@@ -36,8 +36,8 @@
         <item quantity="other">%d ulæst samtaler</item>
 
     </plurals>
-    <string name="sending">sender...</string>
-    <string name="message_decrypting">Dekrypter besked... Vent venligst...</string>
+    <string name="sending">sender…</string>
+    <string name="message_decrypting">Dekrypter besked… Vent venligst…</string>
     <string name="pgp_message">OpenPGP krypteret besked</string>
     <string name="nick_in_use">Kaldenavn er allerede i brug</string>
     <string name="invalid_muc_nick">Ugyldig kaldenavn</string>
@@ -56,7 +56,7 @@
     <string name="remove_bookmark_text">Vil du gerne slette %s som et bogmærke? Samtaler med dette bogmærke vil ikke blive slettet.</string>
     <string name="register_account">Register ny konto på server</string>
     <string name="change_password_on_server">Ændr kodeord på server</string>
-    <string name="share_with">Del med...</string>
+    <string name="share_with">Del med…</string>
     <string name="start_conversation">Start samtale</string>
     <string name="invite_contact">Inviter kontakt</string>
     <string name="invite">Inviter</string>
@@ -84,7 +84,7 @@
     <string name="send_failed">levering mislykkedes</string>
     <string name="preparing_image">Gør klar til at sende billede</string>
     <string name="preparing_images">Gør klar til at sende billeder</string>
-    <string name="sharing_files_please_wait">Deler filer. Vent venligst...</string>
+    <string name="sharing_files_please_wait">Deler filer. Vent venligst…</string>
     <string name="action_clear_history">Ryd historik</string>
     <string name="clear_conversation_history">Ryd samtale historik</string>
     <string name="clear_histor_msg">Vil du slette alle beskeder i denne samtale?\n\n<b>Advarsel:</b>Dette vil ikke påvirke beskeder gemt på andre enheder eller servere.</string>
@@ -95,8 +95,8 @@
     <string name="send_unencrypted_message">Send ukrypteret besked</string>
     <string name="send_message">Send besked</string>
     <string name="send_message_to_x">Send besked to %s</string>
-    <string name="send_omemo_message">Send OMEMO krypteret besked</string>
-    <string name="send_omemo_x509_message">Send v\\OMEMO krypteret besked</string>
+    <string name="send_omemo_message">Send OMEMO-krypteret besked</string>
+    <string name="send_omemo_x509_message">Send v\\OMEMO-krypteret besked</string>
     <string name="send_pgp_message">Send OpenPGP krypteret besked</string>
     <string name="your_nick_has_been_changed">Nyt kaldenavn i brug</string>
     <string name="send_unencrypted">Send ukrypteret</string>
@@ -106,15 +106,15 @@
     <string name="restart">Genstart</string>
     <string name="install">Installer</string>
     <string name="openkeychain_not_installed">Installer venligst OpenKeychain</string>
-    <string name="offering">tilbyder...</string>
-    <string name="waiting">Venter...</string>
+    <string name="offering">tilbyder…</string>
+    <string name="waiting">Venter…</string>
     <string name="no_pgp_key">Ingen Open PGP nøgler fundet</string>
     <string name="contact_has_no_pgp_key">Kunne ikke kryptere din besked, fordi din kontakt ikke annoncerer deres offentlige nøgle.\n\n<small> Bed din kontakt om at konfigurere OpenPGP.</small></string>
     <string name="no_pgp_keys">Ingen OpenPGP nøgler fundet</string>
     <string name="contacts_have_no_pgp_keys">Kunne ikke kryptere din besked, fordi din kontakt ikke annoncerer deres offentlige nøgle.\n\n1<small>Bed dem om at oprette OpenPGP.</small></string>
     <string name="pref_general">Generel</string>
     <string name="pref_accept_files">Accepter filer</string>
-    <string name="pref_accept_files_summary">Accepter automatisk filer mindre end...</string>
+    <string name="pref_accept_files_summary">Accepter automatisk filer mindre end…</string>
     <string name="pref_attachments">Vedhæftninger</string>
     <string name="pref_notification_settings">Notifikation</string>
     <string name="pref_vibrate">Vibrer</string>
@@ -214,13 +214,13 @@
     <string name="install_openkeychain">Krypteret besked. Installer venligst OpenKeychain for dekryptere den?</string>
     <string name="openpgp_messages_found">Ny OpenPGP krypteret beskeder fundet</string>
     <string name="openpgp_key_id">OpenPGP nøgle ID</string>
-    <string name="omemo_fingerprint">OMEMO fingeraftryk</string>
+    <string name="omemo_fingerprint">OMEMO-fingeraftryk</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO fingeraftryk</string>
-    <string name="omemo_fingerprint_selected_message">OMEMO fingeraftryk (beskedoprindelse)</string>
-    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO fingeraftryk (beskedoprindelse)</string>
+    <string name="omemo_fingerprint_selected_message">OMEMO-fingeraftryk (beskedoprindelse)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-fingeraftryk (beskedoprindelse)</string>
     <string name="other_devices">Andre enheder</string>
-    <string name="trust_omemo_fingerprints">Stol på OMEMO fingeraftryk</string>
-    <string name="fetching_keys">Henter nøgler...</string>
+    <string name="trust_omemo_fingerprints">Stol på OMEMO-fingeraftryk</string>
+    <string name="fetching_keys">Henter nøgler…</string>
     <string name="done">Færdig</string>
     <string name="decrypt">Dekrypter</string>
     <string name="bookmarks">Bogmærker</string>
@@ -246,7 +246,7 @@
     <string name="could_not_destroy_channel">Kunne ikke slette kanal</string>
     <string name="action_edit_subject">Rediger titel på gruppechat</string>
     <string name="topic">Emne</string>
-    <string name="joining_conference">Deltager i gruppechat...</string>
+    <string name="joining_conference">Deltager i gruppechat…</string>
     <string name="leave">Forlad</string>
     <string name="contact_added_you">Kontakt tilføjede dig til kontaktliste</string>
     <string name="add_back">Tilføj tilbage</string>
@@ -256,7 +256,7 @@
     <string name="everyone_has_read_up_to_this_point">Alle har læst op til dette punkt</string>
     <string name="publish">Offentliggør </string>
     <string name="touch_to_choose_picture">Tryk på avatar for at vælge billede fra galleri</string>
-    <string name="publishing">Offentliggørelse...</string>
+    <string name="publishing">Offentliggørelse…</string>
     <string name="error_publish_avatar_server_reject">Serveren afviste din offentliggørelse</string>
     <string name="error_publish_avatar_converting">Kunne ikke konverter dit billede</string>
     <string name="error_saving_avatar">Kunne ikke gemme avatar til disk</string>
@@ -328,8 +328,8 @@
     <string name="notification_create_backup_title">Opretter backup filer</string>
     <string name="notification_backup_created_title">Din backup er oprettet</string>
     <string name="notification_backup_created_subtitle">Backup filerne er blevet gem i %s</string>
-    <string name="restoring_backup">Gendan sikkerhedskopi</string>
-    <string name="notification_restored_backup_title">Din sikkerhedskopi er blevet gendannet</string>
+    <string name="restoring_backup">Gendan backup</string>
+    <string name="notification_restored_backup_title">Din backup er blevet gendannet</string>
     <string name="notification_restored_backup_subtitle">Glem ikke at aktivere kontoen.</string>
     <string name="choose_file">Vælg fil</string>
     <string name="receiving_x_file">Modtager %1$s (%2$d%% fuldført)</string>
@@ -353,7 +353,7 @@
     <string name="no_conference_server_found">Ingen gruppechat server fundet</string>
     <string name="conference_creation_failed">Kunne ikke oprette gruppechat</string>
     <string name="account_image_description">Konto avatar</string>
-    <string name="copy_omemo_clipboard_description">Kopier OMEMO fingeraftryk til udklipsholder</string>
+    <string name="copy_omemo_clipboard_description">Kopier OMEMO-fingeraftryk til udklipsholder</string>
     <string name="regenerate_omemo_key">Gendan OMEMO nøgle</string>
     <string name="clear_other_devices">Ryd enheder</string>
     <string name="clear_other_devices_desc">Er du sikker på, at du vil rydde alle andre enheder fra OMEMO-meddelelsen? Næste gang dine enheder opretter forbindelse, annoncerer de sig selv, men de modtager muligvis ikke beskeder sendt i mellemtiden.</string>
@@ -362,7 +362,7 @@
     <string name="error_trustkeys_title">Noget gik galt</string>
     <string name="fetching_history_from_server">Henter historik fra server</string>
     <string name="no_more_history_on_server">Ikke mere historik på server</string>
-    <string name="updating">Opdater...</string>
+    <string name="updating">Opdater…</string>
     <string name="password_changed">Kodeord ændret!</string>
     <string name="could_not_change_password">Kunne ikke ændre kodeord</string>
     <string name="change_password">Ændr kodeord</string>
@@ -419,9 +419,9 @@
     <string name="sending_x_file">Sender %s</string>
     <string name="offering_x_file">Tilbyder %s</string>
     <string name="hide_offline">Skjul offline</string>
-    <string name="contact_is_typing">%s skriver...</string>
+    <string name="contact_is_typing">%s skriver…</string>
     <string name="contact_has_stopped_typing">%s er holdt op med at skrive</string>
-    <string name="contacts_are_typing">%s skriver...</string>
+    <string name="contacts_are_typing">%s skriver…</string>
     <string name="contacts_have_stopped_typing">%s har stoppet skrivning</string>
     <string name="pref_chat_states">Indtastningsnotifikation</string>
     <string name="pref_chat_states_summary">Lad dine kontakter vide når du skriver beskeder til dem</string>
@@ -509,7 +509,8 @@
     <string name="no_storage_permission">Giv %1$s adgang til ekstern lagerplads</string>
     <string name="no_camera_permission">Giv %1$s adgang til kameraet</string>
     <string name="sync_with_contacts">Synkroniser med kontakter</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy har brug for adgang til dine kontaktpersons telefonnumre for at komme med forslag til mulige kontakter, der allerede er på Quicksy.<br><br>Vi gemmer ikke en kopi af disse telefonnumre.\n\nFor mere information, læs vores <a href=\"https://quicksy.im/#privacy\">privatlivspolitik</a>.<br><br>Du vil bedes nu om at give tilladelse til at få adgang til dine kontakter.]]></string>
+    <string name="sync_with_contacts_long">%1$s ønsker tilladelse til at få adgang til din adressebog for at matche den med din XMPP-kontaktliste.\nDette viser dine kontakters fulde navne og avatarer.\n\n%1$s læser kun din adressebog og matcher den lokalt uden at uploade noget til din server.</string>
+    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy har brug for adgang til dine kontaktpersons telefonnumre for at komme med forslag til mulige kontakter, der allerede er på Quicksy.<br><br>Vi gemmer ikke en kopi af disse telefonnumre.\n\nFor mere information, læs vores <a href="https://quicksy.im/#privacy">privatlivspolitik</a>.<br><br>Du vil bedes nu om at give tilladelse til at få adgang til dine kontakter.]]></string>
     <string name="notify_on_all_messages">Underret ved alle beskeder</string>
     <string name="notify_only_when_highlighted">Underret kun når nævnt</string>
     <string name="notify_never">Notifikationer deaktiveret</string>
@@ -532,7 +533,8 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="this_account_is_disabled">Du har deaktiveret denne konto</string>
     <string name="security_error_invalid_file_access">Sikkerhedsfejl: Ugyldig filadgang!</string>
     <string name="no_application_to_share_uri">Ingen app fundet der kan dele URL</string>
-    <string name="share_uri_with">Del URL med...</string>
+    <string name="share_uri_with">Del URL med…</string>
+    <string name="welcome_text_quicksy"><![CDATA[Quicksy er en klone af den populære XMPP-klient samtaler med automatisk kontaktopdagelse.<br><br>Du tilmelder dig med dit telefonnummer, og Quicksy vil automatisk - baseret på telefonnumre i din adressebog - foreslå mulige kontakter til dig.<br><br>Når du tilmelder dig, accepterer du vores <a href="https://quicksy.im/#privacy">privatlispolitik</a>.]]></string>
     <string name="agree_and_continue">Accepter og fortsætte</string>
     <string name="magic_create_text">En guide er oprettet til kontooprettelse på conversations.im.¹ \ nNår du vælger conversations.im som udbyder, kan du kommunikere med brugere fra andre udbydere ved at give dem din fulde XMPP-adresse.</string>
     <string name="your_full_jid_will_be">Din fulde XMPP adresse vil blive: %s</string>
@@ -552,7 +554,7 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="registration_please_wait">Registrering mislykkes: Prøv igen senere</string>
     <string name="registration_password_too_weak">Registring mislykkes: Adgangskode for svag</string>
     <string name="choose_participants">Vælg deltager</string>
-    <string name="creating_conference">Opretter gruppechat...</string>
+    <string name="creating_conference">Opretter gruppechat…</string>
     <string name="invite_again">Inviter igen</string>
     <string name="gp_disable">Deaktiver</string>
     <string name="gp_short">Kort</string>
@@ -585,13 +587,14 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="remote_server_timeout">Fjernserver timeout</string>
     <string name="unable_to_update_account">Kunne ikke opdatere konto</string>
     <string name="report_jid_as_spammer">Reporter denne XMPP adresse for spamming.</string>
-    <string name="pref_delete_omemo_identities">Slet OMEMO identiteter</string>
-    <string name="pref_delete_omemo_identities_summary">Gendan dine OMEMO nøgler. Alle dine kontakter skal bekræfte dig igen. Brug kun dette som en sidste udvej.</string>
+    <string name="pref_delete_omemo_identities">Slet OMEMO-identiteter</string>
+    <string name="pref_delete_omemo_identities_summary">Gendan dine OMEMO-nøgler. Alle dine kontakter skal bekræfte dig igen. Brug kun dette som en sidste udvej.</string>
     <string name="delete_selected_keys">Slet valgte nøgler</string>
     <string name="error_publish_avatar_offline">Du skal være forbundet for at offentliggøre dit avatar.</string>
     <string name="show_error_message">Vis fejlbesked</string>
     <string name="error_message">Fejlbesked</string>
     <string name="data_saver_enabled">Datasparer aktiveret</string>
+    <string name="data_saver_enabled_explained">Dit operativsystem begrænser %1$s adgangen til Internettet i baggrunden. For at modtage notifikationer om nye beskeder, skal du tillade %1$s ubegrænset adgang, når \"Datasparer\" er aktiveret. \n%1$s vil stadig gøre en indsats for at gemme data, når det er muligt.</string>
     <string name="device_does_not_support_data_saver">Din enhed understøtter ikke deaktivering af Databesparelse for %1$s.</string>
     <string name="error_unable_to_create_temporary_file">Kunne ikke oprette midlertidig fil </string>
     <string name="this_device_has_been_verified">Den enhed er blevet bekræftet</string>
@@ -614,8 +617,8 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="pref_clean_private_storage">Tøm privat lagerplads</string>
     <string name="pref_clean_private_storage_summary">Tøm privat lagerplads, hvor filer opbevares (De kan downloades igen fra serveren)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Jeg fulgte dette link fra en pålidelig kilde</string>
-    <string name="verifying_omemo_keys_trusted_source">Du er ved bekræfte OMEMO nøgler af %1$s efter du har klikket på et link.  Dette er kun sikkert, hvis du fulgte linket fra troværdig kilde hvor kun %2$s kunne have offentliggjort dette link.</string>
-    <string name="verify_omemo_keys">Beskræft OMEMO nøgler</string>
+    <string name="verifying_omemo_keys_trusted_source">Du er ved bekræfte OMEMO-nøgler af %1$s efter du har klikket på et link.  Dette er kun sikkert, hvis du fulgte linket fra troværdig kilde hvor kun %2$s kunne have offentliggjort dette link.</string>
+    <string name="verify_omemo_keys">Beskræft OMEMO-nøgler</string>
     <string name="show_inactive_devices">Vis inaktive</string>
     <string name="hide_inactive_devices">Skjul inaktive</string>
     <string name="distrust_omemo_key">Stol ikke på enhed</string>
@@ -695,9 +698,10 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="error_trustkey_device_list">Kunne ikke hente enhedsliste</string>
     <string name="error_trustkey_bundle">Kunne ikke hente krypteringsnøgler</string>
     <string name="error_trustkey_hint_mutual">Tip: I nogle tilfælde kan dette løses ved at tilføje hinanden dine kontaktlister.</string>
+    <string name="disable_encryption_message">Er du sikker på, at du vil deaktivere OMEMO-kryptering til denne samtale?\nDette giver din serveradministrator mulighed for at læse dine meddelelser, men det er muligvis den eneste måde at kommunikere med folk, der bruger forældede klienter.</string>
     <string name="disable_now">Deaktiver nu</string>
     <string name="draft">Udkast:</string>
-    <string name="pref_omemo_setting">OMEMO kryptering</string>
+    <string name="pref_omemo_setting">OMEMO-kryptering</string>
     <string name="pref_omemo_setting_summary_always">OMEMO vil altid blive brugt for en-til-en og private gruppechats</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO vil blive brugt som standard for nye samlater.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO skal være tændt udtrykkeligt for nye samtaler.</string>
@@ -710,7 +714,7 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="medium">Mellem</string>
     <string name="large">Stor</string>
     <string name="not_encrypted_for_this_device">Besked var ikke krypteret på denne enhed</string>
-    <string name="omemo_decryption_failed">Dekryptering af OMEMO besked mislykkes.</string>
+    <string name="omemo_decryption_failed">Dekryptering af OMEMO-besked mislykkes.</string>
     <string name="undo">Fortryd</string>
     <string name="location_disabled">Deling af placering er deaktiveret</string>
     <string name="action_fix_to_location">Fastgør position</string>
@@ -722,7 +726,7 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="title_activity_show_location">Vis placering</string>
     <string name="share">Del</string>
     <string name="unable_to_start_recording">Kunne ikke starte optagelse</string>
-    <string name="please_wait">Vent venligst...</string>
+    <string name="please_wait">Vent venligst…</string>
     <string name="no_microphone_permission">Giv %1$s adgang til mikrofonen</string>
     <string name="search_messages">Find beskeder</string>
     <string name="gif">GIF</string>
@@ -794,8 +798,8 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="abort_registration_procedure">Er du sikker på at du afbryde registreringsproceduren?</string>
     <string name="yes">Ja</string>
     <string name="no">Nej</string>
-    <string name="verifying">Bekræfter...</string>
-    <string name="requesting_sms">Anmoder SMS...</string>
+    <string name="verifying">Bekræfter…</string>
+    <string name="requesting_sms">Anmoder SMS…</string>
     <string name="incorrect_pin">Den indtastet pinkode er forkert.</string>
     <string name="pin_expired">Den sendte pinkode er udløbet.</string>
     <string name="unknown_api_error_network">Ukendt netværksfejl.</string>
@@ -813,7 +817,7 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="the_app_is_out_of_date">Du bruger en ældre version af denne app.</string>
     <string name="update">Opdater</string>
     <string name="logged_in_with_another_device">Dette telefonnummer er i øjeblikket logget ind med en anden enhed.</string>
-    <string name="enter_your_name_instructions">Indtast dit navn for at lade folk, der ikke har dig i deres telefonbøger, vide, hvem du er.</string>
+    <string name="enter_your_name_instructions">Indtast dit navn for at lade folk, der ikke har dig i deres adressebog, vide, hvem du er.</string>
     <string name="your_name">Dit navn</string>
     <string name="enter_your_name">Indtast dit navn</string>
     <string name="no_name_set_instructions">Brug redigeringsknappen for at instille dit navn</string>
@@ -824,12 +828,13 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="group_chat_will_make_your_jabber_id_public">Denne kanal vil offentliggør din XMPP adresse</string>
     <string name="ebook">e-bog</string>
     <string name="video_original">Original (ukomprimeret)</string>
-    <string name="open_with">Åbn med...</string>
+    <string name="open_with">Åbn med…</string>
     <string name="set_profile_picture">Conversations profil billede</string>
     <string name="choose_account">Vælg konto</string>
     <string name="restore_backup">Gendan backup</string>
     <string name="restore">Gendan</string>
-    <string name="enter_password_to_restore">Indtast din adgangskode til kontoen %s for at gendanne sikkerhedskopien.</string>
+    <string name="enter_password_to_restore">Indtast din adgangskode til kontoen %s for at gendanne backuppen.</string>
+    <string name="restore_warning">Brug ikke gendannelsessikkerhedsfunktionen i et forsøg på at klone (køre samtidigt) en installation. Gendannelse af en backup er kun beregnet til migreringer, eller hvis du har mistet den originale enhed.</string>
     <string name="unable_to_restore_backup">Kunne ikke gendan backup</string>
     <string name="unable_to_decrypt_backup">Kunne ikke dekryptere backup. Er adgangskoden korrekt?</string>
     <string name="backup_channel_name">Backup &amp; Gendan</string>
@@ -843,7 +848,7 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="please_enter_name">Angiv venligst et navn til kanalen</string>
     <string name="please_enter_xmpp_address">Angiv venligst en XMPP adresse</string>
     <string name="this_is_an_xmpp_address">Dette er en XMPP adresse. Angiv venligst et navn</string>
-    <string name="creating_channel">Opret offentlig kanal...</string>
+    <string name="creating_channel">Opret offentlig kanal…</string>
     <string name="channel_already_exists">Denne kanal eksister allerede</string>
     <string name="joined_an_existing_channel">Du sluttede dig til en eksisterende kanal</string>
     <string name="unable_to_set_channel_configuration">Kunne ikke gemme kanalkonfiguration</string>
@@ -865,6 +870,7 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="discover_channels">Find kanaler</string>
     <string name="search_channels">Find kanaler</string>
     <string name="channel_discovery_opt_in_title">Mulig krænkelse af privatlivet!</string>
+    <string name="channel_discover_opt_in_message"><![CDATA[Kanalsøgning bruger en tredjepartstjeneste kaldet <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Brug af denne funktion sender din IP-adresse og søgetermer til denne service. Se deres <a href="https://search.jabber.network/privacy">Privatlivspolitik</a> for mere information.]]></string>
     <string name="i_already_have_an_account">Jeg har allerede en konto</string>
     <string name="add_existing_account">Tilføj eksisterende konto</string>
     <string name="register_new_account">Registrer ny konto</string>
@@ -879,7 +885,7 @@ Din enhed anvender kraftig batterioptimeringer for %1$s som kan føre til forsin
     <string name="account_already_setup">Denne konto er allerede oprettet</string>
     <string name="please_enter_password">Indtast adgangskoden til denne konto</string>
     <string name="unable_to_perform_this_action">Kunne ikke udføre denne handling</string>
-    <string name="open_join_dialog">Deltag i offentlig kanal...</string>
+    <string name="open_join_dialog">Deltag i offentlig kanal…</string>
     <string name="sharing_application_not_grant_permission">Dele-appen gav ikke tilladelse til at få adgang til denne fil.</string>
     <string name="group_chats_and_channels"><![CDATA[Gruppechats & Kanaler]]></string>
     <string name="jabber_network">jabber.netværk</string>
