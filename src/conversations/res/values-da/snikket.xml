@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="snikket_intro"><b>Snikket</b> er en sikker og privatlivsvenlig besked app.
+\n
+\nFor at komme igang skal du have en invitation fra en ven der bruger Snikket.
+\n
+\nHvis du allerede har en invitation, så er nu et godt tidspunkt at åbne den og klik på ‘åben appen’ knappen!</string>
+    <string name="learn_more">Lær mere</string>
+</resources>
