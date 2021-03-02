@@ -14,6 +14,7 @@ import com.google.common.collect.Sets;
 
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,6 +26,7 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.GenericTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
+import eu.siacs.conversations.xmpp.jingle.stanzas.OmemoVerifiedIceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 
 public class RtpContentMap {
@@ -32,13 +34,32 @@ public class RtpContentMap {
     public final Group group;
     public final Map<String, DescriptionTransport> contents;
 
-    private RtpContentMap(Group group, Map<String, DescriptionTransport> contents) {
+    public RtpContentMap(Group group, Map<String, DescriptionTransport> contents) {
         this.group = group;
         this.contents = contents;
     }
 
     public static RtpContentMap of(final JinglePacket jinglePacket) {
-        return new RtpContentMap(jinglePacket.getGroup(), DescriptionTransport.of(jinglePacket.getJingleContents()));
+        final Map<String, DescriptionTransport> contents =  DescriptionTransport.of(jinglePacket.getJingleContents());
+        if (isOmemoVerified(contents)) {
+            return new OmemoVerifiedRtpContentMap(jinglePacket.getGroup(), contents);
+        } else {
+            return new RtpContentMap(jinglePacket.getGroup(), contents);
+        }
+    }
+
+    private static boolean isOmemoVerified(Map<String, DescriptionTransport> contents) {
+        final Collection<DescriptionTransport> values = contents.values();
+        if (values.size() == 0) {
+            return false;
+        }
+        for(final DescriptionTransport descriptionTransport : values) {
+            if (descriptionTransport.transport instanceof OmemoVerifiedIceUdpTransportInfo) {
+                continue;
+            }
+            return false;
+        }
+        return true;
     }
 
     public static RtpContentMap of(final SessionDescription sessionDescription) {
@@ -123,7 +144,7 @@ public class RtpContentMap {
         public final RtpDescription description;
         public final IceUdpTransportInfo transport;
 
-        DescriptionTransport(final RtpDescription description, final IceUdpTransportInfo transport) {
+        public DescriptionTransport(final RtpDescription description, final IceUdpTransportInfo transport) {
             this.description = description;
             this.transport = transport;
         }
@@ -146,7 +167,10 @@ public class RtpContentMap {
             } else {
                 throw new UnsupportedTransportException("Content does not contain ICE-UDP transport");
             }
-            return new DescriptionTransport(rtpDescription, iceUdpTransportInfo);
+            return new DescriptionTransport(
+                    rtpDescription,
+                    OmemoVerifiedIceUdpTransportInfo.upgrade(iceUdpTransportInfo)
+            );
         }
 
         public static DescriptionTransport of(final SessionDescription sessionDescription, final SessionDescription.Media media) {

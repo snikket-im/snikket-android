@@ -30,6 +30,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.CryptoFailedException;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
@@ -43,6 +45,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
+import eu.siacs.conversations.xmpp.jingle.stanzas.Proceed;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Propose;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
@@ -123,6 +126,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private final WebRTCWrapper webRTCWrapper = new WebRTCWrapper(this);
     private final ArrayDeque<Set<Map.Entry<String, RtpContentMap.DescriptionTransport>>> pendingIceCandidates = new ArrayDeque<>();
+    private final OmemoVerification omemoVerification = new OmemoVerification();
     private final Message message;
     private State state = State.NULL;
     private StateTransitionException stateTransitionException;
@@ -290,6 +294,25 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
+    private RtpContentMap receiveRtpContentMap(final JinglePacket jinglePacket, final boolean expectVerification) {
+        final RtpContentMap receivedContentMap = RtpContentMap.of(jinglePacket);
+        if (receivedContentMap instanceof OmemoVerifiedRtpContentMap) {
+            final AxolotlService.OmemoVerifiedPayload<RtpContentMap> omemoVerifiedPayload;
+            try {
+                omemoVerifiedPayload = id.account.getAxolotlService().decrypt((OmemoVerifiedRtpContentMap) receivedContentMap, id.with);
+            } catch (final CryptoFailedException e) {
+                throw new SecurityException("Unable to verify DTLS Fingerprint with OMEMO", e);
+            }
+            this.omemoVerification.setOrEnsureEqual(omemoVerifiedPayload);
+            Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": received verifiable DTLS fingerprint via "+this.omemoVerification);
+            return omemoVerifiedPayload.getPayload();
+        } else if (expectVerification) {
+            throw new SecurityException("DTLS fingerprint was unexpectedly not verifiable");
+        } else {
+            return receivedContentMap;
+        }
+    }
+
     private void receiveSessionInitiate(final JinglePacket jinglePacket) {
         if (isInitiator()) {
             Log.d(Config.LOGTAG, String.format("%s: received session-initiate even though we were initiating", id.account.getJid().asBareJid()));
@@ -298,7 +321,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         final RtpContentMap contentMap;
         try {
-            contentMap = RtpContentMap.of(jinglePacket);
+            contentMap = receiveRtpContentMap(jinglePacket, false);
             contentMap.requireContentDescriptions();
             contentMap.requireDTLSFingerprint();
         } catch (final RuntimeException e) {
@@ -328,6 +351,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         if (transition(target, () -> this.initiatorRtpContentMap = contentMap)) {
             respondOk(jinglePacket);
+            //TODO Do not push empty set
             pendingIceCandidates.push(contentMap.contents.entrySet());
             if (target == State.SESSION_INITIALIZED_PRE_APPROVED) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": automatically accepting session-initiate");
@@ -350,7 +374,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         final RtpContentMap contentMap;
         try {
-            contentMap = RtpContentMap.of(jinglePacket);
+            contentMap = receiveRtpContentMap(jinglePacket, this.omemoVerification.hasFingerprint());
             contentMap.requireContentDescriptions();
             contentMap.requireDTLSFingerprint();
         } catch (final RuntimeException e) {
@@ -469,7 +493,23 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private void sendSessionAccept(final RtpContentMap rtpContentMap) {
         this.responderRtpContentMap = rtpContentMap;
         this.transitionOrThrow(State.SESSION_ACCEPTED);
-        final JinglePacket sessionAccept = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_ACCEPT, id.sessionId);
+        final RtpContentMap outgoingContentMap;
+        //TODO do on different thread
+        if (this.omemoVerification.hasDeviceId()) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": encrypting session-accept");
+            try {
+                final AxolotlService.OmemoVerifiedPayload<OmemoVerifiedRtpContentMap> verifiedPayload = id.account.getAxolotlService().encrypt(rtpContentMap, id.with, omemoVerification.getDeviceId());
+                outgoingContentMap = verifiedPayload.getPayload();
+                this.omemoVerification.setOrEnsureEqual(verifiedPayload);
+            } catch (final Exception e) {
+                //TODO fail application if something goes wrong here
+                Log.d(Config.LOGTAG, "unable to encrypt", e);
+                return;
+            }
+        } else {
+            outgoingContentMap = rtpContentMap;
+        }
+        final JinglePacket sessionAccept = outgoingContentMap.toJinglePacket(JinglePacket.Action.SESSION_ACCEPT, id.sessionId);
         send(sessionAccept);
     }
 
@@ -480,7 +520,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 receivePropose(from, Propose.upgrade(message), serverMessageId, timestamp);
                 break;
             case "proceed":
-                receiveProceed(from, serverMessageId, timestamp);
+                receiveProceed(from, Proceed.upgrade(message), serverMessageId, timestamp);
                 break;
             case "retract":
                 receiveRetract(from, serverMessageId, timestamp);
@@ -621,7 +661,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void receiveProceed(final Jid from, final String serverMsgId, final long timestamp) {
+    private void receiveProceed(final Jid from, final Proceed proceed, final String serverMsgId, final long timestamp) {
         final Set<Media> media = Preconditions.checkNotNull(this.proposedMedia, "Proposed media has to be set before handling proceed");
         Preconditions.checkState(media.size() > 0, "Proposed media should not be empty");
         if (from.equals(id.with)) {
@@ -631,6 +671,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                         this.message.setServerMsgId(serverMsgId);
                     }
                     this.message.setTime(timestamp);
+                    this.omemoVerification.setDeviceId(proceed.getDeviceId());
                     this.sendSessionInitiate(media, State.SESSION_INITIALIZED_PRE_APPROVED);
                 } else {
                     Log.d(Config.LOGTAG, String.format("%s: ignoring proceed because already in %s", id.account.getJid().asBareJid(), this.state));
@@ -716,11 +757,29 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void sendSessionInitiate(RtpContentMap rtpContentMap, final State targetState) {
+    private void sendSessionInitiate(final RtpContentMap rtpContentMap, final State targetState) {
         this.initiatorRtpContentMap = rtpContentMap;
         this.transitionOrThrow(targetState);
-        final JinglePacket sessionInitiate = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
+        //TODO do on background thread?
+        final RtpContentMap outgoingContentMap = encryptSessionInitiate(rtpContentMap);
+        final JinglePacket sessionInitiate = outgoingContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
         send(sessionInitiate);
+    }
+
+    private RtpContentMap encryptSessionInitiate(final RtpContentMap rtpContentMap) {
+        if (this.omemoVerification.hasDeviceId()) {
+            final AxolotlService.OmemoVerifiedPayload<OmemoVerifiedRtpContentMap> verifiedPayload;
+            try {
+                verifiedPayload = id.account.getAxolotlService().encrypt(rtpContentMap, id.with, omemoVerification.getDeviceId());
+            } catch (final CryptoFailedException e) {
+                Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": unable to use OMEMO DTLS verification on outgoing session initiate. falling back", e);
+                return rtpContentMap;
+            }
+            this.omemoVerification.setSessionFingerprint(verifiedPayload.getFingerprint());
+            return verifiedPayload.getPayload();
+        } else {
+            return rtpContentMap;
+        }
     }
 
     private void sendSessionTerminate(final Reason reason) {
@@ -1055,12 +1114,17 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void sendJingleMessage(final String action, final Jid to) {
         final MessagePacket messagePacket = new MessagePacket();
-        if ("proceed".equals(action)) {
-            messagePacket.setId(JINGLE_MESSAGE_PROCEED_ID_PREFIX + id.sessionId);
-        }
         messagePacket.setType(MessagePacket.TYPE_CHAT); //we want to carbon copy those
         messagePacket.setTo(to);
-        messagePacket.addChild(action, Namespace.JINGLE_MESSAGE).setAttribute("id", id.sessionId);
+        final Element intent = messagePacket.addChild(action, Namespace.JINGLE_MESSAGE).setAttribute("id", id.sessionId);
+        if ("proceed".equals(action)) {
+            messagePacket.setId(JINGLE_MESSAGE_PROCEED_ID_PREFIX + id.sessionId);
+
+            //TODO only do this if OMEMO is enable so we have an easy way to opt out
+            final int deviceId = id.account.getAxolotlService().getOwnDeviceId();
+            final Element device = intent.addChild("device", Namespace.OMEMO_DTLS_SRTP_VERIFICATION);
+            device.setAttribute("id", deviceId);
+        }
         messagePacket.addChild("store", "urn:xmpp:hints");
         xmppConnectionService.sendMessagePacket(id.account, messagePacket);
     }

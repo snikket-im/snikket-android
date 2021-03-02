@@ -22,7 +22,7 @@ import eu.siacs.conversations.xmpp.jingle.SessionDescription;
 
 public class IceUdpTransportInfo extends GenericTransportInfo {
 
-    private IceUdpTransportInfo() {
+    public IceUdpTransportInfo() {
         super("transport", Namespace.JINGLE_TRANSPORT_ICE_UDP);
     }
 

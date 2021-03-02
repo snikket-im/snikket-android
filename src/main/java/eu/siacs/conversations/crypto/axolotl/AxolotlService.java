@@ -8,6 +8,8 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.common.collect.ImmutableMap;
+
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.IdentityKeyPair;
@@ -49,9 +51,15 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.jingle.OmemoVerification;
+import eu.siacs.conversations.xmpp.jingle.OmemoVerifiedRtpContentMap;
+import eu.siacs.conversations.xmpp.jingle.RtpContentMap;
+import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
+import eu.siacs.conversations.xmpp.jingle.stanzas.OmemoVerifiedIceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.pep.PublishOptions;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
@@ -1198,6 +1206,91 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         });
     }
 
+    public OmemoVerifiedIceUdpTransportInfo encrypt(final IceUdpTransportInfo element, final XmppAxolotlSession session) throws CryptoFailedException {
+        final OmemoVerifiedIceUdpTransportInfo transportInfo = new OmemoVerifiedIceUdpTransportInfo();
+        transportInfo.setAttributes(element.getAttributes());
+        for (final Element child : element.getChildren()) {
+            if ("fingerprint".equals(child.getName()) && Namespace.JINGLE_APPS_DTLS.equals(child.getNamespace())) {
+                final Element fingerprint = new Element("fingerprint", Namespace.OMEMO_DTLS_SRTP_VERIFICATION);
+                fingerprint.setAttribute("setup", child.getAttribute("setup"));
+                fingerprint.setAttribute("hash", child.getAttribute("hash"));
+                final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().asBareJid(), getOwnDeviceId());
+                final String content = child.getContent();
+                axolotlMessage.encrypt(content);
+                axolotlMessage.addDevice(session);
+                fingerprint.addChild(axolotlMessage.toElement());
+                transportInfo.addChild(fingerprint);
+            } else {
+                transportInfo.addChild(child);
+            }
+        }
+        return transportInfo;
+    }
+
+
+    public OmemoVerifiedPayload<OmemoVerifiedRtpContentMap> encrypt(final RtpContentMap rtpContentMap, final Jid jid, final int deviceId) throws CryptoFailedException {
+        final SignalProtocolAddress address = new SignalProtocolAddress(jid.asBareJid().toString(), deviceId);
+        final XmppAxolotlSession session = sessions.get(address);
+        final ImmutableMap.Builder<String, RtpContentMap.DescriptionTransport> descriptionTransportBuilder = new ImmutableMap.Builder<>();
+        final OmemoVerification omemoVerification = new OmemoVerification();
+        omemoVerification.setDeviceId(deviceId);
+        omemoVerification.setSessionFingerprint(session.getFingerprint());
+        for (final Map.Entry<String, RtpContentMap.DescriptionTransport> content : rtpContentMap.contents.entrySet()) {
+            final RtpContentMap.DescriptionTransport descriptionTransport = content.getValue();
+            final OmemoVerifiedIceUdpTransportInfo encryptedTransportInfo = encrypt(descriptionTransport.transport, session);
+            descriptionTransportBuilder.put(
+                    content.getKey(),
+                    new RtpContentMap.DescriptionTransport(descriptionTransport.description, encryptedTransportInfo)
+            );
+        }
+        return new OmemoVerifiedPayload<>(
+                omemoVerification,
+                new OmemoVerifiedRtpContentMap(rtpContentMap.group, descriptionTransportBuilder.build())
+        );
+    }
+
+    public OmemoVerifiedPayload<RtpContentMap> decrypt(OmemoVerifiedRtpContentMap omemoVerifiedRtpContentMap, final Jid from) throws CryptoFailedException {
+        final ImmutableMap.Builder<String, RtpContentMap.DescriptionTransport> descriptionTransportBuilder = new ImmutableMap.Builder<>();
+        final OmemoVerification omemoVerification = new OmemoVerification();
+        for (final Map.Entry<String, RtpContentMap.DescriptionTransport> content : omemoVerifiedRtpContentMap.contents.entrySet()) {
+            final RtpContentMap.DescriptionTransport descriptionTransport = content.getValue();
+            final OmemoVerifiedPayload<IceUdpTransportInfo> decryptedTransport = decrypt((OmemoVerifiedIceUdpTransportInfo) descriptionTransport.transport, from);
+            omemoVerification.setOrEnsureEqual(decryptedTransport);
+            descriptionTransportBuilder.put(
+                    content.getKey(),
+                    new RtpContentMap.DescriptionTransport(descriptionTransport.description, decryptedTransport.payload)
+            );
+        }
+        return new OmemoVerifiedPayload<>(
+                omemoVerification,
+                new RtpContentMap(omemoVerifiedRtpContentMap.group, descriptionTransportBuilder.build())
+        );
+    }
+
+    public OmemoVerifiedPayload<IceUdpTransportInfo> decrypt(final OmemoVerifiedIceUdpTransportInfo verifiedIceUdpTransportInfo, final Jid from) throws CryptoFailedException {
+        final IceUdpTransportInfo transportInfo = new IceUdpTransportInfo();
+        transportInfo.setAttributes(verifiedIceUdpTransportInfo.getAttributes());
+        final OmemoVerification omemoVerification = new OmemoVerification();
+        for (final Element child : verifiedIceUdpTransportInfo.getChildren()) {
+            if ("fingerprint".equals(child.getName()) && Namespace.OMEMO_DTLS_SRTP_VERIFICATION.equals(child.getNamespace())) {
+                final Element fingerprint = new Element("fingerprint", Namespace.JINGLE_APPS_DTLS);
+                fingerprint.setAttribute("setup", child.getAttribute("setup"));
+                fingerprint.setAttribute("hash", child.getAttribute("hash"));
+                final Element encrypted = child.findChildEnsureSingle(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
+                final XmppAxolotlMessage xmppAxolotlMessage = XmppAxolotlMessage.fromElement(encrypted, from.asBareJid());
+                final XmppAxolotlSession session = getReceivingSession(xmppAxolotlMessage);
+                final XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintext = xmppAxolotlMessage.decrypt(session, getOwnDeviceId());
+                fingerprint.setContent(plaintext.getPlaintext());
+                omemoVerification.setDeviceId(session.getRemoteAddress().getDeviceId());
+                omemoVerification.setSessionFingerprint(plaintext.getFingerprint());
+                transportInfo.addChild(fingerprint);
+            } else {
+                transportInfo.addChild(child);
+            }
+        }
+        return new OmemoVerifiedPayload<>(omemoVerification, transportInfo);
+    }
+
     public void prepareKeyTransportMessage(final Conversation conversation, final OnMessageCreatedCallback onMessageCreatedCallback) {
         executor.execute(new Runnable() {
             @Override
@@ -1267,7 +1360,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         } catch (final BrokenSessionException e) {
             throw e;
         } catch (final OutdatedSenderException e) {
-            Log.e(Config.LOGTAG,account.getJid().asBareJid()+": "+e.getMessage());
+            Log.e(Config.LOGTAG, account.getJid().asBareJid() + ": " + e.getMessage());
             throw e;
         } catch (CryptoFailedException e) {
             Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to decrypt message from " + message.getFrom(), e);
@@ -1563,6 +1656,30 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                     }
                 }
             }
+        }
+    }
+
+    public static class OmemoVerifiedPayload<T> {
+        private final int deviceId;
+        private final String fingerprint;
+        private final T payload;
+
+        private OmemoVerifiedPayload(OmemoVerification omemoVerification, T payload) {
+            this.deviceId = omemoVerification.getDeviceId();
+            this.fingerprint = omemoVerification.getFingerprint();
+            this.payload = payload;
+        }
+
+        public int getDeviceId() {
+            return deviceId;
+        }
+
+        public String getFingerprint() {
+            return fingerprint;
+        }
+
+        public T getPayload() {
+            return payload;
         }
     }
 }
