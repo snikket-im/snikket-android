@@ -669,7 +669,15 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                         this.message.setServerMsgId(serverMsgId);
                     }
                     this.message.setTime(timestamp);
-                    this.omemoVerification.setDeviceId(proceed.getDeviceId());
+                    final Integer remoteDeviceId = proceed.getDeviceId();
+                    if (isOmemoEnabled()) {
+                        this.omemoVerification.setDeviceId(remoteDeviceId);
+                    } else {
+                        if (remoteDeviceId != null) {
+                            Log.d(Config.LOGTAG, id.account.getJid().asBareJid()+": remote party signaled support for OMEMO verification but we have OMEMO disabled");
+                        }
+                        this.omemoVerification.setDeviceId(null);
+                    }
                     this.sendSessionInitiate(media, State.SESSION_INITIALIZED_PRE_APPROVED);
                 } else {
                     Log.d(Config.LOGTAG, String.format("%s: ignoring proceed because already in %s", id.account.getJid().asBareJid(), this.state));
@@ -1126,14 +1134,22 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final Element intent = messagePacket.addChild(action, Namespace.JINGLE_MESSAGE).setAttribute("id", id.sessionId);
         if ("proceed".equals(action)) {
             messagePacket.setId(JINGLE_MESSAGE_PROCEED_ID_PREFIX + id.sessionId);
-
-            //TODO only do this if OMEMO is enable so we have an easy way to opt out
-            final int deviceId = id.account.getAxolotlService().getOwnDeviceId();
-            final Element device = intent.addChild("device", Namespace.OMEMO_DTLS_SRTP_VERIFICATION);
-            device.setAttribute("id", deviceId);
+            if (isOmemoEnabled()) {
+                final int deviceId = id.account.getAxolotlService().getOwnDeviceId();
+                final Element device = intent.addChild("device", Namespace.OMEMO_DTLS_SRTP_VERIFICATION);
+                device.setAttribute("id", deviceId);
+            }
         }
         messagePacket.addChild("store", "urn:xmpp:hints");
         xmppConnectionService.sendMessagePacket(id.account, messagePacket);
+    }
+
+    private boolean isOmemoEnabled() {
+        final Conversational conversational = message.getConversation();
+        if (conversational instanceof Conversation) {
+            return ((Conversation) conversational).getNextEncryption() == Message.ENCRYPTION_AXOLOTL;
+        }
+        return false;
     }
 
     private void acceptCallFromSessionInitialized() {
