@@ -7,7 +7,7 @@
     <string name="action_end_conversation">Pechar conversa</string>
     <string name="action_contact_details">Detalles do contacto</string>
     <string name="action_muc_details">Detalles da conversa de grupo</string>
-    <string name="channel_details">Detalles do canal</string>
+    <string name="channel_details">Detalles da canle</string>
     <string name="action_add_account">Engadir conta</string>
     <string name="action_edit_contact">Editar contacto</string>
     <string name="action_add_phone_book">Engadir a libreta de enderezos</string>
@@ -234,16 +234,16 @@
     <string name="select">Selecionar</string>
     <string name="contact_already_exists">Xa existe o contacto</string>
     <string name="join">Unirse</string>
-    <string name="channel_full_jid_example">canal@sala.exemplo.com/alcume</string>
-    <string name="channel_bare_jid_example">canal@sala.exemplo.com</string>
+    <string name="channel_full_jid_example">canle@sala.exemplo.com/alcume</string>
+    <string name="channel_bare_jid_example">canle@sala.exemplo.com</string>
     <string name="save_as_bookmark">Gardar como marcador</string>
     <string name="delete_bookmark">Eliminar marcador</string>
     <string name="destroy_room">Destruír a conversa en grupo</string>
-    <string name="destroy_channel">Eliminar canal</string>
+    <string name="destroy_channel">Eliminar canle</string>
     <string name="destroy_room_dialog">Está segura de querer destruír esta conversa en grupo?\n\n<b>Aviso:</b> A conversa en grupo será totalmente eliminada do servidor.</string>
-    <string name="destroy_channel_dialog">Está segura de que quere eliminar o canal?\n\n<b>Aviso:</b> O canal eliminarase completamente do servidor.</string>
+    <string name="destroy_channel_dialog">Tes a certeza de querer eliminar a canle?\n\n<b>Aviso:</b> A canle será eliminada completamente do servidor.</string>
     <string name="could_not_destroy_room">Non se desfixo a conversa en grupo</string>
-    <string name="could_not_destroy_channel">Non se puido eliminar o canal</string>
+    <string name="could_not_destroy_channel">Non se puido eliminar a canle</string>
     <string name="action_edit_subject">Editar o tema da conversa en grupo</string>
     <string name="topic">Asunto</string>
     <string name="joining_conference">Entrando na conversa en grupo</string>
@@ -384,18 +384,18 @@
     <string name="grant_owner_privileges">Conceder privilexios de propiedade</string>
     <string name="remove_owner_privileges">Retirar privilexios de propiedade</string>
     <string name="remove_from_room">Eliminar da conversa en grupo</string>
-    <string name="remove_from_channel">Retirar do canal</string>
+    <string name="remove_from_channel">Retirar da canle</string>
     <string name="could_not_change_affiliation">Non se puido mudar a afiliación de %s</string>
     <string name="ban_from_conference">Prohibición da conversa en grupo</string>
-    <string name="ban_from_channel">Prohibir no canal</string>
-    <string name="removing_from_public_conference">Estás a intentar eliminar %s dun canal público. O único xeito de facelo é prohibíndolle o acceso para sempre.</string>
+    <string name="ban_from_channel">Vetar na canle</string>
+    <string name="removing_from_public_conference">Estás a intentar eliminar a %s dunha canle pública. O único xeito de facelo é prohibíndolle o acceso para sempre.</string>
     <string name="ban_now">Rexeitar agora</string>
     <string name="could_not_change_role">Non se puido mudar o rol de %s</string>
     <string name="conference_options">Configuración do grupo privado de conversa</string>
-    <string name="channel_options">Configuración do canal público</string>
+    <string name="channel_options">Configuración da canle pública</string>
     <string name="members_only">Privada, só para membros</string>
     <string name="non_anonymous">Facer os enderezos XMPP visibles para calquera</string>
-    <string name="moderated">Establecer canal como moderado</string>
+    <string name="moderated">Establecer canle como moderada</string>
     <string name="you_are_not_participating">Non estás a participar</string>
     <string name="modified_conference_options">¡Opcións da conversa en grupo modificadas!</string>
     <string name="could_not_modify_conference_options">Non se puideron modificar as opcións da conversa en grupo</string>
@@ -431,7 +431,7 @@
     <string name="location">Localización</string>
     <string name="title_undo_swipe_out_conversation">Pechouse a conversa</string>
     <string name="title_undo_swipe_out_group_chat">Deixar o grupo de conversa privada</string>
-    <string name="title_undo_swipe_out_channel">Deixar o canal público</string>
+    <string name="title_undo_swipe_out_channel">Deixar a canle pública</string>
     <string name="pref_dont_trust_system_cas_title">Non confiar nas CAs do sistema</string>
     <string name="pref_dont_trust_system_cas_summary">Todos os certificados deberán ser aprobados manualmente</string>
     <string name="pref_remove_trusted_certificates_title">Eliminar certificados</string>
@@ -510,7 +510,7 @@
     <string name="no_camera_permission">Permitir que %1$s acceda á cámara</string>
     <string name="sync_with_contacts">Sincronice con todos os contactos</string>
     <string name="sync_with_contacts_long">%1$s quere ter permiso para acceder á túa libreta de enderezos para comparala coa lista de contactos XMPP.\nDeste xeito poderá mostrar o nome completo e avatares dos teus contactos.\n\n%1$s só utilizará de xeito local a túa lista de contactos, sen subila a ningún servidor.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy precisa acceder ao número de teléfono dos contactos para facer suxestións sobre posibles contactos que xa están en Quicksy.<br><br>Non gardaremos unha copia de esos números de teléfono.\n\nPara máis información lea a nosa <a href="https://quicksy.im/#privacy">política de intimidade</a>.<br><br>A continuación pediráselle permiso para acceder aos contactos.]]></string>
+    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy precisa acceder ao número de teléfono dos contactos para facer suxestións sobre posibles contactos que xa están en Quicksy.<br><br>Non gardaremos unha copia desos números de teléfono.\n\nPara máis información le a nosa <a href="https://quicksy.im/#privacy">política de privacidade</a>.<br><br>A continuación pediremos permiso para acceder aos contactos.]]></string>
     <string name="notify_on_all_messages">Notificar todas as mensaxes</string>
     <string name="notify_only_when_highlighted">Notificar só cando é mencionada</string>
     <string name="notify_never">Notificacións desactivadas</string>
@@ -533,7 +533,7 @@
     <string name="security_error_invalid_file_access">Fallo de seguridade: Acceso non válido ao ficheiro!</string>
     <string name="no_application_to_share_uri">Non se atopou unha app para compartir URI</string>
     <string name="share_uri_with">Compartir URI con...</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy é un derivado do popular cliente XMPP Conversations con descubrimento automático de contactos.<br><br>Podes rexistrarte co teu número de teléfono e Quicksy suxerillache automáticamente —tomando os números da túa libreta de enderezos como referencia—  posibles contactos para ti.<br><br>Ao rexistrarte aceptas a nosa <a href="https://quicksy.im/#privacy">política de intimidade</a>.]]></string>
+    <string name="welcome_text_quicksy"><![CDATA[Quicksy é un derivado do popular cliente XMPP Conversations con descubrimento automático de contactos.<br><br>Podes rexistrarte co teu número de teléfono e Quicksy suxerirache automáticamente —tomando os números da túa libreta de enderezos como referencia—  posibles contactos para ti.<br><br>Ao rexistrarte aceptas a nosa <a href="https://quicksy.im/#privacy">política de privacidade</a>.]]></string>
     <string name="agree_and_continue">Aceptar e continuar</string>
     <string name="magic_create_text">Tes unha guía para crear unha conta en conversations.im¹\nAo escoller conversations.im como provedor poderás comunicarte con outras usuarias de outros provedores con só darlles o teu enderezo XMPP completo.</string>
     <string name="your_full_jid_will_be">O seu enderezo XMPP completo será: %s</string>
@@ -561,7 +561,7 @@
     <string name="gp_long">Longo</string>
     <string name="pref_broadcast_last_activity">Publicar utilización</string>
     <string name="pref_broadcast_last_activity_summary">Permitelle aos teus contactos saber cando estás a usar Conversations</string>
-    <string name="pref_privacy">Intimidade</string>
+    <string name="pref_privacy">Privacidade</string>
     <string name="pref_theme_options">Decorado</string>
     <string name="pref_theme_options_summary">Escolle a gama de cores</string>
     <string name="pref_theme_automatic">Automático</string>
@@ -824,7 +824,7 @@
     <string name="install_orbot">Instalar Orbot</string>
     <string name="start_orbot">Iniciar Orbot</string>
     <string name="no_market_app_installed">Non ten loxa de aplicacións instalada.</string>
-    <string name="group_chat_will_make_your_jabber_id_public">Este canal fará público o seu enderezo XMPP</string>
+    <string name="group_chat_will_make_your_jabber_id_public">Esta canle fará público o teu enderezo XMPP</string>
     <string name="ebook">e-book</string>
     <string name="video_original">Orixinal (non comprimido)</string>
     <string name="open_with">Abrir con...</string>
@@ -839,18 +839,18 @@
     <string name="backup_channel_name">Respaldar &amp; Restaurar</string>
     <string name="enter_jabber_id">Introducir enderezo XMPP</string>
     <string name="create_group_chat">Crear grupo de conversa</string>
-    <string name="join_public_channel">Unirse a canal público</string>
+    <string name="join_public_channel">Unirse a canle pública</string>
     <string name="create_private_group_chat">Crear grupo privado de conversa</string>
-    <string name="create_public_channel">Crear canal público</string>
-    <string name="create_dialog_channel_name">Nome do canal</string>
+    <string name="create_public_channel">Crear canle pública</string>
+    <string name="create_dialog_channel_name">Nome da canle</string>
     <string name="xmpp_address">Enderezo XMPP</string>
-    <string name="please_enter_name">Por favor, proporcione un nome para o canal</string>
+    <string name="please_enter_name">Por favor, escribe un nome para a canle</string>
     <string name="please_enter_xmpp_address">Por favor, proporcione un enderezo XMPP</string>
     <string name="this_is_an_xmpp_address">Esto é un enderezo XMPP. Por favor, proporcione un nome.</string>
-    <string name="creating_channel">Creando canal público...</string>
-    <string name="channel_already_exists">Este canal xa existe</string>
-    <string name="joined_an_existing_channel">Entrou nun canal existente</string>
-    <string name="unable_to_set_channel_configuration">Non se gardaron os axustes do canal</string>
+    <string name="creating_channel">Creando canle pública...</string>
+    <string name="channel_already_exists">Esta canle xa existe</string>
+    <string name="joined_an_existing_channel">Entraches nunha canle existente</string>
+    <string name="unable_to_set_channel_configuration">Non se gardaron os axustes da canle</string>
     <string name="allow_participants_to_edit_subject">Permitir que calquera cambie o asunto</string>
     <string name="allow_participants_to_invite_others">Permitir que calquera poida convidar</string>
     <string name="anyone_can_edit_subject">Calquera pode editar o asunto.</string>
@@ -860,22 +860,22 @@
     <string name="anyone_can_invite_others">Calquera pode convidar a outras.</string>
     <string name="jabber_ids_are_visible_to_admins">Os enderezos XMPP son visibles para a administración.</string>
     <string name="jabber_ids_are_visible_to_anyone">Os enderezos XMPP son visibles para calquera.</string>
-    <string name="no_users_hint_channel">Este canal público non ten participantes. Convida aos teus contactos ou utiliza o botón compartir para distribuír o teu enderezo XMPP.</string>
+    <string name="no_users_hint_channel">Esta canle pública non ten participantes. Convida aos teus contactos ou utiliza o botón compartir para distribuír o teu enderezo XMPP.</string>
     <string name="no_users_hint_group_chat">Este grupo privado non ten participantes.</string>
     <string name="manage_permission">Xestionar privilexios</string>
     <string name="search_participants">Buscar participantes</string>
     <string name="file_too_large">Ficheiro demasiado grande</string>
     <string name="attach">Anexar</string>
-    <string name="discover_channels">Descubrir canales</string>
-    <string name="search_channels">Buscar canales</string>
-    <string name="channel_discovery_opt_in_title">Posible intrusión na intimidade!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[O descubrimento de canais utiliza un servizo de terceiros chamado <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Ao utilizar esta función transmitirá o teu enderezo IP e termos de busca a ese servizo. Le a súa <a href="https://search.jabber.network/privacy">Política de Privacidade</a> para máis información.]]></string>
+    <string name="discover_channels">Descubrir canles</string>
+    <string name="search_channels">Buscar canles</string>
+    <string name="channel_discovery_opt_in_title">Posible intrusión na privacidade!</string>
+    <string name="channel_discover_opt_in_message"><![CDATA[O descubrimento de canles utiliza un servizo de terceiros chamado <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Ao utilizar esta función transmitirás o teu enderezo IP e termos de busca a ese servizo. Le a súa <a href="https://search.jabber.network/privacy">Política de Privacidade</a> para máis información.]]></string>
     <string name="i_already_have_an_account">Xa teño unha conta</string>
     <string name="add_existing_account">Engadir conta existente</string>
     <string name="register_new_account">Rexistrar unha nova conta</string>
     <string name="this_looks_like_a_domain">Esto semella un enderezo de dominio</string>
     <string name="add_anway">Engadir igualmente</string>
-    <string name="this_looks_like_channel">Esto semella o enderezo de un canal</string>
+    <string name="this_looks_like_channel">Esto semella o enderezo dunha canle</string>
     <string name="share_backup_files">Compartir ficheiros de apoio</string>
     <string name="conversations_backup">Respaldar Conversations</string>
     <string name="event">Evento</string>
@@ -886,7 +886,7 @@
     <string name="unable_to_perform_this_action">Non se puido completar a acción</string>
     <string name="open_join_dialog">Unirse a canle pública...</string>
     <string name="sharing_application_not_grant_permission">A aplicación que comparte non proporciona permiso para acceder ao ficheiro.</string>
-    <string name="group_chats_and_channels"><![CDATA[Conversas grupo & Canles]]></string>
+    <string name="group_chats_and_channels"><![CDATA[Grupos de conversa & Canles]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">Servidor local</string>
     <string name="pref_channel_discovery_summary">A maioría das usuarias debería escoller \'jabber.network\' para obter mellores suxestións desde o ecosistema público XMPP.</string>

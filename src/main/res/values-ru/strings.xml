@@ -411,7 +411,7 @@
     <string name="reply">Ответить</string>
     <string name="mark_as_read">Прочитано</string>
     <string name="pref_input_options">Ввод</string>
-    <string name="pref_enter_is_send">Отправка по \\"Enter\\"</string>
+    <string name="pref_enter_is_send">Отправка по \"Enter\"</string>
     <string name="pref_enter_is_send_summary">Отправлять сообщения клавишей Enter. Даже если эта опция отключена, сообщение можно отправить, нажав Ctrl+Enter.</string>
     <string name="pref_display_enter_key">Показывать клавишу ввода</string>
     <string name="pref_display_enter_key_summary">Поменять кнопку смайликов на кнопку ввода</string>
