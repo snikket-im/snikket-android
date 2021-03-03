@@ -1264,6 +1264,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                     new RtpContentMap.DescriptionTransport(descriptionTransport.description, decryptedTransport.payload)
             );
         }
+        processPostponed();
         return new OmemoVerifiedPayload<>(
                 omemoVerification,
                 new RtpContentMap(omemoVerifiedRtpContentMap.group, descriptionTransportBuilder.build())
@@ -1283,6 +1284,10 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                 final XmppAxolotlMessage xmppAxolotlMessage = XmppAxolotlMessage.fromElement(encrypted, from.asBareJid());
                 final XmppAxolotlSession session = getReceivingSession(xmppAxolotlMessage);
                 final XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintext = xmppAxolotlMessage.decrypt(session, getOwnDeviceId());
+                final Integer preKeyId = session.getPreKeyIdAndReset();
+                if (preKeyId != null) {
+                    postponedSessions.add(session);
+                }
                 fingerprint.setContent(plaintext.getPlaintext());
                 omemoVerification.setDeviceId(session.getRemoteAddress().getDeviceId());
                 omemoVerification.setSessionFingerprint(plaintext.getFingerprint());
@@ -1414,7 +1419,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             } else {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": nothing to flush. Not republishing key");
             }
-            if (trustedOrPreviouslyResponded(session)) {
+            if (trustedOrPreviouslyResponded(session) && Config.AUTOMATICALLY_COMPLETE_SESSIONS) {
                 completeSession(session);
             }
         }
@@ -1429,7 +1434,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         final Iterator<XmppAxolotlSession> iterator = postponedSessions.iterator();
         while (iterator.hasNext()) {
             final XmppAxolotlSession session = iterator.next();
-            if (trustedOrPreviouslyResponded(session)) {
+            if (trustedOrPreviouslyResponded(session) && Config.AUTOMATICALLY_COMPLETE_SESSIONS) {
                 completeSession(session);
             }
             iterator.remove();

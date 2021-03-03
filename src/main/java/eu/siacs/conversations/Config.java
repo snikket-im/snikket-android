@@ -102,6 +102,7 @@ public final class Config {
     public static final boolean REMOVE_BROKEN_DEVICES = false;
     public static final boolean OMEMO_PADDING = false;
     public static final boolean PUT_AUTH_TAG_INTO_KEY = true;
+    public static final boolean AUTOMATICALLY_COMPLETE_SESSIONS = true;
 
     public static final boolean USE_BOOKMARKS2 = false;
 
