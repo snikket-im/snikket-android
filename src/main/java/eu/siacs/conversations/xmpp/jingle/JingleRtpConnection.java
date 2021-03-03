@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.CryptoFailedException;
+import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
@@ -966,6 +967,15 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
+
+    public boolean isVerified() {
+        final String fingerprint = this.omemoVerification.getFingerprint();
+        if (fingerprint == null) {
+            return false;
+        }
+        final FingerprintStatus status = id.account.getAxolotlService().getFingerprintTrust(fingerprint);
+        return status != null && status.getTrust() == FingerprintStatus.Trust.VERIFIED;
+    }
 
     public synchronized void acceptCall() {
         switch (this.state) {

@@ -86,17 +86,14 @@
 
         </RelativeLayout>
 
-
         <org.webrtc.SurfaceViewRenderer
             android:id="@+id/local_video"
             android:layout_width="@dimen/local_video_preview_width"
             android:layout_height="@dimen/local_video_preview_height"
             android:layout_below="@+id/app_bar_layout"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
             android:visibility="gone"
             app:elevation="4dp" />
 
@@ -106,22 +103,31 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/app_bar_layout"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/verified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/app_bar_layout"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:alpha="0.7"
+            android:src="@drawable/ic_verified_fingerprint" />
 
         <ImageView
             android:id="@+id/pip_local_mic_off_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="8dp"
             android:alpha="0.7"
             android:src="@drawable/ic_mic_off_black_24dp"
-            android:tint="@color/white"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:tint="@color/white" />
 
         <RelativeLayout
             android:id="@+id/button_row"
@@ -141,7 +147,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
                     android:layout_margin="16dp"
                     android:src="@drawable/ic_call_end_white_48dp"
                     android:visibility="gone"
@@ -156,7 +161,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="16dp"
                     android:src="@drawable/ic_call_white_48dp"
@@ -176,7 +180,6 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/in_call_fab_margin"
                 android:layout_toStartOf="@+id/end_call"
-                android:layout_toLeftOf="@+id/end_call"
                 android:visibility="gone"
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
@@ -203,7 +206,6 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/in_call_fab_margin"
                 android:layout_toEndOf="@+id/end_call"
-                android:layout_toRightOf="@+id/end_call"
                 android:visibility="gone"
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
@@ -217,7 +219,6 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/in_call_fab_margin"
                 android:layout_toEndOf="@+id/in_call_action_right"
-                android:layout_toRightOf="@+id/in_call_action_right"
                 android:visibility="gone"
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
