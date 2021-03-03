@@ -1206,7 +1206,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         });
     }
 
-    public OmemoVerifiedIceUdpTransportInfo encrypt(final IceUdpTransportInfo element, final XmppAxolotlSession session) throws CryptoFailedException {
+    private OmemoVerifiedIceUdpTransportInfo encrypt(final IceUdpTransportInfo element, final XmppAxolotlSession session) throws CryptoFailedException {
         final OmemoVerifiedIceUdpTransportInfo transportInfo = new OmemoVerifiedIceUdpTransportInfo();
         transportInfo.setAttributes(element.getAttributes());
         for (final Element child : element.getChildren()) {
@@ -1231,6 +1231,9 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     public OmemoVerifiedPayload<OmemoVerifiedRtpContentMap> encrypt(final RtpContentMap rtpContentMap, final Jid jid, final int deviceId) throws CryptoFailedException {
         final SignalProtocolAddress address = new SignalProtocolAddress(jid.asBareJid().toString(), deviceId);
         final XmppAxolotlSession session = sessions.get(address);
+        if (session == null) {
+            throw new CryptoFailedException(String.format("No session found for %d", deviceId));
+        }
         final ImmutableMap.Builder<String, RtpContentMap.DescriptionTransport> descriptionTransportBuilder = new ImmutableMap.Builder<>();
         final OmemoVerification omemoVerification = new OmemoVerification();
         omemoVerification.setDeviceId(deviceId);
@@ -1267,7 +1270,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         );
     }
 
-    public OmemoVerifiedPayload<IceUdpTransportInfo> decrypt(final OmemoVerifiedIceUdpTransportInfo verifiedIceUdpTransportInfo, final Jid from) throws CryptoFailedException {
+    private OmemoVerifiedPayload<IceUdpTransportInfo> decrypt(final OmemoVerifiedIceUdpTransportInfo verifiedIceUdpTransportInfo, final Jid from) throws CryptoFailedException {
         final IceUdpTransportInfo transportInfo = new IceUdpTransportInfo();
         transportInfo.setAttributes(verifiedIceUdpTransportInfo.getAttributes());
         final OmemoVerification omemoVerification = new OmemoVerification();

@@ -494,17 +494,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         this.responderRtpContentMap = rtpContentMap;
         this.transitionOrThrow(State.SESSION_ACCEPTED);
         final RtpContentMap outgoingContentMap;
-        //TODO do on different thread
         if (this.omemoVerification.hasDeviceId()) {
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": encrypting session-accept");
+            final AxolotlService.OmemoVerifiedPayload<OmemoVerifiedRtpContentMap> verifiedPayload;
             try {
-                final AxolotlService.OmemoVerifiedPayload<OmemoVerifiedRtpContentMap> verifiedPayload = id.account.getAxolotlService().encrypt(rtpContentMap, id.with, omemoVerification.getDeviceId());
+                verifiedPayload = id.account.getAxolotlService().encrypt(rtpContentMap, id.with, omemoVerification.getDeviceId());
                 outgoingContentMap = verifiedPayload.getPayload();
                 this.omemoVerification.setOrEnsureEqual(verifiedPayload);
             } catch (final Exception e) {
-                //TODO fail application if something goes wrong here
-                Log.d(Config.LOGTAG, "unable to encrypt", e);
-                return;
+                throw new SecurityException("Unable to verify DTLS Fingerprint with OMEMO", e);
             }
         } else {
             outgoingContentMap = rtpContentMap;
