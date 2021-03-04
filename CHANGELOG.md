@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.9.8
+
+* Verify A/V calls with preexisting OMEMO sessions
+
 ### Version 2.9.7
 
 * Ability to select incoming call ringtone

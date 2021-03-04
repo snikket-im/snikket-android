@@ -691,6 +691,7 @@ public class XmppConnectionService extends Service {
                 }
                 case TorServiceUtils.ACTION_STATUS:
                     final String status = intent.getStringExtra(TorServiceUtils.EXTRA_STATUS);
+                    //TODO port and host are in 'extras' - but this may not be a reliable source?
                     if ("ON".equals(status)) {
                         handleOrbotStartedEvent();
                         return START_STICKY;
