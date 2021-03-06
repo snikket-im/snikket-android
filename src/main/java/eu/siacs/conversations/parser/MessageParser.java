@@ -384,7 +384,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 return;
             }
         } else if (query != null) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received mam result with invalid from ("+original.getFrom()+") or queryId ("+queryId+")");
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received mam result with invalid from (" + original.getFrom() + ") or queryId (" + queryId + ")");
             return;
         } else if (original.fromServer(account)) {
             Pair<MessagePacket, Long> f;
@@ -488,13 +488,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 if (conversation.getMucOptions().isSelf(counterpart)) {
                     status = Message.STATUS_SEND_RECEIVED;
                     isCarbon = true; //not really carbon but received from another resource
-                    //TODO this would be the place to change the body after something like mod_pastebin
-                    if (mXmppConnectionService.markMessage(conversation, remoteMsgId, status, serverMsgId)) {
+                    if (mXmppConnectionService.markMessage(conversation, remoteMsgId, status, serverMsgId, body)) {
                         return;
                     } else if (remoteMsgId == null || Config.IGNORE_ID_REWRITE_IN_MUC) {
-                        LocalizedContent localizedBody = packet.getBody();
-                        if (localizedBody != null) {
-                            Message message = conversation.findSentMessageWithBody(localizedBody.content);
+                        if (body != null) {
+                            Message message = conversation.findSentMessageWithBody(body.content);
                             if (message != null) {
                                 mXmppConnectionService.markMessage(message, status);
                                 return;

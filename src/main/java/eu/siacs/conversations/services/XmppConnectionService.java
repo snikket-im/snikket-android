@@ -136,6 +136,7 @@ import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.LocalizedContent;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnBindListener;
@@ -3950,16 +3951,28 @@ public class XmppConnectionService extends Service {
         return null;
     }
 
-    public boolean markMessage(Conversation conversation, String uuid, int status, String serverMessageId) {
+    public boolean markMessage(final Conversation conversation, final String uuid, final int status, final String serverMessageId) {
+        return markMessage(conversation, uuid, status, serverMessageId, null);
+    }
+
+    public boolean markMessage(final Conversation conversation, final String uuid, final int status, final String serverMessageId, final LocalizedContent body) {
         if (uuid == null) {
             return false;
         } else {
-            Message message = conversation.findSentMessageWithUuid(uuid);
+            final Message message = conversation.findSentMessageWithUuid(uuid);
             if (message != null) {
                 if (message.getServerMsgId() == null) {
                     message.setServerMsgId(serverMessageId);
                 }
-                markMessage(message, status);
+                if (body != null && body.content != null && !body.content.equals(message.getBody())) {
+                    message.setBody(body.content);
+                    if (body.count > 1) {
+                        message.setBodyLanguage(body.language);
+                    }
+                    markMessage(message, status, null, true);
+                } else {
+                    markMessage(message, status);
+                }
                 return true;
             } else {
                 return false;
@@ -3973,6 +3986,10 @@ public class XmppConnectionService extends Service {
 
 
     public void markMessage(final Message message, final int status, final String errorMessage) {
+        markMessage(message, status, errorMessage, false);
+    }
+
+    public void markMessage(final Message message, final int status, final String errorMessage, final boolean includeBody) {
         final int oldStatus = message.getStatus();
         if (status == Message.STATUS_SEND_FAILED && (oldStatus == Message.STATUS_SEND_RECEIVED || oldStatus == Message.STATUS_SEND_DISPLAYED)) {
             return;
@@ -3982,7 +3999,7 @@ public class XmppConnectionService extends Service {
         }
         message.setErrorMessage(errorMessage);
         message.setStatus(status);
-        databaseBackend.updateMessage(message, false);
+        databaseBackend.updateMessage(message, includeBody);
         updateConversationUi();
         if (oldStatus != status && status == Message.STATUS_SEND_FAILED) {
             mNotificationService.pushFailedDelivery(message);
