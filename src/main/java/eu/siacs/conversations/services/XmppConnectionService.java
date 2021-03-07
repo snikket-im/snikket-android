@@ -3964,7 +3964,7 @@ public class XmppConnectionService extends Service {
                 if (message.getServerMsgId() == null) {
                     message.setServerMsgId(serverMessageId);
                 }
-                if (body != null && body.content != null && !body.content.equals(message.getBody())) {
+                if (message.getEncryption() == Message.ENCRYPTION_NONE && isBodyModified(message, body)) {
                     message.setBody(body.content);
                     if (body.count > 1) {
                         message.setBodyLanguage(body.language);
@@ -3978,6 +3978,13 @@ public class XmppConnectionService extends Service {
                 return false;
             }
         }
+    }
+
+    private static boolean isBodyModified(final Message message, final LocalizedContent body) {
+        if (body == null || body.content == null) {
+            return false;
+        }
+        return !body.content.equals(message.getBody());
     }
 
     public void markMessage(Message message, int status) {
