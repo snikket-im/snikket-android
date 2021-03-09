@@ -37,7 +37,7 @@
 
     </plurals>
     <string name="sending">sender…</string>
-    <string name="message_decrypting">Dekrypter besked… Vent venligst…</string>
+    <string name="message_decrypting">Dekrypter besked. Vent venligst…</string>
     <string name="pgp_message">OpenPGP krypteret besked</string>
     <string name="nick_in_use">Kaldenavn er allerede i brug</string>
     <string name="invalid_muc_nick">Ugyldig kaldenavn</string>
@@ -107,7 +107,7 @@
     <string name="install">Installer</string>
     <string name="openkeychain_not_installed">Installer venligst OpenKeychain</string>
     <string name="offering">tilbyder…</string>
-    <string name="waiting">Venter…</string>
+    <string name="waiting">venter…</string>
     <string name="no_pgp_key">Ingen Open PGP nøgler fundet</string>
     <string name="contact_has_no_pgp_key">Kunne ikke kryptere din besked, fordi din kontakt ikke annoncerer deres offentlige nøgle.\n\n<small>Bed din kontakt om at konfigurere OpenPGP.</small></string>
     <string name="no_pgp_keys">Ingen OpenPGP nøgler fundet</string>
@@ -202,7 +202,7 @@
     <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
     <string name="server_info_push">XEP-0357: Push</string>
     <string name="server_info_available">understøttet</string>
-    <string name="server_info_unavailable">Utilgængelig</string>
+    <string name="server_info_unavailable">utilgængelig</string>
     <string name="missing_public_keys">Ingen meddelelser om offentlige nøgler</string>
     <string name="last_seen_now">sidst set lige nu</string>
     <string name="last_seen_min">sidst set for et minut siden</string>
@@ -241,7 +241,7 @@
     <string name="destroy_room">Slet gruppechat</string>
     <string name="destroy_channel">Slet kanal</string>
     <string name="destroy_room_dialog">Er du sikker på du vil slette denne gruppechat?\n\n <b> Advarsel:</b> Gruppechatten fjernes fuldstændigt på serveren.</string>
-    <string name="destroy_channel_dialog">Er du sikker på, at du vil ødelægge denne offentlige kanal?\n\n<b>Advarsel:</b> Kanalen fjernes fuldstændigt på serveren.</string>
+    <string name="destroy_channel_dialog">Er du sikker på, at du vil slette denne offentlige kanal?\n\n<b>Advarsel:</b> Kanalen fjernes fuldstændigt på serveren.</string>
     <string name="could_not_destroy_room">Kunne ikke slette gruppechat</string>
     <string name="could_not_destroy_channel">Kunne ikke slette kanal</string>
     <string name="action_edit_subject">Rediger titel på gruppechat</string>
@@ -466,7 +466,7 @@
     <string name="server_info_broken">Brudt</string>
     <string name="pref_presence_settings">Tilgængelighed</string>
     <string name="pref_away_when_screen_off">Væk når enhed er låst</string>
-    <string name="pref_away_when_screen_off_summary">Væk når enheden er låst</string>
+    <string name="pref_away_when_screen_off_summary">Vis som Væk når enheden er låst</string>
     <string name="pref_dnd_on_silent_mode">Optaget i lydløs tilstand</string>
     <string name="pref_dnd_on_silent_mode_summary">Vis som Optaget når enhed er i lydløs tilstand</string>
     <string name="pref_treat_vibrate_as_silent">Behandl vibration som lydløs tilstand</string>
@@ -493,7 +493,7 @@
     <string name="pref_use_tor_summary">Send alle forbindelser gennem Tor-netværket. Kræver Orbot</string>
     <string name="account_settings_hostname">Værtsnavn</string>
     <string name="account_settings_port">Port</string>
-    <string name="hostname_or_onion">server- eller onion-adresse</string>
+    <string name="hostname_or_onion">Server- eller onion-adresse</string>
     <string name="not_a_valid_port">Dette er ikke en gyldigt port-nummer</string>
     <string name="not_valid_hostname">Dette er ikke et gyldigt værtsnavn</string>
     <string name="connected_accounts">%1$d af %2$d konti forbundet</string>
@@ -601,7 +601,7 @@
     <string name="all_omemo_keys_have_been_verified">Du har bekræftet alle OMEMO-nøglerne i din besiddelse</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Stregkoden indeholder ingen fingeraftryk for denne samtale.</string>
     <string name="verified_fingerprints">Bekræft fingeraftryk</string>
-    <string name="use_camera_icon_to_scan_barcode">Brug kameraet til at skanne en kontakt\'s stregkode</string>
+    <string name="use_camera_icon_to_scan_barcode">Brug kameraet til at skanne en kontakt’s stregkode</string>
     <string name="please_wait_for_keys_to_be_fetched">Vent til nøglerne hentes</string>
     <string name="share_as_barcode">Del som stregkode</string>
     <string name="share_as_uri">Del som XMPP URL</string>
@@ -702,7 +702,7 @@
     <string name="draft">Udkast:</string>
     <string name="pref_omemo_setting">OMEMO-kryptering</string>
     <string name="pref_omemo_setting_summary_always">OMEMO vil altid blive brugt for en-til-en og private gruppechats</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO vil blive brugt som standard for nye samlater.</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO vil blive brugt som standard for nye samtaler.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO skal være tændt udtrykkeligt for nye samtaler.</string>
     <string name="create_shortcut">Opret genvej</string>
     <string name="pref_font_size">Skriftstørrelse</string>
@@ -772,7 +772,7 @@
     <string name="pref_video_compression_summary">Lavere kvalitet betyder mindre filer</string>
     <string name="video_360p">Mellem (360p)</string>
     <string name="video_720p">Høj (720p)</string>
-    <string name="cancelled">Annulleret</string>
+    <string name="cancelled">annulleret</string>
     <string name="already_drafting_message">Du er allerede ved at udarbejde en besked.</string>
     <string name="feature_not_implemented">Funktionen ikke implementeret</string>
     <string name="invalid_country_code">Ugyldig landekode</string>
