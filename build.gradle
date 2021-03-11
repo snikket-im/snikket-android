@@ -66,7 +66,7 @@ dependencies {
     implementation "com.wefika:flowlayout:0.4.1"
     implementation 'net.ypresto.androidtranscoder:android-transcoder:0.3.0'
     implementation 'org.jxmpp:jxmpp-jid:0.6.4'
-    implementation 'org.osmdroid:osmdroid-android:6.1.5'
+    implementation 'org.osmdroid:osmdroid-android:6.1.10'
     implementation 'org.hsluv:hsluv:0.2'
     implementation 'org.conscrypt:conscrypt-android:2.2.1'
     implementation 'me.drakeet.support:toastcompat:1.1.0'
@@ -91,8 +91,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 42001
-        versionName "2.9.8-beta"
+        versionCode 42006
+        versionName "2.9.8"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
