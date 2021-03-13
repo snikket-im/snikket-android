@@ -999,7 +999,10 @@ public class XmppConnectionService extends Service {
 
     public boolean isScreenLocked() {
         final KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        return keyguardManager != null && keyguardManager.inKeyguardRestrictedInputMode();
+        final PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        final boolean locked = keyguardManager != null && keyguardManager.isKeyguardLocked();
+        final boolean interactive = powerManager != null && powerManager.isInteractive();
+        return locked || !interactive;
     }
 
     private boolean isPhoneSilenced() {
@@ -4346,7 +4349,7 @@ public class XmppConnectionService extends Service {
     }
 
     private void sendPresence(final Account account, final boolean includeIdleTimestamp) {
-        Presence.Status status;
+        final Presence.Status status;
         if (manuallyChangePresence()) {
             status = account.getPresenceStatus();
         } else {
