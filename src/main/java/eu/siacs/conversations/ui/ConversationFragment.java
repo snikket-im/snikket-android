@@ -986,7 +986,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 menuCall.setVisible(false);
                 menuOngoingCall.setVisible(false);
             } else {
-                final XmppConnectionService service = activity.xmppConnectionService;
+                final XmppConnectionService service = activity == null ? null : activity.xmppConnectionService;
                 final Optional<OngoingRtpSession> ongoingRtpSession = service == null ? Optional.absent() : service.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
                 if (ongoingRtpSession.isPresent()) {
                     menuOngoingCall.setVisible(true);
