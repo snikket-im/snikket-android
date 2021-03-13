@@ -2992,6 +2992,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             final Menu menu = popupMenu.getMenu();
             menu.findItem(R.id.action_manage_accounts).setVisible(QuickConversationsService.isConversations());
             popupMenu.setOnMenuItemClickListener(item -> {
+                final XmppActivity activity = this.activity;
+                if (activity == null) {
+                    Log.e(Config.LOGTAG,"Unable to perform action. no context provided");
+                    return true;
+                }
                 switch (item.getItemId()) {
                     case R.id.action_show_qr_code:
                         activity.showQrCode(conversation.getAccount().getShareableUri());
