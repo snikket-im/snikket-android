@@ -11,7 +11,7 @@ android:
     - '.+'
 before_script:
     - mkdir libs
-    - wget -O libs/libwebrtc-m87.aar https://gultsch.de/files/libwebrtc-m87.aar
+    - wget -O libs/libwebrtc-m89.aar https://gultsch.de/files/libwebrtc-m89.aar
 script:
     - ./gradlew assembleQuicksyFreeCompatDebug
     - ./gradlew assembleQuicksyFreeSystemDebug
