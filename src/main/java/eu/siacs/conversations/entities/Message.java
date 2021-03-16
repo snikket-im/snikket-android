@@ -908,7 +908,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 		return isFileOrImage() && getFileParams().url == null;
 	}
 
-	public class FileParams {
+	public static class FileParams {
 		public URL url;
 		public long size = 0;
 		public int width = 0;
