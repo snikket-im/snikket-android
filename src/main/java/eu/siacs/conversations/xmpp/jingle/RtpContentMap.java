@@ -40,7 +40,7 @@ public class RtpContentMap {
     }
 
     public static RtpContentMap of(final JinglePacket jinglePacket) {
-        final Map<String, DescriptionTransport> contents =  DescriptionTransport.of(jinglePacket.getJingleContents());
+        final Map<String, DescriptionTransport> contents = DescriptionTransport.of(jinglePacket.getJingleContents());
         if (isOmemoVerified(contents)) {
             return new OmemoVerifiedRtpContentMap(jinglePacket.getGroup(), contents);
         } else {
@@ -53,7 +53,7 @@ public class RtpContentMap {
         if (values.size() == 0) {
             return false;
         }
-        for(final DescriptionTransport descriptionTransport : values) {
+        for (final DescriptionTransport descriptionTransport : values) {
             if (descriptionTransport.transport instanceof OmemoVerifiedIceUdpTransportInfo) {
                 continue;
             }
@@ -174,7 +174,7 @@ public class RtpContentMap {
         }
 
         public static DescriptionTransport of(final SessionDescription sessionDescription, final SessionDescription.Media media) {
-            final RtpDescription rtpDescription = RtpDescription.of(media);
+            final RtpDescription rtpDescription = RtpDescription.of(sessionDescription, media);
             final IceUdpTransportInfo transportInfo = IceUdpTransportInfo.of(sessionDescription, media);
             return new DescriptionTransport(rtpDescription, transportInfo);
         }

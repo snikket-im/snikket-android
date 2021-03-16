@@ -198,10 +198,10 @@ public class SessionDescription {
                 checkNoWhitespace(type, "feedback negotiation type must not contain whitespace");
                 mediaAttributes.put("rtcp-fb", "* " + type + (Strings.isNullOrEmpty(subtype) ? "" : " " + subtype));
             }
-            for (RtpDescription.FeedbackNegotiationTrrInt feedbackNegotiationTrrInt : description.feedbackNegotiationTrrInts()) {
+            for (final RtpDescription.FeedbackNegotiationTrrInt feedbackNegotiationTrrInt : description.feedbackNegotiationTrrInts()) {
                 mediaAttributes.put("rtcp-fb", "* trr-int " + feedbackNegotiationTrrInt.getValue());
             }
-            for (RtpDescription.RtpHeaderExtension extension : description.getHeaderExtensions()) {
+            for (final RtpDescription.RtpHeaderExtension extension : description.getHeaderExtensions()) {
                 final String id = extension.getId();
                 final String uri = extension.getUri();
                 if (Strings.isNullOrEmpty(id)) {
@@ -214,7 +214,12 @@ public class SessionDescription {
                 checkNoWhitespace(uri, "feedback negotiation uri must not contain whitespace");
                 mediaAttributes.put("extmap", id + " " + uri);
             }
-            for (RtpDescription.SourceGroup sourceGroup : description.getSourceGroups()) {
+
+            if (description.hasChild("extmap-allow-mixed", Namespace.JINGLE_RTP_HEADER_EXTENSIONS)) {
+                mediaAttributes.put("extmap-allow-mixed", "");
+            }
+
+            for (final RtpDescription.SourceGroup sourceGroup : description.getSourceGroups()) {
                 final String semantics = sourceGroup.getSemantics();
                 final List<String> groups = sourceGroup.getSsrcs();
                 if (Strings.isNullOrEmpty(semantics)) {
@@ -226,8 +231,8 @@ public class SessionDescription {
                 }
                 mediaAttributes.put("ssrc-group", String.format("%s %s", semantics, Joiner.on(' ').join(groups)));
             }
-            for (RtpDescription.Source source : description.getSources()) {
-                for (RtpDescription.Source.Parameter parameter : source.getParameters()) {
+            for (final RtpDescription.Source source : description.getSources()) {
+                for (final RtpDescription.Source.Parameter parameter : source.getParameters()) {
                     final String id = source.getSsrcId();
                     final String parameterName = parameter.getParameterName();
                     final String parameterValue = parameter.getParameterValue();
