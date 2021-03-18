@@ -930,7 +930,7 @@ public class XmppConnection implements Runnable {
                 if (response.getType() == IqPacket.TYPE.RESULT) {
                     sendRegistryRequest();
                 } else {
-                    final Element error = response.getError();
+                    final String error = response.getErrorCondition();
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": failed to pre auth. " + error);
                     throw new StateChangingError(Account.State.REGISTRATION_INVALID_TOKEN);
                 }

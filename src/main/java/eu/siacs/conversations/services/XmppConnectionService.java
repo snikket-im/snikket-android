@@ -1797,7 +1797,7 @@ public class XmppConnectionService extends Service {
             IqPacket request = mIqGenerator.deleteItem(Namespace.BOOKMARKS2, bookmark.getJid().asBareJid().toEscapedString());
             sendIqPacket(account, request, (a, response) -> {
                 if (response.getType() == IqPacket.TYPE.ERROR) {
-                    Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": unable to delete bookmark " + response.getError());
+                    Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": unable to delete bookmark " + response.getErrorCondition());
                 }
             });
         } else if (connection.getFeatures().bookmarksConversion()) {
@@ -2867,13 +2867,12 @@ public class XmppConnectionService extends Service {
                 }
 
                 @Override
-                public void onFetchFailed(final Conversation conversation, Element error) {
+                public void onFetchFailed(final Conversation conversation, final String errorCondition) {
                     if (conversation.getStatus() == Conversation.STATUS_ARCHIVED) {
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": conversation (" + conversation.getJid() + ") got archived before IQ result");
-
                         return;
                     }
-                    if (error != null && "remote-server-not-found".equals(error.getName())) {
+                    if ("remote-server-not-found".equals(errorCondition)) {
                         synchronized (account.inProgressConferenceJoins) {
                             account.inProgressConferenceJoins.remove(conversation);
                         }
@@ -3239,7 +3238,7 @@ public class XmppConnectionService extends Service {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received timeout waiting for conference configuration fetch");
                 } else {
                     if (callback != null) {
-                        callback.onFetchFailed(conversation, packet.getError());
+                        callback.onFetchFailed(conversation, packet.getErrorCondition());
                     }
                 }
             }
@@ -3534,7 +3533,7 @@ public class XmppConnectionService extends Service {
                     if (publicationResponse.getType() == IqPacket.TYPE.RESULT) {
                         callback.onAvatarPublicationSucceeded();
                     } else {
-                        Log.d(Config.LOGTAG, "failed to publish vcard " + publicationResponse.getError());
+                        Log.d(Config.LOGTAG, "failed to publish vcard " + publicationResponse.getErrorCondition());
                         callback.onAvatarPublicationFailed(R.string.error_publish_avatar_server_reject);
                     }
                 });
@@ -4817,7 +4816,7 @@ public class XmppConnectionService extends Service {
     public interface OnConferenceConfigurationFetched {
         void onConferenceConfigurationFetched(Conversation conversation);
 
-        void onFetchFailed(Conversation conversation, Element error);
+        void onFetchFailed(Conversation conversation, String errorCondition);
     }
 
     public interface OnConferenceJoined {
