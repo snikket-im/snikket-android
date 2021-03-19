@@ -68,7 +68,7 @@ public class ChannelDiscoveryService {
     }
 
     void discover(@NonNull final String query, Method method, OnChannelSearchResultsFound onChannelSearchResultsFound) {
-        List<Room> result = cache.getIfPresent(key(method, query));
+        final List<Room> result = cache.getIfPresent(key(method, query));
         if (result != null) {
             onChannelSearchResultsFound.onChannelSearchResultsFound(result);
             return;

@@ -363,6 +363,7 @@ public class HttpDownloadConnection implements Transferable {
                 changeStatus(STATUS_OFFER);
             } catch (final Exception e) {
                 Log.d(Config.LOGTAG,"problem downloading",e);
+                //TODO do not show toast for cancelled stuff
                 if (interactive) {
                     showToastForException(e);
                 } else {

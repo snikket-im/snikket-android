@@ -890,6 +890,11 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         return type == TYPE_FILE || type == TYPE_IMAGE || type == TYPE_PRIVATE_FILE;
     }
 
+
+    public boolean isTypeText() {
+        return type == TYPE_TEXT || type == TYPE_PRIVATE;
+    }
+
     public boolean hasFileOnRemoteHost() {
         return isFileOrImage() && getFileParams().url != null;
     }
