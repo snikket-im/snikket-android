@@ -147,7 +147,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean httpUploadAvailable(long filesize) {
-        return xmppConnection != null && (xmppConnection.getFeatures().httpUpload(filesize) || xmppConnection.getFeatures().p1S3FileTransfer());
+        return xmppConnection != null && xmppConnection.getFeatures().httpUpload(filesize);
     }
 
     public boolean httpUploadAvailable() {

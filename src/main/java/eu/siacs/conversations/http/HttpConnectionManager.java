@@ -4,20 +4,19 @@ import android.util.Log;
 
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.net.URL;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
@@ -27,6 +26,8 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.TLSSocketFactory;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 
 public class HttpConnectionManager extends AbstractConnectionManager {
 
@@ -39,8 +40,12 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         super(service);
     }
 
-    public static Proxy getProxy() throws IOException {
-        return new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(InetAddress.getByAddress(new byte[]{127, 0, 0, 1}), 9050));
+    public static Proxy getProxy() {
+        try {
+            return new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(InetAddress.getByAddress(new byte[]{127, 0, 0, 1}), 9050));
+        } catch (final UnknownHostException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public void createNewDownloadConnection(Message message) {
@@ -75,15 +80,6 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         }
     }
 
-    public boolean checkConnection(Message message) {
-        final Account account = message.getConversation().getAccount();
-        final URL url = message.getFileParams().url;
-        if (url.getProtocol().equalsIgnoreCase(P1S3UrlStreamHandler.PROTOCOL_NAME) && account.getStatus() != Account.State.ONLINE) {
-            return false;
-        }
-        return mXmppConnectionService.hasInternetConnection();
-    }
-
     void finishConnection(HttpDownloadConnection connection) {
         synchronized (this.downloadConnections) {
             this.downloadConnections.remove(connection);
@@ -96,7 +92,21 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         }
     }
 
-    void setupTrustManager(final HttpsURLConnection connection, final boolean interactive) {
+    OkHttpClient buildHttpClient(final HttpUrl url, final Account account, boolean interactive) {
+        final String slotHostname = url.host();
+        final boolean onionSlot = slotHostname.endsWith(".onion");
+        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        //builder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS));
+        builder.writeTimeout(30, TimeUnit.SECONDS);
+        builder.readTimeout(30, TimeUnit.SECONDS);
+        setupTrustManager(builder, interactive);
+        if (mXmppConnectionService.useTorToConnect() || account.isOnion() || onionSlot) {
+            builder.proxy(HttpConnectionManager.getProxy()).build();
+        }
+        return builder.build();
+    }
+
+    private void setupTrustManager(final OkHttpClient.Builder builder, final boolean interactive) {
         final X509TrustManager trustManager;
         final HostnameVerifier hostnameVerifier = mXmppConnectionService.getMemorizingTrustManager().wrapHostnameVerifier(new StrictHostnameVerifier(), interactive);
         if (interactive) {
@@ -106,8 +116,8 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         }
         try {
             final SSLSocketFactory sf = new TLSSocketFactory(new X509TrustManager[]{trustManager}, mXmppConnectionService.getRNG());
-            connection.setSSLSocketFactory(sf);
-            connection.setHostnameVerifier(hostnameVerifier);
+            builder.sslSocketFactory(sf, trustManager);
+            builder.hostnameVerifier(hostnameVerifier);
         } catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
         }
     }

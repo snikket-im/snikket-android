@@ -75,7 +75,7 @@ public class PgpEngine {
             params.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
             String body;
             if (message.hasFileOnRemoteHost()) {
-                body = message.getFileParams().url.toString();
+                body = message.getFileParams().url;
             } else {
                 body = message.getBody();
             }

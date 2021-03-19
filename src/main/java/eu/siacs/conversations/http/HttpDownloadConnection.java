@@ -1,29 +1,24 @@
 package eu.siacs.conversations.http;
 
-import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
+import com.google.common.primitives.Longs;
 
-import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.Locale;
 import java.util.concurrent.CancellationException;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLHandshakeException;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
@@ -33,8 +28,11 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.FileWriterException;
 import eu.siacs.conversations.utils.MimeUtils;
-import eu.siacs.conversations.utils.WakeLockHelper;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import okhttp3.Call;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static eu.siacs.conversations.http.HttpConnectionManager.EXECUTOR;
 
@@ -44,13 +42,13 @@ public class HttpDownloadConnection implements Transferable {
     private final boolean mUseTor;
     private final HttpConnectionManager mHttpConnectionManager;
     private final XmppConnectionService mXmppConnectionService;
-    private URL mUrl;
+    private HttpUrl mUrl;
     private DownloadableFile file;
     private int mStatus = Transferable.STATUS_UNKNOWN;
     private boolean acceptedAutomatically = false;
     private int mProgress = 0;
     private boolean canceled = false;
-    private Method method = Method.HTTP_UPLOAD;
+    private Call mostRecentCall;
 
     HttpDownloadConnection(Message message, HttpConnectionManager manager) {
         this.message = message;
@@ -88,13 +86,13 @@ public class HttpDownloadConnection implements Transferable {
         try {
             final Message.FileParams fileParams = message.getFileParams();
             if (message.hasFileOnRemoteHost()) {
-                mUrl = CryptoHelper.toHttpsUrl(fileParams.url);
+                mUrl = AesGcmURL.of(fileParams.url);
             } else if (message.isOOb() && fileParams.url != null && fileParams.size > 0) {
-                mUrl = fileParams.url;
+                mUrl = AesGcmURL.of(fileParams.url);
             } else {
-                mUrl = CryptoHelper.toHttpsUrl(new URL(message.getBody().split("\n")[0]));
+                mUrl = AesGcmURL.of(message.getBody().split("\n")[0]);
             }
-            final AbstractConnectionManager.Extension extension = AbstractConnectionManager.Extension.of(mUrl.getPath());
+            final AbstractConnectionManager.Extension extension = AbstractConnectionManager.Extension.of(mUrl.encodedPath());
             if (VALID_CRYPTO_EXTENSIONS.contains(extension.main)) {
                 this.message.setEncryption(Message.ENCRYPTION_PGP);
             } else if (message.getEncryption() != Message.ENCRYPTION_OTR
@@ -111,22 +109,22 @@ public class HttpDownloadConnection implements Transferable {
             if (this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL && this.file.getKey() == null) {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
-            method = mUrl.getProtocol().equalsIgnoreCase(P1S3UrlStreamHandler.PROTOCOL_NAME) ? Method.P1_S3 : Method.HTTP_UPLOAD;
-            long knownFileSize = message.getFileParams().size;
-            if (knownFileSize > 0 && interactive && method != Method.P1_S3) {
+            //TODO add auth tag size to knownFileSize
+            final long knownFileSize = message.getFileParams().size;
+            if (knownFileSize > 0 && interactive) {
                 this.file.setExpectedSize(knownFileSize);
                 download(true);
             } else {
                 checkFileSize(interactive);
             }
-        } catch (MalformedURLException e) {
+        } catch (final IllegalArgumentException e) {
             this.cancel();
         }
     }
 
     private void setupFile() {
-        final String reference = mUrl.getRef();
-        if (reference != null && AesGcmURLStreamHandler.IV_KEY.matcher(reference).matches()) {
+        final String reference = mUrl.fragment();
+        if (reference != null && AesGcmURL.IV_KEY.matcher(reference).matches()) {
             this.file = new DownloadableFile(mXmppConnectionService.getCacheDir().getAbsolutePath() + "/" + message.getUuid());
             this.file.setKeyAndIv(CryptoHelper.hexToBytes(reference));
             Log.d(Config.LOGTAG, "create temporary OMEMO encrypted file: " + this.file.getAbsolutePath() + "(" + message.getMimeType() + ")");
@@ -146,6 +144,10 @@ public class HttpDownloadConnection implements Transferable {
     @Override
     public void cancel() {
         this.canceled = true;
+        final Call call = this.mostRecentCall;
+        if (call != null && !call.isCanceled()) {
+            call.cancel();
+        }
         mHttpConnectionManager.finishConnection(this);
         message.setTransferable(null);
         if (message.isFileOrImage()) {
@@ -260,33 +262,7 @@ public class HttpDownloadConnection implements Transferable {
 
         @Override
         public void run() {
-            if (mUrl.getProtocol().equalsIgnoreCase(P1S3UrlStreamHandler.PROTOCOL_NAME)) {
-                retrieveUrl();
-            } else {
-                check();
-            }
-        }
-
-        private void retrieveUrl() {
-            changeStatus(STATUS_CHECKING);
-            final Account account = message.getConversation().getAccount();
-            IqPacket request = mXmppConnectionService.getIqGenerator().requestP1S3Url(account.getDomain(), mUrl.getHost());
-            mXmppConnectionService.sendIqPacket(message.getConversation().getAccount(), request, (a, packet) -> {
-                if (packet.getType() == IqPacket.TYPE.RESULT) {
-                    String download = packet.query().getAttribute("download");
-                    if (download != null) {
-                        try {
-                            mUrl = new URL(download);
-                            check();
-                            return;
-                        } catch (MalformedURLException e) {
-                            //fallthrough
-                        }
-                    }
-                }
-                Log.d(Config.LOGTAG, "unable to retrieve actual download url");
-                retrieveFailed(null);
-            });
+            check();
         }
 
         private void retrieveFailed(@Nullable Exception e) {
@@ -330,46 +306,21 @@ public class HttpDownloadConnection implements Transferable {
         }
 
         private long retrieveFileSize() throws IOException {
+            final OkHttpClient client = mHttpConnectionManager.buildHttpClient(
+                    mUrl,
+                    message.getConversation().getAccount(),
+                    interactive
+            );
+            final Request request = new Request.Builder()
+                    .url(URL.stripFragment(mUrl))
+                    .head()
+                    .build();
+            mostRecentCall = client.newCall(request);
             try {
-                Log.d(Config.LOGTAG, "retrieve file size. interactive:" + interactive);
-                changeStatus(STATUS_CHECKING);
-                HttpURLConnection connection;
-                final String hostname = mUrl.getHost();
-                final boolean onion = hostname != null && hostname.endsWith(".onion");
-                if (mUseTor || message.getConversation().getAccount().isOnion() || onion) {
-                    connection = (HttpURLConnection) mUrl.openConnection(HttpConnectionManager.getProxy());
-                } else {
-                    connection = (HttpURLConnection) mUrl.openConnection();
-                }
-                if (method == Method.P1_S3) {
-                    connection.setRequestMethod("GET");
-                    connection.addRequestProperty("Range", "bytes=0-0");
-                } else {
-                    connection.setRequestMethod("HEAD");
-                }
-                connection.setUseCaches(false);
-                Log.d(Config.LOGTAG, "url: " + connection.getURL().toString());
-                connection.setRequestProperty("User-Agent", mXmppConnectionService.getIqGenerator().getUserAgent());
-                if (connection instanceof HttpsURLConnection) {
-                    mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
-                }
-                connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
-                connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
-                connection.connect();
-                String contentLength;
-                if (method == Method.P1_S3) {
-                    String contentRange = connection.getHeaderField("Content-Range");
-                    String[] contentRangeParts = contentRange == null ? new String[0] : contentRange.split("/");
-                    if (contentRangeParts.length != 2) {
-                        contentLength = null;
-                    } else {
-                        contentLength = contentRangeParts[1];
-                    }
-                } else {
-                    contentLength = connection.getHeaderField("Content-Length");
-                }
-                final String contentType = connection.getContentType();
-                final AbstractConnectionManager.Extension extension = AbstractConnectionManager.Extension.of(mUrl.getPath());
+                final Response response = mostRecentCall.execute();
+                final String contentLength = response.header("Content-Length");
+                final String contentType = response.header("Content-Type");
+                final AbstractConnectionManager.Extension extension = AbstractConnectionManager.Extension.of(mUrl.encodedPath());
                 if (Strings.isNullOrEmpty(extension.getExtension()) && contentType != null) {
                     final String fileExtension = MimeUtils.guessExtensionFromMimeType(contentType);
                     if (fileExtension != null) {
@@ -378,8 +329,7 @@ public class HttpDownloadConnection implements Transferable {
                         setupFile();
                     }
                 }
-                connection.disconnect();
-                if (contentLength == null) {
+                if (Strings.isNullOrEmpty(contentLength)) {
                     throw new IOException("no content-length found in HEAD response");
                 }
                 return Long.parseLong(contentLength, 10);
@@ -397,8 +347,6 @@ public class HttpDownloadConnection implements Transferable {
 
         private final boolean interactive;
 
-        private OutputStream os;
-
         public FileDownloader(boolean interactive) {
             this.interactive = interactive;
         }
@@ -411,9 +359,10 @@ public class HttpDownloadConnection implements Transferable {
                 decryptIfNeeded();
                 updateImageBounds();
                 finish();
-            } catch (SSLHandshakeException e) {
+            } catch (final SSLHandshakeException e) {
                 changeStatus(STATUS_OFFER);
-            } catch (Exception e) {
+            } catch (final Exception e) {
+                Log.d(Config.LOGTAG,"problem downloading",e);
                 if (interactive) {
                     showToastForException(e);
                 } else {
@@ -425,67 +374,57 @@ public class HttpDownloadConnection implements Transferable {
         }
 
         private void download() throws Exception {
-            InputStream is = null;
-            HttpURLConnection connection = null;
-            final PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock(Thread.currentThread());
-            try {
-                wakeLock.acquire();
-                if (mUseTor || message.getConversation().getAccount().isOnion()) {
-                    connection = (HttpURLConnection) mUrl.openConnection(HttpConnectionManager.getProxy());
-                } else {
-                    connection = (HttpURLConnection) mUrl.openConnection();
-                }
-                if (connection instanceof HttpsURLConnection) {
-                    mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
-                }
-                connection.setUseCaches(false);
-                connection.setRequestProperty("User-Agent", mXmppConnectionService.getIqGenerator().getUserAgent());
-                final long expected = file.getExpectedSize();
-                final boolean tryResume = file.exists() && file.getSize() > 0 && file.getSize() < expected;
-                long resumeSize = 0;
+            final OkHttpClient client = mHttpConnectionManager.buildHttpClient(
+                    mUrl,
+                    message.getConversation().getAccount(),
+                    interactive
+            );
 
-                if (tryResume) {
-                    resumeSize = file.getSize();
-                    Log.d(Config.LOGTAG, "http download trying resume after " + resumeSize + " of " + expected);
-                    connection.setRequestProperty("Range", "bytes=" + resumeSize + "-");
-                }
-                connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
-                connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
-                connection.connect();
-                is = new BufferedInputStream(connection.getInputStream());
-                final String contentRange = connection.getHeaderField("Content-Range");
-                boolean serverResumed = tryResume && contentRange != null && contentRange.startsWith("bytes " + resumeSize + "-");
+            final Request.Builder requestBuilder = new Request.Builder().url(URL.stripFragment(mUrl));
+
+            final long expected = file.getExpectedSize();
+            final boolean tryResume = file.exists() && file.getSize() > 0 && file.getSize() < expected;
+            final long resumeSize;
+            if (tryResume) {
+                resumeSize = file.getSize();
+                Log.d(Config.LOGTAG, "http download trying resume after " + resumeSize + " of " + expected);
+                requestBuilder.addHeader("Range", String.format(Locale.ENGLISH, "bytes=%d-", resumeSize));
+            } else {
+                resumeSize = 0;
+            }
+            final Request request = requestBuilder.build();
+            mostRecentCall = client.newCall(request);
+            final Response response = mostRecentCall.execute();
+            final int code = response.code();
+            if (code >= 200 && code <= 299) {
+                final String contentRange = response.header("Content-Range");
+                final boolean serverResumed = tryResume && contentRange != null && contentRange.startsWith("bytes " + resumeSize + "-");
+                final InputStream inputStream = response.body().byteStream();
+                final OutputStream outputStream;
                 long transmitted = 0;
                 if (tryResume && serverResumed) {
                     Log.d(Config.LOGTAG, "server resumed");
                     transmitted = file.getSize();
                     updateProgress(Math.round(((double) transmitted / expected) * 100));
-                    os = AbstractConnectionManager.createOutputStream(file, true, false);
-                    if (os == null) {
-                        throw new FileWriterException();
-                    }
+                    outputStream = AbstractConnectionManager.createOutputStream(file, true, false);
                 } else {
-                    long reportedContentLengthOnGet;
-                    try {
-                        reportedContentLengthOnGet = Long.parseLong(connection.getHeaderField("Content-Length"));
-                    } catch (NumberFormatException | NullPointerException e) {
-                        reportedContentLengthOnGet = 0;
-                    }
-                    if (expected != reportedContentLengthOnGet) {
-                        Log.d(Config.LOGTAG, "content-length reported on GET (" + reportedContentLengthOnGet + ") did not match Content-Length reported on HEAD (" + expected + ")");
+                    final String contentLength = response.header("Content-Length");
+                    final long size = Strings.isNullOrEmpty(contentLength) ? 0 : Longs.tryParse(contentLength);
+                    if (expected != size) {
+                        Log.d(Config.LOGTAG, "content-length reported on GET (" + size + ") did not match Content-Length reported on HEAD (" + expected + ")");
                     }
                     file.getParentFile().mkdirs();
                     if (!file.exists() && !file.createNewFile()) {
                         throw new FileWriterException();
                     }
-                    os = AbstractConnectionManager.createOutputStream(file, false, false);
+                    outputStream = AbstractConnectionManager.createOutputStream(file, false, false);
                 }
                 int count;
                 byte[] buffer = new byte[4096];
-                while ((count = is.read(buffer)) != -1) {
+                while ((count = inputStream.read(buffer)) != -1) {
                     transmitted += count;
                     try {
-                        os.write(buffer, 0, count);
+                        outputStream.write(buffer, 0, count);
                     } catch (IOException e) {
                         throw new FileWriterException();
                     }
@@ -494,35 +433,21 @@ public class HttpDownloadConnection implements Transferable {
                         throw new CancellationException();
                     }
                 }
-                try {
-                    os.flush();
-                } catch (IOException e) {
-                    throw new FileWriterException();
-                }
-            } catch (CancellationException | IOException e) {
-                Log.d(Config.LOGTAG, message.getConversation().getAccount().getJid().asBareJid() + ": http download failed", e);
-                throw e;
-            } finally {
-                FileBackend.close(os);
-                FileBackend.close(is);
-                if (connection != null) {
-                    connection.disconnect();
-                }
-                WakeLockHelper.release(wakeLock);
+                outputStream.flush();
+            } else {
+                throw new IOException(String.format(Locale.ENGLISH, "HTTP Status code was %d", code));
             }
         }
 
         private void updateImageBounds() {
             final boolean privateMessage = message.isPrivateMessage();
             message.setType(privateMessage ? Message.TYPE_PRIVATE_FILE : Message.TYPE_FILE);
-            final URL url;
-            final String ref = mUrl.getRef();
-            if (method == Method.P1_S3) {
-                url = message.getFileParams().url;
-            } else if (ref != null && AesGcmURLStreamHandler.IV_KEY.matcher(ref).matches()) {
-                url = CryptoHelper.toAesGcmUrl(mUrl);
+            final String url;
+            final String ref = mUrl.fragment();
+            if (ref != null && AesGcmURL.IV_KEY.matcher(ref).matches()) {
+                url = AesGcmURL.toAesGcmUrl(mUrl);
             } else {
-                url = mUrl;
+                url = mUrl.toString();
             }
             mXmppConnectionService.getFileBackend().updateFileParams(message, url);
             mXmppConnectionService.updateMessage(message);

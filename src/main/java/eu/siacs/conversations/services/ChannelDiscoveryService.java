@@ -51,13 +51,8 @@ public class ChannelDiscoveryService {
 
     void initializeMuclumbusService() {
         final OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
         if (service.useTorToConnect()) {
-            try {
-                builder.proxy(HttpConnectionManager.getProxy());
-            } catch (IOException e) {
-                throw new RuntimeException("Unable to use Tor proxy", e);
-            }
+            builder.proxy(HttpConnectionManager.getProxy());
         }
         Retrofit retrofit = new Retrofit.Builder()
                 .client(builder.build())

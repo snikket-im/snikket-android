@@ -1169,7 +1169,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().asBareJid(), getOwnDeviceId());
         final String content;
         if (message.hasFileOnRemoteHost()) {
-            content = message.getFileParams().url.toString();
+            content = message.getFileParams().url;
         } else {
             content = message.getBody();
         }

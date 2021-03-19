@@ -1071,9 +1071,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 } else {
                     this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
                 }
-            } else if (features.p1S3FileTransfer()) {
-                this.binding.serverInfoHttpUploadDescription.setText(R.string.p1_s3_filetransfer);
-                this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
             } else {
                 this.binding.serverInfoHttpUpload.setText(R.string.server_info_unavailable);
             }
