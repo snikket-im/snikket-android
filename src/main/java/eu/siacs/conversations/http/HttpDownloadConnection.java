@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Locale;
-import java.util.concurrent.CancellationException;
 
 import javax.net.ssl.SSLHandshakeException;
 
@@ -39,7 +38,6 @@ import static eu.siacs.conversations.http.HttpConnectionManager.EXECUTOR;
 public class HttpDownloadConnection implements Transferable {
 
     private final Message message;
-    private final boolean mUseTor;
     private final HttpConnectionManager mHttpConnectionManager;
     private final XmppConnectionService mXmppConnectionService;
     private HttpUrl mUrl;
@@ -47,14 +45,12 @@ public class HttpDownloadConnection implements Transferable {
     private int mStatus = Transferable.STATUS_UNKNOWN;
     private boolean acceptedAutomatically = false;
     private int mProgress = 0;
-    private boolean canceled = false;
     private Call mostRecentCall;
 
     HttpDownloadConnection(Message message, HttpConnectionManager manager) {
         this.message = message;
         this.mHttpConnectionManager = manager;
         this.mXmppConnectionService = manager.getXmppConnectionService();
-        this.mUseTor = mXmppConnectionService.useTorToConnect();
     }
 
     @Override
@@ -143,7 +139,6 @@ public class HttpDownloadConnection implements Transferable {
 
     @Override
     public void cancel() {
-        this.canceled = true;
         final Call call = this.mostRecentCall;
         if (call != null && !call.isCanceled()) {
             call.cancel();
@@ -270,7 +265,7 @@ public class HttpDownloadConnection implements Transferable {
             check();
         }
 
-        private void retrieveFailed(@Nullable Exception e) {
+        private void retrieveFailed(@Nullable final Exception e) {
             changeStatus(STATUS_OFFER_CHECK_FILESIZE);
             if (interactive) {
                 showToastForException(e);
@@ -285,7 +280,7 @@ public class HttpDownloadConnection implements Transferable {
             long size;
             try {
                 size = retrieveFileSize();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 Log.d(Config.LOGTAG, "io exception in http file size checker: " + e.getMessage());
                 retrieveFailed(e);
                 return;
@@ -309,6 +304,8 @@ public class HttpDownloadConnection implements Transferable {
         }
 
         private long retrieveFileSize() throws IOException {
+            Log.d(Config.LOGTAG, "retrieve file size. interactive:" + interactive);
+            changeStatus(STATUS_CHECKING);
             final OkHttpClient client = mHttpConnectionManager.buildHttpClient(
                     mUrl,
                     message.getConversation().getAccount(),
