@@ -486,7 +486,7 @@
     <string name="jid_does_not_match_certificate">XMPP-adresse matcher ikke certifikatet</string>
     <string name="action_renew_certificate">Forny certifikat</string>
     <string name="error_fetching_omemo_key">Fejl ved hentning af OMEMO-nøgle!</string>
-    <string name="verified_omemo_key_with_certificate">Bekræftet OMEMO-nøgler med Certifikat!</string>
+    <string name="verified_omemo_key_with_certificate">Bekræftet OMEMO-nøgler med certifikat!</string>
     <string name="device_does_not_support_certificates">Din enhed understøtter ikke valget af klientcertifikater!</string>
     <string name="pref_connection_options">Forbindelse</string>
     <string name="pref_use_tor">Forbind via TOR</string>
