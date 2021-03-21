@@ -1,10 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
-
-import java.util.List;
 
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;

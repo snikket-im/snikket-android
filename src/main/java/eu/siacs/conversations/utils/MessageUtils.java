@@ -29,8 +29,6 @@
 
 package eu.siacs.conversations.utils;
 
-import android.net.Uri;
-
 import com.google.common.base.Strings;
 
 import java.net.URI;

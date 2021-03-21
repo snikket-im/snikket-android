@@ -1,7 +1,6 @@
 package eu.siacs.conversations.services;
 
 import android.content.Context;
-import android.os.FileUtils;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
@@ -20,14 +19,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.annotation.Nullable;
-import javax.crypto.NoSuchPaddingException;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -35,11 +29,8 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.utils.Compatibility;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okio.Buffer;
 import okio.BufferedSink;
-import okio.ForwardingSink;
 import okio.Okio;
-import okio.Sink;
 import okio.Source;
 
 import static eu.siacs.conversations.entities.Transferable.VALID_CRYPTO_EXTENSIONS;

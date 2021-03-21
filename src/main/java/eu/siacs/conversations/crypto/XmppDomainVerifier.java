@@ -1,6 +1,5 @@
 package eu.siacs.conversations.crypto;
 
-import android.os.Build;
 import android.util.Log;
 import android.util.Pair;
 

@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
-import eu.siacs.conversations.http.AesGcmURL;
 import okhttp3.HttpUrl;
 
 public class URL {

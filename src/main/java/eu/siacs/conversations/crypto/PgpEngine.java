@@ -6,17 +6,14 @@ import android.util.Log;
 
 import androidx.annotation.StringRes;
 
-import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.io.BaseEncoding;
 
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
-import org.openintents.openpgp.util.OpenPgpUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

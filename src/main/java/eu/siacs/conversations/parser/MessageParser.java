@@ -3,7 +3,6 @@ package eu.siacs.conversations.parser;
 import android.util.Log;
 import android.util.Pair;
 
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;

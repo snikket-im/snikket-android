@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.SystemClock;
 import android.util.Log;
-import android.util.Pair;
 
 import org.json.JSONException;
 import org.json.JSONObject;
