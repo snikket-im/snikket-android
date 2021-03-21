@@ -2,11 +2,18 @@ package eu.siacs.conversations.http;
 
 import android.util.Log;
 
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
+
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import eu.siacs.conversations.Config;
@@ -34,9 +41,7 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
 
     private final HttpConnectionManager mHttpConnectionManager;
     private final XmppConnectionService mXmppConnectionService;
-    private final SlotRequester mSlotRequester;
     private final Method method;
-    private final boolean mUseTor;
     private boolean delayed = false;
     private DownloadableFile file;
     private final Message message;
@@ -46,14 +51,13 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
 
     private long transmitted = 0;
     private Call mostRecentCall;
+    private ListenableFuture<SlotRequester.Slot> slotFuture;
 
     public HttpUploadConnection(Message message, Method method, HttpConnectionManager httpConnectionManager) {
         this.message = message;
         this.method = method;
         this.mHttpConnectionManager = httpConnectionManager;
         this.mXmppConnectionService = httpConnectionManager.getXmppConnectionService();
-        this.mSlotRequester = new SlotRequester(this.mXmppConnectionService);
-        this.mUseTor = mXmppConnectionService.useTorToConnect();
     }
 
     @Override
@@ -81,6 +85,10 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
 
     @Override
     public void cancel() {
+        final ListenableFuture<SlotRequester.Slot> slotFuture = this.slotFuture;
+        if (slotFuture != null && !slotFuture.isDone()) {
+            slotFuture.cancel(true);
+        }
         final Call call = this.mostRecentCall;
         if (call != null && !call.isCanceled()) {
             call.cancel();
@@ -90,8 +98,14 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
     private void fail(String errorMessage) {
         finish();
         final Call call = this.mostRecentCall;
-        final boolean cancelled = call != null && call.isCanceled();
+        final Future<SlotRequester.Slot> slotFuture = this.slotFuture;
+        final boolean cancelled = (call != null && call.isCanceled()) || (slotFuture != null && slotFuture.isCancelled());
         mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED, cancelled ? Message.ERROR_MESSAGE_CANCELLED : errorMessage);
+    }
+
+    private void markAsCancelled() {
+        finish();
+        mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED, Message.ERROR_MESSAGE_CANCELLED);
     }
 
     private void finish() {
@@ -118,19 +132,20 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
         }
         this.file.setExpectedSize(originalFileSize + (file.getKey() != null ? 16 : 0));
         message.resetFileParams();
-        this.mSlotRequester.request(method, account, file, mime, new SlotRequester.OnSlotRequested() {
+        this.slotFuture = new SlotRequester(mXmppConnectionService).request(method, account, file, mime);
+        Futures.addCallback(this.slotFuture, new FutureCallback<SlotRequester.Slot>() {
             @Override
-            public void success(final SlotRequester.Slot slot) {
-                //TODO needs to mark the message as cancelled afterwards (ie call fail())
-                HttpUploadConnection.this.slot = slot;
+            public void onSuccess(@NullableDecl SlotRequester.Slot result) {
+                HttpUploadConnection.this.slot = result;
                 HttpUploadConnection.this.upload();
             }
 
             @Override
-            public void failure(String message) {
-                fail(message);
+            public void onFailure(@NotNull final Throwable throwable) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to request slot", throwable);
+                fail(throwable.getMessage());
             }
-        });
+        }, MoreExecutors.directExecutor());
         message.setTransferable(this);
         mXmppConnectionService.markMessage(message, Message.STATUS_UNSEND);
     }

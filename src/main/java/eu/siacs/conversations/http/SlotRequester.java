@@ -29,19 +29,19 @@
 
 package eu.siacs.conversations.http;
 
-import android.util.Log;
-
 import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.SettableFuture;
 
 import java.util.Map;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.IqResponseException;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import okhttp3.Headers;
@@ -55,21 +55,22 @@ public class SlotRequester {
         this.service = service;
     }
 
-    public void request(Method method, Account account, DownloadableFile file, String mime, OnSlotRequested callback) {
+    public ListenableFuture<Slot> request(Method method, Account account, DownloadableFile file, String mime) {
         if (method == Method.HTTP_UPLOAD_LEGACY) {
             final Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD_LEGACY);
-            requestHttpUploadLegacy(account, host, file, mime, callback);
+            return requestHttpUploadLegacy(account, host, file, mime);
         } else {
             final Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
-            requestHttpUpload(account, host, file, mime, callback);
+            return requestHttpUpload(account, host, file, mime);
         }
     }
 
-    private void requestHttpUploadLegacy(Account account, Jid host, DownloadableFile file, String mime, OnSlotRequested callback) {
-        IqPacket request = service.getIqGenerator().requestHttpUploadLegacySlot(host, file, mime);
+    private ListenableFuture<Slot> requestHttpUploadLegacy(Account account, Jid host, DownloadableFile file, String mime) {
+        final SettableFuture<Slot> future = SettableFuture.create();
+        final IqPacket request = service.getIqGenerator().requestHttpUploadLegacySlot(host, file, mime);
         service.sendIqPacket(account, request, (a, packet) -> {
             if (packet.getType() == IqPacket.TYPE.RESULT) {
-                Element slotElement = packet.findChild("slot", Namespace.HTTP_UPLOAD_LEGACY);
+                final Element slotElement = packet.findChild("slot", Namespace.HTTP_UPLOAD_LEGACY);
                 if (slotElement != null) {
                     try {
                         final String putUrl = slotElement.findChildContent("put");
@@ -80,22 +81,23 @@ public class SlotRequester {
                                     HttpUrl.get(getUrl),
                                     Headers.of("Content-Type", mime == null ? "application/octet-stream" : mime)
                             );
-                            callback.success(slot);
+                            future.set(slot);
                             return;
                         }
-                    } catch (IllegalArgumentException e) {
-                        //fall through
+                    } catch (final IllegalArgumentException e) {
+                        future.setException(e);
+                        return;
                     }
                 }
             }
-            Log.d(Config.LOGTAG, account.getJid().toString() + ": invalid response to slot request " + packet);
-            callback.failure(IqParser.extractErrorMessage(packet));
+            future.setException(new IqResponseException(IqParser.extractErrorMessage(packet)));
         });
-
+        return future;
     }
 
-    private void requestHttpUpload(Account account, Jid host, DownloadableFile file, String mime, OnSlotRequested callback) {
-        IqPacket request = service.getIqGenerator().requestHttpUploadSlot(host, file, mime);
+    private ListenableFuture<Slot> requestHttpUpload(Account account, Jid host, DownloadableFile file, String mime) {
+        final SettableFuture<Slot> future = SettableFuture.create();
+        final IqPacket request = service.getIqGenerator().requestHttpUploadSlot(host, file, mime);
         service.sendIqPacket(account, request, (a, packet) -> {
             if (packet.getType() == IqPacket.TYPE.RESULT) {
                 final Element slotElement = packet.findChild("slot", Namespace.HTTP_UPLOAD);
@@ -107,7 +109,7 @@ public class SlotRequester {
                         final String getUrl = get == null ? null : get.getAttribute("url");
                         if (getUrl != null && putUrl != null) {
                             final ImmutableMap.Builder<String, String> headers = new ImmutableMap.Builder<>();
-                            for (Element child : put.getChildren()) {
+                            for (final Element child : put.getChildren()) {
                                 if ("header".equals(child.getName())) {
                                     final String name = child.getAttribute("name");
                                     final String value = child.getContent();
@@ -118,23 +120,18 @@ public class SlotRequester {
                             }
                             headers.put("Content-Type", mime == null ? "application/octet-stream" : mime);
                             final Slot slot = new Slot(HttpUrl.get(putUrl), HttpUrl.get(getUrl), headers.build());
-                            callback.success(slot);
+                            future.set(slot);
                             return;
                         }
-                    } catch (IllegalArgumentException e) {
-                        //fall through
+                    } catch (final IllegalArgumentException e) {
+                        future.setException(e);
+                        return;
                     }
                 }
             }
-            Log.d(Config.LOGTAG, account.getJid().toString() + ": invalid response to slot request " + packet);
-            callback.failure(IqParser.extractErrorMessage(packet));
+            future.setException(new IqResponseException(IqParser.extractErrorMessage(packet)));
         });
-
-    }
-
-    public interface OnSlotRequested {
-        void success(Slot slot);
-        void failure(String message);
+        return future;
     }
 
     public static class Slot {
