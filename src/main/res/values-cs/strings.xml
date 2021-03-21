@@ -43,7 +43,7 @@
 
     </plurals>
     <string name="sending">odesílám…</string>
-    <string name="message_decrypting">Dešifrování zprávy. Chvíli strpení...</string>
+    <string name="message_decrypting">Dešifrování zprávy. Chvíli strpení…</string>
     <string name="pgp_message">OpenPGP šifrovaná zpráva</string>
     <string name="nick_in_use">Přezdívka se již používá</string>
     <string name="invalid_muc_nick">Neplatná přezdívka</string>
@@ -62,7 +62,7 @@
     <string name="remove_bookmark_text">Přejete si odstranit %s ze záložek? Předešlé rozhovory pod záložkou nebudou odstraněny.</string>
     <string name="register_account">Registrovat nový účet na serveru</string>
     <string name="change_password_on_server">Změnit heslo na serveru</string>
-    <string name="share_with">Sdílet s...</string>
+    <string name="share_with">Sdílet s…</string>
     <string name="start_conversation">Začít konverzaci</string>
     <string name="invite_contact">Pozvat kontakt</string>
     <string name="invite">Pozvat</string>
@@ -90,7 +90,7 @@
     <string name="send_failed">doručení selhalo</string>
     <string name="preparing_image">Připravuji odeslání obrázku</string>
     <string name="preparing_images">Připravuji odeslání obrázků</string>
-    <string name="sharing_files_please_wait">Sdílení souborů. Chvíli strpení...</string>
+    <string name="sharing_files_please_wait">Sdílení souborů. Chvíli strpení…</string>
     <string name="action_clear_history">Smazat historii</string>
     <string name="clear_conversation_history">Smaže historii konverzací</string>
     <string name="clear_histor_msg">Opravdu chcete smazat všechny zprávy v této konverzace?\n\n<b>Varování</b>Toto neovlivní zprávy uložené na jiných zařízeních či serverech.</string>
@@ -225,7 +225,7 @@
     <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO otisk (původce zprávy)</string>
     <string name="other_devices">Ostatní přístroje</string>
     <string name="trust_omemo_fingerprints">Věřit OMEMO otiskům</string>
-    <string name="fetching_keys">Získávání klíčů...</string>
+    <string name="fetching_keys">Získávání klíčů…</string>
     <string name="done">Hotovo</string>
     <string name="decrypt">Dešifrovat</string>
     <string name="bookmarks">Záložky</string>
@@ -251,7 +251,7 @@
     <string name="could_not_destroy_channel">Nebylo možné zrušit kanál</string>
     <string name="action_edit_subject">Upravit předmět skupinového chatu</string>
     <string name="topic">Téma</string>
-    <string name="joining_conference">Připojuji se ke skupinovému chatu...</string>
+    <string name="joining_conference">Připojuji se ke skupinovému chatu…</string>
     <string name="leave">Odejít</string>
     <string name="contact_added_you">Kontakt přidán do seznamu</string>
     <string name="add_back">Opět přidat</string>
@@ -361,7 +361,7 @@
     <string name="error_trustkeys_title">Něco se pokazilo</string>
     <string name="fetching_history_from_server">Načíst historii ze serveru</string>
     <string name="no_more_history_on_server">Na serveru není žádná další historie</string>
-    <string name="updating">Aktualizuji...</string>
+    <string name="updating">Aktualizuji…</string>
     <string name="password_changed">Heslo změněno!</string>
     <string name="could_not_change_password">Nelze změnit heslo</string>
     <string name="change_password">Změnit heslo</string>
@@ -417,9 +417,9 @@
     <string name="sending_x_file">Odesílám %s</string>
     <string name="offering_x_file">Nabízím %s</string>
     <string name="hide_offline">Skrýt offline</string>
-    <string name="contact_is_typing">%s píše...</string>
+    <string name="contact_is_typing">%s píše…</string>
     <string name="contact_has_stopped_typing">%s přestal(a) psát</string>
-    <string name="contacts_are_typing">%s píší...</string>
+    <string name="contacts_are_typing">%s píší…</string>
     <string name="contacts_have_stopped_typing">%s přestali psát</string>
     <string name="pref_chat_states">Upozornění při psaní</string>
     <string name="pref_chat_states_summary">Nechat kontaky vědět když jim píšete zprávu</string>
@@ -475,7 +475,7 @@
     <string name="unable_to_parse_certificate">Nelze analyzovat certifikát</string>
     <string name="mam_prefs">Nastavení archivace</string>
     <string name="server_side_mam_prefs">Nastavení archivace na serveru</string>
-    <string name="fetching_mam_prefs">Získávání nastavení archivace. Chvíli strpení...</string>
+    <string name="fetching_mam_prefs">Získávání nastavení archivace. Chvíli strpení…</string>
     <string name="unable_to_fetch_mam_prefs">Nelze získat nastavení archivace</string>
     <string name="captcha_required">Captcha vyžadována</string>
     <string name="captcha_hint">Zadejte text z obrázku výše</string>
@@ -528,7 +528,7 @@
     <string name="no_keys_just_confirm">Tento osobní otisk byl již bezpečně ověřen. Ťuknutím na \"Hotovo\" pouze potvrzujete, že %s je členem tohoto skupinového chatu.</string>
     <string name="this_account_is_disabled">Tento účet byl vypnut</string>
     <string name="no_application_to_share_uri">Nebyla nalezena aplikace umožňující sdílení URI</string>
-    <string name="share_uri_with">Sdílet URI s...</string>
+    <string name="share_uri_with">Sdílet URI s…</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy je aplikace odvozená z populárního XMPP klientu Conversations, s funkcí automatického objevování kontaktů.<br><br>Po zadání Vašeho telefonního čísla Vám Quicksy automaticky—na základě čísel ve Vašem telefonním seznamu—navrhne možné kontakty.<br><br>Přihlášením se do služby potvrzujete souhlas s našimi <a href="https://quicksy.im/#privacy">zásadami pro ochranu osobních údajů</a>.]]></string>
     <string name="agree_and_continue">Souhlasím a pokračovat</string>
     <string name="magic_create_text">Průvodce je nastaven, aby vytvořil účet na serveru conversations.im.¹\nPokud si vyberete conversations.im jako svého poskytovatele, budete moci komunikovat s ostatními, budou-li mít vaši celou XMPP adresu.</string>
@@ -549,7 +549,7 @@
     <string name="registration_please_wait">Registrace selhala: Zkuste znovu později</string>
     <string name="registration_password_too_weak">Registrace selhala: Příliš slabé heslo</string>
     <string name="choose_participants">Vybrat účastníky</string>
-    <string name="creating_conference">Vytvářím skupinový chat...</string>
+    <string name="creating_conference">Vytvářím skupinový chat…</string>
     <string name="invite_again">Pozvat znovu</string>
     <string name="gp_disable">Vypnout</string>
     <string name="gp_short">Krátký</string>
@@ -727,7 +727,7 @@
     <string name="title_activity_show_location">Zobrazit pozici</string>
     <string name="share">Sdílet</string>
     <string name="unable_to_start_recording">Nebylo možné zahájit nahrávání</string>
-    <string name="please_wait">Chvíli strpení...</string>
+    <string name="please_wait">Chvíli strpení…</string>
     <string name="no_microphone_permission">Povolit %1$s přístup k mikrofonu</string>
     <string name="search_messages">Prohledat zprávy</string>
     <string name="gif">GIF</string>
@@ -798,7 +798,7 @@
     <string name="abort_registration_procedure">Opravdu si přejete přerušit registraci?</string>
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
-    <string name="verifying">Ověřuji...</string>
+    <string name="verifying">Ověřuji…</string>
     <string name="incorrect_pin">Pin, který jste zadali, je nesprávný.</string>
     <string name="pin_expired">Pin, který jsme Vám poslali, vypršel.</string>
     <string name="unknown_api_error_network">Neznámá chyba sítě.</string>
@@ -824,7 +824,7 @@
     <string name="no_market_app_installed">Není nainstalován žádný správce aplikací.</string>
     <string name="group_chat_will_make_your_jabber_id_public">Tento kanál zveřejní Vaši XMPP adresu</string>
     <string name="video_original">Originální (nekomprimováno)</string>
-    <string name="open_with">Otevřít pomocí...</string>
+    <string name="open_with">Otevřít pomocí…</string>
     <string name="set_profile_picture">Nastavit profilový obrázek</string>
     <string name="choose_account">Vybrat účet</string>
     <string name="restore_backup">Obnovit ze zálohy</string>
@@ -844,7 +844,7 @@
     <string name="please_enter_name">Prosím, zadejte název kanálu</string>
     <string name="please_enter_xmpp_address">Zadejte XMPP adresu</string>
     <string name="this_is_an_xmpp_address">Toto je XMPP adresa. Prosím, zadejte jméno.</string>
-    <string name="creating_channel">Vytváření veřejného kanálu...</string>
+    <string name="creating_channel">Vytváření veřejného kanálu…</string>
     <string name="channel_already_exists">Tento veřejný kanál již existuje</string>
     <string name="joined_an_existing_channel">Připojil(a) jste se k existujícímu kanálu</string>
     <string name="unable_to_set_channel_configuration">Nebylo možné uložit nastavení kanálu</string>
@@ -880,7 +880,7 @@
     <string name="account_already_setup">Tento účet byl již nastaven</string>
     <string name="please_enter_password">Prosím, zadejte heslo k tomuto účtu</string>
     <string name="unable_to_perform_this_action">Nebylo možné vykonat tuto akci</string>
-    <string name="open_join_dialog">Připojit se k veřejnému kanálu...</string>
+    <string name="open_join_dialog">Připojit se k veřejnému kanálu…</string>
     <string name="sharing_application_not_grant_permission">Sdílející aplikace neudělila dostatečná oprávnění pro přístup k souboru.</string>
     <string name="group_chats_and_channels"><![CDATA[Skupinové chaty & Kanály]]></string>
     <string name="local_server">Místní server</string>

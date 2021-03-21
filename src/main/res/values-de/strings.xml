@@ -363,7 +363,7 @@
     <string name="fetching_history_from_server">Lade Chatverlauf…</string>
     <string name="no_more_history_on_server">Keine weiteren Nachrichten vorhanden</string>
     <string name="updating">Aktualisieren…</string>
-    <string name="password_changed">Passwort geändert.</string>
+    <string name="password_changed">Passwort geändert!</string>
     <string name="could_not_change_password">Passwort konnte nicht geändert werden</string>
     <string name="change_password">Passwort ändern</string>
     <string name="current_password">Aktuelles Passwort</string>
