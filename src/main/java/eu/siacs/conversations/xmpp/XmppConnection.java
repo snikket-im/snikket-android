@@ -21,7 +21,6 @@ import java.net.ConnectException;
 import java.net.IDN;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -102,6 +101,7 @@ import eu.siacs.conversations.xmpp.stanzas.streammgmt.AckPacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.EnablePacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.RequestPacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.ResumePacket;
+import okhttp3.HttpUrl;
 
 public class XmppConnection implements Runnable {
 
@@ -172,7 +172,7 @@ public class XmppConnection implements Runnable {
     private OnBindListener bindListener = null;
     private OnMessageAcknowledged acknowledgedListener = null;
     private SaslMechanism saslMechanism;
-    private URL redirectionUrl = null;
+    private HttpUrl redirectionUrl = null;
     private String verifiedHostname = null;
     private volatile Thread mThread;
     private CountDownLatch mStreamCountDownLatch;
@@ -383,9 +383,7 @@ public class XmppConnection implements Runnable {
             this.changeStatus(Account.State.MISSING_INTERNET_PERMISSION);
         } catch (final StateChangingException e) {
             this.changeStatus(e.state);
-        } catch (final UnknownHostException | ConnectException e) {
-            this.changeStatus(Account.State.SERVER_NOT_FOUND);
-        } catch (final SocksSocketFactory.HostNotFoundException e) {
+        } catch (final UnknownHostException | ConnectException | SocksSocketFactory.HostNotFoundException e) {
             this.changeStatus(Account.State.SERVER_NOT_FOUND);
         } catch (final SocksSocketFactory.SocksProxyNotFoundException e) {
             this.changeStatus(Account.State.TOR_NOT_AVAILABLE);
@@ -498,13 +496,14 @@ public class XmppConnection implements Runnable {
                     if (failure.hasChild("account-disabled") && text != null) {
                         Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(text);
                         if (matcher.find()) {
+                            final HttpUrl url;
                             try {
-                                URL url = new URL(text.substring(matcher.start(), matcher.end()));
-                                if (url.getProtocol().equals("https")) {
+                                url = HttpUrl.get(text.substring(matcher.start(), matcher.end()));
+                                if (url.isHttps()) {
                                     this.redirectionUrl = url;
                                     throw new StateChangingException(Account.State.PAYMENT_REQUIRED);
                                 }
-                            } catch (MalformedURLException e) {
+                            } catch (IllegalArgumentException e) {
                                 throw new StateChangingException(Account.State.UNAUTHORIZED);
                             }
                         }
@@ -975,8 +974,8 @@ public class XmppConnection implements Runnable {
                     }
                 } else {
                     try {
-                        Field field = data.getFieldByName("url");
-                        URL url = field != null && field.getValue() != null ? new URL(field.getValue()) : null;
+                        final Field field = data.getFieldByName("url");
+                        final URL url = field != null && field.getValue() != null ? new URL(field.getValue()) : null;
                         is = url != null ? url.openStream() : null;
                     } catch (IOException e) {
                         is = null;
@@ -1001,7 +1000,7 @@ public class XmppConnection implements Runnable {
                 if (url != null) {
                     setAccountCreationFailed(url);
                 } else if (instructions != null) {
-                    Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(instructions);
+                    final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(instructions);
                     if (matcher.find()) {
                         setAccountCreationFailed(instructions.substring(matcher.start(), matcher.end()));
                     }
@@ -1011,21 +1010,16 @@ public class XmppConnection implements Runnable {
         }, true);
     }
 
-    private void setAccountCreationFailed(String url) {
-        if (url != null) {
-            try {
-                this.redirectionUrl = new URL(url);
-                if (this.redirectionUrl.getProtocol().equals("https")) {
-                    throw new StateChangingError(Account.State.REGISTRATION_WEB);
-                }
-            } catch (MalformedURLException e) {
-                //fall through
-            }
+    private void setAccountCreationFailed(final String url) {
+        final HttpUrl httpUrl = url == null ? null : HttpUrl.parse(url);
+        if (httpUrl != null && httpUrl.isHttps()) {
+            this.redirectionUrl = httpUrl;
+            throw new StateChangingError(Account.State.REGISTRATION_WEB);
         }
         throw new StateChangingError(Account.State.REGISTRATION_FAILED);
     }
 
-    public URL getRedirectionUrl() {
+    public HttpUrl getRedirectionUrl() {
         return this.redirectionUrl;
     }
 

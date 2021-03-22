@@ -32,7 +32,7 @@ public class XmppUri {
     private Map<String, String> parameters = Collections.emptyMap();
     private boolean safeSource = true;
 
-    public XmppUri(String uri) {
+    public XmppUri(final String uri) {
         try {
             parse(Uri.parse(uri));
         } catch (IllegalArgumentException e) {
