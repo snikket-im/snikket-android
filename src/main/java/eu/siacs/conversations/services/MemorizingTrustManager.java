@@ -590,20 +590,11 @@ public class MemorizingTrustManager {
     }
 
     private List<String> getPoshFingerprintsFromCache(String domain) {
-        File file = getPoshCacheFile(domain);
+        final File file = getPoshCacheFile(domain);
         try {
-            InputStream is = new FileInputStream(file);
-            BufferedReader buf = new BufferedReader(new InputStreamReader(is));
-
-            String line = buf.readLine();
-            StringBuilder sb = new StringBuilder();
-
-            while (line != null) {
-                sb.append(line).append("\n");
-                line = buf.readLine();
-            }
-            JSONObject jsonObject = new JSONObject(sb.toString());
-            is.close();
+            final InputStream inputStream = new FileInputStream(file);
+            final String json = CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8));
+            final JSONObject jsonObject = new JSONObject(json);
             long expires = jsonObject.getLong("expires");
             long expiresIn = expires - System.currentTimeMillis();
             if (expiresIn < 0) {
@@ -612,15 +603,13 @@ public class MemorizingTrustManager {
             } else {
                 Log.d("mtm", "posh fingerprints expire in " + (expiresIn / 1000) + "s");
             }
-            List<String> result = new ArrayList<>();
-            JSONArray jsonArray = jsonObject.getJSONArray("fingerprints");
+            final List<String> result = new ArrayList<>();
+            final JSONArray jsonArray = jsonObject.getJSONArray("fingerprints");
             for (int i = 0; i < jsonArray.length(); ++i) {
                 result.add(jsonArray.getString(i));
             }
             return result;
-        } catch (FileNotFoundException e) {
-            return null;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             return null;
         } catch (JSONException e) {
             file.delete();
