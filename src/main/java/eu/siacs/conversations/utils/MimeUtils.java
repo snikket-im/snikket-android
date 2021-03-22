@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -578,11 +577,6 @@ public final class MimeUtils {
             return MimeUtils.guessMimeTypeFromExtension(path.substring(start));
         }
         return null;
-    }
-
-    public static String extractRelevantExtension(URL url) {
-        String path = url.getPath();
-        return extractRelevantExtension(path, true);
     }
 
     public static String extractRelevantExtension(final String path) {
