@@ -1,5 +1,6 @@
 package eu.siacs.conversations.http;
 
+import android.os.Build;
 import android.util.Log;
 
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
@@ -45,10 +46,16 @@ public class HttpConnectionManager extends AbstractConnectionManager {
     }
 
     public static Proxy getProxy() {
+        final InetAddress localhost;
         try {
-            return new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(InetAddress.getByAddress(new byte[]{127, 0, 0, 1}), 9050));
+            localhost = InetAddress.getByAddress(new byte[]{127, 0, 0, 1});
         } catch (final UnknownHostException e) {
-            throw new IllegalStateException(e);
+                throw new IllegalStateException(e);
+            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(localhost, 9050));
+        } else {
+            return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(localhost, 8118));
         }
     }
 
