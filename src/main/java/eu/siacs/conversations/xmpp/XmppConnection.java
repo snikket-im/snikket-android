@@ -22,7 +22,6 @@ import java.net.IDN;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -69,6 +68,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.generator.IqGenerator;
+import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.services.MessageArchiveService;
@@ -87,7 +87,6 @@ import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.TagWriter;
 import eu.siacs.conversations.xml.XmlReader;
 import eu.siacs.conversations.xmpp.forms.Data;
-import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.AbstractAcknowledgeableStanza;
@@ -973,11 +972,19 @@ public class XmppConnection implements Runnable {
                         is = null;
                     }
                 } else {
+                    final boolean useTor = mXmppConnectionService.useTorToConnect() || account.isOnion();
                     try {
-                        final Field field = data.getFieldByName("url");
-                        final URL url = field != null && field.getValue() != null ? new URL(field.getValue()) : null;
-                        is = url != null ? url.openStream() : null;
-                    } catch (IOException e) {
+                        final String url = data.getValue("url");
+                        final String fallbackUrl = data.getValue("captcha-fallback-url");
+                        if (url != null) {
+                            is = HttpConnectionManager.open(url, useTor);
+                        } else if (fallbackUrl != null) {
+                            is = HttpConnectionManager.open(fallbackUrl, useTor);
+                        } else {
+                            is = null;
+                        }
+                    } catch (final IOException e) {
+                        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": unable to fetch captcha", e);
                         is = null;
                     }
                 }

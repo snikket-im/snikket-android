@@ -4,6 +4,8 @@ import android.util.Log;
 
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -28,6 +30,8 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.TLSSocketFactory;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
 
 public class HttpConnectionManager extends AbstractConnectionManager {
 
@@ -120,5 +124,23 @@ public class HttpConnectionManager extends AbstractConnectionManager {
             builder.hostnameVerifier(hostnameVerifier);
         } catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
         }
+    }
+
+    public static InputStream open(final String url, final boolean tor) throws IOException {
+        return open(HttpUrl.get(url), tor);
+    }
+
+    public static InputStream open(final HttpUrl httpUrl, final boolean tor) throws IOException {
+        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (tor) {
+            builder.proxy(HttpConnectionManager.getProxy()).build();
+        }
+        final OkHttpClient client = builder.build();
+        final Request request = new Request.Builder().get().url(httpUrl).build();
+        final ResponseBody body = client.newCall(request).execute().body();
+        if (body == null) {
+            throw new IOException("No response body found");
+        }
+        return body.byteStream();
     }
 }
