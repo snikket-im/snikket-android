@@ -31,6 +31,7 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -39,6 +40,9 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +56,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.MessageDigest;
@@ -74,7 +77,6 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
@@ -83,6 +85,7 @@ import javax.net.ssl.X509TrustManager;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.DomainHostnameVerifier;
 import eu.siacs.conversations.entities.MTMDecision;
+import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.MemorizingActivity;
 
@@ -486,15 +489,18 @@ public class MemorizingTrustManager {
                     defaultTrustManager.checkServerTrusted(chain, authType);
                 else
                     defaultTrustManager.checkClientTrusted(chain, authType);
-            } catch (CertificateException e) {
-                boolean trustSystemCAs = !PreferenceManager.getDefaultSharedPreferences(master).getBoolean("dont_trust_system_cas", false);
-                if (domain != null && isServer && trustSystemCAs && !isIp(domain)) {
+            } catch (final CertificateException e) {
+                final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(master);
+                final boolean trustSystemCAs = !preferences.getBoolean("dont_trust_system_cas", false);
+                if (domain != null && isServer && trustSystemCAs && !isIp(domain) && !domain.endsWith(".onion")) {
                     final String hash = getBase64Hash(chain[0], "SHA-256");
                     final List<String> fingerprints = getPoshFingerprints(domain);
                     if (hash != null && fingerprints.size() > 0) {
                         if (fingerprints.contains(hash)) {
                             Log.d("mtm", "trusted cert fingerprint of " + domain + " via posh");
                             return;
+                        } else {
+                            Log.d("mtm", "fingerprint " + hash + " not found in " + fingerprints);
                         }
                         if (getPoshCacheFile(domain).delete()) {
                             Log.d("mtm", "deleted posh file for " + domain + " after not being able to verify");
@@ -511,7 +517,7 @@ public class MemorizingTrustManager {
     }
 
     private List<String> getPoshFingerprints(String domain) {
-        List<String> cached = getPoshFingerprintsFromCache(domain);
+        final List<String> cached = getPoshFingerprintsFromCache(domain);
         if (cached == null) {
             return getPoshFingerprintsFromServer(domain);
         } else {
@@ -525,19 +531,13 @@ public class MemorizingTrustManager {
 
     private List<String> getPoshFingerprintsFromServer(String domain, String url, int maxTtl, boolean followUrl) {
         Log.d("mtm", "downloading json for " + domain + " from " + url);
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(master);
+        final boolean useTor = QuickConversationsService.isConversations() && preferences.getBoolean("use_tor", master.getResources().getBoolean(R.bool.use_tor));
         try {
-            List<String> results = new ArrayList<>();
-            HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuilder builder = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                builder.append(inputLine);
-            }
-            JSONObject jsonObject = new JSONObject(builder.toString());
-            in.close();
+            final List<String> results = new ArrayList<>();
+            final InputStream inputStream = HttpConnectionManager.open(url, useTor);
+            final String body = CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8));
+            final JSONObject jsonObject = new JSONObject(body);
             int expires = jsonObject.getInt("expires");
             if (expires <= 0) {
                 return new ArrayList<>();
@@ -554,17 +554,15 @@ public class MemorizingTrustManager {
             if (followUrl && redirect != null && redirect.toLowerCase().startsWith("https")) {
                 return getPoshFingerprintsFromServer(domain, redirect, expires, false);
             }
-            JSONArray fingerprints = jsonObject.getJSONArray("fingerprints");
+            final JSONArray fingerprints = jsonObject.getJSONArray("fingerprints");
             for (int i = 0; i < fingerprints.length(); i++) {
-                JSONObject fingerprint = fingerprints.getJSONObject(i);
-                String sha256 = fingerprint.getString("sha-256");
-                if (sha256 != null) {
-                    results.add(sha256);
-                }
+                final JSONObject fingerprint = fingerprints.getJSONObject(i);
+                final String sha256 = fingerprint.getString("sha-256");
+                results.add(sha256);
             }
             writeFingerprintsToCache(domain, results, 1000L * expires + System.currentTimeMillis());
             return results;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Log.d("mtm", "error fetching posh " + e.getMessage());
             return new ArrayList<>();
         }
@@ -575,7 +573,7 @@ public class MemorizingTrustManager {
     }
 
     private void writeFingerprintsToCache(String domain, List<String> results, long expires) {
-        File file = getPoshCacheFile(domain);
+        final File file = getPoshCacheFile(domain);
         file.getParentFile().mkdirs();
         try {
             file.createNewFile();
