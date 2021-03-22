@@ -900,9 +900,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean needsUploading() {
-        final boolean needsUploading = isFileOrImage() && getFileParams().url == null;
-        Log.d(Config.LOGTAG, "needs uploading " + needsUploading + " url=" + getFileParams().url);
-        return needsUploading;
+        return isFileOrImage() && getFileParams().url == null;
     }
 
     public static class FileParams {
