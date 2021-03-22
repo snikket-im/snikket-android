@@ -959,4 +959,5 @@
     <string name="unable_to_parse_invite">Unable to parse invite</string>
     <string name="server_does_not_support_easy_onboarding_invites">Server does not support generating invites</string>
     <string name="no_active_accounts_support_this">No active accounts support this feature</string>
+    <string name="backup_started_message">The backup has been started. You’ll get a notification once it has been completed.</string>
 </resources>

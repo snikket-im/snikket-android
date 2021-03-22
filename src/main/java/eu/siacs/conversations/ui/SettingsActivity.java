@@ -411,6 +411,10 @@ public class SettingsActivity extends XmppActivity implements
 
 	private void createBackup() {
 		ContextCompat.startForegroundService(this, new Intent(this, ExportBackupService.class));
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.backup_started_message);
+		builder.setPositiveButton(R.string.ok, null);
+		builder.create().show();
 	}
 
 	private void displayToast(final String msg) {
