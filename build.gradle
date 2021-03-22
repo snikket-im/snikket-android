@@ -74,7 +74,8 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    //implementation "com.squareup.okhttp3:logging-interceptor:3.14.9"
+    implementation "com.squareup.okhttp3:okhttp:4.9.1"
+
     implementation 'com.google.guava:guava:30.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.12.18'
     implementation fileTree(include: ['libwebrtc-m89.aar'], dir: 'libs')
@@ -106,6 +107,10 @@ android {
             universalApk true
             enable true
         }
+    }
+
+    configurations {
+        compile.exclude group: 'org.jetbrains' , module:'annotations'
     }
 
     dataBinding {
