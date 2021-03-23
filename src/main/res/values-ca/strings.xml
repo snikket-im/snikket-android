@@ -941,4 +941,4 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="unable_to_parse_invite">No es pot processar la invitació</string>
     <string name="server_does_not_support_easy_onboarding_invites">El servidor no admet la generació d\'invitacions</string>
     <string name="no_active_accounts_support_this">Cap compte actiu admet aquesta funció</string>
-</resources>
+    </resources>

@@ -946,4 +946,5 @@
     <string name="unable_to_parse_invite">无法解析邀请</string>
     <string name="server_does_not_support_easy_onboarding_invites">服务器不支持生成邀请</string>
     <string name="no_active_accounts_support_this">没有活跃帐户支持此功能</string>
+    <string name="backup_started_message">已启动备份。一旦完成，你会收到通知。</string>
 </resources>

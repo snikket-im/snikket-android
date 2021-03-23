@@ -465,8 +465,8 @@
     <string name="account_status_host_unknown">Serveren er ikke ansvarlig for dette domæne</string>
     <string name="server_info_broken">Brudt</string>
     <string name="pref_presence_settings">Tilgængelighed</string>
-    <string name="pref_away_when_screen_off">Væk når enhed er låst</string>
-    <string name="pref_away_when_screen_off_summary">Vis som Væk når enheden er låst</string>
+    <string name="pref_away_when_screen_off">Ude når enhed er låst</string>
+    <string name="pref_away_when_screen_off_summary">Vis som Ude når enheden er låst</string>
     <string name="pref_dnd_on_silent_mode">Optaget i lydløs tilstand</string>
     <string name="pref_dnd_on_silent_mode_summary">Vis som Optaget når enhed er i lydløs tilstand</string>
     <string name="pref_treat_vibrate_as_silent">Behandl vibration som lydløs tilstand</string>
@@ -545,7 +545,7 @@
     <string name="status_message">Statusbesked</string>
     <string name="presence_chat">Gratis for Chat</string>
     <string name="presence_online">Online</string>
-    <string name="presence_away">Væk</string>
+    <string name="presence_away">Ude</string>
     <string name="presence_xa">Ikke tilgængelig</string>
     <string name="presence_dnd">Optaget</string>
     <string name="secure_password_generated">Der er genereret en sikker adgangskode</string>
@@ -959,4 +959,4 @@
     <string name="unable_to_parse_invite">Kunne ikke analysere invitation</string>
     <string name="server_does_not_support_easy_onboarding_invites">Server understøtter ikke generering af invitationer</string>
     <string name="no_active_accounts_support_this">Ingen aktive konti understøtter denne funktion</string>
-</resources>
+    </resources>

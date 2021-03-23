@@ -954,4 +954,4 @@
     <string name="unable_to_parse_invite">No se ha podido leer la invitación</string>
     <string name="server_does_not_support_easy_onboarding_invites">El servidor no soporta la creación de invitaciones</string>
     <string name="no_active_accounts_support_this">Ninguna cuenta activa soporta esta característica</string>
-</resources>
+    </resources>

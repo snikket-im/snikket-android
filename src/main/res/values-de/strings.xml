@@ -959,4 +959,4 @@
     <string name="unable_to_parse_invite">Einladung kann nicht gelesen werden</string>
     <string name="server_does_not_support_easy_onboarding_invites">Server unterstützt keine Generierung von Einladungen</string>
     <string name="no_active_accounts_support_this">Keine aktiven Konten unterstützen diese Funktion</string>
-</resources>
+    </resources>

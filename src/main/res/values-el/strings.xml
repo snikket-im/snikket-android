@@ -956,4 +956,4 @@
     <string name="unable_to_parse_invite">Αδυναμία ανάγνωσης πρόσκλησης</string>
     <string name="server_does_not_support_easy_onboarding_invites">Ο διακομιστής δεν υποστηρίζει την δημιουργία προσκλήσεων</string>
     <string name="no_active_accounts_support_this">Κανένας από τους ενεργούς λογαριασμούς δεν υποστηρίζει αυτό το χαρακτηριστικό</string>
-</resources>
+    </resources>
