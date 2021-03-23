@@ -657,6 +657,7 @@ public class XmppConnectionService extends Service {
                         if (Config.RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE) {
                             resetAllAttemptCounts(true, false);
                         }
+                        Resolver.clearCache();
                     }
                     break;
                 case Intent.ACTION_SHUTDOWN:
