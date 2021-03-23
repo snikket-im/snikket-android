@@ -143,7 +143,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         }
         final String contact = conversation.getJid().getDomain().toEscapedString();
         final String account = conversation.getAccount().getServer();
-        if (Config.OMEMO_EXCEPTIONS.CONTACT_DOMAINS.contains(contact) || Config.OMEMO_EXCEPTIONS.ACCOUNT_DOMAINS.contains(account)) {
+        if (Config.OMEMO_EXCEPTIONS.matchesContactDomain(contact) || Config.OMEMO_EXCEPTIONS.ACCOUNT_DOMAINS.contains(account)) {
             return false;
         }
         return conversation.isSingleOrPrivateAndNonAnonymous() || conversation.getBooleanAttribute(ATTRIBUTE_FORMERLY_PRIVATE_NON_ANONYMOUS, false);

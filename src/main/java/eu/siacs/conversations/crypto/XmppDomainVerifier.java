@@ -71,8 +71,8 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
         }
     }
 
-    private static boolean matchDomain(String needle, List<String> haystack) {
-        for (String entry : haystack) {
+    public static boolean matchDomain(final String needle, final List<String> haystack) {
+        for (final String entry : haystack) {
             if (entry.startsWith("*.")) {
                 int offset = 0;
                 while (offset < needle.length()) {
@@ -80,16 +80,13 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
                     if (i < 0) {
                         break;
                     }
-                    Log.d(LOGTAG, "comparing " + needle.substring(i) + " and " + entry.substring(1));
                     if (needle.substring(i).equalsIgnoreCase(entry.substring(1))) {
-                        Log.d(LOGTAG, "domain " + needle + " matched " + entry);
                         return true;
                     }
                     offset = i + 1;
                 }
             } else {
                 if (entry.equalsIgnoreCase(needle)) {
-                    Log.d(LOGTAG, "domain " + needle + " matched " + entry);
                     return true;
                 }
             }
