@@ -29,6 +29,7 @@ import android.util.Log;
 import android.util.LruCache;
 
 import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
 import androidx.core.content.FileProvider;
 
 import java.io.ByteArrayOutputStream;
@@ -646,12 +647,13 @@ public class FileBackend {
             } catch (IOException e) {
                 throw new FileWriterException();
             }
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             throw new FileCopyException(R.string.error_file_not_found);
-        } catch (FileWriterException e) {
+        } catch (final FileWriterException e) {
             throw new FileCopyException(R.string.error_unable_to_create_temporary_file);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final SecurityException e) {
+            throw new FileCopyException(R.string.error_security_exception);
+        } catch (final IOException e) {
             throw new FileCopyException(R.string.error_io_exception);
         } finally {
             close(os);
@@ -1462,11 +1464,11 @@ public class FileBackend {
     public static class FileCopyException extends Exception {
         private final int resId;
 
-        private FileCopyException(int resId) {
+        private FileCopyException(@StringRes int resId) {
             this.resId = resId;
         }
 
-        public int getResId() {
+        public @StringRes int getResId() {
             return resId;
         }
     }
