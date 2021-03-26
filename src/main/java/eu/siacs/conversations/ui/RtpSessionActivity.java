@@ -874,7 +874,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void enableVideo(View view) {
-        requireRtpConnection().setVideoEnabled(true);
+        try {
+            requireRtpConnection().setVideoEnabled(true);
+        } catch (final IllegalStateException e) {
+            Toast.makeText(this, R.string.unable_to_enable_video, Toast.LENGTH_SHORT).show();
+            return;
+        }
         updateInCallButtonConfigurationVideo(true, requireRtpConnection().isCameraSwitchable());
     }
 

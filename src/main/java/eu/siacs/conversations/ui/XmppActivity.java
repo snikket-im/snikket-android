@@ -408,11 +408,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         metrics = getResources().getDisplayMetrics();
         ExceptionHelper.init(getApplicationContext());
         new EmojiService(this).init();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
-        } else {
-            this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
-        }
+        this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
         this.mTheme = findTheme();
         setTheme(this.mTheme);
     }

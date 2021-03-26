@@ -393,7 +393,7 @@ public class WebRTCWrapper {
     boolean isVideoEnabled() {
         final VideoTrack videoTrack = this.localVideoTrack;
         if (videoTrack == null) {
-            throw new IllegalStateException("Local video track does not exist");
+            return false;
         }
         return videoTrack.enabled();
     }
