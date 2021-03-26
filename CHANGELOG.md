@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.9.9
+
+* Various bug fixes around Tor support
+
 ### Version 2.9.8
 
 * Verify A/V calls with preexisting OMEMO sessions
