@@ -20,6 +20,8 @@ import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Binder;
@@ -1075,11 +1077,20 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean hasInternetConnection() {
-        final ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        final ConnectivityManager cm = ContextCompat.getSystemService(this, ConnectivityManager.class);
+        if (cm == null) {
+            return false;
+        }
         try {
-            final NetworkInfo activeNetwork = cm == null ? null : cm.getActiveNetworkInfo();
-            return activeNetwork != null && (activeNetwork.isConnected() || activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET);
-        } catch (RuntimeException e) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                final Network activeNetwork = cm.getActiveNetwork();
+                final NetworkCapabilities capabilities = activeNetwork == null ? null : cm.getNetworkCapabilities(activeNetwork);
+                return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+            } else {
+                final NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+                return networkInfo != null && (networkInfo.isConnected() || networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET);
+            }
+        } catch (final RuntimeException e) {
             Log.d(Config.LOGTAG, "unable to check for internet connection", e);
             return true; //if internet connection can not be checked it is probably best to just try
         }
