@@ -164,6 +164,10 @@ public class WebRTCWrapper {
         public void onAddTrack(RtpReceiver rtpReceiver, MediaStream[] mediaStreams) {
             final MediaStreamTrack track = rtpReceiver.track();
             Log.d(EXTENDED_LOGGING_TAG, "onAddTrack(kind=" + (track == null ? "null" : track.kind()) + ",numMediaStreams=" + mediaStreams.length + ")");
+            if (track != null) {
+                Log.d(EXTENDED_LOGGING_TAG,"onAddTrack(class="+track.getClass().getName()+")");
+            }
+
         }
 
         @Override
