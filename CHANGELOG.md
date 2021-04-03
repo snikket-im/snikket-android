@@ -3,6 +3,7 @@
 ### Version 2.9.9
 
 * Various bug fixes around Tor support
+* Improve call compatibility with Dino
 
 ### Version 2.9.8
 
