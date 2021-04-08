@@ -619,7 +619,7 @@ public class MemorizingTrustManager {
 
     private X509Certificate[] getAcceptedIssuers() {
         LOGGER.log(Level.FINE, "getAcceptedIssuers()");
-        return defaultTrustManager.getAcceptedIssuers();
+        return defaultTrustManager == null ? new X509Certificate[0] : defaultTrustManager.getAcceptedIssuers();
     }
 
     private int createDecisionId(MTMDecision d) {
