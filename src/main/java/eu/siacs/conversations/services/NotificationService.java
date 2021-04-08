@@ -425,6 +425,10 @@ public class NotificationService {
         }
         final Uri uri = Uri.parse(ringtonePreference);
         this.currentlyPlayingRingtone = RingtoneManager.getRingtone(mXmppConnectionService, uri);
+        if (this.currentlyPlayingRingtone == null) {
+            Log.d(Config.LOGTAG,"unable to find ringtone for uri "+uri);
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             this.currentlyPlayingRingtone.setLooping(true);
         }
