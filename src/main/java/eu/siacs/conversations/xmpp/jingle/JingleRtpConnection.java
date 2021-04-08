@@ -320,7 +320,16 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private void receiveSessionInitiate(final JinglePacket jinglePacket) {
         if (isInitiator()) {
             Log.d(Config.LOGTAG, String.format("%s: received session-initiate even though we were initiating", id.account.getJid().asBareJid()));
-            terminateWithOutOfOrder(jinglePacket);
+            if (isTerminated()) {
+                Log.d(Config.LOGTAG, String.format(
+                        "%s: got a reason to terminate with out-of-order. but already in state %s",
+                        id.account.getJid().asBareJid(),
+                        getState()
+                ));
+                respondWithOutOfOrder(jinglePacket);
+            } else {
+                terminateWithOutOfOrder(jinglePacket);
+            }
             return;
         }
         final RtpContentMap contentMap;
