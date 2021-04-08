@@ -281,7 +281,7 @@
     <string name="pref_security_settings">Sikkerhed</string>
     <string name="pref_allow_message_correction">Tillad rettelse af beskeder</string>
     <string name="pref_allow_message_correction_summary">Tillad dine kontakter at redigere deres beskeder med tilbagevirkende kraft</string>
-    <string name="pref_expert_options">Ekspert indstillinger</string>
+    <string name="pref_expert_options">Ekspertindstillinger</string>
     <string name="pref_expert_options_summary">Være forsigtig med at ændre i disse</string>
     <string name="title_activity_about_x">Om %s</string>
     <string name="title_pref_quiet_hours">Stilletid</string>
@@ -533,7 +533,7 @@
     <string name="security_error_invalid_file_access">Sikkerhedsfejl: Ugyldig filadgang!</string>
     <string name="no_application_to_share_uri">Ingen app fundet der kan dele URL</string>
     <string name="share_uri_with">Del URL med…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy er en klone af den populære XMPP klient samtaler med automatisk kontaktopdagelse.<br><br>Du tilmelder dig med dit telefonnummer, og Quicksy vil automatisk - baseret på telefonnumre i din adressebog - foreslå mulige kontakter til dig.<br><br>Når du tilmelder dig, accepterer du vores <a href="https://quicksy.im/#privacy">privatlispolitik</a>.]]></string>
+    <string name="welcome_text_quicksy"><![CDATA[Quicksy er en klone af den populære XMPP klient Conversations med automatisk kontaktopdagelse.<br><br>Du tilmelder dig med dit telefonnummer, og Quicksy vil automatisk - baseret på telefonnumre i din adressebog - foreslå mulige kontakter til dig.<br><br>Når du tilmelder dig, accepterer du vores <a href="https://quicksy.im/#privacy">privatlispolitik</a>.]]></string>
     <string name="agree_and_continue">Accepter og fortsætte</string>
     <string name="magic_create_text">En guide er oprettet til kontooprettelse på conversations.im.¹\nNår du vælger conversations.im som udbyder, kan du kommunikere med brugere fra andre udbydere ved at give dem din fulde XMPP-adresse.</string>
     <string name="your_full_jid_will_be">Din fulde XMPP-adresse vil blive: %s</string>
@@ -748,10 +748,10 @@
     <string name="conference_destroyed">Denne gruppechat er blevet slettet</string>
     <string name="unable_to_save_recording">Kinne ikke gemme optagelse</string>
     <string name="foreground_service_channel_name">Forgrundstjeneste</string>
-    <string name="foreground_service_channel_description">Denne underretningskategori bruges til at vise en permanent underretning, der angiver, at %1$s kører.</string>
+    <string name="foreground_service_channel_description">Denne notifikationskategori bruges til at vise en permanent notifikation, der angiver, at %1$s kører.</string>
     <string name="notification_group_status_information">Status Information</string>
     <string name="error_channel_name">Forbindelsesproblemer</string>
-    <string name="error_channel_description">Denne underretningskategori bruges til at vise en underretning, hvis der er et problem med at oprette forbindelse til en konto.</string>
+    <string name="error_channel_description">Denne notifikationskategori bruges til at vise en notifikation, hvis der er et problem med at oprette forbindelse til en konto.</string>
     <string name="notification_group_messages">Beskeder</string>
     <string name="notification_group_calls">Opkald</string>
     <string name="messages_channel_name">Beskeder</string>
@@ -959,4 +959,5 @@
     <string name="unable_to_parse_invite">Kunne ikke analysere invitation</string>
     <string name="server_does_not_support_easy_onboarding_invites">Server understøtter ikke generering af invitationer</string>
     <string name="no_active_accounts_support_this">Ingen aktive konti understøtter denne funktion</string>
-    </resources>
+    <string name="backup_started_message">Sikkerhedskopieringen er startet. Du får en notifikation, når den er afsluttet.</string>
+</resources>

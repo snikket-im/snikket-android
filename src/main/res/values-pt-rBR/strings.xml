@@ -959,4 +959,5 @@
     <string name="unable_to_parse_invite">Não foi possível processar o convite</string>
     <string name="server_does_not_support_easy_onboarding_invites">O servidor não suporta a criação de convites</string>
     <string name="no_active_accounts_support_this">Nenhuma conta ativa suporta esse recurso</string>
-    </resources>
+    <string name="backup_started_message">O backup foi iniciado. Você receberá uma notificação assim que ele for concluído.</string>
+</resources>

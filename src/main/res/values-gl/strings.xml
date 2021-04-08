@@ -115,7 +115,7 @@
     <string name="pref_general">Xeral</string>
     <string name="pref_accept_files">Aceptar ficheiros</string>
     <string name="pref_accept_files_summary">De forma automática aceptar ficheiros menores de…</string>
-    <string name="pref_attachments">Engadidos</string>
+    <string name="pref_attachments">Complementos</string>
     <string name="pref_notification_settings">Notificación</string>
     <string name="pref_vibrate">Vibrar</string>
     <string name="pref_vibrate_summary">Vibra cando chega unha nova mensaxe</string>
@@ -402,7 +402,7 @@
     <string name="never">Nunca</string>
     <string name="until_further_notice">Ate novo aviso</string>
     <string name="snooze">Pospor</string>
-    <string name="reply">Respostar</string>
+    <string name="reply">Responder</string>
     <string name="mark_as_read">Marcar como lido</string>
     <string name="pref_input_options">Entrada</string>
     <string name="pref_enter_is_send">Enter envía</string>
@@ -730,8 +730,8 @@
     <string name="search_messages">Buscar mensaxes</string>
     <string name="gif">GIF</string>
     <string name="view_conversation">Ver conversa</string>
-    <string name="pref_use_share_location_plugin">Engadido para Compartir Localización</string>
-    <string name="pref_use_share_location_plugin_summary">Utilice o Engadido de Compartir Localización no lugar do mapa incluíndo</string>
+    <string name="pref_use_share_location_plugin">Complemento para Compartir Localización</string>
+    <string name="pref_use_share_location_plugin_summary">Utiliza o Complemento para Compartir Localización no lugar do mapa incluído</string>
     <string name="copy_link">Copiar a dirección web</string>
     <string name="copy_jabber_id">Copiar enderezo XMPP</string>
     <string name="p1_s3_filetransfer">Compartición de ficheiro HTTP para S3</string>
@@ -959,4 +959,5 @@
     <string name="unable_to_parse_invite">Non se puido enviar o convite</string>
     <string name="server_does_not_support_easy_onboarding_invites">O servidor non soporta a creación de convites</string>
     <string name="no_active_accounts_support_this">Ningunha conta activa soporta esta función</string>
-    </resources>
+    <string name="backup_started_message">Comezou a creación da copia de apoio. Recibirás unha notificación cando remate.</string>
+</resources>

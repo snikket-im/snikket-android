@@ -9,4 +9,8 @@
     <string name="magic_create_text_fixed">%1$sへ招待されました。ユーザーネームは既に選択されています。アカウント作成手順をご案内します。 \nほかのプロバイダーのユーザーと会話するには、XMPPのフルアドレスを相手にお知らせください。</string>
     <string name="your_server_invitation">サーバーの招待</string>
     <string name="improperly_formatted_provisioning">仮コードの書式が不正です</string>
-    </resources>
+    <string name="tap_share_button_send_invite">共有ボタンを叩いて、連絡先の %1$s に招待を送信する。</string>
+    <string name="if_contact_is_nearby_use_qr">あなたの連絡先が近くにいる場合は、下のコードをスキャンして、あなたの招待を受け取ることもできます。</string>
+    <string name="easy_invite_share_text">%1$s に参加して私とお話しましょう: %2$s</string>
+    <string name="share_invite_with">…で招待を共有</string>
+</resources>

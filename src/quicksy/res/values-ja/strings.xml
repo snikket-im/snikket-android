@@ -5,4 +5,8 @@
     <string name="pref_broadcast_last_activity_summary">Quicksy を使用するときに、すべての連絡先に知らせましょう</string>
     <string name="huawei_protected_apps_summary">画面がオフになっている場合でも通知を受信し続けるには、保護されたアプリのリストに Quicksy を追加する必要があります。</string>
     <string name="set_profile_picture">Quicksy プロフィール写真</string>
-    </resources>
+    <string name="not_available_in_your_country">Quicksy はあなたの国で利用不可です。</string>
+    <string name="unable_to_verify_server_identity">サーバーの同一性を確認できません。</string>
+    <string name="unknown_security_error">未知のセキュリティエラー。</string>
+    <string name="timeout_while_connecting_to_server">サーバーへの接続中にタイムアウトが発生しました。</string>
+</resources>
