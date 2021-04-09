@@ -25,7 +25,7 @@
     <string name="title_activity_choose_contact">連絡先を選択</string>
     <string name="title_activity_choose_contacts">連絡先を選択</string>
     <string name="title_activity_share_via_account">アカウントで共有</string>
-    <string name="title_activity_block_list">ブロックリスト</string>
+    <string name="title_activity_block_list">ブロック一覧</string>
     <string name="just_now">ちょうど今</string>
     <string name="minute_ago">1 分前</string>
     <string name="minutes_ago">%d 分前</string>
@@ -43,7 +43,7 @@
     <string name="moderator">モデレーター</string>
     <string name="participant">参加者</string>
     <string name="visitor">訪問者</string>
-    <string name="remove_contact_text">連絡先リストから %s を削除しますか? この連絡先との会話は削除されません。</string>
+    <string name="remove_contact_text">連絡先名簿から %s を削除しますか? この連絡先との会話は削除されません。</string>
     <string name="block_contact_text">%s からあなたに送信されるメッセージをブロックしますか?</string>
     <string name="unblock_contact_text">%s のブロックを解除し、あなたにメッセージを送信できるようにしますか?</string>
     <string name="block_domain_text">%s からの連絡をすべてブロックしますか?</string>
@@ -76,12 +76,12 @@
     <string name="problem_connecting_to_accounts">複数のアカウントに接続できません</string>
     <string name="touch_to_fix">タップしてアカウントを管理</string>
     <string name="attach_file">添付ファイル</string>
-    <string name="not_in_roster">連絡先が連絡先リストにありません。追加しますか?</string>
+    <string name="not_in_roster">連絡先が連絡先名簿にありません。追加しますか?</string>
     <string name="add_contact">連絡先を追加</string>
     <string name="send_failed">配信に失敗しました</string>
     <string name="preparing_image">転送用画像の準備中</string>
     <string name="preparing_images">転送用画像の準備中</string>
-    <string name="sharing_files_please_wait">フィルを共有しています。しばらくお待ちください…</string>
+    <string name="sharing_files_please_wait">ファイル共有中。しばらくお待ちください…</string>
     <string name="action_clear_history">履歴をクリア</string>
     <string name="clear_conversation_history">会話履歴をクリア</string>
     <string name="clear_histor_msg">この会話のすべてのメッセージを削除してもよろしいですか?\n\n<b>警告:</b> 他のデバイスやサーバーに保存されているメッセージのコピーには影響しません。</string>
@@ -174,7 +174,7 @@
     <string name="mgmt_account_publish_avatar">アバターを公開</string>
     <string name="mgmt_account_publish_pgp">OpenPGP 公開鍵を公開</string>
     <string name="unpublish_pgp">OpenPGP 公開鍵を削除</string>
-    <string name="unpublish_pgp_message">在席通知から OpenPGP 公開鍵を削除してもよろしいですか?\n連絡先はあなたに OpenPGP 暗号化メッセージを送信できなくなります。</string>
+    <string name="unpublish_pgp_message">在席告知から OpenPGP 公開鍵を削除してもよろしいですか?\n連絡先はあなたに OpenPGP 暗号化メッセージを送信できなくなります。</string>
     <string name="openpgp_has_been_published">OpenPGP 公開鍵を公開しました。</string>
     <string name="mgmt_account_enable">アカウントを有効にする</string>
     <string name="mgmt_account_are_you_sure">よろしいですか?</string>
@@ -200,7 +200,7 @@
     <string name="server_info_push">XEP-0357: プッシュ</string>
     <string name="server_info_available">利用可能</string>
     <string name="server_info_unavailable">利用不可</string>
-    <string name="missing_public_keys">公開鍵の通知がありません</string>
+    <string name="missing_public_keys">公開鍵の告知がありません</string>
     <string name="last_seen_now">ちょうど今会いました</string>
     <string name="last_seen_min">1 分前に会いました</string>
     <string name="last_seen_mins">%d 分前に会いました</string>
@@ -236,14 +236,14 @@
     <string name="destroy_room">グループチャットを破棄する</string>
     <string name="destroy_channel">チャンネルを破棄する</string>
     <string name="destroy_room_dialog">このグループチャットを破棄してもよろしいですか?\n\n<b>警告:</b> グループチャットはサーバーから完全に削除されます。</string>
-    <string name="destroy_channel_dialog">このチャンネルを破棄してもよろしいですか?\n\n<b>警告:</b> チャンネルはサーバーから完全に削除されます。</string>
+    <string name="destroy_channel_dialog">この公開談話室を破棄してもよろしいですか?\n\n<b>警告:</b> チャンネルはサーバーから完全に削除されます。</string>
     <string name="could_not_destroy_room">グループチャットを破棄できません</string>
     <string name="could_not_destroy_channel">チャンネルを破棄できません</string>
     <string name="action_edit_subject">グループチャットの題を編集</string>
     <string name="topic">トピック</string>
     <string name="joining_conference">グループチャットに参加しています…</string>
     <string name="leave">退出</string>
-    <string name="contact_added_you">連絡先があなたを連絡先リストに追加しました</string>
+    <string name="contact_added_you">連絡先があなたを連絡先名簿に追加しました</string>
     <string name="add_back">戻りを追加</string>
     <string name="contact_has_read_up_to_this_point">%s はここまで読みました</string>
     <string name="contacts_have_read_up_to_this_point">%s はここまで読みました</string>
@@ -312,7 +312,7 @@
     <string name="web_address">ウェブアドレス</string>
     <string name="scan_qr_code">2D バーコードをスキャン</string>
     <string name="show_qr_code">2D バーコードを表示</string>
-    <string name="show_block_list">ブロックリストを表示</string>
+    <string name="show_block_list">ブロック一覧を表示</string>
     <string name="account_details">アカウントの詳細</string>
     <string name="confirm">確認</string>
     <string name="try_again">再度実行してください</string>
@@ -351,7 +351,7 @@
     <string name="copy_omemo_clipboard_description">OMEMO フィンガープリントをクリップボードにコピー</string>
     <string name="regenerate_omemo_key">OMEMO 鍵を再生成</string>
     <string name="clear_other_devices">デバイスをクリア</string>
-    <string name="clear_other_devices_desc">OMEMO のアナウンスから他のすべてのデバイスをクリアしてもよろしいですか? お使いのデバイスが次回接続したとき、それらは自分自身を再アナウンスしますが、その間に送信されたメッセージを受信できない場合があります。</string>
+    <string name="clear_other_devices_desc">OMEMO の告知から他のすべてのデバイスをクリアしてもよろしいですか? お使いのデバイスが次回接続したとき、それらは自分自身を再告知しますが、その間に送信されたメッセージを受信できない場合があります。</string>
     <string name="error_no_keys_to_trust_server_error">この連絡先で使用可能な鍵がありません。\nサーバーから新しい鍵を取得できませんでした。連絡先のサーバーに問題がある可能性があります。</string>
     <string name="error_no_keys_to_trust_presence">この連絡先で利用可能な鍵はありません。\n双方に存在サブスクリプションあることを確認してください。</string>
     <string name="error_trustkeys_title">何か問題が発生しました。</string>
@@ -383,11 +383,11 @@
     <string name="could_not_change_affiliation">%s の所属を変更できません</string>
     <string name="ban_from_conference">グループチャットから追い出す</string>
     <string name="ban_from_channel">チャンネルから追い出す</string>
-    <string name="removing_from_public_conference">あなたは公開チャンネルから %s を削除しようとしています。その唯一の手段は、そのユーザーを永久に追い出すことです。</string>
+    <string name="removing_from_public_conference">あなたは公開談話室から %s を削除しようとしています。その唯一の手段は、そのユーザーを永久に追い出すことです。</string>
     <string name="ban_now">今すぐ追い出す</string>
     <string name="could_not_change_role">%s の役割を変更できません</string>
     <string name="conference_options">非公開グループチャットの環境設定</string>
-    <string name="channel_options">公開チャンネルの環境設定</string>
+    <string name="channel_options">公開談話室の環境設定</string>
     <string name="members_only">非公開、メンバーのみ</string>
     <string name="non_anonymous">XMPPアドレスを誰でも見れるようにする</string>
     <string name="moderated">チャンネルの調停をする</string>
@@ -426,7 +426,7 @@
     <string name="location">位置</string>
     <string name="title_undo_swipe_out_conversation">会話が閉じられました</string>
     <string name="title_undo_swipe_out_group_chat">非公開グループチャットを退出しました</string>
-    <string name="title_undo_swipe_out_channel">公開チャンネルを退出しました</string>
+    <string name="title_undo_swipe_out_channel">公開談話室を退出しました</string>
     <string name="pref_dont_trust_system_cas_title">システムの CA を信頼しない</string>
     <string name="pref_dont_trust_system_cas_summary">すべての証明書を手動で承認する必要があります</string>
     <string name="pref_remove_trusted_certificates_title">証明書を削除</string>
@@ -502,7 +502,7 @@
     <string name="no_storage_permission">%1$s に外部ストレージへのアクセス権を付与</string>
     <string name="no_camera_permission">%1$s にカメラへのアクセス権を付与</string>
     <string name="sync_with_contacts">連絡先と同期</string>
-    <string name="sync_with_contacts_long">%1$s はあなたのアドレス帳にアクセスして、あなたのXMPP 連絡先リストと照合する権限を求めています。\nこれにより、連絡先のフルネームとアバターが表示されます。\n\n%1$s は、あなたのサーバーに何かをアップロードすることなく、あなたのアドレス帳を読み込んでローカルに照合するだけです。</string>
+    <string name="sync_with_contacts_long">%1$s はあなたのアドレス帳にアクセスして、あなたのXMPP 連絡先名簿と照合する権限を求めています。\nこれにより、連絡先のフルネームとアバターが表示されます。\n\n%1$s は、あなたのサーバーに何かをアップロードすることなく、あなたのアドレス帳を読み込んでローカルに照合するだけです。</string>
     <string name="sync_with_contacts_quicksy"><![CDATA[Quicksyは、既にQuicksyに登録されている連絡先を提案するために、あなたの連絡先の電話番号にアクセスする必要があります。<br><br>Quicksyは、それらの電話番号のコピーを保存することはありません。\n\n詳細は<a href="https://quicksy.im/#privacy">プライバシーポリシー</a>をご覧ください。<br><br>今、連絡先へのアクセス権限を付与するよう求められます。]]></string>
     <string name="notify_on_all_messages">すべてのメッセージで通知</string>
     <string name="notify_only_when_highlighted">メンションされたときにのみ通知</string>
@@ -595,7 +595,7 @@
     <string name="barcode_does_not_contain_fingerprints_for_this_conversation">バーコードに、この会話のフィンガープリントが含まれていません。</string>
     <string name="verified_fingerprints">フィンガープリントを検証しました</string>
     <string name="use_camera_icon_to_scan_barcode">カメラを使用して連絡先のバーコードをスキャンします</string>
-    <string name="please_wait_for_keys_to_be_fetched">キーが取得されるのをお待ちください</string>
+    <string name="please_wait_for_keys_to_be_fetched">鍵が取得されるのをお待ちください</string>
     <string name="share_as_barcode">バーコードとして共有</string>
     <string name="share_as_uri">XMPP URI として共有</string>
     <string name="share_as_http">HTTP リンクとして共有</string>
@@ -640,9 +640,9 @@
     <string name="transcoding_video">ビデオを圧縮中</string>
     <string name="corresponding_conversations_closed">対応する会話が閉じられました。</string>
     <string name="contact_blocked_past_tense">連絡先をブロックしました</string>
-    <string name="pref_notifications_from_strangers">知らない人からの通知</string>
-    <string name="pref_notifications_from_strangers_summary">知らない人から受信したメッセージと通話を通知します。</string>
-    <string name="received_message_from_stranger">知らない人からメッセージを受け取りました</string>
+    <string name="pref_notifications_from_strangers">見知らぬ人からの通知</string>
+    <string name="pref_notifications_from_strangers_summary">見知らぬ人から受信したメッセージと通話を通知します。</string>
+    <string name="received_message_from_stranger">見知らぬ人からメッセージを受け取りました</string>
     <string name="block_stranger">見知らぬ人をブロック</string>
     <string name="block_entire_domain">ドメイン全体をブロック</string>
     <string name="online_right_now">今すぐオンライン</string>
@@ -666,7 +666,7 @@
     <string name="message">メッセージ</string>
     <string name="private_messages_are_disabled">非公開メッセージを無効にしました</string>
     <string name="huawei_protected_apps">保護されたアプリ</string>
-    <string name="huawei_protected_apps_summary">画面がオフになっている場合でも通知を受信し続けるには、保護されたアプリのリストに Conversations を追加する必要があります。</string>
+    <string name="huawei_protected_apps_summary">画面がオフになっている場合でも通知を受信し続けるには、保護されたアプリの一覧に Conversations を追加する必要があります。</string>
     <string name="mtm_accept_cert">未知の証明書を受け入れますか?</string>
     <string name="mtm_trust_anchor">サーバー証明書が既知の認証局によって署名されていません。</string>
     <string name="mtm_accept_servername">不一致なサーバー名を受け入れますか?</string>
@@ -681,9 +681,9 @@
     <string name="edit_status_message">ステータスメッセージを編集</string>
     <string name="disable_encryption">暗号化をしない</string>
     <string name="error_trustkey_general">%1$s は %2$s に暗号化メッセージを送れません。連絡先が利用しているサーバーが古すぎるか、クライアントが OMEMO を扱えません。</string>
-    <string name="error_trustkey_device_list">デバイスのリストを取得できません</string>
+    <string name="error_trustkey_device_list">デバイスの一覧を取得できません</string>
     <string name="error_trustkey_bundle">暗号化の鍵を取得できません</string>
-    <string name="error_trustkey_hint_mutual">ヒント: お互いが名簿に加えれば解決するでしょう。</string>
+    <string name="error_trustkey_hint_mutual">ヒント: お互いが連絡先名簿に加えれば解決するでしょう。</string>
     <string name="disable_encryption_message">この会話でOMEMOの暗号化を無効にしてよろしいですか?\n\nこれにより、サーバー管理者がメッセージを読むことが可能になりますが、時代遅れのクライアントを使っている人と連絡をとるには、この方法しかないかもしれません。</string>
     <string name="disable_now">今すぐ無効化</string>
     <string name="draft">下書き:</string>
@@ -817,15 +817,15 @@
     <string name="backup_channel_name">バックアップ&amp;復元</string>
     <string name="enter_jabber_id">XMPP アドレスを入力</string>
     <string name="create_group_chat">グループチャットを作成</string>
-    <string name="join_public_channel">公開チャンネルに参加</string>
+    <string name="join_public_channel">公開談話室に参加</string>
     <string name="create_private_group_chat">非公開グループチャットを作成</string>
-    <string name="create_public_channel">公開チャンネルを作成</string>
+    <string name="create_public_channel">公開談話室を作成</string>
     <string name="create_dialog_channel_name">チャンネル名</string>
     <string name="xmpp_address">XMPP アドレス</string>
     <string name="please_enter_name">チャンネルの名前をご記入ください</string>
     <string name="please_enter_xmpp_address">XMPP アドレスをご記入ください</string>
     <string name="this_is_an_xmpp_address">これは XMPP アドレスです。名前をご記入ください。</string>
-    <string name="creating_channel">公開チャンネルを作成中…</string>
+    <string name="creating_channel">公開談話室を作成中…</string>
     <string name="channel_already_exists">このチャンネルは既に存在します</string>
     <string name="joined_an_existing_channel">存在しているチャンネルに参加しています</string>
     <string name="unable_to_set_channel_configuration">チャンネルの環境設定を保存できません</string>
@@ -838,7 +838,7 @@
     <string name="anyone_can_invite_others">誰でも他の人を招待できます。</string>
     <string name="jabber_ids_are_visible_to_admins">XMPP アドレスは管理者が見れます。</string>
     <string name="jabber_ids_are_visible_to_anyone">XMPP アドレスは誰でも見れます。</string>
-    <string name="no_users_hint_channel">この公開チャンネルには参加者がいません。連絡先を招待したり、共有ボタンを使って XMPP アドレスを配布できます。</string>
+    <string name="no_users_hint_channel">この公開談話室には参加者がいません。連絡先を招待したり、共有ボタンを使って XMPP アドレスを配布できます。</string>
     <string name="no_users_hint_group_chat">この非公開グループチャットには参加者がいません。</string>
     <string name="manage_permission">権限を管理</string>
     <string name="search_participants">参加者を検索</string>
@@ -862,7 +862,7 @@
     <string name="account_already_setup">このアカウントは既に設定されています</string>
     <string name="please_enter_password">このアカウントのパスワートを入力してください</string>
     <string name="unable_to_perform_this_action">この操作を実行できません</string>
-    <string name="open_join_dialog">公開チャンネルに参加…</string>
+    <string name="open_join_dialog">公開談話室に参加…</string>
     <string name="sharing_application_not_grant_permission">共有アプリがこのファイルへのアクセスを許可していませんでした。</string>
     <string name="group_chats_and_channels"><![CDATA[グループチャットとチャンネル]]></string>
     <string name="jabber_network">jabber.network</string>

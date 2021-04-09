@@ -172,7 +172,7 @@
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
-    <string name="mgmt_account_delete">Löschen</string>
+    <string name="mgmt_account_delete">Konto löschen</string>
     <string name="mgmt_account_disable">Vorübergehend abschalten</string>
     <string name="mgmt_account_publish_avatar">Avatar veröffentlichen</string>
     <string name="mgmt_account_publish_pgp">Öffentlichen OpenPGP-Schlüssel veröffentlichen</string>
@@ -889,7 +889,7 @@
     <string name="group_chats_and_channels"><![CDATA[Gruppenchats & Channels]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">Lokaler Server</string>
-    <string name="pref_channel_discovery_summary">Die meisten Benutzer sollten hier ‘jabber.network’ auswählen um bessere Vorschläge aus dem gesamten, öffentlichen XMPP Ökosystem zu bekommen.</string>
+    <string name="pref_channel_discovery_summary">Die meisten Benutzer sollten hier ‘jabber.network’ auswählen, um bessere Vorschläge aus dem gesamten, öffentlichen XMPP-Ökosystem zu bekommen.</string>
     <string name="pref_channel_discovery">Channelsuchmethode</string>
     <string name="backup">Sicherungskopie</string>
     <string name="category_about">Über</string>

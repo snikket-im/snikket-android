@@ -32,10 +32,13 @@
     <string name="clear_conversation_history">സംഭാഷണ ചരിത്രം മായ്ക്കൂ</string>
     <string name="delete_file_dialog">ഫയൽ ഇല്ലാതാക്കൂ</string>
     <string name="choose_presence">ഉപകരണം തിരഞ്ഞെടുക്കൂ</string>
+    <string name="send_unencrypted_message">സുരക്ഷിതമല്ലാത്ത സന്ദേശം അയയ്കൂ</string>
     <string name="send_message">സന്ദേശം അയയ്ക്കൂ</string>
     <string name="openkeychain_required">OpenKeychain</string>
+    <string name="install">സ്ഥാപിക്കൂ</string>
     <string name="waiting">കാത്തിരിക്കുന്നു...</string>
     <string name="pref_general">പൊതുവായവ</string>
+    <string name="pref_accept_files">ഫയലുകൾ സ്വീകരിക്കൂ</string>
     <string name="pref_notification_settings">അറിയിപ്പ്</string>
     <string name="pref_led">LED അറിയിപ്പ്</string>
     <string name="pref_advanced_options">വിപുലമായ</string>
@@ -44,9 +47,11 @@
     <string name="pref_ui_options">UI</string>
     <string name="accept">സ്വീകരിക്കുക</string>
     <string name="your_account">നിങ്ങളുടെ അക്കൗണ്ട്</string>
+    <string name="attach_take_picture">ഫോട്ടോ എടുക്കൂ</string>
     <string name="error_file_not_found">ഫയൽ കണ്ടില്ല</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
+    <string name="encryption_choice_omemo">OMEMO</string>
     <string name="mgmt_account_delete">അക്കൗണ്ട് ഇല്ലാതാക്കൂ</string>
     <string name="mgmt_account_are_you_sure">നിങ്ങള്ക്ക് ഉറപ്പാണോ?</string>
     <string name="account_settings_jabber_id">XMPP വിലാസം</string>
