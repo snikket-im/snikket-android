@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.9.10
+* fix HTTP up/download for users that don’t trust system CAs
+
 ### Version 2.9.9
 
 * Various bug fixes around Tor support
