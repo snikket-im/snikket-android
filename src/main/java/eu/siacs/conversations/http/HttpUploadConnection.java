@@ -44,7 +44,6 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
     private boolean delayed = false;
     private DownloadableFile file;
     private final Message message;
-    private String mime;
     private SlotRequester.Slot slot;
     private byte[] key = null;
 
@@ -86,11 +85,14 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
     public void cancel() {
         final ListenableFuture<SlotRequester.Slot> slotFuture = this.slotFuture;
         if (slotFuture != null && !slotFuture.isDone()) {
-            slotFuture.cancel(true);
+            if (slotFuture.cancel(true)) {
+                Log.d(Config.LOGTAG,"cancelled slot requester");
+            }
         }
         final Call call = this.mostRecentCall;
         if (call != null && !call.isCanceled()) {
             call.cancel();
+            Log.d(Config.LOGTAG,"cancelled HTTP request");
         }
     }
 
@@ -102,11 +104,6 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
         mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED, cancelled ? Message.ERROR_MESSAGE_CANCELLED : errorMessage);
     }
 
-    private void markAsCancelled() {
-        finish();
-        mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED, Message.ERROR_MESSAGE_CANCELLED);
-    }
-
     private void finish() {
         mHttpConnectionManager.finishUploadConnection(this);
         message.setTransferable(null);
@@ -115,10 +112,11 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
     public void init(boolean delay) {
         final Account account = message.getConversation().getAccount();
         this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
+        final String mime;
         if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-            this.mime = "application/pgp-encrypted";
+            mime = "application/pgp-encrypted";
         } else {
-            this.mime = this.file.getMimeType();
+            mime = this.file.getMimeType();
         }
         final long originalFileSize = file.getSize();
         this.delayed = delay;
@@ -136,7 +134,11 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
             @Override
             public void onSuccess(@NullableDecl SlotRequester.Slot result) {
                 HttpUploadConnection.this.slot = result;
-                HttpUploadConnection.this.upload();
+                try {
+                    HttpUploadConnection.this.upload();
+                } catch (final Exception e) {
+                    fail(e.getMessage());
+                }
             }
 
             @Override
@@ -171,7 +173,7 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull Response response)  {
                 final int code = response.code();
                 if (code == 200 || code == 201) {
                     Log.d(Config.LOGTAG, "finished uploading file");
