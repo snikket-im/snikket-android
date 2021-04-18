@@ -410,12 +410,16 @@ public class NotificationService {
             Log.d(Config.LOGTAG,"do not ring or vibrate because interruption filter has been set to "+currentInterruptionFilter);
             return;
         }
+        final ScheduledFuture<?> currentVibrationFuture = this.vibrationFuture;
         this.vibrationFuture = SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(
                 new VibrationRunnable(),
                 0,
                 3,
                 TimeUnit.SECONDS
         );
+        if (currentVibrationFuture != null) {
+            currentVibrationFuture.cancel(true);
+        }
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
         final Resources resources = mXmppConnectionService.getResources();
         final String ringtonePreference = preferences.getString("call_ringtone", resources.getString(R.string.incoming_call_ringtone));
