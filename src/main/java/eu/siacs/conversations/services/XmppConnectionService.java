@@ -1079,10 +1079,10 @@ public class XmppConnectionService extends Service {
     public boolean hasInternetConnection() {
         final ConnectivityManager cm = ContextCompat.getSystemService(this, ConnectivityManager.class);
         if (cm == null) {
-            return false;
+            return true; //if internet connection can not be checked it is probably best to just try
         }
         try {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
                 final Network activeNetwork = cm.getActiveNetwork();
                 final NetworkCapabilities capabilities = activeNetwork == null ? null : cm.getNetworkCapabilities(activeNetwork);
                 return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
