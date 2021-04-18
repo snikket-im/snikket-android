@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.9.11
+
+* Fixed 'No Connectivity' issues on Android 7.1
+
 ### Version 2.9.10
 * fix HTTP up/download for users that don’t trust system CAs
 
