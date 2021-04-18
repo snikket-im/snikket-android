@@ -41,6 +41,8 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 
     public static final Executor EXECUTOR = Executors.newFixedThreadPool(4);
 
+    private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
+
     public HttpConnectionManager(XmppConnectionService service) {
         super(service);
     }
@@ -50,8 +52,8 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         try {
             localhost = InetAddress.getByAddress(new byte[]{127, 0, 0, 1});
         } catch (final UnknownHostException e) {
-                throw new IllegalStateException(e);
-            }
+            throw new IllegalStateException(e);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(localhost, 9050));
         } else {
@@ -65,7 +67,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 
     public void createNewDownloadConnection(final Message message, boolean interactive) {
         synchronized (this.downloadConnections) {
-            for(HttpDownloadConnection connection : this.downloadConnections) {
+            for (HttpDownloadConnection connection : this.downloadConnections) {
                 if (connection.getMessage() == message) {
                     Log.d(Config.LOGTAG, message.getConversation().getAccount().getJid().asBareJid() + ": download already in progress");
                     return;
@@ -104,12 +106,15 @@ public class HttpConnectionManager extends AbstractConnectionManager {
     }
 
     OkHttpClient buildHttpClient(final HttpUrl url, final Account account, boolean interactive) {
+        return buildHttpClient(url, account, 30, interactive);
+    }
+
+    OkHttpClient buildHttpClient(final HttpUrl url, final Account account, int readTimeout, boolean interactive) {
         final String slotHostname = url.host();
         final boolean onionSlot = slotHostname.endsWith(".onion");
-        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        //builder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS));
+        final OkHttpClient.Builder builder = OK_HTTP_CLIENT.newBuilder();
         builder.writeTimeout(30, TimeUnit.SECONDS);
-        builder.readTimeout(30, TimeUnit.SECONDS);
+        builder.readTimeout(readTimeout, TimeUnit.SECONDS);
         setupTrustManager(builder, interactive);
         if (mXmppConnectionService.useTorToConnect() || account.isOnion() || onionSlot) {
             builder.proxy(HttpConnectionManager.getProxy()).build();
@@ -138,7 +143,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
     }
 
     public static InputStream open(final HttpUrl httpUrl, final boolean tor) throws IOException {
-        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        final OkHttpClient.Builder builder = OK_HTTP_CLIENT.newBuilder();
         if (tor) {
             builder.proxy(HttpConnectionManager.getProxy()).build();
         }

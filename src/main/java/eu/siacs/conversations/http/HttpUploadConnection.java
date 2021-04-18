@@ -155,6 +155,7 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
         final OkHttpClient client = mHttpConnectionManager.buildHttpClient(
                 slot.put,
                 message.getConversation().getAccount(),
+                0,
                 true
         );
         final RequestBody requestBody = AbstractConnectionManager.requestBody(file, this);
