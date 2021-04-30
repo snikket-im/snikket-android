@@ -526,7 +526,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             } else if (contact.showInRoster()) {
                 throw new EnterJidDialog.JidError(getString(R.string.contact_already_exists));
             } else {
-                xmppConnectionService.createContact(contact, true);
+                final String preAuth = invite == null ? null : invite.getParameter(XmppUri.PARAMETER_PRE_AUTH);
+                xmppConnectionService.createContact(contact, true, preAuth);
                 if (invite != null && invite.hasFingerprints()) {
                     xmppConnectionService.verifyFingerprints(contact, invite.getFingerprints());
                 }

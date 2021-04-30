@@ -3448,15 +3448,23 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public void createContact(Contact contact, boolean autoGrant) {
+    public void createContact(final Contact contact, final boolean autoGrant) {
+        createContact(contact, autoGrant, null);
+    }
+
+    public void createContact(final Contact contact, final boolean autoGrant, final String preAuth) {
         if (autoGrant) {
             contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
             contact.setOption(Contact.Options.ASKING);
         }
-        pushContactToServer(contact);
+        pushContactToServer(contact, preAuth);
     }
 
     public void pushContactToServer(final Contact contact) {
+        pushContactToServer(contact, null);
+    }
+
+    private void pushContactToServer(final Contact contact, final String preAuth) {
         contact.resetOption(Contact.Options.DIRTY_DELETE);
         contact.setOption(Contact.Options.DIRTY_PUSH);
         final Account account = contact.getAccount();
@@ -3472,7 +3480,7 @@ public class XmppConnectionService extends Service {
                 sendPresencePacket(account, mPresenceGenerator.sendPresenceUpdatesTo(contact));
             }
             if (ask) {
-                sendPresencePacket(account, mPresenceGenerator.requestPresenceUpdatesFrom(contact));
+                sendPresencePacket(account, mPresenceGenerator.requestPresenceUpdatesFrom(contact, preAuth));
             }
         } else {
             syncRoster(contact.getAccount());

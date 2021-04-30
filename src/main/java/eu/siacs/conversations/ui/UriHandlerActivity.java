@@ -95,7 +95,8 @@ public class UriHandlerActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onNewIntent(Intent intent) {
+    public void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
         handleIntent(intent);
     }
 
@@ -120,7 +121,7 @@ public class UriHandlerActivity extends AppCompatActivity {
                 startActivity(intent);
                 return;
             }
-            if (xmppUri.isAction(XmppUri.ACTION_ROSTER) && "y".equals(xmppUri.getParameter(XmppUri.PARAMETER_IBR))) {
+            if (accounts.size() == 0 && xmppUri.isAction(XmppUri.ACTION_ROSTER) && "y".equals(xmppUri.getParameter(XmppUri.PARAMETER_IBR))) {
                 intent = SignupUtils.getTokenRegistrationIntent(this, jid.getDomain(), preAuth);
                 intent.putExtra(StartConversationActivity.EXTRA_INVITE_URI, xmppUri.toString());
                 startActivity(intent);

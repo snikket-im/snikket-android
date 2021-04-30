@@ -25,11 +25,18 @@ public class PresenceGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public PresencePacket requestPresenceUpdatesFrom(Contact contact) {
+    public PresencePacket requestPresenceUpdatesFrom(final Contact contact) {
+        return requestPresenceUpdatesFrom(contact, null);
+    }
+
+    public PresencePacket requestPresenceUpdatesFrom(final Contact contact, final String preAuth) {
         PresencePacket packet = subscription("subscribe", contact);
         String displayName = contact.getAccount().getDisplayName();
         if (!TextUtils.isEmpty(displayName)) {
             packet.addChild("nick", Namespace.NICK).setContent(displayName);
+        }
+        if (preAuth != null) {
+            packet.addChild("preauth", Namespace.PARS).setAttribute("token", preAuth);
         }
         return packet;
     }
