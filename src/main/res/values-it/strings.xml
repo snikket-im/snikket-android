@@ -960,4 +960,4 @@
     <string name="server_does_not_support_easy_onboarding_invites">Il server non supporta la generazione di inviti</string>
     <string name="no_active_accounts_support_this">Nessun account attivo supporta questa funzione</string>
     <string name="backup_started_message">Il backup è iniziato. Riceverai una notifica una volta completato.</string>
-</resources>
+    </resources>

@@ -973,4 +973,4 @@
     <string name="server_does_not_support_easy_onboarding_invites">Serverul nu suportă generarea de invitații</string>
     <string name="no_active_accounts_support_this">Nici un cont activ nu suporta această caracteristică</string>
     <string name="backup_started_message">Se creează copia de siguranță. Veți primi o notificare când acesta este completă.</string>
-</resources>
+    </resources>

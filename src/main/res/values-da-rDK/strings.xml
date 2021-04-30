@@ -960,4 +960,4 @@
     <string name="server_does_not_support_easy_onboarding_invites">Server understøtter ikke generering af invitationer</string>
     <string name="no_active_accounts_support_this">Ingen aktive konti understøtter denne funktion</string>
     <string name="backup_started_message">Sikkerhedskopieringen er startet. Du får en notifikation, når den er afsluttet.</string>
-</resources>
+    </resources>

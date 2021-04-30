@@ -985,4 +985,5 @@
     <string name="unable_to_parse_invite">Невозможно разобрать приглашение</string>
     <string name="server_does_not_support_easy_onboarding_invites">Сервер не поддерживает создание приглашений</string>
     <string name="no_active_accounts_support_this">Ни один активный аккаунт не поддерживает эту функцию</string>
+    <string name="backup_started_message">Резервное копирование было начато. Вы получите уведомление, как только оно будет завершено. </string>
     </resources>

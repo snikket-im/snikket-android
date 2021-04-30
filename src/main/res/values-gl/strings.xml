@@ -269,7 +269,7 @@
     <string name="account_already_exists">Esta conta xa existe</string>
     <string name="next">Seguinte</string>
     <string name="server_info_session_established">Sesión establecida</string>
-    <string name="skip">Saltar</string>
+    <string name="skip">Omitir</string>
     <string name="disable_notifications">Desactivar notificacións</string>
     <string name="enable">Habilitar</string>
     <string name="conference_requires_password">A conversa en grupo require contrasinal</string>
@@ -960,4 +960,4 @@
     <string name="server_does_not_support_easy_onboarding_invites">O servidor non soporta a creación de convites</string>
     <string name="no_active_accounts_support_this">Ningunha conta activa soporta esta función</string>
     <string name="backup_started_message">Comezou a creación da copia de apoio. Recibirás unha notificación cando remate.</string>
-</resources>
+    </resources>

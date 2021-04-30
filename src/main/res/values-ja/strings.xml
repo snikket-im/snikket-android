@@ -7,7 +7,7 @@
     <string name="action_end_conversation">会話を閉じる</string>
     <string name="action_contact_details">連絡先の詳細</string>
     <string name="action_muc_details">グループチャットの詳細</string>
-    <string name="channel_details">チャンネルの詳細</string>
+    <string name="channel_details">談話室の詳細</string>
     <string name="action_add_account">アカウントを追加</string>
     <string name="action_edit_contact">名前を編集</string>
     <string name="action_add_phone_book">アドレス帳に追加</string>
@@ -234,11 +234,11 @@
     <string name="save_as_bookmark">ブックマークとして保存</string>
     <string name="delete_bookmark">ブックマークを削除</string>
     <string name="destroy_room">グループチャットを破棄する</string>
-    <string name="destroy_channel">チャンネルを破棄する</string>
+    <string name="destroy_channel">談話室を破棄する</string>
     <string name="destroy_room_dialog">このグループチャットを破棄してもよろしいですか?\n\n<b>警告:</b> グループチャットはサーバーから完全に削除されます。</string>
-    <string name="destroy_channel_dialog">この公開談話室を破棄してもよろしいですか?\n\n<b>警告:</b> チャンネルはサーバーから完全に削除されます。</string>
+    <string name="destroy_channel_dialog">この公開談話室を破棄してもよろしいですか?\n\n<b>警告:</b> 談話室はサーバーから完全に削除されます。</string>
     <string name="could_not_destroy_room">グループチャットを破棄できません</string>
-    <string name="could_not_destroy_channel">チャンネルを破棄できません</string>
+    <string name="could_not_destroy_channel">談話室を破棄できません</string>
     <string name="action_edit_subject">グループチャットの題を編集</string>
     <string name="topic">トピック</string>
     <string name="joining_conference">グループチャットに参加しています…</string>
@@ -286,7 +286,7 @@
     <string name="pref_quiet_hours_summary">消音時間の間、通知は無音になります</string>
     <string name="pref_expert_options_other">その他</string>
     <string name="pref_autojoin">ブックマークと同期</string>
-    <string name="pref_autojoin_summary">ブックマークに従って、グループチャットに自動参加します。</string>
+    <string name="pref_autojoin_summary">ブックマークに従って、グループチャットに自動で参加します。</string>
     <string name="toast_message_omemo_fingerprint">OMEMO フィンガープリントをクリップボードにコピーしました</string>
     <string name="conference_banned">このグループチャットから追い出されています</string>
     <string name="conference_members_only">このグループチャットはメンバー制です</string>
@@ -379,10 +379,10 @@
     <string name="grant_owner_privileges">所有者権限を付与</string>
     <string name="remove_owner_privileges">所有者権限を取消</string>
     <string name="remove_from_room">グループチャットから削除</string>
-    <string name="remove_from_channel">チャンネルから削除</string>
+    <string name="remove_from_channel">談話室から削除</string>
     <string name="could_not_change_affiliation">%s の所属を変更できません</string>
     <string name="ban_from_conference">グループチャットから追い出す</string>
-    <string name="ban_from_channel">チャンネルから追い出す</string>
+    <string name="ban_from_channel">談話室から追い出す</string>
     <string name="removing_from_public_conference">あなたは公開談話室から %s を削除しようとしています。その唯一の手段は、そのユーザーを永久に追い出すことです。</string>
     <string name="ban_now">今すぐ追い出す</string>
     <string name="could_not_change_role">%s の役割を変更できません</string>
@@ -390,7 +390,7 @@
     <string name="channel_options">公開談話室の環境設定</string>
     <string name="members_only">非公開、メンバーのみ</string>
     <string name="non_anonymous">XMPPアドレスを誰でも見れるようにする</string>
-    <string name="moderated">チャンネルの調停をする</string>
+    <string name="moderated">談話室の調停をする</string>
     <string name="you_are_not_participating">あなたは参加していません</string>
     <string name="modified_conference_options">グループチャットのオプションが変更されました!</string>
     <string name="could_not_modify_conference_options">グループチャットのオプションを変更できませんでした</string>
@@ -633,7 +633,7 @@
     <plurals name="months">
         <item quantity="other">%dか月</item>
     </plurals>
-    <string name="pref_automatically_delete_messages">自動メッセージ削除</string>
+    <string name="pref_automatically_delete_messages">自動でメッセージを削除</string>
     <string name="pref_automatically_delete_messages_description">設定された期間よりも古いメッセージを、このデバイスから自動的に削除します。</string>
     <string name="encrypting_message">メッセージの暗号化中</string>
     <string name="not_fetching_history_retention_period">ローカル保存期間のためにメッセージを取得しません。</string>
@@ -737,6 +737,11 @@
     <string name="notification_group_status_information">ステータス情報</string>
     <string name="error_channel_name">接続の問題</string>
     <string name="error_channel_description">この通知カテゴリーは、アカウントへの接続に問題があった場合に、通知を表示するために使用されます。</string>
+    <string name="notification_group_messages">メッセージ</string>
+    <string name="notification_group_calls">通話</string>
+    <string name="messages_channel_name">メッセージ</string>
+    <string name="incoming_calls_channel_name">着信</string>
+    <string name="ongoing_calls_channel_name">発信</string>
     <string name="silent_messages_channel_description">この通知グループは、音を鳴らしてはいけない通知を表示するために使用します。例えば、他のデバイスでアクティブになっているときなどです (猶予期間)。</string>
     <string name="delivery_failed_channel_name">配信に失敗</string>
     <string name="pref_message_notification_settings">メッセージ通知設定</string>
@@ -802,9 +807,9 @@
     <string name="install_orbot">Orbot をインストール</string>
     <string name="start_orbot">Orbot を開始</string>
     <string name="no_market_app_installed">マーケットアプリがインストールされていません。</string>
-    <string name="group_chat_will_make_your_jabber_id_public">このチャンネルでは、あなたのXMPPアドレスを公開します</string>
+    <string name="group_chat_will_make_your_jabber_id_public">この談話室では、あなたのXMPPアドレスを公開します</string>
     <string name="ebook">電子書籍</string>
-    <string name="video_original">原物(非圧縮)</string>
+    <string name="video_original">原物 (非圧縮)</string>
     <string name="open_with">…で開く</string>
     <string name="set_profile_picture">Conversations プロフィール写真</string>
     <string name="choose_account">アカウントを選択</string>
@@ -820,15 +825,15 @@
     <string name="join_public_channel">公開談話室に参加</string>
     <string name="create_private_group_chat">非公開グループチャットを作成</string>
     <string name="create_public_channel">公開談話室を作成</string>
-    <string name="create_dialog_channel_name">チャンネル名</string>
+    <string name="create_dialog_channel_name">談話室名</string>
     <string name="xmpp_address">XMPP アドレス</string>
-    <string name="please_enter_name">チャンネルの名前をご記入ください</string>
+    <string name="please_enter_name">談話室の名前をご記入ください</string>
     <string name="please_enter_xmpp_address">XMPP アドレスをご記入ください</string>
     <string name="this_is_an_xmpp_address">これは XMPP アドレスです。名前をご記入ください。</string>
     <string name="creating_channel">公開談話室を作成中…</string>
-    <string name="channel_already_exists">このチャンネルは既に存在します</string>
-    <string name="joined_an_existing_channel">存在しているチャンネルに参加しています</string>
-    <string name="unable_to_set_channel_configuration">チャンネルの環境設定を保存できません</string>
+    <string name="channel_already_exists">この談話室は既に存在します</string>
+    <string name="joined_an_existing_channel">存在している談話室に参加しています</string>
+    <string name="unable_to_set_channel_configuration">談話室の環境設定を保存できません</string>
     <string name="allow_participants_to_edit_subject">誰にでもトピックの編集を許可</string>
     <string name="allow_participants_to_invite_others">誰にでも他の人の招待を許可</string>
     <string name="anyone_can_edit_subject">誰でもトピックを編集できます。</string>
@@ -844,16 +849,16 @@
     <string name="search_participants">参加者を検索</string>
     <string name="file_too_large">ファイルが大きすぎます</string>
     <string name="attach">添付</string>
-    <string name="discover_channels">チャンネルを発見</string>
-    <string name="search_channels">チャンネルを検索</string>
+    <string name="discover_channels">談話室発見</string>
+    <string name="search_channels">談話室を検索</string>
     <string name="channel_discovery_opt_in_title">プライバシー侵害の可能性あり!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[チャンネル発見は、第三者のサービスである<a href="https://search.jabber.network">search.jabber.networkを利用します。<br><br>この機能を使うと、あなたののIPアドレスや検索キーワードがそのサービスに送信されます。詳しくは、<a href="https://search.jabber.network/privacy">プライバシーポリシー</a>をご覧ください。]]></string>
+    <string name="channel_discover_opt_in_message"><![CDATA[談話室発見は、第三者のサービスである<a href="https://search.jabber.network">search.jabber.networkを利用します。<br><br>この機能を使うと、あなたののIPアドレスや検索キーワードがそのサービスに送信されます。詳しくは、<a href="https://search.jabber.network/privacy">プライバシーポリシー</a>をご覧ください。]]></string>
     <string name="i_already_have_an_account">私は既にアカウントを持っています</string>
     <string name="add_existing_account">存在するアカウントを追加</string>
     <string name="register_new_account">新しいアカウントを登録</string>
     <string name="this_looks_like_a_domain">これはドメインアドレスのようです</string>
     <string name="add_anway">とにかく追加</string>
-    <string name="this_looks_like_channel">これはチャンネルアドレスのようです</string>
+    <string name="this_looks_like_channel">これは談話室アドレスのようです</string>
     <string name="share_backup_files">バックアップファイルを共有</string>
     <string name="conversations_backup">Conversations のバックアップ</string>
     <string name="event">出来事</string>
@@ -864,11 +869,11 @@
     <string name="unable_to_perform_this_action">この操作を実行できません</string>
     <string name="open_join_dialog">公開談話室に参加…</string>
     <string name="sharing_application_not_grant_permission">共有アプリがこのファイルへのアクセスを許可していませんでした。</string>
-    <string name="group_chats_and_channels"><![CDATA[グループチャットとチャンネル]]></string>
+    <string name="group_chats_and_channels"><![CDATA[グループチャットと談話室]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">ローカルサーバー</string>
     <string name="pref_channel_discovery_summary">ほとんどのユーザーは、公開されている XMPP エコシステム全体からより良い提案を得るために、‘jabber.network’を選択するはずです。</string>
-    <string name="pref_channel_discovery">チャンネル発見方法</string>
+    <string name="pref_channel_discovery">談話室発見方法</string>
     <string name="please_enable_an_account">アカウントを有効にしてください</string>
     <string name="make_call">通話をする</string>
     <string name="rtp_state_incoming_call">通話着信</string>
@@ -917,7 +922,7 @@
     <string name="record_voice_mail">音声メールを録音</string>
     <string name="play_audio">音声再生</string>
     <string name="pause_audio">音声一時中断</string>
-    <string name="add_contact_or_create_or_join_group_chat">連絡先を追加、作成またはグループチャットに参加、またはチャンネルを発見する</string>
+    <string name="add_contact_or_create_or_join_group_chat">連絡先を追加、作成またはグループチャットに参加、または談話室を発見する</string>
     <plurals name="view_users">
         <item quantity="other">%1$d人の参加者を表示</item>
     </plurals>
@@ -932,4 +937,4 @@
     <string name="server_does_not_support_easy_onboarding_invites">サーバーは招待をサポートしていません</string>
     <string name="no_active_accounts_support_this">この機能をサポートするアクティブなアカウントがありません</string>
     <string name="backup_started_message">バックアップを開始しました。 バックアップが完了すると通知が届きます。</string>
-</resources>
+    </resources>

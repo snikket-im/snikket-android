@@ -150,6 +150,7 @@
     <string name="error_file_not_found">Datei nicht gefunden</string>
     <string name="error_io_exception">Allgemeiner Fehler. Vielleicht hast du keinen Speicherplatz mehr?</string>
     <string name="error_security_exception_during_image_copy">Die App, mit der du das Bild ausgesucht hast, hat keine Rechte eingeräumt, um das Bild zu betrachten.\n\n<small>Benutze einen anderen Dateimanager, um ein Bild auszuwählen</small>.</string>
+    <string name="error_security_exception">Die App, die du zum Teilen dieser Datei verwendet hast, hat nicht die erforderlichen Berechtigungen bereitgestellt.</string>
     <string name="account_status_unknown">Unbekannt</string>
     <string name="account_status_disabled">Vorübergehend abgeschaltet</string>
     <string name="account_status_online">Online</string>
@@ -164,6 +165,7 @@
     <string name="account_status_regis_not_sup">Registrierung wird vom Server nicht unterstützt</string>
     <string name="account_status_regis_invalid_token">Ungültiger Registrierungstoken</string>
     <string name="account_status_tls_error">TLS-Aushandlung fehlgeschlagen</string>
+    <string name="account_status_tls_error_domain">Domain nicht überprüfbar</string>
     <string name="account_status_policy_violation">Verstoß gegen die Richtlinien</string>
     <string name="account_status_incompatible_server">Inkompatibler Server</string>
     <string name="account_status_stream_error">Stream Fehler</string>
@@ -960,4 +962,5 @@
     <string name="server_does_not_support_easy_onboarding_invites">Server unterstützt keine Generierung von Einladungen</string>
     <string name="no_active_accounts_support_this">Keine aktiven Konten unterstützen diese Funktion</string>
     <string name="backup_started_message">Das Backup wurde gestartet. Du bekommst eine Benachrichtigung sobald es fertig ist.</string>
+    <string name="unable_to_enable_video">Video kann nicht aktiviert werden.</string>
 </resources>

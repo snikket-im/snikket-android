@@ -964,4 +964,4 @@
     <string name="server_does_not_support_easy_onboarding_invites">Server nepodporuje vytváření pozvánek</string>
     <string name="no_active_accounts_support_this">Žádný z aktivních účtů tuto funkci nepodporuje</string>
     <string name="backup_started_message">Zálohování zahájeno. Budete upozorněni, jakmile bude záloha hotova.</string>
-</resources>
+    </resources>

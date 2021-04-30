@@ -987,4 +987,4 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="server_does_not_support_easy_onboarding_invites">Serwer nie wspiera tworzenia zaproszeń</string>
     <string name="no_active_accounts_support_this">Nie ma aktywnych kont wspierających tę funkcję</string>
     <string name="backup_started_message">Tworzenie kopii zapasowej się rozpoczęło. Dostaniesz powiadomienie kiedy się zakończy. </string>
-</resources>
+    </resources>
