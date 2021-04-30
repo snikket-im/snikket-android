@@ -48,10 +48,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,26 +62,20 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.DomainHostnameVerifier;
 import eu.siacs.conversations.entities.MTMDecision;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.persistance.FileBackend;
@@ -101,12 +93,10 @@ import eu.siacs.conversations.ui.MemorizingActivity;
  */
 public class MemorizingTrustManager {
 
-
     final static String DECISION_INTENT = "de.duenndns.ssl.DECISION";
     public final static String DECISION_INTENT_ID = DECISION_INTENT + ".decisionId";
     public final static String DECISION_INTENT_CERT = DECISION_INTENT + ".cert";
     public final static String DECISION_TITLE_ID = DECISION_INTENT + ".titleId";
-    final static String DECISION_INTENT_CHOICE = DECISION_INTENT + ".decisionChoice";
     final static String NO_TRUST_ANCHOR = "Trust anchor for certification path not found.";
     private static final Pattern PATTERN_IPV4 = Pattern.compile("\\A(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
     private static final Pattern PATTERN_IPV6_HEX4DECCOMPRESSED = Pattern.compile("\\A((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?) ::((?:[0-9A-Fa-f]{1,4}:)*)(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
@@ -114,7 +104,6 @@ public class MemorizingTrustManager {
     private static final Pattern PATTERN_IPV6_HEXCOMPRESSED = Pattern.compile("\\A((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)\\z");
     private static final Pattern PATTERN_IPV6 = Pattern.compile("\\A(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\\z");
     private final static Logger LOGGER = Logger.getLogger(MemorizingTrustManager.class.getName());
-    private final static int NOTIFICATION_ID = 100509;
     static String KEYSTORE_DIR = "KeyStore";
     static String KEYSTORE_FILE = "KeyStore.bks";
     private static int decisionId = 0;
@@ -168,20 +157,6 @@ public class MemorizingTrustManager {
         this.defaultTrustManager = getTrustManager(null);
     }
 
-    /**
-     * Changes the path for the KeyStore file.
-     * <p>
-     * The actual filename relative to the app's directory will be
-     * <code>app_<i>dirname</i>/<i>filename</i></code>.
-     *
-     * @param dirname  directory to store the KeyStore.
-     * @param filename file name for the KeyStore.
-     */
-    public static void setKeyStoreFile(String dirname, String filename) {
-        KEYSTORE_DIR = dirname;
-        KEYSTORE_FILE = filename;
-    }
-
     private static boolean isIp(final String server) {
         return server != null && (
                 PATTERN_IPV4.matcher(server).matches()
@@ -217,9 +192,7 @@ public class MemorizingTrustManager {
             MessageDigest md = MessageDigest.getInstance(digest);
             md.update(cert.getEncoded());
             return hexString(md.digest());
-        } catch (java.security.cert.CertificateEncodingException e) {
-            return e.getMessage();
-        } catch (java.security.NoSuchAlgorithmException e) {
+        } catch (CertificateEncodingException | NoSuchAlgorithmException e) {
             return e.getMessage();
         }
     }
@@ -240,7 +213,7 @@ public class MemorizingTrustManager {
         }
     }
 
-    void init(Context m) {
+    void init(final Context m) {
         master = m;
         masterHandler = new Handler(m.getMainLooper());
         notificationManager = (NotificationManager) master.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -264,36 +237,6 @@ public class MemorizingTrustManager {
     }
 
     /**
-     * Binds an Activity to the MTM for displaying the query dialog.
-     * <p>
-     * This is useful if your connection is run from a service that is
-     * triggered by user interaction -- in such cases the activity is
-     * visible and the user tends to ignore the service notification.
-     * <p>
-     * You should never have a hidden activity bound to MTM! Use this
-     * function in onResume() and @see unbindDisplayActivity in onPause().
-     *
-     * @param act Activity to be bound
-     */
-    public void bindDisplayActivity(AppCompatActivity act) {
-        foregroundAct = act;
-    }
-
-    /**
-     * Removes an Activity from the MTM display stack.
-     * <p>
-     * Always call this function when the Activity added with
-     * {@link #bindDisplayActivity(AppCompatActivity)} is hidden.
-     *
-     * @param act Activity to be unbound
-     */
-    public void unbindDisplayActivity(AppCompatActivity act) {
-        // do not remove if it was overridden by a different activity
-        if (foregroundAct == act)
-            foregroundAct = null;
-    }
-
-    /**
      * Get a list of all certificate aliases stored in MTM.
      *
      * @return an {@link Enumeration} of all certificates
@@ -301,21 +244,6 @@ public class MemorizingTrustManager {
     public Enumeration<String> getCertificates() {
         try {
             return appKeyStore.aliases();
-        } catch (KeyStoreException e) {
-            // this should never happen, however...
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Get a certificate for a given alias.
-     *
-     * @param alias the certificate's alias as returned by {@link #getCertificates()}.
-     * @return the certificate associated with the alias or <tt>null</tt> if none found.
-     */
-    public Certificate getCertificate(String alias) {
-        try {
-            return appKeyStore.getCertificate(alias);
         } catch (KeyStoreException e) {
             // this should never happen, however...
             throw new RuntimeException(e);
@@ -338,32 +266,6 @@ public class MemorizingTrustManager {
     public void deleteCertificate(String alias) throws KeyStoreException {
         appKeyStore.deleteEntry(alias);
         keyStoreUpdated();
-    }
-
-    /**
-     * Creates a new hostname verifier supporting user interaction.
-     *
-     * <p>This method creates a new {@link HostnameVerifier} that is bound to
-     * the given instance of {@link MemorizingTrustManager}, and leverages an
-     * existing {@link HostnameVerifier}. The returned verifier performs the
-     * following steps, returning as soon as one of them succeeds:
-     * /p>
-     * <ol>
-     * <li>Success, if the wrapped defaultVerifier accepts the certificate.</li>
-     * <li>Success, if the server certificate is stored in the keystore under the given hostname.</li>
-     * <li>Ask the user and return accordingly.</li>
-     * <li>Failure on exception.</li>
-     * </ol>
-     *
-     * @param defaultVerifier the {@link HostnameVerifier} that should perform the actual check
-     * @return a new hostname verifier using the MTM's key store
-     * @throws IllegalArgumentException if the defaultVerifier parameter is null
-     */
-    public DomainHostnameVerifier wrapHostnameVerifier(final HostnameVerifier defaultVerifier, final boolean interactive) {
-        if (defaultVerifier == null)
-            throw new IllegalArgumentException("The default verifier may not be null");
-
-        return new MemorizingHostnameVerifier(defaultVerifier, interactive);
     }
 
     X509TrustManager getTrustManager(KeyStore ks) {
@@ -452,16 +354,8 @@ public class MemorizingTrustManager {
         }
     }
 
-    private boolean isExpiredException(Throwable e) {
-        do {
-            if (e instanceof CertificateExpiredException)
-                return true;
-            e = e.getCause();
-        } while (e != null);
-        return false;
-    }
 
-    public void checkCertTrusted(X509Certificate[] chain, String authType, String domain, boolean isServer, boolean interactive)
+    private void checkCertTrusted(X509Certificate[] chain, String authType, String domain, boolean isServer, boolean interactive)
             throws CertificateException {
         LOGGER.log(Level.FINE, "checkCertTrusted(" + chain + ", " + authType + ", " + isServer + ")");
         try {
@@ -470,13 +364,8 @@ public class MemorizingTrustManager {
                 appTrustManager.checkServerTrusted(chain, authType);
             else
                 appTrustManager.checkClientTrusted(chain, authType);
-        } catch (CertificateException ae) {
+        } catch (final CertificateException ae) {
             LOGGER.log(Level.FINER, "checkCertTrusted: appTrustManager failed", ae);
-            // if the cert is stored in our appTrustManager, we ignore expiredness
-            if (isExpiredException(ae)) {
-                LOGGER.log(Level.INFO, "checkCertTrusted: accepting expired certificate from keystore");
-                return;
-            }
             if (isCertKnown(chain[0])) {
                 LOGGER.log(Level.INFO, "checkCertTrusted: accepting cert already stored in keystore");
                 return;
@@ -673,40 +562,6 @@ public class MemorizingTrustManager {
         return si.toString();
     }
 
-    private String hostNameMessage(X509Certificate cert, String hostname) {
-        StringBuffer si = new StringBuffer();
-
-        si.append(master.getString(R.string.mtm_hostname_mismatch, hostname));
-        si.append("\n\n");
-        try {
-            Collection<List<?>> sans = cert.getSubjectAlternativeNames();
-            if (sans == null) {
-                si.append(cert.getSubjectDN());
-                si.append("\n");
-            } else for (List<?> altName : sans) {
-                Object name = altName.get(1);
-                if (name instanceof String) {
-                    si.append("[");
-                    si.append(altName.get(0));
-                    si.append("] ");
-                    si.append(name);
-                    si.append("\n");
-                }
-            }
-        } catch (CertificateParsingException e) {
-            e.printStackTrace();
-            si.append("<Parsing error: ");
-            si.append(e.getLocalizedMessage());
-            si.append(">\n");
-        }
-        si.append("\n");
-        si.append(master.getString(R.string.mtm_connect_anyway));
-        si.append("\n\n");
-        si.append(master.getString(R.string.mtm_cert_details));
-        certDetails(si, cert);
-        return si.toString();
-    }
-
     /**
      * Returns the top-most entry of the activity stack.
      *
@@ -764,17 +619,6 @@ public class MemorizingTrustManager {
         }
     }
 
-    boolean interactHostname(X509Certificate cert, String hostname) {
-        switch (interact(hostNameMessage(cert, hostname), R.string.mtm_accept_servername)) {
-            case MTMDecision.DECISION_ALWAYS:
-                storeCert(hostname, cert);
-            case MTMDecision.DECISION_ONCE:
-                return true;
-            default:
-                return false;
-        }
-    }
-
     public X509TrustManager getNonInteractive(String domain) {
         return new NonInteractiveMemorizingTrustManager(domain);
     }
@@ -789,57 +633,6 @@ public class MemorizingTrustManager {
 
     public X509TrustManager getInteractive() {
         return new InteractiveMemorizingTrustManager(null);
-    }
-
-    class MemorizingHostnameVerifier implements DomainHostnameVerifier {
-        private final HostnameVerifier defaultVerifier;
-        private final boolean interactive;
-
-        public MemorizingHostnameVerifier(HostnameVerifier wrapped, boolean interactive) {
-            this.defaultVerifier = wrapped;
-            this.interactive = interactive;
-        }
-
-        @Override
-        public boolean verify(String domain, String hostname, SSLSession session) {
-            LOGGER.log(Level.FINE, "hostname verifier for " + domain + ", trying default verifier first");
-            // if the default verifier accepts the hostname, we are done
-            if (defaultVerifier instanceof DomainHostnameVerifier) {
-                if (((DomainHostnameVerifier) defaultVerifier).verify(domain, hostname, session)) {
-                    return true;
-                }
-            } else {
-                if (defaultVerifier.verify(domain, session)) {
-                    return true;
-                }
-            }
-
-
-            // otherwise, we check if the hostname is an alias for this cert in our keystore
-            try {
-                X509Certificate cert = (X509Certificate) session.getPeerCertificates()[0];
-                //Log.d(TAG, "cert: " + cert);
-                if (cert.equals(appKeyStore.getCertificate(domain.toLowerCase(Locale.US)))) {
-                    LOGGER.log(Level.FINE, "certificate for " + domain + " is in our keystore. accepting.");
-                    return true;
-                } else {
-                    LOGGER.log(Level.FINE, "server " + domain + " provided wrong certificate, asking user.");
-                    if (interactive) {
-                        return interactHostname(cert, domain);
-                    } else {
-                        return false;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        public boolean verify(String domain, SSLSession sslSession) {
-            return verify(domain, null, sslSession);
-        }
     }
 
     private class NonInteractiveMemorizingTrustManager implements X509TrustManager {

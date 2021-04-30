@@ -124,7 +124,6 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 
     private void setupTrustManager(final OkHttpClient.Builder builder, final boolean interactive) {
         final X509TrustManager trustManager;
-        final HostnameVerifier hostnameVerifier = mXmppConnectionService.getMemorizingTrustManager().wrapHostnameVerifier(new StrictHostnameVerifier(), interactive);
         if (interactive) {
             trustManager = mXmppConnectionService.getMemorizingTrustManager().getInteractive();
         } else {
@@ -133,7 +132,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         try {
             final SSLSocketFactory sf = new TLSSocketFactory(new X509TrustManager[]{trustManager}, mXmppConnectionService.getRNG());
             builder.sslSocketFactory(sf, trustManager);
-            builder.hostnameVerifier(hostnameVerifier);
+            builder.hostnameVerifier(new StrictHostnameVerifier());
         } catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
         }
     }

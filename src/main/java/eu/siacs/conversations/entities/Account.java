@@ -635,6 +635,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         REGISTRATION_INVALID_TOKEN(true,false),
         REGISTRATION_PASSWORD_TOO_WEAK(true, false),
         TLS_ERROR,
+        TLS_ERROR_DOMAIN,
         INCOMPATIBLE_SERVER,
         TOR_NOT_AVAILABLE,
         DOWNGRADE_ATTACK,
@@ -701,6 +702,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                     return R.string.account_status_regis_invalid_token;
                 case TLS_ERROR:
                     return R.string.account_status_tls_error;
+                case TLS_ERROR_DOMAIN:
+                    return R.string.account_status_tls_error_domain;
                 case INCOMPATIBLE_SERVER:
                     return R.string.account_status_incompatible_server;
                 case TOR_NOT_AVAILABLE:
