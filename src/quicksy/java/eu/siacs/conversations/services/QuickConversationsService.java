@@ -48,6 +48,7 @@ import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Entry;
+import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
@@ -260,7 +261,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     }
 
     private void setHeader(HttpURLConnection connection) {
-        connection.setRequestProperty("User-Agent", service.getIqGenerator().getUserAgent());
+        connection.setRequestProperty("User-Agent", HttpConnectionManager.getUserAgent());
         connection.setRequestProperty("Installation-Id", getInstallationId());
         connection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
     }

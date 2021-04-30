@@ -50,7 +50,7 @@ public class ChannelDiscoveryService {
     }
 
     void initializeMuclumbusService() {
-        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        final OkHttpClient.Builder builder = HttpConnectionManager.OK_HTTP_CLIENT.newBuilder();
         if (service.useTorToConnect()) {
             builder.proxy(HttpConnectionManager.getProxy());
         }

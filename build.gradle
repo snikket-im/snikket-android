@@ -98,8 +98,9 @@ android {
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
-        resValue "string", "app_name", "Conversations"
-        buildConfigField "String", "LOGTAG", "\"conversations\""
+        def appName = "Conversations"
+        resValue "string", "app_name", appName
+        buildConfigField "String", "APP_NAME", "\"$appName\"";
     }
 
     splits {
@@ -135,9 +136,11 @@ android {
         quicksy {
             dimension "mode"
             applicationId = "im.quicksy.client"
-            resValue "string", "app_name", "Quicksy"
             resValue "string", "applicationId", applicationId
-            buildConfigField "String", "LOGTAG", "\"quicksy\""
+
+            def appName = "Quicksy"
+            resValue "string", "app_name", appName
+            buildConfigField "String", "APP_NAME", "\"$appName\"";
         }
 
         conversations {
