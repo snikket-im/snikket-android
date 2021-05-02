@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.9.12
+
+* Always verify domain name. No user overwrite
+* Support roster pre authentication
+
 ### Version 2.9.11
 
 * Fixed 'No Connectivity' issues on Android 7.1
