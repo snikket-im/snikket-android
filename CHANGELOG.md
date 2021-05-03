@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.9.13
+
+* minor A/V improvements
+
 ### Version 2.9.12
 
 * Always verify domain name. No user overwrite
