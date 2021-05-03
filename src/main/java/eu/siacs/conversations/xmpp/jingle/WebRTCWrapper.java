@@ -136,13 +136,6 @@ public class WebRTCWrapper {
         @Override
         public void onAddStream(MediaStream mediaStream) {
             Log.d(EXTENDED_LOGGING_TAG, "onAddStream(numAudioTracks=" + mediaStream.audioTracks.size() + ",numVideoTracks=" + mediaStream.videoTracks.size() + ")");
-            final List<VideoTrack> videoTracks = mediaStream.videoTracks;
-            if (videoTracks.size() > 0) {
-                remoteVideoTrack = videoTracks.get(0);
-                Log.d(Config.LOGTAG, "remote video track enabled?=" + remoteVideoTrack.enabled());
-            } else {
-                Log.d(Config.LOGTAG, "no remote video tracks found");
-            }
         }
 
         @Override
@@ -164,10 +157,9 @@ public class WebRTCWrapper {
         public void onAddTrack(RtpReceiver rtpReceiver, MediaStream[] mediaStreams) {
             final MediaStreamTrack track = rtpReceiver.track();
             Log.d(EXTENDED_LOGGING_TAG, "onAddTrack(kind=" + (track == null ? "null" : track.kind()) + ",numMediaStreams=" + mediaStreams.length + ")");
-            if (track != null) {
-                Log.d(EXTENDED_LOGGING_TAG,"onAddTrack(class="+track.getClass().getName()+")");
+            if (track instanceof VideoTrack) {
+                remoteVideoTrack = (VideoTrack) track;
             }
-
         }
 
         @Override
