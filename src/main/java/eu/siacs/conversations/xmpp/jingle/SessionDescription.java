@@ -215,7 +215,7 @@ public class SessionDescription {
                 mediaAttributes.put("extmap", id + " " + uri);
             }
 
-            if (Config.PROCESS_EXTMAP_ALLOW_MIXED && description.hasChild("extmap-allow-mixed", Namespace.JINGLE_RTP_HEADER_EXTENSIONS)) {
+            if (description.hasChild("extmap-allow-mixed", Namespace.JINGLE_RTP_HEADER_EXTENSIONS)) {
                 mediaAttributes.put("extmap-allow-mixed", "");
             }
 
