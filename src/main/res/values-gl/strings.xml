@@ -150,6 +150,7 @@
     <string name="error_file_not_found">Arquivo non atopado</string>
     <string name="error_io_exception">Erro xeral de I/O. ¿Quedaches sen espazo no disco?</string>
     <string name="error_security_exception_during_image_copy">A app utilizada para escoller esta imaxe non deu permisos suficientes para ler o ficheiro.\n\n<small>Usa un xestor de ficheiros diferente para escoller a imaxe</small></string>
+    <string name="error_security_exception">A app que usaches para compartir este ficheiro non concedeu os permisos suficientes.</string>
     <string name="account_status_unknown">Descoñecido</string>
     <string name="account_status_disabled">Desactivado temporalmente</string>
     <string name="account_status_online">Conectado</string>
@@ -164,6 +165,7 @@
     <string name="account_status_regis_not_sup">O servidor non permite o rexistro</string>
     <string name="account_status_regis_invalid_token">O testemuño de rexistro non é válido</string>
     <string name="account_status_tls_error">Fallo a negociación TLS</string>
+    <string name="account_status_tls_error_domain">Dominio non verificable</string>
     <string name="account_status_policy_violation">Violación da política</string>
     <string name="account_status_incompatible_server">Servidor incompatible</string>
     <string name="account_status_stream_error">Erro de fluxo</string>
@@ -960,4 +962,5 @@
     <string name="server_does_not_support_easy_onboarding_invites">O servidor non soporta a creación de convites</string>
     <string name="no_active_accounts_support_this">Ningunha conta activa soporta esta función</string>
     <string name="backup_started_message">Comezou a creación da copia de apoio. Recibirás unha notificación cando remate.</string>
-    </resources>
+    <string name="unable_to_enable_video">Non se puido activar o vídeo.</string>
+</resources>

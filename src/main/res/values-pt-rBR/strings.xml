@@ -150,6 +150,7 @@
     <string name="error_file_not_found">Arquivo não encontrado</string>
     <string name="error_io_exception">Ocorreu um erro genérico de E/S. Você tem espaço de armazenamento suficiente no seu aparelho?</string>
     <string name="error_security_exception_during_image_copy">O aplicativo que você usou para selecionar esta imagem não nos forneceu permissões suficientes para ler o arquivo.\n\n<small>Utilize um gerenciador de arquivos diferente para selecionar a imagem.</small></string>
+    <string name="error_security_exception">O app que você usou para compartilhar esse arquivo não forneceu permissões suficientes.</string>
     <string name="account_status_unknown">Desconhecido</string>
     <string name="account_status_disabled">Temporariamente desabilitado</string>
     <string name="account_status_online">Conectado</string>
@@ -164,6 +165,7 @@
     <string name="account_status_regis_not_sup">O registro não é suportado pelo servidor</string>
     <string name="account_status_regis_invalid_token">Token de registro inválido</string>
     <string name="account_status_tls_error">Não foi possível efetuar a negociação TLS</string>
+    <string name="account_status_tls_error_domain">Domínio não verificável</string>
     <string name="account_status_policy_violation">Violação de política</string>
     <string name="account_status_incompatible_server">Servidor incompatível</string>
     <string name="account_status_stream_error">Erro de fluxo</string>
@@ -960,4 +962,5 @@
     <string name="server_does_not_support_easy_onboarding_invites">O servidor não suporta a criação de convites</string>
     <string name="no_active_accounts_support_this">Nenhuma conta ativa suporta esse recurso</string>
     <string name="backup_started_message">O backup foi iniciado. Você receberá uma notificação assim que ele for concluído.</string>
-    </resources>
+    <string name="unable_to_enable_video">Não foi possível habilitar o vídeo.</string>
+</resources>

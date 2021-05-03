@@ -147,6 +147,7 @@
     <string name="error_file_not_found">未找到文件</string>
     <string name="error_io_exception">常规I/O错误。可能是存储空间不足？</string>
     <string name="error_security_exception_during_image_copy">您用来选择图片的程序没有给予读取权限。\n\n &lt;/small&gt;尝试其他文件管理器选择图片&lt;/small&gt;。</string>
+    <string name="error_security_exception">你用来共享此文件的应用程序没有提供足够的权限。</string>
     <string name="account_status_unknown">未知</string>
     <string name="account_status_disabled">暂时不可用</string>
     <string name="account_status_online">在线</string>
@@ -161,6 +162,7 @@
     <string name="account_status_regis_not_sup">服务器不支持注册</string>
     <string name="account_status_regis_invalid_token">无效的注册令牌</string>
     <string name="account_status_tls_error">TLS协商失败</string>
+    <string name="account_status_tls_error_domain">域名不可验证</string>
     <string name="account_status_policy_violation">违反政策</string>
     <string name="account_status_incompatible_server">服务器不兼容</string>
     <string name="account_status_stream_error">流错误</string>
@@ -947,4 +949,5 @@
     <string name="server_does_not_support_easy_onboarding_invites">服务器不支持生成邀请</string>
     <string name="no_active_accounts_support_this">没有活跃帐户支持此功能</string>
     <string name="backup_started_message">已启动备份。一旦完成，你会收到通知。</string>
-    </resources>
+    <string name="unable_to_enable_video">无法启用视频</string>
+</resources>
