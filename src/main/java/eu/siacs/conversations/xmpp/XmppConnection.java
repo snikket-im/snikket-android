@@ -46,6 +46,7 @@ import java.util.regex.Matcher;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509KeyManager;
@@ -826,10 +827,15 @@ public class XmppConnection implements Runnable {
         SSLSocketHelper.setHostname(sslSocket, IDN.toASCII(account.getServer()));
         SSLSocketHelper.setApplicationProtocol(sslSocket, "xmpp-client");
         final XmppDomainVerifier xmppDomainVerifier = new XmppDomainVerifier();
-        if (!xmppDomainVerifier.verify(account.getServer(), this.verifiedHostname, sslSocket.getSession())) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS certificate domain verification failed");
+        try {
+            if (!xmppDomainVerifier.verify(account.getServer(), this.verifiedHostname, sslSocket.getSession())) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS certificate domain verification failed");
+                FileBackend.close(sslSocket);
+                throw new StateChangingException(Account.State.TLS_ERROR_DOMAIN);
+            }
+        } catch (final SSLPeerUnverifiedException e) {
             FileBackend.close(sslSocket);
-            throw new StateChangingException(Account.State.TLS_ERROR_DOMAIN);
+            throw new StateChangingException(Account.State.TLS_ERROR);
         }
         return sslSocket;
     }

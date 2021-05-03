@@ -42,6 +42,7 @@ import android.util.SparseArray;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
 import com.google.common.io.CharStreams;
 
 import org.json.JSONArray;
@@ -61,12 +62,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateExpiredException;
+import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -76,6 +78,7 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.entities.MTMDecision;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.persistance.FileBackend;
@@ -92,6 +95,8 @@ import eu.siacs.conversations.ui.MemorizingActivity;
  * opening sockets!
  */
 public class MemorizingTrustManager {
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
     final static String DECISION_INTENT = "de.duenndns.ssl.DECISION";
     public final static String DECISION_INTENT_ID = DECISION_INTENT + ".decisionId";
@@ -521,14 +526,24 @@ public class MemorizingTrustManager {
         return myId;
     }
 
-    private void certDetails(StringBuffer si, X509Certificate c) {
-        SimpleDateFormat validityDateFormater = new SimpleDateFormat("yyyy-MM-dd");
+    private void certDetails(final StringBuffer si, final X509Certificate c, final boolean showValidFor) {
+
         si.append("\n");
-        si.append(c.getSubjectDN().toString());
+        if (showValidFor) {
+            try {
+                si.append("Valid for: ");
+                si.append(Joiner.on(", ").join(XmppDomainVerifier.parseValidDomains(c).all()));
+            } catch (final CertificateParsingException e) {
+                si.append("Unable to parse Certificate");
+            }
+            si.append("\n");
+        } else {
+            si.append(c.getSubjectDN());
+        }
         si.append("\n");
-        si.append(validityDateFormater.format(c.getNotBefore()));
+        si.append(DATE_FORMAT.format(c.getNotBefore()));
         si.append(" - ");
-        si.append(validityDateFormater.format(c.getNotAfter()));
+        si.append(DATE_FORMAT.format(c.getNotAfter()));
         si.append("\nSHA-256: ");
         si.append(certHash(c, "SHA-256"));
         si.append("\nSHA-1: ");
@@ -541,7 +556,7 @@ public class MemorizingTrustManager {
     private String certChainMessage(final X509Certificate[] chain, CertificateException cause) {
         Throwable e = cause;
         LOGGER.log(Level.FINE, "certChainMessage for " + e);
-        StringBuffer si = new StringBuffer();
+        final StringBuffer si = new StringBuffer();
         if (e.getCause() != null) {
             e = e.getCause();
             // HACK: there is no sane way to check if the error is a "trust anchor
@@ -556,8 +571,9 @@ public class MemorizingTrustManager {
         si.append(master.getString(R.string.mtm_connect_anyway));
         si.append("\n\n");
         si.append(master.getString(R.string.mtm_cert_details));
-        for (X509Certificate c : chain) {
-            certDetails(si, c);
+        si.append('\n');
+        for(int i = 0; i < chain.length; ++i) {
+            certDetails(si, chain[i], i == 0);
         }
         return si.toString();
     }
