@@ -762,9 +762,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         } catch (final WebRTCWrapper.InitializationException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to initialize WebRTC");
             webRTCWrapper.close();
-            sendJingleMessage("retract", id.with.asBareJid());
-            transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
-            this.finish();
+            sendRetract(Reason.ofException(e));
             return;
         }
         try {
@@ -776,22 +774,27 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         } catch (final Exception e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to sendSessionInitiate", Throwables.getRootCause(e));
             webRTCWrapper.close();
+            final Reason reason = Reason.ofException(e);
             if (isInState(targetState)) {
-                sendSessionTerminate(Reason.FAILED_APPLICATION);
+                sendSessionTerminate(reason);
             } else {
-                sendJingleMessage("retract", id.with.asBareJid());
-                transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
-                this.finish();
+                sendRetract(reason);
             }
         }
     }
 
+    private void sendRetract(final Reason reason) {
+        //TODO embed reason into retract
+        sendJingleMessage("retract", id.with.asBareJid());
+        transitionOrThrow(reasonToState(reason));
+        this.finish();
+    }
+
     private void sendSessionInitiate(final RtpContentMap rtpContentMap, final State targetState) {
         this.initiatorRtpContentMap = rtpContentMap;
-        this.transitionOrThrow(targetState);
-        //TODO do on background thread?
         final RtpContentMap outgoingContentMap = encryptSessionInitiate(rtpContentMap);
         final JinglePacket sessionInitiate = outgoingContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
+        this.transitionOrThrow(targetState);
         send(sessionInitiate);
     }
 

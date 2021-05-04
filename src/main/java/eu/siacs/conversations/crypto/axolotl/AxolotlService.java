@@ -1234,6 +1234,9 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         if (session == null) {
             throw new CryptoFailedException(String.format("No session found for %d", deviceId));
         }
+        if (Config.REQUIRE_RTP_VERIFICATION) {
+            requireVerification(session);
+        }
         final ImmutableMap.Builder<String, RtpContentMap.DescriptionTransport> descriptionTransportBuilder = new ImmutableMap.Builder<>();
         final OmemoVerification omemoVerification = new OmemoVerification();
         omemoVerification.setDeviceId(deviceId);
@@ -1283,6 +1286,9 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                 final Element encrypted = child.findChildEnsureSingle(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
                 final XmppAxolotlMessage xmppAxolotlMessage = XmppAxolotlMessage.fromElement(encrypted, from.asBareJid());
                 final XmppAxolotlSession session = getReceivingSession(xmppAxolotlMessage);
+                if (Config.REQUIRE_RTP_VERIFICATION) {
+                    requireVerification(session);
+                }
                 final XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintext = xmppAxolotlMessage.decrypt(session, getOwnDeviceId());
                 final Integer preKeyId = session.getPreKeyIdAndReset();
                 if (preKeyId != null) {
@@ -1297,6 +1303,16 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             }
         }
         return new OmemoVerifiedPayload<>(omemoVerification, transportInfo);
+    }
+
+    private static void requireVerification(final XmppAxolotlSession session) {
+        if (session.getTrust().isVerified()) {
+            return;
+        }
+        throw new NotVerifiedException(String.format(
+                "session with %s was not verified",
+                session.getFingerprint()
+        ));
     }
 
     public void prepareKeyTransportMessage(final Conversation conversation, final OnMessageCreatedCallback onMessageCreatedCallback) {
@@ -1689,5 +1705,13 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         public T getPayload() {
             return payload;
         }
+    }
+
+    public static class NotVerifiedException extends SecurityException {
+
+        public NotVerifiedException(String message) {
+            super(message);
+        }
+
     }
 }

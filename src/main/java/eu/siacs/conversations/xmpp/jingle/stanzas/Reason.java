@@ -3,7 +3,9 @@ package eu.siacs.conversations.xmpp.jingle.stanzas;
 import androidx.annotation.NonNull;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Throwables;
 
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.xmpp.jingle.RtpContentMap;
 
 public enum Reason {
@@ -50,5 +52,13 @@ public enum Reason {
         } else {
             return FAILED_APPLICATION;
         }
+    }
+
+    public static Reason ofException(final Exception e) {
+        final Throwable root = Throwables.getRootCause(e);
+        if (root instanceof RuntimeException) {
+            return of((RuntimeException) root);
+        }
+        return FAILED_APPLICATION;
     }
 }
