@@ -3,7 +3,7 @@ package eu.siacs.conversations.services;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GoogleApiAvailabilityLight;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import eu.siacs.conversations.Config;
@@ -107,7 +107,7 @@ public class PushManagementService {
     }
 
     private boolean playServicesAvailable() {
-        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mXmppConnectionService) == ConnectionResult.SUCCESS;
+        return GoogleApiAvailabilityLight.getInstance().isGooglePlayServicesAvailable(mXmppConnectionService) == ConnectionResult.SUCCESS;
     }
 
     public boolean isStub() {
