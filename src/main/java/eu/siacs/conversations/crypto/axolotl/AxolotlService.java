@@ -1217,7 +1217,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                 final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().asBareJid(), getOwnDeviceId());
                 final String content = child.getContent();
                 axolotlMessage.encrypt(content);
-                axolotlMessage.addDevice(session);
+                axolotlMessage.addDevice(session, true);
                 fingerprint.addChild(axolotlMessage.toElement());
                 transportInfo.addChild(fingerprint);
             } else {
