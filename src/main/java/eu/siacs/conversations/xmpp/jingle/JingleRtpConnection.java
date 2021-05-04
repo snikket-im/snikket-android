@@ -71,7 +71,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             State.TERMINATED_DECLINED_OR_BUSY,
             State.TERMINATED_CONNECTIVITY_ERROR,
             State.TERMINATED_CANCEL_OR_TIMEOUT,
-            State.TERMINATED_APPLICATION_FAILURE
+            State.TERMINATED_APPLICATION_FAILURE,
+            State.TERMINATED_SECURITY_ERROR
     );
 
     private static final Map<State, Collection<State>> VALID_TRANSITIONS;
@@ -81,7 +82,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         transitionBuilder.put(State.NULL, ImmutableList.of(
                 State.PROPOSED,
                 State.SESSION_INITIALIZED,
-                State.TERMINATED_APPLICATION_FAILURE
+                State.TERMINATED_APPLICATION_FAILURE,
+                State.TERMINATED_SECURITY_ERROR
         ));
         transitionBuilder.put(State.PROPOSED, ImmutableList.of(
                 State.ACCEPTED,
@@ -89,6 +91,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 State.REJECTED,
                 State.RETRACTED,
                 State.TERMINATED_APPLICATION_FAILURE,
+                State.TERMINATED_SECURITY_ERROR,
                 State.TERMINATED_CONNECTIVITY_ERROR //only used when the xmpp connection rebinds
         ));
         transitionBuilder.put(State.PROCEED, ImmutableList.of(
@@ -97,6 +100,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 State.SESSION_INITIALIZED_PRE_APPROVED,
                 State.TERMINATED_SUCCESS,
                 State.TERMINATED_APPLICATION_FAILURE,
+                State.TERMINATED_SECURITY_ERROR,
                 State.TERMINATED_CONNECTIVITY_ERROR //at this state used for error bounces of the proceed message
         ));
         transitionBuilder.put(State.SESSION_INITIALIZED, ImmutableList.of(
@@ -105,7 +109,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 State.TERMINATED_DECLINED_OR_BUSY,
                 State.TERMINATED_CONNECTIVITY_ERROR,  //at this state used for IQ errors and IQ timeouts
                 State.TERMINATED_CANCEL_OR_TIMEOUT,
-                State.TERMINATED_APPLICATION_FAILURE
+                State.TERMINATED_APPLICATION_FAILURE,
+                State.TERMINATED_SECURITY_ERROR
         ));
         transitionBuilder.put(State.SESSION_INITIALIZED_PRE_APPROVED, ImmutableList.of(
                 State.SESSION_ACCEPTED,
@@ -113,14 +118,16 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 State.TERMINATED_DECLINED_OR_BUSY,
                 State.TERMINATED_CONNECTIVITY_ERROR,  //at this state used for IQ errors and IQ timeouts
                 State.TERMINATED_CANCEL_OR_TIMEOUT,
-                State.TERMINATED_APPLICATION_FAILURE
+                State.TERMINATED_APPLICATION_FAILURE,
+                State.TERMINATED_SECURITY_ERROR
         ));
         transitionBuilder.put(State.SESSION_ACCEPTED, ImmutableList.of(
                 State.TERMINATED_SUCCESS,
                 State.TERMINATED_DECLINED_OR_BUSY,
                 State.TERMINATED_CONNECTIVITY_ERROR,
                 State.TERMINATED_CANCEL_OR_TIMEOUT,
-                State.TERMINATED_APPLICATION_FAILURE
+                State.TERMINATED_APPLICATION_FAILURE,
+                State.TERMINATED_SECURITY_ERROR
         ));
         VALID_TRANSITIONS = transitionBuilder.build();
     }
@@ -164,8 +171,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             case CANCEL:
             case TIMEOUT:
                 return State.TERMINATED_CANCEL_OR_TIMEOUT;
-            case FAILED_APPLICATION:
             case SECURITY_ERROR:
+                return State.TERMINATED_SECURITY_ERROR;
+            case FAILED_APPLICATION:
             case UNSUPPORTED_TRANSPORTS:
             case UNSUPPORTED_APPLICATIONS:
                 return State.TERMINATED_APPLICATION_FAILURE;
@@ -959,6 +967,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 return rtpConnectionStarted == 0 ? RtpEndUserState.CONNECTIVITY_ERROR : RtpEndUserState.CONNECTIVITY_LOST_ERROR;
             case TERMINATED_APPLICATION_FAILURE:
                 return RtpEndUserState.APPLICATION_ERROR;
+            case TERMINATED_SECURITY_ERROR:
+                return RtpEndUserState.SECURITY_ERROR;
         }
         throw new IllegalStateException(String.format("%s has no equivalent EndUserState", this.state));
     }
