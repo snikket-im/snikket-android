@@ -734,7 +734,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (body.length() == 0 || conversation == null) {
             return;
         }
-        if (conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL && trustKeysIfNeeded(REQUEST_TRUST_KEYS_TEXT)) {
+        if (trustKeysIfNeeded(conversation, REQUEST_TRUST_KEYS_TEXT)) {
             return;
         }
         final Message message;
@@ -755,6 +755,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             default:
                 sendMessage(message);
         }
+    }
+
+    private boolean trustKeysIfNeeded(final Conversation conversation, final int requestCode) {
+        return conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL && trustKeysIfNeeded(requestCode);
     }
 
     protected boolean trustKeysIfNeeded(int requestCode) {
@@ -824,6 +828,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case REQUEST_TRUST_KEYS_ATTACHMENTS:
                 commitAttachments();
                 break;
+            case REQUEST_START_AUDIO_CALL:
+                triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+                break;
+            case REQUEST_START_VIDEO_CALL:
+                triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
+                break;
             case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
                 final List<Attachment> imageUris = Attachment.extractAttachments(getActivity(), data, Attachment.Type.IMAGE);
                 mediaPreviewAdapter.addMediaPreviews(imageUris);
@@ -870,7 +880,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (anyNeedsExternalStoragePermission(attachments) && !hasPermissions(REQUEST_COMMIT_ATTACHMENTS, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             return;
         }
-        if (conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL && trustKeysIfNeeded(REQUEST_TRUST_KEYS_ATTACHMENTS)) {
+        if (trustKeysIfNeeded(conversation, REQUEST_TRUST_KEYS_ATTACHMENTS)) {
             return;
         }
         final PresenceSelector.OnPresenceSelected callback = () -> {
@@ -1345,6 +1355,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             return;
         }
         if (hasPermissions(REQUEST_START_AUDIO_CALL, Manifest.permission.RECORD_AUDIO)) {
+            if (Config.REQUIRE_RTP_VERIFICATION && trustKeysIfNeeded(conversation, REQUEST_START_AUDIO_CALL)) {
+                return;
+            }
             triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
         }
     }
@@ -1355,6 +1368,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             return;
         }
         if (hasPermissions(REQUEST_START_VIDEO_CALL, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)) {
+            if (Config.REQUIRE_RTP_VERIFICATION && trustKeysIfNeeded(conversation, REQUEST_START_VIDEO_CALL)) {
+                return;
+            }
             triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
         }
     }
@@ -1365,7 +1381,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             Toast.makeText(getActivity(), R.string.only_one_call_at_a_time, Toast.LENGTH_LONG).show();
             return;
         }
-
         final Contact contact = conversation.getContact();
         if (contact.getPresences().anySupport(Namespace.JINGLE_MESSAGE)) {
             triggerRtpSession(contact.getAccount(), contact.getJid().asBareJid(), action);
