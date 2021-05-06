@@ -8,7 +8,13 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.SettableFuture;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.whispersystems.libsignal.IdentityKey;
@@ -733,58 +739,62 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         axolotlStore.setFingerprintStatus(fingerprint, status);
     }
 
-    private void verifySessionWithPEP(final XmppAxolotlSession session) {
+    private ListenableFuture<XmppAxolotlSession> verifySessionWithPEP(final XmppAxolotlSession session) {
         Log.d(Config.LOGTAG, "trying to verify fresh session (" + session.getRemoteAddress().getName() + ") with pep");
         final SignalProtocolAddress address = session.getRemoteAddress();
         final IdentityKey identityKey = session.getIdentityKey();
+        final Jid jid;
         try {
-            IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveVerificationForDevice(Jid.of(address.getName()), address.getDeviceId());
-            mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
-                @Override
-                public void onIqPacketReceived(Account account, IqPacket packet) {
-                    Pair<X509Certificate[], byte[]> verification = mXmppConnectionService.getIqParser().verification(packet);
-                    if (verification != null) {
-                        try {
-                            Signature verifier = Signature.getInstance("sha256WithRSA");
-                            verifier.initVerify(verification.first[0]);
-                            verifier.update(identityKey.serialize());
-                            if (verifier.verify(verification.second)) {
-                                try {
-                                    mXmppConnectionService.getMemorizingTrustManager().getNonInteractive().checkClientTrusted(verification.first, "RSA");
-                                    String fingerprint = session.getFingerprint();
-                                    Log.d(Config.LOGTAG, "verified session with x.509 signature. fingerprint was: " + fingerprint);
-                                    setFingerprintTrust(fingerprint, FingerprintStatus.createActiveVerified(true));
-                                    axolotlStore.setFingerprintCertificate(fingerprint, verification.first[0]);
-                                    fetchStatusMap.put(address, FetchStatus.SUCCESS_VERIFIED);
-                                    Bundle information = CryptoHelper.extractCertificateInformation(verification.first[0]);
-                                    try {
-                                        final String cn = information.getString("subject_cn");
-                                        final Jid jid = Jid.of(address.getName());
-                                        Log.d(Config.LOGTAG, "setting common name for " + jid + " to " + cn);
-                                        account.getRoster().getContact(jid).setCommonName(cn);
-                                    } catch (final IllegalArgumentException ignored) {
-                                        //ignored
-                                    }
-                                    finishBuildingSessionsFromPEP(address);
-                                    return;
-                                } catch (Exception e) {
-                                    Log.d(Config.LOGTAG, "could not verify certificate");
-                                }
-                            }
-                        } catch (Exception e) {
-                            Log.d(Config.LOGTAG, "error during verification " + e.getMessage());
-                        }
-                    } else {
-                        Log.d(Config.LOGTAG, "no verification found");
-                    }
-                    fetchStatusMap.put(address, FetchStatus.SUCCESS);
-                    finishBuildingSessionsFromPEP(address);
-                }
-            });
-        } catch (IllegalArgumentException e) {
+            jid = Jid.of(address.getName());
+        } catch (final IllegalArgumentException e) {
             fetchStatusMap.put(address, FetchStatus.SUCCESS);
             finishBuildingSessionsFromPEP(address);
+            return Futures.immediateFuture(session);
         }
+        final SettableFuture<XmppAxolotlSession> future = SettableFuture.create();
+        final IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveVerificationForDevice(jid, address.getDeviceId());
+        mXmppConnectionService.sendIqPacket(account, packet, (account, response) -> {
+            Pair<X509Certificate[], byte[]> verification = mXmppConnectionService.getIqParser().verification(response);
+            if (verification != null) {
+                try {
+                    Signature verifier = Signature.getInstance("sha256WithRSA");
+                    verifier.initVerify(verification.first[0]);
+                    verifier.update(identityKey.serialize());
+                    if (verifier.verify(verification.second)) {
+                        try {
+                            mXmppConnectionService.getMemorizingTrustManager().getNonInteractive().checkClientTrusted(verification.first, "RSA");
+                            String fingerprint = session.getFingerprint();
+                            Log.d(Config.LOGTAG, "verified session with x.509 signature. fingerprint was: " + fingerprint);
+                            setFingerprintTrust(fingerprint, FingerprintStatus.createActiveVerified(true));
+                            axolotlStore.setFingerprintCertificate(fingerprint, verification.first[0]);
+                            fetchStatusMap.put(address, FetchStatus.SUCCESS_VERIFIED);
+                            Bundle information = CryptoHelper.extractCertificateInformation(verification.first[0]);
+                            try {
+                                final String cn = information.getString("subject_cn");
+                                final Jid jid1 = Jid.of(address.getName());
+                                Log.d(Config.LOGTAG, "setting common name for " + jid1 + " to " + cn);
+                                account.getRoster().getContact(jid1).setCommonName(cn);
+                            } catch (final IllegalArgumentException ignored) {
+                                //ignored
+                            }
+                            finishBuildingSessionsFromPEP(address);
+                            future.set(session);
+                            return;
+                        } catch (Exception e) {
+                            Log.d(Config.LOGTAG, "could not verify certificate");
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.d(Config.LOGTAG, "error during verification " + e.getMessage());
+                }
+            } else {
+                Log.d(Config.LOGTAG, "no verification found");
+            }
+            fetchStatusMap.put(address, FetchStatus.SUCCESS);
+            finishBuildingSessionsFromPEP(address);
+            future.set(session);
+        });
+        return future;
     }
 
     private void finishBuildingSessionsFromPEP(final SignalProtocolAddress address) {
@@ -1255,12 +1265,18 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         );
     }
 
-    public OmemoVerifiedPayload<RtpContentMap> decrypt(OmemoVerifiedRtpContentMap omemoVerifiedRtpContentMap, final Jid from) throws CryptoFailedException {
+    public ListenableFuture<OmemoVerifiedPayload<RtpContentMap>> decrypt(OmemoVerifiedRtpContentMap omemoVerifiedRtpContentMap, final Jid from) {
         final ImmutableMap.Builder<String, RtpContentMap.DescriptionTransport> descriptionTransportBuilder = new ImmutableMap.Builder<>();
         final OmemoVerification omemoVerification = new OmemoVerification();
+        final ImmutableList.Builder<ListenableFuture<XmppAxolotlSession>> pepVerificationFutures = new ImmutableList.Builder<>();
         for (final Map.Entry<String, RtpContentMap.DescriptionTransport> content : omemoVerifiedRtpContentMap.contents.entrySet()) {
             final RtpContentMap.DescriptionTransport descriptionTransport = content.getValue();
-            final OmemoVerifiedPayload<IceUdpTransportInfo> decryptedTransport = decrypt((OmemoVerifiedIceUdpTransportInfo) descriptionTransport.transport, from);
+            final OmemoVerifiedPayload<IceUdpTransportInfo> decryptedTransport;
+            try {
+                decryptedTransport = decrypt((OmemoVerifiedIceUdpTransportInfo) descriptionTransport.transport, from, pepVerificationFutures);
+            } catch (CryptoFailedException e) {
+                return Futures.immediateFailedFuture(e);
+            }
             omemoVerification.setOrEnsureEqual(decryptedTransport);
             descriptionTransportBuilder.put(
                     content.getKey(),
@@ -1268,13 +1284,26 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             );
         }
         processPostponed();
-        return new OmemoVerifiedPayload<>(
-                omemoVerification,
-                new RtpContentMap(omemoVerifiedRtpContentMap.group, descriptionTransportBuilder.build())
+        final ImmutableList<ListenableFuture<XmppAxolotlSession>> sessionFutures = pepVerificationFutures.build();
+        return Futures.transform(
+                Futures.allAsList(sessionFutures),
+                sessions -> {
+                    if (Config.REQUIRE_RTP_VERIFICATION) {
+                        for (XmppAxolotlSession session : sessions) {
+                            requireVerification(session);
+                        }
+                    }
+                    return new OmemoVerifiedPayload<>(
+                            omemoVerification,
+                            new RtpContentMap(omemoVerifiedRtpContentMap.group, descriptionTransportBuilder.build())
+                    );
+
+                },
+                MoreExecutors.directExecutor()
         );
     }
 
-    private OmemoVerifiedPayload<IceUdpTransportInfo> decrypt(final OmemoVerifiedIceUdpTransportInfo verifiedIceUdpTransportInfo, final Jid from) throws CryptoFailedException {
+    private OmemoVerifiedPayload<IceUdpTransportInfo> decrypt(final OmemoVerifiedIceUdpTransportInfo verifiedIceUdpTransportInfo, final Jid from, ImmutableList.Builder<ListenableFuture<XmppAxolotlSession>> pepVerificationFutures) throws CryptoFailedException {
         final IceUdpTransportInfo transportInfo = new IceUdpTransportInfo();
         transportInfo.setAttributes(verifiedIceUdpTransportInfo.getAttributes());
         final OmemoVerification omemoVerification = new OmemoVerification();
@@ -1286,13 +1315,15 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                 final Element encrypted = child.findChildEnsureSingle(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
                 final XmppAxolotlMessage xmppAxolotlMessage = XmppAxolotlMessage.fromElement(encrypted, from.asBareJid());
                 final XmppAxolotlSession session = getReceivingSession(xmppAxolotlMessage);
-                if (Config.REQUIRE_RTP_VERIFICATION) {
-                    requireVerification(session);
-                }
                 final XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintext = xmppAxolotlMessage.decrypt(session, getOwnDeviceId());
                 final Integer preKeyId = session.getPreKeyIdAndReset();
                 if (preKeyId != null) {
                     postponedSessions.add(session);
+                }
+                if (session.isFresh()) {
+                    pepVerificationFutures.add(putFreshSession(session));
+                } else if (Config.REQUIRE_RTP_VERIFICATION) {
+                    pepVerificationFutures.add(Futures.immediateFuture(session));
                 }
                 fingerprint.setContent(plaintext.getPlaintext());
                 omemoVerification.setDeviceId(session.getRemoteAddress().getDeviceId());
@@ -1512,15 +1543,16 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         return keyTransportMessage;
     }
 
-    private void putFreshSession(XmppAxolotlSession session) {
+    private ListenableFuture<XmppAxolotlSession> putFreshSession(XmppAxolotlSession session) {
         sessions.put(session);
         if (Config.X509_VERIFICATION) {
             if (session.getIdentityKey() != null) {
-                verifySessionWithPEP(session);
+                return verifySessionWithPEP(session);
             } else {
                 Log.e(Config.LOGTAG, account.getJid().asBareJid() + ": identity key was empty after reloading for x509 verification");
             }
         }
+        return Futures.immediateFuture(session);
     }
 
     public enum FetchStatus {
