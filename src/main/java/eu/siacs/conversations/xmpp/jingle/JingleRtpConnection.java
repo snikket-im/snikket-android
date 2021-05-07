@@ -322,8 +322,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received verifiable DTLS fingerprint via " + omemoVerification);
                 return omemoVerifiedPayload.getPayload();
             }, MoreExecutors.directExecutor());
-        } else if (expectVerification) {
-            throw new SecurityException("DTLS fingerprint was unexpectedly not verifiable");
+        } else if (Config.REQUIRE_RTP_VERIFICATION || expectVerification) {
+            return Futures.immediateFailedFuture(
+                    new SecurityException("DTLS fingerprint was unexpectedly not verifiable")
+            );
         } else {
             return Futures.immediateFuture(receivedContentMap);
         }
