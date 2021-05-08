@@ -55,7 +55,7 @@ public class OmemoVerification {
                 throw new IllegalStateException("No session fingerprint has been previously provided");
             }
             if (!sessionFingerprint.equals(this.sessionFingerprint)) {
-                throw new IllegalStateException("Session Fingerprints did not match");
+                throw new SecurityException("Session Fingerprints did not match");
             }
             if (this.deviceId == null) {
                 throw new IllegalStateException("No Device Id has been previously provided");
