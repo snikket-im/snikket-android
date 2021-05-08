@@ -909,22 +909,23 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         }
     }
 
-    private void buildSessionFromPEP(final SignalProtocolAddress address) {
-        buildSessionFromPEP(address, null);
+    private ListenableFuture<XmppAxolotlSession> buildSessionFromPEP(final SignalProtocolAddress address) {
+        return buildSessionFromPEP(address, null);
     }
 
-    private void buildSessionFromPEP(final SignalProtocolAddress address, OnSessionBuildFromPep callback) {
+    private ListenableFuture<XmppAxolotlSession> buildSessionFromPEP(final SignalProtocolAddress address, OnSessionBuildFromPep callback) {
+        final SettableFuture<XmppAxolotlSession> sessionSettableFuture = SettableFuture.create();
         Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building new session for " + address.toString());
         if (address.equals(getOwnAxolotlAddress())) {
             throw new AssertionError("We should NEVER build a session with ourselves. What happened here?!");
         }
-
         final Jid jid = Jid.of(address.getName());
         final boolean oneOfOurs = jid.asBareJid().equals(account.getJid().asBareJid());
         IqPacket bundlesPacket = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(jid, address.getDeviceId());
         mXmppConnectionService.sendIqPacket(account, bundlesPacket, (account, packet) -> {
             if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
                 fetchStatusMap.put(address, FetchStatus.TIMEOUT);
+                sessionSettableFuture.setException(new CryptoFailedException("Unable to build session. Timeout"));
             } else if (packet.getType() == IqPacket.TYPE.RESULT) {
                 Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received preKey IQ packet, processing...");
                 final IqParser parser = mXmppConnectionService.getIqParser();
@@ -937,6 +938,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                     if (callback != null) {
                         callback.onSessionBuildFailed();
                     }
+                    sessionSettableFuture.setException(new CryptoFailedException("Unable to build session. IQ Packet Invalid"));
                     return;
                 }
                 Random random = new Random();
@@ -948,6 +950,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                     if (callback != null) {
                         callback.onSessionBuildFailed();
                     }
+                    sessionSettableFuture.setException(new CryptoFailedException("Unable to build session. No suitable PreKey found"));
                     return;
                 }
 
@@ -962,7 +965,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                     XmppAxolotlSession session = new XmppAxolotlSession(account, axolotlStore, address, bundle.getIdentityKey());
                     sessions.put(address, session);
                     if (Config.X509_VERIFICATION) {
-                        verifySessionWithPEP(session); //TODO; maybe inject callback in here too
+                        sessionSettableFuture.setFuture(verifySessionWithPEP(session)); //TODO; maybe inject callback in here too
                     } else {
                         FingerprintStatus status = getFingerprintTrust(CryptoHelper.bytesToHex(bundle.getIdentityKey().getPublicKey().serialize()));
                         FetchStatus fetchStatus;
@@ -978,6 +981,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                         if (callback != null) {
                             callback.onSessionBuildSuccessful();
                         }
+                        sessionSettableFuture.set(session);
                     }
                 } catch (UntrustedIdentityException | InvalidKeyException e) {
                     Log.e(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Error building session for " + address + ": "
@@ -990,6 +994,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                     if (callback != null) {
                         callback.onSessionBuildFailed();
                     }
+                    sessionSettableFuture.setException(new CryptoFailedException(e));
                 }
             } else {
                 fetchStatusMap.put(address, FetchStatus.ERROR);
@@ -1003,8 +1008,10 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                 if (callback != null) {
                     callback.onSessionBuildFailed();
                 }
+                sessionSettableFuture.setException(new CryptoFailedException("Unable to build session. IQ Packet Error"));
             }
         });
+        return sessionSettableFuture;
     }
 
     private void removeFromDeviceAnnouncement(Integer id) {
@@ -1277,9 +1284,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         final SignalProtocolAddress address = new SignalProtocolAddress(jid.asBareJid().toString(), deviceId);
         final XmppAxolotlSession session = sessions.get(address);
         if (session == null) {
-            return Futures.immediateFailedFuture(
-                    new CryptoFailedException(String.format("No session found for %d", deviceId))
-            );
+            return buildSessionFromPEP(address);
         }
         return Futures.immediateFuture(session);
     }
