@@ -397,7 +397,7 @@ public class NotificationService {
         notify(DELIVERY_FAILED_NOTIFICATION_ID, summaryNotification);
     }
 
-    public void startRinging(final AbstractJingleConnection.Id id, final Set<Media> media) {
+    public synchronized void startRinging(final AbstractJingleConnection.Id id, final Set<Media> media) {
         showIncomingCallNotification(id, media);
         final NotificationManager notificationManager = (NotificationManager) mXmppConnectionService.getSystemService(Context.NOTIFICATION_SERVICE);
         final int currentInterruptionFilter;
