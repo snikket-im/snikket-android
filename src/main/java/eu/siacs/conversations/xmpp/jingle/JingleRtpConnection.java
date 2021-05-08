@@ -540,6 +540,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void failureToAcceptSession(final Throwable throwable) {
+        if (isTerminated()) {
+            return;
+        }
         Log.d(Config.LOGTAG, "unable to send session accept", Throwables.getRootCause(throwable));
         webRTCWrapper.close();
         sendSessionTerminate(Reason.ofThrowable(throwable));
@@ -574,6 +577,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void sendSessionAccept(final RtpContentMap rtpContentMap, final org.webrtc.SessionDescription webRTCSessionDescription) {
+        if (isTerminated()) {
+            Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": preparing session accept was too slow. already terminated. nothing to do.");
+            return;
+        }
         transitionOrThrow(State.SESSION_ACCEPTED);
         final JinglePacket sessionAccept = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_ACCEPT, id.sessionId);
         send(sessionAccept);
@@ -837,6 +844,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void failureToInitiateSession(final Throwable throwable, final State targetState) {
+        if (isTerminated()) {
+            return;
+        }
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to sendSessionInitiate", Throwables.getRootCause(throwable));
         webRTCWrapper.close();
         final Reason reason = Reason.ofThrowable(throwable);
@@ -873,6 +883,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void sendSessionInitiate(final RtpContentMap rtpContentMap, final org.webrtc.SessionDescription webRTCSessionDescription, final State targetState) {
+        if (isTerminated()) {
+            Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": preparing session was too slow. already terminated. nothing to do.");
+            return;
+        }
         this.transitionOrThrow(targetState);
         final JinglePacket sessionInitiate = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
         send(sessionInitiate);
