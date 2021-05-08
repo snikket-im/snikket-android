@@ -8,7 +8,6 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.Futures;
@@ -1238,31 +1237,51 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     }
 
 
-    public OmemoVerifiedPayload<OmemoVerifiedRtpContentMap> encrypt(final RtpContentMap rtpContentMap, final Jid jid, final int deviceId) throws CryptoFailedException {
-        final SignalProtocolAddress address = new SignalProtocolAddress(jid.asBareJid().toString(), deviceId);
-        final XmppAxolotlSession session = sessions.get(address);
-        if (session == null) {
-            throw new CryptoFailedException(String.format("No session found for %d", deviceId));
-        }
+    public ListenableFuture<OmemoVerifiedPayload<OmemoVerifiedRtpContentMap>> encrypt(final RtpContentMap rtpContentMap, final Jid jid, final int deviceId) {
+        return Futures.transformAsync(
+                getSession(jid, deviceId),
+                session -> encrypt(rtpContentMap, session),
+                MoreExecutors.directExecutor()
+        );
+    }
+
+    private ListenableFuture<OmemoVerifiedPayload<OmemoVerifiedRtpContentMap>> encrypt(final RtpContentMap rtpContentMap, final XmppAxolotlSession session) {
         if (Config.REQUIRE_RTP_VERIFICATION) {
             requireVerification(session);
         }
         final ImmutableMap.Builder<String, RtpContentMap.DescriptionTransport> descriptionTransportBuilder = new ImmutableMap.Builder<>();
         final OmemoVerification omemoVerification = new OmemoVerification();
-        omemoVerification.setDeviceId(deviceId);
+        omemoVerification.setDeviceId(session.getRemoteAddress().getDeviceId());
         omemoVerification.setSessionFingerprint(session.getFingerprint());
         for (final Map.Entry<String, RtpContentMap.DescriptionTransport> content : rtpContentMap.contents.entrySet()) {
             final RtpContentMap.DescriptionTransport descriptionTransport = content.getValue();
-            final OmemoVerifiedIceUdpTransportInfo encryptedTransportInfo = encrypt(descriptionTransport.transport, session);
+            final OmemoVerifiedIceUdpTransportInfo encryptedTransportInfo;
+            try {
+                encryptedTransportInfo = encrypt(descriptionTransport.transport, session);
+            } catch (final CryptoFailedException e) {
+                return Futures.immediateFailedFuture(e);
+            }
             descriptionTransportBuilder.put(
                     content.getKey(),
                     new RtpContentMap.DescriptionTransport(descriptionTransport.description, encryptedTransportInfo)
             );
         }
-        return new OmemoVerifiedPayload<>(
-                omemoVerification,
-                new OmemoVerifiedRtpContentMap(rtpContentMap.group, descriptionTransportBuilder.build())
-        );
+        return Futures.immediateFuture(
+                new OmemoVerifiedPayload<>(
+                        omemoVerification,
+                        new OmemoVerifiedRtpContentMap(rtpContentMap.group, descriptionTransportBuilder.build())
+                ));
+    }
+
+    private ListenableFuture<XmppAxolotlSession> getSession(final Jid jid, final int deviceId) {
+        final SignalProtocolAddress address = new SignalProtocolAddress(jid.asBareJid().toString(), deviceId);
+        final XmppAxolotlSession session = sessions.get(address);
+        if (session == null) {
+            return Futures.immediateFailedFuture(
+                    new CryptoFailedException(String.format("No session found for %d", deviceId))
+            );
+        }
+        return Futures.immediateFuture(session);
     }
 
     public ListenableFuture<OmemoVerifiedPayload<RtpContentMap>> decrypt(OmemoVerifiedRtpContentMap omemoVerifiedRtpContentMap, final Jid from) {

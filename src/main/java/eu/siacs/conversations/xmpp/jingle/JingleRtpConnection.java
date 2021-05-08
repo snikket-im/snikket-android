@@ -318,6 +318,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (receivedContentMap instanceof OmemoVerifiedRtpContentMap) {
             final ListenableFuture<AxolotlService.OmemoVerifiedPayload<RtpContentMap>> future = id.account.getAxolotlService().decrypt((OmemoVerifiedRtpContentMap) receivedContentMap, id.with);
             return Futures.transform(future, omemoVerifiedPayload -> {
+                //TODO test if an exception here triggers a correct abort
                 omemoVerification.setOrEnsureEqual(omemoVerifiedPayload);
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received verifiable DTLS fingerprint via " + omemoVerification);
                 return omemoVerifiedPayload.getPayload();
@@ -532,15 +533,16 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             this.webRTCWrapper.setRemoteDescription(sdp).get();
             addIceCandidatesFromBlackLog();
             org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createAnswer().get();
-            final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
-            final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
-            sendSessionAccept(respondingRtpContentMap);
-            this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
+            prepareSessionAccept(webRTCSessionDescription);
         } catch (final Exception e) {
-            Log.d(Config.LOGTAG, "unable to send session accept", Throwables.getRootCause(e));
-            webRTCWrapper.close();
-            sendSessionTerminate(Reason.FAILED_APPLICATION);
+            failureToAcceptSession(e);
         }
+    }
+
+    private void failureToAcceptSession(final Throwable throwable) {
+        Log.d(Config.LOGTAG, "unable to send session accept", Throwables.getRootCause(throwable));
+        webRTCWrapper.close();
+        sendSessionTerminate(Reason.ofThrowable(throwable));
     }
 
     private void addIceCandidatesFromBlackLog() {
@@ -550,24 +552,49 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void sendSessionAccept(final RtpContentMap rtpContentMap) {
-        this.responderRtpContentMap = rtpContentMap;
-        this.transitionOrThrow(State.SESSION_ACCEPTED);
-        final RtpContentMap outgoingContentMap;
-        if (this.omemoVerification.hasDeviceId()) {
-            final AxolotlService.OmemoVerifiedPayload<OmemoVerifiedRtpContentMap> verifiedPayload;
-            try {
-                verifiedPayload = id.account.getAxolotlService().encrypt(rtpContentMap, id.with, omemoVerification.getDeviceId());
-                outgoingContentMap = verifiedPayload.getPayload();
-                this.omemoVerification.setOrEnsureEqual(verifiedPayload);
-            } catch (final Exception e) {
-                throw new SecurityException("Unable to verify DTLS Fingerprint with OMEMO", e);
-            }
-        } else {
-            outgoingContentMap = rtpContentMap;
-        }
-        final JinglePacket sessionAccept = outgoingContentMap.toJinglePacket(JinglePacket.Action.SESSION_ACCEPT, id.sessionId);
+    private void prepareSessionAccept(final org.webrtc.SessionDescription webRTCSessionDescription) {
+        final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
+        final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
+        this.responderRtpContentMap = respondingRtpContentMap;
+        final ListenableFuture<RtpContentMap> outgoingContentMapFuture = prepareOutgoingContentMap(respondingRtpContentMap);
+        Futures.addCallback(outgoingContentMapFuture,
+                new FutureCallback<RtpContentMap>() {
+                    @Override
+                    public void onSuccess(final RtpContentMap outgoingContentMap) {
+                        sendSessionAccept(outgoingContentMap, webRTCSessionDescription);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        failureToAcceptSession(throwable);
+                    }
+                },
+                MoreExecutors.directExecutor()
+        );
+    }
+
+    private void sendSessionAccept(final RtpContentMap rtpContentMap, final org.webrtc.SessionDescription webRTCSessionDescription) {
+        transitionOrThrow(State.SESSION_ACCEPTED);
+        final JinglePacket sessionAccept = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_ACCEPT, id.sessionId);
         send(sessionAccept);
+        try {
+            webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
+        } catch (Exception e) {
+            failureToAcceptSession(e);
+        }
+    }
+
+    private ListenableFuture<RtpContentMap> prepareOutgoingContentMap(final RtpContentMap rtpContentMap) {
+        if (this.omemoVerification.hasDeviceId()) {
+            ListenableFuture<AxolotlService.OmemoVerifiedPayload<OmemoVerifiedRtpContentMap>> verifiedPayloadFuture = id.account.getAxolotlService()
+                    .encrypt(rtpContentMap, id.with, omemoVerification.getDeviceId());
+            return Futures.transform(verifiedPayloadFuture, verifiedPayload -> {
+                omemoVerification.setOrEnsureEqual(verifiedPayload);
+                return verifiedPayload.getPayload();
+            }, MoreExecutors.directExecutor());
+        } else {
+            return Futures.immediateFuture(rtpContentMap);
+        }
     }
 
     synchronized void deliveryMessage(final Jid from, final Element message, final String serverMessageId, final long timestamp) {
@@ -803,19 +830,20 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         try {
             org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createOffer().get();
-            final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
-            final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
-            sendSessionInitiate(rtpContentMap, targetState);
-            this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
+            prepareSessionInitiate(webRTCSessionDescription, targetState);
         } catch (final Exception e) {
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to sendSessionInitiate", Throwables.getRootCause(e));
-            webRTCWrapper.close();
-            final Reason reason = Reason.ofThrowable(e);
-            if (isInState(targetState)) {
-                sendSessionTerminate(reason);
-            } else {
-                sendRetract(reason);
-            }
+            failureToInitiateSession(e, targetState);
+        }
+    }
+
+    private void failureToInitiateSession(final Throwable throwable, final State targetState) {
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to sendSessionInitiate", Throwables.getRootCause(throwable));
+        webRTCWrapper.close();
+        final Reason reason = Reason.ofThrowable(throwable);
+        if (isInState(targetState)) {
+            sendSessionTerminate(reason);
+        } else {
+            sendRetract(reason);
         }
     }
 
@@ -826,27 +854,57 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         this.finish();
     }
 
-    private void sendSessionInitiate(final RtpContentMap rtpContentMap, final State targetState) {
+    private void prepareSessionInitiate(final org.webrtc.SessionDescription webRTCSessionDescription, final State targetState) {
+        final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
+        final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
         this.initiatorRtpContentMap = rtpContentMap;
-        final RtpContentMap outgoingContentMap = encryptSessionInitiate(rtpContentMap);
-        final JinglePacket sessionInitiate = outgoingContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
-        this.transitionOrThrow(targetState);
-        send(sessionInitiate);
+        final ListenableFuture<RtpContentMap> outgoingContentMapFuture = encryptSessionInitiate(rtpContentMap);
+        Futures.addCallback(outgoingContentMapFuture, new FutureCallback<RtpContentMap>() {
+            @Override
+            public void onSuccess(final RtpContentMap outgoingContentMap) {
+                sendSessionInitiate(outgoingContentMap, webRTCSessionDescription, targetState);
+            }
+
+            @Override
+            public void onFailure(@NonNull final Throwable throwable) {
+                failureToInitiateSession(throwable, targetState);
+            }
+        }, MoreExecutors.directExecutor());
     }
 
-    private RtpContentMap encryptSessionInitiate(final RtpContentMap rtpContentMap) {
+    private void sendSessionInitiate(final RtpContentMap rtpContentMap, final org.webrtc.SessionDescription webRTCSessionDescription, final State targetState) {
+        this.transitionOrThrow(targetState);
+        final JinglePacket sessionInitiate = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
+        send(sessionInitiate);
+        try {
+            this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
+        } catch (Exception e) {
+            failureToInitiateSession(e, targetState);
+        }
+    }
+
+    private ListenableFuture<RtpContentMap> encryptSessionInitiate(final RtpContentMap rtpContentMap) {
         if (this.omemoVerification.hasDeviceId()) {
-            final AxolotlService.OmemoVerifiedPayload<OmemoVerifiedRtpContentMap> verifiedPayload;
-            try {
-                verifiedPayload = id.account.getAxolotlService().encrypt(rtpContentMap, id.with, omemoVerification.getDeviceId());
-            } catch (final CryptoFailedException e) {
-                Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to use OMEMO DTLS verification on outgoing session initiate. falling back", e);
-                return rtpContentMap;
+            final ListenableFuture<AxolotlService.OmemoVerifiedPayload<OmemoVerifiedRtpContentMap>> verifiedPayloadFuture = id.account.getAxolotlService()
+                    .encrypt(rtpContentMap, id.with, omemoVerification.getDeviceId());
+            final ListenableFuture<RtpContentMap> future = Futures.transform(verifiedPayloadFuture, verifiedPayload -> {
+                omemoVerification.setSessionFingerprint(verifiedPayload.getFingerprint());
+                return verifiedPayload.getPayload();
+            }, MoreExecutors.directExecutor());
+            if (Config.REQUIRE_RTP_VERIFICATION) {
+                return future;
             }
-            this.omemoVerification.setSessionFingerprint(verifiedPayload.getFingerprint());
-            return verifiedPayload.getPayload();
+            return Futures.catching(
+                    future,
+                    CryptoFailedException.class,
+                    e -> {
+                        Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to use OMEMO DTLS verification on outgoing session initiate. falling back", e);
+                        return rtpContentMap;
+                    },
+                    MoreExecutors.directExecutor()
+            );
         } else {
-            return rtpContentMap;
+            return Futures.immediateFuture(rtpContentMap);
         }
     }
 

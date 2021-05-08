@@ -6,6 +6,7 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Throwables;
 
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.CryptoFailedException;
 import eu.siacs.conversations.xmpp.jingle.RtpContentMap;
 
 public enum Reason {
@@ -58,6 +59,9 @@ public enum Reason {
         final Throwable root = Throwables.getRootCause(throwable);
         if (root instanceof RuntimeException) {
             return of((RuntimeException) root);
+        }
+        if (root instanceof CryptoFailedException) {
+            return SECURITY_ERROR;
         }
         return FAILED_APPLICATION;
     }
