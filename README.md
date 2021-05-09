@@ -388,7 +388,7 @@ you can get access to the the latest beta version by signing up using [this link
 **Note:** Starting with version 2.8.0 you will need to compile libwebrtc.
 [Instructions](https://webrtc.github.io/webrtc-org/native-code/android/) can be found on the WebRTC
 website. Place the resulting libwebrtc.aar in the `libs/` directory. The PlayStore release currently
-uses the stable M81 release and renamed the file name to `libwebrtc-m81.aar` put potentially you can
+uses the stable M90 release and renamed the file name to `libwebrtc-m90.aar` put potentially you can
 reference any file name by modifying `build.gradle`.
 
 Make sure to have ANDROID_HOME point to your Android SDK. Use the Android SDK Manager to install missing dependencies.
