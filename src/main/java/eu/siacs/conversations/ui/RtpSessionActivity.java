@@ -35,6 +35,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
 import org.webrtc.VideoTrack;
 
@@ -928,7 +929,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         if (END_CARD.contains(state) || state == RtpEndUserState.ENDING_CALL) {
             binding.localVideo.setVisibility(View.GONE);
             binding.localVideo.release();
-            binding.remoteVideo.setVisibility(View.GONE);
+            binding.remoteVideoWrapper.setVisibility(View.GONE);
             binding.remoteVideo.release();
             binding.pipLocalMicOffIndicator.setVisibility(View.GONE);
             if (isPictureInPicture()) {
@@ -954,7 +955,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         }
         if (isPictureInPicture() && (state == RtpEndUserState.CONNECTING || state == RtpEndUserState.ACCEPTING_CALL)) {
             binding.localVideo.setVisibility(View.GONE);
-            binding.remoteVideo.setVisibility(View.GONE);
+            binding.remoteVideoWrapper.setVisibility(View.GONE);
             binding.appBarLayout.setVisibility(View.GONE);
             binding.pipPlaceholder.setVisibility(View.VISIBLE);
             binding.pipWarning.setVisibility(View.GONE);
@@ -976,12 +977,17 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         if (remoteVideoTrack.isPresent()) {
             ensureSurfaceViewRendererIsSetup(binding.remoteVideo);
             addSink(remoteVideoTrack.get(), binding.remoteVideo);
+            binding.remoteVideo.setScalingType(
+                    RendererCommon.ScalingType.SCALE_ASPECT_FILL,
+                    RendererCommon.ScalingType.SCALE_ASPECT_FIT
+            );
             if (state == RtpEndUserState.CONNECTED) {
                 binding.appBarLayout.setVisibility(View.GONE);
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                binding.remoteVideoWrapper.setVisibility(View.VISIBLE);
             } else {
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                binding.remoteVideo.setVisibility(View.GONE);
+                binding.remoteVideoWrapper.setVisibility(View.GONE);
             }
             if (isPictureInPicture() && !requireRtpConnection().isMicrophoneEnabled()) {
                 binding.pipLocalMicOffIndicator.setVisibility(View.VISIBLE);
@@ -990,7 +996,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             }
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            binding.remoteVideo.setVisibility(View.GONE);
+            binding.remoteVideoWrapper.setVisibility(View.GONE);
             binding.pipLocalMicOffIndicator.setVisibility(View.GONE);
         }
     }

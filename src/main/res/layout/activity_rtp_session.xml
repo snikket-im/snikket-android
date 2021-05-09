@@ -86,6 +86,24 @@
 
         </RelativeLayout>
 
+
+        <LinearLayout
+            android:id="@+id/remote_video_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/app_bar_layout"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:background="@color/black"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <org.webrtc.SurfaceViewRenderer
+                android:id="@+id/remote_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
         <org.webrtc.SurfaceViewRenderer
             android:id="@+id/local_video"
             android:layout_width="@dimen/local_video_preview_width"
@@ -96,15 +114,6 @@
             android:layout_marginEnd="24dp"
             android:visibility="gone"
             app:elevation="4dp" />
-
-        <org.webrtc.SurfaceViewRenderer
-            android:id="@+id/remote_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/app_bar_layout"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/verified"
