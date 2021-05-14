@@ -80,8 +80,8 @@
         <item name="dialog_horizontal_padding">24dp</item>
         <item name="dialog_vertical_padding">16dp</item>
 
-        <item name="media_preview_document" type="reference">@drawable/ic_description_black_48dp
-        </item>
+        <item name="media_preview_image" type="reference">@drawable/ic_image_black_48dp</item>
+        <item name="media_preview_document" type="reference">@drawable/ic_description_black_48dp</item>
         <item name="media_preview_recording" type="reference">@drawable/ic_mic_black_48dp</item>
         <item name="media_preview_audio" type="reference">@drawable/ic_headset_black_48dp</item>
         <item name="media_preview_location" type="reference">@drawable/ic_room_black_48dp</item>
@@ -236,8 +236,8 @@
         <item name="dialog_horizontal_padding">24dp</item>
         <item name="dialog_vertical_padding">16dp</item>
 
-        <item name="media_preview_document" type="reference">@drawable/ic_description_white_48dp
-        </item>
+        <item name="media_preview_image" type="reference">@drawable/ic_image_white_48dp</item>
+        <item name="media_preview_document" type="reference">@drawable/ic_description_white_48dp</item>
         <item name="media_preview_recording" type="reference">@drawable/ic_mic_white_48dp</item>
         <item name="media_preview_audio" type="reference">@drawable/ic_headset_white_48dp</item>
         <item name="media_preview_location" type="reference">@drawable/ic_room_white_48dp</item>

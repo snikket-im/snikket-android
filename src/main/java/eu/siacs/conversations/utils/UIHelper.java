@@ -475,9 +475,6 @@ public class UIHelper {
     }
 
     public static String getFileDescriptionString(final Context context, final Message message) {
-        if (message.getType() == Message.TYPE_IMAGE) {
-            return context.getString(R.string.image);
-        }
         final String mime = message.getMimeType();
         if (mime == null) {
             return context.getString(R.string.file);
@@ -487,7 +484,9 @@ public class UIHelper {
             return context.getString(R.string.video);
         } else if (mime.equals("image/gif")) {
             return context.getString(R.string.gif);
-        } else if (mime.startsWith("image/")) {
+        } else if (mime.equals("image/svg+xml")) {
+            return context.getString(R.string.vector_graphic);
+        } else if (mime.startsWith("image/") || message.getType() == Message.TYPE_IMAGE) {
             return context.getString(R.string.image);
         } else if (mime.contains("pdf")) {
             return context.getString(R.string.pdf_document);
