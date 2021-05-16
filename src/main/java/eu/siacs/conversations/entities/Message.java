@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.primitives.Longs;
 
 import org.json.JSONException;
 
@@ -849,24 +850,16 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                     fileParams.height = parseInt(parts[3]);
                 case 2:
                     fileParams.url = URL.tryParse(parts[0]);
-                    fileParams.size = parseLong(parts[1]);
+                    fileParams.size = Longs.tryParse(parts[1]);
                     break;
                 case 3:
-                    fileParams.size = parseLong(parts[0]);
+                    fileParams.size = Longs.tryParse(parts[0]);
                     fileParams.width = parseInt(parts[1]);
                     fileParams.height = parseInt(parts[2]);
                     break;
             }
         }
         return fileParams;
-    }
-
-    private static long parseLong(String value) {
-        try {
-            return Long.parseLong(value);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
     }
 
     private static int parseInt(String value) {
@@ -905,10 +898,14 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public static class FileParams {
         public String url;
-        public long size = 0;
+        public Long size = null;
         public int width = 0;
         public int height = 0;
         public int runtime = 0;
+
+        public long getSize() {
+            return size == null ? 0 : size;
+        }
     }
 
     public void setFingerprint(String fingerprint) {

@@ -184,7 +184,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 && message.getMergedStatus() <= Message.STATUS_RECEIVED;
         if (message.isFileOrImage() || transferable != null || MessageUtils.unInitiatedButKnownSize(message)) {
             FileParams params = message.getFileParams();
-            filesize = params.size > 0 ? UIHelper.filesizeToString(params.size) : null;
+            filesize = params.size != null ? UIHelper.filesizeToString(params.size) : null;
             if (transferable != null && (transferable.getStatus() == Transferable.STATUS_FAILED || transferable.getStatus() == Transferable.STATUS_CANCELLED)) {
                 error = true;
             }
