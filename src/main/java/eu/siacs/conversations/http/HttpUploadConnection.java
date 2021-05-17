@@ -69,8 +69,8 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
     }
 
     @Override
-    public long getFileSize() {
-        return file == null ? 0 : file.getExpectedSize();
+    public Long getFileSize() {
+        return file == null ? null : file.getExpectedSize();
     }
 
     @Override

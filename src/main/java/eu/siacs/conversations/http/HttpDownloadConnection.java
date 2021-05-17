@@ -107,6 +107,7 @@ public class HttpDownloadConnection implements Transferable {
             }
             //TODO add auth tag size to knownFileSize
             final Long knownFileSize = message.getFileParams().size;
+            Log.d(Config.LOGTAG,"knownFileSize: "+knownFileSize+", body="+message.getBody());
             if (knownFileSize != null && interactive) {
                 this.file.setExpectedSize(knownFileSize);
                 download(true);
@@ -130,6 +131,7 @@ public class HttpDownloadConnection implements Transferable {
     }
 
     private void download(final boolean interactive) {
+        Log.d(Config.LOGTAG,"download()",new Exception());
         EXECUTOR.execute(new FileDownloader(interactive));
     }
 
@@ -234,11 +236,11 @@ public class HttpDownloadConnection implements Transferable {
     }
 
     @Override
-    public long getFileSize() {
+    public Long getFileSize() {
         if (this.file != null) {
             return this.file.getExpectedSize();
         } else {
-            return 0;
+            return null;
         }
     }
 
