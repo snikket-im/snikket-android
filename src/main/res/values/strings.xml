@@ -965,4 +965,5 @@
     <string name="no_active_accounts_support_this">No active accounts support this feature</string>
     <string name="backup_started_message">The backup has been started. You’ll get a notification once it has been completed.</string>
     <string name="unable_to_enable_video">Unable to enable video.</string>
+    <string name="plain_text_document">Plain text document</string>
 </resources>
