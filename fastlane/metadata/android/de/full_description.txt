@@ -1,0 +1,11 @@
+Mit Snikket kannst du an einem weltweiten Kommunikationsnetz teilhaben. Du kannst die App verwenden um mit Freunden, Familie und Kollegen zu kommunizieren ohne deine Daten an irgendeine große Firma zu verkaufen.
+
+ℹ️ Wichtiger Hinweis: Um die App zu verwenden brauchst du eine Einladung zu einem Snikket-Server oder musst einen eigenen betreiben. Die App wird ohne Einladung nicht funktionieren.
+
+Snikket erlaubt dir einen Server zu verwenden, der von jemandem betreiben wird, dem oder der du vertraust. Das kann eine Organisation sein, oder einfach ein Techie-Freund oder Familienmitglied.
+
+Sowohl die App als auch der Server sind 100% freie und quelloffene Software.
+
+Mehr Informationen gibt es auf https://snikket.org/app/learn/ (Englisch).
+
+Diese App basiert auf dem großartigen XMPP-Client Conversations.
