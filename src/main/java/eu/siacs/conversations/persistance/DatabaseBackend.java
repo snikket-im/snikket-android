@@ -164,16 +164,16 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             + "UNIQUE(" + Resolver.Result.DOMAIN + ") ON CONFLICT REPLACE"
             + ");";
 
-    private static final String CREATE_MESSAGE_TIME_INDEX = "create INDEX message_time_index ON " + Message.TABLENAME + "(" + Message.TIME_SENT + ")";
-    private static final String CREATE_MESSAGE_CONVERSATION_INDEX = "create INDEX message_conversation_index ON " + Message.TABLENAME + "(" + Message.CONVERSATION + ")";
-    private static final String CREATE_MESSAGE_DELETED_INDEX = "create index message_deleted_index ON " + Message.TABLENAME + "(" + Message.DELETED + ")";
-    private static final String CREATE_MESSAGE_RELATIVE_FILE_PATH_INDEX = "create INDEX message_file_path_index ON " + Message.TABLENAME + "(" + Message.RELATIVE_FILE_PATH + ")";
-    private static final String CREATE_MESSAGE_TYPE_INDEX = "create INDEX message_type_index ON " + Message.TABLENAME + "(" + Message.TYPE + ")";
+    private static final String CREATE_MESSAGE_TIME_INDEX = "CREATE INDEX message_time_index ON " + Message.TABLENAME + "(" + Message.TIME_SENT + ")";
+    private static final String CREATE_MESSAGE_CONVERSATION_INDEX = "CREATE INDEX message_conversation_index ON " + Message.TABLENAME + "(" + Message.CONVERSATION + ")";
+    private static final String CREATE_MESSAGE_DELETED_INDEX = "CREATE INDEX message_deleted_index ON " + Message.TABLENAME + "(" + Message.DELETED + ")";
+    private static final String CREATE_MESSAGE_RELATIVE_FILE_PATH_INDEX = "CREATE INDEX message_file_path_index ON " + Message.TABLENAME + "(" + Message.RELATIVE_FILE_PATH + ")";
+    private static final String CREATE_MESSAGE_TYPE_INDEX = "CREATE INDEX message_type_index ON " + Message.TABLENAME + "(" + Message.TYPE + ")";
 
-    private static final String CREATE_MESSAGE_INDEX_TABLE = "CREATE VIRTUAL TABLE messages_index USING FTS4(uuid TEXT PRIMARY KEY, body TEXT)";
+    private static final String CREATE_MESSAGE_INDEX_TABLE = "CREATE VIRTUAL TABLE messages_index USING fts4 (uuid TEXT PRIMARY KEY, body TEXT, tokenize = 'unicode61')";
     private static final String CREATE_MESSAGE_INSERT_TRIGGER = "CREATE TRIGGER after_message_insert AFTER INSERT ON " + Message.TABLENAME + " BEGIN INSERT INTO messages_index (uuid,body) VALUES (new.uuid,new.body); END;";
     private static final String CREATE_MESSAGE_UPDATE_TRIGGER = "CREATE TRIGGER after_message_update UPDATE of uuid,body ON " + Message.TABLENAME + " BEGIN update messages_index set body=new.body,uuid=new.uuid WHERE uuid=old.uuid; END;";
-    private static final String COPY_PREEXISTING_ENTRIES = "INSERT into messages_index(uuid,body) select uuid,body FROM " + Message.TABLENAME + ";";
+    private static final String COPY_PREEXISTING_ENTRIES = "INSERT INTO messages_index(uuid,body) SELECT uuid,body FROM " + Message.TABLENAME + ";";
 
     private DatabaseBackend(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
