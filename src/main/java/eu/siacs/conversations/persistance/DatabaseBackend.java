@@ -171,8 +171,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     private static final String CREATE_MESSAGE_TYPE_INDEX = "CREATE INDEX message_type_index ON " + Message.TABLENAME + "(" + Message.TYPE + ")";
 
     private static final String CREATE_MESSAGE_INDEX_TABLE = "CREATE VIRTUAL TABLE messages_index USING fts4 (uuid,body,notindexed=\"uuid\",content=\"" + Message.TABLENAME + "\",tokenize='unicode61')";
-    private static final String CREATE_MESSAGE_INSERT_TRIGGER = "CREATE TRIGGER after_message_insert AFTER INSERT ON " + Message.TABLENAME + " BEGIN INSERT INTO messages_index (uuid,body) VALUES (new.uuid,new.body); END;";
-    private static final String CREATE_MESSAGE_UPDATE_TRIGGER = "CREATE TRIGGER after_message_update UPDATE of uuid,body ON " + Message.TABLENAME + " BEGIN update messages_index set body=new.body,uuid=new.uuid WHERE uuid=old.uuid; END;";
+    private static final String CREATE_MESSAGE_INSERT_TRIGGER = "CREATE TRIGGER after_message_insert AFTER INSERT ON " + Message.TABLENAME + " BEGIN INSERT INTO messages_index(rowid,uuid,body) VALUES(NEW.rowid,NEW.uuid,NEW.body); END;";
+    private static final String CREATE_MESSAGE_UPDATE_TRIGGER = "CREATE TRIGGER after_message_update UPDATE OF uuid,body ON " + Message.TABLENAME + " BEGIN UPDATE messages_index SET body=NEW.body,uuid=NEW.uuid WHERE rowid=OLD.rowid; END;";
+    private static final String CREATE_MESSAGE_DELETE_TRIGGER = "CREATE TRIGGER after_message_delete AFTER DELETE ON " + Message.TABLENAME + " BEGIN DELETE FROM messages_index WHERE rowid=OLD.rowid; END;";
     private static final String COPY_PREEXISTING_ENTRIES = "INSERT INTO messages_index(messages_index) VALUES('rebuild');";
 
     private DatabaseBackend(Context context) {
@@ -262,6 +263,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         db.execSQL(CREATE_MESSAGE_INDEX_TABLE);
         db.execSQL(CREATE_MESSAGE_INSERT_TRIGGER);
         db.execSQL(CREATE_MESSAGE_UPDATE_TRIGGER);
+        db.execSQL(CREATE_MESSAGE_DELETE_TRIGGER);
     }
 
     @Override
@@ -522,6 +524,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             db.execSQL(CREATE_MESSAGE_INDEX_TABLE);
             db.execSQL(CREATE_MESSAGE_INSERT_TRIGGER);
             db.execSQL(CREATE_MESSAGE_UPDATE_TRIGGER);
+            db.execSQL(CREATE_MESSAGE_DELETE_TRIGGER);
             db.execSQL(COPY_PREEXISTING_ENTRIES);
         }
 
@@ -787,7 +790,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         final SQLiteDatabase db = this.getReadableDatabase();
         final StringBuilder SQL = new StringBuilder();
         final String[] selectionArgs;
-        SQL.append("SELECT " + Message.TABLENAME + ".*," + Conversation.TABLENAME + '.' + Conversation.CONTACTJID + ',' + Conversation.TABLENAME + '.' + Conversation.ACCOUNT + ',' + Conversation.TABLENAME + '.' + Conversation.MODE + " FROM " + Message.TABLENAME + " join " + Conversation.TABLENAME + " on " + Message.TABLENAME + '.' + Message.CONVERSATION + '=' + Conversation.TABLENAME + '.' + Conversation.UUID + " join messages_index ON messages_index.uuid=messages.uuid where " + Message.ENCRYPTION + " NOT IN(" + Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE + ',' + Message.ENCRYPTION_PGP + ',' + Message.ENCRYPTION_DECRYPTION_FAILED + ',' + Message.ENCRYPTION_AXOLOTL_FAILED + ") AND " + Message.TYPE + " IN(" + Message.TYPE_TEXT + ',' + Message.TYPE_PRIVATE + ") AND messages_index.body MATCH ?");
+        // TODO: change "ON messages_index.uuid=messages.uuid" to
+        // "ON messages_index.rowid=messages.rowid" when everyone's migrated.
+        SQL.append("SELECT " + Message.TABLENAME + ".*," + Conversation.TABLENAME + "." + Conversation.CONTACTJID + "," + Conversation.TABLENAME + "." + Conversation.ACCOUNT + "," + Conversation.TABLENAME + "." + Conversation.MODE + " FROM " + Message.TABLENAME + " JOIN " + Conversation.TABLENAME + " ON " + Message.TABLENAME + "." + Message.CONVERSATION + "=" + Conversation.TABLENAME + "." + Conversation.UUID + " JOIN messages_index ON messages_index.uuid=messages.uuid WHERE " + Message.ENCRYPTION + " NOT IN(" + Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE + "," + Message.ENCRYPTION_PGP + "," + Message.ENCRYPTION_DECRYPTION_FAILED + "," + Message.ENCRYPTION_AXOLOTL_FAILED + ") AND " + Message.TYPE + " IN(" + Message.TYPE_TEXT + "," + Message.TYPE_PRIVATE + ") AND messages_index.body MATCH ?");
         if (uuid == null) {
             selectionArgs = new String[]{FtsUtils.toMatchString(term)};
         } else {
@@ -1039,6 +1044,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         final SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         String[] args = {conversation.getUuid()};
+        // TODO: remove once everyone has the after_message_delete trigger
         db.delete("messages_index", "uuid in (select uuid from messages where conversationUuid=?)", args);
         int num = db.delete(Message.TABLENAME, Message.CONVERSATION + "=?", args);
         db.setTransactionSuccessful();
@@ -1049,6 +1055,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     public void expireOldMessages(long timestamp) {
         final String[] args = {String.valueOf(timestamp)};
         SQLiteDatabase db = this.getReadableDatabase();
+        // TODO: remove once everyone has the after_message_delete trigger
         db.beginTransaction();
         db.delete("messages_index", "uuid in (select uuid from messages where timeSent<?)", args);
         db.delete(Message.TABLENAME, "timeSent<?", args);
