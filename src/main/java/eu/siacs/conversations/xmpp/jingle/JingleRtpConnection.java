@@ -20,6 +20,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 
+import org.webrtc.DtmfSender;
 import org.webrtc.EglBase;
 import org.webrtc.IceCandidate;
 import org.webrtc.PeerConnection;
@@ -228,6 +229,17 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             finish();
         }
     }
+
+    //TODO: remove - hack to test dtmfSending
+    public DtmfSender getDtmfSender() {
+        return webRTCWrapper.getDtmfSender();
+    }
+
+    //FIXME: possible implementation
+    public boolean applyDtmfTone(String tone) {
+        return webRTCWrapper.applyDtmfTone(tone);
+    }
+
 
     private void receiveSessionTerminate(final JinglePacket jinglePacket) {
         respondOk(jinglePacket);
