@@ -247,6 +247,7 @@ public final class MimeUtils {
         add("audio/mpeg", "m4a");
         add("audio/mpegurl", "m3u");
         add("audio/ogg", "oga");
+        add("audio/opus", "opus");
         add("audio/prs.sid", "sid");
         add("audio/x-aiff", "aif");
         add("audio/x-aiff", "aiff");
