@@ -1,0 +1,32 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build Quicksy (Compat)
+      run: ./gradlew assembleQuicksyFreeCompatDebug
+    - name: Build Quicksy (System)
+      run: ./gradlew assembleQuicksyFreeSystemDebug
+    - name: Build Conversations (Compat)
+      run: ./gradlew assembleConversationsFreeCompatDebug
+    - name: Build Conversations (System)
+      run: ./gradlew assembleConversationsFreeSystemDebug
+      
