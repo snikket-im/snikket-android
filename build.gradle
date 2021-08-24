@@ -8,7 +8,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.android.tools.build:gradle:7.0.1'
     }
 }
 
@@ -111,7 +111,7 @@ android {
     }
 
     configurations {
-        compile.exclude group: 'org.jetbrains' , module:'annotations'
+        implementation.exclude group: 'org.jetbrains' , module:'annotations'
     }
 
     dataBinding {
