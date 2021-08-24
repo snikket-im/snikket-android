@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.10.0
+
+* Show black bars when remote video does not match aspect ratio of screen
+* Add setting to prevent screenshots
+
 ### Version 2.9.13
 
 * minor A/V improvements
