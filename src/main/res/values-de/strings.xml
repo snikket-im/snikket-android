@@ -76,7 +76,7 @@
     <string name="send_now">Jetzt abschicken</string>
     <string name="send_never">Nie mehr nachfragen</string>
     <string name="problem_connecting_to_account">Verbindung zum Konto konnte nicht hergestellt werden</string>
-    <string name="problem_connecting_to_accounts">Verbindung zu mehreren Konto konnte nicht hergestellt werden</string>
+    <string name="problem_connecting_to_accounts">Verbindung zu mehreren Konten konnte nicht hergestellt werden</string>
     <string name="touch_to_fix">Antippen, um deine Konten zu verwalten</string>
     <string name="attach_file">Datei auswählen</string>
     <string name="not_in_roster">Diesen fehlenden Kontakt zu deiner Kontaktliste hinzufügen?</string>
@@ -371,7 +371,7 @@
     <string name="current_password">Aktuelles Passwort</string>
     <string name="new_password">Neues Passwort</string>
     <string name="password_should_not_be_empty">Passwort kann nicht leer sein</string>
-    <string name="enable_all_accounts">Alle Konten aktiveren</string>
+    <string name="enable_all_accounts">Alle Konten aktivieren</string>
     <string name="disable_all_accounts">Alle Konten abschalten</string>
     <string name="perform_action_with">Aktion durchführen mit</string>
     <string name="no_affiliation">Keine Zugehörigkeit</string>
@@ -963,4 +963,4 @@
     <string name="no_active_accounts_support_this">Keine aktiven Konten unterstützen diese Funktion</string>
     <string name="backup_started_message">Das Backup wurde gestartet. Du bekommst eine Benachrichtigung sobald es fertig ist.</string>
     <string name="unable_to_enable_video">Video kann nicht aktiviert werden.</string>
-</resources>
+    </resources>

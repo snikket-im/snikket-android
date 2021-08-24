@@ -4,6 +4,7 @@
     <string name="action_add">محادثة جديدة</string>
     <string name="action_accounts">إدارة الحسابات</string>
     <string name="action_account">إدارة الحساب</string>
+    <string name="action_end_conversation">أغلق المحادثة</string>
     <string name="action_contact_details">بيانات جهة الإتصال</string>
     <string name="action_muc_details">تفاصيل مجموعة المحادثة</string>
     <string name="channel_details">تفاصيل القناة</string>
@@ -27,7 +28,7 @@
     <string name="title_activity_block_list">قائمة المحجوبين</string>
     <string name="just_now">الآن</string>
     <string name="minute_ago">منذ 1 دقيقة</string>
-    <string name="minutes_ago">دقائق %d منذ</string>
+    <string name="minutes_ago">منذ %d دقائق</string>
     <string name="sending">ارسال</string>
     <string name="message_decrypting">حل شيفرة الرسالة. الرجاء الإنتظار ...</string>
     <string name="pgp_message">رسالة مشفرة عبر OpenPGP</string>
@@ -38,12 +39,14 @@
     <string name="moderator">مشرف</string>
     <string name="participant">مشترك</string>
     <string name="visitor">زائر</string>
+    <string name="remove_contact_text">هل تريد حذف %sمن قائمة إتصالك؟ المحادثات مع هذا الشخص لن تحذف.</string>
     <string name="block_contact_text">هل ترغب في حجب %s  من ارسال الرسائل لك?</string>
     <string name="unblock_contact_text">هل ترغب في انهاء حجب %s والسماح له بمراسلتك?</string>
     <string name="block_domain_text">هل تريد حجب جميع جهات الإتصال من %s?</string>
     <string name="unblock_domain_text">الغاء حجب جميع جهات الإتصال من %s?</string>
     <string name="contact_blocked">جهة الاتصال محجوبه</string>
     <string name="blocked">محجوب</string>
+    <string name="remove_bookmark_text">هل تريد حذف %sمن قائمة المفضلة؟ المحادثات مع هذا المفضل لن تحذف.</string>
     <string name="register_account">تسجيل حساب جديد في سيرفر</string>
     <string name="change_password_on_server">تغيير كلمة المرور في سيرفر</string>
     <string name="share_with">مشاركة مع</string>
@@ -61,11 +64,16 @@
     <string name="unblock">الغاء حجب</string>
     <string name="save">حفظ</string>
     <string name="ok">موافق</string>
+    <string name="crash_report_title">%1$sتعطّل</string>
     <string name="send_now">ارسال الآن</string>
     <string name="send_never">لا تسألني ثانية</string>
+    <string name="problem_connecting_to_account">لا يمكن الإتصال بالحساب</string>
+    <string name="problem_connecting_to_accounts">لايمكن الإتصال بحسابات متعددة</string>
     <string name="attach_file">ارفاق ملف</string>
     <string name="add_contact">اضافة جهة اتصال</string>
     <string name="send_failed">فشل التسليم</string>
+    <string name="preparing_image">الإستعداد لإرسال الصورة</string>
+    <string name="preparing_images">الإستعداد لإرسال الصور</string>
     <string name="sharing_files_please_wait">جاري إرسال الملفات.  الرجاء الإنتظار ...</string>
     <string name="action_clear_history">حذف سجل المحفوظات</string>
     <string name="clear_conversation_history">حذف سجل المحفوظات للمحادثة</string>
@@ -77,6 +85,7 @@
     <string name="send_omemo_message">إرسال رسالة مشفرة عبر OMEMO</string>
     <string name="send_omemo_x509_message">إبعث رسالة مشفَّرة بـ أومي مو OMEMO</string>
     <string name="send_pgp_message">إرسال رسالة مشفرة عبر OpenPGP</string>
+    <string name="your_nick_has_been_changed">إسم مستخدم جديد تحت الإستعمال</string>
     <string name="send_unencrypted">إرسال بدون تشفير</string>
     <string name="decryption_failed">فشل فك التشفير. ربما ليس لديك المفتاح الخاص الصحيح.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -96,6 +105,7 @@
     <string name="pref_vibrate_summary">إهتز عند وصول رسالة جديدة</string>
     <string name="pref_led">إشعار ضوئي</string>
     <string name="pref_ringtone">التنبيه الصوتي</string>
+    <string name="pref_notification_sound">تنبيه صوتي</string>
     <string name="pref_notification_grace_period">فترة السماح</string>
     <string name="pref_advanced_options">متقدم</string>
     <string name="pref_never_send_crash">لا ترسل تقارير أخطاء</string>
@@ -112,6 +122,7 @@
     <string name="attach_choose_picture">اختيار صورة</string>
     <string name="attach_take_picture">التقاط صورة</string>
     <string name="error_not_an_image_file">الملف الذي حددته ليس صورة</string>
+    <string name="error_compressing_image">لا يمكن تحويل ملف الصورة</string>
     <string name="error_file_not_found">الملف غير موجود</string>
     <string name="account_status_unknown">غير معروف</string>
     <string name="account_status_disabled">معطلٌ موقتاً</string>
@@ -145,6 +156,7 @@
     <string name="block_jabber_id">احجب عنوان XMPP</string>
     <string name="account_settings_example_jabber_id">username@example.com</string>
     <string name="password">كلمة السر</string>
+    <string name="error_out_of_memory">الذاكرة مليئة، صورة كبيرة جدا</string>
     <string name="add_phone_book_text">هل تود إضافة %s إلى سجل عناوينك ؟</string>
     <string name="server_info_show_more">معلومات عن المضيف</string>
     <string name="server_info_mam">XEP-0313: إدارة أرشيف الرسائل</string>
@@ -159,6 +171,7 @@
     <string name="server_info_available">متاح</string>
     <string name="server_info_unavailable">غير متاح</string>
     <string name="last_seen_now">آخر ظهور الآن</string>
+    <string name="last_seen_min">آخر مشاهدة منذ دقيقة</string>
     <string name="last_seen_mins">آخر ظهور منذ %d دقيقة</string>
     <string name="last_seen_hours">آخر ظهور منذ %d ساعة</string>
     <string name="last_seen_days">آخر ظهور منذ %d يوم</string>
@@ -642,4 +655,5 @@
     <string name="open_backup">افتح النسخة الاحتياطية</string>
     <string name="please_enter_password">يرجى إدخال الكلمة السرية للحساب</string>
     <string name="rtp_state_declined_or_busy">مشغول</string>
+    <string name="more_options">خيارات أخرى</string>
     </resources>

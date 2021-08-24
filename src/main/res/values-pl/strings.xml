@@ -156,6 +156,7 @@
     <string name="error_file_not_found">Nie odnaleziono pliku</string>
     <string name="error_io_exception">Ogólny błąd wejścia/wyjścia</string>
     <string name="error_security_exception_during_image_copy">Aplikacja użyta do wyboru obrazu nie zezwoliła na odczyt pliku.\n\n<small>Wybierz obraz przy użyciu innego menedżera plików</small></string>
+    <string name="error_security_exception">Aplikacja której użyłeś do udostępnienia pliku nie dostarczyła odpowiednich uprawnień. </string>
     <string name="account_status_unknown">Nieznany</string>
     <string name="account_status_disabled">Tymczasowo wyłączono</string>
     <string name="account_status_online">Połączono</string>
@@ -170,6 +171,7 @@
     <string name="account_status_regis_not_sup">Ten serwer nie wspiera rejestracji</string>
     <string name="account_status_regis_invalid_token">Nieprawidłowy żeton rejestracji</string>
     <string name="account_status_tls_error">Nie powiodła się negocjacja TLS</string>
+    <string name="account_status_tls_error_domain">Nie można zweryfikować tej domeny</string>
     <string name="account_status_policy_violation">Naruszenie zasad</string>
     <string name="account_status_incompatible_server">Serwer niekompatybilny</string>
     <string name="account_status_stream_error">Błąd strumienia</string>
@@ -924,7 +926,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="rtp_state_connected">Połączony</string>
     <string name="rtp_state_accepting_call">Akceptowanie połączenia</string>
     <string name="rtp_state_ending_call">Kończenie połączenia</string>
-    <string name="answer_call">Odbierz</string>
+    <string name="answer_call">Połącz</string>
     <string name="dismiss_call">Odrzuć</string>
     <string name="rtp_state_finding_device">Wyszukiwanie urządzeń</string>
     <string name="rtp_state_ringing">Dzwonienie</string>
@@ -987,4 +989,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="server_does_not_support_easy_onboarding_invites">Serwer nie wspiera tworzenia zaproszeń</string>
     <string name="no_active_accounts_support_this">Nie ma aktywnych kont wspierających tę funkcję</string>
     <string name="backup_started_message">Tworzenie kopii zapasowej się rozpoczęło. Dostaniesz powiadomienie kiedy się zakończy. </string>
+    <string name="unable_to_enable_video">Nie można włączyć wideo. </string>
     </resources>

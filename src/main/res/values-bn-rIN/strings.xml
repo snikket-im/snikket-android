@@ -46,6 +46,9 @@
     <string name="moderator">নির্ধারক</string>
     <string name="participant">অংশগ্রহণকারী</string>
     <string name="visitor">অতিথি</string>
+    <string name="remove_contact_text">আপনি কি আপনার পরিচিতি তালিকা থেকে %s-কে অপসারণ করতে চান? এই যোগাযোগের সাথে কথোপকথনগুলি সরানো হবে না।</string>
+    <string name="block_contact_text">%s-কে বার্তা পাঠানো থেকে ব্লক করতে চান?</string>
+    <string name="unblock_contact_text">আপনি কি %s-কে আনব্লক করতে চান এবং তাদের আপনাকে বার্তা পাঠানোর অনুমতি দিতে চান?</string>
     <string name="contact_blocked">ব্যক্তিটিকে ব্লক্ করা হয়েছে</string>
     <string name="blocked">ব্লক্ করা আছে</string>
     <string name="register_account">সার্ভারে একটি নতুন অ্যকাউন্ট খোলা যাক</string>
@@ -90,8 +93,26 @@
     <string name="send_omemo_message">OMEMO সাঙ্কেতিক বার্তা পাঠানো হোক</string>
     <string name="send_omemo_x509_message">v\\OMEMO সাঙ্কেতিক বার্তা পাঠানো হোক</string>
     <string name="send_pgp_message">OpenPGP সাঙ্কেতিক বার্তা পাঠানো হোক</string>
+    <string name="your_nick_has_been_changed">নতুন নাম ব্যবহার করা হচ্ছে</string>
+    <string name="send_unencrypted">এনক্রিপ্ট না করেই পাঠানো হোক</string>
+    <string name="decryption_failed">ডিক্রিপ্ট করা যায়নি। হয়তো আপনার কাছে সঠিক Private Key নেই।</string>
+    <string name="restart">রিস্টার্ট্</string>
+    <string name="install">ইনস্টল্</string>
+    <string name="openkeychain_not_installed">OpenKeychain ইনস্টল্ করতে হবে</string>
+    <string name="offering">প্রস্তাব দেওয়া হচ্ছে...</string>
+    <string name="waiting">অপেক্ষা করা হচ্ছে...</string>
+    <string name="no_pgp_key">কোনো OpenPGP Key খুঁজে পাওয়া যায়নি</string>
+    <string name="bookmarks">বুকমার্ক করা যেগুলি</string>
+    <string name="search">খোঁজা যাক</string>
     <string name="block_contact">এই ব্যক্তিকে ব্লক্ করা যাক</string>
     <string name="unblock_contact">ব্লকটা সরিয়ে ফেলা যাক</string>
     <string name="vcard">পরিচিত ব্যক্তি</string>
     <string name="dialog_manage_certs_negativebutton">না, থাক।</string>
+    <string name="search_contacts">পরিচিত ব্যক্তিদের মধ্যে খোঁজা যাক</string>
+    <string name="search_messages">বার্তাগুলির মধ্যে খোঁজা যাক</string>
+    <string name="pref_start_search">সরাসরিভাবেই খোঁজা যাক</string>
+    <string name="join_public_channel">পাবলিক চ্যানেলে যোগ দেওয়া যাক</string>
+    <string name="create_private_group_chat">ব্যক্তিগত গ্রুপ চ্যাট তৈরি করুন</string>
+    <string name="create_public_channel">পাবলিক চ্যানেল তৈরি করা যাক</string>
+    <string name="discover_channels">বর্তমান চ্যানেলগুলির মধ্যে থেকে খোঁজা যাক</string>
     </resources>

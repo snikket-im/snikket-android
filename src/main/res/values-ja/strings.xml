@@ -27,8 +27,8 @@
     <string name="title_activity_share_via_account">アカウントで共有</string>
     <string name="title_activity_block_list">ブロック一覧</string>
     <string name="just_now">ちょうど今</string>
-    <string name="minute_ago">1 分前</string>
-    <string name="minutes_ago">%d 分前</string>
+    <string name="minute_ago">1分前</string>
+    <string name="minutes_ago">%d分前</string>
     <plurals name="x_unread_conversations">
         <item quantity="other">未読%d件</item>
 
@@ -40,7 +40,7 @@
     <string name="invalid_muc_nick">正しくないニックネームです</string>
     <string name="admin">管理者</string>
     <string name="owner">所有者</string>
-    <string name="moderator">モデレーター</string>
+    <string name="moderator">調停者</string>
     <string name="participant">参加者</string>
     <string name="visitor">訪問者</string>
     <string name="remove_contact_text">連絡先名簿から %s を削除しますか? この連絡先との会話は削除されません。</string>
@@ -147,6 +147,7 @@
     <string name="error_file_not_found">ファイルが見つかりません</string>
     <string name="error_io_exception">一般的な I/O エラー。おそらく空き容量がなくなっていませんか?</string>
     <string name="error_security_exception_during_image_copy">あなたが画像の選択のために使用したアプリは、読み取りに必要なアクセス権がありません。\n\n<small>別のファイルマネージャを使用して、画像を選択してください。</small></string>
+    <string name="error_security_exception">このファイルを共有するために使用したアプリに、十分な許可が与えられていませんでした。</string>
     <string name="account_status_unknown">不明</string>
     <string name="account_status_disabled">一時的に無効</string>
     <string name="account_status_online">オンライン</string>
@@ -161,6 +162,7 @@
     <string name="account_status_regis_not_sup">サーバーが登録をサポートしていません</string>
     <string name="account_status_regis_invalid_token">トークンが無効です</string>
     <string name="account_status_tls_error">TLS ネゴシエーションに失敗しました</string>
+    <string name="account_status_tls_error_domain">検証不可能なドメイン</string>
     <string name="account_status_policy_violation">ポリシー違反</string>
     <string name="account_status_incompatible_server">互換性のないサーバー</string>
     <string name="account_status_stream_error">ストリーム エラー</string>
@@ -189,7 +191,7 @@
     <string name="add_phone_book_text">%s をお使いのアドレス帳に追加しますか?</string>
     <string name="server_info_show_more">サーバー情報</string>
     <string name="server_info_mam">XEP-0313: メッセージ アーカイブ管理</string>
-    <string name="server_info_carbon_messages">XEP-0280: メッセージ カーボン</string>
+    <string name="server_info_carbon_messages">XEP-0280: メッセージ複写</string>
     <string name="server_info_csi">XEP-0352: クライアント状態表示</string>
     <string name="server_info_blocking">XEP-0191: ブロッキング コマンド</string>
     <string name="server_info_roster_version">XEP-0237: 名簿バージョニング</string>
@@ -202,12 +204,12 @@
     <string name="server_info_unavailable">利用不可</string>
     <string name="missing_public_keys">公開鍵の告知がありません</string>
     <string name="last_seen_now">ちょうど今会いました</string>
-    <string name="last_seen_min">1 分前に会いました</string>
-    <string name="last_seen_mins">%d 分前に会いました</string>
-    <string name="last_seen_hour">1 時間前に会いました</string>
-    <string name="last_seen_hours">%d 時間前に会いました</string>
-    <string name="last_seen_day">1 日前に会いました</string>
-    <string name="last_seen_days">%d 日前に会いました</string>
+    <string name="last_seen_min">1分前に会いました</string>
+    <string name="last_seen_mins">%d分前に会いました</string>
+    <string name="last_seen_hour">1時間前に会いました</string>
+    <string name="last_seen_hours">%d時間前に会いました</string>
+    <string name="last_seen_day">1日前に会いました</string>
+    <string name="last_seen_days">%d日前に会いました</string>
     <string name="install_openkeychain">暗号化されたメッセージです。復号するには OpenKeychain をインストールしてください。</string>
     <string name="openpgp_messages_found">新しい OpenPGP 暗号化されたメッセージが見つかりました</string>
     <string name="openpgp_key_id">OpenPGP 鍵 ID</string>
@@ -298,8 +300,8 @@
     <string name="hosted_on">%s 上でホストされた</string>
     <string name="checking_x">HTTP ホストの %s を確認中</string>
     <string name="not_connected_try_again">接続されていません。後でもう一度お試しください</string>
-    <string name="check_x_filesize">%s サイズを確認</string>
-    <string name="check_x_filesize_on_host">%2$s で %1$s のサイズを確認</string>
+    <string name="check_x_filesize">%s の大きさを確認</string>
+    <string name="check_x_filesize_on_host">%2$s で %1$s の大きさを確認</string>
     <string name="message_options">メッセージオプション</string>
     <string name="quote">引用</string>
     <string name="paste_as_quote">引用として貼り付け</string>
@@ -310,8 +312,8 @@
     <string name="jabber_id_copied_to_clipboard">XMPP アドレスをクリップボードにコピーしました</string>
     <string name="error_message_copied_to_clipboard">エラーメッセージをクリップボードにコピーしました</string>
     <string name="web_address">ウェブアドレス</string>
-    <string name="scan_qr_code">2D バーコードをスキャン</string>
-    <string name="show_qr_code">2D バーコードを表示</string>
+    <string name="scan_qr_code">二次元バーコードをスキャン</string>
+    <string name="show_qr_code">二次元バーコードを表示</string>
     <string name="show_block_list">ブロック一覧を表示</string>
     <string name="account_details">アカウントの詳細</string>
     <string name="confirm">確認</string>
@@ -494,12 +496,12 @@
     <plurals name="x_messages">
         <item quantity="other">%d メッセージ</item>
     </plurals>
-    <string name="load_more_messages">さらにメッセージをロード</string>
+    <string name="load_more_messages">さらにメッセージを読み込む</string>
     <string name="shared_file_with_x">%s でファイル共有</string>
     <string name="shared_image_with_x">%s で画像共有</string>
     <string name="shared_images_with_x">%s で画像共有</string>
     <string name="shared_text_with_x">%s でテキスト共有</string>
-    <string name="no_storage_permission">%1$s に外部ストレージへのアクセス権を付与</string>
+    <string name="no_storage_permission">%1$s に外部ストレージへのアクセス権を付与してください</string>
     <string name="no_camera_permission">%1$s にカメラへのアクセス権を付与</string>
     <string name="sync_with_contacts">連絡先と同期</string>
     <string name="sync_with_contacts_long">%1$s はあなたのアドレス帳にアクセスして、あなたのXMPP 連絡先名簿と照合する権限を求めています。\nこれにより、連絡先のフルネームとアバターが表示されます。\n\n%1$s は、あなたのサーバーに何かをアップロードすることなく、あなたのアドレス帳を読み込んでローカルに照合するだけです。</string>
@@ -528,7 +530,7 @@
     <string name="share_uri_with">…で URI を共有</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy は人気の XMPP クライアント Conversations の派生で、連絡先の自動検出機能を備えています。<br><br>電話番号を入力して登録すると、アドレス帳に登録されている電話番号をもとに、Quicksyが自動的に連絡先を提案します。<br><br>登録すると、<a href="https://quicksy.im/#privacy">我々のプライバシーポリシー</a>に同意することになります。]]></string>
     <string name="agree_and_continue">同意して続行</string>
-    <string name="magic_create_text">conversations.im のアカウント作成のための指南が設定されています。¹\nconversations.im をプロバイダーとして選択した場合、あなたの完全なXMPPアドレスを与えることで、他のプロバイダーのユーザーと連絡をとることができます。</string>
+    <string name="magic_create_text">conversations.im 上にアカウントを作成する設定の指南です。¹\nconversations.im をプロバイダーとして選択した場合、あなたの完全な XMPP アドレスを他のプロバイダーのユーザーに示すことで、その人と連絡をとることができます。</string>
     <string name="your_full_jid_will_be">あなたの完全なXMPPアドレスは: %s</string>
     <string name="create_account">アカウントを作成</string>
     <string name="use_own_provider">独自のプロバイダーを使用する</string>
@@ -538,8 +540,8 @@
     <string name="status_message">ステータスメッセージ</string>
     <string name="presence_chat">いつでもチャットできます</string>
     <string name="presence_online">オンライン</string>
-    <string name="presence_away">離席中</string>
-    <string name="presence_xa">利用不可</string>
+    <string name="presence_away">離席</string>
+    <string name="presence_xa">不在</string>
     <string name="presence_dnd">取込中</string>
     <string name="secure_password_generated">安全なパスワードが生成されました</string>
     <string name="device_does_not_support_battery_op">お使いのデバイスは電池最適化の停止をサポートしていません</string>
@@ -553,13 +555,13 @@
     <string name="gp_medium">中</string>
     <string name="gp_long">長</string>
     <string name="pref_broadcast_last_activity">ブロードキャストを使用</string>
-    <string name="pref_broadcast_last_activity_summary">Conversations を使用するとき、連絡先に知らせましょう</string>
+    <string name="pref_broadcast_last_activity_summary">Conversations を使用するときに、連絡先に知らせましょう</string>
     <string name="pref_privacy">プライバシー</string>
     <string name="pref_theme_options">テーマ</string>
     <string name="pref_theme_options_summary">カラーパレットの選択</string>
     <string name="pref_theme_automatic">自動</string>
-    <string name="pref_theme_light">ライト</string>
-    <string name="pref_theme_dark">ダーク</string>
+    <string name="pref_theme_light">明</string>
+    <string name="pref_theme_dark">暗</string>
     <string name="pref_use_green_background">緑の背景</string>
     <string name="pref_use_green_background_summary">受信したメッセージに緑の背景を使用します</string>
     <string name="unable_to_connect_to_keychain">OpenKeychain に接続できません</string>
@@ -603,11 +605,11 @@
     <string name="pref_blind_trust_before_verification_summary">認証されていない連絡先からの新規デバイスを信頼するが、認証されている連絡先からの新規デバイスについては手動での確認を求める。</string>
     <string name="blindly_trusted_omemo_keys">OMEMO 鍵を盲目的に信用していた。つまり、他の人かもしれないし、誰かが盗聴しているかもしれない。</string>
     <string name="not_trusted">信頼されていない</string>
-    <string name="invalid_barcode">不正な 2D バーコード</string>
-    <string name="pref_clean_cache_summary">キャッシュフォルダーをクリアします (カメラアプリで使用)</string>
-    <string name="pref_clean_cache">キャッシュをクリア</string>
-    <string name="pref_clean_private_storage">プライベートストレージをクリア</string>
-    <string name="pref_clean_private_storage_summary">ファイルが保存されているプライベートストレージをクリアします (サーバーから再ダウンロードできます)</string>
+    <string name="invalid_barcode">不正な二次元バーコード</string>
+    <string name="pref_clean_cache_summary">キャッシュフォルダを消去します (カメラアプリで使用)</string>
+    <string name="pref_clean_cache">キャッシュを消去</string>
+    <string name="pref_clean_private_storage">プライベートストレージを消去</string>
+    <string name="pref_clean_private_storage_summary">ファイルが保存されているプライベートストレージを消去します (サーバーから再ダウンロードできます)</string>
     <string name="i_followed_this_link_from_a_trusted_source">信頼できるソースからこのリンクをたどりました</string>
     <string name="verifying_omemo_keys_trusted_source">リンクをクリックした後、%1$s の OMEMO 鍵を検証しようとしています。 これは、%2$s がこのリンクを公開した、信頼できるソースからこのリンクをたどった場合にのみ安全です。</string>
     <string name="verify_omemo_keys">OMEMO 鍵を検証</string>
@@ -693,7 +695,7 @@
     <string name="pref_omemo_setting_summary_default_off">新しい会話をするためには、OMEMOを明示的にオンにする必要があります。</string>
     <string name="create_shortcut">ショートカットを作成</string>
     <string name="pref_font_size">フォントの大きさ</string>
-    <string name="pref_font_size_summary">このアプリで使用される相対フォントサイズ</string>
+    <string name="pref_font_size_summary">このアプリで使用される相対的なフォントの大きさ</string>
     <string name="default_on">デフォルトでオン</string>
     <string name="default_off">デフォルトでオフ</string>
     <string name="small">小</string>
@@ -849,11 +851,11 @@
     <string name="search_participants">参加者を検索</string>
     <string name="file_too_large">ファイルが大きすぎます</string>
     <string name="attach">添付</string>
-    <string name="discover_channels">談話室発見</string>
+    <string name="discover_channels">談話室を発見</string>
     <string name="search_channels">談話室を検索</string>
     <string name="channel_discovery_opt_in_title">プライバシー侵害の可能性あり!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[談話室発見は、第三者のサービスである<a href="https://search.jabber.network">search.jabber.networkを利用します。<br><br>この機能を使うと、あなたののIPアドレスや検索キーワードがそのサービスに送信されます。詳しくは、<a href="https://search.jabber.network/privacy">プライバシーポリシー</a>をご覧ください。]]></string>
-    <string name="i_already_have_an_account">私は既にアカウントを持っています</string>
+    <string name="channel_discover_opt_in_message"><![CDATA[談話室発見は、第三者のサービスである<a href=\"https://search.jabber.network\">search.jabber.network</a>を利用します。<br><br>この機能を使うと、あなたののIPアドレスや検索キーワードがそのサービスに送信されます。詳しくは、<a href=\"https://search.jabber.network/privacy\">プライバシーポリシー</a>をご覧ください。]]></string>
+    <string name="i_already_have_an_account">既にアカウントを持っています</string>
     <string name="add_existing_account">存在するアカウントを追加</string>
     <string name="register_new_account">新しいアカウントを登録</string>
     <string name="this_looks_like_a_domain">これはドメインアドレスのようです</string>
@@ -873,7 +875,7 @@
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">ローカルサーバー</string>
     <string name="pref_channel_discovery_summary">ほとんどのユーザーは、公開されている XMPP エコシステム全体からより良い提案を得るために、‘jabber.network’を選択するはずです。</string>
-    <string name="pref_channel_discovery">談話室発見方法</string>
+    <string name="pref_channel_discovery">談話室の発見方法</string>
     <string name="please_enable_an_account">アカウントを有効にしてください</string>
     <string name="make_call">通話をする</string>
     <string name="rtp_state_incoming_call">通話着信</string>
@@ -937,4 +939,5 @@
     <string name="server_does_not_support_easy_onboarding_invites">サーバーは招待をサポートしていません</string>
     <string name="no_active_accounts_support_this">この機能をサポートするアクティブなアカウントがありません</string>
     <string name="backup_started_message">バックアップを開始しました。 バックアップが完了すると通知が届きます。</string>
+    <string name="unable_to_enable_video">映像を有効化できません。</string>
     </resources>

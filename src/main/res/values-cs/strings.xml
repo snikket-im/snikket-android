@@ -156,6 +156,7 @@
     <string name="error_file_not_found">Soubor nenalezen</string>
     <string name="error_io_exception">Obecná I/O chyba. Že by již nebylo volné místo?</string>
     <string name="error_security_exception_during_image_copy">Aplikace, kterou jste použil(a) k výběru obrázku, neposkytla dostatečná oprávnění ke čtení souboru.\n\n<small>Použijte jiného správce souborů k výběru obrázku</small>.</string>
+    <string name="error_security_exception">Aplikace kterou jste použili pro nasdílení tohoto souboru nemá dostatečná oprávnění.</string>
     <string name="account_status_unknown">Neznámý</string>
     <string name="account_status_disabled">Dočasně vypnuto</string>
     <string name="account_status_online">Online</string>
@@ -170,6 +171,7 @@
     <string name="account_status_regis_not_sup">Registrace není podporována serverem</string>
     <string name="account_status_regis_invalid_token">Chybný registrační token</string>
     <string name="account_status_tls_error">Vyjednávání TLS selhalo</string>
+    <string name="account_status_tls_error_domain">Doménu nelze ověřit</string>
     <string name="account_status_policy_violation">Porušení podmínek</string>
     <string name="account_status_incompatible_server">Nekompatibilní server</string>
     <string name="account_status_stream_error">Chyba přenosu</string>
@@ -406,6 +408,7 @@
     <string name="could_not_modify_conference_options">Nebylo možné změnit nastavení skupinového chatu</string>
     <string name="never">Nikdy</string>
     <string name="until_further_notice">Než opět změním</string>
+    <string name="snooze">Posunout</string>
     <string name="reply">Odpovědět</string>
     <string name="mark_as_read">Označit jako přečtené</string>
     <string name="pref_input_options">Vstup</string>
@@ -434,6 +437,8 @@
     <string name="no_application_found_to_display_location">Nebyla nalezena aplikace pro zobrazení pozice</string>
     <string name="location">Pozice</string>
     <string name="title_undo_swipe_out_conversation">Conversation zavřena</string>
+    <string name="title_undo_swipe_out_group_chat">Opustil(a) soukromý skupinový chat</string>
+    <string name="title_undo_swipe_out_channel">Opustil(a) veřejný kanál</string>
     <string name="pref_dont_trust_system_cas_title">Nedůvěřovat systémovým CA</string>
     <string name="pref_dont_trust_system_cas_summary">Všechny certifikáty musí být schváleny ručně</string>
     <string name="pref_remove_trusted_certificates_title">Odstranit certifikáty</string>
@@ -466,6 +471,7 @@
     <string name="download_failed_could_not_write_file">Stažení selhalo: Nelze zapsat soubor</string>
     <string name="account_status_tor_unavailable">Tor síť není dostupná</string>
     <string name="account_status_bind_failure">Bind chyba</string>
+    <string name="account_status_host_unknown">Server není zodpovědný za tuto doménu</string>
     <string name="server_info_broken">Rozbité</string>
     <string name="pref_presence_settings">Dostupnost</string>
     <string name="pref_away_when_screen_off">Pryč při uzamčení zařízení</string>
@@ -495,6 +501,7 @@
     <string name="pref_use_tor_summary">Vedení všech připojení po Tor síti vyžaduje aplikaci Orbot</string>
     <string name="account_settings_hostname">Hostname</string>
     <string name="account_settings_port">Port</string>
+    <string name="hostname_or_onion">Server nebo .onion adresa</string>
     <string name="not_a_valid_port">Toto není platné číslo portu</string>
     <string name="not_valid_hostname">Toto není platné hostname</string>
     <string name="connected_accounts">%1$d z %2$d účtů připojeno</string>
@@ -533,6 +540,7 @@
     <string name="send_corrected_message">Odeslat opravenou zprávu</string>
     <string name="no_keys_just_confirm">Tento osobní otisk byl již bezpečně ověřen. Ťuknutím na \"Hotovo\" pouze potvrzujete, že %s je členem tohoto skupinového chatu.</string>
     <string name="this_account_is_disabled">Tento účet byl vypnut</string>
+    <string name="security_error_invalid_file_access">Bezpečnostní chyba: Neplatný přístup k souboru</string>
     <string name="no_application_to_share_uri">Nebyla nalezena aplikace umožňující sdílení URI</string>
     <string name="share_uri_with">Sdílet URI s…</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy je aplikace odvozená z populárního XMPP klientu Conversations, s funkcí automatického objevování kontaktů.<br><br>Po zadání Vašeho telefonního čísla Vám Quicksy automaticky—na základě čísel ve Vašem telefonním seznamu—navrhne možné kontakty.<br><br>Přihlášením se do služby potvrzujete souhlas s našimi <a href="https://quicksy.im/#privacy">zásadami pro ochranu osobních údajů</a>.]]></string>
@@ -744,6 +752,7 @@
     <string name="pref_use_share_location_plugin_summary">Použít Plugin pro sdílení pozice namísto interní mapy</string>
     <string name="copy_link">Kopírovat webovou adresu</string>
     <string name="copy_jabber_id">Kopírovat XMPP adresu</string>
+    <string name="p1_s3_filetransfer">HTTP sdílení souborů pro S3</string>
     <string name="pref_start_search">Přímé vyhledávání</string>
     <string name="pref_start_search_summary">Na úvodní obrazovce otevřít klávesnici a umístit kurzor do vyhledávacího pole</string>
     <string name="group_chat_avatar">Avatar skupinového chatu</string>
@@ -883,6 +892,7 @@
     <string name="this_looks_like_channel">Toto vypadá jako adresa kanálu</string>
     <string name="share_backup_files">Sdílet soubory zálohy</string>
     <string name="conversations_backup">Záloha Conversations</string>
+    <string name="event">Událost</string>
     <string name="open_backup">Otevřít zálohu</string>
     <string name="not_a_backup_file">Soubor, který jste zvolili, není soubor zálohy Conversations</string>
     <string name="account_already_setup">Tento účet byl již nastaven</string>
@@ -932,6 +942,7 @@
     <string name="could_not_switch_camera">Nebylo možné přepnout kameru</string>
     <string name="add_to_favorites">Připnout nahoru</string>
     <string name="remove_from_favorites">Odepnout shora</string>
+    <string name="gpx_track">GPX trasa</string>
     <string name="could_not_correct_message">Nebylo možné opravit zprávu</string>
     <string name="search_all_conversations">Všechny konverzace</string>
     <string name="search_this_conversation">Tato konverzace</string>
@@ -961,7 +972,9 @@
     <string name="more_options">Více možností</string>
     <string name="no_application_found">Nenalezena žádná aplikace</string>
     <string name="invite_to_app">Pozvat do Conversations</string>
+    <string name="unable_to_parse_invite">Nelze načíst pozvánku</string>
     <string name="server_does_not_support_easy_onboarding_invites">Server nepodporuje vytváření pozvánek</string>
     <string name="no_active_accounts_support_this">Žádný z aktivních účtů tuto funkci nepodporuje</string>
     <string name="backup_started_message">Zálohování zahájeno. Budete upozorněni, jakmile bude záloha hotova.</string>
+    <string name="unable_to_enable_video">Nelze povolit video.</string>
     </resources>

@@ -53,7 +53,7 @@
     <string name="unblock_domain_text">Άρση αποκλεισμού όλων των επαφών από το %s;</string>
     <string name="contact_blocked">Η επαφή αποκλείστηκε</string>
     <string name="blocked">Αποκλεισμένος</string>
-    <string name="remove_bookmark_text">Θέλετε να αφαιρέσετε το %s ως σελιδοδείκτη; Οι συζητήσεις που σχετίζονται με αυτόν τον σελιδοδείκτη δεν θα αφαιρεθούν.</string>
+    <string name="remove_bookmark_text">Θέλετε να αφαιρέσετε το %s από σελιδοδείκτη; Οι συζητήσεις που σχετίζονται με αυτόν τον σελιδοδείκτη δεν θα αφαιρεθούν.</string>
     <string name="register_account">Εγγραφή νέου λογαριασμού στον διακομιστή</string>
     <string name="change_password_on_server">Αλλαγή συνθηματικού στον διακομιστή</string>
     <string name="share_with">Διαμοιρασμός με...</string>
@@ -89,7 +89,7 @@
     <string name="clear_conversation_history">Καθαρισμός ιστορικού Συζήτησης</string>
     <string name="clear_histor_msg">Θέλετε να διαγράψετε όλα τα μηνύματα αυτής της συζήτησης;\n\n<b>Προσοχή:</b> Αυτή η ενέργεια δεν θα επηρεάσει μηνύματα που είναι αποθηκευμένα σε άλλες συσκευές ή εξυπηρετητές.</string>
     <string name="delete_file_dialog">Διαγραφή αρχείου</string>
-    <string name="delete_file_dialog_msg">Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτό το αρχείο;\n\n<b>Προσοχή</b> Αυτή η ενέργεια δεν θα διαγράψει αντίγραφα αυτού του αρχείου που είναι αποθηκευμένα σε άλλες συσκευές ή εξυπηρετητές.</string>
+    <string name="delete_file_dialog_msg">Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτό το αρχείο;\n\n<b>Προσοχή:</b> Αυτή η ενέργεια δεν θα διαγράψει αντίγραφα αυτού του αρχείου που είναι αποθηκευμένα σε άλλες συσκευές ή εξυπηρετητές.</string>
     <string name="also_end_conversation">Κλείσιμο της συζήτησης αμέσως μετά</string>
     <string name="choose_presence">Επιλογή συσκευής</string>
     <string name="send_unencrypted_message">Αποστολή μη κρυπτογραφημένου μηνύματος</string>
@@ -114,7 +114,7 @@
     <string name="contacts_have_no_pgp_keys">Δεν ήταν δυνατή η κρυπτογράφηση του μηνύματός σας γιατί οι επαφές σας δεν ανακοινώνουν το δημόσιο κλειδί τους.\n\n<small>Παρακαλώ ζητήστε από τις επαφές σας να εγκαταστήσουν το OpenPGP.</small></string>
     <string name="pref_general">Γενικά</string>
     <string name="pref_accept_files">Αποδοχή αρχείων</string>
-    <string name="pref_accept_files_summary">Αυτόματη αποδοχή αρχείων μικρότερα από...</string>
+    <string name="pref_accept_files_summary">Αυτόματη αποδοχή αρχείων μικρότερων από...</string>
     <string name="pref_attachments">Συνημμένα</string>
     <string name="pref_notification_settings">Ειδοποίηση</string>
     <string name="pref_vibrate">Δόνηση</string>
@@ -124,6 +124,7 @@
     <string name="pref_ringtone">Κουδούνισμα</string>
     <string name="pref_notification_sound">Ήχος ειδοποίησης</string>
     <string name="pref_notification_sound_summary">Ήχος ειδοποίησης για νέα μηνύματα</string>
+    <string name="pref_call_ringtone_summary">Ήχος κουδουνίσματος για εισερχόμενες κλήσεις</string>
     <string name="pref_notification_grace_period">Περίοδος Χάριτος</string>
     <string name="pref_notification_grace_period_summary">Ο χρόνος σίγασης ειδοποιήσεων αφότου ανιχνευθεί δραστηριότητα σε μια από τις άλλες συσκευές σας.</string>
     <string name="pref_advanced_options">Για προχωρημένους</string>
@@ -133,7 +134,7 @@
     <string name="pref_confirm_messages_summary">Επιτρέψτε στις επαφές σας να γνωρίζουν όταν έχετε λάβει και διαβάσει τα μηνύματά τους</string>
     <string name="pref_ui_options">Διεπαφή χρήστη</string>
     <string name="openpgp_error">Το OpenKeychain ανέφερε κάποιο σφάλμα.</string>
-    <string name="bad_key_for_encryption">Σφάλμα στο κλειδί κρυπτογράφησης</string>
+    <string name="bad_key_for_encryption">Σφάλμα στο κλειδί κρυπτογράφησης.</string>
     <string name="accept">Αποδοχή</string>
     <string name="error">Έχει συμβεί κάποιο σφάλμα</string>
     <string name="recording_error">Σφάλμα</string>
@@ -149,6 +150,7 @@
     <string name="error_file_not_found">Το αρχείο δεν βρέθηκε</string>
     <string name="error_io_exception">Γενικό σφάλμα εισόδου/εξόδου. Ίσως δεν έχετε ελεύθερο χώρο αποθήκευσης;</string>
     <string name="error_security_exception_during_image_copy">Η εφαρμογή που χρησιμοποιήσατε για να επιλέξετε αυτή την εικόνα δεν παραχώρησε αρκετά δικαιώματα για την ανάγνωση του αρχείου.\n\n<small>Χρησιμοποιήστε διαφορετικό διαχειριστή αρχείων για να επιλέξετε μια εικόνα</small></string>
+    <string name="error_security_exception">Η εφαρμογή που χρησιμοποιήσατε για να διαμοιραστείτε αυτό το αρχείο δεν παρείχε αρκετά δικαιώματα.</string>
     <string name="account_status_unknown">Άγνωστο</string>
     <string name="account_status_disabled">Προσωρινά απενεργοποιημένο</string>
     <string name="account_status_online">Σε σύνδεση</string>
@@ -163,6 +165,7 @@
     <string name="account_status_regis_not_sup">Ο διακομιστής δεν υποστηρίζει εγγραφή</string>
     <string name="account_status_regis_invalid_token">Άκυρο κουπόνι εγγραφής</string>
     <string name="account_status_tls_error">Αποτυχία διαπραγμάτευσης TLS</string>
+    <string name="account_status_tls_error_domain">Ο τομέας δεν είναι επαληθεύσιμος</string>
     <string name="account_status_policy_violation">Παραβίαση κανονισμού</string>
     <string name="account_status_incompatible_server">Μη συμβατός διακομιστής</string>
     <string name="account_status_stream_error">Σφάλμα μετάδοσης</string>
@@ -204,11 +207,11 @@
     <string name="server_info_unavailable">μη διαθέσιμος</string>
     <string name="missing_public_keys">Ελλειπείς ανακοινώσεις δημοσίων κλειδιών</string>
     <string name="last_seen_now">συνδέθηκε τελευταία φορά μόλις τώρα</string>
-    <string name="last_seen_min">τελευταία σύνδεση πριν από 1 λεπτό</string>
+    <string name="last_seen_min">τελευταία σύνδεση πριν από ένα λεπτό</string>
     <string name="last_seen_mins">τελευταία σύνδεση πριν από %d λεπτά</string>
-    <string name="last_seen_hour">τελευταία σύνδεση πριν από 1 ώρα</string>
+    <string name="last_seen_hour">τελευταία σύνδεση πριν από μία ώρα</string>
     <string name="last_seen_hours">τελευταία σύνδεση πριν από %d ώρες</string>
-    <string name="last_seen_day">τελευταία σύνδεση πριν από 1 μέρα</string>
+    <string name="last_seen_day">τελευταία σύνδεση πριν από μία μέρα</string>
     <string name="last_seen_days">τελευταία σύνδεση πριν από %d μέρες</string>
     <string name="install_openkeychain">Κρυπτογραφημένο μήνυμα. Παρακαλώ εγκαταστήστε το OpenKeychain για αποκρυπτογράφηση.</string>
     <string name="openpgp_messages_found">Βρέθηκαν νέα μηνύματα κρυπτογραφημένα με OpenPGP</string>
@@ -217,7 +220,7 @@
     <string name="omemo_fingerprint_x509">v\\Αποτύπωμα OMEMO</string>
     <string name="omemo_fingerprint_selected_message">Αποτύπωμα OMEMO (πηγή μηνύματος)</string>
     <string name="omemo_fingerprint_x509_selected_message">v\\Αποτύπωμα OMEMO (πηγή μηνύματος)</string>
-    <string name="other_devices">\'Αλλες συσκευές</string>
+    <string name="other_devices">Άλλες συσκευές</string>
     <string name="trust_omemo_fingerprints">Επαλήθευση των αποτυπωμάτων OMEMO</string>
     <string name="fetching_keys">Μεταφόρτωση κλειδιών...</string>
     <string name="done">Έγινε</string>
@@ -327,7 +330,7 @@
     <string name="notification_create_backup_title">Δημιουργία αντιγράφων ασφαλείας</string>
     <string name="notification_backup_created_title">Το αντίγραφο ασφαλείας σας έχει δημιουργηθεί</string>
     <string name="notification_backup_created_subtitle">Τα αρχεία του αντιγράφου ασφαλείας έχουν αποθηκευτεί στο %s</string>
-    <string name="restoring_backup">Επαναφορά αντιγράφου ασφαλείας</string>
+    <string name="restoring_backup">Γίνεται επαναφορά αντιγράφου ασφαλείας</string>
     <string name="notification_restored_backup_title">Έχει γίνει επαναφορά του αντιγράφου ασφαλείας σας</string>
     <string name="notification_restored_backup_subtitle">Μην παραλείψετε να ενεργοποιήσετε τον λογαριασμό.</string>
     <string name="choose_file">Επιλογή αρχείου</string>
@@ -338,7 +341,7 @@
     <string name="open_x_file">Άνοιγμα του %s</string>
     <string name="sending_file">αποστολή (ολοκλήρωση %1$d%%)</string>
     <string name="preparing_file">Προετοιμασία του αρχείου για διαμοιρασμό</string>
-    <string name="x_file_offered_for_download">%s προσφέρθηκε για μεταφόρτωση</string>
+    <string name="x_file_offered_for_download">Το %s προσφέρθηκε για μεταφόρτωση</string>
     <string name="cancel_transmission">Ακύρωση μετάδοσης</string>
     <string name="file_transmission_failed">ο διαμοιρασμός του αρχείου απέτυχε</string>
     <string name="file_transmission_cancelled">η μεταφορά αρχείου ακυρώθηκε</string>
@@ -418,10 +421,10 @@
     <string name="sending_x_file">Αποστολή του %s</string>
     <string name="offering_x_file">Προσφορά του %s</string>
     <string name="hide_offline">Απόκρυψη των εκτός σύνδεσης</string>
-    <string name="contact_is_typing">Η επαφή %s πληκτρολογεί...</string>
-    <string name="contact_has_stopped_typing">Η επαφή %s σταμάτησε να πληκτρολογεί</string>
-    <string name="contacts_are_typing">Οι επαφές %s πληκτρολογούν...</string>
-    <string name="contacts_have_stopped_typing">Η επαφές %s σταμάτησαν να πληκτρολογούν</string>
+    <string name="contact_is_typing">Ο/Η %s πληκτρολογεί...</string>
+    <string name="contact_has_stopped_typing">Ο/Η %s σταμάτησε να πληκτρολογεί</string>
+    <string name="contacts_are_typing">Οι %s πληκτρολογούν...</string>
+    <string name="contacts_have_stopped_typing">Οι %s σταμάτησαν να πληκτρολογούν</string>
     <string name="pref_chat_states">Ειδοποιήσεις πληκτρολόγησης</string>
     <string name="pref_chat_states_summary">Επιτρέψτε στις επαφές σας να γνωρίζουν πότε γράφετε μηνύματα προς αυτές</string>
     <string name="send_location">Αποστολή τοποθεσίας</string>
@@ -451,7 +454,7 @@
     <string name="search_contacts">Αναζήτηση επαφών</string>
     <string name="search_bookmarks">Αναζήτηση σελιδοδεικτών</string>
     <string name="send_private_message">Αποστολή ιδιωτικού μηνύματος</string>
-    <string name="user_has_left_conference">Η επαφή %1$s αποχώρησε από την ομαδική συζήτηση</string>
+    <string name="user_has_left_conference">Ο/Η %1$s αποχώρησε από την ομαδική συζήτηση</string>
     <string name="username">Όνομα χρήστη</string>
     <string name="username_hint">Όνομα χρήστη</string>
     <string name="invalid_username">Αυτό δεν είναι έγκυρο όνομα χρήστη</string>
@@ -464,6 +467,8 @@
     <string name="account_status_host_unknown">Ο διακομιστής δεν είναι υπεύθυνος για αυτόν τον τομέα</string>
     <string name="server_info_broken">Χαλασμένος</string>
     <string name="pref_presence_settings">Διαθεσιμότητα</string>
+    <string name="pref_away_when_screen_off">Εκτός χρήσης όταν η οθόνη είναι κλειδωμένη</string>
+    <string name="pref_away_when_screen_off_summary">Εμφάνιση παρουσίας ως εκτός χρήσης όταν η συσκευή κλειδώνεται</string>
     <string name="pref_dnd_on_silent_mode">Απασχολημένος/η όταν βρίσκεται σε σιωπηρή λειτουργία</string>
     <string name="pref_dnd_on_silent_mode_summary">Σημειώνει την παρουσία σας ως Απασχολημένος/η όταν η συσκευή είναι σε κατάσταση σιωπής</string>
     <string name="pref_treat_vibrate_as_silent">Χρήση της κατάστασης δόνησης ως σιωπηρή κατάσταση</string>
@@ -501,7 +506,7 @@
     <string name="load_more_messages">Φόρτωση περισσότερων μηνυμάτων</string>
     <string name="shared_file_with_x">Το αρχείο διαμοιράστηκε με την επαφή %s</string>
     <string name="shared_image_with_x">Η εικόνα διαμοιράστηκε με την επαφή %s</string>
-    <string name="shared_images_with_x">Η εικόνες διαμοιράστηκαν με την επαφή %s</string>
+    <string name="shared_images_with_x">Οι εικόνες διαμοιράστηκαν με την επαφή %s</string>
     <string name="shared_text_with_x">Το κείμενο διαμοιράστηκε με την επαφή %s</string>
     <string name="no_storage_permission">Απόδοση δικαιώματος στο %1$s για πρόσβαση στον εξωτερικό αποθηκευτικό χώρο</string>
     <string name="no_camera_permission">Απόδοση δικαιώματος στο %1$s για πρόσβαση στην φωτογραφική μηχανή</string>
@@ -577,7 +582,7 @@
     <string name="missing_internet_permission">Απόδοση δικαιώματος χρήσης Internet</string>
     <string name="me">Εγώ</string>
     <string name="contact_asks_for_presence_subscription">Η επαφή ζητά συνδρομή σε υπηρεσία παρουσίας</string>
-    <string name="allow">Επιτρέπω</string>
+    <string name="allow">Να επιτραπεί</string>
     <string name="no_permission_to_access_x">Δεν υπάρχει δικαίωμα για πρόσβαση στο %s</string>
     <string name="remote_server_not_found">Δεν βρέθηκε ο απομακρυσμένος διακομιστής</string>
     <string name="remote_server_timeout">Λήξη χρόνου για τον απομακρυσμένο διακομιστή</string>
@@ -833,7 +838,7 @@
     <string name="restore_warning">Μην χρησιμοποιείτε τη λειτουργία επαναφοράς αντιγράφων ασφαλείας για να κλωνοποιήσετε (ταυτόχρονη εκτέλεση) μια εγκατάσταση. Η επαναφορά αντιγράφου ασφαλείας προσφέρεται μόνο για μεταφορές ή σε περίπτωση που έχετε χάσει την αρχική συσκευή.</string>
     <string name="unable_to_restore_backup">Αδυναμία επαναφοράς αντιγράφου ασφαλείας.</string>
     <string name="unable_to_decrypt_backup">Αδυναμία αποκρυπτογράφησης του αντιγράφου ασφαλείας. Είναι ο κωδικός σωστός;</string>
-    <string name="backup_channel_name">Δημιουργία &amp; Επαναφορά αντιγράφων ασφαλείας</string>
+    <string name="backup_channel_name">Δημιουργία &amp; Επαναφορά</string>
     <string name="enter_jabber_id">Εισάγετε τη διεύθυνση XMPP</string>
     <string name="create_group_chat">Δημιουργία ομαδικής συζήτησης</string>
     <string name="join_public_channel">Είσοδος σε δημόσιο κανάλι</string>
@@ -893,8 +898,8 @@
     <string name="please_enable_an_account">Παρακαλώ ενεργοποιήστε έναν λογαριασμό</string>
     <string name="make_call">Νέα κλήση</string>
     <string name="rtp_state_incoming_call">Εισερχόμενη κλήση</string>
-    <string name="rtp_state_incoming_video_call">Εισερχόμενη κλήση βίντεο</string>
-    <string name="rtp_state_connecting">Σύνδεση</string>
+    <string name="rtp_state_incoming_video_call">Εισερχόμενη βιντεοκλήση</string>
+    <string name="rtp_state_connecting">Γίνεται σύνδεση</string>
     <string name="rtp_state_connected">Συνδέθηκε</string>
     <string name="rtp_state_accepting_call">Αποδοχή κλήσης</string>
     <string name="rtp_state_ending_call">Τερματισμός κλήσης</string>
@@ -909,7 +914,7 @@
     <string name="rtp_state_application_failure">Αποτυχία εφαρμογής</string>
     <string name="hang_up">Τερματισμός κλήσης</string>
     <string name="ongoing_call">Κλήση σε εξέλιξη</string>
-    <string name="ongoing_video_call">Κλήση βίντεο σε εξέλιξη</string>
+    <string name="ongoing_video_call">Βιντεοκλήση σε εξέλιξη</string>
     <string name="disable_tor_to_make_call">Απενεργοποίηστε το Tor για να κάνετε κλήσεις</string>
     <string name="incoming_call">Εισερχόμενη κλήση</string>
     <string name="incoming_call_duration">Εισερχόμενη κλήση · %s</string>
@@ -918,7 +923,7 @@
     <string name="outgoing_call_duration">Εξερχόμενη κλήση · %s</string>
     <string name="missed_call">Αναπάντηση κλήση</string>
     <string name="audio_call">Κλήση ήχου</string>
-    <string name="video_call">Κλήση βίντεο</string>
+    <string name="video_call">Βιντεοκλήση</string>
     <string name="help">Βοήθεια</string>
     <string name="switch_to_conversation">Εναλλαγή στη συζήτηση</string>
     <string name="microphone_unavailable">Το μικρόφωνο δεν είναι διαθέσιμο</string>
@@ -949,11 +954,13 @@
         <item quantity="one">Κάποιο μήνυμα δεν ήταν δυνατό να παραδοθεί</item>
         <item quantity="other">Κάποια μηνύματα δεν ήταν δυνατό να παραδοθούν</item>
     </plurals>
-    <string name="failed_deliveries">Αποτυχημένες διανομές</string>
+    <string name="failed_deliveries">Αποτυχημένες παραδόσεις</string>
     <string name="more_options">Περισσότερες επιλογές</string>
     <string name="no_application_found">Δεν βρέθηκε εφαρμογή</string>
     <string name="invite_to_app">Πρόσκληση στο Conversations</string>
     <string name="unable_to_parse_invite">Αδυναμία ανάγνωσης πρόσκλησης</string>
     <string name="server_does_not_support_easy_onboarding_invites">Ο διακομιστής δεν υποστηρίζει την δημιουργία προσκλήσεων</string>
     <string name="no_active_accounts_support_this">Κανένας από τους ενεργούς λογαριασμούς δεν υποστηρίζει αυτό το χαρακτηριστικό</string>
+    <string name="backup_started_message">Το αντίγραφο ασφαλείας δημιουργείται. Θα λάβετε ειδοποίηση όταν ολοκληρωθεί.</string>
+    <string name="unable_to_enable_video">Αδυναμία ενεργοποίησης βίντεο.</string>
     </resources>

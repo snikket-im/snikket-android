@@ -950,4 +950,4 @@
     <string name="no_active_accounts_support_this">没有活跃帐户支持此功能</string>
     <string name="backup_started_message">已启动备份。一旦完成，你会收到通知。</string>
     <string name="unable_to_enable_video">无法启用视频</string>
-</resources>
+    </resources>

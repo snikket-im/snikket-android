@@ -150,6 +150,7 @@
     <string name="error_file_not_found">File non trovato</string>
     <string name="error_io_exception">Errore di I/O generico. Forse hai esaurito lo spazio?</string>
     <string name="error_security_exception_during_image_copy">L’app che hai usato per selezionare questa immagine non ha fornito autorizzazioni sufficienti per leggere il file.\n\n<small>Usa un gestore di file differente per scegliere un’immagine</small></string>
+    <string name="error_security_exception">L\'app che hai usato per condividere questo file non ha fornito autorizzazioni sufficienti.</string>
     <string name="account_status_unknown">Sconosciuto</string>
     <string name="account_status_disabled">Disattivato temporaneamente</string>
     <string name="account_status_online">Online</string>
@@ -164,6 +165,7 @@
     <string name="account_status_regis_not_sup">Registrazione non supportata dal server</string>
     <string name="account_status_regis_invalid_token">Token di registrazione non valido</string>
     <string name="account_status_tls_error">Negoziazione TLS fallita</string>
+    <string name="account_status_tls_error_domain">Dominio non verificabile</string>
     <string name="account_status_policy_violation">Violazione della policy</string>
     <string name="account_status_incompatible_server">Server non compatibile</string>
     <string name="account_status_stream_error">Errore di stream</string>
@@ -960,4 +962,5 @@
     <string name="server_does_not_support_easy_onboarding_invites">Il server non supporta la generazione di inviti</string>
     <string name="no_active_accounts_support_this">Nessun account attivo supporta questa funzione</string>
     <string name="backup_started_message">Il backup è iniziato. Riceverai una notifica una volta completato.</string>
+    <string name="unable_to_enable_video">Impossibile attivare il video.</string>
     </resources>

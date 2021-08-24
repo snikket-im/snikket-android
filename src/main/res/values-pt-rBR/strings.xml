@@ -963,4 +963,4 @@
     <string name="no_active_accounts_support_this">Nenhuma conta ativa suporta esse recurso</string>
     <string name="backup_started_message">O backup foi iniciado. Você receberá uma notificação assim que ele for concluído.</string>
     <string name="unable_to_enable_video">Não foi possível habilitar o vídeo.</string>
-</resources>
+    </resources>

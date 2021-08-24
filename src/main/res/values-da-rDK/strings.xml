@@ -150,6 +150,7 @@
     <string name="error_file_not_found">Fil ikke fundet</string>
     <string name="error_io_exception">General I/O fejl. Måske er du kørt tør for lagerplads?</string>
     <string name="error_security_exception_during_image_copy">Appen du brugte til at vælge dette billede havde ikke tilstrækkelig tilladelse til at læse filen.\n\n<small>Brug en anden filmanager til at vælge et billede</small>.</string>
+    <string name="error_security_exception">Appen du brugte til at dele denne fil har ikke givet nok tilladelser.</string>
     <string name="account_status_unknown">Ukendt</string>
     <string name="account_status_disabled">Midlertidigt deaktiveret</string>
     <string name="account_status_online">Online</string>
@@ -164,6 +165,7 @@
     <string name="account_status_regis_not_sup">Registrering er ikke understøttet af server</string>
     <string name="account_status_regis_invalid_token">Ugyldig registreringstoken</string>
     <string name="account_status_tls_error">TLS forhandling mislykkedes</string>
+    <string name="account_status_tls_error_domain">Domæne kan ikke verificeres</string>
     <string name="account_status_policy_violation">Brud på retningslinjer</string>
     <string name="account_status_incompatible_server">Inkompatibel server</string>
     <string name="account_status_stream_error">Strømfejl</string>
@@ -960,4 +962,5 @@
     <string name="server_does_not_support_easy_onboarding_invites">Server understøtter ikke generering af invitationer</string>
     <string name="no_active_accounts_support_this">Ingen aktive konti understøtter denne funktion</string>
     <string name="backup_started_message">Sikkerhedskopieringen er startet. Du får en notifikation, når den er afsluttet.</string>
+    <string name="unable_to_enable_video">Kunne ikke aktivere video.</string>
     </resources>

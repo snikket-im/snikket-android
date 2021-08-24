@@ -156,6 +156,7 @@
     <string name="error_file_not_found">Файл не найден</string>
     <string name="error_io_exception">Общая ошибка ввода/вывода. Возможно, на устройстве недостаточно свободного места?</string>
     <string name="error_security_exception_during_image_copy">У приложения, которым вы выбрали это изображение, недостаточно прав, чтобы прочитать этот файл.\n\n<small>Пожалуйста, используйте другой файловый менеджер, чтобы выбрать это изображение</small>.</string>
+    <string name="error_security_exception">Приложение, которое вы использовали для публикации этого файла, не предоставило достаточно разрешений.</string>
     <string name="account_status_unknown">Неизвестен</string>
     <string name="account_status_disabled">Временно отключён</string>
     <string name="account_status_online">В сети</string>
@@ -170,6 +171,7 @@
     <string name="account_status_regis_not_sup">Сервер не поддерживает возможность регистрации</string>
     <string name="account_status_regis_invalid_token">Неправильный токен регистрации</string>
     <string name="account_status_tls_error">Не удалось согласовать TLS</string>
+    <string name="account_status_tls_error_domain">Домен не поддается проверке</string>
     <string name="account_status_policy_violation">Нарушение правил</string>
     <string name="account_status_incompatible_server">Несовместимый сервер</string>
     <string name="account_status_stream_error">Ошибка потока</string>
@@ -986,4 +988,5 @@
     <string name="server_does_not_support_easy_onboarding_invites">Сервер не поддерживает создание приглашений</string>
     <string name="no_active_accounts_support_this">Ни один активный аккаунт не поддерживает эту функцию</string>
     <string name="backup_started_message">Резервное копирование было начато. Вы получите уведомление, как только оно будет завершено. </string>
+    <string name="unable_to_enable_video">Невозможно включить видео.</string>
     </resources>
