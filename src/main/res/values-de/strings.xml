@@ -132,6 +132,8 @@
     <string name="pref_never_send_crash_summary">Mit dem Einsenden von Absturzberichten hilfst du bei der Weiterentwicklung</string>
     <string name="pref_confirm_messages">Lese- und Empfangsbestätigung senden</string>
     <string name="pref_confirm_messages_summary">Informiere deine Kontakte, wenn du eine Nachricht empfangen und gelesen hast</string>
+    <string name="pref_prevent_screenshots">Screenshots verhindern</string>
+    <string name="pref_prevent_screenshots_summary">Ausblenden von App-Inhalten im App-Switcher und Blockieren von Screenshots</string>
     <string name="pref_ui_options">Benutzeroberfläche</string>
     <string name="openpgp_error">OpenKeychain verursachte einen Fehler.</string>
     <string name="bad_key_for_encryption">Fehlerhafter Schlüssel für die Verschlüsselung.</string>
@@ -414,6 +416,7 @@
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="image">Bild</string>
+    <string name="vector_graphic">Vektorgrafik</string>
     <string name="pdf_document">PDF-Dokument</string>
     <string name="apk">Android App</string>
     <string name="vcard">Kontakt</string>
@@ -912,6 +915,7 @@
     <string name="rtp_state_connectivity_lost_error">Verbindung unterbrochen</string>
     <string name="rtp_state_retracted">Anruf zurückgenommen</string>
     <string name="rtp_state_application_failure">App-Fehler</string>
+    <string name="rtp_state_security_error">Verifikationsproblem</string>
     <string name="hang_up">Auflegen</string>
     <string name="ongoing_call">Laufender Anruf</string>
     <string name="ongoing_video_call">Laufender Videoanruf</string>
@@ -963,4 +967,6 @@
     <string name="no_active_accounts_support_this">Keine aktiven Konten unterstützen diese Funktion</string>
     <string name="backup_started_message">Das Backup wurde gestartet. Du bekommst eine Benachrichtigung sobald es fertig ist.</string>
     <string name="unable_to_enable_video">Video kann nicht aktiviert werden.</string>
-    </resources>
+    <string name="plain_text_document">Textdokument</string>
+
+</resources>

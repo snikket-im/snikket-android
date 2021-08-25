@@ -129,6 +129,8 @@
     <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您可以帮助Conversations持续发展</string>
     <string name="pref_confirm_messages">确认消息</string>
     <string name="pref_confirm_messages_summary">让对方知道你收到并阅读了他们的消息</string>
+    <string name="pref_prevent_screenshots">防止截屏</string>
+    <string name="pref_prevent_screenshots_summary">在应用切换中隐藏应用程序内容并阻止截图</string>
     <string name="pref_ui_options">用户界面</string>
     <string name="openpgp_error">OpenKeychain报告一个错误。</string>
     <string name="bad_key_for_encryption">错误的密钥</string>
@@ -411,6 +413,7 @@
     <string name="audio">音频</string>
     <string name="video">视频</string>
     <string name="image">图片</string>
+    <string name="vector_graphic">矢量图</string>
     <string name="pdf_document">PDF文档</string>
     <string name="apk">Android App</string>
     <string name="vcard">联系人</string>
@@ -901,6 +904,7 @@
     <string name="rtp_state_connectivity_lost_error">连接丢失</string>
     <string name="rtp_state_retracted">通话已撤销</string>
     <string name="rtp_state_application_failure">程序错误</string>
+    <string name="rtp_state_security_error">验证问题</string>
     <string name="hang_up">挂断</string>
     <string name="ongoing_call">正在进行的通话</string>
     <string name="ongoing_video_call">正在进行的视频通话</string>
@@ -950,4 +954,6 @@
     <string name="no_active_accounts_support_this">没有活跃帐户支持此功能</string>
     <string name="backup_started_message">已启动备份。一旦完成，你会收到通知。</string>
     <string name="unable_to_enable_video">无法启用视频</string>
-    </resources>
+    <string name="plain_text_document">纯文本文档</string>
+
+</resources>

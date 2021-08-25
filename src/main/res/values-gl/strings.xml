@@ -132,6 +132,8 @@
     <string name="pref_never_send_crash_summary">Ao enviar trazas do sistema estás axudando ao desenvolvemento</string>
     <string name="pref_confirm_messages">Confirmación de mensaxes</string>
     <string name="pref_confirm_messages_summary">Permitir aos teus contactos saber se recibiches e liches as súas mensaxes</string>
+    <string name="pref_prevent_screenshots">Evitar capturas de pantalla</string>
+    <string name="pref_prevent_screenshots_summary">Agochar os contidos da app no cambiador de apps e bloquear pantallazos</string>
     <string name="pref_ui_options">Interface</string>
     <string name="openpgp_error">OpenKeychain producíu un erro.</string>
     <string name="bad_key_for_encryption">Chave incorrecta para cifrar.</string>
@@ -414,6 +416,7 @@
     <string name="audio">son</string>
     <string name="video">video</string>
     <string name="image">imaxe</string>
+    <string name="vector_graphic">gráfico de vector</string>
     <string name="pdf_document">documento PDF</string>
     <string name="apk">App Android</string>
     <string name="vcard">Contacto</string>
@@ -912,6 +915,7 @@
     <string name="rtp_state_connectivity_lost_error">Perdeuse a conexión</string>
     <string name="rtp_state_retracted">Chamada cortada</string>
     <string name="rtp_state_application_failure">Fallo na aplicación</string>
+    <string name="rtp_state_security_error">Problema na verificación</string>
     <string name="hang_up">Colgar</string>
     <string name="ongoing_call">Chamada en curso</string>
     <string name="ongoing_video_call">Videochamada en curso</string>
@@ -963,4 +967,6 @@
     <string name="no_active_accounts_support_this">Ningunha conta activa soporta esta función</string>
     <string name="backup_started_message">Comezou a creación da copia de apoio. Recibirás unha notificación cando remate.</string>
     <string name="unable_to_enable_video">Non se puido activar o vídeo.</string>
-    </resources>
+    <string name="plain_text_document">Documento de texto plano</string>
+
+</resources>
