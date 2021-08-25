@@ -186,10 +186,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), ConferenceDetailsActivity.class);
-            intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-            intent.putExtra("uuid", conversation.getUuid());
-            startActivity(intent);
+            ConferenceDetailsActivity.open(getActivity(), conversation);
         }
     };
     private final OnClickListener leaveMuc = new OnClickListener() {
@@ -1272,10 +1269,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 activity.switchToContactDetails(conversation.getContact());
                 break;
             case R.id.action_muc_details:
-                Intent intent = new Intent(getActivity(), ConferenceDetailsActivity.class);
-                intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-                intent.putExtra("uuid", conversation.getUuid());
-                startActivity(intent);
+                ConferenceDetailsActivity.open(getActivity(), conversation);
                 break;
             case R.id.action_invite:
                 startActivityForResult(ChooseContactActivity.create(activity, conversation), REQUEST_INVITE_TO_CONVERSATION);
