@@ -425,16 +425,18 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private void openConversation(Conversation conversation, Bundle extras) {
-        ConversationFragment conversationFragment = (ConversationFragment) getFragmentManager().findFragmentById(R.id.secondary_fragment);
+        final FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.executePendingTransactions();
+        ConversationFragment conversationFragment = (ConversationFragment) fragmentManager.findFragmentById(R.id.secondary_fragment);
         final boolean mainNeedsRefresh;
         if (conversationFragment == null) {
             mainNeedsRefresh = false;
-            Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+            final Fragment mainFragment = fragmentManager.findFragmentById(R.id.main_fragment);
             if (mainFragment instanceof ConversationFragment) {
                 conversationFragment = (ConversationFragment) mainFragment;
             } else {
                 conversationFragment = new ConversationFragment();
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.main_fragment, conversationFragment);
                 fragmentTransaction.addToBackStack(null);
                 try {
@@ -562,17 +564,18 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private void initializeFragments() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
-        Fragment secondaryFragment = getFragmentManager().findFragmentById(R.id.secondary_fragment);
+        final FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        final Fragment mainFragment = fragmentManager.findFragmentById(R.id.main_fragment);
+        final Fragment secondaryFragment = fragmentManager.findFragmentById(R.id.secondary_fragment);
         if (mainFragment != null) {
             if (binding.secondaryFragment != null) {
                 if (mainFragment instanceof ConversationFragment) {
                     getFragmentManager().popBackStack();
                     transaction.remove(mainFragment);
                     transaction.commit();
-                    getFragmentManager().executePendingTransactions();
-                    transaction = getFragmentManager().beginTransaction();
+                    fragmentManager.executePendingTransactions();
+                    transaction = fragmentManager.beginTransaction();
                     transaction.replace(R.id.secondary_fragment, mainFragment);
                     transaction.replace(R.id.main_fragment, new ConversationsOverviewFragment());
                     transaction.commit();
@@ -583,7 +586,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                     transaction.remove(secondaryFragment);
                     transaction.commit();
                     getFragmentManager().executePendingTransactions();
-                    transaction = getFragmentManager().beginTransaction();
+                    transaction = fragmentManager.beginTransaction();
                     transaction.replace(R.id.main_fragment, secondaryFragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
