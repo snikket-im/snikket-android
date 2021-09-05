@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.google.common.base.Strings;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -247,7 +249,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public String getHostname() {
-        return this.hostname == null ? "" : this.hostname;
+        return Strings.nullToEmpty(this.hostname);
     }
 
     public void setHostname(String hostname) {

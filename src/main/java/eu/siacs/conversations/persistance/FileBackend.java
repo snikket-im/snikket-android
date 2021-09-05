@@ -31,6 +31,7 @@ import android.util.LruCache;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.core.content.FileProvider;
+import androidx.exifinterface.media.ExifInterface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -64,7 +65,6 @@ import eu.siacs.conversations.ui.RecordingActivity;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.ExifHelper;
 import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.FileWriterException;
 import eu.siacs.conversations.utils.MimeUtils;
@@ -808,19 +808,34 @@ public class FileBackend {
         }
     }
 
-    private int getRotation(File file) {
-        return getRotation(Uri.parse("file://" + file.getAbsolutePath()));
+    private int getRotation(final File file) {
+        try (final InputStream inputStream = new FileInputStream(file)) {
+            return getRotation(inputStream);
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
-    private int getRotation(Uri image) {
-        InputStream is = null;
-        try {
-            is = mXmppConnectionService.getContentResolver().openInputStream(image);
-            return ExifHelper.getOrientation(is);
-        } catch (FileNotFoundException e) {
+    private int getRotation(final Uri image) {
+        try (final InputStream is = mXmppConnectionService.getContentResolver().openInputStream(image)) {
+            return is == null ? 0 : getRotation(is);
+        } catch (final Exception e) {
             return 0;
-        } finally {
-            close(is);
+        }
+    }
+
+    private static int getRotation(final InputStream inputStream) throws IOException {
+        final ExifInterface exif = new ExifInterface(inputStream);
+        final int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return 180;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return 90;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return 270;
+            default:
+                return 0;
         }
     }
 
@@ -1468,7 +1483,8 @@ public class FileBackend {
             this.resId = resId;
         }
 
-        public @StringRes int getResId() {
+        public @StringRes
+        int getResId() {
             return resId;
         }
     }
