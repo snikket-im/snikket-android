@@ -1884,7 +1884,10 @@ public class XmppConnectionService extends Service {
             long diffConversationsRestore = SystemClock.elapsedRealtime() - startTimeConversationsRestore;
             Log.d(Config.LOGTAG, "finished restoring conversations in " + diffConversationsRestore + "ms");
             Runnable runnable = () -> {
-                long deletionDate = getAutomaticMessageDeletionDate();
+                if (DatabaseBackend.requiresMessageIndexRebuild()) {
+                    DatabaseBackend.getInstance(this).rebuildMessagesIndex();
+                }
+                final long deletionDate = getAutomaticMessageDeletionDate();
                 mLastExpiryRun.set(SystemClock.elapsedRealtime());
                 if (deletionDate > 0) {
                     Log.d(Config.LOGTAG, "deleting messages that are older than " + AbstractGenerator.getTimestamp(deletionDate));
