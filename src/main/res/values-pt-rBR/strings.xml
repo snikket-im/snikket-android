@@ -132,6 +132,8 @@
     <string name="pref_never_send_crash_summary">Ao enviar os stack traces você está colaborando com o desenvolvimento</string>
     <string name="pref_confirm_messages">Confirmação de mensagens</string>
     <string name="pref_confirm_messages_summary">Permite que seus contatos saibam quando você recebeu e leu as mensagens deles.</string>
+    <string name="pref_prevent_screenshots">Impedir capturas de tela</string>
+    <string name="pref_prevent_screenshots_summary">Esconde o conteúdo do app no alternador de apps e bloqueia capturas de tela</string>
     <string name="pref_ui_options">IU</string>
     <string name="openpgp_error">O OpenKeychain produziu um erro.</string>
     <string name="bad_key_for_encryption">Chave ruim para a criptografia</string>
@@ -414,6 +416,7 @@
     <string name="audio">áudio</string>
     <string name="video">vídeo</string>
     <string name="image">imagem</string>
+    <string name="vector_graphic">gráfico vetorial</string>
     <string name="pdf_document">Documento PDF</string>
     <string name="apk">Aplicativo Android</string>
     <string name="vcard">Contato</string>
@@ -912,6 +915,7 @@
     <string name="rtp_state_connectivity_lost_error">Conexão perdida</string>
     <string name="rtp_state_retracted">Chamada rejeitada</string>
     <string name="rtp_state_application_failure">Falha no aplicativo</string>
+    <string name="rtp_state_security_error">Problema de verificação</string>
     <string name="hang_up">Desligar</string>
     <string name="ongoing_call">Chamada em andamento</string>
     <string name="ongoing_video_call">Chamada de vídeo em andamento</string>
@@ -963,4 +967,6 @@
     <string name="no_active_accounts_support_this">Nenhuma conta ativa suporta esse recurso</string>
     <string name="backup_started_message">O backup foi iniciado. Você receberá uma notificação assim que ele for concluído.</string>
     <string name="unable_to_enable_video">Não foi possível habilitar o vídeo.</string>
-    </resources>
+    <string name="plain_text_document">Documento em texto puro</string>
+
+</resources>

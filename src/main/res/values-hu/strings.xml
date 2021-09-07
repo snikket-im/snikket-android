@@ -53,6 +53,7 @@
     <string name="unblock_domain_text">%s összes partnerének tiltását feloldja?</string>
     <string name="contact_blocked">Partner tiltva</string>
     <string name="blocked">Tiltva</string>
+    <string name="remove_bookmark_text">Szeretné eltávolítani ezt a könyvjelzőkből: %s? Ezzel a könyvjelzővel megjelölt beszélgetései nem lesznek eltávolítva.</string>
     <string name="register_account">Új fiók regisztrálása a kiszolgálón</string>
     <string name="change_password_on_server">Jelszó megváltoztatása a kiszolgálón</string>
     <string name="share_with">Megosztás ezzel…</string>
@@ -70,6 +71,8 @@
     <string name="unblock">Tiltás feloldása</string>
     <string name="save">Mentés</string>
     <string name="ok">Rendben</string>
+    <string name="crash_report_title">%1$s összeomlott</string>
+    <string name="crash_report_message">Azzal, hogy az XMPP fiókja használatával beküldi a veremkiíratásokat, elősegítheti a %1$s alkalmazás folyamatos fejlesztését.</string>
     <string name="send_now">Küldés most</string>
     <string name="send_never">Sose kérdezzen újra</string>
     <string name="problem_connecting_to_account">Nem sikerült kapcsolódni a fiókhoz</string>
@@ -99,6 +102,7 @@
     <string name="send_unencrypted">Küldés titkosítatlanul</string>
     <string name="decryption_failed">A visszafejtés sikertelen. Talán nem rendelkezik a megfelelő személyes kulccsal.</string>
     <string name="openkeychain_required">OpenKeychain</string>
+    <string name="openkeychain_required_long"><![CDATA[A %1$s az <b>OpenKeychain</b> alkalmazást használja az üzenetek titkosításához és visszafejtéséhez, valamint a személyes kulcsai kezeléséhez.<br><br>Ez GPLv3+ szerint licencelt, és elérhető az F-Droid és a Google Play szoftveráruházakban.<br><br><small>(Ezután indítsa újra a %1$s alkalmazást.)</small>]]></string>
     <string name="restart">Újraindítás</string>
     <string name="install">Telepítés</string>
     <string name="openkeychain_not_installed">Telepítse az OpenKeychain alkalmazás</string>
@@ -120,6 +124,7 @@
     <string name="pref_ringtone">Csengőhang</string>
     <string name="pref_notification_sound">Értesítési hang</string>
     <string name="pref_notification_sound_summary">Értesítési hang új üzeneteknél</string>
+    <string name="pref_call_ringtone_summary">Csengőhang bejövő hívásnál</string>
     <string name="pref_notification_grace_period">Türelmi idő</string>
     <string name="pref_notification_grace_period_summary">Az időtartam, amíg az értesítések némítva vannak az egyéb eszközei egyikén történt tevékenység észlelése után.</string>
     <string name="pref_advanced_options">Speciális</string>
@@ -127,7 +132,10 @@
     <string name="pref_never_send_crash_summary">A veremkiíratások elküldésével segíti a fejlesztést</string>
     <string name="pref_confirm_messages">Üzenetek megerősítése</string>
     <string name="pref_confirm_messages_summary">Tudassa a partnereivel, hogy megkapta és elolvasta az üzeneteiket</string>
+    <string name="pref_prevent_screenshots">Képernyőfotó készítésének megakadályozása</string>
+    <string name="pref_prevent_screenshots_summary">Az alkalmazás tartalmának elrejtése az alkalmazásváltóban és a képernyőfotók blokkolása</string>
     <string name="pref_ui_options">Felhasználói felület</string>
+    <string name="openpgp_error">Az OpenKeychain hibát produkált.</string>
     <string name="bad_key_for_encryption">Rossz kulcs a titkosításhoz.</string>
     <string name="accept">Elfogadás</string>
     <string name="error">Hiba történt</string>
@@ -143,6 +151,8 @@
     <string name="error_compressing_image">Nem sikerült átalakítani a képet</string>
     <string name="error_file_not_found">A fájl nem található</string>
     <string name="error_io_exception">Általános bemeneti/kimeneti hiba. Talán elfogyott a tárolóhely?</string>
+    <string name="error_security_exception_during_image_copy">A kép kiválasztásához használt alkalmazás nem biztosított számunkra elegendő jogosultságot a fájl olvasásához.\n\n<small>Használjon másik fájlkezelőt a kép kiválasztásához</small></string>
+    <string name="error_security_exception">A fájl megosztásához használt alkalmazás nem biztosított számunkra elegendő jogosultságot.</string>
     <string name="account_status_unknown">Ismeretlen</string>
     <string name="account_status_disabled">Átmenetileg letiltva</string>
     <string name="account_status_online">Elérhető</string>
@@ -157,6 +167,7 @@
     <string name="account_status_regis_not_sup">A kiszolgáló nem támogatja a regisztrációt</string>
     <string name="account_status_regis_invalid_token">Érvénytelen regisztrációs token</string>
     <string name="account_status_tls_error">A TLS-egyeztetés sikertelen</string>
+    <string name="account_status_tls_error_domain">Tartomány nem ellenőrizhető</string>
     <string name="account_status_policy_violation">Irányelv megsértése</string>
     <string name="account_status_incompatible_server">Nem kompatibilis kiszolgáló</string>
     <string name="account_status_stream_error">Adatfolyamhiba</string>
@@ -174,6 +185,7 @@
     <string name="openpgp_has_been_published">Az OpenPGP nyilvános kulcs közzé lett téve.</string>
     <string name="mgmt_account_enable">Fiók engedélyezése</string>
     <string name="mgmt_account_are_you_sure">Biztos benne?</string>
+    <string name="mgmt_account_delete_confirm_text">A fiók törlésével az összes beszélgetési előzményei is eltávolításra kerülnek</string>
     <string name="attach_record_voice">Hang rögzítése</string>
     <string name="account_settings_jabber_id">XMPP-cím</string>
     <string name="block_jabber_id">XMPP-cím tiltása</string>
@@ -204,6 +216,7 @@
     <string name="last_seen_day">egy napja volt aktív</string>
     <string name="last_seen_days">%d napja volt aktív</string>
     <string name="install_openkeychain">Titkosított üzenet. Telepítse az OpenKeychain alkalmazást a visszafejtéshez.</string>
+    <string name="openpgp_messages_found">Új OpenPGP titkosítású üzenetek találhatók</string>
     <string name="openpgp_key_id">OpenPGP kulcsazonosító</string>
     <string name="omemo_fingerprint">OMEMO ujjlenyomat</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO ujjlenyomat</string>
@@ -394,6 +407,7 @@
     <string name="audio">hang</string>
     <string name="video">videó</string>
     <string name="image">kép</string>
+    <string name="vector_graphic">vektorgrafika</string>
     <string name="pdf_document">PDF-dokumentum</string>
     <string name="apk">Android alkalmazás</string>
     <string name="vcard">Partner</string>
@@ -447,6 +461,8 @@
     <string name="account_status_host_unknown">A kiszolgáló nem felelős a tartományért</string>
     <string name="server_info_broken">Törött</string>
     <string name="pref_presence_settings">Elérhetőség</string>
+    <string name="pref_away_when_screen_off">Távol, ha az eszköz le van zárva</string>
+    <string name="pref_away_when_screen_off_summary">Mutasson „Távoli”-ként, ha az eszköz le van zárva</string>
     <string name="pref_treat_vibrate_as_silent">Rezgés kezelése csendes módként</string>
     <string name="pref_show_connection_options">Kiterjesztett kapcsolati beállítások</string>
     <string name="pref_show_connection_options_summary">Gépnév és port beállításainak megjelenítése egy fiók beállításakor</string>

@@ -138,6 +138,8 @@
     <string name="pref_never_send_crash_summary">Wysyłając nam ślady stosu pomagasz w rozwoju</string>
     <string name="pref_confirm_messages">Potwierdzenia wiadomości</string>
     <string name="pref_confirm_messages_summary">Zezwól na wysyłanie do osób z twojej listy kontaktów informacji o tym, kiedy otrzymałeś i przeczytałeś wiadomość od nich</string>
+    <string name="pref_prevent_screenshots">Zapobiegaj zrzutom ekranu</string>
+    <string name="pref_prevent_screenshots_summary">Ukryj zawartość aplikacji w podglądzie aplikacji oraz zablokuj zrzuty ekranu </string>
     <string name="pref_ui_options">UI</string>
     <string name="openpgp_error">OpenKeychain zgłosiło błąd.</string>
     <string name="bad_key_for_encryption">Zły klucz szyfrowania.</string>
@@ -420,6 +422,7 @@
     <string name="audio">plik audio</string>
     <string name="video">plik wideo</string>
     <string name="image">obraz</string>
+    <string name="vector_graphic">grafika wektorowa</string>
     <string name="pdf_document">Dokument PDF</string>
     <string name="apk">Aplikacja Androida</string>
     <string name="vcard">Kontakt</string>
@@ -935,6 +938,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="rtp_state_connectivity_lost_error">Utracono połączenie</string>
     <string name="rtp_state_retracted">Anulowane połączenie</string>
     <string name="rtp_state_application_failure">Błąd aplikacji</string>
+    <string name="rtp_state_security_error">Problem z weryfikacją </string>
     <string name="hang_up">Rozłącz</string>
     <string name="ongoing_call">Połączenie wychodzące</string>
     <string name="ongoing_video_call">Wideorozmowa wychodząca</string>
@@ -990,4 +994,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="no_active_accounts_support_this">Nie ma aktywnych kont wspierających tę funkcję</string>
     <string name="backup_started_message">Tworzenie kopii zapasowej się rozpoczęło. Dostaniesz powiadomienie kiedy się zakończy. </string>
     <string name="unable_to_enable_video">Nie można włączyć wideo. </string>
-    </resources>
+    <string name="plain_text_document">Dokument zwykłego tekstu</string>
+
+</resources>

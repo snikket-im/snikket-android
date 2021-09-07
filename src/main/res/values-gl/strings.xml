@@ -131,7 +131,7 @@
     <string name="pref_never_send_crash">Nunca enviar informe de erros</string>
     <string name="pref_never_send_crash_summary">Ao enviar trazas do sistema estás axudando ao desenvolvemento</string>
     <string name="pref_confirm_messages">Confirmación de mensaxes</string>
-    <string name="pref_confirm_messages_summary">Permitir aos teus contactos saber se recibiches e liches as súas mensaxes</string>
+    <string name="pref_confirm_messages_summary">Permitir aos teus contactos saber se recibiches e leches as súas mensaxes</string>
     <string name="pref_prevent_screenshots">Evitar capturas de pantalla</string>
     <string name="pref_prevent_screenshots_summary">Agochar os contidos da app no cambiador de apps e bloquear pantallazos</string>
     <string name="pref_ui_options">Interface</string>
@@ -151,7 +151,7 @@
     <string name="error_compressing_image">Non se puido converter o ficheiro de imaxe</string>
     <string name="error_file_not_found">Arquivo non atopado</string>
     <string name="error_io_exception">Erro xeral de I/O. ¿Quedaches sen espazo no disco?</string>
-    <string name="error_security_exception_during_image_copy">A app utilizada para escoller esta imaxe non deu permisos suficientes para ler o ficheiro.\n\n<small>Usa un xestor de ficheiros diferente para escoller a imaxe</small></string>
+    <string name="error_security_exception_during_image_copy">A app utilizada para seleccionar esta imaxe non deu permisos suficientes para ler o ficheiro.\n\n<small>Usa un xestor de ficheiros diferente para elexir a imaxe</small></string>
     <string name="error_security_exception">A app que usaches para compartir este ficheiro non concedeu os permisos suficientes.</string>
     <string name="account_status_unknown">Descoñecido</string>
     <string name="account_status_disabled">Desactivado temporalmente</string>
@@ -624,7 +624,7 @@
     <string name="verifying_omemo_keys_trusted_source">Vas verificar as chaves OMEMO de %1$s despois de premer na ligazón. Esto só é seguro se seguiches esta ligazón desde unha fonte de confianza onde só %2$s a podería ter publicado.</string>
     <string name="verify_omemo_keys">Validar chaves OMEMO</string>
     <string name="show_inactive_devices">Mostrar inactivos</string>
-    <string name="hide_inactive_devices">Amagar inactivos</string>
+    <string name="hide_inactive_devices">Agochar inactivos</string>
     <string name="distrust_omemo_key">Retirar confianza a dispositivo</string>
     <string name="distrust_omemo_key_text">Tes a certeza de que queres eliminar a verificación deste dispositivo?\nEste dispositivo e as súas mensaxes serán marcados como \"Non confiable\".</string>
     <plurals name="seconds">

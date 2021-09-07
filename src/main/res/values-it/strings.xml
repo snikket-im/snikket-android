@@ -132,6 +132,8 @@
     <string name="pref_never_send_crash_summary">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo</string>
     <string name="pref_confirm_messages">Conferma messaggi</string>
     <string name="pref_confirm_messages_summary">Fai sapere ai tuoi contatti quando hai ricevuto e letto i loro messaggi</string>
+    <string name="pref_prevent_screenshots">Impedisci cattura schermo</string>
+    <string name="pref_prevent_screenshots_summary">Nascondi i contenuti dell\'app nell\'elenco recenti e blocca la cattura delle schermate</string>
     <string name="pref_ui_options">Interfaccia utente</string>
     <string name="openpgp_error">OpenKeychain ha generato un errore.</string>
     <string name="bad_key_for_encryption">Chiave di cifratura non valida.</string>
@@ -912,6 +914,7 @@
     <string name="rtp_state_connectivity_lost_error">Connessione persa</string>
     <string name="rtp_state_retracted">Chiamata ritirata</string>
     <string name="rtp_state_application_failure">Errore dell\'app</string>
+    <string name="rtp_state_security_error">Problema di verifica</string>
     <string name="hang_up">Riaggancia</string>
     <string name="ongoing_call">Chiamata in corso</string>
     <string name="ongoing_video_call">Chiamata video in corso</string>
@@ -963,4 +966,6 @@
     <string name="no_active_accounts_support_this">Nessun account attivo supporta questa funzione</string>
     <string name="backup_started_message">Il backup è iniziato. Riceverai una notifica una volta completato.</string>
     <string name="unable_to_enable_video">Impossibile attivare il video.</string>
-    </resources>
+    <string name="plain_text_document">Documento di testo</string>
+
+</resources>
