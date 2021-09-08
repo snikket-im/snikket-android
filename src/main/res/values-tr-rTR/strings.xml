@@ -132,6 +132,8 @@
     <string name="pref_never_send_crash_summary">Yığın izi göndererek gelişime yardımcı oluyorsunuz.</string>
     <string name="pref_confirm_messages">İletileri onayla</string>
     <string name="pref_confirm_messages_summary">Onların iletilerini aldığınızda ve okuduğunuzda, kişilerinizin bunu bilmesini sağlayın</string>
+    <string name="pref_prevent_screenshots">Ekran görüntülerini engelle</string>
+    <string name="pref_prevent_screenshots_summary">Uygulama anahtarlayıcısında uygulama içeriklerini sakla ve ekran görüntülerini engelle</string>
     <string name="pref_ui_options">Arabirim</string>
     <string name="openpgp_error">OpenKeychain bir hata verdi.</string>
     <string name="bad_key_for_encryption">Kötü anahar şifrelemesi.</string>
@@ -414,6 +416,7 @@
     <string name="audio">ses</string>
     <string name="video">video</string>
     <string name="image">görüntü</string>
+    <string name="vector_graphic">Vektör grafik</string>
     <string name="pdf_document">PDF belgesi</string>
     <string name="apk">Android uygulaması</string>
     <string name="vcard">Kişi</string>
@@ -912,6 +915,7 @@
     <string name="rtp_state_connectivity_lost_error">Bağlantı kesildi</string>
     <string name="rtp_state_retracted">Geri çekilmiş arama</string>
     <string name="rtp_state_application_failure">Uygulama hatası</string>
+    <string name="rtp_state_security_error">Doğrulama sorunu</string>
     <string name="hang_up">Çağrıyı sonlandır</string>
     <string name="ongoing_call">Devam eden arama</string>
     <string name="ongoing_video_call">Deaam eden görüntülü arama</string>
@@ -963,4 +967,6 @@
     <string name="no_active_accounts_support_this">Bu özelliği destekleyen aktif bir hesap yok</string>
     <string name="backup_started_message">Yedekleme başlatıldı. Tamamlandığı zaman bir bildirim alacaksınız.</string>
     <string name="unable_to_enable_video">Video etkinleştirilemedi</string>
-    </resources>
+    <string name="plain_text_document">Düz metin dosyası</string>
+
+</resources>

@@ -727,7 +727,7 @@
     <string name="copy_jabber_id">XMPP アドレスをコピー</string>
     <string name="p1_s3_filetransfer">S3 の HTTP ファイル共有</string>
     <string name="pref_start_search">直接検索</string>
-    <string name="pref_start_search_summary">‘会話の開始’画面でキーボードを開き、検索フィールドにカーソルを置きます</string>
+    <string name="pref_start_search_summary">‘会話を開始’画面でキーボードを開き、検索フィールドにカーソルを置きます</string>
     <string name="group_chat_avatar">グループチャットのアバター</string>
     <string name="host_does_not_support_group_chat_avatars">ホストはグループチャットのアバターをサポートしていません</string>
     <string name="only_the_owner_can_change_group_chat_avatar">所有者だけが、グループチャットのアバターを変更可能です</string>
