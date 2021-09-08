@@ -93,8 +93,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 42016
-        versionName "2.10.0-beta"
+        versionCode 42017
+        versionName "2.10.0-beta.2"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
