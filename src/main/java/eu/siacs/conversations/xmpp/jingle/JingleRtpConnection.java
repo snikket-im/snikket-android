@@ -1038,6 +1038,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     return RtpEndUserState.CONNECTING;
                 }
             case SESSION_ACCEPTED:
+                //TODO refactor this out into separate method (that uses switch for better readability)
                 final PeerConnection.PeerConnectionState state;
                 try {
                     state = webRTCWrapper.getState();
@@ -1340,9 +1341,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (newState == PeerConnection.PeerConnectionState.CLOSED && this.rtpConnectionEnded == 0) {
             this.rtpConnectionEnded = SystemClock.elapsedRealtime();
         }
-        //TODO 'DISCONNECTED' might be an opportunity to renew the offer and send a transport-replace
-        //TODO exact syntax is yet to be determined but transport-replace sounds like the most reasonable
-        //as there is no content-replace
+        //TODO 'failed' means we need to restart ICE
+        //
+        //TODO 'disconnected' can probably be ignored as "This is a less stringent test than failed
+        // and may trigger intermittently and resolve just as spontaneously on less reliable networks,
+        // or during temporary disconnections. When the problem resolves, the connection may return
+        // to the connected state."
+        // Obviously the UI needs to reflect this new state with a 'reconnecting' display or something
         if (Arrays.asList(PeerConnection.PeerConnectionState.FAILED, PeerConnection.PeerConnectionState.DISCONNECTED).contains(newState)) {
             if (isTerminated()) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not sending session-terminate after connectivity error because session is already in state " + this.state);
