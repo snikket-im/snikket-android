@@ -568,6 +568,8 @@ public final class MimeUtils {
             if (cursor != null && cursor.moveToFirst()) {
                 return cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
             }
+        } catch (Exception e) {
+            return null;
         }
         return null;
     }
