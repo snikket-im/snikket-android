@@ -39,8 +39,6 @@
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <uses-sdk tools:overrideLibrary="net.ypresto.androidtranscoder" />
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
