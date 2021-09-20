@@ -47,8 +47,8 @@
     <string name="participant">Participante</string>
     <string name="visitor">Visitante</string>
     <string name="remove_contact_text">Desexas eliminar a %s da túa lista de contactos? As conversas con este contacto non se eliminarán.</string>
-    <string name="block_contact_text">Desexa evitar que %s lle envíe mensaxes?</string>
-    <string name="unblock_contact_text">Desexa desbloquear %s e permitirlles que lle envíen mensaxes?</string>
+    <string name="block_contact_text">Queres evitar que %s che envíe mensaxes?</string>
+    <string name="unblock_contact_text">Queres desbloquear a %s e permitirlle que che envíe mensaxes?</string>
     <string name="block_domain_text">Bloquear todos os contactos desde 1%s?</string>
     <string name="unblock_domain_text">Desbloquear todos os contactos desde 1%s?</string>
     <string name="contact_blocked">Contacto bloqueado</string>
@@ -492,7 +492,7 @@
     <string name="action_renew_certificate">Anovar certificado</string>
     <string name="error_fetching_omemo_key">Fallo obtendo a chave OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Comprobouse a chave OMEMO co certificado!</string>
-    <string name="device_does_not_support_certificates">O seu dispositivo non admite a selección de certificados do cliente!</string>
+    <string name="device_does_not_support_certificates">O teu dispositivo non admite a selección de certificados do cliente!</string>
     <string name="pref_connection_options">Conexión</string>
     <string name="pref_use_tor">Conectar vía Tor</string>
     <string name="pref_use_tor_summary">Facer pasar todas as conexións a través da rede Tor. Require Orbot</string>
@@ -541,7 +541,7 @@
     <string name="welcome_text_quicksy"><![CDATA[Quicksy é un derivado do popular cliente XMPP Conversations con descubrimento automático de contactos.<br><br>Podes rexistrarte co teu número de teléfono e Quicksy suxerirache automáticamente —tomando os números da túa libreta de enderezos como referencia—  posibles contactos para ti.<br><br>Ao rexistrarte aceptas a nosa <a href="https://quicksy.im/#privacy">política de privacidade</a>.]]></string>
     <string name="agree_and_continue">Aceptar e continuar</string>
     <string name="magic_create_text">Tes unha guía para crear unha conta en conversations.im¹\nAo escoller conversations.im como provedor poderás comunicarte con outras usuarias de outros provedores con só darlles o teu enderezo XMPP completo.</string>
-    <string name="your_full_jid_will_be">O seu enderezo XMPP completo será: %s</string>
+    <string name="your_full_jid_will_be">O teu enderezo XMPP completo será: %s</string>
     <string name="create_account">Crear conta</string>
     <string name="use_own_provider">Utilizar o meu propio proveedor</string>
     <string name="pick_your_username">Elixe un identificador</string>
@@ -554,7 +554,7 @@
     <string name="presence_xa">Non dipoñible</string>
     <string name="presence_dnd">Ocupada</string>
     <string name="secure_password_generated">Xerouse un contrasinal seguro</string>
-    <string name="device_does_not_support_battery_op">O seu dispositivo non permite non optimizar a batería</string>
+    <string name="device_does_not_support_battery_op">O teu dispositivo non permite evitar a optimización a batería</string>
     <string name="registration_please_wait">Fallo no rexistro: inténteo de novo</string>
     <string name="registration_password_too_weak">Fallo no rexistro: contrasinal moi feble</string>
     <string name="choose_participants">Escoller participantes</string>
@@ -594,7 +594,7 @@
     <string name="pref_delete_omemo_identities">Borrar identidades OMEMO</string>
     <string name="pref_delete_omemo_identities_summary">Rexenerar chaves OMEMO. Todos os teus contactos terán que verificar a túa conta de novo. Utiliza esto só como último recurso.</string>
     <string name="delete_selected_keys">Eliminar as chaves seleccionadas.</string>
-    <string name="error_publish_avatar_offline">Precisa estar conectada para publicar o seu avatar.</string>
+    <string name="error_publish_avatar_offline">Debes ter conexión para publicar o teu avatar.</string>
     <string name="show_error_message">Mostrar mensaxe do fallo</string>
     <string name="error_message">Mensaxe de fallo</string>
     <string name="data_saver_enabled">Aforrador de datos habilitado</string>
@@ -783,15 +783,15 @@
     <string name="invalid_country_code">Código de país non válido</string>
     <string name="choose_a_country">Indica un país</string>
     <string name="phone_number">número de teléfono</string>
-    <string name="verify_your_phone_number">Valide o seu número de teléfono</string>
-    <string name="enter_country_code_and_phone_number">Quicsy enviaralle unha mensaxe SMS (poderíanse aplicar cargos) para validar o seu número de teléfono. Introduza o código de país e número de teléfono.</string>
+    <string name="verify_your_phone_number">Valida o teu número de teléfono</string>
+    <string name="enter_country_code_and_phone_number">Quicksy vaiche enviar unha mensaxe SMS (podería ter custos) para validar o teu número de teléfono. Escribe o código de país e número de teléfono.</string>
     <string name="we_will_be_verifying"><![CDATA[Validaremos o número de teléfono<br/><br/><b>%s</b><br/><br/>É correcto, ou quere modificar o número?]]></string>
     <string name="not_a_valid_phone_number">%s non é un número de teléfono válido.</string>
-    <string name="please_enter_your_phone_number">Por favor introduza o seu número de teléfono.</string>
+    <string name="please_enter_your_phone_number">Por favor escribe o teu número de teléfono.</string>
     <string name="search_countries">Buscar países</string>
     <string name="verify_x">Validar %s</string>
-    <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Enviámoslle un SMS a <b>%s</b>.]]></string>
-    <string name="we_have_sent_you_another_sms">Enviamoslle outro SMS con un código de 6 díxitos.</string>
+    <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Enviámosche un SMS a <b>%s</b>.]]></string>
+    <string name="we_have_sent_you_another_sms">Enviamosche outro SMS cun código de 6 díxitos.</string>
     <string name="please_enter_pin_below">Por favor, introduza o pin de 6 díxitos inferior.</string>
     <string name="resend_sms">Reenviar SMS</string>
     <string name="resend_sms_in">Reenviar SMS (%s)</string>
@@ -805,7 +805,7 @@
     <string name="verifying">Validando...</string>
     <string name="requesting_sms">Solicitando SMS...</string>
     <string name="incorrect_pin">O pin introducido non é correcto.</string>
-    <string name="pin_expired">O pin que lle enviamos caducou.</string>
+    <string name="pin_expired">O pin que che enviamos caducou.</string>
     <string name="unknown_api_error_network">Fallo descoñecido na rede.</string>
     <string name="unknown_api_error_response">Resposta descoñecida desde o servidor.</string>
     <string name="unable_to_connect_to_server">Non se puido conectar co servidor.</string>
@@ -822,9 +822,9 @@
     <string name="update">Actualizar</string>
     <string name="logged_in_with_another_device">Este número de teléfono está actualmente ligado a outro dispositivo.</string>
     <string name="enter_your_name_instructions">Por favor, escribe o teu nome para permitir que a xente que non te ten na axenda de enderezos sepa quen es.</string>
-    <string name="your_name">O seu nome</string>
-    <string name="enter_your_name">Introduza o seu nome</string>
-    <string name="no_name_set_instructions">Utilice o botón editar para escribir o seu nome.</string>
+    <string name="your_name">O teu nome</string>
+    <string name="enter_your_name">Escribe o teu nome</string>
+    <string name="no_name_set_instructions">Establece o teu nome usando o botón editar.</string>
     <string name="reject_request">Rexeitar solicitude</string>
     <string name="install_orbot">Instalar Orbot</string>
     <string name="start_orbot">Iniciar Orbot</string>
@@ -834,7 +834,7 @@
     <string name="video_original">Orixinal (non comprimido)</string>
     <string name="open_with">Abrir con...</string>
     <string name="set_profile_picture">Imaxe de perfil en Conversations</string>
-    <string name="choose_account">Escoller conta</string>
+    <string name="choose_account">Elexir conta</string>
     <string name="restore_backup">Restablecer copia de apoio</string>
     <string name="restore">Restablecer</string>
     <string name="enter_password_to_restore">Escribe o contrasinal da conta %s para restablecer a copia.</string>

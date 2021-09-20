@@ -129,6 +129,8 @@
     <string name="pref_never_send_crash_summary">Bằng việc gửi báo cáo hoạt động, bạn đang hỗ trợ sự phát triển</string>
     <string name="pref_confirm_messages">Xác nhận tin nhắn</string>
     <string name="pref_confirm_messages_summary">Báo cho liên hệ của bạn biết khi bạn đã nhận và đọc tin nhắn</string>
+    <string name="pref_prevent_screenshots">Ngăn chặn chụp màn hình</string>
+    <string name="pref_prevent_screenshots_summary">Ẩn nội dung ứng dụng trong màn hình chuyển ứng dụng và chặn chụp màn hình</string>
     <string name="pref_ui_options">UI</string>
     <string name="openpgp_error">OpenKeychain đã có lỗi.</string>
     <string name="bad_key_for_encryption">Mã khoá mã hoá bị lỗi.</string>
@@ -411,6 +413,7 @@
     <string name="audio">âm thanh</string>
     <string name="video">video</string>
     <string name="image">hình ảnh</string>
+    <string name="vector_graphic">hình ảnh véc tơ</string>
     <string name="pdf_document">tài liệu PDF</string>
     <string name="apk">Ứng dụng Android</string>
     <string name="vcard">Liên hệ</string>
@@ -901,6 +904,7 @@
     <string name="rtp_state_connectivity_lost_error">Đã mất kết nối</string>
     <string name="rtp_state_retracted">Cuộc gọi đã bị rút lại</string>
     <string name="rtp_state_application_failure">Lỗi ứng dụng</string>
+    <string name="rtp_state_security_error">Vấn đề xác minh</string>
     <string name="hang_up">Cúp máy</string>
     <string name="ongoing_call">Cuộc gọi đang diễn ra</string>
     <string name="ongoing_video_call">Cuộc gọi video đang diễn ra</string>
@@ -950,4 +954,6 @@
     <string name="no_active_accounts_support_this">Không có tài khoản đang hoạt động nào hỗ trợ tính năng này</string>
     <string name="backup_started_message">Việc sao lưu đã được bắt đầu. Bạn sẽ nhận một thông báo khi việc đó đã hoàn tất.</string>
     <string name="unable_to_enable_video">Không thể bật video.</string>
-    </resources>
+    <string name="plain_text_document">Tài liệu văn bản thuần</string>
+
+</resources>
