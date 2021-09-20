@@ -131,6 +131,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     }
 
     private void showAddToPhoneBookDialog() {
+        //TODO check if isQuicksy and contact is on quicksy.im domain
+        // store in final boolean. show different message. use phone number for add
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.action_add_phone_book));
         builder.setMessage(getString(R.string.add_phone_book_text, contact.getJid().toEscapedString()));
