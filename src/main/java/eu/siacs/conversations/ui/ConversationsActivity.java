@@ -430,7 +430,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     private void openConversation(Conversation conversation, Bundle extras) {
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.executePendingTransactions();
+        executePendingTransactions(fragmentManager);
         ConversationFragment conversationFragment = (ConversationFragment) fragmentManager.findFragmentById(R.id.secondary_fragment);
         final boolean mainNeedsRefresh;
         if (conversationFragment == null) {
@@ -459,6 +459,14 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             refreshFragment(R.id.main_fragment);
         } else {
             invalidateActionBarTitle();
+        }
+    }
+
+    private static void executePendingTransactions(final FragmentManager fragmentManager) {
+        try {
+            fragmentManager.executePendingTransactions();
+        } catch (final Exception e) {
+            Log.e(Config.LOGTAG,"unable to execute pending fragment transactions");
         }
     }
 
