@@ -3,6 +3,8 @@ package eu.siacs.conversations.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -50,8 +52,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.inputmethod.InputConnectionCompat;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.google.common.base.Optional;
 
@@ -467,41 +467,41 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private boolean firstWord = false;
     private Message mPendingDownloadableMessage;
 
-    private static ConversationFragment findConversationFragment(FragmentManager fragmentManager) {
-        Fragment fragment = fragmentManager.findFragmentById(R.id.main_fragment);
+    private static ConversationFragment findConversationFragment(Activity activity) {
+        Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
         if (fragment instanceof ConversationFragment) {
             return (ConversationFragment) fragment;
         }
-        fragment = fragmentManager.findFragmentById(R.id.secondary_fragment);
+        fragment = activity.getFragmentManager().findFragmentById(R.id.secondary_fragment);
         if (fragment instanceof ConversationFragment) {
             return (ConversationFragment) fragment;
         }
         return null;
     }
 
-    public static void startStopPending(FragmentManager fragmentManager) {
-        ConversationFragment fragment = findConversationFragment(fragmentManager);
+    public static void startStopPending(Activity activity) {
+        ConversationFragment fragment = findConversationFragment(activity);
         if (fragment != null) {
             fragment.messageListAdapter.startStopPending();
         }
     }
 
-    public static void downloadFile(FragmentManager fragmentManager, Message message) {
-        ConversationFragment fragment = findConversationFragment(fragmentManager);
+    public static void downloadFile(Activity activity, Message message) {
+        ConversationFragment fragment = findConversationFragment(activity);
         if (fragment != null) {
             fragment.startDownloadable(message);
         }
     }
 
-    public static void registerPendingMessage(FragmentManager fragmentManager, Message message) {
-        ConversationFragment fragment = findConversationFragment(fragmentManager);
+    public static void registerPendingMessage(Activity activity, Message message) {
+        ConversationFragment fragment = findConversationFragment(activity);
         if (fragment != null) {
             fragment.pendingMessage.push(message);
         }
     }
 
-    public static void openPendingMessage(FragmentManager fragmentManager) {
-        ConversationFragment fragment = findConversationFragment(fragmentManager);
+    public static void openPendingMessage(Activity activity) {
+        ConversationFragment fragment = findConversationFragment(activity);
         if (fragment != null) {
             Message message = fragment.pendingMessage.pop();
             if (message != null) {
@@ -510,12 +510,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
     }
 
-    public static Conversation getConversation(FragmentManager fragmentManager) {
-        return getConversation(fragmentManager, R.id.secondary_fragment);
+    public static Conversation getConversation(Activity activity) {
+        return getConversation(activity, R.id.secondary_fragment);
     }
 
-    private static Conversation getConversation(FragmentManager fragmentManager, @IdRes int res) {
-        final Fragment fragment = fragmentManager.findFragmentById(res);
+    private static Conversation getConversation(Activity activity, @IdRes int res) {
+        final Fragment fragment = activity.getFragmentManager().findFragmentById(res);
         if (fragment instanceof ConversationFragment) {
             return ((ConversationFragment) fragment).getConversation();
         } else {
@@ -523,7 +523,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
     }
 
-    public static ConversationFragment get(FragmentManager fragmentManager) {
+    public static ConversationFragment get(Activity activity) {
+        FragmentManager fragmentManager = activity.getFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.main_fragment);
         if (fragment instanceof ConversationFragment) {
             return (ConversationFragment) fragment;
@@ -533,12 +534,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
     }
 
-    public static Conversation getConversationReliable(FragmentManager fragmentManager) {
-        final Conversation conversation = getConversation(fragmentManager, R.id.secondary_fragment);
+    public static Conversation getConversationReliable(Activity activity) {
+        final Conversation conversation = getConversation(activity, R.id.secondary_fragment);
         if (conversation != null) {
             return conversation;
         }
-        return getConversation(fragmentManager, R.id.main_fragment);
+        return getConversation(activity, R.id.main_fragment);
     }
 
     private static boolean scrolledToBottom(AbsListView listView) {

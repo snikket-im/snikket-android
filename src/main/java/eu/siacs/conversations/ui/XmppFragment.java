@@ -30,8 +30,7 @@
 package eu.siacs.conversations.ui;
 
 import android.app.Activity;
-
-import androidx.fragment.app.Fragment;
+import android.app.Fragment;
 
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 
