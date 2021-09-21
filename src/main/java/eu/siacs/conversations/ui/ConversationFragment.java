@@ -3051,4 +3051,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         activity.switchToAccount(message.getConversation().getAccount(), fingerprint);
     }
+
+    private Activity requireActivity() {
+        final Activity activity = getActivity();
+        if (activity == null) {
+            throw new IllegalStateException("Activity not attached");
+        }
+        return activity;
+    }
 }
