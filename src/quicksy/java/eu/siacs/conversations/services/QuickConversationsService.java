@@ -382,9 +382,13 @@ public class QuickConversationsService extends AbstractQuickConversationsService
             if (uri == null) {
                 continue;
             }
-            PhoneNumberContact phoneNumberContact = PhoneNumberContact.findByUri(contacts, uri);
+            final String number = getNumber(contact);
+            final PhoneNumberContact phoneNumberContact = PhoneNumberContact.findByUriOrNumber(contacts, uri, number);
             final boolean needsCacheClean;
             if (phoneNumberContact != null) {
+                if (!uri.equals(phoneNumberContact.getLookupUri())) {
+                    Log.d(Config.LOGTAG, "lookupUri has changed from " + uri + " to " + phoneNumberContact.getLookupUri());
+                }
                 needsCacheClean = contact.setPhoneContact(phoneNumberContact);
             } else {
                 needsCacheClean = contact.unsetPhoneContact(PhoneNumberContact.class);
@@ -394,6 +398,14 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                 service.getAvatarService().clear(contact);
             }
         }
+    }
+
+    private static String getNumber(final Contact contact) {
+        final Jid jid = contact.getJid();
+        if (jid.getLocal() != null && Config.QUICKSY_DOMAIN.equals(jid.getDomain())) {
+            return jid.getLocal();
+        }
+        return null;
     }
 
     private boolean considerSync(final Account account, final Map<String, PhoneNumberContact> contacts, final boolean forced) {
