@@ -45,6 +45,7 @@ import eu.siacs.conversations.databinding.ActivityContactDetailsBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.services.AbstractQuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.MediaAdapter;
@@ -58,6 +59,7 @@ import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
+import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Namespace;
@@ -131,17 +133,29 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     }
 
     private void showAddToPhoneBookDialog() {
-        //TODO check if isQuicksy and contact is on quicksy.im domain
-        // store in final boolean. show different message. use phone number for add
+        final Jid jid = contact.getJid();
+        final boolean quicksyContact = AbstractQuickConversationsService.isQuicksy()
+                && Config.QUICKSY_DOMAIN.equals(jid.getDomain())
+                && jid.getLocal() != null;
+        final String value;
+        if (quicksyContact) {
+            value = PhoneNumberUtilWrapper.toFormattedPhoneNumber(this, jid);
+        } else {
+            value = jid.toEscapedString();
+        }
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.action_add_phone_book));
-        builder.setMessage(getString(R.string.add_phone_book_text, contact.getJid().toEscapedString()));
+        builder.setMessage(getString(R.string.add_phone_book_text, value));
         builder.setNegativeButton(getString(R.string.cancel), null);
         builder.setPositiveButton(getString(R.string.add), (dialog, which) -> {
             final Intent intent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
             intent.setType(Contacts.CONTENT_ITEM_TYPE);
-            intent.putExtra(Intents.Insert.IM_HANDLE, contact.getJid().toEscapedString());
-            intent.putExtra(Intents.Insert.IM_PROTOCOL, CommonDataKinds.Im.PROTOCOL_JABBER);
+            if (quicksyContact) {
+                intent.putExtra(Intents.Insert.PHONE, value);
+            } else {
+                intent.putExtra(Intents.Insert.IM_HANDLE, value);
+                intent.putExtra(Intents.Insert.IM_PROTOCOL, CommonDataKinds.Im.PROTOCOL_JABBER);
+            }
             intent.putExtra("finishActivityOnSaveCompleted", true);
             try {
                 startActivityForResult(intent, 0);
