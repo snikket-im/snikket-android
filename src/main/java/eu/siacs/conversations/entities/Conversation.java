@@ -28,6 +28,7 @@ import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.JidHelper;
+import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
@@ -258,9 +259,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public Message findMessageWithFileAndUuid(final String uuid) {
         synchronized (this.messages) {
             for (final Message message : this.messages) {
+                final Transferable transferable = message.getTransferable();
+                final boolean unInitiatedButKnownSize = MessageUtils.unInitiatedButKnownSize(message);
                 if (message.getUuid().equals(uuid)
                         && message.getEncryption() != Message.ENCRYPTION_PGP
-                        && (message.isFileOrImage() || message.treatAsDownloadable())) {
+                        && (message.isFileOrImage() || message.treatAsDownloadable() || unInitiatedButKnownSize || (transferable != null && transferable.getStatus() != Transferable.STATUS_UPLOADING))) {
                     return message;
                 }
             }

@@ -131,7 +131,6 @@ public class HttpDownloadConnection implements Transferable {
     }
 
     private void download(final boolean interactive) {
-        Log.d(Config.LOGTAG,"download()",new Exception());
         EXECUTOR.execute(new FileDownloader(interactive));
     }
 
