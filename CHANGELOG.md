@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.10.1
+
+* Fix issue with some videos not being compressed
+* Fix rare crash when opening notification
+
 ### Version 2.10.0
 
 * Show black bars when remote video does not match aspect ratio of screen
