@@ -4,6 +4,8 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -189,7 +191,10 @@ public class XmppUri {
     }
 
     public boolean isAction(final String action) {
-        return parameters.containsKey(action);
+        return Collections2.transform(
+                parameters.keySet(),
+                s -> CharMatcher.inRange('a', 'z').or(CharMatcher.inRange('A', 'z')).retainFrom(s)
+        ).contains(action);
     }
 
     public Jid getJid() {
