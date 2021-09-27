@@ -30,7 +30,7 @@
     <string name="minute_ago">1分前</string>
     <string name="minutes_ago">%d分前</string>
     <plurals name="x_unread_conversations">
-        <item quantity="other">未読%d件</item>
+        <item quantity="other">%d件の未読の会話</item>
 
     </plurals>
     <string name="sending">送信中…</string>
@@ -47,11 +47,11 @@
     <string name="block_contact_text">%s からあなたに送信されるメッセージをブロックしますか?</string>
     <string name="unblock_contact_text">%s のブロックを解除し、あなたにメッセージを送信できるようにしますか?</string>
     <string name="block_domain_text">%s からの連絡をすべてブロックしますか?</string>
-    <string name="unblock_domain_text">%s からの連絡をすべてブロック解除しますか?</string>
+    <string name="unblock_domain_text">%s からすべての連絡先のブロックを解除しますか?</string>
     <string name="contact_blocked">連絡先をブロックしました</string>
     <string name="blocked">ブロックしました</string>
     <string name="remove_bookmark_text">%s のブックマークを削除しますか? このブックマークとの会話は削除されません。</string>
-    <string name="register_account">サーバーに新しいアカウントを登録</string>
+    <string name="register_account">サーバーに新規アカウントを登録</string>
     <string name="change_password_on_server">サーバーのパスワードを変更</string>
     <string name="share_with">…で共有</string>
     <string name="start_conversation">会話を始める</string>
@@ -59,7 +59,7 @@
     <string name="invite">招待</string>
     <string name="contacts">連絡先</string>
     <string name="contact">連絡先</string>
-    <string name="cancel">キャンセル</string>
+    <string name="cancel">中止</string>
     <string name="set">設定</string>
     <string name="add">追加</string>
     <string name="edit">編集</string>
@@ -105,9 +105,9 @@
     <string name="openkeychain_not_installed">OpenKeychain をインストールしてください</string>
     <string name="offering">依頼中…</string>
     <string name="waiting">待機中…</string>
-    <string name="no_pgp_key">OpenPGP の鍵はありません</string>
+    <string name="no_pgp_key">OpenPGP 鍵が見つかりません</string>
     <string name="contact_has_no_pgp_key">連絡先が公開鍵を通知しないため、あなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
-    <string name="no_pgp_keys">OpenPGP の鍵はありません</string>
+    <string name="no_pgp_keys">OpenPGP 鍵が見つかりません</string>
     <string name="contacts_have_no_pgp_keys">連絡先が公開鍵を通知しないため、あなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
     <string name="pref_general">全般</string>
     <string name="pref_accept_files">ファイルを受取</string>
@@ -115,9 +115,9 @@
     <string name="pref_attachments">添付ファイル</string>
     <string name="pref_notification_settings">通知</string>
     <string name="pref_vibrate">振動</string>
-    <string name="pref_vibrate_summary">新しいメッセージが届いたときに振動します</string>
+    <string name="pref_vibrate_summary">新着メッセージが届いたときに振動します</string>
     <string name="pref_led">LED 通知</string>
-    <string name="pref_led_summary">新しいメッセージが届いたときに通知ライトを点滅します</string>
+    <string name="pref_led_summary">新着メッセージが届いたときに通知ライトを点滅します</string>
     <string name="pref_ringtone">着信音</string>
     <string name="pref_notification_sound">通知音</string>
     <string name="pref_notification_sound_summary">新着メッセージの通知音</string>
@@ -128,7 +128,7 @@
     <string name="pref_never_send_crash">クラッシュレポートを送信しない</string>
     <string name="pref_never_send_crash_summary">スタックトレースを送信すると、 Conversations の開発を支援します</string>
     <string name="pref_confirm_messages">メッセージを確認</string>
-    <string name="pref_confirm_messages_summary">あなたがメッセージを受信して読んだときに、連絡先に知らせます</string>
+    <string name="pref_confirm_messages_summary">あなたがメッセージを受信して読んだときに、連絡先に知らせる</string>
     <string name="pref_prevent_screenshots">スクリーンショットを防ぐ</string>
     <string name="pref_prevent_screenshots_summary">アプリスイッチャーでアプリの内容を隠し、スクリーンショットを防ぐ</string>
     <string name="pref_ui_options">UI</string>
@@ -138,9 +138,9 @@
     <string name="error">エラーが発生しました</string>
     <string name="recording_error">エラー</string>
     <string name="your_account">あなたのアカウント</string>
-    <string name="send_presence_updates">参加アップデートを送信</string>
-    <string name="receive_presence_updates">参加アップデートを受信</string>
-    <string name="ask_for_presence_updates">参加アップデートを問合せ</string>
+    <string name="send_presence_updates">出席情報アップデートを送信</string>
+    <string name="receive_presence_updates">出席情報アップデートを受信</string>
+    <string name="ask_for_presence_updates">出席情報アップデートを求める</string>
     <string name="attach_choose_picture">画像を選択</string>
     <string name="attach_take_picture">写真を撮影</string>
     <string name="preemptively_grant">サブスクリプション要求を事前に付与する</string>
@@ -162,7 +162,7 @@
     <string name="account_status_regis_conflict">ユーザー名は既に使用されています</string>
     <string name="account_status_regis_success">登録が完了しました</string>
     <string name="account_status_regis_not_sup">サーバーは登録をサポートしていません</string>
-    <string name="account_status_regis_invalid_token">トークンが無効です</string>
+    <string name="account_status_regis_invalid_token">登録トークンが無効です</string>
     <string name="account_status_tls_error">TLS ネゴシエーションに失敗しました</string>
     <string name="account_status_tls_error_domain">検証不可能なドメイン</string>
     <string name="account_status_policy_violation">ポリシー違反</string>
@@ -174,13 +174,13 @@
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
     <string name="mgmt_account_delete">アカウントを削除</string>
-    <string name="mgmt_account_disable">一時的に無効にする</string>
+    <string name="mgmt_account_disable">一時的に無効化</string>
     <string name="mgmt_account_publish_avatar">アバターを公開</string>
     <string name="mgmt_account_publish_pgp">OpenPGP 公開鍵を公開</string>
     <string name="unpublish_pgp">OpenPGP 公開鍵を削除</string>
-    <string name="unpublish_pgp_message">存在告知から OpenPGP 公開鍵を削除してもよろしいですか?\n連絡先はあなたに OpenPGP 暗号化メッセージを送信できなくなります。</string>
+    <string name="unpublish_pgp_message">出席情報告知から OpenPGP 公開鍵を削除してもよろしいですか?\n連絡先はあなたに OpenPGP 暗号化メッセージを送信できなくなります。</string>
     <string name="openpgp_has_been_published">OpenPGP 公開鍵を公開しました。</string>
-    <string name="mgmt_account_enable">アカウントを有効にする</string>
+    <string name="mgmt_account_enable">アカウントを有効化</string>
     <string name="mgmt_account_are_you_sure">よろしいですか?</string>
     <string name="mgmt_account_delete_confirm_text">アカウントを削除すると会話履歴がすべて消去されます</string>
     <string name="attach_record_voice">音声を録音</string>
@@ -213,7 +213,7 @@
     <string name="last_seen_day">1日前に会いました</string>
     <string name="last_seen_days">%d日前に会いました</string>
     <string name="install_openkeychain">暗号化されたメッセージです。復号するには OpenKeychain をインストールしてください。</string>
-    <string name="openpgp_messages_found">新しい OpenPGP で暗号化されたメッセージが見つかりました</string>
+    <string name="openpgp_messages_found">新規の OpenPGP で暗号化されたメッセージが見つかりました</string>
     <string name="openpgp_key_id">OpenPGP 鍵 ID</string>
     <string name="omemo_fingerprint">OMEMO フィンガープリント</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO フィンガープリント</string>
@@ -251,7 +251,7 @@
     <string name="add_back">戻りを追加</string>
     <string name="contact_has_read_up_to_this_point">%s はここまで読みました</string>
     <string name="contacts_have_read_up_to_this_point">%s はここまで読みました</string>
-    <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d 全員ここまで読みました</string>
+    <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d人がここまで読みました</string>
     <string name="everyone_has_read_up_to_this_point">全員がここまで読みました</string>
     <string name="publish">公開</string>
     <string name="touch_to_choose_picture">アバターをタップしてギャラリーから画像を選択します</string>
@@ -269,14 +269,14 @@
     <string name="next">次へ</string>
     <string name="server_info_session_established">セッションが確立</string>
     <string name="skip">スキップ</string>
-    <string name="disable_notifications">通知を無効にする</string>
+    <string name="disable_notifications">通知を無効化</string>
     <string name="enable">有効</string>
     <string name="conference_requires_password">グループチャットにはパスワードが必要</string>
     <string name="enter_password">パスワードを入力してください</string>
-    <string name="request_presence_updates">最初に連絡先から参加アップデートを要求してください。\n\n<small>これは、連絡先が何のクライアントを使用しているかを決めるために使用されます。</small></string>
+    <string name="request_presence_updates">最初に、連絡先から出席情報アップデートを要求してください。\n\n<small>これは、連絡先が何のクライアントを使用しているかを特定するために使用されます。</small></string>
     <string name="request_now">今すぐ要求</string>
     <string name="ignore">無視</string>
-    <string name="without_mutual_presence_updates"><b>警告:</b> 相互の参加アップデートなしにこれを送信すると、予期しない問題が発生する可能性があります。\n\n<small>あなたの参加サブスクリプションを検証するために、“連絡先”の詳細に移動します。</small></string>
+    <string name="without_mutual_presence_updates"><b>警告:</b> 相互の出席情報アップデートなしにこれを送信すると、予期しない問題が発生する可能性があります。\n\n<small>あなたの出席情報サブスクリプションを検証するために、“連絡先の詳細”に移動します。</small></string>
     <string name="pref_security_settings">セキュリティ</string>
     <string name="pref_allow_message_correction">メッセージの修正を許可</string>
     <string name="pref_allow_message_correction_summary">連絡先が、遡及的に自分のメッセージを編集することを許可します</string>
@@ -286,7 +286,7 @@
     <string name="title_pref_quiet_hours">消音時間</string>
     <string name="title_pref_quiet_hours_start_time">開始時刻</string>
     <string name="title_pref_quiet_hours_end_time">終了時刻</string>
-    <string name="title_pref_enable_quiet_hours">消音時間を有効にする</string>
+    <string name="title_pref_enable_quiet_hours">消音時間を有効化</string>
     <string name="pref_quiet_hours_summary">消音時間の間、通知は無音になります</string>
     <string name="pref_expert_options_other">その他</string>
     <string name="pref_autojoin">ブックマークと同期</string>
@@ -319,7 +319,7 @@
     <string name="show_block_list">ブロック一覧を表示</string>
     <string name="account_details">アカウントの詳細</string>
     <string name="confirm">確認</string>
-    <string name="try_again">後でもう一度お試しください</string>
+    <string name="try_again">再試行</string>
     <string name="pref_keep_foreground_service">フォアグラウンドサービス</string>
     <string name="pref_keep_foreground_service_summary">オペレーティングシステムが接続を切断するのを防止します</string>
     <string name="pref_create_backup">バックアップを作成</string>
@@ -329,7 +329,7 @@
     <string name="notification_backup_created_subtitle">バックアップファイルは %s に保存されました</string>
     <string name="restoring_backup">バックアップを復元</string>
     <string name="notification_restored_backup_title">バックアップを復元しました</string>
-    <string name="notification_restored_backup_subtitle">アカウントを有効にしてください。</string>
+    <string name="notification_restored_backup_subtitle">アカウントを有効化してください。</string>
     <string name="choose_file">ファイルを選択</string>
     <string name="receiving_x_file">%1$s 受信中 (%2$d%% 完了)</string>
     <string name="download_x_file">%s をダウンロード</string>
@@ -339,16 +339,16 @@
     <string name="sending_file">送信中 (%1$d%% 完了)</string>
     <string name="preparing_file">転送用ファイルの準備中</string>
     <string name="x_file_offered_for_download">%s ダウンロード依頼中</string>
-    <string name="cancel_transmission">転送をキャンセル</string>
+    <string name="cancel_transmission">転送を中止</string>
     <string name="file_transmission_failed">ファイル転送に失敗しました</string>
-    <string name="file_transmission_cancelled">転送をキャンセルしました</string>
+    <string name="file_transmission_cancelled">ファイル転送を中止しました</string>
     <string name="file_deleted">ファイルを削除しました</string>
     <string name="no_application_found_to_open_file">ファイルを開くアプリケーションが見つかりません</string>
     <string name="no_application_found_to_open_link">リンクを開くアプリケーションが見つかりません</string>
     <string name="no_application_found_to_view_contact">連絡先を表示するアプリケーションが見つかりません</string>
     <string name="pref_show_dynamic_tags">ダイナミック タグ</string>
     <string name="pref_show_dynamic_tags_summary">連絡先の下に、読み取り専用タグを表示します</string>
-    <string name="enable_notifications">通知を有効にする</string>
+    <string name="enable_notifications">通知を有効化</string>
     <string name="no_conference_server_found">グループチャットのサーバーが見つかりませんでした</string>
     <string name="conference_creation_failed">グループチャットを作成できません</string>
     <string name="account_image_description">アカウントのアバター</string>
@@ -357,7 +357,7 @@
     <string name="clear_other_devices">デバイスを消去</string>
     <string name="clear_other_devices_desc">OMEMO の告知から他のすべてのデバイスを消去してもよろしいですか? お使いのデバイスが次回接続したとき、それらのデバイスは自分自身を再告知しますが、その間に送信されたメッセージを受信できない場合があります。</string>
     <string name="error_no_keys_to_trust_server_error">この連絡先で使用可能な鍵がありません。\nサーバーから新しい鍵を取得できませんでした。連絡先のサーバーに問題がある可能性があります。</string>
-    <string name="error_no_keys_to_trust_presence">この連絡先で利用可能な鍵はありません。\n双方に存在サブスクリプションがあることを確認してください。</string>
+    <string name="error_no_keys_to_trust_presence">この連絡先で利用可能な鍵はありません。\n双方に出席情報サブスクリプションがあることを確認してください。</string>
     <string name="error_trustkeys_title">何か問題が発生しました</string>
     <string name="fetching_history_from_server">サーバーから履歴を取得中</string>
     <string name="no_more_history_on_server">サーバーにこれ以上履歴がありません</string>
@@ -368,8 +368,8 @@
     <string name="current_password">現在のパスワード</string>
     <string name="new_password">新しいパスワード</string>
     <string name="password_should_not_be_empty">パスワードは空にできません</string>
-    <string name="enable_all_accounts">すべてのアカウントを有効にする</string>
-    <string name="disable_all_accounts">すべてのアカウントを無効にする</string>
+    <string name="enable_all_accounts">すべてのアカウントを有効化</string>
+    <string name="disable_all_accounts">すべてのアカウントを無効化</string>
     <string name="perform_action_with">アクションを実行...</string>
     <string name="no_affiliation">所属なし</string>
     <string name="no_role">オフライン</string>
@@ -396,8 +396,8 @@
     <string name="non_anonymous">XMPPアドレスを誰でも見れるようにする</string>
     <string name="moderated">談話室の調停をする</string>
     <string name="you_are_not_participating">あなたは参加していません</string>
-    <string name="modified_conference_options">グループチャットのオプションが変更されました!</string>
-    <string name="could_not_modify_conference_options">グループチャットのオプションを変更できませんでした</string>
+    <string name="modified_conference_options">グループチャットの設定が変更されました!</string>
+    <string name="could_not_modify_conference_options">グループチャットの設定を変更できませんでした</string>
     <string name="never">なし</string>
     <string name="until_further_notice">通知が来るまで</string>
     <string name="snooze">スヌーズ</string>
@@ -424,7 +424,7 @@
     <string name="contacts_are_typing">%s さんが入力中…</string>
     <string name="contacts_have_stopped_typing">%s さんが入力を止めました</string>
     <string name="pref_chat_states">入力中通知</string>
-    <string name="pref_chat_states_summary">あなたがメッセージを書いているときに、連絡先に知らせます</string>
+    <string name="pref_chat_states_summary">あなたがメッセージを書いているときに、連絡先に知らせる</string>
     <string name="send_location">位置を送信</string>
     <string name="show_location">位置を表示</string>
     <string name="no_application_found_to_display_location">位置を表示するアプリケーションが見つかりません</string>
@@ -518,8 +518,8 @@
     <string name="always">常に</string>
     <string name="large_images_only">大きい画像のみ</string>
     <string name="battery_optimizations_enabled">電池最適化が有効</string>
-    <string name="battery_optimizations_enabled_explained">お使いのデバイスは、%1$s で通知の遅延やメッセージの損失につながる可能性のある、重い電池の最適化を使用しています。\nそれを無効にすることをお勧めします。</string>
-    <string name="battery_optimizations_enabled_dialog">お使いのデバイスは、%1$s で通知の遅延やメッセージの損失につながる可能性のある、重い電池の最適化を使用しています。\n\n今、それらを無効にするように求められます。</string>
+    <string name="battery_optimizations_enabled_explained">お使いのデバイスは、%1$s で通知の遅延やメッセージの損失につながる可能性のある、重い電池の最適化を使用しています。\nそれを無効化することをお勧めします。</string>
+    <string name="battery_optimizations_enabled_dialog">お使いのデバイスは、%1$s で通知の遅延やメッセージの損失につながる可能性のある、重い電池の最適化を使用しています。\n\n今、それらを無効化するように求められます。</string>
     <string name="disable">無効</string>
     <string name="selection_too_large">選択した範囲が大きすぎます</string>
     <string name="no_accounts">(アクティベートしたアカウントはありません)</string>
@@ -527,7 +527,7 @@
     <string name="correct_message">メッセージを修正</string>
     <string name="send_corrected_message">修正したメッセージを送信</string>
     <string name="no_keys_just_confirm">あなたは信頼を確認するために、この人の指紋を安全に検証しました。“完了”を選択すると、 %s がこのグループチャットの一員であることを確認したことになります。</string>
-    <string name="this_account_is_disabled">このアカウントを無効にしました</string>
+    <string name="this_account_is_disabled">このアカウントを無効化しました</string>
     <string name="security_error_invalid_file_access">セキュリティエラー: 不正なファイルアクセス!</string>
     <string name="no_application_to_share_uri">URI を共有するアプリが見つかりません</string>
     <string name="share_uri_with">…で URI を共有</string>
@@ -577,11 +577,11 @@
     <string name="payment_required">支払が必要です</string>
     <string name="missing_internet_permission">インターネット使用権限の付与</string>
     <string name="me">自分</string>
-    <string name="contact_asks_for_presence_subscription">連絡先が、参加サブスクリプションを問い合わせしています</string>
+    <string name="contact_asks_for_presence_subscription">連絡先が出席情報サブスクリプションを求めています</string>
     <string name="allow">許可</string>
     <string name="no_permission_to_access_x">%s にアクセスする権限がありません</string>
     <string name="remote_server_not_found">リモートサーバーが見つかりません</string>
-    <string name="remote_server_timeout">リモートサーバーのタイムアウト</string>
+    <string name="remote_server_timeout">リモートサーバーがタイムアウト</string>
     <string name="unable_to_update_account">アカウントを更新できません</string>
     <string name="report_jid_as_spammer">この XMPP アドレスをスパムとして報告する。</string>
     <string name="pref_delete_omemo_identities">OMEMO ID を削除</string>
@@ -590,8 +590,8 @@
     <string name="error_publish_avatar_offline">アバターを公開するには接続する必要があります。</string>
     <string name="show_error_message">エラーメッセージを表示</string>
     <string name="error_message">エラーメッセージ</string>
-    <string name="data_saver_enabled">データセーバーを有効にしました</string>
-    <string name="data_saver_enabled_explained">お使いのオペレーティングシステムは、%1$s がバックグラウンドのときにインターネットにアクセスすることを制限しています。新しいメッセージの通知を受信するには、“データセーバー”がオンならば、%1$s に無制限のアクセスを許可する必要があります。\n%1$s は可能なときにデータを保存するための努力をします。</string>
+    <string name="data_saver_enabled">データセーバーを有効化しました</string>
+    <string name="data_saver_enabled_explained">お使いのオペレーティングシステムは、%1$s がバックグラウンドのときにインターネットにアクセスすることを制限しています。新着メッセージの通知を受信するには、“データセーバー”がオンならば、%1$s に無制限のアクセスを許可する必要があります。\n%1$s は可能なときにデータを保存するための努力をします。</string>
     <string name="device_does_not_support_data_saver">お使いのデバイスは、%1$s のデータセーバーを無効にできません。</string>
     <string name="error_unable_to_create_temporary_file">一時ファイルを作成できません</string>
     <string name="this_device_has_been_verified">このデバイスは検証済です</string>
@@ -647,7 +647,7 @@
     <string name="contact_blocked_past_tense">連絡先をブロックしました</string>
     <string name="pref_notifications_from_strangers">見知らぬ人からの通知</string>
     <string name="pref_notifications_from_strangers_summary">見知らぬ人から受信したメッセージと通話を通知します。</string>
-    <string name="received_message_from_stranger">見知らぬ人からメッセージを受け取りました</string>
+    <string name="received_message_from_stranger">見知らぬ人からメッセージを受信しました</string>
     <string name="block_stranger">見知らぬ人をブロック</string>
     <string name="block_entire_domain">ドメイン全体をブロック</string>
     <string name="online_right_now">今すぐオンライン</string>
@@ -669,12 +669,12 @@
     <string name="copy_to_clipboard">クリップボードにコピー</string>
     <string name="message_copied_to_clipboard">メッセージをクリップボードにコピーしました</string>
     <string name="message">メッセージ</string>
-    <string name="private_messages_are_disabled">非公開メッセージを無効にしました</string>
+    <string name="private_messages_are_disabled">非公開メッセージを無効化しました</string>
     <string name="huawei_protected_apps">保護されたアプリ</string>
     <string name="huawei_protected_apps_summary">画面がオフになっているときでも通知を受信し続けるには、保護されたアプリの一覧に Conversations を追加する必要があります。</string>
     <string name="mtm_accept_cert">未知の証明書を受け入れますか?</string>
     <string name="mtm_trust_anchor">サーバー証明書が既知の認証局によって署名されていません。</string>
-    <string name="mtm_accept_servername">サーバー名の不一致を受け入れますか?</string>
+    <string name="mtm_accept_servername">不一致のサーバー名を受け入れますか?</string>
     <string name="mtm_hostname_mismatch">サーバーは\&quot;%s\&quot;として認証できませんでした。証明書は次の場合にのみ有効です:</string>
     <string name="mtm_connect_anyway">それでも接続を希望しますか?</string>
     <string name="mtm_cert_details">証明書の詳細:</string>
@@ -689,7 +689,7 @@
     <string name="error_trustkey_device_list">デバイスの一覧を取得できません</string>
     <string name="error_trustkey_bundle">暗号化の鍵を取得できません</string>
     <string name="error_trustkey_hint_mutual">ヒント: お互いが連絡先名簿に加えれば解決するでしょう。</string>
-    <string name="disable_encryption_message">この会話で OMEMO の暗号化を無効にしてもよろしいですか?\nこれにより、サーバー管理者がメッセージを読むことが可能になりますが、時代遅れのクライアントを使っている人と連絡をとるには、この方法しかないかもしれません。</string>
+    <string name="disable_encryption_message">この会話で OMEMO の暗号化を無効化してもよろしいですか?\nこれにより、サーバー管理者がメッセージを読むことが可能になりますが、時代遅れのクライアントを使っている人と連絡をとるには、この方法しかないかもしれません。</string>
     <string name="disable_now">今すぐ無効化</string>
     <string name="draft">下書き:</string>
     <string name="pref_omemo_setting">OMEMO 暗号化</string>
@@ -763,6 +763,7 @@
     <string name="pref_video_compression_summary">質が低い程、ファイルは小さくなります</string>
     <string name="video_360p">中 (360p)</string>
     <string name="video_720p">高 (720p)</string>
+    <string name="cancelled">中止しました</string>
     <string name="already_drafting_message">あなたは既にメッセージを作成中です。</string>
     <string name="feature_not_implemented">実装されてない機能</string>
     <string name="invalid_country_code">不正な国コード</string>
@@ -784,7 +785,7 @@
     <string name="back">戻る</string>
     <string name="possible_pin">クリップボードから可能な pin を自動的に貼り付ける。</string>
     <string name="please_enter_pin">6桁の pin を入力してください。</string>
-    <string name="abort_registration_procedure">本当に登録手続きを中止してもよろしいのですか？</string>
+    <string name="abort_registration_procedure">登録手続きを中止してもよろしいのですか？</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
     <string name="verifying">検証しています…</string>
@@ -816,7 +817,7 @@
     <string name="no_market_app_installed">マーケットアプリがインストールされていません。</string>
     <string name="group_chat_will_make_your_jabber_id_public">この談話室では、あなたの XMPP アドレスを公開します</string>
     <string name="ebook">電子書籍</string>
-    <string name="video_original">原物 (非圧縮)</string>
+    <string name="video_original">そのまま (非圧縮)</string>
     <string name="open_with">…で開く</string>
     <string name="set_profile_picture">Conversations プロフィール画像</string>
     <string name="choose_account">アカウントを選択</string>
@@ -862,7 +863,7 @@
     <string name="channel_discover_opt_in_message"><![CDATA[談話室発見は、第三者のサービスである<a href=\"https://search.jabber.network\">search.jabber.network</a>を利用します。<br><br>この機能を使うと、あなたののIPアドレスや検索キーワードがそのサービスに送信されます。詳しくは、<a href=\"https://search.jabber.network/privacy\">プライバシーポリシー</a>をご覧ください。]]></string>
     <string name="i_already_have_an_account">既にアカウントを持っています</string>
     <string name="add_existing_account">既存アカウントを追加</string>
-    <string name="register_new_account">新しいアカウントを登録</string>
+    <string name="register_new_account">新規アカウントを登録</string>
     <string name="this_looks_like_a_domain">これはドメインアドレスのようです</string>
     <string name="add_anway">とにかく追加</string>
     <string name="this_looks_like_channel">これは談話室アドレスのようです</string>
@@ -881,7 +882,8 @@
     <string name="local_server">ローカルサーバー</string>
     <string name="pref_channel_discovery_summary">ほとんどのユーザーは、公開されている XMPP エコシステム全体からより良い提案を得るために、‘jabber.network’を選択するはずです。</string>
     <string name="pref_channel_discovery">談話室の発見方法</string>
-    <string name="please_enable_an_account">アカウントを有効にしてください</string>
+    <string name="backup">バックアップ</string>
+    <string name="please_enable_an_account">アカウントを有効化してください</string>
     <string name="make_call">通話をする</string>
     <string name="rtp_state_incoming_call">着信通話</string>
     <string name="rtp_state_incoming_video_call">着信映像通話</string>
@@ -897,11 +899,12 @@
     <string name="rtp_state_connectivity_error">通話に接続できません</string>
     <string name="rtp_state_connectivity_lost_error">接続切断</string>
     <string name="rtp_state_retracted">撤回された通話</string>
+    <string name="rtp_state_application_failure">アプリの失敗</string>
     <string name="rtp_state_security_error">検証に問題</string>
     <string name="hang_up">電話を切る</string>
     <string name="ongoing_call">継続中の通話</string>
     <string name="ongoing_video_call">継続中の映像通話</string>
-    <string name="disable_tor_to_make_call">通話するのに Tor を無効にする</string>
+    <string name="disable_tor_to_make_call">通話するのに Tor を無効化</string>
     <string name="incoming_call">着信通話</string>
     <string name="incoming_call_duration">着信通話・%s</string>
     <string name="missed_call_timestamp">不在着信通話・%s</string>

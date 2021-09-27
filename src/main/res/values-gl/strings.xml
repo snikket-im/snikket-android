@@ -58,7 +58,7 @@
     <string name="change_password_on_server">Cambiar o contrasinal no servidor</string>
     <string name="share_with">Compartir con</string>
     <string name="start_conversation">Comezar conversa</string>
-    <string name="invite_contact">Invitar contacto</string>
+    <string name="invite_contact">Convidar contacto</string>
     <string name="invite">Convidar</string>
     <string name="contacts">Contactos</string>
     <string name="contact">Contacto</string>
@@ -559,7 +559,7 @@
     <string name="registration_password_too_weak">Fallo no rexistro: contrasinal moi feble</string>
     <string name="choose_participants">Escoller participantes</string>
     <string name="creating_conference">Creando unha conversa en grupo...</string>
-    <string name="invite_again">Invitar de novo</string>
+    <string name="invite_again">Convidar de novo</string>
     <string name="gp_disable">Desactivar</string>
     <string name="gp_short">Breve</string>
     <string name="gp_medium">Medio</string>
