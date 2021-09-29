@@ -20,7 +20,7 @@ public class EnterNameActivity extends XmppActivity implements XmppConnectionSer
 
     private Account account;
 
-    private AtomicBoolean setNick = new AtomicBoolean(false);
+    private final AtomicBoolean setNick = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
