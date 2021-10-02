@@ -60,22 +60,12 @@ public class JingleSocks5Transport extends JingleTransport {
         } else {
             destBuilder.append(this.connection.getTransportId());
         }
-        if (candidate.getType() == JingleCandidate.TYPE_PROXY) {
-            if (candidate.isOurs()) {
-                destBuilder.append(this.account.getJid());
-                destBuilder.append(this.connection.getId().with);
-            } else {
-                destBuilder.append(this.connection.getId().with);
-                destBuilder.append(this.account.getJid());
-            }
+        if (candidate.isOurs()) {
+            destBuilder.append(this.account.getJid());
+            destBuilder.append(this.connection.getId().with);
         } else {
-            if (connection.isInitiator()) {
-                destBuilder.append(this.account.getJid());
-                destBuilder.append(this.connection.getId().with);
-            } else {
-                destBuilder.append(this.connection.getId().with);
-                destBuilder.append(this.account.getJid());
-            }
+            destBuilder.append(this.connection.getId().with);
+            destBuilder.append(this.account.getJid());
         }
         messageDigest.reset();
         this.destination = CryptoHelper.bytesToHex(messageDigest.digest(destBuilder.toString().getBytes()));
@@ -189,7 +179,8 @@ public class JingleSocks5Transport extends JingleTransport {
                 socket.setSoTimeout(0);
                 isEstablished = true;
                 callback.established();
-            } catch (IOException e) {
+            } catch (final IOException e) {
+                Log.d(Config.LOGTAG, "unable to establish connection to candidate", e);
                 callback.failed();
             }
         }).start();
