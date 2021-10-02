@@ -180,7 +180,6 @@ public class JingleSocks5Transport extends JingleTransport {
                 isEstablished = true;
                 callback.established();
             } catch (final IOException e) {
-                Log.d(Config.LOGTAG, "unable to establish connection to candidate", e);
                 callback.failed();
             }
         }).start();
