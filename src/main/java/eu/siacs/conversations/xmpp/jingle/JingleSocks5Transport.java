@@ -3,6 +3,8 @@ package eu.siacs.conversations.xmpp.jingle;
 import android.os.PowerManager;
 import android.util.Log;
 
+import com.google.common.io.ByteStreams;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -114,26 +116,26 @@ public class JingleSocks5Transport extends JingleTransport {
         final byte[] authBegin = new byte[2];
         final InputStream inputStream = socket.getInputStream();
         final OutputStream outputStream = socket.getOutputStream();
-        inputStream.read(authBegin);
+        ByteStreams.readFully(inputStream, authBegin);
         if (authBegin[0] != 0x5) {
             socket.close();
         }
         final short methodCount = authBegin[1];
         final byte[] methods = new byte[methodCount];
-        inputStream.read(methods);
+        ByteStreams.readFully(inputStream, methods);
         if (SocksSocketFactory.contains((byte) 0x00, methods)) {
             outputStream.write(new byte[]{0x05, 0x00});
         } else {
             outputStream.write(new byte[]{0x05, (byte) 0xff});
         }
-        byte[] connectCommand = new byte[4];
-        inputStream.read(connectCommand);
+        final byte[] connectCommand = new byte[4];
+        ByteStreams.readFully(inputStream, connectCommand);
         if (connectCommand[0] == 0x05 && connectCommand[1] == 0x01 && connectCommand[3] == 0x03) {
             int destinationCount = inputStream.read();
             final byte[] destination = new byte[destinationCount];
-            inputStream.read(destination);
+            ByteStreams.readFully(inputStream, destination);
             final byte[] port = new byte[2];
-            inputStream.read(port);
+            ByteStreams.readFully(inputStream, port);
             final String receivedDestination = new String(destination);
             final ByteBuffer response = ByteBuffer.allocate(7 + destination.length);
             final byte[] responseHeader;
