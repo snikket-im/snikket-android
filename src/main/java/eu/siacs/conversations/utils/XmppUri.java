@@ -194,7 +194,7 @@ public class XmppUri {
     public boolean isAction(final String action) {
         return Collections2.transform(
                 parameters.keySet(),
-                s -> CharMatcher.inRange('a', 'z').or(CharMatcher.inRange('A', 'z')).retainFrom(s)
+                s -> CharMatcher.inRange('a', 'z').or(CharMatcher.inRange('A', 'Z')).retainFrom(s)
         ).contains(action);
     }
 
