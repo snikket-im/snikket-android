@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableMap;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -169,7 +170,7 @@ public class XmppUri {
                 }
             }
             this.fingerprints = parseFingerprints(parameters);
-        } else if ("imto".equalsIgnoreCase(scheme)) {
+        } else if ("imto".equalsIgnoreCase(scheme) && Arrays.asList("xmpp", "jabber").contains(uri.getHost())) {
             // sample: imto://xmpp/foo@bar.com
             try {
                 jid = URLDecoder.decode(uri.getEncodedPath(), "UTF-8").split("/")[1].trim();
