@@ -271,6 +271,17 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         return null;
     }
 
+    public Message findMessageWithUuid(final String uuid) {
+        synchronized (this.messages) {
+            for (final Message message : this.messages) {
+                if (message.getUuid().equals(uuid)) {
+                    return message;
+                }
+            }
+        }
+        return null;
+    }
+
     public boolean markAsDeleted(final List<String> uuids) {
         boolean deleted = false;
         final PgpDecryptionService pgpDecryptionService = account.getPgpDecryptionService();

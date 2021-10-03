@@ -726,6 +726,7 @@ public class XmppConnectionService extends Service {
                     }
                     final CharSequence body = remoteInput.getCharSequence("text_reply");
                     final boolean dismissNotification = intent.getBooleanExtra("dismiss_notification", false);
+                    final String lastMessageUuid = intent.getStringExtra("last_message_uuid");
                     if (body == null || body.length() <= 0) {
                         break;
                     }
@@ -734,7 +735,7 @@ public class XmppConnectionService extends Service {
                             restoredFromDatabaseLatch.await();
                             final Conversation c = findConversationByUuid(uuid);
                             if (c != null) {
-                                directReply(c, body.toString(), dismissNotification);
+                                directReply(c, body.toString(), lastMessageUuid, dismissNotification);
                             }
                         } catch (InterruptedException e) {
                             Log.d(Config.LOGTAG, "unable to process direct reply");
@@ -932,8 +933,12 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    private void directReply(Conversation conversation, String body, final boolean dismissAfterReply) {
-        Message message = new Message(conversation, body, conversation.getNextEncryption());
+    private void directReply(final Conversation conversation, final String body, final String lastMessageUuid, final boolean dismissAfterReply) {
+        final Message inReplyTo = lastMessageUuid == null ? null : conversation.findMessageWithUuid(lastMessageUuid);
+        final Message message = new Message(conversation, body, conversation.getNextEncryption());
+        if (inReplyTo != null && inReplyTo.isPrivateMessage()) {
+            Message.configurePrivateMessage(message, inReplyTo.getCounterpart());
+        }
         message.markUnread();
         if (message.getEncryption() == Message.ENCRYPTION_PGP) {
             getPgpEngine().encrypt(message, new UiCallback<Message>() {

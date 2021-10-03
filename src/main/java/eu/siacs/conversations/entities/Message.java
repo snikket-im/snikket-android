@@ -984,13 +984,28 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         }
         if (conversation.getMode() == Conversation.MODE_MULTI) {
             final Jid nextCounterpart = conversation.getNextCounterpart();
-            if (nextCounterpart != null) {
-                message.setCounterpart(nextCounterpart);
-                message.setTrueCounterpart(conversation.getMucOptions().getTrueCounterpart(nextCounterpart));
-                message.setType(isFile ? Message.TYPE_PRIVATE_FILE : Message.TYPE_PRIVATE);
-                return true;
-            }
+            return configurePrivateMessage(conversation, message, nextCounterpart, isFile);
         }
         return false;
+    }
+
+    public static boolean configurePrivateMessage(final Message message, final Jid counterpart) {
+        final Conversation conversation;
+        if (message.conversation instanceof Conversation) {
+            conversation = (Conversation) message.conversation;
+        } else {
+            return false;
+        }
+        return configurePrivateMessage(conversation, message, counterpart, false);
+    }
+
+    private static boolean configurePrivateMessage(final Conversation conversation, final Message message, final Jid counterpart, final boolean isFile) {
+        if (counterpart == null) {
+            return false;
+        }
+        message.setCounterpart(counterpart);
+        message.setTrueCounterpart(conversation.getMucOptions().getTrueCounterpart(counterpart));
+        message.setType(isFile ? Message.TYPE_PRIVATE_FILE : Message.TYPE_PRIVATE);
+        return true;
     }
 }
