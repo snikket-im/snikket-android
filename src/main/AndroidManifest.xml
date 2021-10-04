@@ -52,7 +52,8 @@
 
 
     <application
-        android:allowBackup="false"
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_content"
         android:appCategory="social"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/new_launcher"
