@@ -159,7 +159,6 @@ public class RtpContentMap {
             } else if (description instanceof RtpDescription) {
                 rtpDescription = (RtpDescription) description;
             } else {
-                Log.d(Config.LOGTAG, "description was " + description);
                 throw new UnsupportedApplicationException("Content does not contain rtp description");
             }
             if (transportInfo instanceof IceUdpTransportInfo) {

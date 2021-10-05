@@ -314,7 +314,12 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private ListenableFuture<RtpContentMap> receiveRtpContentMap(final JinglePacket jinglePacket, final boolean expectVerification) {
-        final RtpContentMap receivedContentMap = RtpContentMap.of(jinglePacket);
+        final RtpContentMap receivedContentMap;
+        try {
+            receivedContentMap = RtpContentMap.of(jinglePacket);
+        } catch (final Exception e) {
+            return Futures.immediateFailedFuture(e);
+        }
         if (receivedContentMap instanceof OmemoVerifiedRtpContentMap) {
             final ListenableFuture<AxolotlService.OmemoVerifiedPayload<RtpContentMap>> future = id.account.getAxolotlService().decrypt((OmemoVerifiedRtpContentMap) receivedContentMap, id.with);
             return Futures.transform(future, omemoVerifiedPayload -> {
