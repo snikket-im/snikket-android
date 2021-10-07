@@ -35,6 +35,8 @@ public class XmppUri {
     private Map<String, String> parameters = Collections.emptyMap();
     private boolean safeSource = true;
 
+    public static final String INVITE_DOMAIN = "conversations.im";
+
     public XmppUri(final String uri) {
         try {
             parse(Uri.parse(uri));
@@ -136,10 +138,10 @@ public class XmppUri {
             return;
         }
         this.uri = uri;
-        String scheme = uri.getScheme();
-        String host = uri.getHost();
+        final String scheme = uri.getScheme();
+        final String host = uri.getHost();
         List<String> segments = uri.getPathSegments();
-        if ("https".equalsIgnoreCase(scheme) && "conversations.im".equalsIgnoreCase(host)) {
+        if ("https".equalsIgnoreCase(scheme) && INVITE_DOMAIN.equalsIgnoreCase(host)) {
             if (segments.size() >= 2 && segments.get(1).contains("@")) {
                 // sample : https://conversations.im/i/foo@bar.com
                 try {

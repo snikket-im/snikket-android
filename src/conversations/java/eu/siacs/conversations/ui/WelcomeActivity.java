@@ -106,7 +106,8 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
     }
 
     @Override
-    public void onNewIntent(Intent intent) {
+    public void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
         if (intent != null) {
             setIntent(intent);
         }

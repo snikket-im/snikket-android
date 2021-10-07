@@ -968,5 +968,7 @@
     <string name="backup_started_message">The backup has been started. You’ll get a notification once it has been completed.</string>
     <string name="unable_to_enable_video">Unable to enable video.</string>
     <string name="plain_text_document">Plain text document</string>
+    <string name="account_registrations_are_not_supported">Account registrations are not supported</string>
+    <string name="no_xmpp_adddress_found">No XMPP address found</string>
 
 </resources>
