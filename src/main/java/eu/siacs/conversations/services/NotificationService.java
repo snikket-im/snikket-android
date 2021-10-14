@@ -35,6 +35,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
 
 import java.io.File;
 import java.io.IOException;
@@ -397,23 +398,42 @@ public class NotificationService {
         notify(DELIVERY_FAILED_NOTIFICATION_ID, summaryNotification);
     }
 
-    public void startRinging(final AbstractJingleConnection.Id id, final Set<Media> media) {
+    public synchronized void startRinging(final AbstractJingleConnection.Id id, final Set<Media> media) {
         showIncomingCallNotification(id, media);
+        final NotificationManager notificationManager = (NotificationManager) mXmppConnectionService.getSystemService(Context.NOTIFICATION_SERVICE);
+        final int currentInterruptionFilter;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && notificationManager != null) {
+            currentInterruptionFilter = notificationManager.getCurrentInterruptionFilter();
+        } else {
+            currentInterruptionFilter = 1; //INTERRUPTION_FILTER_ALL
+        }
+        if (currentInterruptionFilter != 1) {
+            Log.d(Config.LOGTAG, "do not ring or vibrate because interruption filter has been set to " + currentInterruptionFilter);
+            return;
+        }
+        final ScheduledFuture<?> currentVibrationFuture = this.vibrationFuture;
         this.vibrationFuture = SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(
                 new VibrationRunnable(),
                 0,
                 3,
                 TimeUnit.SECONDS
         );
+        if (currentVibrationFuture != null) {
+            currentVibrationFuture.cancel(true);
+        }
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
         final Resources resources = mXmppConnectionService.getResources();
         final String ringtonePreference = preferences.getString("call_ringtone", resources.getString(R.string.incoming_call_ringtone));
         if (Strings.isNullOrEmpty(ringtonePreference)) {
-            Log.d(Config.LOGTAG,"ringtone has been set to none");
+            Log.d(Config.LOGTAG, "ringtone has been set to none");
             return;
         }
         final Uri uri = Uri.parse(ringtonePreference);
         this.currentlyPlayingRingtone = RingtoneManager.getRingtone(mXmppConnectionService, uri);
+        if (this.currentlyPlayingRingtone == null) {
+            Log.d(Config.LOGTAG, "unable to find ringtone for uri " + uri);
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             this.currentlyPlayingRingtone.setLooping(true);
         }
@@ -771,17 +791,18 @@ public class NotificationService {
                         .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ)
                         .setShowsUserInterface(false)
                         .build();
-                String replyLabel = mXmppConnectionService.getString(R.string.reply);
-                NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(
+                final String replyLabel = mXmppConnectionService.getString(R.string.reply);
+                final String lastMessageUuid = Iterables.getLast(messages).getUuid();
+                final NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(
                         R.drawable.ic_send_text_offline,
                         replyLabel,
-                        createReplyIntent(conversation, false))
+                        createReplyIntent(conversation, lastMessageUuid, false))
                         .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_REPLY)
                         .setShowsUserInterface(false)
                         .addRemoteInput(remoteInput).build();
-                NotificationCompat.Action wearReplyAction = new NotificationCompat.Action.Builder(R.drawable.ic_wear_reply,
+                final NotificationCompat.Action wearReplyAction = new NotificationCompat.Action.Builder(R.drawable.ic_wear_reply,
                         replyLabel,
-                        createReplyIntent(conversation, true)).addRemoteInput(remoteInput).build();
+                        createReplyIntent(conversation, lastMessageUuid, true)).addRemoteInput(remoteInput).build();
                 mBuilder.extend(new NotificationCompat.WearableExtender().addAction(wearReplyAction));
                 int addedActionsCount = 1;
                 mBuilder.addAction(markReadAction);
@@ -1047,13 +1068,14 @@ public class NotificationService {
         return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
     }
 
-    private PendingIntent createReplyIntent(Conversation conversation, boolean dismissAfterReply) {
+    private PendingIntent createReplyIntent(final Conversation conversation, final String lastMessageUuid, final boolean dismissAfterReply) {
         final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
         intent.setAction(XmppConnectionService.ACTION_REPLY_TO_CONVERSATION);
         intent.putExtra("uuid", conversation.getUuid());
         intent.putExtra("dismiss_notification", dismissAfterReply);
+        intent.putExtra("last_message_uuid", lastMessageUuid);
         final int id = generateRequestCode(conversation, dismissAfterReply ? 12 : 14);
-        return PendingIntent.getService(mXmppConnectionService, id, intent, 0);
+        return PendingIntent.getService(mXmppConnectionService, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createReadPendingIntent(Conversation conversation) {

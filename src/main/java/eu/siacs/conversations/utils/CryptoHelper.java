@@ -9,8 +9,6 @@ import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -31,7 +29,6 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.http.AesGcmURLStreamHandler;
 import eu.siacs.conversations.xmpp.Jid;
 
 public final class CryptoHelper {
@@ -275,28 +272,6 @@ public final class CryptoHelper {
                 return R.string.encryption_choice_unencrypted;
             default:
                 return R.string.encryption_choice_pgp;
-        }
-    }
-
-    public static URL toAesGcmUrl(URL url) {
-        if (!url.getProtocol().equalsIgnoreCase("https")) {
-            return url;
-        }
-        try {
-            return new URL(AesGcmURLStreamHandler.PROTOCOL_NAME + url.toString().substring(url.getProtocol().length()));
-        } catch (MalformedURLException e) {
-            return url;
-        }
-    }
-
-    public static URL toHttpsUrl(URL url) {
-        if (!url.getProtocol().equalsIgnoreCase(AesGcmURLStreamHandler.PROTOCOL_NAME)) {
-            return url;
-        }
-        try {
-            return new URL("https" + url.toString().substring(url.getProtocol().length()));
-        } catch (MalformedURLException e) {
-            return url;
         }
     }
 

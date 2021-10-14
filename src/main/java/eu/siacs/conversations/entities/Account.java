@@ -4,7 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.SystemClock;
 import android.util.Log;
-import android.util.Pair;
+
+import com.google.common.base.Strings;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -147,7 +148,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean httpUploadAvailable(long filesize) {
-        return xmppConnection != null && (xmppConnection.getFeatures().httpUpload(filesize) || xmppConnection.getFeatures().p1S3FileTransfer());
+        return xmppConnection != null && xmppConnection.getFeatures().httpUpload(filesize);
     }
 
     public boolean httpUploadAvailable() {
@@ -248,7 +249,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public String getHostname() {
-        return this.hostname == null ? "" : this.hostname;
+        return Strings.nullToEmpty(this.hostname);
     }
 
     public void setHostname(String hostname) {
@@ -636,6 +637,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         REGISTRATION_INVALID_TOKEN(true,false),
         REGISTRATION_PASSWORD_TOO_WEAK(true, false),
         TLS_ERROR,
+        TLS_ERROR_DOMAIN,
         INCOMPATIBLE_SERVER,
         TOR_NOT_AVAILABLE,
         DOWNGRADE_ATTACK,
@@ -702,6 +704,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                     return R.string.account_status_regis_invalid_token;
                 case TLS_ERROR:
                     return R.string.account_status_tls_error;
+                case TLS_ERROR_DOMAIN:
+                    return R.string.account_status_tls_error_domain;
                 case INCOMPATIBLE_SERVER:
                     return R.string.account_status_incompatible_server;
                 case TOR_NOT_AVAILABLE:

@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
@@ -525,7 +526,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             } else if (contact.showInRoster()) {
                 throw new EnterJidDialog.JidError(getString(R.string.contact_already_exists));
             } else {
-                xmppConnectionService.createContact(contact, true);
+                final String preAuth = invite == null ? null : invite.getParameter(XmppUri.PARAMETER_PRE_AUTH);
+                xmppConnectionService.createContact(contact, true, preAuth);
                 if (invite != null && invite.hasFingerprints()) {
                     xmppConnectionService.verifyFingerprints(contact, invite.getFingerprints());
                 }
@@ -731,7 +733,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                 if (mRequestedContactsPermission.compareAndSet(false, true)) {
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+                    if (QuickConversationsService.isQuicksy() || shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         final AtomicBoolean requestPermission = new AtomicBoolean(false);
                         builder.setTitle(R.string.sync_with_contacts);
@@ -740,20 +742,26 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                         } else {
                             builder.setMessage(getString(R.string.sync_with_contacts_long, getString(R.string.app_name)));
                         }
-                        builder.setPositiveButton(R.string.next, (dialog, which) -> {
+                        @StringRes int confirmButtonText;
+                        if (QuickConversationsService.isConversations()) {
+                            confirmButtonText = R.string.next;
+                        } else {
+                            confirmButtonText = R.string.confirm;
+                        }
+                        builder.setPositiveButton(confirmButtonText, (dialog, which) -> {
                             if (requestPermission.compareAndSet(false, true)) {
                                 requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
                             }
                         });
                         builder.setOnDismissListener(dialog -> {
-                            if (requestPermission.compareAndSet(false, true)) {
+                            if (QuickConversationsService.isConversations() && requestPermission.compareAndSet(false, true)) {
                                 requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
 
                             }
                         });
-                        builder.setCancelable(false);
+                        builder.setCancelable(QuickConversationsService.isQuicksy());
                         final AlertDialog dialog = builder.create();
-                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setCanceledOnTouchOutside(QuickConversationsService.isQuicksy());
                         dialog.setOnShowListener(dialogInterface -> {
                             final TextView tv = dialog.findViewById(android.R.id.message);
                             if (tv != null) {

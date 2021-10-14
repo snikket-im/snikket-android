@@ -20,7 +20,7 @@
     <string name="action_unblock_participant">Débloquer le participant</string>
     <string name="title_activity_manage_accounts">Gestion des comptes</string>
     <string name="title_activity_settings">Paramètres</string>
-    <string name="title_activity_sharewith">Partager avec Conversations</string>
+    <string name="title_activity_sharewith">Partager avec Snikket</string>
     <string name="title_activity_start_conversation">Démarrer une conversation</string>
     <string name="title_activity_choose_contact">Choisir un contact</string>
     <string name="title_activity_choose_contacts">Choisir les contacts</string>
@@ -124,6 +124,7 @@
     <string name="pref_ringtone">Sonnerie</string>
     <string name="pref_notification_sound">Son des notifications</string>
     <string name="pref_notification_sound_summary">Son de notification pour les nouveaux messages</string>
+    <string name="pref_call_ringtone_summary">Sonnerie d\'appel entrant</string>
     <string name="pref_notification_grace_period">Période sans notification</string>
     <string name="pref_notification_grace_period_summary">La durée pendant laquelle les notifications sont désactivées après la détection d\'une activité sur l\'un de vos autres appareils.</string>
     <string name="pref_advanced_options">Avancé</string>
@@ -149,6 +150,7 @@
     <string name="error_file_not_found">Impossible de trouver le fichier</string>
     <string name="error_io_exception">Erreur générale d\'E/S. Avez-vous encore de l\'espace libre ?</string>
     <string name="error_security_exception_during_image_copy">L\'application utilisée ne donne pas la permission de lire l\'image.\n\n<small>Utilisez une autre application pour choisir une image.</small></string>
+    <string name="error_security_exception">L\'app avec laquelle vous avez partagé ce fichier n\'a pas fourni assez de permissions.</string>
     <string name="account_status_unknown">Inconnu</string>
     <string name="account_status_disabled">Désactivé temporairement</string>
     <string name="account_status_online">En ligne</string>
@@ -163,6 +165,7 @@
     <string name="account_status_regis_not_sup">Inscription non supportée par le serveur</string>
     <string name="account_status_regis_invalid_token">Jeton d’inscription invalide</string>
     <string name="account_status_tls_error">La négociation TLS a échoué</string>
+    <string name="account_status_tls_error_domain">Domaine non vérifiable</string>
     <string name="account_status_policy_violation">Violation de politique</string>
     <string name="account_status_incompatible_server">Serveur incompatible</string>
     <string name="account_status_stream_error">Erreur de flux</string>
@@ -215,6 +218,7 @@
     <string name="openpgp_key_id">ID de clé OpenPGP</string>
     <string name="omemo_fingerprint">Empreinte OMEMO</string>
     <string name="omemo_fingerprint_x509">v\\Empreinte OMEMO</string>
+    <string name="omemo_fingerprint_selected_message">Empreinte OMEMO (origine du message)</string>
     <string name="other_devices">Autres appareils</string>
     <string name="trust_omemo_fingerprints">Faire confiance aux empreintes OMEMO</string>
     <string name="fetching_keys">Récupération des clés…</string>
@@ -462,6 +466,7 @@
     <string name="account_status_host_unknown">Le serveur n\'est pas responsable pour ce domaine</string>
     <string name="server_info_broken">Détraqué</string>
     <string name="pref_presence_settings">Disponibilité</string>
+    <string name="pref_away_when_screen_off">Absent quand l\'appareil est verrouillé</string>
     <string name="pref_dnd_on_silent_mode">Occupé en mode silence</string>
     <string name="pref_dnd_on_silent_mode_summary">Occupé lorsque l\'appareil est en mode silencieux</string>
     <string name="pref_treat_vibrate_as_silent">Indisponible en mode vibreur</string>

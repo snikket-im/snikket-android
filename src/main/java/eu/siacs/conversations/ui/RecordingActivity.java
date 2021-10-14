@@ -28,6 +28,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityRecordingBinding;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 
@@ -64,6 +65,12 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         this.binding.shareButton.setOnClickListener(this);
         this.setFinishOnTouchOutside(false);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        SettingsUtils.applyScreenshotPreventionSetting(this);
     }
 
     @Override

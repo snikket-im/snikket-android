@@ -130,6 +130,7 @@
     <string name="pref_ringtone">Dzwonek</string>
     <string name="pref_notification_sound">Dźwięk powiadomień</string>
     <string name="pref_notification_sound_summary">Dźwięk powiadomień dla nowych wiadomości</string>
+    <string name="pref_call_ringtone_summary">Dzwonek dla przychodzących rozmów</string>
     <string name="pref_notification_grace_period">Czas bez powiadomień</string>
     <string name="pref_notification_grace_period_summary">Długość czasu kiedy powiadomienia są uśpione po wykryciu aktywności na jednym z twoich innych urządzeń.</string>
     <string name="pref_advanced_options">Zaawansowane</string>
@@ -137,6 +138,8 @@
     <string name="pref_never_send_crash_summary">Wysyłając nam ślady stosu pomagasz w rozwoju</string>
     <string name="pref_confirm_messages">Potwierdzenia wiadomości</string>
     <string name="pref_confirm_messages_summary">Zezwól na wysyłanie do osób z twojej listy kontaktów informacji o tym, kiedy otrzymałeś i przeczytałeś wiadomość od nich</string>
+    <string name="pref_prevent_screenshots">Zapobiegaj zrzutom ekranu</string>
+    <string name="pref_prevent_screenshots_summary">Ukryj zawartość aplikacji w podglądzie aplikacji oraz zablokuj zrzuty ekranu </string>
     <string name="pref_ui_options">UI</string>
     <string name="openpgp_error">OpenKeychain zgłosiło błąd.</string>
     <string name="bad_key_for_encryption">Zły klucz szyfrowania.</string>
@@ -155,6 +158,7 @@
     <string name="error_file_not_found">Nie odnaleziono pliku</string>
     <string name="error_io_exception">Ogólny błąd wejścia/wyjścia</string>
     <string name="error_security_exception_during_image_copy">Aplikacja użyta do wyboru obrazu nie zezwoliła na odczyt pliku.\n\n<small>Wybierz obraz przy użyciu innego menedżera plików</small></string>
+    <string name="error_security_exception">Aplikacja której użyłeś do udostępnienia pliku nie dostarczyła odpowiednich uprawnień. </string>
     <string name="account_status_unknown">Nieznany</string>
     <string name="account_status_disabled">Tymczasowo wyłączono</string>
     <string name="account_status_online">Połączono</string>
@@ -169,6 +173,7 @@
     <string name="account_status_regis_not_sup">Ten serwer nie wspiera rejestracji</string>
     <string name="account_status_regis_invalid_token">Nieprawidłowy żeton rejestracji</string>
     <string name="account_status_tls_error">Nie powiodła się negocjacja TLS</string>
+    <string name="account_status_tls_error_domain">Nie można zweryfikować tej domeny</string>
     <string name="account_status_policy_violation">Naruszenie zasad</string>
     <string name="account_status_incompatible_server">Serwer niekompatybilny</string>
     <string name="account_status_stream_error">Błąd strumienia</string>
@@ -221,6 +226,8 @@
     <string name="openpgp_key_id">ID klucza OpenPGP</string>
     <string name="omemo_fingerprint">Odcisk OMEMO</string>
     <string name="omemo_fingerprint_x509">Odcisk v\\OMEMO</string>
+    <string name="omemo_fingerprint_selected_message">Odcisk OMEMO (pochodzenie wiadomości)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\Odcisk OMEMO (pochodzenie wiadomości)</string>
     <string name="other_devices">Pozostałe urządzenia</string>
     <string name="trust_omemo_fingerprints">Zaufane odciski OMEMO</string>
     <string name="fetching_keys">Pobieranie kluczy...</string>
@@ -415,6 +422,7 @@
     <string name="audio">plik audio</string>
     <string name="video">plik wideo</string>
     <string name="image">obraz</string>
+    <string name="vector_graphic">grafika wektorowa</string>
     <string name="pdf_document">Dokument PDF</string>
     <string name="apk">Aplikacja Androida</string>
     <string name="vcard">Kontakt</string>
@@ -470,6 +478,8 @@
     <string name="account_status_host_unknown">Serwer nie odpowiada domenie</string>
     <string name="server_info_broken">Zepsute</string>
     <string name="pref_presence_settings">Dostępność</string>
+    <string name="pref_away_when_screen_off">Niedostępny kiedy urządzenie jest zablokowane</string>
+    <string name="pref_away_when_screen_off_summary">Pokaż jako Niedostępny kiedy urządzenie jest zablokowane</string>
     <string name="pref_dnd_on_silent_mode">Zajęty w trybie cichym</string>
     <string name="pref_dnd_on_silent_mode_summary">Pokaż jako Zajęty jeśli urządzenie jest w trybie cichym</string>
     <string name="pref_treat_vibrate_as_silent">Traktuj tryb wibracji jak tryb cichy</string>
@@ -895,7 +905,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="add_anway">Dodaj i tak</string>
     <string name="this_looks_like_channel">To wygląda jak adres kanału</string>
     <string name="share_backup_files">Udostępnij pliki kopii zapasowych</string>
-    <string name="conversations_backup">Kopia zapasowa Conversations</string>
+    <string name="conversations_backup">Kopia zapasowa Snikket</string>
     <string name="event">Zdarzenie</string>
     <string name="open_backup">Otwórz kopię zapasową</string>
     <string name="not_a_backup_file">Plik, który otworzyłeś, nie jest plikiem kopii zapasowej Snikket</string>
@@ -919,7 +929,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="rtp_state_connected">Połączony</string>
     <string name="rtp_state_accepting_call">Akceptowanie połączenia</string>
     <string name="rtp_state_ending_call">Kończenie połączenia</string>
-    <string name="answer_call">Odbierz</string>
+    <string name="answer_call">Połącz</string>
     <string name="dismiss_call">Odrzuć</string>
     <string name="rtp_state_finding_device">Wyszukiwanie urządzeń</string>
     <string name="rtp_state_ringing">Dzwonienie</string>
@@ -928,6 +938,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="rtp_state_connectivity_lost_error">Utracono połączenie</string>
     <string name="rtp_state_retracted">Anulowane połączenie</string>
     <string name="rtp_state_application_failure">Błąd aplikacji</string>
+    <string name="rtp_state_security_error">Problem z weryfikacją </string>
     <string name="hang_up">Rozłącz</string>
     <string name="ongoing_call">Połączenie wychodzące</string>
     <string name="ongoing_video_call">Wideorozmowa wychodząca</string>
@@ -981,4 +992,8 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="unable_to_parse_invite">Nie można przetworzyć zaproszenia</string>
     <string name="server_does_not_support_easy_onboarding_invites">Serwer nie wspiera tworzenia zaproszeń</string>
     <string name="no_active_accounts_support_this">Nie ma aktywnych kont wspierających tę funkcję</string>
+    <string name="backup_started_message">Tworzenie kopii zapasowej się rozpoczęło. Dostaniesz powiadomienie kiedy się zakończy. </string>
+    <string name="unable_to_enable_video">Nie można włączyć wideo. </string>
+    <string name="plain_text_document">Dokument zwykłego tekstu</string>
+
 </resources>

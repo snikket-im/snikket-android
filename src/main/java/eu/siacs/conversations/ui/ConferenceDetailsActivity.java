@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -85,6 +87,13 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
         }
     };
+
+    public static void open(final Activity activity, final Conversation conversation) {
+        Intent intent = new Intent(activity, ConferenceDetailsActivity.class);
+        intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
+        intent.putExtra("uuid", conversation.getUuid());
+        activity.startActivity(intent);
+    }
 
     private final OnClickListener mNotifyStatusClickListener = new OnClickListener() {
         @Override
@@ -481,6 +490,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             this.binding.mucSubject.setTextAppearance(this, subject.length() > (hasTitle ? 128 : 196) ? R.style.TextAppearance_Conversations_Body1_Linkified : R.style.TextAppearance_Conversations_Subhead);
             this.binding.mucSubject.setAutoLinkMask(0);
             this.binding.mucSubject.setVisibility(View.VISIBLE);
+            this.binding.mucSubject.setMovementMethod(LinkMovementMethod.getInstance());
         } else {
             this.binding.mucSubject.setVisibility(View.GONE);
         }

@@ -1,5 +1,42 @@
 # Changelog
 
+### Version 2.10.1
+
+* Fix issue with some videos not being compressed
+* Fix rare crash when opening notification
+
+### Version 2.10.0
+
+* Show black bars when remote video does not match aspect ratio of screen
+* Improve search performance
+* Add setting to prevent screenshots
+
+### Version 2.9.13
+
+* minor A/V improvements
+
+### Version 2.9.12
+
+* Always verify domain name. No user overwrite
+* Support roster pre authentication
+
+### Version 2.9.11
+
+* Fixed 'No Connectivity' issues on Android 7.1
+
+### Version 2.9.10
+* fix HTTP up/download for users that don’t trust system CAs
+
+### Version 2.9.9
+
+* Various bug fixes around Tor support
+* Improve call compatibility with Dino
+
+### Version 2.9.8
+
+* Verify A/V calls with preexisting OMEMO sessions
+* Improve compatibility with non libwebrtc WebRTC implementations
+
 ### Version 2.9.7
 
 * Ability to select incoming call ringtone

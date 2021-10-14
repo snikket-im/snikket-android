@@ -1,14 +1,12 @@
-import com.android.build.OutputFile
-
 // Top-level build file where you can add configuration options common to all
 // sub-projects/modules.
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'com.android.tools.build:gradle:7.0.3'
     }
 }
 
@@ -16,8 +14,8 @@ apply plugin: 'com.android.application'
 
 repositories {
     google()
-    jcenter()
     mavenCentral()
+    jcenter()
 }
 
 configurations {
@@ -35,23 +33,23 @@ configurations {
 dependencies {
     implementation 'androidx.viewpager:viewpager:1.0.0'
 
-    playstoreImplementation('com.google.firebase:firebase-messaging:21.0.1') {
+    playstoreImplementation('com.google.firebase:firebase-messaging:22.0.0') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
     conversationsPlaystoreCompatImplementation("com.android.installreferrer:installreferrer:2.2")
     conversationsPlaystoreSystemImplementation("com.android.installreferrer:installreferrer:2.2")
-    quicksyPlaystoreCompatImplementation 'com.google.android.gms:play-services-auth-api-phone:17.5.0'
-    quicksyPlaystoreSystemImplementation 'com.google.android.gms:play-services-auth-api-phone:17.5.0'
+    quicksyPlaystoreCompatImplementation 'com.google.android.gms:play-services-auth-api-phone:17.5.1'
+    quicksyPlaystoreSystemImplementation 'com.google.android.gms:play-services-auth-api-phone:17.5.1'
     implementation 'org.sufficientlysecure:openpgp-api:10.0'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.exifinterface:exifinterface:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.exifinterface:exifinterface:1.3.3'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.emoji:emoji:1.1.0'
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.material:material:1.4.0'
     compatImplementation 'androidx.emoji:emoji-appcompat:1.1.0'
     conversationsFreeCompatImplementation 'androidx.emoji:emoji-bundled:1.1.0'
     quicksyFreeCompatImplementation 'androidx.emoji:emoji-bundled:1.1.0'
@@ -64,19 +62,22 @@ dependencies {
     implementation 'org.whispersystems:signal-protocol-java:2.6.2'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation "com.wefika:flowlayout:0.4.1"
-    implementation 'net.ypresto.androidtranscoder:android-transcoder:0.3.0'
-    implementation 'org.jxmpp:jxmpp-jid:0.6.4'
-    implementation 'org.osmdroid:osmdroid-android:6.1.5'
+    implementation 'com.otaliastudios:transcoder:0.10.4'
+
+    implementation 'org.jxmpp:jxmpp-jid:1.0.1'
+    implementation 'org.osmdroid:osmdroid-android:6.1.10'
     implementation 'org.hsluv:hsluv:0.2'
-    implementation 'org.conscrypt:conscrypt-android:2.2.1'
+    implementation 'org.conscrypt:conscrypt-android:2.5.2'
     implementation 'me.drakeet.support:toastcompat:1.1.0'
     implementation "com.leinardi.android:speed-dial:2.0.1"
 
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    implementation 'com.google.guava:guava:30.1-android'
+    implementation "com.squareup.okhttp3:okhttp:4.9.1"
+
+    implementation 'com.google.guava:guava:30.1.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.12.18'
-    implementation fileTree(include: ['libwebrtc-m87.aar'], dir: 'libs')
+    implementation fileTree(include: ['libwebrtc-m92.aar'], dir: 'libs')
 }
 
 ext {
@@ -91,13 +92,14 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 410
-        versionName "2.9.7"
+        versionCode 42022
+        versionName "2.10.1"
         archivesBaseName += "-$versionName"
         applicationId "org.snikket.android"
         resValue "string", "applicationId", applicationId
-        resValue "string", "app_name", "Snikket"
-        buildConfigField "String", "LOGTAG", "\"snikket\""
+        def appName = "Snikket"
+        resValue "string", "app_name", appName
+        buildConfigField "String", "APP_NAME", "\"$appName\"";
     }
 
     splits {
@@ -107,14 +109,12 @@ android {
         }
     }
 
-    dataBinding {
-        enabled true
+    configurations {
+        implementation.exclude group: 'org.jetbrains' , module:'annotations'
     }
 
-    dexOptions {
-        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
-        preDexLibraries = preDexEnabled && !travisBuild
-        jumboMode true
+    dataBinding {
+        enabled true
     }
 
     compileOptions {
@@ -129,9 +129,11 @@ android {
         quicksy {
             dimension "mode"
             applicationId = "im.quicksy.client"
-            resValue "string", "app_name", "Quicksy"
             resValue "string", "applicationId", applicationId
-            buildConfigField "String", "LOGTAG", "\"quicksy\""
+
+            def appName = "Quicksy"
+            resValue "string", "app_name", appName
+            buildConfigField "String", "APP_NAME", "\"$appName\"";
         }
 
         conversations {
@@ -273,11 +275,9 @@ android {
 
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
-            def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+            def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(com.android.build.OutputFile.ABI))
             if (baseAbiVersionCode != null) {
                 output.versionCodeOverride = (100 * variant.versionCode) + baseAbiVersionCode
-            } else {
-                output.versionCodeOverride = (100 * variant.versionCode)
             }
         }
 

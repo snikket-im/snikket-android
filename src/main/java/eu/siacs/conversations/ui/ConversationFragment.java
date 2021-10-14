@@ -135,6 +135,8 @@ import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class ConversationFragment extends XmppFragment implements EditMessage.KeyboardListener, MessageAdapter.OnContactPictureLongClicked, MessageAdapter.OnContactPictureClicked {
 
@@ -186,10 +188,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), ConferenceDetailsActivity.class);
-            intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-            intent.putExtra("uuid", conversation.getUuid());
-            startActivity(intent);
+            ConferenceDetailsActivity.open(getActivity(), conversation);
         }
     };
     private final OnClickListener leaveMuc = new OnClickListener() {
@@ -734,7 +733,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (body.length() == 0 || conversation == null) {
             return;
         }
-        if (conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL && trustKeysIfNeeded(REQUEST_TRUST_KEYS_TEXT)) {
+        if (trustKeysIfNeeded(conversation, REQUEST_TRUST_KEYS_TEXT)) {
             return;
         }
         final Message message;
@@ -755,6 +754,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             default:
                 sendMessage(message);
         }
+    }
+
+    private boolean trustKeysIfNeeded(final Conversation conversation, final int requestCode) {
+        return conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL && trustKeysIfNeeded(requestCode);
     }
 
     protected boolean trustKeysIfNeeded(int requestCode) {
@@ -824,6 +827,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case REQUEST_TRUST_KEYS_ATTACHMENTS:
                 commitAttachments();
                 break;
+            case REQUEST_START_AUDIO_CALL:
+                triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+                break;
+            case REQUEST_START_VIDEO_CALL:
+                triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
+                break;
             case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
                 final List<Attachment> imageUris = Attachment.extractAttachments(getActivity(), data, Attachment.Type.IMAGE);
                 mediaPreviewAdapter.addMediaPreviews(imageUris);
@@ -870,7 +879,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (anyNeedsExternalStoragePermission(attachments) && !hasPermissions(REQUEST_COMMIT_ATTACHMENTS, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             return;
         }
-        if (conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL && trustKeysIfNeeded(REQUEST_TRUST_KEYS_ATTACHMENTS)) {
+        if (trustKeysIfNeeded(conversation, REQUEST_TRUST_KEYS_ATTACHMENTS)) {
             return;
         }
         final PresenceSelector.OnPresenceSelected callback = () -> {
@@ -986,7 +995,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 menuCall.setVisible(false);
                 menuOngoingCall.setVisible(false);
             } else {
-                final XmppConnectionService service = activity.xmppConnectionService;
+                final XmppConnectionService service = activity == null ? null : activity.xmppConnectionService;
                 final Optional<OngoingRtpSession> ongoingRtpSession = service == null ? Optional.absent() : service.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
                 if (ongoingRtpSession.isPresent()) {
                     menuOngoingCall.setVisible(true);
@@ -994,8 +1003,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 } else {
                     menuOngoingCall.setVisible(false);
                     final RtpCapability.Capability rtpCapability = RtpCapability.check(conversation.getContact());
+                    final boolean cameraAvailable = activity != null && activity.isCameraFeatureAvailable();
                     menuCall.setVisible(rtpCapability != RtpCapability.Capability.NONE);
-                    menuVideoCall.setVisible(rtpCapability == RtpCapability.Capability.VIDEO);
+                    menuVideoCall.setVisible(rtpCapability == RtpCapability.Capability.VIDEO && cameraAvailable);
                 }
                 menuContactDetails.setVisible(!this.conversation.withSelf());
                 menuMucDetails.setVisible(false);
@@ -1261,10 +1271,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 activity.switchToContactDetails(conversation.getContact());
                 break;
             case R.id.action_muc_details:
-                Intent intent = new Intent(getActivity(), ConferenceDetailsActivity.class);
-                intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-                intent.putExtra("uuid", conversation.getUuid());
-                startActivity(intent);
+                ConferenceDetailsActivity.open(getActivity(), conversation);
                 break;
             case R.id.action_invite:
                 startActivityForResult(ChooseContactActivity.create(activity, conversation), REQUEST_INVITE_TO_CONVERSATION);
@@ -1364,7 +1371,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             Toast.makeText(getActivity(), R.string.only_one_call_at_a_time, Toast.LENGTH_LONG).show();
             return;
         }
-
         final Contact contact = conversation.getContact();
         if (contact.getPresences().anySupport(Namespace.JINGLE_MESSAGE)) {
             triggerRtpSession(contact.getAccount(), contact.getJid().asBareJid(), action);
@@ -1576,6 +1582,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         if (writeGranted(grantResults, permissions)) {
             if (activity != null && activity.xmppConnectionService != null) {
+                activity.xmppConnectionService.getBitmapCache().evictAll();
                 activity.xmppConnectionService.restartFileObserver();
             }
             refresh();
@@ -1605,7 +1612,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void createNewConnection(final Message message) {
-        if (!activity.xmppConnectionService.getHttpConnectionManager().checkConnection(message)) {
+        if (!activity.xmppConnectionService.hasInternetConnection()) {
             Toast.makeText(getActivity(), R.string.not_connected_try_again, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -1614,9 +1621,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     @SuppressLint("InflateParams")
     protected void clearHistoryDialog(final Conversation conversation) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setTitle(getString(R.string.clear_conversation_history));
-        final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_clear_history, null);
+        final View dialogView = requireActivity().getLayoutInflater().inflate(R.layout.dialog_clear_history, null);
         final CheckBox endConversationCheckBox = dialogView.findViewById(R.id.end_conversation_checkbox);
         builder.setView(dialogView);
         builder.setNegativeButton(getString(R.string.cancel), null);
@@ -1634,7 +1641,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     protected void muteConversationDialog(final Conversation conversation) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setTitle(R.string.disable_notifications);
         final int[] durations = getResources().getIntArray(R.array.mute_options_durations);
         final CharSequence[] labels = new CharSequence[durations.length];
@@ -1650,13 +1657,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (durations[which] == -1) {
                 till = Long.MAX_VALUE;
             } else {
-                till = System.currentTimeMillis() + (durations[which] * 1000);
+                till = System.currentTimeMillis() + (durations[which] * 1000L);
             }
             conversation.setMutedTill(till);
             activity.xmppConnectionService.updateConversation(conversation);
             activity.onConversationsListItemUpdated();
             refresh();
-            getActivity().invalidateOptionsMenu();
+            requireActivity().invalidateOptionsMenu();
         });
         builder.create().show();
     }
@@ -1688,7 +1695,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         this.activity.xmppConnectionService.updateConversation(conversation);
         this.activity.onConversationsListItemUpdated();
         refresh();
-        getActivity().invalidateOptionsMenu();
+        requireActivity().invalidateOptionsMenu();
     }
 
 
@@ -1698,9 +1705,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         switch (attachmentChoice) {
             case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                }
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setType("image/*");
                 chooser = true;
                 break;
@@ -1718,9 +1723,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case ATTACHMENT_CHOICE_CHOOSE_FILE:
                 chooser = true;
                 intent.setType("*/*");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                }
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 break;
@@ -1803,7 +1806,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void showErrorMessage(final Message message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setTitle(R.string.error_message);
         final String errorMessage = message.getErrorMessage();
         final String[] errorMessageParts = errorMessage == null ? new String[0] : errorMessage.split("\\u001f");
@@ -1824,7 +1827,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 
     private void deleteFile(final Message message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setNegativeButton(R.string.cancel, null);
         builder.setTitle(R.string.delete_file_dialog);
         builder.setMessage(R.string.delete_file_dialog_msg);
@@ -1853,7 +1856,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 if (!message.hasFileOnRemoteHost()
                         && xmppConnection != null
                         && conversation.getMode() == Conversational.MODE_SINGLE
-                        && !xmppConnection.getFeatures().httpUpload(message.getFileParams().size)) {
+                        && !xmppConnection.getFeatures().httpUpload(message.getFileParams().getSize())) {
                     activity.selectPresence(conversation, () -> {
                         message.setCounterpart(conversation.getNextCounterpart());
                         activity.xmppConnectionService.resendFailedMessages(message);
@@ -1958,7 +1961,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (conversation != null) {
             outState.putString(STATE_CONVERSATION_UUID, conversation.getUuid());
@@ -2992,6 +2995,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             final Menu menu = popupMenu.getMenu();
             menu.findItem(R.id.action_manage_accounts).setVisible(QuickConversationsService.isConversations());
             popupMenu.setOnMenuItemClickListener(item -> {
+                final XmppActivity activity = this.activity;
+                if (activity == null) {
+                    Log.e(Config.LOGTAG,"Unable to perform action. no context provided");
+                    return true;
+                }
                 switch (item.getItemId()) {
                     case R.id.action_show_qr_code:
                         activity.showQrCode(conversation.getAccount().getShareableUri());
@@ -3042,5 +3050,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
         }
         activity.switchToAccount(message.getConversation().getAccount(), fingerprint);
+    }
+
+    private Activity requireActivity() {
+        final Activity activity = getActivity();
+        if (activity == null) {
+            throw new IllegalStateException("Activity not attached");
+        }
+        return activity;
     }
 }

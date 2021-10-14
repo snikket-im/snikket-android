@@ -136,13 +136,6 @@ public class WebRTCWrapper {
         @Override
         public void onAddStream(MediaStream mediaStream) {
             Log.d(EXTENDED_LOGGING_TAG, "onAddStream(numAudioTracks=" + mediaStream.audioTracks.size() + ",numVideoTracks=" + mediaStream.videoTracks.size() + ")");
-            final List<VideoTrack> videoTracks = mediaStream.videoTracks;
-            if (videoTracks.size() > 0) {
-                remoteVideoTrack = videoTracks.get(0);
-                Log.d(Config.LOGTAG, "remote video track enabled?=" + remoteVideoTrack.enabled());
-            } else {
-                Log.d(Config.LOGTAG, "no remote video tracks found");
-            }
         }
 
         @Override
@@ -164,6 +157,9 @@ public class WebRTCWrapper {
         public void onAddTrack(RtpReceiver rtpReceiver, MediaStream[] mediaStreams) {
             final MediaStreamTrack track = rtpReceiver.track();
             Log.d(EXTENDED_LOGGING_TAG, "onAddTrack(kind=" + (track == null ? "null" : track.kind()) + ",numMediaStreams=" + mediaStreams.length + ")");
+            if (track instanceof VideoTrack) {
+                remoteVideoTrack = (VideoTrack) track;
+            }
         }
 
         @Override
@@ -208,6 +204,14 @@ public class WebRTCWrapper {
         return null;
     }
 
+    private static boolean isFrontFacing(final CameraEnumerator cameraEnumerator, final String deviceName) {
+        try {
+            return cameraEnumerator.isFrontFacing(deviceName);
+        } catch (final NullPointerException e) {
+            return false;
+        }
+    }
+
     public void setup(final XmppConnectionService service, final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference) throws InitializationException {
         try {
             PeerConnectionFactory.initialize(
@@ -247,7 +251,14 @@ public class WebRTCWrapper {
                 .createPeerConnectionFactory();
 
 
-        final MediaStream stream = peerConnectionFactory.createLocalMediaStream("my-media-stream");
+        final PeerConnection.RTCConfiguration rtcConfig = new PeerConnection.RTCConfiguration(iceServers);
+        rtcConfig.tcpCandidatePolicy = PeerConnection.TcpCandidatePolicy.DISABLED; //XEP-0176 doesn't support tcp
+        rtcConfig.continualGatheringPolicy = PeerConnection.ContinualGatheringPolicy.GATHER_CONTINUALLY;
+        rtcConfig.sdpSemantics = PeerConnection.SdpSemantics.UNIFIED_PLAN;
+        final PeerConnection peerConnection = peerConnectionFactory.createPeerConnection(rtcConfig, peerConnectionObserver);
+        if (peerConnection == null) {
+            throw new InitializationException("Unable to create PeerConnection");
+        }
 
         final Optional<CapturerChoice> optionalCapturerChoice = media.contains(Media.VIDEO) ? getVideoCapturer() : Optional.absent();
 
@@ -262,7 +273,7 @@ public class WebRTCWrapper {
 
             this.localVideoTrack = peerConnectionFactory.createVideoTrack("my-video-track", videoSource);
 
-            stream.addTrack(this.localVideoTrack);
+            peerConnection.addTrack(this.localVideoTrack);
         }
 
 
@@ -270,18 +281,8 @@ public class WebRTCWrapper {
             //set up audio track
             final AudioSource audioSource = peerConnectionFactory.createAudioSource(new MediaConstraints());
             this.localAudioTrack = peerConnectionFactory.createAudioTrack("my-audio-track", audioSource);
-            stream.addTrack(this.localAudioTrack);
+            peerConnection.addTrack(this.localAudioTrack);
         }
-
-
-        final PeerConnection.RTCConfiguration rtcConfig = new PeerConnection.RTCConfiguration(iceServers);
-        rtcConfig.tcpCandidatePolicy = PeerConnection.TcpCandidatePolicy.DISABLED; //XEP-0176 doesn't support tcp
-        rtcConfig.continualGatheringPolicy = PeerConnection.ContinualGatheringPolicy.GATHER_CONTINUALLY;
-        final PeerConnection peerConnection = peerConnectionFactory.createPeerConnection(rtcConfig, peerConnectionObserver);
-        if (peerConnection == null) {
-            throw new InitializationException("Unable to create PeerConnection");
-        }
-        peerConnection.addStream(stream);
         peerConnection.setAudioPlayout(true);
         peerConnection.setAudioRecording(true);
         this.peerConnection = peerConnection;
@@ -388,7 +389,7 @@ public class WebRTCWrapper {
     boolean isVideoEnabled() {
         final VideoTrack videoTrack = this.localVideoTrack;
         if (videoTrack == null) {
-            throw new IllegalStateException("Local video track does not exist");
+            return false;
         }
         return videoTrack.enabled();
     }
@@ -522,14 +523,6 @@ public class WebRTCWrapper {
             return Optional.absent();
         } else {
             return Optional.fromNullable(of(enumerator, Iterables.get(deviceNames, 0), deviceNames));
-        }
-    }
-
-    private static boolean isFrontFacing(final CameraEnumerator cameraEnumerator, final String deviceName) {
-        try {
-            return cameraEnumerator.isFrontFacing(deviceName);
-        } catch (final NullPointerException e) {
-            return false;
         }
     }
 

@@ -750,7 +750,7 @@
     <string name="add_anway">Tóch toevoegen</string>
     <string name="this_looks_like_channel">Dit lijkt op een kanaaladres</string>
     <string name="share_backup_files">Back-upbestanden delen</string>
-    <string name="conversations_backup">Back-up van Conversations</string>
+    <string name="conversations_backup">Back-up van Snikket</string>
     <string name="event">Gebeurtenis</string>
     <string name="open_backup">Back-up openen</string>
     <string name="not_a_backup_file">Het geselecteerde bestand is geen Snikket-back-upbestand</string>

@@ -13,5 +13,6 @@ public enum RtpEndUserState {
     CONNECTIVITY_ERROR, //network error; retry button
     CONNECTIVITY_LOST_ERROR, //network error but for call duration > 0
     RETRACTED, //user pressed home or power button during 'ringing' - shows retry button
-    APPLICATION_ERROR //something rather bad happened; libwebrtc failed or we got in IQ-error
+    APPLICATION_ERROR, //something rather bad happened; libwebrtc failed or we got in IQ-error
+    SECURITY_ERROR //problem with DTLS (missing) or verification
 }

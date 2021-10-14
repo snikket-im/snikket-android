@@ -13,7 +13,7 @@
     <string name="action_unblock_domain">בטל חסימת דומיין</string>
     <string name="title_activity_manage_accounts">נהל חשבונות</string>
     <string name="title_activity_settings">הגדרות</string>
-    <string name="title_activity_sharewith">שתף בעזרת Conversations</string>
+    <string name="title_activity_sharewith">שתף בעזרת Snikket</string>
     <string name="title_activity_start_conversation">התחל דיון</string>
     <string name="title_activity_block_list">רשימת חסימה</string>
     <string name="just_now">ממש עכשיו</string>

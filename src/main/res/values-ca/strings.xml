@@ -20,7 +20,7 @@
     <string name="action_unblock_participant">Desbloquejar participant</string>
     <string name="title_activity_manage_accounts">Gestiona els comptes</string>
     <string name="title_activity_settings">Configuració</string>
-    <string name="title_activity_sharewith">Compartir amb Conversations</string>
+    <string name="title_activity_sharewith">Compartir amb Snikket</string>
     <string name="title_activity_start_conversation">Comença una conversa</string>
     <string name="title_activity_choose_contact">Tria el contacte</string>
     <string name="title_activity_choose_contacts">Seleccionar contactes</string>
@@ -860,7 +860,7 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="add_anway">Afegir de totes maneres</string>
     <string name="this_looks_like_channel">Això sembla una direcció de canal</string>
     <string name="share_backup_files">Compartir arxius de còpia de seguretat</string>
-    <string name="conversations_backup">Còpia de seguretat de Conversations</string>
+    <string name="conversations_backup">Còpia de seguretat de Snikket</string>
     <string name="event">Esdeveniment</string>
     <string name="open_backup">Obrir la còpia de seguretat</string>
     <string name="not_a_backup_file">L\'arxiu seleccionat no és un arxiu de còpia de seguretat de Snikket</string>
@@ -941,4 +941,4 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="unable_to_parse_invite">No es pot processar la invitació</string>
     <string name="server_does_not_support_easy_onboarding_invites">El servidor no admet la generació d\'invitacions</string>
     <string name="no_active_accounts_support_this">Cap compte actiu admet aquesta funció</string>
-</resources>
+    </resources>

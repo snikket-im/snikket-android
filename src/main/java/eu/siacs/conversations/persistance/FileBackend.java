@@ -18,7 +18,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.system.Os;
@@ -30,7 +29,11 @@ import android.util.Log;
 import android.util.LruCache;
 
 import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
 import androidx.core.content.FileProvider;
+import androidx.exifinterface.media.ExifInterface;
+
+import com.google.common.io.ByteStreams;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -44,7 +47,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URL;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -65,7 +67,6 @@ import eu.siacs.conversations.ui.RecordingActivity;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.ExifHelper;
 import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.FileWriterException;
 import eu.siacs.conversations.utils.MimeUtils;
@@ -416,9 +417,9 @@ public class FileBackend {
         }
     }
 
-    public static void updateFileParams(Message message, URL url, long size) {
+    public static void updateFileParams(Message message, String url, long size) {
         final StringBuilder body = new StringBuilder();
-        body.append(url.toString()).append('|').append(size);
+        body.append(url).append('|').append(size);
         message.setBody(body.toString());
     }
 
@@ -628,36 +629,38 @@ public class FileBackend {
     private void copyFileToPrivateStorage(File file, Uri uri) throws FileCopyException {
         Log.d(Config.LOGTAG, "copy file (" + uri.toString() + ") to private storage " + file.getAbsolutePath());
         file.getParentFile().mkdirs();
-        OutputStream os = null;
-        InputStream is = null;
         try {
             file.createNewFile();
-            os = new FileOutputStream(file);
-            is = mXmppConnectionService.getContentResolver().openInputStream(uri);
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = is.read(buffer)) > 0) {
-                try {
-                    os.write(buffer, 0, length);
-                } catch (IOException e) {
-                    throw new FileWriterException();
-                }
+        } catch (IOException e) {
+            throw new FileCopyException(R.string.error_unable_to_create_temporary_file);
+        }
+        try (final OutputStream os = new FileOutputStream(file);
+             final InputStream is = mXmppConnectionService.getContentResolver().openInputStream(uri)) {
+            if (is == null) {
+                throw new FileCopyException(R.string.error_file_not_found);
+            }
+            try {
+                ByteStreams.copy(is, os);
+            } catch (IOException e) {
+                throw new FileWriterException();
             }
             try {
                 os.flush();
             } catch (IOException e) {
                 throw new FileWriterException();
             }
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
+            cleanup(file);
             throw new FileCopyException(R.string.error_file_not_found);
-        } catch (FileWriterException e) {
+        } catch (final FileWriterException e) {
+            cleanup(file);
             throw new FileCopyException(R.string.error_unable_to_create_temporary_file);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final SecurityException e) {
+            cleanup(file);
+            throw new FileCopyException(R.string.error_security_exception);
+        } catch (final IOException e) {
+            cleanup(file);
             throw new FileCopyException(R.string.error_io_exception);
-        } finally {
-            close(os);
-            close(is);
         }
     }
 
@@ -708,7 +711,7 @@ public class FileBackend {
 
     private void copyImageToPrivateStorage(File file, Uri image, int sampleSize) throws FileCopyException, ImageCompressionException {
         final File parent = file.getParentFile();
-        if (parent.mkdirs()) {
+        if (parent != null && parent.mkdirs()) {
             Log.d(Config.LOGTAG, "created parent directory");
         }
         InputStream is = null;
@@ -753,13 +756,15 @@ public class FileBackend {
             }
             scaledBitmap.recycle();
         } catch (final FileNotFoundException e) {
+            cleanup(file);
             throw new FileCopyException(R.string.error_file_not_found);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException e) {
+            cleanup(file);
             throw new FileCopyException(R.string.error_io_exception);
         } catch (SecurityException e) {
+            cleanup(file);
             throw new FileCopyException(R.string.error_security_exception_during_image_copy);
-        } catch (OutOfMemoryError e) {
+        } catch (final OutOfMemoryError e) {
             ++sampleSize;
             if (sampleSize <= 3) {
                 copyImageToPrivateStorage(file, image, sampleSize);
@@ -769,6 +774,14 @@ public class FileBackend {
         } finally {
             close(os);
             close(is);
+        }
+    }
+
+    private static void cleanup(final File file) {
+        try {
+            file.delete();
+        } catch (Exception e) {
+
         }
     }
 
@@ -808,19 +821,34 @@ public class FileBackend {
         }
     }
 
-    private int getRotation(File file) {
-        return getRotation(Uri.parse("file://" + file.getAbsolutePath()));
+    private int getRotation(final File file) {
+        try (final InputStream inputStream = new FileInputStream(file)) {
+            return getRotation(inputStream);
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
-    private int getRotation(Uri image) {
-        InputStream is = null;
-        try {
-            is = mXmppConnectionService.getContentResolver().openInputStream(image);
-            return ExifHelper.getOrientation(is);
-        } catch (FileNotFoundException e) {
+    private int getRotation(final Uri image) {
+        try (final InputStream is = mXmppConnectionService.getContentResolver().openInputStream(image)) {
+            return is == null ? 0 : getRotation(is);
+        } catch (final Exception e) {
             return 0;
-        } finally {
-            close(is);
+        }
+    }
+
+    private static int getRotation(final InputStream inputStream) throws IOException {
+        final ExifInterface exif = new ExifInterface(inputStream);
+        final int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return 180;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return 90;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return 270;
+            default:
+                return 0;
         }
     }
 
@@ -1305,7 +1333,7 @@ public class FileBackend {
         updateFileParams(message, null);
     }
 
-    public void updateFileParams(Message message, URL url) {
+    public void updateFileParams(Message message, String url) {
         DownloadableFile file = getFile(message);
         final String mime = file.getMimeType();
         final boolean privateMessage = message.isPrivateMessage();
@@ -1315,7 +1343,7 @@ public class FileBackend {
         final boolean pdf = "application/pdf".equals(mime);
         final StringBuilder body = new StringBuilder();
         if (url != null) {
-            body.append(url.toString());
+            body.append(url);
         }
         body.append('|').append(file.getSize());
         if (image || video || (pdf && Compatibility.runsTwentyOne())) {
@@ -1464,11 +1492,12 @@ public class FileBackend {
     public static class FileCopyException extends Exception {
         private final int resId;
 
-        private FileCopyException(int resId) {
+        private FileCopyException(@StringRes int resId) {
             this.resId = resId;
         }
 
-        public int getResId() {
+        public @StringRes
+        int getResId() {
             return resId;
         }
     }

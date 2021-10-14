@@ -60,6 +60,7 @@ import java.util.Map;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.service.CameraManager;
+import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.ui.widget.ScannerView;
 
 /**
@@ -181,6 +182,7 @@ public final class ScanActivity extends Activity implements SurfaceTextureListen
 	@Override
 	protected void onResume() {
 		super.onResume();
+		SettingsUtils.applyScreenshotPreventionSetting(this);
 		maybeOpenCamera();
 	}
 

@@ -75,8 +75,10 @@ public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapte
         view.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         try {
             context.startActivity(view);
-        } catch (ActivityNotFoundException e) {
+        } catch (final ActivityNotFoundException e) {
             Toast.makeText(context, R.string.no_application_found_to_open_file, Toast.LENGTH_SHORT).show();
+        } catch (final SecurityException e) {
+            Toast.makeText(context, R.string.sharing_application_not_grant_permission, Toast.LENGTH_SHORT).show();
         }
     }
 

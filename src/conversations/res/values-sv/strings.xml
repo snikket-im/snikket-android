@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pick_a_server">Välj din XMPP leverantör</string>
     <string name="use_conversations.im">Använd conversations.im</string>
     <string name="create_new_account">Skapa nytt konto</string>
-    </resources>
+    <string name="your_server_invitation">Din server inbjudan</string>
+    <string name="share_invite_with">Dela inbjudan med...</string>
+</resources>

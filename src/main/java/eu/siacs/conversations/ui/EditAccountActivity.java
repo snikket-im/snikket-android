@@ -38,7 +38,6 @@ import com.google.common.base.CharMatcher;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -78,6 +77,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+import okhttp3.HttpUrl;
 
 public class EditAccountActivity extends OmemoActivity implements OnAccountUpdate, OnUpdateBlocklist,
         OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnMamPreferencesFetched {
@@ -188,7 +188,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             final boolean openRegistrationUrl = registerNewAccount && !accountInfoEdited && mAccount != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB;
             final boolean openPaymentUrl = mAccount != null && mAccount.getStatus() == Account.State.PAYMENT_REQUIRED;
             final boolean redirectionWorthyStatus = openPaymentUrl || openRegistrationUrl;
-            URL url = connection != null && redirectionWorthyStatus ? connection.getRedirectionUrl() : null;
+            final HttpUrl url = connection != null && redirectionWorthyStatus ? connection.getRedirectionUrl() : null;
             if (url != null && !wasDisabled) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url.toString())));
@@ -531,7 +531,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                     }
                 } else {
                     XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
-                    URL url = connection != null && mAccount.getStatus() == Account.State.PAYMENT_REQUIRED ? connection.getRedirectionUrl() : null;
+                    HttpUrl url = connection != null && mAccount.getStatus() == Account.State.PAYMENT_REQUIRED ? connection.getRedirectionUrl() : null;
                     if (url != null) {
                         this.binding.saveButton.setText(R.string.open_website);
                     } else if (inNeedOfSaslAccept()) {
@@ -542,7 +542,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 }
             } else {
                 XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
-                URL url = connection != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB ? connection.getRedirectionUrl() : null;
+                HttpUrl url = connection != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB ? connection.getRedirectionUrl() : null;
                 if (url != null && this.binding.accountRegisterNew.isChecked() && !accountInfoEdited) {
                     this.binding.saveButton.setText(R.string.open_website);
                 } else {
@@ -736,7 +736,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     @Override
-    public void onNewIntent(Intent intent) {
+    public void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
         if (intent != null && intent.getData() != null) {
             final XmppUri uri = new XmppUri(intent.getData());
             if (xmppConnectionServiceBound) {
@@ -1071,9 +1072,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 } else {
                     this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
                 }
-            } else if (features.p1S3FileTransfer()) {
-                this.binding.serverInfoHttpUploadDescription.setText(R.string.p1_s3_filetransfer);
-                this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
             } else {
                 this.binding.serverInfoHttpUpload.setText(R.string.server_info_unavailable);
             }

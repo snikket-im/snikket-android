@@ -14,7 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.List;
@@ -209,7 +208,7 @@ public class PgpDecryptionService {
 									message.setRelativeFilePath(path);
 								}
 							}
-							URL url = message.getFileParams().url;
+							final String url = message.getFileParams().url;
 							mXmppConnectionService.getFileBackend().updateFileParams(message, url);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							mXmppConnectionService.updateMessage(message);

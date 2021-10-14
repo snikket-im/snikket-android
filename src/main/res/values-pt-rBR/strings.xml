@@ -124,6 +124,7 @@
     <string name="pref_ringtone">Toque</string>
     <string name="pref_notification_sound">Som de notificação</string>
     <string name="pref_notification_sound_summary">Som de notificação para novas mensagens</string>
+    <string name="pref_call_ringtone_summary">Toque para chamadas recebidas</string>
     <string name="pref_notification_grace_period">Período de espera</string>
     <string name="pref_notification_grace_period_summary">Espaço de tempo em que as notificações serão silenciadas, após detectar atividade em algum dos seus outros dispositivos.</string>
     <string name="pref_advanced_options">Avançado</string>
@@ -131,6 +132,8 @@
     <string name="pref_never_send_crash_summary">Ao enviar os stack traces você está colaborando com o desenvolvimento</string>
     <string name="pref_confirm_messages">Confirmação de mensagens</string>
     <string name="pref_confirm_messages_summary">Permite que seus contatos saibam quando você recebeu e leu as mensagens deles.</string>
+    <string name="pref_prevent_screenshots">Impedir capturas de tela</string>
+    <string name="pref_prevent_screenshots_summary">Esconde o conteúdo do app no alternador de apps e bloqueia capturas de tela</string>
     <string name="pref_ui_options">IU</string>
     <string name="openpgp_error">O OpenKeychain produziu um erro.</string>
     <string name="bad_key_for_encryption">Chave ruim para a criptografia</string>
@@ -149,6 +152,7 @@
     <string name="error_file_not_found">Arquivo não encontrado</string>
     <string name="error_io_exception">Ocorreu um erro genérico de E/S. Você tem espaço de armazenamento suficiente no seu aparelho?</string>
     <string name="error_security_exception_during_image_copy">O aplicativo que você usou para selecionar esta imagem não nos forneceu permissões suficientes para ler o arquivo.\n\n<small>Utilize um gerenciador de arquivos diferente para selecionar a imagem.</small></string>
+    <string name="error_security_exception">O app que você usou para compartilhar esse arquivo não forneceu permissões suficientes.</string>
     <string name="account_status_unknown">Desconhecido</string>
     <string name="account_status_disabled">Temporariamente desabilitado</string>
     <string name="account_status_online">Conectado</string>
@@ -163,6 +167,7 @@
     <string name="account_status_regis_not_sup">O registro não é suportado pelo servidor</string>
     <string name="account_status_regis_invalid_token">Token de registro inválido</string>
     <string name="account_status_tls_error">Não foi possível efetuar a negociação TLS</string>
+    <string name="account_status_tls_error_domain">Domínio não verificável</string>
     <string name="account_status_policy_violation">Violação de política</string>
     <string name="account_status_incompatible_server">Servidor incompatível</string>
     <string name="account_status_stream_error">Erro de fluxo</string>
@@ -215,6 +220,8 @@
     <string name="openpgp_key_id">ID da chave OpenPGP</string>
     <string name="omemo_fingerprint">Impressão digital OMEMO</string>
     <string name="omemo_fingerprint_x509">Impressão digital v\\OMEMO</string>
+    <string name="omemo_fingerprint_selected_message">Impressão digital OMEMO (origem da mensagem)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\Impressão digital OMEMO (origem da mensagem)</string>
     <string name="other_devices">Outros dispositivos</string>
     <string name="trust_omemo_fingerprints">Confiar nas impressões digitais OMEMO</string>
     <string name="fetching_keys">Buscando as chaves...</string>
@@ -409,6 +416,7 @@
     <string name="audio">áudio</string>
     <string name="video">vídeo</string>
     <string name="image">imagem</string>
+    <string name="vector_graphic">gráfico vetorial</string>
     <string name="pdf_document">Documento PDF</string>
     <string name="apk">Aplicativo Android</string>
     <string name="vcard">Contato</string>
@@ -462,6 +470,8 @@
     <string name="account_status_host_unknown">O servidor não responde por esse domínio</string>
     <string name="server_info_broken">Quebrado</string>
     <string name="pref_presence_settings">Disponibilidade</string>
+    <string name="pref_away_when_screen_off">\"Afastado\" quando o dispositivo estiver travado</string>
+    <string name="pref_away_when_screen_off_summary">Exibe como Afastado quando o dispositivo estiver travado</string>
     <string name="pref_dnd_on_silent_mode">\"Ocupado\" no modo silencioso</string>
     <string name="pref_dnd_on_silent_mode_summary">Exibe como Ocupado quando o dispositivo estiver em modo silencioso</string>
     <string name="pref_treat_vibrate_as_silent">Considerar o modo de vibração como silencioso</string>
@@ -872,7 +882,7 @@
     <string name="add_anway">Adicionar mesmo assim</string>
     <string name="this_looks_like_channel">Isso se parece com um endereço de canal</string>
     <string name="share_backup_files">Compartilhar arquivos de backup</string>
-    <string name="conversations_backup">Backup do Conversations</string>
+    <string name="conversations_backup">Backup do Snikket</string>
     <string name="event">Evento</string>
     <string name="open_backup">Abrir backup</string>
     <string name="not_a_backup_file">O arquivo que você selecionou não é um backup do Snikket</string>
@@ -905,6 +915,7 @@
     <string name="rtp_state_connectivity_lost_error">Conexão perdida</string>
     <string name="rtp_state_retracted">Chamada rejeitada</string>
     <string name="rtp_state_application_failure">Falha no aplicativo</string>
+    <string name="rtp_state_security_error">Problema de verificação</string>
     <string name="hang_up">Desligar</string>
     <string name="ongoing_call">Chamada em andamento</string>
     <string name="ongoing_video_call">Chamada de vídeo em andamento</string>
@@ -954,4 +965,8 @@
     <string name="unable_to_parse_invite">Não foi possível processar o convite</string>
     <string name="server_does_not_support_easy_onboarding_invites">O servidor não suporta a criação de convites</string>
     <string name="no_active_accounts_support_this">Nenhuma conta ativa suporta esse recurso</string>
+    <string name="backup_started_message">O backup foi iniciado. Você receberá uma notificação assim que ele for concluído.</string>
+    <string name="unable_to_enable_video">Não foi possível habilitar o vídeo.</string>
+    <string name="plain_text_document">Documento em texto puro</string>
+
 </resources>

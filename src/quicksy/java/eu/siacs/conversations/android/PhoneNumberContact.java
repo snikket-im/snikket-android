@@ -46,33 +46,42 @@ public class PhoneNumberContact extends AbstractPhoneContact {
                 ContactsContract.Data.PHOTO_URI,
                 ContactsContract.Data.LOOKUP_KEY,
                 ContactsContract.CommonDataKinds.Phone.NUMBER};
-        final Cursor cursor;
-        try {
-            cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, null, null, null);
+        final HashMap<String, PhoneNumberContact> contacts = new HashMap<>();
+        try (final Cursor cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, null, null, null)){
+            while (cursor != null && cursor.moveToNext()) {
+                try {
+                    final PhoneNumberContact contact = new PhoneNumberContact(context, cursor);
+                    final PhoneNumberContact preexisting = contacts.get(contact.getPhoneNumber());
+                    if (preexisting == null || preexisting.rating() < contact.rating()) {
+                        contacts.put(contact.getPhoneNumber(), contact);
+                    }
+                } catch (final IllegalArgumentException ignored) {
+
+                }
+            }
         } catch (final Exception e) {
             return ImmutableMap.of();
         }
-        final HashMap<String, PhoneNumberContact> contacts = new HashMap<>();
-        while (cursor != null && cursor.moveToNext()) {
-            try {
-                final PhoneNumberContact contact = new PhoneNumberContact(context, cursor);
-                final PhoneNumberContact preexisting = contacts.get(contact.getPhoneNumber());
-                if (preexisting == null || preexisting.rating() < contact.rating()) {
-                    contacts.put(contact.getPhoneNumber(), contact);
-                }
-            } catch (final IllegalArgumentException e) {
-                Log.d(Config.LOGTAG, e.getMessage());
-            }
-        }
-        if (cursor != null) {
-            cursor.close();
-        }
         return ImmutableMap.copyOf(contacts);
+    }
+
+    public static PhoneNumberContact findByUriOrNumber(Collection<PhoneNumberContact> haystack, Uri uri, String number) {
+        final PhoneNumberContact byUri = findByUri(haystack, uri);
+        return byUri != null || number == null ? byUri : findByNumber(haystack, number);
     }
 
     public static PhoneNumberContact findByUri(Collection<PhoneNumberContact> haystack, Uri needle) {
         for (PhoneNumberContact contact : haystack) {
             if (needle.equals(contact.getLookupUri())) {
+                return contact;
+            }
+        }
+        return null;
+    }
+
+    private static PhoneNumberContact findByNumber(Collection<PhoneNumberContact> haystack, String needle) {
+        for (PhoneNumberContact contact : haystack) {
+            if (needle.equals(contact.getPhoneNumber())) {
                 return contact;
             }
         }

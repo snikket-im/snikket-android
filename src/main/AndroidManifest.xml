@@ -39,8 +39,6 @@
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <uses-sdk tools:overrideLibrary="net.ypresto.androidtranscoder" />
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -54,7 +52,8 @@
 
 
     <application
-        android:allowBackup="false"
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_content"
         android:appCategory="social"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/new_launcher"
@@ -143,6 +142,14 @@
 
                 <data android:scheme="imto" />
                 <data android:host="jabber" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="imto" />
+                <data android:host="xmpp" />
             </intent-filter>
         </activity>
         <activity

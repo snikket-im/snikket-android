@@ -738,7 +738,7 @@
     <string name="add_anway">Gehitu hala ere</string>
     <string name="this_looks_like_channel">Honek kanal helbide baten itxura dauka</string>
     <string name="share_backup_files">Babes-kopia fitxategiak partekatu</string>
-    <string name="conversations_backup">Conversations babes-kopia</string>
+    <string name="conversations_backup">Snikket babes-kopia</string>
     <string name="event">Gertaera</string>
     <string name="open_backup">Babes-kopia ireki</string>
     <string name="not_a_backup_file">Hautatu duzun fitxategia ez da Snikket babes-kopia bat</string>

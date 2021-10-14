@@ -39,6 +39,7 @@ import java.util.logging.Logger;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.MTMDecision;
 import eu.siacs.conversations.services.MemorizingTrustManager;
+import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.utils.ThemeHelper;
 
 public class MemorizingActivity extends AppCompatActivity implements OnClickListener, OnCancelListener {
@@ -61,6 +62,8 @@ public class MemorizingActivity extends AppCompatActivity implements OnClickList
 	@Override
 	public void onResume() {
 		super.onResume();
+		SettingsUtils.applyScreenshotPreventionSetting(this);
+
 		Intent i = getIntent();
 		decisionId = i.getIntExtra(MemorizingTrustManager.DECISION_INTENT_ID, MTMDecision.DECISION_INVALID);
 		int titleId = i.getIntExtra(MemorizingTrustManager.DECISION_TITLE_ID, R.string.mtm_accept_cert);

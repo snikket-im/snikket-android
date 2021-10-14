@@ -21,11 +21,12 @@ import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.util.Log;
 
+import com.google.common.base.Strings;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -248,6 +249,7 @@ public final class MimeUtils {
         add("audio/mpeg", "m4a");
         add("audio/mpegurl", "m3u");
         add("audio/ogg", "oga");
+        add("audio/opus", "opus");
         add("audio/prs.sid", "sid");
         add("audio/x-aiff", "aif");
         add("audio/x-aiff", "aiff");
@@ -274,6 +276,8 @@ public final class MimeUtils {
         add("image/ico", "ico");
         add("image/ief", "ief");
         add("image/heic", "heic");
+        add("image/heif", "heif");
+        add("image/avif", "avif");
         // add ".jpg" first so it will be the default for guessExtensionFromMimeType
         add("image/jpeg", "jpg");
         add("image/jpeg", "jpeg");
@@ -568,6 +572,8 @@ public final class MimeUtils {
             if (cursor != null && cursor.moveToFirst()) {
                 return cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
             }
+        } catch (Exception e) {
+            return null;
         }
         return null;
     }
@@ -580,32 +586,38 @@ public final class MimeUtils {
         return null;
     }
 
-    public static String extractRelevantExtension(URL url) {
-        String path = url.getPath();
-        return extractRelevantExtension(path, true);
-    }
-
     public static String extractRelevantExtension(final String path) {
         return extractRelevantExtension(path, false);
     }
 
     public static String extractRelevantExtension(final String path, final boolean ignoreCryptoExtension) {
-        if (path == null || path.isEmpty()) {
+        if (Strings.isNullOrEmpty(path)) {
             return null;
         }
 
-        String filename = path.substring(path.lastIndexOf('/') + 1).toLowerCase();
-        int dotPosition = filename.lastIndexOf(".");
+        final String filenameQueryAnchor = path.substring(path.lastIndexOf('/') + 1);
+        final String filenameQuery = cutBefore(filenameQueryAnchor, '#');
+        final String filename = cutBefore(filenameQuery, '?');
+        final int dotPosition = filename.lastIndexOf('.');
 
-        if (dotPosition != -1) {
-            String extension = filename.substring(dotPosition + 1);
-            // we want the real file extension, not the crypto one
-            if (ignoreCryptoExtension && Transferable.VALID_CRYPTO_EXTENSIONS.contains(extension)) {
-                return extractRelevantExtension(filename.substring(0, dotPosition));
-            } else {
-                return extension;
-            }
+        if (dotPosition == -1) {
+            return null;
         }
-        return null;
+        final String extension = filename.substring(dotPosition + 1);
+        // we want the real file extension, not the crypto one
+        if (ignoreCryptoExtension && Transferable.VALID_CRYPTO_EXTENSIONS.contains(extension)) {
+            return extractRelevantExtension(filename.substring(0, dotPosition));
+        } else {
+            return extension;
+        }
+    }
+
+    private static String cutBefore(final String input, final char c) {
+        final int position = input.indexOf(c);
+        if (position > 0) {
+            return input.substring(0, position);
+        } else {
+            return input;
+        }
     }
 }

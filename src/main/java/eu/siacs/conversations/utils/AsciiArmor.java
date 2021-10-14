@@ -14,8 +14,13 @@ public class AsciiArmor {
         final List<String> lines = Splitter.on('\n').splitToList(Strings.nullToEmpty(input).trim());
         if (lines.size() == 1) {
             final String line = lines.get(0);
-            final String cleaned = line.substring(0, line.lastIndexOf("="));
-            return BaseEncoding.base64().decode(cleaned);
+            if (line.length() > 1) {
+                final int end = line.lastIndexOf('=');
+                if (end >= 1) {
+                    final String cleaned = line.substring(0, end);
+                    return BaseEncoding.base64().decode(cleaned);
+                }
+            }
         }
         final String withoutChecksum;
         if (Iterables.getLast(lines).charAt(0) == '=') {

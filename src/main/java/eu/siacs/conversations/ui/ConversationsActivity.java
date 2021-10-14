@@ -30,6 +30,8 @@
 package eu.siacs.conversations.ui;
 
 
+import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
@@ -65,13 +67,16 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.databinding.ActivityConversationsBinding;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
 import eu.siacs.conversations.ui.interfaces.OnConversationRead;
 import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
 import eu.siacs.conversations.ui.interfaces.OnConversationsListItemUpdated;
+import eu.siacs.conversations.ui.util.ActionBarUtil;
 import eu.siacs.conversations.ui.util.ActivityResult;
 import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
@@ -82,8 +87,6 @@ import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
-
-import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
 
 public class ConversationsActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead, XmppConnectionService.OnAccountUpdate, XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnAffiliationChanged {
 
@@ -278,6 +281,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         UriHandlerActivity.onRequestPermissionResult(this, requestCode, grantResults);
         if (grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -425,16 +429,18 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private void openConversation(Conversation conversation, Bundle extras) {
-        ConversationFragment conversationFragment = (ConversationFragment) getFragmentManager().findFragmentById(R.id.secondary_fragment);
+        final FragmentManager fragmentManager = getFragmentManager();
+        executePendingTransactions(fragmentManager);
+        ConversationFragment conversationFragment = (ConversationFragment) fragmentManager.findFragmentById(R.id.secondary_fragment);
         final boolean mainNeedsRefresh;
         if (conversationFragment == null) {
             mainNeedsRefresh = false;
-            Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+            final Fragment mainFragment = fragmentManager.findFragmentById(R.id.main_fragment);
             if (mainFragment instanceof ConversationFragment) {
                 conversationFragment = (ConversationFragment) mainFragment;
             } else {
                 conversationFragment = new ConversationFragment();
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.main_fragment, conversationFragment);
                 fragmentTransaction.addToBackStack(null);
                 try {
@@ -453,6 +459,14 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             refreshFragment(R.id.main_fragment);
         } else {
             invalidateActionBarTitle();
+        }
+    }
+
+    private static void executePendingTransactions(final FragmentManager fragmentManager) {
+        try {
+            fragmentManager.executePendingTransactions();
+        } catch (final Exception e) {
+            Log.e(Config.LOGTAG,"unable to execute pending fragment transactions");
         }
     }
 
@@ -524,6 +538,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     @Override
     protected void onStart() {
+        super.onStart();
         final int theme = findTheme();
         if (this.mTheme != theme) {
             this.mSkipBackgroundBinding = true;
@@ -532,7 +547,6 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             this.mSkipBackgroundBinding = false;
         }
         mRedirectInProcess.set(false);
-        super.onStart();
     }
 
     @Override
@@ -562,17 +576,18 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private void initializeFragments() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
-        Fragment secondaryFragment = getFragmentManager().findFragmentById(R.id.secondary_fragment);
+        final FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        final Fragment mainFragment = fragmentManager.findFragmentById(R.id.main_fragment);
+        final Fragment secondaryFragment = fragmentManager.findFragmentById(R.id.secondary_fragment);
         if (mainFragment != null) {
             if (binding.secondaryFragment != null) {
                 if (mainFragment instanceof ConversationFragment) {
                     getFragmentManager().popBackStack();
                     transaction.remove(mainFragment);
                     transaction.commit();
-                    getFragmentManager().executePendingTransactions();
-                    transaction = getFragmentManager().beginTransaction();
+                    fragmentManager.executePendingTransactions();
+                    transaction = fragmentManager.beginTransaction();
                     transaction.replace(R.id.secondary_fragment, mainFragment);
                     transaction.replace(R.id.main_fragment, new ConversationsOverviewFragment());
                     transaction.commit();
@@ -583,7 +598,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                     transaction.remove(secondaryFragment);
                     transaction.commit();
                     getFragmentManager().executePendingTransactions();
-                    transaction = getFragmentManager().beginTransaction();
+                    transaction = fragmentManager.beginTransaction();
                     transaction.replace(R.id.main_fragment, secondaryFragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
@@ -601,18 +616,38 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     private void invalidateActionBarTitle() {
         final ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
-            if (mainFragment instanceof ConversationFragment) {
-                final Conversation conversation = ((ConversationFragment) mainFragment).getConversation();
-                if (conversation != null) {
-                    actionBar.setTitle(EmojiWrapper.transform(conversation.getName()));
-                    actionBar.setDisplayHomeAsUpEnabled(true);
-                    return;
-                }
+        if (actionBar == null) {
+            return;
+        }
+        final FragmentManager fragmentManager = getFragmentManager();
+        final Fragment mainFragment = fragmentManager.findFragmentById(R.id.main_fragment);
+        if (mainFragment instanceof ConversationFragment) {
+            final Conversation conversation = ((ConversationFragment) mainFragment).getConversation();
+            if (conversation != null) {
+                actionBar.setTitle(EmojiWrapper.transform(conversation.getName()));
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                ActionBarUtil.setActionBarOnClickListener(
+                        binding.toolbar,
+                        (v) -> openConversationDetails(conversation)
+                );
+                return;
             }
-            actionBar.setTitle(R.string.app_name);
-            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
+        actionBar.setTitle(R.string.app_name);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        ActionBarUtil.resetActionBarOnClickListeners(binding.toolbar);
+    }
+
+    private void openConversationDetails(final Conversation conversation) {
+        if (conversation.getMode() == Conversational.MODE_MULTI) {
+            ConferenceDetailsActivity.open(this, conversation);
+        } else {
+            final Contact contact = conversation.getContact();
+            if (contact.isSelf()) {
+                switchToAccount(conversation.getAccount());
+            } else {
+                switchToContactDetails(contact);
+            }
         }
     }
 
@@ -621,17 +656,18 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         if (performRedirectIfNecessary(conversation, false)) {
             return;
         }
-        Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+        final FragmentManager fragmentManager = getFragmentManager();
+        final Fragment mainFragment = fragmentManager.findFragmentById(R.id.main_fragment);
         if (mainFragment instanceof ConversationFragment) {
             try {
-                getFragmentManager().popBackStack();
-            } catch (IllegalStateException e) {
+                fragmentManager.popBackStack();
+            } catch (final IllegalStateException e) {
                 Log.w(Config.LOGTAG, "state loss while popping back state after archiving conversation", e);
                 //this usually means activity is no longer active; meaning on the next open we will run through this again
             }
             return;
         }
-        Fragment secondaryFragment = getFragmentManager().findFragmentById(R.id.secondary_fragment);
+        final Fragment secondaryFragment = fragmentManager.findFragmentById(R.id.secondary_fragment);
         if (secondaryFragment instanceof ConversationFragment) {
             if (((ConversationFragment) secondaryFragment).getConversation() == conversation) {
                 Conversation suggestion = ConversationsOverviewFragment.getSuggestion(this, conversation);

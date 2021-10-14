@@ -14,6 +14,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
@@ -126,7 +128,7 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NotNull Bundle savedInstanceState) {
         if (this.region != null) {
             savedInstanceState.putString("region", this.region);
         }

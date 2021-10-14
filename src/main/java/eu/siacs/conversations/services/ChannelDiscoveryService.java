@@ -50,14 +50,9 @@ public class ChannelDiscoveryService {
     }
 
     void initializeMuclumbusService() {
-        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
+        final OkHttpClient.Builder builder = HttpConnectionManager.OK_HTTP_CLIENT.newBuilder();
         if (service.useTorToConnect()) {
-            try {
-                builder.proxy(HttpConnectionManager.getProxy());
-            } catch (IOException e) {
-                throw new RuntimeException("Unable to use Tor proxy", e);
-            }
+            builder.proxy(HttpConnectionManager.getProxy());
         }
         Retrofit retrofit = new Retrofit.Builder()
                 .client(builder.build())
@@ -73,7 +68,7 @@ public class ChannelDiscoveryService {
     }
 
     void discover(@NonNull final String query, Method method, OnChannelSearchResultsFound onChannelSearchResultsFound) {
-        List<Room> result = cache.getIfPresent(key(method, query));
+        final List<Room> result = cache.getIfPresent(key(method, query));
         if (result != null) {
             onChannelSearchResultsFound.onChannelSearchResultsFound(result);
             return;

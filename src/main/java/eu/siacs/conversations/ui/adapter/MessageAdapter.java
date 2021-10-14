@@ -31,7 +31,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.common.base.Strings;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -48,7 +48,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Message.FileParams;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.entities.Transferable;
-import eu.siacs.conversations.http.P1S3UrlStreamHandler;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
@@ -60,6 +59,7 @@ import eu.siacs.conversations.ui.text.DividerSpan;
 import eu.siacs.conversations.ui.text.QuoteSpan;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MyLinkify;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -185,7 +185,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 && message.getMergedStatus() <= Message.STATUS_RECEIVED;
         if (message.isFileOrImage() || transferable != null || MessageUtils.unInitiatedButKnownSize(message)) {
             FileParams params = message.getFileParams();
-            filesize = params.size > 0 ? UIHelper.filesizeToString(params.size) : null;
+            filesize = params.size != null ? UIHelper.filesizeToString(params.size) : null;
             if (transferable != null && (transferable.getStatus() == Transferable.STATUS_FAILED || transferable.getStatus() == Transferable.STATUS_CANCELLED)) {
                 error = true;
             }
@@ -360,48 +360,53 @@ public class MessageAdapter extends ArrayAdapter<Message> {
      */
     private boolean handleTextQuotes(SpannableStringBuilder body, boolean darkBackground) {
         boolean startsWithQuote = false;
-        char previous = '\n';
-        int lineStart = -1;
-        int lineTextStart = -1;
-        int quoteStart = -1;
-        for (int i = 0; i <= body.length(); i++) {
-            char current = body.length() > i ? body.charAt(i) : '\n';
-            if (lineStart == -1) {
-                if (previous == '\n') {
-                    if ((current == '>' && UIHelper.isPositionFollowedByQuoteableCharacter(body, i))
-                            || current == '\u00bb' && !UIHelper.isPositionFollowedByQuote(body, i)) {
-                        // Line start with quote
-                        lineStart = i;
-                        if (quoteStart == -1) quoteStart = i;
-                        if (i == 0) startsWithQuote = true;
-                    } else if (quoteStart >= 0) {
-                        // Line start without quote, apply spans there
-                        applyQuoteSpan(body, quoteStart, i - 1, darkBackground);
-                        quoteStart = -1;
+        int quoteDepth = 1;
+        while (QuoteHelper.bodyContainsQuoteStart(body) && quoteDepth <= Config.QUOTE_MAX_DEPTH) {
+            char previous = '\n';
+            int lineStart = -1;
+            int lineTextStart = -1;
+            int quoteStart = -1;
+            for (int i = 0; i <= body.length(); i++) {
+                char current = body.length() > i ? body.charAt(i) : '\n';
+                if (lineStart == -1) {
+                    if (previous == '\n') {
+                        if (
+                                QuoteHelper.isPositionQuoteStart(body, i)
+                        ) {
+                            // Line start with quote
+                            lineStart = i;
+                            if (quoteStart == -1) quoteStart = i;
+                            if (i == 0) startsWithQuote = true;
+                        } else if (quoteStart >= 0) {
+                            // Line start without quote, apply spans there
+                            applyQuoteSpan(body, quoteStart, i - 1, darkBackground);
+                            quoteStart = -1;
+                        }
+                    }
+                } else {
+                    // Remove extra spaces between > and first character in the line
+                    // > character will be removed too
+                    if (current != ' ' && lineTextStart == -1) {
+                        lineTextStart = i;
+                    }
+                    if (current == '\n') {
+                        body.delete(lineStart, lineTextStart);
+                        i -= lineTextStart - lineStart;
+                        if (i == lineStart) {
+                            // Avoid empty lines because span over empty line can be hidden
+                            body.insert(i++, " ");
+                        }
+                        lineStart = -1;
+                        lineTextStart = -1;
                     }
                 }
-            } else {
-                // Remove extra spaces between > and first character in the line
-                // > character will be removed too
-                if (current != ' ' && lineTextStart == -1) {
-                    lineTextStart = i;
-                }
-                if (current == '\n') {
-                    body.delete(lineStart, lineTextStart);
-                    i -= lineTextStart - lineStart;
-                    if (i == lineStart) {
-                        // Avoid empty lines because span over empty line can be hidden
-                        body.insert(i++, " ");
-                    }
-                    lineStart = -1;
-                    lineTextStart = -1;
-                }
+                previous = current;
             }
-            previous = current;
-        }
-        if (quoteStart >= 0) {
-            // Apply spans to finishing open quote
-            applyQuoteSpan(body, quoteStart, body.length(), darkBackground);
+            if (quoteStart >= 0) {
+                // Apply spans to finishing open quote
+                applyQuoteSpan(body, quoteStart, body.length(), darkBackground);
+            }
+            quoteDepth++;
         }
         return startsWithQuote;
     }
@@ -800,21 +805,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 displayEmojiMessage(viewHolder, message.getBody().trim(), darkBackground);
             } else if (message.treatAsDownloadable()) {
                 try {
-                    URL url = new URL(message.getBody());
-                    if (P1S3UrlStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(url.getProtocol())) {
-                        displayDownloadableMessage(viewHolder,
-                                message,
-                                activity.getString(R.string.check_x_filesize,
-                                        UIHelper.getFileDescriptionString(activity, message)),
-                                darkBackground);
-                    } else {
+                    final URI uri = new URI(message.getBody());
                         displayDownloadableMessage(viewHolder,
                                 message,
                                 activity.getString(R.string.check_x_filesize_on_host,
                                         UIHelper.getFileDescriptionString(activity, message),
-                                        url.getHost()),
+                                        uri.getHost()),
                                 darkBackground);
-                    }
                 } catch (Exception e) {
                     displayDownloadableMessage(viewHolder,
                             message,
@@ -901,10 +898,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     public void setHighlightedTerm(List<String> terms) {
         this.highlightedTerm = terms == null ? null : StylingHelper.filterHighlightedWords(terms);
-    }
-
-    public interface OnQuoteListener {
-        void onQuote(String text);
     }
 
     public interface OnContactPictureClicked {

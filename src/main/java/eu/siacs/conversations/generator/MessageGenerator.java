@@ -1,6 +1,5 @@
 package eu.siacs.conversations.generator;
 
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +13,6 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.http.P1S3UrlStreamHandler;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
@@ -103,18 +101,9 @@ public class MessageGenerator extends AbstractGenerator {
         MessagePacket packet = preparePacket(message);
         String content;
         if (message.hasFileOnRemoteHost()) {
-            Message.FileParams fileParams = message.getFileParams();
-            final URL url = fileParams.url;
-            if (P1S3UrlStreamHandler.PROTOCOL_NAME.equals(url.getProtocol())) {
-                Element x = packet.addChild("x", Namespace.P1_S3_FILE_TRANSFER);
-                final String file = url.getFile();
-                x.setAttribute("name", file.charAt(0) == '/' ? file.substring(1) : file);
-                x.setAttribute("fileid", url.getHost());
-                return packet;
-            } else {
-                content = url.toString();
-                packet.addChild("x", Namespace.OOB).addChild("url").setContent(content);
-            }
+            final Message.FileParams fileParams = message.getFileParams();
+            content = fileParams.url;
+            packet.addChild("x", Namespace.OOB).addChild("url").setContent(content);
         } else {
             content = message.getBody();
         }
@@ -126,16 +115,9 @@ public class MessageGenerator extends AbstractGenerator {
         MessagePacket packet = preparePacket(message);
         if (message.hasFileOnRemoteHost()) {
             Message.FileParams fileParams = message.getFileParams();
-            final URL url = fileParams.url;
-            if (P1S3UrlStreamHandler.PROTOCOL_NAME.equals(url.getProtocol())) {
-                Element x = packet.addChild("x", Namespace.P1_S3_FILE_TRANSFER);
-                final String file = url.getFile();
-                x.setAttribute("name", file.charAt(0) == '/' ? file.substring(1) : file);
-                x.setAttribute("fileid", url.getHost());
-            } else {
-                packet.setBody(url.toString());
-                packet.addChild("x", Namespace.OOB).addChild("url").setContent(url.toString());
-            }
+            final String url = fileParams.url;
+            packet.setBody(url);
+            packet.addChild("x", Namespace.OOB).addChild("url").setContent(url);
         } else {
             if (Config.supportUnencrypted()) {
                 packet.setBody(PGP_FALLBACK_MESSAGE);
@@ -225,7 +207,7 @@ public class MessageGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public MessagePacket received(Account account, final Jid from, final String id,  ArrayList<String> namespaces, int type) {
+    public MessagePacket received(Account account, final Jid from, final String id, ArrayList<String> namespaces, int type) {
         final MessagePacket receivedPacket = new MessagePacket();
         receivedPacket.setType(type);
         receivedPacket.setTo(from);

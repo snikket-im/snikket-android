@@ -32,6 +32,7 @@ import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.ExportBackupService;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class UIHelper {
@@ -328,7 +329,7 @@ public class UIHelper {
                             continue;
                         }
                         char first = l.charAt(0);
-                        if ((first != '>' || !isPositionFollowedByQuoteableCharacter(l, 0)) && first != '\u00bb') {
+                        if ((!QuoteHelper.isPositionQuoteStart(l, 0))) {
                             CharSequence line = CharSequenceUtils.trim(l);
                             if (line.length() == 0) {
                                 continue;
@@ -372,6 +373,23 @@ public class UIHelper {
         return input.length() > 256 ? StylingHelper.subSequence(input, 0, 256) : input;
     }
 
+    public static boolean isPositionPrecededByBodyStart(CharSequence body, int pos){
+        // true if not a single linebreak before current position
+        for (int i = pos - 1; i >= 0; i--){
+            if (body.charAt(i) != ' '){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isPositionPrecededByLineStart(CharSequence body, int pos){
+        if (isPositionPrecededByBodyStart(body, pos)){
+            return true;
+        }
+        return body.charAt(pos - 1) == '\n';
+    }
+
     public static boolean isPositionFollowedByQuoteableCharacter(CharSequence body, int pos) {
         return !isPositionFollowedByNumber(body, pos)
                 && !isPositionFollowedByEmoticon(body, pos)
@@ -404,6 +422,7 @@ public class UIHelper {
             final char first = body.charAt(pos + 1);
             return first == ';'
                     || first == ':'
+                    || first == '.' // do not quote >.< (but >>.<)
                     || closingBeforeWhitespace(body, pos + 1);
         }
     }
@@ -413,26 +432,8 @@ public class UIHelper {
             final char c = body.charAt(i);
             if (Character.isWhitespace(c)) {
                 return false;
-            } else if (c == '<' || c == '>') {
+            } else if (QuoteHelper.isPositionQuoteCharacter(body, pos) || QuoteHelper.isPositionQuoteEndCharacter(body, pos)) {
                 return body.length() == i + 1 || Character.isWhitespace(body.charAt(i + 1));
-            }
-        }
-        return false;
-    }
-
-    public static boolean isPositionFollowedByQuote(CharSequence body, int pos) {
-        if (body.length() <= pos + 1 || Character.isWhitespace(body.charAt(pos + 1))) {
-            return false;
-        }
-        boolean previousWasWhitespace = false;
-        for (int i = pos + 1; i < body.length(); i++) {
-            char c = body.charAt(i);
-            if (c == '\n' || c == '»') {
-                return false;
-            } else if (c == '«' && !previousWasWhitespace) {
-                return true;
-            } else {
-                previousWasWhitespace = Character.isWhitespace(c);
             }
         }
         return false;
@@ -475,9 +476,6 @@ public class UIHelper {
     }
 
     public static String getFileDescriptionString(final Context context, final Message message) {
-        if (message.getType() == Message.TYPE_IMAGE) {
-            return context.getString(R.string.image);
-        }
         final String mime = message.getMimeType();
         if (mime == null) {
             return context.getString(R.string.file);
@@ -487,7 +485,9 @@ public class UIHelper {
             return context.getString(R.string.video);
         } else if (mime.equals("image/gif")) {
             return context.getString(R.string.gif);
-        } else if (mime.startsWith("image/")) {
+        } else if (mime.equals("image/svg+xml")) {
+            return context.getString(R.string.vector_graphic);
+        } else if (mime.startsWith("image/") || message.getType() == Message.TYPE_IMAGE) {
             return context.getString(R.string.image);
         } else if (mime.contains("pdf")) {
             return context.getString(R.string.pdf_document);
@@ -503,6 +503,8 @@ public class UIHelper {
             return context.getString(R.string.ebook);
         } else if (mime.equals("application/gpx+xml")) {
             return context.getString(R.string.gpx_track);
+        } else if (mime.equals("text/plain")) {
+            return context.getString(R.string.plain_text_document);
         } else {
             return mime;
         }

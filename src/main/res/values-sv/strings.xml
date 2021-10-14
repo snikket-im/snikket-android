@@ -4,6 +4,7 @@
     <string name="action_add">Ny konversation</string>
     <string name="action_accounts">Kontoinställningar</string>
     <string name="action_account">Hantera konto</string>
+    <string name="action_end_conversation">Stäng konversation</string>
     <string name="action_contact_details">Kontaktdetaljer</string>
     <string name="action_muc_details">Gruppchattdetaljer</string>
     <string name="channel_details">Kanaldetaljer</string>
@@ -28,6 +29,13 @@
     <string name="just_now">just nu</string>
     <string name="minute_ago">1 min sedan</string>
     <string name="minutes_ago">%d min sedan</string>
+    <plurals name="x_unread_conversations">
+        <item quantity="one">%d oläst konversation</item>
+
+    
+        <item quantity="other">%d olästa konversationer</item>
+
+    </plurals>
     <string name="sending">skickar…</string>
     <string name="message_decrypting">Avkrypterar meddelande. Vänta…</string>
     <string name="pgp_message">OpenPGP-krypterat meddelande</string>
@@ -105,12 +113,16 @@
     <string name="pref_led">LED notifieringar</string>
     <string name="pref_led_summary">Blinka med notifieringsljuset när ett meddelande tagits emot</string>
     <string name="pref_ringtone">Meddelandesignal</string>
+    <string name="pref_notification_sound">Aviseringsljud</string>
+    <string name="pref_notification_sound_summary">Aviseringsljud för nya meddelande</string>
+    <string name="pref_call_ringtone_summary">Ringsignal för inkommande samtal</string>
     <string name="pref_notification_grace_period">Notifieringsfrist</string>
     <string name="pref_advanced_options">Avancerat</string>
     <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
     <string name="pref_confirm_messages">Bekräfta meddelanden</string>
     <string name="pref_confirm_messages_summary">Låt dina kontakter veta när du har mottagit och läst deras meddelanden</string>
     <string name="pref_ui_options">Gränssnitt</string>
+    <string name="openpgp_error">OpenKeychain genererade ett fel.</string>
     <string name="bad_key_for_encryption">Dålig krypterings-nyckel.</string>
     <string name="accept">Acceptera</string>
     <string name="error">Ett fel har inträffat</string>
@@ -136,6 +148,7 @@
     <string name="account_status_regis_fail">Registreringsfel</string>
     <string name="account_status_regis_conflict">Användarnamn används redan</string>
     <string name="account_status_regis_success">Registrering klar</string>
+    <string name="account_status_regis_not_sup">Registrering stöds ej av server</string>
     <string name="account_status_tls_error">TLS-förhandling misslyckades</string>
     <string name="account_status_policy_violation">Kränkning av policy</string>
     <string name="account_status_incompatible_server">Inkompatibel server</string>
@@ -173,9 +186,14 @@
     <string name="server_info_unavailable">otillgänglig</string>
     <string name="missing_public_keys">Annonsering om publik nyckel saknas</string>
     <string name="last_seen_now">senast sedd just nu</string>
+    <string name="last_seen_min">senast sedd för en minut sedan</string>
     <string name="last_seen_mins">senast sedd %d minuter sedan</string>
+    <string name="last_seen_hour">senast sedd för en timme sedan</string>
     <string name="last_seen_hours">senast sedd %d timmar sedan</string>
+    <string name="last_seen_day">senast sedd för en dag sedan</string>
     <string name="last_seen_days">senast sedd %d dagar sedan</string>
+    <string name="install_openkeychain">Krypterat meddelande. Installera OpenKeychain för att dekryptera meddelandet.</string>
+    <string name="openpgp_messages_found">Nytt OpenPGP krypterat meddelande hittades</string>
     <string name="openpgp_key_id">OpenPGP-nyckel-ID</string>
     <string name="omemo_fingerprint">OMEMO-fingeravtryck</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO-fingeravtryck</string>
@@ -500,7 +518,7 @@
     <string name="encrypting_message">Krypterar meddelande</string>
     <string name="not_fetching_history_retention_period">Hämtar inte meddelanden på grund av inställningen för borttagning av gamla meddelanden.</string>
     <string name="transcoding_video">Komprimerar video</string>
-    <string name="corresponding_conversations_closed">Motsvarande konversationer är stängda.</string>
+    <string name="corresponding_conversations_closed">Korresponderande konversationer är stängda.</string>
     <string name="contact_blocked_past_tense">Kontakt blockerad.</string>
     <string name="pref_notifications_from_strangers">Notifieringar från främlingar</string>
     <string name="received_message_from_stranger">Mottagna meddelanden från främlingar</string>
@@ -531,6 +549,7 @@
     <string name="title_activity_show_location">Visa plats</string>
     <string name="share">Dela</string>
     <string name="please_wait">Var god dröj...</string>
+    <string name="search_messages">Söka i meddelanden</string>
     <string name="gif">GIF</string>
     <string name="copy_jabber_id">Kopiera XMPP-adress</string>
     <string name="nickname">Smeknamn</string>
@@ -557,7 +576,10 @@
     <string name="ebook">e-bok</string>
     <string name="open_with">Öppna med...</string>
     <string name="choose_account">Välj konto</string>
+    <string name="restore_backup">Återställa säkerhetskopiering</string>
+    <string name="restore">Återställa</string>
     <string name="enter_password_to_restore">Ange ditt lösenord till kontot %s för att återställa säkerhetskopian.</string>
+    <string name="unable_to_restore_backup">Det gick inte att återställa säkerhetskopian.</string>
     <string name="create_group_chat">Skapa gruppchatt</string>
     <string name="create_private_group_chat">Skapa sluten gruppchatt</string>
     <string name="create_dialog_channel_name">Kanalnamn</string>
@@ -584,4 +606,7 @@
     <string name="category_about">Om</string>
     <string name="please_enable_an_account">Aktivera ett konto</string>
     <string name="rtp_state_declined_or_busy">Upptagen</string>
+    <string name="add_to_favorites">Fäst flik till toppen</string>
+    <string name="remove_from_favorites">Ta bort flik från toppen</string>
+    <string name="more_options">Fler alternativ</string>
     </resources>

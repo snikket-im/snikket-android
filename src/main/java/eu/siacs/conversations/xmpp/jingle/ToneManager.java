@@ -37,7 +37,7 @@ class ToneManager {
 
     private static ToneState of(final boolean isInitiator, final RtpEndUserState state, final Set<Media> media) {
         if (isInitiator) {
-            if (asList(RtpEndUserState.RINGING, RtpEndUserState.CONNECTING).contains(state)) {
+            if (asList(RtpEndUserState.FINDING_DEVICE, RtpEndUserState.RINGING, RtpEndUserState.CONNECTING).contains(state)) {
                 return ToneState.RINGING;
             }
             if (state == RtpEndUserState.DECLINED_OR_BUSY) {

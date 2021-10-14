@@ -20,7 +20,7 @@
     <string name="action_unblock_participant">解封成员</string>
     <string name="title_activity_manage_accounts">管理账户</string>
     <string name="title_activity_settings">设置</string>
-    <string name="title_activity_sharewith">通过Conversations分享</string>
+    <string name="title_activity_sharewith">通过Snikket分享</string>
     <string name="title_activity_start_conversation">开始对话</string>
     <string name="title_activity_choose_contact">选择联系人</string>
     <string name="title_activity_choose_contacts">选择联系人</string>
@@ -121,6 +121,7 @@
     <string name="pref_ringtone">铃声</string>
     <string name="pref_notification_sound">通知铃声</string>
     <string name="pref_notification_sound_summary">新消息通知铃声</string>
+    <string name="pref_call_ringtone_summary">来电响铃</string>
     <string name="pref_notification_grace_period">静默时间段</string>
     <string name="pref_notification_grace_period_summary">在其他设备上检测到活动之后，通知在此时间段内将被静音。</string>
     <string name="pref_advanced_options">高级</string>
@@ -128,6 +129,8 @@
     <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您可以帮助Snikket持续发展</string>
     <string name="pref_confirm_messages">确认消息</string>
     <string name="pref_confirm_messages_summary">让对方知道你收到并阅读了他们的消息</string>
+    <string name="pref_prevent_screenshots">防止截屏</string>
+    <string name="pref_prevent_screenshots_summary">在应用切换中隐藏应用程序内容并阻止截图</string>
     <string name="pref_ui_options">用户界面</string>
     <string name="openpgp_error">OpenKeychain报告一个错误。</string>
     <string name="bad_key_for_encryption">错误的密钥</string>
@@ -146,6 +149,7 @@
     <string name="error_file_not_found">未找到文件</string>
     <string name="error_io_exception">常规I/O错误。可能是存储空间不足？</string>
     <string name="error_security_exception_during_image_copy">您用来选择图片的程序没有给予读取权限。\n\n &lt;/small&gt;尝试其他文件管理器选择图片&lt;/small&gt;。</string>
+    <string name="error_security_exception">你用来共享此文件的应用程序没有提供足够的权限。</string>
     <string name="account_status_unknown">未知</string>
     <string name="account_status_disabled">暂时不可用</string>
     <string name="account_status_online">在线</string>
@@ -160,6 +164,7 @@
     <string name="account_status_regis_not_sup">服务器不支持注册</string>
     <string name="account_status_regis_invalid_token">无效的注册令牌</string>
     <string name="account_status_tls_error">TLS协商失败</string>
+    <string name="account_status_tls_error_domain">域名不可验证</string>
     <string name="account_status_policy_violation">违反政策</string>
     <string name="account_status_incompatible_server">服务器不兼容</string>
     <string name="account_status_stream_error">流错误</string>
@@ -408,6 +413,7 @@
     <string name="audio">音频</string>
     <string name="video">视频</string>
     <string name="image">图片</string>
+    <string name="vector_graphic">矢量图</string>
     <string name="pdf_document">PDF文档</string>
     <string name="apk">Android App</string>
     <string name="vcard">联系人</string>
@@ -460,6 +466,8 @@
     <string name="account_status_host_unknown">服务器不能为域名做出响应</string>
     <string name="server_info_broken">损坏</string>
     <string name="pref_presence_settings">可用性</string>
+    <string name="pref_away_when_screen_off">当设备锁定时离开 </string>
+    <string name="pref_away_when_screen_off_summary">当设备锁定时显示状态为离开</string>
     <string name="pref_dnd_on_silent_mode">在静音模式显示为忙碌</string>
     <string name="pref_dnd_on_silent_mode_summary">设备处于静音模式时显示为忙碌</string>
     <string name="pref_treat_vibrate_as_silent">将振动看作静音</string>
@@ -896,6 +904,7 @@
     <string name="rtp_state_connectivity_lost_error">连接丢失</string>
     <string name="rtp_state_retracted">通话已撤销</string>
     <string name="rtp_state_application_failure">程序错误</string>
+    <string name="rtp_state_security_error">验证问题</string>
     <string name="hang_up">挂断</string>
     <string name="ongoing_call">正在进行的通话</string>
     <string name="ongoing_video_call">正在进行的视频通话</string>
@@ -943,4 +952,8 @@
     <string name="unable_to_parse_invite">无法解析邀请</string>
     <string name="server_does_not_support_easy_onboarding_invites">服务器不支持生成邀请</string>
     <string name="no_active_accounts_support_this">没有活跃帐户支持此功能</string>
+    <string name="backup_started_message">已启动备份。一旦完成，你会收到通知。</string>
+    <string name="unable_to_enable_video">无法启用视频</string>
+    <string name="plain_text_document">纯文本文档</string>
+
 </resources>

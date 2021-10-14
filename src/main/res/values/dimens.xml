@@ -43,4 +43,5 @@
 
     <dimen name="local_video_preview_height">128dp</dimen>
     <dimen name="local_video_preview_width">96dp</dimen>
+    <dimen name="rtp_session_duration_top_margin">24dp</dimen>
 </resources>

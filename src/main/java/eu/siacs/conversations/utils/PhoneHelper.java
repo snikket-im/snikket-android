@@ -35,17 +35,4 @@ public class PhoneHelper {
 		cursor.close();
 		return uri == null ? null : Uri.parse(uri);
 	}
-
-	public static String getVersionName(Context context) {
-		final String packageName = context == null ? null : context.getPackageName();
-		if (packageName != null) {
-			try {
-				return context.getPackageManager().getPackageInfo(packageName, 0).versionName;
-			} catch (final PackageManager.NameNotFoundException | RuntimeException e) {
-				return "unknown";
-			}
-		} else {
-			return "unknown";
-		}
-	}
 }

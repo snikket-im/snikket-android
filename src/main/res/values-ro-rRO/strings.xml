@@ -127,6 +127,7 @@
     <string name="pref_ringtone">Ton de apel</string>
     <string name="pref_notification_sound">Sunet de notificare</string>
     <string name="pref_notification_sound_summary">Sunet de notificare pentru mesaje noi</string>
+    <string name="pref_call_ringtone_summary">Ton pentru apelurile primite</string>
     <string name="pref_notification_grace_period">Perioadă de grație</string>
     <string name="pref_notification_grace_period_summary">Durata de timp cât notificările sunt ascunse după ce s-a observat activitate pe un alt dispozitiv de al dumneavoastră.</string>
     <string name="pref_advanced_options">Opțiuni avansate</string>
@@ -134,6 +135,8 @@
     <string name="pref_never_send_crash_summary">Trimițând date despre erori ajutați la continuarea dezvoltării aplicației</string>
     <string name="pref_confirm_messages">Confirmă mesajele</string>
     <string name="pref_confirm_messages_summary">Contactele sunt notificate atunci când ați primit un mesaj și l-ați citit</string>
+    <string name="pref_prevent_screenshots">Previne captura ecranului</string>
+    <string name="pref_prevent_screenshots_summary">Ascunde conținutul în managerul de aplicații și blochează captura de ecran</string>
     <string name="pref_ui_options">Opțiuni interfață</string>
     <string name="openpgp_error">OpenKeychain a raportat o eroare.</string>
     <string name="bad_key_for_encryption">Cheie invalidă pentru criptare.</string>
@@ -152,6 +155,7 @@
     <string name="error_file_not_found">Fișierul nu a fost găsit</string>
     <string name="error_io_exception">Eroare I/O generala. Poate ați rămas fără spațiu liber?</string>
     <string name="error_security_exception_during_image_copy">Aplicația folosită pentru selecția acestei imagini nu a oferit destule permisiuni pentru a putea citii fișierul.\n\n<small>Folosiți un alt manager de fișiere pentru a alege o imagine</small></string>
+    <string name="error_security_exception">Aplicația pe care ați folosit-o pentru a partaja acest fișier nu a furnizat suficiente permisiuni.</string>
     <string name="account_status_unknown">Necunoscut</string>
     <string name="account_status_disabled">Dezactivat temporar</string>
     <string name="account_status_online">Conectat</string>
@@ -166,6 +170,7 @@
     <string name="account_status_regis_not_sup">Serverul nu permite înregistrarea</string>
     <string name="account_status_regis_invalid_token">Simbol de înregistrare invalid</string>
     <string name="account_status_tls_error">Negociere TLS eşuată</string>
+    <string name="account_status_tls_error_domain">Domeniul nu se poate verifica</string>
     <string name="account_status_policy_violation">Încălcare condiții furnizare serviciu</string>
     <string name="account_status_incompatible_server">Server incompatibil</string>
     <string name="account_status_stream_error">Eroare de date</string>
@@ -414,6 +419,7 @@
     <string name="audio">audio</string>
     <string name="video">video</string>
     <string name="image">imagine</string>
+    <string name="vector_graphic">grafic vectorial</string>
     <string name="pdf_document">document PDF</string>
     <string name="apk">Aplicație Android</string>
     <string name="vcard">Contact</string>
@@ -468,6 +474,8 @@
     <string name="account_status_host_unknown">Serverul nu este responsabil pentru acest domeniu</string>
     <string name="server_info_broken">Deteriorat</string>
     <string name="pref_presence_settings">Setări de disponibilitate</string>
+    <string name="pref_away_when_screen_off">Plecat când dispozitivul este blocat</string>
+    <string name="pref_away_when_screen_off_summary">Prezintă clientul drept \"Plecat\" atunci când dispozitivul este blocat</string>
     <string name="pref_dnd_on_silent_mode">\"Ocupat\" în modul silențios</string>
     <string name="pref_dnd_on_silent_mode_summary">Prezintă clientul drept \"Ocupat\" atunci când dispozitivul este în mod silențios</string>
     <string name="pref_treat_vibrate_as_silent">Tratează modul vibrație ca silențios</string>
@@ -885,7 +893,7 @@
     <string name="add_anway">Adaugă oricum</string>
     <string name="this_looks_like_channel">Aceasta pare o adresă de canal</string>
     <string name="share_backup_files">Partajează fișierele copiei de siguranță</string>
-    <string name="conversations_backup">Copie de siguranță Conversations</string>
+    <string name="conversations_backup">Copie de siguranță Snikket</string>
     <string name="event">Eveniment</string>
     <string name="open_backup">Deschide o copie de siguranță</string>
     <string name="not_a_backup_file">Fișierul selectat nu este o copie de siguranță Snikket</string>
@@ -918,6 +926,7 @@
     <string name="rtp_state_connectivity_lost_error">Conexiune pierdută</string>
     <string name="rtp_state_retracted">Apel anulat</string>
     <string name="rtp_state_application_failure">Eroare de aplicație</string>
+    <string name="rtp_state_security_error">Problemă la verificare</string>
     <string name="hang_up">Închide</string>
     <string name="ongoing_call">Apel în curs</string>
     <string name="ongoing_video_call">Apel video în curs</string>
@@ -969,4 +978,8 @@
     <string name="unable_to_parse_invite">Nu s-a putut procesa invitația</string>
     <string name="server_does_not_support_easy_onboarding_invites">Serverul nu suportă generarea de invitații</string>
     <string name="no_active_accounts_support_this">Nici un cont activ nu suporta această caracteristică</string>
+    <string name="backup_started_message">Se creează copia de siguranță. Veți primi o notificare când acesta este completă.</string>
+    <string name="unable_to_enable_video">Nu s-a putut activa camera video.</string>
+    <string name="plain_text_document">Document text</string>
+
 </resources>

@@ -76,7 +76,7 @@
     <string name="send_now">Jetzt abschicken</string>
     <string name="send_never">Nie mehr nachfragen</string>
     <string name="problem_connecting_to_account">Verbindung zum Konto konnte nicht hergestellt werden</string>
-    <string name="problem_connecting_to_accounts">Verbindung zu mehreren Konto konnte nicht hergestellt werden</string>
+    <string name="problem_connecting_to_accounts">Verbindung zu mehreren Konten konnte nicht hergestellt werden</string>
     <string name="touch_to_fix">Antippen, um deine Konten zu verwalten</string>
     <string name="attach_file">Datei auswählen</string>
     <string name="not_in_roster">Diesen fehlenden Kontakt zu deiner Kontaktliste hinzufügen?</string>
@@ -94,7 +94,7 @@
     <string name="choose_presence">Gerät auswählen</string>
     <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>
     <string name="send_message">Nachricht senden</string>
-    <string name="send_message_to_x">Sende Nachricht an %s</string>
+    <string name="send_message_to_x">Nachricht an %s senden</string>
     <string name="send_omemo_message">OMEMO-verschlüsselt schreiben…</string>
     <string name="send_omemo_x509_message">v\\OMEMO-verschlüsselte Nachricht senden</string>
     <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben…</string>
@@ -112,7 +112,7 @@
     <string name="contact_has_no_pgp_key">Deine Nachricht konnte nicht verschlüsselt werden, weil dein Kontakt seinen öffentlichen Schlüssel nicht bekannt gibt.\n\n<small>Bitte sage deinem Kontakt, er möge OpenPGP einrichten.</small></string>
     <string name="no_pgp_keys">Keine OpenPGP-Schlüssel gefunden</string>
     <string name="contacts_have_no_pgp_keys">Deine Nachrichten konnten nicht verschlüsselt werden, weil deine Kontakte ihre öffentlichen Schlüssel nicht bekannt geben.\n\n<small>Bitte sage ihnen, sie mögen OpenPGP einrichten.</small></string>
-    <string name="pref_general">Allgemeines</string>
+    <string name="pref_general">Allgemein</string>
     <string name="pref_accept_files">Dateien annehmen</string>
     <string name="pref_accept_files_summary">Dateien automatisch annehmen, die kleiner sind als …</string>
     <string name="pref_attachments">Anhänge</string>
@@ -124,6 +124,7 @@
     <string name="pref_ringtone">Klingelton</string>
     <string name="pref_notification_sound">Benachrichtigungston</string>
     <string name="pref_notification_sound_summary">Benachrichtigungston für neue Nachrichten</string>
+    <string name="pref_call_ringtone_summary">Klingelton für eingehende Anrufe</string>
     <string name="pref_notification_grace_period">Schonfrist</string>
     <string name="pref_notification_grace_period_summary">Die Zeitspanne, in der Benachrichtigungen nach der Erkennung von Aktivitäten auf einem deiner anderen Geräte unterdrückt werden.</string>
     <string name="pref_advanced_options">Erweitert</string>
@@ -131,6 +132,8 @@
     <string name="pref_never_send_crash_summary">Mit dem Einsenden von Absturzberichten hilfst du bei der Weiterentwicklung</string>
     <string name="pref_confirm_messages">Lese- und Empfangsbestätigung senden</string>
     <string name="pref_confirm_messages_summary">Informiere deine Kontakte, wenn du eine Nachricht empfangen und gelesen hast</string>
+    <string name="pref_prevent_screenshots">Screenshots verhindern</string>
+    <string name="pref_prevent_screenshots_summary">Ausblenden von App-Inhalten im App-Switcher und Blockieren von Screenshots</string>
     <string name="pref_ui_options">Benutzeroberfläche</string>
     <string name="openpgp_error">OpenKeychain verursachte einen Fehler.</string>
     <string name="bad_key_for_encryption">Fehlerhafter Schlüssel für die Verschlüsselung.</string>
@@ -148,7 +151,8 @@
     <string name="error_compressing_image">Bilddatei konnte nicht konvertiert werden</string>
     <string name="error_file_not_found">Datei nicht gefunden</string>
     <string name="error_io_exception">Allgemeiner Fehler. Vielleicht hast du keinen Speicherplatz mehr?</string>
-    <string name="error_security_exception_during_image_copy">Die App, mit der du das Bild ausgesucht hast, hat keine Rechte eingeräumt, um das Bild zu betrachten.\n\n<small>Benutze einen anderen Dateimanager, um ein Bild auszuwählen</small>.</string>
+    <string name="error_security_exception_during_image_copy">Die App, mit der du das Bild ausgesucht hast, hat nicht die erforderlichen Berechtigungen, um das Bild zu betrachten.\n\n<small>Benutze einen anderen Dateimanager, um ein Bild auszuwählen</small>.</string>
+    <string name="error_security_exception">Die App, die du zum Teilen dieser Datei verwendet hast, hat nicht die erforderlichen Berechtigungen bereitgestellt.</string>
     <string name="account_status_unknown">Unbekannt</string>
     <string name="account_status_disabled">Vorübergehend abgeschaltet</string>
     <string name="account_status_online">Online</string>
@@ -163,21 +167,22 @@
     <string name="account_status_regis_not_sup">Registrierung wird vom Server nicht unterstützt</string>
     <string name="account_status_regis_invalid_token">Ungültiger Registrierungstoken</string>
     <string name="account_status_tls_error">TLS-Aushandlung fehlgeschlagen</string>
+    <string name="account_status_tls_error_domain">Domain nicht überprüfbar</string>
     <string name="account_status_policy_violation">Verstoß gegen die Richtlinien</string>
     <string name="account_status_incompatible_server">Inkompatibler Server</string>
-    <string name="account_status_stream_error">Stream Fehler</string>
+    <string name="account_status_stream_error">Stream-Fehler</string>
     <string name="account_status_stream_opening_error">Fehler beim Öffnen des Streams</string>
     <string name="encryption_choice_unencrypted">Unverschlüsselt</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
-    <string name="mgmt_account_delete">Löschen</string>
+    <string name="mgmt_account_delete">Konto löschen</string>
     <string name="mgmt_account_disable">Vorübergehend abschalten</string>
     <string name="mgmt_account_publish_avatar">Avatar veröffentlichen</string>
     <string name="mgmt_account_publish_pgp">Öffentlichen OpenPGP-Schlüssel veröffentlichen</string>
     <string name="unpublish_pgp">Öffentlichen OpenPGP-Schlüssel verwerfen</string>
     <string name="unpublish_pgp_message">Bist du sicher, dass du deinen öffentlichen OpenPGP-Schlüssel aus deiner Anwesenheitsmitteilung entfernen möchtest?\nDeine Kontakte können dir dann keine OpenPGP-verschlüsselten Nachrichten senden.</string>
-    <string name="openpgp_has_been_published">Öffentlicher OpenPGP-Schlüssel veröffentlicht</string>
+    <string name="openpgp_has_been_published">Öffentlicher OpenPGP-Schlüssel veröffentlicht.</string>
     <string name="mgmt_account_enable">Konto aktivieren </string>
     <string name="mgmt_account_are_you_sure">Bist du dir sicher?</string>
     <string name="mgmt_account_delete_confirm_text">Die Löschung deines Kontos löscht deinen gesamten Gesprächsverlauf</string>
@@ -247,14 +252,14 @@
     <string name="topic">Thema</string>
     <string name="joining_conference">Gruppenchat wird beigetreten…</string>
     <string name="leave">Verlassen</string>
-    <string name="contact_added_you">Der Kontakt hat dich zur Kontaktliste hinzugefügt</string>
+    <string name="contact_added_you">Kontakt hat dich zur Kontaktliste hinzugefügt</string>
     <string name="add_back">Auch hinzufügen</string>
     <string name="contact_has_read_up_to_this_point">%s hat bis zu diesem Punkt gelesen</string>
     <string name="contacts_have_read_up_to_this_point">%s haben bis zu diesem Punkt gelesen</string>
     <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d andere haben bis zu diesem Punkt gelesen</string>
     <string name="everyone_has_read_up_to_this_point">Alle haben bis zu diesem Punkt gelesen</string>
     <string name="publish">Veröffentlichen</string>
-    <string name="touch_to_choose_picture">Avatar antippen, um ein Bild aus Galerie auszuwählen</string>
+    <string name="touch_to_choose_picture">Avatar antippen, um ein Bild aus der Galerie auszuwählen</string>
     <string name="publishing">Veröffentliche…</string>
     <string name="error_publish_avatar_server_reject">Der Server hat die Veröffentlichung des Avatars abgelehnt.</string>
     <string name="error_publish_avatar_converting">Bild konnte nicht konvertiert werden</string>
@@ -301,7 +306,7 @@
     <string name="using_account">verwende Konto %s</string>
     <string name="hosted_on">gehostet bei %s</string>
     <string name="checking_x">%s auf HTTP-Host wird überprüft</string>
-    <string name="not_connected_try_again">Nicht verbunden, bitte später versuchen</string>
+    <string name="not_connected_try_again">Du bist nicht verbunden. Bitte versuche es später noch einmal</string>
     <string name="check_x_filesize">%s-Größe prüfen</string>
     <string name="check_x_filesize_on_host">%1$s-Größe auf %2$s prüfen</string>
     <string name="message_options">Nachrichtenoptionen</string>
@@ -362,13 +367,13 @@
     <string name="fetching_history_from_server">Lade Chatverlauf…</string>
     <string name="no_more_history_on_server">Keine weiteren Nachrichten vorhanden</string>
     <string name="updating">Aktualisieren…</string>
-    <string name="password_changed">Passwort geändert.</string>
+    <string name="password_changed">Passwort geändert!</string>
     <string name="could_not_change_password">Passwort konnte nicht geändert werden</string>
     <string name="change_password">Passwort ändern</string>
     <string name="current_password">Aktuelles Passwort</string>
     <string name="new_password">Neues Passwort</string>
     <string name="password_should_not_be_empty">Passwort kann nicht leer sein</string>
-    <string name="enable_all_accounts">Alle Konten aktiveren</string>
+    <string name="enable_all_accounts">Alle Konten aktivieren</string>
     <string name="disable_all_accounts">Alle Konten abschalten</string>
     <string name="perform_action_with">Aktion durchführen mit</string>
     <string name="no_affiliation">Keine Zugehörigkeit</string>
@@ -411,6 +416,7 @@
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="image">Bild</string>
+    <string name="vector_graphic">Vektorgrafik</string>
     <string name="pdf_document">PDF-Dokument</string>
     <string name="apk">Android App</string>
     <string name="vcard">Kontakt</string>
@@ -464,6 +470,8 @@
     <string name="account_status_host_unknown">Der Server ist nicht für diese Domain verantwortlich</string>
     <string name="server_info_broken">Fehlerhaft</string>
     <string name="pref_presence_settings">Status</string>
+    <string name="pref_away_when_screen_off">Abwesend bei gesperrtem Gerät</string>
+    <string name="pref_away_when_screen_off_summary">Als abwesend anzeigen, wenn das Gerät gesperrt ist.</string>
     <string name="pref_dnd_on_silent_mode">Beschäftigt im lautlosen Modus</string>
     <string name="pref_dnd_on_silent_mode_summary">Als Beschäftigt anzeigen, wenn sich das Gerät im lautlosen Modus befindet</string>
     <string name="pref_treat_vibrate_as_silent">Vibration als Lautlos behandeln</string>
@@ -784,7 +792,7 @@
     <string name="verify_x">Überprüfe %s</string>
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Wir haben dir eine SMS an <b>%s</b> geschickt.]]></string>
     <string name="we_have_sent_you_another_sms">Wir haben dir eine weitere SMS mit einem 6-stelligen Code geschickt.</string>
-    <string name="please_enter_pin_below">Gib bitte den 6-stellige PIN unten ein.</string>
+    <string name="please_enter_pin_below">Gib bitte die 6-stellige PIN unten ein.</string>
     <string name="resend_sms">SMS erneut versenden</string>
     <string name="resend_sms_in">SMS erneut versenden (%s)</string>
     <string name="wait_x">Bitte warten (%s)</string>
@@ -874,7 +882,7 @@
     <string name="add_anway">Trotzdem hinzufügen</string>
     <string name="this_looks_like_channel">Dies sieht aus wie eine Channel-Adresse</string>
     <string name="share_backup_files">Sicherungsdateien teilen</string>
-    <string name="conversations_backup">Sicherung für Conversations</string>
+    <string name="conversations_backup">Sicherung für Snikket</string>
     <string name="event">Ereignis</string>
     <string name="open_backup">Sicherung öffnen</string>
     <string name="not_a_backup_file">Die von dir ausgewählte Datei ist keine Sicherungsdatei von Snikket</string>
@@ -886,7 +894,7 @@
     <string name="group_chats_and_channels"><![CDATA[Gruppenchats & Channels]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">Lokaler Server</string>
-    <string name="pref_channel_discovery_summary">Die meisten Benutzer sollten hier ‘jabber.network’ auswählen um bessere Vorschläge aus dem gesamten, öffentlichen XMPP Ökosystem zu bekommen.</string>
+    <string name="pref_channel_discovery_summary">Die meisten Benutzer sollten hier ‘jabber.network’ auswählen, um bessere Vorschläge aus dem gesamten, öffentlichen XMPP-Ökosystem zu bekommen.</string>
     <string name="pref_channel_discovery">Channelsuchmethode</string>
     <string name="backup">Sicherungskopie</string>
     <string name="category_about">Über</string>
@@ -907,6 +915,7 @@
     <string name="rtp_state_connectivity_lost_error">Verbindung unterbrochen</string>
     <string name="rtp_state_retracted">Anruf zurückgenommen</string>
     <string name="rtp_state_application_failure">App-Fehler</string>
+    <string name="rtp_state_security_error">Verifikationsproblem</string>
     <string name="hang_up">Auflegen</string>
     <string name="ongoing_call">Laufender Anruf</string>
     <string name="ongoing_video_call">Laufender Videoanruf</string>
@@ -956,4 +965,8 @@
     <string name="unable_to_parse_invite">Einladung kann nicht gelesen werden</string>
     <string name="server_does_not_support_easy_onboarding_invites">Server unterstützt keine Generierung von Einladungen</string>
     <string name="no_active_accounts_support_this">Keine aktiven Konten unterstützen diese Funktion</string>
+    <string name="backup_started_message">Das Backup wurde gestartet. Du bekommst eine Benachrichtigung sobald es fertig ist.</string>
+    <string name="unable_to_enable_video">Video kann nicht aktiviert werden.</string>
+    <string name="plain_text_document">Textdokument</string>
+
 </resources>

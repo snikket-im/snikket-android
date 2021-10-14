@@ -130,6 +130,7 @@
     <string name="pref_ringtone">Мелодия звонка</string>
     <string name="pref_notification_sound">Звук уведомления</string>
     <string name="pref_notification_sound_summary">Звук уведомления о новых сообщениях</string>
+    <string name="pref_call_ringtone_summary">Мелодия входящего звонка</string>
     <string name="pref_notification_grace_period">Грейс-период</string>
     <string name="pref_notification_grace_period_summary">Время, на которое уведомления будут отключены, когда вы пользуетесь аккаунтом на другом устройстве.</string>
     <string name="pref_advanced_options">Дополнительно</string>
@@ -155,6 +156,7 @@
     <string name="error_file_not_found">Файл не найден</string>
     <string name="error_io_exception">Общая ошибка ввода/вывода. Возможно, на устройстве недостаточно свободного места?</string>
     <string name="error_security_exception_during_image_copy">У приложения, которым вы выбрали это изображение, недостаточно прав, чтобы прочитать этот файл.\n\n<small>Пожалуйста, используйте другой файловый менеджер, чтобы выбрать это изображение</small>.</string>
+    <string name="error_security_exception">Приложение, которое вы использовали для публикации этого файла, не предоставило достаточно разрешений.</string>
     <string name="account_status_unknown">Неизвестен</string>
     <string name="account_status_disabled">Временно отключён</string>
     <string name="account_status_online">В сети</string>
@@ -169,6 +171,7 @@
     <string name="account_status_regis_not_sup">Сервер не поддерживает возможность регистрации</string>
     <string name="account_status_regis_invalid_token">Неправильный токен регистрации</string>
     <string name="account_status_tls_error">Не удалось согласовать TLS</string>
+    <string name="account_status_tls_error_domain">Домен не поддается проверке</string>
     <string name="account_status_policy_violation">Нарушение правил</string>
     <string name="account_status_incompatible_server">Несовместимый сервер</string>
     <string name="account_status_stream_error">Ошибка потока</string>
@@ -221,8 +224,8 @@
     <string name="openpgp_key_id">ID OpenPGP ключа</string>
     <string name="omemo_fingerprint">OMEMO-отпечаток</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO-отпечаток</string>
-    <string name="omemo_fingerprint_selected_message">OMEMO-отпечаток (из сообщения)</string>
-    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-отпечаток (из сообщения)</string>
+    <string name="omemo_fingerprint_selected_message">OMEMO-отпечаток (выбранного сообщения)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-отпечаток (выбранного сообщения)</string>
     <string name="other_devices">Другие устройства</string>
     <string name="trust_omemo_fingerprints">Доверенные отпечатки OMEMO</string>
     <string name="fetching_keys">Получение ключей…</string>
@@ -410,7 +413,7 @@
     <string name="reply">Ответить</string>
     <string name="mark_as_read">Прочитано</string>
     <string name="pref_input_options">Ввод</string>
-    <string name="pref_enter_is_send">Отправка по \\"Enter\\"</string>
+    <string name="pref_enter_is_send">Отправка по \"Enter\"</string>
     <string name="pref_enter_is_send_summary">Отправлять сообщения клавишей Enter. Даже если эта опция отключена, сообщение можно отправить, нажав Ctrl+Enter.</string>
     <string name="pref_display_enter_key">Показывать клавишу ввода</string>
     <string name="pref_display_enter_key_summary">Поменять кнопку смайликов на кнопку ввода</string>
@@ -472,6 +475,8 @@
     <string name="account_status_host_unknown">Сервер не ответственен за этот домен</string>
     <string name="server_info_broken">Повреждено</string>
     <string name="pref_presence_settings">Доступность</string>
+    <string name="pref_away_when_screen_off">\"Отошёл\" когда экран заблокирован</string>
+    <string name="pref_away_when_screen_off_summary">Устанавливает статус \"Отошёл\", когда устройство заблокировано</string>
     <string name="pref_dnd_on_silent_mode">\"Не беспокоить\" в беззвучном режиме</string>
     <string name="pref_dnd_on_silent_mode_summary">Устанавливает статус \"Не беспокоить\", когда устройство в беззвучном режиме</string>
     <string name="pref_treat_vibrate_as_silent">Не доступен в режиме вибрации</string>
@@ -896,7 +901,7 @@
     <string name="add_anway">Добавить все равно</string>
     <string name="this_looks_like_channel">Это похоже на адрес канала</string>
     <string name="share_backup_files">Поделиться резервными копиями</string>
-    <string name="conversations_backup">Резервная копия Conversations</string>
+    <string name="conversations_backup">Резервная копия Snikket</string>
     <string name="event">Событие</string>
     <string name="open_backup">Открыть резервную копию</string>
     <string name="not_a_backup_file">Выбранный вами файл не является файлом резервной копии Snikket</string>
@@ -982,4 +987,6 @@
     <string name="unable_to_parse_invite">Невозможно разобрать приглашение</string>
     <string name="server_does_not_support_easy_onboarding_invites">Сервер не поддерживает создание приглашений</string>
     <string name="no_active_accounts_support_this">Ни один активный аккаунт не поддерживает эту функцию</string>
-</resources>
+    <string name="backup_started_message">Резервное копирование было начато. Вы получите уведомление, как только оно будет завершено. </string>
+    <string name="unable_to_enable_video">Невозможно включить видео.</string>
+    </resources>

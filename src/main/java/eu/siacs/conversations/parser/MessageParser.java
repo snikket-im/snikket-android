@@ -3,7 +3,6 @@ package eu.siacs.conversations.parser;
 import android.util.Log;
 import android.util.Pair;
 
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +32,6 @@ import eu.siacs.conversations.entities.ReadByMarker;
 import eu.siacs.conversations.entities.ReceiptRequest;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.http.HttpConnectionManager;
-import eu.siacs.conversations.http.P1S3UrlStreamHandler;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -384,7 +382,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 return;
             }
         } else if (query != null) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received mam result with invalid from ("+original.getFrom()+") or queryId ("+queryId+")");
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received mam result with invalid from (" + original.getFrom() + ") or queryId (" + queryId + ")");
             return;
         } else if (original.fromServer(account)) {
             Pair<MessagePacket, Long> f;
@@ -408,8 +406,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
         final Element replaceElement = packet.findChild("replace", "urn:xmpp:message-correct:0");
         final Element oob = packet.findChild("x", Namespace.OOB);
-        final Element xP1S3 = packet.findChild("x", Namespace.P1_S3_FILE_TRANSFER);
-        final URL xP1S3url = xP1S3 == null ? null : P1S3UrlStreamHandler.of(xP1S3);
         final String oobUrl = oob != null ? oob.findChildContent("url") : null;
         final String replacementId = replaceElement == null ? null : replaceElement.getAttribute("id");
         final Element axolotlEncrypted = packet.findChildEnsureSingle(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
@@ -464,7 +460,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             }
         }
 
-        if ((body != null || pgpEncrypted != null || (axolotlEncrypted != null && axolotlEncrypted.hasChild("payload")) || oobUrl != null || xP1S3 != null) && !isMucStatusMessage) {
+        if ((body != null || pgpEncrypted != null || (axolotlEncrypted != null && axolotlEncrypted.hasChild("payload")) || oobUrl != null) && !isMucStatusMessage) {
             final boolean conversationIsProbablyMuc = isTypeGroupChat || mucUserElement != null || account.getXmppConnection().getMucServersWithholdAccount().contains(counterpart.getDomain().toEscapedString());
             final Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.asBareJid(), conversationIsProbablyMuc, false, query, false);
             final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
@@ -488,13 +484,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 if (conversation.getMucOptions().isSelf(counterpart)) {
                     status = Message.STATUS_SEND_RECEIVED;
                     isCarbon = true; //not really carbon but received from another resource
-                    //TODO this would be the place to change the body after something like mod_pastebin
-                    if (mXmppConnectionService.markMessage(conversation, remoteMsgId, status, serverMsgId)) {
+                    if (mXmppConnectionService.markMessage(conversation, remoteMsgId, status, serverMsgId, body)) {
                         return;
                     } else if (remoteMsgId == null || Config.IGNORE_ID_REWRITE_IN_MUC) {
-                        LocalizedContent localizedBody = packet.getBody();
-                        if (localizedBody != null) {
-                            Message message = conversation.findSentMessageWithBody(localizedBody.content);
+                        if (body != null) {
+                            Message message = conversation.findSentMessageWithBody(body.content);
                             if (message != null) {
                                 mXmppConnectionService.markMessage(message, status);
                                 return;
@@ -506,13 +500,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 }
             }
             final Message message;
-            if (xP1S3url != null) {
-                message = new Message(conversation, xP1S3url.toString(), Message.ENCRYPTION_NONE, status);
-                message.setOob(true);
-                if (CryptoHelper.isPgpEncryptedUrl(xP1S3url.toString())) {
-                    message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-                }
-            } else if (pgpEncrypted != null && Config.supportOpenPgp()) {
+            if (pgpEncrypted != null && Config.supportOpenPgp()) {
                 message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
             } else if (axolotlEncrypted != null && Config.supportOmemo()) {
                 Jid origin;

@@ -18,8 +18,8 @@ public class TransferablePlaceholder implements Transferable {
 	}
 
 	@Override
-	public long getFileSize() {
-		return 0;
+	public Long getFileSize() {
+		return null;
 	}
 
 	@Override
