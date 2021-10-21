@@ -37,11 +37,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -51,6 +54,8 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -266,8 +271,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar());
 
-        binding.speedDial.inflate(R.menu.start_conversation_fab_submenu);
-
+        inflateFab(binding.speedDial, R.menu.start_conversation_fab_submenu);
         binding.tabLayout.setupWithViewPager(binding.startConversationViewPager);
         binding.startConversationViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -336,6 +340,21 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             }
             return false;
         });
+    }
+
+    private void inflateFab(final SpeedDialView speedDialView, final @MenuRes int menuRes) {
+        speedDialView.clearActionItems();
+        final PopupMenu popupMenu = new PopupMenu(this, new View(this));
+        popupMenu.inflate(menuRes);
+        final Menu menu = popupMenu.getMenu();
+        for (int i = 0; i < menu.size(); i++) {
+            final MenuItem menuItem = menu.getItem(i);
+            final SpeedDialActionItem actionItem = new SpeedDialActionItem.Builder(menuItem.getItemId(), menuItem.getIcon())
+                    .setLabel(menuItem.getTitle() != null ? menuItem.getTitle().toString() : null)
+                    .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
+                    .create();
+            speedDialView.addActionItem(actionItem);
+        }
     }
 
     public static boolean isValidJid(String input) {
