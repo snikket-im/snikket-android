@@ -370,9 +370,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 char current = body.length() > i ? body.charAt(i) : '\n';
                 if (lineStart == -1) {
                     if (previous == '\n') {
-                        if (
-                                QuoteHelper.isPositionQuoteStart(body, i)
-                        ) {
+                        if (i < body.length() && QuoteHelper.isPositionQuoteStart(body, i)) {
                             // Line start with quote
                             lineStart = i;
                             if (quoteStart == -1) quoteStart = i;
@@ -806,12 +804,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else if (message.treatAsDownloadable()) {
                 try {
                     final URI uri = new URI(message.getBody());
-                        displayDownloadableMessage(viewHolder,
-                                message,
-                                activity.getString(R.string.check_x_filesize_on_host,
-                                        UIHelper.getFileDescriptionString(activity, message),
-                                        uri.getHost()),
-                                darkBackground);
+                    displayDownloadableMessage(viewHolder,
+                            message,
+                            activity.getString(R.string.check_x_filesize_on_host,
+                                    UIHelper.getFileDescriptionString(activity, message),
+                                    uri.getHost()),
+                            darkBackground);
                 } catch (Exception e) {
                     displayDownloadableMessage(viewHolder,
                             message,
