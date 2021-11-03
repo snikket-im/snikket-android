@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.10.2
+
+* Fix crash when rendering some quotes
+* Fix crash in welcome screen
+
 ### Version 2.10.1
 
 * Fix issue with some videos not being compressed

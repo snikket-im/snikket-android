@@ -92,8 +92,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 42022
-        versionName "2.10.1"
+        versionCode 42023
+        versionName "2.10.2"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
@@ -277,7 +277,9 @@ android {
         variant.outputs.each { output ->
             def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(com.android.build.OutputFile.ABI))
             if (baseAbiVersionCode != null) {
-                output.versionCodeOverride = (100 * variant.versionCode) + baseAbiVersionCode
+                output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + baseAbiVersionCode
+            } else {
+                output.versionCodeOverride = 100 * project.android.defaultConfig.versionCode
             }
         }
 
