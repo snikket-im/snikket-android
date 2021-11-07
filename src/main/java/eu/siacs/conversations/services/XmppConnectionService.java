@@ -572,8 +572,8 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public void attachImageToConversation(final Conversation conversation, final Uri uri, final UiCallback<Message> callback) {
-        final String mimeType = MimeUtils.guessMimeTypeFromUri(this, uri);
+    public void attachImageToConversation(final Conversation conversation, final Uri uri,  final String type, final UiCallback<Message> callback) {
+        final String mimeType = MimeUtils.guessMimeTypeFromUriAndMime(this, uri, type);
         final String compressPictures = getCompressPicturesPreference();
 
         if ("never".equals(compressPictures)

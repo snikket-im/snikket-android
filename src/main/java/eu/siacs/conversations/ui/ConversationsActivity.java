@@ -99,6 +99,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     public static final String EXTRA_DO_NOT_APPEND = "do_not_append";
     public static final String EXTRA_POST_INIT_ACTION = "post_init_action";
     public static final String POST_ACTION_RECORD_VOICE = "record_voice";
+    public static final String EXTRA_TYPE = "type";
 
     private static final List<String> VIEW_AND_SHARE_ACTIONS = Arrays.asList(
             ACTION_VIEW_CONVERSATION,
