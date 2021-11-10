@@ -403,70 +403,36 @@ public class WebRTCWrapper {
         videoTrack.setEnabled(enabled);
     }
 
-    ListenableFuture<SessionDescription> createOffer() {
+    ListenableFuture<SessionDescription> setLocalDescription() {
         return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {
             final SettableFuture<SessionDescription> future = SettableFuture.create();
-            peerConnection.createOffer(new CreateSdpObserver() {
-                @Override
-                public void onCreateSuccess(SessionDescription sessionDescription) {
-                    future.set(sessionDescription);
-                }
-
-                @Override
-                public void onCreateFailure(String s) {
-                    future.setException(new IllegalStateException("Unable to create offer: " + s));
-                }
-            }, new MediaConstraints());
-            return future;
-        }, MoreExecutors.directExecutor());
-    }
-
-    ListenableFuture<SessionDescription> createAnswer() {
-        return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {
-            final SettableFuture<SessionDescription> future = SettableFuture.create();
-            peerConnection.createAnswer(new CreateSdpObserver() {
-                @Override
-                public void onCreateSuccess(SessionDescription sessionDescription) {
-                    future.set(sessionDescription);
-                }
-
-                @Override
-                public void onCreateFailure(String s) {
-                    future.setException(new IllegalStateException("Unable to create answer: " + s));
-                }
-            }, new MediaConstraints());
-            return future;
-        }, MoreExecutors.directExecutor());
-    }
-
-    ListenableFuture<Void> setLocalDescription(final SessionDescription sessionDescription) {
-        Log.d(EXTENDED_LOGGING_TAG, "setting local description:");
-        for (final String line : sessionDescription.description.split(eu.siacs.conversations.xmpp.jingle.SessionDescription.LINE_DIVIDER)) {
-            Log.d(EXTENDED_LOGGING_TAG, line);
-        }
-        return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {
-            final SettableFuture<Void> future = SettableFuture.create();
             peerConnection.setLocalDescription(new SetSdpObserver() {
                 @Override
                 public void onSetSuccess() {
-                    future.set(null);
+                    final SessionDescription description = peerConnection.getLocalDescription();
+                    Log.d(EXTENDED_LOGGING_TAG, "set local description:");
+                    logDescription(description);
+                    future.set(description);
                 }
 
                 @Override
-                public void onSetFailure(final String s) {
-                    future.setException(new IllegalArgumentException("unable to set local session description: " + s));
-
+                public void onSetFailure(final String message) {
+                    future.setException(new FailureToSetDescriptionException(message));
                 }
-            }, sessionDescription);
+            });
             return future;
         }, MoreExecutors.directExecutor());
+    }
+
+    private static void logDescription(final SessionDescription sessionDescription) {
+        for (final String line : sessionDescription.description.split(eu.siacs.conversations.xmpp.jingle.SessionDescription.LINE_DIVIDER)) {
+            Log.d(EXTENDED_LOGGING_TAG, line);
+        }
     }
 
     ListenableFuture<Void> setRemoteDescription(final SessionDescription sessionDescription) {
         Log.d(EXTENDED_LOGGING_TAG, "setting remote description:");
-        for (final String line : sessionDescription.description.split(eu.siacs.conversations.xmpp.jingle.SessionDescription.LINE_DIVIDER)) {
-            Log.d(EXTENDED_LOGGING_TAG, line);
-        }
+        logDescription(sessionDescription);
         return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {
             final SettableFuture<Void> future = SettableFuture.create();
             peerConnection.setRemoteDescription(new SetSdpObserver() {
@@ -476,9 +442,8 @@ public class WebRTCWrapper {
                 }
 
                 @Override
-                public void onSetFailure(String s) {
-                    future.setException(new IllegalArgumentException("unable to set remote session description: " + s));
-
+                public void onSetFailure(final String message) {
+                    future.setException(new FailureToSetDescriptionException(message));
                 }
             }, sessionDescription);
             return future;
@@ -617,6 +582,12 @@ public class WebRTCWrapper {
             super("initialize PeerConnection first");
         }
 
+    }
+
+    private static class FailureToSetDescriptionException extends IllegalArgumentException {
+        public FailureToSetDescriptionException(String message) {
+            super(message);
+        }
     }
 
     private static class CapturerChoice {
