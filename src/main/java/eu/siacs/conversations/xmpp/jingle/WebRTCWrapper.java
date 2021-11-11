@@ -88,6 +88,7 @@ public class WebRTCWrapper {
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private VideoTrack localVideoTrack = null;
     private VideoTrack remoteVideoTrack = null;
+    private PeerConnection.PeerConnectionState currentState;
     private final PeerConnection.Observer peerConnectionObserver = new PeerConnection.Observer() {
         @Override
         public void onSignalingChange(PeerConnection.SignalingState signalingState) {
@@ -98,8 +99,9 @@ public class WebRTCWrapper {
         }
 
         @Override
-        public void onConnectionChange(PeerConnection.PeerConnectionState newState) {
-            eventCallback.onConnectionChange(newState);
+        public void onConnectionChange(final PeerConnection.PeerConnectionState newState) {
+            eventCallback.onConnectionChange(currentState, newState);
+            currentState = newState;
         }
 
         @Override
@@ -150,7 +152,7 @@ public class WebRTCWrapper {
 
         @Override
         public void onRenegotiationNeeded() {
-
+            Log.d(EXTENDED_LOGGING_TAG,"onRenegotiationNeeded - current state: "+currentState);
         }
 
         @Override
@@ -260,6 +262,8 @@ public class WebRTCWrapper {
         if (peerConnection == null) {
             throw new InitializationException("Unable to create PeerConnection");
         }
+
+        this.currentState = peerConnection.connectionState();
 
         final Optional<CapturerChoice> optionalCapturerChoice = media.contains(Media.VIDEO) ? getVideoCapturer() : Optional.absent();
 
@@ -531,7 +535,7 @@ public class WebRTCWrapper {
     public interface EventCallback {
         void onIceCandidate(IceCandidate iceCandidate);
 
-        void onConnectionChange(PeerConnection.PeerConnectionState newState);
+        void onConnectionChange(PeerConnection.PeerConnectionState oldState, PeerConnection.PeerConnectionState newState);
 
         void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices);
     }
