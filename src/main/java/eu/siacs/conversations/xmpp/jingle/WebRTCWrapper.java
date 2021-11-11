@@ -476,16 +476,8 @@ public class WebRTCWrapper {
         requirePeerConnection().addIceCandidate(iceCandidate);
     }
 
-    private CameraEnumerator getCameraEnumerator() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return new Camera2Enumerator(requireContext());
-        } else {
-            return new Camera1Enumerator();
-        }
-    }
-
     private Optional<CapturerChoice> getVideoCapturer() {
-        final CameraEnumerator enumerator = getCameraEnumerator();
+        final CameraEnumerator enumerator = new Camera2Enumerator(requireContext());
         final Set<String> deviceNames = ImmutableSet.copyOf(enumerator.getDeviceNames());
         for (final String deviceName : deviceNames) {
             if (isFrontFacing(enumerator, deviceName)) {
