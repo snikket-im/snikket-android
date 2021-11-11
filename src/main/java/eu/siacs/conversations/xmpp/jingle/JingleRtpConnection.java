@@ -1,6 +1,5 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Stopwatch;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
@@ -29,8 +29,10 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -147,8 +149,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private Set<Media> proposedMedia;
     private RtpContentMap initiatorRtpContentMap;
     private RtpContentMap responderRtpContentMap;
-    private long rtpConnectionStarted = 0; //time of 'connected'
-    private long rtpConnectionEnded = 0;
+    private final Stopwatch sessionDuration = Stopwatch.createUnstarted();
+    private final Queue<PeerConnection.PeerConnectionState> stateHistory = new LinkedList<>();
     private ScheduledFuture<?> ringingTimeoutFuture;
 
     JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
@@ -1056,7 +1058,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     return RtpEndUserState.RETRACTED;
                 }
             case TERMINATED_CONNECTIVITY_ERROR:
-                return rtpConnectionStarted == 0 ? RtpEndUserState.CONNECTIVITY_ERROR : RtpEndUserState.CONNECTIVITY_LOST_ERROR;
+                return zeroDuration() ? RtpEndUserState.CONNECTIVITY_ERROR : RtpEndUserState.CONNECTIVITY_LOST_ERROR;
             case TERMINATED_APPLICATION_FAILURE:
                 return RtpEndUserState.APPLICATION_ERROR;
             case TERMINATED_SECURITY_ERROR:
@@ -1084,7 +1086,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             case CLOSED:
                 return RtpEndUserState.ENDING_CALL;
             default:
-                return rtpConnectionStarted == 0 ? RtpEndUserState.CONNECTIVITY_ERROR : RtpEndUserState.RECONNECTING;
+                return zeroDuration() ? RtpEndUserState.CONNECTIVITY_ERROR : RtpEndUserState.RECONNECTING;
         }
     }
 
@@ -1338,15 +1340,18 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     @Override
     public void onConnectionChange(final PeerConnection.PeerConnectionState oldState, final PeerConnection.PeerConnectionState newState) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed: " + oldState + "->" + newState);
-        final boolean neverConnected = this.rtpConnectionStarted == 0;
-        if (newState == PeerConnection.PeerConnectionState.CONNECTED && this.rtpConnectionStarted == 0) {
-            this.rtpConnectionStarted = SystemClock.elapsedRealtime();
-        }
-        if (newState == PeerConnection.PeerConnectionState.CLOSED && this.rtpConnectionEnded == 0) {
-            this.rtpConnectionEnded = SystemClock.elapsedRealtime();
+        this.stateHistory.add(newState);
+        if (newState == PeerConnection.PeerConnectionState.CONNECTED) {
+            this.sessionDuration.start();
+        } else if (this.sessionDuration.isRunning()) {
+            this.sessionDuration.stop();
         }
 
-        if (neverConnected && Arrays.asList(PeerConnection.PeerConnectionState.FAILED, PeerConnection.PeerConnectionState.DISCONNECTED).contains(newState)) {
+        final boolean neverConnected = !this.stateHistory.contains(PeerConnection.PeerConnectionState.CONNECTED);
+        final boolean failedOrDisconnected = Arrays.asList(PeerConnection.PeerConnectionState.FAILED, PeerConnection.PeerConnectionState.DISCONNECTED).contains(newState);
+
+
+        if (neverConnected && failedOrDisconnected) {
             if (isTerminated()) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not sending session-terminate after connectivity error because session is already in state " + this.state);
                 return;
@@ -1375,12 +1380,12 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    public long getRtpConnectionStarted() {
-        return this.rtpConnectionStarted;
+    public boolean zeroDuration() {
+        return this.sessionDuration.elapsed(TimeUnit.NANOSECONDS) <= 0;
     }
 
-    public long getRtpConnectionEnded() {
-        return this.rtpConnectionEnded;
+    public long getCallDuration() {
+        return this.sessionDuration.elapsed(TimeUnit.MILLISECONDS);
     }
 
     public AppRTCAudioManager getAudioManager() {
@@ -1507,8 +1512,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void writeLogMessage(final State state) {
-        final long started = this.rtpConnectionStarted;
-        long duration = started <= 0 ? 0 : SystemClock.elapsedRealtime() - started;
+        final long duration = getCallDuration();
         if (state == State.TERMINATED_SUCCESS || (state == State.TERMINATED_CONNECTIVITY_ERROR && duration > 0)) {
             writeLogMessageSuccess(duration);
         } else {
