@@ -96,7 +96,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     );
     private static final List<RtpEndUserState> STATES_SHOWING_SWITCH_TO_CHAT = Arrays.asList(
             RtpEndUserState.CONNECTING,
-            RtpEndUserState.CONNECTED
+            RtpEndUserState.CONNECTED,
+            RtpEndUserState.RECONNECTING
+    );
+    private static final List<RtpEndUserState> STATES_CONSIDERED_CONNECTED = Arrays.asList(
+            RtpEndUserState.CONNECTED,
+            RtpEndUserState.RECONNECTING
     );
     private static final String PROXIMITY_WAKE_LOCK_TAG = "conversations:in-rtp-session";
     private static final int REQUEST_ACCEPT_CALL = 0x1111;
@@ -502,7 +507,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private boolean isConnected() {
         final JingleRtpConnection connection = this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
-        return connection != null && connection.getEndUserState() == RtpEndUserState.CONNECTED;
+        return connection != null && STATES_CONSIDERED_CONNECTED.contains(connection.getEndUserState());
     }
 
     private boolean switchToPictureInPicture() {
@@ -661,6 +666,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             case CONNECTED:
                 setTitle(R.string.rtp_state_connected);
                 break;
+            case RECONNECTING:
+                setTitle(R.string.rtp_state_reconnecting);
+                break;
             case ACCEPTING_CALL:
                 setTitle(R.string.rtp_state_accepting_call);
                 break;
@@ -803,7 +811,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @SuppressLint("RestrictedApi")
     private void updateInCallButtonConfiguration(final RtpEndUserState state, final Set<Media> media) {
-        if (state == RtpEndUserState.CONNECTED && !isPictureInPicture()) {
+        if (STATES_CONSIDERED_CONNECTED.contains(state) && !isPictureInPicture()) {
             Preconditions.checkArgument(media.size() > 0, "Media must not be empty");
             if (media.contains(Media.VIDEO)) {
                 final JingleRtpConnection rtpConnection = requireRtpConnection();
@@ -998,7 +1006,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                     RendererCommon.ScalingType.SCALE_ASPECT_FILL,
                     RendererCommon.ScalingType.SCALE_ASPECT_FIT
             );
-            if (state == RtpEndUserState.CONNECTED) {
+            if (STATES_CONSIDERED_CONNECTED.contains(state)) {
                 binding.appBarLayout.setVisibility(View.GONE);
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 binding.remoteVideoWrapper.setVisibility(View.VISIBLE);
