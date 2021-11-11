@@ -45,8 +45,13 @@ import org.webrtc.voiceengine.WebRtcAudioEffects;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -58,6 +63,8 @@ import eu.siacs.conversations.services.XmppConnectionService;
 public class WebRTCWrapper {
 
     private static final String EXTENDED_LOGGING_TAG = WebRTCWrapper.class.getSimpleName();
+
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     //we should probably keep this in sync with: https://github.com/signalapp/Signal-Android/blob/master/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java#L296
     private static final Set<String> HARDWARE_AEC_BLACKLIST = new ImmutableSet.Builder<String>()
@@ -79,6 +86,8 @@ public class WebRTCWrapper {
     private static final int CAPTURING_MAX_FRAME_RATE = 30;
 
     private final EventCallback eventCallback;
+    private final AtomicBoolean readyToReceivedIceCandidates = new AtomicBoolean(false);
+    private final Queue<IceCandidate> iceCandidates = new LinkedList<>();
     private final AppRTCAudioManager.AudioManagerEvents audioManagerEvents = new AppRTCAudioManager.AudioManagerEvents() {
         @Override
         public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
@@ -125,7 +134,11 @@ public class WebRTCWrapper {
 
         @Override
         public void onIceCandidate(IceCandidate iceCandidate) {
-            eventCallback.onIceCandidate(iceCandidate);
+            if (readyToReceivedIceCandidates.get()) {
+                eventCallback.onIceCandidate(iceCandidate);
+            } else {
+                iceCandidates.add(iceCandidate);
+            }
         }
 
         @Override
@@ -294,7 +307,14 @@ public class WebRTCWrapper {
     }
 
     void restartIce() {
-        requirePeerConnection().restartIce();
+        executorService.execute(()-> requirePeerConnection().restartIce());
+    }
+
+    public void setIsReadyToReceiveIceCandidates(final boolean ready) {
+        readyToReceivedIceCandidates.set(ready);
+        while(ready && iceCandidates.peek() != null) {
+            eventCallback.onIceCandidate(iceCandidates.poll());
+        }
     }
 
     synchronized void close() {
@@ -526,6 +546,10 @@ public class WebRTCWrapper {
 
     AppRTCAudioManager getAudioManager() {
         return appRTCAudioManager;
+    }
+
+    void execute(final Runnable command) {
+        executorService.execute(command);
     }
 
     public interface EventCallback {
