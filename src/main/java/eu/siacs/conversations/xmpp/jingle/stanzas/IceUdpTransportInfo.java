@@ -10,6 +10,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -83,11 +84,19 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         return transportInfo;
     }
 
-    public IceUdpTransportInfo modifyCredentials(Credentials credentials) {
+    public IceUdpTransportInfo modifyCredentials(final Credentials credentials, final Setup setup) {
         final IceUdpTransportInfo transportInfo = new IceUdpTransportInfo();
         transportInfo.setAttribute("ufrag", credentials.ufrag);
         transportInfo.setAttribute("pwd", credentials.password);
-        transportInfo.setChildren(getChildren());
+        for (final Element child : getChildren()) {
+            if (child.getName().equals("fingerprint") && Namespace.JINGLE_APPS_DTLS.equals(child.getNamespace())) {
+                final Fingerprint fingerprint = new Fingerprint();
+                fingerprint.setAttributes(new Hashtable<>(child.getAttributes()));
+                fingerprint.setContent(child.getContent());
+                fingerprint.setAttribute("setup", setup.toString().toLowerCase(Locale.ROOT));
+                transportInfo.addChild(fingerprint);
+            }
+        }
         return transportInfo;
     }
 
@@ -337,8 +346,31 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             return this.getAttribute("hash");
         }
 
-        public String getSetup() {
-            return this.getAttribute("setup");
+        public Setup getSetup() {
+            final String setup = this.getAttribute("setup");
+            return setup == null ? null : Setup.of(setup);
+        }
+    }
+
+    public enum Setup {
+        ACTPASS, PASSIVE, ACTIVE;
+
+        public static Setup of(String setup) {
+            try {
+                return valueOf(setup.toUpperCase(Locale.ROOT));
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
+        }
+
+        public Setup flip() {
+            if (this == PASSIVE) {
+                return ACTIVE;
+            }
+            if (this == ACTIVE) {
+                return PASSIVE;
+            }
+            throw new IllegalStateException(this.name()+" can not be flipped");
         }
     }
 }
