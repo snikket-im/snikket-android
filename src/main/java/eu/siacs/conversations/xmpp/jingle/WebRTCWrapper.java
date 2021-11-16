@@ -431,7 +431,7 @@ public class WebRTCWrapper {
         videoTrack.setEnabled(enabled);
     }
 
-    ListenableFuture<SessionDescription> setLocalDescription() {
+    synchronized ListenableFuture<SessionDescription> setLocalDescription() {
         return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {
             final SettableFuture<SessionDescription> future = SettableFuture.create();
             peerConnection.setLocalDescription(new SetSdpObserver() {
@@ -458,7 +458,7 @@ public class WebRTCWrapper {
         }
     }
 
-    ListenableFuture<Void> setRemoteDescription(final SessionDescription sessionDescription) {
+    synchronized ListenableFuture<Void> setRemoteDescription(final SessionDescription sessionDescription) {
         Log.d(EXTENDED_LOGGING_TAG, "setting remote description:");
         logDescription(sessionDescription);
         return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {
@@ -482,10 +482,18 @@ public class WebRTCWrapper {
     private ListenableFuture<PeerConnection> getPeerConnectionFuture() {
         final PeerConnection peerConnection = this.peerConnection;
         if (peerConnection == null) {
-            return Futures.immediateFailedFuture(new IllegalStateException("initialize PeerConnection first"));
+            return Futures.immediateFailedFuture(new PeerConnectionNotInitialized());
         } else {
             return Futures.immediateFuture(peerConnection);
         }
+    }
+
+    private PeerConnection requirePeerConnection() {
+        final PeerConnection peerConnection = this.peerConnection;
+        if (peerConnection == null) {
+            throw new PeerConnectionNotInitialized();
+        }
+        return peerConnection;
     }
 
     void addIceCandidate(IceCandidate iceCandidate) {
@@ -512,9 +520,14 @@ public class WebRTCWrapper {
         }
     }
 
-    public PeerConnection.PeerConnectionState getState() {
+    PeerConnection.PeerConnectionState getState() {
         return requirePeerConnection().connectionState();
     }
+
+    public PeerConnection.SignalingState getSignalingState() {
+        return requirePeerConnection().signalingState();
+    }
+
 
     EglBase.Context getEglBaseContext() {
         return this.eglBase.getEglBaseContext();
@@ -526,14 +539,6 @@ public class WebRTCWrapper {
 
     Optional<VideoTrack> getRemoteVideoTrack() {
         return Optional.fromNullable(this.remoteVideoTrack);
-    }
-
-    private PeerConnection requirePeerConnection() {
-        final PeerConnection peerConnection = this.peerConnection;
-        if (peerConnection == null) {
-            throw new PeerConnectionNotInitialized();
-        }
-        return peerConnection;
     }
 
     private Context requireContext() {
@@ -550,10 +555,6 @@ public class WebRTCWrapper {
 
     void execute(final Runnable command) {
         executorService.execute(command);
-    }
-
-    public PeerConnection.SignalingState getSignalingState() {
-        return requirePeerConnection().signalingState();
     }
 
     public interface EventCallback {
