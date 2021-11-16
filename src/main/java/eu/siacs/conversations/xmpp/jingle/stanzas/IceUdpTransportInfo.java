@@ -146,7 +146,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         }
 
         // https://tools.ietf.org/html/draft-ietf-mmusic-ice-sip-sdp-39#section-5.1
-        public static Candidate fromSdpAttribute(final String attribute, Collection<String> currentUfrags) {
+        public static Candidate fromSdpAttribute(final String attribute, String currentUfrag) {
             final String[] pair = attribute.split(":", 2);
             if (pair.length == 2 && "candidate".equals(pair[0])) {
                 final String[] segments = pair[1].split(" ");
@@ -163,7 +163,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
                         additional.put(segments[i], segments[i + 1]);
                     }
                     final String ufrag = additional.get("ufrag");
-                    if (ufrag != null && !currentUfrags.contains(ufrag)) {
+                    if (ufrag != null && !ufrag.equals(currentUfrag)) {
                         return null;
                     }
                     final Candidate candidate = new Candidate();

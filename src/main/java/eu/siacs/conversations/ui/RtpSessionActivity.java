@@ -1003,6 +1003,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                     RendererCommon.ScalingType.SCALE_ASPECT_FILL,
                     RendererCommon.ScalingType.SCALE_ASPECT_FIT
             );
+            //TODO this should probably only be 'connected'
             if (STATES_CONSIDERED_CONNECTED.contains(state)) {
                 binding.appBarLayout.setVisibility(View.GONE);
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
