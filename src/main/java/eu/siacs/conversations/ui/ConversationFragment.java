@@ -856,9 +856,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 toggleInputMethod();
                 break;
             case ATTACHMENT_CHOICE_LOCATION:
-                double latitude = data.getDoubleExtra("latitude", 0);
-                double longitude = data.getDoubleExtra("longitude", 0);
-                Uri geo = Uri.parse("geo:" + latitude + "," + longitude);
+                final double latitude = data.getDoubleExtra("latitude", 0);
+                final double longitude = data.getDoubleExtra("longitude", 0);
+                final int accuracy = data.getIntExtra("accuracy", 0);
+                final Uri geo;
+                if (accuracy > 0) {
+                    geo = Uri.parse(String.format("geo:%s,%s;u=%s", latitude, longitude, accuracy));
+                } else {
+                    geo = Uri.parse(String.format("geo:%s,%s", latitude, longitude));
+                }
                 mediaPreviewAdapter.addMediaPreviews(Attachment.of(getActivity(), geo, Attachment.Type.LOCATION));
                 toggleInputMethod();
                 break;
