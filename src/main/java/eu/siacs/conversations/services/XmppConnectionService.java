@@ -1298,8 +1298,8 @@ public class XmppConnectionService extends Service {
         toggleForegroundService(false);
     }
 
-    public void setOngoingCall(AbstractJingleConnection.Id id, Set<Media> media) {
-        ongoingCall.set(new OngoingCall(id, media));
+    public void setOngoingCall(AbstractJingleConnection.Id id, Set<Media> media, final boolean reconnecting) {
+        ongoingCall.set(new OngoingCall(id, media, reconnecting));
         toggleForegroundService(false);
     }
 
@@ -1315,7 +1315,7 @@ public class XmppConnectionService extends Service {
             final Notification notification;
             final int id;
             if (ongoing != null) {
-                notification = this.mNotificationService.getOngoingCallNotification(ongoing.id, ongoing.media);
+                notification = this.mNotificationService.getOngoingCallNotification(ongoing);
                 id = NotificationService.ONGOING_CALL_NOTIFICATION_ID;
                 startForeground(id, notification);
                 mNotificationService.cancel(NotificationService.FOREGROUND_NOTIFICATION_ID);
@@ -4869,12 +4869,14 @@ public class XmppConnectionService extends Service {
     }
 
     public static class OngoingCall {
-        private final AbstractJingleConnection.Id id;
-        private final Set<Media> media;
+        public final AbstractJingleConnection.Id id;
+        public final Set<Media> media;
+        public final boolean reconnecting;
 
-        public OngoingCall(AbstractJingleConnection.Id id, Set<Media> media) {
+        public OngoingCall(AbstractJingleConnection.Id id, Set<Media> media, final boolean reconnecting) {
             this.id = id;
             this.media = media;
+            this.reconnecting = reconnecting;
         }
 
         @Override
@@ -4882,12 +4884,12 @@ public class XmppConnectionService extends Service {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             OngoingCall that = (OngoingCall) o;
-            return Objects.equal(id, that.id);
+            return reconnecting == that.reconnecting && Objects.equal(id, that.id) && Objects.equal(media, that.media);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hashCode(id);
+            return Objects.hashCode(id, media, reconnecting);
         }
     }
 }
