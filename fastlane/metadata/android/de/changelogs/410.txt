@@ -1,0 +1,8 @@
+Weitere Verbesserungen bei Audio/Video-Calls!
+
+* Der Anrufbutton wird nun durchgängiger angezeigt, vor allem bei Kontakten mit der iOS-App.
+* Der Zurück-Knopf unterbricht nicht mehr den Anruf.
+* Eingehende Anrufe können mit dem Leiser-Knopf nun sofort ruhiggestellt werden.
+* Mehrere Fehler bei der Anrufverlässlichkeit und verpassten Anrufen behoben.
+
+Außerdem können Admins nun Kontakte direkt aus dem Hauptmenü der App einladen! In Zukunft wird dies auch für nicht-Admins einschaltbar sein.

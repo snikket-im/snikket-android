@@ -1,0 +1,3 @@
+* Easy-Invite-Erzeugung auf Servern die das unterstützen
+* GIFs von Movim können nun angezeigt werden
+* Avatars werden nun im Cache gespeichert

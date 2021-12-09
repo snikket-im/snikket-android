@@ -1,0 +1,3 @@
+* Suche funktioniert nun wieder auf Android 5 und älter
+* Speicherverbrauch reduziert
+* Verbesserungen der Gesprächsansicht auf kleinen Bildschirmen
