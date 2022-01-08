@@ -89,7 +89,7 @@
     <string name="clear_conversation_history">Eliminar historial da conversa</string>
     <string name="clear_histor_msg">¿Queres eliminar as mensaxes desta conversa?\n\n<b>Aviso:</b> Esto non lle afecta as mensaxes gardadas noutros dispositivos ou servidores. </string>
     <string name="delete_file_dialog">Eliminar ficheiro</string>
-    <string name="delete_file_dialog_msg">Está segura de querer eliminar este ficheiro?\n\n<b>Aviso:</b> Esto non eliminará as copias de este ficheiro que están gardadas en outros dispositivos ou servidores.</string>
+    <string name="delete_file_dialog_msg">Tes a certeza de querer eliminar este ficheiro?\n\n<b>Aviso:</b> Esto non eliminará as copias de este ficheiro que están gardadas noutros dispositivos ou servidores.</string>
     <string name="also_end_conversation">Pechar a conversa tras baleirar</string>
     <string name="choose_presence">Escoller dispositivo</string>
     <string name="send_unencrypted_message">Enviar mensaxe non cifrada</string>
@@ -244,7 +244,7 @@
     <string name="delete_bookmark">Eliminar marcador</string>
     <string name="destroy_room">Destruír a conversa en grupo</string>
     <string name="destroy_channel">Eliminar canle</string>
-    <string name="destroy_room_dialog">Está segura de querer destruír esta conversa en grupo?\n\n<b>Aviso:</b> A conversa en grupo será totalmente eliminada do servidor.</string>
+    <string name="destroy_room_dialog">Tes a certeza de querer destruír esta conversa en grupo?\n\n<b>Aviso:</b> A conversa en grupo será totalmente eliminada do servidor.</string>
     <string name="destroy_channel_dialog">Tes a certeza de querer eliminar a canle?\n\n<b>Aviso:</b> A canle será eliminada completamente do servidor.</string>
     <string name="could_not_destroy_room">Non se desfixo a conversa en grupo</string>
     <string name="could_not_destroy_channel">Non se puido eliminar a canle</string>
@@ -688,7 +688,7 @@
     <string name="mtm_accept_cert">¿Aceptar certificado descoñecido?</string>
     <string name="mtm_trust_anchor">O certificado do servidor non está asinado por unha autoridade de certificación coñecida.</string>
     <string name="mtm_accept_servername">¿Aceptar un nome de servidor que non coincida?</string>
-    <string name="mtm_hostname_mismatch">O servidor non pode autenticarse como \"%s\". O certificado só é válido para:</string>
+    <string name="mtm_hostname_mismatch">O servidor non pode autenticarse como  \&quot;%s\&quot;. O certificado só é válido para:</string>
     <string name="mtm_connect_anyway">Queres conectarte de todos os xeitos?</string>
     <string name="mtm_cert_details">Detalles do certificado:</string>
     <string name="once">Unha vez</string>
@@ -828,7 +828,7 @@
     <string name="reject_request">Rexeitar solicitude</string>
     <string name="install_orbot">Instalar Orbot</string>
     <string name="start_orbot">Iniciar Orbot</string>
-    <string name="no_market_app_installed">Non ten loxa de aplicacións instalada.</string>
+    <string name="no_market_app_installed">Non hai tenda de apps instalada.</string>
     <string name="group_chat_will_make_your_jabber_id_public">Esta canle fará público o teu enderezo XMPP</string>
     <string name="ebook">e-book</string>
     <string name="video_original">Orixinal (non comprimido)</string>

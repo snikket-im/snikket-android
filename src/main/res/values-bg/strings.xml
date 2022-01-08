@@ -101,7 +101,7 @@
     <string name="send_unencrypted">Изпращане нешифровано</string>
     <string name="decryption_failed">Неуспешно дешифроване. Възможно е да нямате правилния частен ключ.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long"><![CDATA[%1$s използва <b>OpenKeychain</b>, за да шифрова и дешифрова съобщенията и да управлява публичните Ви ключове.OpenKeychain е с лиценз GPLv3+ и може се свали от F-Droid и Google Play.<br><br><small>(Моля, рестартирайте %1$s след това.)</small>]]></string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s използва <b>OpenKeychain</b>, за да шифрова и дешифрова съобщенията и да управлява публичните Ви ключове. <br><br> OpenKeychain е под лиценза GPLv3+ и може се свали от F-Droid и Google Play.<br><br><small>(Моля, рестартирайте %1$s след това.)</small>]]></string>
     <string name="restart">Рестартиране</string>
     <string name="install">Инсталиране</string>
     <string name="openkeychain_not_installed">Моля, инсталирайте OpenKeychain</string>
@@ -188,7 +188,7 @@
     <string name="account_settings_jabber_id">XMPP адрес</string>
     <string name="account_settings_example_jabber_id">username@example.com</string>
     <string name="password">Парола</string>
-    <string name="invalid_jid">Това не е валиден XMPP адрес</string>
+    <string name="invalid_jid">Това не е правилен XMPP адрес</string>
     <string name="error_out_of_memory">Няма достатъчно памет. Изображението е твърде голямо.</string>
     <string name="add_phone_book_text">Искате ли да добавите %s към адресния си указател?</string>
     <string name="server_info_show_more">Инф. за сървъра</string>
@@ -351,11 +351,11 @@
     <string name="outcast">Отхвърлен</string>
     <string name="member">Член</string>
     <string name="advanced_mode">Разширен режим</string>
-    <string name="grant_membership">Дай членски привилегии</string>
-    <string name="remove_membership">Премахни членски привилегии</string>
-    <string name="grant_admin_privileges">Даване на администраторски права</string>
+    <string name="grant_membership">Даване на правомощия на член</string>
+    <string name="remove_membership">Премахване на правомощията на член</string>
+    <string name="grant_admin_privileges">Даване на правомощия на администратор</string>
     <string name="remove_admin_privileges">Отмяна на администраторските права</string>
-    <string name="grant_owner_privileges">Дай права на собственик</string>
+    <string name="grant_owner_privileges">Даване на правомощия на собственик</string>
     <string name="remove_from_room">Премахване от груповия разговор</string>
     <string name="could_not_change_affiliation">Неуспешна промяна на принадлежността на %s</string>
     <string name="ban_from_conference">Забраняване на достъпа до груповия разговор</string>
@@ -448,6 +448,8 @@
         <item quantity="other">%d съобщения</item>
     </plurals>
     <string name="load_more_messages">Зареждане на още съобщения</string>
+    <string name="no_storage_permission">Дайте на %1$s разрешение за достъп до външната памет</string>
+    <string name="no_camera_permission">Дайте на %1$s разрешение за достъп до камерата</string>
     <string name="sync_with_contacts">Синхронизиране с контактите</string>
     <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy се нуждае от достъп до телефонните номера на контактите Ви, за да прави предложения относно контакти, които вероятно вече са регистрирани в системата на Quicksy.<br><br>Ние няма да пазим копия на тези телефонни номера.\n\nЗа повече информация, прочетете <a href="https://quicksy.im/#privacy">декларацията ни за поверителност</a>.<br><br>Сега ще Ви помолим да дадете достъп до контактите си.]]></string>
     <string name="notify_on_all_messages">Известяване за всички съобщения</string>
@@ -490,6 +492,9 @@
     <string name="pref_privacy">Поверителност</string>
     <string name="pref_theme_options">Тема</string>
     <string name="pref_theme_options_summary">Изберете цветовата схема</string>
+    <string name="pref_theme_automatic">Автоматично</string>
+    <string name="pref_theme_light">Светла</string>
+    <string name="pref_theme_dark">Тъмна</string>
     <string name="pref_use_green_background">Зелен фон</string>
     <string name="pref_use_green_background_summary">Получените съобщения ще бъдат на зелен фон</string>
     <string name="this_device_is_no_longer_in_use">Това устройство вече не се използва</string>
@@ -505,6 +510,7 @@
     <string name="no_permission_to_access_x">Няма позволение за достъп до %s</string>
     <string name="remote_server_not_found">Отдалеченият сървър не е намерен</string>
     <string name="remote_server_timeout">Времето за изчакване на отдалечения сървър изтече</string>
+    <string name="report_jid_as_spammer">Докладване този XMPP адрес за спам.</string>
     <string name="pref_delete_omemo_identities">Изтриване на идентификаторите OMEMO</string>
     <string name="delete_selected_keys">Изтриване на избраните ключове.</string>
     <string name="error_publish_avatar_offline">Трябва да бъдете свързан(а), за да публикувате аватара си.</string>
@@ -563,6 +569,7 @@
     <string name="corresponding_conversations_closed">Съответстващите разговори са затворени.</string>
     <string name="contact_blocked_past_tense">Контактът е блокиран.</string>
     <string name="pref_notifications_from_strangers">Известия от непознати</string>
+    <string name="pref_notifications_from_strangers_summary">Известяване за съобщения и обаждания от непознати.</string>
     <string name="received_message_from_stranger">Получено е съобщение от непознат</string>
     <string name="block_stranger">Блокиране на непознатия</string>
     <string name="block_entire_domain">Блокиране на целия домейн</string>
@@ -572,11 +579,14 @@
     <string name="sasl_downgrade">Механизмът на SASL е понижен</string>
     <string name="account_status_regis_web">Сървърът изисква регистриране чрез уеб сайт</string>
     <string name="open_website">Отваряне на уеб сайта</string>
+    <string name="application_found_to_open_website">Няма намерено приложение за отваряне на уеб сайта</string>
     <string name="pref_headsup_notifications">Изскачащи известия</string>
+    <string name="pref_headsup_notifications_summary">Показване на изскачащи известия</string>
     <string name="today">Днес</string>
     <string name="yesterday">Вчера</string>
     <string name="pref_validate_hostname">Проверка на името на сървъра чрез DNSSEC</string>
     <string name="pref_validate_hostname_summary">Сървърните сертификати, които съдържат проверено име на сървъра, се смятат за потвърдени</string>
+    <string name="certificate_does_not_contain_jid">Сертификатът не съдържа XMPP адрес</string>
     <string name="server_info_partial">частично</string>
     <string name="attach_record_video">Запис на видео</string>
     <string name="copy_to_clipboard">Копиране в буфера</string>
@@ -598,6 +608,9 @@
     <string name="edit_status_message_title">Редактиране на съобщението за състоянието</string>
     <string name="edit_status_message">Редактиране на съобщението за състоянието</string>
     <string name="disable_encryption">Изключване на шифроването</string>
+    <string name="error_trustkey_general">%1$s не може да изпраща шифровани съобщения до %2$s. Възможно е Вашият контакт да използва остарял сървър или клиент, който не може да работи с OMEMO.</string>
+    <string name="error_trustkey_device_list">Неуспешно получаване на списъка с устройства</string>
+    <string name="error_trustkey_bundle">Неуспешно получаване на ключове за шифроване</string>
     <string name="error_trustkey_hint_mutual">Съвет: В някои случаи това може да се оправи, ако се добавите един друг в списъците си с контакти.</string>
     <string name="disable_encryption_message">Наистина ли искате да изключите шифроването чрез OMEMO за този разговор?\nТова ще позволи на администратора Ви да чете съобщенията Ви, но пък най-вероятно е единственият начин за общуване с хората, използващи стари клиенти.</string>
     <string name="disable_now">Изключване сега</string>
@@ -626,13 +639,16 @@
     <string name="title_activity_share_location">Споделяне на местоположението</string>
     <string name="title_activity_show_location">Показване на местоположението</string>
     <string name="share">Споделяне</string>
+    <string name="unable_to_start_recording">Записът не може да започне</string>
     <string name="please_wait">Моля, изчакайте…</string>
+    <string name="no_microphone_permission">Дайте на %1$s разрешение за достъп до микрофона</string>
     <string name="search_messages">Търсене в съобщенията</string>
     <string name="gif">GIF</string>
     <string name="view_conversation">Преглед на разговора</string>
     <string name="pref_use_share_location_plugin">Разширение за споделяне на местоположението</string>
     <string name="pref_use_share_location_plugin_summary">Използване на разширението за споделяне на местоположението вместо вградената карта</string>
     <string name="copy_link">Копиране на уеб адрес</string>
+    <string name="copy_jabber_id">Копиране на XMPP адрес</string>
     <string name="p1_s3_filetransfer">Споделяне на файлове през HTTP за S3</string>
     <string name="pref_start_search">Директно търсене</string>
     <string name="pref_start_search_summary">На екрана за „Започване на разговор“ да се отваря клавиатурата и да се поставя курсорът в полето за търсене</string>
@@ -645,12 +661,17 @@
     <string name="providing_a_name_is_optional">Въвеждането на име не е задължитално</string>
     <string name="create_dialog_group_chat_name">Име на груповия разговор</string>
     <string name="conference_destroyed">Този групов разговор е унищожен</string>
+    <string name="unable_to_save_recording">Записът не може да бъде запазен</string>
     <string name="foreground_service_channel_name">Услуга на преден план</string>
+    <string name="foreground_service_channel_description">Тази категория известия се използва за показване на постоянно известие, което показва, че %1$s работи.</string>
     <string name="notification_group_status_information">Информация за състоянието</string>
     <string name="error_channel_name">Проблеми с връзката</string>
     <string name="error_channel_description">Тази категория известия се използва за показване на известие, в случай че има проблем със свързването с профил.</string>
     <string name="notification_group_messages">Съобщения</string>
+    <string name="notification_group_calls">Обаждания</string>
     <string name="messages_channel_name">Съобщения</string>
+    <string name="incoming_calls_channel_name">Входящи обаждания</string>
+    <string name="ongoing_calls_channel_name">Изходящи обаждания</string>
     <string name="silent_messages_channel_name">Тихи съобщения</string>
     <string name="silent_messages_channel_description">Тази категория известия се използва за показване на известия, които не бива да изпълняват звук. Това може да се използва, например, докато използвате друго устройство (по време на Период на пренебрегване).</string>
     <string name="pref_more_notification_settings_summary">Важност, звук, вибрация</string>
@@ -723,6 +744,6 @@
     <string name="create_group_chat">Създаване на групов разговор</string>
     <string name="xmpp_address">XMPP адрес</string>
     <string name="joined_an_existing_channel">Присъединихте се към съществуващ канал</string>
-    <string name="add_existing_account">Добави съществуващ профил</string>
+    <string name="add_existing_account">Добавяне на съществуващ профил</string>
     <string name="rtp_state_declined_or_busy">Зает</string>
     </resources>

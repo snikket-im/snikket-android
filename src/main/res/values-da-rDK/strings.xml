@@ -132,6 +132,8 @@
     <string name="pref_never_send_crash_summary">Ved at indsende \"stack traces\" hjælper du udviklingen</string>
     <string name="pref_confirm_messages">Bekræft beskeder</string>
     <string name="pref_confirm_messages_summary">Lad dine kontakter vide når du har modtaget og læst deres beskeder</string>
+    <string name="pref_prevent_screenshots">Forbyd skærmbillede</string>
+    <string name="pref_prevent_screenshots_summary">Skjul app indhold i app-skifteren og bloker skærmbilleder</string>
     <string name="pref_ui_options">UI</string>
     <string name="openpgp_error">OpenKeychain producerede en fejl</string>
     <string name="bad_key_for_encryption">Dårlig nøgle til kryptering</string>
@@ -414,6 +416,7 @@
     <string name="audio">lyd</string>
     <string name="video">video</string>
     <string name="image">billede</string>
+    <string name="vector_graphic">vektorgrafik</string>
     <string name="pdf_document">PDF dokument</string>
     <string name="apk">Android App</string>
     <string name="vcard">Kontakt</string>
@@ -912,6 +915,7 @@
     <string name="rtp_state_connectivity_lost_error">Forbindelsen tabt</string>
     <string name="rtp_state_retracted">Tilbagetrukket opkald</string>
     <string name="rtp_state_application_failure">App fejl</string>
+    <string name="rtp_state_security_error">Bekræftelsesproblem</string>
     <string name="hang_up">Læg på</string>
     <string name="ongoing_call">Udgående opkald</string>
     <string name="ongoing_video_call">Igangværende videoopkald</string>
@@ -963,4 +967,6 @@
     <string name="no_active_accounts_support_this">Ingen aktive konti understøtter denne funktion</string>
     <string name="backup_started_message">Sikkerhedskopieringen er startet. Du får en notifikation, når den er afsluttet.</string>
     <string name="unable_to_enable_video">Kunne ikke aktivere video.</string>
-    </resources>
+    <string name="plain_text_document">Ren tekstdokument</string>
+
+</resources>
