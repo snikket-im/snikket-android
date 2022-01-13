@@ -71,11 +71,13 @@
     <string name="unblock">Avblockera</string>
     <string name="save">Spara</string>
     <string name="ok">Ok</string>
+    <string name="crash_report_title">%1$s har kraschat</string>
     <string name="send_now">Skicka nu</string>
     <string name="send_never">Fråga aldrig igen</string>
     <string name="problem_connecting_to_account">Kunde inte ansluta till konto</string>
     <string name="problem_connecting_to_accounts">Kunde inte ansluta till flera konton</string>
     <string name="attach_file">Bifoga fil</string>
+    <string name="not_in_roster">Vill du lägga till den här saknade kontakten i din kontaktlista?</string>
     <string name="add_contact">Lägg till kontakt</string>
     <string name="send_failed">sändning misslyckades</string>
     <string name="preparing_image">Förbereder att skicka bild</string>
@@ -135,6 +137,7 @@
     <string name="attach_take_picture">Ta ny bild</string>
     <string name="preemptively_grant">Tillåt abonnemangsbegäran i förväg</string>
     <string name="error_not_an_image_file">Filen du valt är inte en bild</string>
+    <string name="error_compressing_image">Det gick inte att konvertera bildfilen</string>
     <string name="error_file_not_found">Filen hittas ej</string>
     <string name="error_io_exception">Generellt I/O-fel. Du kanske fick slut på plats?</string>
     <string name="account_status_unknown">Okänd</string>

@@ -270,7 +270,7 @@
     <string name="private_message_to">an %s</string>
     <string name="send_private_message_to">Private Nachricht an %s senden</string>
     <string name="connect">Verbinden</string>
-    <string name="account_already_exists">Das Konto existiert bereits</string>
+    <string name="account_already_exists">Dieses Konto existiert bereits</string>
     <string name="next">Weiter</string>
     <string name="server_info_session_established">Sitzung wiederhergestellt</string>
     <string name="skip">Überspringen</string>
