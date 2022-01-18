@@ -746,12 +746,15 @@ public class FileBackend {
             final int imageMaxSize = mXmppConnectionService.getResources().getInteger(R.integer.auto_accept_filesize);
             while (!targetSizeReached) {
                 os = new FileOutputStream(file);
+                Log.d(Config.LOGTAG, "compressing image with quality " + quality);
                 boolean success = scaledBitmap.compress(Config.IMAGE_FORMAT, quality, os);
                 if (!success) {
                     throw new FileCopyException(R.string.error_compressing_image);
                 }
                 os.flush();
-                targetSizeReached = file.length() <= imageMaxSize || quality <= 50;
+                final long fileSize = file.length();
+                Log.d(Config.LOGTAG, "achieved file size of " + fileSize);
+                targetSizeReached = fileSize <= imageMaxSize || quality <= 50;
                 quality -= 5;
             }
             scaledBitmap.recycle();
