@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'com.android.tools.build:gradle:7.1.1'
     }
 }
 
@@ -250,9 +250,6 @@ android {
         buildTypes.release.signingConfig = signingConfigs.release
     }
 
-    lintOptions {
-        disable 'MissingTranslation', 'InvalidPackage','AppCompatResource'
-    }
 
     subprojects {
 
@@ -267,11 +264,15 @@ android {
 
         }
     }
-
     packagingOptions {
-        exclude 'META-INF/BCKEY.DSA'
-        exclude 'META-INF/BCKEY.SF'
+        resources {
+            excludes += ['META-INF/BCKEY.DSA', 'META-INF/BCKEY.SF']
+        }
     }
+    lint {
+        disable 'MissingTranslation', 'InvalidPackage', 'AppCompatResource'
+    }
+
 
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
