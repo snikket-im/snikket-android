@@ -132,6 +132,8 @@
     <string name="pref_never_send_crash_summary">Al enviar las trazas de error estás ayudando en el desarrollo</string>
     <string name="pref_confirm_messages">Confirmar mensajes</string>
     <string name="pref_confirm_messages_summary">Permitir a tus contactos saber cuando has recibido y leído sus mensajes</string>
+    <string name="pref_prevent_screenshots">Impedir capturas de pantalla</string>
+    <string name="pref_prevent_screenshots_summary">Ocultar el contenido de la aplicación en el selector de aplicaciones y bloquear las capturas de pantalla</string>
     <string name="pref_ui_options">Pantalla</string>
     <string name="openpgp_error">OpenKeychain causó un error.</string>
     <string name="bad_key_for_encryption">Clave errónea para el cifrado.</string>
@@ -414,6 +416,7 @@
     <string name="audio">audio</string>
     <string name="video">vídeo</string>
     <string name="image">imagen</string>
+    <string name="vector_graphic">gráfico de vectores</string>
     <string name="pdf_document">documento PDF</string>
     <string name="apk">Android App</string>
     <string name="vcard">Contacto</string>
@@ -912,6 +915,7 @@
     <string name="rtp_state_connectivity_lost_error">Conexión perdida</string>
     <string name="rtp_state_retracted">Llamada rechazada</string>
     <string name="rtp_state_application_failure">Fallo en la aplicación</string>
+    <string name="rtp_state_security_error">Problema de verificación</string>
     <string name="hang_up">Colgar</string>
     <string name="ongoing_call">Llamada saliente</string>
     <string name="ongoing_video_call">Video llamada saliente</string>
@@ -963,4 +967,6 @@
     <string name="no_active_accounts_support_this">Ninguna cuenta activa soporta esta característica</string>
     <string name="backup_started_message">La copia de seguridad ha empezado. Recibirás una notificación cuando se haya completado.</string>
     <string name="unable_to_enable_video">No se ha podido habilitar el vídeo.</string>
-    </resources>
+    <string name="plain_text_document">Documento de texto plano</string>
+
+</resources>

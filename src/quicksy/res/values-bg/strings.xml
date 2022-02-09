@@ -3,7 +3,7 @@
     <string name="pref_notification_grace_period_summary">Времето, през което Quicksy няма да прави нищо, след като забележи дейност на друго устройство</string>
     <string name="pref_never_send_crash_summary">Изпращайки проследявания на стека, Вие помагате за непрекъснатото развитие на Quicksy</string>
     <string name="pref_broadcast_last_activity_summary">Така всичките Ви контакти ще знаят кога използвате Quicksy</string>
-    <string name="huawei_protected_apps_summary">Ако искате да продължите да получавате известия дори когато екранът е заключен, трябва да добавите „Quicksy“ към списъка от защитени приложения.</string>
+    <string name="huawei_protected_apps_summary">Ако искате да продължите да получавате известия дори когато екранът е заключен, трябва да добавите Quicksy към списъка със защитени приложения.</string>
     <string name="set_profile_picture">Профилна снимка за Quicksy</string>
     <string name="not_available_in_your_country">Quicksy не може да се използва във Вашата страна.</string>
     <string name="unable_to_verify_server_identity">Идентичността на сървъра не може да бъде потвърдена.</string>
