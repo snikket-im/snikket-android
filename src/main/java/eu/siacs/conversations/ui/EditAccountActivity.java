@@ -23,11 +23,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.CheckBox;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AlertDialog.Builder;
@@ -693,12 +696,18 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             } catch (final IllegalArgumentException | NullPointerException ignored) {
                 this.jidToEdit = null;
             }
-            if (jidToEdit != null && intent.getData() != null && intent.getBooleanExtra("scanned", false)) {
-                final XmppUri uri = new XmppUri(intent.getData());
-                if (xmppConnectionServiceBound) {
-                    processFingerprintVerification(uri, false);
+            final Uri data = intent.getData();
+            final XmppUri xmppUri = data == null ? null : new XmppUri(data);
+            final boolean scanned = intent.getBooleanExtra("scanned", false);
+            if (jidToEdit != null && xmppUri != null && xmppUri.hasFingerprints()) {
+                if (scanned) {
+                    if (xmppConnectionServiceBound) {
+                        processFingerprintVerification(xmppUri, false);
+                    } else {
+                        this.pendingUri = xmppUri;
+                    }
                 } else {
-                    this.pendingUri = uri;
+                    displayVerificationWarningDialog(xmppUri);
                 }
             }
             boolean init = intent.getBooleanExtra("init", false);
@@ -735,6 +744,28 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         }
     }
 
+    private void displayVerificationWarningDialog(final XmppUri xmppUri) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.verify_omemo_keys);
+        View view = getLayoutInflater().inflate(R.layout.dialog_verify_fingerprints, null);
+        final CheckBox isTrustedSource = view.findViewById(R.id.trusted_source);
+        TextView warning = view.findViewById(R.id.warning);
+        warning.setText(R.string.verifying_omemo_keys_trusted_source_account);
+        builder.setView(view);
+        builder.setPositiveButton(R.string.continue_btn, (dialog, which) -> {
+            if (isTrustedSource.isChecked()) {
+                processFingerprintVerification(xmppUri, false);
+            } else {
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> finish());
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnCancelListener(d -> finish());
+        dialog.show();
+    }
+
     @Override
     public void onNewIntent(final Intent intent) {
         super.onNewIntent(intent);
@@ -749,7 +780,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     @Override
-    public void onSaveInstanceState(final Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull final Bundle savedInstanceState) {
         if (mAccount != null) {
             savedInstanceState.putString("account", mAccount.getJid().asBareJid().toEscapedString());
             savedInstanceState.putBoolean("initMode", mInitMode);

@@ -164,16 +164,16 @@ public class FileBackend {
         return Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + app + "/Backup/";
     }
 
-    private static Bitmap rotate(Bitmap bitmap, int degree) {
+    private static Bitmap rotate(final Bitmap bitmap, final int degree) {
         if (degree == 0) {
             return bitmap;
         }
-        int w = bitmap.getWidth();
-        int h = bitmap.getHeight();
-        Matrix mtx = new Matrix();
-        mtx.postRotate(degree);
-        Bitmap result = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
-        if (bitmap != null && !bitmap.isRecycled()) {
+        final int w = bitmap.getWidth();
+        final int h = bitmap.getHeight();
+        final Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        final Bitmap result = Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
+        if (!bitmap.isRecycled()) {
             bitmap.recycle();
         }
         return result;
