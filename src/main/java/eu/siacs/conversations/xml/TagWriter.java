@@ -8,11 +8,14 @@ import java.io.OutputStreamWriter;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 
 public class TagWriter {
+
+    private static final int FLUSH_DELAY = 400;
 
     private OutputStreamWriter outputStream;
     private boolean finished = false;
@@ -20,6 +23,8 @@ public class TagWriter {
     private CountDownLatch stanzaWriterCountDownLatch = null;
 
     private final Thread asyncStanzaWriter = new Thread() {
+
+        private final AtomicInteger batchStanzaCount = new AtomicInteger(0);
 
         @Override
         public void run() {
@@ -29,12 +34,21 @@ public class TagWriter {
                     break;
                 }
                 try {
-                    AbstractStanza output = writeQueue.take();
-                    outputStream.write(output.toString());
-                    if (writeQueue.size() == 0) {
+                    final AbstractStanza stanza = writeQueue.poll(FLUSH_DELAY, TimeUnit.MILLISECONDS);
+                    if (stanza != null) {
+                        batchStanzaCount.incrementAndGet();
+                        outputStream.write(stanza.toString());
+                    } else {
+                        final int batch = batchStanzaCount.getAndSet(0);
+                        if (batch > 1) {
+                            Log.d(Config.LOGTAG, "flushing " + batch + " stanzas");
+                        }
                         outputStream.flush();
+                        final AbstractStanza nextStanza = writeQueue.take();
+                        batchStanzaCount.incrementAndGet();
+                        outputStream.write(nextStanza.toString());
                     }
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     break;
                 }
             }
