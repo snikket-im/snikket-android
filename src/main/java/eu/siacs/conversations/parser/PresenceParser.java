@@ -143,7 +143,9 @@ public class PresenceParser extends AbstractParser implements
 				} else if (codes.contains(MucOptions.STATUS_CODE_SHUTDOWN) && fullJidMatches) {
 					mucOptions.setError(MucOptions.Error.SHUTDOWN);
 				} else if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE)) {
-					if (codes.contains(MucOptions.STATUS_CODE_KICKED)) {
+					if (codes.contains(MucOptions.STATUS_CODE_TECHNICAL_REASONS)) {
+						mucOptions.setError(MucOptions.Error.UNKNOWN);
+					} else if (codes.contains(MucOptions.STATUS_CODE_KICKED)) {
 						mucOptions.setError(MucOptions.Error.KICKED);
 					} else if (codes.contains(MucOptions.STATUS_CODE_BANNED)) {
 						mucOptions.setError(MucOptions.Error.BANNED);

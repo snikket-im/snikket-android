@@ -34,6 +34,7 @@ public class MucOptions {
     public static final String STATUS_CODE_AFFILIATION_CHANGE = "321";
     public static final String STATUS_CODE_LOST_MEMBERSHIP = "322";
     public static final String STATUS_CODE_SHUTDOWN = "332";
+    public static final String STATUS_CODE_TECHNICAL_REASONS = "333";
     private final Set<User> users = new HashSet<>();
     private final Conversation conversation;
     public OnRenameListener onRenameListener = null;
