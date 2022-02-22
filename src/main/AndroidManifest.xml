@@ -50,6 +50,10 @@
         android:name="android.hardware.microphone"
         android:required="false" />
 
+    <queries>
+        <package android:name="org.sufficientlysecure.keychain"/>
+    </queries>
+
 
     <application
         android:allowBackup="true"
