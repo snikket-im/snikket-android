@@ -880,19 +880,25 @@ public class FileBackend {
     public File getStorageLocation(final String filename, final String mime) {
         final File parentDirectory;
         if (Strings.isNullOrEmpty(mime)) {
-            parentDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            parentDirectory =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         } else if (mime.startsWith("image/")) {
-            parentDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            parentDirectory =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         } else if (mime.startsWith("video/")) {
-            parentDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+            parentDirectory =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
         } else {
-            parentDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            parentDirectory =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         }
-        final File appDirectory = new File(parentDirectory, mXmppConnectionService.getString(R.string.app_name));
+        final File appDirectory =
+                new File(parentDirectory, mXmppConnectionService.getString(R.string.app_name));
         return new File(appDirectory, filename);
     }
 
-    public void setupRelativeFilePath(final Message message, final String filename,  final String mime) {
+    public void setupRelativeFilePath(
+            final Message message, final String filename, final String mime) {
         final File file = getStorageLocation(filename, mime);
         message.setRelativeFilePath(file.getAbsolutePath());
     }
@@ -1147,14 +1153,19 @@ public class FileBackend {
     }
 
     public Uri getTakePhotoUri() {
-        final String filename = String.format("IMG_%s.%s", IMAGE_DATE_FORMAT.format(new Date()),"jpg");
-        File file;
+        final String filename =
+                String.format("IMG_%s.%s", IMAGE_DATE_FORMAT.format(new Date()), "jpg");
+        final File directory;
         if (Config.ONLY_INTERNAL_STORAGE) {
-            final File dcimCache = new File(mXmppConnectionService.getCacheDir(), "Camera");
-            file = new File(dcimCache, filename);
+            directory = new File(mXmppConnectionService.getCacheDir(), "Camera");
         } else {
-            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), filename);
+            directory =
+                    new File(
+                            Environment.getExternalStoragePublicDirectory(
+                                    Environment.DIRECTORY_DCIM),
+                            "Camera");
         }
+        final File file = new File(directory, filename);
         file.getParentFile().mkdirs();
         return getUriForFile(mXmppConnectionService, file);
     }
