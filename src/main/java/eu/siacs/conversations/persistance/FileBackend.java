@@ -533,7 +533,7 @@ public class FileBackend {
                 MimeUtils.guessMimeTypeFromExtension(MimeUtils.extractRelevantExtension(path)));
     }
 
-    public DownloadableFile getFileForPath(final String path, final String mime) {
+    private DownloadableFile getFileForPath(final String path, final String mime) {
         if (path.startsWith("/")) {
             return new DownloadableFile(path);
         } else {
@@ -719,7 +719,7 @@ public class FileBackend {
         if ("ogg".equals(extension) && type != null && type.startsWith("audio/")) {
             extension = "oga";
         }
-        message.setRelativeFilePath(message.getUuid() + "." + extension);
+        setupRelativeFilePath(message, String.format("%s.%s", message.getUuid(), extension));
         copyFileToPrivateStorage(mXmppConnectionService.getFileBackend().getFile(message), uri);
     }
 
@@ -852,19 +852,49 @@ public class FileBackend {
 
     public void copyImageToPrivateStorage(Message message, Uri image)
             throws FileCopyException, ImageCompressionException {
+        final String filename;
         switch (Config.IMAGE_FORMAT) {
             case JPEG:
-                message.setRelativeFilePath(message.getUuid() + ".jpg");
+                filename = String.format("%s.%s", message.getUuid(), "jpg");
                 break;
             case PNG:
-                message.setRelativeFilePath(message.getUuid() + ".png");
+                filename = String.format("%s.%s", message.getUuid(), "png");
                 break;
             case WEBP:
-                message.setRelativeFilePath(message.getUuid() + ".webp");
+                filename = String.format("%s.%s", message.getUuid(), "webp");
                 break;
+            default:
+                throw new IllegalStateException("Unknown image format");
         }
+        setupRelativeFilePath(message, filename);
         copyImageToPrivateStorage(getFile(message), image);
         updateFileParams(message);
+    }
+
+    public void setupRelativeFilePath(final Message message, final String filename) {
+        final String extension = MimeUtils.extractRelevantExtension(filename);
+        final String mime = MimeUtils.guessMimeTypeFromExtension(extension);
+        setupRelativeFilePath(message, filename, mime);
+    }
+
+    public File getStorageLocation(final String filename, final String mime) {
+        final File parentDirectory;
+        if (Strings.isNullOrEmpty(mime)) {
+            parentDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        } else if (mime.startsWith("image/")) {
+            parentDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        } else if (mime.startsWith("video/")) {
+            parentDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+        } else {
+            parentDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        }
+        final File appDirectory = new File(parentDirectory, mXmppConnectionService.getString(R.string.app_name));
+        return new File(appDirectory, filename);
+    }
+
+    public void setupRelativeFilePath(final Message message, final String filename,  final String mime) {
+        final File file = getStorageLocation(filename, mime);
+        message.setRelativeFilePath(file.getAbsolutePath());
     }
 
     public boolean unusualBounds(final Uri image) {

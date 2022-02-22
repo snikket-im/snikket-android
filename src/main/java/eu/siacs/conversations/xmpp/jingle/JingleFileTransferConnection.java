@@ -492,19 +492,19 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                 AbstractConnectionManager.Extension extension = AbstractConnectionManager.Extension.of(path);
                 if (VALID_IMAGE_EXTENSIONS.contains(extension.main)) {
                     message.setType(Message.TYPE_IMAGE);
-                    message.setRelativeFilePath(message.getUuid() + "." + extension.main);
+                    xmppConnectionService.getFileBackend().setupRelativeFilePath(message, message.getUuid() + "." + extension.main);
                 } else if (VALID_CRYPTO_EXTENSIONS.contains(extension.main)) {
                     if (VALID_IMAGE_EXTENSIONS.contains(extension.secondary)) {
                         message.setType(Message.TYPE_IMAGE);
-                        message.setRelativeFilePath(message.getUuid() + "." + extension.secondary);
+                        xmppConnectionService.getFileBackend().setupRelativeFilePath(message,message.getUuid() + "." + extension.secondary);
                     } else {
                         message.setType(Message.TYPE_FILE);
-                        message.setRelativeFilePath(message.getUuid() + (extension.secondary != null ? ("." + extension.secondary) : ""));
+                        xmppConnectionService.getFileBackend().setupRelativeFilePath(message,message.getUuid() + (extension.secondary != null ? ("." + extension.secondary) : ""));
                     }
                     message.setEncryption(Message.ENCRYPTION_PGP);
                 } else {
                     message.setType(Message.TYPE_FILE);
-                    message.setRelativeFilePath(message.getUuid() + (extension.main != null ? ("." + extension.main) : ""));
+                    xmppConnectionService.getFileBackend().setupRelativeFilePath(message,message.getUuid() + (extension.main != null ? ("." + extension.main) : ""));
                 }
                 long size = parseLong(fileSize, 0);
                 message.setBody(Long.toString(size));

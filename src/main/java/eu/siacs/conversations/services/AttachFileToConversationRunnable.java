@@ -91,7 +91,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
     private void processAsVideo() throws FileNotFoundException {
         Log.d(Config.LOGTAG, "processing file as video");
         mXmppConnectionService.startForcingForegroundNotification();
-        message.setRelativeFilePath(message.getUuid() + ".mp4");
+        mXmppConnectionService.getFileBackend().setupRelativeFilePath(message, String.format("%s.%s", message.getUuid(), "mp4"));
         final DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
         if (Objects.requireNonNull(file.getParentFile()).mkdirs()) {
             Log.d(Config.LOGTAG, "created parent directory for video file");

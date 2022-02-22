@@ -9,6 +9,7 @@ import org.openintents.openpgp.util.OpenPgpApi;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -194,9 +195,9 @@ public class PgpDecryptionService {
 							String originalExtension = originalFilename == null ? null : MimeUtils.extractRelevantExtension(originalFilename);
 							if (originalExtension != null && MimeUtils.extractRelevantExtension(outputFile.getName()) == null) {
 								Log.d(Config.LOGTAG,"detected original filename during pgp decryption");
-								String mime = MimeUtils.guessMimeTypeFromExtension(originalExtension);
-								String path = outputFile.getName()+"."+originalExtension;
-								DownloadableFile fixedFile = mXmppConnectionService.getFileBackend().getFileForPath(path,mime);
+								final String mime = MimeUtils.guessMimeTypeFromExtension(originalExtension);
+								final String filename = outputFile.getName()+"."+originalExtension;
+								final File fixedFile = mXmppConnectionService.getFileBackend().getStorageLocation(filename,mime);
 								if (fixedFile.getParentFile().mkdirs()) {
 									Log.d(Config.LOGTAG,"created parent directories for "+fixedFile.getAbsolutePath());
 								}
@@ -205,7 +206,7 @@ public class PgpDecryptionService {
 								}
 								if (outputFile.renameTo(fixedFile)) {
 									Log.d(Config.LOGTAG, "renamed " + outputFile.getAbsolutePath() + " to " + fixedFile.getAbsolutePath());
-									message.setRelativeFilePath(path);
+									message.setRelativeFilePath(fixedFile.getAbsolutePath());
 								}
 							}
 							final String url = message.getFileParams().url;

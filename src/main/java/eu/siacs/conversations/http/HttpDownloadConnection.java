@@ -96,11 +96,8 @@ public class HttpDownloadConnection implements Transferable {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
             final String ext = extension.getExtension();
-            if (ext != null) {
-                message.setRelativeFilePath(String.format("%s.%s", message.getUuid(), ext));
-            } else if (Strings.isNullOrEmpty(message.getRelativeFilePath())) {
-                message.setRelativeFilePath(message.getUuid());
-            }
+            final String filename = Strings.isNullOrEmpty(ext) ? message.getUuid() : String.format("%s.%s", message.getUuid(), ext);
+            mXmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
             setupFile();
             if (this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL && this.file.getKey() == null) {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
@@ -326,7 +323,7 @@ public class HttpDownloadConnection implements Transferable {
                 if (Strings.isNullOrEmpty(extension.getExtension()) && contentType != null) {
                     final String fileExtension = MimeUtils.guessExtensionFromMimeType(contentType);
                     if (fileExtension != null) {
-                        message.setRelativeFilePath(String.format("%s.%s", message.getUuid(), fileExtension));
+                        mXmppConnectionService.getFileBackend().setupRelativeFilePath(message, String.format("%s.%s", message.getUuid(), fileExtension), contentType);
                         Log.d(Config.LOGTAG, "rewriting name after not finding extension in url but in content type");
                         setupFile();
                     }
