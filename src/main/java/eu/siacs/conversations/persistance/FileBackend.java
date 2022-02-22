@@ -1147,19 +1147,13 @@ public class FileBackend {
     }
 
     public Uri getTakePhotoUri() {
+        final String filename = String.format("IMG_%s.%s", IMAGE_DATE_FORMAT.format(new Date()),"jpg");
         File file;
         if (Config.ONLY_INTERNAL_STORAGE) {
-            file =
-                    new File(
-                            mXmppConnectionService.getCacheDir().getAbsolutePath(),
-                            "Camera/IMG_" + IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
+            final File dcimCache = new File(mXmppConnectionService.getCacheDir(), "Camera");
+            file = new File(dcimCache, filename);
         } else {
-            file =
-                    new File(
-                            getTakePhotoPath()
-                                    + "IMG_"
-                                    + IMAGE_DATE_FORMAT.format(new Date())
-                                    + ".jpg");
+            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), filename);
         }
         file.getParentFile().mkdirs();
         return getUriForFile(mXmppConnectionService, file);

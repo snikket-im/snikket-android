@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -1744,7 +1745,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (context == null) {
             return;
         }
-        if (intent.resolveActivity(context.getPackageManager()) != null) {
+        try {
             if (chooser) {
                 startActivityForResult(
                         Intent.createChooser(intent, getString(R.string.perform_action_with)),
@@ -1752,7 +1753,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             } else {
                 startActivityForResult(intent, attachmentChoice);
             }
-        } else {
+        } catch (final ActivityNotFoundException e) {
             Toast.makeText(context, R.string.no_application_found, Toast.LENGTH_LONG).show();
         }
     }
