@@ -128,16 +128,19 @@ public class ImportBackupService extends Service {
             final List<Jid> accounts = mDatabaseBackend.getAccountJids(false);
             final ArrayList<BackupFile> backupFiles = new ArrayList<>();
             final Set<String> apps = new HashSet<>(Arrays.asList("Conversations", "Quicksy", getString(R.string.app_name)));
-            for (String app : apps) {
-                final File directory = new File(FileBackend.getBackupDirectory(app));
+            final List<File> directories = new ArrayList<>();
+            for (final String app : apps) {
+                directories.add(FileBackend.getLegacyBackupDirectory(app));
+            }
+            directories.add(FileBackend.getBackupDirectory(this));
+            for (final File directory : directories) {
                 if (!directory.exists() || !directory.isDirectory()) {
                     Log.d(Config.LOGTAG, "directory not found: " + directory.getAbsolutePath());
                     continue;
                 }
                 final File[] files = directory.listFiles();
                 if (files == null) {
-                    onBackupFilesLoaded.onBackupFilesLoaded(backupFiles);
-                    return;
+                    continue;
                 }
                 for (final File file : files) {
                     if (file.isFile() && file.getName().endsWith(".ceb")) {

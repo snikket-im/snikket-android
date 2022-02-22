@@ -291,7 +291,7 @@ public class ExportBackupService extends Service {
             secureRandom.nextBytes(salt);
             final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
             final Progress progress = new Progress(mBuilder, max, count);
-            final File file = new File(FileBackend.getBackupDirectory(this) + account.getJid().asBareJid().toEscapedString() + ".ceb");
+            final File file = new File(FileBackend.getBackupDirectory(this), account.getJid().asBareJid().toEscapedString() + ".ceb");
             files.add(file);
             final File directory = file.getParentFile();
             if (directory != null && directory.mkdirs()) {
@@ -335,7 +335,7 @@ public class ExportBackupService extends Service {
     }
 
     private void notifySuccess(final List<File> files) {
-        final String path = FileBackend.getBackupDirectory(this);
+        final String path = FileBackend.getBackupDirectory(this).getAbsolutePath();
 
         PendingIntent openFolderIntent = null;
 
@@ -363,7 +363,7 @@ public class ExportBackupService extends Service {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), "backup");
         mBuilder.setContentTitle(getString(R.string.notification_backup_created_title))
                 .setContentText(getString(R.string.notification_backup_created_subtitle, path))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_backup_created_subtitle, FileBackend.getBackupDirectory(this))))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_backup_created_subtitle, FileBackend.getBackupDirectory(this).getAbsolutePath())))
                 .setAutoCancel(true)
                 .setContentIntent(openFolderIntent)
                 .setSmallIcon(R.drawable.ic_archive_white_24dp);

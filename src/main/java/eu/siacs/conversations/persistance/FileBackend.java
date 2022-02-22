@@ -64,7 +64,6 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AttachFileToConversationRunnable;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.ui.RecordingActivity;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -86,19 +85,6 @@ public class FileBackend {
 
     public FileBackend(XmppConnectionService service) {
         this.mXmppConnectionService = service;
-    }
-
-    private static boolean isInDirectoryThatShouldNotBeScanned(Context context, File file) {
-        return isInDirectoryThatShouldNotBeScanned(context, file.getAbsolutePath());
-    }
-
-    public static boolean isInDirectoryThatShouldNotBeScanned(Context context, String path) {
-        for (String type : new String[] {RecordingActivity.STORAGE_DIRECTORY_TYPE_NAME, "Files"}) {
-            if (path.startsWith(getLegacyStorageLocation(context, type).getAbsolutePath())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static long getFileSize(Context context, Uri uri) {
@@ -156,34 +142,18 @@ public class FileBackend {
         return true;
     }
 
-    public static File getLegacyStorageLocation(Context context, final String type) {
-        if (Config.ONLY_INTERNAL_STORAGE) {
-            return new File(context.getFilesDir(), type);
-        } else {
-            final File appDirectory =
-                    new File(
-                            Environment.getExternalStorageDirectory(),
-                            context.getString(R.string.app_name));
-            final File appMediaDirectory = new File(appDirectory, "Media");
-            final String locationName =
-                    String.format("%s %s", context.getString(R.string.app_name), type);
-            return new File(appMediaDirectory, locationName);
-        }
+    public static File getBackupDirectory(final Context context) {
+        final File conversationsDownloadDirectory =
+                new File(
+                        Environment.getExternalStoragePublicDirectory(
+                                Environment.DIRECTORY_DOWNLOADS),
+                        context.getString(R.string.app_name));
+        return new File(conversationsDownloadDirectory, "Backup");
     }
 
-    private static String getAppMediaDirectory(Context context) {
-        return Environment.getExternalStorageDirectory().getAbsolutePath()
-                + "/"
-                + context.getString(R.string.app_name)
-                + "/Media/";
-    }
-
-    public static String getBackupDirectory(Context context) {
-        return getBackupDirectory(context.getString(R.string.app_name));
-    }
-
-    public static String getBackupDirectory(String app) {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + app + "/Backup/";
+    public static File getLegacyBackupDirectory(final String app) {
+        final File appDirectory = new File(Environment.getExternalStorageDirectory(), app);
+        return new File(appDirectory, "Backup");
     }
 
     private static Bitmap rotate(final Bitmap bitmap, final int degree) {
@@ -521,38 +491,26 @@ public class FileBackend {
     }
 
     public void updateMediaScanner(File file, final Runnable callback) {
-        if (!isInDirectoryThatShouldNotBeScanned(mXmppConnectionService, file)) {
-            MediaScannerConnection.scanFile(
-                    mXmppConnectionService,
-                    new String[] {file.getAbsolutePath()},
-                    null,
-                    new MediaScannerConnection.MediaScannerConnectionClient() {
-                        @Override
-                        public void onMediaScannerConnected() {}
+        MediaScannerConnection.scanFile(
+                mXmppConnectionService,
+                new String[] {file.getAbsolutePath()},
+                null,
+                new MediaScannerConnection.MediaScannerConnectionClient() {
+                    @Override
+                    public void onMediaScannerConnected() {}
 
-                        @Override
-                        public void onScanCompleted(String path, Uri uri) {
-                            if (callback != null && file.getAbsolutePath().equals(path)) {
+                    @Override
+                    public void onScanCompleted(String path, Uri uri) {
+                        if (callback != null && file.getAbsolutePath().equals(path)) {
+                            callback.run();
+                        } else {
+                            Log.d(Config.LOGTAG, "media scanner scanned wrong file");
+                            if (callback != null) {
                                 callback.run();
-                            } else {
-                                Log.d(Config.LOGTAG, "media scanner scanned wrong file");
-                                if (callback != null) {
-                                    callback.run();
-                                }
                             }
                         }
-                    });
-            return;
-            /*Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            intent.setData(Uri.fromFile(file));
-            mXmppConnectionService.sendBroadcast(intent);*/
-        } else if (file.getAbsolutePath()
-                .startsWith(getAppMediaDirectory(mXmppConnectionService))) {
-            createNoMedia(file.getParentFile());
-        }
-        if (callback != null) {
-            callback.run();
-        }
+                    }
+                });
     }
 
     public boolean deleteFile(Message message) {
@@ -629,9 +587,20 @@ public class FileBackend {
         return attachments;
     }
 
-    // TODO remove static method. use direct instance access
     private File getLegacyStorageLocation(final String type) {
-        return getLegacyStorageLocation(mXmppConnectionService, type);
+        if (Config.ONLY_INTERNAL_STORAGE) {
+            return new File(mXmppConnectionService.getFilesDir(), type);
+        } else {
+            final File appDirectory =
+                    new File(
+                            Environment.getExternalStorageDirectory(),
+                            mXmppConnectionService.getString(R.string.app_name));
+            final File appMediaDirectory = new File(appDirectory, "Media");
+            final String locationName =
+                    String.format(
+                            "%s %s", mXmppConnectionService.getString(R.string.app_name), type);
+            return new File(appMediaDirectory, locationName);
+        }
     }
 
     private Bitmap resize(final Bitmap originalBitmap, int size) throws IOException {

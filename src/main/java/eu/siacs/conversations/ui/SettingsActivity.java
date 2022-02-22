@@ -224,7 +224,7 @@ public class SettingsActivity extends XmppActivity implements
 
 		final Preference createBackupPreference = mSettingsFragment.findPreference("create_backup");
 		if (createBackupPreference != null) {
-			createBackupPreference.setSummary(getString(R.string.pref_create_backup_summary, FileBackend.getBackupDirectory(this)));
+			createBackupPreference.setSummary(getString(R.string.pref_create_backup_summary, FileBackend.getBackupDirectory(this).getAbsolutePath()));
 			createBackupPreference.setOnPreferenceClickListener(preference -> {
 				if (hasStoragePermission(REQUEST_CREATE_BACKUP)) {
 					createBackup();

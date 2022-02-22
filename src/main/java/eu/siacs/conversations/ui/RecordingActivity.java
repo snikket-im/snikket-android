@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.FileObserver;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -153,27 +154,20 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         }
     }
 
-    private static File generateOutputFilename(Context context) {
+    private File generateOutputFilename() {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
         final String filename = "RECORDING_" + dateFormat.format(new Date()) + ".m4a";
-        return new File(FileBackend.getLegacyStorageLocation(context, STORAGE_DIRECTORY_TYPE_NAME), filename);
+        //TODO once we target 31 use DIRECTORY_RECORDINGS
+        final File parentDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        final File conversationsDirectory = new File(parentDirectory, getString(R.string.app_name));
+        return new File(conversationsDirectory, filename);
     }
 
     private void setupOutputFile() {
-        mOutputFile = generateOutputFilename(this);
-        File parentDirectory = mOutputFile.getParentFile();
+        mOutputFile = generateOutputFilename();
+        final File parentDirectory = mOutputFile.getParentFile();
         if (parentDirectory.mkdirs()) {
             Log.d(Config.LOGTAG, "created " + parentDirectory.getAbsolutePath());
-        }
-        File noMedia = new File(parentDirectory, ".nomedia");
-        if (!noMedia.exists()) {
-            try {
-                if (noMedia.createNewFile()) {
-                    Log.d(Config.LOGTAG, "created nomedia file in " + parentDirectory.getAbsolutePath());
-                }
-            } catch (IOException e) {
-                Log.d(Config.LOGTAG, "unable to create nomedia file in " + parentDirectory.getAbsolutePath(), e);
-            }
         }
         setupFileObserver(parentDirectory);
     }
