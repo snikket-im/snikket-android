@@ -140,11 +140,11 @@ android {
 
         playstore {
             dimension "distribution"
-            versionNameSuffix "+p"
+            versionNameSuffix "+playstore"
         }
         free {
             dimension "distribution"
-            versionNameSuffix "+f"
+            versionNameSuffix "+free"
         }
     }
 
@@ -182,13 +182,11 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            versionNameSuffix "r"
         }
         debug {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            versionNameSuffix "d"
         }
     }
 
