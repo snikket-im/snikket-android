@@ -119,7 +119,7 @@ public class HttpDownloadConnection implements Transferable {
     private void setupFile() {
         final String reference = mUrl.fragment();
         if (reference != null && AesGcmURL.IV_KEY.matcher(reference).matches()) {
-            this.file = new DownloadableFile(mXmppConnectionService.getCacheDir().getAbsolutePath() + "/" + message.getUuid());
+            this.file = new DownloadableFile(mXmppConnectionService.getCacheDir(), message.getUuid());
             this.file.setKeyAndIv(CryptoHelper.hexToBytes(reference));
             Log.d(Config.LOGTAG, "create temporary OMEMO encrypted file: " + this.file.getAbsolutePath() + "(" + message.getMimeType() + ")");
         } else {
@@ -416,8 +416,9 @@ public class HttpDownloadConnection implements Transferable {
                     Log.d(Config.LOGTAG, "content-length reported on GET (" + size + ") did not match Content-Length reported on HEAD (" + expected + ")");
                 }
                 file.getParentFile().mkdirs();
+                Log.d(Config.LOGTAG,"creating file: "+file.getAbsolutePath());
                 if (!file.exists() && !file.createNewFile()) {
-                    throw new FileWriterException();
+                    throw new FileWriterException(file);
                 }
                 outputStream = AbstractConnectionManager.createOutputStream(file, false, false);
             }
@@ -428,7 +429,7 @@ public class HttpDownloadConnection implements Transferable {
                 try {
                     outputStream.write(buffer, 0, count);
                 } catch (IOException e) {
-                    throw new FileWriterException();
+                    throw new FileWriterException(file);
                 }
                 updateProgress(Math.round(((double) transmitted / expected) * 100));
             }
