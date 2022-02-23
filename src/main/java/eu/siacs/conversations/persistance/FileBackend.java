@@ -354,32 +354,15 @@ public class FileBackend {
         }
     }
 
-    public static boolean weOwnFile(Context context, Uri uri) {
+    public static boolean weOwnFile(final Uri uri) {
         if (uri == null || !ContentResolver.SCHEME_FILE.equals(uri.getScheme())) {
             return false;
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return fileIsInFilesDir(context, uri);
         } else {
             return weOwnFileLollipop(uri);
         }
     }
 
-    /**
-     * This is more than hacky but probably way better than doing nothing Further 'optimizations'
-     * might contain to get the parents of CacheDir and NoBackupDir and check against those as well
-     */
-    private static boolean fileIsInFilesDir(Context context, Uri uri) {
-        try {
-            final String haystack = context.getFilesDir().getParentFile().getCanonicalPath();
-            final String needle = new File(uri.getPath()).getCanonicalPath();
-            return needle.startsWith(haystack);
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static boolean weOwnFileLollipop(Uri uri) {
+    private static boolean weOwnFileLollipop(final Uri uri) {
         try {
             File file = new File(uri.getPath());
             FileDescriptor fd =
