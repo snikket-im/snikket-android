@@ -64,6 +64,7 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AttachFileToConversationRunnable;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.adapter.MediaAdapter;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -888,6 +889,9 @@ public class FileBackend {
         } else if (mime.startsWith("video/")) {
             parentDirectory =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+        } else if (MediaAdapter.DOCUMENT_MIMES.contains(mime)) {
+            parentDirectory =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         } else {
             parentDirectory =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
