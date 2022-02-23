@@ -23,7 +23,6 @@ import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.StyledAttributes;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
@@ -57,7 +56,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         if (name instanceof Jid) {
             viewHolder.binding.conversationName.setText(IrregularUnicodeDetector.style(activity, (Jid) name));
         } else {
-            viewHolder.binding.conversationName.setText(EmojiWrapper.transform(name));
+            viewHolder.binding.conversationName.setText(name);
         }
 
         if (conversation == ConversationFragment.getConversation(activity)) {
@@ -85,7 +84,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         if (draft != null) {
             viewHolder.binding.conversationLastmsgImg.setVisibility(View.GONE);
-            viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(draft.getMessage()));
+            viewHolder.binding.conversationLastmsg.setText(draft.getMessage());
             viewHolder.binding.senderName.setText(R.string.draft);
             viewHolder.binding.senderName.setVisibility(View.VISIBLE);
             viewHolder.binding.conversationLastmsg.setTypeface(null, Typeface.NORMAL);
@@ -128,7 +127,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             }
             final Pair<CharSequence, Boolean> preview = UIHelper.getMessagePreview(activity, message, viewHolder.binding.conversationLastmsg.getCurrentTextColor());
             if (showPreviewText) {
-                viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(preview.first)));
+                viewHolder.binding.conversationLastmsg.setText(UIHelper.shorten(preview.first));
             } else {
                 viewHolder.binding.conversationLastmsgImg.setContentDescription(preview.first);
             }
