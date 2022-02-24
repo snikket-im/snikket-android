@@ -148,9 +148,6 @@ public class PgpDecryptionService {
 						try {
 							os.flush();
 							final String body = os.toString();
-							if (body == null) {
-								throw new IOException("body was null");
-							}
 							message.setBody(body);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							final HttpConnectionManager manager = mXmppConnectionService.getHttpConnectionManager();
