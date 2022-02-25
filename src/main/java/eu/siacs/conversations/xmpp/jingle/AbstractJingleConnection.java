@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -110,6 +112,7 @@ public abstract class AbstractJingleConnection {
         }
 
         @Override
+        @NonNull
         public String toString() {
             return MoreObjects.toStringHelper(this)
                     .add("account", account.getJid())
