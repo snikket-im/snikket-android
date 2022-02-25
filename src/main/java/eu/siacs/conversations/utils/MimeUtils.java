@@ -568,11 +568,15 @@ public final class MimeUtils {
     }
 
     private static String getDisplayName(final Context context, final Uri uri) {
-        try (Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
+        try (final Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
-                return cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                final int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                if (index == -1) {
+                    return null;
+                }
+                return cursor.getString(index);
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             return null;
         }
         return null;
