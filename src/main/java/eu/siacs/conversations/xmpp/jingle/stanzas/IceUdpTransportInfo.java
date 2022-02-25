@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -123,6 +125,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         }
 
         @Override
+        @NonNull
         public String toString() {
             return MoreObjects.toStringHelper(this)
                     .add("ufrag", ufrag)
