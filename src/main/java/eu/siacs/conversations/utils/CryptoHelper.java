@@ -36,7 +36,7 @@ public final class CryptoHelper {
     public static final Pattern UUID_PATTERN = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
     final public static byte[] ONE = new byte[]{0, 0, 0, 1};
     private static final char[] CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789+-/#$!?".toCharArray();
-    private static final int PW_LENGTH = 10;
+    private static final int PW_LENGTH = 12;
     private static final char[] VOWELS = "aeiou".toCharArray();
     private static final char[] CONSONANTS = "bcfghjklmnpqrstvwxyz".toCharArray();
     private final static char[] hexArray = "0123456789abcdef".toCharArray();
