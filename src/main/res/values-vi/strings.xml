@@ -955,5 +955,4 @@
     <string name="backup_started_message">Việc sao lưu đã được bắt đầu. Bạn sẽ nhận một thông báo khi việc đó đã hoàn tất.</string>
     <string name="unable_to_enable_video">Không thể bật video.</string>
     <string name="plain_text_document">Tài liệu văn bản thuần</string>
-
-</resources>
+    </resources>

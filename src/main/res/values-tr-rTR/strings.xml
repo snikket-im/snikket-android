@@ -968,5 +968,4 @@
     <string name="backup_started_message">Yedekleme başlatıldı. Tamamlandığı zaman bir bildirim alacaksınız.</string>
     <string name="unable_to_enable_video">Video etkinleştirilemedi</string>
     <string name="plain_text_document">Düz metin dosyası</string>
-
-</resources>
+    </resources>

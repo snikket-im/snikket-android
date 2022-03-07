@@ -993,5 +993,4 @@
     <string name="backup_started_message">Резервное копирование было начато. Вы получите уведомление, как только оно будет завершено. </string>
     <string name="unable_to_enable_video">Невозможно включить видео.</string>
     <string name="plain_text_document">Текстовые данные</string>
-
-</resources>
+    </resources>

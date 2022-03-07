@@ -431,7 +431,7 @@
     <string name="offering_x_file">Oferowanie %s</string>
     <string name="hide_offline">Ukryj niedostępnych</string>
     <string name="contact_is_typing">%s pisze...</string>
-    <string name="contact_has_stopped_typing">%s przestał(a) pisać</string>
+    <string name="contact_has_stopped_typing">%s już nie pisze </string>
     <string name="contacts_are_typing">%s piszą...</string>
     <string name="contacts_have_stopped_typing">%s przestali pisać</string>
     <string name="pref_chat_states">Powiadomienia pisania</string>
@@ -995,5 +995,4 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="backup_started_message">Tworzenie kopii zapasowej się rozpoczęło. Dostaniesz powiadomienie kiedy się zakończy. </string>
     <string name="unable_to_enable_video">Nie można włączyć wideo. </string>
     <string name="plain_text_document">Dokument zwykłego tekstu</string>
-
-</resources>
+    </resources>

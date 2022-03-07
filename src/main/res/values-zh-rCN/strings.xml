@@ -955,5 +955,4 @@
     <string name="backup_started_message">已启动备份。一旦完成，你会收到通知。</string>
     <string name="unable_to_enable_video">无法启用视频</string>
     <string name="plain_text_document">纯文本文档</string>
-
-</resources>
+    </resources>

@@ -914,5 +914,4 @@
     <string name="backup_started_message">Varmuuskopion teko aloitettu. Saat ilmoituksen kun se on valmis.</string>
     <string name="unable_to_enable_video">Videon käyttöönotto epäonnistui</string>
     <string name="plain_text_document">Perustekstiasiakirja</string>
-
-</resources>
+    </resources>

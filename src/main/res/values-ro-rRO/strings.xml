@@ -981,5 +981,4 @@
     <string name="backup_started_message">Se creează copia de siguranță. Veți primi o notificare când acesta este completă.</string>
     <string name="unable_to_enable_video">Nu s-a putut activa camera video.</string>
     <string name="plain_text_document">Document text</string>
-
-</resources>
+    </resources>

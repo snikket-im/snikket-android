@@ -968,5 +968,4 @@
     <string name="backup_started_message">Die Sicherung wurde gestartet. Du bekommst eine Benachrichtigung, sobald sie fertig ist.</string>
     <string name="unable_to_enable_video">Video kann nicht aktiviert werden.</string>
     <string name="plain_text_document">Textdokument</string>
-
-</resources>
+    </resources>

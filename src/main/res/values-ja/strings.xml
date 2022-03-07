@@ -950,5 +950,4 @@
     <string name="backup_started_message">バックアップを開始しました。 バックアップが完了すると通知が届きます。</string>
     <string name="unable_to_enable_video">映像を有効化できません。</string>
     <string name="plain_text_document">プレーンテキスト文書</string>
-
-</resources>
+    </resources>

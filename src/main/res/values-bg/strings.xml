@@ -965,5 +965,4 @@
     <string name="backup_started_message">Създаването на резервно копие е стартирано. Ще получите известие, когато приключи.</string>
     <string name="unable_to_enable_video">Видеото не може да бъде включено.</string>
     <string name="plain_text_document">Обикновен текстов документ</string>
-
-</resources>
+    </resources>

@@ -968,5 +968,4 @@
     <string name="backup_started_message">Sikkerhedskopieringen er startet. Du får en notifikation, når den er afsluttet.</string>
     <string name="unable_to_enable_video">Kunne ikke aktivere video.</string>
     <string name="plain_text_document">Ren tekstdokument</string>
-
-</resources>
+    </resources>

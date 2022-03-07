@@ -479,7 +479,7 @@
     <string name="pref_show_connection_options">Axustes ampliados de conexión</string>
     <string name="pref_show_connection_options_summary">Mostar axustes de servidor e porto cando se configura unha conta</string>
     <string name="hostname_example">xmpp.exemplo.com</string>
-    <string name="action_add_account_with_certificate">Conéctate con certificado</string>
+    <string name="action_add_account_with_certificate">Accede con certificado</string>
     <string name="unable_to_parse_certificate">Non se puido procesar o certificado</string>
     <string name="mam_prefs">Gardando axustes</string>
     <string name="server_side_mam_prefs">Axustes de gardado no servidor</string>
@@ -968,5 +968,4 @@
     <string name="backup_started_message">Comezou a creación da copia de apoio. Recibirás unha notificación cando remate.</string>
     <string name="unable_to_enable_video">Non se puido activar o vídeo.</string>
     <string name="plain_text_document">Documento de texto plano</string>
-
-</resources>
+    </resources>

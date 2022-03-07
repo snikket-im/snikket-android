@@ -537,6 +537,7 @@
     <string name="security_error_invalid_file_access">Säkerhetsfel: Ogiltig filåtkomst!</string>
     <string name="no_application_to_share_uri">Ingen applikation hittades för att dela URI</string>
     <string name="share_uri_with">Dela URI med...</string>
+    <string name="agree_and_continue">Acceptera och gå vidare</string>
     <string name="your_full_jid_will_be">Din fullständiga XMPP-adress kommer att vara: %s</string>
     <string name="create_account">Skapa konto</string>
     <string name="use_own_provider">Använd min egen leverantör</string>
@@ -662,7 +663,9 @@
     <string name="yesterday">Igår</string>
     <string name="pref_validate_hostname">Bekräfta värdnamn med DNSSEC</string>
     <string name="certificate_does_not_contain_jid">Certifikatet innehåller ej en XMPP-adress</string>
+    <string name="server_info_partial">delvis</string>
     <string name="attach_record_video">Spela in video</string>
+    <string name="copy_to_clipboard">Kopiera till urklipp</string>
     <string name="message_copied_to_clipboard">Meddelande kopierat till urklipp</string>
     <string name="message">Meddelande</string>
     <string name="mtm_accept_cert">Godkänn okänt certifikat?</string>

@@ -968,5 +968,4 @@
     <string name="backup_started_message">Il backup è iniziato. Riceverai una notifica una volta completato.</string>
     <string name="unable_to_enable_video">Impossibile attivare il video.</string>
     <string name="plain_text_document">Documento di testo</string>
-
-</resources>
+    </resources>

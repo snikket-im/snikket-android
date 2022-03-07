@@ -968,5 +968,4 @@
     <string name="backup_started_message">La copia de seguridad ha empezado. Recibirás una notificación cuando se haya completado.</string>
     <string name="unable_to_enable_video">No se ha podido habilitar el vídeo.</string>
     <string name="plain_text_document">Documento de texto plano</string>
-
-</resources>
+    </resources>
