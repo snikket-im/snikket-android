@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.10.3
+
+* Store files in location appropriate for Android 11
+* Attempt to reconnect call after network switch
+
 ### Version 2.10.2
 
 * Fix crash when rendering some quotes
