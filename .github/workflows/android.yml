@@ -22,14 +22,10 @@ jobs:
       run: mkdir libs && wget -O libs/libwebrtc-m92.aar https://gultsch.de/files/libwebrtc-m92.aar
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Build Quicksy (Compat)
-      run: ./gradlew assembleQuicksyFreeCompatDebug
-    - name: Build Quicksy (System)
-      run: ./gradlew assembleQuicksyFreeSystemDebug
-    - name: Build Conversations (Compat)
-      run: ./gradlew assembleConversationsFreeCompatDebug
-    - name: Build Conversations (System)
-      run: ./gradlew assembleConversationsFreeSystemDebug
+    - name: Build Quicksy
+      run: ./gradlew assembleQuicksyFreeDebug
+    - name: Build Conversations
+      run: ./gradlew assembleConversationsFreeDebug
     - uses: actions/upload-artifact@v2
       with:
         name: Conversations all-flavors (debug)
