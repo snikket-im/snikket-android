@@ -622,6 +622,8 @@
     <string name="pref_clean_private_storage_summary">Lösche privaten Speicher, in dem die Dateien gespeichert werden (sie können erneut vom Server heruntergeladen werden)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Ich habe diesen Link aus einer vertrauenswürdigen Quelle erhalten</string>
     <string name="verifying_omemo_keys_trusted_source">Du bist dabei, die OMEMO-Schlüssel von %1$s nach dem Klick auf diesen Link zu überprüfen. Dies ist nur sicher, wenn du diesen Link von einer vertrauenswürdigen Quelle erhalten hast, der nur von %2$s veröffentlicht werden konnte.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Du bist dabei, die OMEMO-Schlüssel deines eigenen Kontos zu verifizieren. Dies ist nur sicher, wenn du diesem Link aus einer vertrauenswürdigen Quelle gefolgt bist, bei der nur du diesen Link veröffentlicht haben kannst.</string>
+    <string name="continue_btn">Weiter</string>
     <string name="verify_omemo_keys">Überprüfe OMEMO-Schlüssel</string>
     <string name="show_inactive_devices">Inaktive anzeigen</string>
     <string name="hide_inactive_devices">Inaktive ausblenden</string>
@@ -904,6 +906,7 @@
     <string name="rtp_state_incoming_video_call">Eingehender Videoanruf</string>
     <string name="rtp_state_connecting">Verbinden</string>
     <string name="rtp_state_connected">Verbunden</string>
+    <string name="rtp_state_reconnecting">Erneut verbinden</string>
     <string name="rtp_state_accepting_call">Anruf annehmen</string>
     <string name="rtp_state_ending_call">Anruf beenden</string>
     <string name="answer_call">Annehmen</string>
@@ -919,6 +922,8 @@
     <string name="hang_up">Auflegen</string>
     <string name="ongoing_call">Laufender Anruf</string>
     <string name="ongoing_video_call">Laufender Videoanruf</string>
+    <string name="reconnecting_call">Anruf erneut verbinden</string>
+    <string name="reconnecting_video_call">Videoanruf erneut verbinden</string>
     <string name="disable_tor_to_make_call">Deaktiviere Tor, um Anrufe zu tätigen</string>
     <string name="incoming_call">Eingehender Anruf</string>
     <string name="incoming_call_duration">Eingehender Anruf · %s</string>
@@ -968,4 +973,7 @@
     <string name="backup_started_message">Die Sicherung wurde gestartet. Du bekommst eine Benachrichtigung, sobald sie fertig ist.</string>
     <string name="unable_to_enable_video">Video kann nicht aktiviert werden.</string>
     <string name="plain_text_document">Textdokument</string>
-    </resources>
+    <string name="account_registrations_are_not_supported">Kontoregistrierungen werden nicht unterstützt</string>
+    <string name="no_xmpp_adddress_found">Keine XMPP-Adresse gefunden</string>
+
+</resources>

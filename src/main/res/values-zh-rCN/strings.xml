@@ -617,6 +617,8 @@
     <string name="pref_clean_private_storage_summary">清除保存私密文件的存储 (可以从服务器上重新下载)</string>
     <string name="i_followed_this_link_from_a_trusted_source">此链接的源头是可信的</string>
     <string name="verifying_omemo_keys_trusted_source">点击链接后将会开始校验%1$s的OMEMO密钥。只有%2$s发布的链接才是安全的。</string>
+    <string name="verifying_omemo_keys_trusted_source_account">您将验证您自己帐户的 OMEMO 密钥。只有当您从可信的来源跟踪此链接时，这才是安全的。“可信”指的是此链接只可能是你在来源中发布的。</string>
+    <string name="continue_btn">继续</string>
     <string name="verify_omemo_keys">校验OMEMO密钥</string>
     <string name="show_inactive_devices">显示不活跃设备</string>
     <string name="hide_inactive_devices">隐藏不活跃设备</string>
@@ -893,6 +895,7 @@
     <string name="rtp_state_incoming_video_call">视频来电</string>
     <string name="rtp_state_connecting">正在连接</string>
     <string name="rtp_state_connected">已连接</string>
+    <string name="rtp_state_reconnecting">重新连接</string>
     <string name="rtp_state_accepting_call">正在接通来电</string>
     <string name="rtp_state_ending_call">正在结束来电</string>
     <string name="answer_call">应答</string>
@@ -908,6 +911,8 @@
     <string name="hang_up">挂断</string>
     <string name="ongoing_call">正在进行的通话</string>
     <string name="ongoing_video_call">正在进行的视频通话</string>
+    <string name="reconnecting_call">重连通话</string>
+    <string name="reconnecting_video_call">重连视频通话</string>
     <string name="disable_tor_to_make_call">禁用Tor以拨打电话</string>
     <string name="incoming_call">来电</string>
     <string name="incoming_call_duration">来电 · %s</string>
@@ -955,4 +960,7 @@
     <string name="backup_started_message">已启动备份。一旦完成，你会收到通知。</string>
     <string name="unable_to_enable_video">无法启用视频</string>
     <string name="plain_text_document">纯文本文档</string>
-    </resources>
+    <string name="account_registrations_are_not_supported">不支持注册账户</string>
+    <string name="no_xmpp_adddress_found">未找到 XMPP 地址</string>
+
+</resources>
