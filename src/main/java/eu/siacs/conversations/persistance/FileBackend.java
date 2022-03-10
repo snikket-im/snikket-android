@@ -33,6 +33,7 @@ import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteStreams;
 
 import java.io.ByteArrayOutputStream;
@@ -83,21 +84,38 @@ public class FileBackend {
     private static final float IGNORE_PADDING = 0.15f;
     private final XmppConnectionService mXmppConnectionService;
 
+    private static final List<String> STORAGE_TYPES;
+
+    static {
+        final ImmutableList.Builder<String> builder =
+                new ImmutableList.Builder<String>()
+                        .add(
+                                Environment.DIRECTORY_DOWNLOADS,
+                                Environment.DIRECTORY_PICTURES,
+                                Environment.DIRECTORY_MOVIES,
+                                Environment.DIRECTORY_DOCUMENTS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            builder.add(Environment.DIRECTORY_RECORDINGS);
+        }
+        STORAGE_TYPES = builder.build();
+    }
+
     public FileBackend(XmppConnectionService service) {
         this.mXmppConnectionService = service;
     }
 
     public static long getFileSize(Context context, Uri uri) {
-        try {
-            final Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        try (final Cursor cursor =
+                context.getContentResolver().query(uri, null, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
-                long size = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
-                cursor.close();
-                return size;
-            } else {
-                return -1;
+                final int index = cursor.getColumnIndex(OpenableColumns.SIZE);
+                if (index == -1) {
+                    return -1;
+                }
+                return cursor.getLong(index);
             }
-        } catch (Exception e) {
+            return -1;
+        } catch (final Exception ignored) {
             return -1;
         }
     }
@@ -859,6 +877,20 @@ public class FileBackend {
         final File appDirectory =
                 new File(parentDirectory, mXmppConnectionService.getString(R.string.app_name));
         return new File(appDirectory, filename);
+    }
+
+    public static boolean inConversationsDirectory(final Context context, String path) {
+        final File fileDirectory = new File(path).getParentFile();
+        for (final String type : STORAGE_TYPES) {
+            final File typeDirectory =
+                    new File(
+                            Environment.getExternalStoragePublicDirectory(type),
+                            context.getString(R.string.app_name));
+            if (typeDirectory.equals(fileDirectory)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setupRelativeFilePath(
