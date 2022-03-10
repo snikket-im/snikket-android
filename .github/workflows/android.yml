@@ -19,7 +19,7 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Download WebRTC
-      run: mkdir libs && wget -O libs/libwebrtc-m92.aar https://gultsch.de/files/libwebrtc-m92.aar
+      run: mkdir libs && wget -O libs/libwebrtc-m99.aar https://gultsch.de/files/libwebrtc-m99.aar
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build Quicksy
