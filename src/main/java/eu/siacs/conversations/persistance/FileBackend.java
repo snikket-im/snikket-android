@@ -362,8 +362,12 @@ public class FileBackend {
     }
 
     private static boolean weOwnFileLollipop(final Uri uri) {
+        final String path = uri.getPath();
+        if (path == null) {
+            return false;
+        }
         try {
-            File file = new File(uri.getPath());
+            File file = new File(path);
             FileDescriptor fd =
                     ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
                             .getFileDescriptor();
