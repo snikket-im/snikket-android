@@ -627,6 +627,8 @@
     <string name="pref_clean_private_storage_summary">Locul unde sunt fișierele păstrate (pot fi descărcate de pe server din nou)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Am urmat această legătură de la o sursă de încredere</string>
     <string name="verifying_omemo_keys_trusted_source">Urmează să verificați cheile OMEMO pentru %1$s după ce veți deschide legătura. Acest lucru se poate face în siguranță doar dacă ați primit legătura de la o sursă de încredere unde doar %2$s putea publica.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Urmează să verificați cheile OMEMO pentru contul dumneavoastră. Acest lucru se poate face în siguranță doar dacă ați primit legătura de la o sursă de încredere unde doar dumneavoastră ați fi putut publica.</string>
+    <string name="continue_btn">Continuă</string>
     <string name="verify_omemo_keys">Verificare chei OMEMO</string>
     <string name="show_inactive_devices">Arată inactive</string>
     <string name="hide_inactive_devices">Ascunde inactive</string>
@@ -915,6 +917,7 @@
     <string name="rtp_state_incoming_video_call">Apel video primit</string>
     <string name="rtp_state_connecting">Conectare</string>
     <string name="rtp_state_connected">Conectat</string>
+    <string name="rtp_state_reconnecting">Reconectare</string>
     <string name="rtp_state_accepting_call">Se acceptă apelul</string>
     <string name="rtp_state_ending_call">Se încheie apelul</string>
     <string name="answer_call">Răspunde</string>
@@ -930,6 +933,8 @@
     <string name="hang_up">Închide</string>
     <string name="ongoing_call">Apel în curs</string>
     <string name="ongoing_video_call">Apel video în curs</string>
+    <string name="reconnecting_call">Reconectare apel</string>
+    <string name="reconnecting_video_call">Reconectare apel video</string>
     <string name="disable_tor_to_make_call">Dezactivați Tor pentru a face apeluri</string>
     <string name="incoming_call">Apel primit</string>
     <string name="incoming_call_duration">Apel primit · %s</string>
@@ -981,4 +986,7 @@
     <string name="backup_started_message">Se creează copia de siguranță. Veți primi o notificare când acesta este completă.</string>
     <string name="unable_to_enable_video">Nu s-a putut activa camera video.</string>
     <string name="plain_text_document">Document text</string>
-    </resources>
+    <string name="account_registrations_are_not_supported">Nu este posibilă înregistrarea unui cont</string>
+    <string name="no_xmpp_adddress_found">Nu a fost găsită o adresă XMPP</string>
+
+</resources>

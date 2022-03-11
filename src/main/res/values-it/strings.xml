@@ -622,6 +622,8 @@
     <string name="pref_clean_private_storage_summary">Svuota l\'archivio privato nella quale sono memorizzati i file (possono essere riscaricati dal server)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Ho seguito questo link da una fonte fidata</string>
     <string name="verifying_omemo_keys_trusted_source">Stai per verificare le chiavi OMEMO di %1$s cliccando un link. Questo metodo è sicuro solo se hai seguito il link da una fonte fidata dove solo %2$s può averlo pubblicato.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Stai per verificare le chiavi OMEMO del tuo stesso account. Questo metodo è sicuro solo se hai seguito il link da una fonte fidata dove solo tu puoi averlo pubblicato.</string>
+    <string name="continue_btn">Continua</string>
     <string name="verify_omemo_keys">Verifica chiavi OMEMO</string>
     <string name="show_inactive_devices">Mostra inattivi</string>
     <string name="hide_inactive_devices">Nascondi inattivi</string>
@@ -904,6 +906,7 @@
     <string name="rtp_state_incoming_video_call">Chiamata video in arrivo</string>
     <string name="rtp_state_connecting">Connessione</string>
     <string name="rtp_state_connected">Connesso</string>
+    <string name="rtp_state_reconnecting">Riconnessione</string>
     <string name="rtp_state_accepting_call">Accettazione chiamata</string>
     <string name="rtp_state_ending_call">Chiusura chiamata</string>
     <string name="answer_call">Rispondi</string>
@@ -919,6 +922,8 @@
     <string name="hang_up">Riaggancia</string>
     <string name="ongoing_call">Chiamata in corso</string>
     <string name="ongoing_video_call">Chiamata video in corso</string>
+    <string name="reconnecting_call">Riconnessione chiamata</string>
+    <string name="reconnecting_video_call">Riconnessione chiamata video</string>
     <string name="disable_tor_to_make_call">Disattiva Tor per le chiamate</string>
     <string name="incoming_call">Chiamata in arrivo</string>
     <string name="incoming_call_duration">Chiamata in arrivo · %s</string>
@@ -968,4 +973,7 @@
     <string name="backup_started_message">Il backup è iniziato. Riceverai una notifica una volta completato.</string>
     <string name="unable_to_enable_video">Impossibile attivare il video.</string>
     <string name="plain_text_document">Documento di testo</string>
-    </resources>
+    <string name="account_registrations_are_not_supported">Le registrazioni di profili non sono supportate</string>
+    <string name="no_xmpp_adddress_found">Nessun indirizzo XMPP trovato</string>
+
+</resources>
