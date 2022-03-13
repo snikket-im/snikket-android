@@ -632,6 +632,8 @@
     <string name="pref_clean_private_storage_summary">Wyczyść prywatny magazyn gdzie trzymane są pliki (mogą zostać pobrane ponownie z serwera)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Trafiłem na ten link w zaufanym źródle</string>
     <string name="verifying_omemo_keys_trusted_source">Zaraz zweryfikujesz klucz OMEMO %1$s klikając w link. Jest to bezpieczne jedynie, kiedy link pochodzi z zaufanego źródła gdzie tylko %2$s mógł go opublikować.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Weryfikujesz właśnie klucze OMEMO własnego konta. To jest bezpieczne tylko jeśli kliknąłeś łącze w miejscu w którym jedynie ty mogłeś je zamieścić. </string>
+    <string name="continue_btn">Kontynuuj</string>
     <string name="verify_omemo_keys">Zweryfikuj klucze OMEMO</string>
     <string name="show_inactive_devices">Pokaż nieaktywne</string>
     <string name="hide_inactive_devices">Ukryj nieaktywne</string>
@@ -927,6 +929,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="rtp_state_incoming_video_call">Wideorozmowa przychodząca</string>
     <string name="rtp_state_connecting">Łączenie</string>
     <string name="rtp_state_connected">Połączony</string>
+    <string name="rtp_state_reconnecting">Ponowne łączenie</string>
     <string name="rtp_state_accepting_call">Akceptowanie połączenia</string>
     <string name="rtp_state_ending_call">Kończenie połączenia</string>
     <string name="answer_call">Połącz</string>
@@ -942,6 +945,8 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="hang_up">Rozłącz</string>
     <string name="ongoing_call">Połączenie wychodzące</string>
     <string name="ongoing_video_call">Wideorozmowa wychodząca</string>
+    <string name="reconnecting_call">Ponowne łączenie rozmowy</string>
+    <string name="reconnecting_video_call">Ponowne łączenie rozmowy wideo</string>
     <string name="disable_tor_to_make_call">Wyłącz Tor aby dzwonić</string>
     <string name="incoming_call">Połączenie przychodzące</string>
     <string name="incoming_call_duration">Połączenie przychodzące · %s</string>
@@ -995,4 +1000,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="backup_started_message">Tworzenie kopii zapasowej się rozpoczęło. Dostaniesz powiadomienie kiedy się zakończy. </string>
     <string name="unable_to_enable_video">Nie można włączyć wideo. </string>
     <string name="plain_text_document">Dokument zwykłego tekstu</string>
-    </resources>
+    <string name="account_registrations_are_not_supported">Rejestracja kont nie jest wspierana</string>
+    <string name="no_xmpp_adddress_found">Nie znaleziono adresu XMPP</string>
+
+</resources>
