@@ -4,6 +4,7 @@
 
 * Store files in location appropriate for Android 11
 * Attempt to reconnect call after network switch
+* Show caller JID and account JID in incoming call screen
 
 ### Version 2.10.2
 
