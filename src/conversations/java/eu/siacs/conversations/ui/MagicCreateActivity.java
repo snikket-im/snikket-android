@@ -66,13 +66,11 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
         if (username != null && domain != null) {
             binding.title.setText(R.string.your_server_invitation);
             binding.instructions.setText(getString(R.string.magic_create_text_fixed, domain));
-            binding.finePrint.setVisibility(View.INVISIBLE);
             binding.username.setEnabled(false);
             binding.username.setText(this.username);
             updateFullJidInformation(this.username);
         } else if (domain != null) {
             binding.instructions.setText(getString(R.string.magic_create_text_on_x, domain));
-            binding.finePrint.setVisibility(View.INVISIBLE);
         }
         binding.createAccount.setOnClickListener(v -> {
             try {
