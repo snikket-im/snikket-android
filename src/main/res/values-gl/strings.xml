@@ -186,7 +186,7 @@
     <string name="mgmt_account_enable">Habilitar</string>
     <string name="mgmt_account_are_you_sure">Seguro?</string>
     <string name="mgmt_account_delete_confirm_text">Ao eliminar a conta eliminas todo o historial de conversas</string>
-    <string name="attach_record_voice">Grabar audio</string>
+    <string name="attach_record_voice">Gravar audio</string>
     <string name="account_settings_jabber_id">Enderezo XMPP</string>
     <string name="block_jabber_id">Bloquear enderezo XMPP</string>
     <string name="account_settings_example_jabber_id">usuaria@exemplo.com</string>
@@ -205,8 +205,8 @@
     <string name="server_info_pep">XEP-0163: PEP (Avatars / OMEMO)</string>
     <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
     <string name="server_info_push">XEP-0357: Push</string>
-    <string name="server_info_available">dispoñible</string>
-    <string name="server_info_unavailable">non dispoñible</string>
+    <string name="server_info_available">Dispoñible</string>
+    <string name="server_info_unavailable">Fallo</string>
     <string name="missing_public_keys">Anuncios de chave pública non notificados</string>
     <string name="last_seen_now">acaba de estar dispoñible</string>
     <string name="last_seen_min">visto hai un minuto</string>
@@ -697,8 +697,8 @@
     <string name="qr_code_scanner_needs_access_to_camera">O escaner de código QR necesita acceso á cámara.</string>
     <string name="pref_scroll_to_bottom">Desprazarse ata a parte inferior</string>
     <string name="pref_scroll_to_bottom_summary">Desprazarse cara abaixo logo de enviar unha mensaxe</string>
-    <string name="edit_status_message_title">Editar a Menxase de Estado</string>
-    <string name="edit_status_message">Editar a menxase de estado</string>
+    <string name="edit_status_message_title">Editar a Mensaxe de Estado</string>
+    <string name="edit_status_message">Editar a mensaxe de estado</string>
     <string name="disable_encryption">Desactivar a encriptación</string>
     <string name="error_trustkey_general">%1$s non pode enviar mensaxes cifradas a %2$s. Podería deberse a que o teu contacto utiliza un servidor sen actualizar ou un cliente que non pode xestionar OMEMO.</string>
     <string name="error_trustkey_device_list">Non se obtivo a lista de dispositivos</string>
@@ -719,7 +719,7 @@
     <string name="small">Pequena</string>
     <string name="medium">Mediana</string>
     <string name="large">Grande</string>
-    <string name="not_encrypted_for_this_device">A menxase non foi encriptada para este disposivivo</string>
+    <string name="not_encrypted_for_this_device">A mensaxe non foi encriptada para este disposivivo</string>
     <string name="omemo_decryption_failed">Fallo ao descifrar a mensaxe OMEMO</string>
     <string name="undo">desfacer</string>
     <string name="location_disabled">Compartir Localización está desactivado</string>
@@ -815,7 +815,7 @@
     <string name="unable_to_find_server">Non se atopou o servidor.</string>
     <string name="something_went_wrong_processing_your_request">Algo fallou ao xestionar a túa solicitude.</string>
     <string name="invalid_user_input">Entrada da usuaria non válida</string>
-    <string name="temporarily_unavailable">Non dispoñible temporalmente. Inténteo máis tarde.</string>
+    <string name="temporarily_unavailable">Non dispoñible temporalmente. Inténtao máis tarde.</string>
     <string name="no_network_connection">Se conexión a rede.</string>
     <string name="try_again_in_x">Inténteo de novo en %s</string>
     <string name="rate_limited">Taxa de transferencia limitada</string>
