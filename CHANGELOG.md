@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.10.4
+
+* Fix interaction with Google Maps Share Location Plugin
+* Remove footnote with regards to server fee
+
 ### Version 2.10.3
 
 * Store files in location appropriate for Android 11
