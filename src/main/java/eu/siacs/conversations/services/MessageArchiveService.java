@@ -256,7 +256,11 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
                     //do nothing
                 } else {
                     Log.d(Config.LOGTAG, a.getJid().asBareJid().toString() + ": error executing mam: " + p.toString());
-                    finalizeQuery(query, true);
+                    try {
+                        finalizeQuery(query, true);
+                    } catch (final IllegalStateException e) {
+                        //ignored
+                    }
                 }
             });
         } else {
