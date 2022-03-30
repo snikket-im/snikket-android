@@ -102,7 +102,12 @@ public class HttpDownloadConnection implements Transferable {
             if (this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL && this.file.getKey() == null) {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
-            final Long knownFileSize = message.getFileParams().size;
+            final Long knownFileSize;
+            if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+                knownFileSize = null;
+            } else {
+                knownFileSize = message.getFileParams().size;
+            }
             Log.d(Config.LOGTAG,"knownFileSize: "+knownFileSize+", body="+message.getBody());
             if (knownFileSize != null && interactive) {
                 if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL
