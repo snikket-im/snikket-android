@@ -43,6 +43,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
+import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 
 import org.json.JSONArray;
@@ -77,6 +78,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.entities.MTMDecision;
@@ -391,13 +393,13 @@ public class MemorizingTrustManager {
                     final List<String> fingerprints = getPoshFingerprints(domain);
                     if (hash != null && fingerprints.size() > 0) {
                         if (fingerprints.contains(hash)) {
-                            Log.d("mtm", "trusted cert fingerprint of " + domain + " via posh");
+                            Log.d(Config.LOGTAG, "trusted cert fingerprint of " + domain + " via posh");
                             return;
                         } else {
-                            Log.d("mtm", "fingerprint " + hash + " not found in " + fingerprints);
+                            Log.d(Config.LOGTAG, "fingerprint " + hash + " not found in " + fingerprints);
                         }
                         if (getPoshCacheFile(domain).delete()) {
-                            Log.d("mtm", "deleted posh file for " + domain + " after not being able to verify");
+                            Log.d(Config.LOGTAG, "deleted posh file for " + domain + " after not being able to verify");
                         }
                     }
                 }
@@ -410,7 +412,7 @@ public class MemorizingTrustManager {
         }
     }
 
-    private List<String> getPoshFingerprints(String domain) {
+    private List<String> getPoshFingerprints(final String domain) {
         final List<String> cached = getPoshFingerprintsFromCache(domain);
         if (cached == null) {
             return getPoshFingerprintsFromServer(domain);
@@ -424,13 +426,13 @@ public class MemorizingTrustManager {
     }
 
     private List<String> getPoshFingerprintsFromServer(String domain, String url, int maxTtl, boolean followUrl) {
-        Log.d("mtm", "downloading json for " + domain + " from " + url);
+        Log.d(Config.LOGTAG, "downloading json for " + domain + " from " + url);
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(master);
         final boolean useTor = QuickConversationsService.isConversations() && preferences.getBoolean("use_tor", master.getResources().getBoolean(R.bool.use_tor));
         try {
             final List<String> results = new ArrayList<>();
             final InputStream inputStream = HttpConnectionManager.open(url, useTor);
-            final String body = CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8));
+            final String body = CharStreams.toString(new InputStreamReader(ByteStreams.limit(inputStream,10_000), Charsets.UTF_8));
             final JSONObject jsonObject = new JSONObject(body);
             int expires = jsonObject.getInt("expires");
             if (expires <= 0) {
@@ -457,7 +459,7 @@ public class MemorizingTrustManager {
             writeFingerprintsToCache(domain, results, 1000L * expires + System.currentTimeMillis());
             return results;
         } catch (final Exception e) {
-            Log.d("mtm", "error fetching posh " + e.getMessage());
+            Log.d(Config.LOGTAG, "error fetching posh",e);
             return new ArrayList<>();
         }
     }
@@ -495,7 +497,7 @@ public class MemorizingTrustManager {
                 file.delete();
                 return null;
             } else {
-                Log.d("mtm", "posh fingerprints expire in " + (expiresIn / 1000) + "s");
+                Log.d(Config.LOGTAG, "posh fingerprints expire in " + (expiresIn / 1000) + "s");
             }
             final List<String> result = new ArrayList<>();
             final JSONArray jsonArray = jsonObject.getJSONArray("fingerprints");
@@ -512,7 +514,6 @@ public class MemorizingTrustManager {
     }
 
     private X509Certificate[] getAcceptedIssuers() {
-        LOGGER.log(Level.FINE, "getAcceptedIssuers()");
         return defaultTrustManager == null ? new X509Certificate[0] : defaultTrustManager.getAcceptedIssuers();
     }
 
