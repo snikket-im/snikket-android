@@ -322,6 +322,7 @@ public class HttpDownloadConnection implements Transferable {
             );
             final Request request = new Request.Builder()
                     .url(URL.stripFragment(mUrl))
+                    .addHeader("Accept-Encoding", "identity")
                     .head()
                     .build();
             mostRecentCall = client.newCall(request);
@@ -347,11 +348,11 @@ public class HttpDownloadConnection implements Transferable {
                     throw new IOException("Server reported negative file size");
                 }
                 return size;
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 Log.d(Config.LOGTAG, "io exception during HEAD " + e.getMessage());
                 throw e;
-            } catch (NumberFormatException e) {
-                throw new IOException();
+            } catch (final NumberFormatException e) {
+                throw new IOException(e);
             }
         }
 
