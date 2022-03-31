@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.10.5
+
+* Security: Stop downloading files that exceed advertised file size
+* Security: Limit POSH files to 10K
+
 ### Version 2.10.4
 
 * Fix interaction with Google Maps Share Location Plugin
