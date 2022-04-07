@@ -463,8 +463,9 @@
     <string name="invalid_username">Ungültiger Benutzername</string>
     <string name="download_failed_server_not_found">Download fehlgeschlagen: Server nicht gefunden</string>
     <string name="download_failed_file_not_found">Download fehlgeschlagen: Datei nicht gefunden</string>
-    <string name="download_failed_could_not_connect">Download fehlgeschlagen: keine Verbindung zum Host</string>
+    <string name="download_failed_could_not_connect">Download fehlgeschlagen: Keine Verbindung zum Host</string>
     <string name="download_failed_could_not_write_file">Download fehlgeschlagen: Datei konnte nicht gespeichert werden</string>
+    <string name="download_failed_invalid_file">Download fehlgeschlagen: Ungültige Datei</string>
     <string name="account_status_tor_unavailable">Tor-Netzwerk nicht verfügbar</string>
     <string name="account_status_bind_failure">Verbindungsfehler</string>
     <string name="account_status_host_unknown">Der Server ist nicht für diese Domain verantwortlich</string>

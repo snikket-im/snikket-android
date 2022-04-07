@@ -473,6 +473,7 @@
     <string name="download_failed_file_not_found">Pobieranie nieudane: Nie odnaleziono pliku</string>
     <string name="download_failed_could_not_connect">Pobieranie nieudane: Nie można połączyć z hostem</string>
     <string name="download_failed_could_not_write_file">Pobieranie niepowiodło się: brak możliwości zapisu pliku</string>
+    <string name="download_failed_invalid_file">Pobieranie nieudane: Nieprawidłowy plik</string>
     <string name="account_status_tor_unavailable">Sieć TOR jest niedostepna</string>
     <string name="account_status_bind_failure">Błąd połączenia (zasób)</string>
     <string name="account_status_host_unknown">Serwer nie odpowiada domenie</string>

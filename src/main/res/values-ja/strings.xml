@@ -615,6 +615,8 @@
     <string name="pref_clean_private_storage_summary">ファイルが保存されているプライベートストレージを消去します (サーバーから再ダウンロードできます)</string>
     <string name="i_followed_this_link_from_a_trusted_source">信頼できるソースからこのリンクをたどりました</string>
     <string name="verifying_omemo_keys_trusted_source">リンクをクリックした後、%1$s の OMEMO 鍵を検証しようとしています。 これは、%2$s がこのリンクを公開した、信頼できるソースからこのリンクをたどった場合にのみ安全です。</string>
+    <string name="verifying_omemo_keys_trusted_source_account">あなたが所有するアカウントの OMEMO 鍵を検証しようとしています。 これは、あなたがこのリンクを公開した、信頼できるソースからこのリンクをたどった場合にのみ安全です。</string>
+    <string name="continue_btn">続行</string>
     <string name="verify_omemo_keys">OMEMO 鍵を検証</string>
     <string name="show_inactive_devices">非アクティブを表示</string>
     <string name="hide_inactive_devices">非アクティブを非表示</string>
@@ -950,4 +952,7 @@
     <string name="backup_started_message">バックアップを開始しました。 バックアップが完了すると通知が届きます。</string>
     <string name="unable_to_enable_video">映像を有効化できません。</string>
     <string name="plain_text_document">プレーンテキスト文書</string>
-    </resources>
+    <string name="account_registrations_are_not_supported">アカウント登録はサポートされていません</string>
+    <string name="no_xmpp_adddress_found">XMPPアドレスがみつかりません</string>
+
+</resources>

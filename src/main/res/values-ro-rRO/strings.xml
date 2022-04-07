@@ -469,6 +469,7 @@
     <string name="download_failed_file_not_found">Descărcare eșuată: Fișierul nu a fost găsit</string>
     <string name="download_failed_could_not_connect">Descărcare eșuată: Nu s-a putut realiza conexiunea cu gazda.</string>
     <string name="download_failed_could_not_write_file">Descărcare eșuată: Nu s-a putut scrie fișierul</string>
+    <string name="download_failed_invalid_file">Descărcarea a eșuat: Fișier invalid</string>
     <string name="account_status_tor_unavailable">Rețeaua Tor nu este disponibilă</string>
     <string name="account_status_bind_failure">Eroare de conexiune</string>
     <string name="account_status_host_unknown">Serverul nu este responsabil pentru acest domeniu</string>

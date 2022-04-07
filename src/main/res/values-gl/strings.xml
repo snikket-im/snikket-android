@@ -37,7 +37,7 @@
 
     </plurals>
     <string name="sending">enviando…</string>
-    <string name="message_decrypting">Descifrando a mensaxe. Por favor agarde...</string>
+    <string name="message_decrypting">Descifrando a mensaxe. Agarda por favor...</string>
     <string name="pgp_message">Mensaxe cifrado con OpenPGP</string>
     <string name="nick_in_use">O alcume xa está en uso</string>
     <string name="invalid_muc_nick">Alcume non válido</string>
@@ -84,7 +84,7 @@
     <string name="send_failed">Erro ao enviar</string>
     <string name="preparing_image">Preparándose para enviar a imaxe</string>
     <string name="preparing_images">Preparándose para enviar imaxes</string>
-    <string name="sharing_files_please_wait">Compartindo ficheiros. Por favor agarde...</string>
+    <string name="sharing_files_please_wait">Compartindo ficheiros. Agarda por favor...</string>
     <string name="action_clear_history">Baleirar historial</string>
     <string name="clear_conversation_history">Eliminar historial da conversa</string>
     <string name="clear_histor_msg">¿Queres eliminar as mensaxes desta conversa?\n\n<b>Aviso:</b> Esto non lle afecta as mensaxes gardadas noutros dispositivos ou servidores. </string>
@@ -105,7 +105,7 @@
     <string name="openkeychain_required_long"><![CDATA[%1$s utiliza <b>OpenKeychain</b> para cifrar e descifrar as mensaxes e xestionar a túas chaves públicas.<br><br>Está baixo licenza  GPLv3+ e dispoñible en F-Droid e Google Play.<br><br><small>(Reinicia %1$s após a instalación.)</small>]]></string>
     <string name="restart">Reiniciar</string>
     <string name="install">Instalar</string>
-    <string name="openkeychain_not_installed">Por favor instale OpenKeychain</string>
+    <string name="openkeychain_not_installed">Instala OpenKeychain por favor</string>
     <string name="offering">ofrecendo…</string>
     <string name="waiting">agardando...</string>
     <string name="no_pgp_key">Clave OpenPGP non atopada</string>
@@ -254,10 +254,10 @@
     <string name="leave">Saír</string>
     <string name="contact_added_you">Contacto engadido a túa lista de contactos</string>
     <string name="add_back">Volver a engadir</string>
-    <string name="contact_has_read_up_to_this_point">%s leu ata este punto</string>
-    <string name="contacts_have_read_up_to_this_point">%s leu ate este punto</string>
-    <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s + %2$d outras leron ata este punto</string>
-    <string name="everyone_has_read_up_to_this_point">Todas leron ate este punto</string>
+    <string name="contact_has_read_up_to_this_point">%s leu até aquí</string>
+    <string name="contacts_have_read_up_to_this_point">%s leron até aquí</string>
+    <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s + %2$d outras leron até aquí</string>
+    <string name="everyone_has_read_up_to_this_point">Todas leron até aquí</string>
     <string name="publish">Publicar</string>
     <string name="touch_to_choose_picture">Toca no avatar para escoller a imaxe na galería</string>
     <string name="publishing">Publicando...</string>
@@ -459,17 +459,18 @@
     <string name="send_private_message">Enviar mensaxe privada</string>
     <string name="user_has_left_conference">%1$s deixou a conversa en grupo</string>
     <string name="username">Identificador</string>
-    <string name="username_hint">Nome de usuaria</string>
+    <string name="username_hint">Identificador</string>
     <string name="invalid_username">Este non é un identificador válido</string>
     <string name="download_failed_server_not_found">Fallou a descarga: non se atopou o servidor</string>
     <string name="download_failed_file_not_found">Fallou a descarga: non se atopou o ficheiro</string>
     <string name="download_failed_could_not_connect">Fallou a descarga: Non se puido conectar ao servidor</string>
     <string name="download_failed_could_not_write_file">Fallou a descarga: non se escribeu o ficheiro</string>
+    <string name="download_failed_invalid_file">Fallou a descarga: ficheiro non válido</string>
     <string name="account_status_tor_unavailable">Sen acceso a rede Tor</string>
     <string name="account_status_bind_failure">Fallou a ligazón</string>
     <string name="account_status_host_unknown">O servidor non corresponde a este dominio</string>
     <string name="server_info_broken">Roto</string>
-    <string name="pref_presence_settings">Disponibilidade</string>
+    <string name="pref_presence_settings">Dispoñibilidade</string>
     <string name="pref_away_when_screen_off">Ausente cando o dispositivo está bloqueado</string>
     <string name="pref_away_when_screen_off_summary">Mostrar como Ausente cando o dispositivo está bloqueado</string>
     <string name="pref_dnd_on_silent_mode">En modolo silencioso, Ocupado</string>
@@ -544,8 +545,8 @@
     <string name="your_full_jid_will_be">O teu enderezo XMPP completo será: %s</string>
     <string name="create_account">Crear conta</string>
     <string name="use_own_provider">Utilizar o meu propio proveedor</string>
-    <string name="pick_your_username">Elixe un identificador</string>
-    <string name="pref_manually_change_presence">Xestionar a disponibilidade manualmente</string>
+    <string name="pick_your_username">Elixe un nome de usuaria</string>
+    <string name="pref_manually_change_presence">Xestionar a dispoñibilidade manualmente</string>
     <string name="pref_manually_change_presence_summary">Configura a túa dispoñibilidade ao editar a mensaxe de estado.</string>
     <string name="status_message">Mensaxe de estado</string>
     <string name="presence_chat">Dispoñible para conversar</string>
@@ -743,7 +744,7 @@
     <string name="copy_jabber_id">Copiar enderezo XMPP</string>
     <string name="p1_s3_filetransfer">Compartición de ficheiro HTTP para S3</string>
     <string name="pref_start_search">Busca directa</string>
-    <string name="pref_start_search_summary">Na pantalla \'Iniciar Conversa\' abrir teclado e por o cursor no campo de busca</string>
+    <string name="pref_start_search_summary">Na pantalla \'Iniciar Conversa\' abrir teclado e pór o cursor no campo de busca</string>
     <string name="group_chat_avatar">Avatar da conversa de grupo</string>
     <string name="host_does_not_support_group_chat_avatars">O servidor non soporta o avatar na conversa de grupo</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Só o dono pode cambiar o avatar da conversa de grupo</string>
@@ -794,13 +795,13 @@
     <string name="verify_x">Validar %s</string>
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Enviámosche un SMS a <b>%s</b>.]]></string>
     <string name="we_have_sent_you_another_sms">Enviamosche outro SMS cun código de 6 díxitos.</string>
-    <string name="please_enter_pin_below">Por favor, introduza o pin de 6 díxitos inferior.</string>
+    <string name="please_enter_pin_below">Escribe o PIN de 6 díxitos.</string>
     <string name="resend_sms">Reenviar SMS</string>
     <string name="resend_sms_in">Reenviar SMS (%s)</string>
-    <string name="wait_x">Agarde por favor (%s)</string>
+    <string name="wait_x">Agarda por favor (%s)</string>
     <string name="back">atrás</string>
     <string name="possible_pin">Copiado automático desde o portapapeis.</string>
-    <string name="please_enter_pin">Por favor, introduza o pin de 6 díxitos.</string>
+    <string name="please_enter_pin">Por favor, escribe o pin de 6 díxitos.</string>
     <string name="abort_registration_procedure">Seguro que quere cancelar o proceso de rexistro?</string>
     <string name="yes">Si</string>
     <string name="no">Non</string>
@@ -852,8 +853,8 @@
     <string name="create_dialog_channel_name">Nome da canle</string>
     <string name="xmpp_address">Enderezo XMPP</string>
     <string name="please_enter_name">Por favor, escribe un nome para a canle</string>
-    <string name="please_enter_xmpp_address">Por favor, proporcione un enderezo XMPP</string>
-    <string name="this_is_an_xmpp_address">Esto é un enderezo XMPP. Por favor, proporcione un nome.</string>
+    <string name="please_enter_xmpp_address">Por favor, escribe un enderezo XMPP</string>
+    <string name="this_is_an_xmpp_address">Esto é un enderezo XMPP. Por favor, escribe un nome.</string>
     <string name="creating_channel">Creando canle pública...</string>
     <string name="channel_already_exists">Esta canle xa existe</string>
     <string name="joined_an_existing_channel">Entraches nunha canle existente</string>

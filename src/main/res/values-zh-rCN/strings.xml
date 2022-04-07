@@ -461,6 +461,7 @@
     <string name="download_failed_file_not_found">下载失败：未找到文件</string>
     <string name="download_failed_could_not_connect">下载失败：无法连接到服务器</string>
     <string name="download_failed_could_not_write_file">下载失败：不能写入文件</string>
+    <string name="download_failed_invalid_file">下载失败：无效文件</string>
     <string name="account_status_tor_unavailable">Tor网络不可用</string>
     <string name="account_status_bind_failure">绑定失败</string>
     <string name="account_status_host_unknown">服务器不能为域名做出响应</string>

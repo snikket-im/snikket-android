@@ -420,7 +420,7 @@
     <string name="pref_display_enter_key">Показывать клавишу ввода</string>
     <string name="pref_display_enter_key_summary">Поменять кнопку смайликов на кнопку ввода</string>
     <string name="audio">аудио</string>
-    <string name="video">звук</string>
+    <string name="video">видео</string>
     <string name="image">изображение</string>
     <string name="vector_graphic">векторная графика</string>
     <string name="pdf_document">PDF-документ</string>

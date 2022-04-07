@@ -465,6 +465,7 @@
     <string name="download_failed_file_not_found">Não foi possível fazer o download: arquivo não encontrado</string>
     <string name="download_failed_could_not_connect">Não foi possível fazer o download: não foi possível conectar ao host</string>
     <string name="download_failed_could_not_write_file">Falha no download: não foi possível salvar o arquivo</string>
+    <string name="download_failed_invalid_file">Falha no download: arquivo inválido</string>
     <string name="account_status_tor_unavailable">Rede Tor não disponível</string>
     <string name="account_status_bind_failure">Falha na associação</string>
     <string name="account_status_host_unknown">O servidor não responde por esse domínio</string>
