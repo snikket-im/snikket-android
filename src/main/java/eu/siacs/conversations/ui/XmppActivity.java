@@ -46,6 +46,7 @@ import android.widget.Toast;
 
 import androidx.annotation.BoolRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AlertDialog.Builder;
@@ -447,9 +448,19 @@ public abstract class XmppActivity extends ActionBarActivity {
             final ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             return cm != null
                     && cm.isActiveNetworkMetered()
-                    && cm.getRestrictBackgroundStatus() == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED;
+                    && getRestrictBackgroundStatus(cm) == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED;
         } else {
             return false;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private static int getRestrictBackgroundStatus(@NonNull final ConnectivityManager connectivityManager) {
+        try {
+            return connectivityManager.getRestrictBackgroundStatus();
+        } catch (final Exception e) {
+            Log.d(Config.LOGTAG,"platform bug detected. Unable to get restrict background status",e);
+            return -1;
         }
     }
 
