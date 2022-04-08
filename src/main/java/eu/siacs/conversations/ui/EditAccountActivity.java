@@ -208,6 +208,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                     jid = Jid.ofEscaped(binding.accountJid.getText().toString(), getUserModeDomain(), null);
                 } else {
                     jid = Jid.ofEscaped(binding.accountJid.getText().toString());
+                    Resolver.checkDomain(jid);
                 }
             } catch (final NullPointerException | IllegalArgumentException e) {
                 if (mUsernameMode) {
