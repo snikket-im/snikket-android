@@ -151,7 +151,7 @@
     <string name="error_compressing_image">Non se puido converter o ficheiro de imaxe</string>
     <string name="error_file_not_found">Arquivo non atopado</string>
     <string name="error_io_exception">Erro xeral de I/O. ¿Quedaches sen espazo no disco?</string>
-    <string name="error_security_exception_during_image_copy">A app utilizada para seleccionar esta imaxe non deu permisos suficientes para ler o ficheiro.\n\n<small>Usa un xestor de ficheiros diferente para elexir a imaxe</small></string>
+    <string name="error_security_exception_during_image_copy">A app utilizada para seleccionar esta imaxe non deu permisos suficientes para ler o ficheiro.\n\n<small>Usa un xestor de ficheiros diferente para escoller a imaxe</small></string>
     <string name="error_security_exception">A app que usaches para compartir este ficheiro non concedeu os permisos suficientes.</string>
     <string name="account_status_unknown">Descoñecido</string>
     <string name="account_status_disabled">Desactivado temporalmente</string>
@@ -259,7 +259,7 @@
     <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s + %2$d outras leron até aquí</string>
     <string name="everyone_has_read_up_to_this_point">Todas leron até aquí</string>
     <string name="publish">Publicar</string>
-    <string name="touch_to_choose_picture">Toca no avatar para escoller a imaxe na galería</string>
+    <string name="touch_to_choose_picture">Toca no avatar para elixir a imaxe na galería</string>
     <string name="publishing">Publicando...</string>
     <string name="error_publish_avatar_server_reject">O servidor rexeitou a túa publicación</string>
     <string name="error_publish_avatar_converting">Non se puido converter a imaxe</string>
@@ -453,7 +453,7 @@
     <string name="pref_quick_action">Acción rápida</string>
     <string name="none">Ningunha</string>
     <string name="recently_used">Utilizadas recentemente</string>
-    <string name="choose_quick_action">Escolle a acción rápida</string>
+    <string name="choose_quick_action">Elixe a acción rápida</string>
     <string name="search_contacts">Buscar contactos</string>
     <string name="search_bookmarks">Buscar marcadores</string>
     <string name="send_private_message">Enviar mensaxe privada</string>
@@ -569,7 +569,7 @@
     <string name="pref_broadcast_last_activity_summary">Permitelle aos teus contactos saber cando estás a usar Conversations</string>
     <string name="pref_privacy">Privacidade</string>
     <string name="pref_theme_options">Decorado</string>
-    <string name="pref_theme_options_summary">Escolle a gama de cores</string>
+    <string name="pref_theme_options_summary">Elixe a gama de cores</string>
     <string name="pref_theme_automatic">Automático</string>
     <string name="pref_theme_light">Claro</string>
     <string name="pref_theme_dark">Escuro</string>
@@ -837,7 +837,7 @@
     <string name="video_original">Orixinal (non comprimido)</string>
     <string name="open_with">Abrir con...</string>
     <string name="set_profile_picture">Imaxe de perfil en Conversations</string>
-    <string name="choose_account">Elexir conta</string>
+    <string name="choose_account">Elixir conta</string>
     <string name="restore_backup">Restablecer copia de apoio</string>
     <string name="restore">Restablecer</string>
     <string name="enter_password_to_restore">Escribe o contrasinal da conta %s para restablecer a copia.</string>

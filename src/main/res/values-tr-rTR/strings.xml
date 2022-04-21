@@ -465,6 +465,7 @@
     <string name="download_failed_file_not_found">İndirme başarısız: Dosya bulunamadı</string>
     <string name="download_failed_could_not_connect">İndirme başarısız: Sunucuya bağlanılamadı</string>
     <string name="download_failed_could_not_write_file">İndirme başarısız: Dosya yazılamıyor</string>
+    <string name="download_failed_invalid_file">İndirme başarısız: Geçersiz dosya</string>
     <string name="account_status_tor_unavailable">Tor ağına erişilemiyor</string>
     <string name="account_status_bind_failure">Bağlantı başarısız</string>
     <string name="account_status_host_unknown">Sunucu bu alan adı için sorumlu değil</string>
@@ -622,6 +623,8 @@
     <string name="pref_clean_private_storage_summary">Dosyaların tutulduğu özel depolama alanını temizle (Sunucu üzerinden tekrar indirilebilir)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Bu bağlantıyı güvenilir bir kaynaktan takip ettim</string>
     <string name="verifying_omemo_keys_trusted_source">Bir bağlantıyı tıkladıktan sonra %1$s in OMEMO anahtarını doğrulamış olacaksınız.  Bu yalnızca  bağlantının %2$s  tarafından yayınladığından eminseniz güvenlidir.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Hesabınızın OMEMO anahtarını doğrulamış olacaksınız. Bu yalnızca bağlantıya yalnızca sizin yayınlayabileceğiniz bir kaynaktan eriştiyseniz güvenlidir. </string>
+    <string name="continue_btn">Devam et</string>
     <string name="verify_omemo_keys">OMEMO anahtarlarını doğrula</string>
     <string name="show_inactive_devices">Aktif olmayanları göster</string>
     <string name="hide_inactive_devices">Aktif olmayanları sakla</string>
@@ -904,6 +907,7 @@
     <string name="rtp_state_incoming_video_call">Gelen görüntülü arama</string>
     <string name="rtp_state_connecting">Bağlanıyor</string>
     <string name="rtp_state_connected">Bağlandı</string>
+    <string name="rtp_state_reconnecting">Tekrar bağlanılıyor</string>
     <string name="rtp_state_accepting_call">Arama kabül ediliyor</string>
     <string name="rtp_state_ending_call">Arama sonlandırılıyor</string>
     <string name="answer_call">Cevapla</string>
@@ -919,6 +923,8 @@
     <string name="hang_up">Çağrıyı sonlandır</string>
     <string name="ongoing_call">Devam eden arama</string>
     <string name="ongoing_video_call">Deaam eden görüntülü arama</string>
+    <string name="reconnecting_call">Aramaya tekrar bağlanıyılor</string>
+    <string name="reconnecting_video_call">Görüntülü aramaya tekrar bağlanılıyor</string>
     <string name="disable_tor_to_make_call">Arama yapmak için Tor\'u devre dışı bırak</string>
     <string name="incoming_call">Gelen arama</string>
     <string name="incoming_call_duration">Gelen arama. %s</string>
@@ -968,4 +974,7 @@
     <string name="backup_started_message">Yedekleme başlatıldı. Tamamlandığı zaman bir bildirim alacaksınız.</string>
     <string name="unable_to_enable_video">Video etkinleştirilemedi</string>
     <string name="plain_text_document">Düz metin dosyası</string>
-    </resources>
+    <string name="account_registrations_are_not_supported">Hesap kayıtları desteklenmemektedir.</string>
+    <string name="no_xmpp_adddress_found">Herhangi bir XMPP adresi bulunamadı</string>
+
+</resources>
