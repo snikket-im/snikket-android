@@ -465,6 +465,7 @@
     <string name="download_failed_file_not_found">Scaricamento fallito: file non trovato</string>
     <string name="download_failed_could_not_connect">Scaricamento fallito: impossibile connettersi all\'host</string>
     <string name="download_failed_could_not_write_file">Scaricamento fallito: scrittura del file impossibile</string>
+    <string name="download_failed_invalid_file">Scaricamento fallito: file non valido</string>
     <string name="account_status_tor_unavailable">Rete Tor non disponibile</string>
     <string name="account_status_bind_failure">Bind fallito</string>
     <string name="account_status_host_unknown">Il server non è responsabile per questo dominio</string>
