@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.10.6
+
+* Minor bug fixes
+
 ### Version 2.10.5
 
 * Security: Stop downloading files that exceed advertised file size
