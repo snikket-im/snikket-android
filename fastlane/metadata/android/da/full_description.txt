@@ -1,0 +1,11 @@
+Snikket-appen giver dig mulighed for at deltage i et verdensomspændende kommunikationsnetværk. Brug appen til at kommunikere med venner, familie og kolleger uden at overgive dine data til store virksomheder.
+
+ℹ️ Vigtig note: For at komme i gang med appen skal du invitation til en Snikket-tjeneste eller køre din egen. Appen fungerer ikke, medmindre du har en invitation til at deltage i en Snikket-tjeneste.
+
+Snikket giver dig mulighed for at bruge en tjeneste, der leveres af en du stoler på. Dette kan være en organisation, it-kyndig ven eller et familiemedlem.
+
+Både appen og tjenesten er 100% gratis og open source-software.
+
+Få mere at vide på https://snikket.org/app/learn/
+
+Denne app er baseret på den fantastiske XMPP-klient, Conversations.
