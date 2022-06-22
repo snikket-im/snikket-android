@@ -989,4 +989,6 @@
     <string name="plain_text_document">Documento em texto puro</string>
     <string name="account_registrations_are_not_supported">O registro de contas não está ativo</string>
     <string name="no_xmpp_adddress_found">Não foi encontrado nenhum endereço XMPP</string>
-    </resources>
+    <string name="account_status_temporary_auth_failure">Falha temporária na autenticação</string>
+
+</resources>

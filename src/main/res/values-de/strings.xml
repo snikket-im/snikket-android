@@ -401,8 +401,8 @@
     <string name="non_anonymous">XMPP-Adressen für alle sichtbar machen</string>
     <string name="moderated">Channel wird moderiert</string>
     <string name="you_are_not_participating">Du bist kein Mitglied</string>
-    <string name="modified_conference_options">Gruppenchatoptionen wurden modifiziert!</string>
-    <string name="could_not_modify_conference_options">Gruppenchatoptionen konnten nicht modifiziert werden</string>
+    <string name="modified_conference_options">Gruppenchatoptionen wurden geändert!</string>
+    <string name="could_not_modify_conference_options">Gruppenchatoptionen konnten nicht geändert werden</string>
     <string name="never">Niemals</string>
     <string name="until_further_notice">Bis auf Weiteres</string>
     <string name="snooze">Schlummern</string>
@@ -440,7 +440,7 @@
     <string name="pref_dont_trust_system_cas_title">Zertifizierungsstellen nicht vertrauen</string>
     <string name="pref_dont_trust_system_cas_summary">Alle Zertifikate müssen manuell bestätigt werden</string>
     <string name="pref_remove_trusted_certificates_title">Zertifikate löschen</string>
-    <string name="pref_remove_trusted_certificates_summary">Als vertrauenswürdig bestätigte Zertifikate löschen</string>
+    <string name="pref_remove_trusted_certificates_summary">Manuell bestätigte Zertifikate löschen</string>
     <string name="toast_no_trusted_certs">Keine manuell bestätigten Zertifikate</string>
     <string name="dialog_manage_certs_title">Zertifikate löschen</string>
     <string name="dialog_manage_certs_positivebutton">Auswahl löschen</string>
@@ -481,13 +481,13 @@
     <string name="pref_show_connection_options_summary">Hostname- und Port-Optionen bei Kontoeinrichtung anzeigen</string>
     <string name="hostname_example">xmpp.domain.de</string>
     <string name="action_add_account_with_certificate">Mit Zertifikat anmelden</string>
-    <string name="unable_to_parse_certificate">Zertifikat konnte nicht ausgewertet werden</string>
+    <string name="unable_to_parse_certificate">Zertifikat konnte nicht verarbeitet werden</string>
     <string name="mam_prefs">Archivierungseinstellungen</string>
     <string name="server_side_mam_prefs">Archivierungseinstellungen des Servers</string>
     <string name="fetching_mam_prefs">Archivierungseinstellungen werden abgerufen. Bitte warten…</string>
     <string name="unable_to_fetch_mam_prefs">Archivierungseinstellungen konnten nicht abgerufen werden</string>
     <string name="captcha_required">CAPTCHA erforderlich</string>
-    <string name="captcha_hint">Gib den Text von obigem Bild ein</string>
+    <string name="captcha_hint">Gib den Text aus dem Bild oben ein</string>
     <string name="certificate_chain_is_not_trusted">Nicht vertrauenswürdige Zertifikatskette</string>
     <string name="jid_does_not_match_certificate">XMPP-Adresse stimmt nicht dem Zertifikat überein</string>
     <string name="action_renew_certificate">Zertifikat erneuern</string>
@@ -968,7 +968,7 @@
     <string name="more_options">Weitere Optionen</string>
     <string name="no_application_found">Keine Anwendung gefunden</string>
     <string name="invite_to_app">Einladung zu Conversations</string>
-    <string name="unable_to_parse_invite">Einladung kann nicht gelesen werden</string>
+    <string name="unable_to_parse_invite">Einladung kann nicht verarbeitet werden</string>
     <string name="server_does_not_support_easy_onboarding_invites">Server unterstützt keine Generierung von Einladungen</string>
     <string name="no_active_accounts_support_this">Keine aktiven Konten unterstützen diese Funktion</string>
     <string name="backup_started_message">Die Sicherung wurde gestartet. Du bekommst eine Benachrichtigung, sobald sie fertig ist.</string>
@@ -976,4 +976,6 @@
     <string name="plain_text_document">Textdokument</string>
     <string name="account_registrations_are_not_supported">Kontoregistrierungen werden nicht unterstützt</string>
     <string name="no_xmpp_adddress_found">Keine XMPP-Adresse gefunden</string>
-    </resources>
+    <string name="account_status_temporary_auth_failure">Temporärer Authentifizierungsfehler</string>
+
+</resources>
