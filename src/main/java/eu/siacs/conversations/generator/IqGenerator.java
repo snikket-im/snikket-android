@@ -131,6 +131,7 @@ public class IqGenerator extends AbstractGenerator {
 
     public IqPacket publishNick(String nick) {
         final Element item = new Element("item");
+        item.setAttribute("id", "current");
         item.addChild("nick", Namespace.NICK).setContent(nick);
         return publish(Namespace.NICK, item);
     }
