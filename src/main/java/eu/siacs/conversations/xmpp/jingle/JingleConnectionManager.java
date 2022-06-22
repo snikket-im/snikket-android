@@ -569,9 +569,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
         }
         synchronized (this.rtpSessionProposals) {
-            for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry :
+            for (final Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry :
                     this.rtpSessionProposals.entrySet()) {
-                RtpSessionProposal proposal = entry.getKey();
+                final RtpSessionProposal proposal = entry.getKey();
                 if (proposal.account == contact.getAccount()
                         && contact.getJid().asBareJid().equals(proposal.with)) {
                     final DeviceDiscoveryState preexistingState = entry.getValue();
