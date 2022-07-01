@@ -178,7 +178,7 @@
     <string name="encryption_choice_omemo">OMEMO</string>
     <string name="mgmt_account_delete">Konto löschen</string>
     <string name="mgmt_account_disable">Vorübergehend abschalten</string>
-    <string name="mgmt_account_publish_avatar">Avatar veröffentlichen</string>
+    <string name="mgmt_account_publish_avatar">Profilbild veröffentlichen</string>
     <string name="mgmt_account_publish_pgp">Öffentlichen OpenPGP-Schlüssel veröffentlichen</string>
     <string name="unpublish_pgp">Öffentlichen OpenPGP-Schlüssel verwerfen</string>
     <string name="unpublish_pgp_message">Bist du sicher, dass du deinen öffentlichen OpenPGP-Schlüssel aus deiner Anwesenheitsmitteilung entfernen möchtest?\nDeine Kontakte können dir dann keine OpenPGP-verschlüsselten Nachrichten senden.</string>
@@ -250,7 +250,7 @@
     <string name="could_not_destroy_channel">Channel konnte nicht gelöscht werden</string>
     <string name="action_edit_subject">Gruppenchatthema bearbeiten</string>
     <string name="topic">Thema</string>
-    <string name="joining_conference">Gruppenchat wird beigetreten…</string>
+    <string name="joining_conference">Gruppenchat beigetreten…</string>
     <string name="leave">Verlassen</string>
     <string name="contact_added_you">Kontakt hat dich zur Kontaktliste hinzugefügt</string>
     <string name="add_back">Auch hinzufügen</string>
@@ -259,13 +259,13 @@
     <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d andere haben bis zu diesem Punkt gelesen</string>
     <string name="everyone_has_read_up_to_this_point">Alle haben bis zu diesem Punkt gelesen</string>
     <string name="publish">Veröffentlichen</string>
-    <string name="touch_to_choose_picture">Avatar antippen, um ein Bild aus der Galerie auszuwählen</string>
+    <string name="touch_to_choose_picture">Profilbild antippen, um ein Bild aus der Galerie auszuwählen</string>
     <string name="publishing">Veröffentliche…</string>
     <string name="error_publish_avatar_server_reject">Der Server hat die Veröffentlichung des Avatars abgelehnt.</string>
     <string name="error_publish_avatar_converting">Bild konnte nicht konvertiert werden</string>
-    <string name="error_saving_avatar">Avatar kann nicht gespeichert werden</string>
+    <string name="error_saving_avatar">Profilbild kann nicht gespeichert werden</string>
     <string name="or_long_press_for_default">(Oder klicke lange, um den Standard wiederherzustellen)</string>
-    <string name="error_publish_avatar_no_server_support">Dein Server unterstützt die Veröffentlichung von Avataren nicht</string>
+    <string name="error_publish_avatar_no_server_support">Dein Server unterstützt die Veröffentlichung von Profilbildern nicht</string>
     <string name="private_message">private Nachricht:</string>
     <string name="private_message_to">an %s</string>
     <string name="send_private_message_to">Private Nachricht an %s senden</string>
@@ -356,7 +356,7 @@
     <string name="enable_notifications">Benachrichtigungen aktivieren</string>
     <string name="no_conference_server_found">Keinen Gruppenchatserver gefunden</string>
     <string name="conference_creation_failed">Gruppenchat konnte nicht erstellt werden</string>
-    <string name="account_image_description">Konto-Avatar</string>
+    <string name="account_image_description">Konto-Profilbild</string>
     <string name="copy_omemo_clipboard_description">OMEMO-Fingerabdruck in Zwischenablage kopieren</string>
     <string name="regenerate_omemo_key">OMEMO-Schlüssel erneuern</string>
     <string name="clear_other_devices">Geräte entfernen</string>
@@ -420,7 +420,7 @@
     <string name="pdf_document">PDF-Dokument</string>
     <string name="apk">Android App</string>
     <string name="vcard">Kontakt</string>
-    <string name="avatar_has_been_published">Avatar wurde veröffentlicht!</string>
+    <string name="avatar_has_been_published">Profilbild wurde veröffentlicht!</string>
     <string name="sending_x_file">%s wird gesendet</string>
     <string name="offering_x_file">%s wird angeboten</string>
     <string name="hide_offline">Offline verstecken</string>
@@ -477,7 +477,7 @@
     <string name="pref_dnd_on_silent_mode_summary">Als Beschäftigt anzeigen, wenn sich das Gerät im lautlosen Modus befindet</string>
     <string name="pref_treat_vibrate_as_silent">Vibration als Lautlos behandeln</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Als Beschäftigt anzeigen, wenn das Gerät auf Vibration eingestellt ist</string>
-    <string name="pref_show_connection_options">Erweiterte Verbindungsoptionen</string>
+    <string name="pref_show_connection_options">Erweiterte Verbindungseinstellungen</string>
     <string name="pref_show_connection_options_summary">Hostname- und Port-Optionen bei Kontoeinrichtung anzeigen</string>
     <string name="hostname_example">xmpp.domain.de</string>
     <string name="action_add_account_with_certificate">Mit Zertifikat anmelden</string>
@@ -515,7 +515,7 @@
     <string name="no_storage_permission"> %1$s den Zugriff auf den externen Speicher gewähren</string>
     <string name="no_camera_permission">%1$s den Zugriff auf die Kamera gewähren</string>
     <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
-    <string name="sync_with_contacts_long">%1$s möchte die Erlaubnis, auf deine Kontakte zuzugreifen, um sie mit deiner XMPP-Kontaktliste abzugleichen.\nDadurch werden die vollständigen Namen und Avatare deiner Kontakte angezeigt.\n\n%1$s liest nur dein Adressbuch und gleicht es lokal ab, ohne dass etwas auf deinen Server hochgeladen wird.</string>
+    <string name="sync_with_contacts_long">%1$s möchte die Erlaubnis, auf deine Kontakte zuzugreifen, um sie mit deiner XMPP-Kontaktliste abzugleichen.\nDadurch werden die vollständigen Namen und Profilbilder deiner Kontakte angezeigt.\n\n%1$s liest nur dein Adressbuch und gleicht es lokal ab, ohne dass etwas auf deinen Server hochgeladen wird.</string>
     <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy benötigt Zugriff auf die Telefonnummern deiner Kontakte, um Vorschläge für mögliche Kontakte zu machen, die bereits bei Quicksy sind.<br><br>Wir werden keine Kopie dieser Telefonnummern speichern.\n\nFür weitere Informationen lies unsere <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a>.<br><br>Du wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.]]></string>
     <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
     <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich erwähnt werde</string>
@@ -595,7 +595,7 @@
     <string name="pref_delete_omemo_identities">OMEMO-Identitäten zurücksetzen</string>
     <string name="pref_delete_omemo_identities_summary">Erzeuge neue OMEMO-Schlüssel. Alle deine Kontakte müssen sie erneut verifizieren. Verwende dies nur als letztes Mittel.</string>
     <string name="delete_selected_keys">Ausgewählte Schlüssel löschen</string>
-    <string name="error_publish_avatar_offline">Du musst verbunden sein, um deinen Avatar zu veröffentlichen.</string>
+    <string name="error_publish_avatar_offline">Du musst verbunden sein, um deinen Profilbild zu veröffentlichen.</string>
     <string name="show_error_message">Zeige Fehlermeldung</string>
     <string name="error_message">Fehlermeldung</string>
     <string name="data_saver_enabled">Datensparmodus aktiv</string>
@@ -745,9 +745,9 @@
     <string name="p1_s3_filetransfer">HTTP-Dateifreigabe für S3</string>
     <string name="pref_start_search">Direkte Suche </string>
     <string name="pref_start_search_summary">Beim Dialog \'Unterhaltung beginnen\' Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
-    <string name="group_chat_avatar">Gruppenchat-Avatar</string>
-    <string name="host_does_not_support_group_chat_avatars">Host unterstützt keine Gruppenchat-Avatare</string>
-    <string name="only_the_owner_can_change_group_chat_avatar">Nur der Eigentümer kann den Gruppenchat-Avatar ändern</string>
+    <string name="group_chat_avatar">Gruppenchat-Profilbild</string>
+    <string name="host_does_not_support_group_chat_avatars">Host unterstützt keine Gruppenchat-Profilbilder</string>
+    <string name="only_the_owner_can_change_group_chat_avatar">Nur der Eigentümer kann das Gruppenchat-Profilbild ändern</string>
     <string name="contact_name">Kontaktname</string>
     <string name="nickname">Nickname</string>
     <string name="group_chat_name">Name</string>
@@ -946,8 +946,8 @@
     <string name="could_not_correct_message">Nachricht konnte nicht korrigiert werden</string>
     <string name="search_all_conversations">Alle Unterhaltungen</string>
     <string name="search_this_conversation">Diese Unterhaltung</string>
-    <string name="your_avatar">Dein Avatar</string>
-    <string name="avatar_for_x">Avatar für %s</string>
+    <string name="your_avatar">Dein Profilbild</string>
+    <string name="avatar_for_x">Profilbild für %s</string>
     <string name="encrypted_with_omemo">Verschlüsselt mit OMEMO</string>
     <string name="encrypted_with_openpgp">Verschlüsselt mit OpenPGP</string>
     <string name="not_encrypted">Nicht verschlüsselt</string>
