@@ -989,4 +989,6 @@
     <string name="plain_text_document">Documento di testo</string>
     <string name="account_registrations_are_not_supported">Le registrazioni di profili non sono supportate</string>
     <string name="no_xmpp_adddress_found">Nessun indirizzo XMPP trovato</string>
-    </resources>
+    <string name="account_status_temporary_auth_failure">Errore di autenticazione temporaneo</string>
+
+</resources>
