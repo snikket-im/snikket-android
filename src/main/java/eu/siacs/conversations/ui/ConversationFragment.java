@@ -710,8 +710,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     }
 
                     @Override
-                    public void error(final int error, Message message) {
+                    public void error(final int error, final Message message) {
                         hidePrepareFileToast(prepareFileToast);
+                        final ConversationsActivity activity = ConversationFragment.this.activity;
+                        if (activity == null) {
+                            return;
+                        }
                         activity.runOnUiThread(() -> activity.replaceToast(getString(error)));
                     }
                 });
