@@ -179,7 +179,7 @@ public class Attachment implements Parcelable {
     private static boolean renderFileThumbnail(final String mime) {
         return mime.startsWith("video/")
                 || isImage(mime)
-                || (Compatibility.runsTwentyOne() && "application/pdf".equals(mime));
+                || "application/pdf".equals(mime);
     }
 
     public Uri getUri() {

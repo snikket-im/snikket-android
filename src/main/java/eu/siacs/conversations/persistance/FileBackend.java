@@ -437,7 +437,7 @@ public class FileBackend {
             return bitmap;
         }
         final String mime = attachment.getMime();
-        if ("application/pdf".equals(mime) && Compatibility.runsTwentyOne()) {
+        if ("application/pdf".equals(mime)) {
             bitmap = cropCenterSquarePdf(attachment.getUri(), size);
             drawOverlay(
                     bitmap,
@@ -961,7 +961,7 @@ public class FileBackend {
                 }
                 DownloadableFile file = getFile(message);
                 final String mime = file.getMimeType();
-                if ("application/pdf".equals(mime) && Compatibility.runsTwentyOne()) {
+                if ("application/pdf".equals(mime)) {
                     thumbnail = getPdfDocumentPreview(file, size);
                 } else if (mime.startsWith("video/")) {
                     thumbnail = getVideoPreview(file, size);
@@ -1507,12 +1507,12 @@ public class FileBackend {
             body.append(url);
         }
         body.append('|').append(file.getSize());
-        if (image || video || (pdf && Compatibility.runsTwentyOne())) {
+        if (image || video || pdf) {
             try {
                 final Dimensions dimensions;
                 if (video) {
                     dimensions = getVideoDimensions(file);
-                } else if (pdf && Compatibility.runsTwentyOne()) {
+                } else if (pdf) {
                     dimensions = getPdfDocumentDimensions(file);
                 } else {
                     dimensions = getImageDimensions(file);
