@@ -1,5 +1,7 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.utils.Compatibility.s;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
@@ -625,7 +627,9 @@ public class NotificationService {
                 mXmppConnectionService,
                 requestCode,
                 fullScreenIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                s()
+                        ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public void cancelIncomingCallNotification() {
@@ -759,7 +763,7 @@ public class NotificationService {
                         && conversations != null
                         && conversations.size()
                                 == 1; // if this check is changed to > 0 catchup messages will
-                                      // create one notification per conversation
+        // create one notification per conversation
 
         if (notifications.size() == 0) {
             cancel(NOTIFICATION_ID);
@@ -835,9 +839,7 @@ public class NotificationService {
         } else {
             mBuilder.setLocalOnly(true);
         }
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
-        }
+        mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
         mBuilder.setPriority(
                 notify
                         ? (headsup
@@ -1280,7 +1282,9 @@ public class NotificationService {
                         mXmppConnectionService,
                         generateRequestCode(message.getConversation(), 18),
                         intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
+                        s()
+                                ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                                : PendingIntent.FLAG_UPDATE_CURRENT);
             }
         }
         return null;
@@ -1299,13 +1303,17 @@ public class NotificationService {
                     mXmppConnectionService,
                     generateRequestCode(conversationUuid, 8),
                     viewConversationIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    s()
+                            ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                            : PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
             return PendingIntent.getActivity(
                     mXmppConnectionService,
                     generateRequestCode(conversationUuid, 10),
                     viewConversationIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    s()
+                            ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                            : PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
 
@@ -1332,9 +1340,20 @@ public class NotificationService {
         if (conversation != null) {
             intent.putExtra("uuid", conversation.getUuid());
             return PendingIntent.getService(
-                    mXmppConnectionService, generateRequestCode(conversation, 20), intent, 0);
+                    mXmppConnectionService,
+                    generateRequestCode(conversation, 20),
+                    intent,
+                    s()
+                            ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                            : PendingIntent.FLAG_UPDATE_CURRENT);
         }
-        return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
+        return PendingIntent.getService(
+                mXmppConnectionService,
+                0,
+                intent,
+                s()
+                        ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createReplyIntent(
@@ -1348,7 +1367,12 @@ public class NotificationService {
         intent.putExtra("last_message_uuid", lastMessageUuid);
         final int id = generateRequestCode(conversation, dismissAfterReply ? 12 : 14);
         return PendingIntent.getService(
-                mXmppConnectionService, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                mXmppConnectionService,
+                id,
+                intent,
+                s()
+                        ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createReadPendingIntent(Conversation conversation) {
@@ -1360,7 +1384,9 @@ public class NotificationService {
                 mXmppConnectionService,
                 generateRequestCode(conversation, 16),
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                s()
+                        ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createCallAction(String sessionId, final String action, int requestCode) {
@@ -1369,7 +1395,12 @@ public class NotificationService {
         intent.setPackage(mXmppConnectionService.getPackageName());
         intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, sessionId);
         return PendingIntent.getService(
-                mXmppConnectionService, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                mXmppConnectionService,
+                requestCode,
+                intent,
+                s()
+                        ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createSnoozeIntent(Conversation conversation) {
@@ -1381,19 +1412,33 @@ public class NotificationService {
                 mXmppConnectionService,
                 generateRequestCode(conversation, 22),
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                s()
+                        ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createTryAgainIntent() {
         final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
         intent.setAction(XmppConnectionService.ACTION_TRY_AGAIN);
-        return PendingIntent.getService(mXmppConnectionService, 45, intent, 0);
+        return PendingIntent.getService(
+                mXmppConnectionService,
+                45,
+                intent,
+                s()
+                        ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createDismissErrorIntent() {
         final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
         intent.setAction(XmppConnectionService.ACTION_DISMISS_ERROR_NOTIFICATIONS);
-        return PendingIntent.getService(mXmppConnectionService, 69, intent, 0);
+        return PendingIntent.getService(
+                mXmppConnectionService,
+                69,
+                intent,
+                s()
+                        ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private boolean wasHighlightedOrPrivate(final Message message) {
@@ -1538,15 +1583,9 @@ public class NotificationService {
             }
         }
         mBuilder.setDeleteIntent(createDismissErrorIntent());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);
-            mBuilder.setSmallIcon(R.drawable.ic_warning_white_24dp);
-        } else {
-            mBuilder.setSmallIcon(R.drawable.ic_stat_alert_warning);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-            mBuilder.setLocalOnly(true);
-        }
+        mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);
+        mBuilder.setSmallIcon(R.drawable.ic_warning_white_24dp);
+        mBuilder.setLocalOnly(true);
         mBuilder.setPriority(Notification.PRIORITY_LOW);
         final Intent intent;
         if (AccountUtils.MANAGE_ACCOUNT_ACTIVITY != null) {
@@ -1558,7 +1597,12 @@ public class NotificationService {
         }
         mBuilder.setContentIntent(
                 PendingIntent.getActivity(
-                        mXmppConnectionService, 145, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+                        mXmppConnectionService,
+                        145,
+                        intent,
+                        s()
+                                ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                                : PendingIntent.FLAG_UPDATE_CURRENT));
         if (Compatibility.runsTwentySix()) {
             mBuilder.setChannelId("error");
         }

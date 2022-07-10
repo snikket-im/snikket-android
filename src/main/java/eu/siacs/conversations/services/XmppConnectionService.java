@@ -36,6 +36,7 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.security.KeyChain;
 import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyCallback;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -1203,9 +1204,10 @@ public class XmppConnectionService extends Service {
 
     private void setupPhoneStateListener() {
         final TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        if (telephonyManager != null) {
-            telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        if (telephonyManager == null || Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return;
         }
+        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
     public boolean isPhoneInCall() {
@@ -1402,7 +1404,16 @@ public class XmppConnectionService extends Service {
         final Intent intent = new Intent(this, EventReceiver.class);
         intent.setAction("ping");
         try {
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, 0);
+            final PendingIntent pendingIntent;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                pendingIntent =
+                        PendingIntent.getBroadcast(
+                                this, requestCode, intent, PendingIntent.FLAG_IMMUTABLE);
+            } else {
+                pendingIntent =
+                        PendingIntent.getBroadcast(
+                                this, requestCode, intent, 0);
+            }
             alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timeToWake, pendingIntent);
         } catch (RuntimeException e) {
             Log.e(Config.LOGTAG, "unable to schedule alarm for ping", e);
