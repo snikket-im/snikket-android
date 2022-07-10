@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.10.7
+
+* always ask for battery optimizations opt-out
+* set local only flag on 'x connected accounts' notifications
+* Minor bug fixes
+
 ### Version 2.10.6
 
 * Minor bug fixes
