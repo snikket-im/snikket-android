@@ -957,4 +957,6 @@
     <string name="plain_text_document">プレーンテキスト文書</string>
     <string name="account_registrations_are_not_supported">アカウント登録はサポートされていません</string>
     <string name="no_xmpp_adddress_found">XMPPアドレスがみつかりません</string>
-    </resources>
+    <string name="account_status_temporary_auth_failure">一時的な認証失敗</string>
+
+</resources>
