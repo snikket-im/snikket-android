@@ -196,8 +196,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
     }
 
     private void parseEvent(final Element event, final Jid from, final Account account) {
-        Element items = event.findChild("items");
-        String node = items == null ? null : items.getAttribute("node");
+        final Element items = event.findChild("items");
+        final String node = items == null ? null : items.getAttribute("node");
         if ("urn:xmpp:avatar:metadata".equals(node)) {
             Avatar avatar = Avatar.parseMetadata(items);
             if (avatar != null) {
@@ -1000,7 +1000,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         }
 
         final Element event = original.findChild("event", "http://jabber.org/protocol/pubsub#event");
-        if (event != null && InvalidJid.hasValidFrom(original)) {
+        if (event != null && InvalidJid.hasValidFrom(original) && original.getFrom().isBareJid()) {
             if (event.hasChild("items")) {
                 parseEvent(event, original.getFrom(), account);
             } else if (event.hasChild("delete")) {
@@ -1012,6 +1012,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
         final String nick = packet.findChildContent("nick", Namespace.NICK);
         if (nick != null && InvalidJid.hasValidFrom(original)) {
+            if (mXmppConnectionService.isMuc(account, from)) {
+                return;
+            }
             final Contact contact = account.getRoster().getContact(from);
             if (contact.setPresenceName(nick)) {
                 mXmppConnectionService.syncRoster(account);
