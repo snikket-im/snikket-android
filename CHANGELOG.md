@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.10.8
+
+* Fix wrong avatar being shown for group chats
+
 ### Version 2.10.7
 
 * always ask for battery optimizations opt-out
