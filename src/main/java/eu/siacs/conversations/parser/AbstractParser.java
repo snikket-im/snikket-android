@@ -126,7 +126,7 @@ public abstract class AbstractParser {
 		return user;
 	}
 
-	public static String extractErrorMessage(Element packet) {
+	public static String extractErrorMessage(final Element packet) {
 		final Element error = packet.findChild("error");
 		if (error != null && error.getChildren().size() > 0) {
 			final List<String> errorNames = orderedElementNames(error.getChildren());
