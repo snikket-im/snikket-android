@@ -15,6 +15,7 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 
 import java.io.DataOutputStream;
@@ -114,7 +115,7 @@ public class ExportBackupService extends Service {
                     }
                     builder.append(intValue);
                 } else {
-                    DatabaseUtils.appendEscapedSQLString(builder, value);
+                    appendEscapedSQLString(builder, value);
                 }
             }
             builder.append(")");
@@ -125,6 +126,10 @@ public class ExportBackupService extends Service {
             accountCursor.close();
         }
         writer.append(builder.toString());
+    }
+
+    private static void appendEscapedSQLString(final StringBuilder sb, final String sqlString) {
+        DatabaseUtils.appendEscapedSQLString(sb, CharMatcher.is('\u0000').removeFrom(sqlString));
     }
 
     private static void simpleExport(SQLiteDatabase db, String table, String column, String uuid, PrintWriter writer) {
@@ -201,7 +206,7 @@ public class ExportBackupService extends Service {
             } else if (value.matches("[0-9]+")) {
                 builder.append(value);
             } else {
-                DatabaseUtils.appendEscapedSQLString(builder, value);
+                appendEscapedSQLString(builder, value);
             }
         }
         builder.append(")");
