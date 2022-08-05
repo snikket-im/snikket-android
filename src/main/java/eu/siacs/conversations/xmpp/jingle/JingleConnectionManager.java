@@ -892,7 +892,15 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         for (final AbstractJingleConnection connection : this.connections.values()) {
             if (connection.getId().sessionId.equals(sessionId)) {
                 if (connection instanceof JingleRtpConnection) {
-                    ((JingleRtpConnection) connection).rejectCall();
+                    try {
+                        ((JingleRtpConnection) connection).rejectCall();
+                        return;
+                    } catch (final IllegalStateException e) {
+                        Log.w(
+                                Config.LOGTAG,
+                                "race condition on rejecting call from notification",
+                                e);
+                    }
                 }
             }
         }
