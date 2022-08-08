@@ -272,14 +272,16 @@ public class RtpSessionActivity extends XmppActivity
     }
 
     private void requestPermissionsAndAcceptCall() {
-        final List<String> permissions;
+        final ImmutableList.Builder<String> permissions = ImmutableList.builder();
         if (getMedia().contains(Media.VIDEO)) {
-            permissions =
-                    ImmutableList.of(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO);
+            permissions.add(Manifest.permission.CAMERA).add(Manifest.permission.RECORD_AUDIO);
         } else {
-            permissions = ImmutableList.of(Manifest.permission.RECORD_AUDIO);
+            permissions.add(Manifest.permission.RECORD_AUDIO);
         }
-        if (PermissionUtils.hasPermission(this, permissions, REQUEST_ACCEPT_CALL)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+        }
+        if (PermissionUtils.hasPermission(this, permissions.build(), REQUEST_ACCEPT_CALL)) {
             putScreenInCallMode();
             checkRecorderAndAcceptCall();
         }
@@ -491,13 +493,16 @@ public class RtpSessionActivity extends XmppActivity
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (PermissionUtils.allGranted(grantResults)) {
+        final PermissionUtils.PermissionResult permissionResult =
+                PermissionUtils.removeBluetoothConnect(permissions, grantResults);
+        if (PermissionUtils.allGranted(permissionResult.grantResults)) {
             if (requestCode == REQUEST_ACCEPT_CALL) {
                 checkRecorderAndAcceptCall();
             }
         } else {
             @StringRes int res;
-            final String firstDenied = getFirstDenied(grantResults, permissions);
+            final String firstDenied =
+                    getFirstDenied(permissionResult.grantResults, permissionResult.permissions);
             if (Manifest.permission.RECORD_AUDIO.equals(firstDenied)) {
                 res = R.string.no_microphone_permission;
             } else if (Manifest.permission.CAMERA.equals(firstDenied)) {
