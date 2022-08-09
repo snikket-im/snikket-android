@@ -144,6 +144,7 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
             @Override
             public void onFailure(@NotNull final Throwable throwable) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to request slot", throwable);
+                // TODO consider fall back to jingle in 1-on-1 chats with exactly one online presence
                 fail(throwable.getMessage());
             }
         }, MoreExecutors.directExecutor());
