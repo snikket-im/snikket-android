@@ -1496,6 +1496,7 @@ public class FileBackend {
         DownloadableFile file = getFile(message);
         final String mime = file.getMimeType();
         final boolean privateMessage = message.isPrivateMessage();
+        final boolean ambiguous = MimeUtils.AMBIGUOUS_CONTAINER_FORMATS.contains(mime);
         final boolean image =
                 message.getType() == Message.TYPE_IMAGE
                         || (mime != null && mime.startsWith("image/"));
@@ -1507,7 +1508,21 @@ public class FileBackend {
             body.append(url);
         }
         body.append('|').append(file.getSize());
-        if (image || video || pdf) {
+        if (ambiguous) {
+            try {
+                final Dimensions dimensions = getVideoDimensions(file);
+                if (dimensions.valid()) {
+                    Log.d(Config.LOGTAG,"ambiguous file "+mime+" is video");
+                    body.append('|').append(dimensions.width).append('|').append(dimensions.height);
+                } else {
+                    Log.d(Config.LOGTAG,"ambiguous file "+mime+" is audio");
+                    body.append("|0|0|").append(getMediaRuntime(file));
+                }
+            } catch (final NotAVideoFile e) {
+                Log.d(Config.LOGTAG,"ambiguous file "+mime+" is audio");
+                body.append("|0|0|").append(getMediaRuntime(file));
+            }
+        } else if (image || video || pdf) {
             try {
                 final Dimensions dimensions;
                 if (video) {
@@ -1537,14 +1552,16 @@ public class FileBackend {
                         : (image ? Message.TYPE_IMAGE : Message.TYPE_FILE));
     }
 
-    private int getMediaRuntime(File file) {
+    private int getMediaRuntime(final File file) {
         try {
-            MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+            final MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
             mediaMetadataRetriever.setDataSource(file.toString());
-            return Integer.parseInt(
-                    mediaMetadataRetriever.extractMetadata(
-                            MediaMetadataRetriever.METADATA_KEY_DURATION));
-        } catch (RuntimeException e) {
+            final String value = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            if (Strings.isNullOrEmpty(value)) {
+                return 0;
+            }
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
             return 0;
         }
     }
