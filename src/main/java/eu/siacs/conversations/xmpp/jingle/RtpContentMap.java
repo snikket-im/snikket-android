@@ -182,6 +182,9 @@ public class RtpContentMap {
         final IceUdpTransportInfo.Credentials credentials =
                 Iterables.getFirst(allCredentials, null);
         if (allCredentials.size() == 1 && credentials != null) {
+            if (Strings.isNullOrEmpty(credentials.password) || Strings.isNullOrEmpty(credentials.ufrag)) {
+                throw new IllegalStateException("Credentials are missing password or ufrag");
+            }
             return credentials;
         }
         throw new IllegalStateException("Content map does not have distinct credentials");
