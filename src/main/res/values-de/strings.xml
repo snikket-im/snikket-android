@@ -417,6 +417,7 @@
     <string name="video">Video</string>
     <string name="image">Bild</string>
     <string name="vector_graphic">Vektorgrafik</string>
+    <string name="multimedia_file">Multimediadatei</string>
     <string name="pdf_document">PDF-Dokument</string>
     <string name="apk">Android App</string>
     <string name="vcard">Kontakt</string>

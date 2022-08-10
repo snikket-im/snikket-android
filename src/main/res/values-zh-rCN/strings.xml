@@ -414,6 +414,7 @@
     <string name="video">视频</string>
     <string name="image">图片</string>
     <string name="vector_graphic">矢量图</string>
+    <string name="multimedia_file">多媒体文件</string>
     <string name="pdf_document">PDF文档</string>
     <string name="apk">Android App</string>
     <string name="vcard">联系人</string>

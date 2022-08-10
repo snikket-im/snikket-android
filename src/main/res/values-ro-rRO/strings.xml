@@ -420,6 +420,7 @@
     <string name="video">video</string>
     <string name="image">imagine</string>
     <string name="vector_graphic">grafic vectorial</string>
+    <string name="multimedia_file">fișier multimedia</string>
     <string name="pdf_document">document PDF</string>
     <string name="apk">Aplicație Android</string>
     <string name="vcard">Contact</string>
