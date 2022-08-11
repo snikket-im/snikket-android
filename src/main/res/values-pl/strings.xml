@@ -423,6 +423,7 @@
     <string name="video">plik wideo</string>
     <string name="image">obraz</string>
     <string name="vector_graphic">grafika wektorowa</string>
+    <string name="multimedia_file">plik multimediów</string>
     <string name="pdf_document">Dokument PDF</string>
     <string name="apk">Aplikacja Androida</string>
     <string name="vcard">Kontakt</string>
