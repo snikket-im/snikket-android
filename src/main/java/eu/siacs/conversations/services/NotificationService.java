@@ -1524,7 +1524,9 @@ public class NotificationService {
                     mXmppConnectionService,
                     0,
                     new Intent(mXmppConnectionService, ConversationsActivity.class),
-                    0);
+                    s()
+                            ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                            : PendingIntent.FLAG_UPDATE_CURRENT);
         } catch (RuntimeException e) {
             return null;
         }
@@ -1573,13 +1575,25 @@ public class NotificationService {
                         R.drawable.ic_play_circle_filled_white_48dp,
                         mXmppConnectionService.getString(R.string.start_orbot),
                         PendingIntent.getActivity(
-                                mXmppConnectionService, 147, TorServiceUtils.LAUNCH_INTENT, 0));
+                                mXmppConnectionService,
+                                147,
+                                TorServiceUtils.LAUNCH_INTENT,
+                                s()
+                                        ? PendingIntent.FLAG_IMMUTABLE
+                                                | PendingIntent.FLAG_UPDATE_CURRENT
+                                        : PendingIntent.FLAG_UPDATE_CURRENT));
             } else {
                 mBuilder.addAction(
                         R.drawable.ic_file_download_white_24dp,
                         mXmppConnectionService.getString(R.string.install_orbot),
                         PendingIntent.getActivity(
-                                mXmppConnectionService, 146, TorServiceUtils.INSTALL_INTENT, 0));
+                                mXmppConnectionService,
+                                146,
+                                TorServiceUtils.INSTALL_INTENT,
+                                s()
+                                        ? PendingIntent.FLAG_IMMUTABLE
+                                                | PendingIntent.FLAG_UPDATE_CURRENT
+                                        : PendingIntent.FLAG_UPDATE_CURRENT));
             }
         }
         mBuilder.setDeleteIntent(createDismissErrorIntent());
