@@ -139,6 +139,9 @@ public class Attachment implements Parcelable {
     public static List<Attachment> of(final Context context, List<Uri> uris, final String type) {
         final List<Attachment> attachments = new ArrayList<>();
         for (final Uri uri : uris) {
+            if (uri == null) {
+                continue;
+            }
             final String mime = MimeUtils.guessMimeTypeFromUriAndMime(context, uri, type);
             attachments.add(new Attachment(uri, mime != null && isImage(mime) ? Type.IMAGE : Type.FILE, mime));
         }
