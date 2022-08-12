@@ -207,8 +207,8 @@ public class PgpDecryptionService {
 								}
 							}
 							final String url = message.getFileParams().url;
-							mXmppConnectionService.getFileBackend().updateFileParams(message, url);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+							mXmppConnectionService.getFileBackend().updateFileParams(message, url);
 							mXmppConnectionService.updateMessage(message);
 							if (!inputFile.delete()) {
 								Log.w(Config.LOGTAG,"unable to delete pgp encrypted source file "+inputFile.getAbsolutePath());
