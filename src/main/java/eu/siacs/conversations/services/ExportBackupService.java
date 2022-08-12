@@ -1,5 +1,7 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.utils.Compatibility.s;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -344,9 +346,11 @@ public class ExportBackupService extends Service {
 
         PendingIntent openFolderIntent = null;
 
-        for (Intent intent : getPossibleFileOpenIntents(this, path)) {
+        for (final Intent intent : getPossibleFileOpenIntents(this, path)) {
             if (intent.resolveActivityInfo(getPackageManager(), 0) != null) {
-                openFolderIntent = PendingIntent.getActivity(this, 189, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                openFolderIntent = PendingIntent.getActivity(this, 189, intent, s()
+                        ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
                 break;
             }
         }
@@ -362,7 +366,9 @@ public class ExportBackupService extends Service {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setType(MIME_TYPE);
             final Intent chooser = Intent.createChooser(intent, getString(R.string.share_backup_files));
-            shareFilesIntent = PendingIntent.getActivity(this, 190, chooser, PendingIntent.FLAG_UPDATE_CURRENT);
+            shareFilesIntent = PendingIntent.getActivity(this, 190, chooser, s()
+                    ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                    : PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), "backup");

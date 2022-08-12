@@ -1,5 +1,7 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.utils.Compatibility.s;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -304,7 +306,9 @@ public class ImportBackupService extends Service {
         mBuilder.setContentTitle(getString(R.string.notification_restored_backup_title))
                 .setContentText(getString(R.string.notification_restored_backup_subtitle))
                 .setAutoCancel(true)
-                .setContentIntent(PendingIntent.getActivity(this, 145, new Intent(this, ManageAccountActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(this, 145, new Intent(this, ManageAccountActivity.class), s()
+                        ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT))
                 .setSmallIcon(R.drawable.ic_unarchive_white_24dp);
         notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }

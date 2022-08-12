@@ -60,6 +60,10 @@
         <intent>
             <action android:name="eu.siacs.conversations.location.show" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="resource/folder" />
+        </intent>
     </queries>
 
 

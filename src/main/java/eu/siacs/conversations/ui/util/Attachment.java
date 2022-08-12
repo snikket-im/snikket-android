@@ -38,6 +38,8 @@ import android.os.Parcelable;
 
 import com.google.common.base.MoreObjects;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,6 +91,7 @@ public class Attachment implements Parcelable {
         return type;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
