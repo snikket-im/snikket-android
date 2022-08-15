@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.10.9
+
+* Ask for Bluetooth permissions when making A/V calls (You can reject this if you don’t use Bluetooth headsets)
+* Fix bug when calling Movim
+
 ### Version 2.10.8
 
 * Fix wrong avatar being shown for group chats
