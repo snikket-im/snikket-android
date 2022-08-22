@@ -1,6 +1,5 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
@@ -10,8 +9,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import java.util.Collection;
 import java.util.List;
@@ -292,13 +289,7 @@ public class RtpContentMap {
             return ImmutableMap.copyOf(
                     Maps.transformValues(
                             contents,
-                            new Function<Content, DescriptionTransport>() {
-                                @NullableDecl
-                                @Override
-                                public DescriptionTransport apply(@NullableDecl Content content) {
-                                    return content == null ? null : of(content);
-                                }
-                            }));
+                            content -> content == null ? null : of(content)));
         }
     }
 
