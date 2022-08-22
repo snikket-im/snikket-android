@@ -108,20 +108,19 @@ public class ShareUtil {
 		}
 	}
 
-	public static void copyLinkToClipboard(XmppActivity activity, Message message) {
-		SpannableStringBuilder body = message.getMergedBody();
+	public static void copyLinkToClipboard(final XmppActivity activity, final Message message) {
+		final SpannableStringBuilder body = message.getMergedBody();
 		MyLinkify.addLinks(body, true);
 		for (final URLSpan urlspan : body.getSpans(0, body.length() - 1, URLSpan.class)) {
-			Uri uri = Uri.parse(urlspan.getURL());
+			final Uri uri = Uri.parse(urlspan.getURL());
 			if ("xmpp".equals(uri.getScheme())) {
 				try {
-					Jid jid = new XmppUri(uri).getJid();
+					final Jid jid = new XmppUri(uri).getJid();
 					if (activity.copyTextToClipboard(jid.asBareJid().toString(), R.string.account_settings_jabber_id)) {
 						Toast.makeText(activity,R.string.jabber_id_copied_to_clipboard, Toast.LENGTH_SHORT).show();
 					}
 					return;
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (final Exception e) {
 					return;
 				}
 			} else {
