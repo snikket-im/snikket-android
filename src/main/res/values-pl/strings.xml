@@ -413,7 +413,7 @@
     <string name="until_further_notice">Ręcznie</string>
     <string name="snooze">Odłóż</string>
     <string name="reply">Odpowiedz</string>
-    <string name="mark_as_read">Oznacz jako przeczytane</string>
+    <string name="mark_as_read">Już przeczytane</string>
     <string name="pref_input_options">Ustawienia wprowadzania</string>
     <string name="pref_enter_is_send">Enter wysyła</string>
     <string name="pref_enter_is_send_summary">Użyj klawisza Enter aby wysłać wiadomość. Możesz zawsze użyć Ctrl+Enter do wysyłania wiadomości, nawet jeśli ta opcja jest wyłączona.</string>

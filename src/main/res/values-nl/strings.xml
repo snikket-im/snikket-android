@@ -97,6 +97,7 @@
     <string name="send_omemo_message">Verstuur OMEMO-versleuteld bericht</string>
     <string name="send_omemo_x509_message">Verstuur v\\OMEMO-versleuteld bericht</string>
     <string name="send_pgp_message">Verstuur OpenPGP-versleuteld bericht</string>
+    <string name="your_nick_has_been_changed">Nieuwe bijnaam in gebruik</string>
     <string name="send_unencrypted">Verstuur onversleuteld</string>
     <string name="decryption_failed">Ontsleutelen mislukt. Misschien heb je niet de juiste private sleutel.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -122,6 +123,7 @@
     <string name="pref_never_send_crash">Verstuur nooit crashrapportages</string>
     <string name="pref_confirm_messages">Bevestig berichten</string>
     <string name="pref_confirm_messages_summary">Laat je contacten weten wanneer je hun berichten ontvangen en gelezen hebt</string>
+    <string name="pref_prevent_screenshots">Voorkom schermafdrukken</string>
     <string name="pref_ui_options">Gebruikersomgeving</string>
     <string name="openpgp_error">OpenKeychain veroorzaakte een fout.</string>
     <string name="bad_key_for_encryption">Slechte sleutel voor versleuteling.</string>
@@ -150,7 +152,9 @@
     <string name="account_status_regis_fail">Registratie mislukt</string>
     <string name="account_status_regis_conflict">Gebruikersnaam is al in gebruik</string>
     <string name="account_status_regis_success">Registratie voltooid</string>
+    <string name="account_status_regis_invalid_token">Ongeldig registratietoken</string>
     <string name="account_status_tls_error">TLS-onderhandeling mislukt</string>
+    <string name="account_status_tls_error_domain">Domein niet verifieerbaar</string>
     <string name="account_status_policy_violation">Beleidsschending</string>
     <string name="account_status_incompatible_server">Incompatibele server</string>
     <string name="account_status_stream_error">Fout bij stream</string>
@@ -174,6 +178,7 @@
     <string name="account_settings_example_jabber_id">gebruikersnaam@voorbeeld.nl</string>
     <string name="password">Wachtwoord</string>
     <string name="invalid_jid">Dit is geen geldig XMPP-adres</string>
+    <string name="error_out_of_memory">Geen geheugen beschikbaar. Afbeelding is te groot</string>
     <string name="add_phone_book_text">Wil je %s toevoegen aan je adresboek?</string>
     <string name="server_info_show_more">Server-info</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
@@ -195,9 +200,12 @@
     <string name="last_seen_hours">%d uur geleden voor het laatst gezien</string>
     <string name="last_seen_day">een dag geleden voor het laatst gezien</string>
     <string name="last_seen_days">%d dagen geleden voor het laatst gezien</string>
+    <string name="openpgp_messages_found">Nieuw OpenPGP-versleuteld bericht gevonden</string>
     <string name="openpgp_key_id">OpenPGP-sleutel-ID</string>
     <string name="omemo_fingerprint">OMEMO-vingerafdruk</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO-vingerafdruk</string>
+    <string name="omemo_fingerprint_selected_message">OMEMO-vingerafdruk (herkomst bericht)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-vingerafdruk (herkomst bericht)</string>
     <string name="other_devices">Andere apparaten</string>
     <string name="trust_omemo_fingerprints">Vertrouw OMEMO-vingerafdrukken</string>
     <string name="fetching_keys">Sleutels ophalen…</string>
@@ -232,13 +240,16 @@
     <string name="add_back">Ook toevoegen</string>
     <string name="contact_has_read_up_to_this_point">%s heeft tot hier gelezen</string>
     <string name="contacts_have_read_up_to_this_point">%s hebben tot hier gelezen</string>
+    <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s en nog %2$d meer hebben tot hier gelezen</string>
     <string name="everyone_has_read_up_to_this_point">Iedereen heeft tot hier gelezen</string>
     <string name="publish">Publiceer</string>
     <string name="touch_to_choose_picture">Tik op avatar om een foto uit de galerij te kiezen</string>
     <string name="publishing">Publiceren…</string>
     <string name="error_publish_avatar_server_reject">De server weigerde de publicatie van je afbeelding</string>
+    <string name="error_publish_avatar_converting">Kon de afbeelding niet converteren</string>
     <string name="error_saving_avatar">Fout bij opslaan van avatar</string>
     <string name="or_long_press_for_default">(Of hou lang ingedrukt om de oorspronkelijke terug te zetten)</string>
+    <string name="error_publish_avatar_no_server_support">Je server ondersteunt de publicatie van avatars niet</string>
     <string name="private_message">gefluisterd</string>
     <string name="private_message_to">naar %s</string>
     <string name="send_private_message_to">Privébericht sturen naar %s</string>
@@ -266,6 +277,7 @@
     <string name="pref_quiet_hours_summary">Tijdens stille uren worden meldingen onderdrukt</string>
     <string name="pref_expert_options_other">Andere</string>
     <string name="pref_autojoin">Synchroniseren met bladwijzers</string>
+    <string name="toast_message_omemo_fingerprint">OMEMO-vingerafdruk gekopieerd naar klembord</string>
     <string name="conference_banned">Je bent verbannen uit dit groepsgesprek</string>
     <string name="conference_members_only">Dit groepsgesprek is enkel voor leden</string>
     <string name="conference_resource_constraint">Bronbeperking</string>
@@ -779,4 +791,38 @@
     <string name="local_server">Lokale server</string>
     <string name="category_about">Over</string>
     <string name="rtp_state_declined_or_busy">Bezig</string>
+    <string name="video_call">Videogesprek</string>
+    <string name="microphone_unavailable">Je microfoon is niet beschikbaar</string>
+    <string name="only_one_call_at_a_time">Je kunt slechts één gesprek tegelijk voeren.</string>
+    <string name="return_to_ongoing_call">Terug naar lopend gesprek</string>
+    <string name="could_not_switch_camera">Kon camera niet wisselen</string>
+    <string name="add_to_favorites">Bovenaan vastzetten</string>
+    <string name="remove_from_favorites">Bovenaan losmaken</string>
+    <string name="could_not_correct_message">Kon bericht niet corrigeren</string>
+    <string name="search_all_conversations">Alle gesprekken</string>
+    <string name="search_this_conversation">Dit gesprek</string>
+    <string name="your_avatar">Je avatar</string>
+    <string name="avatar_for_x">Avatar voor %s</string>
+    <string name="encrypted_with_omemo">Versleuteld met OMEMO</string>
+    <string name="not_encrypted">Onversleuteld</string>
+    <string name="play_audio">Speel audio</string>
+    <string name="pause_audio">Pauzeer audio</string>
+    <plurals name="view_users">
+        <item quantity="one">Bekijk %1$d deelnemer</item>
+        <item quantity="other">Bekijk %1$d deelnemers</item>
+    </plurals>
+    <plurals name="some_messages_could_not_be_delivered">
+        <item quantity="one">Een bericht kon niet worden afgeleverd</item>
+        <item quantity="other">Sommige berichten konden niet worden afgeleverd</item>
+    </plurals>
+    <string name="failed_deliveries">Mislukte afleveringen</string>
+    <string name="more_options">Meer opties</string>
+    <string name="no_application_found">Geen applicatie gevonden</string>
+    <string name="invite_to_app">Nodig uit bij Conversations</string>
+    <string name="unable_to_parse_invite">Kan uitnodiging niet verwerken</string>
+    <string name="no_active_accounts_support_this">Geen actieve accounts ondersteunen deze functie</string>
+    <string name="backup_started_message">De backup is gestart. Je krijgt een bericht als het voltooid is.</string>
+    <string name="unable_to_enable_video">Kan video niet schakelen.</string>
+    <string name="plain_text_document">Onversleuteld document</string>
+    <string name="account_registrations_are_not_supported">Accountregistraties zijn niet ondersteund</string>
     </resources>
