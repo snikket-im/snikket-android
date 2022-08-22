@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.10.10
+
+* Minor bug fixes
+* Restore ability to call out via JMP and other services (Playstore version)
+
 ### Version 2.10.9
 
 * Ask for Bluetooth permissions when making A/V calls (You can reject this if you don’t use Bluetooth headsets)
