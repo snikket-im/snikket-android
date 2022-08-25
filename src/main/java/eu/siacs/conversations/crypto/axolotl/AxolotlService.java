@@ -708,11 +708,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     }
 
     public void deleteOmemoIdentity() {
-        final String node = AxolotlService.PEP_BUNDLES + ":" + getOwnDeviceId();
-        final IqPacket deleteBundleNode = mXmppConnectionService.getIqGenerator().deleteNode(node);
-        mXmppConnectionService.sendIqPacket(account, deleteBundleNode, null);
+        mXmppConnectionService.deletePepNode(
+                account, AxolotlService.PEP_BUNDLES + ":" + getOwnDeviceId());
         final Set<Integer> ownDeviceIds = getOwnDeviceIds();
-        publishDeviceIdsAndRefineAccessModel(ownDeviceIds == null ? Collections.emptySet() : ownDeviceIds);
+        publishDeviceIdsAndRefineAccessModel(
+                ownDeviceIds == null ? Collections.emptySet() : ownDeviceIds);
     }
 
     public List<Jid> getCryptoTargets(Conversation conversation) {

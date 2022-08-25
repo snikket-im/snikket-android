@@ -279,6 +279,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         } else if (Namespace.BOOKMARKS2.equals(node) && account.getJid().asBareJid().equals(from)) {
             account.setBookmarks(Collections.emptyMap());
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleted bookmarks node");
+        } else if (Namespace.AVATAR_METADATA.equals(node) && account.getJid().asBareJid().equals(from)) {
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": deleted avatar metadata node");
         }
     }
 
