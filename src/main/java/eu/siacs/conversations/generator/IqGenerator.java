@@ -136,8 +136,8 @@ public class IqGenerator extends AbstractGenerator {
         return publish(Namespace.NICK, item);
     }
 
-    public IqPacket deleteNode(String node) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public IqPacket deleteNode(final String node) {
+        final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
         final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB_OWNER);
         pubsub.addChild("delete").setAttribute("node", node);
         return packet;

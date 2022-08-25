@@ -2721,6 +2721,9 @@ public class ConversationFragment extends XmppFragment
                 case KICKED:
                     showSnackbar(R.string.conference_kicked, R.string.join, joinMuc);
                     break;
+                case TECHNICAL_PROBLEMS:
+                    showSnackbar(R.string.conference_technical_problems, R.string.try_again, joinMuc);
+                    break;
                 case UNKNOWN:
                     showSnackbar(R.string.conference_unknown_error, R.string.try_again, joinMuc);
                     break;

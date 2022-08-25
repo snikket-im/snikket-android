@@ -56,7 +56,8 @@ public class PresenceParser extends AbstractParser implements
 	}
 
 	private void processConferencePresence(PresencePacket packet, Conversation conversation) {
-		MucOptions mucOptions = conversation.getMucOptions();
+		final Account account = conversation.getAccount();
+		final MucOptions mucOptions = conversation.getMucOptions();
 		final Jid jid = conversation.getAccount().getJid();
 		final Jid from = packet.getFrom();
 		if (!from.isBareJid()) {
@@ -93,7 +94,7 @@ public class PresenceParser extends AbstractParser implements
 							axolotlService.fetchDeviceIds(user.getRealJid());
 						}
 						if (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED) && mucOptions.autoPushConfiguration()) {
-							Log.d(Config.LOGTAG,mucOptions.getAccount().getJid().asBareJid()
+							Log.d(Config.LOGTAG,account.getJid().asBareJid()
 									+": room '"
 									+mucOptions.getConversation().getJid().asBareJid()
 									+"' created. pushing default configuration");
@@ -138,13 +139,24 @@ public class PresenceParser extends AbstractParser implements
 					final Jid alternate = destroy == null ? null : InvalidJid.getNullForInvalid(destroy.getAttributeAsJid("jid"));
 					mucOptions.setError(MucOptions.Error.DESTROYED);
 					if (alternate != null) {
-						Log.d(Config.LOGTAG, conversation.getAccount().getJid().asBareJid() + ": muc destroyed. alternate location " + alternate);
+						Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": muc destroyed. alternate location " + alternate);
 					}
 				} else if (codes.contains(MucOptions.STATUS_CODE_SHUTDOWN) && fullJidMatches) {
 					mucOptions.setError(MucOptions.Error.SHUTDOWN);
 				} else if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE)) {
 					if (codes.contains(MucOptions.STATUS_CODE_TECHNICAL_REASONS)) {
-						mucOptions.setError(MucOptions.Error.UNKNOWN);
+                        final boolean wasOnline = mucOptions.online();
+                        mucOptions.setError(MucOptions.Error.TECHNICAL_PROBLEMS);
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid()
+                                        + ": received status code 333 in room "
+                                        + mucOptions.getConversation().getJid().asBareJid()
+                                        + " online="
+                                        + wasOnline);
+                        if (wasOnline) {
+                            mXmppConnectionService.mucSelfPingAndRejoin(conversation);
+                        }
 					} else if (codes.contains(MucOptions.STATUS_CODE_KICKED)) {
 						mucOptions.setError(MucOptions.Error.KICKED);
 					} else if (codes.contains(MucOptions.STATUS_CODE_BANNED)) {

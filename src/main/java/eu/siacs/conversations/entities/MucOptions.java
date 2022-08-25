@@ -725,6 +725,7 @@ public class MucOptions {
         SHUTDOWN,
         DESTROYED,
         INVALID_NICK,
+        TECHNICAL_PROBLEMS,
         UNKNOWN,
         NON_ANONYMOUS
     }

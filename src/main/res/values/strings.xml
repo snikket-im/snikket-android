@@ -301,6 +301,7 @@
     <string name="conference_kicked">You have been kicked from this group chat</string>
     <string name="conference_shutdown">The group chat was shut down</string>
     <string name="conference_unknown_error">You are no longer in this group chat</string>
+    <string name="conference_technical_problems">You left this group chat due to technical reasons</string>
     <string name="using_account">using account %s</string>
     <string name="hosted_on">hosted on %s</string>
     <string name="checking_x">Checking %s on HTTP host</string>
