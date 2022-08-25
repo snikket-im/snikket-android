@@ -292,8 +292,8 @@
     <string name="title_pref_enable_quiet_hours">Enable quiet hours</string>
     <string name="pref_quiet_hours_summary">Notifications will be silenced during quiet hours</string>
     <string name="pref_expert_options_other">Other</string>
-    <string name="pref_autojoin">Synchronize with bookmarks</string>
-    <string name="pref_autojoin_summary">Join group chats automatically if the bookmark says so</string>
+    <string name="pref_autojoin">Synchronize bookmarks</string>
+    <string name="pref_autojoin_summary">Set “autojoin” flag when entering or leaving a MUC and react to modifications made by other clients.</string>
     <string name="toast_message_omemo_fingerprint">OMEMO fingerprint copied to clipboard</string>
     <string name="conference_banned">You are banned from this group chat</string>
     <string name="conference_members_only">This group chat is members only</string>
