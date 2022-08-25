@@ -297,8 +297,6 @@
     <string name="title_pref_enable_quiet_hours">Habilitar horario de silencio</string>
     <string name="pref_quiet_hours_summary">Las notificaciones serán silenciadas durante el horario de silencio</string>
     <string name="pref_expert_options_other">Otros</string>
-    <string name="pref_autojoin">Sincronizar marcadores</string>
-    <string name="pref_autojoin_summary">Unirse a conversaciones en grupo automáticamente si el marcador así lo indica</string>
     <string name="toast_message_omemo_fingerprint">Huella digital OMEMO copiada al portapapeles</string>
     <string name="conference_banned">Tu entrada a esta conversación en grupo ha sido prohibida</string>
     <string name="conference_members_only">Esta conversación en grupo es solo para miembros</string>
@@ -990,5 +988,4 @@
     <string name="account_registrations_are_not_supported">Los registros de cuenta no están soportados</string>
     <string name="no_xmpp_adddress_found">Dirección XMPP no encontrada</string>
     <string name="account_status_temporary_auth_failure">Fallo temporal de autenticación</string>
-
-</resources>
+    </resources>

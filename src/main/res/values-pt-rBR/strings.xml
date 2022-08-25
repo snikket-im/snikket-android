@@ -297,8 +297,6 @@
     <string name="title_pref_enable_quiet_hours">Habilitar horário de sossego</string>
     <string name="pref_quiet_hours_summary">As notificações serão silenciadas no horário de sossego.</string>
     <string name="pref_expert_options_other">Outras</string>
-    <string name="pref_autojoin">Sincronizar com os favoritos</string>
-    <string name="pref_autojoin_summary">Entre nas conversas em grupo automaticamente caso isso esteja definido no favorito</string>
     <string name="toast_message_omemo_fingerprint">Impressão digital OMEMO copiada para a área de transferência</string>
     <string name="conference_banned">Você foi banido desta conversa em grupo</string>
     <string name="conference_members_only">Somente membros podem entrar nessa conversa em grupo</string>
@@ -991,5 +989,4 @@
     <string name="account_registrations_are_not_supported">O registro de contas não está ativo</string>
     <string name="no_xmpp_adddress_found">Não foi encontrado nenhum endereço XMPP</string>
     <string name="account_status_temporary_auth_failure">Falha temporária na autenticação</string>
-
-</resources>
+    </resources>

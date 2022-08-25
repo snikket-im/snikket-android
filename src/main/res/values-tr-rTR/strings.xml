@@ -294,8 +294,6 @@
     <string name="title_pref_enable_quiet_hours">Sessiz saatleri etkinleştir</string>
     <string name="pref_quiet_hours_summary">Bildirimler sessiz saatler boyunca sessize alınacaktır</string>
     <string name="pref_expert_options_other">Diğer</string>
-    <string name="pref_autojoin">Yer imleri ile senkronize et.</string>
-    <string name="pref_autojoin_summary">Yer imleri öyle belirtmişse grup konuşmalarına otomatik olarak katıl.</string>
     <string name="toast_message_omemo_fingerprint">OMEMO parmak izi panoya kopyalandı</string>
     <string name="conference_banned">Bu grup konuşmasından menedildiniz</string>
     <string name="conference_members_only">Bu grup konuşması yalnızca üyeleri içindir</string>

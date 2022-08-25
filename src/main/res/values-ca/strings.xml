@@ -284,8 +284,6 @@
     <string name="title_pref_enable_quiet_hours">Habilitar hores de silenci</string>
     <string name="pref_quiet_hours_summary">Les notificacions seràn silenciades a les hores de silenci</string>
     <string name="pref_expert_options_other">Altres</string>
-    <string name="pref_autojoin">Sincronitzar als marcadors</string>
-    <string name="pref_autojoin_summary">Unir-se als xats de grup automàticament si el marcador l\'indica</string>
     <string name="toast_message_omemo_fingerprint">Empremta digital de OMEMO copiada en el portapapers</string>
     <string name="conference_banned">Estàs prohibit en aquest xat de grup</string>
     <string name="conference_members_only">Aquest xat en grup només és de membres</string>

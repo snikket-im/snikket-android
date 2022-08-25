@@ -300,8 +300,6 @@
     <string name="title_pref_enable_quiet_hours">Включить режим «тихих часов»</string>
     <string name="pref_quiet_hours_summary">Уведомления будут отключены во время «тихих часов»</string>
     <string name="pref_expert_options_other">Другие</string>
-    <string name="pref_autojoin">Синхронизировать с закладками</string>
-    <string name="pref_autojoin_summary">Автоматически заходить в конференции при установленном флаге в настройках закладки</string>
     <string name="toast_message_omemo_fingerprint">OMEMO-отпечаток скопирован в буфер обмена</string>
     <string name="conference_banned">Вы заблокированы в этой конференции</string>
     <string name="conference_members_only">Эта конференция — только для участников</string>

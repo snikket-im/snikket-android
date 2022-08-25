@@ -294,8 +294,6 @@
     <string name="title_pref_enable_quiet_hours">Aktiver stilletid</string>
     <string name="pref_quiet_hours_summary">Notifikationer vil være lydløs under stilletid</string>
     <string name="pref_expert_options_other">Andre</string>
-    <string name="pref_autojoin">Synkroniser med bogmærker</string>
-    <string name="pref_autojoin_summary">Deltag automatisk i gruppechat hvis bogmærket tillader det</string>
     <string name="toast_message_omemo_fingerprint">OMEMO-fingeraftryk kopieret til udklipsholder</string>
     <string name="conference_banned">Du er udelukket fra denne gruppechat</string>
     <string name="conference_members_only">Denne gruppechat er kun for medlemmer</string>
@@ -417,6 +415,7 @@
     <string name="video">video</string>
     <string name="image">billede</string>
     <string name="vector_graphic">vektorgrafik</string>
+    <string name="multimedia_file">multimediefil</string>
     <string name="pdf_document">PDF dokument</string>
     <string name="apk">Android App</string>
     <string name="vcard">Kontakt</string>
@@ -976,4 +975,5 @@
     <string name="plain_text_document">Ren tekstdokument</string>
     <string name="account_registrations_are_not_supported">Kontoregistrering er ikke understøttet</string>
     <string name="no_xmpp_adddress_found">Ingen XMPP-adresse fundet</string>
+    <string name="account_status_temporary_auth_failure">Midlertidig godkendelsesfejl</string>
     </resources>

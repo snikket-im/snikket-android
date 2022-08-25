@@ -300,8 +300,6 @@
     <string name="title_pref_enable_quiet_hours">Włącz godziny ciszy</string>
     <string name="pref_quiet_hours_summary">Powiadomienia będą wyciszone w wybranym przedziale czasu</string>
     <string name="pref_expert_options_other">Inne</string>
-    <string name="pref_autojoin">Synchronizuj z zakładkami</string>
-    <string name="pref_autojoin_summary">Dołączaj do rozmów grupowych automatycznie jeśli na to wskazuje zakładka</string>
     <string name="toast_message_omemo_fingerprint">Odcisk klucza OMEMO został skopiowany do schowka</string>
     <string name="conference_banned">Zbanowany</string>
     <string name="conference_members_only">Konferencja tylko dla użytkowników</string>
@@ -1005,5 +1003,4 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="account_registrations_are_not_supported">Rejestracja kont nie jest wspierana</string>
     <string name="no_xmpp_adddress_found">Nie znaleziono adresu XMPP</string>
     <string name="account_status_temporary_auth_failure">Tymczasowy błąd uwierzytelniania</string>
-
-</resources>
+    </resources>

@@ -294,8 +294,6 @@
     <string name="title_pref_enable_quiet_hours">Включване на тихите часове</string>
     <string name="pref_quiet_hours_summary">Известията ще бъдат заглушени по време на тихите часове</string>
     <string name="pref_expert_options_other">Други</string>
-    <string name="pref_autojoin">Синхронизиране с отметките</string>
-    <string name="pref_autojoin_summary">Автоматично присъединяване към групови разговори, ако такава е настройката на отметката</string>
     <string name="toast_message_omemo_fingerprint">Отпечатъкът OMEMO е копиран</string>
     <string name="conference_banned">Достъпът Ви до този групов разговор е забранен</string>
     <string name="conference_members_only">Този групов разговор е само за членове</string>

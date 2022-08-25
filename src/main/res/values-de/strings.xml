@@ -294,8 +294,6 @@
     <string name="title_pref_enable_quiet_hours">Ruhige Stunden aktivieren</string>
     <string name="pref_quiet_hours_summary">Benachrichtigungen sind während der ruhigen Stunden stumm.</string>
     <string name="pref_expert_options_other">Sonstiges</string>
-    <string name="pref_autojoin">Mit Lesezeichen synchronisieren</string>
-    <string name="pref_autojoin_summary">Gruppenchats automatisch beitreten, wenn das Lesezeichen dies angibt</string>
     <string name="toast_message_omemo_fingerprint">OMEMO-Fingerabdruck in die Zwischenablage kopiert</string>
     <string name="conference_banned">Du wurdest aus diesem Gruppenchat ausgeschlossen</string>
     <string name="conference_members_only">Dieser Gruppenchat ist nur für Mitglieder</string>
@@ -978,5 +976,4 @@
     <string name="account_registrations_are_not_supported">Kontoregistrierungen werden nicht unterstützt</string>
     <string name="no_xmpp_adddress_found">Keine XMPP-Adresse gefunden</string>
     <string name="account_status_temporary_auth_failure">Temporärer Authentifizierungsfehler</string>
-
-</resources>
+    </resources>

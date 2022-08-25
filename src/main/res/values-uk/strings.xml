@@ -276,8 +276,6 @@
     <string name="title_pref_enable_quiet_hours">Увімкнути години тиші</string>
     <string name="pref_quiet_hours_summary">Сповіщення не звучатимуть під час годин тиші</string>
     <string name="pref_expert_options_other">Інше</string>
-    <string name="pref_autojoin">Синхронізовувати з закладками</string>
-    <string name="pref_autojoin_summary">Приєднуватися до груп і полишати їх відповідно до опції автоматичного приєднання, вибраної в закладках.</string>
     <string name="toast_message_omemo_fingerprint">Цифровий підпис OMEMO скопійовано</string>
     <string name="conference_banned">Вам заборонили доступ до цієї групи</string>
     <string name="conference_members_only">Ця група лише для учасників</string>

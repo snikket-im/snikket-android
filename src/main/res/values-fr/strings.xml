@@ -295,8 +295,6 @@
     <string name="title_pref_enable_quiet_hours">Activer les heures tranquilles</string>
     <string name="pref_quiet_hours_summary">Les notifications seront muettes pendant les heures tranquilles.</string>
     <string name="pref_expert_options_other">Autres</string>
-    <string name="pref_autojoin">Synchroniser avec les signets</string>
-    <string name="pref_autojoin_summary">Rejoindre automatiquement les groupes marqués en favoris</string>
     <string name="toast_message_omemo_fingerprint">Empreinte OMEMO copiée dans le presse-papier</string>
     <string name="conference_banned">Vous êtes bannis de ce groupe</string>
     <string name="conference_members_only">Ce groupe est réservé aux membres</string>

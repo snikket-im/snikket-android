@@ -291,8 +291,6 @@
     <string name="title_pref_enable_quiet_hours">启用静默时间段</string>
     <string name="pref_quiet_hours_summary">在静默时间段内通知将保持静音</string>
     <string name="pref_expert_options_other">其他</string>
-    <string name="pref_autojoin">与书签同步</string>
-    <string name="pref_autojoin_summary">根据书签标记自动加入群聊。</string>
     <string name="toast_message_omemo_fingerprint">OMEMO指纹已拷贝到剪贴板</string>
     <string name="conference_banned">您被封禁了</string>
     <string name="conference_members_only">这个群聊只允许成员聊天</string>
@@ -965,5 +963,4 @@
     <string name="account_registrations_are_not_supported">不支持注册账户</string>
     <string name="no_xmpp_adddress_found">未找到 XMPP 地址</string>
     <string name="account_status_temporary_auth_failure">临时认证失败</string>
-
-</resources>
+    </resources>

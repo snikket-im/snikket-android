@@ -276,7 +276,6 @@
     <string name="title_pref_enable_quiet_hours">Stille uren inschakelen</string>
     <string name="pref_quiet_hours_summary">Tijdens stille uren worden meldingen onderdrukt</string>
     <string name="pref_expert_options_other">Andere</string>
-    <string name="pref_autojoin">Synchroniseren met bladwijzers</string>
     <string name="toast_message_omemo_fingerprint">OMEMO-vingerafdruk gekopieerd naar klembord</string>
     <string name="conference_banned">Je bent verbannen uit dit groepsgesprek</string>
     <string name="conference_members_only">Dit groepsgesprek is enkel voor leden</string>

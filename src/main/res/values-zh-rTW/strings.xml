@@ -248,7 +248,6 @@
     <string name="title_pref_enable_quiet_hours">啟用靜默時間段</string>
     <string name="pref_quiet_hours_summary">在靜默時間段內通知將保持靜音</string>
     <string name="pref_expert_options_other">其他</string>
-    <string name="pref_autojoin">同步處理書籤</string>
     <string name="using_account">用帳戶  %s</string>
     <string name="checking_x">正在 HTTP 伺服器中檢查 %s</string>
     <string name="not_connected_try_again">你沒有連接。請稍後重試</string>

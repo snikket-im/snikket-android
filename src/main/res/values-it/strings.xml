@@ -297,8 +297,6 @@
     <string name="title_pref_enable_quiet_hours">Attiva ore di quiete</string>
     <string name="pref_quiet_hours_summary">Le notifiche verranno silenziate durante le ore di quiete</string>
     <string name="pref_expert_options_other">Altro</string>
-    <string name="pref_autojoin">Sincronizza con i segnalibri</string>
-    <string name="pref_autojoin_summary">Entra nelle chat di gruppo automaticamente se il segnalibro dice così</string>
     <string name="toast_message_omemo_fingerprint">Impronta OMEMO copiata negli appunti</string>
     <string name="conference_banned">Sei stato bandito da questa chat di gruppo</string>
     <string name="conference_members_only">Questa chat di gruppo è solo per membri</string>
@@ -990,5 +988,4 @@
     <string name="account_registrations_are_not_supported">Le registrazioni di profili non sono supportate</string>
     <string name="no_xmpp_adddress_found">Nessun indirizzo XMPP trovato</string>
     <string name="account_status_temporary_auth_failure">Errore di autenticazione temporaneo</string>
-
-</resources>
+    </resources>

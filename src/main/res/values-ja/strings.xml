@@ -291,8 +291,6 @@
     <string name="title_pref_enable_quiet_hours">消音時間を有効化</string>
     <string name="pref_quiet_hours_summary">消音時間の間、通知は無音になります</string>
     <string name="pref_expert_options_other">その他</string>
-    <string name="pref_autojoin">ブックマークと同期</string>
-    <string name="pref_autojoin_summary">ブックマークに従って、グループチャットに自動で参加します。</string>
     <string name="toast_message_omemo_fingerprint">OMEMO フィンガープリントをクリップボードにコピーしました</string>
     <string name="conference_banned">このグループチャットから出禁にされています</string>
     <string name="conference_members_only">このグループチャットはメンバー制です</string>
@@ -958,5 +956,4 @@
     <string name="account_registrations_are_not_supported">アカウント登録はサポートされていません</string>
     <string name="no_xmpp_adddress_found">XMPPアドレスがみつかりません</string>
     <string name="account_status_temporary_auth_failure">一時的な認証失敗</string>
-
-</resources>
+    </resources>

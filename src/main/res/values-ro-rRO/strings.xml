@@ -297,8 +297,6 @@
     <string name="title_pref_enable_quiet_hours">Activează orar de liniște</string>
     <string name="pref_quiet_hours_summary">Notificările vor fi reduse la tăcere în timpul orelor de liniște</string>
     <string name="pref_expert_options_other">Altele</string>
-    <string name="pref_autojoin">Sincronizează cu semnele de carte</string>
-    <string name="pref_autojoin_summary">Alătură-te discuției de grup în mod automat dacă semnul de carte este setat așa</string>
     <string name="toast_message_omemo_fingerprint">Amprentă OMEMO copiată în memorie</string>
     <string name="conference_banned">V-a fost interzis accesul la această discuție de grup</string>
     <string name="conference_members_only">Această discuție de grup este rezervată membrilor</string>
@@ -991,5 +989,4 @@
     <string name="account_registrations_are_not_supported">Nu este posibilă înregistrarea unui cont</string>
     <string name="no_xmpp_adddress_found">Nu a fost găsită o adresă XMPP</string>
     <string name="account_status_temporary_auth_failure">Eroare temporară de autentificare</string>
-
-</resources>
+    </resources>

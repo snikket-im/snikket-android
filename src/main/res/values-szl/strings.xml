@@ -316,8 +316,6 @@
     <string name="title_pref_enable_quiet_hours">Włōncz godziny cisze</string>
     <string name="pref_quiet_hours_summary">Powiadōmiynia bydōm wyciszōne we ôbranych godzinach</string>
     <string name="pref_expert_options_other">Inksze</string>
-    <string name="pref_autojoin">Synchrōnizuj ze zokłodkami</string>
-    <string name="pref_autojoin_summary">Przistympuj do godek grupowych autōmatycznie, jeźli tak pado zokłodka</string>
     <string name="toast_message_omemo_fingerprint">Ôdcisk klucza OMEMO bōł skopiowany do skrytki</string>
     <string name="conference_banned">Ôd tyj grupy mosz wykluczynie</string>
     <string name="conference_members_only">Kōnferyncyjo ino dlo czōnkōw</string>

@@ -294,8 +294,6 @@
     <string name="title_pref_enable_quiet_hours">Aktivera tysta timmar</string>
     <string name="pref_quiet_hours_summary">Notifieringar kommer vara tysta under tysta timmar</string>
     <string name="pref_expert_options_other">Annat</string>
-    <string name="pref_autojoin">Synkronisera med bokmärken</string>
-    <string name="pref_autojoin_summary">Gå med i gruppchattar automatiskt om bokmärket säger det</string>
     <string name="toast_message_omemo_fingerprint">OMEMO-fingeravtryck kopierat till urklipp</string>
     <string name="conference_banned">Du är avstängd från denna gruppchatt</string>
     <string name="conference_members_only">Denna gruppchatt är endast för medlemmar</string>

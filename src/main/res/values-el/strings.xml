@@ -294,8 +294,6 @@
     <string name="title_pref_enable_quiet_hours">Ενεργοποίηση ωρών ησυχίας</string>
     <string name="pref_quiet_hours_summary">Οι ειδοποιήσεις θα σιγαστούν κατά τις ώρες ησυχίας</string>
     <string name="pref_expert_options_other">Άλλο</string>
-    <string name="pref_autojoin">Συγχρονισμός με σελιδοδείκτες</string>
-    <string name="pref_autojoin_summary">Συμμετοχή σε ομαδικές συζητήσεις αυτόματα αν ο σελιδοδείκτης αναφέρει αυτόματη συμμετοχή</string>
     <string name="toast_message_omemo_fingerprint">Το αποτύπωμα OMEMO αντιγράφηκε στο πρόχειρο</string>
     <string name="conference_banned">Είστε αποκλεισμένοι από αυτή την ομαδική συζήτηση</string>
     <string name="conference_members_only">Αυτή η ομαδική συζήτηση είναι μόνο για μέλη</string>
