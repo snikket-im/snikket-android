@@ -506,6 +506,10 @@ public class XmppConnection implements Runnable {
                             account.getJid().asBareJid()
                                     + ": SASL 2.0 authorization identifier was "
                                     + authorizationIdentifier);
+                    final Element resumed = success.findChild("resumed", "urn:xmpp:sm:3");
+                    if (resumed != null && streamId != null) {
+                        processResumed(resumed);
+                    }
                 }
                 if (version == SaslMechanism.Version.SASL) {
                     tagReader.reset();
@@ -579,7 +583,7 @@ public class XmppConnection implements Runnable {
                 tagWriter.writeElement(response);
             } else if (nextTag.isStart("enabled")) {
                 final Element enabled = tagReader.readElement(nextTag);
-                if ("true".equals(enabled.getAttribute("resume"))) {
+                if (enabled.getAttributeAsBoolean("resume")) {
                     this.streamId = enabled.getAttribute("id");
                     Log.d(
                             Config.LOGTAG,
@@ -600,57 +604,8 @@ public class XmppConnection implements Runnable {
                 final RequestPacket r = new RequestPacket(smVersion);
                 tagWriter.writeStanzaAsync(r);
             } else if (nextTag.isStart("resumed")) {
-                this.inSmacksSession = true;
-                this.isBound = true;
-                this.tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
-                lastPacketReceived = SystemClock.elapsedRealtime();
                 final Element resumed = tagReader.readElement(nextTag);
-                final String h = resumed.getAttribute("h");
-                try {
-                    ArrayList<AbstractAcknowledgeableStanza> failedStanzas = new ArrayList<>();
-                    final boolean acknowledgedMessages;
-                    synchronized (this.mStanzaQueue) {
-                        final int serverCount = Integer.parseInt(h);
-                        if (serverCount < stanzasSent) {
-                            Log.d(
-                                    Config.LOGTAG,
-                                    account.getJid().asBareJid().toString()
-                                            + ": session resumed with lost packages");
-                            stanzasSent = serverCount;
-                        } else {
-                            Log.d(
-                                    Config.LOGTAG,
-                                    account.getJid().asBareJid().toString() + ": session resumed");
-                        }
-                        acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
-                        for (int i = 0; i < this.mStanzaQueue.size(); ++i) {
-                            failedStanzas.add(mStanzaQueue.valueAt(i));
-                        }
-                        mStanzaQueue.clear();
-                    }
-                    if (acknowledgedMessages) {
-                        mXmppConnectionService.updateConversationUi();
-                    }
-                    Log.d(Config.LOGTAG, "resending " + failedStanzas.size() + " stanzas");
-                    for (AbstractAcknowledgeableStanza packet : failedStanzas) {
-                        if (packet instanceof MessagePacket) {
-                            MessagePacket message = (MessagePacket) packet;
-                            mXmppConnectionService.markMessage(
-                                    account,
-                                    message.getTo().asBareJid(),
-                                    message.getId(),
-                                    Message.STATUS_UNSEND);
-                        }
-                        sendPacket(packet);
-                    }
-                } catch (final NumberFormatException ignored) {
-                }
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid()
-                                + ": online with resource "
-                                + account.getResource());
-                changeStatus(Account.State.ONLINE);
+                processResumed(resumed);
             } else if (nextTag.isStart("r")) {
                 tagReader.readElement(nextTag);
                 if (Config.EXTENDED_SM_LOGGING) {
@@ -737,6 +692,59 @@ public class XmppConnection implements Runnable {
         if (nextTag != null && nextTag.isEnd("stream")) {
             streamCountDownLatch.countDown();
         }
+    }
+
+    private void processResumed(final Element resumed) {
+        this.inSmacksSession = true;
+        this.isBound = true;
+        this.tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
+        lastPacketReceived = SystemClock.elapsedRealtime();
+        final String h = resumed.getAttribute("h");
+        try {
+            ArrayList<AbstractAcknowledgeableStanza> failedStanzas = new ArrayList<>();
+            final boolean acknowledgedMessages;
+            synchronized (this.mStanzaQueue) {
+                final int serverCount = Integer.parseInt(h);
+                if (serverCount < stanzasSent) {
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid() + ": session resumed with lost packages");
+                    stanzasSent = serverCount;
+                } else {
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": session resumed");
+                }
+                acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
+                for (int i = 0; i < this.mStanzaQueue.size(); ++i) {
+                    failedStanzas.add(mStanzaQueue.valueAt(i));
+                }
+                mStanzaQueue.clear();
+            }
+            if (acknowledgedMessages) {
+                mXmppConnectionService.updateConversationUi();
+            }
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": resending "
+                            + failedStanzas.size()
+                            + " stanzas");
+            for (AbstractAcknowledgeableStanza packet : failedStanzas) {
+                if (packet instanceof MessagePacket) {
+                    MessagePacket message = (MessagePacket) packet;
+                    mXmppConnectionService.markMessage(
+                            account,
+                            message.getTo().asBareJid(),
+                            message.getId(),
+                            Message.STATUS_UNSEND);
+                }
+                sendPacket(packet);
+            }
+        } catch (final NumberFormatException ignored) {
+        }
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid() + ": online with resource " + account.getResource());
+        changeStatus(Account.State.ONLINE);
     }
 
     private boolean acknowledgeStanzaUpTo(int serverCount) {
@@ -986,6 +994,12 @@ public class XmppConnection implements Runnable {
                                 + XmlHelper.printElementNames(this.streamFeatures));
                 throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
             }
+        } else {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": received NOP stream features"
+                            + this.streamFeatures);
         }
     }
 
@@ -1030,7 +1044,14 @@ public class XmppConnection implements Runnable {
             if (!Strings.isNullOrEmpty(firstMessage)) {
                 authenticate.addChild("initial-response").setContent(firstMessage);
             }
-            // TODO place to add extensions
+            final Element inline = this.streamFeatures.findChild("inline", Namespace.SASL_2);
+            final boolean inlineStreamManagement = inline != null && inline.hasChild("sm", "urn:xmpp:sm:3");
+            if (inlineStreamManagement && streamId != null) {
+                final ResumePacket resume = new ResumePacket(this.streamId, stanzasReceived, smVersion);
+                this.mSmCatchupMessageCounter.set(0);
+                this.mWaitingForSmCatchup.set(true);
+                authenticate.addChild(resume);
+            }
         } else {
             throw new AssertionError("Missing implementation for " + version);
         }
