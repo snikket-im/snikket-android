@@ -1,8 +1,12 @@
 package eu.siacs.conversations.crypto.sasl;
 
+import com.google.common.base.Strings;
+
 import java.security.SecureRandom;
 
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.TagWriter;
 
 public abstract class SaslMechanism {
@@ -68,6 +72,17 @@ public abstract class SaslMechanism {
     }
 
     public enum Version {
-        SASL, SASL_2
+        SASL, SASL_2;
+
+        public static Version of(final Element element) {
+            switch ( Strings.nullToEmpty(element.getNamespace())) {
+                case Namespace.SASL:
+                    return SASL;
+                case Namespace.SASL_2:
+                    return SASL_2;
+                default:
+                    throw new IllegalArgumentException("Unrecognized SASL namespace");
+            }
+        }
     }
 }
