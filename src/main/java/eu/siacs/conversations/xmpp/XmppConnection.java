@@ -848,40 +848,64 @@ public class XmppConnection implements Runnable {
 
     private void processStreamFeatures(final Tag currentTag) throws IOException {
         this.streamFeatures = tagReader.readElement(currentTag);
-        final boolean isSecure = features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion();
+        Log.d(Config.LOGTAG, this.streamFeatures.toString());
+        final boolean isSecure =
+                features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion();
         final boolean needsBinding = !isBound && !account.isOptionSet(Account.OPTION_REGISTER);
-        if (this.streamFeatures.hasChild("starttls") && !features.encryptionEnabled) {
+        if (this.streamFeatures.hasChild("starttls", Namespace.TLS)
+                && !features.encryptionEnabled) {
             sendStartTLS();
-        } else if (this.streamFeatures.hasChild("register") && account.isOptionSet(Account.OPTION_REGISTER)) {
+        } else if (this.streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
+                && account.isOptionSet(Account.OPTION_REGISTER)) {
             if (isSecure) {
                 register();
             } else {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to find STARTTLS for registration process " + XmlHelper.printElementNames(this.streamFeatures));
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": unable to find STARTTLS for registration process "
+                                + XmlHelper.printElementNames(this.streamFeatures));
                 throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
             }
-        } else if (!this.streamFeatures.hasChild("register") && account.isOptionSet(Account.OPTION_REGISTER)) {
+        } else if (!this.streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
+                && account.isOptionSet(Account.OPTION_REGISTER)) {
             throw new StateChangingException(Account.State.REGISTRATION_NOT_SUPPORTED);
-        } else if (this.streamFeatures.hasChild("mechanisms") && shouldAuthenticate && isSecure) {
-            authenticate();
-        } else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:" + smVersion) && streamId != null) {
+        } else if (this.streamFeatures.hasChild("mechanisms", Namespace.SASL_2)
+                && shouldAuthenticate
+                && isSecure) {
+            authenticate(SaslMechanism.Version.SASL_2);
+        } else if (this.streamFeatures.hasChild("mechanisms", Namespace.SASL)
+                && shouldAuthenticate
+                && isSecure) {
+            authenticate(SaslMechanism.Version.SASL);
+        } else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:" + smVersion)
+                && streamId != null) {
             if (Config.EXTENDED_SM_LOGGING) {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resuming after stanza #" + stanzasReceived);
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": resuming after stanza #"
+                                + stanzasReceived);
             }
             final ResumePacket resume = new ResumePacket(this.streamId, stanzasReceived, smVersion);
             this.mSmCatchupMessageCounter.set(0);
             this.mWaitingForSmCatchup.set(true);
             this.tagWriter.writeStanzaAsync(resume);
         } else if (needsBinding) {
-            if (this.streamFeatures.hasChild("bind") && isSecure) {
+            if (this.streamFeatures.hasChild("bind", Namespace.BIND) && isSecure) {
                 sendBindRequest();
             } else {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to find bind feature " + XmlHelper.printElementNames(this.streamFeatures));
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": unable to find bind feature "
+                                + XmlHelper.printElementNames(this.streamFeatures));
                 throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
             }
         }
     }
 
-    private void authenticate() throws IOException {
+    private void authenticate(final SaslMechanism.Version version) throws IOException {
         final List<String> mechanisms = extractMechanisms(streamFeatures.findChild("mechanisms"));
         final Element auth = new Element("auth", Namespace.SASL);
         if (mechanisms.contains(External.MECHANISM) && account.getPrivateKeyAlias() != null) {

@@ -66,4 +66,8 @@ public abstract class SaslMechanism {
     public String getResponse(final String challenge) throws AuthenticationException {
         return "";
     }
+
+    public enum Version {
+        SASL, SASL_2
+    }
 }
