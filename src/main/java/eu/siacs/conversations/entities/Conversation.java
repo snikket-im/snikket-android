@@ -241,11 +241,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         }
     }
 
-    public void findUnreadMessages(OnMessageFound onMessageFound) {
+    public void findUnreadMessagesAndCalls(OnMessageFound onMessageFound) {
         final ArrayList<Message> results = new ArrayList<>();
         synchronized (this.messages) {
             for (final Message message : this.messages) {
-                if (message.isRead() || message.getType() == Message.TYPE_RTP_SESSION) {
+                if (message.isRead()) {
                     continue;
                 }
                 results.add(message);

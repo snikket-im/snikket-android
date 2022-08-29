@@ -28,6 +28,7 @@ images = {
 	'conversations_mono.svg' => ['conversations/ic_notification', 24],
     'quicksy_mono.svg' => ['quicksy/ic_notification', 24],
     'flip_camera_android-black-24dp.svg' => ['ic_flip_camera_android_black_24dp', 24],
+    'ic_missed_call_notification.svg' => ['ic_missed_call_notification', 24],
 	'ic_send_text_offline.svg' => ['ic_send_text_offline', 36],
 	'ic_send_text_offline_white.svg' => ['ic_send_text_offline_white', 36],
 	'ic_send_text_online.svg' => ['ic_send_text_online', 36],
@@ -119,7 +120,7 @@ images.each do |source_filename, settings|
         else
             path = "../src/#{output_parts[0]}/res/drawable-#{resolution}/#{output_parts[1]}.png"
         end
-		execute_cmd "#{inkscape} #{source_filename} -C -w #{width} -h #{height} -o #{path}"
+		execute_cmd "#{inkscape} #{source_filename} -C -w #{width} -h #{height} -e #{path}"
 
 		top = []
 		right = []

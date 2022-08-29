@@ -1110,6 +1110,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 rejectCallFromSessionInitiate();
                 break;
         }
+        xmppConnectionService.getNotificationService().pushMissedCallNow(message);
     }
 
     private void cancelRingingTimeout() {
@@ -1187,6 +1188,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     this.state == State.PROCEED ? State.RETRACTED_RACED : State.RETRACTED;
             if (transition(target)) {
                 xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+                xmppConnectionService.getNotificationService().pushMissedCallNow(message);
                 Log.d(
                         Config.LOGTAG,
                         id.account.getJid().asBareJid()

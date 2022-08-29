@@ -767,6 +767,7 @@
     <string name="messages_channel_name">Messages</string>
     <string name="incoming_calls_channel_name">Incoming calls</string>
     <string name="ongoing_calls_channel_name">Ongoing calls</string>
+    <string name="missed_calls_channel_name">Missed calls</string>
     <string name="silent_messages_channel_name">Silent messages</string>
     <string name="silent_messages_channel_description">This notification group is used to display notifications that should not trigger any sound. For example when being active on another device (Grace Period).</string>
     <string name="delivery_failed_channel_name">Failed deliveries</string>
@@ -934,6 +935,10 @@
     <string name="outgoing_call">Outgoing call</string>
     <string name="outgoing_call_duration">Outgoing call · %s</string>
     <string name="missed_call">Missed call</string>
+    <string name="missed_call_from_x">Missed call from %s</string>
+    <string name="n_missed_calls_from_x">%1$d missed calls from %2$s</string>
+    <string name="n_missed_calls">%d missed calls</string>
+    <string name="n_missed_calls_from_m_contacts">%1$d missed calls from %2$d contacts</string>
     <string name="audio_call">Audio call</string>
     <string name="video_call">Video call</string>
     <string name="help">Help</string>
