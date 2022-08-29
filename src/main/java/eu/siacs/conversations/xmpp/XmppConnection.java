@@ -507,8 +507,11 @@ public class XmppConnection implements Runnable {
                                     + ": SASL 2.0 authorization identifier was "
                                     + authorizationIdentifier);
                     final Element resumed = success.findChild("resumed", "urn:xmpp:sm:3");
+                    final Element failed = success.findChild("failed", "urn:xmpp:sm:3");
                     if (resumed != null && streamId != null) {
                         processResumed(resumed);
+                    } else if (failed != null) {
+                        processFailed(failed, false); // wait for new stream features
                     }
                 }
                 if (version == SaslMechanism.Version.SASL) {
@@ -660,26 +663,8 @@ public class XmppConnection implements Runnable {
                                     + ": server send ack without sequence number");
                 }
             } else if (nextTag.isStart("failed")) {
-                Element failed = tagReader.readElement(nextTag);
-                try {
-                    final int serverCount = Integer.parseInt(failed.getAttribute("h"));
-                    Log.d(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid()
-                                    + ": resumption failed but server acknowledged stanza #"
-                                    + serverCount);
-                    final boolean acknowledgedMessages;
-                    synchronized (this.mStanzaQueue) {
-                        acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
-                    }
-                    if (acknowledgedMessages) {
-                        mXmppConnectionService.updateConversationUi();
-                    }
-                } catch (NumberFormatException | NullPointerException e) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resumption failed");
-                }
-                resetStreamId();
-                sendBindRequest();
+                final Element failed = tagReader.readElement(nextTag);
+                processFailed(failed, true);
             } else if (nextTag.isStart("iq")) {
                 processIq(nextTag);
             } else if (nextTag.isStart("message")) {
@@ -749,6 +734,36 @@ public class XmppConnection implements Runnable {
                 Config.LOGTAG,
                 account.getJid().asBareJid() + ": online with resource " + account.getResource());
         changeStatus(Account.State.ONLINE);
+    }
+
+    private void processFailed(final Element failed, final boolean sendBindRequest) {
+        final int serverCount;
+        try {
+            serverCount = Integer.parseInt(failed.getAttribute("h"));
+        } catch (final NumberFormatException | NullPointerException e) {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resumption failed");
+            resetStreamId();
+            if (sendBindRequest) {
+                sendBindRequest();
+            }
+            return;
+        }
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid()
+                        + ": resumption failed but server acknowledged stanza #"
+                        + serverCount);
+        final boolean acknowledgedMessages;
+        synchronized (this.mStanzaQueue) {
+            acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
+        }
+        if (acknowledgedMessages) {
+            mXmppConnectionService.updateConversationUi();
+        }
+        resetStreamId();
+        if (sendBindRequest) {
+            sendBindRequest();
+        }
     }
 
     private boolean acknowledgeStanzaUpTo(int serverCount) {
