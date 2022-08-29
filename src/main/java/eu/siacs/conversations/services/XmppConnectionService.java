@@ -1958,7 +1958,7 @@ public class XmppConnectionService extends Service {
                         restoreMessages(conversation);
                     }
                 }
-                mNotificationService.finishBacklog(false);
+                mNotificationService.finishBacklog();
                 restoredFromDatabaseLatch.countDown();
                 final long diffMessageRestore = SystemClock.elapsedRealtime() - startMessageRestore;
                 Log.d(Config.LOGTAG, "finished restoring messages in " + diffMessageRestore + "ms");
