@@ -694,52 +694,56 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private void processResumed(final Element resumed) {
+    private void processResumed(final Element resumed) throws StateChangingException {
         this.inSmacksSession = true;
         this.isBound = true;
         this.tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
         lastPacketReceived = SystemClock.elapsedRealtime();
         final String h = resumed.getAttribute("h");
+        if (h == null) {
+            resetStreamId();
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
+        final int serverCount;
         try {
-            ArrayList<AbstractAcknowledgeableStanza> failedStanzas = new ArrayList<>();
-            final boolean acknowledgedMessages;
-            synchronized (this.mStanzaQueue) {
-                final int serverCount = Integer.parseInt(h);
-                if (serverCount < stanzasSent) {
-                    Log.d(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid() + ": session resumed with lost packages");
-                    stanzasSent = serverCount;
-                } else {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": session resumed");
-                }
-                acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
-                for (int i = 0; i < this.mStanzaQueue.size(); ++i) {
-                    failedStanzas.add(mStanzaQueue.valueAt(i));
-                }
-                mStanzaQueue.clear();
+            serverCount = Integer.parseInt(h);
+        } catch (final NumberFormatException e) {
+            resetStreamId();
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
+        final ArrayList<AbstractAcknowledgeableStanza> failedStanzas = new ArrayList<>();
+        final boolean acknowledgedMessages;
+        synchronized (this.mStanzaQueue) {
+            if (serverCount < stanzasSent) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid() + ": session resumed with lost packages");
+                stanzasSent = serverCount;
+            } else {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": session resumed");
             }
-            if (acknowledgedMessages) {
-                mXmppConnectionService.updateConversationUi();
+            acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
+            for (int i = 0; i < this.mStanzaQueue.size(); ++i) {
+                failedStanzas.add(mStanzaQueue.valueAt(i));
             }
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid()
-                            + ": resending "
-                            + failedStanzas.size()
-                            + " stanzas");
-            for (AbstractAcknowledgeableStanza packet : failedStanzas) {
-                if (packet instanceof MessagePacket) {
-                    MessagePacket message = (MessagePacket) packet;
-                    mXmppConnectionService.markMessage(
-                            account,
-                            message.getTo().asBareJid(),
-                            message.getId(),
-                            Message.STATUS_UNSEND);
-                }
-                sendPacket(packet);
+            mStanzaQueue.clear();
+        }
+        if (acknowledgedMessages) {
+            mXmppConnectionService.updateConversationUi();
+        }
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid() + ": resending " + failedStanzas.size() + " stanzas");
+        for (final AbstractAcknowledgeableStanza packet : failedStanzas) {
+            if (packet instanceof MessagePacket) {
+                MessagePacket message = (MessagePacket) packet;
+                mXmppConnectionService.markMessage(
+                        account,
+                        message.getTo().asBareJid(),
+                        message.getId(),
+                        Message.STATUS_UNSEND);
             }
-        } catch (final NumberFormatException ignored) {
+            sendPacket(packet);
         }
         Log.d(
                 Config.LOGTAG,
@@ -998,7 +1002,7 @@ public class XmppConnection implements Runnable {
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid()
-                            + ": received NOP stream features"
+                            + ": received NOP stream features "
                             + this.streamFeatures);
         }
     }
