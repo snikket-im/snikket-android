@@ -498,6 +498,10 @@ public class XmppConnection implements Runnable {
                                 + ")");
                 account.setKey(
                         Account.PINNED_MECHANISM_KEY, String.valueOf(saslMechanism.getPriority()));
+                if (version == SaslMechanism.Version.SASL_2) {
+                    final String authorizationIdentifier = success.findChildContent("authorization-identifier");
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": SASL 2.0 authorization identifier was "+authorizationIdentifier);
+                }
                 if (version == SaslMechanism.Version.SASL) {
                     tagReader.reset();
                     sendStartStream();
@@ -1179,7 +1183,7 @@ public class XmppConnection implements Runnable {
                     Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure. (no jid)");
                 }
             } else {
-                Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure (" + packet.toString());
+                Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure (" + packet);
             }
             final Element error = packet.findChild("error");
             if (packet.getType() == IqPacket.TYPE.ERROR && error != null && error.hasChild("conflict")) {
@@ -1449,7 +1453,7 @@ public class XmppConnection implements Runnable {
                 features.carbonsEnabled = true;
             } else {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid()
-                        + ": error enableing carbons " + packet.toString());
+                        + ": could not enable carbons " + packet);
             }
         });
     }
@@ -1472,7 +1476,7 @@ public class XmppConnection implements Runnable {
             failPendingMessages(text);
             throw new StateChangingException(Account.State.POLICY_VIOLATION);
         } else {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": stream error " + streamError.toString());
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": stream error " + streamError);
             throw new StateChangingException(Account.State.STREAM_ERROR);
         }
     }
@@ -1839,8 +1843,8 @@ public class XmppConnection implements Runnable {
             Log.d(Config.LOGTAG, "getting certificate chain");
             try {
                 return KeyChain.getCertificateChain(mXmppConnectionService, alias);
-            } catch (Exception e) {
-                Log.d(Config.LOGTAG, e.getMessage());
+            } catch (final Exception e) {
+                Log.d(Config.LOGTAG, "could not get certificate chain", e);
                 return new X509Certificate[0];
             }
         }
