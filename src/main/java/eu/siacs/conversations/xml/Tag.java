@@ -56,9 +56,15 @@ public class Tag {
         this.attributes = attributes;
     }
 
-    public boolean isStart(String needle) {
-        if (needle == null) return false;
+    public boolean isStart(final String needle) {
+        if (needle == null) {
+            return false;
+        }
         return (this.type == START) && (needle.equals(this.name));
+    }
+
+    public boolean isStart(final String name, final String namespace) {
+        return isStart(name) && namespace != null && namespace.equals(this.getAttribute("xmlns"));
     }
 
     public boolean isEnd(String needle) {

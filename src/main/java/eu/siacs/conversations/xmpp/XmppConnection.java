@@ -466,7 +466,7 @@ public class XmppConnection implements Runnable {
                 processStreamError(nextTag);
             } else if (nextTag.isStart("features")) {
                 processStreamFeatures(nextTag);
-            } else if (nextTag.isStart("proceed")) {
+            } else if (nextTag.isStart("proceed", Namespace.TLS)) {
                 switchOverToTls();
             } else if (nextTag.isStart("success")) {
                 final Element success = tagReader.readElement(nextTag);
@@ -499,8 +499,13 @@ public class XmppConnection implements Runnable {
                 account.setKey(
                         Account.PINNED_MECHANISM_KEY, String.valueOf(saslMechanism.getPriority()));
                 if (version == SaslMechanism.Version.SASL_2) {
-                    final String authorizationIdentifier = success.findChildContent("authorization-identifier");
-                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": SASL 2.0 authorization identifier was "+authorizationIdentifier);
+                    final String authorizationIdentifier =
+                            success.findChildContent("authorization-identifier");
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid()
+                                    + ": SASL 2.0 authorization identifier was "
+                                    + authorizationIdentifier);
                 }
                 if (version == SaslMechanism.Version.SASL) {
                     tagReader.reset();
@@ -513,11 +518,10 @@ public class XmppConnection implements Runnable {
                     }
                     break;
                 }
+            } else if (nextTag.isStart("failure", Namespace.TLS)) {
+                throw new StateChangingException(Account.State.TLS_ERROR);
             } else if (nextTag.isStart("failure")) {
                 final Element failure = tagReader.readElement(nextTag);
-                if (Namespace.TLS.equals(failure.getNamespace())) {
-                    throw new StateChangingException(Account.State.TLS_ERROR);
-                }
                 final SaslMechanism.Version version;
                 try {
                     version = SaslMechanism.Version.of(failure);
@@ -547,6 +551,8 @@ public class XmppConnection implements Runnable {
                     }
                 }
                 throw new StateChangingException(Account.State.UNAUTHORIZED);
+            } else if (nextTag.isStart("continue", Namespace.SASL_2)) {
+                throw new StateChangingException(Account.State.INCOMPATIBLE_CLIENT);
             } else if (nextTag.isStart("challenge")) {
                 final Element challenge = tagReader.readElement(nextTag);
                 final SaslMechanism.Version version;
@@ -575,12 +581,19 @@ public class XmppConnection implements Runnable {
                 final Element enabled = tagReader.readElement(nextTag);
                 if ("true".equals(enabled.getAttribute("resume"))) {
                     this.streamId = enabled.getAttribute("id");
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid().toString()
-                            + ": stream management(" + smVersion
-                            + ") enabled (resumable)");
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid().toString()
+                                    + ": stream management("
+                                    + smVersion
+                                    + ") enabled (resumable)");
                 } else {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid().toString()
-                            + ": stream management(" + smVersion + ") enabled");
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid().toString()
+                                    + ": stream management("
+                                    + smVersion
+                                    + ") enabled");
                 }
                 this.stanzasReceived = 0;
                 this.inSmacksSession = true;
@@ -599,11 +612,15 @@ public class XmppConnection implements Runnable {
                     synchronized (this.mStanzaQueue) {
                         final int serverCount = Integer.parseInt(h);
                         if (serverCount < stanzasSent) {
-                            Log.d(Config.LOGTAG, account.getJid().asBareJid().toString()
-                                    + ": session resumed with lost packages");
+                            Log.d(
+                                    Config.LOGTAG,
+                                    account.getJid().asBareJid().toString()
+                                            + ": session resumed with lost packages");
                             stanzasSent = serverCount;
                         } else {
-                            Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": session resumed");
+                            Log.d(
+                                    Config.LOGTAG,
+                                    account.getJid().asBareJid().toString() + ": session resumed");
                         }
                         acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
                         for (int i = 0; i < this.mStanzaQueue.size(); ++i) {
@@ -618,7 +635,8 @@ public class XmppConnection implements Runnable {
                     for (AbstractAcknowledgeableStanza packet : failedStanzas) {
                         if (packet instanceof MessagePacket) {
                             MessagePacket message = (MessagePacket) packet;
-                            mXmppConnectionService.markMessage(account,
+                            mXmppConnectionService.markMessage(
+                                    account,
                                     message.getTo().asBareJid(),
                                     message.getId(),
                                     Message.STATUS_UNSEND);
@@ -627,12 +645,20 @@ public class XmppConnection implements Runnable {
                     }
                 } catch (final NumberFormatException ignored) {
                 }
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": online with resource " + account.getResource());
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": online with resource "
+                                + account.getResource());
                 changeStatus(Account.State.ONLINE);
             } else if (nextTag.isStart("r")) {
                 tagReader.readElement(nextTag);
                 if (Config.EXTENDED_SM_LOGGING) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": acknowledging stanza #" + this.stanzasReceived);
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid()
+                                    + ": acknowledging stanza #"
+                                    + this.stanzasReceived);
                 }
                 final AckPacket ack = new AckPacket(this.stanzasReceived, smVersion);
                 tagWriter.writeStanzaAsync(ack);
@@ -642,10 +668,19 @@ public class XmppConnection implements Runnable {
                     if (mWaitingForSmCatchup.compareAndSet(true, false)) {
                         final int messageCount = mSmCatchupMessageCounter.get();
                         final int pendingIQs = packetCallbacks.size();
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": SM catchup complete (messages=" + messageCount + ", pending IQs=" + pendingIQs + ")");
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid()
+                                        + ": SM catchup complete (messages="
+                                        + messageCount
+                                        + ", pending IQs="
+                                        + pendingIQs
+                                        + ")");
                         accountUiNeedsRefresh = true;
                         if (messageCount > 0) {
-                            mXmppConnectionService.getNotificationService().finishBacklog(true, account);
+                            mXmppConnectionService
+                                    .getNotificationService()
+                                    .finishBacklog(true, account);
                         }
                     }
                 }
@@ -664,13 +699,20 @@ public class XmppConnection implements Runnable {
                         mXmppConnectionService.updateConversationUi();
                     }
                 } catch (NumberFormatException | NullPointerException e) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server send ack without sequence number");
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid()
+                                    + ": server send ack without sequence number");
                 }
             } else if (nextTag.isStart("failed")) {
                 Element failed = tagReader.readElement(nextTag);
                 try {
                     final int serverCount = Integer.parseInt(failed.getAttribute("h"));
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resumption failed but server acknowledged stanza #" + serverCount);
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid()
+                                    + ": resumption failed but server acknowledged stanza #"
+                                    + serverCount);
                     final boolean acknowledgedMessages;
                     synchronized (this.mStanzaQueue) {
                         acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
