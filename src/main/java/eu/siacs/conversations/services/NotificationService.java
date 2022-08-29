@@ -36,6 +36,7 @@ import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 
@@ -973,18 +974,14 @@ public class NotificationService {
         final Builder builder =
                 new NotificationCompat.Builder(mXmppConnectionService, "missed_calls");
         int totalCalls = 0;
-        final StringBuilder names = new StringBuilder();
+        final List<String> names = new ArrayList<>();
         long lastTime = 0;
-        for (Map.Entry<Conversational, MissedCallsInfo> entry : mMissedCalls.entrySet()) {
+        for (final Map.Entry<Conversational, MissedCallsInfo> entry : mMissedCalls.entrySet()) {
             final Conversational conversation = entry.getKey();
             final MissedCallsInfo missedCallsInfo = entry.getValue();
-            names.append(conversation.getContact().getDisplayName());
-            names.append(", ");
+            names.add(conversation.getContact().getDisplayName());
             totalCalls += missedCallsInfo.getNumberOfCalls();
             lastTime = Math.max(lastTime, missedCallsInfo.getLastTime());
-        }
-        if (names.length() >= 2) {
-            names.delete(names.length() - 2, names.length());
         }
         final String title =
                 (totalCalls == 1)
@@ -999,9 +996,9 @@ public class NotificationService {
         builder.setContentTitle(title);
         builder.setTicker(title);
         if (!publicVersion) {
-            builder.setContentText(names.toString());
+            builder.setContentText(Joiner.on(", ").join(names));
         }
-        builder.setSmallIcon(R.drawable.ic_missed_call_notification);
+        builder.setSmallIcon(R.drawable.ic_call_missed_white_24db);
         builder.setGroupSummary(true);
         builder.setGroup(MISSED_CALLS_GROUP);
         builder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN);
@@ -1047,7 +1044,7 @@ public class NotificationService {
             }
             builder.setContentText(name);
         }
-        builder.setSmallIcon(R.drawable.ic_missed_call_notification);
+        builder.setSmallIcon(R.drawable.ic_call_missed_white_24db);
         builder.setGroup(MISSED_CALLS_GROUP);
         builder.setCategory(NotificationCompat.CATEGORY_CALL);
         builder.setWhen(info.getLastTime());
@@ -1091,42 +1088,39 @@ public class NotificationService {
                                 R.plurals.x_unread_conversations,
                                 notifications.size(),
                                 notifications.size()));
-        final StringBuilder names = new StringBuilder();
+        final List<String> names = new ArrayList<>();
         Conversation conversation = null;
         for (final ArrayList<Message> messages : notifications.values()) {
-            if (messages.size() > 0) {
-                conversation = (Conversation) messages.get(0).getConversation();
-                final String name = conversation.getName().toString();
-                SpannableString styledString;
-                if (Config.HIDE_MESSAGE_TEXT_IN_NOTIFICATION) {
-                    int count = messages.size();
-                    styledString =
-                            new SpannableString(
-                                    name
-                                            + ": "
-                                            + mXmppConnectionService
-                                                    .getResources()
-                                                    .getQuantityString(
-                                                            R.plurals.x_messages, count, count));
-                    styledString.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), 0);
-                    style.addLine(styledString);
-                } else {
-                    styledString =
-                            new SpannableString(
-                                    name
-                                            + ": "
-                                            + UIHelper.getMessagePreview(
-                                                            mXmppConnectionService, messages.get(0))
-                                                    .first);
-                    styledString.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), 0);
-                    style.addLine(styledString);
-                }
-                names.append(name);
-                names.append(", ");
+            if (messages.isEmpty()) {
+                continue;
             }
-        }
-        if (names.length() >= 2) {
-            names.delete(names.length() - 2, names.length());
+            conversation = (Conversation) messages.get(0).getConversation();
+            final String name = conversation.getName().toString();
+            SpannableString styledString;
+            if (Config.HIDE_MESSAGE_TEXT_IN_NOTIFICATION) {
+                int count = messages.size();
+                styledString =
+                        new SpannableString(
+                                name
+                                        + ": "
+                                        + mXmppConnectionService
+                                                .getResources()
+                                                .getQuantityString(
+                                                        R.plurals.x_messages, count, count));
+                styledString.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), 0);
+                style.addLine(styledString);
+            } else {
+                styledString =
+                        new SpannableString(
+                                name
+                                        + ": "
+                                        + UIHelper.getMessagePreview(
+                                                        mXmppConnectionService, messages.get(0))
+                                                .first);
+                styledString.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), 0);
+                style.addLine(styledString);
+            }
+            names.add(name);
         }
         final String contentTitle =
                 mXmppConnectionService
@@ -1137,7 +1131,7 @@ public class NotificationService {
                                 notifications.size());
         mBuilder.setContentTitle(contentTitle);
         mBuilder.setTicker(contentTitle);
-        mBuilder.setContentText(names.toString());
+        mBuilder.setContentText(Joiner.on(", ").join(names));
         mBuilder.setStyle(style);
         if (conversation != null) {
             mBuilder.setContentIntent(createContentIntent(conversation));
