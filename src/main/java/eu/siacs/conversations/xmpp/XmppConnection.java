@@ -470,61 +470,10 @@ public class XmppConnection implements Runnable {
                 switchOverToTls();
             } else if (nextTag.isStart("success")) {
                 final Element success = tagReader.readElement(nextTag);
-                final SaslMechanism.Version version;
-                try {
-                    version = SaslMechanism.Version.of(success);
-                } catch (final IllegalArgumentException e) {
-                    throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
-                }
-                final String challenge;
-                if (version == SaslMechanism.Version.SASL) {
-                    challenge = success.getContent();
-                } else if (version == SaslMechanism.Version.SASL_2) {
-                    challenge = success.findChildContent("additional-data");
-                } else {
-                    throw new AssertionError("Missing implementation for " + version);
-                }
-                try {
-                    saslMechanism.getResponse(challenge);
-                } catch (final SaslMechanism.AuthenticationException e) {
-                    Log.e(Config.LOGTAG, String.valueOf(e));
-                    throw new StateChangingException(Account.State.UNAUTHORIZED);
-                }
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid().toString()
-                                + ": logged in (using "
-                                + version
-                                + ")");
-                account.setKey(
-                        Account.PINNED_MECHANISM_KEY, String.valueOf(saslMechanism.getPriority()));
-                if (version == SaslMechanism.Version.SASL_2) {
-                    final String authorizationIdentifier =
-                            success.findChildContent("authorization-identifier");
-                    Log.d(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid()
-                                    + ": SASL 2.0 authorization identifier was "
-                                    + authorizationIdentifier);
-                    final Element resumed = success.findChild("resumed", "urn:xmpp:sm:3");
-                    final Element failed = success.findChild("failed", "urn:xmpp:sm:3");
-                    if (resumed != null && streamId != null) {
-                        processResumed(resumed);
-                    } else if (failed != null) {
-                        processFailed(failed, false); // wait for new stream features
-                    }
-                }
-                if (version == SaslMechanism.Version.SASL) {
-                    tagReader.reset();
-                    sendStartStream();
-                    final Tag tag = tagReader.readTag();
-                    if (tag != null && tag.isStart("stream")) {
-                        processStream();
-                    } else {
-                        throw new StateChangingException(Account.State.STREAM_OPENING_ERROR);
-                    }
+                if (processSuccess(success)) {
                     break;
                 }
+
             } else if (nextTag.isStart("failure", Namespace.TLS)) {
                 throw new StateChangingException(Account.State.TLS_ERROR);
             } else if (nextTag.isStart("failure")) {
@@ -676,6 +625,84 @@ public class XmppConnection implements Runnable {
         }
         if (nextTag != null && nextTag.isEnd("stream")) {
             streamCountDownLatch.countDown();
+        }
+    }
+
+    private boolean processSuccess(final Element success) throws IOException, XmlPullParserException {
+        final SaslMechanism.Version version;
+        try {
+            version = SaslMechanism.Version.of(success);
+        } catch (final IllegalArgumentException e) {
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
+        final String challenge;
+        if (version == SaslMechanism.Version.SASL) {
+            challenge = success.getContent();
+        } else if (version == SaslMechanism.Version.SASL_2) {
+            challenge = success.findChildContent("additional-data");
+        } else {
+            throw new AssertionError("Missing implementation for " + version);
+        }
+        try {
+            saslMechanism.getResponse(challenge);
+        } catch (final SaslMechanism.AuthenticationException e) {
+            Log.e(Config.LOGTAG, String.valueOf(e));
+            throw new StateChangingException(Account.State.UNAUTHORIZED);
+        }
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid().toString()
+                        + ": logged in (using "
+                        + version
+                        + ")");
+        account.setKey(
+                Account.PINNED_MECHANISM_KEY, String.valueOf(saslMechanism.getPriority()));
+        if (version == SaslMechanism.Version.SASL_2) {
+            final String authorizationIdentifier =
+                    success.findChildContent("authorization-identifier");
+            final Jid authorizationJid;
+            try {
+                authorizationJid = Strings.isNullOrEmpty(authorizationIdentifier) ? null : Jid.ofEscaped(authorizationIdentifier);
+            } catch (final IllegalArgumentException e) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": SASL 2.0 authorization identifier was not a valid jid");
+                throw new StateChangingException(Account.State.BIND_FAILURE);
+            }
+            if (authorizationJid == null) {
+                throw new StateChangingException(Account.State.BIND_FAILURE);
+            }
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": SASL 2.0 authorization identifier was "
+                            + authorizationJid);
+            if (!account.getJid().getDomain().equals(authorizationJid.getDomain())) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server tried to re-assign domain to " + authorizationJid.getDomain());
+                throw new StateChangingError(Account.State.BIND_FAILURE);
+            }
+            if (authorizationJid.isFullJid() && account.setJid(authorizationJid)) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": jid changed during SASL 2.0. updating database");
+                mXmppConnectionService.databaseBackend.updateAccount(account);
+            }
+            final Element resumed = success.findChild("resumed", "urn:xmpp:sm:3");
+            final Element failed = success.findChild("failed", "urn:xmpp:sm:3");
+            if (resumed != null && streamId != null) {
+                processResumed(resumed);
+            } else if (failed != null) {
+                processFailed(failed, false); // wait for new stream features
+            }
+        }
+        if (version == SaslMechanism.Version.SASL) {
+            tagReader.reset();
+            sendStartStream();
+            final Tag tag = tagReader.readTag();
+            if (tag != null && tag.isStart("stream")) {
+                processStream();
+                return true;
+            } else {
+                throw new StateChangingException(Account.State.STREAM_OPENING_ERROR);
+            }
+        } else {
+            return false;
         }
     }
 
