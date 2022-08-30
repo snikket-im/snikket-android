@@ -1080,7 +1080,7 @@ public class XmppConnection implements Runnable {
         tagWriter.writeElement(authenticate);
     }
 
-    private List<String> extractMechanisms(final Element stream) {
+    private static List<String> extractMechanisms(final Element stream) {
         final ArrayList<String> mechanisms = new ArrayList<>(stream
                 .getChildren().size());
         for (final Element child : stream.getChildren()) {

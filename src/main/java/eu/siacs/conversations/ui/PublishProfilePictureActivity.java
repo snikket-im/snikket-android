@@ -102,18 +102,25 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
                 xmppConnectionService.publishAvatar(account, avatarUri, this);
             }
         });
-        this.cancelButton.setOnClickListener(v -> {
-            if (mInitialAccountSetup) {
-                final Intent intent = new Intent(getApplicationContext(), StartConversationActivity.class);
-                if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1) {
-                    intent.putExtra("init", true);
-                }
-                StartConversationActivity.addInviteUri(intent, getIntent());
-                intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
-                startActivity(intent);
-            }
-            finish();
-        });
+        this.cancelButton.setOnClickListener(
+                v -> {
+                    if (mInitialAccountSetup) {
+                        final Intent intent =
+                                new Intent(
+                                        getApplicationContext(), StartConversationActivity.class);
+                        if (xmppConnectionService != null
+                                && xmppConnectionService.getAccounts().size() == 1) {
+                            intent.putExtra("init", true);
+                        }
+                        StartConversationActivity.addInviteUri(intent, getIntent());
+                        if (account != null) {
+                            intent.putExtra(
+                                    EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
+                        }
+                        startActivity(intent);
+                    }
+                    finish();
+                });
         this.avatar.setOnClickListener(v -> chooseAvatar(this));
         this.defaultUri = PhoneHelper.getProfilePictureUri(getApplicationContext());
         if (savedInstanceState != null) {
