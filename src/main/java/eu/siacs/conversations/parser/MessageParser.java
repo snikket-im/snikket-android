@@ -313,7 +313,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
     private boolean handleErrorMessage(final Account account, final MessagePacket packet) {
         if (packet.getType() == MessagePacket.TYPE_ERROR) {
             if (packet.fromServer(account)) {
-                final Pair<MessagePacket, Long> forwarded = packet.getForwardedMessagePacket("received", "urn:xmpp:carbons:2");
+                final Pair<MessagePacket, Long> forwarded = packet.getForwardedMessagePacket("received", Namespace.CARBONS);
                 if (forwarded != null) {
                     return handleErrorMessage(account, forwarded.first);
                 }
@@ -389,8 +389,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             return;
         } else if (original.fromServer(account)) {
             Pair<MessagePacket, Long> f;
-            f = original.getForwardedMessagePacket("received", "urn:xmpp:carbons:2");
-            f = f == null ? original.getForwardedMessagePacket("sent", "urn:xmpp:carbons:2") : f;
+            f = original.getForwardedMessagePacket("received", Namespace.CARBONS);
+            f = f == null ? original.getForwardedMessagePacket("sent", Namespace.CARBONS) : f;
             packet = f != null ? f.first : original;
             if (handleErrorMessage(account, packet)) {
                 return;

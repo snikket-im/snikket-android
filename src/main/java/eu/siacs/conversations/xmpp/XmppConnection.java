@@ -13,6 +13,7 @@ import android.util.SparseArray;
 import androidx.annotation.NonNull;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -32,6 +33,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -274,7 +276,7 @@ public class XmppConnection implements Runnable {
         this.attempt++;
         this.verifiedHostname =
                 null; // will be set if user entered hostname is being used or hostname was verified
-                      // with dnssec
+        // with dnssec
         try {
             Socket localSocket;
             shouldAuthenticate = !account.isOptionSet(Account.OPTION_REGISTER);
@@ -409,7 +411,7 @@ public class XmppConnection implements Runnable {
                         if (startXmpp(localSocket)) {
                             localSocket.setSoTimeout(
                                     0); // reset to 0; once the connection is established we don’t
-                                        // want this
+                            // want this
                             if (!hardcoded && !result.equals(storedBackupResult)) {
                                 mXmppConnectionService.databaseBackend.saveResolverResult(
                                         domain, result);
@@ -615,24 +617,9 @@ public class XmppConnection implements Runnable {
                     throw new StateChangingException(Account.State.UNAUTHORIZED);
                 }
                 tagWriter.writeElement(response);
-            } else if (nextTag.isStart("enabled")) {
+            } else if (nextTag.isStart("enabled", Namespace.STREAM_MANAGEMENT)) {
                 final Element enabled = tagReader.readElement(nextTag);
-                if (enabled.getAttributeAsBoolean("resume")) {
-                    this.streamId = enabled.getAttribute("id");
-                    Log.d(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid().toString()
-                                    + ": stream management enabled (resumable)");
-                } else {
-                    Log.d(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid().toString()
-                                    + ": stream management enabled");
-                }
-                this.stanzasReceived = 0;
-                this.inSmacksSession = true;
-                final RequestPacket r = new RequestPacket();
-                tagWriter.writeStanzaAsync(r);
+                processEnabled(enabled);
             } else if (nextTag.isStart("resumed")) {
                 final Element resumed = tagReader.readElement(nextTag);
                 processResumed(resumed);
@@ -771,12 +758,30 @@ public class XmppConnection implements Runnable {
                                 + ": jid changed during SASL 2.0. updating database");
                 mXmppConnectionService.databaseBackend.updateAccount(account);
             }
+            final Element bound = success.findChild("bound", Namespace.BIND2);
             final Element resumed = success.findChild("resumed", "urn:xmpp:sm:3");
             final Element failed = success.findChild("failed", "urn:xmpp:sm:3");
+            // TODO check if resumed and bound exist and throw bind failure
             if (resumed != null && streamId != null) {
                 processResumed(resumed);
             } else if (failed != null) {
                 processFailed(failed, false); // wait for new stream features
+            }
+            if (bound != null) {
+                this.isBound = true;
+                final Element streamManagementEnabled =
+                        bound.findChild("enabled", Namespace.STREAM_MANAGEMENT);
+                final Element carbonsEnabled = bound.findChild("enabled", Namespace.CARBONS);
+                if (streamManagementEnabled != null) {
+                    processEnabled(streamManagementEnabled);
+                }
+                if (carbonsEnabled != null) {
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid() + ": successfully enabled carbons");
+                    features.carbonsEnabled = true;
+                }
+                sendPostBindInitialization(streamManagementEnabled != null, carbonsEnabled != null);
             }
         }
         if (version == SaslMechanism.Version.SASL) {
@@ -792,6 +797,27 @@ public class XmppConnection implements Runnable {
         } else {
             return false;
         }
+    }
+
+    private void processEnabled(final Element enabled) {
+        final String streamId;
+        if (enabled.getAttributeAsBoolean("resume")) {
+            streamId = enabled.getAttribute("id");
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid().toString()
+                            + ": stream management enabled (resumable)");
+        } else {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid().toString() + ": stream management enabled");
+            streamId = null;
+        }
+        this.streamId = streamId;
+        this.stanzasReceived = 0;
+        this.inSmacksSession = true;
+        final RequestPacket r = new RequestPacket();
+        // tagWriter.writeStanzaAsync(r);
     }
 
     private void processResumed(final Element resumed) throws StateChangingException {
@@ -1241,6 +1267,16 @@ public class XmppConnection implements Runnable {
             final boolean inlineStreamManagement =
                     inline != null && inline.hasChild("sm", "urn:xmpp:sm:3");
             final boolean inlineBind2 = inline != null && inline.hasChild("bind", Namespace.BIND2);
+            final Element inlineBindFeatures =
+                    this.streamFeatures.findChild("inline", Namespace.BIND2);
+            if (inlineBind2 && inlineBindFeatures != null) {
+                final Element bind =
+                        generateBindRequest(
+                                Collections2.transform(
+                                        inlineBindFeatures.getChildren(),
+                                        c -> c == null ? null : c.getAttribute("var")));
+                authenticate.addChild(bind);
+            }
             if (inlineStreamManagement && streamId != null) {
                 final ResumePacket resume = new ResumePacket(this.streamId, stanzasReceived);
                 this.mSmCatchupMessageCounter.set(0);
@@ -1259,7 +1295,24 @@ public class XmppConnection implements Runnable {
                         + "/"
                         + saslMechanism.getMechanism());
         authenticate.setAttribute("mechanism", saslMechanism.getMechanism());
+        Log.d(Config.LOGTAG, "authenticate " + authenticate);
         tagWriter.writeElement(authenticate);
+    }
+
+    private Element generateBindRequest(final Collection<String> bindFeatures) {
+        Log.d(Config.LOGTAG, "inline bind features: " + bindFeatures);
+        final Element bind = new Element("bind", Namespace.BIND2);
+        final Element clientId = bind.addChild("client-id");
+        clientId.setAttribute("tag", mXmppConnectionService.getString(R.string.app_name));
+        clientId.setContent(account.getUuid());
+        final Element features = bind.addChild("features");
+        if (bindFeatures.contains(Namespace.CARBONS)) {
+            features.addChild("enable", Namespace.CARBONS);
+        }
+        if (bindFeatures.contains(Namespace.STREAM_MANAGEMENT)) {
+            features.addChild("enable", Namespace.STREAM_MANAGEMENT);
+        }
+        return bind;
     }
 
     private static List<String> extractMechanisms(final Element stream) {
@@ -1469,7 +1522,8 @@ public class XmppConnection implements Runnable {
                                                 .hasChild("optional")) {
                                     sendStartSession();
                                 } else {
-                                    sendPostBindInitialization();
+                                    final boolean waitForDisco = enableStreamManagement();
+                                    sendPostBindInitialization(waitForDisco, false);
                                 }
                                 return;
                             } catch (final IllegalArgumentException e) {
@@ -1565,7 +1619,8 @@ public class XmppConnection implements Runnable {
                 startSession,
                 (account, packet) -> {
                     if (packet.getType() == IqPacket.TYPE.RESULT) {
-                        sendPostBindInitialization();
+                        final boolean waitForDisco = enableStreamManagement();
+                        sendPostBindInitialization(waitForDisco, false);
                     } else if (packet.getType() != IqPacket.TYPE.TIMEOUT) {
                         throw new StateChangingError(Account.State.SESSION_FAILURE);
                     }
@@ -1573,7 +1628,7 @@ public class XmppConnection implements Runnable {
                 true);
     }
 
-    private void sendPostBindInitialization() {
+    private boolean enableStreamManagement() {
         final boolean streamManagement =
                 this.streamFeatures.hasChild("sm", Namespace.STREAM_MANAGEMENT);
         if (streamManagement) {
@@ -1583,15 +1638,22 @@ public class XmppConnection implements Runnable {
                 stanzasSent = 0;
                 mStanzaQueue.clear();
             }
+            return true;
+        } else {
+            return false;
         }
-        features.carbonsEnabled = false;
+    }
+
+    private void sendPostBindInitialization(
+            final boolean waitForDisco, final boolean carbonsEnabled) {
+        features.carbonsEnabled = carbonsEnabled;
         features.blockListRequested = false;
         synchronized (this.disco) {
             this.disco.clear();
         }
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": starting service discovery");
         mPendingServiceDiscoveries.set(0);
-        if (!streamManagement
+        if (!waitForDisco
                 || Patches.DISCO_EXCEPTIONS.contains(
                         account.getJid().getDomain().toEscapedString())) {
             Log.d(
@@ -1819,11 +1881,11 @@ public class XmppConnection implements Runnable {
 
     private void sendEnableCarbons() {
         final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
-        iq.addChild("enable", "urn:xmpp:carbons:2");
+        iq.addChild("enable", Namespace.CARBONS);
         this.sendIqPacket(
                 iq,
                 (account, packet) -> {
-                    if (!packet.hasChild("error")) {
+                    if (packet.getType() == IqPacket.TYPE.RESULT) {
                         Log.d(
                                 Config.LOGTAG,
                                 account.getJid().asBareJid() + ": successfully enabled carbons");
@@ -2309,7 +2371,7 @@ public class XmppConnection implements Runnable {
         }
 
         public boolean carbons() {
-            return hasDiscoFeature(account.getDomain(), "urn:xmpp:carbons:2");
+            return hasDiscoFeature(account.getDomain(), Namespace.CARBONS);
         }
 
         public boolean commands() {
