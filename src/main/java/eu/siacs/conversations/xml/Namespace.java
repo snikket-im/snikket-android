@@ -25,6 +25,9 @@ public final class Namespace {
     public static final String NICK = "http://jabber.org/protocol/nick";
     public static final String FLEXIBLE_OFFLINE_MESSAGE_RETRIEVAL = "http://jabber.org/protocol/offline";
     public static final String BIND = "urn:ietf:params:xml:ns:xmpp-bind";
+    public static final String BIND2 = "urn:xmpp:bind2:0";
+    public static final String STREAM_MANAGEMENT = "urn:xmpp:sm:3";
+    public static final String CSI = "urn:xmpp:csi:0";
     public static final String BOOKMARKS_CONVERSION = "urn:xmpp:bookmarks-conversion:0";
     public static final String BOOKMARKS = "storage:bookmarks";
     public static final String SYNCHRONIZATION = "im.quicksy.synchronization:0";
