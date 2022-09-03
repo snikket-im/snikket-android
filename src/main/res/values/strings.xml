@@ -986,5 +986,6 @@
     <string name="no_xmpp_adddress_found">No XMPP address found</string>
     <string name="account_status_temporary_auth_failure">Temporary authentication failure</string>
     <string name="delete_avatar">Delete avatar</string>
+    <string name="audio_video_disabled_tor">Calls are disabled when using Tor</string>
 
 </resources>

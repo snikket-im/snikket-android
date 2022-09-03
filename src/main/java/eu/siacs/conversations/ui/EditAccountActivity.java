@@ -293,6 +293,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             }
             binding.hostnameLayout.setError(null);
             binding.portLayout.setError(null);
+            if (mAccount.isOnion()) {
+                Toast.makeText(EditAccountActivity.this, R.string.audio_video_disabled_tor, Toast.LENGTH_LONG).show();
+            }
             if (mAccount.isEnabled()
                     && !registerNewAccount
                     && !mInitMode) {
