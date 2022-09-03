@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
@@ -15,6 +16,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.BoolRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import java.util.Arrays;
@@ -158,10 +161,20 @@ public class Compatibility {
     @SuppressLint("UnsupportedChromeOsCameraSystemFeature")
     public static boolean hasFeatureCamera(final Context context) {
         final PackageManager packageManager = context.getPackageManager();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
-        } else {
-            return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
+        return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static int getRestrictBackgroundStatus(
+            @NonNull final ConnectivityManager connectivityManager) {
+        try {
+            return connectivityManager.getRestrictBackgroundStatus();
+        } catch (final Exception e) {
+            Log.d(
+                    Config.LOGTAG,
+                    "platform bug detected. Unable to get restrict background status",
+                    e);
+            return ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED;
         }
     }
 }
