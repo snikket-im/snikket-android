@@ -718,6 +718,7 @@ public class XmppConnection implements Runnable {
         Log.d(
                 Config.LOGTAG,
                 account.getJid().asBareJid().toString() + ": logged in (using " + version + ")");
+        //TODO store mechanism name
         account.setKey(Account.PINNED_MECHANISM_KEY, String.valueOf(saslMechanism.getPriority()));
         if (version == SaslMechanism.Version.SASL_2) {
             final String authorizationIdentifier =
@@ -781,6 +782,7 @@ public class XmppConnection implements Runnable {
                             account.getJid().asBareJid() + ": successfully enabled carbons");
                     features.carbonsEnabled = true;
                 }
+                //TODO if both are set mark account ready for pipelining
                 sendPostBindInitialization(streamManagementEnabled != null, carbonsEnabled != null);
             }
         }
