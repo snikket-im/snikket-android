@@ -145,7 +145,13 @@ public class EditMessage extends AppCompatEditText {
 
     public void insertAsQuote(String text) {
         text = QuoteHelper.replaceAltQuoteCharsInText(text);
-        text = text.replaceAll("(\n *){2,}", "\n").replaceAll("(^|\n)(" + QuoteHelper.QUOTE_CHAR + ")", "$1$2$2").replaceAll("(^|\n)([^" + QuoteHelper.QUOTE_CHAR + "])", "$1> $2").replaceAll("\n$", "");
+        text = text
+                // first replace all '>' at the beginning of the line with nice and tidy '>>'
+                // for nested quoting
+                .replaceAll("(^|\n)(" + QuoteHelper.QUOTE_CHAR + ")", "$1$2$2")
+                // then find all other lines and have them start with a '> '
+                .replaceAll("(^|\n)(?!" + QuoteHelper.QUOTE_CHAR + ")(.*)", "$1> $2")
+        ;
         Editable editable = getEditableText();
         int position = getSelectionEnd();
         if (position == -1) position = editable.length();

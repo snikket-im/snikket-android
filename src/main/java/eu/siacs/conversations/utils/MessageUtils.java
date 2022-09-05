@@ -66,11 +66,7 @@ public class MessageUtils {
             body = message.getMergedBody().toString();
         }
         for (String line : body.split("\n")) {
-            if (line.length() <= 0) {
-                continue;
-            }
-            final char c = line.charAt(0);
-            if (QuoteHelper.isNestedTooDeeply(line)) {
+            if (!(line.length() <= 0) && QuoteHelper.isNestedTooDeeply(line)) {
                 continue;
             }
             if (builder.length() != 0) {

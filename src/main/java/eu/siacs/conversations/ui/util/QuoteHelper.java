@@ -84,13 +84,13 @@ public class QuoteHelper {
         if (isPositionQuoteStart(line, 0)) {
             int nestingDepth = 1;
             for (int i = 1; i < line.length(); i++) {
-                if (isPositionQuoteStart(line, i)) {
+                if (isPositionQuoteCharacter(line, i)) {
                     nestingDepth++;
-                }
-                if (nestingDepth > (Config.QUOTING_MAX_DEPTH - 1)) {
-                    return true;
+                } else if (line.charAt(i) != ' ') {
+                    break;
                 }
             }
+            return nestingDepth >= (Config.QUOTING_MAX_DEPTH);
         }
         return false;
     }
