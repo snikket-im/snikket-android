@@ -25,14 +25,15 @@ abstract class ScramMechanism extends SaslMechanism {
     private static final byte[] SERVER_KEY_BYTES = "Server Key".getBytes();
     private static final Cache<CacheKey, KeyPair> CACHE =
             CacheBuilder.newBuilder().maximumSize(10).build();
+    protected final ChannelBinding channelBinding;
     private final String clientNonce;
     protected State state = State.INITIAL;
     private String clientFirstMessageBare;
     private byte[] serverSignature = null;
 
-    ScramMechanism(final Account account) {
+    ScramMechanism(final Account account, final ChannelBinding channelBinding) {
         super(account);
-
+        this.channelBinding = channelBinding;
         // This nonce should be different for each authentication attempt.
         this.clientNonce = CryptoHelper.random(100);
         clientFirstMessageBare = "";

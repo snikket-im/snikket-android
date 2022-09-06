@@ -90,7 +90,8 @@ public abstract class SaslMechanism {
             this.account = account;
         }
 
-        public SaslMechanism of(final Collection<String> mechanisms) {
+        public SaslMechanism of(
+                final Collection<String> mechanisms, final Collection<ChannelBinding> bindings) {
             if (mechanisms.contains(External.MECHANISM) && account.getPrivateKeyAlias() != null) {
                 return new External(account);
             } else if (mechanisms.contains(ScramSha512.MECHANISM)) {

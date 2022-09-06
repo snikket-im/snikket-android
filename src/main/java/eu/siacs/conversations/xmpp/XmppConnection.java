@@ -14,6 +14,7 @@ import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
 
+import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 
@@ -62,14 +63,8 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
-import eu.siacs.conversations.crypto.sasl.Anonymous;
-import eu.siacs.conversations.crypto.sasl.DigestMd5;
-import eu.siacs.conversations.crypto.sasl.External;
-import eu.siacs.conversations.crypto.sasl.Plain;
+import eu.siacs.conversations.crypto.sasl.ChannelBinding;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
-import eu.siacs.conversations.crypto.sasl.ScramSha1;
-import eu.siacs.conversations.crypto.sasl.ScramSha256;
-import eu.siacs.conversations.crypto.sasl.ScramSha512;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
@@ -720,7 +715,7 @@ public class XmppConnection implements Runnable {
         Log.d(
                 Config.LOGTAG,
                 account.getJid().asBareJid().toString() + ": logged in (using " + version + ")");
-        //TODO store mechanism name
+        // TODO store mechanism name
         account.setKey(Account.PINNED_MECHANISM_KEY, String.valueOf(saslMechanism.getPriority()));
         if (version == SaslMechanism.Version.SASL_2) {
             final String authorizationIdentifier =
@@ -784,7 +779,7 @@ public class XmppConnection implements Runnable {
                             account.getJid().asBareJid() + ": successfully enabled carbons");
                     features.carbonsEnabled = true;
                 }
-                //TODO if both are set mark account ready for pipelining
+                // TODO if both are set mark account ready for pipelining
                 sendPostBindInitialization(streamManagementEnabled != null, carbonsEnabled != null);
             }
         }
@@ -1218,10 +1213,30 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate(final SaslMechanism.Version version) throws IOException {
-        final Element element = streamFeatures.findChild("mechanisms");
-        final Collection<String> mechanisms = Collections2.transform(element.getChildren(), c -> c == null ? null : c.getContent());
+        Log.d(Config.LOGTAG, "stream features: " + this.streamFeatures);
+        final Element element =
+                this.streamFeatures.findChild("mechanisms"); // TODO get from correct NS
+        final Collection<String> mechanisms =
+                Collections2.transform(
+                        Collections2.filter(
+                                element.getChildren(),
+                                c -> c != null && "mechanism".equals(c.getName())),
+                        c -> c == null ? null : c.getContent());
+        final Element cbElement =
+                this.streamFeatures.findChild("sasl-channel-binding", Namespace.CHANNEL_BINDING);
+        final Collection<ChannelBinding> channelBindings =
+                Collections2.filter(
+                        Collections2.transform(
+                                Collections2.filter(
+                                        cbElement == null
+                                                ? Collections.emptyList()
+                                                : cbElement.getChildren(),
+                                        c -> c != null && "channel-binding".equals(c.getName())),
+                                c -> c == null ? null : ChannelBinding.of(c.getAttribute("type"))),
+                        Predicates.notNull());
+        Log.d(Config.LOGTAG, "channel bindings: " + channelBindings);
         final SaslMechanism.Factory factory = new SaslMechanism.Factory(account);
-        this.saslMechanism = factory.of(mechanisms);
+        this.saslMechanism = factory.of(mechanisms, channelBindings);
 
         if (saslMechanism == null) {
             Log.d(

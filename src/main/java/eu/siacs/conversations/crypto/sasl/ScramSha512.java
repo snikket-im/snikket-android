@@ -11,7 +11,7 @@ public class ScramSha512 extends ScramMechanism {
     public static final String MECHANISM = "SCRAM-SHA-512";
 
     public ScramSha512(final Account account) {
-        super(account);
+        super(account, ChannelBinding.NONE);
     }
 
     @Override
