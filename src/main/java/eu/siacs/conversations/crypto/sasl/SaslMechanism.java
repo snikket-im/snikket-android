@@ -18,6 +18,14 @@ public abstract class SaslMechanism {
         this.account = account;
     }
 
+    public static String namespace(final Version version) {
+        if (version == Version.SASL) {
+            return Namespace.SASL;
+        } else {
+            return Namespace.SASL_2;
+        }
+    }
+
     /**
      * The priority is used to pin the authentication mechanism. If authentication fails, it MAY be
      * retried with another mechanism of the same priority, but MUST NOT be tried with a mechanism
@@ -97,6 +105,9 @@ public abstract class SaslMechanism {
                 final Collection<String> mechanisms, final Collection<ChannelBinding> bindings) {
             if (mechanisms.contains(External.MECHANISM) && account.getPrivateKeyAlias() != null) {
                 return new External(account);
+            } else if (mechanisms.contains(ScramSha1Plus.MECHANISM)
+                    && bindings.contains(ChannelBinding.TLS_EXPORTER)) {
+                return new ScramSha1Plus(account, ChannelBinding.TLS_EXPORTER);
             } else if (mechanisms.contains(ScramSha512.MECHANISM)) {
                 return new ScramSha512(account);
             } else if (mechanisms.contains(ScramSha256.MECHANISM)) {
@@ -113,14 +124,6 @@ public abstract class SaslMechanism {
             } else {
                 return null;
             }
-        }
-    }
-
-    public static String namespace(final Version version) {
-        if (version == Version.SASL) {
-            return Namespace.SASL;
-        } else {
-            return Namespace.SASL_2;
         }
     }
 }

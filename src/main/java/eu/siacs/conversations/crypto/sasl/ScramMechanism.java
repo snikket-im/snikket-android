@@ -258,7 +258,8 @@ abstract class ScramMechanism extends SaslMechanism {
         }
     }
 
-    protected byte[] getChannelBindingData(final SSLSocket sslSocket) throws AuthenticationException {
+    protected byte[] getChannelBindingData(final SSLSocket sslSocket)
+            throws AuthenticationException {
         if (this.channelBinding == ChannelBinding.NONE) {
             return new byte[0];
         }
