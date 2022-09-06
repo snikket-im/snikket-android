@@ -106,6 +106,10 @@ public abstract class SaslMechanism {
             final ChannelBinding channelBinding = ChannelBinding.best(bindings);
             if (mechanisms.contains(External.MECHANISM) && account.getPrivateKeyAlias() != null) {
                 return new External(account);
+            } else if (mechanisms.contains(ScramSha512Plus.MECHANISM) && channelBinding != null) {
+                return new ScramSha512Plus(account, channelBinding);
+            } else if (mechanisms.contains(ScramSha256Plus.MECHANISM) && channelBinding != null) {
+                return new ScramSha256Plus(account, channelBinding);
             } else if (mechanisms.contains(ScramSha1Plus.MECHANISM) && channelBinding != null) {
                 return new ScramSha1Plus(account, channelBinding);
             } else if (mechanisms.contains(ScramSha512.MECHANISM)) {
