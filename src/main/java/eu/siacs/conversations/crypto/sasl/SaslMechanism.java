@@ -103,11 +103,11 @@ public abstract class SaslMechanism {
 
         public SaslMechanism of(
                 final Collection<String> mechanisms, final Collection<ChannelBinding> bindings) {
+            final ChannelBinding channelBinding = ChannelBinding.best(bindings);
             if (mechanisms.contains(External.MECHANISM) && account.getPrivateKeyAlias() != null) {
                 return new External(account);
-            } else if (mechanisms.contains(ScramSha1Plus.MECHANISM)
-                    && bindings.contains(ChannelBinding.TLS_EXPORTER)) {
-                return new ScramSha1Plus(account, ChannelBinding.TLS_EXPORTER);
+            } else if (mechanisms.contains(ScramSha1Plus.MECHANISM) && channelBinding != null) {
+                return new ScramSha1Plus(account, channelBinding);
             } else if (mechanisms.contains(ScramSha512.MECHANISM)) {
                 return new ScramSha512(account);
             } else if (mechanisms.contains(ScramSha256.MECHANISM)) {
