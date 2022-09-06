@@ -2,6 +2,7 @@ package eu.siacs.conversations.crypto.sasl;
 
 import android.util.Base64;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Objects;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -14,18 +15,19 @@ import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.util.concurrent.ExecutionException;
 
+import javax.net.ssl.SSLSocket;
+
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
 
 abstract class ScramMechanism extends SaslMechanism {
-    // TODO: When channel binding (SCRAM-SHA1-PLUS) is supported in future, generalize this to
-    // indicate support and/or usage.
-    private static final String GS2_HEADER = "n,,";
+
     private static final byte[] CLIENT_KEY_BYTES = "Client Key".getBytes();
     private static final byte[] SERVER_KEY_BYTES = "Server Key".getBytes();
     private static final Cache<CacheKey, KeyPair> CACHE =
             CacheBuilder.newBuilder().maximumSize(10).build();
     protected final ChannelBinding channelBinding;
+    private final String gs2Header;
     private final String clientNonce;
     protected State state = State.INITIAL;
     private String clientFirstMessageBare;
@@ -34,6 +36,16 @@ abstract class ScramMechanism extends SaslMechanism {
     ScramMechanism(final Account account, final ChannelBinding channelBinding) {
         super(account);
         this.channelBinding = channelBinding;
+        if (channelBinding == ChannelBinding.NONE) {
+            this.gs2Header = "n,,";
+        } else {
+            this.gs2Header =
+                    String.format(
+                            "p=%s,,",
+                            CaseFormat.UPPER_UNDERSCORE
+                                    .converterTo(CaseFormat.LOWER_HYPHEN)
+                                    .convert(channelBinding.toString()));
+        }
         // This nonce should be different for each authentication attempt.
         this.clientNonce = CryptoHelper.random(100);
         clientFirstMessageBare = "";
@@ -69,7 +81,7 @@ abstract class ScramMechanism extends SaslMechanism {
         return out;
     }
 
-    public byte[] digest(byte[] bytes) {
+    public byte[] digest(final byte[] bytes) {
         final Digest digest = getDigest();
         digest.reset();
         digest.update(bytes, 0, bytes.length);
@@ -107,12 +119,13 @@ abstract class ScramMechanism extends SaslMechanism {
             state = State.AUTH_TEXT_SENT;
         }
         return Base64.encodeToString(
-                (GS2_HEADER + clientFirstMessageBare).getBytes(Charset.defaultCharset()),
+                (gs2Header + clientFirstMessageBare).getBytes(Charset.defaultCharset()),
                 Base64.NO_WRAP);
     }
 
     @Override
-    public String getResponse(final String challenge) throws AuthenticationException {
+    public String getResponse(final String challenge, final SSLSocket socket)
+            throws AuthenticationException {
         switch (state) {
             case AUTH_TEXT_SENT:
                 if (challenge == null) {
@@ -169,11 +182,17 @@ abstract class ScramMechanism extends SaslMechanism {
                     throw new AuthenticationException("Server sent empty salt");
                 }
 
+                final byte[] channelBindingData = getChannelBindingData(socket);
+
+                final int gs2Len = this.gs2Header.getBytes().length;
+                final byte[] cMessage = new byte[gs2Len + channelBindingData.length];
+                System.arraycopy(this.gs2Header.getBytes(), 0, cMessage, 0, gs2Len);
+                System.arraycopy(
+                        channelBindingData, 0, cMessage, gs2Len, channelBindingData.length);
+
                 final String clientFinalMessageWithoutProof =
-                        "c="
-                                + Base64.encodeToString(GS2_HEADER.getBytes(), Base64.NO_WRAP)
-                                + ",r="
-                                + nonce;
+                        "c=" + Base64.encodeToString(cMessage, Base64.NO_WRAP) + ",r=" + nonce;
+
                 final byte[] authMessage =
                         (clientFirstMessageBare
                                         + ','
@@ -237,6 +256,13 @@ abstract class ScramMechanism extends SaslMechanism {
             default:
                 throw new InvalidStateException(state);
         }
+    }
+
+    protected byte[] getChannelBindingData(final SSLSocket sslSocket) throws AuthenticationException {
+        if (this.channelBinding == ChannelBinding.NONE) {
+            return new byte[0];
+        }
+        throw new AssertionError("getChannelBindingData needs to be overwritten");
     }
 
     private static class CacheKey {

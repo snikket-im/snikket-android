@@ -6,6 +6,8 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.net.ssl.SSLSocket;
+
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
 
@@ -29,7 +31,8 @@ public class DigestMd5 extends SaslMechanism {
     }
 
     @Override
-    public String getResponse(final String challenge) throws AuthenticationException {
+    public String getResponse(final String challenge, final SSLSocket sslSocket)
+            throws AuthenticationException {
         switch (state) {
             case INITIAL:
                 state = State.RESPONSE_SENT;

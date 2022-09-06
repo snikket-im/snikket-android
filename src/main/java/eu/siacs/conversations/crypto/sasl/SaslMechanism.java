@@ -4,6 +4,8 @@ import com.google.common.base.Strings;
 
 import java.util.Collection;
 
+import javax.net.ssl.SSLSocket;
+
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
@@ -31,7 +33,8 @@ public abstract class SaslMechanism {
         return "";
     }
 
-    public String getResponse(final String challenge) throws AuthenticationException {
+    public String getResponse(final String challenge, final SSLSocket sslSocket)
+            throws AuthenticationException {
         return "";
     }
 
@@ -110,6 +113,14 @@ public abstract class SaslMechanism {
             } else {
                 return null;
             }
+        }
+    }
+
+    public static String namespace(final Version version) {
+        if (version == Version.SASL) {
+            return Namespace.SASL;
+        } else {
+            return Namespace.SASL_2;
         }
     }
 }

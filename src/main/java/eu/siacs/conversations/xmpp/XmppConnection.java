@@ -607,7 +607,7 @@ public class XmppConnection implements Runnable {
                     throw new AssertionError("Missing implementation for " + version);
                 }
                 try {
-                    response.setContent(saslMechanism.getResponse(challenge.getContent()));
+                    response.setContent(saslMechanism.getResponse(challenge.getContent(), sslSocketOrNull(socket)));
                 } catch (final SaslMechanism.AuthenticationException e) {
                     // TODO: Send auth abort tag.
                     Log.e(Config.LOGTAG, e.toString());
@@ -707,7 +707,7 @@ public class XmppConnection implements Runnable {
             throw new AssertionError("Missing implementation for " + version);
         }
         try {
-            saslMechanism.getResponse(challenge);
+            saslMechanism.getResponse(challenge, sslSocketOrNull(socket));
         } catch (final SaslMechanism.AuthenticationException e) {
             Log.e(Config.LOGTAG, String.valueOf(e));
             throw new StateChangingException(Account.State.UNAUTHORIZED);
@@ -795,6 +795,14 @@ public class XmppConnection implements Runnable {
             }
         } else {
             return false;
+        }
+    }
+
+    private static SSLSocket sslSocketOrNull(final Socket socket) {
+        if (socket instanceof SSLSocket) {
+            return (SSLSocket) socket;
+        } else {
+            return null;
         }
     }
 
@@ -1170,7 +1178,8 @@ public class XmppConnection implements Runnable {
         } else if (!this.streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
                 && account.isOptionSet(Account.OPTION_REGISTER)) {
             throw new StateChangingException(Account.State.REGISTRATION_NOT_SUPPORTED);
-        } else if (this.streamFeatures.hasChild("mechanisms", Namespace.SASL_2)
+        } else if (Config.SASL_2_ENABLED
+                && this.streamFeatures.hasChild("mechanisms", Namespace.SASL_2)
                 && shouldAuthenticate
                 && isSecure) {
             authenticate(SaslMechanism.Version.SASL_2);
@@ -1213,9 +1222,8 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate(final SaslMechanism.Version version) throws IOException {
-        Log.d(Config.LOGTAG, "stream features: " + this.streamFeatures);
         final Element element =
-                this.streamFeatures.findChild("mechanisms"); // TODO get from correct NS
+                this.streamFeatures.findChild("mechanisms", SaslMechanism.namespace(version));
         final Collection<String> mechanisms =
                 Collections2.transform(
                         Collections2.filter(
@@ -1234,6 +1242,7 @@ public class XmppConnection implements Runnable {
                                         c -> c != null && "channel-binding".equals(c.getName())),
                                 c -> c == null ? null : ChannelBinding.of(c.getAttribute("type"))),
                         Predicates.notNull());
+        Log.d(Config.LOGTAG,"mechanisms: "+mechanisms);
         Log.d(Config.LOGTAG, "channel bindings: " + channelBindings);
         final SaslMechanism.Factory factory = new SaslMechanism.Factory(account);
         this.saslMechanism = factory.of(mechanisms, channelBindings);
