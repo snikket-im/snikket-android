@@ -4,14 +4,15 @@ import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.SHA512Digest;
 import org.bouncycastle.crypto.macs.HMac;
 
-import java.security.SecureRandom;
-
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.xml.TagWriter;
 
 public class ScramSha512 extends ScramMechanism {
 
     public static final String MECHANISM = "SCRAM-SHA-512";
+
+    public ScramSha512(final Account account) {
+        super(account);
+    }
 
     @Override
     protected HMac getHMAC() {
@@ -21,10 +22,6 @@ public class ScramSha512 extends ScramMechanism {
     @Override
     protected Digest getDigest() {
         return new SHA512Digest();
-    }
-
-    public ScramSha512(final TagWriter tagWriter, final Account account, final SecureRandom rng) {
-        super(tagWriter, account, rng);
     }
 
     @Override

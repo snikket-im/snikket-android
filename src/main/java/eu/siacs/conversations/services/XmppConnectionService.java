@@ -1,6 +1,7 @@
 package eu.siacs.conversations.services;
 
 import static eu.siacs.conversations.utils.Compatibility.s;
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -379,7 +380,6 @@ public class XmppConnectionService extends Service {
         }
     };
     private final AtomicLong mLastExpiryRun = new AtomicLong(0);
-    private SecureRandom mRandom;
     private final LruCache<Pair<String, String>, ServiceDiscoveryResult> discoCache = new LruCache<>(20);
     private final OnStatusChanged statusListener = new OnStatusChanged() {
 
@@ -451,7 +451,7 @@ public class XmppConnectionService extends Service {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": went into offline state during low ping mode. reconnecting now");
                     reconnectAccount(account, true, false);
                 } else {
-                    int timeToReconnect = mRandom.nextInt(10) + 2;
+                    final int timeToReconnect = SECURE_RANDOM.nextInt(10) + 2;
                     scheduleWakeUpCall(timeToReconnect, account.getUuid().hashCode());
                 }
             } else if (account.getStatus() == Account.State.REGISTRATION_SUCCESSFUL) {
@@ -1143,7 +1143,6 @@ public class XmppConnectionService extends Service {
             Log.e(Config.LOGTAG, "unable to initialize security provider", throwable);
         }
         Resolver.init(this);
-        this.mRandom = new SecureRandom();
         updateMemorizingTrustmanager();
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 8;
@@ -3269,7 +3268,7 @@ public class XmppConnectionService extends Service {
                     }
                     return false;
                 }
-                final Jid jid = Jid.of(CryptoHelper.pronounceable(getRNG()), server, null);
+                final Jid jid = Jid.of(CryptoHelper.pronounceable(), server, null);
                 final Conversation conversation = findOrCreateConversation(account, jid, true, false, true);
                 joinMuc(conversation, new OnConferenceJoined() {
                     @Override
@@ -4364,10 +4363,6 @@ public class XmppConnectionService extends Service {
             final MessagePacket packet = mMessageGenerator.confirm(markable);
             this.sendMessagePacket(account, packet);
         }
-    }
-
-    public SecureRandom getRNG() {
-        return this.mRandom;
     }
 
     public MemorizingTrustManager getMemorizingTrustManager() {

@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp;
 
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -521,7 +523,7 @@ public class XmppConnection implements Runnable {
                             ? trustManager.getInteractive(domain)
                             : trustManager.getNonInteractive(domain)
                 },
-                mXmppConnectionService.getRNG());
+                SECURE_RANDOM);
         return sc.getSocketFactory();
     }
 
@@ -1216,23 +1218,11 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate(final SaslMechanism.Version version) throws IOException {
-        final List<String> mechanisms = extractMechanisms(streamFeatures.findChild("mechanisms"));
-        if (mechanisms.contains(External.MECHANISM) && account.getPrivateKeyAlias() != null) {
-            saslMechanism = new External(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains(ScramSha512.MECHANISM)) {
-            saslMechanism = new ScramSha512(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains(ScramSha256.MECHANISM)) {
-            saslMechanism = new ScramSha256(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains(ScramSha1.MECHANISM)) {
-            saslMechanism = new ScramSha1(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains(Plain.MECHANISM)
-                && !account.getJid().getDomain().toEscapedString().equals("nimbuzz.com")) {
-            saslMechanism = new Plain(tagWriter, account);
-        } else if (mechanisms.contains(DigestMd5.MECHANISM)) {
-            saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains(Anonymous.MECHANISM)) {
-            saslMechanism = new Anonymous(tagWriter, account, mXmppConnectionService.getRNG());
-        }
+        final Element element = streamFeatures.findChild("mechanisms");
+        final Collection<String> mechanisms = Collections2.transform(element.getChildren(), c -> c == null ? null : c.getContent());
+        final SaslMechanism.Factory factory = new SaslMechanism.Factory(account);
+        this.saslMechanism = factory.of(mechanisms);
+
         if (saslMechanism == null) {
             Log.d(
                     Config.LOGTAG,
@@ -1317,12 +1307,8 @@ public class XmppConnection implements Runnable {
         return bind;
     }
 
-    private static List<String> extractMechanisms(final Element stream) {
-        final ArrayList<String> mechanisms = new ArrayList<>(stream.getChildren().size());
-        for (final Element child : stream.getChildren()) {
-            mechanisms.add(child.getContent());
-        }
-        return mechanisms;
+    private static Collection<String> extractMechanisms(final Element stream) {
+        return Collections2.transform(stream.getChildren(), c -> c == null ? null : c.getContent());
     }
 
     private void register() {
@@ -1963,8 +1949,8 @@ public class XmppConnection implements Runnable {
         return nextRandomId(false);
     }
 
-    private String nextRandomId(boolean s) {
-        return CryptoHelper.random(s ? 3 : 9, mXmppConnectionService.getRNG());
+    private String nextRandomId(final boolean s) {
+        return CryptoHelper.random(s ? 3 : 9);
     }
 
     public String sendIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {

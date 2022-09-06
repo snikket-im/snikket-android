@@ -1,5 +1,7 @@
 package eu.siacs.conversations.crypto.axolotl;
 
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
+
 import android.os.Bundle;
 import android.security.KeyChain;
 import android.util.Log;
@@ -499,7 +501,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             PrivateKey x509PrivateKey = KeyChain.getPrivateKey(mXmppConnectionService, account.getPrivateKeyAlias());
             X509Certificate[] chain = KeyChain.getCertificateChain(mXmppConnectionService, account.getPrivateKeyAlias());
             Signature verifier = Signature.getInstance("sha256WithRSA");
-            verifier.initSign(x509PrivateKey, mXmppConnectionService.getRNG());
+            verifier.initSign(x509PrivateKey, SECURE_RANDOM);
             verifier.update(axolotlPublicKey.serialize());
             byte[] signature = verifier.sign();
             IqPacket packet = mXmppConnectionService.getIqGenerator().publishVerification(signature, chain, getOwnDeviceId());

@@ -2,24 +2,60 @@ package eu.siacs.conversations.crypto.sasl;
 
 import com.google.common.base.Strings;
 
-import java.security.SecureRandom;
+import java.util.Collection;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xml.TagWriter;
 
 public abstract class SaslMechanism {
 
-    final protected TagWriter tagWriter;
-    final protected Account account;
-    final protected SecureRandom rng;
+    protected final Account account;
+
+    protected SaslMechanism(final Account account) {
+        this.account = account;
+    }
+
+    /**
+     * The priority is used to pin the authentication mechanism. If authentication fails, it MAY be
+     * retried with another mechanism of the same priority, but MUST NOT be tried with a mechanism
+     * of lower priority (to prevent downgrade attacks).
+     *
+     * @return An arbitrary int representing the priority
+     */
+    public abstract int getPriority();
+
+    public abstract String getMechanism();
+
+    public String getClientFirstMessage() {
+        return "";
+    }
+
+    public String getResponse(final String challenge) throws AuthenticationException {
+        return "";
+    }
 
     protected enum State {
         INITIAL,
         AUTH_TEXT_SENT,
         RESPONSE_SENT,
         VALID_SERVER_RESPONSE,
+    }
+
+    public enum Version {
+        SASL,
+        SASL_2;
+
+        public static Version of(final Element element) {
+            switch (Strings.nullToEmpty(element.getNamespace())) {
+                case Namespace.SASL:
+                    return SASL;
+                case Namespace.SASL_2:
+                    return SASL_2;
+                default:
+                    throw new IllegalArgumentException("Unrecognized SASL namespace");
+            }
+        }
     }
 
     public static class AuthenticationException extends Exception {
@@ -46,42 +82,32 @@ public abstract class SaslMechanism {
         }
     }
 
-    public SaslMechanism(final TagWriter tagWriter, final Account account, final SecureRandom rng) {
-        this.tagWriter = tagWriter;
-        this.account = account;
-        this.rng = rng;
-    }
+    public static final class Factory {
 
-    /**
-     * The priority is used to pin the authentication mechanism. If authentication fails, it MAY be retried with another
-     * mechanism of the same priority, but MUST NOT be tried with a mechanism of lower priority (to prevent downgrade
-     * attacks).
-     *
-     * @return An arbitrary int representing the priority
-     */
-    public abstract int getPriority();
+        private final Account account;
 
-    public abstract String getMechanism();
+        public Factory(final Account account) {
+            this.account = account;
+        }
 
-    public String getClientFirstMessage() {
-        return "";
-    }
-
-    public String getResponse(final String challenge) throws AuthenticationException {
-        return "";
-    }
-
-    public enum Version {
-        SASL, SASL_2;
-
-        public static Version of(final Element element) {
-            switch ( Strings.nullToEmpty(element.getNamespace())) {
-                case Namespace.SASL:
-                    return SASL;
-                case Namespace.SASL_2:
-                    return SASL_2;
-                default:
-                    throw new IllegalArgumentException("Unrecognized SASL namespace");
+        public SaslMechanism of(final Collection<String> mechanisms) {
+            if (mechanisms.contains(External.MECHANISM) && account.getPrivateKeyAlias() != null) {
+                return new External(account);
+            } else if (mechanisms.contains(ScramSha512.MECHANISM)) {
+                return new ScramSha512(account);
+            } else if (mechanisms.contains(ScramSha256.MECHANISM)) {
+                return new ScramSha256(account);
+            } else if (mechanisms.contains(ScramSha1.MECHANISM)) {
+                return new ScramSha1(account);
+            } else if (mechanisms.contains(Plain.MECHANISM)
+                    && !account.getServer().equals("nimbuzz.com")) {
+                return new Plain(account);
+            } else if (mechanisms.contains(DigestMd5.MECHANISM)) {
+                return new DigestMd5(account);
+            } else if (mechanisms.contains(Anonymous.MECHANISM)) {
+                return new Anonymous(account);
+            } else {
+                return null;
             }
         }
     }

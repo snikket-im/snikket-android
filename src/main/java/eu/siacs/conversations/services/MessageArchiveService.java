@@ -1,5 +1,7 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
+
 import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
@@ -502,7 +504,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
                 this.start = start.getTimestamp();
             }
             this.end = end;
-            this.queryId = new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
+            this.queryId = new BigInteger(50, SECURE_RANDOM).toString(32);
             this.version = version;
         }
 

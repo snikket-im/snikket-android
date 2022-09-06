@@ -12,76 +12,51 @@ import org.bouncycastle.crypto.params.KeyParameter;
 
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
-import java.security.SecureRandom;
 import java.util.concurrent.ExecutionException;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.xml.TagWriter;
 
 abstract class ScramMechanism extends SaslMechanism {
-    // TODO: When channel binding (SCRAM-SHA1-PLUS) is supported in future, generalize this to indicate support and/or usage.
-    private final static String GS2_HEADER = "n,,";
+    // TODO: When channel binding (SCRAM-SHA1-PLUS) is supported in future, generalize this to
+    // indicate support and/or usage.
+    private static final String GS2_HEADER = "n,,";
     private static final byte[] CLIENT_KEY_BYTES = "Client Key".getBytes();
     private static final byte[] SERVER_KEY_BYTES = "Server Key".getBytes();
-
-    protected abstract HMac getHMAC();
-
-    protected abstract Digest getDigest();
-
-    private static final Cache<CacheKey, KeyPair> CACHE = CacheBuilder.newBuilder().maximumSize(10).build();
-
-    private static class CacheKey {
-        final String algorithm;
-        final String password;
-        final String salt;
-        final int iterations;
-
-        private CacheKey(String algorithm, String password, String salt, int iterations) {
-            this.algorithm = algorithm;
-            this.password = password;
-            this.salt = salt;
-            this.iterations = iterations;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            CacheKey cacheKey = (CacheKey) o;
-            return iterations == cacheKey.iterations &&
-                    Objects.equal(algorithm, cacheKey.algorithm) &&
-                    Objects.equal(password, cacheKey.password) &&
-                    Objects.equal(salt, cacheKey.salt);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(algorithm, password, salt, iterations);
-        }
-    }
-
-    private KeyPair getKeyPair(final String password, final String salt, final int iterations) throws ExecutionException {
-        return CACHE.get(new CacheKey(getHMAC().getAlgorithmName(), password, salt, iterations), () -> {
-            final byte[] saltedPassword, serverKey, clientKey;
-            saltedPassword = hi(password.getBytes(), Base64.decode(salt, Base64.DEFAULT), iterations);
-            serverKey = hmac(saltedPassword, SERVER_KEY_BYTES);
-            clientKey = hmac(saltedPassword, CLIENT_KEY_BYTES);
-            return new KeyPair(clientKey, serverKey);
-        });
-    }
-
+    private static final Cache<CacheKey, KeyPair> CACHE =
+            CacheBuilder.newBuilder().maximumSize(10).build();
     private final String clientNonce;
     protected State state = State.INITIAL;
     private String clientFirstMessageBare;
     private byte[] serverSignature = null;
 
-    ScramMechanism(final TagWriter tagWriter, final Account account, final SecureRandom rng) {
-        super(tagWriter, account, rng);
+    ScramMechanism(final Account account) {
+        super(account);
 
         // This nonce should be different for each authentication attempt.
-        clientNonce = CryptoHelper.random(100, rng);
+        this.clientNonce = CryptoHelper.random(100);
         clientFirstMessageBare = "";
+    }
+
+    protected abstract HMac getHMAC();
+
+    protected abstract Digest getDigest();
+
+    private KeyPair getKeyPair(final String password, final String salt, final int iterations)
+            throws ExecutionException {
+        return CACHE.get(
+                new CacheKey(getHMAC().getAlgorithmName(), password, salt, iterations),
+                () -> {
+                    final byte[] saltedPassword, serverKey, clientKey;
+                    saltedPassword =
+                            hi(
+                                    password.getBytes(),
+                                    Base64.decode(salt, Base64.DEFAULT),
+                                    iterations);
+                    serverKey = hmac(saltedPassword, SERVER_KEY_BYTES);
+                    clientKey = hmac(saltedPassword, CLIENT_KEY_BYTES);
+                    return new KeyPair(clientKey, serverKey);
+                });
     }
 
     private byte[] hmac(final byte[] key, final byte[] input) throws InvalidKeyException {
@@ -123,8 +98,11 @@ abstract class ScramMechanism extends SaslMechanism {
     @Override
     public String getClientFirstMessage() {
         if (clientFirstMessageBare.isEmpty() && state == State.INITIAL) {
-            clientFirstMessageBare = "n=" + CryptoHelper.saslEscape(CryptoHelper.saslPrep(account.getUsername())) +
-                    ",r=" + this.clientNonce;
+            clientFirstMessageBare =
+                    "n="
+                            + CryptoHelper.saslEscape(CryptoHelper.saslPrep(account.getUsername()))
+                            + ",r="
+                            + this.clientNonce;
             state = State.AUTH_TEXT_SENT;
         }
         return Base64.encodeToString(
@@ -173,7 +151,8 @@ abstract class ScramMechanism extends SaslMechanism {
                                  * MUST cause authentication failure when the attribute is parsed by
                                  * the other end.
                                  */
-                                throw new AuthenticationException("Server sent reserved token: `m'");
+                                throw new AuthenticationException(
+                                        "Server sent reserved token: `m'");
                         }
                     }
                 }
@@ -182,20 +161,33 @@ abstract class ScramMechanism extends SaslMechanism {
                     throw new AuthenticationException("Server did not send iteration count");
                 }
                 if (nonce.isEmpty() || !nonce.startsWith(clientNonce)) {
-                    throw new AuthenticationException("Server nonce does not contain client nonce: " + nonce);
+                    throw new AuthenticationException(
+                            "Server nonce does not contain client nonce: " + nonce);
                 }
                 if (salt.isEmpty()) {
                     throw new AuthenticationException("Server sent empty salt");
                 }
 
-                final String clientFinalMessageWithoutProof = "c=" + Base64.encodeToString(
-                        GS2_HEADER.getBytes(), Base64.NO_WRAP) + ",r=" + nonce;
-                final byte[] authMessage = (clientFirstMessageBare + ',' + new String(serverFirstMessage) + ','
-                        + clientFinalMessageWithoutProof).getBytes();
+                final String clientFinalMessageWithoutProof =
+                        "c="
+                                + Base64.encodeToString(GS2_HEADER.getBytes(), Base64.NO_WRAP)
+                                + ",r="
+                                + nonce;
+                final byte[] authMessage =
+                        (clientFirstMessageBare
+                                        + ','
+                                        + new String(serverFirstMessage)
+                                        + ','
+                                        + clientFinalMessageWithoutProof)
+                                .getBytes();
 
                 final KeyPair keys;
                 try {
-                    keys = getKeyPair(CryptoHelper.saslPrep(account.getPassword()), salt, iterationCount);
+                    keys =
+                            getKeyPair(
+                                    CryptoHelper.saslPrep(account.getPassword()),
+                                    salt,
+                                    iterationCount);
                 } catch (ExecutionException e) {
                     throw new AuthenticationException("Invalid keys generated");
                 }
@@ -213,32 +205,66 @@ abstract class ScramMechanism extends SaslMechanism {
                 final byte[] clientProof = new byte[keys.clientKey.length];
 
                 if (clientSignature.length < keys.clientKey.length) {
-                    throw new AuthenticationException("client signature was shorter than clientKey");
+                    throw new AuthenticationException(
+                            "client signature was shorter than clientKey");
                 }
 
                 for (int i = 0; i < clientProof.length; i++) {
                     clientProof[i] = (byte) (keys.clientKey[i] ^ clientSignature[i]);
                 }
 
-
-                final String clientFinalMessage = clientFinalMessageWithoutProof + ",p=" +
-                        Base64.encodeToString(clientProof, Base64.NO_WRAP);
+                final String clientFinalMessage =
+                        clientFinalMessageWithoutProof
+                                + ",p="
+                                + Base64.encodeToString(clientProof, Base64.NO_WRAP);
                 state = State.RESPONSE_SENT;
                 return Base64.encodeToString(clientFinalMessage.getBytes(), Base64.NO_WRAP);
             case RESPONSE_SENT:
                 try {
-                    final String clientCalculatedServerFinalMessage = "v=" +
-                            Base64.encodeToString(serverSignature, Base64.NO_WRAP);
-                    if (!clientCalculatedServerFinalMessage.equals(new String(Base64.decode(challenge, Base64.DEFAULT)))) {
+                    final String clientCalculatedServerFinalMessage =
+                            "v=" + Base64.encodeToString(serverSignature, Base64.NO_WRAP);
+                    if (!clientCalculatedServerFinalMessage.equals(
+                            new String(Base64.decode(challenge, Base64.DEFAULT)))) {
                         throw new Exception();
                     }
                     state = State.VALID_SERVER_RESPONSE;
                     return "";
                 } catch (Exception e) {
-                    throw new AuthenticationException("Server final message does not match calculated final message");
+                    throw new AuthenticationException(
+                            "Server final message does not match calculated final message");
                 }
             default:
                 throw new InvalidStateException(state);
+        }
+    }
+
+    private static class CacheKey {
+        final String algorithm;
+        final String password;
+        final String salt;
+        final int iterations;
+
+        private CacheKey(String algorithm, String password, String salt, int iterations) {
+            this.algorithm = algorithm;
+            this.password = password;
+            this.salt = salt;
+            this.iterations = iterations;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CacheKey cacheKey = (CacheKey) o;
+            return iterations == cacheKey.iterations
+                    && Objects.equal(algorithm, cacheKey.algorithm)
+                    && Objects.equal(password, cacheKey.password)
+                    && Objects.equal(salt, cacheKey.salt);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(algorithm, password, salt, iterations);
         }
     }
 

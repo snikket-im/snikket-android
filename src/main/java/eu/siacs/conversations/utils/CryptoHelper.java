@@ -1,5 +1,7 @@
 package eu.siacs.conversations.utils;
 
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
+
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Pair;
@@ -59,12 +61,12 @@ public final class CryptoHelper {
         return builder.toString();
     }
 
-    public static String pronounceable(SecureRandom random) {
-        final int rand = random.nextInt(4);
+    public static String pronounceable() {
+        final int rand = SECURE_RANDOM.nextInt(4);
         char[] output = new char[rand * 2 + (5 - rand)];
-        boolean vowel = random.nextBoolean();
+        boolean vowel = SECURE_RANDOM.nextBoolean();
         for (int i = 0; i < output.length; ++i) {
-            output[i] = vowel ? VOWELS[random.nextInt(VOWELS.length)] : CONSONANTS[random.nextInt(CONSONANTS.length)];
+            output[i] = vowel ? VOWELS[SECURE_RANDOM.nextInt(VOWELS.length)] : CONSONANTS[SECURE_RANDOM.nextInt(CONSONANTS.length)];
             vowel = !vowel;
         }
         return String.valueOf(output);
@@ -117,9 +119,9 @@ public final class CryptoHelper {
         return Normalizer.normalize(s, Normalizer.Form.NFKC);
     }
 
-    public static String random(int length, SecureRandom random) {
+    public static String random(final int length) {
         final byte[] bytes = new byte[length];
-        random.nextBytes(bytes);
+        SECURE_RANDOM.nextBytes(bytes);
         return Base64.encodeToString(bytes, Base64.NO_PADDING | Base64.NO_WRAP | Base64.URL_SAFE);
     }
 

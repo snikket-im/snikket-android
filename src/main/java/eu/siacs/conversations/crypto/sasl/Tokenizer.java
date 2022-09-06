@@ -6,9 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-/**
- * A tokenizer for GS2 header strings
- */
+/** A tokenizer for GS2 header strings */
 public final class Tokenizer implements Iterator<String>, Iterable<String> {
     private final List<String> parts;
     private int index;
@@ -50,18 +48,19 @@ public final class Tokenizer implements Iterator<String>, Iterable<String> {
     }
 
     /**
-     * Removes the last object returned by {@code next} from the collection.
-     * This method can only be called once between each call to {@code next}.
+     * Removes the last object returned by {@code next} from the collection. This method can only be
+     * called once between each call to {@code next}.
      *
      * @throws UnsupportedOperationException if removing is not supported by the collection being
-     *                                       iterated.
-     * @throws IllegalStateException         if {@code next} has not been called, or {@code remove} has
-     *                                       already been called after the last call to {@code next}.
+     *     iterated.
+     * @throws IllegalStateException if {@code next} has not been called, or {@code remove} has
+     *     already been called after the last call to {@code next}.
      */
     @Override
     public void remove() {
         if (index <= 0) {
-            throw new IllegalStateException("You can't delete an element before first next() method call");
+            throw new IllegalStateException(
+                    "You can't delete an element before first next() method call");
         }
         parts.remove(--index);
     }

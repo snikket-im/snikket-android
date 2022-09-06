@@ -1,5 +1,7 @@
 package eu.siacs.conversations.http;
 
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -124,7 +126,7 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
                 || message.getEncryption() == Message.ENCRYPTION_AXOLOTL
                 || message.getEncryption() == Message.ENCRYPTION_OTR) {
             this.key = new byte[44];
-            mXmppConnectionService.getRNG().nextBytes(this.key);
+            SECURE_RANDOM.nextBytes(this.key);
             this.file.setKeyAndIv(this.key);
         }
         this.file.setExpectedSize(originalFileSize + (file.getKey() != null ? 16 : 0));
