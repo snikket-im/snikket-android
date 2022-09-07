@@ -559,61 +559,13 @@ public class XmppConnection implements Runnable {
                 throw new StateChangingException(Account.State.TLS_ERROR);
             } else if (nextTag.isStart("failure")) {
                 final Element failure = tagReader.readElement(nextTag);
-                final SaslMechanism.Version version;
-                try {
-                    version = SaslMechanism.Version.of(failure);
-                } catch (final IllegalArgumentException e) {
-                    throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
-                }
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": login failure " + version);
-                if (failure.hasChild("temporary-auth-failure")) {
-                    throw new StateChangingException(Account.State.TEMPORARY_AUTH_FAILURE);
-                } else if (failure.hasChild("account-disabled")) {
-                    final String text = failure.findChildContent("text");
-                    if (Strings.isNullOrEmpty(text)) {
-                        throw new StateChangingException(Account.State.UNAUTHORIZED);
-                    }
-                    final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(text);
-                    if (matcher.find()) {
-                        final HttpUrl url;
-                        try {
-                            url = HttpUrl.get(text.substring(matcher.start(), matcher.end()));
-                        } catch (final IllegalArgumentException e) {
-                            throw new StateChangingException(Account.State.UNAUTHORIZED);
-                        }
-                        if (url.isHttps()) {
-                            this.redirectionUrl = url;
-                            throw new StateChangingException(Account.State.PAYMENT_REQUIRED);
-                        }
-                    }
-                }
-                throw new StateChangingException(Account.State.UNAUTHORIZED);
+                processFailure(failure);
             } else if (nextTag.isStart("continue", Namespace.SASL_2)) {
+                // two step sasl2 - we don’t support this yet
                 throw new StateChangingException(Account.State.INCOMPATIBLE_CLIENT);
             } else if (nextTag.isStart("challenge")) {
                 final Element challenge = tagReader.readElement(nextTag);
-                final SaslMechanism.Version version;
-                try {
-                    version = SaslMechanism.Version.of(challenge);
-                } catch (final IllegalArgumentException e) {
-                    throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
-                }
-                final Element response;
-                if (version == SaslMechanism.Version.SASL) {
-                    response = new Element("response", Namespace.SASL);
-                } else if (version == SaslMechanism.Version.SASL_2) {
-                    response = new Element("response", Namespace.SASL_2);
-                } else {
-                    throw new AssertionError("Missing implementation for " + version);
-                }
-                try {
-                    response.setContent(saslMechanism.getResponse(challenge.getContent(), sslSocketOrNull(socket)));
-                } catch (final SaslMechanism.AuthenticationException e) {
-                    // TODO: Send auth abort tag.
-                    Log.e(Config.LOGTAG, e.toString());
-                    throw new StateChangingException(Account.State.UNAUTHORIZED);
-                }
-                tagWriter.writeElement(response);
+                processChallenge(challenge);
             } else if (nextTag.isStart("enabled", Namespace.STREAM_MANAGEMENT)) {
                 final Element enabled = tagReader.readElement(nextTag);
                 processEnabled(enabled);
@@ -688,6 +640,31 @@ public class XmppConnection implements Runnable {
         if (nextTag != null && nextTag.isEnd("stream")) {
             streamCountDownLatch.countDown();
         }
+    }
+
+    private void processChallenge(Element challenge) throws IOException {
+        final SaslMechanism.Version version;
+        try {
+            version = SaslMechanism.Version.of(challenge);
+        } catch (final IllegalArgumentException e) {
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
+        final Element response;
+        if (version == SaslMechanism.Version.SASL) {
+            response = new Element("response", Namespace.SASL);
+        } else if (version == SaslMechanism.Version.SASL_2) {
+            response = new Element("response", Namespace.SASL_2);
+        } else {
+            throw new AssertionError("Missing implementation for " + version);
+        }
+        try {
+            response.setContent(saslMechanism.getResponse(challenge.getContent(), sslSocketOrNull(socket)));
+        } catch (final SaslMechanism.AuthenticationException e) {
+            // TODO: Send auth abort tag.
+            Log.e(Config.LOGTAG, e.toString());
+            throw new StateChangingException(Account.State.UNAUTHORIZED);
+        }
+        tagWriter.writeElement(response);
     }
 
     private boolean processSuccess(final Element success)
@@ -796,6 +773,38 @@ public class XmppConnection implements Runnable {
         } else {
             return false;
         }
+    }
+
+    private void processFailure(final Element failure) throws StateChangingException {
+        final SaslMechanism.Version version;
+        try {
+            version = SaslMechanism.Version.of(failure);
+        } catch (final IllegalArgumentException e) {
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
+        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": login failure " + version);
+        if (failure.hasChild("temporary-auth-failure")) {
+            throw new StateChangingException(Account.State.TEMPORARY_AUTH_FAILURE);
+        } else if (failure.hasChild("account-disabled")) {
+            final String text = failure.findChildContent("text");
+            if (Strings.isNullOrEmpty(text)) {
+                throw new StateChangingException(Account.State.UNAUTHORIZED);
+            }
+            final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(text);
+            if (matcher.find()) {
+                final HttpUrl url;
+                try {
+                    url = HttpUrl.get(text.substring(matcher.start(), matcher.end()));
+                } catch (final IllegalArgumentException e) {
+                    throw new StateChangingException(Account.State.UNAUTHORIZED);
+                }
+                if (url.isHttps()) {
+                    this.redirectionUrl = url;
+                    throw new StateChangingException(Account.State.PAYMENT_REQUIRED);
+                }
+            }
+        }
+        throw new StateChangingException(Account.State.UNAUTHORIZED);
     }
 
     private static SSLSocket sslSocketOrNull(final Socket socket) {
