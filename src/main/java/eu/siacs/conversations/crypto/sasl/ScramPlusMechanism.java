@@ -1,7 +1,5 @@
 package eu.siacs.conversations.crypto.sasl;
 
-import android.util.Log;
-
 import org.bouncycastle.jcajce.provider.digest.SHA256;
 import org.conscrypt.Conscrypt;
 
@@ -16,9 +14,7 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.utils.CryptoHelper;
 
 abstract class ScramPlusMechanism extends ScramMechanism {
 
@@ -56,11 +52,10 @@ abstract class ScramPlusMechanism extends ScramMechanism {
             return unique;
         } else if (this.channelBinding == ChannelBinding.TLS_SERVER_END_POINT) {
             final byte[] endPoint = getServerEndPointChannelBinding(sslSocket.getSession());
-            Log.d(Config.LOGTAG, "retrieved endpoint " + CryptoHelper.bytesToHex(endPoint));
             return endPoint;
         } else {
             throw new AuthenticationException(
-                    String.format("%s is not a valid channel binding", ChannelBinding.NONE));
+                    String.format("%s is not a valid channel binding", channelBinding));
         }
     }
 
@@ -99,7 +94,6 @@ abstract class ScramPlusMechanism extends ScramMechanism {
                         "Could not instantiate message digest for " + hashAlgorithm);
             }
         }
-        Log.d(Config.LOGTAG, "hashing certificate with " + messageDigest.getAlgorithm());
         final byte[] encodedCertificate;
         try {
             encodedCertificate = certificate.getEncoded();

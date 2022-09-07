@@ -32,6 +32,8 @@ public enum ChannelBinding {
             return TLS_EXPORTER;
         } else if (bindings.contains(TLS_UNIQUE)) {
             return TLS_UNIQUE;
+        } else if (bindings.contains(TLS_SERVER_END_POINT)) {
+            return TLS_SERVER_END_POINT;
         } else {
             return null;
         }
