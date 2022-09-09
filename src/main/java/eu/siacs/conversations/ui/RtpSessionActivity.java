@@ -5,6 +5,7 @@ import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.PictureInPictureParams;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -297,21 +298,38 @@ public class RtpSessionActivity extends XmppActivity
     }
 
     private void checkMicrophoneAvailabilityAsync() {
-        new Thread(this::checkMicrophoneAvailability).start();
+        new Thread(new MicrophoneAvailabilityCheck(this)).start();
     }
 
-    private void checkMicrophoneAvailability() {
-        final long start = SystemClock.elapsedRealtime();
-        final boolean isMicrophoneAvailable = AppRTCAudioManager.isMicrophoneAvailable();
-        final long stop = SystemClock.elapsedRealtime();
-        Log.d(Config.LOGTAG, "checking microphone availability took " + (stop - start) + "ms");
-        if (isMicrophoneAvailable) {
-            return;
+    private static class MicrophoneAvailabilityCheck implements Runnable {
+
+        private final WeakReference<Activity> activityReference;
+
+        private MicrophoneAvailabilityCheck(final Activity activity) {
+            this.activityReference = new WeakReference<>(activity);
         }
-        runOnUiThread(
-                () ->
-                        Toast.makeText(this, R.string.microphone_unavailable, Toast.LENGTH_LONG)
-                                .show());
+
+        @Override
+        public void run() {
+            final long start = SystemClock.elapsedRealtime();
+            final boolean isMicrophoneAvailable = AppRTCAudioManager.isMicrophoneAvailable();
+            final long stop = SystemClock.elapsedRealtime();
+            Log.d(Config.LOGTAG, "checking microphone availability took " + (stop - start) + "ms");
+            if (isMicrophoneAvailable) {
+                return;
+            }
+            final Activity activity = activityReference.get();
+            if (activity == null) {
+                return;
+            }
+            activity.runOnUiThread(
+                    () ->
+                            Toast.makeText(
+                                            activity,
+                                            R.string.microphone_unavailable,
+                                            Toast.LENGTH_LONG)
+                                    .show());
+        }
     }
 
     private void putScreenInCallMode() {
