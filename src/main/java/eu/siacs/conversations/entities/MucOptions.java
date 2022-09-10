@@ -156,7 +156,8 @@ public class MucOptions {
     }
 
     public boolean canInvite() {
-        return !membersOnly() || self.getRole().ranks(Role.MODERATOR) || allowInvites();
+        final boolean hasPermission = !membersOnly() || self.getRole().ranks(Role.MODERATOR) || allowInvites();
+        return hasPermission && online();
     }
 
     public boolean allowInvites() {
