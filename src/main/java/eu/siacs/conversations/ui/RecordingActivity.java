@@ -156,7 +156,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         @Override
         public void run() {
             try {
-                if (!latch.await(5, TimeUnit.SECONDS)) {
+                if (!latch.await(8, TimeUnit.SECONDS)) {
                     Log.d(Config.LOGTAG, "time out waiting for output file to be written");
                 }
             } catch (final InterruptedException e) {
@@ -199,7 +199,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         setupFileObserver(parentDirectory);
     }
 
-    private void setupFileObserver(File directory) {
+    private void setupFileObserver(final File directory) {
         mFileObserver =
                 new FileObserver(directory.getAbsolutePath()) {
                     @Override
@@ -219,7 +219,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(final View view) {
         switch (view.getId()) {
             case R.id.cancel_button:
                 mHandler.removeCallbacks(mTickExecutor);
