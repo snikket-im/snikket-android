@@ -57,7 +57,7 @@ public final class Config {
     public static final long CONTACT_SYNC_RETRY_INTERVAL = 1000L * 60 * 5;
 
 
-    public static final boolean SASL_2_ENABLED = false;
+    public static final boolean SASL_2_ENABLED = true;
 
     //Notification settings
     public static final boolean HIDE_MESSAGE_TEXT_IN_NOTIFICATION = false;

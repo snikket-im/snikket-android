@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -488,17 +489,19 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public Collection<Bookmark> getBookmarks() {
-        return this.bookmarks.values();
+        synchronized (this.bookmarks) {
+            return ImmutableList.copyOf(this.bookmarks.values());
+        }
     }
 
-    public void setBookmarks(Map<Jid, Bookmark> bookmarks) {
+    public void setBookmarks(final Map<Jid, Bookmark> bookmarks) {
         synchronized (this.bookmarks) {
             this.bookmarks.clear();
             this.bookmarks.putAll(bookmarks);
         }
     }
 
-    public void putBookmark(Bookmark bookmark) {
+    public void putBookmark(final Bookmark bookmark) {
         synchronized (this.bookmarks) {
             this.bookmarks.put(bookmark.getJid(), bookmark);
         }
