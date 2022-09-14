@@ -967,33 +967,28 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     }
 
     public List<Jid> getAccountJids(final boolean enabledOnly) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        final SQLiteDatabase db = this.getReadableDatabase();
         final List<Jid> jids = new ArrayList<>();
         final String[] columns = new String[]{Account.USERNAME, Account.SERVER};
-        String where = enabledOnly ? "not options & (1 <<1)" : null;
-        Cursor cursor = db.query(Account.TABLENAME, columns, where, null, null, null, null);
-        try {
-            while (cursor.moveToNext()) {
+        final String where = enabledOnly ? "not options & (1 <<1)" : null;
+        try (final Cursor cursor = db.query(Account.TABLENAME, columns, where, null, null, null, null)) {
+            while (cursor != null && cursor.moveToNext()) {
                 jids.add(Jid.of(cursor.getString(0), cursor.getString(1), null));
             }
+        } catch (final Exception e) {
             return jids;
-        } catch (Exception e) {
-            return jids;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
+        return jids;
     }
 
     private List<Account> getAccounts(SQLiteDatabase db) {
-        List<Account> list = new ArrayList<>();
-        Cursor cursor = db.query(Account.TABLENAME, null, null, null, null,
-                null, null);
-        while (cursor.moveToNext()) {
-            list.add(Account.fromCursor(cursor));
+        final List<Account> list = new ArrayList<>();
+        try (final Cursor cursor =
+                db.query(Account.TABLENAME, null, null, null, null, null, null)) {
+            while (cursor != null && cursor.moveToNext()) {
+                list.add(Account.fromCursor(cursor));
+            }
         }
-        cursor.close();
         return list;
     }
 

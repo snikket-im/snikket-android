@@ -125,31 +125,31 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public static Account fromCursor(final Cursor cursor) {
         final Jid jid;
         try {
-            String resource = cursor.getString(cursor.getColumnIndex(RESOURCE));
+            String resource = cursor.getString(cursor.getColumnIndexOrThrow(RESOURCE));
             jid = Jid.of(
-                    cursor.getString(cursor.getColumnIndex(USERNAME)),
-                    cursor.getString(cursor.getColumnIndex(SERVER)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(USERNAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(SERVER)),
                     resource == null || resource.trim().isEmpty() ? null : resource);
         } catch (final IllegalArgumentException ignored) {
-            Log.d(Config.LOGTAG, cursor.getString(cursor.getColumnIndex(USERNAME)) + "@" + cursor.getString(cursor.getColumnIndex(SERVER)));
+            Log.d(Config.LOGTAG, cursor.getString(cursor.getColumnIndexOrThrow(USERNAME)) + "@" + cursor.getString(cursor.getColumnIndexOrThrow(SERVER)));
             throw new AssertionError(ignored);
         }
-        return new Account(cursor.getString(cursor.getColumnIndex(UUID)),
+        return new Account(cursor.getString(cursor.getColumnIndexOrThrow(UUID)),
                 jid,
-                cursor.getString(cursor.getColumnIndex(PASSWORD)),
-                cursor.getInt(cursor.getColumnIndex(OPTIONS)),
-                cursor.getString(cursor.getColumnIndex(ROSTERVERSION)),
-                cursor.getString(cursor.getColumnIndex(KEYS)),
-                cursor.getString(cursor.getColumnIndex(AVATAR)),
-                cursor.getString(cursor.getColumnIndex(DISPLAY_NAME)),
-                cursor.getString(cursor.getColumnIndex(HOSTNAME)),
-                cursor.getInt(cursor.getColumnIndex(PORT)),
-                Presence.Status.fromShowString(cursor.getString(cursor.getColumnIndex(STATUS))),
-                cursor.getString(cursor.getColumnIndex(STATUS_MESSAGE)));
+                cursor.getString(cursor.getColumnIndexOrThrow(PASSWORD)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(OPTIONS)),
+                cursor.getString(cursor.getColumnIndexOrThrow(ROSTERVERSION)),
+                cursor.getString(cursor.getColumnIndexOrThrow(KEYS)),
+                cursor.getString(cursor.getColumnIndexOrThrow(AVATAR)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DISPLAY_NAME)),
+                cursor.getString(cursor.getColumnIndexOrThrow(HOSTNAME)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(PORT)),
+                Presence.Status.fromShowString(cursor.getString(cursor.getColumnIndexOrThrow(STATUS))),
+                cursor.getString(cursor.getColumnIndexOrThrow(STATUS_MESSAGE)));
     }
 
-    public boolean httpUploadAvailable(long filesize) {
-        return xmppConnection != null && xmppConnection.getFeatures().httpUpload(filesize);
+    public boolean httpUploadAvailable(long size) {
+        return xmppConnection != null && xmppConnection.getFeatures().httpUpload(size);
     }
 
     public boolean httpUploadAvailable() {
