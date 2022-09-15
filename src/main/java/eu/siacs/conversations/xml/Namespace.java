@@ -16,7 +16,7 @@ public final class Namespace {
     public static final String DATA = "jabber:x:data";
     public static final String OOB = "jabber:x:oob";
     public static final String SASL = "urn:ietf:params:xml:ns:xmpp-sasl";
-    public static final String SASL_2 = "urn:xmpp:sasl:1";
+    public static final String SASL_2 = "urn:xmpp:sasl:2";
     public static final String CHANNEL_BINDING = "urn:xmpp:sasl-cb:0";
     public static final String TLS = "urn:ietf:params:xml:ns:xmpp-tls";
     public static final String PUBSUB = "http://jabber.org/protocol/pubsub";

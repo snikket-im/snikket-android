@@ -1187,7 +1187,7 @@ public class XmppConnection implements Runnable {
                 && account.isOptionSet(Account.OPTION_REGISTER)) {
             throw new StateChangingException(Account.State.REGISTRATION_NOT_SUPPORTED);
         } else if (Config.SASL_2_ENABLED
-                && this.streamFeatures.hasChild("mechanisms", Namespace.SASL_2)
+                && this.streamFeatures.hasChild("authentication", Namespace.SASL_2)
                 && shouldAuthenticate
                 && isSecure) {
             authenticate(SaslMechanism.Version.SASL_2);
@@ -1230,8 +1230,12 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate(final SaslMechanism.Version version) throws IOException {
-        final Element element =
-                this.streamFeatures.findChild("mechanisms", SaslMechanism.namespace(version));
+        final Element element;
+        if (version == SaslMechanism.Version.SASL) {
+            element = this.streamFeatures.findChild("mechanisms", Namespace.SASL);
+        } else {
+            element = this.streamFeatures.findChild("authentication", Namespace.SASL_2);
+        }
         final Collection<String> mechanisms =
                 Collections2.transform(
                         Collections2.filter(
