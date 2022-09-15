@@ -100,7 +100,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
                         account.setOption(Account.OPTION_MAGIC_CREATE, true);
                         account.setOption(Account.OPTION_FIXED_USERNAME, fixedUsername);
                         if (this.preAuth != null) {
-                            account.setKey(Account.PRE_AUTH_REGISTRATION_TOKEN, this.preAuth);
+                            account.setKey(Account.KEY_PRE_AUTH_REGISTRATION_TOKEN, this.preAuth);
                         }
                         xmppConnectionService.createAccount(account);
                     }

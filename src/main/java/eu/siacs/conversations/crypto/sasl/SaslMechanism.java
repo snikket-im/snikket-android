@@ -3,6 +3,7 @@ package eu.siacs.conversations.crypto.sasl;
 import com.google.common.base.Strings;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.net.ssl.SSLSocket;
 
@@ -129,5 +130,10 @@ public abstract class SaslMechanism {
                 return null;
             }
         }
+
+        public SaslMechanism of(final String mechanism, final ChannelBinding channelBinding) {
+            return of(Collections.singleton(mechanism), Collections.singleton(channelBinding));
+        }
+
     }
 }

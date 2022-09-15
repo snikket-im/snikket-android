@@ -16,7 +16,7 @@ import javax.net.ssl.SSLSocket;
 
 import eu.siacs.conversations.entities.Account;
 
-abstract class ScramPlusMechanism extends ScramMechanism {
+public abstract class ScramPlusMechanism extends ScramMechanism {
 
     private static final String EXPORTER_LABEL = "EXPORTER-Channel-Binding";
 
@@ -51,8 +51,7 @@ abstract class ScramPlusMechanism extends ScramMechanism {
             }
             return unique;
         } else if (this.channelBinding == ChannelBinding.TLS_SERVER_END_POINT) {
-            final byte[] endPoint = getServerEndPointChannelBinding(sslSocket.getSession());
-            return endPoint;
+            return getServerEndPointChannelBinding(sslSocket.getSession());
         } else {
             throw new AuthenticationException(
                     String.format("%s is not a valid channel binding", channelBinding));
@@ -102,5 +101,9 @@ abstract class ScramPlusMechanism extends ScramMechanism {
         }
         messageDigest.update(encodedCertificate);
         return messageDigest.digest();
+    }
+
+    public ChannelBinding getChannelBinding() {
+        return this.channelBinding;
     }
 }

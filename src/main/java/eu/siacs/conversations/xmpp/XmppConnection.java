@@ -692,8 +692,7 @@ public class XmppConnection implements Runnable {
         Log.d(
                 Config.LOGTAG,
                 account.getJid().asBareJid().toString() + ": logged in (using " + version + ")");
-        // TODO store mechanism name
-        account.setKey(Account.PINNED_MECHANISM_KEY, String.valueOf(saslMechanism.getPriority()));
+        account.setPinnedMechanism(saslMechanism);
         if (version == SaslMechanism.Version.SASL_2) {
             final String authorizationIdentifier =
                     success.findChildContent("authorization-identifier");
@@ -1264,7 +1263,7 @@ public class XmppConnection implements Runnable {
                             + mechanisms);
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
-        final int pinnedMechanism = account.getKeyAsInt(Account.PINNED_MECHANISM_KEY, -1);
+        final int pinnedMechanism = account.getPinnedMechanismPriority();
         if (pinnedMechanism > saslMechanism.getPriority()) {
             Log.e(
                     Config.LOGTAG,
@@ -1345,7 +1344,7 @@ public class XmppConnection implements Runnable {
     }
 
     private void register() {
-        final String preAuth = account.getKey(Account.PRE_AUTH_REGISTRATION_TOKEN);
+        final String preAuth = account.getKey(Account.KEY_PRE_AUTH_REGISTRATION_TOKEN);
         if (preAuth != null && features.invite()) {
             final IqPacket preAuthRequest = new IqPacket(IqPacket.TYPE.SET);
             preAuthRequest.addChild("preauth", Namespace.PARS).setAttribute("token", preAuth);

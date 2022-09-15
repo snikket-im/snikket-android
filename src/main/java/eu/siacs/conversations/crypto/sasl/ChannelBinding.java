@@ -3,6 +3,7 @@ package eu.siacs.conversations.crypto.sasl;
 import android.util.Log;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Strings;
 
 import java.util.Collection;
 
@@ -24,6 +25,17 @@ public enum ChannelBinding {
         } catch (final IllegalArgumentException e) {
             Log.d(Config.LOGTAG, type + " is not a known channel binding");
             return null;
+        }
+    }
+
+    public static ChannelBinding get(final String name) {
+        if (Strings.isNullOrEmpty(name)) {
+            return NONE;
+        }
+        try {
+            return valueOf(name);
+        } catch (final IllegalArgumentException e) {
+            return NONE;
         }
     }
 
