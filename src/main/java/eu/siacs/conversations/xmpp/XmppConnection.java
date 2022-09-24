@@ -1290,43 +1290,10 @@ public class XmppConnection implements Runnable {
                 authenticate.setContent(firstMessage);
             }
         } else if (version == SaslMechanism.Version.SASL_2) {
-            authenticate = new Element("authenticate", Namespace.SASL_2);
-            if (!Strings.isNullOrEmpty(firstMessage)) {
-                authenticate.addChild("initial-response").setContent(firstMessage);
-            }
-            final Element userAgent = authenticate.addChild("user-agent");
-            userAgent.setAttribute("id", account.getUuid());
-            userAgent
-                    .addChild("software")
-                    .setContent(mXmppConnectionService.getString(R.string.app_name));
-            if (!PhoneHelper.isEmulator()) {
-                userAgent
-                        .addChild("device")
-                        .setContent(String.format("%s %s", Build.MANUFACTURER, Build.MODEL));
-            }
             final Element inline = authElement.findChild("inline", Namespace.SASL_2);
-            final boolean inlineStreamManagement =
-                    inline != null && inline.hasChild("sm", "urn:xmpp:sm:3");
-            final Element inlineBind2 =
-                    inline != null ? inline.findChild("bind", Namespace.BIND2) : null;
-            final Element inlineBind2Inline =
-                    inlineBind2 != null ? inlineBind2.findChild("inline", Namespace.BIND2) : null;
-            if (inlineBind2 != null) {
-                final Element bind =
-                        generateBindRequest(
-                                inlineBind2Inline == null
-                                        ? Collections.emptyList()
-                                        : Collections2.transform(
-                                                inlineBind2Inline.getChildren(),
-                                                c -> c == null ? null : c.getAttribute("var")));
-                authenticate.addChild(bind);
-            }
-            if (inlineStreamManagement && streamId != null) {
-                final ResumePacket resume = new ResumePacket(this.streamId, stanzasReceived);
-                this.mSmCatchupMessageCounter.set(0);
-                this.mWaitingForSmCatchup.set(true);
-                authenticate.addChild(resume);
-            }
+            final boolean sm = inline != null && inline.hasChild("sm", "urn:xmpp:sm:3");
+            final Collection<String> bindFeatures = bindFeatures(inline);
+            authenticate = generateAuthenticationRequest(firstMessage, bindFeatures, sm);
         } else {
             throw new AssertionError("Missing implementation for " + version);
         }
@@ -1340,6 +1307,51 @@ public class XmppConnection implements Runnable {
                         + saslMechanism.getMechanism());
         authenticate.setAttribute("mechanism", saslMechanism.getMechanism());
         tagWriter.writeElement(authenticate);
+    }
+
+    private static Collection<String> bindFeatures(final Element inline) {
+        final Element inlineBind2 =
+                inline != null ? inline.findChild("bind", Namespace.BIND2) : null;
+        final Element inlineBind2Inline =
+                inlineBind2 != null ? inlineBind2.findChild("inline", Namespace.BIND2) : null;
+        if (inlineBind2 == null) {
+            return null;
+        }
+        if (inlineBind2Inline == null) {
+            return Collections.emptyList();
+        }
+        return Collections2.transform(
+                inlineBind2Inline.getChildren(), c -> c == null ? null : c.getAttribute("var"));
+    }
+
+    private Element generateAuthenticationRequest(
+            final String firstMessage,
+            final Collection<String> bind,
+            final boolean inlineStreamManagement) {
+        final Element authenticate = new Element("authenticate", Namespace.SASL_2);
+        if (!Strings.isNullOrEmpty(firstMessage)) {
+            authenticate.addChild("initial-response").setContent(firstMessage);
+        }
+        final Element userAgent = authenticate.addChild("user-agent");
+        userAgent.setAttribute("id", account.getUuid());
+        userAgent
+                .addChild("software")
+                .setContent(mXmppConnectionService.getString(R.string.app_name));
+        if (!PhoneHelper.isEmulator()) {
+            userAgent
+                    .addChild("device")
+                    .setContent(String.format("%s %s", Build.MANUFACTURER, Build.MODEL));
+        }
+        if (bind != null) {
+            authenticate.addChild(generateBindRequest(bind));
+        }
+        if (inlineStreamManagement && streamId != null) {
+            final ResumePacket resume = new ResumePacket(this.streamId, stanzasReceived);
+            this.mSmCatchupMessageCounter.set(0);
+            this.mWaitingForSmCatchup.set(true);
+            authenticate.addChild(resume);
+        }
+        return authenticate;
     }
 
     private Element generateBindRequest(final Collection<String> bindFeatures) {
