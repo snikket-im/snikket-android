@@ -233,7 +233,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             Element item = items.findChild("item");
             Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
             Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received PEP device list " + deviceIds + " update from " + from + ", processing... ");
-            AxolotlService axolotlService = account.getAxolotlService();
+            final AxolotlService axolotlService = account.getAxolotlService();
             axolotlService.registerDevices(from, deviceIds);
         } else if (Namespace.BOOKMARKS.equals(node) && account.getJid().asBareJid().equals(from)) {
             if (account.getXmppConnection().getFeatures().bookmarksConversion()) {

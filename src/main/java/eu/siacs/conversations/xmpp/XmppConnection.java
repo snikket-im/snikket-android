@@ -60,7 +60,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 
-import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
@@ -1233,16 +1232,16 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate(final SaslMechanism.Version version) throws IOException {
-        final Element element;
+        final Element authElement;
         if (version == SaslMechanism.Version.SASL) {
-            element = this.streamFeatures.findChild("mechanisms", Namespace.SASL);
+            authElement = this.streamFeatures.findChild("mechanisms", Namespace.SASL);
         } else {
-            element = this.streamFeatures.findChild("authentication", Namespace.SASL_2);
+            authElement = this.streamFeatures.findChild("authentication", Namespace.SASL_2);
         }
         final Collection<String> mechanisms =
                 Collections2.transform(
                         Collections2.filter(
-                                element.getChildren(),
+                                authElement.getChildren(),
                                 c -> c != null && "mechanism".equals(c.getName())),
                         c -> c == null ? null : c.getContent());
         final Element cbElement =
@@ -1297,24 +1296,29 @@ public class XmppConnection implements Runnable {
             }
             final Element userAgent = authenticate.addChild("user-agent");
             userAgent.setAttribute("id", account.getUuid());
-            userAgent.addChild("software").setContent(mXmppConnectionService.getString(R.string.app_name));
+            userAgent
+                    .addChild("software")
+                    .setContent(mXmppConnectionService.getString(R.string.app_name));
             if (!PhoneHelper.isEmulator()) {
                 userAgent
                         .addChild("device")
                         .setContent(String.format("%s %s", Build.MANUFACTURER, Build.MODEL));
             }
-            final Element inline = this.streamFeatures.findChild("inline", Namespace.SASL_2);
+            final Element inline = authElement.findChild("inline", Namespace.SASL_2);
             final boolean inlineStreamManagement =
                     inline != null && inline.hasChild("sm", "urn:xmpp:sm:3");
-            final boolean inlineBind2 = inline != null && inline.hasChild("bind", Namespace.BIND2);
-            final Element inlineBindFeatures =
-                    this.streamFeatures.findChild("inline", Namespace.BIND2);
-            if (inlineBind2 && inlineBindFeatures != null) {
+            final Element inlineBind2 =
+                    inline != null ? inline.findChild("bind", Namespace.BIND2) : null;
+            final Element inlineBind2Inline =
+                    inlineBind2 != null ? inlineBind2.findChild("inline", Namespace.BIND2) : null;
+            if (inlineBind2 != null) {
                 final Element bind =
                         generateBindRequest(
-                                Collections2.transform(
-                                        inlineBindFeatures.getChildren(),
-                                        c -> c == null ? null : c.getAttribute("var")));
+                                inlineBind2Inline == null
+                                        ? Collections.emptyList()
+                                        : Collections2.transform(
+                                                inlineBind2Inline.getChildren(),
+                                                c -> c == null ? null : c.getAttribute("var")));
                 authenticate.addChild(bind);
             }
             if (inlineStreamManagement && streamId != null) {
