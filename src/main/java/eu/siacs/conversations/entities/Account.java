@@ -63,6 +63,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public static final int OPTION_REQUIRES_ACCESS_MODE_CHANGE = 5;
     public static final int OPTION_LOGGED_IN_SUCCESSFULLY = 6;
     public static final int OPTION_HTTP_UPLOAD_AVAILABLE = 7;
+    public static final int OPTION_UNVERIFIED = 8;
     public static final int OPTION_FIXED_USERNAME = 9;
     public static final int OPTION_QUICKSTART_AVAILABLE = 10;
 
