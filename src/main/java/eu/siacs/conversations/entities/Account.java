@@ -57,16 +57,14 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public static final String PINNED_CHANNEL_BINDING = "pinned_channel_binding";
 
 
-    public static final int OPTION_USETLS = 0;
     public static final int OPTION_DISABLED = 1;
     public static final int OPTION_REGISTER = 2;
-    public static final int OPTION_USECOMPRESSION = 3;
     public static final int OPTION_MAGIC_CREATE = 4;
     public static final int OPTION_REQUIRES_ACCESS_MODE_CHANGE = 5;
     public static final int OPTION_LOGGED_IN_SUCCESSFULLY = 6;
     public static final int OPTION_HTTP_UPLOAD_AVAILABLE = 7;
-    public static final int OPTION_UNVERIFIED = 8;
     public static final int OPTION_FIXED_USERNAME = 9;
+    public static final int OPTION_QUICKSTART_AVAILABLE = 10;
 
     private static final String KEY_PGP_SIGNATURE = "pgp_signature";
     private static final String KEY_PGP_ID = "pgp_id";

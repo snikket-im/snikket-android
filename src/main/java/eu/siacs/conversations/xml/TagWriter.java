@@ -58,15 +58,20 @@ public class TagWriter {
             throw new IOException("output stream was null");
         }
         outputStream.write("<?xml version='1.0'?>");
-        outputStream.flush();
     }
 
-    public synchronized void writeTag(Tag tag) throws IOException {
+    public void writeTag(final Tag tag) throws IOException {
+        writeTag(tag, true);
+    }
+
+    public synchronized void writeTag(final Tag tag, final boolean flush) throws IOException {
         if (outputStream == null) {
             throw new IOException("output stream was null");
         }
         outputStream.write(tag.toString());
-        outputStream.flush();
+        if (flush) {
+            outputStream.flush();
+        }
     }
 
     public synchronized void writeElement(Element element) throws IOException {

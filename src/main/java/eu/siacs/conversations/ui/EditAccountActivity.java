@@ -286,8 +286,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 mAccount = new Account(jid.asBareJid(), password);
                 mAccount.setPort(numericPort);
                 mAccount.setHostname(hostname);
-                mAccount.setOption(Account.OPTION_USETLS, true);
-                mAccount.setOption(Account.OPTION_USECOMPRESSION, true);
                 mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
                 xmppConnectionService.createAccount(mAccount);
             }
