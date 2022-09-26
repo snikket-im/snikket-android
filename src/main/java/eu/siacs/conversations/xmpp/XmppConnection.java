@@ -898,6 +898,10 @@ public class XmppConnection implements Runnable {
             }
             sendPacket(packet);
         }
+        changeStatusToOnline();
+    }
+
+    private void changeStatusToOnline() {
         Log.d(
                 Config.LOGTAG,
                 account.getJid().asBareJid() + ": online with resource " + account.getResource());
@@ -1184,12 +1188,20 @@ public class XmppConnection implements Runnable {
                 features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion();
         final boolean needsBinding = !isBound && !account.isOptionSet(Account.OPTION_REGISTER);
         if (this.quickStartInProgress) {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid()
-                            + ": quick start in progress. ignoring features: "
-                            + XmlHelper.printElementNames(this.streamFeatures));
-        } else if (this.streamFeatures.hasChild("starttls", Namespace.TLS)
+            if (this.streamFeatures.hasChild("authentication", Namespace.SASL_2)) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": quick start in progress. ignoring features: "
+                                + XmlHelper.printElementNames(this.streamFeatures));
+                return;
+            }
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": server lost support for SASL 2. quick start not possible");
+            this.account.setOption(Account.OPTION_QUICKSTART_AVAILABLE, false);
+            mXmppConnectionService.updateAccount(account);
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
+        if (this.streamFeatures.hasChild("starttls", Namespace.TLS)
                 && !features.encryptionEnabled) {
             sendStartTLS();
         } else if (this.streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
@@ -1878,13 +1890,10 @@ public class XmppConnection implements Runnable {
     }
 
     private void finalizeBind() {
-        Log.d(
-                Config.LOGTAG,
-                account.getJid().asBareJid() + ": online with resource " + account.getResource());
         if (bindListener != null) {
             bindListener.onBind(account);
         }
-        changeStatus(Account.State.ONLINE);
+        changeStatusToOnline();
     }
 
     private void enableAdvancedStreamFeatures() {
@@ -2012,6 +2021,7 @@ public class XmppConnection implements Runnable {
     private boolean establishStream(final boolean secureConnection) throws IOException {
         final SaslMechanism saslMechanism = account.getPinnedMechanism();
         if (secureConnection
+                && Config.SASL_2_ENABLED
                 && saslMechanism != null
                 && account.isOptionSet(Account.OPTION_QUICKSTART_AVAILABLE)) {
             this.saslMechanism = saslMechanism;
