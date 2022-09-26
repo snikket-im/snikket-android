@@ -29,16 +29,22 @@
 
 package eu.siacs.conversations.ui.util;
 
+import android.net.Uri;
 import android.os.Build;
 import android.text.Editable;
+import android.text.style.URLSpan;
 import android.text.util.Linkify;
 
 import java.util.Locale;
 
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.ui.text.FixedURLSpan;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class MyLinkify {
 
@@ -117,5 +123,25 @@ public class MyLinkify {
             Linkify.addLinks(body, GeoHelper.GEO_URI, "geo");
         }
         FixedURLSpan.fix(body);
+    }
+
+    public static void addLinks(Editable body, Account account) {
+        addLinks(body, true);
+        Roster roster = account.getRoster();
+        for (final URLSpan urlspan : body.getSpans(0, body.length() - 1, URLSpan.class)) {
+            Uri uri = Uri.parse(urlspan.getURL());
+            if ("xmpp".equals(uri.getScheme())) {
+                try {
+                    Jid jid = new XmppUri(uri).getJid();
+                    ListItem item = account.getBookmark(jid);
+                    if (item == null) item = roster.getContact(jid);
+                    body.replace(
+                        body.getSpanStart(urlspan),
+                        body.getSpanEnd(urlspan),
+                        item.getDisplayName()
+                    );
+                } catch (final IllegalArgumentException e) { /* bad JID */ }
+            }
+        }
     }
 }

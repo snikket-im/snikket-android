@@ -494,7 +494,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             if (highlightedTerm != null) {
                 StylingHelper.highlight(activity, body, highlightedTerm, StylingHelper.isDarkText(viewHolder.messageBody));
             }
-            MyLinkify.addLinks(body, true);
+            MyLinkify.addLinks(body, message.getConversation().getAccount());
             viewHolder.messageBody.setAutoLinkMask(0);
             viewHolder.messageBody.setText(EmojiWrapper.transform(body));
             viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
