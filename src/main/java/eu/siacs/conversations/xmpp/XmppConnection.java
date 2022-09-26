@@ -753,6 +753,7 @@ public class XmppConnection implements Runnable {
                 processFailed(failed, false); // wait for new stream features
             }
             if (bound != null) {
+                clearIqCallbacks();
                 this.isBound = true;
                 final Element streamManagementEnabled =
                         bound.findChild("enabled", Namespace.STREAM_MANAGEMENT);
@@ -1134,7 +1135,12 @@ public class XmppConnection implements Runnable {
         tagReader.setInputStream(sslSocket.getInputStream());
         tagWriter.setOutputStream(sslSocket.getOutputStream());
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS connection established");
-        final boolean quickStart = establishStream(true);
+        final boolean quickStart;
+        try {
+            quickStart = establishStream(true);
+        } catch (final InterruptedException e) {
+            return;
+        }
         if (quickStart) {
             this.quickStartInProgress = true;
         }
@@ -1333,6 +1339,17 @@ public class XmppConnection implements Runnable {
                     sm
                             && bindFeatures != null
                             && bindFeatures.containsAll(Bind2.QUICKSTART_FEATURES);
+            if (bindFeatures != null) {
+                try {
+                    mXmppConnectionService.restoredFromDatabaseLatch.await();
+                } catch (final InterruptedException e) {
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid()
+                                    + ": interrupted while waiting for DB restore during SASL2 bind");
+                    return;
+                }
+            }
             authenticate = generateAuthenticationRequest(firstMessage, bindFeatures, sm);
         } else {
             throw new AssertionError("Missing implementation for " + version);
@@ -1876,7 +1893,6 @@ public class XmppConnection implements Runnable {
                                 }
                             }
                         }
-                        Log.d(Config.LOGTAG, commands.toString());
                         synchronized (this.commands) {
                             this.commands.clear();
                             this.commands.putAll(commands);
@@ -2018,12 +2034,13 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private boolean establishStream(final boolean secureConnection) throws IOException {
+    private boolean establishStream(final boolean secureConnection) throws IOException, InterruptedException {
         final SaslMechanism saslMechanism = account.getPinnedMechanism();
         if (secureConnection
                 && Config.SASL_2_ENABLED
                 && saslMechanism != null
                 && account.isOptionSet(Account.OPTION_QUICKSTART_AVAILABLE)) {
+            mXmppConnectionService.restoredFromDatabaseLatch.await();
             this.saslMechanism = saslMechanism;
             final Element authenticate =
                     generateAuthenticationRequest(saslMechanism.getClientFirstMessage());

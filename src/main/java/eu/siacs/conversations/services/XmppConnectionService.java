@@ -1939,7 +1939,7 @@ public class XmppConnectionService extends Service {
                     databaseBackend.expireOldMessages(deletionDate);
                 }
                 Log.d(Config.LOGTAG, "restoring roster...");
-                for (Account account : accounts) {
+                for (final Account account : accounts) {
                     databaseBackend.readRoster(account.getRoster());
                     account.initAccountServices(XmppConnectionService.this); //roster needs to be loaded at this stage
                 }
@@ -1977,11 +1977,11 @@ public class XmppConnectionService extends Service {
 
     public void loadPhoneContacts() {
         mContactMergerExecutor.execute(() -> {
-            Map<Jid, JabberIdContact> contacts = JabberIdContact.load(this);
+            final Map<Jid, JabberIdContact> contacts = JabberIdContact.load(this);
             Log.d(Config.LOGTAG, "start merging phone contacts with roster");
-            for (Account account : accounts) {
-                List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(JabberIdContact.class);
-                for (JabberIdContact jidContact : contacts.values()) {
+            for (final Account account : accounts) {
+                final List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(JabberIdContact.class);
+                for (final JabberIdContact jidContact : contacts.values()) {
                     final Contact contact = account.getRoster().getContact(jidContact.getJid());
                     boolean needsCacheClean = contact.setPhoneContact(jidContact);
                     if (needsCacheClean) {
@@ -1989,7 +1989,7 @@ public class XmppConnectionService extends Service {
                     }
                     withSystemAccounts.remove(contact);
                 }
-                for (Contact contact : withSystemAccounts) {
+                for (final Contact contact : withSystemAccounts) {
                     boolean needsCacheClean = contact.unsetPhoneContact(JabberIdContact.class);
                     if (needsCacheClean) {
                         getAvatarService().clear(contact);
