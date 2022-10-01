@@ -1602,7 +1602,6 @@ public class FileBackend {
         return getVideoDimensions(metadataRetriever);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Dimensions getPdfDocumentDimensions(final File file) {
         final ParcelFileDescriptor fileDescriptor;
         try {
@@ -1610,7 +1609,7 @@ public class FileBackend {
             if (fileDescriptor == null) {
                 return new Dimensions(0, 0);
             }
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             return new Dimensions(0, 0);
         }
         try {
@@ -1621,7 +1620,7 @@ public class FileBackend {
             page.close();
             pdfRenderer.close();
             return scalePdfDimensions(new Dimensions(height, width));
-        } catch (IOException | SecurityException e) {
+        } catch (final IOException | SecurityException e) {
             Log.d(Config.LOGTAG, "unable to get dimensions for pdf document", e);
             return new Dimensions(0, 0);
         }

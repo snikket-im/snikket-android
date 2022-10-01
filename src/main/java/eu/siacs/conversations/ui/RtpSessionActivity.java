@@ -521,6 +521,9 @@ public class RtpSessionActivity extends XmppActivity
             @StringRes int res;
             final String firstDenied =
                     getFirstDenied(permissionResult.grantResults, permissionResult.permissions);
+            if (firstDenied == null) {
+                return;
+            }
             if (Manifest.permission.RECORD_AUDIO.equals(firstDenied)) {
                 res = R.string.no_microphone_permission;
             } else if (Manifest.permission.CAMERA.equals(firstDenied)) {
