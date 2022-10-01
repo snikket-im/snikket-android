@@ -15,7 +15,8 @@
                 android:targetPackage="com.huawei.systemmanager" />
         </PreferenceScreen>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_privacy">
+    <PreferenceCategory android:title="@string/pref_privacy"
+        android:key="privacy">
         <CheckBoxPreference
             android:defaultValue="@bool/confirm_messages"
             android:key="confirm_messages"

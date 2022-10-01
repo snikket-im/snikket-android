@@ -298,26 +298,33 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             deleteOmemoPreference.setOnPreferenceClickListener(
                     preference -> deleteOmemoIdentities());
         }
+        if (Config.omemoOnly()) {
+            final PreferenceCategory privacyCategory =
+                    (PreferenceCategory) mSettingsFragment.findPreference("privacy");
+            final Preference omemoPreference =mSettingsFragment.findPreference(OMEMO_SETTING);
+            if (omemoPreference != null) {
+                privacyCategory.removePreference(omemoPreference);
+            }
+        }
     }
 
     private void changeOmemoSettingSummary() {
-        ListPreference omemoPreference =
+        final ListPreference omemoPreference =
                 (ListPreference) mSettingsFragment.findPreference(OMEMO_SETTING);
-        if (omemoPreference != null) {
-            String value = omemoPreference.getValue();
-            switch (value) {
-                case "always":
-                    omemoPreference.setSummary(R.string.pref_omemo_setting_summary_always);
-                    break;
-                case "default_on":
-                    omemoPreference.setSummary(R.string.pref_omemo_setting_summary_default_on);
-                    break;
-                case "default_off":
-                    omemoPreference.setSummary(R.string.pref_omemo_setting_summary_default_off);
-                    break;
-            }
-        } else {
-            Log.d(Config.LOGTAG, "unable to find preference named " + OMEMO_SETTING);
+        if (omemoPreference == null) {
+            return;
+        }
+        final String value = omemoPreference.getValue();
+        switch (value) {
+            case "always":
+                omemoPreference.setSummary(R.string.pref_omemo_setting_summary_always);
+                break;
+            case "default_on":
+                omemoPreference.setSummary(R.string.pref_omemo_setting_summary_default_on);
+                break;
+            case "default_off":
+                omemoPreference.setSummary(R.string.pref_omemo_setting_summary_default_off);
+                break;
         }
     }
 

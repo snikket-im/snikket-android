@@ -15,10 +15,9 @@ import eu.siacs.conversations.xmpp.chatstate.ChatState;
 public final class Config {
     private static final int UNENCRYPTED = 1;
     private static final int OPENPGP = 2;
-    private static final int OTR = 4;
     private static final int OMEMO = 8;
 
-    private static final int ENCRYPTION_MASK = UNENCRYPTED | OPENPGP | OTR | OMEMO;
+    private static final int ENCRYPTION_MASK = UNENCRYPTED | OPENPGP | OMEMO;
 
     public static boolean supportUnencrypted() {
         return (ENCRYPTION_MASK & UNENCRYPTED) != 0;
@@ -30,6 +29,10 @@ public final class Config {
 
     public static boolean supportOmemo() {
         return (ENCRYPTION_MASK & OMEMO) != 0;
+    }
+
+    public static boolean omemoOnly() {
+        return !multipleEncryptionChoices() && supportOmemo();
     }
 
     public static boolean multipleEncryptionChoices() {
