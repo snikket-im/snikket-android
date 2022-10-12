@@ -1332,11 +1332,11 @@ public class ConversationFragment extends XmppFragment
                     && t == null) {
                 copyMessage.setVisible(true);
                 quoteMessage.setVisible(!showError && MessageUtils.prepareQuote(m).length() > 0);
-                String body = m.getMergedBody().toString();
-                if (ShareUtil.containsXmppUri(body)) {
+                final String scheme = ShareUtil.getLinkScheme(m.getMergedBody());
+                if ("xmpp".equals(scheme)) {
                     copyLink.setTitle(R.string.copy_jabber_id);
                     copyLink.setVisible(true);
-                } else if (Patterns.AUTOLINK_WEB_URL.matcher(body).find()) {
+                } else if (scheme != null) {
                     copyLink.setVisible(true);
                 }
             }
