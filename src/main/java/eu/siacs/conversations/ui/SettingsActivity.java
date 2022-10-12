@@ -23,6 +23,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
+import com.google.common.base.Strings;
+
 import java.io.File;
 import java.security.KeyStoreException;
 import java.util.ArrayList;
@@ -96,19 +98,23 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
 
         changeOmemoSettingSummary();
 
-        if (QuickConversationsService.isQuicksy()) {
-            final PreferenceCategory connectionOptions =
-                    (PreferenceCategory) mSettingsFragment.findPreference("connection_options");
+        if (QuickConversationsService.isQuicksy()
+                || Strings.isNullOrEmpty(Config.CHANNEL_DISCOVERY)) {
             final PreferenceCategory groupChats =
                     (PreferenceCategory) mSettingsFragment.findPreference("group_chats");
             final Preference channelDiscoveryMethod =
                     mSettingsFragment.findPreference("channel_discovery_method");
+            if (groupChats != null && channelDiscoveryMethod != null) {
+                groupChats.removePreference(channelDiscoveryMethod);
+            }
+        }
+
+        if (QuickConversationsService.isQuicksy()) {
+            final PreferenceCategory connectionOptions =
+                    (PreferenceCategory) mSettingsFragment.findPreference("connection_options");
             PreferenceScreen expert = (PreferenceScreen) mSettingsFragment.findPreference("expert");
             if (connectionOptions != null) {
                 expert.removePreference(connectionOptions);
-            }
-            if (groupChats != null && channelDiscoveryMethod != null) {
-                groupChats.removePreference(channelDiscoveryMethod);
             }
         }
 
