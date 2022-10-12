@@ -110,11 +110,9 @@ public class ExportBackupService extends Service {
                 final String value = accountCursor.getString(i);
                 if (value == null || Account.ROSTERVERSION.equals(accountCursor.getColumnName(i))) {
                     builder.append("NULL");
-                } else if (value.matches("\\d+")) {
+                } else if (Account.OPTIONS.equals(accountCursor.getColumnName(i)) && value.matches("\\d+")) {
                     int intValue = Integer.parseInt(value);
-                    if (Account.OPTIONS.equals(accountCursor.getColumnName(i))) {
-                        intValue |= 1 << Account.OPTION_DISABLED;
-                    }
+                    intValue |= 1 << Account.OPTION_DISABLED;
                     builder.append(intValue);
                 } else {
                     appendEscapedSQLString(builder, value);
