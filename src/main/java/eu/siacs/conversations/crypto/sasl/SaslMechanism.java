@@ -1,13 +1,19 @@
 package eu.siacs.conversations.crypto.sasl;
 
+import android.util.Log;
+
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 
 import java.util.Collection;
 import java.util.Collections;
 
 import javax.net.ssl.SSLSocket;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.utils.SSLSockets;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 
@@ -45,6 +51,17 @@ public abstract class SaslMechanism {
     public String getResponse(final String challenge, final SSLSocket sslSocket)
             throws AuthenticationException {
         return "";
+    }
+
+    public static Collection<String> mechanisms(final Element authElement) {
+        if (authElement == null) {
+            return Collections.emptyList();
+        }
+        return Collections2.transform(
+                Collections2.filter(
+                        authElement.getChildren(),
+                        c -> c != null && "mechanism".equals(c.getName())),
+                c -> c == null ? null : c.getContent());
     }
 
     protected enum State {
@@ -102,16 +119,19 @@ public abstract class SaslMechanism {
             this.account = account;
         }
 
-        public SaslMechanism of(
-                final Collection<String> mechanisms, final Collection<ChannelBinding> bindings) {
-            final ChannelBinding channelBinding = ChannelBinding.best(bindings);
+        private SaslMechanism of(
+                final Collection<String> mechanisms, final ChannelBinding channelBinding) {
+            Preconditions.checkNotNull(channelBinding, "Use ChannelBinding.NONE instead of null");
             if (mechanisms.contains(External.MECHANISM) && account.getPrivateKeyAlias() != null) {
                 return new External(account);
-            } else if (mechanisms.contains(ScramSha512Plus.MECHANISM) && channelBinding != null) {
+            } else if (mechanisms.contains(ScramSha512Plus.MECHANISM)
+                    && channelBinding != ChannelBinding.NONE) {
                 return new ScramSha512Plus(account, channelBinding);
-            } else if (mechanisms.contains(ScramSha256Plus.MECHANISM) && channelBinding != null) {
+            } else if (mechanisms.contains(ScramSha256Plus.MECHANISM)
+                    && channelBinding != ChannelBinding.NONE) {
                 return new ScramSha256Plus(account, channelBinding);
-            } else if (mechanisms.contains(ScramSha1Plus.MECHANISM) && channelBinding != null) {
+            } else if (mechanisms.contains(ScramSha1Plus.MECHANISM)
+                    && channelBinding != ChannelBinding.NONE) {
                 return new ScramSha1Plus(account, channelBinding);
             } else if (mechanisms.contains(ScramSha512.MECHANISM)) {
                 return new ScramSha512(account);
@@ -131,9 +151,33 @@ public abstract class SaslMechanism {
             }
         }
 
-        public SaslMechanism of(final String mechanism, final ChannelBinding channelBinding) {
-            return of(Collections.singleton(mechanism), Collections.singleton(channelBinding));
+        public SaslMechanism of(
+                final Collection<String> mechanisms,
+                final Collection<ChannelBinding> bindings,
+                final SSLSockets.Version sslVersion) {
+            final ChannelBinding channelBinding = ChannelBinding.best(bindings, sslVersion);
+            return of(mechanisms, channelBinding);
         }
 
+        public SaslMechanism of(final String mechanism, final ChannelBinding channelBinding) {
+            return of(Collections.singleton(mechanism), channelBinding);
+        }
+    }
+
+    public static SaslMechanism ensureAvailable(
+            final SaslMechanism mechanism, final SSLSockets.Version sslVersion) {
+        if (mechanism instanceof ScramPlusMechanism) {
+            final ChannelBinding cb = ((ScramPlusMechanism) mechanism).getChannelBinding();
+            if (ChannelBinding.ensureBest(cb, sslVersion)) {
+                return mechanism;
+            } else {
+                Log.d(
+                        Config.LOGTAG,
+                        "pinned channel binding method " + cb + " no longer available");
+                return null;
+            }
+        } else {
+            return mechanism;
+        }
     }
 }

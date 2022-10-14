@@ -5,9 +5,12 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.common.base.Strings;
+
 import org.conscrypt.Conscrypt;
 
 import java.lang.reflect.Method;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -24,7 +27,7 @@ import javax.net.ssl.SSLSocket;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 
-public class SSLSocketHelper {
+public class SSLSockets {
 
     public static void setSecurity(final SSLSocket sslSocket) {
         final String[] supportProtocols;
@@ -100,6 +103,45 @@ public class SSLSocketHelper {
 
     public static void log(Account account, SSLSocket socket) {
         SSLSession session = socket.getSession();
-        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": protocol=" + session.getProtocol() + " cipher=" + session.getCipherSuite());
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid()
+                        + ": protocol="
+                        + session.getProtocol()
+                        + " cipher="
+                        + session.getCipherSuite());
+    }
+
+    public static Version version(final Socket socket) {
+        if (socket instanceof SSLSocket) {
+            final SSLSocket sslSocket = (SSLSocket) socket;
+            return Version.of(sslSocket.getSession().getProtocol());
+        } else {
+            return Version.NONE;
+        }
+    }
+
+    public enum Version {
+        TLS_1_0,
+        TLS_1_1,
+        TLS_1_2,
+        TLS_1_3,
+        UNKNOWN,
+        NONE;
+
+        private static Version of(final String protocol) {
+            switch (Strings.nullToEmpty(protocol)) {
+                case "TLSv1":
+                    return TLS_1_0;
+                case "TLSv1.1":
+                    return TLS_1_1;
+                case "TLSv1.2":
+                    return TLS_1_2;
+                case "TLSv1.3":
+                    return TLS_1_3;
+                default:
+                    return UNKNOWN;
+            }
+        }
     }
 }

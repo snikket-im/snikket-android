@@ -17,7 +17,7 @@ public class TLSSocketFactory extends SSLSocketFactory {
     private final SSLSocketFactory internalSSLSocketFactory;
 
     public TLSSocketFactory(X509TrustManager[] trustManager, SecureRandom random) throws KeyManagementException, NoSuchAlgorithmException {
-        SSLContext context = SSLSocketHelper.getSSLContext();
+        SSLContext context = SSLSockets.getSSLContext();
         context.init(null, trustManager, random);
         this.internalSSLSocketFactory = context.getSocketFactory();
     }
@@ -59,7 +59,7 @@ public class TLSSocketFactory extends SSLSocketFactory {
 
     private static Socket enableTLSOnSocket(Socket socket) {
         if(socket instanceof SSLSocket) {
-            SSLSocketHelper.setSecurity((SSLSocket) socket);
+            SSLSockets.setSecurity((SSLSocket) socket);
         }
         return socket;
     }
