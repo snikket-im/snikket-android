@@ -556,7 +556,7 @@ public class XmppConnection implements Runnable {
         while (nextTag != null && !nextTag.isEnd("stream")) {
             if (nextTag.isStart("error")) {
                 processStreamError(nextTag);
-            } else if (nextTag.isStart("features")) {
+            } else if (nextTag.isStart("features", Namespace.STREAMS)) {
                 processStreamFeatures(nextTag);
             } else if (nextTag.isStart("proceed", Namespace.TLS)) {
                 switchOverToTls();
@@ -705,6 +705,22 @@ public class XmppConnection implements Runnable {
                 account.getJid().asBareJid().toString() + ": logged in (using " + version + ")");
         account.setPinnedMechanism(saslMechanism);
         if (version == SaslMechanism.Version.SASL_2) {
+            final Tag tag = tagReader.readTag();
+            if (tag != null && tag.isStart("features", Namespace.STREAMS)) {
+                this.streamFeatures = tagReader.readElement(tag);
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": processed NOP stream features after success "
+                                + XmlHelper.printElementNames(this.streamFeatures));
+            } else {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": server did not send stream features after SASL2 success");
+                throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            }
+            Log.d(Config.LOGTAG, "success: " + success);
             final String authorizationIdentifier =
                     success.findChildContent("authorization-identifier");
             final Jid authorizationJid;
@@ -746,7 +762,13 @@ public class XmppConnection implements Runnable {
             final Element bound = success.findChild("bound", Namespace.BIND2);
             final Element resumed = success.findChild("resumed", "urn:xmpp:sm:3");
             final Element failed = success.findChild("failed", "urn:xmpp:sm:3");
-            // TODO check if resumed and bound exist and throw bind failure
+            if (bound != null && resumed != null) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": server sent bound and resumed in SASL2 success");
+                throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            }
             if (resumed != null && streamId != null) {
                 processResumed(resumed);
             } else if (failed != null) {
@@ -767,6 +789,7 @@ public class XmppConnection implements Runnable {
                             account.getJid().asBareJid() + ": successfully enabled carbons");
                     features.carbonsEnabled = true;
                 }
+                // TODO if we didn’t enable stream managment in bind do it now
                 // TODO if both are set mark account ready for pipelining
                 sendPostBindInitialization(streamManagementEnabled != null, carbonsEnabled != null);
             }
@@ -1761,7 +1784,7 @@ public class XmppConnection implements Runnable {
         lastDiscoStarted = SystemClock.elapsedRealtime();
         mXmppConnectionService.scheduleWakeUpCall(
                 Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
-        Element caps = streamFeatures.findChild("c");
+        final Element caps = streamFeatures.findChild("c");
         final String hash = caps == null ? null : caps.getAttribute("hash");
         final String ver = caps == null ? null : caps.getAttribute("ver");
         ServiceDiscoveryResult discoveryResult = null;
