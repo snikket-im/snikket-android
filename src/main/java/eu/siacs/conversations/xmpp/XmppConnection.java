@@ -63,6 +63,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.sasl.ChannelBinding;
+import eu.siacs.conversations.crypto.sasl.HashedToken;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
@@ -1344,7 +1345,7 @@ public class XmppConnection implements Runnable {
             final boolean sm = inline != null && inline.hasChild("sm", "urn:xmpp:sm:3");
             final Element fast = inline == null ? null : inline.findChild("fast", Namespace.FAST);
             final Collection<String> fastMechanisms = SaslMechanism.mechanisms(fast);
-            Log.d(Config.LOGTAG,"fast mechanisms: "+fastMechanisms);
+            Log.d(Config.LOGTAG,"fast mechanism: "+ HashedToken.Mechanism.best(fastMechanisms, SSLSockets.version(this.socket)));
             final Collection<String> bindFeatures = Bind2.features(inline);
             quickStartAvailable =
                     sm

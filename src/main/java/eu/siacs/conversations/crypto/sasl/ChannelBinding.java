@@ -6,7 +6,9 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
+import com.google.common.collect.BiMap;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableBiMap;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,6 +24,16 @@ public enum ChannelBinding {
     TLS_EXPORTER,
     TLS_SERVER_END_POINT,
     TLS_UNIQUE;
+
+    public static final BiMap<ChannelBinding, String> SHORT_NAMES;
+
+    static {
+        final ImmutableBiMap.Builder<ChannelBinding, String> builder = ImmutableBiMap.builder();
+        for (final ChannelBinding cb : values()) {
+            builder.put(cb, shortName(cb));
+        }
+        SHORT_NAMES = builder.build();
+    }
 
     public static Collection<ChannelBinding> of(final Element channelBinding) {
         Preconditions.checkArgument(
@@ -85,7 +97,24 @@ public enum ChannelBinding {
         }
     }
 
-    public static boolean ensureBest(final ChannelBinding channelBinding, final SSLSockets.Version sslVersion) {
-        return ChannelBinding.best(Collections.singleton(channelBinding), sslVersion) == channelBinding;
+    public static boolean ensureBest(
+            final ChannelBinding channelBinding, final SSLSockets.Version sslVersion) {
+        return ChannelBinding.best(Collections.singleton(channelBinding), sslVersion)
+                == channelBinding;
+    }
+
+    private static String shortName(final ChannelBinding channelBinding) {
+        switch (channelBinding) {
+            case TLS_UNIQUE:
+                return "UNIQ";
+            case TLS_EXPORTER:
+                return "EXPR";
+            case TLS_SERVER_END_POINT:
+                return "ENDP";
+            case NONE:
+                return "NONE";
+            default:
+                throw new AssertionError("Missing short name for " + channelBinding);
+        }
     }
 }
