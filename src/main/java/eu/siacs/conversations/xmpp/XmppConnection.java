@@ -780,8 +780,13 @@ public class XmppConnection implements Runnable {
                 final Element streamManagementEnabled =
                         bound.findChild("enabled", Namespace.STREAM_MANAGEMENT);
                 final Element carbonsEnabled = bound.findChild("enabled", Namespace.CARBONS);
+                final boolean waitForDisco;
                 if (streamManagementEnabled != null) {
                     processEnabled(streamManagementEnabled);
+                    waitForDisco = true;
+                } else {
+                    //if we didn’t enable stream managment in bind do it now
+                    waitForDisco = enableStreamManagement();
                 }
                 if (carbonsEnabled != null) {
                     Log.d(
@@ -789,9 +794,7 @@ public class XmppConnection implements Runnable {
                             account.getJid().asBareJid() + ": successfully enabled carbons");
                     features.carbonsEnabled = true;
                 }
-                // TODO if we didn’t enable stream managment in bind do it now
-                // TODO if both are set mark account ready for pipelining
-                sendPostBindInitialization(streamManagementEnabled != null, carbonsEnabled != null);
+                sendPostBindInitialization(waitForDisco, carbonsEnabled != null);
             }
         }
         this.quickStartInProgress = false;
