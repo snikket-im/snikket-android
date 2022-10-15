@@ -16,7 +16,7 @@ import javax.net.ssl.SSLSocket;
 
 import eu.siacs.conversations.entities.Account;
 
-public abstract class ScramPlusMechanism extends ScramMechanism {
+public abstract class ScramPlusMechanism extends ScramMechanism implements ChannelBindingMechanism {
 
     private static final String EXPORTER_LABEL = "EXPORTER-Channel-Binding";
 
@@ -103,6 +103,7 @@ public abstract class ScramPlusMechanism extends ScramMechanism {
         return messageDigest.digest();
     }
 
+    @Override
     public ChannelBinding getChannelBinding() {
         return this.channelBinding;
     }

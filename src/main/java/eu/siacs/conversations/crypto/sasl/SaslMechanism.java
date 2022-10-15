@@ -166,9 +166,9 @@ public abstract class SaslMechanism {
 
     public static SaslMechanism ensureAvailable(
             final SaslMechanism mechanism, final SSLSockets.Version sslVersion) {
-        if (mechanism instanceof ScramPlusMechanism) {
-            final ChannelBinding cb = ((ScramPlusMechanism) mechanism).getChannelBinding();
-            if (ChannelBinding.ensureBest(cb, sslVersion)) {
+        if (mechanism instanceof ChannelBindingMechanism) {
+            final ChannelBinding cb = ((ChannelBindingMechanism) mechanism).getChannelBinding();
+            if (ChannelBinding.isAvailable(cb, sslVersion)) {
                 return mechanism;
             } else {
                 Log.d(

@@ -26,6 +26,9 @@ import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.crypto.sasl.ChannelBinding;
+import eu.siacs.conversations.crypto.sasl.HashedToken;
+import eu.siacs.conversations.crypto.sasl.HashedTokenSha256;
+import eu.siacs.conversations.crypto.sasl.HashedTokenSha512;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
 import eu.siacs.conversations.crypto.sasl.ScramPlusMechanism;
 import eu.siacs.conversations.services.AvatarService;
@@ -55,7 +58,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public static final String RESOURCE = "resource";
     public static final String PINNED_MECHANISM = "pinned_mechanism";
     public static final String PINNED_CHANNEL_BINDING = "pinned_channel_binding";
-
+    public static final String FAST_MECHANISM = "fast_mechanism";
+    public static final String FAST_TOKEN = "fast_token";
 
     public static final int OPTION_DISABLED = 1;
     public static final int OPTION_REGISTER = 2;
@@ -71,7 +75,6 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private static final String KEY_PGP_ID = "pgp_id";
     private static final String KEY_PINNED_MECHANISM = "pinned_mechanism";
     public static final String KEY_PRE_AUTH_REGISTRATION_TOKEN = "pre_auth_registration";
-
 
     protected final JSONObject keys;
     private final Roster roster = new Roster(this);
@@ -101,16 +104,46 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private String presenceStatusMessage;
     private String pinnedMechanism;
     private String pinnedChannelBinding;
+    private String fastMechanism;
+    private String fastToken;
 
     public Account(final Jid jid, final String password) {
-        this(java.util.UUID.randomUUID().toString(), jid,
-                password, 0, null, "", null, null, null, 5222, Presence.Status.ONLINE, null, null, null);
+        this(
+                java.util.UUID.randomUUID().toString(),
+                jid,
+                password,
+                0,
+                null,
+                "",
+                null,
+                null,
+                null,
+                5222,
+                Presence.Status.ONLINE,
+                null,
+                null,
+                null,
+                null,
+                null);
     }
 
-    private Account(final String uuid, final Jid jid,
-                    final String password, final int options, final String rosterVersion, final String keys,
-                    final String avatar, String displayName, String hostname, int port,
-                    final Presence.Status status, String statusMessage, final String pinnedMechanism, final String pinnedChannelBinding) {
+    private Account(
+            final String uuid,
+            final Jid jid,
+            final String password,
+            final int options,
+            final String rosterVersion,
+            final String keys,
+            final String avatar,
+            String displayName,
+            String hostname,
+            int port,
+            final Presence.Status status,
+            String statusMessage,
+            final String pinnedMechanism,
+            final String pinnedChannelBinding,
+            final String fastMechanism,
+            final String fastToken) {
         this.uuid = uuid;
         this.jid = jid;
         this.password = password;
@@ -131,21 +164,29 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         this.presenceStatusMessage = statusMessage;
         this.pinnedMechanism = pinnedMechanism;
         this.pinnedChannelBinding = pinnedChannelBinding;
+        this.fastMechanism = fastMechanism;
+        this.fastToken = fastToken;
     }
 
     public static Account fromCursor(final Cursor cursor) {
         final Jid jid;
         try {
             final String resource = cursor.getString(cursor.getColumnIndexOrThrow(RESOURCE));
-            jid = Jid.of(
-                    cursor.getString(cursor.getColumnIndexOrThrow(USERNAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(SERVER)),
-                    resource == null || resource.trim().isEmpty() ? null : resource);
+            jid =
+                    Jid.of(
+                            cursor.getString(cursor.getColumnIndexOrThrow(USERNAME)),
+                            cursor.getString(cursor.getColumnIndexOrThrow(SERVER)),
+                            resource == null || resource.trim().isEmpty() ? null : resource);
         } catch (final IllegalArgumentException e) {
-            Log.d(Config.LOGTAG, cursor.getString(cursor.getColumnIndexOrThrow(USERNAME)) + "@" + cursor.getString(cursor.getColumnIndexOrThrow(SERVER)));
+            Log.d(
+                    Config.LOGTAG,
+                    cursor.getString(cursor.getColumnIndexOrThrow(USERNAME))
+                            + "@"
+                            + cursor.getString(cursor.getColumnIndexOrThrow(SERVER)));
             throw new AssertionError(e);
         }
-        return new Account(cursor.getString(cursor.getColumnIndexOrThrow(UUID)),
+        return new Account(
+                cursor.getString(cursor.getColumnIndexOrThrow(UUID)),
                 jid,
                 cursor.getString(cursor.getColumnIndexOrThrow(PASSWORD)),
                 cursor.getInt(cursor.getColumnIndexOrThrow(OPTIONS)),
@@ -155,10 +196,13 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                 cursor.getString(cursor.getColumnIndexOrThrow(DISPLAY_NAME)),
                 cursor.getString(cursor.getColumnIndexOrThrow(HOSTNAME)),
                 cursor.getInt(cursor.getColumnIndexOrThrow(PORT)),
-                Presence.Status.fromShowString(cursor.getString(cursor.getColumnIndexOrThrow(STATUS))),
+                Presence.Status.fromShowString(
+                        cursor.getString(cursor.getColumnIndexOrThrow(STATUS))),
                 cursor.getString(cursor.getColumnIndexOrThrow(STATUS_MESSAGE)),
                 cursor.getString(cursor.getColumnIndexOrThrow(PINNED_MECHANISM)),
-                cursor.getString(cursor.getColumnIndexOrThrow(PINNED_CHANNEL_BINDING)));
+                cursor.getString(cursor.getColumnIndexOrThrow(PINNED_CHANNEL_BINDING)),
+                cursor.getString(cursor.getColumnIndexOrThrow(FAST_MECHANISM)),
+                cursor.getString(cursor.getColumnIndexOrThrow(FAST_TOKEN)));
     }
 
     public boolean httpUploadAvailable(long size) {
@@ -305,8 +349,16 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public void setPinnedMechanism(final SaslMechanism mechanism) {
         this.pinnedMechanism = mechanism.getMechanism();
         if (mechanism instanceof ScramPlusMechanism) {
-            this.pinnedChannelBinding = ((ScramPlusMechanism) mechanism).getChannelBinding().toString();
+            this.pinnedChannelBinding =
+                    ((ScramPlusMechanism) mechanism).getChannelBinding().toString();
+        } else {
+            this.pinnedChannelBinding = null;
         }
+    }
+
+    public void setFastToken(final HashedToken.Mechanism mechanism, final String token) {
+        this.fastMechanism = mechanism.name();
+        this.fastToken = token;
     }
 
     public void resetPinnedMechanism() {
@@ -328,10 +380,37 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         }
     }
 
-    public SaslMechanism getPinnedMechanism() {
+    private SaslMechanism getPinnedMechanism() {
         final String mechanism = Strings.nullToEmpty(this.pinnedMechanism);
         final ChannelBinding channelBinding = ChannelBinding.get(this.pinnedChannelBinding);
         return new SaslMechanism.Factory(this).of(mechanism, channelBinding);
+    }
+
+    private HashedToken getFastMechanism() {
+        final HashedToken.Mechanism fastMechanism = HashedToken.Mechanism.ofOrNull(this.fastMechanism);
+        final String token = this.fastToken;
+        if (fastMechanism == null || Strings.isNullOrEmpty(token)) {
+            return null;
+        }
+        if (fastMechanism.hashFunction.equals("SHA-256")) {
+            return new HashedTokenSha256(this, fastMechanism.channelBinding);
+        } else if (fastMechanism.hashFunction.equals("SHA-512")) {
+            return new HashedTokenSha512(this, fastMechanism.channelBinding);
+        } else {
+            return null;
+        }
+    }
+
+    public SaslMechanism getQuickStartMechanism() {
+        final HashedToken hashedTokenMechanism = getFastMechanism();
+        if (hashedTokenMechanism != null) {
+            return hashedTokenMechanism;
+        }
+        return getPinnedMechanism();
+    }
+
+    public String getFastToken() {
+        return this.fastToken;
     }
 
     public State getTrueStatus() {
@@ -435,6 +514,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         values.put(RESOURCE, jid.getResource());
         values.put(PINNED_MECHANISM, pinnedMechanism);
         values.put(PINNED_CHANNEL_BINDING, pinnedChannelBinding);
+        values.put(FAST_MECHANISM, this.fastMechanism);
+        values.put(FAST_TOKEN, this.fastToken);
         return values;
     }
 
@@ -480,7 +561,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public int activeDevicesWithRtpCapability() {
         int i = 0;
-        for(Presence presence : getSelfContact().getPresences().getPresences()) {
+        for (Presence presence : getSelfContact().getPresences().getPresences()) {
             if (RtpCapability.check(presence) != RtpCapability.Capability.NONE) {
                 i++;
             }
@@ -617,7 +698,9 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public String getShareableLink() {
         List<XmppUri.Fingerprint> fingerprints = this.getFingerprints();
-        String uri = "https://conversations.im/i/" + XmppUri.lameUrlEncode(this.getJid().asBareJid().toEscapedString());
+        String uri =
+                "https://conversations.im/i/"
+                        + XmppUri.lameUrlEncode(this.getJid().asBareJid().toEscapedString());
         if (fingerprints.size() > 0) {
             return XmppUri.getFingerprintUri(uri, fingerprints, '&');
         } else {
@@ -630,10 +713,18 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         if (axolotlService == null) {
             return fingerprints;
         }
-        fingerprints.add(new XmppUri.Fingerprint(XmppUri.FingerprintType.OMEMO, axolotlService.getOwnFingerprint().substring(2), axolotlService.getOwnDeviceId()));
+        fingerprints.add(
+                new XmppUri.Fingerprint(
+                        XmppUri.FingerprintType.OMEMO,
+                        axolotlService.getOwnFingerprint().substring(2),
+                        axolotlService.getOwnDeviceId()));
         for (XmppAxolotlSession session : axolotlService.findOwnSessions()) {
             if (session.getTrust().isVerified() && session.getTrust().isActive()) {
-                fingerprints.add(new XmppUri.Fingerprint(XmppUri.FingerprintType.OMEMO, session.getFingerprint().substring(2).replaceAll("\\s", ""), session.getRemoteAddress().getDeviceId()));
+                fingerprints.add(
+                        new XmppUri.Fingerprint(
+                                XmppUri.FingerprintType.OMEMO,
+                                session.getFingerprint().substring(2).replaceAll("\\s", ""),
+                                session.getRemoteAddress().getDeviceId()));
             }
         }
         return fingerprints;
@@ -641,7 +732,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public boolean isBlocked(final ListItem contact) {
         final Jid jid = contact.getJid();
-        return jid != null && (blocklist.contains(jid.asBareJid()) || blocklist.contains(jid.getDomain()));
+        return jid != null
+                && (blocklist.contains(jid.asBareJid()) || blocklist.contains(jid.getDomain()));
     }
 
     public boolean isBlocked(final Jid jid) {
@@ -685,7 +777,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         REGISTRATION_CONFLICT(true, false),
         REGISTRATION_NOT_SUPPORTED(true, false),
         REGISTRATION_PLEASE_WAIT(true, false),
-        REGISTRATION_INVALID_TOKEN(true,false),
+        REGISTRATION_INVALID_TOKEN(true, false),
         REGISTRATION_PASSWORD_TOO_WEAK(true, false),
         TLS_ERROR,
         TLS_ERROR_DOMAIN,

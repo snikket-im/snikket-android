@@ -17,8 +17,7 @@ public class HashedTokenSha512 extends HashedToken {
     }
 
     @Override
-    public String getMechanism() {
-        final String cbShortName = ChannelBinding.SHORT_NAMES.get(this.channelBinding);
-        return String.format("HT-SHA-512-%s", cbShortName);
+    public Mechanism getTokenMechanism() {
+        return new Mechanism("SHA-512", this.channelBinding);
     }
 }

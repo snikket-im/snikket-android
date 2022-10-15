@@ -17,8 +17,7 @@ public class HashedTokenSha256 extends HashedToken {
     }
 
     @Override
-    public String getMechanism() {
-        final String cbShortName = ChannelBinding.SHORT_NAMES.get(this.channelBinding);
-        return String.format("HT-SHA-256-%s", cbShortName);
+    public Mechanism getTokenMechanism() {
+        return new Mechanism("SHA-256", channelBinding);
     }
 }

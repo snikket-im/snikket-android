@@ -97,7 +97,7 @@ public enum ChannelBinding {
         }
     }
 
-    public static boolean ensureBest(
+    public static boolean isAvailable(
             final ChannelBinding channelBinding, final SSLSockets.Version sslVersion) {
         return ChannelBinding.best(Collections.singleton(channelBinding), sslVersion)
                 == channelBinding;

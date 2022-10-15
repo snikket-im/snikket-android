@@ -1,12 +1,17 @@
 package eu.siacs.conversations.crypto.sasl;
 
+import android.util.Base64;
+
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.hash.HashFunction;
+import com.google.common.primitives.Bytes;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -16,11 +21,13 @@ import javax.net.ssl.SSLSocket;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.SSLSockets;
 
-public abstract class HashedToken extends SaslMechanism {
+public abstract class HashedToken extends SaslMechanism implements ChannelBindingMechanism {
 
     private static final String PREFIX = "HT";
 
     private static final List<String> HASH_FUNCTIONS = Arrays.asList("SHA-512", "SHA-256");
+    private static final byte[] INITIATOR = "Initiator".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] RESPONDER = "Responder".getBytes(StandardCharsets.UTF_8);
 
     protected final ChannelBinding channelBinding;
 
@@ -36,17 +43,47 @@ public abstract class HashedToken extends SaslMechanism {
 
     @Override
     public String getClientFirstMessage() {
-        return null; // HMAC(token, "Initiator" || cb-data)
+        final String token = Strings.nullToEmpty(this.account.getFastToken());
+        final HashFunction hashing = getHashFunction(token.getBytes(StandardCharsets.UTF_8));
+        final byte[] cbData = new byte[0];
+        final byte[] initiatorHashedToken =
+                hashing.hashBytes(Bytes.concat(INITIATOR, cbData)).asBytes();
+        final byte[] firstMessage =
+                Bytes.concat(
+                        account.getUsername().getBytes(StandardCharsets.UTF_8),
+                        new byte[] {0x00},
+                        initiatorHashedToken);
+        return Base64.encodeToString(firstMessage, Base64.NO_WRAP);
     }
 
     @Override
     public String getResponse(final String challenge, final SSLSocket socket)
             throws AuthenticationException {
-        // todo verify that challenge matches HMAC(token, "Responder" || cb-data)
-        return null;
+        final byte[] responderMessage;
+        try {
+            responderMessage = Base64.decode(challenge, Base64.NO_WRAP);
+        } catch (final Exception e) {
+            throw new AuthenticationException("Unable to decode responder message", e);
+        }
+        final String token = Strings.nullToEmpty(this.account.getFastToken());
+        final HashFunction hashing = getHashFunction(token.getBytes(StandardCharsets.UTF_8));
+        final byte[] cbData = new byte[0];
+        final byte[] expectedResponderMessage =
+                hashing.hashBytes(Bytes.concat(RESPONDER, cbData)).asBytes();
+        if (Arrays.equals(responderMessage, expectedResponderMessage)) {
+            return null;
+        }
+        throw new AuthenticationException("Responder message did not match");
     }
 
     protected abstract HashFunction getHashFunction(final byte[] key);
+
+    public abstract Mechanism getTokenMechanism();
+
+    @Override
+    public String getMechanism() {
+        return getTokenMechanism().name();
+    }
 
     public static final class Mechanism {
         public final String hashFunction;
@@ -74,6 +111,14 @@ public abstract class HashedToken extends SaslMechanism {
                 return new Mechanism(hashFunction, channelBinding);
             } else {
                 throw new IllegalArgumentException("HashedToken name does not start with HT");
+            }
+        }
+
+        public static Mechanism ofOrNull(final String mechanism) {
+            try {
+                return mechanism == null ? null : of(mechanism);
+            } catch (final IllegalArgumentException e) {
+                return null;
             }
         }
 
@@ -118,5 +163,9 @@ public abstract class HashedToken extends SaslMechanism {
                     "%s-%s-%s",
                     PREFIX, hashFunction, ChannelBinding.SHORT_NAMES.get(channelBinding));
         }
+    }
+
+    public ChannelBinding getChannelBinding() {
+        return this.channelBinding;
     }
 }

@@ -757,7 +757,6 @@ public class XmppConnection implements Runnable {
                         Config.LOGTAG,
                         account.getJid().asBareJid()
                                 + ": jid changed during SASL 2.0. updating database");
-                mXmppConnectionService.databaseBackend.updateAccount(account);
             }
             final Element bound = success.findChild("bound", Namespace.BIND2);
             final Element resumed = success.findChild("resumed", "urn:xmpp:sm:3");
@@ -798,11 +797,21 @@ public class XmppConnection implements Runnable {
                 }
                 sendPostBindInitialization(waitForDisco, carbonsEnabled != null);
             }
-            //TODO figure out name either by the existence of hashTokenRequest or if scramMechanism is of instance HashedToken
-            if (this.hashTokenRequest != null && !Strings.isNullOrEmpty(token)) {
-                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": storing hashed token "+this.hashTokenRequest.name()+ " "+token);
+            final HashedToken.Mechanism tokenMechanism;
+            final SaslMechanism currentMechanism = this.saslMechanism;
+            if (currentMechanism instanceof HashedToken) {
+                tokenMechanism = ((HashedToken) currentMechanism).getTokenMechanism();
+            } else if (this.hashTokenRequest != null) {
+                tokenMechanism = this.hashTokenRequest;
+            } else {
+                tokenMechanism = null;
+            }
+            if (tokenMechanism != null && !Strings.isNullOrEmpty(token)) {
+                this.account.setFastToken(tokenMechanism,token);
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": storing hashed token "+tokenMechanism);
             }
         }
+        mXmppConnectionService.databaseBackend.updateAccount(account);
         this.quickStartInProgress = false;
         if (version == SaslMechanism.Version.SASL) {
             tagReader.reset();
@@ -826,6 +835,7 @@ public class XmppConnection implements Runnable {
         } catch (final IllegalArgumentException e) {
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
+        Log.d(Config.LOGTAG,failure.toString());
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": login failure " + version);
         if (failure.hasChild("temporary-auth-failure")) {
             throw new StateChangingException(Account.State.TEMPORARY_AUTH_FAILURE);
@@ -1340,6 +1350,7 @@ public class XmppConnection implements Runnable {
         }
         final boolean quickStartAvailable;
         final String firstMessage = saslMechanism.getClientFirstMessage();
+        final boolean usingFast = saslMechanism instanceof HashedToken;
         final Element authenticate;
         if (version == SaslMechanism.Version.SASL) {
             authenticate = new Element("auth", Namespace.SASL);
@@ -1350,9 +1361,15 @@ public class XmppConnection implements Runnable {
         } else if (version == SaslMechanism.Version.SASL_2) {
             final Element inline = authElement.findChild("inline", Namespace.SASL_2);
             final boolean sm = inline != null && inline.hasChild("sm", "urn:xmpp:sm:3");
-            final Element fast = inline == null ? null : inline.findChild("fast", Namespace.FAST);
-            final Collection<String> fastMechanisms = SaslMechanism.mechanisms(fast);
-            final HashedToken.Mechanism hashTokenRequest = HashedToken.Mechanism.best(fastMechanisms, SSLSockets.version(this.socket));
+            final HashedToken.Mechanism hashTokenRequest;
+            if (usingFast) {
+                hashTokenRequest = null;
+            } else {
+                final Element fast = inline == null ? null : inline.findChild("fast", Namespace.FAST);
+                final Collection<String> fastMechanisms = SaslMechanism.mechanisms(fast);
+                hashTokenRequest =
+                        HashedToken.Mechanism.best(fastMechanisms, SSLSockets.version(this.socket));
+            }
             final Collection<String> bindFeatures = Bind2.features(inline);
             quickStartAvailable =
                     sm
@@ -1370,7 +1387,7 @@ public class XmppConnection implements Runnable {
                 }
             }
             this.hashTokenRequest = hashTokenRequest;
-            authenticate = generateAuthenticationRequest(firstMessage, hashTokenRequest, bindFeatures, sm);
+            authenticate = generateAuthenticationRequest(firstMessage, usingFast, hashTokenRequest, bindFeatures, sm);
         } else {
             throw new AssertionError("Missing implementation for " + version);
         }
@@ -1390,12 +1407,13 @@ public class XmppConnection implements Runnable {
         tagWriter.writeElement(authenticate);
     }
 
-    private Element generateAuthenticationRequest(final String firstMessage) {
-        return generateAuthenticationRequest(firstMessage, null, Bind2.QUICKSTART_FEATURES, true);
+    private Element generateAuthenticationRequest(final String firstMessage, final boolean usingFast) {
+        return generateAuthenticationRequest(firstMessage, usingFast, null, Bind2.QUICKSTART_FEATURES, true);
     }
 
     private Element generateAuthenticationRequest(
             final String firstMessage,
+            final boolean usingFast,
             final HashedToken.Mechanism hashedTokenRequest,
             final Collection<String> bind,
             final boolean inlineStreamManagement) {
@@ -1423,7 +1441,12 @@ public class XmppConnection implements Runnable {
             authenticate.addChild(resume);
         }
         if (hashedTokenRequest != null) {
-            authenticate.addChild("request-token", Namespace.FAST).setAttribute("mechanism", hashedTokenRequest.name());
+            authenticate
+                    .addChild("request-token", Namespace.FAST)
+                    .setAttribute("mechanism", hashedTokenRequest.name());
+        }
+        if (usingFast) {
+            authenticate.addChild("fast", Namespace.FAST);
         }
         return authenticate;
     }
@@ -2059,25 +2082,26 @@ public class XmppConnection implements Runnable {
 
     private boolean establishStream(final SSLSockets.Version sslVersion)
             throws IOException, InterruptedException {
-        final SaslMechanism pinnedMechanism =
-                SaslMechanism.ensureAvailable(account.getPinnedMechanism(), sslVersion);
+        final SaslMechanism quickStartMechanism =
+                SaslMechanism.ensureAvailable(account.getQuickStartMechanism(), sslVersion);
         final boolean secureConnection = sslVersion != SSLSockets.Version.NONE;
         if (secureConnection
                 && Config.QUICKSTART_ENABLED
-                && pinnedMechanism != null
+                && quickStartMechanism != null
                 && account.isOptionSet(Account.OPTION_QUICKSTART_AVAILABLE)) {
             mXmppConnectionService.restoredFromDatabaseLatch.await();
-            this.saslMechanism = pinnedMechanism;
+            this.saslMechanism = quickStartMechanism;
+            final boolean usingFast = quickStartMechanism instanceof HashedToken;
             final Element authenticate =
-                    generateAuthenticationRequest(pinnedMechanism.getClientFirstMessage());
-            authenticate.setAttribute("mechanism", pinnedMechanism.getMechanism());
+                    generateAuthenticationRequest(quickStartMechanism.getClientFirstMessage(), usingFast);
+            authenticate.setAttribute("mechanism", quickStartMechanism.getMechanism());
             sendStartStream(true, false);
             tagWriter.writeElement(authenticate);
             Log.d(
                     Config.LOGTAG,
                     account.getJid().toString()
                             + ": quick start with "
-                            + pinnedMechanism.getMechanism());
+                            + quickStartMechanism.getMechanism());
             return true;
         } else {
             sendStartStream(secureConnection, true);
