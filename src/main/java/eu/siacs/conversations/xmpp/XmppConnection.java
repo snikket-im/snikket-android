@@ -181,6 +181,7 @@ public class XmppConnection implements Runnable {
     private OnBindListener bindListener = null;
     private OnMessageAcknowledged acknowledgedListener = null;
     private SaslMechanism saslMechanism;
+    private HashedToken.Mechanism hashTokenRequest;
     private HttpUrl redirectionUrl = null;
     private String verifiedHostname = null;
     private volatile Thread mThread;
@@ -761,6 +762,8 @@ public class XmppConnection implements Runnable {
             final Element bound = success.findChild("bound", Namespace.BIND2);
             final Element resumed = success.findChild("resumed", "urn:xmpp:sm:3");
             final Element failed = success.findChild("failed", "urn:xmpp:sm:3");
+            final Element tokenWrapper = success.findChild("token", Namespace.FAST);
+            final String token = tokenWrapper == null ? null : tokenWrapper.getAttribute("token");
             if (bound != null && resumed != null) {
                 Log.d(
                         Config.LOGTAG,
@@ -794,6 +797,10 @@ public class XmppConnection implements Runnable {
                     features.carbonsEnabled = true;
                 }
                 sendPostBindInitialization(waitForDisco, carbonsEnabled != null);
+            }
+            //TODO figure out name either by the existence of hashTokenRequest or if scramMechanism is of instance HashedToken
+            if (this.hashTokenRequest != null && !Strings.isNullOrEmpty(token)) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": storing hashed token "+this.hashTokenRequest.name()+ " "+token);
             }
         }
         this.quickStartInProgress = false;
@@ -1345,7 +1352,7 @@ public class XmppConnection implements Runnable {
             final boolean sm = inline != null && inline.hasChild("sm", "urn:xmpp:sm:3");
             final Element fast = inline == null ? null : inline.findChild("fast", Namespace.FAST);
             final Collection<String> fastMechanisms = SaslMechanism.mechanisms(fast);
-            Log.d(Config.LOGTAG,"fast mechanism: "+ HashedToken.Mechanism.best(fastMechanisms, SSLSockets.version(this.socket)));
+            final HashedToken.Mechanism hashTokenRequest = HashedToken.Mechanism.best(fastMechanisms, SSLSockets.version(this.socket));
             final Collection<String> bindFeatures = Bind2.features(inline);
             quickStartAvailable =
                     sm
@@ -1362,7 +1369,8 @@ public class XmppConnection implements Runnable {
                     return;
                 }
             }
-            authenticate = generateAuthenticationRequest(firstMessage, bindFeatures, sm);
+            this.hashTokenRequest = hashTokenRequest;
+            authenticate = generateAuthenticationRequest(firstMessage, hashTokenRequest, bindFeatures, sm);
         } else {
             throw new AssertionError("Missing implementation for " + version);
         }
@@ -1383,11 +1391,12 @@ public class XmppConnection implements Runnable {
     }
 
     private Element generateAuthenticationRequest(final String firstMessage) {
-        return generateAuthenticationRequest(firstMessage, Bind2.QUICKSTART_FEATURES, true);
+        return generateAuthenticationRequest(firstMessage, null, Bind2.QUICKSTART_FEATURES, true);
     }
 
     private Element generateAuthenticationRequest(
             final String firstMessage,
+            final HashedToken.Mechanism hashedTokenRequest,
             final Collection<String> bind,
             final boolean inlineStreamManagement) {
         final Element authenticate = new Element("authenticate", Namespace.SASL_2);
@@ -1412,6 +1421,9 @@ public class XmppConnection implements Runnable {
             this.mSmCatchupMessageCounter.set(0);
             this.mWaitingForSmCatchup.set(true);
             authenticate.addChild(resume);
+        }
+        if (hashedTokenRequest != null) {
+            authenticate.addChild("request-token", Namespace.FAST).setAttribute("mechanism", hashedTokenRequest.name());
         }
         return authenticate;
     }

@@ -18,7 +18,9 @@ import eu.siacs.conversations.utils.SSLSockets;
 
 public abstract class HashedToken extends SaslMechanism {
 
-    private static List<String> HASH_FUNCTIONS = Arrays.asList("SHA-512", "SHA-256");
+    private static final String PREFIX = "HT";
+
+    private static final List<String> HASH_FUNCTIONS = Arrays.asList("SHA-512", "SHA-256");
 
     protected final ChannelBinding channelBinding;
 
@@ -61,7 +63,7 @@ public abstract class HashedToken extends SaslMechanism {
             if (last <= first || mechanism.length() <= last) {
                 throw new IllegalArgumentException("Not a valid HashedToken name");
             }
-            if (mechanism.substring(0, first).equals("HT")) {
+            if (mechanism.substring(0, first).equals(PREFIX)) {
                 final String hashFunction = mechanism.substring(first + 1, last);
                 final String cbShortName = mechanism.substring(last + 1);
                 final ChannelBinding channelBinding =
@@ -109,6 +111,12 @@ public abstract class HashedToken extends SaslMechanism {
                     .add("hashFunction", hashFunction)
                     .add("channelBinding", channelBinding)
                     .toString();
+        }
+
+        public String name() {
+            return String.format(
+                    "%s-%s-%s",
+                    PREFIX, hashFunction, ChannelBinding.SHORT_NAMES.get(channelBinding));
         }
     }
 }
