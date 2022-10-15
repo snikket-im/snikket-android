@@ -4,6 +4,8 @@ import android.util.Base64;
 
 import java.nio.charset.Charset;
 
+import javax.net.ssl.SSLSocket;
+
 import eu.siacs.conversations.entities.Account;
 
 public class Plain extends SaslMechanism {
@@ -30,7 +32,7 @@ public class Plain extends SaslMechanism {
     }
 
     @Override
-    public String getClientFirstMessage() {
+    public String getClientFirstMessage(final SSLSocket sslSocket) {
         return getMessage(account.getUsername(), account.getPassword());
     }
 }

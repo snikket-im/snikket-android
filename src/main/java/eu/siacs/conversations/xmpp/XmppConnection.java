@@ -14,6 +14,7 @@ import android.util.Pair;
 import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.common.base.Strings;
 
@@ -704,7 +705,9 @@ public class XmppConnection implements Runnable {
         Log.d(
                 Config.LOGTAG,
                 account.getJid().asBareJid().toString() + ": logged in (using " + version + ")");
-        account.setPinnedMechanism(saslMechanism);
+        if (SaslMechanism.pin(this.saslMechanism)) {
+            account.setPinnedMechanism(this.saslMechanism);
+        }
         if (version == SaslMechanism.Version.SASL_2) {
             final Tag tag = tagReader.readTag();
             if (tag != null && tag.isStart("features", Namespace.STREAMS)) {
@@ -837,6 +840,7 @@ public class XmppConnection implements Runnable {
         }
         Log.d(Config.LOGTAG,failure.toString());
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": login failure " + version);
+        //TODO check if we are doing FAST; reset token
         if (failure.hasChild("temporary-auth-failure")) {
             throw new StateChangingException(Account.State.TEMPORARY_AUTH_FAILURE);
         } else if (failure.hasChild("account-disabled")) {
@@ -1242,6 +1246,7 @@ public class XmppConnection implements Runnable {
                         account.getJid().asBareJid()
                                 + ": quick start in progress. ignoring features: "
                                 + XmlHelper.printElementNames(this.streamFeatures));
+                //TODO check if 'fast' is available but we are doing something else
                 return;
             }
             Log.d(Config.LOGTAG,account.getJid().asBareJid()+": server lost support for SASL 2. quick start not possible");
@@ -1320,37 +1325,12 @@ public class XmppConnection implements Runnable {
         final Element cbElement =
                 this.streamFeatures.findChild("sasl-channel-binding", Namespace.CHANNEL_BINDING);
         final Collection<ChannelBinding> channelBindings = ChannelBinding.of(cbElement);
-        Log.d(Config.LOGTAG,"mechanisms: "+mechanisms);
-        Log.d(Config.LOGTAG, "channel bindings: " + channelBindings);
         final SaslMechanism.Factory factory = new SaslMechanism.Factory(account);
-        this.saslMechanism = factory.of(mechanisms, channelBindings, SSLSockets.version(this.socket));
-
-        //TODO externalize checks
-
-        if (saslMechanism == null) {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid()
-                            + ": unable to find supported SASL mechanism in "
-                            + mechanisms);
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
-        }
-        final int pinnedMechanism = account.getPinnedMechanismPriority();
-        if (pinnedMechanism > saslMechanism.getPriority()) {
-            Log.e(
-                    Config.LOGTAG,
-                    "Auth failed. Authentication mechanism "
-                            + saslMechanism.getMechanism()
-                            + " has lower priority ("
-                            + saslMechanism.getPriority()
-                            + ") than pinned priority ("
-                            + pinnedMechanism
-                            + "). Possible downgrade attack?");
-            throw new StateChangingException(Account.State.DOWNGRADE_ATTACK);
-        }
+        final SaslMechanism saslMechanism = factory.of(mechanisms, channelBindings, version, SSLSockets.version(this.socket));
+        this.saslMechanism = validate(saslMechanism, mechanisms);
         final boolean quickStartAvailable;
-        final String firstMessage = saslMechanism.getClientFirstMessage();
-        final boolean usingFast = saslMechanism instanceof HashedToken;
+        final String firstMessage = this.saslMechanism.getClientFirstMessage(sslSocketOrNull(this.socket));
+        final boolean usingFast = SaslMechanism.hashedToken(this.saslMechanism);
         final Element authenticate;
         if (version == SaslMechanism.Version.SASL) {
             authenticate = new Element("auth", Namespace.SASL);
@@ -1402,9 +1382,38 @@ public class XmppConnection implements Runnable {
                         + ": Authenticating with "
                         + version
                         + "/"
-                        + saslMechanism.getMechanism());
-        authenticate.setAttribute("mechanism", saslMechanism.getMechanism());
+                        + this.saslMechanism.getMechanism());
+        authenticate.setAttribute("mechanism", this.saslMechanism.getMechanism());
         tagWriter.writeElement(authenticate);
+    }
+
+    @NonNull
+    private SaslMechanism validate(final @Nullable SaslMechanism saslMechanism, Collection<String> mechanisms) throws StateChangingException {
+        if (saslMechanism == null) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": unable to find supported SASL mechanism in "
+                            + mechanisms);
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
+        if (SaslMechanism.hashedToken(saslMechanism)) {
+            return saslMechanism;
+        }
+        final int pinnedMechanism = account.getPinnedMechanismPriority();
+        if (pinnedMechanism > saslMechanism.getPriority()) {
+            Log.e(
+                    Config.LOGTAG,
+                    "Auth failed. Authentication mechanism "
+                            + saslMechanism.getMechanism()
+                            + " has lower priority ("
+                            + saslMechanism.getPriority()
+                            + ") than pinned priority ("
+                            + pinnedMechanism
+                            + "). Possible downgrade attack?");
+            throw new StateChangingException(Account.State.DOWNGRADE_ATTACK);
+        }
+        return saslMechanism;
     }
 
     private Element generateAuthenticationRequest(final String firstMessage, final boolean usingFast) {
@@ -2093,7 +2102,7 @@ public class XmppConnection implements Runnable {
             this.saslMechanism = quickStartMechanism;
             final boolean usingFast = quickStartMechanism instanceof HashedToken;
             final Element authenticate =
-                    generateAuthenticationRequest(quickStartMechanism.getClientFirstMessage(), usingFast);
+                    generateAuthenticationRequest(quickStartMechanism.getClientFirstMessage(sslSocketOrNull(this.socket)), usingFast);
             authenticate.setAttribute("mechanism", quickStartMechanism.getMechanism());
             sendStartStream(true, false);
             tagWriter.writeElement(authenticate);

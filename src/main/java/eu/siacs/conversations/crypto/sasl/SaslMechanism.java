@@ -44,7 +44,7 @@ public abstract class SaslMechanism {
 
     public abstract String getMechanism();
 
-    public String getClientFirstMessage() {
+    public String getClientFirstMessage(final SSLSocket sslSocket) {
         return "";
     }
 
@@ -154,7 +154,12 @@ public abstract class SaslMechanism {
         public SaslMechanism of(
                 final Collection<String> mechanisms,
                 final Collection<ChannelBinding> bindings,
+                final Version version,
                 final SSLSockets.Version sslVersion) {
+            final HashedToken fastMechanism = account.getFastMechanism();
+            if (version == Version.SASL_2 && fastMechanism != null) {
+                return fastMechanism;
+            }
             final ChannelBinding channelBinding = ChannelBinding.best(bindings, sslVersion);
             return of(mechanisms, channelBinding);
         }
@@ -179,5 +184,13 @@ public abstract class SaslMechanism {
         } else {
             return mechanism;
         }
+    }
+
+    public static boolean hashedToken(final SaslMechanism saslMechanism) {
+        return saslMechanism instanceof HashedToken;
+    }
+
+    public static boolean pin(final SaslMechanism saslMechanism) {
+        return !hashedToken(saslMechanism);
     }
 }

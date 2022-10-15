@@ -112,7 +112,7 @@ abstract class ScramMechanism extends SaslMechanism {
     }
 
     @Override
-    public String getClientFirstMessage() {
+    public String getClientFirstMessage(final SSLSocket sslSocket) {
         if (clientFirstMessageBare.isEmpty() && state == State.INITIAL) {
             clientFirstMessageBare =
                     "n="

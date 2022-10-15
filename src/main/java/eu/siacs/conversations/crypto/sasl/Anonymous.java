@@ -1,5 +1,7 @@
 package eu.siacs.conversations.crypto.sasl;
 
+import javax.net.ssl.SSLSocket;
+
 import eu.siacs.conversations.entities.Account;
 
 public class Anonymous extends SaslMechanism {
@@ -21,7 +23,7 @@ public class Anonymous extends SaslMechanism {
     }
 
     @Override
-    public String getClientFirstMessage() {
+    public String getClientFirstMessage(final SSLSocket sslSocket) {
         return "";
     }
 }

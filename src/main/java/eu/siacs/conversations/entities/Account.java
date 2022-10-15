@@ -26,6 +26,7 @@ import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.crypto.sasl.ChannelBinding;
+import eu.siacs.conversations.crypto.sasl.ChannelBindingMechanism;
 import eu.siacs.conversations.crypto.sasl.HashedToken;
 import eu.siacs.conversations.crypto.sasl.HashedTokenSha256;
 import eu.siacs.conversations.crypto.sasl.HashedTokenSha512;
@@ -348,9 +349,9 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public void setPinnedMechanism(final SaslMechanism mechanism) {
         this.pinnedMechanism = mechanism.getMechanism();
-        if (mechanism instanceof ScramPlusMechanism) {
+        if (mechanism instanceof ChannelBindingMechanism) {
             this.pinnedChannelBinding =
-                    ((ScramPlusMechanism) mechanism).getChannelBinding().toString();
+                    ((ChannelBindingMechanism) mechanism).getChannelBinding().toString();
         } else {
             this.pinnedChannelBinding = null;
         }
@@ -386,7 +387,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         return new SaslMechanism.Factory(this).of(mechanism, channelBinding);
     }
 
-    private HashedToken getFastMechanism() {
+    public HashedToken getFastMechanism() {
         final HashedToken.Mechanism fastMechanism = HashedToken.Mechanism.ofOrNull(this.fastMechanism);
         final String token = this.fastToken;
         if (fastMechanism == null || Strings.isNullOrEmpty(token)) {

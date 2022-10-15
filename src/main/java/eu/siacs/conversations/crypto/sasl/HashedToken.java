@@ -1,6 +1,7 @@
 package eu.siacs.conversations.crypto.sasl;
 
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import javax.net.ssl.SSLSocket;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.SSLSockets;
 
@@ -42,10 +44,10 @@ public abstract class HashedToken extends SaslMechanism implements ChannelBindin
     }
 
     @Override
-    public String getClientFirstMessage() {
+    public String getClientFirstMessage(final SSLSocket sslSocket) {
         final String token = Strings.nullToEmpty(this.account.getFastToken());
         final HashFunction hashing = getHashFunction(token.getBytes(StandardCharsets.UTF_8));
-        final byte[] cbData = new byte[0];
+        final byte[] cbData = getChannelBindingData(sslSocket);
         final byte[] initiatorHashedToken =
                 hashing.hashBytes(Bytes.concat(INITIATOR, cbData)).asBytes();
         final byte[] firstMessage =
@@ -54,6 +56,23 @@ public abstract class HashedToken extends SaslMechanism implements ChannelBindin
                         new byte[] {0x00},
                         initiatorHashedToken);
         return Base64.encodeToString(firstMessage, Base64.NO_WRAP);
+    }
+
+    private byte[] getChannelBindingData(final SSLSocket sslSocket) {
+        if (this.channelBinding == ChannelBinding.NONE) {
+            return new byte[0];
+        }
+        try {
+            return ChannelBindingMechanism.getChannelBindingData(sslSocket, this.channelBinding);
+        } catch (final AuthenticationException e) {
+            Log.e(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": unable to retrieve channel binding data for "
+                            + getMechanism(),
+                    e);
+            return new byte[0];
+        }
     }
 
     @Override
@@ -67,7 +86,7 @@ public abstract class HashedToken extends SaslMechanism implements ChannelBindin
         }
         final String token = Strings.nullToEmpty(this.account.getFastToken());
         final HashFunction hashing = getHashFunction(token.getBytes(StandardCharsets.UTF_8));
-        final byte[] cbData = new byte[0];
+        final byte[] cbData = getChannelBindingData(socket);
         final byte[] expectedResponderMessage =
                 hashing.hashBytes(Bytes.concat(RESPONDER, cbData)).asBytes();
         if (Arrays.equals(responderMessage, expectedResponderMessage)) {
