@@ -1,5 +1,8 @@
 package eu.siacs.conversations.crypto.sasl;
 
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
+
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.SHA512Digest;
 import org.bouncycastle.crypto.macs.HMac;
@@ -15,13 +18,13 @@ public class ScramSha512 extends ScramMechanism {
     }
 
     @Override
-    protected HMac getHMAC() {
-        return new HMac(new SHA512Digest());
+    protected HashFunction getHMac(final byte[] key) {
+        return Hashing.hmacSha512(key);
     }
 
     @Override
-    protected Digest getDigest() {
-        return new SHA512Digest();
+    protected HashFunction getDigest() {
+        return Hashing.sha512();
     }
 
     @Override

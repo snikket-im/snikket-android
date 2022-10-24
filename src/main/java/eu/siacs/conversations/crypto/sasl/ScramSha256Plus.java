@@ -1,8 +1,7 @@
 package eu.siacs.conversations.crypto.sasl;
 
-import org.bouncycastle.crypto.Digest;
-import org.bouncycastle.crypto.digests.SHA256Digest;
-import org.bouncycastle.crypto.macs.HMac;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 
 import eu.siacs.conversations.entities.Account;
 
@@ -15,13 +14,13 @@ public class ScramSha256Plus extends ScramPlusMechanism {
     }
 
     @Override
-    protected HMac getHMAC() {
-        return new HMac(new SHA256Digest());
+    protected HashFunction getHMac(final byte[] key) {
+        return Hashing.hmacSha256(key);
     }
 
     @Override
-    protected Digest getDigest() {
-        return new SHA256Digest();
+    protected HashFunction getDigest() {
+        return Hashing.sha256();
     }
 
     @Override

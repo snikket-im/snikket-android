@@ -1,15 +1,13 @@
 package eu.siacs.conversations.crypto.sasl;
 
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Objects;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-
-import org.bouncycastle.crypto.Digest;
-import org.bouncycastle.crypto.macs.HMac;
-import org.bouncycastle.crypto.params.KeyParameter;
+import com.google.common.hash.HashFunction;
 
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
@@ -17,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.SSLSocket;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
 
@@ -54,14 +53,14 @@ abstract class ScramMechanism extends SaslMechanism {
         clientFirstMessageBare = "";
     }
 
-    protected abstract HMac getHMAC();
+    protected abstract HashFunction getHMac(final byte[] key);
 
-    protected abstract Digest getDigest();
+    protected abstract HashFunction getDigest();
 
     private KeyPair getKeyPair(final String password, final String salt, final int iterations)
             throws ExecutionException {
         return CACHE.get(
-                new CacheKey(getHMAC().getAlgorithmName(), password, salt, iterations),
+                new CacheKey(getMechanism(), password, salt, iterations),
                 () -> {
                     final byte[] saltedPassword, serverKey, clientKey;
                     saltedPassword =
@@ -76,21 +75,11 @@ abstract class ScramMechanism extends SaslMechanism {
     }
 
     private byte[] hmac(final byte[] key, final byte[] input) throws InvalidKeyException {
-        final HMac hMac = getHMAC();
-        hMac.init(new KeyParameter(key));
-        hMac.update(input, 0, input.length);
-        final byte[] out = new byte[hMac.getMacSize()];
-        hMac.doFinal(out, 0);
-        return out;
+        return getHMac(key).hashBytes(input).asBytes();
     }
 
-    public byte[] digest(final byte[] bytes) {
-        final Digest digest = getDigest();
-        digest.reset();
-        digest.update(bytes, 0, bytes.length);
-        final byte[] out = new byte[digest.getDigestSize()];
-        digest.doFinal(out, 0);
-        return out;
+    private byte[] digest(final byte[] bytes) {
+        return getDigest().hashBytes(bytes).asBytes();
     }
 
     /*
