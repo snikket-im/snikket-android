@@ -3,10 +3,6 @@
 <p align="center">Conversations: the very last word in instant messaging</p>
 
 <p align="center">
-    <a href="https://conversations.im/j/conversations@conference.siacs.eu">
-        <img src="https://inverse.chat/badge.svg?room=conversations@conference.siacs.eu"
-             alt="chat on our conference room">
-    </a>
     <a href="https://travis-ci.org/inputmice/Conversations">
         <img src="https://travis-ci.org/inputmice/Conversations.svg?branch=master"
              alt="build status">
