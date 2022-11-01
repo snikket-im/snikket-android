@@ -840,7 +840,11 @@ public class XmppConnection implements Runnable {
         }
         Log.d(Config.LOGTAG,failure.toString());
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": login failure " + version);
-        //TODO check if we are doing FAST; reset token
+        if (this.saslMechanism instanceof HashedToken) {
+            Log.d(Config.LOGTAG,account.getJid().asBareJid() + ": resetting token");
+            account.resetFastToken();
+            mXmppConnectionService.databaseBackend.updateAccount(account);
+        }
         if (failure.hasChild("temporary-auth-failure")) {
             throw new StateChangingException(Account.State.TEMPORARY_AUTH_FAILURE);
         } else if (failure.hasChild("account-disabled")) {
