@@ -802,7 +802,7 @@ public class XmppConnection implements Runnable {
             }
             final HashedToken.Mechanism tokenMechanism;
             final SaslMechanism currentMechanism = this.saslMechanism;
-            if (currentMechanism instanceof HashedToken) {
+            if (SaslMechanism.hashedToken(currentMechanism)) {
                 tokenMechanism = ((HashedToken) currentMechanism).getTokenMechanism();
             } else if (this.hashTokenRequest != null) {
                 tokenMechanism = this.hashTokenRequest;
@@ -840,7 +840,7 @@ public class XmppConnection implements Runnable {
         }
         Log.d(Config.LOGTAG,failure.toString());
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": login failure " + version);
-        if (this.saslMechanism instanceof HashedToken) {
+        if (SaslMechanism.hashedToken(this.saslMechanism)) {
             Log.d(Config.LOGTAG,account.getJid().asBareJid() + ": resetting token");
             account.resetFastToken();
             mXmppConnectionService.databaseBackend.updateAccount(account);
@@ -1250,12 +1250,26 @@ public class XmppConnection implements Runnable {
                         account.getJid().asBareJid()
                                 + ": quick start in progress. ignoring features: "
                                 + XmlHelper.printElementNames(this.streamFeatures));
-                //TODO check if 'fast' is available but we are doing something else
+                if (SaslMechanism.hashedToken(this.saslMechanism)) {
+                    return;
+                }
+                if (isFastTokenAvailable(
+                        this.streamFeatures.findChild("authentication", Namespace.SASL_2))) {
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid()
+                                    + ": fast token available; resetting quick start");
+                    account.setOption(Account.OPTION_QUICKSTART_AVAILABLE, false);
+                    mXmppConnectionService.databaseBackend.updateAccount(account);
+                }
                 return;
             }
-            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": server lost support for SASL 2. quick start not possible");
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": server lost support for SASL 2. quick start not possible");
             this.account.setOption(Account.OPTION_QUICKSTART_AVAILABLE, false);
-            mXmppConnectionService.updateAccount(account);
+            mXmppConnectionService.databaseBackend.updateAccount(account);
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
         if (this.streamFeatures.hasChild("starttls", Namespace.TLS)
@@ -1377,7 +1391,7 @@ public class XmppConnection implements Runnable {
         }
 
         if (account.setOption(Account.OPTION_QUICKSTART_AVAILABLE, quickStartAvailable)) {
-            mXmppConnectionService.updateAccount(account);
+            mXmppConnectionService.databaseBackend.updateAccount(account);
         }
 
         Log.d(
@@ -1389,6 +1403,11 @@ public class XmppConnection implements Runnable {
                         + this.saslMechanism.getMechanism());
         authenticate.setAttribute("mechanism", this.saslMechanism.getMechanism());
         tagWriter.writeElement(authenticate);
+    }
+
+    private static boolean isFastTokenAvailable(final Element authentication) {
+        final Element inline = authentication == null ? null : authentication.findChild("inline");
+        return inline != null && inline.hasChild("fast", Namespace.FAST);
     }
 
     @NonNull
