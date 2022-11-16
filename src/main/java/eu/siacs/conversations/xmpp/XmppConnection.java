@@ -831,17 +831,17 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private void processFailure(final Element failure) throws StateChangingException {
+    private void processFailure(final Element failure) throws IOException {
         final SaslMechanism.Version version;
         try {
             version = SaslMechanism.Version.of(failure);
         } catch (final IllegalArgumentException e) {
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
-        Log.d(Config.LOGTAG,failure.toString());
+        Log.d(Config.LOGTAG, failure.toString());
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": login failure " + version);
         if (SaslMechanism.hashedToken(this.saslMechanism)) {
-            Log.d(Config.LOGTAG,account.getJid().asBareJid() + ": resetting token");
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resetting token");
             account.resetFastToken();
             mXmppConnectionService.databaseBackend.updateAccount(account);
         }
@@ -866,7 +866,15 @@ public class XmppConnection implements Runnable {
                 }
             }
         }
-        throw new StateChangingException(Account.State.UNAUTHORIZED);
+        if (SaslMechanism.hashedToken(this.saslMechanism)) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": fast authentication failed. falling back to regular authentication");
+            authenticate();
+        } else {
+            throw new StateChangingException(Account.State.UNAUTHORIZED);
+        }
     }
 
     private static SSLSocket sslSocketOrNull(final Socket socket) {
@@ -1329,6 +1337,17 @@ public class XmppConnection implements Runnable {
                     account.getJid().asBareJid()
                             + ": received NOP stream features "
                             + XmlHelper.printElementNames(this.streamFeatures));
+        }
+    }
+
+    private void authenticate() throws IOException {
+        final boolean isSecure =
+                features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion();
+        if (isSecure && this.streamFeatures.hasChild("authentication", Namespace.SASL_2)) {authenticate(SaslMechanism.Version.SASL_2);
+        } else if (isSecure && this.streamFeatures.hasChild("mechanisms", Namespace.SASL)) {
+            authenticate(SaslMechanism.Version.SASL);
+        } else {
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
     }
 
