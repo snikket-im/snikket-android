@@ -771,7 +771,7 @@ public class XmppConnection implements Runnable {
                                 + ": server sent bound and resumed in SASL2 success");
                 throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
             }
-            final boolean processNopStreamFeatures = (resumed != null && streamId != null) || bound != null;
+            final boolean processNopStreamFeatures;
             if (resumed != null && streamId != null) {
                 processResumed(resumed);
             } else if (failed != null) {
@@ -798,6 +798,9 @@ public class XmppConnection implements Runnable {
                     features.carbonsEnabled = true;
                 }
                 sendPostBindInitialization(waitForDisco, carbonsEnabled != null);
+                processNopStreamFeatures = true;
+            } else {
+                processNopStreamFeatures = false;
             }
             final HashedToken.Mechanism tokenMechanism;
             if (SaslMechanism.hashedToken(currentSaslMechanism)) {
@@ -811,6 +814,7 @@ public class XmppConnection implements Runnable {
                 this.account.setFastToken(tokenMechanism,token);
                 Log.d(Config.LOGTAG,account.getJid().asBareJid()+": storing hashed token "+tokenMechanism);
             }
+            // TODO it is currently unclear if a successful resume triggers new stream features or not
             if (processNopStreamFeatures) {
                 processNopStreamFeatures();
             }
@@ -1354,7 +1358,7 @@ public class XmppConnection implements Runnable {
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid()
-                            + ": received NOP stream features "
+                            + ": received NOP stream features: "
                             + XmlHelper.printElementNames(this.streamFeatures));
         }
     }
