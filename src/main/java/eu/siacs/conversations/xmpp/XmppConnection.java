@@ -814,7 +814,7 @@ public class XmppConnection implements Runnable {
                 this.account.setFastToken(tokenMechanism,token);
                 Log.d(Config.LOGTAG,account.getJid().asBareJid()+": storing hashed token "+tokenMechanism);
             }
-            // TODO it is currently unclear if a successful resume triggers new stream features or not
+            // a successful resume will not send stream features
             if (processNopStreamFeatures) {
                 processNopStreamFeatures();
             }
