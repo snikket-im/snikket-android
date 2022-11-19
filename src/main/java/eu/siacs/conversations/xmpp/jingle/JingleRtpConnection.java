@@ -1291,6 +1291,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 SessionDescription.parse(webRTCSessionDescription.description);
         final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
         this.initiatorRtpContentMap = rtpContentMap;
+        //TODO delay ready to receive ice until after session-init
         this.webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
         final ListenableFuture<RtpContentMap> outgoingContentMapFuture =
                 encryptSessionInitiate(rtpContentMap);
