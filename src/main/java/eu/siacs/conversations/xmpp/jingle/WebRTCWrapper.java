@@ -310,6 +310,7 @@ public class WebRTCWrapper {
         videoSourceWrapper.initialize(
                 requirePeerConnectionFactory(), requireContext(), eglBase.getEglBaseContext());
         videoSourceWrapper.startCapture();
+        this.videoSourceWrapper = videoSourceWrapper;
         return videoSourceWrapper;
     }
 
