@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
@@ -14,6 +15,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
 
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
@@ -58,13 +61,15 @@ public class RtpContentMap {
         return true;
     }
 
-    public static RtpContentMap of(final SessionDescription sessionDescription) {
+    public static RtpContentMap of(
+            final SessionDescription sessionDescription, final boolean isInitiator) {
         final ImmutableMap.Builder<String, DescriptionTransport> contentMapBuilder =
                 new ImmutableMap.Builder<>();
         for (SessionDescription.Media media : sessionDescription.media) {
             final String id = Iterables.getFirst(media.attributes.get("mid"), null);
             Preconditions.checkNotNull(id, "media has no mid");
-            contentMapBuilder.put(id, DescriptionTransport.of(sessionDescription, media));
+            contentMapBuilder.put(
+                    id, DescriptionTransport.of(sessionDescription, isInitiator, media));
         }
         final String groupAttribute =
                 Iterables.getFirst(sessionDescription.attributes.get("group"), null);
@@ -140,11 +145,16 @@ public class RtpContentMap {
             jinglePacket.addGroup(this.group);
         }
         for (Map.Entry<String, DescriptionTransport> entry : this.contents.entrySet()) {
-            final Content content = new Content(Content.Creator.INITIATOR, entry.getKey());
-            if (entry.getValue().description != null) {
-                content.addChild(entry.getValue().description);
+            final DescriptionTransport descriptionTransport = entry.getValue();
+            final Content content =
+                    new Content(
+                            Content.Creator.INITIATOR,
+                            descriptionTransport.senders,
+                            entry.getKey());
+            if (descriptionTransport.description != null) {
+                content.addChild(descriptionTransport.description);
             }
-            content.addChild(entry.getValue().transport);
+            content.addChild(descriptionTransport.transport);
             jinglePacket.addJingleContent(content);
         }
         return jinglePacket;
@@ -163,7 +173,10 @@ public class RtpContentMap {
         newTransportInfo.addChild(candidate);
         return new RtpContentMap(
                 null,
-                ImmutableMap.of(contentName, new DescriptionTransport(null, newTransportInfo)));
+                ImmutableMap.of(
+                        contentName,
+                        new DescriptionTransport(
+                                descriptionTransport.senders, null, newTransportInfo)));
     }
 
     RtpContentMap transportInfo() {
@@ -171,7 +184,9 @@ public class RtpContentMap {
                 null,
                 Maps.transformValues(
                         contents,
-                        dt -> new DescriptionTransport(null, dt.transport.cloneWrapper())));
+                        dt ->
+                                new DescriptionTransport(
+                                        dt.senders, null, dt.transport.cloneWrapper())));
     }
 
     public IceUdpTransportInfo.Credentials getDistinctCredentials() {
@@ -179,7 +194,8 @@ public class RtpContentMap {
         final IceUdpTransportInfo.Credentials credentials =
                 Iterables.getFirst(allCredentials, null);
         if (allCredentials.size() == 1 && credentials != null) {
-            if (Strings.isNullOrEmpty(credentials.password) || Strings.isNullOrEmpty(credentials.ufrag)) {
+            if (Strings.isNullOrEmpty(credentials.password)
+                    || Strings.isNullOrEmpty(credentials.ufrag)) {
                 throw new IllegalStateException("Credentials are missing password or ufrag");
             }
             return credentials;
@@ -233,23 +249,45 @@ public class RtpContentMap {
         final ImmutableMap.Builder<String, DescriptionTransport> contentMapBuilder =
                 new ImmutableMap.Builder<>();
         for (final Map.Entry<String, DescriptionTransport> content : contents.entrySet()) {
-            final RtpDescription rtpDescription = content.getValue().description;
-            IceUdpTransportInfo transportInfo = content.getValue().transport;
+            final DescriptionTransport descriptionTransport = content.getValue();
+            final RtpDescription rtpDescription = descriptionTransport.description;
+            final IceUdpTransportInfo transportInfo = descriptionTransport.transport;
             final IceUdpTransportInfo modifiedTransportInfo =
                     transportInfo.modifyCredentials(credentials, setup);
             contentMapBuilder.put(
                     content.getKey(),
-                    new DescriptionTransport(rtpDescription, modifiedTransportInfo));
+                    new DescriptionTransport(
+                            descriptionTransport.senders, rtpDescription, modifiedTransportInfo));
         }
         return new RtpContentMap(this.group, contentMapBuilder.build());
     }
 
+    public Diff diff(final RtpContentMap rtpContentMap) {
+        final Set<String> existingContentIds = this.contents.keySet();
+        final Set<String> newContentIds = rtpContentMap.contents.keySet();
+        return new Diff(
+                Sets.difference(newContentIds, existingContentIds),
+                Sets.difference(existingContentIds, newContentIds));
+    }
+
+    public boolean iceRestart(final RtpContentMap rtpContentMap) {
+        try {
+            return !getDistinctCredentials().equals(rtpContentMap.getDistinctCredentials());
+        } catch (final IllegalStateException e) {
+            return false;
+        }
+    }
+
     public static class DescriptionTransport {
+        public final Content.Senders senders;
         public final RtpDescription description;
         public final IceUdpTransportInfo transport;
 
         public DescriptionTransport(
-                final RtpDescription description, final IceUdpTransportInfo transport) {
+                final Content.Senders senders,
+                final RtpDescription description,
+                final IceUdpTransportInfo transport) {
+            this.senders = senders;
             this.description = description;
             this.transport = transport;
         }
@@ -257,6 +295,7 @@ public class RtpContentMap {
         public static DescriptionTransport of(final Content content) {
             final GenericDescription description = content.getDescription();
             final GenericTransportInfo transportInfo = content.getTransport();
+            final Content.Senders senders = content.getSenders();
             final RtpDescription rtpDescription;
             final IceUdpTransportInfo iceUdpTransportInfo;
             if (description == null) {
@@ -274,22 +313,26 @@ public class RtpContentMap {
                         "Content does not contain ICE-UDP transport");
             }
             return new DescriptionTransport(
-                    rtpDescription, OmemoVerifiedIceUdpTransportInfo.upgrade(iceUdpTransportInfo));
+                    senders,
+                    rtpDescription,
+                    OmemoVerifiedIceUdpTransportInfo.upgrade(iceUdpTransportInfo));
         }
 
-        public static DescriptionTransport of(
-                final SessionDescription sessionDescription, final SessionDescription.Media media) {
+        private static DescriptionTransport of(
+                final SessionDescription sessionDescription,
+                final boolean isInitiator,
+                final SessionDescription.Media media) {
+            final Content.Senders senders = Content.Senders.of(media, isInitiator);
             final RtpDescription rtpDescription = RtpDescription.of(sessionDescription, media);
             final IceUdpTransportInfo transportInfo =
                     IceUdpTransportInfo.of(sessionDescription, media);
-            return new DescriptionTransport(rtpDescription, transportInfo);
+            return new DescriptionTransport(senders, rtpDescription, transportInfo);
         }
 
         public static Map<String, DescriptionTransport> of(final Map<String, Content> contents) {
             return ImmutableMap.copyOf(
                     Maps.transformValues(
-                            contents,
-                            content -> content == null ? null : of(content)));
+                            contents, content -> content == null ? null : of(content)));
         }
     }
 
@@ -302,6 +345,29 @@ public class RtpContentMap {
     public static class UnsupportedTransportException extends IllegalArgumentException {
         UnsupportedTransportException(String message) {
             super(message);
+        }
+    }
+
+    public static final class Diff {
+        public final Set<String> added;
+        public final Set<String> removed;
+
+        private Diff(final Set<String> added, final Set<String> removed) {
+            this.added = added;
+            this.removed = removed;
+        }
+
+        public boolean hasModifications() {
+            return !this.added.isEmpty() || !this.removed.isEmpty();
+        }
+
+        @Override
+        @Nonnull
+        public String toString() {
+            return MoreObjects.toStringHelper(this)
+                    .add("added", added)
+                    .add("removed", removed)
+                    .toString();
         }
     }
 }

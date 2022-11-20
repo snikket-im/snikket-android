@@ -425,7 +425,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
             final RtpContentMap restartContentMap,
             final boolean isOffer)
             throws ExecutionException, InterruptedException {
-        final SessionDescription sessionDescription = SessionDescription.of(restartContentMap);
+        final SessionDescription sessionDescription = SessionDescription.of(restartContentMap, !isInitiator());
         final org.webrtc.SessionDescription.Type type =
                 isOffer
                         ? org.webrtc.SessionDescription.Type.OFFER
@@ -444,7 +444,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         if (isOffer) {
             webRTCWrapper.setIsReadyToReceiveIceCandidates(false);
             final SessionDescription localSessionDescription = setLocalSessionDescription();
-            setLocalContentMap(RtpContentMap.of(localSessionDescription));
+            setLocalContentMap(RtpContentMap.of(localSessionDescription, isInitiator()));
             // We need to respond OK before sending any candidates
             respondOk(jinglePacket);
             webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
@@ -726,7 +726,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         this.storePeerDtlsSetup(contentMap.getDtlsSetup());
         final SessionDescription sessionDescription;
         try {
-            sessionDescription = SessionDescription.of(contentMap);
+            sessionDescription = SessionDescription.of(contentMap, false);
         } catch (final IllegalArgumentException | NullPointerException e) {
             Log.d(
                     Config.LOGTAG,
@@ -763,7 +763,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
         final SessionDescription offer;
         try {
-            offer = SessionDescription.of(rtpContentMap);
+            offer = SessionDescription.of(rtpContentMap, true);
         } catch (final IllegalArgumentException | NullPointerException e) {
             Log.d(
                     Config.LOGTAG,
@@ -838,7 +838,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
             final org.webrtc.SessionDescription webRTCSessionDescription) {
         final SessionDescription sessionDescription =
                 SessionDescription.parse(webRTCSessionDescription.description);
-        final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
+        final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription, false);
         this.responderRtpContentMap = respondingRtpContentMap;
         storePeerDtlsSetup(respondingRtpContentMap.getDtlsSetup().flip());
         webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
@@ -1289,7 +1289,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
             final org.webrtc.SessionDescription webRTCSessionDescription, final State targetState) {
         final SessionDescription sessionDescription =
                 SessionDescription.parse(webRTCSessionDescription.description);
-        final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
+        final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription, true);
         this.initiatorRtpContentMap = rtpContentMap;
         //TODO delay ready to receive ice until after session-init
         this.webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
@@ -1922,7 +1922,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
             sendSessionTerminate(Reason.FAILED_APPLICATION, cause.getMessage());
             return;
         }
-        final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
+        final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription, isInitiator());
         final RtpContentMap transportInfo = rtpContentMap.transportInfo();
         final JinglePacket jinglePacket =
                 transportInfo.toJinglePacket(JinglePacket.Action.TRANSPORT_INFO, id.sessionId);
