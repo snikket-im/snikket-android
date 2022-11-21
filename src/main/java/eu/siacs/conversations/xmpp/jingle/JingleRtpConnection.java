@@ -7,12 +7,14 @@ import androidx.annotation.Nullable;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicates;
 import com.google.common.base.Stopwatch;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
 import com.google.common.util.concurrent.FutureCallback;
@@ -497,6 +499,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private RtpContentMap getRemoteContentMap() {
         return isInitiator() ? this.responderRtpContentMap : this.initiatorRtpContentMap;
+    }
+
+    private RtpContentMap getLocalContentMap() {
+        return isInitiator() ? this.initiatorRtpContentMap : this.responderRtpContentMap;
     }
 
     private List<String> toIdentificationTags(final RtpContentMap rtpContentMap) {
@@ -1906,11 +1912,11 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     @Override
     public void onRenegotiationNeeded() {
-        this.webRTCWrapper.execute(this::initiateIceRestart);
+        this.webRTCWrapper.execute(this::renegotiate);
     }
 
-    private void initiateIceRestart() {
-        // TODO discover new TURN/STUN credentials
+    private void renegotiate() {
+        //TODO needs to be called only for ice restarts; maybe in the call to restartICe()
         this.stateHistory.clear();
         this.webRTCWrapper.setIsReadyToReceiveIceCandidates(false);
         final SessionDescription sessionDescription;
@@ -1919,10 +1925,41 @@ public class JingleRtpConnection extends AbstractJingleConnection
         } catch (final Exception e) {
             final Throwable cause = Throwables.getRootCause(e);
             Log.d(Config.LOGTAG, "failed to renegotiate", cause);
+            webRTCWrapper.close();
             sendSessionTerminate(Reason.FAILED_APPLICATION, cause.getMessage());
             return;
         }
         final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription, isInitiator());
+        final RtpContentMap currentContentMap = getLocalContentMap();
+        final boolean iceRestart = currentContentMap.iceRestart(rtpContentMap);
+        final RtpContentMap.Diff diff = currentContentMap.diff(rtpContentMap);
+
+        Log.d(
+                Config.LOGTAG,
+                id.getAccount().getJid().asBareJid()
+                        + ": renegotiate. iceRestart="
+                        + iceRestart
+                        + " content id diff="
+                        + diff);
+
+        if (diff.hasModifications() && iceRestart) {
+            webRTCWrapper.close();
+            sendSessionTerminate(Reason.FAILED_APPLICATION, "WebRTC unexpectedly tried to modify content and transport at once");
+            return;
+        }
+
+        if (iceRestart) {
+            initiateIceRestart(rtpContentMap);
+            return;
+        }
+
+        if (diff.added.size() > 0) {
+            sendContentAdd(rtpContentMap);
+        }
+
+    }
+
+    private void initiateIceRestart(final RtpContentMap rtpContentMap) {
         final RtpContentMap transportInfo = rtpContentMap.transportInfo();
         final JinglePacket jinglePacket =
                 transportInfo.toJinglePacket(JinglePacket.Action.TRANSPORT_INFO, id.sessionId);
@@ -1950,6 +1987,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
                         handleIqTimeoutResponse(response);
                     }
                 });
+    }
+
+    private void sendContentAdd(final RtpContentMap rtpContentMap) {
+
     }
 
     private void setLocalContentMap(final RtpContentMap rtpContentMap) {
