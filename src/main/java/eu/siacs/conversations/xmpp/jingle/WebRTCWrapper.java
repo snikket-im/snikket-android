@@ -186,14 +186,21 @@ public class WebRTCWrapper {
                 }
 
                 @Override
-                public void onTrack(RtpTransceiver transceiver) {
+                public void onTrack(final RtpTransceiver transceiver) {
                     Log.d(
                             EXTENDED_LOGGING_TAG,
                             "onTrack(mid="
                                     + transceiver.getMid()
                                     + ",media="
                                     + transceiver.getMediaType()
+                                    + ",direction="
+                                    + transceiver.getDirection()
                                     + ")");
+                }
+
+                @Override
+                public void onRemoveTrack(final RtpReceiver receiver) {
+                    Log.d(EXTENDED_LOGGING_TAG, "onRemoveTrack(" + receiver.id() + ")");
                 }
             };
     @Nullable private PeerConnectionFactory peerConnectionFactory = null;

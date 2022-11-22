@@ -1,7 +1,9 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
@@ -236,6 +238,23 @@ public class RtpContentMap {
         throw new IllegalStateException("Content map doesn't have distinct DTLS setup");
     }
 
+    private DTLS getDistinctDtls() {
+        final Set<DTLS> dtlsSet =
+                ImmutableSet.copyOf(
+                        Collections2.transform(
+                                contents.values(),
+                                dt -> {
+                                    final IceUdpTransportInfo.Fingerprint fp =
+                                            dt.transport.getFingerprint();
+                                    return new DTLS(fp.getHash(), fp.getSetup(), fp.getContent());
+                                }));
+        final DTLS dtls = Iterables.getFirst(dtlsSet, null);
+        if (dtlsSet.size() == 1 && dtls != null) {
+            return dtls;
+        }
+        throw new IllegalStateException("Content map doesn't have distinct DTLS setup");
+    }
+
     public boolean emptyCandidates() {
         int count = 0;
         for (DescriptionTransport descriptionTransport : contents.values()) {
@@ -262,12 +281,22 @@ public class RtpContentMap {
         return new RtpContentMap(this.group, contentMapBuilder.build());
     }
 
+    public RtpContentMap toContentModification(final Collection<String> modifications) {
+        return new RtpContentMap(
+                this.group,
+                Maps.transformValues(
+                        Maps.filterKeys(contents, Predicates.in(modifications)),
+                        dt ->
+                                new DescriptionTransport(
+                                        dt.senders, dt.description, IceUdpTransportInfo.STUB)));
+    }
+
     public Diff diff(final RtpContentMap rtpContentMap) {
         final Set<String> existingContentIds = this.contents.keySet();
         final Set<String> newContentIds = rtpContentMap.contents.keySet();
         return new Diff(
-                Sets.difference(newContentIds, existingContentIds),
-                Sets.difference(existingContentIds, newContentIds));
+                ImmutableSet.copyOf(Sets.difference(newContentIds, existingContentIds)),
+                ImmutableSet.copyOf(Sets.difference(existingContentIds, newContentIds)));
     }
 
     public boolean iceRestart(final RtpContentMap rtpContentMap) {
@@ -276,6 +305,26 @@ public class RtpContentMap {
         } catch (final IllegalStateException e) {
             return false;
         }
+    }
+
+    public RtpContentMap addContent(final RtpContentMap modification) {
+        final IceUdpTransportInfo.Credentials credentials = getDistinctCredentials();
+        final DTLS dtls = getDistinctDtls();
+        final IceUdpTransportInfo iceUdpTransportInfo =
+                IceUdpTransportInfo.of(credentials, dtls.setup, dtls.hash, dtls.fingerprint);
+        final Map<String, DescriptionTransport> combined =
+                new ImmutableMap.Builder<String, DescriptionTransport>()
+                        .putAll(contents)
+                        .putAll(
+                                Maps.transformValues(
+                                        modification.contents,
+                                        dt ->
+                                                new DescriptionTransport(
+                                                        dt.senders,
+                                                        dt.description,
+                                                        iceUdpTransportInfo)))
+                        .build();
+        return new RtpContentMap(modification.group, combined);
     }
 
     public static class DescriptionTransport {
@@ -368,6 +417,33 @@ public class RtpContentMap {
                     .add("added", added)
                     .add("removed", removed)
                     .toString();
+        }
+    }
+
+    public static final class DTLS {
+        public final String hash;
+        public final IceUdpTransportInfo.Setup setup;
+        public final String fingerprint;
+
+        private DTLS(String hash, IceUdpTransportInfo.Setup setup, String fingerprint) {
+            this.hash = hash;
+            this.setup = setup;
+            this.fingerprint = fingerprint;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            DTLS dtls = (DTLS) o;
+            return Objects.equal(hash, dtls.hash)
+                    && setup == dtls.setup
+                    && Objects.equal(fingerprint, dtls.fingerprint);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(hash, setup, fingerprint);
         }
     }
 }
