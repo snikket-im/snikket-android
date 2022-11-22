@@ -952,16 +952,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 from.asBareJid().equals(id.account.getJid().asBareJid());
         if (originatedFromMyself) {
             if (transition(State.ACCEPTED)) {
-                if (serverMsgId != null) {
-                    this.message.setServerMsgId(serverMsgId);
-                }
-                this.message.setTime(timestamp);
-                this.message.setCarbon(true); // indicate that call was accepted on other device
-                this.writeLogMessageSuccess(0);
-                this.xmppConnectionService
-                        .getNotificationService()
-                        .cancelIncomingCallNotification();
-                this.finish();
+                acceptedOnOtherDevice(serverMsgId, timestamp);
             } else {
                 Log.d(
                         Config.LOGTAG,
@@ -974,6 +965,19 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     Config.LOGTAG,
                     id.account.getJid().asBareJid() + ": ignoring 'accept' from " + from);
         }
+    }
+
+    private void acceptedOnOtherDevice(final String serverMsgId, final long timestamp) {
+        if (serverMsgId != null) {
+            this.message.setServerMsgId(serverMsgId);
+        }
+        this.message.setTime(timestamp);
+        this.message.setCarbon(true); // indicate that call was accepted on other device
+        this.writeLogMessageSuccess(0);
+        this.xmppConnectionService
+                .getNotificationService()
+                .cancelIncomingCallNotification();
+        this.finish();
     }
 
     private void receiveReject(final Jid from, final String serverMsgId, final long timestamp) {
@@ -1173,11 +1177,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
                         id.account.getJid().asBareJid()
                                 + ": moved session with "
                                 + id.with
-                                + " into state accepted after received carbon copied procced");
-                this.xmppConnectionService
-                        .getNotificationService()
-                        .cancelIncomingCallNotification();
-                this.finish();
+                                + " into state accepted after received carbon copied proceed");
+                acceptedOnOtherDevice(serverMsgId, timestamp);
             }
         } else {
             Log.d(
