@@ -14,6 +14,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -90,6 +91,10 @@ public class RtpContentMap {
                                     ? Media.UNKNOWN
                                     : input.description.getMedia();
                         }));
+    }
+
+    public Set<Content.Senders> getSenders() {
+        return ImmutableSet.copyOf(Collections2.transform(contents.values(),dt -> dt.senders));
     }
 
     public List<String> getNames() {
@@ -281,6 +286,14 @@ public class RtpContentMap {
         return new RtpContentMap(this.group, contentMapBuilder.build());
     }
 
+    public RtpContentMap modifiedSenders(final Content.Senders senders) {
+        return new RtpContentMap(
+                this.group,
+                Maps.transformValues(
+                        contents,
+                        dt -> new DescriptionTransport(senders, dt.description, dt.transport)));
+    }
+
     public RtpContentMap toContentModification(final Collection<String> modifications) {
         return new RtpContentMap(
                 this.group,
@@ -289,6 +302,22 @@ public class RtpContentMap {
                         dt ->
                                 new DescriptionTransport(
                                         dt.senders, dt.description, IceUdpTransportInfo.STUB)));
+    }
+
+    public RtpContentMap toStub() {
+        return new RtpContentMap(
+                null,
+                Maps.transformValues(
+                        this.contents,
+                        dt ->
+                                new DescriptionTransport(
+                                        dt.senders,
+                                        RtpDescription.stub(dt.description.getMedia()),
+                                        IceUdpTransportInfo.STUB)));
+    }
+
+    public RtpContentMap activeContents() {
+        return new RtpContentMap(group, Maps.filterValues(this.contents, dt -> dt.senders != Content.Senders.NONE));
     }
 
     public Diff diff(final RtpContentMap rtpContentMap) {
@@ -307,24 +336,32 @@ public class RtpContentMap {
         }
     }
 
-    public RtpContentMap addContent(final RtpContentMap modification) {
+    public RtpContentMap addContent(
+            final RtpContentMap modification, final IceUdpTransportInfo.Setup setup) {
         final IceUdpTransportInfo.Credentials credentials = getDistinctCredentials();
         final DTLS dtls = getDistinctDtls();
         final IceUdpTransportInfo iceUdpTransportInfo =
-                IceUdpTransportInfo.of(credentials, dtls.setup, dtls.hash, dtls.fingerprint);
-        final Map<String, DescriptionTransport> combined =
-                new ImmutableMap.Builder<String, DescriptionTransport>()
+                IceUdpTransportInfo.of(credentials, setup, dtls.hash, dtls.fingerprint);
+        final Map<String, DescriptionTransport> combined = merge(contents, modification.contents);
+                /*new ImmutableMap.Builder<String, DescriptionTransport>()
                         .putAll(contents)
-                        .putAll(
-                                Maps.transformValues(
-                                        modification.contents,
-                                        dt ->
-                                                new DescriptionTransport(
-                                                        dt.senders,
-                                                        dt.description,
-                                                        iceUdpTransportInfo)))
-                        .build();
-        return new RtpContentMap(modification.group, combined);
+                        .putAll(modification.contents)
+                        .build();*/
+        final Map<String, DescriptionTransport> combinedFixedTransport =
+                Maps.transformValues(
+                        combined,
+                        dt ->
+                                new DescriptionTransport(
+                                        dt.senders, dt.description, iceUdpTransportInfo));
+        return new RtpContentMap(modification.group, combinedFixedTransport);
+    }
+
+    private static Map<String, DescriptionTransport> merge(
+            final Map<String, DescriptionTransport> a, final Map<String, DescriptionTransport> b) {
+        final Map<String, DescriptionTransport> combined = new HashMap<>();
+        combined.putAll(a);
+        combined.putAll(b);
+        return ImmutableMap.copyOf(combined);
     }
 
     public static class DescriptionTransport {
@@ -408,6 +445,10 @@ public class RtpContentMap {
 
         public boolean hasModifications() {
             return !this.added.isEmpty() || !this.removed.isEmpty();
+        }
+
+        public boolean isEmpty() {
+            return this.added.isEmpty() && this.removed.isEmpty();
         }
 
         @Override

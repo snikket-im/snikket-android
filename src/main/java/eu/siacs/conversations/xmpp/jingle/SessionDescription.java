@@ -298,7 +298,7 @@ public class SessionDescription {
             mediaAttributes.put("mid", name);
 
             mediaAttributes.put(descriptionTransport.senders.asMediaAttribute(isInitiatorContentMap), "");
-            if (description.hasChild("rtcp-mux", Namespace.JINGLE_APPS_RTP)) {
+            if (description.hasChild("rtcp-mux", Namespace.JINGLE_APPS_RTP) || group != null) {
                 mediaAttributes.put("rtcp-mux", "");
             }
 
