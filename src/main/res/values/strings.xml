@@ -909,6 +909,8 @@
     <string name="make_call">Make call</string>
     <string name="rtp_state_incoming_call">Incoming call</string>
     <string name="rtp_state_incoming_video_call">Incoming video call</string>
+    <string name="rtp_state_content_add_video">Switch to video call?</string>
+    <string name="rtp_state_content_add">Add additional tracks?</string>
     <string name="rtp_state_connecting">Connecting</string>
     <string name="rtp_state_connected">Connected</string>
     <string name="rtp_state_reconnecting">Reconnecting</string>
@@ -995,5 +997,7 @@
     <string name="account_status_temporary_auth_failure">Temporary authentication failure</string>
     <string name="delete_avatar">Delete avatar</string>
     <string name="audio_video_disabled_tor">Calls are disabled when using Tor</string>
+    <string name="switch_to_video">Switch to video</string>
+    <string name="reject_switch_to_video">Reject switch to video request</string>
 
 </resources>
