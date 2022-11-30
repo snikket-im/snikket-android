@@ -173,6 +173,7 @@
     <string name="account_status_tls_error_domain">Domeniul nu se poate verifica</string>
     <string name="account_status_policy_violation">Încălcare condiții furnizare serviciu</string>
     <string name="account_status_incompatible_server">Server incompatibil</string>
+    <string name="account_status_incompatible_client">Client incompatibil</string>
     <string name="account_status_stream_error">Eroare de date</string>
     <string name="account_status_stream_opening_error">Eroare deschidere flux de date</string>
     <string name="encryption_choice_unencrypted">Necriptat</string>
@@ -778,6 +779,7 @@
     <string name="messages_channel_name">Mesaje</string>
     <string name="incoming_calls_channel_name">Apeluri primite</string>
     <string name="ongoing_calls_channel_name">Apeluri în curs</string>
+    <string name="missed_calls_channel_name">Apeluri pierdute</string>
     <string name="silent_messages_channel_name">Mesaje silențioase</string>
     <string name="silent_messages_channel_description">Acest grup de notificări este folosit pentru a arăta notificări care nu emit sunete. De exemplu atunci când sunteți activi pe un alt dispozitiv (Perioada de grație).</string>
     <string name="delivery_failed_channel_name">Trimiteri eșuate</string>
@@ -945,6 +947,21 @@
     <string name="outgoing_call">Apel efectuat</string>
     <string name="outgoing_call_duration">Apel efectuat · %s</string>
     <string name="missed_call">Apel pierdut</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d apel pierdut de la %2$s</item>
+        <item quantity="few">%1$d apeluri pierdute de la %2$s</item>
+        <item quantity="other">%1$d de apeluri pierdute de la %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d apel pierdut</item>
+        <item quantity="few">%d apeluri pierdute</item>
+        <item quantity="other">%d de apeluri pierdute</item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d apel pierdut de la %2$d contact</item>
+        <item quantity="few">%1$d apeluri pierdute de la %2$d contact</item>
+        <item quantity="other">%1$d de apeluri pierdute de la %2$d contacte</item>
+    </plurals>
     <string name="audio_call">Apel audio</string>
     <string name="video_call">Apel video</string>
     <string name="help">Ajutor</string>
@@ -993,4 +1010,5 @@
     <string name="no_xmpp_adddress_found">Nu a fost găsită o adresă XMPP</string>
     <string name="account_status_temporary_auth_failure">Eroare temporară de autentificare</string>
     <string name="delete_avatar">Șterge avatar</string>
+    <string name="audio_video_disabled_tor">Apelurile sunt dezactivate atunci când utilizați Tor</string>
     </resources>

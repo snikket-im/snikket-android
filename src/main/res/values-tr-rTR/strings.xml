@@ -170,6 +170,7 @@
     <string name="account_status_tls_error_domain">Alan adı doğrulanamıyor</string>
     <string name="account_status_policy_violation">Politika ihlali</string>
     <string name="account_status_incompatible_server">Sunucu uyuşmazlığı</string>
+    <string name="account_status_incompatible_client">Uyumsuz istemci</string>
     <string name="account_status_stream_error">Akış hatası</string>
     <string name="account_status_stream_opening_error">Akış açılım hatası</string>
     <string name="encryption_choice_unencrypted">Şifrelenmemiş</string>
@@ -294,6 +295,7 @@
     <string name="title_pref_enable_quiet_hours">Sessiz saatleri etkinleştir</string>
     <string name="pref_quiet_hours_summary">Bildirimler sessiz saatler boyunca sessize alınacaktır</string>
     <string name="pref_expert_options_other">Diğer</string>
+    <string name="pref_autojoin">Yer imleriyle senkronize et</string>
     <string name="toast_message_omemo_fingerprint">OMEMO parmak izi panoya kopyalandı</string>
     <string name="conference_banned">Bu grup konuşmasından menedildiniz</string>
     <string name="conference_members_only">Bu grup konuşması yalnızca üyeleri içindir</string>
@@ -301,6 +303,7 @@
     <string name="conference_kicked">Bu grup konuşmasından atıldınız</string>
     <string name="conference_shutdown">Grup konuşması kapatıldı</string>
     <string name="conference_unknown_error">Artık bu grup konuşmasında değilsiniz</string>
+    <string name="conference_technical_problems">Teknik sebeplerden dolayı bu grup sohbetinden ayrıldınız</string>
     <string name="using_account">%s hesabını kullanarak</string>
     <string name="hosted_on">%sev sahipliğinde</string>
     <string name="checking_x">HTTP sunucusundaki %s denetleniyor</string>
@@ -415,6 +418,7 @@
     <string name="video">video</string>
     <string name="image">görüntü</string>
     <string name="vector_graphic">Vektör grafik</string>
+    <string name="multimedia_file">Multimedya dosyası</string>
     <string name="pdf_document">PDF belgesi</string>
     <string name="apk">Android uygulaması</string>
     <string name="vcard">Kişi</string>
@@ -763,6 +767,7 @@
     <string name="messages_channel_name">İletiler</string>
     <string name="incoming_calls_channel_name">Gelen aramalar</string>
     <string name="ongoing_calls_channel_name">Yapılan aramalar</string>
+    <string name="missed_calls_channel_name">Cevapsız aramalar</string>
     <string name="silent_messages_channel_name">Sessiz iletiler</string>
     <string name="silent_messages_channel_description">Bu bildirim grubu, bildirimlerin herhangi bir ses çıkarmaması gerektiğini belirtmekte kullanılır. Mesela başka bir cihazda aktif olunduğunda (Mühlet)</string>
     <string name="delivery_failed_channel_name">Başarısız gönderiler</string>
@@ -930,6 +935,18 @@
     <string name="outgoing_call">Yapılan arama</string>
     <string name="outgoing_call_duration">Yapılan arama. %s</string>
     <string name="missed_call">Cevapsız arama</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one"> %2$s tarafından %1$d cevapsız çağrı</item>
+        <item quantity="other">%2$s tarafından %1$d cevapsız çağrı </item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d cevapsız çağrı</item>
+        <item quantity="other">%d cevapsız çağrı </item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%2$d tarafından %1$d cevapsız çağrı</item>
+        <item quantity="other">%2$d kişi tarafından %1$d cevapsız çağrı</item>
+    </plurals>
     <string name="audio_call">Sesli arama</string>
     <string name="video_call">Görüntülü arama</string>
     <string name="help">Yardım</string>
@@ -974,4 +991,7 @@
     <string name="plain_text_document">Düz metin dosyası</string>
     <string name="account_registrations_are_not_supported">Hesap kayıtları desteklenmemektedir.</string>
     <string name="no_xmpp_adddress_found">Herhangi bir XMPP adresi bulunamadı</string>
+    <string name="account_status_temporary_auth_failure">Geçici doğrulama hatası</string>
+    <string name="delete_avatar">Avatar\'ı sil</string>
+    <string name="audio_video_disabled_tor">Tor kullanırken çağrılar devre dışı</string>
     </resources>

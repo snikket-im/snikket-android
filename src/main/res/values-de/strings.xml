@@ -170,6 +170,7 @@
     <string name="account_status_tls_error_domain">Domain nicht überprüfbar</string>
     <string name="account_status_policy_violation">Verstoß gegen die Richtlinien</string>
     <string name="account_status_incompatible_server">Inkompatibler Server</string>
+    <string name="account_status_incompatible_client">Inkompatibler Client</string>
     <string name="account_status_stream_error">Stream-Fehler</string>
     <string name="account_status_stream_opening_error">Fehler beim Öffnen des Streams</string>
     <string name="encryption_choice_unencrypted">Unverschlüsselt</string>
@@ -363,7 +364,7 @@
     <string name="clear_other_devices">Geräte entfernen</string>
     <string name="clear_other_devices_desc">Bist du sicher, dass du alle anderen Geräte aus der OMEMO-Bekanntmachung entfernen willst? Die Bekanntmachung wird bei der nächsten Verbindung erneuert aber möglicherweise werden keine zwischenzeitlich gesendeten Nachrichten empfangen.</string>
     <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine nutzbaren Schlüssel verfügbar.\nEs konnten keine neuen Schlüssel vom Server abgerufen werden. Gibt es vielleicht ein Problem mit dem Server deines Kontaktes?</string>
-    <string name="error_no_keys_to_trust_presence">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nStelle sicher, dass ihre beide gegenseitig den Online-Status aktiviert habt.</string>
+    <string name="error_no_keys_to_trust_presence">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nStelle sicher, dass ihr beide gegenseitig den Online-Status aktiviert habt.</string>
     <string name="error_trustkeys_title">Etwas ist schief gelaufen</string>
     <string name="fetching_history_from_server">Lade Chatverlauf vom Server</string>
     <string name="no_more_history_on_server">Keine weiteren Nachrichten vorhanden</string>
@@ -767,6 +768,7 @@
     <string name="messages_channel_name">Nachrichten</string>
     <string name="incoming_calls_channel_name">Eingehende Anrufe</string>
     <string name="ongoing_calls_channel_name">Laufende Anrufe</string>
+    <string name="missed_calls_channel_name">Entgangene Anrufe</string>
     <string name="silent_messages_channel_name">Lautlose Nachrichten</string>
     <string name="silent_messages_channel_description">Diese Benachrichtigungsart wird verwendet, um Benachrichtigungen anzuzeigen, die keinen Ton auslösen sollen. Zum Beispiel, wenn du auf einem anderen Gerät aktiv bist (Schonfrist).</string>
     <string name="delivery_failed_channel_name">Fehlgeschlagene Zustellungen</string>
@@ -934,6 +936,18 @@
     <string name="outgoing_call">Ausgehender Anruf</string>
     <string name="outgoing_call_duration">Ausgehender Anruf · %s</string>
     <string name="missed_call">Entgangener Anruf</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d entgangener Anruf von %2$s</item>
+        <item quantity="other">%1$d entgangene Anrufe von %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d entgangener Anruf</item>
+        <item quantity="other">%d entgangene Anrufe</item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d entgangener Anruf von %2$d Kontakt</item>
+        <item quantity="other">%1$d entgangene Anrufe von %2$d Kontakten</item>
+    </plurals>
     <string name="audio_call">Audioanruf</string>
     <string name="video_call">Videoanruf</string>
     <string name="help">Hilfe</string>
@@ -980,4 +994,5 @@
     <string name="no_xmpp_adddress_found">Keine XMPP-Adresse gefunden</string>
     <string name="account_status_temporary_auth_failure">Temporärer Authentifizierungsfehler</string>
     <string name="delete_avatar">Profilbild löschen</string>
+    <string name="audio_video_disabled_tor">Anrufe sind bei der Verwendung von Tor deaktiviert</string>
     </resources>

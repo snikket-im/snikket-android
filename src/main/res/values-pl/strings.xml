@@ -176,6 +176,7 @@
     <string name="account_status_tls_error_domain">Nie można zweryfikować tej domeny</string>
     <string name="account_status_policy_violation">Naruszenie zasad</string>
     <string name="account_status_incompatible_server">Serwer niekompatybilny</string>
+    <string name="account_status_incompatible_client">Niekompatybilny klient</string>
     <string name="account_status_stream_error">Błąd strumienia</string>
     <string name="account_status_stream_opening_error">Błąd otwierania strumienia</string>
     <string name="encryption_choice_unencrypted">Bez szyfrowania</string>
@@ -790,6 +791,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="messages_channel_name">Wiadomości</string>
     <string name="incoming_calls_channel_name">Połączenia przychodzące</string>
     <string name="ongoing_calls_channel_name">Połączenia wychodzące</string>
+    <string name="missed_calls_channel_name">Nieodebrane rozmowy</string>
     <string name="silent_messages_channel_name">Ciche wiadomości</string>
     <string name="silent_messages_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać powiadomienia które nie powodują żadnych dźwięków. Na przykład w ciągu aktywności na innym urządzeniu (okres karencji).</string>
     <string name="delivery_failed_channel_name">Nie dostarczone wiadomości</string>
@@ -957,6 +959,24 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="outgoing_call">Połączenie wychodzące</string>
     <string name="outgoing_call_duration">Połączenie wychodzące · %s</string>
     <string name="missed_call">Nieodebrane połączenie</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d nieodebrana rozmowa od %2$s</item>
+        <item quantity="few">%1$d nieodebrane rozmowy od %2$s</item>
+        <item quantity="many">%1$d nieodebranych rozmów od %2$s</item>
+        <item quantity="other">%1$d nieodebranych rozmów od %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d nieodebrana rozmowa</item>
+        <item quantity="few">%d nieodebrane rozmowy</item>
+        <item quantity="many">%d nieodebranych rozmów</item>
+        <item quantity="other">%d nieodebranych rozmów</item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d nieodebrana rozmowa od %2$d kontaktu</item>
+        <item quantity="few">%1$d nieodebrane rozmowy od %2$d kontaktu</item>
+        <item quantity="many">%1$d nieodebranych rozmów od %2$d kontaktów</item>
+        <item quantity="other">%1$d nieodebranych rozmów od %2$d kontaktów</item>
+    </plurals>
     <string name="audio_call">Połączenie audio</string>
     <string name="video_call">Połączenie wideo</string>
     <string name="help">Pomoc</string>
@@ -1007,4 +1027,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="no_xmpp_adddress_found">Nie znaleziono adresu XMPP</string>
     <string name="account_status_temporary_auth_failure">Tymczasowy błąd uwierzytelniania</string>
     <string name="delete_avatar">Usuń awatar</string>
+    <string name="audio_video_disabled_tor">Dzwonienie jest wyłączone podczas używania Tora</string>
     </resources>

@@ -173,6 +173,7 @@
     <string name="account_status_tls_error_domain">Dominio no verificable</string>
     <string name="account_status_policy_violation">Policy violation</string>
     <string name="account_status_incompatible_server">Servidor incompatible</string>
+    <string name="account_status_incompatible_client">Cliente incompatible</string>
     <string name="account_status_stream_error">Error de flujo</string>
     <string name="account_status_stream_opening_error">Error al abrir la secuencia</string>
     <string name="encryption_choice_unencrypted">Sin cifrado</string>
@@ -778,6 +779,7 @@
     <string name="messages_channel_name">Mensajes</string>
     <string name="incoming_calls_channel_name">Llamadas entrantes</string>
     <string name="ongoing_calls_channel_name">Llamadas salientes</string>
+    <string name="missed_calls_channel_name">Llamadas perdidas</string>
     <string name="silent_messages_channel_name">Mensajes sin sonido</string>
     <string name="silent_messages_channel_description">Este grupo de notificaciones se usa para mostrar notificaciones que no deberían emitir ningún sonido. Por ejemplo, cuando estás activo en otro dispositivo (periodo de gracia).</string>
     <string name="delivery_failed_channel_name">Envíos fallidos</string>
@@ -945,6 +947,21 @@
     <string name="outgoing_call">Llamada saliente</string>
     <string name="outgoing_call_duration">Video llamada saliente · %s</string>
     <string name="missed_call">Llamada perdida</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d llamada perdida de %2$s</item>
+        <item quantity="many">%1$d llamadas perdidas de %2$s</item>
+        <item quantity="other">%1$d llamadas perdidas de %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d llamada perdida</item>
+        <item quantity="many">%d llamadas perdidas</item>
+        <item quantity="other">%d llamadas perdidas</item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d llamadas perdidas de %2$d contacto</item>
+        <item quantity="many">%1$d llamadas perdidas de %2$d contacto</item>
+        <item quantity="other">%1$d llamadas perdidas de %2$d contactos</item>
+    </plurals>
     <string name="audio_call">Audio llamada</string>
     <string name="video_call">Video llamada</string>
     <string name="help">Ayuda</string>
@@ -993,4 +1010,5 @@
     <string name="no_xmpp_adddress_found">Dirección XMPP no encontrada</string>
     <string name="account_status_temporary_auth_failure">Fallo temporal de autenticación</string>
     <string name="delete_avatar">Eliminar imagen de perfil</string>
+    <string name="audio_video_disabled_tor">Las llamadas están deshabilitadas cuando se usa Tor</string>
     </resources>
