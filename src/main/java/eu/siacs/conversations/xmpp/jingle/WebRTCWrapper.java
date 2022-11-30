@@ -415,12 +415,20 @@ public class WebRTCWrapper {
     }
 
     void restartIce() {
-        executorService.execute(() -> {
-            final PeerConnection peerConnection = requirePeerConnection();
-            setIsReadyToReceiveIceCandidates(false);
-            peerConnection.restartIce();
-            requirePeerConnection().restartIce();}
-        );
+        executorService.execute(
+                () -> {
+                    final PeerConnection peerConnection;
+                    try {
+                        peerConnection = requirePeerConnection();
+                    } catch (final PeerConnectionNotInitialized e) {
+                        Log.w(
+                                EXTENDED_LOGGING_TAG,
+                                "PeerConnection vanished before we could execute restart");
+                        return;
+                    }
+                    setIsReadyToReceiveIceCandidates(false);
+                    peerConnection.restartIce();
+                });
     }
 
     public void setIsReadyToReceiveIceCandidates(final boolean ready) {
