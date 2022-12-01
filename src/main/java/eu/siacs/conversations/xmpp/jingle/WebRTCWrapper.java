@@ -445,8 +445,8 @@ public class WebRTCWrapper {
         final AppRTCAudioManager audioManager = this.appRTCAudioManager;
         final EglBase eglBase = this.eglBase;
         if (peerConnection != null) {
-            dispose(peerConnection);
             this.peerConnection = null;
+            dispose(peerConnection);
         }
         if (audioManager != null) {
             toneManager.setAppRtcAudioManagerHasControl(false);
@@ -467,6 +467,7 @@ public class WebRTCWrapper {
             this.eglBase = null;
         }
         if (peerConnectionFactory != null) {
+            this.peerConnectionFactory = null;
             peerConnectionFactory.dispose();
         }
     }
