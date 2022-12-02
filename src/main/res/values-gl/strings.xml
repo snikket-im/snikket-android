@@ -909,6 +909,8 @@
     <string name="make_call">Facer unha chamada</string>
     <string name="rtp_state_incoming_call">Chamada entrante</string>
     <string name="rtp_state_incoming_video_call">Videochamada entrante</string>
+    <string name="rtp_state_content_add_video">Cambiar a unha chamada de vídeo?</string>
+    <string name="rtp_state_content_add">Engadir pistas adicionais?</string>
     <string name="rtp_state_connecting">Conectando</string>
     <string name="rtp_state_connected">Conectado</string>
     <string name="rtp_state_reconnecting">Reconectando</string>
@@ -995,4 +997,7 @@
     <string name="account_status_temporary_auth_failure">Fallo temporal da autenticación</string>
     <string name="delete_avatar">Eliminar avatar</string>
     <string name="audio_video_disabled_tor">As chamadas están desactivadas cando usas Tor</string>
-    </resources>
+    <string name="switch_to_video">Cambiar a vídeo</string>
+    <string name="reject_switch_to_video">Rexeitar a solicitude para cambiar a vídeo</string>
+
+</resources>

@@ -909,6 +909,8 @@
     <string name="make_call">Anrufen</string>
     <string name="rtp_state_incoming_call">Eingehender Anruf</string>
     <string name="rtp_state_incoming_video_call">Eingehender Videoanruf</string>
+    <string name="rtp_state_content_add_video">Umschalten auf Videoanruf?</string>
+    <string name="rtp_state_content_add">Zusätzliche Audiospuren hinzufügen?</string>
     <string name="rtp_state_connecting">Verbinden</string>
     <string name="rtp_state_connected">Verbunden</string>
     <string name="rtp_state_reconnecting">Erneut verbinden</string>
@@ -995,4 +997,7 @@
     <string name="account_status_temporary_auth_failure">Temporärer Authentifizierungsfehler</string>
     <string name="delete_avatar">Profilbild löschen</string>
     <string name="audio_video_disabled_tor">Anrufe sind bei der Verwendung von Tor deaktiviert</string>
-    </resources>
+    <string name="switch_to_video">Umschalten auf Video</string>
+    <string name="reject_switch_to_video">Umschalten auf Video ablehnen</string>
+
+</resources>

@@ -920,6 +920,8 @@
     <string name="make_call">Apelează</string>
     <string name="rtp_state_incoming_call">Apel primit</string>
     <string name="rtp_state_incoming_video_call">Apel video primit</string>
+    <string name="rtp_state_content_add_video">Comută la apel video?</string>
+    <string name="rtp_state_content_add">Adăugați canale suplimentare?</string>
     <string name="rtp_state_connecting">Conectare</string>
     <string name="rtp_state_connected">Conectat</string>
     <string name="rtp_state_reconnecting">Reconectare</string>
@@ -1011,4 +1013,7 @@
     <string name="account_status_temporary_auth_failure">Eroare temporară de autentificare</string>
     <string name="delete_avatar">Șterge avatar</string>
     <string name="audio_video_disabled_tor">Apelurile sunt dezactivate atunci când utilizați Tor</string>
-    </resources>
+    <string name="switch_to_video">Comută la video</string>
+    <string name="reject_switch_to_video">Respinge solicitarea de comutare la video</string>
+
+</resources>

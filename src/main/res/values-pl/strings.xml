@@ -932,6 +932,8 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="make_call">Zadzwoń</string>
     <string name="rtp_state_incoming_call">Połączenie przychodzące</string>
     <string name="rtp_state_incoming_video_call">Wideorozmowa przychodząca</string>
+    <string name="rtp_state_content_add_video">Przełączyć na rozmowę wideo?</string>
+    <string name="rtp_state_content_add">Włączyć dodatkowe ścieżki?</string>
     <string name="rtp_state_connecting">Łączenie</string>
     <string name="rtp_state_connected">Połączony</string>
     <string name="rtp_state_reconnecting">Ponowne łączenie</string>
@@ -1028,4 +1030,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="account_status_temporary_auth_failure">Tymczasowy błąd uwierzytelniania</string>
     <string name="delete_avatar">Usuń awatar</string>
     <string name="audio_video_disabled_tor">Dzwonienie jest wyłączone podczas używania Tora</string>
-    </resources>
+    <string name="switch_to_video">Przełącz na wideo</string>
+    <string name="reject_switch_to_video">Odrzuć prośbę przełączenia na wideo</string>
+
+</resources>

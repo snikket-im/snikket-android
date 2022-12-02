@@ -898,6 +898,8 @@
     <string name="make_call">进行通话</string>
     <string name="rtp_state_incoming_call">来电</string>
     <string name="rtp_state_incoming_video_call">视频来电</string>
+    <string name="rtp_state_content_add_video">切换到视频通话？</string>
+    <string name="rtp_state_content_add">添加额外轨道？</string>
     <string name="rtp_state_connecting">正在连接</string>
     <string name="rtp_state_connected">已连接</string>
     <string name="rtp_state_reconnecting">重新连接</string>
@@ -979,4 +981,7 @@
     <string name="account_status_temporary_auth_failure">临时认证失败</string>
     <string name="delete_avatar">删除群聊</string>
     <string name="audio_video_disabled_tor">使用 Tor 时通话被禁用</string>
-    </resources>
+    <string name="switch_to_video">切换到视频</string>
+    <string name="reject_switch_to_video">拒绝切换到视频的请求</string>
+
+</resources>
