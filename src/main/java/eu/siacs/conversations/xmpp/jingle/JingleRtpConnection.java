@@ -1262,7 +1262,6 @@ public class JingleRtpConnection extends AbstractJingleConnection
         final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription, false);
         this.responderRtpContentMap = respondingRtpContentMap;
         storePeerDtlsSetup(respondingRtpContentMap.getDtlsSetup().flip());
-        webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
         final ListenableFuture<RtpContentMap> outgoingContentMapFuture =
                 prepareOutgoingContentMap(respondingRtpContentMap);
         Futures.addCallback(
@@ -1271,6 +1270,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     @Override
                     public void onSuccess(final RtpContentMap outgoingContentMap) {
                         sendSessionAccept(outgoingContentMap);
+                        webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
                     }
 
                     @Override
@@ -1713,8 +1713,6 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 SessionDescription.parse(webRTCSessionDescription.description);
         final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription, true);
         this.initiatorRtpContentMap = rtpContentMap;
-        //TODO delay ready to receive ice until after session-init
-        this.webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
         final ListenableFuture<RtpContentMap> outgoingContentMapFuture =
                 encryptSessionInitiate(rtpContentMap);
         Futures.addCallback(
@@ -1723,6 +1721,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     @Override
                     public void onSuccess(final RtpContentMap outgoingContentMap) {
                         sendSessionInitiate(outgoingContentMap, targetState);
+                        webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
                     }
 
                     @Override
