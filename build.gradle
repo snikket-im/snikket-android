@@ -76,7 +76,8 @@ dependencies {
 
     implementation 'com.google.guava:guava:31.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.12.49'
-    freeImplementation 'ch.threema:webrtc-android:100.0.0'
+    // temporarily use Snikket’s build of WebRTC. The next release will use our own build
+    freeImplementation 'org.snikket:webrtc-android:107.0.0'
     playstoreImplementation fileTree(include: ['libwebrtc-m107.aar'], dir: 'libs')
 }
 
