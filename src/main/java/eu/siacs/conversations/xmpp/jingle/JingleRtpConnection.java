@@ -45,10 +45,13 @@ import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.CryptoFailedException;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.RtpSessionStatus;
+import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.utils.IP;
 import eu.siacs.conversations.xml.Element;
@@ -2761,6 +2764,25 @@ public class JingleRtpConnection extends AbstractJingleConnection
         final RtpEndUserState endUserState = getEndUserState();
         xmppConnectionService.notifyJingleRtpConnectionUpdate(
                 id.account, id.with, id.sessionId, endUserState);
+    }
+
+    public boolean isSwitchToVideoAvailable() {
+        final boolean prerequisite =
+                Media.audioOnly(getMedia())
+                        && Arrays.asList(RtpEndUserState.CONNECTED, RtpEndUserState.RECONNECTING)
+                                .contains(getEndUserState());
+        return prerequisite && remoteHasVideoFeature();
+    }
+
+    private boolean remoteHasVideoFeature() {
+        final Contact contact = id.getContact();
+        final Presence presence =
+                contact.getPresences().get(Strings.nullToEmpty(id.with.getResource()));
+        final ServiceDiscoveryResult serviceDiscoveryResult =
+                presence == null ? null : presence.getServiceDiscoveryResult();
+        final List<String> features =
+                serviceDiscoveryResult == null ? null : serviceDiscoveryResult.getFeatures();
+        return features != null && features.contains(Namespace.JINGLE_FEATURE_VIDEO);
     }
 
     private interface OnIceServersDiscovered {

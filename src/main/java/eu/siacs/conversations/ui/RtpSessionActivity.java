@@ -217,7 +217,7 @@ public class RtpSessionActivity extends XmppActivity
         if (connection == null) {
             return false;
         }
-        return Media.audioOnly(connection.getMedia()) && STATES_CONSIDERED_CONNECTED.contains(connection.getEndUserState());
+        return connection.isSwitchToVideoAvailable();
     }
 
     private void switchToConversation() {
