@@ -758,10 +758,9 @@ public class XmppConnection implements Runnable {
                         account.getJid().asBareJid()
                                 + ": jid changed during SASL 2.0. updating database");
             }
-            final boolean nopStreamFeatures;
             final Element bound = success.findChild("bound", Namespace.BIND2);
-            final Element resumed = success.findChild("resumed", "urn:xmpp:sm:3");
-            final Element failed = success.findChild("failed", "urn:xmpp:sm:3");
+            final Element resumed = success.findChild("resumed", Namespace.STREAM_MANAGEMENT);
+            final Element failed = success.findChild("failed", Namespace.STREAM_MANAGEMENT);
             final Element tokenWrapper = success.findChild("token", Namespace.FAST);
             final String token = tokenWrapper == null ? null : tokenWrapper.getAttribute("token");
             if (bound != null && resumed != null) {
@@ -1403,7 +1402,7 @@ public class XmppConnection implements Runnable {
             quickStartAvailable = false;
         } else if (version == SaslMechanism.Version.SASL_2) {
             final Element inline = authElement.findChild("inline", Namespace.SASL_2);
-            final boolean sm = inline != null && inline.hasChild("sm", "urn:xmpp:sm:3");
+            final boolean sm = inline != null && inline.hasChild("sm", Namespace.STREAM_MANAGEMENT);
             final HashedToken.Mechanism hashTokenRequest;
             if (usingFast) {
                 hashTokenRequest = null;
@@ -2666,7 +2665,7 @@ public class XmppConnection implements Runnable {
         public boolean sm() {
             return streamId != null
                     || (connection.streamFeatures != null
-                            && connection.streamFeatures.hasChild("sm"));
+                            && connection.streamFeatures.hasChild("sm", Namespace.STREAM_MANAGEMENT));
         }
 
         public boolean csi() {
