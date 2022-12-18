@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.11.1
+
+* Fix resend loop on servers that support only sm:2
+* Show 'Switch to video' only if other party supports video
+
 ### Version 2.11.0
 
 * Implement Extensible SASL Profile, Bind 2.0 and Fast for faster reconnects
