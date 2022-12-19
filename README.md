@@ -3,16 +3,12 @@
 <p align="center">Conversations: the very last word in instant messaging</p>
 
 <p align="center">
-    <a href="https://travis-ci.org/inputmice/Conversations">
-        <img src="https://travis-ci.org/inputmice/Conversations.svg?branch=master"
-             alt="build status">
-    </a>
-</p>
-
-<p align="center">
-    <a href="https://play.google.com/store/apps/details?id=eu.siacs.conversations&amp;referrer=utm_source%3Dgithub">
-       <img src="https://conversations.im/images/en-play-badge.png" alt="Google Play">
-    </a>
+  <a href="https://play.google.com/store/apps/details?id=eu.siacs.conversations&amp;referrer=utm_source%3Dgithub">
+    <img src="https://conversations.im/images/get-it-on-play.png" alt="Get it on Google Play" height="80">
+  </a>
+  <a href="https://f-droid.org/packages/eu.siacs.conversations">
+    <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="80">
+  </a>
 </p>
 
 ![screenshots](https://raw.githubusercontent.com/inputmice/Conversations/master/screenshots.png)
