@@ -64,7 +64,9 @@ public class Content extends Element {
             return null;
         }
         final String namespace = description.getNamespace();
-        if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
+        if (FileTransferDescription.NAMESPACES.contains(namespace)) {
+            return FileTransferDescription.upgrade(description);
+        } else if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
             return RtpDescription.upgrade(description);
         } else {
             return GenericDescription.upgrade(description);
@@ -84,7 +86,11 @@ public class Content extends Element {
     public GenericTransportInfo getTransport() {
         final Element transport = this.findChild("transport");
         final String namespace = transport == null ? null : transport.getNamespace();
-        if (Namespace.JINGLE_TRANSPORT_ICE_UDP.equals(namespace)) {
+        if (Namespace.JINGLE_TRANSPORTS_IBB.equals(namespace)) {
+            return IbbTransportInfo.upgrade(transport);
+        } else if (Namespace.JINGLE_TRANSPORTS_S5B.equals(namespace)) {
+            return S5BTransportInfo.upgrade(transport);
+        } else if (Namespace.JINGLE_TRANSPORT_ICE_UDP.equals(namespace)) {
             return IceUdpTransportInfo.upgrade(transport);
         } else if (transport != null) {
             return GenericTransportInfo.upgrade(transport);
@@ -92,6 +98,7 @@ public class Content extends Element {
             return null;
         }
     }
+
 
     public void setTransport(GenericTransportInfo transportInfo) {
         this.addChild(transportInfo);
