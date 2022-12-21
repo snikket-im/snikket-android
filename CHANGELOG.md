@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.11.2
+
+* Fixed regression in P2P file transfer
+
 ### Version 2.11.1
 
 * Fix resend loop on servers that support only sm:2
