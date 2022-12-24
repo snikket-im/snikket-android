@@ -82,7 +82,6 @@ dependencies {
 }
 
 ext {
-    travisBuild = System.getenv("TRAVIS") == "true"
     preDexEnabled = System.getProperty("pre-dex", "true")
     abiCodes = ['armeabi-v7a': 1, 'x86': 2, 'x86_64': 3, 'arm64-v8a': 4]
 }
