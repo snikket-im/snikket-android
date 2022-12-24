@@ -662,7 +662,11 @@ public class WebRTCWrapper {
     }
 
     public PeerConnection.SignalingState getSignalingState() {
-        return requirePeerConnection().signalingState();
+        try {
+            return requirePeerConnection().signalingState();
+        } catch (final IllegalStateException e) {
+            return PeerConnection.SignalingState.CLOSED;
+        }
     }
 
     EglBase.Context getEglBaseContext() {
