@@ -258,7 +258,7 @@ Conversations is trying to get rid of old behaviours and set an example for
 other clients.
 
 #### Translations
-Translations are managed on [Weblate](https://translate.codeberg.org/projects/converastions/).
+Translations are managed on [Weblate](https://translate.codeberg.org/projects/conversations/).
 
 You can log in with your Codeberg account and start translating.
 
