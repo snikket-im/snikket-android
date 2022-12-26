@@ -31,10 +31,7 @@
     <string name="minutes_ago">vor %d Minuten</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d ungelesene Unterhaltung</item>
-
-    
         <item quantity="other">%d ungelesene Unterhaltungen</item>
-
     </plurals>
     <string name="sending">senden…</string>
     <string name="message_decrypting">Nachricht wird entschlüsselt. Bitte warten…</string>
@@ -262,7 +259,7 @@
     <string name="publish">Veröffentlichen</string>
     <string name="touch_to_choose_picture">Profilbild antippen, um ein Bild aus der Galerie auszuwählen</string>
     <string name="publishing">Veröffentliche…</string>
-    <string name="error_publish_avatar_server_reject">Der Server hat die Veröffentlichung des Avatars abgelehnt.</string>
+    <string name="error_publish_avatar_server_reject">Der Server hat die Veröffentlichung des Profilbildes abgelehnt.</string>
     <string name="error_publish_avatar_converting">Bild konnte nicht konvertiert werden</string>
     <string name="error_saving_avatar">Profilbild kann nicht gespeichert werden</string>
     <string name="or_long_press_for_default">(Oder klicke lange, um den Standard wiederherzustellen)</string>
@@ -999,5 +996,4 @@
     <string name="audio_video_disabled_tor">Anrufe sind bei der Verwendung von Tor deaktiviert</string>
     <string name="switch_to_video">Umschalten auf Video</string>
     <string name="reject_switch_to_video">Umschalten auf Video ablehnen</string>
-
 </resources>
