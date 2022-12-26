@@ -1,0 +1,1 @@
+Un client di messaggistica XMPP facile e criptato, ottimizzato per il mobile
