@@ -31,16 +31,11 @@
     <string name="minutes_ago">%d min fa</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d conversazione non letta</item>
-
-    
         <item quantity="many">%d conversazioni non lette</item>
-
-    
         <item quantity="other">%d conversazioni non lette</item>
-
     </plurals>
     <string name="sending">invio…</string>
-    <string name="message_decrypting">Decifrazione messaggio. Attendere prego...</string>
+    <string name="message_decrypting">Decifrazione messaggio. Attendere prego…</string>
     <string name="pgp_message">Messaggio cifrato con OpenPGP</string>
     <string name="nick_in_use">Nome utente già in uso</string>
     <string name="invalid_muc_nick">Nickname non valido</string>
@@ -59,7 +54,7 @@
     <string name="remove_bookmark_text">Vuoi rimuovere %s dai segnalibri? Le conversazioni con questo segnalibro non verranno rimosse.</string>
     <string name="register_account">Registra un nuovo profilo sul server</string>
     <string name="change_password_on_server">Cambia la password sul server</string>
-    <string name="share_with">Condividi con</string>
+    <string name="share_with">Condividi con…</string>
     <string name="start_conversation">Inizia conversazione</string>
     <string name="invite_contact">Invita contatto</string>
     <string name="invite">Invita</string>
@@ -87,7 +82,7 @@
     <string name="send_failed">Invio fallito</string>
     <string name="preparing_image">Preparazione per l\'invio dell\'immagine</string>
     <string name="preparing_images">Preparazione per l\'invio delle immagini</string>
-    <string name="sharing_files_please_wait">Condivisione file. Attendere prego...</string>
+    <string name="sharing_files_please_wait">Condivisione file. Attendere prego…</string>
     <string name="action_clear_history">Pulisci la cronologia</string>
     <string name="clear_conversation_history">Pulisci la cronologia della conversazione</string>
     <string name="clear_histor_msg">Vuoi eliminare tutti i messaggi in questa conversazione?\n\n<b>Attenzione:</b> ciò non influenzerà i messaggi salvati su altri dispositivi o server.</string>
@@ -154,7 +149,9 @@
     <string name="error_compressing_image">Impossibile convertire l\'immagine</string>
     <string name="error_file_not_found">File non trovato</string>
     <string name="error_io_exception">Errore di I/O generico. Forse hai esaurito lo spazio?</string>
-    <string name="error_security_exception_during_image_copy">L’app che hai usato per selezionare questa immagine non ha fornito autorizzazioni sufficienti per leggere il file.\n\n<small>Usa un gestore di file differente per scegliere un’immagine</small></string>
+    <string name="error_security_exception_during_image_copy">L’app che hai usato per selezionare questa immagine non ha fornito autorizzazioni sufficienti per leggere il file.
+\n
+\n<small>Usa un gestore di file differente per scegliere un’immagine</small>.</string>
     <string name="error_security_exception">L\'app che hai usato per condividere questo file non ha fornito autorizzazioni sufficienti.</string>
     <string name="account_status_unknown">Sconosciuto</string>
     <string name="account_status_disabled">Disattivato temporaneamente</string>
@@ -228,7 +225,7 @@
     <string name="omemo_fingerprint_x509_selected_message">v\\Impronta OMEMO (origine del messaggio)</string>
     <string name="other_devices">Altri dispositivi</string>
     <string name="trust_omemo_fingerprints">Fidati delle impronte OMEMO</string>
-    <string name="fetching_keys">Ricezione chiavi...</string>
+    <string name="fetching_keys">Ricezione chiavi…</string>
     <string name="done">Fatto</string>
     <string name="decrypt">Decripta</string>
     <string name="bookmarks">Segnalibri</string>
@@ -254,7 +251,7 @@
     <string name="could_not_destroy_channel">Distruzione canale fallita</string>
     <string name="action_edit_subject">Modifica titolo chat di gruppo</string>
     <string name="topic">Argomento</string>
-    <string name="joining_conference">Ingresso nella chat di gruppo...</string>
+    <string name="joining_conference">Ingresso nella chat di gruppo…</string>
     <string name="leave">Abbandona</string>
     <string name="contact_added_you">Il contatto ti ha aggiunto alla sua lista contatti</string>
     <string name="add_back">Aggiungi anche tu</string>
@@ -282,7 +279,9 @@
     <string name="enable">Attiva</string>
     <string name="conference_requires_password">La chat di gruppo richiede una password</string>
     <string name="enter_password">Inserisci la password</string>
-    <string name="request_presence_updates">Richiedi gli aggiornamenti della presenza dal tuo contatto.\n\n<small>Ciò verrà usato per determinare quale app sta usando il tuo contatto.</small></string>
+    <string name="request_presence_updates">Prima chiedi gli aggiornamenti della presenza dal tuo contatto.
+\n
+\n<small>Ciò verrà usato per determinare quale app sta usando il tuo contatto</small>.</string>
     <string name="request_now">Rechiedi adesso</string>
     <string name="ignore">Ignora</string>
     <string name="without_mutual_presence_updates"><b>Attenzione:</b> inviarlo senza aggiornamenti della presenza reciproci può causare problemi inaspettati.\n\n<small>Vai nei dettagli del contatto per verificare le tue sottoscrizioni alla presenza.</small></string>
@@ -430,7 +429,7 @@
     <string name="sending_x_file">Invio %s</string>
     <string name="offering_x_file">Offrendo %s</string>
     <string name="hide_offline">Nascondi i contatti offline</string>
-    <string name="contact_is_typing">%s sta digitando...</string>
+    <string name="contact_is_typing">%s sta digitando…</string>
     <string name="contact_has_stopped_typing">%s ha smesso di digitare</string>
     <string name="contacts_are_typing">%s stanno scrivendo…</string>
     <string name="contacts_have_stopped_typing">%s hanno smesso di scrivere</string>
@@ -491,7 +490,7 @@
     <string name="unable_to_parse_certificate">Impossibile analizzare il certificato</string>
     <string name="mam_prefs">Preferenze di archiviazione</string>
     <string name="server_side_mam_prefs">Preferenze di archiviazione lato server</string>
-    <string name="fetching_mam_prefs">Raccolta preferenze di archiviazione. Attendere prego...</string>
+    <string name="fetching_mam_prefs">Ricezione preferenze di archiviazione. Attendere prego…</string>
     <string name="unable_to_fetch_mam_prefs">Impossibile recuperare le preferenze di archiviazione</string>
     <string name="captcha_required">CAPTCHA necessario</string>
     <string name="captcha_hint">Inserisci il testo dell\'immagine soprastante</string>
@@ -546,7 +545,7 @@
     <string name="this_account_is_disabled">Hai disattivato questo profilo</string>
     <string name="security_error_invalid_file_access">Errore di sicurezza: accesso file non valido!</string>
     <string name="no_application_to_share_uri">Nessuna app trovata per condividere l\'URI</string>
-    <string name="share_uri_with">Condividi l\'URI con...</string>
+    <string name="share_uri_with">Condividi URI con…</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy è una variante del popolare client XMPP Conversations con ricerca automatica dei contatti.<br><br>Ti registri con il tuo numero di telefono e Quicksy ti suggerirà—in base ai numeri di telefono nella tua rubrica—automaticamente i possibili contatti.<br><br>Registrandoti accetti la nostra <a href="https://quicksy.im/#privacy">politica sulla privacy</a>.]]></string>
     <string name="agree_and_continue">Accetta e continua</string>
     <string name="magic_create_text">È disponibile una guida per la creazione di un profilo su conversations.im.¹\nQuando scegli conversations.im come fornitore potrai comunicare con utenti di altri fornitori dando il tuo indirizzo XMPP completo.</string>
@@ -567,7 +566,7 @@
     <string name="registration_please_wait">Registrazione fallita: riprova più tardi</string>
     <string name="registration_password_too_weak">Registrazione fallita: password troppo debole</string>
     <string name="choose_participants">Scegli i partecipanti</string>
-    <string name="creating_conference">Creazione chat di gruppo...</string>
+    <string name="creating_conference">Creazione chat di gruppo…</string>
     <string name="invite_again">Invita di nuovo</string>
     <string name="gp_disable">Disattiva</string>
     <string name="gp_short">Breve</string>
@@ -747,7 +746,7 @@
     <string name="title_activity_show_location">Mostra la posizione</string>
     <string name="share">Condividi</string>
     <string name="unable_to_start_recording">Impossibile avviare la registrazione</string>
-    <string name="please_wait">Attendere prego...</string>
+    <string name="please_wait">Attendere prego…</string>
     <string name="no_microphone_permission">Dai a %1$s l\'accesso al microfono</string>
     <string name="search_messages">Cerca messaggi</string>
     <string name="gif">GIF</string>
@@ -805,7 +804,7 @@
     <string name="enter_country_code_and_phone_number">Quicksy invierà un SMS (possono essere applicati costi dal gestore) per verificare il tuo numero. Inserisci il tuo codice nazionale e numero di telefono:</string>
     <string name="we_will_be_verifying"><![CDATA[Verificheremo il numero di telefono<br/><br/><b>%s</b><br/><br/>È corretto o vuoi modificare il numero?]]></string>
     <string name="not_a_valid_phone_number">%s non è un numero di telefono valido.</string>
-    <string name="please_enter_your_phone_number">Inserisci il tuo numero di telefono:</string>
+    <string name="please_enter_your_phone_number">Inserisci il tuo numero di telefono.</string>
     <string name="search_countries">Cerca nazioni</string>
     <string name="verify_x">Verifica %s</string>
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Ti abbiamo inviato un SMS a <b>%s</b>.]]></string>
@@ -907,7 +906,7 @@
     <string name="account_already_setup">Questo profilo è già stato configurato</string>
     <string name="please_enter_password">Inserisci la password per questo profilo</string>
     <string name="unable_to_perform_this_action">Impossibile eseguire questa azione</string>
-    <string name="open_join_dialog">Entra in un canale pubblico...</string>
+    <string name="open_join_dialog">Entra in un canale pubblico…</string>
     <string name="sharing_application_not_grant_permission">L\'app di condivisione non ha concesso l\'autorizzazione per accedere a questo file.</string>
     <string name="group_chats_and_channels"><![CDATA[Chat di gruppo e canali]]></string>
     <string name="jabber_network">jabber.network</string>
@@ -1015,5 +1014,4 @@
     <string name="audio_video_disabled_tor">Le chiamate sono disattivate quando si usa Tor</string>
     <string name="switch_to_video">Passa al video</string>
     <string name="reject_switch_to_video">Rifiuta richiesta di passare al video</string>
-
 </resources>
