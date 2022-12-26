@@ -258,11 +258,9 @@ Conversations is trying to get rid of old behaviours and set an example for
 other clients.
 
 #### Translations
-Translations are managed on [Transifex](https://www.transifex.com/projects/p/conversations/).
-If you want to become a translator  Please register on transifex, apply to join
-the translation team and then step by our group chat on
-[conversations@conference.siacs.eu](https://conversations.im/j/conversations@conference.siacs.eu)
-and introduce yourself to `iNPUTmice` so he can approve your join request.
+Translations are managed on [Weblate](https://translate.codeberg.org/projects/converastions/).
+
+You can log in with your Codeberg account and start translating.
 
 #### How do I backup / move Conversations to a new device?
 
