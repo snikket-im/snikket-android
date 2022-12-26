@@ -12,5 +12,5 @@
     <string name="tap_share_button_send_invite">Toca no botón compartir para convidar ao teu contacto a %1$s.</string>
     <string name="if_contact_is_nearby_use_qr">Se o contacto está preto de ti, pode escanear o código inferior para aceptar o teu convite.</string>
     <string name="easy_invite_share_text">Únete a %1$s e conversa conmigo: %2$s</string>
-    <string name="share_invite_with">Enviar convite a...</string>
+    <string name="share_invite_with">Enviar convite a…</string>
 </resources>
