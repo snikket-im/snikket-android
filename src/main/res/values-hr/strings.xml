@@ -73,4 +73,18 @@
     <string name="unblock">Odblokiraj</string>
     <string name="save">Sačuvaj</string>
     <string name="ok">Ok</string>
+    <string name="send_now">Pošalji sada</string>
+    <string name="send_never">Nikad više ne pitaj</string>
+    <string name="problem_connecting_to_account">Nije moguće povezati se s računom</string>
+    <string name="problem_connecting_to_accounts">Nije moguće povezati se s više računa</string>
+    <string name="touch_to_fix">Dodirnite za upravljanje svojim računima</string>
+    <string name="attach_file">Priložite datoteku</string>
+    <string name="not_in_roster">Dodati ovaj kontakt koji nedostaje na popis kontakata?</string>
+    <string name="add_contact">Dodaj kontakt</string>
+    <string name="send_failed">dostava nije uspjela</string>
+    <string name="preparing_image">Priprema za slanje slike</string>
+    <string name="preparing_images">Priprema za slanje slika</string>
+    <string name="sharing_files_please_wait">Dijeljenje datoteka. Molimo pričekajte…</string>
+    <string name="action_clear_history">Obriši povijest</string>
+    <string name="clear_conversation_history">Obriši povijest razgovora</string>
     </resources>

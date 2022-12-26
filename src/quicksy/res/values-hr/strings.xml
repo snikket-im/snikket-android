@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_notification_grace_period_summary">Duljina vremena u kojem Quicksy šuti nakon što vidi aktivnost na drugom uređaju</string>
+    <string name="pref_never_send_crash_summary">Slanjem tragova hrpe pomažete tekući razvoj Quicksyja</string>
+    <string name="pref_broadcast_last_activity_summary">Obavijestite sve svoje kontakte kada koristite Quicksy</string>
+    <string name="huawei_protected_apps_summary">Kako biste nastavili primati obavijesti, čak i kada je ekran isključen, trebate dodati Quicksy na popis zaštićenih aplikacija.</string>
+    <string name="set_profile_picture">Quicksy profilna slika</string>
+    <string name="not_available_in_your_country">Quicksy nije dostupan u vašoj zemlji.</string>
+    <string name="unable_to_verify_server_identity">Nije moguće potvrditi identitet poslužitelja.</string>
+    <string name="unknown_security_error">Nepoznata sigurnosna pogreška.</string>
+    <string name="timeout_while_connecting_to_server">Istek vremena tijekom povezivanja s poslužiteljem.</string>
+</resources>

@@ -170,6 +170,7 @@
     <string name="account_status_tls_error_domain">Domæne kan ikke verificeres</string>
     <string name="account_status_policy_violation">Brud på retningslinjer</string>
     <string name="account_status_incompatible_server">Inkompatibel server</string>
+    <string name="account_status_incompatible_client">Inkompatibel klient</string>
     <string name="account_status_stream_error">Strømfejl</string>
     <string name="account_status_stream_opening_error">Fejl ved streamåbning</string>
     <string name="encryption_choice_unencrypted">Ukrypteret</string>
@@ -767,6 +768,7 @@
     <string name="messages_channel_name">Beskeder</string>
     <string name="incoming_calls_channel_name">Indkommende opkald</string>
     <string name="ongoing_calls_channel_name">Udgående opkald</string>
+    <string name="missed_calls_channel_name">Mistet opkald</string>
     <string name="silent_messages_channel_name">Lydløse beskeder</string>
     <string name="silent_messages_channel_description">Denne notifikationsgruppe bruges til at vise notifikationer, der ikke bør udløse nogen lyd. For eksempel når du er aktiv på en anden enhed (Fredningsperiode).</string>
     <string name="delivery_failed_channel_name">Mislykkede leverancer</string>
@@ -907,6 +909,8 @@
     <string name="make_call">Lav opkald</string>
     <string name="rtp_state_incoming_call">Indkommende opkald</string>
     <string name="rtp_state_incoming_video_call">Indkommende videoopkald</string>
+    <string name="rtp_state_content_add_video">Skift til videoopkald</string>
+    <string name="rtp_state_content_add">Tilføje yderligere spor?</string>
     <string name="rtp_state_connecting">Forbinder</string>
     <string name="rtp_state_connected">Forbundet</string>
     <string name="rtp_state_reconnecting">Forbinder igen</string>
@@ -934,6 +938,18 @@
     <string name="outgoing_call">Udgående opkald</string>
     <string name="outgoing_call_duration">Udgående opkald · %s</string>
     <string name="missed_call">Mistet opkald</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d mistet opkald fra %2$s</item>
+        <item quantity="other">%1$d mistet opkald fra %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d mistet opkald</item>
+        <item quantity="other">%d mistet opkald</item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d mistet opkald fra %2$d kontakt</item>
+        <item quantity="other">%1$d mistet opkald fra %2$d kontakter</item>
+    </plurals>
     <string name="audio_call">Lydopkald</string>
     <string name="video_call">Videoopkald</string>
     <string name="help">Hjælp</string>
@@ -980,4 +996,8 @@
     <string name="no_xmpp_adddress_found">Ingen XMPP-adresse fundet</string>
     <string name="account_status_temporary_auth_failure">Midlertidig godkendelsesfejl</string>
     <string name="delete_avatar">Slet avatar</string>
-    </resources>
+    <string name="audio_video_disabled_tor">Opkald er deaktiveret ved brug af Tor</string>
+    <string name="switch_to_video">Skift til video</string>
+    <string name="reject_switch_to_video">Afvis skift til video anmodning</string>
+
+</resources>
