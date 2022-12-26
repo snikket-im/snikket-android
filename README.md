@@ -369,41 +369,6 @@ you can get access to the the latest beta version by signing up using [this link
 
 #### How do I build Conversations
 
-##### Compiling WebRTC.
-
-WebRTC is a standard for Internet audio and video communication. libwebrtc, also used in the Google Chrome web browser, implementing the WebRTC standard.
-
-**Note:** Starting with version 2.8.0 you will need to compile libwebrtc from source because there are no fresh binary releases available to download.
-
-[Instructions](https://webrtc.github.io/webrtc-org/native-code/android/) can be found on the WebRTC website, however, there build method used by Conversations developers is slightly different.
-
-```
-mkdir -p ~/Prerequisites-for-Conversations
-cd ~/Prerequisites-for-Conversations
-git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-export PATH=~/Prerequisites-for-Conversations/depot_tools:$PATH
-mkdir webrtc
-cd webrtc
-fetch --nohooks webrtc_android
-# ...wait for 20Gb of stuff...
-gclient sync
-# ...wait for more 5Gb of stuff...
-cd src
-unset _JAVA_OPTS
-./tools_webrtc/android/build_aar.py
-```
-
-It will take some time and build webrtc for all popular Android architectures.
-The result will be the file `./libwebrtc.aar`
-
-
-##### Building Conversations itself
-
-Place the resulting libwebrtc.aar in the `libs/` directory. The PlayStore release currently
-uses the stable M90 release and renamed the file name to `libwebrtc-m90.aar` put potentially you can
-reference any file name by modifying `build.gradle`. Search for `libwebrtc-m90.aar`, and replace it with `libwebrtc.aar`.
-
-
 Make sure to have ANDROID_HOME point to your Android SDK. Use the Android SDK Manager to install missing dependencies.
 
 Alternatively (and to avoid thinking about environment variables), create a file called local.properties, in the root of the Conversations build tree,
