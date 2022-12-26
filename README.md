@@ -3,7 +3,7 @@
 <p align="center">Conversations: the very last word in instant messaging</p>
 
 <p align="center">
-  <a href="https://play.google.com/store/apps/details?id=eu.siacs.conversations&amp;referrer=utm_source%3Dgithub">
+  <a href="https://play.google.com/store/apps/details?id=eu.siacs.conversations&amp;referrer=utm_source%3Dcodeberg">
     <img src="https://conversations.im/images/get-it-on-play.png" alt="Get it on Google Play" height="80">
   </a>
   <a href="https://f-droid.org/packages/eu.siacs.conversations">
@@ -11,7 +11,7 @@
   </a>
 </p>
 
-![screenshots](https://raw.githubusercontent.com/inputmice/Conversations/master/screenshots.png)
+![screenshots](https://codeberg.org/iNPUTmice/Conversations/raw/branch/master/screenshots.png)
 
 ## Design principles
 
@@ -79,7 +79,7 @@ build your apk file.
 
 The more convenient way — which not only gives you automatic updates but also
 supports the further development of Conversations — is to buy the App in the
-Google [Play Store](https://play.google.com/store/apps/details?id=eu.siacs.conversations&referrer=utm_source%3Dgithub).
+Google [Play Store](https://play.google.com/store/apps/details?id=eu.siacs.conversations&referrer=utm_source%3Dcodeberg).
 
 Buying the App from the Play Store will also give you access to our [beta test](#beta).
 
@@ -388,7 +388,7 @@ sdk.dir=Path-To-Sdk
 
 Then issue the following commands in order to build the apk.
 
-    git clone https://github.com/inputmice/Conversations.git
+    git clone https://codeberg.org/iNPUTmice/Conversations.git
     cd Conversations
     ./gradlew assembleConversationsFreeDebug
 
@@ -429,11 +429,9 @@ directly on your rooted phone. (Search for logcat). However in regards to furthe
 
 #### I found a bug
 
-Please report it to our [issue tracker][issues]. If your app crashes please
+Please report it to our [issue tracker](https://codeberg.org/iNPUTmice/Conversations/issues). If your app crashes please
 provide a stack trace. If you are experiencing misbehavior please provide
 detailed steps to reproduce. Always mention whether you are running the latest
 Play Store version or the current HEAD. If you are having problems connecting to
 your XMPP server your file transfer doesn’t work as expected please always
 include a logcat debug output with your issue (see above).
-
-[issues]: https://github.com/inputmice/Conversations/issues

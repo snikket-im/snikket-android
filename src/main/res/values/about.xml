@@ -31,7 +31,7 @@
 <resources>
     <string name="pref_about_message" translatable="false">
 			Conversations • the very last word in instant messaging.
-			\n\nCopyright © 2014-2022 Daniel Gultsch
+			\n\nCopyright © 2014-2023 Daniel Gultsch
 			\n\nThis program is free software: you can redistribute it and/or modify
 			it under the terms of the GNU General Public License as published by
 			the Free Software Foundation, either version 3 of the License, or
@@ -42,7 +42,7 @@
 			GNU General Public License for more details.
 			\n\nYou should have received a copy of the GNU General Public License
 			along with this program. If not, see https://www.gnu.org/licenses
-			\n\nDownload the full source code at https://github.com/iNPUTmice/Conversations
+			\n\nDownload the full source code at https://codeberg.org/iNPUTmice/Conversations
 			\n\n\nLibraries
 			\n\nhttps://webrtc.org\nCopyright (c) 2011, The WebRTC project authors. All rights reserved. (https://webrtc.org/support/license)
 			\n\nhttps://github.com/ypresto/android-transcoder\n(Apache License, Version 2.0)
