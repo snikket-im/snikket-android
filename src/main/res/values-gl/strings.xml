@@ -31,13 +31,10 @@
     <string name="minutes_ago">hai %d minutos</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d conversa sen ler</item>
-
-    
         <item quantity="other">%d conversas sen ler</item>
-
     </plurals>
     <string name="sending">enviando…</string>
-    <string name="message_decrypting">Descifrando a mensaxe. Agarda por favor...</string>
+    <string name="message_decrypting">Descifrando a mensaxe. Agarda por favor…</string>
     <string name="pgp_message">Mensaxe cifrado con OpenPGP</string>
     <string name="nick_in_use">O alcume xa está en uso</string>
     <string name="invalid_muc_nick">Alcume non válido</string>
@@ -56,7 +53,7 @@
     <string name="remove_bookmark_text">Desexas eliminar o marcador %s? As conversas deste marcador non se eliminarán. </string>
     <string name="register_account">Rexistrar nova conta no servidor</string>
     <string name="change_password_on_server">Cambiar o contrasinal no servidor</string>
-    <string name="share_with">Compartir con</string>
+    <string name="share_with">Compartir con…</string>
     <string name="start_conversation">Comezar conversa</string>
     <string name="invite_contact">Convidar contacto</string>
     <string name="invite">Convidar</string>
@@ -84,12 +81,16 @@
     <string name="send_failed">Erro ao enviar</string>
     <string name="preparing_image">Preparándose para enviar a imaxe</string>
     <string name="preparing_images">Preparándose para enviar imaxes</string>
-    <string name="sharing_files_please_wait">Compartindo ficheiros. Agarda por favor...</string>
+    <string name="sharing_files_please_wait">Compartindo ficheiros. Agarda…</string>
     <string name="action_clear_history">Baleirar historial</string>
     <string name="clear_conversation_history">Eliminar historial da conversa</string>
-    <string name="clear_histor_msg">¿Queres eliminar as mensaxes desta conversa?\n\n<b>Aviso:</b> Esto non lle afecta as mensaxes gardadas noutros dispositivos ou servidores. </string>
+    <string name="clear_histor_msg">¿Queres eliminar tódalas mensaxes desta conversa\?
+\n
+\n<b>Aviso:</b> Esto non lle afecta ás mensaxes gardadas noutros dispositivos ou servidores.</string>
     <string name="delete_file_dialog">Eliminar ficheiro</string>
-    <string name="delete_file_dialog_msg">Tes a certeza de querer eliminar este ficheiro?\n\n<b>Aviso:</b> Esto non eliminará as copias de este ficheiro que están gardadas noutros dispositivos ou servidores.</string>
+    <string name="delete_file_dialog_msg">Tes a certeza de querer eliminar este ficheiro\?
+\n
+\n<b>Aviso:</b> Esto non eliminará as copias de este ficheiro que están gardadas noutros dispositivos ou servidores. </string>
     <string name="also_end_conversation">Pechar a conversa tras baleirar</string>
     <string name="choose_presence">Escoller dispositivo</string>
     <string name="send_unencrypted_message">Enviar mensaxe non cifrada</string>
@@ -107,7 +108,7 @@
     <string name="install">Instalar</string>
     <string name="openkeychain_not_installed">Instala OpenKeychain por favor</string>
     <string name="offering">ofrecendo…</string>
-    <string name="waiting">agardando...</string>
+    <string name="waiting">agardando…</string>
     <string name="no_pgp_key">Clave OpenPGP non atopada</string>
     <string name="contact_has_no_pgp_key">Non se cifrou a mensaxe porque o contacto non está publicando a súa chave pública.\n\n<small>Pídelle ao contacto que configure OpenPGP.</small></string>
     <string name="no_pgp_keys">Non se atoparon chaves OpenPGP</string>
@@ -126,7 +127,7 @@
     <string name="pref_notification_sound_summary">Son da notificación para novas mensaxes</string>
     <string name="pref_call_ringtone_summary">Ton para as chamadas entrantes</string>
     <string name="pref_notification_grace_period">Período de graza</string>
-    <string name="pref_notification_grace_period_summary">O tempo no que as notificacións son silenciadas tras detectar actividade en algún dos teus outros dispositivos.</string>
+    <string name="pref_notification_grace_period_summary">O tempo no que as notificacións son silenciadas tras detectar actividade nalgún dos teus outros dispositivos.</string>
     <string name="pref_advanced_options">Avanzado</string>
     <string name="pref_never_send_crash">Nunca enviar informe de erros</string>
     <string name="pref_never_send_crash_summary">Ao enviar trazas do sistema estás axudando ao desenvolvemento</string>
@@ -151,7 +152,9 @@
     <string name="error_compressing_image">Non se puido converter o ficheiro de imaxe</string>
     <string name="error_file_not_found">Arquivo non atopado</string>
     <string name="error_io_exception">Erro xeral de I/O. ¿Quedaches sen espazo no disco?</string>
-    <string name="error_security_exception_during_image_copy">A app utilizada para seleccionar esta imaxe non deu permisos suficientes para ler o ficheiro.\n\n<small>Usa un xestor de ficheiros diferente para escoller a imaxe</small></string>
+    <string name="error_security_exception_during_image_copy">A app utilizada para seleccionar esta imaxe non deu permisos suficientes para ler o ficheiro.
+\n
+\n<small>Usa un xestor de ficheiros diferente para escoller a imaxe</small>.</string>
     <string name="error_security_exception">A app que usaches para compartir este ficheiro non concedeu os permisos suficientes.</string>
     <string name="account_status_unknown">Descoñecido</string>
     <string name="account_status_disabled">Desactivado temporalmente</string>
@@ -225,7 +228,7 @@
     <string name="omemo_fingerprint_x509_selected_message">v\\Impresión dixital OMEMO (orixe da mensaxe)</string>
     <string name="other_devices">Outros dispositivos</string>
     <string name="trust_omemo_fingerprints">Confiar en impresións dixitais OMEMO</string>
-    <string name="fetching_keys">Obtendo chaves...</string>
+    <string name="fetching_keys">Obtendo chaves…</string>
     <string name="done">Feito</string>
     <string name="decrypt">Descifrar</string>
     <string name="bookmarks">Marcadores</string>
@@ -251,7 +254,7 @@
     <string name="could_not_destroy_channel">Non se puido eliminar a canle</string>
     <string name="action_edit_subject">Editar o tema da conversa en grupo</string>
     <string name="topic">Asunto</string>
-    <string name="joining_conference">Entrando na conversa en grupo</string>
+    <string name="joining_conference">Entrando na conversa en grupo…</string>
     <string name="leave">Saír</string>
     <string name="contact_added_you">Contacto engadido a túa lista de contactos</string>
     <string name="add_back">Volver a engadir</string>
@@ -261,7 +264,7 @@
     <string name="everyone_has_read_up_to_this_point">Todas leron até aquí</string>
     <string name="publish">Publicar</string>
     <string name="touch_to_choose_picture">Toca no avatar para elixir a imaxe na galería</string>
-    <string name="publishing">Publicando...</string>
+    <string name="publishing">Publicando…</string>
     <string name="error_publish_avatar_server_reject">O servidor rexeitou a túa publicación</string>
     <string name="error_publish_avatar_converting">Non se puido converter a imaxe</string>
     <string name="error_saving_avatar">Non se puido salvar o avatar no disco</string>
@@ -368,7 +371,7 @@
     <string name="error_trustkeys_title">Algo saíu mal</string>
     <string name="fetching_history_from_server">Obtendo historial desde o servidor</string>
     <string name="no_more_history_on_server">Non hai máis historial no servidor</string>
-    <string name="updating">Actualizando....</string>
+    <string name="updating">Actualizando…</string>
     <string name="password_changed">Mudou o contrasinal!</string>
     <string name="could_not_change_password">Non puido mudar o contrasinal</string>
     <string name="change_password">Cambiar contrasinal</string>
@@ -423,13 +426,13 @@
     <string name="pdf_document">documento PDF</string>
     <string name="apk">App Android</string>
     <string name="vcard">Contacto</string>
-    <string name="avatar_has_been_published">Publicouse o avatar</string>
+    <string name="avatar_has_been_published">Publicouse o avatar!</string>
     <string name="sending_x_file">Enviando %s</string>
     <string name="offering_x_file">Ofrecendo %s</string>
     <string name="hide_offline">Ocultar fora de liña</string>
-    <string name="contact_is_typing">%s está a escribir...</string>
+    <string name="contact_is_typing">%s está escribindo…</string>
     <string name="contact_has_stopped_typing">%s deixou de escribir</string>
-    <string name="contacts_are_typing">%s están escribindo...</string>
+    <string name="contacts_are_typing">%s están escribindo…</string>
     <string name="contacts_have_stopped_typing">%s deixaron de escribir</string>
     <string name="pref_chat_states">Notificacións de escritura</string>
     <string name="pref_chat_states_summary">Permitelle aos teus contactos que saiban cando lles estás a escribir</string>
@@ -487,7 +490,7 @@
     <string name="unable_to_parse_certificate">Non se puido procesar o certificado</string>
     <string name="mam_prefs">Gardando axustes</string>
     <string name="server_side_mam_prefs">Axustes de gardado no servidor</string>
-    <string name="fetching_mam_prefs">Obtendo os axustes de gardado. Por favor agarde...</string>
+    <string name="fetching_mam_prefs">Obtendo os axustes de gardado. Agarda…</string>
     <string name="unable_to_fetch_mam_prefs">Non se obtiveron os axustes gardados</string>
     <string name="captcha_required">Requírese o CAPTCHA</string>
     <string name="captcha_hint">Introduza o texto da imaxe superior</string>
@@ -541,7 +544,7 @@
     <string name="this_account_is_disabled">Desactivou esta conta</string>
     <string name="security_error_invalid_file_access">Fallo de seguridade: Acceso non válido ao ficheiro!</string>
     <string name="no_application_to_share_uri">Non se atopou unha app para compartir URI</string>
-    <string name="share_uri_with">Compartir URI con...</string>
+    <string name="share_uri_with">Compartir URI con…</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy é un derivado do popular cliente XMPP Conversations con descubrimento automático de contactos.<br><br>Podes rexistrarte co teu número de teléfono e Quicksy suxerirache automáticamente —tomando os números da túa libreta de enderezos como referencia—  posibles contactos para ti.<br><br>Ao rexistrarte aceptas a nosa <a href="https://quicksy.im/#privacy">política de privacidade</a>.]]></string>
     <string name="agree_and_continue">Aceptar e continuar</string>
     <string name="magic_create_text">Tes unha guía para crear unha conta en conversations.im¹\nAo escoller conversations.im como provedor poderás comunicarte con outras usuarias de outros provedores con só darlles o teu enderezo XMPP completo.</string>
@@ -562,7 +565,7 @@
     <string name="registration_please_wait">Fallo no rexistro: inténteo de novo</string>
     <string name="registration_password_too_weak">Fallo no rexistro: contrasinal moi feble</string>
     <string name="choose_participants">Escoller participantes</string>
-    <string name="creating_conference">Creando unha conversa en grupo...</string>
+    <string name="creating_conference">Creando conversa en grupo…</string>
     <string name="invite_again">Convidar de novo</string>
     <string name="gp_disable">Desactivar</string>
     <string name="gp_short">Breve</string>
@@ -597,7 +600,7 @@
     <string name="report_jid_as_spammer">Denuncia esta conta XMPP por facer spam.</string>
     <string name="pref_delete_omemo_identities">Borrar identidades OMEMO</string>
     <string name="pref_delete_omemo_identities_summary">Rexenerar chaves OMEMO. Todos os teus contactos terán que verificar a túa conta de novo. Utiliza esto só como último recurso.</string>
-    <string name="delete_selected_keys">Eliminar as chaves seleccionadas.</string>
+    <string name="delete_selected_keys">Eliminar as chaves seleccionadas</string>
     <string name="error_publish_avatar_offline">Debes ter conexión para publicar o teu avatar.</string>
     <string name="show_error_message">Mostrar mensaxe do fallo</string>
     <string name="error_message">Mensaxe de fallo</string>
@@ -634,7 +637,7 @@
     <string name="distrust_omemo_key">Retirar confianza a dispositivo</string>
     <string name="distrust_omemo_key_text">Tes a certeza de que queres eliminar a verificación deste dispositivo?\nEste dispositivo e as súas mensaxes serán marcados como \"Non confiable\".</string>
     <plurals name="seconds">
-        <item quantity="one">%d segundos</item>
+        <item quantity="one">%d segundo</item>
         <item quantity="other">%d segundos</item>
     </plurals>
     <plurals name="minutes">
@@ -642,7 +645,7 @@
         <item quantity="other">%d minutos</item>
     </plurals>
     <plurals name="hours">
-        <item quantity="one">%d horas</item>
+        <item quantity="one">%d hora</item>
         <item quantity="other">%d horas</item>
     </plurals>
     <plurals name="days">
@@ -654,8 +657,8 @@
         <item quantity="other">%d semanas</item>
     </plurals>
     <plurals name="months">
-        <item quantity="one">%dmeses</item>
-        <item quantity="other">%dmeses</item>
+        <item quantity="one">%d mes</item>
+        <item quantity="other">%d meses</item>
     </plurals>
     <string name="pref_automatically_delete_messages">Borrado automático de mensaxes</string>
     <string name="pref_automatically_delete_messages_description">Borrar mensaxes de xeito automático de este dispositivo que anteriores ao marco temporal configurado.</string>
@@ -672,7 +675,7 @@
     <string name="online_right_now">En liña neste momento</string>
     <string name="retry_decryption">Volver a intentar o descifrado</string>
     <string name="session_failure">Fallo na sesión</string>
-    <string name="sasl_downgrade">Downgraded SASL mechanism</string>
+    <string name="sasl_downgrade">Mecanismo SASL desactualizado</string>
     <string name="account_status_regis_web">O servidor require rexistro no sitio web</string>
     <string name="open_website">Abrir sitio web</string>
     <string name="application_found_to_open_website">Non se atopou app para abrir sitio web</string>
@@ -690,15 +693,15 @@
     <string name="message">Mensaxe</string>
     <string name="private_messages_are_disabled">As mensaxes privadas están desactivadas</string>
     <string name="huawei_protected_apps">Apps protexidos</string>
-    <string name="huawei_protected_apps_summary">Para seguir recibindo notificacións, incluso cando a pantalla está apagada, precisa engadir Conversations a lista de apps protexidos.</string>
+    <string name="huawei_protected_apps_summary">Para seguir recibindo notificacións, incluso cando a pantalla está apagada, tes que engadir Conversations á lista de apps protexidas.</string>
     <string name="mtm_accept_cert">¿Aceptar certificado descoñecido?</string>
     <string name="mtm_trust_anchor">O certificado do servidor non está asinado por unha autoridade de certificación coñecida.</string>
     <string name="mtm_accept_servername">¿Aceptar un nome de servidor que non coincida?</string>
-    <string name="mtm_hostname_mismatch">O servidor non pode autenticarse como  \&quot;%s\&quot;. O certificado só é válido para:</string>
+    <string name="mtm_hostname_mismatch">O servidor non pode autenticarse como  \"%s\". O certificado só é válido para:</string>
     <string name="mtm_connect_anyway">Queres conectarte de todos os xeitos?</string>
     <string name="mtm_cert_details">Detalles do certificado:</string>
     <string name="once">Unha vez</string>
-    <string name="qr_code_scanner_needs_access_to_camera">O escaner de código QR necesita acceso á cámara.</string>
+    <string name="qr_code_scanner_needs_access_to_camera">O escaner de código QR necesita acceso á cámara</string>
     <string name="pref_scroll_to_bottom">Desprazarse ata a parte inferior</string>
     <string name="pref_scroll_to_bottom_summary">Desprazarse cara abaixo logo de enviar unha mensaxe</string>
     <string name="edit_status_message_title">Editar a Mensaxe de Estado</string>
@@ -708,7 +711,8 @@
     <string name="error_trustkey_device_list">Non se obtivo a lista de dispositivos</string>
     <string name="error_trustkey_bundle">Non se obtiveron as chaves de cifrado</string>
     <string name="error_trustkey_hint_mutual">Suxestión: Nalgúns casos, isto pode solucionarse engadíndovos mutuamente as vosas listas de contactos.</string>
-    <string name="disable_encryption_message">¿Tes a certeza de que queres desactivar o cifrado OMEMO para esta conversa? Isto permitirá que o administrador do teu servidor lea as túas mensaxes, pero pode ser a única forma de comunicarse con persoas que usan clientes obsoletos.</string>
+    <string name="disable_encryption_message">Tes a certeza de querer desactivar o cifrado OMEMO para esta conversa\?
+\nIsto permitirá á administración do teu servidor ler as túas mensaxes, pero pode ser a única forma de comunicarse con persoas que usan clientes obsoletos.</string>
     <string name="disable_now">Desactivar agora</string>
     <string name="draft">Borrador:</string>
     <string name="pref_omemo_setting">Cifrado OMEMO</string>
@@ -723,8 +727,8 @@
     <string name="small">Pequena</string>
     <string name="medium">Mediana</string>
     <string name="large">Grande</string>
-    <string name="not_encrypted_for_this_device">A mensaxe non foi encriptada para este disposivivo</string>
-    <string name="omemo_decryption_failed">Fallo ao descifrar a mensaxe OMEMO</string>
+    <string name="not_encrypted_for_this_device">A mensaxe non foi cifrada para este disposivivo.</string>
+    <string name="omemo_decryption_failed">Fallo ao descifrar a mensaxe OMEMO.</string>
     <string name="undo">desfacer</string>
     <string name="location_disabled">Compartir Localización está desactivado</string>
     <string name="action_fix_to_location">Fixar posición</string>
@@ -736,7 +740,7 @@
     <string name="title_activity_show_location">Mostrar localización</string>
     <string name="share">Compartir</string>
     <string name="unable_to_start_recording">Non comezou a gravación</string>
-    <string name="please_wait">Por favor, agarde...</string>
+    <string name="please_wait">Por favor, agarda…</string>
     <string name="no_microphone_permission">Permitir que %1$s acceda ao micrófono</string>
     <string name="search_messages">Buscar mensaxes</string>
     <string name="gif">GIF</string>
@@ -791,7 +795,7 @@
     <string name="choose_a_country">Indica un país</string>
     <string name="phone_number">número de teléfono</string>
     <string name="verify_your_phone_number">Valida o teu número de teléfono</string>
-    <string name="enter_country_code_and_phone_number">Quicksy vaiche enviar unha mensaxe SMS (podería ter custos) para validar o teu número de teléfono. Escribe o código de país e número de teléfono.</string>
+    <string name="enter_country_code_and_phone_number">Quicksy vaiche enviar unha mensaxe SMS (podería ter custos) para validar o teu número de teléfono. Escribe o código de país e número de teléfono:</string>
     <string name="we_will_be_verifying"><![CDATA[Validaremos o número de teléfono<br/><br/><b>%s</b><br/><br/>É correcto, ou quere modificar o número?]]></string>
     <string name="not_a_valid_phone_number">%s non é un número de teléfono válido.</string>
     <string name="please_enter_your_phone_number">Por favor escribe o teu número de teléfono.</string>
@@ -809,8 +813,8 @@
     <string name="abort_registration_procedure">Seguro que quere cancelar o proceso de rexistro?</string>
     <string name="yes">Si</string>
     <string name="no">Non</string>
-    <string name="verifying">Validando...</string>
-    <string name="requesting_sms">Solicitando SMS...</string>
+    <string name="verifying">Validando…</string>
+    <string name="requesting_sms">Solicitando SMS…</string>
     <string name="incorrect_pin">O pin introducido non é correcto.</string>
     <string name="pin_expired">O pin que che enviamos caducou.</string>
     <string name="unknown_api_error_network">Fallo descoñecido na rede.</string>
@@ -839,7 +843,7 @@
     <string name="group_chat_will_make_your_jabber_id_public">Esta canle fará público o teu enderezo XMPP</string>
     <string name="ebook">e-book</string>
     <string name="video_original">Orixinal (non comprimido)</string>
-    <string name="open_with">Abrir con...</string>
+    <string name="open_with">Abrir con…</string>
     <string name="set_profile_picture">Imaxe de perfil en Conversations</string>
     <string name="choose_account">Elixir conta</string>
     <string name="restore_backup">Restablecer copia de apoio</string>
@@ -859,7 +863,7 @@
     <string name="please_enter_name">Por favor, escribe un nome para a canle</string>
     <string name="please_enter_xmpp_address">Por favor, escribe un enderezo XMPP</string>
     <string name="this_is_an_xmpp_address">Esto é un enderezo XMPP. Por favor, escribe un nome.</string>
-    <string name="creating_channel">Creando canle pública...</string>
+    <string name="creating_channel">Creando canle pública…</string>
     <string name="channel_already_exists">Esta canle xa existe</string>
     <string name="joined_an_existing_channel">Entraches nunha canle existente</string>
     <string name="unable_to_set_channel_configuration">Non se gardaron os axustes da canle</string>
@@ -896,7 +900,7 @@
     <string name="account_already_setup">Esta conta xa foi configurada</string>
     <string name="please_enter_password">Introduza o contrasinal de esta conta</string>
     <string name="unable_to_perform_this_action">Non se puido completar a acción</string>
-    <string name="open_join_dialog">Unirse a canle pública...</string>
+    <string name="open_join_dialog">Unirse a canle pública…</string>
     <string name="sharing_application_not_grant_permission">A aplicación que comparte non proporciona permiso para acceder ao ficheiro.</string>
     <string name="group_chats_and_channels"><![CDATA[Grupos de conversa & Canles]]></string>
     <string name="jabber_network">jabber.network</string>
@@ -973,7 +977,7 @@
     <string name="record_voice_mail">Gravar correo de voz</string>
     <string name="play_audio">Reproducir audio</string>
     <string name="pause_audio">Pausar audio</string>
-    <string name="add_contact_or_create_or_join_group_chat">Engade un contacto, crea o únete a unha conversa en grupo ou descubre canles.</string>
+    <string name="add_contact_or_create_or_join_group_chat">Engade un contacto, crea o únete a unha conversa en grupo ou descubre canles</string>
     <plurals name="view_users">
         <item quantity="one">Ver %1$d Participante</item>
         <item quantity="other">Ver %1$d Participantes</item>
@@ -999,5 +1003,4 @@
     <string name="audio_video_disabled_tor">As chamadas están desactivadas cando usas Tor</string>
     <string name="switch_to_video">Cambiar a vídeo</string>
     <string name="reject_switch_to_video">Rexeitar a solicitude para cambiar a vídeo</string>
-
 </resources>
