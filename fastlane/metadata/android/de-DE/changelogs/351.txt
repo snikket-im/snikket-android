@@ -1,0 +1,3 @@
+* Fehlerkorrektur für Jingle IBB Dateitransfer
+* Fehlerkorrektur für wiederholende Korrekturen, welche die Datenbank füllen
+* Wechsel zu Last Message Correction v1.1

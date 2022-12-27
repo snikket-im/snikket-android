@@ -1,0 +1,1 @@
+* Unterstützung für automatische Motiv/Themewechsel in Android 10
