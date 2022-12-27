@@ -3,7 +3,7 @@
     <string name="pref_notification_grace_period_summary">O período de tempo que Quicksy permanece acalado tras ver actividade noutro dispositivo</string>
     <string name="pref_never_send_crash_summary">Enviando trazas do rexistro estás axudando ao desenvolvemento de Quicksy</string>
     <string name="pref_broadcast_last_activity_summary">Permitir a todos os teus contactos saber cando estás a utilizar Quicksy</string>
-    <string name="huawei_protected_apps_summary">Para seguir recibindo notificacións, mesmo coa pantalla apagada, precisas engadir a Quicksy na lista de apps protexidas.</string>
+    <string name="huawei_protected_apps_summary">Para seguir recibindo notificacións, mesmo coa pantalla apagada, tes que engadir a Quicksy á lista de apps protexidas.</string>
     <string name="set_profile_picture">Imaxe de perfil Quicksy</string>
     <string name="not_available_in_your_country">Quicksy non está dispoñible no teu país.</string>
     <string name="unable_to_verify_server_identity">Non se puido verificar a identidade do servidor.</string>
