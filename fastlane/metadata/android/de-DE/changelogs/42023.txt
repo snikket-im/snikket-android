@@ -1,0 +1,2 @@
+* Absturz beim Rendern einiger Anführungszeichen behoben
+* Absturz im Willkommensbildschirm behoben

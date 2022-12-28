@@ -1,0 +1,4 @@
+* Benutzer können ihren eigenen Nicknamen festlegen
+* Wiederaufnahme des Downloads von OMEMO-verschlüsselten Dateien
+* Channels verwenden jetzt '#' als Symbol im Profilbild
+* Quicksy verwendet 'immer' als OMEMO-Verschlüsselungsstandard (versteckt das Schlosssymbol)

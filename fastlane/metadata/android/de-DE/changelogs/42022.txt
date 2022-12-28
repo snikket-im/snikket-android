@@ -1,0 +1,2 @@
+* Fehler behoben, bei dem einige Videos nicht komprimiert wurden
+* Seltenen Absturz beim Öffnen von Benachrichtigungen behoben

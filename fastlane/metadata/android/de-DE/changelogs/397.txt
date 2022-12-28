@@ -1,0 +1,3 @@
+* Verarbeitung von GPX-Dateien
+* Verbesserte Leistung bei der Wiederherstellung von Sicherungen
+* Fehlerbehebungen

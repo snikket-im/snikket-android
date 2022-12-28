@@ -1,0 +1,4 @@
+* Suche in einzelnen Unterhaltungen
+* Benutzer werden benachrichtigt, wenn die Nachrichtenzustellung fehlschlägt
+* Anzeigenamen (Nicks) von Quicksy-Benutzern über Neustarts hinweg speichern
+* Hinzufügen einer Schaltfläche zum Starten von Orbot (Tor) aus der Benachrichtigung heraus, falls erforderlich

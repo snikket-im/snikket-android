@@ -1,0 +1,3 @@
+* Schwarze Balken anzeigen, wenn das entfernte Video nicht dem Seitenverhältnis des Bildschirms entspricht
+* Verbesserung der Suchleistung
+* Einstellung hinzugefügt, um Bildschirmfotos zu verhindern

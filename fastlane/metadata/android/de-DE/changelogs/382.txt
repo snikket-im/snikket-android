@@ -1,0 +1,2 @@
+* Schaltfläche zum Umschalten der Kamera während eines Videoanrufs hinzugefügt
+* Audioanrufe auf Tablets repariert

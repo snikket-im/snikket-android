@@ -1,0 +1,1 @@
+Ein verschlüsselter, benutzerfreundlicher XMPP-Instant-Messaging-Client, der für Smartphones optimiert ist
