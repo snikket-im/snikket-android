@@ -76,7 +76,7 @@ dependencies {
 
     implementation 'com.google.guava:guava:31.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.12.49'
-    implementation 'im.conversations.webrtc:webrtc-android:108.0.0'
+    implementation 'im.conversations.webrtc:webrtc-android:108.0.1'
 }
 
 ext {
