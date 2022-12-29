@@ -2634,6 +2634,12 @@ public class JingleRtpConnection extends AbstractJingleConnection
                                                             + ": skipping invalid combination of udp/tls in external services");
                                             continue;
                                         }
+                                        // TODO Starting on milestone 110, Chromium will perform
+                                        // stricter validation of TURN and STUN URLs passed to the
+                                        // constructor of an RTCPeerConnection. More specifically,
+                                        // STUN URLs will not support a query section, and TURN URLs
+                                        // will support only a transport parameter in their query
+                                        // section.
                                         final PeerConnection.IceServer.Builder iceServerBuilder =
                                                 PeerConnection.IceServer.builder(
                                                         String.format(
