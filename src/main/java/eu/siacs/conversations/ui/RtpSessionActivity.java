@@ -1409,8 +1409,8 @@ public class RtpSessionActivity extends XmppActivity
 
     @Override
     public void onAudioDeviceChanged(
-            AppRTCAudioManager.AudioDevice selectedAudioDevice,
-            Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
+            final AppRTCAudioManager.AudioDevice selectedAudioDevice,
+            final Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
         Log.d(
                 Config.LOGTAG,
                 "onAudioDeviceChanged in activity: selected:"
@@ -1418,24 +1418,26 @@ public class RtpSessionActivity extends XmppActivity
                         + ", available:"
                         + availableAudioDevices);
         try {
-            if (getMedia().contains(Media.VIDEO)) {
-                Log.d(Config.LOGTAG, "nothing to do; in video mode");
-                return;
-            }
             final RtpEndUserState endUserState = requireRtpConnection().getEndUserState();
-            if (endUserState == RtpEndUserState.CONNECTED) {
-                final AppRTCAudioManager audioManager = requireRtpConnection().getAudioManager();
-                updateInCallButtonConfigurationSpeaker(
-                        audioManager.getSelectedAudioDevice(),
-                        audioManager.getAudioDevices().size());
-            } else if (END_CARD.contains(endUserState)) {
+            final Set<Media> media = getMedia();
+            if (END_CARD.contains(endUserState)) {
                 Log.d(
                         Config.LOGTAG,
                         "onAudioDeviceChanged() nothing to do because end card has been reached");
             } else {
+                if (Media.audioOnly(media) && endUserState == RtpEndUserState.CONNECTED) {
+                    final AppRTCAudioManager audioManager =
+                            requireRtpConnection().getAudioManager();
+                    updateInCallButtonConfigurationSpeaker(
+                            audioManager.getSelectedAudioDevice(),
+                            audioManager.getAudioDevices().size());
+                }
+                Log.d(
+                        Config.LOGTAG,
+                        "put proximity wake lock into proper state after device update");
                 putProximityWakeLockInProperState(selectedAudioDevice);
             }
-        } catch (IllegalStateException e) {
+        } catch (final IllegalStateException e) {
             Log.d(Config.LOGTAG, "RTP connection was not available when audio device changed");
         }
     }

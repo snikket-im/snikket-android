@@ -433,9 +433,14 @@ public class WebRTCWrapper {
 
     public void setIsReadyToReceiveIceCandidates(final boolean ready) {
         readyToReceivedIceCandidates.set(ready);
+        final int was = iceCandidates.size();
         while (ready && iceCandidates.peek() != null) {
             eventCallback.onIceCandidate(iceCandidates.poll());
         }
+        final int is = iceCandidates.size();
+        Log.d(
+                EXTENDED_LOGGING_TAG,
+                "setIsReadyToReceiveCandidates(" + ready + ") was=" + was + " is=" + is);
     }
 
     synchronized void close() {
