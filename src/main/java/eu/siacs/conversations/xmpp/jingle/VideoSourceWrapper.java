@@ -87,7 +87,15 @@ class VideoSourceWrapper {
     public void dispose() {
         this.cameraVideoCapturer.dispose();
         if (this.videoSource != null) {
-            this.videoSource.dispose();
+            dispose(this.videoSource);
+        }
+    }
+
+    private static void dispose(final VideoSource videoSource) {
+        try {
+            videoSource.dispose();
+        } catch (final IllegalStateException e) {
+            Log.e(Config.LOGTAG, "unable to dispose video source", e);
         }
     }
 

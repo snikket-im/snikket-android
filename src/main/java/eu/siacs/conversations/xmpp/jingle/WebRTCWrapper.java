@@ -460,6 +460,7 @@ public class WebRTCWrapper {
         this.localVideoTrack = null;
         this.remoteVideoTrack = null;
         if (videoSourceWrapper != null) {
+            this.videoSourceWrapper = null;
             try {
                 videoSourceWrapper.stopCapture();
             } catch (final InterruptedException e) {
