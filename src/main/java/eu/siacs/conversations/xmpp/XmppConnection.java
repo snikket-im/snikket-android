@@ -810,8 +810,16 @@ public class XmppConnection implements Runnable {
                 tokenMechanism = null;
             }
             if (tokenMechanism != null && !Strings.isNullOrEmpty(token)) {
-                this.account.setFastToken(tokenMechanism,token);
-                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": storing hashed token "+tokenMechanism);
+                this.account.setFastToken(tokenMechanism, token);
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid() + ": storing hashed token " + tokenMechanism);
+            } else if (this.hashTokenRequest != null) {
+                Log.w(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": no response to our hashed token request "
+                                + this.hashTokenRequest);
             }
             // a successful resume will not send stream features
             if (processNopStreamFeatures) {
