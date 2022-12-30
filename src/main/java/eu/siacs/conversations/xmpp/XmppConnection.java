@@ -16,6 +16,7 @@ import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -631,20 +632,21 @@ public class XmppConnection implements Runnable {
                 }
                 final Element ack = tagReader.readElement(nextTag);
                 lastPacketReceived = SystemClock.elapsedRealtime();
-                try {
-                    final boolean acknowledgedMessages;
-                    synchronized (this.mStanzaQueue) {
-                        final int serverSequence = Integer.parseInt(ack.getAttribute("h"));
-                        acknowledgedMessages = acknowledgeStanzaUpTo(serverSequence);
+                final boolean acknowledgedMessages;
+                synchronized (this.mStanzaQueue) {
+                    final Optional<Integer> serverSequence = ack.getOptionalIntAttribute("h");
+                    if (serverSequence.isPresent()) {
+                        acknowledgedMessages = acknowledgeStanzaUpTo(serverSequence.get());
+                    } else {
+                        acknowledgedMessages = false;
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid()
+                                        + ": server send ack without sequence number");
                     }
-                    if (acknowledgedMessages) {
-                        mXmppConnectionService.updateConversationUi();
-                    }
-                } catch (NumberFormatException | NullPointerException e) {
-                    Log.d(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid()
-                                    + ": server send ack without sequence number");
+                }
+                if (acknowledgedMessages) {
+                    mXmppConnectionService.updateConversationUi();
                 }
             } else if (nextTag.isStart("failed")) {
                 final Element failed = tagReader.readElement(nextTag);
@@ -942,15 +944,11 @@ public class XmppConnection implements Runnable {
         this.isBound = true;
         this.tagWriter.writeStanzaAsync(new RequestPacket());
         lastPacketReceived = SystemClock.elapsedRealtime();
-        final String h = resumed.getAttribute("h");
-        if (h == null) {
-            resetStreamId();
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
-        }
+        final Optional<Integer> h = resumed.getOptionalIntAttribute("h");
         final int serverCount;
-        try {
-            serverCount = Integer.parseInt(h);
-        } catch (final NumberFormatException e) {
+        if (h.isPresent()) {
+            serverCount = h.get();
+        } else {
             resetStreamId();
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
@@ -999,28 +997,22 @@ public class XmppConnection implements Runnable {
     }
 
     private void processFailed(final Element failed, final boolean sendBindRequest) {
-        final int serverCount;
-        try {
-            serverCount = Integer.parseInt(failed.getAttribute("h"));
-        } catch (final NumberFormatException | NullPointerException e) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resumption failed");
-            resetStreamId();
-            if (sendBindRequest) {
-                sendBindRequest();
+        final Optional<Integer> serverCount = failed.getOptionalIntAttribute("h");
+        if (serverCount.isPresent()) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": resumption failed but server acknowledged stanza #"
+                            + serverCount.get());
+            final boolean acknowledgedMessages;
+            synchronized (this.mStanzaQueue) {
+                acknowledgedMessages = acknowledgeStanzaUpTo(serverCount.get());
             }
-            return;
-        }
-        Log.d(
-                Config.LOGTAG,
-                account.getJid().asBareJid()
-                        + ": resumption failed but server acknowledged stanza #"
-                        + serverCount);
-        final boolean acknowledgedMessages;
-        synchronized (this.mStanzaQueue) {
-            acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
-        }
-        if (acknowledgedMessages) {
-            mXmppConnectionService.updateConversationUi();
+            if (acknowledgedMessages) {
+                mXmppConnectionService.updateConversationUi();
+            }
+        } else {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resumption failed");
         }
         resetStreamId();
         if (sendBindRequest) {
@@ -1028,7 +1020,7 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private boolean acknowledgeStanzaUpTo(int serverCount) {
+    private boolean acknowledgeStanzaUpTo(final int serverCount) {
         if (serverCount > stanzasSent) {
             Log.e(
                     Config.LOGTAG,
@@ -2277,6 +2269,9 @@ public class XmppConnection implements Runnable {
                 }
 
                 ++stanzasSent;
+                if (Config.EXTENDED_SM_LOGGING) {
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid()+": counting outbound "+packet.getName()+" as #" + stanzasSent);
+                }
                 this.mStanzaQueue.append(stanzasSent, stanza);
                 if (stanza instanceof MessagePacket && stanza.getId() != null && inSmacksSession) {
                     if (Config.EXTENDED_SM_LOGGING) {
