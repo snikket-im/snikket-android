@@ -19,7 +19,9 @@ public class ScramSha512 extends ScramMechanism {
 
     @Override
     protected HashFunction getHMac(final byte[] key) {
-        return Hashing.hmacSha512(key);
+        return (key == null || key.length == 0)
+                ? Hashing.hmacSha512(EMPTY_KEY)
+                : Hashing.hmacSha512(key);
     }
 
     @Override

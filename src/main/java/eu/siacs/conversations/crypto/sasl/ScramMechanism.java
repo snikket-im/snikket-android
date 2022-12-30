@@ -1,7 +1,6 @@
 package eu.siacs.conversations.crypto.sasl;
 
 import android.util.Base64;
-import android.util.Log;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Objects;
@@ -13,13 +12,31 @@ import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.util.concurrent.ExecutionException;
 
+import javax.crypto.SecretKey;
 import javax.net.ssl.SSLSocket;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
 
 abstract class ScramMechanism extends SaslMechanism {
+
+    public static final SecretKey EMPTY_KEY =
+            new SecretKey() {
+                @Override
+                public String getAlgorithm() {
+                    return "HMAC";
+                }
+
+                @Override
+                public String getFormat() {
+                    return "RAW";
+                }
+
+                @Override
+                public byte[] getEncoded() {
+                    return new byte[0];
+                }
+            };
 
     private static final byte[] CLIENT_KEY_BYTES = "Client Key".getBytes();
     private static final byte[] SERVER_KEY_BYTES = "Server Key".getBytes();

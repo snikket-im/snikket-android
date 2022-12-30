@@ -19,7 +19,9 @@ public class ScramSha256 extends ScramMechanism {
 
     @Override
     protected HashFunction getHMac(final byte[] key) {
-        return Hashing.hmacSha256(key);
+        return (key == null || key.length == 0)
+                ? Hashing.hmacSha256(EMPTY_KEY)
+                : Hashing.hmacSha256(key);
     }
 
     @Override

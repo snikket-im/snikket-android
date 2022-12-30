@@ -15,7 +15,9 @@ public class ScramSha1Plus extends ScramPlusMechanism {
 
     @Override
     protected HashFunction getHMac(final byte[] key) {
-        return Hashing.hmacSha1(key);
+        return (key == null || key.length == 0)
+                ? Hashing.hmacSha1(EMPTY_KEY)
+                : Hashing.hmacSha1(key);
     }
 
     @Override
