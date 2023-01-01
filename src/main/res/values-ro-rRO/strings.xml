@@ -31,16 +31,11 @@
     <string name="minutes_ago">acum %d minute</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d conversație necitită</item>
-
-    
         <item quantity="few">%d conversații necitite</item>
-
-    
         <item quantity="other">%d de conversații necitite</item>
-
     </plurals>
-    <string name="sending">trimitere...</string>
-    <string name="message_decrypting">Decriptez mesaj. Te rog așteaptă...</string>
+    <string name="sending">trimitere…</string>
+    <string name="message_decrypting">Decriptez mesaj. Te rog așteaptă…</string>
     <string name="pgp_message">Mesaj criptat cu OpenPGP</string>
     <string name="nick_in_use">Numele de utilizator este deja alocat</string>
     <string name="invalid_muc_nick">Nume invalid</string>
@@ -59,7 +54,7 @@
     <string name="remove_bookmark_text">Ați dori să ștergeți %s din semne de carte? Conversațiile asociate cu acest semn de carte nu vor fi șterse.</string>
     <string name="register_account">Înregistrează un cont nou pe server</string>
     <string name="change_password_on_server">Schimbă parola pe server</string>
-    <string name="share_with">Partajează cu...</string>
+    <string name="share_with">Partajează cu…</string>
     <string name="start_conversation">Pornește o conversație</string>
     <string name="invite_contact">Invită contact</string>
     <string name="invite">Invită</string>
@@ -87,12 +82,14 @@
     <string name="send_failed">trimitere eșuată</string>
     <string name="preparing_image">Se pregătește trimiterea imaginii</string>
     <string name="preparing_images">Se pregătește trimiterea imaginilor</string>
-    <string name="sharing_files_please_wait">Trimitere fișiere. Te rog asteaptă...</string>
+    <string name="sharing_files_please_wait">Trimitere fișiere. Vă rugăm așteptați…</string>
     <string name="action_clear_history">Șterge istoric</string>
     <string name="clear_conversation_history">Șterge istoricul conversației</string>
     <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această conversație?\n\n<b>Atenție:</b> Această acțiune nu va afecta mesajele aflate pe alte dispozitive sau servere.</string>
     <string name="delete_file_dialog">Șterge fișierul</string>
-    <string name="delete_file_dialog_msg">Sigur doriți să ștergeți acest fișier?\n\n<b>Atenție:</b> Această acțiune nu va șterge copiile acestui fișier care sunt stocate pe alte dispozitive sau servere.</string>
+    <string name="delete_file_dialog_msg">Sigur doriți să ștergeți acest fișier\?
+\n
+\n<b>Atenție:</b> Această acțiune nu va șterge copiile acestui fișier care sunt stocate pe alte dispozitive sau servere. </string>
     <string name="also_end_conversation">Închide conversația după ștergere</string>
     <string name="choose_presence">Alege dispozitiv</string>
     <string name="send_unencrypted_message">Trimite mesaje necriptate</string>
@@ -105,19 +102,19 @@
     <string name="send_unencrypted">Trimite necriptat</string>
     <string name="decryption_failed">Decriptarea a eșuat. Poate nu aveți cheia privată corectă.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long"><![CDATA[%1$s utilizează <b>OpenKeychain</b> pentru a cripta și decripta mesaje și a administra cheile publice.\n\nOpenKeychain este licențiat sub GPLv3+ și este disponibil în F-Droid și Google Play.\n\n<small>(Vă rugăm să reporniți %1$s după instalare.)</small>]]></string>
+    <string name="openkeychain_required_long">%1$s utilizează &lt;b&gt;OpenKeychain&lt;/b&gt; pentru a cripta și decripta mesaje și a administra cheile publice.&lt;br&gt;&lt;br&gt;OpenKeychain este licențiat sub GPLv3+ și este disponibil în F-Droid și Google Play.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Vă rugăm să reporniți %1$s după instalare.)&lt;/small&gt;</string>
     <string name="restart">Repornește</string>
     <string name="install">Instalare</string>
     <string name="openkeychain_not_installed">Va rugăm să instalați OpenKeychain</string>
-    <string name="offering">transmit...</string>
-    <string name="waiting">în așteptare...</string>
+    <string name="offering">transmit…</string>
+    <string name="waiting">în așteptare…</string>
     <string name="no_pgp_key">Nu am găsit cheia OpenPGP</string>
     <string name="contact_has_no_pgp_key">Nu s-au putut cripta mesajele deoarece contactul nu își anunță cheile publice.\n\n<small>Rugați-vă contactul să își configureze OpenPGP.</small></string>
     <string name="no_pgp_keys">Nu am găsit chei OpenPGP</string>
     <string name="contacts_have_no_pgp_keys">Nu s-au putut cripta mesajele deoarece contactele nu își anunță cheile publice.\n\n<small>Rugați-vă contactele să își configureze OpenPGP.</small></string>
     <string name="pref_general">General</string>
     <string name="pref_accept_files">Acceptă fișiere</string>
-    <string name="pref_accept_files_summary">Mai mici decât...</string>
+    <string name="pref_accept_files_summary">Mai mici decât…</string>
     <string name="pref_attachments">Atașamente</string>
     <string name="pref_notification_settings">Notificare</string>
     <string name="pref_vibrate">Vibrează</string>
@@ -154,7 +151,9 @@
     <string name="error_compressing_image">Nu s-a putut face convertirea imaginii</string>
     <string name="error_file_not_found">Fișierul nu a fost găsit</string>
     <string name="error_io_exception">Eroare I/O generala. Poate ați rămas fără spațiu liber?</string>
-    <string name="error_security_exception_during_image_copy">Aplicația folosită pentru selecția acestei imagini nu a oferit destule permisiuni pentru a putea citii fișierul.\n\n<small>Folosiți un alt manager de fișiere pentru a alege o imagine</small></string>
+    <string name="error_security_exception_during_image_copy">Aplicația folosită pentru selecția acestei imagini nu a oferit destule permisiuni pentru a putea citii fișierul.
+\n
+\n<small>Folosiți un alt manager de fișiere pentru a alege o imagine</small>.</string>
     <string name="error_security_exception">Aplicația pe care ați folosit-o pentru a partaja acest fișier nu a furnizat suficiente permisiuni.</string>
     <string name="account_status_unknown">Necunoscut</string>
     <string name="account_status_disabled">Dezactivat temporar</string>
@@ -196,7 +195,7 @@
     <string name="account_settings_example_jabber_id">numeutilizator@exemplu.ro</string>
     <string name="password">Parolă</string>
     <string name="invalid_jid">Aceasta nu este o adresă XMPP valabilă</string>
-    <string name="error_out_of_memory">Memorie epuizată. Imaginea este prea mare.</string>
+    <string name="error_out_of_memory">Memorie epuizată. Imaginea este prea mare</string>
     <string name="add_phone_book_text">Vreți să adăugați pe %s în lista de contacte?</string>
     <string name="server_info_show_more">Informații server</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
@@ -228,7 +227,7 @@
     <string name="omemo_fingerprint_x509_selected_message">v\\Amprenta OMEMO (originea mesajului)</string>
     <string name="other_devices">Alte dispozitive</string>
     <string name="trust_omemo_fingerprints">Amprente OMEMO de încredere</string>
-    <string name="fetching_keys">Se preiau cheile...</string>
+    <string name="fetching_keys">Se preiau cheile…</string>
     <string name="done">Gata</string>
     <string name="decrypt">Decriptează</string>
     <string name="bookmarks">Semne de carte</string>
@@ -254,7 +253,7 @@
     <string name="could_not_destroy_channel">Nu s-a putut distruge canalul</string>
     <string name="action_edit_subject">Editează subiectul discuției de grup</string>
     <string name="topic">Subiect discuție</string>
-    <string name="joining_conference">Vă alăturați discuției de grup...</string>
+    <string name="joining_conference">Vă alăturați discuției de grup…</string>
     <string name="leave">Paraseste</string>
     <string name="contact_added_you">Contactul v-a adăugat în lista de contacte</string>
     <string name="add_back">Adaugă contact</string>
@@ -264,7 +263,7 @@
     <string name="everyone_has_read_up_to_this_point">Toate persoanele au citit până aici</string>
     <string name="publish">Publică</string>
     <string name="touch_to_choose_picture">Atingeți avatarul pentru a selecta o poză din galerie</string>
-    <string name="publishing">Se publică...</string>
+    <string name="publishing">Se publică…</string>
     <string name="error_publish_avatar_server_reject">Acest server v-a refuzat publicarea</string>
     <string name="error_publish_avatar_converting">Nu s-a putut face convertirea pozei</string>
     <string name="error_saving_avatar">Nu s-a putut salva avatarul pe disc</string>
@@ -282,7 +281,9 @@
     <string name="enable">Activează</string>
     <string name="conference_requires_password">Discuția de grup necesită o parolă</string>
     <string name="enter_password">Introduceți parola</string>
-    <string name="request_presence_updates">Vă rugăm să cereți mai întâi actualizări de prezență de la acest contact.\n\n<small>Acestea vor fi folosite pentru a determina ce aplicații folosește contactul dumneavoastră.</small></string>
+    <string name="request_presence_updates">Vă rugăm să cereți mai întâi actualizări de prezență de la acest contact.
+\n
+\n<small>Acestea vor fi folosite pentru a determina ce aplicații folosește contactul dumneavoastră.</small>.</string>
     <string name="request_now">Cere acum</string>
     <string name="ignore">Ignora</string>
     <string name="without_mutual_presence_updates"><b>Atenție:</b> Trimițând aceasta fără actualizări de prezență reciproce ar putea produce probleme neprevazute.\n\n<small>Mergeți la \"Detalii contact\" pentru a verifica abonările la actualizările de prezență.</small></string>
@@ -371,8 +372,8 @@
     <string name="error_trustkeys_title">A apărut o problemă</string>
     <string name="fetching_history_from_server">Descarc istoric de pe server</string>
     <string name="no_more_history_on_server">Nu mai exista istoric pe server</string>
-    <string name="updating">Actualizare...</string>
-    <string name="password_changed">Parolă schimbată</string>
+    <string name="updating">Actualizare…</string>
+    <string name="password_changed">Parolă schimbată!</string>
     <string name="could_not_change_password">Nu s-a putut schimba parola</string>
     <string name="change_password">Schimbare parolă</string>
     <string name="current_password">Parola curentă</string>
@@ -430,9 +431,9 @@
     <string name="sending_x_file">Trimit %s</string>
     <string name="offering_x_file">Ofer %s</string>
     <string name="hide_offline">Ascunde deconectat</string>
-    <string name="contact_is_typing">%s tastează...</string>
+    <string name="contact_is_typing">%s tastează…</string>
     <string name="contact_has_stopped_typing">%s s-a oprit din scris</string>
-    <string name="contacts_are_typing">%s tastează...</string>
+    <string name="contacts_are_typing">%s tastează…</string>
     <string name="contacts_have_stopped_typing">%s s-au oprit din scris</string>
     <string name="pref_chat_states">Notificare tastare</string>
     <string name="pref_chat_states_summary">Contactele sunt anunțate atunci când le scrieți un nou mesaj</string>
@@ -470,7 +471,7 @@
     <string name="invalid_username">Acesta nu este un nume de utilizator valabil</string>
     <string name="download_failed_server_not_found">Descărcare eșuată: Serverul nu a fost găsit</string>
     <string name="download_failed_file_not_found">Descărcare eșuată: Fișierul nu a fost găsit</string>
-    <string name="download_failed_could_not_connect">Descărcare eșuată: Nu s-a putut realiza conexiunea cu gazda.</string>
+    <string name="download_failed_could_not_connect">Descărcare eșuată: Nu s-a putut realiza conexiunea cu gazda</string>
     <string name="download_failed_could_not_write_file">Descărcare eșuată: Nu s-a putut scrie fișierul</string>
     <string name="download_failed_invalid_file">Descărcarea a eșuat: Fișier invalid</string>
     <string name="account_status_tor_unavailable">Rețeaua Tor nu este disponibilă</string>
@@ -491,7 +492,7 @@
     <string name="unable_to_parse_certificate">Nu s-a putut analiza certificatul</string>
     <string name="mam_prefs">Preferințe arhivare</string>
     <string name="server_side_mam_prefs">Preferințe arhivare pe server</string>
-    <string name="fetching_mam_prefs">Se descarcă preferințe arhivare. Vă rugăm să așteptați...</string>
+    <string name="fetching_mam_prefs">Se descarcă preferințe arhivare. Vă rugăm să așteptați…</string>
     <string name="unable_to_fetch_mam_prefs">Nu s-au putut descărca preferințele de arhivare</string>
     <string name="captcha_required">Text captcha de verificare necesar</string>
     <string name="captcha_hint">Introduceți textul din imaginea de mai sus</string>
@@ -499,7 +500,7 @@
     <string name="jid_does_not_match_certificate">Adresa XMPP nu corespunde cu certificatul</string>
     <string name="action_renew_certificate">Înnoiește certificatul</string>
     <string name="error_fetching_omemo_key">Eroare la preluarea cheii OMEMO!</string>
-    <string name="verified_omemo_key_with_certificate">Verifica cheia OMEMO cu un certificat</string>
+    <string name="verified_omemo_key_with_certificate">Sa verificat cheia OMEMO cu un certificat!</string>
     <string name="device_does_not_support_certificates">Dispozitivul nu permite selectia unui certificat pentru client!</string>
     <string name="pref_connection_options">Opțiuni conexiune</string>
     <string name="pref_use_tor">Conectare prin Tor</string>
@@ -523,7 +524,10 @@
     <string name="no_storage_permission">Permiteți %1$s acces la stocarea externă</string>
     <string name="no_camera_permission">Permiteți %1$s acces la camera foto</string>
     <string name="sync_with_contacts">Sincronizează cu contactele</string>
-    <string name="sync_with_contacts_long">%1$s dorește permisiunea de a vă accesa contactele pentru a putea potrivi lista de contacte XMPP cu cea din dispozitiv și a afișa numele lor complete și avatarele.\n\n%1$s va citi și potrivi local fără a fi încărcate pe serverul dumneavoastră.</string>
+    <string name="sync_with_contacts_long">%1$s dorește permisiunea de a vă accesa contactele pentru a putea potrivi lista de contacte XMPP cu cea din dispozitiv.
+\nAșa v-a afișa numele lor complete și avatarele.
+\n
+\n%1$s va citi și potrivi local fără a fi încărcate pe serverul dumneavoastră.</string>
     <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy are nevoie să poată accesa numerele de telefon ale contactelor dumneavoastră pentru a putea sugera posibile contacte ce sunt deja pe Quicksy.<br><br>Nu vom stoca o copie a acestor numere the telefon.\n\nPentru mai multe informații puteți citii <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.<br><br>Urmează să fiți întrebați dacă doriți să permiteți accesul la contacte.]]></string>
     <string name="notify_on_all_messages">Notifică la toate mesajele</string>
     <string name="notify_only_when_highlighted">Notifică doar atunci când cineva vă menționează numele</string>
@@ -535,7 +539,9 @@
     <string name="large_images_only">Doar imaginile mari</string>
     <string name="battery_optimizations_enabled">Optimizare baterie activată</string>
     <string name="battery_optimizations_enabled_explained">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru %1$s, aceasta poate duce la notificări întârziate sau chiar pierderea mesajelor.\nEste recomandat sa le dezactivați.</string>
-    <string name="battery_optimizations_enabled_dialog">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru %1$s, aceasta poate duce la notificări întârziate sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să le dezactivați.</string>
+    <string name="battery_optimizations_enabled_dialog">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru %1$s, aceasta poate duce la notificări întârziate sau chiar pierderea mesajelor.
+\n
+\nÎn continuare veți fi rugați să le dezactivați.</string>
     <string name="disable">Dezactivează</string>
     <string name="selection_too_large">Zona selectată este prea mare</string>
     <string name="no_accounts">(Nici un cont activat)</string>
@@ -546,7 +552,7 @@
     <string name="this_account_is_disabled">Ați dezactivat acest cont</string>
     <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fișier invalid!</string>
     <string name="no_application_to_share_uri">Nu s-a găsit nici o aplicație care să partajeze adresa</string>
-    <string name="share_uri_with">Partajează adresa cu...</string>
+    <string name="share_uri_with">Partajează adresa cu…</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy este o versiune a popularului client XMPP Conversations cu descoperire automată a contactelor.<br><br>Vă înscrieți cu numărul de telefon și Quicksy—pe baza numerelor de telefon din agenda dumneavoastră—vă va sugera automat posibile contacte.<br><br>Înscriindu-vă sunteți de acord cu <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.]]></string>
     <string name="agree_and_continue">Sunt de acord și continuă</string>
     <string name="magic_create_text">Ghidul va configura un cont pe conversations.im.¹\nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
@@ -567,7 +573,7 @@
     <string name="registration_please_wait">Înregistrare eșuată: Încercați din nou mai târziu</string>
     <string name="registration_password_too_weak">Înregistrare eșuată: Parolă nesigură</string>
     <string name="choose_participants">Alegeți participanți</string>
-    <string name="creating_conference">Se creează discuția de grup...</string>
+    <string name="creating_conference">Se creează discuția de grup…</string>
     <string name="invite_again">Trimite din nou invitația</string>
     <string name="gp_disable">Dezactivată</string>
     <string name="gp_short">Scurtă</string>
@@ -747,7 +753,7 @@
     <string name="title_activity_show_location">Arată locația</string>
     <string name="share">Partajare</string>
     <string name="unable_to_start_recording">Nu s-a putut pornii înregistrarea</string>
-    <string name="please_wait">Vă rugăm să așteptați...</string>
+    <string name="please_wait">Vă rugăm să așteptați…</string>
     <string name="no_microphone_permission">Permiteți %1$s acces la microfon</string>
     <string name="search_messages">Caută mesaje</string>
     <string name="gif">GIF</string>
@@ -815,13 +821,13 @@
     <string name="resend_sms_in">Retrimite SMS (%s)</string>
     <string name="wait_x">%s</string>
     <string name="back">înapoi</string>
-    <string name="possible_pin">S-a copiat automat un posibil cod din memorie</string>
+    <string name="possible_pin">S-a copiat automat un posibil cod din memorie.</string>
     <string name="please_enter_pin">Vă rugăm să vă introduceți codul de 6 cifre.</string>
     <string name="abort_registration_procedure">Sigur doriți să anulați procedura de înregistrare?</string>
     <string name="yes">Da</string>
     <string name="no">Nu</string>
-    <string name="verifying">Verificare...</string>
-    <string name="requesting_sms">Se cere SMS...</string>
+    <string name="verifying">Se verifică…</string>
+    <string name="requesting_sms">Se cere SMS…</string>
     <string name="incorrect_pin">Codul introdus este incorect.</string>
     <string name="pin_expired">Codul pe care vi l-am trimis a expirat.</string>
     <string name="unknown_api_error_network">Eroare de rețea necunoscută.</string>
@@ -870,7 +876,7 @@
     <string name="please_enter_name">Vă rugăm să furnizați un nume pentru canal</string>
     <string name="please_enter_xmpp_address">Vă rugăm să furnizați o adresă XMPP</string>
     <string name="this_is_an_xmpp_address">Aceasta este o adresă XMPP. Vă rugăm să furnizați un nume.</string>
-    <string name="creating_channel">Se creează canalul public...</string>
+    <string name="creating_channel">Se creează canalul public…</string>
     <string name="channel_already_exists">Acest canal există deja</string>
     <string name="joined_an_existing_channel">V-ați alăturat unui canal existent</string>
     <string name="unable_to_set_channel_configuration">Nu s-a putut salva configurația canalului</string>
@@ -907,7 +913,7 @@
     <string name="account_already_setup">Acest cont a fost deja configurat</string>
     <string name="please_enter_password">Va rugăm să introduceți parola pentru acest cont</string>
     <string name="unable_to_perform_this_action">Nu s-a putut realiza această acțiune</string>
-    <string name="open_join_dialog">Alătură-te unui canal public...</string>
+    <string name="open_join_dialog">Alătură-te unui canal public…</string>
     <string name="sharing_application_not_grant_permission">Aplicația care a partajat nu a permis accesul la acest fișier.</string>
     <string name="group_chats_and_channels"><![CDATA[Discuții de grup & Canale]]></string>
     <string name="jabber_network">jabber.network</string>
@@ -1015,5 +1021,4 @@
     <string name="audio_video_disabled_tor">Apelurile sunt dezactivate atunci când utilizați Tor</string>
     <string name="switch_to_video">Comută la video</string>
     <string name="reject_switch_to_video">Respinge solicitarea de comutare la video</string>
-
 </resources>
