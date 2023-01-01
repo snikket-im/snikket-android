@@ -2545,41 +2545,8 @@ public class XmppConnection implements Runnable {
         this.mInteractive = interactive;
     }
 
-    public Identity getServerIdentity() {
-        synchronized (this.disco) {
-            ServiceDiscoveryResult result = disco.get(account.getJid().getDomain());
-            if (result == null) {
-                return Identity.UNKNOWN;
-            }
-            for (final ServiceDiscoveryResult.Identity id : result.getIdentities()) {
-                if (id.getType().equals("im")
-                        && id.getCategory().equals("server")
-                        && id.getName() != null) {
-                    switch (id.getName()) {
-                        case "Prosody":
-                            return Identity.PROSODY;
-                        case "ejabberd":
-                            return Identity.EJABBERD;
-                        case "Slack-XMPP":
-                            return Identity.SLACK;
-                    }
-                }
-            }
-        }
-        return Identity.UNKNOWN;
-    }
-
     private IqGenerator getIqGenerator() {
         return mXmppConnectionService.getIqGenerator();
-    }
-
-    public enum Identity {
-        FACEBOOK,
-        SLACK,
-        EJABBERD,
-        PROSODY,
-        NIMBUZZ,
-        UNKNOWN
     }
 
     private class MyKeyManager implements X509KeyManager {

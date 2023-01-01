@@ -222,14 +222,6 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         this.displayName = displayName;
     }
 
-    public XmppConnection.Identity getServerIdentity() {
-        if (xmppConnection == null) {
-            return XmppConnection.Identity.UNKNOWN;
-        } else {
-            return xmppConnection.getServerIdentity();
-        }
-    }
-
     public Contact getSelfContact() {
         return getRoster().getContact(jid);
     }
