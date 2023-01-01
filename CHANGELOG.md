@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.11.3
+
+* Fix messages getting resend when using SASL2
+* Fix black video between some devices
+* Fix crash on empty passwords
+
 ### Version 2.11.2
 
 * Fixed regression in P2P file transfer
