@@ -1907,16 +1907,7 @@ public class XmppConnection implements Runnable {
         }
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": starting service discovery");
         mPendingServiceDiscoveries.set(0);
-        if (!waitForDisco
-                || Patches.DISCO_EXCEPTIONS.contains(
-                        account.getJid().getDomain().toEscapedString())) {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid() + ": do not wait for service discovery");
-            mWaitForDisco.set(false);
-        } else {
-            mWaitForDisco.set(true);
-        }
+        mWaitForDisco.set(waitForDisco);
         lastDiscoStarted = SystemClock.elapsedRealtime();
         mXmppConnectionService.scheduleWakeUpCall(
                 Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
