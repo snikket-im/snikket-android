@@ -35,7 +35,7 @@
         <item quantity="other">%d de conversații necitite</item>
     </plurals>
     <string name="sending">trimitere…</string>
-    <string name="message_decrypting">Decriptez mesaj. Te rog așteaptă…</string>
+    <string name="message_decrypting">Decriptare mesaj. Vă rugăm să așteptați…</string>
     <string name="pgp_message">Mesaj criptat cu OpenPGP</string>
     <string name="nick_in_use">Numele de utilizator este deja alocat</string>
     <string name="invalid_muc_nick">Nume invalid</string>
@@ -82,7 +82,7 @@
     <string name="send_failed">trimitere eșuată</string>
     <string name="preparing_image">Se pregătește trimiterea imaginii</string>
     <string name="preparing_images">Se pregătește trimiterea imaginilor</string>
-    <string name="sharing_files_please_wait">Trimitere fișiere. Vă rugăm așteptați…</string>
+    <string name="sharing_files_please_wait">Trimitere fișiere. Vă rugăm să așteptați…</string>
     <string name="action_clear_history">Șterge istoric</string>
     <string name="clear_conversation_history">Șterge istoricul conversației</string>
     <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această conversație?\n\n<b>Atenție:</b> Această acțiune nu va afecta mesajele aflate pe alte dispozitive sau servere.</string>
@@ -500,7 +500,7 @@
     <string name="jid_does_not_match_certificate">Adresa XMPP nu corespunde cu certificatul</string>
     <string name="action_renew_certificate">Înnoiește certificatul</string>
     <string name="error_fetching_omemo_key">Eroare la preluarea cheii OMEMO!</string>
-    <string name="verified_omemo_key_with_certificate">Sa verificat cheia OMEMO cu un certificat!</string>
+    <string name="verified_omemo_key_with_certificate">Cheia OMEMO s-a verificat cu un certificat!</string>
     <string name="device_does_not_support_certificates">Dispozitivul nu permite selectia unui certificat pentru client!</string>
     <string name="pref_connection_options">Opțiuni conexiune</string>
     <string name="pref_use_tor">Conectare prin Tor</string>
@@ -538,10 +538,11 @@
     <string name="always">Mereu</string>
     <string name="large_images_only">Doar imaginile mari</string>
     <string name="battery_optimizations_enabled">Optimizare baterie activată</string>
-    <string name="battery_optimizations_enabled_explained">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru %1$s, aceasta poate duce la notificări întârziate sau chiar pierderea mesajelor.\nEste recomandat sa le dezactivați.</string>
+    <string name="battery_optimizations_enabled_explained">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru %1$s, aceasta poate duce la notificări întârziate sau chiar pierderea mesajelor.
+\nEste recomandat să dezactivați optimizarea.</string>
     <string name="battery_optimizations_enabled_dialog">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru %1$s, aceasta poate duce la notificări întârziate sau chiar pierderea mesajelor.
 \n
-\nÎn continuare veți fi rugați să le dezactivați.</string>
+\nÎn continuare veți fi rugați să dezactivați optimizarea.</string>
     <string name="disable">Dezactivează</string>
     <string name="selection_too_large">Zona selectată este prea mare</string>
     <string name="no_accounts">(Nici un cont activat)</string>
@@ -590,7 +591,7 @@
     <string name="pref_use_green_background">Fundal verde</string>
     <string name="pref_use_green_background_summary">Pentru mesajele primite</string>
     <string name="unable_to_connect_to_keychain">Nu s-a putut face conectarea la OpenKeychain</string>
-    <string name="this_device_is_no_longer_in_use">Acest dispozitiv nu mai este in uz</string>
+    <string name="this_device_is_no_longer_in_use">Acest dispozitiv nu mai este în uz</string>
     <string name="type_pc">PC</string>
     <string name="type_phone">Telefon mobil</string>
     <string name="type_tablet">Tabletă</string>
@@ -622,7 +623,7 @@
     <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Codul de bare nu conține amprente pentru această conversație.</string>
     <string name="verified_fingerprints">Amprente verificate</string>
     <string name="use_camera_icon_to_scan_barcode">Folosește camera pentru a scana codul de bare al contactului</string>
-    <string name="please_wait_for_keys_to_be_fetched">Asteptati cat se preiau cheile</string>
+    <string name="please_wait_for_keys_to_be_fetched">Vă rugăm să așteptați până se preiau cheile</string>
     <string name="share_as_barcode">Partajează un cod de bare</string>
     <string name="share_as_uri">Partajează ca adresă XMPP</string>
     <string name="share_as_http">Partajează ca legatură HTTP</string>
@@ -808,7 +809,7 @@
     <string name="choose_a_country">Alegeți o țară</string>
     <string name="phone_number">număr de telefon</string>
     <string name="verify_your_phone_number">Verificare număr de telefon</string>
-    <string name="enter_country_code_and_phone_number">Quicksy va trimite un mesaj SMS (pot exista costuri în funcție de furnizor) pentru a vă verifica numărul de telefon. Introduceți codul țării dumneavoastră si numărul de telefon:</string>
+    <string name="enter_country_code_and_phone_number">Quicksy va trimite un mesaj SMS (pot exista costuri în funcție de furnizor) pentru a vă verifica numărul de telefon. Introduceți codul țării dumneavoastră și numărul de telefon:</string>
     <string name="we_will_be_verifying"><![CDATA[Vă vom verifica numărul de telefon<br/><br/><b>%s</b><br/><br/>Este în regulă sau ați dori să editați numărul?]]></string>
     <string name="not_a_valid_phone_number">%s nu este un număr de telefon valid.</string>
     <string name="please_enter_your_phone_number">Vă rugăm să vă introduceți numărul de telefon.</string>
@@ -819,7 +820,7 @@
     <string name="please_enter_pin_below">Vă rugăm să introduceți codul de 6 cifre mai jos.</string>
     <string name="resend_sms">Retrimitere SMS</string>
     <string name="resend_sms_in">Retrimite SMS (%s)</string>
-    <string name="wait_x">%s</string>
+    <string name="wait_x">Vă rugăm să așteptați (%s)</string>
     <string name="back">înapoi</string>
     <string name="possible_pin">S-a copiat automat un posibil cod din memorie.</string>
     <string name="please_enter_pin">Vă rugăm să vă introduceți codul de 6 cifre.</string>
