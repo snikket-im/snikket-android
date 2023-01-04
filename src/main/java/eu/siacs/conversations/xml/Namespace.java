@@ -65,4 +65,5 @@ public final class Namespace {
     public static final String PARS = "urn:xmpp:pars:0";
     public static final String EASY_ONBOARDING_INVITE = "urn:xmpp:invite#invite";
     public static final String OMEMO_DTLS_SRTP_VERIFICATION = "http://gultsch.de/xmpp/drafts/omemo/dlts-srtp-verification";
+    public static final String UNIFIED_PUSH = "http://gultsch.de/xmpp/drafts/unified-push";
 }

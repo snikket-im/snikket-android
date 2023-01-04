@@ -24,6 +24,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 import java.io.File;
 import java.security.KeyStoreException;
@@ -40,6 +42,7 @@ import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.ExportBackupService;
 import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.services.QuickConversationsService;
+import eu.siacs.conversations.services.UnifiedPushDistributor;
 import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.GeoHelper;
@@ -88,7 +91,36 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
     }
 
     @Override
-    void onBackendConnected() {}
+    void onBackendConnected() {
+        final Preference accountPreference =
+                mSettingsFragment.findPreference(UnifiedPushDistributor.PREFERENCE_ACCOUNT);
+        reconfigureUpAccountPreference(accountPreference);
+    }
+
+    private void reconfigureUpAccountPreference(final Preference preference) {
+        final ListPreference listPreference;
+        if (preference instanceof ListPreference) {
+            listPreference = (ListPreference) preference;
+        } else {
+            return;
+        }
+        final List<CharSequence> accounts =
+                ImmutableList.copyOf(
+                        Lists.transform(
+                                xmppConnectionService.getAccounts(),
+                                a -> a.getJid().asBareJid().toEscapedString()));
+        final ImmutableList.Builder<CharSequence> entries = new ImmutableList.Builder<>();
+        final ImmutableList.Builder<CharSequence> entryValues = new ImmutableList.Builder<>();
+        entries.add(getString(R.string.no_account_deactivated));
+        entryValues.add("none");
+        entries.addAll(accounts);
+        entryValues.addAll(accounts);
+        listPreference.setEntries(entries.build().toArray(new CharSequence[0]));
+        listPreference.setEntryValues(entryValues.build().toArray(new CharSequence[0]));
+        if (!accounts.contains(listPreference.getValue())) {
+            listPreference.setValue("none");
+        }
+    }
 
     @Override
     public void onStart() {
@@ -472,6 +504,10 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             }
         } else if (name.equals(PREVENT_SCREENSHOTS)) {
             SettingsUtils.applyScreenshotPreventionSetting(this);
+        } else if (UnifiedPushDistributor.PREFERENCES.contains(name)) {
+            if (xmppConnectionService.reconfigurePushDistributor()) {
+                xmppConnectionService.renewUnifiedPushEndpoints();
+            }
         }
     }
 

@@ -67,6 +67,9 @@
         <intent>
             <action android:name="android.intent.action.VIEW" />
         </intent>
+        <intent>
+            <action android:name="org.unifiedpush.android.connector.MESSAGE"/>
+        </intent>
     </queries>
 
 
@@ -99,6 +102,21 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />
                 <action android:name="android.media.RINGER_MODE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".services.UnifiedPushDistributor"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.unifiedpush.android.distributor.REGISTER" />
+                <action android:name="org.unifiedpush.android.distributor.UNREGISTER" />
+                <action android:name="org.unifiedpush.android.distributor.feature.BYTES_MESSAGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
+                <data android:scheme="package"/>
             </intent-filter>
         </receiver>
 

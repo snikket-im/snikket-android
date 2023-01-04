@@ -999,5 +999,11 @@
     <string name="audio_video_disabled_tor">Calls are disabled when using Tor</string>
     <string name="switch_to_video">Switch to video</string>
     <string name="reject_switch_to_video">Reject switch to video request</string>
+    <string name="unified_push_distributor">UnifiedPush Distributor</string>
+    <string name="pref_up_push_account_title">XMPP Account</string>
+    <string name="pref_up_push_account_summary">The account through which push messages will be received.</string>
+    <string name="pref_up_push_server_title">Push Server</string>
+    <string name="pref_up_push_server_summary">A user-chosen push server to relay push messages via XMPP to your device.</string>
+    <string name="no_account_deactivated">None (deactivated)</string>
 
 </resources>
