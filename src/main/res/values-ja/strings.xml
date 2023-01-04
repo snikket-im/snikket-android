@@ -31,7 +31,6 @@
     <string name="minutes_ago">%d分前</string>
     <plurals name="x_unread_conversations">
         <item quantity="other">%d件の未読の会話</item>
-
     </plurals>
     <string name="sending">送信中…</string>
     <string name="message_decrypting">メッセージを復号しています。しばらくお待ちください…</string>
@@ -170,7 +169,7 @@
     <string name="account_status_incompatible_client">互換性のない端末</string>
     <string name="account_status_stream_error">ストリーム エラー</string>
     <string name="account_status_stream_opening_error">ストリームを開く際にエラー</string>
-    <string name="encryption_choice_unencrypted">暗号化されていない</string>
+    <string name="encryption_choice_unencrypted">暗号化しない</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -682,7 +681,7 @@
     <string name="mtm_accept_cert">未知の証明書を受け入れますか?</string>
     <string name="mtm_trust_anchor">サーバー証明書が既知の認証局によって署名されていません。</string>
     <string name="mtm_accept_servername">不一致のサーバー名を受け入れますか?</string>
-    <string name="mtm_hostname_mismatch">サーバーは\&quot;%s\&quot;として認証できませんでした。証明書は次の場合にのみ有効です:</string>
+    <string name="mtm_hostname_mismatch">サーバーは\"%s\"として認証できませんでした。証明書は次の場合にのみ有効です:</string>
     <string name="mtm_connect_anyway">それでも接続を希望しますか?</string>
     <string name="mtm_cert_details">証明書の詳細:</string>
     <string name="once">一度だけ</string>
@@ -902,7 +901,7 @@
     <string name="rtp_state_accepting_call">通話受入</string>
     <string name="rtp_state_ending_call">通話終了</string>
     <string name="answer_call">応答</string>
-    <string name="dismiss_call">解散</string>
+    <string name="dismiss_call">拒否</string>
     <string name="rtp_state_finding_device">デバイス発見</string>
     <string name="rtp_state_ringing">鳴動</string>
     <string name="rtp_state_declined_or_busy">取込中</string>
@@ -978,4 +977,4 @@
     <string name="delete_avatar">アバターを削除</string>
     <string name="audio_video_disabled_tor">Tor使用中のため通話できません</string>
     <string name="switch_to_video">ビデオ通話切替</string>
-    </resources>
+</resources>
