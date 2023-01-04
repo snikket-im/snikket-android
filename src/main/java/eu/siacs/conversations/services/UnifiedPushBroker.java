@@ -34,10 +34,28 @@ public class UnifiedPushBroker {
         this.service = xmppConnectionService;
     }
 
+    public void renewUnifiedPushEndpointsOnBind(final Account account) {
+        final Optional<Transport> transport = getTransport();
+        if (transport.isPresent()) {
+            final Account transportAccount = transport.get().account;
+            if (transportAccount != null && transportAccount.getUuid().equals(account.getUuid())) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid() + ": trigger endpoint renewal on bind");
+                renewUnifiedEndpoint(transport.get());
+            }
+        }
+    }
+
     public Optional<Transport> renewUnifiedPushEndpoints() {
         final Optional<Transport> transportOptional = getTransport();
         if (transportOptional.isPresent()) {
-            renewUnifiedEndpoint(transportOptional.get());
+            final Transport transport = transportOptional.get();
+            if (transport.account.isEnabled()) {
+                renewUnifiedEndpoint(transportOptional.get());
+            } else {
+                Log.d(Config.LOGTAG, "skipping UnifiedPush endpoint renewal. Account is disabled");
+            }
         } else {
             Log.d(Config.LOGTAG, "skipping UnifiedPush endpoint renewal. No transport selected");
         }

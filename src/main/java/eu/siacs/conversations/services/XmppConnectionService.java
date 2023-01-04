@@ -381,6 +381,7 @@ public class XmppConnectionService extends Service {
             connectMultiModeConversations(account);
             syncDirtyContacts(account);
 
+            unifiedPushBroker.renewUnifiedPushEndpointsOnBind(account);
         }
     };
     private final AtomicLong mLastExpiryRun = new AtomicLong(0);
