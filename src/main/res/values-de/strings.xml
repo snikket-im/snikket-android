@@ -614,7 +614,7 @@
     <string name="use_camera_icon_to_scan_barcode">Nutze die Kamera, um Barcodes deiner Kontakte zu scannen</string>
     <string name="please_wait_for_keys_to_be_fetched">Bitte warten, bis die Schlüssel abgerufen werden</string>
     <string name="share_as_barcode">Als Barcode teilen</string>
-    <string name="share_as_uri">Als XMPP URI teilen</string>
+    <string name="share_as_uri">Als XMPP-URI teilen</string>
     <string name="share_as_http">Als HTTP Link teilen</string>
     <string name="pref_blind_trust_before_verification">Blind vertrauen vor der Überprüfung</string>
     <string name="pref_blind_trust_before_verification_summary">Neuen Geräten von nicht verifizierten Kontakten vertrauen, aber bei verifizierten Kontakten eine manuelle Bestätigung der neuen Geräte verlangen.</string>
@@ -1000,4 +1000,10 @@
     <string name="audio_video_disabled_tor">Anrufe sind bei der Verwendung von Tor deaktiviert</string>
     <string name="switch_to_video">Umschalten auf Video</string>
     <string name="reject_switch_to_video">Umschalten auf Video ablehnen</string>
+    <string name="pref_up_push_account_title">XMPP-Konto</string>
+    <string name="pref_up_push_server_title">Push-Server</string>
+    <string name="pref_up_push_server_summary">Ein selbst gewählter Push-Server, der Push-Nachrichten über XMPP an dein Gerät weiterleitet.</string>
+    <string name="no_account_deactivated">Kein (deaktiviert)</string>
+    <string name="unified_push_distributor">UnifiedPush Verteiler</string>
+    <string name="pref_up_push_account_summary">Das Konto, über das Push-Nachrichten empfangen werden sollen.</string>
 </resources>
