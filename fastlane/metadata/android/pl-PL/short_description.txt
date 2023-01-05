@@ -1,0 +1,1 @@
+Szyfrowany, prosty w użyciu klient XMPP przystosowany do urządzeń mobilnych
