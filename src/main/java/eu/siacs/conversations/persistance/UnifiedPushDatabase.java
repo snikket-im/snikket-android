@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.services.UnifiedPushBroker;
 
 public class UnifiedPushDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "unified-push-distributor";
@@ -84,8 +85,7 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
 
     public List<PushTarget> getRenewals(final String account, final String transport) {
         final ImmutableList.Builder<PushTarget> renewalBuilder = ImmutableList.builder();
-        // TODO use a date somewhat in the future to account for period renewal triggers
-        final long expiration = System.currentTimeMillis();
+        final long expiration = System.currentTimeMillis() + UnifiedPushBroker.TIME_TO_RENEW;
         final SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         try (final Cursor cursor =
                 sqLiteDatabase.query(
@@ -108,13 +108,14 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
 
     public ApplicationEndpoint getEndpoint(
             final String account, final String transport, final String instance) {
+        final long expiration = System.currentTimeMillis() + UnifiedPushBroker.TIME_TO_RENEW;
         final SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         try (final Cursor cursor =
                 sqLiteDatabase.query(
                         "push",
                         new String[] {"application", "endpoint"},
                         "account = ? AND transport = ? AND instance = ? AND endpoint IS NOT NULL AND expiration >= "
-                                + System.currentTimeMillis(),
+                                + expiration,
                         new String[] {account, transport, instance},
                         null,
                         null,

@@ -15,6 +15,9 @@ import com.google.common.io.BaseEncoding;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -28,10 +31,24 @@ import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class UnifiedPushBroker {
 
+    // time to expiration before a renewal attempt is made (24 hours)
+    public static final long TIME_TO_RENEW = 86_400_000L;
+
+    // interval for the 'cron tob' that attempts renewals for everything that expires is lass than
+    // `TIME_TO_RENEW`
+    public static final long RENEWAL_INTERVAL = 3_600_000L;
+
+    private static final ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
+
     private final XmppConnectionService service;
 
     public UnifiedPushBroker(final XmppConnectionService xmppConnectionService) {
         this.service = xmppConnectionService;
+        SCHEDULER.scheduleAtFixedRate(
+                this::renewUnifiedPushEndpoints,
+                RENEWAL_INTERVAL,
+                RENEWAL_INTERVAL,
+                TimeUnit.MILLISECONDS);
     }
 
     public void renewUnifiedPushEndpointsOnBind(final Account account) {
@@ -68,6 +85,13 @@ public class UnifiedPushBroker {
         final List<UnifiedPushDatabase.PushTarget> renewals =
                 unifiedPushDatabase.getRenewals(
                         account.getUuid(), transport.transport.toEscapedString());
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid()
+                        + ": "
+                        + renewals.size()
+                        + " UnifiedPush endpoints scheduled for renewal on "
+                        + transport.transport);
         for (final UnifiedPushDatabase.PushTarget renewal : renewals) {
             Log.d(
                     Config.LOGTAG,
@@ -110,6 +134,8 @@ public class UnifiedPushBroker {
                 return;
             }
             renewUnifiedPushEndpoint(transport, renewal, endpoint, expiration);
+        } else {
+            Log.d(Config.LOGTAG, "could not register UP endpoint " + response.getErrorCondition());
         }
     }
 
