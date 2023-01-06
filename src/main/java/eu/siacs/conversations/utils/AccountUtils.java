@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -32,6 +33,23 @@ public class AccountUtils {
             }
         }
         return false;
+    }
+
+    public static String publicDeviceId(final Account account) {
+        final UUID uuid;
+        try {
+            uuid = UUID.fromString(account.getUuid());
+        } catch (final IllegalArgumentException e) {
+            return account.getUuid();
+        }
+        final UUID publicDeviceId = getUuid(uuid.getLeastSignificantBits(), uuid.getLeastSignificantBits());
+        return publicDeviceId.toString();
+    }
+
+    protected static UUID getUuid(final long msb, final long lsb) {
+        final long msb0 = (msb & 0xffffffffffff0fffL) | 4; // set version
+        final long lsb0 = (lsb & 0x3fffffffffffffffL) | 0x8000000000000000L; // set variant
+        return new UUID(msb0, lsb0);
     }
 
     public static List<String> getEnabledAccounts(final XmppConnectionService service) {

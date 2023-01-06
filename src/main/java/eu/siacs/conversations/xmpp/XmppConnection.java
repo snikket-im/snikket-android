@@ -77,6 +77,7 @@ import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.PhoneHelper;
@@ -1534,7 +1535,7 @@ public class XmppConnection implements Runnable {
             authenticate.addChild("initial-response").setContent(firstMessage);
         }
         final Element userAgent = authenticate.addChild("user-agent");
-        userAgent.setAttribute("id", account.getUuid());
+        userAgent.setAttribute("id", AccountUtils.publicDeviceId(account));
         userAgent
                 .addChild("software")
                 .setContent(mXmppConnectionService.getString(R.string.app_name));
