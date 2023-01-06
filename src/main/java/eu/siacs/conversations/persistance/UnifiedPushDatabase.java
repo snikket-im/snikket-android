@@ -129,6 +129,21 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
         return null;
     }
 
+    public boolean hasEndpoints(final UnifiedPushBroker.Transport transport) {
+        final SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        try (final Cursor cursor =
+                sqLiteDatabase.rawQuery(
+                        "SELECT EXISTS(SELECT endpoint FROM push WHERE account = ? AND transport = ?)",
+                        new String[] {
+                            transport.account.getUuid(), transport.transport.toEscapedString()
+                        })) {
+            if (cursor != null && cursor.moveToFirst()) {
+                return cursor.getInt(0) > 0;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onUpgrade(
             final SQLiteDatabase sqLiteDatabase, final int oldVersion, final int newVersion) {}

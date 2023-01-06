@@ -28,6 +28,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
 public class UnifiedPushBroker {
 
@@ -52,16 +53,27 @@ public class UnifiedPushBroker {
     }
 
     public void renewUnifiedPushEndpointsOnBind(final Account account) {
-        final Optional<Transport> transport = getTransport();
-        if (transport.isPresent()) {
-            final Account transportAccount = transport.get().account;
+        final Optional<Transport> transportOptional = getTransport();
+        if (transportOptional.isPresent()) {
+            final Transport transport = transportOptional.get();
+            final Account transportAccount = transport.account;
             if (transportAccount != null && transportAccount.getUuid().equals(account.getUuid())) {
+                final UnifiedPushDatabase database = UnifiedPushDatabase.getInstance(service);
+                if (database.hasEndpoints(transport)) {
+                    sendDirectedPresence(transportAccount, transport.transport);
+                }
                 Log.d(
                         Config.LOGTAG,
                         account.getJid().asBareJid() + ": trigger endpoint renewal on bind");
-                renewUnifiedEndpoint(transport.get());
+                renewUnifiedEndpoint(transportOptional.get());
             }
         }
+    }
+
+    private void sendDirectedPresence(final Account account, Jid to) {
+        final PresencePacket presence = new PresencePacket();
+        presence.setTo(to);
+        service.sendPresencePacket(account, presence);
     }
 
     public Optional<Transport> renewUnifiedPushEndpoints() {
