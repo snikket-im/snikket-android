@@ -545,7 +545,8 @@
     <string name="share_uri_with">Teile URI mit…</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy ist ein Ableger des beliebten XMPP-Clients Conversations mit automatischer Kontakterkennung.<br><br>Du registrierst dich mit deiner Telefonnummer und Quicksy wird automatisch auf der Grundlage der Telefonnummern in deinem Adressbuch mögliche Kontakte vorschlagen.<br><br>Mit der Anmeldung erklärst du dich mit unserer <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a> einverstanden.]]></string>
     <string name="agree_and_continue">Zustimmen und fortfahren</string>
-    <string name="magic_create_text">Ein Guide hilft bei der Kontoerstellung auf conversations.im.¹\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige XMPP-Adresse gibst.</string>
+    <string name="magic_create_text">Ein Guide hilft bei der Kontoerstellung auf conversations.im.
+\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige XMPP-Adresse gibst.</string>
     <string name="your_full_jid_will_be">Deine vollständige XMPP-Adresse lautet: %s</string>
     <string name="create_account">Konto erstellen</string>
     <string name="use_own_provider">Nutze eigenen Provider</string>
