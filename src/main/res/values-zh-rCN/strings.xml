@@ -991,4 +991,10 @@
     <string name="audio_video_disabled_tor">使用 Tor 时通话被禁用</string>
     <string name="switch_to_video">切换到视频</string>
     <string name="reject_switch_to_video">拒绝切换到视频的请求</string>
+    <string name="pref_up_push_account_title">XMPP 账户</string>
+    <string name="pref_up_push_server_title">推送服务器</string>
+    <string name="no_account_deactivated">无（未激活）</string>
+    <string name="unified_push_distributor">UnifiedPush 分发程序</string>
+    <string name="pref_up_push_account_summary">将通过该账户接收推送消息。</string>
+    <string name="pref_up_push_server_summary">用户选择的推送服务器，通过 XMPP 将推送消息传递到你的设备。</string>
 </resources>
