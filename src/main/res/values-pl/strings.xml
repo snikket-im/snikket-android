@@ -31,16 +31,9 @@
     <string name="minutes_ago">%d minut temu</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d nieprzeczytana konwersacja</item>
-
-    
         <item quantity="few">%d nieprzeczytane konwersacje</item>
-
-    
         <item quantity="many">%d nieprzeczytanych konwersacji</item>
-
-    
         <item quantity="other">%d nieprzeczytanych konwersacji</item>
-
     </plurals>
     <string name="sending">wysyłanie...</string>
     <string name="message_decrypting">Odszyfrowywanie wiadomości. To zajmie tylko chwilę...</string>
@@ -95,7 +88,9 @@
     <string name="clear_conversation_history">Wyczyść historię konwersacji</string>
     <string name="clear_histor_msg">Czy chcesz usunąć wszystkie wiadomości w tej rozmowie?\n\n<b>Ostrzeżenie:</b> To nie ma wpływu na wiadomości składowane na innych urządzeniach lub serwerach.</string>
     <string name="delete_file_dialog">Usuń plik</string>
-    <string name="delete_file_dialog_msg">Czy na pewno usunąć ten plik?\n\n<b>Uwaga:</b> Działanie nie wpływa na kopie pliku przechowywane na innych urządzeniach lub serwerach.</string>
+    <string name="delete_file_dialog_msg">Czy na pewno usunąć ten plik\?
+\n
+\n<b>Uwaga:</b> Działanie nie wpływa na kopie pliku przechowywane na innych urządzeniach lub serwerach. </string>
     <string name="also_end_conversation">Zamknij konwersację po zakończeniu</string>
     <string name="choose_presence">Wybierz urządzenie</string>
     <string name="send_unencrypted_message">Wyślij wiadomość bez szyfrowania</string>
@@ -156,7 +151,7 @@
     <string name="error_not_an_image_file">Wybrany plik nie jest obrazem</string>
     <string name="error_compressing_image">Błąd konwersji obrazu</string>
     <string name="error_file_not_found">Nie odnaleziono pliku</string>
-    <string name="error_io_exception">Ogólny błąd wejścia/wyjścia</string>
+    <string name="error_io_exception">Ogólny błąd wejścia/wyjścia. Być może skończyło się miejsce w pamięci\?</string>
     <string name="error_security_exception_during_image_copy">Aplikacja użyta do wyboru obrazu nie zezwoliła na odczyt pliku.\n\n<small>Wybierz obraz przy użyciu innego menedżera plików</small></string>
     <string name="error_security_exception">Aplikacja której użyłeś do udostępnienia pliku nie dostarczyła odpowiednich uprawnień. </string>
     <string name="account_status_unknown">Nieznany</string>
@@ -409,7 +404,7 @@
     <string name="non_anonymous">Spraw aby adres XMPP był widoczny dla wszystkich</string>
     <string name="moderated">Włącz moderację na kanale</string>
     <string name="you_are_not_participating">Nie bierzesz udziału</string>
-    <string name="modified_conference_options">Ustawienia konferencji zostały zmodyfikowane</string>
+    <string name="modified_conference_options">Ustawienia konferencji zostały zmodyfikowane!</string>
     <string name="could_not_modify_conference_options">Nie można zmodyfikować ustawień konferencji</string>
     <string name="never">Nigdy</string>
     <string name="until_further_notice">Ręcznie</string>
@@ -468,7 +463,7 @@
     <string name="search_contacts">Przeszukuj kontakty</string>
     <string name="search_bookmarks">Przeszukaj zakładki</string>
     <string name="send_private_message">Wyślij wiadomość prywatną</string>
-    <string name="user_has_left_conference">%1$s opuścił konferencję!</string>
+    <string name="user_has_left_conference">%1$s opuścił konferencję</string>
     <string name="username">Nazwa użytkownika</string>
     <string name="username_hint">Nazwa użytkownika</string>
     <string name="invalid_username">Błędna nazwa użytkownika</string>
@@ -503,8 +498,8 @@
     <string name="jid_does_not_match_certificate">Adres XMPP nie pasuje do certyfikatu</string>
     <string name="action_renew_certificate">Odnów certyfikat</string>
     <string name="error_fetching_omemo_key">Błąd pobierania klucza OMEMO!</string>
-    <string name="verified_omemo_key_with_certificate">Zweryfikowano klucz OMEMO z certyfikatem</string>
-    <string name="device_does_not_support_certificates">Twoje urządzenie nie wspiera wyboru certyfikatów klienckich</string>
+    <string name="verified_omemo_key_with_certificate">Zweryfikowano klucz OMEMO z certyfikatem!</string>
+    <string name="device_does_not_support_certificates">Twoje urządzenie nie wspiera wyboru certyfikatów klienckich!</string>
     <string name="pref_connection_options">Połączenie</string>
     <string name="pref_use_tor">Połącz przez sieć TOR</string>
     <string name="pref_use_tor_summary">Tuneluj wszystkie połączenia przez sieć TOR. Wymaga zainstalowania aplikacji \"Orbot\"</string>
@@ -814,7 +809,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="choose_a_country">Wybierz kraj</string>
     <string name="phone_number">numer telefonu</string>
     <string name="verify_your_phone_number">Zweryfikuj swój numer telefonu</string>
-    <string name="enter_country_code_and_phone_number">Quicksy wyśle SMS (operator może naliczyć koszty) aby zweryfikować numer telefonu. Wpisz kod kraju i numer telefonu.</string>
+    <string name="enter_country_code_and_phone_number">Quicksy wyśle wiadomość SMS (operator może naliczyć opłatę) aby zweryfikować numer telefonu. Wpisz kod kraju i numer telefonu:</string>
     <string name="we_will_be_verifying"><![CDATA[Zweryfikujemy numer telefonu <br/><br/><b>%s</b><br/><br/>Czy wszystko się zgadza czy też chciałbyś zmienić numer?]]></string>
     <string name="not_a_valid_phone_number">%s nie jest prawidłowym numerem telefonu</string>
     <string name="please_enter_your_phone_number">Proszę wpisać swój numer telefonu.</string>
@@ -1032,5 +1027,10 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="audio_video_disabled_tor">Dzwonienie jest wyłączone podczas używania Tora</string>
     <string name="switch_to_video">Przełącz na wideo</string>
     <string name="reject_switch_to_video">Odrzuć prośbę przełączenia na wideo</string>
-
+    <string name="unified_push_distributor">Dystrybutor UnifiedPush</string>
+    <string name="pref_up_push_account_title">Konto XMPP</string>
+    <string name="pref_up_push_account_summary">Konto, poprzez które będą odbierane powiadomienia push.</string>
+    <string name="pref_up_push_server_title">Serwer push</string>
+    <string name="pref_up_push_server_summary">Dowolnie wybrany serwer push do przekazywania wiadomości push przez XMPP na Twoje urządzenie.</string>
+    <string name="no_account_deactivated">Brak (nieaktywne)</string>
 </resources>
