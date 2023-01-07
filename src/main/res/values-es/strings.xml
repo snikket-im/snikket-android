@@ -548,7 +548,7 @@
     <string name="share_uri_with">Compartir URI con…</string>
     <string name="welcome_text_quicksy">Quicksy es un derivado del popular cliente XMPP Conversations con detección automática de contactos.&lt;br&gt;&lt;br&gt;El registro se realiza con tu número de teléfono y Quicksy automáticamente—basado en los teléfonos de tu agenda de contactos—te sugerirá posibles contactos.&lt;br&gt;&lt;br&gt;Registrándote en Quicksy aceptas nuestra &lt;a href=https://quicksy.im/#privacy&gt;política de privacidad&lt;/a&gt;.</string>
     <string name="agree_and_continue">Aceptar y continuar</string>
-    <string name="magic_create_text">Una guía te ayudará en el proceso de creación de la cuenta en conversations.im.¹
+    <string name="magic_create_text">Una guía te ayudará en el proceso de creación de la cuenta en conversations.im.
 \nCuando selecciones conversations.im como proveedor podrás comunicarte con usuarios de otros servidores proporcionándoles tu dirección XMPP completa.</string>
     <string name="your_full_jid_will_be">Tu dirección XMPP completa será: %s</string>
     <string name="create_account">Crear cuenta</string>
@@ -1015,4 +1015,7 @@
     <string name="audio_video_disabled_tor">Las llamadas están deshabilitadas cuando se usa Tor</string>
     <string name="switch_to_video">Cambiar a vídeo</string>
     <string name="reject_switch_to_video">Rechazar petición de cambiar a vídeo</string>
+    <string name="unified_push_distributor">Distribuidor de UnifiedPush</string>
+    <string name="pref_up_push_account_title">Cuenta XMPP</string>
+    <string name="pref_up_push_account_summary">La cuenta a través de la cual se recibirán los mensajes push.</string>
 </resources>
