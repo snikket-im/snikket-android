@@ -1018,4 +1018,7 @@
     <string name="unified_push_distributor">Distribuidor de UnifiedPush</string>
     <string name="pref_up_push_account_title">Cuenta XMPP</string>
     <string name="pref_up_push_account_summary">La cuenta a través de la cual se recibirán los mensajes push.</string>
+    <string name="pref_up_push_server_title">Servidor push</string>
+    <string name="pref_up_push_server_summary">Un servidor push elegido por el usuario para transmitir mensajes push a través de XMPP a su dispositivo.</string>
+    <string name="no_account_deactivated">Ninguno (desactivado)</string>
 </resources>
