@@ -12,5 +12,5 @@
     <string name="tap_share_button_send_invite">Użyj przycisku udostępniania aby wysłać swojemu kontaktowi zaproszenie do %1$s.</string>
     <string name="if_contact_is_nearby_use_qr">Jeśli twój kontakt jest blisko może przeskanować kod poniżej aby zaakceptować twoje zaproszenie.</string>
     <string name="easy_invite_share_text">Dołącz do %1$s aby porozmawiać ze mną: %2$s</string>
-    <string name="share_invite_with">Udostępnij zaproszenie...</string>
+    <string name="share_invite_with">Udostępnij zaproszenie…</string>
 </resources>
