@@ -547,7 +547,8 @@
     <string name="share_uri_with">分享链接……</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy是从受欢迎的XMPP客户端对话中分离出来的，具有自动联系人发现功能<br><br>您注册了电话号码，Quicksy就会根据您的通讯录中的电话号码自动为您建议可能的联系人<br><br>签署即表示您同意我们的<a href="https://quicksy.im/#privacy">隐私政策</a>。]]></string>
     <string name="agree_and_continue">同意并继续</string>
-    <string name="magic_create_text">此向导将为您在conversations.im¹上创建一个账户。\n您的联系人可以通过您的XMPP完整地址与您聊天。</string>
+    <string name="magic_create_text">此向导将为您在conversations.im 上创建一个账户。
+\n您的联系人可以通过您的XMPP完整地址与您聊天。</string>
     <string name="your_full_jid_will_be">您的XMPP完整地址将是：%s</string>
     <string name="create_account">创建账户</string>
     <string name="use_own_provider">使用我自己的服务器</string>
