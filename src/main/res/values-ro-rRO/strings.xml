@@ -556,7 +556,8 @@
     <string name="share_uri_with">Partajează adresa cu…</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy este o versiune a popularului client XMPP Conversations cu descoperire automată a contactelor.<br><br>Vă înscrieți cu numărul de telefon și Quicksy—pe baza numerelor de telefon din agenda dumneavoastră—vă va sugera automat posibile contacte.<br><br>Înscriindu-vă sunteți de acord cu <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.]]></string>
     <string name="agree_and_continue">Sunt de acord și continuă</string>
-    <string name="magic_create_text">Ghidul va configura un cont pe conversations.im.¹\nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
+    <string name="magic_create_text">Ghidul va configura un cont pe conversations.im.
+\nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
     <string name="your_full_jid_will_be">Adresa dumneavoastră XMPP completă va fi: %s</string>
     <string name="create_account">Creează cont</string>
     <string name="use_own_provider">Folosește furnizorul meu</string>
