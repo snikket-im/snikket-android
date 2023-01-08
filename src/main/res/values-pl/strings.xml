@@ -35,8 +35,8 @@
         <item quantity="many">%d nieprzeczytanych konwersacji</item>
         <item quantity="other">%d nieprzeczytanych konwersacji</item>
     </plurals>
-    <string name="sending">wysyłanie...</string>
-    <string name="message_decrypting">Odszyfrowywanie wiadomości. To zajmie tylko chwilę...</string>
+    <string name="sending">wysyłanie…</string>
+    <string name="message_decrypting">Odszyfrowywanie wiadomości. To zajmie tylko chwilę…</string>
     <string name="pgp_message">Wiadomość zaszyfrowana OpenPGP</string>
     <string name="nick_in_use">Nazwa jest już w użyciu</string>
     <string name="invalid_muc_nick">NIeprawidłowy pseudonim</string>
@@ -55,7 +55,7 @@
     <string name="remove_bookmark_text">Czy chcesz usunąć zakładkę %s? Rozmowy z tą zakładką nie zostaną usunięte.</string>
     <string name="register_account">Zarejestruj nowe konto na serwerze</string>
     <string name="change_password_on_server">Zmień hasło na serwerze</string>
-    <string name="share_with">Udostępnij...</string>
+    <string name="share_with">Udostępnij…</string>
     <string name="start_conversation">Rozpocznij rozmowę</string>
     <string name="invite_contact">Zaproś kontakt</string>
     <string name="invite">Zaproś</string>
@@ -83,7 +83,7 @@
     <string name="send_failed">wysyłanie nie powiodło się</string>
     <string name="preparing_image">Przygotowanie do wysłania obrazka</string>
     <string name="preparing_images">Przygotowanie do wysłania obrazków</string>
-    <string name="sharing_files_please_wait">Udostępnianie plików. Proszę czekać...</string>
+    <string name="sharing_files_please_wait">Udostępnianie plików. Proszę czekać…</string>
     <string name="action_clear_history">Wyczyść historię</string>
     <string name="clear_conversation_history">Wyczyść historię konwersacji</string>
     <string name="clear_histor_msg">Czy chcesz usunąć wszystkie wiadomości w tej rozmowie?\n\n<b>Ostrzeżenie:</b> To nie ma wpływu na wiadomości składowane na innych urządzeniach lub serwerach.</string>
@@ -107,8 +107,8 @@
     <string name="restart">Zrestartuj</string>
     <string name="install">Zainstaluj</string>
     <string name="openkeychain_not_installed">Proszę zainstalować OpenKeychain</string>
-    <string name="offering">oferowanie...</string>
-    <string name="waiting">oczekiwanie...</string>
+    <string name="offering">oferowanie…</string>
+    <string name="waiting">oczekiwanie…</string>
     <string name="no_pgp_key">Nie znaleziono klucza OpenPGP</string>
     <string name="contact_has_no_pgp_key">Nie można zaszyfrować twojej wiadomości bo ten kontakt nie ogłasza swojego publicznego klucza.\n\n<small>Poproś kontakt aby ustawił OpenPGP.</small></string>
     <string name="no_pgp_keys">Nie znaleziono kluczy OpenPGP</string>
@@ -199,10 +199,10 @@
     <string name="server_info_show_more">Informacje o serwerze</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Kopie wiadomości</string>
-    <string name="server_info_csi">XEP-0352: Client State Indication</string>
-    <string name="server_info_blocking">XEP-0191: Blocking Command</string>
+    <string name="server_info_csi">XEP-0352: Wskaźnik stanu klienta</string>
+    <string name="server_info_blocking">XEP-0191: Polecenia Blokujące</string>
     <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
-    <string name="server_info_stream_management">XEP-0198: Stream Management</string>
+    <string name="server_info_stream_management">XEP-0198: Zarządzanie Strumieniem</string>
     <string name="server_info_external_service_discovery">XEP-0215: Wykrywanie Zewnętrznych Usług</string>
     <string name="server_info_pep">XEP-0163: PEP (Awatary / OMEMO)</string>
     <string name="server_info_http_upload">XEP-0363: Przesyłanie plików przez HTTP</string>
@@ -549,7 +549,8 @@
     <string name="share_uri_with">Udostępnij URI za pomocą...</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy to modyfikacja popularnego klienta XMPP Conversations, z automatycznym wykrywaniem kontaktów.<br><br>Zapisujesz się przy użyciu numeru telefonu i Quicksy automatycznie - na podstawie numerów telefonów w książce adresowej - zasugeruje potencjalne kontakty dla ciebie.<br><br>Zapisując się zgadzasz się na naszą <a href="https://quicksy.im/#privacy">politykę prywatności</a>.]]></string>
     <string name="agree_and_continue">Zgoda i kontynuuj</string>
-    <string name="magic_create_text">Poprowadzimy ciebie przez proces tworzenia konta na conversations.im.¹\nKiedy wybierzesz conversations.im jako dostawcę będziesz mógł komunikować się z innymi osobami jeśli podasz im swój pełen adres XMPP.</string>
+    <string name="magic_create_text">Poprowadzimy cię przez proces tworzenia konta na conversations.im.
+\nKiedy wybierzesz conversations.im jako dostawcę będziesz mógł komunikować się z innymi osobami jeśli podasz im swój pełen adres XMPP.</string>
     <string name="your_full_jid_will_be">Twój pełen adres XMPP to: %s</string>
     <string name="create_account">Utwórz konto</string>
     <string name="use_own_provider">Użyj innego serwera</string>
