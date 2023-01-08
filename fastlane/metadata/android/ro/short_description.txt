@@ -1,0 +1,1 @@
+Client de mesagerie XMPP ușor de folosit, criptat, și optimizat pentru mobile
