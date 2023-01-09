@@ -1,0 +1,1 @@
+* Integration eines UnifiedPush-Verteilers, um Push-Nachrichten für andere UnifiedPush-fähige Apps wie Tusky und Fedilab zu ermöglichen
