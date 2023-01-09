@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.12.0
+
+* Integrate UnifiedPush Distributor to facilitate push messages to other UnifiedPush enabled apps like Tusky and Fedilab
+
 ### Version 2.11.3
 
 * Fix messages getting resend when using SASL2
