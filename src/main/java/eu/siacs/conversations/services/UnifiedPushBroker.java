@@ -6,19 +6,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.io.BaseEncoding;
-
-import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -29,6 +20,12 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class UnifiedPushBroker {
 
@@ -278,6 +275,9 @@ public class UnifiedPushBroker {
             final Jid transport,
             final String application,
             final String instance) {
+        if (transport == null || application == null || instance == null) {
+            return Optional.absent();
+        }
         final String uuid = account.getUuid();
         final List<UnifiedPushDatabase.PushTarget> pushTargets =
                 UnifiedPushDatabase.getInstance(service)
