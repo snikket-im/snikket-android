@@ -1,0 +1,3 @@
+* Kalim i ikonës së thirrjes në të majtë, për të mbajtur ikonat e paneleve të tjerë në një vend të qëndrueshëm
+* Shfaq kohëzgjatje thirrjeje gjatë thirrjesh audio
+* Ndërprerje komunikimi për thirrje A/V (të njëjtët dy persona që i bëjnë thirrje njëri-tjetrit në të njëjtën kohë)

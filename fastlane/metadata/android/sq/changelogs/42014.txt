@@ -1,0 +1,2 @@
+* Verifikim përherë i emrit të përkatësisë. Pa mbishkrim përdoruesi
+* Mbulim për mirëfilltësim paraprak liste përdoruesish

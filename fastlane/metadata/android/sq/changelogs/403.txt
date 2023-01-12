@@ -1,0 +1,3 @@
+* U ndreqën probleme lidhjeje, kur llogari të ndryshme përdornin mekanizma të ndryshëm SCRAM
+* Shtim mbulimi për SCRAM-SHA-512
+* Lejim shpërngulje kartelash P2P (Jingle) me kontakt veten

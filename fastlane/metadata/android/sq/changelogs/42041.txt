@@ -1,0 +1,5 @@
+* Sendërtim profili Implement Extensible SASL, Bind 2.0 dhe Fast, për rilidhje më të shpejta
+* Sendërtim i “channel binding”
+* Shtim aftësie për të kaluar nga thirrje audio në thirrje video
+* Shtim aftësie për të fshirë avatarin e vetes
+* Shtim njoftimi për thirrje të humbura

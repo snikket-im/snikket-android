@@ -1,0 +1,3 @@
+* Shtim aftësie për trajtim kartelash GPX
+* Përmirësim funksionimi për rikthim me kopjeruajtje
+* ndreqje të metash

@@ -1,0 +1,4 @@
+* Kërkim te biseda individuale
+* Njoftim përdoruesish, nëse dështon dërgimi i mesazhit
+* Mbajtje mend i emrave në ekran (nofkave) prej përdoruesish të Quicksy-t nga një rinisje në tjetrën
+* Shtim butoni për nisje të Orbot-it (Tor) që nga njoftim, në qoftë e nevojshme

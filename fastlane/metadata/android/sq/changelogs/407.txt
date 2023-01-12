@@ -1,0 +1,3 @@
+* Shfaq buton thirrjeje, për kontakte jo në linjë, nëse kanë deklaruar më parë mbulim të kësaj
+* Butoni “mbrapsht” nuk përfundon më thirrjen, kur thirrja është e lidhur
+* ndreqje të metash

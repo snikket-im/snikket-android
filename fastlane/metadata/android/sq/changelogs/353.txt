@@ -1,0 +1,4 @@
+* lejim i përdoruesve të caktojnë nofkën e vet
+* rimarrje shkarkimi kartela të fshehtëzuara me OMEMO
+* Kanali tani përdor '#' si simbol në një avatar
+* Quicksy përdor “përherë”, si parazgjedhje për fshehtëzim OMEMO (e fsheh ikonën e kyçjes)

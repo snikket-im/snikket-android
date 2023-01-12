@@ -1,0 +1,1 @@
+* Mbulim për parametra URI XMPP ?register dher ?register;preauth

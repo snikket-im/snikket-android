@@ -1,0 +1,1 @@
+* Integrim “UnifiedPush Distributor” për të lehtësuar mesazhe push për te aplikacione të tjerë që munden të përdorin UnifiedPush, bie fjala, Tusky dhe Fedilab

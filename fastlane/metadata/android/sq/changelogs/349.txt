@@ -1,0 +1,4 @@
+* Sjellje për herë të parë rregullimi ekspertësh për të kryer pikasje kanalesh në shërbyes vendor, në vend se në search.jabber.network
+* Aktivizim, si parazgjedhje, i shenjave të për dërgim dhe heqje e rregullimit
+* Aktivizim, si parazgjedhje, i “Send button indicates status” dhe heqje e rregullimit
+* Kalim i rregullimit “Shërbim Move Backup and Foreground Service” te skena kryesore
