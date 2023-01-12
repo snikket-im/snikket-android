@@ -31,10 +31,7 @@
     <string name="minutes_ago">%d dakika önc</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d okunmamış konuşma</item>
-
-    
         <item quantity="other">%d okunmamış konuşmalar</item>
-
     </plurals>
     <string name="sending">gönderiyor…</string>
     <string name="message_decrypting">İleti deşifre ediliyor. Lütfen bekleyin…</string>
@@ -631,7 +628,7 @@
     <string name="show_inactive_devices">Aktif olmayanları göster</string>
     <string name="hide_inactive_devices">Aktif olmayanları sakla</string>
     <string name="distrust_omemo_key">Güvensiz aygıt</string>
-    <string name="distrust_omemo_key_text">Bu cihazın doğrulamasını kaldırmak istediğinizden emin misiniz? \ Bu cihaz ve cihazdan gelen mesajlar güvenilmez olarak işaretlenecektir.</string>
+    <string name="distrust_omemo_key_text">Bu cihazın doğrulamasını kaldırmak istediğinizden emin misiniz\? Bu cihaz ve cihazdan gelen mesajlar güvenilmez olarak işaretlenecektir.</string>
     <plurals name="seconds">
         <item quantity="one">%d saniye</item>
         <item quantity="other">%d saniye</item>
@@ -994,4 +991,4 @@
     <string name="account_status_temporary_auth_failure">Geçici doğrulama hatası</string>
     <string name="delete_avatar">Avatar\'ı sil</string>
     <string name="audio_video_disabled_tor">Tor kullanırken çağrılar devre dışı</string>
-    </resources>
+</resources>
