@@ -8,5 +8,5 @@
     <string name="not_available_in_your_country">Quicksy s’mund të kihet në vendin tuaj.</string>
     <string name="unable_to_verify_server_identity">S’arrihet të verifikohet identitet shërbyesi.</string>
     <string name="unknown_security_error">Gabim i panjohur sigurie.</string>
-    <string name="timeout_while_connecting_to_server">Mbarim kohe teksa lidhej me shërbyesin</string>
+    <string name="timeout_while_connecting_to_server">Mbarim kohe teksa lidhej me shërbyesin.</string>
 </resources>
