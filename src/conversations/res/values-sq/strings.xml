@@ -1,2 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="server_select_text">XMPP është një rrjet shkëmbimi mesazhesh të atypëratyshëm i pavarur nga shërbimet. Këtë klient mund ta përdorni me cilindo shërbyes XMPP që zgjidhni.
+\nMegjithatë, për lehtësi, e kemi bërë të kollajshme të krijohet një llogari te conversations.im, një shërbim posaçërisht i përshtatshëm për përdorim me Conversations.</string>
+    <string name="magic_create_text_on_x">Jeni ftuar te %1$s. Do t’ju udhëheqim përmes procesit të krijimit të një llogarie.
+\nKur zgjidhet %1$s si shërbim, do të jeni në gjendje të komunikoni me përdorues nga shërbime të tjera duke u dhënë adresën tuaj të plotë XMPP.</string>
+    <string name="magic_create_text_fixed">Jeni ftuar te %1$s. Për ju është zgjedhur tashmë një emër përdoruesi. Do t’ju udhëheqim përmes procesit të krijimit të një llogarie.
+\nDo të jeni në gjendje të komunikoni me përdorues nga shërbime të tjera duke u dhënë adresën tuaj të plotë XMPP.</string>
+    <string name="tap_share_button_send_invite">Prekni butonin e ndarjes me të tjerë që t’i dërgoni kontaktit tuaj një ftesë për te %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Nëse kontakti juaj është atypari, mund të skanojë gjithashtu kodin më poshtë, që të pranojë ftesën tuaj.</string>
+    <string name="easy_invite_share_text">Bëhuni pjesë e %1$s dhe bisedoni me: %2$s</string>
+    <string name="share_invite_with">Ndajeni ftesën me…</string>
+    <string name="create_new_account">Krijoni llogari të re</string>
+    <string name="pick_a_server">Zgjidhni shërbimin tuaj XMPP</string>
+    <string name="use_conversations.im">Përdor conversations.im</string>
+    <string name="do_you_have_an_account">Keni tashmë një llogari XMPP\? Mund të jetë kështu nëse përdorni tashmë një klient tjetër XMPP, ose e keni përdorur Conversations më parë. Nëse jo, mund të krijoni një llogari të re XMPP që tani.
+\nNdihmëz: Disa shërbime email-i ofrojnë gjithashtu llogari XMPP.</string>
+    <string name="your_server_invitation">Ftesë nga shërbyesi juaj</string>
+    <string name="improperly_formatted_provisioning">Kod i formatuar jo saktësisht</string>
+</resources>
