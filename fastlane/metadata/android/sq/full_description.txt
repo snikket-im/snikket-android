@@ -1,0 +1,39 @@
+I kollajtë për t’u përdorur, i qëndrueshëm, dashamirës ndaj baterisë. Me mbulim së brendshmi për figura, fjalosje në grup dhe fshehtëzim e2e.
+
+Parime konceptuale:
+
+* Të qenët aq i bukur dhe i lehtë për përdorim sa mundet, pa sakrifikuar sigurinë ose privatësinë
+* Bazim në protokolle ekzistues, të mirënjohur
+* Mospasje nevojë për një Google Account, ose, posaçërisht Google Cloud Messaging (GCM)
+* Kërkim i sa më pak lejesh që të jetë e mundur
+
+Veçori:
+
+* Fshehtëzim skaj-më-skaj me <a href="http://conversations.im/omemo/">OMEMO</a>, ose <a href="http://openpgp.org/about/">OpenPGP</a>
+* Dërgim dhe marrje mesazhesh
+* Thirrje të fshehtëzuara audio dhe video (DTLS-SRTP)
+* UI intuitive që ndjek udhëzimet Android Design
+* Foto / Avatarë të Kontakteve tuaja
+* Njëkohësim me klient desktop
+* Konferenca (me mbulim për faqerojtës)
+* Integrim libri adresash
+* Llogari të shumta / kuti e unifikuar të marrësh
+* Ndikim shumë i pakët në jetëgjatësinë e baterisë
+
+Conversations e bën shumë të lehtë krijimin e një llogarie te shërbyesi falas conversations.im. Megjithatë, Conversations do të funksionojë me çfarëdo shërbyesi tjetër XMPP. Plot shërbyes XMPP mbahen në punë nga vullnetarë dhe janë pa pagesë
+
+Veçori të XMPP-së:
+
+Conversations funksionon me çdo shërbyes XMPP në qarkullim. Megjithatë, XMPP është një protokoll i zgjerueshëm. Edhe këto zgjerime janë të standardizuara në të ashtuquajturit XEP-e. Conversations mbulon një a dy prej tyre, për ta bërë punën e përdoruesit më të mirë në përgjithësi. Ka një mundësi që shërbyesi juaj aktual XMPP të mos i mbulojë këto zgjerime. Ndaj, që të përfitoni maksimumin nga Conversations, duhet të shihni mundësi ose të kaloni te një shërbyes XMPP që i mbulon, ose - akoma më mirë - të vini në punë shërbyesin tuaj XMPP për ju dhe shokët tuaj.
+
+Këto XEP-e janë - deri sot:
+
+* XEP-0065: SOCKS5 Bytestreams (ose mod_proxy65). Do të përdoret për të shpërngulur kartela, nëse të dy palët gjenden pas një firewall-i (NAT).
+* XEP-0163: Personal Eventing Protocol, për avatarë
+* XEP-0191: Urdhri i bllokimeve ju lejon të kaloni në listë bllokimesh llogari që dërgojnë mesazhe të padëshiruar, ose të bllokoni kontakte pa i hequr nga lista juaj.
+* XEP-0198: Stream Management i lejon XMPP-së të mbijetojë ndërprerje të vockla rrjeti dhe ndryshime te lidhja përkatëse TCP.
+* XEP-0280: Message Carbons do të njëkohësojë automatikisht te klienti juaj desktop mesazhet që dërgoni dhe, pra, ju lejon të kaloni pa një cen nga klienti juaj për celular në atë për desktop dhe anasjelltas, brenda një bisede.
+* XEP-0237: Roster Versioning kryesisht për të kursyer sasi trafiku në lidhje celulare të dobëta
+* XEP-0313: Message Archive Management njëkohëson historik mesazhesh me shërbyesin. Ndiqni mesazhet që qenë dërguar ndërkohë që Conversations s’qe në linjë.
+* XEP-0352: Client State Indication i lejon shërbyesit të dijë nëse është apo jo në prapaskenë Conversations. I lejon shërbyesit të kursejë sasi trafiku, duke mbajtur paketa pa rëndësi.
+* XEP-0363: HTTP File Upload ju lejon të ndani me të tjerë kartela në konferenca dhe me kontakte jo në linjë. Lyp një përbërë shtesë në shërbyesin tuaj.
