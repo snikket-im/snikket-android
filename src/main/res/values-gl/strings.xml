@@ -547,7 +547,8 @@
     <string name="share_uri_with">Compartir URI con…</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy é un derivado do popular cliente XMPP Conversations con descubrimento automático de contactos.<br><br>Podes rexistrarte co teu número de teléfono e Quicksy suxerirache automáticamente —tomando os números da túa libreta de enderezos como referencia—  posibles contactos para ti.<br><br>Ao rexistrarte aceptas a nosa <a href="https://quicksy.im/#privacy">política de privacidade</a>.]]></string>
     <string name="agree_and_continue">Aceptar e continuar</string>
-    <string name="magic_create_text">Tes unha guía para crear unha conta en conversations.im¹\nAo escoller conversations.im como provedor poderás comunicarte con outras usuarias de outros provedores con só darlles o teu enderezo XMPP completo.</string>
+    <string name="magic_create_text">Tes unha guía para crear unha conta en conversations.im
+\nAo escoller conversations.im como provedor poderás comunicarte con outras usuarias de outros provedores con só darlles o teu enderezo XMPP completo.</string>
     <string name="your_full_jid_will_be">O teu enderezo XMPP completo será: %s</string>
     <string name="create_account">Crear conta</string>
     <string name="use_own_provider">Utilizar o meu propio proveedor</string>
@@ -1003,4 +1004,10 @@
     <string name="audio_video_disabled_tor">As chamadas están desactivadas cando usas Tor</string>
     <string name="switch_to_video">Cambiar a vídeo</string>
     <string name="reject_switch_to_video">Rexeitar a solicitude para cambiar a vídeo</string>
+    <string name="unified_push_distributor">Distribuidor UnifiedPush</string>
+    <string name="pref_up_push_account_title">Conta XMPP</string>
+    <string name="pref_up_push_account_summary">A conta a través da cal se recibirán as mensaxes push.</string>
+    <string name="pref_up_push_server_title">Servidor Push</string>
+    <string name="pref_up_push_server_summary">O servidor elexido pola usuaria para obter as mensaxes push a través de XMPP.</string>
+    <string name="no_account_deactivated">Ningún (desactivado)</string>
 </resources>
