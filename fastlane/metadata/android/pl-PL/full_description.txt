@@ -20,7 +20,7 @@ Funkcjonalność:
 * wiele kont, zintegrowana skrzynka odbiorcza;
 * bardzo ograniczony wpływ na zużycie baterii.
 
-Conversations bardzo ułatwia rejestrację konta na darmowym serwerze conversations.im, jednak będzie działać również z każdym innym serwerem XMPP. Wiele serwerów jest uruchamianych przez wolontariuszy i są dostępne za bez opłat.
+Conversations bardzo ułatwia rejestrację konta na darmowym serwerze conversations.im, jednak będzie działać również z każdym innym serwerem XMPP. Wiele serwerów jest uruchamianych przez wolontariuszy i są dostępne bez opłat.
 
 Funkcjonalność XMPP:
 
