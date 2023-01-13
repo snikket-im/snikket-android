@@ -548,7 +548,8 @@
     <string name="share_uri_with">Condividi URI con…</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy è una variante del popolare client XMPP Conversations con ricerca automatica dei contatti.<br><br>Ti registri con il tuo numero di telefono e Quicksy ti suggerirà—in base ai numeri di telefono nella tua rubrica—automaticamente i possibili contatti.<br><br>Registrandoti accetti la nostra <a href="https://quicksy.im/#privacy">politica sulla privacy</a>.]]></string>
     <string name="agree_and_continue">Accetta e continua</string>
-    <string name="magic_create_text">È disponibile una guida per la creazione di un profilo su conversations.im.¹\nQuando scegli conversations.im come fornitore potrai comunicare con utenti di altri fornitori dando il tuo indirizzo XMPP completo.</string>
+    <string name="magic_create_text">È disponibile una guida per la creazione di un profilo su conversations.im.
+\nQuando scegli conversations.im come fornitore potrai comunicare con utenti di altri fornitori dando il tuo indirizzo XMPP completo.</string>
     <string name="your_full_jid_will_be">Il tuo indirizzo XMPP completo sarà: %s</string>
     <string name="create_account">Crea profilo</string>
     <string name="use_own_provider">Usa un altro fornitore</string>
@@ -1014,4 +1015,10 @@
     <string name="audio_video_disabled_tor">Le chiamate sono disattivate quando si usa Tor</string>
     <string name="switch_to_video">Passa al video</string>
     <string name="reject_switch_to_video">Rifiuta richiesta di passare al video</string>
+    <string name="unified_push_distributor">Distributore di UnifiedPush</string>
+    <string name="pref_up_push_account_title">Profilo XMPP</string>
+    <string name="pref_up_push_account_summary">Il profilo attraverso cui verranno ricevuti i messaggi push.</string>
+    <string name="pref_up_push_server_title">Server push</string>
+    <string name="pref_up_push_server_summary">Un server scelto dall\'utente per inoltrare i messaggi push via XMPP al tuo dispositivo.</string>
+    <string name="no_account_deactivated">Nessuno (disattivato)</string>
 </resources>
