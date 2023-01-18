@@ -18,6 +18,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -475,6 +477,7 @@ public class XmppConnectionService extends Service {
     private PgpEngine mPgpEngine = null;
     private WakeLock wakeLock;
     private LruCache<String, Bitmap> mBitmapCache;
+    private LruCache<String, Drawable> mDrawableCache;
     private final BroadcastReceiver mInternalEventReceiver = new InternalEventReceiver();
     private final BroadcastReceiver mInternalScreenEventReceiver = new InternalEventReceiver();
 
@@ -1124,11 +1127,21 @@ public class XmppConnectionService extends Service {
         this.mRandom = new SecureRandom();
         updateMemorizingTrustmanager();
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        final int cacheSize = maxMemory / 8;
+        final int cacheSize = maxMemory / 9;
         this.mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override
             protected int sizeOf(final String key, final Bitmap bitmap) {
                 return bitmap.getByteCount() / 1024;
+            }
+        };
+        this.mDrawableCache = new LruCache<String, Drawable>(cacheSize) {
+            @Override
+            protected int sizeOf(final String key, final Drawable drawable) {
+                if (drawable instanceof BitmapDrawable) {
+                    return ((BitmapDrawable) drawable).getBitmap().getByteCount() / 1024;
+                } else {
+                    return drawable.getIntrinsicWidth() * drawable.getIntrinsicHeight() * 40 / 1024;
+                }
             }
         };
         if (mLastActivity == 0) {
@@ -4289,6 +4302,10 @@ public class XmppConnectionService extends Service {
 
     public LruCache<String, Bitmap> getBitmapCache() {
         return this.mBitmapCache;
+    }
+
+    public LruCache<String, Drawable> getDrawableCache() {
+        return this.mDrawableCache;
     }
 
     public Collection<String> getKnownHosts() {

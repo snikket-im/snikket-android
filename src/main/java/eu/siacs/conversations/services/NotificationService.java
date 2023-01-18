@@ -867,7 +867,7 @@ public class NotificationService {
 
     private void modifyForImage(final Builder builder, final Message message, final ArrayList<Message> messages) {
         try {
-            final Bitmap bitmap = mXmppConnectionService.getFileBackend().getThumbnail(message, getPixel(288), false);
+            final Bitmap bitmap = mXmppConnectionService.getFileBackend().getThumbnailBitmap(message, mXmppConnectionService.getResources(), getPixel(288));
             final ArrayList<Message> tmp = new ArrayList<>();
             for (final Message msg : messages) {
                 if (msg.getType() == Message.TYPE_TEXT
