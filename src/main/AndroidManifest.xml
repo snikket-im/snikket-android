@@ -88,6 +88,10 @@
         tools:replace="android:label"
         tools:targetApi="q">
 
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+
         <service android:name=".services.XmppConnectionService" />
 
         <receiver
