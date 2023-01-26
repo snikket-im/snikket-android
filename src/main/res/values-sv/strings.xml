@@ -31,10 +31,7 @@
     <string name="minutes_ago">%d min sedan</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d oläst konversation</item>
-
-    
         <item quantity="other">%d olästa konversationer</item>
-
     </plurals>
     <string name="sending">skickar…</string>
     <string name="message_decrypting">Avkrypterar meddelande. Vänta…</string>
@@ -84,7 +81,7 @@
     <string name="send_failed">sändning misslyckades</string>
     <string name="preparing_image">Förbereder att skicka bild</string>
     <string name="preparing_images">Förbereder att skicka bilder</string>
-    <string name="sharing_files_please_wait">Delar filer. Vänta...</string>
+    <string name="sharing_files_please_wait">Delar filer. Vänta…</string>
     <string name="action_clear_history">Rensa historik</string>
     <string name="clear_conversation_history">Rensa konversationshistorik</string>
     <string name="clear_histor_msg">Vill du radera alla meddelanden i den här konversationen?\n\n<b>Varning:</b> Det här påverkar inte meddelanden som finns lagrade på andra enheter eller servrar.</string>
@@ -689,7 +686,7 @@
     <string name="mtm_accept_cert">Godkänn okänt certifikat?</string>
     <string name="mtm_trust_anchor">Servercertifikatet är inte signerat av en känd certifikatutfärdare.</string>
     <string name="mtm_accept_servername">Acceptera servernamn som inte matchar?</string>
-    <string name="mtm_hostname_mismatch">Servern kunde inte autentisera som \&quot;%s\&quot;. Certifikatet är endast giltigt för:</string>
+    <string name="mtm_hostname_mismatch">Servern kunde inte autentisera som \"%s\". Certifikatet är endast giltigt för:</string>
     <string name="mtm_connect_anyway">Vill du ansluta ändå?</string>
     <string name="mtm_cert_details">Certifikatdetaljer:</string>
     <string name="once">En gång</string>
@@ -913,4 +910,4 @@
     <string name="no_application_found">Ingen applikation hittades</string>
     <string name="invite_to_app">Bjud in till Conversations</string>
     <string name="no_xmpp_adddress_found">Ingen XMPP-adress hittades</string>
-    </resources>
+</resources>
