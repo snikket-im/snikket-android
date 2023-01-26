@@ -9,5 +9,11 @@
     <string name="tap_share_button_send_invite">Tryck på dela-knappen för att skicka en inbjudan till din kontakt till %1$s.</string>
     <string name="if_contact_is_nearby_use_qr">Om din kontakt är i närheten, kan de också skanna koden nedan för att acceptera din inbjudan.</string>
     <string name="easy_invite_share_text">Gå med %1$s och chatta med mig: %2$s</string>
-    <string name="share_invite_with">Dela inbjudan med...</string>
+    <string name="share_invite_with">Dela inbjudan med…</string>
+    <string name="magic_create_text_fixed">Du har blivit inbjuden till %1$s. Ett användarnamn har redan valts åt dig. Vi guidar dig genom processen för att skapa ett konto.
+\nDu kommer att kunna kommunicera med användare av andra leverantörer genom att ge dem din fullständiga XMPP-adress.</string>
+    <string name="server_select_text">XMPP är ett leverantörsoberoende snabbmeddelandenätverk. Du kan använda den här klienten med vilken XMPP-server du än väljer.
+\nMen för din bekvämlighet har vi gjort det enkelt att skapa ett konto på conversations.im; en leverantör som är speciellt lämpad för användning med Conversations.</string>
+    <string name="magic_create_text_on_x">Du har blivit inbjuden till %1$s. Vi guidar dig genom processen för att skapa ett konto.
+\nNär du väljer %1$s som leverantör kommer du att kunna kommunicera med användare av andra leverantörer genom att ge dem din fullständiga XMPP-adress.</string>
 </resources>
