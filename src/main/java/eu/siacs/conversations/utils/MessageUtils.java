@@ -45,7 +45,7 @@ public class MessageUtils {
 
     private static final Pattern LTR_RTL = Pattern.compile("(\\u200E[^\\u200F]*\\u200F){3,}");
 
-    private static final String EMPTY_STRING = "";
+    public static final String EMPTY_STRING = "";
 
     public static String prepareQuote(Message message) {
         final StringBuilder builder = new StringBuilder();

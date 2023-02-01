@@ -2452,12 +2452,14 @@ public class ConversationFragment extends XmppFragment
         this.binding.textSendButton.setContentDescription(
                 activity.getString(R.string.send_message_to_x, conversation.getName()));
         this.binding.textinput.setKeyboardListener(null);
-        this.binding.textinput.setText("");
         final boolean participating =
                 conversation.getMode() == Conversational.MODE_SINGLE
                         || conversation.getMucOptions().participating();
         if (participating) {
-            this.binding.textinput.append(this.conversation.getNextMessage());
+            this.binding.textinput.setText(this.conversation.getNextMessage());
+            this.binding.textinput.setSelection(this.binding.textinput.length());
+        } else {
+            this.binding.textinput.setText(MessageUtils.EMPTY_STRING);
         }
         this.binding.textinput.setKeyboardListener(this);
         messageListAdapter.updatePreferences();
