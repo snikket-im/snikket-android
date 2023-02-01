@@ -83,8 +83,8 @@
     <string name="preparing_image">Preparazione per l\'invio dell\'immagine</string>
     <string name="preparing_images">Preparazione per l\'invio delle immagini</string>
     <string name="sharing_files_please_wait">Condivisione file. Attendere prego…</string>
-    <string name="action_clear_history">Pulisci la cronologia</string>
-    <string name="clear_conversation_history">Pulisci la cronologia della conversazione</string>
+    <string name="action_clear_history">Svuota la cronologia</string>
+    <string name="clear_conversation_history">Svuota la cronologia della conversazione</string>
     <string name="clear_histor_msg">Vuoi eliminare tutti i messaggi in questa conversazione?\n\n<b>Attenzione:</b> ciò non influenzerà i messaggi salvati su altri dispositivi o server.</string>
     <string name="delete_file_dialog">Elimina file</string>
     <string name="delete_file_dialog_msg">Sei sicuro di voler eliminare questo file?\n\n<b>Attenzione:</b> non verranno eliminate copie di questo file memorizzate in altri dispositivi o server. </string>
@@ -363,7 +363,7 @@
     <string name="account_image_description">Avatar del profilo</string>
     <string name="copy_omemo_clipboard_description">Copia impronta OMEMO negli appunti</string>
     <string name="regenerate_omemo_key">Rigenera chiave OMEMO</string>
-    <string name="clear_other_devices">Pulisci dispositivi</string>
+    <string name="clear_other_devices">Elimina dispositivi</string>
     <string name="clear_other_devices_desc">Sei sicuro di voler rimuovere tutti gli altri dispositivi dall\'annuncio OMEMO? La prossima volta che si connetteranno si riannunceranno, ma potrebbero non ricevere i messaggi inviati nel frattempo.</string>
     <string name="error_no_keys_to_trust_server_error">Non ci sono chiavi utilizzabili per questo contatto.\nRicezione di nuove chiavi dal server non riuscita. Forse qualcosa non va con il server del tuo contatto?</string>
     <string name="error_no_keys_to_trust_presence">Non ci sono chiavi utilizzabili per questo contatto.\nAssicurati di avere reciprocamente la sottoscrizione sulla presenza.</string>
