@@ -36,11 +36,12 @@
                         android:layout_height="wrap_content"
                         android:padding="@dimen/card_padding_regular">
 
-                        <QuickContactBadge
+                        <com.makeramen.roundedimageview.RoundedImageView
                             android:id="@+id/details_contact_badge"
                             android:layout_width="@dimen/avatar_on_details_screen_size"
                             android:layout_height="@dimen/avatar_on_details_screen_size"
                             android:layout_alignParentTop="true"
+                            app:riv_corner_radius="8dp"
                             android:scaleType="centerCrop" />
 
                         <LinearLayout
