@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.12.2
+
+* Increase corner radius on profile pictures
+
 ### Version 2.12.1
 
 * Fix crash in UnifiedPush Distributor
