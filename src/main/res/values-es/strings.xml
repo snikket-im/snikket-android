@@ -126,10 +126,10 @@
     <string name="pref_notification_sound_summary">Sonido de notificación para nuevos mensajes</string>
     <string name="pref_call_ringtone_summary">Tono para las nuevas llamadas</string>
     <string name="pref_notification_grace_period">Periodo de gracia</string>
-    <string name="pref_notification_grace_period_summary">El tiempo que se silencian las notificaciones tras detectar actividad en otro de tus dispositivos.</string>
+    <string name="pref_notification_grace_period_summary">El tiempo que se silencian las notificaciones después de detectar actividad en uno de sus otros dispositivos.</string>
     <string name="pref_advanced_options">Avanzado</string>
     <string name="pref_never_send_crash">Nunca informar de errores</string>
-    <string name="pref_never_send_crash_summary">Al enviar informes de fallas, ayudará a un mayor desarrollo</string>
+    <string name="pref_never_send_crash_summary">Al enviar los detalles sobre el error, ayudará al desarrollo</string>
     <string name="pref_confirm_messages">Confirmar mensajes</string>
     <string name="pref_confirm_messages_summary">Permitir a tus contactos saber cuando has recibido y leído sus mensajes</string>
     <string name="pref_prevent_screenshots">Impedir capturas de pantalla</string>
@@ -701,7 +701,7 @@
     <string name="message">Mensaje</string>
     <string name="private_messages_are_disabled">Los mensajes privados están deshabilitados</string>
     <string name="huawei_protected_apps">Aplicaciones protegidas</string>
-    <string name="huawei_protected_apps_summary">Para continuar recibiendo notificaciones, incluso cuando la pantalla está apagada, debe agregar Conversaciones a la lista de aplicaciones protegidas.</string>
+    <string name="huawei_protected_apps_summary">Para seguir recibiendo notificaciones, aunque la pantalla esté apagada, tienes que añadir Conversaciones a la lista de aplicaciones protegidas.</string>
     <string name="mtm_accept_cert">¿Aceptar certificado desconocido?</string>
     <string name="mtm_trust_anchor">El certificado del servidor no está firmado por una Autoridad Certificadora conocida.</string>
     <string name="mtm_accept_servername">¿Aceptar nombre del servidor no coincidente?</string>
@@ -851,7 +851,7 @@
     <string name="ebook">e-book</string>
     <string name="video_original">Original (sin comprimir)</string>
     <string name="open_with">Abrir con…</string>
-    <string name="set_profile_picture">Foto de perfil de las conversaciones</string>
+    <string name="set_profile_picture">Foto del perfil de conversaciones</string>
     <string name="choose_account">Elige una cuenta</string>
     <string name="restore_backup">Restaurar copia de respaldo</string>
     <string name="restore">Restaurar</string>
