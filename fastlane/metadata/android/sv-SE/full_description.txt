@@ -1,0 +1,39 @@
+Lättanvänd, pålitlig och batterivänlig. Med inbyggt stöd för bilder, gruppchatt och totalsträckskryptering (end-to-end-kryptering).
+
+Designprinciper:
+
+* Vara så snygg och lättanvänd som möjligt utan att offra säkerhet eller personlig integritet
+* Bygga på väletablerade existerande protokoll
+* Inte kräva ett Google-konto eller specifikt Google Cloud Messaging (GCM)
+* Kräva så få behörigheter som möjligt
+
+Funktioner:
+
+* Totalsträckskryptering (end-to-end-kryptering) med antingen <a href="http://conversations.im/omemo/">OMEMO</a> eller <a href="http://openpgp.org/about/">OpenPGP</a>
+* Skicka och ta emot bilder
+* Krypterade ljud- och bildsamtal (DTLS-SRTP)
+* Intuitivt användargränssnitt som följder Androids designriktlinjer
+* Bilder eller avatarer för dina kontakter
+* Synkroniserar med din skrivbordsklient
+* Konferenser (med stöd för bokmärken)
+* Integration med adressboken
+* Stöd för flera konton, med delan inkorg
+* Väldigt liten påverkan på batteriets livstid
+
+Med Conversations kan du lätt skapa ett konto på den fria servern conversations.im. Men Conversations fungerar med vilken annan XMPP-server som helst. Många XMPP-servrar drivs av volontärer och är gratis att använda.
+
+XMPP-funktioner:
+
+Conversations fungerar med alla XMPP-servrar. Men XMPP är ett utbyggbart protokoll. Dessa tillägg är också standardiserade i så kallade XEP’s. Conversations stödjer vissa av dessa tillägg för att göra den övergripande användarupplevelsen bättre. Det kan hända att din XMPP-server inte har stöd för dessa tillägg. För att få ut det mesta av Conversations bör du överväga att antingen byta till en XMPP-server som har stöd, eller - ännu bättre - kör din egen XMPP-server för dig och dina vänner! 
+
+De XEP-tillägg som stöds är:
+
+* XEP-0065: SOCKS5 Bytestreams (or mod_proxy65). Används för filöverföring om båda parter är bakom en brandvägg (NAT).
+* XEP-0163: Personal Eventing Protocol för avatarer
+* XEP-0191: Blocking command låter dig svartlista spammare eller blocka kontakter utan att ta bort dem
+* XEP-0198: Stream Management låter XMPP att klara av mindre nätverksavbrott och förändringar i den underliggande TCP-anslutningen
+* XEP-0280: Message Carbons som automatiskt synkar meddelanden till din skrivbordsklient och på så viss gör det möjligt att växla sömlöst från din mobil till skrivbordsklient och tillbaka inom en och samma konversation
+* XEP-0237: Roster Versioning för att spara bandbredd vid dåliga mobilanslutningar
+* XEP-0313: Message Archive Management synkronisera meddelandehistorik med server. Läs meddelanden som sänts medan Conversations var off line.
+* XEP-0352: Client State Indication låter servern veta om Conversations är körs i bakgrunden eller inte. Det gör att servern kan spara bandbredd genom att inte skicka oviktiga paket.
+* XEP-0363: HTTP File Upload låter dig dela filer i konferenser med offline-kontakter. Det kräver ett tillägg på din server.
