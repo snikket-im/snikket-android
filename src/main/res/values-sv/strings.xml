@@ -86,7 +86,9 @@
     <string name="clear_conversation_history">Rensa konversationshistorik</string>
     <string name="clear_histor_msg">Vill du radera alla meddelanden i den här konversationen?\n\n<b>Varning:</b> Det här påverkar inte meddelanden som finns lagrade på andra enheter eller servrar.</string>
     <string name="delete_file_dialog">Ta bort fil</string>
-    <string name="delete_file_dialog_msg">Är du säker på att du vill ta bort den här filen?\n\n<b>Varning:</b> Den här åtgärden kommer inte att ta bort kopior av den här filen som finns lagrad på andra enheter eller servrar.</string>
+    <string name="delete_file_dialog_msg">Är du säker på att du vill ta bort den här filen\?
+\n
+\n<b>Varning:</b> Den här åtgärden kommer inte att ta bort kopior av den här filen som finns lagrad på andra enheter eller servrar. </string>
     <string name="also_end_conversation">Stäng denna konversation efteråt</string>
     <string name="choose_presence">Välj enhet</string>
     <string name="send_unencrypted_message">Skicka okrypterat meddelande</string>
@@ -97,7 +99,7 @@
     <string name="send_pgp_message">Skicka OpenPGP-krypterat meddelande</string>
     <string name="your_nick_has_been_changed">Nytt smeknamn används</string>
     <string name="send_unencrypted">Skicka okrypterat</string>
-    <string name="decryption_failed">Avkryptering misslyckades. Du har kanske kanske inte rätt privat nyckel.</string>
+    <string name="decryption_failed">Dekrypteringen misslyckades. Du har kanske inte rätt privat nyckel.</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="openkeychain_required_long"><![CDATA[%1$s använder <b>OpenKeychain</b> för att kryptera och avkryptera dina publika nycklar.<br><br>Programmet är licensierat under GPLv3+ och finns tillgänglig via F-Droid and Google Play.<br><br><small>(Var god och starta om %1$s efter installationen.)</small>]]></string>
     <string name="restart">Starta om</string>
@@ -126,7 +128,7 @@
     <string name="pref_notification_grace_period_summary">Tidsgräns för hur länge notiser ska tystas efter att aktivitet har upptäckts på en av dina andra enheter.</string>
     <string name="pref_advanced_options">Avancerat</string>
     <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
-    <string name="pref_never_send_crash_summary">Genom att skicka in stack traces hjälper du utvecklingen</string>
+    <string name="pref_never_send_crash_summary">Genom att skicka in felrapporter hjälper du utvecklingen</string>
     <string name="pref_confirm_messages">Bekräfta meddelanden</string>
     <string name="pref_confirm_messages_summary">Låt dina kontakter veta när du har mottagit och läst deras meddelanden</string>
     <string name="pref_prevent_screenshots">Förhindra skärmdumpar</string>
@@ -148,7 +150,9 @@
     <string name="error_compressing_image">Det gick inte att konvertera bildfilen</string>
     <string name="error_file_not_found">Filen hittas ej</string>
     <string name="error_io_exception">Generellt I/O-fel. Du kanske fick slut på plats?</string>
-    <string name="error_security_exception_during_image_copy">Applikationen som du använde för att välja den här bilden  tillhandahöll inte tillräckligt med rättigheter för att läsa filen.\n\n<small>Var god och använd en annan filhanterare för att välja en bild.</small></string>
+    <string name="error_security_exception_during_image_copy">Applikationen som du använde för att välja den här bilden tillhandahöll inte tillräckligt med rättigheter för att läsa filen.
+\n
+\n<small>Använd en annan filhanterare för att välja en bild</small>.</string>
     <string name="error_security_exception">Applikationen du använde för att dela den här filen tillhandahöll inte tillräckligt med behörigheter.</string>
     <string name="account_status_unknown">Okänd</string>
     <string name="account_status_disabled">Tillfälligt inaktiverad</string>
@@ -221,7 +225,7 @@
     <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-fingeravtryck (meddelandets ursprung)</string>
     <string name="other_devices">Andra enheter</string>
     <string name="trust_omemo_fingerprints">Lita på OMEMO-fingeravtryck</string>
-    <string name="fetching_keys">Hämtar nycklar...</string>
+    <string name="fetching_keys">Hämtar nycklar …</string>
     <string name="done">Klar</string>
     <string name="decrypt">Avkryptera</string>
     <string name="bookmarks">Bokmärken</string>
@@ -247,7 +251,7 @@
     <string name="could_not_destroy_channel">Det gick inte att ta bort kanalen</string>
     <string name="action_edit_subject">Redigera ämnet för gruppchatten</string>
     <string name="topic">Ämne</string>
-    <string name="joining_conference">Går med i gruppchatt...</string>
+    <string name="joining_conference">Går med i gruppchatt …</string>
     <string name="leave">Lämna</string>
     <string name="contact_added_you">Kontakten lade till dig i sin kontaktlista</string>
     <string name="add_back">Addera tillbaka</string>
@@ -419,9 +423,9 @@
     <string name="sending_x_file">Skickar %s</string>
     <string name="offering_x_file">Erbjuder %s</string>
     <string name="hide_offline">Dölj ej anslutna</string>
-    <string name="contact_is_typing">%s skriver...</string>
+    <string name="contact_is_typing">%s skriver …</string>
     <string name="contact_has_stopped_typing">%s har slutat skriva</string>
-    <string name="contacts_are_typing">%s skriver...</string>
+    <string name="contacts_are_typing">%s skriver …</string>
     <string name="contacts_have_stopped_typing">%s har slutat skriva</string>
     <string name="pref_chat_states">Skriv-notifieringar</string>
     <string name="pref_chat_states_summary">Låt dina kontakter veta när du skriver meddelande till dem</string>
@@ -479,7 +483,7 @@
     <string name="unable_to_parse_certificate">Det gick inte att analysera certifikatet</string>
     <string name="mam_prefs">Arkiveringsinställningar</string>
     <string name="server_side_mam_prefs">Arkiveringsinställningar på servern</string>
-    <string name="fetching_mam_prefs">Hämtar arkiveringsinställningar, vänta...</string>
+    <string name="fetching_mam_prefs">Hämtar arkiveringsinställningar, vänta …</string>
     <string name="unable_to_fetch_mam_prefs">Det gick inte att hämta arkiveringsinställningar</string>
     <string name="captcha_required">CAPTCHA behövs</string>
     <string name="captcha_hint">Skriv i texten från bilden ovan</string>
@@ -522,7 +526,9 @@
     <string name="large_images_only">Endast stora bilder</string>
     <string name="battery_optimizations_enabled">Batterioptimeringar aktiverade</string>
     <string name="battery_optimizations_enabled_explained">Din enhet använder kraftiga batterioptimeringar för %1$s, vilket kan leda till försenade aviseringar eller till och med förlust av meddelanden.\nVi rekommenderar att du inaktiverar dem.</string>
-    <string name="battery_optimizations_enabled_dialog">Din enhet använder kraftiga batterioptimeringar för %1$s, vilket kan leda till försenade aviseringar eller till och med förlust av meddelanden.\nDu kommer nu att bli ombedd att inaktivera dem.</string>
+    <string name="battery_optimizations_enabled_dialog">Din enhet använder kraftiga batterioptimeringar för %1$s, vilket kan leda till försenade aviseringar eller till och med förlust av meddelanden.
+\n
+\nDu kommer nu att bli ombedd att inaktivera dem.</string>
     <string name="disable">Deaktivera</string>
     <string name="selection_too_large">The valda området är för stort</string>
     <string name="no_accounts">(Inget konto aktiverat)</string>
@@ -533,10 +539,11 @@
     <string name="this_account_is_disabled">Du har deaktiverat detta konto</string>
     <string name="security_error_invalid_file_access">Säkerhetsfel: Ogiltig filåtkomst!</string>
     <string name="no_application_to_share_uri">Ingen applikation hittades för att dela URI</string>
-    <string name="share_uri_with">Dela URI med...</string>
+    <string name="share_uri_with">Dela URI med …</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy är en spin-off av den populära XMPP-klienten Conversations med automatisk kontaktupptäckt.<br><br>Du registrerar dig med ditt telefonnummer och Quicksy kommer automatiskt – baserat på telefonnumren i din adressbok – att föreslå möjliga kontakter till dig.<br><br>Genom att registrera dig godkänner du vår <a href=\"https://quicksy.im/#privacy\">integritetspolicy</a>.]]></string>
     <string name="agree_and_continue">Acceptera och gå vidare</string>
-    <string name="magic_create_text">En guide har skapats för kontoskapande på conversations.im.¹\nNär du väljer conversations.im som leverantör kommer du att kunna kommunicera med användare av andra leverantörer genom att ge dem din fullständiga XMPP-adress.</string>
+    <string name="magic_create_text">En guide har skapats för kontoskapande på conversations.im.
+\nNär du väljer conversations.im som leverantör kommer du att kunna kommunicera med användare av andra leverantörer genom att ge dem din fullständiga XMPP-adress.</string>
     <string name="your_full_jid_will_be">Din fullständiga XMPP-adress kommer att vara: %s</string>
     <string name="create_account">Skapa konto</string>
     <string name="use_own_provider">Använd min egen leverantör</string>
@@ -554,7 +561,7 @@
     <string name="registration_please_wait">Registreringfel: Försök igen senare</string>
     <string name="registration_password_too_weak">Registreringsfel: Lösenordet är för svagt</string>
     <string name="choose_participants">Välj deltagare</string>
-    <string name="creating_conference">Skapar gruppchatt...</string>
+    <string name="creating_conference">Skapar gruppchatt …</string>
     <string name="invite_again">Bjud in igen</string>
     <string name="gp_disable">Deaktivera</string>
     <string name="gp_short">Kort</string>
@@ -590,7 +597,7 @@
     <string name="pref_delete_omemo_identities">Ta bort OMEMO identiteter</string>
     <string name="pref_delete_omemo_identities_summary">Återskapa dina OMEMO-nycklar. Alla dina kontakter måste verifiera dig igen. Använd endast det här som en sista utväg.</string>
     <string name="delete_selected_keys">Ta bort valda nycklar</string>
-    <string name="error_publish_avatar_offline">Du måste vara ansluten för att publicera din avatarbild</string>
+    <string name="error_publish_avatar_offline">Du måste vara ansluten för att publicera din avatarbild.</string>
     <string name="show_error_message">Visa felmeddelande</string>
     <string name="error_message">Felmeddelande</string>
     <string name="data_saver_enabled">Databesparing</string>
@@ -682,7 +689,7 @@
     <string name="message">Meddelande</string>
     <string name="private_messages_are_disabled">Privata meddelanden är inaktiverade</string>
     <string name="huawei_protected_apps">Skyddade applikationer</string>
-    <string name="huawei_protected_apps_summary">För att fortsätta ta emot aviseringar, även när skärmen är avstängd, måste du lägga till Conversations i listan över skyddade applikationer.</string>
+    <string name="huawei_protected_apps_summary">För att fortsätta ta emot aviseringar även när skärmen är avstängd, måste du lägga till Conversations i listan över skyddade applikationer.</string>
     <string name="mtm_accept_cert">Godkänn okänt certifikat?</string>
     <string name="mtm_trust_anchor">Servercertifikatet är inte signerat av en känd certifikatutfärdare.</string>
     <string name="mtm_accept_servername">Acceptera servernamn som inte matchar?</string>
@@ -728,7 +735,7 @@
     <string name="title_activity_show_location">Visa plats</string>
     <string name="share">Dela</string>
     <string name="unable_to_start_recording">Det gick inte att starta inspelningen</string>
-    <string name="please_wait">Var god dröj...</string>
+    <string name="please_wait">Var god dröj …</string>
     <string name="no_microphone_permission">Ge %1$s tillgång till mikrofonen</string>
     <string name="search_messages">Söka i meddelanden</string>
     <string name="gif">GIF</string>
@@ -772,7 +779,7 @@
     <string name="back">tillbaka</string>
     <string name="yes">Ja</string>
     <string name="no">Nej</string>
-    <string name="verifying">Bekräftar...</string>
+    <string name="verifying">Bekräftar …</string>
     <string name="unknown_api_error_network">Okänt nätverksfel.</string>
     <string name="too_many_attempts">För många försök</string>
     <string name="the_app_is_out_of_date">Du använder en föråldrad version av denna app.</string>
@@ -783,7 +790,7 @@
     <string name="install_orbot">Installera Orbot</string>
     <string name="start_orbot">Starta Orbot</string>
     <string name="ebook">e-bok</string>
-    <string name="open_with">Öppna med...</string>
+    <string name="open_with">Öppna med …</string>
     <string name="set_profile_picture">Konversationens profilbild</string>
     <string name="choose_account">Välj konto</string>
     <string name="restore_backup">Återställa säkerhetskopiering</string>
@@ -801,7 +808,7 @@
     <string name="please_enter_name">Vänligen ange ett namn på kanalen</string>
     <string name="please_enter_xmpp_address">Ange en XMPP-adress</string>
     <string name="this_is_an_xmpp_address">Detta är en XMPP-adress. Ange ett namn.</string>
-    <string name="creating_channel">Skapar publik gruppkonversation...</string>
+    <string name="creating_channel">Skapar publik gruppkonversation …</string>
     <string name="channel_already_exists">Denna kanal finns redan</string>
     <string name="joined_an_existing_channel">Du har gått med i en befintlig kanal</string>
     <string name="unable_to_set_channel_configuration">Det gick inte att spara kanalkonfigurationen</string>
@@ -837,7 +844,7 @@
     <string name="account_already_setup">Det här kontot har redan konfigurerats</string>
     <string name="please_enter_password">Var god ange lösenordet för det här kontot</string>
     <string name="unable_to_perform_this_action">Det gick inte att utföra den här åtgärden</string>
-    <string name="open_join_dialog">Anslut till publik gruppkonversation...</string>
+    <string name="open_join_dialog">Anslut till publik gruppkonversation …</string>
     <string name="sharing_application_not_grant_permission">Delnings-appen gav inte behörighet till att komma åt den här filen.</string>
     <string name="group_chats_and_channels"><![CDATA[Gruppkonversationer & Kanaler]]></string>
     <string name="jabber_network">jabber.network</string>
@@ -910,4 +917,96 @@
     <string name="no_application_found">Ingen applikation hittades</string>
     <string name="invite_to_app">Bjud in till Conversations</string>
     <string name="no_xmpp_adddress_found">Ingen XMPP-adress hittades</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d missat samtal från %2$s</item>
+        <item quantity="other">%1$d missade samtal från %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d missat samtal</item>
+        <item quantity="other">%d missade samtal</item>
+    </plurals>
+    <string name="conference_destroyed">Denna gruppchatt har förstörts</string>
+    <string name="pref_start_search_summary">Öppna tangentbordet och placera markören i sökfältet vid \"Starta konversation\"-sidan</string>
+    <string name="foreground_service_channel_description">Denna notifikationskategori används för att visa en permanent notifikation som visar att %1$s är igång.</string>
+    <string name="pref_message_notification_settings">Inställningar för meddelandenotifikationer</string>
+    <string name="pref_incoming_call_notification_settings">Inställningar för notifikationer om inkommande samtal</string>
+    <string name="pref_more_notification_settings_summary">Vikt, ljud, vibration</string>
+    <string name="unable_to_establish_secure_connection">Kunde inte upprätta en säker anslutning.</string>
+    <string name="invalid_user_input">Ogiltig inmatning</string>
+    <string name="temporarily_unavailable">Tillfälligt otillgänglig. Försök igen om en stund.</string>
+    <string name="no_network_connection">Ingen kontakt med nätverket.</string>
+    <string name="try_again_in_x">Prova igen om %s</string>
+    <string name="requesting_sms">Begär sms …</string>
+    <string name="incorrect_pin">Pinkoden är fel.</string>
+    <string name="pin_expired">Pinkoden som vi har skickat dig har utgått.</string>
+    <string name="unable_to_find_server">Kunde inte hitta servern.</string>
+    <string name="possible_pin">Klistrade automatiskt in pinkod från urklipp.</string>
+    <string name="please_enter_pin">Ange din sexsiffriga pinkod.</string>
+    <string name="abort_registration_procedure">Är du säker på att du vill avbryta registreringen\?</string>
+    <string name="please_enter_your_phone_number">Ange ditt telefonnummer.</string>
+    <string name="search_countries">Sök länder</string>
+    <string name="verify_x">Verifiera %s</string>
+    <string name="we_have_sent_you_another_sms">Vi har sänt dig ett annat SMS med en sexsiffrig kod.</string>
+    <string name="please_enter_pin_below">Enge din sexsifftiga pinkod nedan.</string>
+    <string name="resend_sms">Skicka SMS igen</string>
+    <string name="resend_sms_in">Skicka SMS igen (%s)</string>
+    <string name="wait_x">Vänta (%s)</string>
+    <string name="we_will_be_verifying">Vi kommer att verifiera telefonnumret<br/><br/><b>%s</b><br/><br/>Är det okej, eller vill du ändra numret\?</string>
+    <string name="not_a_valid_phone_number">%s är inte ett giltigt telefonnummer.</string>
+    <string name="security_violation_not_attaching_file">Filen utelämnad av säkerhetsskäl.</string>
+    <string name="pref_video_compression_summary">Lägre kvalitet ger mindre filer</string>
+    <string name="feature_not_implemented">Funktionen är inte implementerad</string>
+    <string name="invalid_country_code">Felaktig landskod</string>
+    <string name="rate_limited">Du är begränsad</string>
+    <string name="no_name_set_instructions">Använd redigera-knappen för att ange ditt namn.</string>
+    <string name="no_market_app_installed">Ingen butiksapp installerad.</string>
+    <string name="group_chat_will_make_your_jabber_id_public">Den här kanalen gör din XMPP-adress publik</string>
+    <string name="video_original">Original (okomprimerad)</string>
+    <string name="unable_to_decrypt_backup">Kunde inte dekryptera säkerhetskopian. Är lösenordet rätt\?</string>
+    <string name="rtp_state_content_add_video">Byta till videosamtal\?</string>
+    <string name="rtp_state_content_add">Lägg till ytterligare spår\?</string>
+    <string name="no_active_accounts_support_this">Inga aktiva konton har stöd för denna funktion</string>
+    <string name="backup_started_message">Säkerhetskopieringen har startat. Du får en notifikation när den är färdig.</string>
+    <string name="unable_to_enable_video">Video kan inte aktiveras.</string>
+    <string name="plain_text_document">Textdokument</string>
+    <string name="account_status_temporary_auth_failure">Tillfälligt autentiseringsfel</string>
+    <string name="delete_avatar">Radera avatar</string>
+    <string name="audio_video_disabled_tor">Samtal är inaktiverat när Tor används</string>
+    <string name="switch_to_video">Växla till video</string>
+    <string name="reject_switch_to_video">Avböj förfrågan om att växla till video</string>
+    <string name="unified_push_distributor">UnifiedPush-distributör</string>
+    <string name="pref_up_push_account_title">XMPP-konto</string>
+    <string name="pref_up_push_account_summary">Kontot genom vilket push-meddelanden tas emot.</string>
+    <string name="pref_up_push_server_title">Push-server</string>
+    <string name="pref_up_push_server_summary">En användarvald push-server för att vidarebefordra push-meddelanden via XMPP till din enhet.</string>
+    <string name="no_account_deactivated">Ingen (avaktiverad)</string>
+    <string name="logged_in_with_another_device">Det här telefonnumret är inloggat på en annan enhet.</string>
+    <string name="enter_your_name_instructions">Ange ditt namn så att folk som inte har dig i sin adressbok vet vem du är.</string>
+    <string name="unable_to_connect_to_server">Kunde inte kontakta servern.</string>
+    <string name="something_went_wrong_processing_your_request">Något blev fel när din förfrågan hanterades.</string>
+    <string name="unknown_api_error_response">Okänt svar från servern.</string>
+    <string name="we_have_sent_you_an_sms_to_x">Vi har sänt dig ett SMS till <b>%s</b>.</string>
+    <string name="enter_country_code_and_phone_number">Quicksy skickar ett SMS för att bekräfta ditt telefonnummer (operatörsavgifter kan tillkomma). Ange din landskod och ditt telefonnumer:</string>
+    <string name="missed_calls_channel_name">Missade samtal</string>
+    <string name="pref_use_share_location_plugin_summary">Använd Dela plats-plugin istället för den inbyggda kartan</string>
+    <string name="error_channel_description">Denna notifikationskategori används för att visa en notifikation om det är problem med att kontakta ett konto.</string>
+    <string name="silent_messages_channel_description">Denna notifikationsgrupp används för att visa notifikationer som inte ska utlösa något ljud, till exempel när man är aktiv på en annan enhet (respitperiod).</string>
+    <string name="account_status_incompatible_client">Inkomatibel klient</string>
+    <string name="pref_autojoin">Synkronisera bokmärken</string>
+    <string name="conference_technical_problems">Du lämnade gruppchatten av tekniska skäl</string>
+    <string name="multimedia_file">multimedia-fil</string>
+    <string name="restore_warning">Använd inte funktionen för återställning av säkerhetskopia för att försöka klona (köra samtidigt) en installation. Återställning av en säkerhetskopia är avsedd för migreringar eller om du har tappat bort den ursprungliga enheten.</string>
+    <string name="channel_discover_opt_in_message">Upptäck kanaler använder en tredjepartstjänst som heter &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Om du använder denna funktion kommer din IP-adress och din sökfråga att överföras till den tjänsten. Läs deras &lt;a href=https://search.jabber.network/privacy&gt;integritetspolicy&lt;/a&gt; för att få veta mer.</string>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d missat samtal från %2$d kontakt</item>
+        <item quantity="other">%1$d missade samtal från %2$d kontakter</item>
+    </plurals>
+    <plurals name="some_messages_could_not_be_delivered">
+        <item quantity="one">Ett meddelande kunde inte levereras</item>
+        <item quantity="other">Några meddelanden kunde inte levereras</item>
+    </plurals>
+    <string name="unable_to_parse_invite">Kunde inte tolka inbjudan</string>
+    <string name="server_does_not_support_easy_onboarding_invites">Servern har inte stöd för att skapa inbjudningar</string>
+    <string name="account_registrations_are_not_supported">Det finns inget stöd för att registrera konto</string>
+    <string name="pref_autojoin_summary">Sätt \"autojoin\"-flagga när du går med i eller lämnar en MUC och reagerar på ändringar gjorda av andra klienter.</string>
 </resources>
