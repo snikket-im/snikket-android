@@ -128,7 +128,7 @@
     <string name="pref_notification_grace_period_summary">Tidsgräns för hur länge notiser ska tystas efter att aktivitet har upptäckts på en av dina andra enheter.</string>
     <string name="pref_advanced_options">Avancerat</string>
     <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
-    <string name="pref_never_send_crash_summary">Genom att skicka in felrapporter hjälper du utvecklingen</string>
+    <string name="pref_never_send_crash_summary">Genom att skicka in kraschrapporter hjälper du den pågående utvecklingen av Conversations</string>
     <string name="pref_confirm_messages">Bekräfta meddelanden</string>
     <string name="pref_confirm_messages_summary">Låt dina kontakter veta när du har mottagit och läst deras meddelanden</string>
     <string name="pref_prevent_screenshots">Förhindra skärmdumpar</string>
@@ -689,7 +689,7 @@
     <string name="message">Meddelande</string>
     <string name="private_messages_are_disabled">Privata meddelanden är inaktiverade</string>
     <string name="huawei_protected_apps">Skyddade applikationer</string>
-    <string name="huawei_protected_apps_summary">För att fortsätta ta emot aviseringar även när skärmen är avstängd, måste du lägga till Conversations i listan över skyddade applikationer.</string>
+    <string name="huawei_protected_apps_summary">För att fortsätta ta emot aviseringar även när skärmen är avstängd, måste du lägga till Conversations i listan över skyddade appar.</string>
     <string name="mtm_accept_cert">Godkänn okänt certifikat?</string>
     <string name="mtm_trust_anchor">Servercertifikatet är inte signerat av en känd certifikatutfärdare.</string>
     <string name="mtm_accept_servername">Acceptera servernamn som inte matchar?</string>
@@ -791,7 +791,7 @@
     <string name="start_orbot">Starta Orbot</string>
     <string name="ebook">e-bok</string>
     <string name="open_with">Öppna med …</string>
-    <string name="set_profile_picture">Konversationens profilbild</string>
+    <string name="set_profile_picture">Conversations-profilbild</string>
     <string name="choose_account">Välj konto</string>
     <string name="restore_backup">Återställa säkerhetskopiering</string>
     <string name="restore">Återställa</string>
