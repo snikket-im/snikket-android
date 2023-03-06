@@ -765,7 +765,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                         if (QuickConversationsService.isConversations()) {
                             confirmButtonText = R.string.next;
                         } else {
-                            confirmButtonText = R.string.confirm;
+                            confirmButtonText = R.string.agree_and_continue;
                         }
                         builder.setPositiveButton(confirmButtonText, (dialog, which) -> {
                             if (requestPermission.compareAndSet(false, true)) {
