@@ -31,16 +31,9 @@
     <string name="minutes_ago">%d мин. назад</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d непрочитанная беседа</item>
-
-    
         <item quantity="few">%d непрочитанные беседы</item>
-
-    
         <item quantity="many">%d непрочитанных бесед</item>
-
-    
         <item quantity="other">%d непрочитанных бесед</item>
-
     </plurals>
     <string name="sending">отправка…</string>
     <string name="message_decrypting">Расшифровка сообщения. Подождите…</string>
@@ -991,4 +984,10 @@
     <string name="backup_started_message">Резервное копирование было начато. Вы получите уведомление, как только оно будет завершено. </string>
     <string name="unable_to_enable_video">Невозможно включить видео.</string>
     <string name="plain_text_document">Текстовые данные</string>
-    </resources>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d пропущеный звонок</item>
+        <item quantity="few">%d пропущенных звонков</item>
+        <item quantity="many">%d пропущеныыз звонков</item>
+        <item quantity="other">%d пропущеныыз звонков</item>
+    </plurals>
+</resources>
