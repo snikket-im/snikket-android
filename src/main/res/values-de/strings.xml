@@ -520,7 +520,9 @@
     <string name="no_camera_permission">%1$s den Zugriff auf die Kamera gewähren</string>
     <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
     <string name="sync_with_contacts_long">%1$s möchte die Erlaubnis, auf deine Kontakte zuzugreifen, um sie mit deiner XMPP-Kontaktliste abzugleichen.\nDadurch werden die vollständigen Namen und Profilbilder deiner Kontakte angezeigt.\n\n%1$s liest nur dein Adressbuch und gleicht es lokal ab, ohne dass etwas auf deinen Server hochgeladen wird.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy benötigt Zugriff auf die Telefonnummern deiner Kontakte, um Vorschläge für mögliche Kontakte zu machen, die bereits bei Quicksy sind.<br><br>Wir werden keine Kopie dieser Telefonnummern speichern.\n\nFür weitere Informationen lies unsere <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a>.<br><br>Du wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.]]></string>
+    <string name="sync_with_contacts_quicksy">Quicksy benötigt Zugriff auf die Telefonnummern deiner Kontakte, um Vorschläge für mögliche Kontakte zu machen, die bereits bei Quicksy sind.&lt;br&gt;&lt;br&gt;Wir werden keine Kopie dieser Telefonnummern speichern.
+\n
+\nFür weitere Informationen lies unsere &lt;a href=https://quicksy.im/privacy.htm&gt;Datenschutzerklärung&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Du wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.</string>
     <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
     <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich erwähnt werde</string>
     <string name="notify_never">Benachrichtigungen deaktiviert</string>
@@ -543,7 +545,7 @@
     <string name="security_error_invalid_file_access">Sicherheitsfehler: Dateizugriff nicht erlaubt!</string>
     <string name="no_application_to_share_uri">Keine App zum Teilen der URI gefunden</string>
     <string name="share_uri_with">Teile URI mit…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy ist ein Ableger des beliebten XMPP-Clients Conversations mit automatischer Kontakterkennung.<br><br>Du registrierst dich mit deiner Telefonnummer und Quicksy wird automatisch auf der Grundlage der Telefonnummern in deinem Adressbuch mögliche Kontakte vorschlagen.<br><br>Mit der Anmeldung erklärst du dich mit unserer <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a> einverstanden.]]></string>
+    <string name="welcome_text_quicksy">Quicksy ist ein Ableger des beliebten XMPP-Clients Conversations mit automatischer Kontakterkennung.&lt;br&gt;&lt;br&gt;Du registrierst dich mit deiner Telefonnummer und Quicksy wird automatisch auf der Grundlage der Telefonnummern in deinem Adressbuch mögliche Kontakte vorschlagen.&lt;br&gt;&lt;br&gt;Mit der Anmeldung erklärst du dich mit unserer &lt;a href=https://quicksy.im/privacy.htm&gt;Datenschutzerklärung&lt;/a&gt; einverstanden.</string>
     <string name="agree_and_continue">Zustimmen und fortfahren</string>
     <string name="magic_create_text">Ein Guide hilft bei der Kontoerstellung auf conversations.im.
 \nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige XMPP-Adresse gibst.</string>
