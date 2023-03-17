@@ -523,7 +523,9 @@
     <string name="no_camera_permission">Permitir a %1$s acceder a la cámara</string>
     <string name="sync_with_contacts">Sincronizar contactos</string>
     <string name="sync_with_contacts_long">%1$s quiere permiso para acceder a tu agenda de contactos y cruzarla con tu lista de contactos de XMPP.\nEsto permitirá mostrar el nombre completo y los avatares de tus contactos.\n\n%1$s solo leerá tu agenda de contactos y la cruzará localmente sin subir nada a tu servidor.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy necesita acceso a los números de teléfonos de tu agenda de contactos para hacerte sugerencias de posibles contactos que ya estén en Quicksy.<br><br>No guardaremos una copia de estos números de teléfono.\n\nPara más información puedes leer nuestra política de privacidad<a href="https://quicksy.im/#privacy">.<br><br>El sistema te preguntará ahora para conceder los permisos de acceso a tus contactos del móvil.]]></string>
+    <string name="sync_with_contacts_quicksy">Quicksy necesita acceder a los números de teléfono de sus contactos para hacer sugerencias sobre posibles contactos que ya están en Quicksy.&lt;br&gt;&lt;br&gt;No almacenaremos una copia de esos números de teléfono. 
+\n
+\nPara obtener más información, lea nuestra &lt;a href=https://quicksy.im/privacy.htm&gt;política de privacidad&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Ahora se le pedirá permiso para acceder a sus contactos.</string>
     <string name="notify_on_all_messages">Notificar para todos los mensajes</string>
     <string name="notify_only_when_highlighted">Notificar solo cuando eres mencionado</string>
     <string name="notify_never">Notificaciones deshabilitadas</string>
@@ -546,7 +548,7 @@
     <string name="security_error_invalid_file_access">Error de seguridad: ¡Acceso a archivo inválido!</string>
     <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
     <string name="share_uri_with">Compartir URI con…</string>
-    <string name="welcome_text_quicksy">Quicksy es un derivado del popular cliente XMPP Conversations con detección automática de contactos.&lt;br&gt;&lt;br&gt;El registro se realiza con tu número de teléfono y Quicksy automáticamente—basado en los teléfonos de tu agenda de contactos—te sugerirá posibles contactos.&lt;br&gt;&lt;br&gt;Registrándote en Quicksy aceptas nuestra &lt;a href=https://quicksy.im/#privacy&gt;política de privacidad&lt;/a&gt;.</string>
+    <string name="welcome_text_quicksy">Quicksy es un derivado del popular cliente XMPP Conversations con detección automática de contactos.&lt;br&gt;&lt;br&gt;El registro se realiza con tu número de teléfono y Quicksy automáticamente—basado en los teléfonos de tu agenda de contactos—te sugerirá posibles contactos.&lt;br&gt;&lt;br&gt;Registrándote en Quicksy aceptas nuestra &lt;a href=https://quicksy.im/privacy.htm&gt;política de privacidad&lt;/a&gt;.</string>
     <string name="agree_and_continue">Aceptar y continuar</string>
     <string name="magic_create_text">Una guía te ayudará en el proceso de creación de la cuenta en conversations.im.
 \nCuando selecciones conversations.im como proveedor podrás comunicarte con usuarios de otros servidores proporcionándoles tu dirección XMPP completa.</string>
