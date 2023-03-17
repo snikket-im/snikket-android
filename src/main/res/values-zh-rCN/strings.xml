@@ -520,7 +520,9 @@
     <string name="no_camera_permission">授予 %1$s 相机访问权限</string>
     <string name="sync_with_contacts">同步联系人</string>
     <string name="sync_with_contacts_long">%1$s想要访问通讯录的权限来将它与你的 XMPP 联系人列表相匹配。\n这会显示你的联系人的完整姓名和头像。\n\n%1$s只会读取你的通讯录并在本地进行匹配，不会将信息上传到你的服务器。</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy可以匹配您的通讯录以确定哪些人已经在使用此应用。<br><br>我们并不储存这些号码。\n\n更多信息请阅读<a href="https://quicksy.im/#privacy">隐私政策</a>。接下来将请求通讯录权限。]]></string>
+    <string name="sync_with_contacts_quicksy">Quicksy 需要访问你联系人的手机号码来做出有关可能已经在使用 Quicksy 的联系人的建议。&lt;br&gt;&lt;br&gt;我们不会存储这些手机号的副本。
+\n
+\n更多信息，请阅读我们的 &lt;a href=https://quicksy.im/privacy.htm&gt;隐私政策&lt;/a&gt;。&lt;br&gt;&lt;br&gt;你不会被要求授予访问手机联系人的权限。</string>
     <string name="notify_on_all_messages">为所有信息显示通知</string>
     <string name="notify_only_when_highlighted">只在被提到时通知</string>
     <string name="notify_never">通知已禁用</string>
@@ -545,7 +547,7 @@
     <string name="security_error_invalid_file_access">安全错误：文件访问无效！</string>
     <string name="no_application_to_share_uri">未找到可以分享此链接的应用</string>
     <string name="share_uri_with">分享链接……</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy是从受欢迎的XMPP客户端对话中分离出来的，具有自动联系人发现功能<br><br>您注册了电话号码，Quicksy就会根据您的通讯录中的电话号码自动为您建议可能的联系人<br><br>签署即表示您同意我们的<a href="https://quicksy.im/#privacy">隐私政策</a>。]]></string>
+    <string name="welcome_text_quicksy">Quicksy 是受欢迎的 XMPP 客户端 Conversation 的衍生作品，能够自动发现联系人。&lt;br&gt;&lt;br&gt;你用你的手机号进行注册，Quicksy 就会根据你通讯录中的电话号码自动建议可能的联系人。&lt;br&gt;&lt;br&gt;注册即表示您同意我们的&lt;a href=https://quicksy.im/#privacy.htm&gt;隐私政策&lt;/a&gt;。</string>
     <string name="agree_and_continue">同意并继续</string>
     <string name="magic_create_text">此向导将为您在conversations.im 上创建一个账户。
 \n您的联系人可以通过您的XMPP完整地址与您聊天。</string>
