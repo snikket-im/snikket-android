@@ -130,7 +130,7 @@
     <string name="pref_notification_grace_period_summary">Długość czasu kiedy powiadomienia są uśpione po wykryciu aktywności na jednym z twoich innych urządzeń.</string>
     <string name="pref_advanced_options">Zaawansowane</string>
     <string name="pref_never_send_crash">Nie wysyłaj raportów awarii</string>
-    <string name="pref_never_send_crash_summary">Wysyłając nam ślady stosu pomagasz w rozwoju</string>
+    <string name="pref_never_send_crash_summary">Wysyłając nam ślady stosu pomagasz w rozwoju</string>
     <string name="pref_confirm_messages">Potwierdzenia wiadomości</string>
     <string name="pref_confirm_messages_summary">Zezwól na wysyłanie do osób z twojej listy kontaktów informacji o tym, kiedy otrzymałeś i przeczytałeś wiadomość od nich</string>
     <string name="pref_prevent_screenshots">Zapobiegaj zrzutom ekranu</string>
@@ -282,9 +282,9 @@
     <string name="enable">Włącz</string>
     <string name="conference_requires_password">Konferencja wymaga hasła</string>
     <string name="enter_password">Wprowadź hasło</string>
-    <string name="request_presence_updates">Poproś kontakt o udostępnianie powiadomień o obecności.
+    <string name="request_presence_updates">Poproś kontakt o udostępnianie powiadomień o obecności.
 \n
-\n<small>Pozwoli to na ustalenie klienta, z którego korzysta rozmówca.</small></string>
+\n<small>Pozwoli to na ustalenie klienta, z którego korzysta rozmówca</small>.</string>
     <string name="request_now">Zażądaj teraz</string>
     <string name="ignore">Ignoruj</string>
     <string name="without_mutual_presence_updates"><b>Uwaga:</b> Wysyłanie bez obustronnych powiadomień o obecności może powodować nieoczekiwane problemy.\n\n<small>Sprawdź subskrypcję powiadomień w szczegółach kontaktu.</small></string>
@@ -528,7 +528,9 @@
     <string name="no_camera_permission">Pozwól %1$s na dostępu do aparatu</string>
     <string name="sync_with_contacts">Synchronizuj z kontaktami</string>
     <string name="sync_with_contacts_long">%1$s potrzebuje dostępu do twojej książki adresowej aby dopasować ją z twoją listą kontaktów XMPP.\nDzięki temu wyświetlone zostaną pełne nazwy i awatary kontaktów.\n\n%1$s użyje książki adresowej wyłącznie do lokalnego dopasowania bez wysyłania czegokolwiek na serwer.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy potrzebuje dostępu do numerów telefonów twoich kontaktów aby zasugerować ci kontakty które już używają Quicksy. <br><br> Nie przechowujemy kopii tych numerów.\n\nAby uzyskać więcej informacji przeczytaj naszą <a href="https://quicksy.im/#privacy">politykę prywatności</a>. <br><br>Zostaniesz poproszony o pozwolenie na dostęp do twoich kontaktów.]]></string>
+    <string name="sync_with_contacts_quicksy">Quicksy potrzebuje dostępu do numerów telefonów twoich kontaktów aby zasugerować ci kontakty które już używają Quicksy. &lt;br&gt;&lt;br&gt; Nie przechowujemy kopii tych numerów.
+\n
+\nAby uzyskać więcej informacji przeczytaj naszą &lt;a href=https://quicksy.im/privacy.htm&gt;politykę prywatności&lt;/a&gt;. &lt;br&gt;&lt;br&gt;Zostaniesz poproszony o pozwolenie na dostęp do twoich kontaktów.</string>
     <string name="notify_on_all_messages">Powiadom o wszystkich wiadomościach</string>
     <string name="notify_only_when_highlighted">Powiadamiaj tylko w przypadku wzmianki o mnie</string>
     <string name="notify_never">Powiadomienia wyłączone</string>
@@ -553,7 +555,7 @@
     <string name="security_error_invalid_file_access">Błąd bezpieczeństwa: nieprawidłowy dostęp do pliku!</string>
     <string name="no_application_to_share_uri">Nie odnaleziono aplikacji do udostępnienia URI</string>
     <string name="share_uri_with">Udostępnij URI za pomocą…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy to modyfikacja popularnego klienta XMPP Conversations, z automatycznym wykrywaniem kontaktów.<br><br>Zapisujesz się przy użyciu numeru telefonu i Quicksy automatycznie - na podstawie numerów telefonów w książce adresowej - zasugeruje potencjalne kontakty dla ciebie.<br><br>Zapisując się zgadzasz się na naszą <a href="https://quicksy.im/#privacy">politykę prywatności</a>.]]></string>
+    <string name="welcome_text_quicksy">Quicksy to modyfikacja popularnego klienta XMPP Conversations, z automatycznym wykrywaniem kontaktów.&lt;br&gt;&lt;br&gt;Zapisujesz się przy użyciu numeru telefonu i Quicksy automatycznie - na podstawie numerów telefonów w książce adresowej - zasugeruje potencjalne kontakty dla ciebie.&lt;br&gt;&lt;br&gt;Zapisując się zgadzasz się na naszą &lt;a href=https://quicksy.im/privacy.htm&gt;politykę prywatności&lt;/a&gt;.</string>
     <string name="agree_and_continue">Zgoda i kontynuuj</string>
     <string name="magic_create_text">Poprowadzimy cię przez proces tworzenia konta na conversations.im.
 \nKiedy wybierzesz conversations.im jako dostawcę będziesz mógł komunikować się z innymi osobami jeśli podasz im swój pełen adres XMPP.</string>
