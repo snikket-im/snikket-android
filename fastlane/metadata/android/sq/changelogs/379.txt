@@ -1,0 +1,1 @@
+* Thirrje audio/video (Lyp mbulim nga shërbyesi në formë shërbyesish STUN dhe TURN të zbulueshëm përmes XEP-0215)

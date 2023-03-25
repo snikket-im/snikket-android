@@ -1,0 +1,2 @@
+* Ndreqje të metash të ndryshme që lidhen me mbulim Tor-i
+* Përmirësim përputhshmërie thirrjesh me Dino

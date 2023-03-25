@@ -291,8 +291,6 @@
     <string name="title_pref_enable_quiet_hours">Bật giờ yên lặng</string>
     <string name="pref_quiet_hours_summary">Thông báo sẽ được tắt trong giờ yên lặng</string>
     <string name="pref_expert_options_other">Khác</string>
-    <string name="pref_autojoin">Đồng bộ hoá bằng dấu trang</string>
-    <string name="pref_autojoin_summary">Tự động tham gia các cuộc trò chuyện nhóm nếu dấu trang bảo thế</string>
     <string name="toast_message_omemo_fingerprint">Đã sao chép mã vân tay OMEMO vào bộ nhớ tạm</string>
     <string name="conference_banned">Bạn bị cấm khỏi cuộc trò chuyện nhóm này</string>
     <string name="conference_members_only">Cuộc trò chuyện nhóm này chỉ dành cho thành viên</string>
@@ -955,5 +953,4 @@
     <string name="backup_started_message">Việc sao lưu đã được bắt đầu. Bạn sẽ nhận một thông báo khi việc đó đã hoàn tất.</string>
     <string name="unable_to_enable_video">Không thể bật video.</string>
     <string name="plain_text_document">Tài liệu văn bản thuần</string>
-
-</resources>
+    </resources>

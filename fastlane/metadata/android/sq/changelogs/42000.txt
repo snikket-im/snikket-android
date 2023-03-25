@@ -1,0 +1,4 @@
+* Aftësi për të përzgjedhur zilen për thirrje ardhëse
+* Ndreqje pikasjeje ID-je kyçi OpenPGP për OpenKeychain 5.6+
+* Verifikim si duhet dëshmish TLS punycode
+* Përmirësim qëndrueshmërie vendosjeje sesioni RTP (thirrje)

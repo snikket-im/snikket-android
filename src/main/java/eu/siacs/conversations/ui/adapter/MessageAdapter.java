@@ -63,7 +63,6 @@ import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
@@ -88,15 +87,20 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private OnContactPictureClicked mOnContactPictureClickedListener;
     private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
     private boolean mUseGreenBackground = false;
+    private final boolean mForceNames;
 
-    public MessageAdapter(XmppActivity activity, List<Message> messages) {
+    public MessageAdapter(final XmppActivity activity, final List<Message> messages, final boolean forceNames) {
         super(activity, 0, messages);
         this.audioPlayer = new AudioPlayer(this);
         this.activity = activity;
         metrics = getContext().getResources().getDisplayMetrics();
         updatePreferences();
+        this.mForceNames = forceNames;
     }
 
+    public MessageAdapter(final XmppActivity activity, final List<Message> messages) {
+        this(activity, messages, false);
+    }
 
     private static void resetClickListener(View... views) {
         for (View view : views) {
@@ -234,7 +238,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 error = true;
                 break;
             default:
-                if (multiReceived) {
+                if (mForceNames || multiReceived) {
                     info = UIHelper.getMessageDisplayName(message);
                 }
                 break;
@@ -335,7 +339,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         Spannable span = new SpannableString(body);
         float size = Emoticons.isEmoji(body) ? 3.0f : 2.0f;
         span.setSpan(new RelativeSizeSpan(size), 0, body.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        viewHolder.messageBody.setText(EmojiWrapper.transform(span));
+        viewHolder.messageBody.setText(span);
     }
 
     private void applyQuoteSpan(SpannableStringBuilder body, int start, int end, boolean darkBackground) {
@@ -370,9 +374,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 char current = body.length() > i ? body.charAt(i) : '\n';
                 if (lineStart == -1) {
                     if (previous == '\n') {
-                        if (
-                                QuoteHelper.isPositionQuoteStart(body, i)
-                        ) {
+                        if (i < body.length() && QuoteHelper.isPositionQuoteStart(body, i)) {
                             // Line start with quote
                             lineStart = i;
                             if (quoteStart == -1) quoteStart = i;
@@ -496,7 +498,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
             MyLinkify.addLinks(body, true);
             viewHolder.messageBody.setAutoLinkMask(0);
-            viewHolder.messageBody.setText(EmojiWrapper.transform(body));
+            viewHolder.messageBody.setText(body);
             viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
         } else {
             viewHolder.messageBody.setText("");
@@ -806,12 +808,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else if (message.treatAsDownloadable()) {
                 try {
                     final URI uri = new URI(message.getBody());
-                        displayDownloadableMessage(viewHolder,
-                                message,
-                                activity.getString(R.string.check_x_filesize_on_host,
-                                        UIHelper.getFileDescriptionString(activity, message),
-                                        uri.getHost()),
-                                darkBackground);
+                    displayDownloadableMessage(viewHolder,
+                            message,
+                            activity.getString(R.string.check_x_filesize_on_host,
+                                    UIHelper.getFileDescriptionString(activity, message),
+                                    uri.getHost()),
+                            darkBackground);
                 } catch (Exception e) {
                     displayDownloadableMessage(viewHolder,
                             message,

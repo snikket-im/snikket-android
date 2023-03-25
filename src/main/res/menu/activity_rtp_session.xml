@@ -20,4 +20,7 @@
         app:showAsAction="ifRoom" />
 
 
+    <item android:id="@+id/action_switch_to_video"
+        android:title="@string/switch_to_video"
+        app:showAsAction="never"/>
 </menu>

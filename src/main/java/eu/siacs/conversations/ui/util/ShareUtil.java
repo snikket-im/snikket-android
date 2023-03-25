@@ -31,9 +31,9 @@ package eu.siacs.conversations.ui.util;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
+import android.text.SpannableStringBuilder;
 import android.widget.Toast;
-
-import java.util.regex.Matcher;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
@@ -41,7 +41,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
-import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 
@@ -105,39 +104,45 @@ public class ShareUtil {
 		}
 	}
 
-	public static void copyLinkToClipboard(XmppActivity activity, Message message) {
-		String body = message.getMergedBody().toString();
-		Matcher xmppPatternMatcher = Patterns.XMPP_PATTERN.matcher(body);
-		if (xmppPatternMatcher.find()) {
-			try {
-				Jid jid = new XmppUri(body.substring(xmppPatternMatcher.start(), xmppPatternMatcher.end())).getJid();
-				if (activity.copyTextToClipboard(jid.asBareJid().toString(), R.string.account_settings_jabber_id)) {
-					Toast.makeText(activity,R.string.jabber_id_copied_to_clipboard, Toast.LENGTH_SHORT).show();
-				}
-				return;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
-		}
-		Matcher webUrlPatternMatcher = Patterns.AUTOLINK_WEB_URL.matcher(body);
-		if (webUrlPatternMatcher.find()) {
-			String url = body.substring(webUrlPatternMatcher.start(),webUrlPatternMatcher.end());
-			if (activity.copyTextToClipboard(url,R.string.web_address)) {
-				Toast.makeText(activity,R.string.url_copied_to_clipboard, Toast.LENGTH_SHORT).show();
-			}
-		}
-	}
+    public static void copyLinkToClipboard(final XmppActivity activity, final Message message) {
+        final SpannableStringBuilder body = message.getMergedBody();
+        for (final String url : MyLinkify.extractLinks(body)) {
+            final Uri uri = Uri.parse(url);
+            if ("xmpp".equals(uri.getScheme())) {
+                try {
+                    final Jid jid = new XmppUri(uri).getJid();
+                    if (activity.copyTextToClipboard(
+                            jid.asBareJid().toString(), R.string.account_settings_jabber_id)) {
+                        Toast.makeText(
+                                        activity,
+                                        R.string.jabber_id_copied_to_clipboard,
+                                        Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                    return;
+                } catch (final Exception e) {
+                    return;
+                }
+            } else {
+                if (activity.copyTextToClipboard(url, R.string.web_address)) {
+                    Toast.makeText(activity, R.string.url_copied_to_clipboard, Toast.LENGTH_SHORT)
+                            .show();
+                }
+                return;
+            }
+        }
+    }
 
-	public static boolean containsXmppUri(String body) {
-		Matcher xmppPatternMatcher = Patterns.XMPP_PATTERN.matcher(body);
-		if (xmppPatternMatcher.find()) {
-			try {
-				return new XmppUri(body.substring(xmppPatternMatcher.start(), xmppPatternMatcher.end())).isValidJid();
-			} catch (Exception e) {
-				return false;
-			}
-		}
-		return false;
-	}
+    public static String getLinkScheme(final SpannableStringBuilder body) {
+        MyLinkify.addLinks(body, false);
+        for (final String url : MyLinkify.extractLinks(body)) {
+            final Uri uri = Uri.parse(url);
+            if ("xmpp".equals(uri.getScheme())) {
+                return uri.getScheme();
+            } else {
+                return "http";
+            }
+        }
+        return null;
+    }
 }

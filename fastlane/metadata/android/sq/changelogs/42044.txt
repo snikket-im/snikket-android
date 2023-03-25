@@ -1,0 +1,3 @@
+* Ndreqje dërgim sërish i mesazheve, kur përdoret SASL2
+* Ndreqje nxirje të videos mes disa pajisjesh
+* Ndreqje vithisje kur jepen fjalëkalime të zbrazët

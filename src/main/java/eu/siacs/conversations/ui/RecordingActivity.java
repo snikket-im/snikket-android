@@ -1,11 +1,12 @@
 package eu.siacs.conversations.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.FileObserver;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -17,24 +18,22 @@ import android.widget.Toast;
 import androidx.databinding.DataBindingUtil;
 
 import java.io.File;
-import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityRecordingBinding;
-import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 
 public class RecordingActivity extends Activity implements View.OnClickListener {
-
-    public static String STORAGE_DIRECTORY_TYPE_NAME = "Recordings";
 
     private ActivityRecordingBinding binding;
 
@@ -44,13 +43,14 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
     private final CountDownLatch outputFileWrittenLatch = new CountDownLatch(1);
 
     private final Handler mHandler = new Handler();
-    private final Runnable mTickExecutor = new Runnable() {
-        @Override
-        public void run() {
-            tick();
-            mHandler.postDelayed(mTickExecutor, 100);
-        }
-    };
+    private final Runnable mTickExecutor =
+            new Runnable() {
+                @Override
+                public void run() {
+                    tick();
+                    mHandler.postDelayed(mTickExecutor, 100);
+                }
+            };
 
     private File mOutputFile;
 
@@ -68,7 +68,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         SettingsUtils.applyScreenshotPreventionSetting(this);
     }
@@ -137,56 +137,80 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
             }
         }
         if (saveFile) {
-            new Thread(() -> {
-                try {
-                    if (!outputFileWrittenLatch.await(2, TimeUnit.SECONDS)) {
-                        Log.d(Config.LOGTAG, "time out waiting for output file to be written");
-                    }
-                } catch (InterruptedException e) {
-                    Log.d(Config.LOGTAG, "interrupted while waiting for output file to be written", e);
-                }
-                runOnUiThread(() -> {
-                    setResult(Activity.RESULT_OK, new Intent().setData(Uri.fromFile(mOutputFile)));
-                    finish();
-                });
-            }).start();
+            new Thread(new Finisher(outputFileWrittenLatch, mOutputFile, this)).start();
         }
     }
 
-    private static File generateOutputFilename(Context context) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
-        String filename = "RECORDING_" + dateFormat.format(new Date()) + ".m4a";
-        return new File(FileBackend.getConversationsDirectory(context, STORAGE_DIRECTORY_TYPE_NAME) + "/" + filename);
+    private static class Finisher implements Runnable {
+
+        private final CountDownLatch latch;
+        private final File outputFile;
+        private final WeakReference<Activity> activityReference;
+
+        private Finisher(CountDownLatch latch, File outputFile, Activity activity) {
+            this.latch = latch;
+            this.outputFile = outputFile;
+            this.activityReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void run() {
+            try {
+                if (!latch.await(8, TimeUnit.SECONDS)) {
+                    Log.d(Config.LOGTAG, "time out waiting for output file to be written");
+                }
+            } catch (final InterruptedException e) {
+                Log.d(Config.LOGTAG, "interrupted while waiting for output file to be written", e);
+            }
+            final Activity activity = activityReference.get();
+            if (activity == null) {
+                return;
+            }
+            activity.runOnUiThread(
+                    () -> {
+                        activity.setResult(
+                                Activity.RESULT_OK, new Intent().setData(Uri.fromFile(outputFile)));
+                        activity.finish();
+                    });
+        }
+    }
+
+    private File generateOutputFilename() {
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
+        final String filename = "RECORDING_" + dateFormat.format(new Date()) + ".m4a";
+        final File parentDirectory;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            parentDirectory =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_RECORDINGS);
+        } else {
+            parentDirectory =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        }
+        final File conversationsDirectory = new File(parentDirectory, getString(R.string.app_name));
+        return new File(conversationsDirectory, filename);
     }
 
     private void setupOutputFile() {
-        mOutputFile = generateOutputFilename(this);
-        File parentDirectory = mOutputFile.getParentFile();
-        if (parentDirectory.mkdirs()) {
+        mOutputFile = generateOutputFilename();
+        final File parentDirectory = mOutputFile.getParentFile();
+        if (Objects.requireNonNull(parentDirectory).mkdirs()) {
             Log.d(Config.LOGTAG, "created " + parentDirectory.getAbsolutePath());
-        }
-        File noMedia = new File(parentDirectory, ".nomedia");
-        if (!noMedia.exists()) {
-            try {
-                if (noMedia.createNewFile()) {
-                    Log.d(Config.LOGTAG, "created nomedia file in " + parentDirectory.getAbsolutePath());
-                }
-            } catch (IOException e) {
-                Log.d(Config.LOGTAG, "unable to create nomedia file in " + parentDirectory.getAbsolutePath(), e);
-            }
         }
         setupFileObserver(parentDirectory);
     }
 
-    private void setupFileObserver(File directory) {
-        mFileObserver = new FileObserver(directory.getAbsolutePath()) {
-            @Override
-            public void onEvent(int event, String s) {
-                if (s != null && s.equals(mOutputFile.getName()) && event == FileObserver.CLOSE_WRITE) {
-                    outputFileWrittenLatch.countDown();
-                }
-            }
-        };
+    private void setupFileObserver(final File directory) {
+        mFileObserver =
+                new FileObserver(directory.getAbsolutePath()) {
+                    @Override
+                    public void onEvent(int event, String s) {
+                        if (s != null
+                                && s.equals(mOutputFile.getName())
+                                && event == FileObserver.CLOSE_WRITE) {
+                            outputFileWrittenLatch.countDown();
+                        }
+                    }
+                };
         mFileObserver.startWatching();
     }
 
@@ -195,7 +219,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(final View view) {
         switch (view.getId()) {
             case R.id.cancel_button:
                 mHandler.removeCallbacks(mTickExecutor);

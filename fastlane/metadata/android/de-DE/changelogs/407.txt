@@ -1,0 +1,3 @@
+* Anzeige der Anruftaste für Offline-Kontakte, wenn diese zuvor Unterstützung gemeldet haben
+* Zurück-Taste beendet den Anruf nicht mehr, wenn der Anruf gerade läuft
+* Fehlerbehebungen

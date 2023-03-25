@@ -1,30 +1,32 @@
 package eu.siacs.conversations.crypto.sasl;
 
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
+
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.SHA512Digest;
 import org.bouncycastle.crypto.macs.HMac;
 
-import java.security.SecureRandom;
-
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.xml.TagWriter;
 
 public class ScramSha512 extends ScramMechanism {
 
     public static final String MECHANISM = "SCRAM-SHA-512";
 
-    @Override
-    protected HMac getHMAC() {
-        return new HMac(new SHA512Digest());
+    public ScramSha512(final Account account) {
+        super(account, ChannelBinding.NONE);
     }
 
     @Override
-    protected Digest getDigest() {
-        return new SHA512Digest();
+    protected HashFunction getHMac(final byte[] key) {
+        return (key == null || key.length == 0)
+                ? Hashing.hmacSha512(EMPTY_KEY)
+                : Hashing.hmacSha512(key);
     }
 
-    public ScramSha512(final TagWriter tagWriter, final Account account, final SecureRandom rng) {
-        super(tagWriter, account, rng);
+    @Override
+    protected HashFunction getDigest() {
+        return Hashing.sha512();
     }
 
     @Override

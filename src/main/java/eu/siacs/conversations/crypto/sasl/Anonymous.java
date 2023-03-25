@@ -1,16 +1,15 @@
 package eu.siacs.conversations.crypto.sasl;
 
-import java.security.SecureRandom;
+import javax.net.ssl.SSLSocket;
 
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.xml.TagWriter;
 
 public class Anonymous extends SaslMechanism {
 
     public static final String MECHANISM = "ANONYMOUS";
 
-    public Anonymous(TagWriter tagWriter, Account account, SecureRandom rng) {
-        super(tagWriter, account, rng);
+    public Anonymous(final Account account) {
+        super(account);
     }
 
     @Override
@@ -24,7 +23,7 @@ public class Anonymous extends SaslMechanism {
     }
 
     @Override
-    public String getClientFirstMessage() {
+    public String getClientFirstMessage(final SSLSocket sslSocket) {
         return "";
     }
 }

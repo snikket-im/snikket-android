@@ -1,0 +1,1 @@
+* Ndreqje ngarkimesh/shkarkime HTTP për përdorues që nuk besojnë AD-ra sistemi

@@ -15,7 +15,7 @@
             android:layout_height="48dp"
             android:layout_alignParentLeft="true"
             android:scaleType="centerCrop"
-            app:riv_corner_radius="2dp" />
+            app:riv_corner_radius="6dp" />
 
         <RelativeLayout
             android:layout_width="wrap_content"

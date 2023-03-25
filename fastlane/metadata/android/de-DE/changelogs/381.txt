@@ -1,0 +1,2 @@
+* Akustische Rückmeldungen (Wählen, Anruf begonnen, Anruf beendet) für Audioanrufe
+* Problem mit der Wiederholung eines fehlgeschlagenen Videoanrufs behoben

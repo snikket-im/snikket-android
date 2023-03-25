@@ -1,0 +1,2 @@
+* Verschiedene Fehlerbehebungen rund um die Tor-Unterstützung
+* Verbesserung der Anrufkompatibilität mit Dino

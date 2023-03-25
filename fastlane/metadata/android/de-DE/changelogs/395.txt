@@ -1,0 +1,3 @@
+* Hinzufügen von 'Zurück zum Chat' zum Audio-Anruf-Bildschirm
+* Verbesserung der Tastaturkürzel
+* Fehlerbehebungen

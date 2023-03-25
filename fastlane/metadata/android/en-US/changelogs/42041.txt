@@ -1,0 +1,5 @@
+* Implement Extensible SASL Profile, Bind 2.0 and Fast for faster reconnects
+* Implement Channel Binding
+* Add ability to switch from audio call to video call
+* Add ability to delete own avatar
+* Add notification for missed calls

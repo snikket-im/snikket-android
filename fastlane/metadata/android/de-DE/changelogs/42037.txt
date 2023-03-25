@@ -1,0 +1,9 @@
+* Abfrage der Bluetooth-Berechtigung bei A/V-Anrufen (nur bei Bluetooth-Headsets erforderlich)
+* Fehler beim Anrufen von Movim behoben
+* Anzeige eines falschen Profilbilds bei Gruppenchats behoben
+* Immer nach dem Opt-Out für Akku-Optimierungen fragen
+* Interaktion mit Google Maps Share Location Plugin behoben
+* Fußnote bezüglich der Servergebühr entfernt
+* Dateien an einem für Android 11 geeigneten Ort speichern
+* Anruf nach Netzwechsel erneut versuchen zu verbinden
+* JID des Anrufers und JID des Kontos im Bildschirm für eingehende Anrufe anzeigen

@@ -1,0 +1,1 @@
+* Problembehebung beim HTTP-Upload/Download für Benutzer, die den System-CAs nicht vertrauen

@@ -31,10 +31,7 @@
     <string name="minutes_ago">vor %d Minuten</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d ungelesene Unterhaltung</item>
-
-    
         <item quantity="other">%d ungelesene Unterhaltungen</item>
-
     </plurals>
     <string name="sending">senden…</string>
     <string name="message_decrypting">Nachricht wird entschlüsselt. Bitte warten…</string>
@@ -89,7 +86,9 @@
     <string name="clear_conversation_history">Unterhaltungsverlauf löschen</string>
     <string name="clear_histor_msg">Möchtest du alle Nachrichten in dieser Unterhaltung löschen?\n\n<b>Achtung:</b> Dies beeinflusst nicht Nachrichten, die auf anderen Geräten oder Servern gespeichert sind.</string>
     <string name="delete_file_dialog">Datei löschen</string>
-    <string name="delete_file_dialog_msg">Bist du sicher, dass du diese Datei löschen möchtest?\n\n<b>Achtung:</b> Dies löscht keine Kopien dieser Datei, die auf anderen Geräten oder Servern gespeichert sind.</string>
+    <string name="delete_file_dialog_msg">Bist du sicher, dass du diese Datei löschen möchtest\?
+\n
+\n<b>Achtung:</b> Dies löscht keine Kopien dieser Datei, die auf anderen Geräten oder Servern gespeichert sind. </string>
     <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
     <string name="choose_presence">Gerät auswählen</string>
     <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>
@@ -170,6 +169,7 @@
     <string name="account_status_tls_error_domain">Domain nicht überprüfbar</string>
     <string name="account_status_policy_violation">Verstoß gegen die Richtlinien</string>
     <string name="account_status_incompatible_server">Inkompatibler Server</string>
+    <string name="account_status_incompatible_client">Inkompatibler Client</string>
     <string name="account_status_stream_error">Stream-Fehler</string>
     <string name="account_status_stream_opening_error">Fehler beim Öffnen des Streams</string>
     <string name="encryption_choice_unencrypted">Unverschlüsselt</string>
@@ -178,7 +178,7 @@
     <string name="encryption_choice_omemo">OMEMO</string>
     <string name="mgmt_account_delete">Konto löschen</string>
     <string name="mgmt_account_disable">Vorübergehend abschalten</string>
-    <string name="mgmt_account_publish_avatar">Avatar veröffentlichen</string>
+    <string name="mgmt_account_publish_avatar">Profilbild veröffentlichen</string>
     <string name="mgmt_account_publish_pgp">Öffentlichen OpenPGP-Schlüssel veröffentlichen</string>
     <string name="unpublish_pgp">Öffentlichen OpenPGP-Schlüssel verwerfen</string>
     <string name="unpublish_pgp_message">Bist du sicher, dass du deinen öffentlichen OpenPGP-Schlüssel aus deiner Anwesenheitsmitteilung entfernen möchtest?\nDeine Kontakte können dir dann keine OpenPGP-verschlüsselten Nachrichten senden.</string>
@@ -193,7 +193,7 @@
     <string name="password">Passwort</string>
     <string name="invalid_jid">Ungültige XMPP-Adresse</string>
     <string name="error_out_of_memory">Zu wenig Speicher vorhanden. Bild ist zu groß</string>
-    <string name="add_phone_book_text">%s zum Telefonbuch hinzufügen</string>
+    <string name="add_phone_book_text">Möchtest du %s in dein Telefonbuch hinzufügen\?</string>
     <string name="server_info_show_more">Server-Info</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
@@ -250,7 +250,7 @@
     <string name="could_not_destroy_channel">Channel konnte nicht gelöscht werden</string>
     <string name="action_edit_subject">Gruppenchatthema bearbeiten</string>
     <string name="topic">Thema</string>
-    <string name="joining_conference">Gruppenchat wird beigetreten…</string>
+    <string name="joining_conference">Gruppenchat beigetreten…</string>
     <string name="leave">Verlassen</string>
     <string name="contact_added_you">Kontakt hat dich zur Kontaktliste hinzugefügt</string>
     <string name="add_back">Auch hinzufügen</string>
@@ -259,18 +259,18 @@
     <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d andere haben bis zu diesem Punkt gelesen</string>
     <string name="everyone_has_read_up_to_this_point">Alle haben bis zu diesem Punkt gelesen</string>
     <string name="publish">Veröffentlichen</string>
-    <string name="touch_to_choose_picture">Avatar antippen, um ein Bild aus der Galerie auszuwählen</string>
+    <string name="touch_to_choose_picture">Profilbild antippen, um ein Bild aus der Galerie auszuwählen</string>
     <string name="publishing">Veröffentliche…</string>
-    <string name="error_publish_avatar_server_reject">Der Server hat die Veröffentlichung des Avatars abgelehnt.</string>
+    <string name="error_publish_avatar_server_reject">Server hat die Veröffentlichung des Profilbildes abgelehnt</string>
     <string name="error_publish_avatar_converting">Bild konnte nicht konvertiert werden</string>
-    <string name="error_saving_avatar">Avatar kann nicht gespeichert werden</string>
-    <string name="or_long_press_for_default">(Oder klicke lange, um Standard wiederherzustellen)</string>
-    <string name="error_publish_avatar_no_server_support">Dein Server unterstützt die Veröffentlichung von Avataren nicht</string>
+    <string name="error_saving_avatar">Profilbild kann nicht gespeichert werden</string>
+    <string name="or_long_press_for_default">(Oder klicke lange, um den Standard wiederherzustellen)</string>
+    <string name="error_publish_avatar_no_server_support">Dein Server unterstützt die Veröffentlichung von Profilbildern nicht</string>
     <string name="private_message">private Nachricht:</string>
     <string name="private_message_to">an %s</string>
     <string name="send_private_message_to">Private Nachricht an %s senden</string>
     <string name="connect">Verbinden</string>
-    <string name="account_already_exists">Das Konto existiert bereits</string>
+    <string name="account_already_exists">Dieses Konto existiert bereits</string>
     <string name="next">Weiter</string>
     <string name="server_info_session_established">Sitzung wiederhergestellt</string>
     <string name="skip">Überspringen</string>
@@ -281,7 +281,9 @@
     <string name="request_presence_updates">Bitte zuerst den Online-Status von deinem Kontakt anfragen.\n\n<small>Dies wird verwendet, um festzustellen, welche Chat-App dein Kontakt nutzt.</small></string>
     <string name="request_now">Jetzt anfordern</string>
     <string name="ignore">Ignorieren</string>
-    <string name="without_mutual_presence_updates"><b>Achtung:</b> Ohne gegenseitige Kenntnis des Online-Status kann es zu unerwarteten Problemen kommen.\n\n<small>Gehe zu \"Kontaktdetails\", um die Einstellungen zu überprüfen.</small></string>
+    <string name="without_mutual_presence_updates"><b>Achtung:</b> Ohne gegenseitige Kenntnis des Online-Status kann es zu unerwarteten Problemen kommen.
+\n
+\n<small>Gehe zu \"Kontaktdetails\", um deine Einstellungen zu überprüfen.</small></string>
     <string name="pref_security_settings">Sicherheit</string>
     <string name="pref_allow_message_correction">Nachrichtenkorrektur erlauben</string>
     <string name="pref_allow_message_correction_summary">Erlaube deinen Kontakten das nachträgliche Korrigieren ihrer Nachrichten</string>
@@ -292,10 +294,10 @@
     <string name="title_pref_quiet_hours_start_time">Beginn</string>
     <string name="title_pref_quiet_hours_end_time">Ende</string>
     <string name="title_pref_enable_quiet_hours">Ruhige Stunden aktivieren</string>
-    <string name="pref_quiet_hours_summary">Benachrichtigungen sind während der ruhigen Stunden stumm.</string>
+    <string name="pref_quiet_hours_summary">Benachrichtigungen sind während der ruhigen Stunden stumm</string>
     <string name="pref_expert_options_other">Sonstiges</string>
-    <string name="pref_autojoin">Mit Lesezeichen synchronisieren</string>
-    <string name="pref_autojoin_summary">Gruppenchats automatisch beitreten, wenn das Lesezeichen dies angibt</string>
+    <string name="pref_autojoin">Lesezeichen synchronisieren</string>
+    <string name="pref_autojoin_summary">Setzt das \"Autojoin\"-Kennzeichen beim Betreten oder Verlassen eines Gruppenchats/Channels und reagiert auf Änderungen durch andere Clients.</string>
     <string name="toast_message_omemo_fingerprint">OMEMO-Fingerabdruck in die Zwischenablage kopiert</string>
     <string name="conference_banned">Du wurdest aus diesem Gruppenchat ausgeschlossen</string>
     <string name="conference_members_only">Dieser Gruppenchat ist nur für Mitglieder</string>
@@ -303,6 +305,7 @@
     <string name="conference_kicked">Du wurdest aus diesem Gruppchat geworfen</string>
     <string name="conference_shutdown">Gruppenchat wurde geschlossen</string>
     <string name="conference_unknown_error">Du bist nicht länger in diesem Gruppenchat</string>
+    <string name="conference_technical_problems">Du hast diesen Gruppenchat aus technischen Gründen verlassen</string>
     <string name="using_account">verwende Konto %s</string>
     <string name="hosted_on">gehostet bei %s</string>
     <string name="checking_x">%s auf HTTP-Host wird überprüft</string>
@@ -326,7 +329,7 @@
     <string name="confirm">Bestätigen</string>
     <string name="try_again">Erneut versuchen</string>
     <string name="pref_keep_foreground_service">Vordergrunddienst</string>
-    <string name="pref_keep_foreground_service_summary">Verhindert, dass Android Conversations beendet und die Verbindung unterbricht</string>
+    <string name="pref_keep_foreground_service_summary">Verhindert, dass das Betriebssystem deine Verbindung unterbricht</string>
     <string name="pref_create_backup">Sicherung erstellen</string>
     <string name="pref_create_backup_summary">Sicherungsdateien werden gespeichert in %s</string>
     <string name="notification_create_backup_title">Erstelle Sicherungsdateien</string>
@@ -356,15 +359,15 @@
     <string name="enable_notifications">Benachrichtigungen aktivieren</string>
     <string name="no_conference_server_found">Keinen Gruppenchatserver gefunden</string>
     <string name="conference_creation_failed">Gruppenchat konnte nicht erstellt werden</string>
-    <string name="account_image_description">Konto-Avatar</string>
+    <string name="account_image_description">Konto-Profilbild</string>
     <string name="copy_omemo_clipboard_description">OMEMO-Fingerabdruck in Zwischenablage kopieren</string>
     <string name="regenerate_omemo_key">OMEMO-Schlüssel erneuern</string>
     <string name="clear_other_devices">Geräte entfernen</string>
     <string name="clear_other_devices_desc">Bist du sicher, dass du alle anderen Geräte aus der OMEMO-Bekanntmachung entfernen willst? Die Bekanntmachung wird bei der nächsten Verbindung erneuert aber möglicherweise werden keine zwischenzeitlich gesendeten Nachrichten empfangen.</string>
     <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine nutzbaren Schlüssel verfügbar.\nEs konnten keine neuen Schlüssel vom Server abgerufen werden. Gibt es vielleicht ein Problem mit dem Server deines Kontaktes?</string>
-    <string name="error_no_keys_to_trust_presence">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nStelle sicher, dass ihre beide gegenseitig den Online-Status aktiviert habt.</string>
+    <string name="error_no_keys_to_trust_presence">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nStelle sicher, dass ihr beide gegenseitig den Online-Status aktiviert habt.</string>
     <string name="error_trustkeys_title">Etwas ist schief gelaufen</string>
-    <string name="fetching_history_from_server">Lade Chatverlauf…</string>
+    <string name="fetching_history_from_server">Lade Chatverlauf vom Server</string>
     <string name="no_more_history_on_server">Keine weiteren Nachrichten vorhanden</string>
     <string name="updating">Aktualisieren…</string>
     <string name="password_changed">Passwort geändert!</string>
@@ -401,8 +404,8 @@
     <string name="non_anonymous">XMPP-Adressen für alle sichtbar machen</string>
     <string name="moderated">Channel wird moderiert</string>
     <string name="you_are_not_participating">Du bist kein Mitglied</string>
-    <string name="modified_conference_options">Gruppenchatoptionen wurden modifiziert!</string>
-    <string name="could_not_modify_conference_options">Gruppenchatoptionen konnten nicht modifiziert werden</string>
+    <string name="modified_conference_options">Gruppenchatoptionen wurden geändert!</string>
+    <string name="could_not_modify_conference_options">Gruppenchatoptionen konnten nicht geändert werden</string>
     <string name="never">Niemals</string>
     <string name="until_further_notice">Bis auf Weiteres</string>
     <string name="snooze">Schlummern</string>
@@ -417,16 +420,17 @@
     <string name="video">Video</string>
     <string name="image">Bild</string>
     <string name="vector_graphic">Vektorgrafik</string>
+    <string name="multimedia_file">Multimediadatei</string>
     <string name="pdf_document">PDF-Dokument</string>
     <string name="apk">Android App</string>
     <string name="vcard">Kontakt</string>
-    <string name="avatar_has_been_published">Avatar wurde veröffentlicht!</string>
+    <string name="avatar_has_been_published">Profilbild wurde veröffentlicht!</string>
     <string name="sending_x_file">%s wird gesendet</string>
     <string name="offering_x_file">%s wird angeboten</string>
     <string name="hide_offline">Offline verstecken</string>
     <string name="contact_is_typing">%s schreibt…</string>
     <string name="contact_has_stopped_typing">%s schreibt nicht mehr</string>
-    <string name="contacts_are_typing">%s schreiben...</string>
+    <string name="contacts_are_typing">%s schreiben…</string>
     <string name="contacts_have_stopped_typing">%s schreiben nicht mehr</string>
     <string name="pref_chat_states">Tipp-Benachrichtigung</string>
     <string name="pref_chat_states_summary">Informiere deine Kontakte, wenn du eine Nachricht schreibst</string>
@@ -440,7 +444,7 @@
     <string name="pref_dont_trust_system_cas_title">Zertifizierungsstellen nicht vertrauen</string>
     <string name="pref_dont_trust_system_cas_summary">Alle Zertifikate müssen manuell bestätigt werden</string>
     <string name="pref_remove_trusted_certificates_title">Zertifikate löschen</string>
-    <string name="pref_remove_trusted_certificates_summary">Als vertrauenswürdig bestätigte Zertifikate löschen</string>
+    <string name="pref_remove_trusted_certificates_summary">Manuell bestätigte Zertifikate löschen</string>
     <string name="toast_no_trusted_certs">Keine manuell bestätigten Zertifikate</string>
     <string name="dialog_manage_certs_title">Zertifikate löschen</string>
     <string name="dialog_manage_certs_positivebutton">Auswahl löschen</string>
@@ -463,30 +467,31 @@
     <string name="invalid_username">Ungültiger Benutzername</string>
     <string name="download_failed_server_not_found">Download fehlgeschlagen: Server nicht gefunden</string>
     <string name="download_failed_file_not_found">Download fehlgeschlagen: Datei nicht gefunden</string>
-    <string name="download_failed_could_not_connect">Download fehlgeschlagen: keine Verbindung zum Host</string>
+    <string name="download_failed_could_not_connect">Download fehlgeschlagen: Keine Verbindung zum Host</string>
     <string name="download_failed_could_not_write_file">Download fehlgeschlagen: Datei konnte nicht gespeichert werden</string>
+    <string name="download_failed_invalid_file">Download fehlgeschlagen: Ungültige Datei</string>
     <string name="account_status_tor_unavailable">Tor-Netzwerk nicht verfügbar</string>
     <string name="account_status_bind_failure">Verbindungsfehler</string>
     <string name="account_status_host_unknown">Der Server ist nicht für diese Domain verantwortlich</string>
     <string name="server_info_broken">Fehlerhaft</string>
     <string name="pref_presence_settings">Status</string>
     <string name="pref_away_when_screen_off">Abwesend bei gesperrtem Gerät</string>
-    <string name="pref_away_when_screen_off_summary">Als abwesend anzeigen, wenn das Gerät gesperrt ist.</string>
+    <string name="pref_away_when_screen_off_summary">Als abwesend anzeigen, wenn das Gerät gesperrt ist</string>
     <string name="pref_dnd_on_silent_mode">Beschäftigt im lautlosen Modus</string>
     <string name="pref_dnd_on_silent_mode_summary">Als Beschäftigt anzeigen, wenn sich das Gerät im lautlosen Modus befindet</string>
     <string name="pref_treat_vibrate_as_silent">Vibration als Lautlos behandeln</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Als Beschäftigt anzeigen, wenn das Gerät auf Vibration eingestellt ist</string>
-    <string name="pref_show_connection_options">Erweiterte Verbindungsoptionen</string>
+    <string name="pref_show_connection_options">Erweiterte Verbindungseinstellungen</string>
     <string name="pref_show_connection_options_summary">Hostname- und Port-Optionen bei Kontoeinrichtung anzeigen</string>
     <string name="hostname_example">xmpp.domain.de</string>
     <string name="action_add_account_with_certificate">Mit Zertifikat anmelden</string>
-    <string name="unable_to_parse_certificate">Zertifikat konnte nicht ausgewertet werden</string>
+    <string name="unable_to_parse_certificate">Zertifikat konnte nicht verarbeitet werden</string>
     <string name="mam_prefs">Archivierungseinstellungen</string>
     <string name="server_side_mam_prefs">Archivierungseinstellungen des Servers</string>
     <string name="fetching_mam_prefs">Archivierungseinstellungen werden abgerufen. Bitte warten…</string>
     <string name="unable_to_fetch_mam_prefs">Archivierungseinstellungen konnten nicht abgerufen werden</string>
     <string name="captcha_required">CAPTCHA erforderlich</string>
-    <string name="captcha_hint">Gib den Text von obigem Bild ein</string>
+    <string name="captcha_hint">Gib den Text aus dem Bild oben ein</string>
     <string name="certificate_chain_is_not_trusted">Nicht vertrauenswürdige Zertifikatskette</string>
     <string name="jid_does_not_match_certificate">XMPP-Adresse stimmt nicht dem Zertifikat überein</string>
     <string name="action_renew_certificate">Zertifikat erneuern</string>
@@ -514,7 +519,7 @@
     <string name="no_storage_permission"> %1$s den Zugriff auf den externen Speicher gewähren</string>
     <string name="no_camera_permission">%1$s den Zugriff auf die Kamera gewähren</string>
     <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
-    <string name="sync_with_contacts_long">%1$s möchte die Erlaubnis, auf deine Kontakte zuzugreifen, um sie mit deiner XMPP-Kontaktliste abzugleichen.\nDadurch werden die vollständigen Namen und Avatare deiner Kontakte angezeigt.\n\n%1$s liest nur dein Adressbuch und gleicht es lokal ab, ohne dass etwas auf deinen Server hochgeladen wird.</string>
+    <string name="sync_with_contacts_long">%1$s möchte die Erlaubnis, auf deine Kontakte zuzugreifen, um sie mit deiner XMPP-Kontaktliste abzugleichen.\nDadurch werden die vollständigen Namen und Profilbilder deiner Kontakte angezeigt.\n\n%1$s liest nur dein Adressbuch und gleicht es lokal ab, ohne dass etwas auf deinen Server hochgeladen wird.</string>
     <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy benötigt Zugriff auf die Telefonnummern deiner Kontakte, um Vorschläge für mögliche Kontakte zu machen, die bereits bei Quicksy sind.<br><br>Wir werden keine Kopie dieser Telefonnummern speichern.\n\nFür weitere Informationen lies unsere <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a>.<br><br>Du wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.]]></string>
     <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
     <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich erwähnt werde</string>
@@ -540,7 +545,8 @@
     <string name="share_uri_with">Teile URI mit…</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy ist ein Ableger des beliebten XMPP-Clients Conversations mit automatischer Kontakterkennung.<br><br>Du registrierst dich mit deiner Telefonnummer und Quicksy wird automatisch auf der Grundlage der Telefonnummern in deinem Adressbuch mögliche Kontakte vorschlagen.<br><br>Mit der Anmeldung erklärst du dich mit unserer <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a> einverstanden.]]></string>
     <string name="agree_and_continue">Zustimmen und fortfahren</string>
-    <string name="magic_create_text">Ein Guide hilft bei der Kontoerstellung auf conversations.im.¹\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige XMPP-Adresse gibst.</string>
+    <string name="magic_create_text">Ein Guide hilft bei der Kontoerstellung auf conversations.im.
+\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige XMPP-Adresse gibst.</string>
     <string name="your_full_jid_will_be">Deine vollständige XMPP-Adresse lautet: %s</string>
     <string name="create_account">Konto erstellen</string>
     <string name="use_own_provider">Nutze eigenen Provider</string>
@@ -554,10 +560,10 @@
     <string name="presence_xa">Nicht verfügbar</string>
     <string name="presence_dnd">Beschäftigt</string>
     <string name="secure_password_generated">Ein sicheres Passwort wurde erstellt</string>
-    <string name="device_does_not_support_battery_op">Dein Gerät unterstützt kein Ausschalten der Akkuoptimierung</string>
+    <string name="device_does_not_support_battery_op">Dein Gerät unterstützt nicht das Ausschalten der Akkuoptimierung</string>
     <string name="registration_please_wait">Registrierung fehlgeschlagen: Bitte später versuchen</string>
     <string name="registration_password_too_weak">Registrierung fehlgeschlagen: Passwort zu schwach</string>
-    <string name="choose_participants">Mitglieder wählen</string>
+    <string name="choose_participants">Teilnehmer wählen</string>
     <string name="creating_conference">Erstelle Gruppenchat…</string>
     <string name="invite_again">Erneut einladen</string>
     <string name="gp_disable">Deaktivieren</string>
@@ -594,7 +600,7 @@
     <string name="pref_delete_omemo_identities">OMEMO-Identitäten zurücksetzen</string>
     <string name="pref_delete_omemo_identities_summary">Erzeuge neue OMEMO-Schlüssel. Alle deine Kontakte müssen sie erneut verifizieren. Verwende dies nur als letztes Mittel.</string>
     <string name="delete_selected_keys">Ausgewählte Schlüssel löschen</string>
-    <string name="error_publish_avatar_offline">Du musst verbunden sein, um deinen Avatar zu veröffentlichen.</string>
+    <string name="error_publish_avatar_offline">Du musst verbunden sein, um deinen Profilbild zu veröffentlichen.</string>
     <string name="show_error_message">Zeige Fehlermeldung</string>
     <string name="error_message">Fehlermeldung</string>
     <string name="data_saver_enabled">Datensparmodus aktiv</string>
@@ -606,10 +612,10 @@
     <string name="all_omemo_keys_have_been_verified">Du hast alle in deinem Besitz befindlichen OMEMO-Schlüssel überprüft</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Der Barcode enthält keine Fingerabdrücke für diese Unterhaltung.</string>
     <string name="verified_fingerprints">Überprüfte Fingerabdrücke</string>
-    <string name="use_camera_icon_to_scan_barcode">Nutze Kamera, um Barcodes deiner Kontakte zu scannen</string>
+    <string name="use_camera_icon_to_scan_barcode">Nutze die Kamera, um Barcodes deiner Kontakte zu scannen</string>
     <string name="please_wait_for_keys_to_be_fetched">Bitte warten, bis die Schlüssel abgerufen werden</string>
     <string name="share_as_barcode">Als Barcode teilen</string>
-    <string name="share_as_uri">Als XMPP URI teilen</string>
+    <string name="share_as_uri">Als XMPP-URI teilen</string>
     <string name="share_as_http">Als HTTP Link teilen</string>
     <string name="pref_blind_trust_before_verification">Blind vertrauen vor der Überprüfung</string>
     <string name="pref_blind_trust_before_verification_summary">Neuen Geräten von nicht verifizierten Kontakten vertrauen, aber bei verifizierten Kontakten eine manuelle Bestätigung der neuen Geräte verlangen.</string>
@@ -622,6 +628,8 @@
     <string name="pref_clean_private_storage_summary">Lösche privaten Speicher, in dem die Dateien gespeichert werden (sie können erneut vom Server heruntergeladen werden)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Ich habe diesen Link aus einer vertrauenswürdigen Quelle erhalten</string>
     <string name="verifying_omemo_keys_trusted_source">Du bist dabei, die OMEMO-Schlüssel von %1$s nach dem Klick auf diesen Link zu überprüfen. Dies ist nur sicher, wenn du diesen Link von einer vertrauenswürdigen Quelle erhalten hast, der nur von %2$s veröffentlicht werden konnte.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Du bist dabei, die OMEMO-Schlüssel deines eigenen Kontos zu verifizieren. Dies ist nur sicher, wenn du diesem Link aus einer vertrauenswürdigen Quelle gefolgt bist, bei der nur du diesen Link veröffentlicht haben kannst.</string>
+    <string name="continue_btn">Weiter</string>
     <string name="verify_omemo_keys">Überprüfe OMEMO-Schlüssel</string>
     <string name="show_inactive_devices">Inaktive anzeigen</string>
     <string name="hide_inactive_devices">Inaktive ausblenden</string>
@@ -730,7 +738,7 @@
     <string name="title_activity_show_location">Standort anzeigen</string>
     <string name="share">Teilen</string>
     <string name="unable_to_start_recording">Aufnahme konnte nicht gestartet werden</string>
-    <string name="please_wait">Bitte warten...</string>
+    <string name="please_wait">Bitte warten…</string>
     <string name="no_microphone_permission">%1$s den Zugriff auf das Mikrofon gewähren</string>
     <string name="search_messages">Nachrichten durchsuchen</string>
     <string name="gif">GIF</string>
@@ -742,9 +750,9 @@
     <string name="p1_s3_filetransfer">HTTP-Dateifreigabe für S3</string>
     <string name="pref_start_search">Direkte Suche </string>
     <string name="pref_start_search_summary">Beim Dialog \'Unterhaltung beginnen\' Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
-    <string name="group_chat_avatar">Gruppenchat-Avatar</string>
-    <string name="host_does_not_support_group_chat_avatars">Host unterstützt keine Gruppenchat-Avatare</string>
-    <string name="only_the_owner_can_change_group_chat_avatar">Nur der Eigentümer kann den Gruppenchat-Avatar ändern</string>
+    <string name="group_chat_avatar">Gruppenchat-Profilbild</string>
+    <string name="host_does_not_support_group_chat_avatars">Host unterstützt keine Gruppenchat-Profilbilder</string>
+    <string name="only_the_owner_can_change_group_chat_avatar">Nur der Eigentümer kann das Gruppenchat-Profilbild ändern</string>
     <string name="contact_name">Kontaktname</string>
     <string name="nickname">Nickname</string>
     <string name="group_chat_name">Name</string>
@@ -762,6 +770,7 @@
     <string name="messages_channel_name">Nachrichten</string>
     <string name="incoming_calls_channel_name">Eingehende Anrufe</string>
     <string name="ongoing_calls_channel_name">Laufende Anrufe</string>
+    <string name="missed_calls_channel_name">Entgangene Anrufe</string>
     <string name="silent_messages_channel_name">Lautlose Nachrichten</string>
     <string name="silent_messages_channel_description">Diese Benachrichtigungsart wird verwendet, um Benachrichtigungen anzuzeigen, die keinen Ton auslösen sollen. Zum Beispiel, wenn du auf einem anderen Gerät aktiv bist (Schonfrist).</string>
     <string name="delivery_failed_channel_name">Fehlgeschlagene Zustellungen</string>
@@ -802,8 +811,8 @@
     <string name="abort_registration_procedure">Bist du sicher, dass du den Registrierungsprozess abbrechen willst?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
-    <string name="verifying">Überprüfen...</string>
-    <string name="requesting_sms">SMS anfordern...</string>
+    <string name="verifying">Überprüfen…</string>
+    <string name="requesting_sms">SMS anfordern…</string>
     <string name="incorrect_pin">Die eingegebene PIN ist falsch.</string>
     <string name="pin_expired">Die von uns zugesandte PIN ist abgelaufen.</string>
     <string name="unknown_api_error_network">Unbekannter Netzwerkfehler.</string>
@@ -832,7 +841,7 @@
     <string name="group_chat_will_make_your_jabber_id_public">Dieser Channel wird deine XMPP-Adresse veröffentlichen</string>
     <string name="ebook">E-Book</string>
     <string name="video_original">Original (unkomprimiert)</string>
-    <string name="open_with">Öffnen mit...</string>
+    <string name="open_with">Öffnen mit…</string>
     <string name="set_profile_picture">Snikket Profilbild</string>
     <string name="choose_account">Konto auswählen</string>
     <string name="restore_backup">Sicherung wiederherstellen</string>
@@ -852,7 +861,7 @@
     <string name="please_enter_name">Bitte einen Namen für den Channel eingeben</string>
     <string name="please_enter_xmpp_address">Bitte eine XMPP-Adresse eingeben</string>
     <string name="this_is_an_xmpp_address">Dies ist eine XMPP-Adresse. Bitte einen Namen eingeben.</string>
-    <string name="creating_channel">Öffentlichen Channel erstellen...</string>
+    <string name="creating_channel">Öffentlichen Channel erstellen…</string>
     <string name="channel_already_exists">Dieser Channel existiert bereits</string>
     <string name="joined_an_existing_channel">Du bist einem bestehenden Channel beigetreten</string>
     <string name="unable_to_set_channel_configuration">Channeleinstellung konnte nicht gespeichert werden</string>
@@ -889,21 +898,24 @@
     <string name="account_already_setup">Dieses Konto wurde bereits eingerichtet</string>
     <string name="please_enter_password">Bitte gib das Passwort für dieses Konto ein</string>
     <string name="unable_to_perform_this_action">Diese Aktion konnte nicht durchgeführt werden</string>
-    <string name="open_join_dialog">Öffentlichen Channel beitreten...</string>
+    <string name="open_join_dialog">Öffentlichen Channel beitreten…</string>
     <string name="sharing_application_not_grant_permission">Die teilende App hat keine Berechtigung für den Zugriff auf diese Datei erteilt.</string>
     <string name="group_chats_and_channels"><![CDATA[Gruppenchats & Channels]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">Lokaler Server</string>
     <string name="pref_channel_discovery_summary">Die meisten Benutzer sollten hier ‘jabber.network’ auswählen, um bessere Vorschläge aus dem gesamten, öffentlichen XMPP-Ökosystem zu bekommen.</string>
     <string name="pref_channel_discovery">Channelsuchmethode</string>
-    <string name="backup">Sicherungskopie</string>
+    <string name="backup">Sicherung</string>
     <string name="category_about">Über</string>
     <string name="please_enable_an_account">Bitte aktiviere ein Konto</string>
     <string name="make_call">Anrufen</string>
     <string name="rtp_state_incoming_call">Eingehender Anruf</string>
     <string name="rtp_state_incoming_video_call">Eingehender Videoanruf</string>
+    <string name="rtp_state_content_add_video">Umschalten auf Videoanruf?</string>
+    <string name="rtp_state_content_add">Zusätzliche Audiospuren hinzufügen?</string>
     <string name="rtp_state_connecting">Verbinden</string>
     <string name="rtp_state_connected">Verbunden</string>
+    <string name="rtp_state_reconnecting">Erneut verbinden</string>
     <string name="rtp_state_accepting_call">Anruf annehmen</string>
     <string name="rtp_state_ending_call">Anruf beenden</string>
     <string name="answer_call">Annehmen</string>
@@ -919,6 +931,8 @@
     <string name="hang_up">Auflegen</string>
     <string name="ongoing_call">Laufender Anruf</string>
     <string name="ongoing_video_call">Laufender Videoanruf</string>
+    <string name="reconnecting_call">Anruf erneut verbinden</string>
+    <string name="reconnecting_video_call">Videoanruf erneut verbinden</string>
     <string name="disable_tor_to_make_call">Deaktiviere Tor, um Anrufe zu tätigen</string>
     <string name="incoming_call">Eingehender Anruf</string>
     <string name="incoming_call_duration">Eingehender Anruf · %s</string>
@@ -926,6 +940,18 @@
     <string name="outgoing_call">Ausgehender Anruf</string>
     <string name="outgoing_call_duration">Ausgehender Anruf · %s</string>
     <string name="missed_call">Entgangener Anruf</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d entgangener Anruf von %2$s</item>
+        <item quantity="other">%1$d entgangene Anrufe von %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d entgangener Anruf</item>
+        <item quantity="other">%d entgangene Anrufe</item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d entgangener Anruf von %2$d Kontakt</item>
+        <item quantity="other">%1$d entgangene Anrufe von %2$d Kontakten</item>
+    </plurals>
     <string name="audio_call">Audioanruf</string>
     <string name="video_call">Videoanruf</string>
     <string name="help">Hilfe</string>
@@ -940,8 +966,8 @@
     <string name="could_not_correct_message">Nachricht konnte nicht korrigiert werden</string>
     <string name="search_all_conversations">Alle Unterhaltungen</string>
     <string name="search_this_conversation">Diese Unterhaltung</string>
-    <string name="your_avatar">Dein Avatar</string>
-    <string name="avatar_for_x">Avatar für %s</string>
+    <string name="your_avatar">Dein Profilbild</string>
+    <string name="avatar_for_x">Profilbild für %s</string>
     <string name="encrypted_with_omemo">Verschlüsselt mit OMEMO</string>
     <string name="encrypted_with_openpgp">Verschlüsselt mit OpenPGP</string>
     <string name="not_encrypted">Nicht verschlüsselt</string>
@@ -962,11 +988,23 @@
     <string name="more_options">Weitere Optionen</string>
     <string name="no_application_found">Keine Anwendung gefunden</string>
     <string name="invite_to_app">Einladung zu Snikket</string>
-    <string name="unable_to_parse_invite">Einladung kann nicht gelesen werden</string>
+    <string name="unable_to_parse_invite">Einladung kann nicht verarbeitet werden</string>
     <string name="server_does_not_support_easy_onboarding_invites">Server unterstützt keine Generierung von Einladungen</string>
     <string name="no_active_accounts_support_this">Keine aktiven Konten unterstützen diese Funktion</string>
-    <string name="backup_started_message">Das Backup wurde gestartet. Du bekommst eine Benachrichtigung sobald es fertig ist.</string>
+    <string name="backup_started_message">Die Sicherung wurde gestartet. Du bekommst eine Benachrichtigung, sobald sie fertig ist.</string>
     <string name="unable_to_enable_video">Video kann nicht aktiviert werden.</string>
     <string name="plain_text_document">Textdokument</string>
-
+    <string name="account_registrations_are_not_supported">Kontoregistrierungen werden nicht unterstützt</string>
+    <string name="no_xmpp_adddress_found">Keine XMPP-Adresse gefunden</string>
+    <string name="account_status_temporary_auth_failure">Temporärer Authentifizierungsfehler</string>
+    <string name="delete_avatar">Profilbild löschen</string>
+    <string name="audio_video_disabled_tor">Anrufe sind bei der Verwendung von Tor deaktiviert</string>
+    <string name="switch_to_video">Umschalten auf Video</string>
+    <string name="reject_switch_to_video">Umschalten auf Video ablehnen</string>
+    <string name="pref_up_push_account_title">XMPP-Konto</string>
+    <string name="pref_up_push_server_title">Push-Server</string>
+    <string name="pref_up_push_server_summary">Ein selbst gewählter Push-Server, der Push-Nachrichten über XMPP an dein Gerät weiterleitet.</string>
+    <string name="no_account_deactivated">Kein (deaktiviert)</string>
+    <string name="unified_push_distributor">UnifiedPush Verteiler</string>
+    <string name="pref_up_push_account_summary">Das Konto, über das Push-Nachrichten empfangen werden sollen.</string>
 </resources>

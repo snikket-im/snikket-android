@@ -31,10 +31,8 @@
     <string name="minutes_ago">Il y a %d minutes</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d conversation non lue</item>
-
-    
+        <item quantity="many">%d conversations non lues</item>
         <item quantity="other">%d conversations non lues</item>
-
     </plurals>
     <string name="sending">Envoi…</string>
     <string name="message_decrypting">Déchiffrement du message. Veuillez patienter…</string>
@@ -132,6 +130,7 @@
     <string name="pref_never_send_crash_summary">En envoyant des rapports de crash vous aidez le développement de Snikket</string>
     <string name="pref_confirm_messages">Confirmation de lecture</string>
     <string name="pref_confirm_messages_summary">Informer vos contacts quand vous avez reçu et lu leurs messages</string>
+    <string name="pref_prevent_screenshots">Interdire les captures d’écran</string>
     <string name="pref_ui_options">Interface</string>
     <string name="openpgp_error">OpenKeychain a signalé une erreur.</string>
     <string name="bad_key_for_encryption">Mauvaise clé pour le chiffrement.</string>
@@ -242,7 +241,7 @@
     <string name="destroy_room">Détruire le groupe</string>
     <string name="destroy_channel">Détruire le canal</string>
     <string name="destroy_room_dialog">Voulez-vous vraiment détruire ce groupe ?\n\n<b>Avertissement :</b> le groupe sera complètement supprimé du serveur.</string>
-    <string name="destroy_channel_dialog">Êtes-vous sûr de vouloir détruire ce canal public ? \ On \ <b>Avertissement :</b> le canal sera complètement supprimé du serveur.</string>
+    <string name="destroy_channel_dialog">Êtes-vous sûr de vouloir détruire ce canal public\? On <b>Avertissement:</b> le canal sera complètement supprimé du serveur.</string>
     <string name="could_not_destroy_room">Impossible de détruire le groupe</string>
     <string name="could_not_destroy_channel">Impossible de détruire le canal</string>
     <string name="action_edit_subject">Modifier le sujet du groupe</string>
@@ -291,8 +290,6 @@
     <string name="title_pref_enable_quiet_hours">Activer les heures tranquilles</string>
     <string name="pref_quiet_hours_summary">Les notifications seront muettes pendant les heures tranquilles.</string>
     <string name="pref_expert_options_other">Autres</string>
-    <string name="pref_autojoin">Synchroniser avec les signets</string>
-    <string name="pref_autojoin_summary">Rejoindre automatiquement les groupes marqués en favoris</string>
     <string name="toast_message_omemo_fingerprint">Empreinte OMEMO copiée dans le presse-papier</string>
     <string name="conference_banned">Vous êtes bannis de ce groupe</string>
     <string name="conference_members_only">Ce groupe est réservé aux membres</string>
@@ -443,6 +440,7 @@
     <string name="dialog_manage_certs_negativebutton">Annuler</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificat supprimé</item>
+        <item quantity="many">%d certificats supprimés</item>
         <item quantity="other">%d certificats supprimés</item>
     </plurals>
     <string name="pref_quick_action_summary">Remplacer le bouton « Envoyer » par une action rapide</string>
@@ -461,12 +459,14 @@
     <string name="download_failed_file_not_found">Échec du téléchargement : impossible de trouver le fichier</string>
     <string name="download_failed_could_not_connect">Échec du téléchargement : impossible de se connecter à l\'hôte</string>
     <string name="download_failed_could_not_write_file">Échec du téléchargement : Écriture impossible</string>
+    <string name="download_failed_invalid_file">Échec du téléchargement : Fichier non valide</string>
     <string name="account_status_tor_unavailable">Réseau Tor inaccessible</string>
     <string name="account_status_bind_failure">La liaison a échoué</string>
     <string name="account_status_host_unknown">Le serveur n\'est pas responsable pour ce domaine</string>
     <string name="server_info_broken">Détraqué</string>
     <string name="pref_presence_settings">Disponibilité</string>
     <string name="pref_away_when_screen_off">Absent quand l\'appareil est verrouillé</string>
+    <string name="pref_away_when_screen_off_summary">Afficher comme étant absent lorsque l\'appareil est verrouillé</string>
     <string name="pref_dnd_on_silent_mode">Occupé en mode silence</string>
     <string name="pref_dnd_on_silent_mode_summary">Occupé lorsque l\'appareil est en mode silencieux</string>
     <string name="pref_treat_vibrate_as_silent">Indisponible en mode vibreur</string>
@@ -499,6 +499,7 @@
     <string name="connected_accounts">%1$d compte(s) sur %2$d connecté(s)</string>
     <plurals name="x_messages">
         <item quantity="one">%d message</item>
+        <item quantity="many">%d messages</item>
         <item quantity="other">%d messages</item>
     </plurals>
     <string name="load_more_messages">Charger plus de messages</string>
@@ -615,6 +616,7 @@
     <string name="pref_clean_private_storage_summary">Vide le stockage privé, où les fichiers sont conservés (ils peuvent être re-téléchargés depuis le serveur)</string>
     <string name="i_followed_this_link_from_a_trusted_source">J\'ai obtenu ce lien d\'une source de confiance</string>
     <string name="verifying_omemo_keys_trusted_source">Vous êtes sur le point de vérifier les clés OMEMO de %1$s en cliquant sur un lien. Cette procédure n\'est sécurisée que si le lien en question n\'a pu être publié que par %2$s et que vous l\'avez obtenu d\'une source digne de confiance.</string>
+    <string name="continue_btn">Continuer</string>
     <string name="verify_omemo_keys">Vérifier les clés OMEMO</string>
     <string name="show_inactive_devices">Afficher les comptes inactifs</string>
     <string name="hide_inactive_devices">Cacher les comptes inactifs</string>
@@ -622,26 +624,32 @@
     <string name="distrust_omemo_key_text">Êtes-vous sûr de vouloir retirer la vérification pour cet appareil ?\nCet appareil et les messages qui en proviennent seront marqués comme « indignes de confiance ».</string>
     <plurals name="seconds">
         <item quantity="one">%d seconde</item>
+        <item quantity="many">%d secondes</item>
         <item quantity="other">%d secondes</item>
     </plurals>
     <plurals name="minutes">
         <item quantity="one">%d minute</item>
+        <item quantity="many">%d minutes</item>
         <item quantity="other">%d minutes</item>
     </plurals>
     <plurals name="hours">
         <item quantity="one">%d heure</item>
+        <item quantity="many">%d heures</item>
         <item quantity="other">%d heures</item>
     </plurals>
     <plurals name="days">
         <item quantity="one">%d jour</item>
+        <item quantity="many">%d jours</item>
         <item quantity="other">%d jours</item>
     </plurals>
     <plurals name="weeks">
         <item quantity="one">%d semaine</item>
+        <item quantity="many">%d semaines</item>
         <item quantity="other">%d semaines</item>
     </plurals>
     <plurals name="months">
         <item quantity="one">%d mois</item>
+        <item quantity="many">%d mois</item>
         <item quantity="other">%d mois</item>
     </plurals>
     <string name="pref_automatically_delete_messages">Suppression messages auto</string>
@@ -897,6 +905,7 @@
     <string name="rtp_state_incoming_video_call">Appel vidéo entrant</string>
     <string name="rtp_state_connecting">Connexion en cours</string>
     <string name="rtp_state_connected">Connecté</string>
+    <string name="rtp_state_reconnecting">Reconnexion en cours</string>
     <string name="rtp_state_accepting_call">Accepter les appels</string>
     <string name="rtp_state_ending_call">Fin d\'appel</string>
     <string name="answer_call">Décrocher</string>
@@ -908,9 +917,12 @@
     <string name="rtp_state_connectivity_lost_error">Connexion perdue</string>
     <string name="rtp_state_retracted">Appel annulé</string>
     <string name="rtp_state_application_failure">Échec de l\'application</string>
+    <string name="rtp_state_security_error">Vérification du problème</string>
     <string name="hang_up">Raccrocher</string>
     <string name="ongoing_call">Appel en cours</string>
     <string name="ongoing_video_call">Appel vidéo en cours</string>
+    <string name="reconnecting_call">En cours de reconnexion de l\'appel</string>
+    <string name="reconnecting_video_call">En cours de reconnexion de l\'appel vidéo</string>
     <string name="disable_tor_to_make_call">Désactivez Tor afin de passer des appels</string>
     <string name="incoming_call">Appel entrant</string>
     <string name="incoming_call_duration">Appel entrant · %s</string>
@@ -944,10 +956,12 @@
     <string name="add_contact_or_create_or_join_group_chat">Ajouter un contact, créer ou joindre un groupe de discussion, ou découvrir les salons</string>
     <plurals name="view_users">
         <item quantity="one">Voir %1$d participant</item>
+        <item quantity="many">Voir %1$d participants</item>
         <item quantity="other">Voir %1$d participants</item>
     </plurals>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="one">Certains messages n\'ont pas pu être distribués</item>
+        <item quantity="many">Certains messages n\'ont pu être distribués</item>
         <item quantity="other">Certains messages n\'ont pu être distribués</item>
     </plurals>
     <string name="failed_deliveries">Échec lors de la livraison</string>
@@ -955,4 +969,9 @@
     <string name="no_application_found">Aucune application trouvée</string>
     <string name="invite_to_app">Inviter à Snikket</string>
     <string name="unable_to_parse_invite">Impossible de lire l\'invitation</string>
-    </resources>
+    <string name="server_does_not_support_easy_onboarding_invites">Le serveur ne prend pas en charge la génération d\'invitations</string>
+    <string name="no_active_accounts_support_this">Aucun compte actif ne prend en charge cette fonctionalité</string>
+    <string name="unable_to_enable_video">Impossible d’activer la vidéo.</string>
+    <string name="account_registrations_are_not_supported">La création de nouveaux comptes n’est pas prise en charge</string>
+    <string name="no_xmpp_adddress_found">Aucune adresse XMPP trouvée</string>
+</resources>

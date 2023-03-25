@@ -1,5 +1,7 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
+
 import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
@@ -256,7 +258,11 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
                     //do nothing
                 } else {
                     Log.d(Config.LOGTAG, a.getJid().asBareJid().toString() + ": error executing mam: " + p.toString());
-                    finalizeQuery(query, true);
+                    try {
+                        finalizeQuery(query, true);
+                    } catch (final IllegalStateException e) {
+                        //ignored
+                    }
                 }
             });
         } else {
@@ -498,7 +504,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
                 this.start = start.getTimestamp();
             }
             this.end = end;
-            this.queryId = new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
+            this.queryId = new BigInteger(50, SECURE_RANDOM).toString(32);
             this.version = version;
         }
 

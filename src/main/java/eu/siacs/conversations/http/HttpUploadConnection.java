@@ -1,14 +1,16 @@
 package eu.siacs.conversations.http;
 
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
+
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
-
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -124,7 +126,7 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
                 || message.getEncryption() == Message.ENCRYPTION_AXOLOTL
                 || message.getEncryption() == Message.ENCRYPTION_OTR) {
             this.key = new byte[44];
-            mXmppConnectionService.getRNG().nextBytes(this.key);
+            SECURE_RANDOM.nextBytes(this.key);
             this.file.setKeyAndIv(this.key);
         }
         this.file.setExpectedSize(originalFileSize + (file.getKey() != null ? 16 : 0));
@@ -132,7 +134,7 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
         this.slotFuture = new SlotRequester(mXmppConnectionService).request(method, account, file, mime);
         Futures.addCallback(this.slotFuture, new FutureCallback<SlotRequester.Slot>() {
             @Override
-            public void onSuccess(@NullableDecl SlotRequester.Slot result) {
+            public void onSuccess(@Nullable SlotRequester.Slot result) {
                 HttpUploadConnection.this.slot = result;
                 try {
                     HttpUploadConnection.this.upload();
@@ -142,8 +144,9 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
             }
 
             @Override
-            public void onFailure(@NotNull final Throwable throwable) {
+            public void onFailure(@NonNull final Throwable throwable) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to request slot", throwable);
+                // TODO consider fall back to jingle in 1-on-1 chats with exactly one online presence
                 fail(throwable.getMessage());
             }
         }, MoreExecutors.directExecutor());
@@ -168,13 +171,13 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
         this.mostRecentCall = client.newCall(request);
         this.mostRecentCall.enqueue(new Callback() {
             @Override
-            public void onFailure(@NotNull Call call, IOException e) {
+            public void onFailure(@NonNull Call call, IOException e) {
                 Log.d(Config.LOGTAG, "http upload failed", e);
                 fail(e.getMessage());
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response)  {
+            public void onResponse(@NonNull Call call, @NonNull Response response)  {
                 final int code = response.code();
                 if (code == 200 || code == 201) {
                     Log.d(Config.LOGTAG, "finished uploading file");

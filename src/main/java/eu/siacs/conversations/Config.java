@@ -15,10 +15,9 @@ import eu.siacs.conversations.xmpp.chatstate.ChatState;
 public final class Config {
     private static final int UNENCRYPTED = 1;
     private static final int OPENPGP = 2;
-    private static final int OTR = 4;
     private static final int OMEMO = 8;
 
-    private static final int ENCRYPTION_MASK = UNENCRYPTED | OPENPGP | OTR | OMEMO;
+    private static final int ENCRYPTION_MASK = UNENCRYPTED | OPENPGP | OMEMO;
 
     public static boolean supportUnencrypted() {
         return (ENCRYPTION_MASK & UNENCRYPTED) != 0;
@@ -30,6 +29,10 @@ public final class Config {
 
     public static boolean supportOmemo() {
         return (ENCRYPTION_MASK & OMEMO) != 0;
+    }
+
+    public static boolean omemoOnly() {
+        return !multipleEncryptionChoices() && supportOmemo();
     }
 
     public static boolean multipleEncryptionChoices() {
@@ -56,6 +59,8 @@ public final class Config {
 
     public static final long CONTACT_SYNC_RETRY_INTERVAL = 1000L * 60 * 5;
 
+
+    public static final boolean QUICKSTART_ENABLED = true;
 
     //Notification settings
     public static final boolean HIDE_MESSAGE_TEXT_IN_NOTIFICATION = false;
@@ -205,5 +210,5 @@ public final class Config {
     // How deep nested quotes should be displayed. '2' means one quote nested in another.
     public static final int QUOTE_MAX_DEPTH = 7;
     // How deep nested quotes should be created on quoting a message.
-    public static final int QUOTING_MAX_DEPTH = 1;
+    public static final int QUOTING_MAX_DEPTH = 2;
 }

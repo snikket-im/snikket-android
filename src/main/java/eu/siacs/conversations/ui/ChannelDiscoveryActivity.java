@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 
+import com.google.common.base.Strings;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -90,6 +92,9 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     }
 
     private static ChannelDiscoveryService.Method getMethod(final Context c) {
+        if ( Strings.isNullOrEmpty(Config.CHANNEL_DISCOVERY)) {
+            return ChannelDiscoveryService.Method.LOCAL_SERVER;
+        }
         if (QuickConversationsService.isQuicksy()) {
             return ChannelDiscoveryService.Method.JABBER_NETWORK;
         }

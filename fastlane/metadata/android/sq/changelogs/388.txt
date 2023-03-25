@@ -1,0 +1,3 @@
+* Zvogëlim jehone gjatë thirrjesh në disa pajisje
+* Ndreqje hyrjeje, kur fjalëkalimet përmbajnë shenja speciale
+* Luajtje tonesh për “rënie numri” dhe “i zënë” në altoparlant, gjatë thirrjesh video

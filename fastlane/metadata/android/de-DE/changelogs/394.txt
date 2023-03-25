@@ -1,0 +1,2 @@
+* Benachrichtigungen wurden unter bestimmten Bedingungen nicht mehr angezeigt
+* Kompatibilitätsprobleme und Abstürze im Zusammenhang mit A/V-Anrufen behoben

@@ -1,6 +1,10 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.base.Joiner;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
@@ -22,23 +26,29 @@ import eu.siacs.conversations.xmpp.jingle.SessionDescription;
 
 public class IceUdpTransportInfo extends GenericTransportInfo {
 
+    public static final IceUdpTransportInfo STUB = new IceUdpTransportInfo();
+
     public IceUdpTransportInfo() {
         super("transport", Namespace.JINGLE_TRANSPORT_ICE_UDP);
     }
 
     public static IceUdpTransportInfo upgrade(final Element element) {
-        Preconditions.checkArgument("transport".equals(element.getName()), "Name of provided element is not transport");
-        Preconditions.checkArgument(Namespace.JINGLE_TRANSPORT_ICE_UDP.equals(element.getNamespace()), "Element does not match ice-udp transport namespace");
+        Preconditions.checkArgument(
+                "transport".equals(element.getName()), "Name of provided element is not transport");
+        Preconditions.checkArgument(
+                Namespace.JINGLE_TRANSPORT_ICE_UDP.equals(element.getNamespace()),
+                "Element does not match ice-udp transport namespace");
         final IceUdpTransportInfo transportInfo = new IceUdpTransportInfo();
         transportInfo.setAttributes(element.getAttributes());
         transportInfo.setChildren(element.getChildren());
         return transportInfo;
     }
 
-    public static IceUdpTransportInfo of(SessionDescription sessionDescription, SessionDescription.Media media) {
+    public static IceUdpTransportInfo of(
+            SessionDescription sessionDescription, SessionDescription.Media media) {
         final String ufrag = Iterables.getFirst(media.attributes.get("ice-ufrag"), null);
         final String pwd = Iterables.getFirst(media.attributes.get("ice-pwd"), null);
-        IceUdpTransportInfo iceUdpTransportInfo = new IceUdpTransportInfo();
+        final IceUdpTransportInfo iceUdpTransportInfo = new IceUdpTransportInfo();
         if (ufrag != null) {
             iceUdpTransportInfo.setAttribute("ufrag", ufrag);
         }
@@ -50,12 +60,26 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             iceUdpTransportInfo.addChild(fingerprint);
         }
         return iceUdpTransportInfo;
+    }
 
+    public static IceUdpTransportInfo of(
+            final Credentials credentials,  final Setup setup, final String hash, final String fingerprint) {
+        final IceUdpTransportInfo iceUdpTransportInfo = new IceUdpTransportInfo();
+        iceUdpTransportInfo.addChild(Fingerprint.of(setup, hash, fingerprint));
+        iceUdpTransportInfo.setAttribute("ufrag", credentials.ufrag);
+        iceUdpTransportInfo.setAttribute("pwd", credentials.password);
+        return iceUdpTransportInfo;
     }
 
     public Fingerprint getFingerprint() {
         final Element fingerprint = this.findChild("fingerprint", Namespace.JINGLE_APPS_DTLS);
         return fingerprint == null ? null : Fingerprint.upgrade(fingerprint);
+    }
+
+    public Credentials getCredentials() {
+        final String ufrag = this.getAttribute("ufrag");
+        final String password = this.getAttribute("pwd");
+        return new Credentials(ufrag, password);
     }
 
     public List<Candidate> getCandidates() {
@@ -74,6 +98,55 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         return transportInfo;
     }
 
+    public IceUdpTransportInfo modifyCredentials(final Credentials credentials, final Setup setup) {
+        final IceUdpTransportInfo transportInfo = new IceUdpTransportInfo();
+        transportInfo.setAttribute("ufrag", credentials.ufrag);
+        transportInfo.setAttribute("pwd", credentials.password);
+        for (final Element child : getChildren()) {
+            if (child.getName().equals("fingerprint")
+                    && Namespace.JINGLE_APPS_DTLS.equals(child.getNamespace())) {
+                final Fingerprint fingerprint = new Fingerprint();
+                fingerprint.setAttributes(new Hashtable<>(child.getAttributes()));
+                fingerprint.setContent(child.getContent());
+                fingerprint.setAttribute("setup", setup.toString().toLowerCase(Locale.ROOT));
+                transportInfo.addChild(fingerprint);
+            }
+        }
+        return transportInfo;
+    }
+
+    public static class Credentials {
+        public final String ufrag;
+        public final String password;
+
+        public Credentials(String ufrag, String password) {
+            this.ufrag = ufrag;
+            this.password = password;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Credentials that = (Credentials) o;
+            return Objects.equal(ufrag, that.ufrag) && Objects.equal(password, that.password);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(ufrag, password);
+        }
+
+        @Override
+        @NonNull
+        public String toString() {
+            return MoreObjects.toStringHelper(this)
+                    .add("ufrag", ufrag)
+                    .add("password", password)
+                    .toString();
+        }
+    }
+
     public static class Candidate extends Element {
 
         private Candidate() {
@@ -89,7 +162,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         }
 
         // https://tools.ietf.org/html/draft-ietf-mmusic-ice-sip-sdp-39#section-5.1
-        public static Candidate fromSdpAttribute(final String attribute) {
+        public static Candidate fromSdpAttribute(final String attribute, String currentUfrag) {
             final String[] pair = attribute.split(":", 2);
             if (pair.length == 2 && "candidate".equals(pair[0])) {
                 final String[] segments = pair[1].split(" ");
@@ -104,6 +177,10 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
                     final HashMap<String, String> additional = new HashMap<>();
                     for (int i = 6; i < segments.length - 1; i = i + 2) {
                         additional.put(segments[i], segments[i + 1]);
+                    }
+                    final String ufrag = additional.get("ufrag");
+                    if (ufrag != null && !ufrag.equals(currentUfrag)) {
+                        return null;
                     }
                     final Candidate candidate = new Candidate();
                     candidate.setAttribute("component", component);
@@ -167,7 +244,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             return getAttributeAsInt("rel-port");
         }
 
-        public String getType() { //TODO might be converted to enum
+        public String getType() { // TODO might be converted to enum
             return getAttribute("type");
         }
 
@@ -192,7 +269,8 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             checkNotNullNoWhitespace(protocol, "protocol");
             final String transport = protocol.toLowerCase(Locale.ROOT);
             if (!"udp".equals(transport)) {
-                throw new IllegalArgumentException(String.format("'%s' is not a supported protocol", transport));
+                throw new IllegalArgumentException(
+                        String.format("'%s' is not a supported protocol", transport));
             }
             final String priority = this.getAttribute("priority");
             checkNotNullNoWhitespace(priority, "priority");
@@ -220,7 +298,15 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             if (ufrag != null) {
                 additionalParameter.put("ufrag", ufrag);
             }
-            final String parametersString = Joiner.on(' ').join(Collections2.transform(additionalParameter.entrySet(), input -> String.format("%s %s", input.getKey(), input.getValue())));
+            final String parametersString =
+                    Joiner.on(' ')
+                            .join(
+                                    Collections2.transform(
+                                            additionalParameter.entrySet(),
+                                            input ->
+                                                    String.format(
+                                                            "%s %s",
+                                                            input.getKey(), input.getValue())));
             return String.format(
                     "candidate:%s %s %s %s %s %s %s",
                     foundation,
@@ -229,19 +315,18 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
                     priority,
                     connectionAddress,
                     port,
-                    parametersString
-
-            );
+                    parametersString);
         }
     }
 
     private static void checkNotNullNoWhitespace(final String value, final String name) {
         if (Strings.isNullOrEmpty(value)) {
-            throw new IllegalArgumentException(String.format("Parameter %s is missing or empty", name));
+            throw new IllegalArgumentException(
+                    String.format("Parameter %s is missing or empty", name));
         }
-        SessionDescription.checkNoWhitespace(value, String.format("Parameter %s contains white spaces", name));
+        SessionDescription.checkNoWhitespace(
+                value, String.format("Parameter %s contains white spaces", name));
     }
-
 
     public static class Fingerprint extends Element {
 
@@ -276,17 +361,51 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             return null;
         }
 
-        public static Fingerprint of(final SessionDescription sessionDescription, final SessionDescription.Media media) {
+        public static Fingerprint of(
+                final SessionDescription sessionDescription, final SessionDescription.Media media) {
             final Fingerprint fingerprint = of(media.attributes);
             return fingerprint == null ? of(sessionDescription.attributes) : fingerprint;
+        }
+
+        private static Fingerprint of(final Setup setup, final String hash, final String content) {
+            final Fingerprint fingerprint = new Fingerprint();
+            fingerprint.setContent(content);
+            fingerprint.setAttribute("hash", hash);
+            fingerprint.setAttribute("setup", setup.toString().toLowerCase(Locale.ROOT));
+            return fingerprint;
         }
 
         public String getHash() {
             return this.getAttribute("hash");
         }
 
-        public String getSetup() {
-            return this.getAttribute("setup");
+        public Setup getSetup() {
+            final String setup = this.getAttribute("setup");
+            return setup == null ? null : Setup.of(setup);
+        }
+    }
+
+    public enum Setup {
+        ACTPASS,
+        PASSIVE,
+        ACTIVE;
+
+        public static Setup of(String setup) {
+            try {
+                return valueOf(setup.toUpperCase(Locale.ROOT));
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
+        }
+
+        public Setup flip() {
+            if (this == PASSIVE) {
+                return ACTIVE;
+            }
+            if (this == ACTIVE) {
+                return PASSIVE;
+            }
+            throw new IllegalStateException(this.name() + " can not be flipped");
         }
     }
 }

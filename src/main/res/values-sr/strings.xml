@@ -293,8 +293,6 @@
     <string name="title_pref_enable_quiet_hours">Укључи тихе сате</string>
     <string name="pref_quiet_hours_summary">Обавештења ће бити ућуткана за време тихих сати</string>
     <string name="pref_expert_options_other">Остало</string>
-    <string name="pref_autojoin">Синхронизуј са обележивачима</string>
-    <string name="pref_autojoin_summary">Аутоматски се придружите групним ћаскањима по поставци обележивача</string>
     <string name="toast_message_omemo_fingerprint">ОМЕМО отисак копиран на клипборд</string>
     <string name="conference_banned">Забрањен вам је приступ овом групном ћаскању</string>
     <string name="conference_members_only">Ово групно ћаскање је само за чланове</string>

@@ -1,0 +1,5 @@
+* Implementierung von Extensible SASL Profile, Bind 2.0 und Fast für schnellere Wiederverbindungen
+* Implementierung von Channel Binding
+* Möglichkeit von einem Audioanruf zu einem Videoanruf zu wechseln
+* Möglichkeit zum Löschen des eigenen Profilbildes hinzugefügt
+* Benachrichtigung für verpasste Anrufe hinzugefügt
