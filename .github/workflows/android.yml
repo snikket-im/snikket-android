@@ -22,10 +22,8 @@ jobs:
       run: mkdir libs && wget -O libs/libwebrtc-m92.aar https://gultsch.de/files/libwebrtc-m92.aar
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Build Snikket (Compat)
-      run: ./gradlew assembleConversationsFreeCompatDebug
-    - name: Build Snikket (System)
-      run: ./gradlew assembleConversationsFreeSystemDebug
+    - name: Build Snikket
+      run: ./gradlew assembleConversationsFreeDebug
     - uses: actions/upload-artifact@v2
       with:
         name: Snikket all-flavors (debug)
