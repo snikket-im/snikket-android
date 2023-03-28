@@ -1,0 +1,8 @@
+Version 2.10.9
+* Kërko leje Bluetooth, kur bëhen thirrje A/V (Mund ta hidhni tej këtë, nëse s’përdorni kufje Bluetooth me mikrofon)
+* Ndreqje të mete, kur thirret dikush në Movim
+* Ndreqje shfaqjeje avatari gabim për fjalosje në grup
+* Pyet përherë për lënie jashtë optimizimesh për baterinë
+* Vendosje flamurke “vetëm vendore” për njoftime “x llogari të lidhura”
+* Ndreqje ndërveprimi me shtojcën Google Maps Share Location Plugin
+* Heqje poshtëshënimi lidhur me tarifa shërbyesi

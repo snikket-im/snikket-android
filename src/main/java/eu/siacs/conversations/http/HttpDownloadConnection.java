@@ -96,20 +96,26 @@ public class HttpDownloadConnection implements Transferable {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
             final String ext = extension.getExtension();
-            if (ext != null) {
-                message.setRelativeFilePath(String.format("%s.%s", message.getUuid(), ext));
-            } else if (Strings.isNullOrEmpty(message.getRelativeFilePath())) {
-                message.setRelativeFilePath(message.getUuid());
-            }
+            final String filename = Strings.isNullOrEmpty(ext) ? message.getUuid() : String.format("%s.%s", message.getUuid(), ext);
+            mXmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
             setupFile();
             if (this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL && this.file.getKey() == null) {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
-            //TODO add auth tag size to knownFileSize
-            final Long knownFileSize = message.getFileParams().size;
+            final Long knownFileSize;
+            if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+                knownFileSize = null;
+            } else {
+                knownFileSize = message.getFileParams().size;
+            }
             Log.d(Config.LOGTAG,"knownFileSize: "+knownFileSize+", body="+message.getBody());
             if (knownFileSize != null && interactive) {
-                this.file.setExpectedSize(knownFileSize);
+                if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL
+                        && this.file.getKey() != null) {
+                    this.file.setExpectedSize(knownFileSize + 16);
+                } else {
+                    this.file.setExpectedSize(knownFileSize);
+                }
                 download(true);
             } else {
                 checkFileSize(interactive);
@@ -122,7 +128,7 @@ public class HttpDownloadConnection implements Transferable {
     private void setupFile() {
         final String reference = mUrl.fragment();
         if (reference != null && AesGcmURL.IV_KEY.matcher(reference).matches()) {
-            this.file = new DownloadableFile(mXmppConnectionService.getCacheDir().getAbsolutePath() + "/" + message.getUuid());
+            this.file = new DownloadableFile(mXmppConnectionService.getCacheDir(), message.getUuid());
             this.file.setKeyAndIv(CryptoHelper.hexToBytes(reference));
             Log.d(Config.LOGTAG, "create temporary OMEMO encrypted file: " + this.file.getAbsolutePath() + "(" + message.getMimeType() + ")");
         } else {
@@ -219,6 +225,8 @@ public class HttpDownloadConnection implements Transferable {
             mXmppConnectionService.showErrorToastInUi(R.string.download_failed_could_not_connect);
         } else if (e instanceof FileWriterException) {
             mXmppConnectionService.showErrorToastInUi(R.string.download_failed_could_not_write_file);
+        } else if (e instanceof InvalidFileException) {
+            mXmppConnectionService.showErrorToastInUi(R.string.download_failed_invalid_file);
         } else {
             mXmppConnectionService.showErrorToastInUi(R.string.download_failed_file_not_found);
         }
@@ -314,6 +322,7 @@ public class HttpDownloadConnection implements Transferable {
             );
             final Request request = new Request.Builder()
                     .url(URL.stripFragment(mUrl))
+                    .addHeader("Accept-Encoding", "identity")
                     .head()
                     .build();
             mostRecentCall = client.newCall(request);
@@ -326,7 +335,7 @@ public class HttpDownloadConnection implements Transferable {
                 if (Strings.isNullOrEmpty(extension.getExtension()) && contentType != null) {
                     final String fileExtension = MimeUtils.guessExtensionFromMimeType(contentType);
                     if (fileExtension != null) {
-                        message.setRelativeFilePath(String.format("%s.%s", message.getUuid(), fileExtension));
+                        mXmppConnectionService.getFileBackend().setupRelativeFilePath(message, String.format("%s.%s", message.getUuid(), fileExtension), contentType);
                         Log.d(Config.LOGTAG, "rewriting name after not finding extension in url but in content type");
                         setupFile();
                     }
@@ -339,11 +348,11 @@ public class HttpDownloadConnection implements Transferable {
                     throw new IOException("Server reported negative file size");
                 }
                 return size;
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 Log.d(Config.LOGTAG, "io exception during HEAD " + e.getMessage());
                 throw e;
-            } catch (NumberFormatException e) {
-                throw new IOException();
+            } catch (final NumberFormatException e) {
+                throw new IOException(e);
             }
         }
 
@@ -419,8 +428,9 @@ public class HttpDownloadConnection implements Transferable {
                     Log.d(Config.LOGTAG, "content-length reported on GET (" + size + ") did not match Content-Length reported on HEAD (" + expected + ")");
                 }
                 file.getParentFile().mkdirs();
+                Log.d(Config.LOGTAG,"creating file: "+file.getAbsolutePath());
                 if (!file.exists() && !file.createNewFile()) {
-                    throw new FileWriterException();
+                    throw new FileWriterException(file);
                 }
                 outputStream = AbstractConnectionManager.createOutputStream(file, false, false);
             }
@@ -430,8 +440,11 @@ public class HttpDownloadConnection implements Transferable {
                 transmitted += count;
                 try {
                     outputStream.write(buffer, 0, count);
-                } catch (IOException e) {
-                    throw new FileWriterException();
+                } catch (final IOException e) {
+                    throw new FileWriterException(file);
+                }
+                if (transmitted > expected) {
+                    throw new InvalidFileException(String.format("File exceeds expected size of %d", expected));
                 }
                 updateProgress(Math.round(((double) transmitted / expected) * 100));
             }
@@ -459,5 +472,13 @@ public class HttpDownloadConnection implements Transferable {
         if (code < 200 || code >= 300) {
             throw new IOException(String.format(Locale.ENGLISH, "HTTP Status code was %d", code));
         }
+    }
+
+    private static class InvalidFileException extends IOException {
+
+        private InvalidFileException(final String message) {
+            super(message);
+        }
+
     }
 }

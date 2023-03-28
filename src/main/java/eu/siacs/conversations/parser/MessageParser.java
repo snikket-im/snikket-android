@@ -196,8 +196,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
     }
 
     private void parseEvent(final Element event, final Jid from, final Account account) {
-        Element items = event.findChild("items");
-        String node = items == null ? null : items.getAttribute("node");
+        final Element items = event.findChild("items");
+        final String node = items == null ? null : items.getAttribute("node");
         if ("urn:xmpp:avatar:metadata".equals(node)) {
             Avatar avatar = Avatar.parseMetadata(items);
             if (avatar != null) {
@@ -233,7 +233,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             Element item = items.findChild("item");
             Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
             Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received PEP device list " + deviceIds + " update from " + from + ", processing... ");
-            AxolotlService axolotlService = account.getAxolotlService();
+            final AxolotlService axolotlService = account.getAxolotlService();
             axolotlService.registerDevices(from, deviceIds);
         } else if (Namespace.BOOKMARKS.equals(node) && account.getJid().asBareJid().equals(from)) {
             if (account.getXmppConnection().getFeatures().bookmarksConversion()) {
@@ -279,6 +279,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         } else if (Namespace.BOOKMARKS2.equals(node) && account.getJid().asBareJid().equals(from)) {
             account.setBookmarks(Collections.emptyMap());
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleted bookmarks node");
+        } else if (Namespace.AVATAR_METADATA.equals(node) && account.getJid().asBareJid().equals(from)) {
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": deleted avatar metadata node");
         }
     }
 
@@ -311,7 +313,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
     private boolean handleErrorMessage(final Account account, final MessagePacket packet) {
         if (packet.getType() == MessagePacket.TYPE_ERROR) {
             if (packet.fromServer(account)) {
-                final Pair<MessagePacket, Long> forwarded = packet.getForwardedMessagePacket("received", "urn:xmpp:carbons:2");
+                final Pair<MessagePacket, Long> forwarded = packet.getForwardedMessagePacket("received", Namespace.CARBONS);
                 if (forwarded != null) {
                     return handleErrorMessage(account, forwarded.first);
                 }
@@ -327,7 +329,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 }
                 if (id.startsWith(JingleRtpConnection.JINGLE_MESSAGE_PROCEED_ID_PREFIX)) {
                     final String sessionId = id.substring(JingleRtpConnection.JINGLE_MESSAGE_PROCEED_ID_PREFIX.length());
-                    mXmppConnectionService.getJingleConnectionManager().failProceed(account, from, sessionId);
+                    final String message = extractErrorMessage(packet);
+                    mXmppConnectionService.getJingleConnectionManager().failProceed(account, from, sessionId, message);
                     return true;
                 }
                 mXmppConnectionService.markMessage(account,
@@ -386,8 +389,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             return;
         } else if (original.fromServer(account)) {
             Pair<MessagePacket, Long> f;
-            f = original.getForwardedMessagePacket("received", "urn:xmpp:carbons:2");
-            f = f == null ? original.getForwardedMessagePacket("sent", "urn:xmpp:carbons:2") : f;
+            f = original.getForwardedMessagePacket("received", Namespace.CARBONS);
+            f = f == null ? original.getForwardedMessagePacket("sent", Namespace.CARBONS) : f;
             packet = f != null ? f.first : original;
             if (handleErrorMessage(account, packet)) {
                 return;
@@ -1000,7 +1003,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         }
 
         final Element event = original.findChild("event", "http://jabber.org/protocol/pubsub#event");
-        if (event != null && InvalidJid.hasValidFrom(original)) {
+        if (event != null && InvalidJid.hasValidFrom(original) && original.getFrom().isBareJid()) {
             if (event.hasChild("items")) {
                 parseEvent(event, original.getFrom(), account);
             } else if (event.hasChild("delete")) {
@@ -1012,6 +1015,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
         final String nick = packet.findChildContent("nick", Namespace.NICK);
         if (nick != null && InvalidJid.hasValidFrom(original)) {
+            if (mXmppConnectionService.isMuc(account, from)) {
+                return;
+            }
             final Contact contact = account.getRoster().getContact(from);
             if (contact.setPresenceName(nick)) {
                 mXmppConnectionService.syncRoster(account);

@@ -1,0 +1,1 @@
+* Fixed regression in P2P file transfer

@@ -45,7 +45,7 @@ public class MessageUtils {
 
     private static final Pattern LTR_RTL = Pattern.compile("(\\u200E[^\\u200F]*\\u200F){3,}");
 
-    private static final String EMPTY_STRING = "";
+    public static final String EMPTY_STRING = "";
 
     public static String prepareQuote(Message message) {
         final StringBuilder builder = new StringBuilder();
@@ -66,11 +66,7 @@ public class MessageUtils {
             body = message.getMergedBody().toString();
         }
         for (String line : body.split("\n")) {
-            if (line.length() <= 0) {
-                continue;
-            }
-            final char c = line.charAt(0);
-            if (QuoteHelper.isNestedTooDeeply(line)) {
+            if (!(line.length() <= 0) && QuoteHelper.isNestedTooDeeply(line)) {
                 continue;
             }
             if (builder.length() != 0) {

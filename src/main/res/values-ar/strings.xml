@@ -239,7 +239,6 @@
     <string name="title_pref_enable_quiet_hours">تفعيل ساعات السكون</string>
     <string name="pref_quiet_hours_summary">سوف تكتم التنبيهات إبان ساعات السكون</string>
     <string name="pref_expert_options_other">أخرى</string>
-    <string name="pref_autojoin">زامِن مع الفواصل المرجعية</string>
     <string name="conference_banned">حسابك محظور للإلتحاق بمجموعة المحادثة هذه</string>
     <string name="conference_members_only">هذه المجموعة متاحة للأعضاء المنتمين إليها فقط</string>
     <string name="conference_kicked">تم طردك من مجموعة الدردشة هذه</string>

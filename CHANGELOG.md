@@ -1,5 +1,85 @@
 # Changelog
 
+### Version 2.12.2
+
+* Increase corner radius on profile pictures
+
+### Version 2.12.1
+
+* Fix crash in UnifiedPush Distributor
+
+### Version 2.12.0
+
+* Integrate UnifiedPush Distributor to facilitate push messages to other UnifiedPush enabled apps like Tusky and Fedilab
+
+### Version 2.11.3
+
+* Fix messages getting resend when using SASL2
+* Fix black video between some devices
+* Fix crash on empty passwords
+
+### Version 2.11.2
+
+* Fixed regression in P2P file transfer
+
+### Version 2.11.1
+
+* Fix resend loop on servers that support only sm:2
+* Show 'Switch to video' only if other party supports video
+
+### Version 2.11.0
+
+* Implement Extensible SASL Profile, Bind 2.0 and Fast for faster reconnects
+* Implement Channel Binding
+* Add ability to switch from audio call to video call
+* Add ability to delete own avatar
+* Add notification for missed calls
+
+### Version 2.10.10
+
+* Minor bug fixes
+* Restore ability to call out via JMP and other services (Playstore version)
+
+### Version 2.10.9
+
+* Ask for Bluetooth permissions when making A/V calls (You can reject this if you don’t use Bluetooth headsets)
+* Fix bug when calling Movim
+
+### Version 2.10.8
+
+* Fix wrong avatar being shown for group chats
+
+### Version 2.10.7
+
+* always ask for battery optimizations opt-out
+* set local only flag on 'x connected accounts' notifications
+* Minor bug fixes
+
+### Version 2.10.6
+
+* Minor bug fixes
+
+### Version 2.10.5
+
+* Security: Stop downloading files that exceed advertised file size
+* Security: Limit POSH files to 10K
+
+### Version 2.10.4
+
+* Fix interaction with Google Maps Share Location Plugin
+* Remove footnote with regards to server fee
+
+### Version 2.10.3
+
+* Store files in location appropriate for Android 11
+* Attempt to reconnect call after network switch
+* Show caller JID and account JID in incoming call screen
+
+### Version 2.10.2
+
+* Fix crash when rendering some quotes
+* Fix crash in welcome screen
+
 ### Version 2.10.1
 
 * Fix issue with some videos not being compressed

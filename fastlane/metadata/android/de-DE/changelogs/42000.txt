@@ -1,0 +1,4 @@
+* Möglichkeit zur Auswahl des Klingeltons für eingehende Anrufe
+* Behebung der OpenPGP-Schlüsselerkennung für OpenKeychain 5.6+
+* Korrekte Verifizierung von Punycode-TLS-Zertifikaten
+* Verbesserte Stabilität des RTP-Sitzungsaufbaus (Anrufe)

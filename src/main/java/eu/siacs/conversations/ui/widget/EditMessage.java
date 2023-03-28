@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.view.inputmethod.EditorInfoCompat;
 import androidx.core.view.inputmethod.InputConnectionCompat;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
@@ -26,7 +27,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.util.QuoteHelper;
 
-public class EditMessage extends EmojiWrapperEditText {
+public class EditMessage extends AppCompatEditText {
 
     private static final InputFilter SPAN_FILTER = (source, start, end, dest, dstart, dend) -> source instanceof Spanned ? source.toString() : source;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -144,7 +145,13 @@ public class EditMessage extends EmojiWrapperEditText {
 
     public void insertAsQuote(String text) {
         text = QuoteHelper.replaceAltQuoteCharsInText(text);
-        text = text.replaceAll("(\n *){2,}", "\n").replaceAll("(^|\n)(" + QuoteHelper.QUOTE_CHAR + ")", "$1$2$2").replaceAll("(^|\n)([^" + QuoteHelper.QUOTE_CHAR + "])", "$1> $2").replaceAll("\n$", "");
+        text = text
+                // first replace all '>' at the beginning of the line with nice and tidy '>>'
+                // for nested quoting
+                .replaceAll("(^|\n)(" + QuoteHelper.QUOTE_CHAR + ")", "$1$2$2")
+                // then find all other lines and have them start with a '> '
+                .replaceAll("(^|\n)(?!" + QuoteHelper.QUOTE_CHAR + ")(.*)", "$1> $2")
+        ;
         Editable editable = getEditableText();
         int position = getSelectionEnd();
         if (position == -1) position = editable.length();

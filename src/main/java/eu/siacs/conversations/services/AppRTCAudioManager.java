@@ -33,6 +33,7 @@ import java.util.concurrent.CountDownLatch;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.AppRTCUtils;
+import eu.siacs.conversations.xmpp.jingle.Media;
 
 /**
  * AppRTCAudioManager manages all audio related parts of the AppRTC demo.
@@ -44,7 +45,7 @@ public class AppRTCAudioManager {
     private final Context apprtcContext;
     // Contains speakerphone setting: auto, true or false
     @Nullable
-    private final SpeakerPhonePreference speakerPhonePreference;
+    private SpeakerPhonePreference speakerPhonePreference;
     // Handles all tasks related to Bluetooth headset devices.
     private final AppRTCBluetoothManager bluetoothManager;
     @Nullable
@@ -108,6 +109,16 @@ public class AppRTCAudioManager {
                 this::onProximitySensorChangedState);
         Log.d(Config.LOGTAG, "defaultAudioDevice: " + defaultAudioDevice);
         AppRTCUtils.logDeviceInfo(Config.LOGTAG);
+    }
+
+    public void switchSpeakerPhonePreference(final SpeakerPhonePreference speakerPhonePreference) {
+        this.speakerPhonePreference = speakerPhonePreference;
+        if (speakerPhonePreference == SpeakerPhonePreference.EARPIECE && hasEarpiece()) {
+            defaultAudioDevice = AudioDevice.EARPIECE;
+        } else {
+            defaultAudioDevice = AudioDevice.SPEAKER_PHONE;
+        }
+        updateAudioDeviceState();
     }
 
     /**
@@ -587,7 +598,15 @@ public class AppRTCAudioManager {
     }
 
     public enum SpeakerPhonePreference {
-        AUTO, EARPIECE, SPEAKER
+        AUTO, EARPIECE, SPEAKER;
+
+        public static SpeakerPhonePreference of(final Set<Media> media) {
+            if (media.contains(Media.VIDEO)) {
+                return SPEAKER;
+            } else {
+                return EARPIECE;
+            }
+        }
     }
 
     /**

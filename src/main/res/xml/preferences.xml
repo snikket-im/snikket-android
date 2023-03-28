@@ -15,7 +15,8 @@
                 android:targetPackage="com.huawei.systemmanager" />
         </PreferenceScreen>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_privacy">
+    <PreferenceCategory android:title="@string/pref_privacy"
+        android:key="privacy">
         <CheckBoxPreference
             android:defaultValue="@bool/confirm_messages"
             android:key="confirm_messages"
@@ -204,6 +205,21 @@
             android:key="create_backup"
             android:summary="@string/pref_create_backup_summary"
             android:title="@string/pref_create_backup" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="unified_push"
+        android:title="@string/unified_push_distributor">
+        <ListPreference
+            android:defaultValue="@string/default_push_account"
+            android:key="up_push_account"
+            android:summary="@string/pref_up_push_account_summary"
+            android:title="@string/pref_up_push_account_title" />
+        <EditTextPreference
+            android:defaultValue="@string/default_push_server"
+            android:key="up_push_server"
+            android:summary="@string/pref_up_push_server_summary"
+            android:title="@string/pref_up_push_server_title" />
+
     </PreferenceCategory>
     <PreferenceCategory
         android:key="advanced"

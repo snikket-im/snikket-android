@@ -16,7 +16,7 @@
             app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
             app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
 
-            <eu.siacs.conversations.ui.widget.EmojiWrapperEditText
+            <EditText
                 android:id="@+id/input_edit_text"
                 style="@style/Widget.Conversations.EditText"
                 android:layout_width="match_parent"
@@ -25,7 +25,7 @@
                 android:inputType="textPersonName">
 
                 <requestFocus/>
-            </eu.siacs.conversations.ui.widget.EmojiWrapperEditText>
+            </EditText>
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

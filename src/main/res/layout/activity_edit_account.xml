@@ -45,7 +45,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_marginRight="@dimen/avatar_item_distance"
                             android:contentDescription="@string/account_image_description"
-                            app:riv_corner_radius="2dp"/>
+                            app:riv_corner_radius="8dp"/>
 
                         <LinearLayout
                             android:layout_width="fill_parent"

@@ -23,13 +23,13 @@ public class JabberIdContact extends AbstractPhoneContact {
             ContactsContract.Data.LOOKUP_KEY,
             ContactsContract.CommonDataKinds.Im.DATA
     };
-    private static final String SELECTION = ContactsContract.Data.MIMETYPE + "=? AND (" + ContactsContract.CommonDataKinds.Im.PROTOCOL + "=? or (" + ContactsContract.CommonDataKinds.Im.PROTOCOL + "=? and " + ContactsContract.CommonDataKinds.Im.CUSTOM_PROTOCOL + "=?))";
+    private static final String SELECTION = ContactsContract.Data.MIMETYPE + "=? AND (" + ContactsContract.CommonDataKinds.Im.PROTOCOL + "=? or (" + ContactsContract.CommonDataKinds.Im.PROTOCOL + "=? and lower(" + ContactsContract.CommonDataKinds.Im.CUSTOM_PROTOCOL + ")=?))";
 
     private static final String[] SELECTION_ARGS = {
             ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE,
             String.valueOf(ContactsContract.CommonDataKinds.Im.PROTOCOL_JABBER),
             String.valueOf(ContactsContract.CommonDataKinds.Im.PROTOCOL_CUSTOM),
-            "XMPP"
+            "xmpp"
     };
 
     private final Jid jid;

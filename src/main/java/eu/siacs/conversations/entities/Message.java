@@ -14,12 +14,14 @@ import org.json.JSONException;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.http.URL;
 import eu.siacs.conversations.services.AvatarService;
@@ -632,9 +634,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                         message.getEncryption() != Message.ENCRYPTION_PGP &&
                         message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED &&
                         this.getType() == message.getType() &&
-                        //this.getStatus() == message.getStatus() &&
                         isStatusMergeable(this.getStatus(), message.getStatus()) &&
-                        this.getEncryption() == message.getEncryption() &&
+                        isEncryptionMergeable(this.getEncryption(),message.getEncryption()) &&
                         this.getCounterpart() != null &&
                         this.getCounterpart().equals(message.getCounterpart()) &&
                         this.edited() == message.edited() &&
@@ -665,6 +666,12 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                         || (a == Message.STATUS_SEND && b == Message.STATUS_UNSEND)
                         || (a == Message.STATUS_SEND && b == Message.STATUS_WAITING)
         );
+    }
+
+    private static boolean isEncryptionMergeable(final int a, final int b) {
+        return a == b
+                && Arrays.asList(ENCRYPTION_NONE, ENCRYPTION_DECRYPTED, ENCRYPTION_AXOLOTL)
+                        .contains(a);
     }
 
     public void setCounterparts(List<MucOptions.User> counterparts) {
@@ -917,7 +924,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean isTrusted() {
-        FingerprintStatus s = conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint);
+        final AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
+        final FingerprintStatus s = axolotlService != null ? axolotlService.getFingerprintTrust(axolotlFingerprint) : null;
         return s != null && s.isTrusted();
     }
 

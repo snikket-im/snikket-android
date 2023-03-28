@@ -81,7 +81,6 @@ import eu.siacs.conversations.ui.util.ActivityResult;
 import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.XmppUri;
@@ -99,6 +98,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     public static final String EXTRA_DO_NOT_APPEND = "do_not_append";
     public static final String EXTRA_POST_INIT_ACTION = "post_init_action";
     public static final String POST_ACTION_RECORD_VOICE = "record_voice";
+    public static final String EXTRA_TYPE = "type";
 
     private static final List<String> VIEW_AND_SHARE_ACTIONS = Arrays.asList(
             ACTION_VIEW_CONVERSATION,
@@ -145,7 +145,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             return;
         }
         xmppConnectionService.getNotificationService().setIsInForeground(true);
-        Intent intent = pendingViewIntent.pop();
+        final Intent intent = pendingViewIntent.pop();
         if (intent != null) {
             if (processViewIntent(intent)) {
                 if (binding.secondaryFragment != null) {
@@ -159,7 +159,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             notifyFragmentOfBackendConnected(id);
         }
 
-        ActivityResult activityResult = postponedActivityResult.pop();
+        final ActivityResult activityResult = postponedActivityResult.pop();
         if (activityResult != null) {
             handleActivityResult(activityResult);
         }
@@ -221,8 +221,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private void openBatteryOptimizationDialogIfNeeded() {
-        if (hasAccountWithoutPush()
-                && isOptimizingBattery()
+        if (isOptimizingBattery()
                 && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M
                 && getPreferences().getBoolean(getBatteryOptimizationPreferenceKey(), true)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -243,15 +242,6 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         }
-    }
-
-    private boolean hasAccountWithoutPush() {
-        for (Account account : xmppConnectionService.getAccounts()) {
-            if (account.getStatus() == Account.State.ONLINE && !xmppConnectionService.getPushManagementService().available(account)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void notifyFragmentOfBackendConnected(@IdRes int id) {
@@ -624,7 +614,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         if (mainFragment instanceof ConversationFragment) {
             final Conversation conversation = ((ConversationFragment) mainFragment).getConversation();
             if (conversation != null) {
-                actionBar.setTitle(EmojiWrapper.transform(conversation.getName()));
+                actionBar.setTitle(conversation.getName());
                 actionBar.setDisplayHomeAsUpEnabled(true);
                 ActionBarUtil.setActionBarOnClickListener(
                         binding.toolbar,

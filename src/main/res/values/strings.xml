@@ -169,6 +169,7 @@
     <string name="account_status_tls_error_domain">Domain not verifiable</string>
     <string name="account_status_policy_violation">Policy violation</string>
     <string name="account_status_incompatible_server">Incompatible server</string>
+    <string name="account_status_incompatible_client">Incompatible client</string>
     <string name="account_status_stream_error">Stream error</string>
     <string name="account_status_stream_opening_error">Stream opening error</string>
     <string name="encryption_choice_unencrypted">Unencrypted</string>
@@ -293,8 +294,8 @@
     <string name="title_pref_enable_quiet_hours">Enable quiet hours</string>
     <string name="pref_quiet_hours_summary">Notifications will be silenced during quiet hours</string>
     <string name="pref_expert_options_other">Other</string>
-    <string name="pref_autojoin">Synchronize with bookmarks</string>
-    <string name="pref_autojoin_summary">Join group chats automatically if the bookmark says so</string>
+    <string name="pref_autojoin">Synchronize bookmarks</string>
+    <string name="pref_autojoin_summary">Set “autojoin” flag when entering or leaving a MUC and react to modifications made by other clients.</string>
     <string name="toast_message_omemo_fingerprint">OMEMO fingerprint copied to clipboard</string>
     <string name="conference_banned">You are banned from this group chat</string>
     <string name="conference_members_only">This group chat is members only</string>
@@ -302,6 +303,7 @@
     <string name="conference_kicked">You have been kicked from this group chat</string>
     <string name="conference_shutdown">The group chat was shut down</string>
     <string name="conference_unknown_error">You are no longer in this group chat</string>
+    <string name="conference_technical_problems">You left this group chat due to technical reasons</string>
     <string name="using_account">using account %s</string>
     <string name="hosted_on">hosted on %s</string>
     <string name="checking_x">Checking %s on HTTP host</string>
@@ -416,6 +418,7 @@
     <string name="video">video</string>
     <string name="image">image</string>
     <string name="vector_graphic">vector graphic</string>
+    <string name="multimedia_file">multimedia file</string>
     <string name="pdf_document">PDF document</string>
     <string name="apk">Android App</string>
     <string name="vcard">Contact</string>
@@ -464,6 +467,7 @@
     <string name="download_failed_file_not_found">Download failed: File not found</string>
     <string name="download_failed_could_not_connect">Download failed: Could not connect to host</string>
     <string name="download_failed_could_not_write_file">Download failed: Could not write file</string>
+    <string name="download_failed_invalid_file">Download failed: Invalid file</string>
     <string name="account_status_tor_unavailable">Tor network unavailable</string>
     <string name="account_status_bind_failure">Bind failure</string>
     <string name="account_status_host_unknown">The server is not responsible for this domain</string>
@@ -541,7 +545,7 @@
     <string name="welcome_header_quicksy" translatable="false">Have some Quick Conversations</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy is a spin off of the popular XMPP client Conversations with automatic contact discovery.<br><br>You sign up with your phone number and Quicksy will automatically—based on the phone numbers in your address book—suggest possible contacts to you.<br><br>By signing up you agree to our <a href="https://quicksy.im/#privacy">privacy policy</a>.]]></string>
     <string name="agree_and_continue">Agree and continue</string>
-    <string name="magic_create_text">A guide is set up for account creation on conversations.im.¹\nWhen picking conversations.im as a provider you will be able to communicate with users of other providers by giving them your full XMPP address.</string>
+    <string name="magic_create_text">A guide is set up for account creation on conversations.im.\nWhen picking conversations.im as a provider you will be able to communicate with users of other providers by giving them your full XMPP address.</string>
     <string name="your_full_jid_will_be">Your full XMPP address will be: %s</string>
     <string name="create_account">Create Account</string>
     <string name="use_own_provider">Use my own provider</string>
@@ -625,6 +629,8 @@
     <string name="pref_clean_private_storage_summary">Clean private storage where files are kept (They can be re-downloaded from the server)</string>
     <string name="i_followed_this_link_from_a_trusted_source">I followed this link from a trusted source</string>
     <string name="verifying_omemo_keys_trusted_source">You are about to verify the OMEMO keys of %1$s after clicking a link. This is only secure if you followed this link from a trusted source where only %2$s could have published this link.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">You are about to verify the OMEMO keys of your own account. This is only secure if you followed this link from a trusted source where only you could have published this link.</string>
+    <string name="continue_btn">Continue</string>
     <string name="verify_omemo_keys">Verify OMEMO keys</string>
     <string name="show_inactive_devices">Show inactive</string>
     <string name="hide_inactive_devices">Hide inactive</string>
@@ -765,6 +771,7 @@
     <string name="messages_channel_name">Messages</string>
     <string name="incoming_calls_channel_name">Incoming calls</string>
     <string name="ongoing_calls_channel_name">Ongoing calls</string>
+    <string name="missed_calls_channel_name">Missed calls</string>
     <string name="silent_messages_channel_name">Silent messages</string>
     <string name="silent_messages_channel_description">This notification group is used to display notifications that should not trigger any sound. For example when being active on another device (Grace Period).</string>
     <string name="delivery_failed_channel_name">Failed deliveries</string>
@@ -905,8 +912,11 @@
     <string name="make_call">Make call</string>
     <string name="rtp_state_incoming_call">Incoming call</string>
     <string name="rtp_state_incoming_video_call">Incoming video call</string>
+    <string name="rtp_state_content_add_video">Switch to video call?</string>
+    <string name="rtp_state_content_add">Add additional tracks?</string>
     <string name="rtp_state_connecting">Connecting</string>
     <string name="rtp_state_connected">Connected</string>
+    <string name="rtp_state_reconnecting">Reconnecting</string>
     <string name="rtp_state_accepting_call">Accepting call</string>
     <string name="rtp_state_ending_call">Ending call</string>
     <string name="answer_call">Answer</string>
@@ -922,6 +932,8 @@
     <string name="hang_up">Hang up</string>
     <string name="ongoing_call">Ongoing call</string>
     <string name="ongoing_video_call">Ongoing video call</string>
+    <string name="reconnecting_call">Reconnecting call</string>
+    <string name="reconnecting_video_call">Reconnecting video call</string>
     <string name="disable_tor_to_make_call">Disable Tor to make calls</string>
     <string name="incoming_call">Incoming call</string>
     <string name="incoming_call_duration">Incoming call · %s</string>
@@ -929,6 +941,18 @@
     <string name="outgoing_call">Outgoing call</string>
     <string name="outgoing_call_duration">Outgoing call · %s</string>
     <string name="missed_call">Missed call</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d missed call from %2$s</item>
+        <item quantity="other">%1$d missed calls from %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d missed call</item>
+        <item quantity="other">%d missed calls</item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d missed calls from %2$d contact</item>
+        <item quantity="other">%1$d missed calls from %2$d contacts</item>
+    </plurals>
     <string name="audio_call">Audio call</string>
     <string name="video_call">Video call</string>
     <string name="help">Help</string>
@@ -973,5 +997,16 @@
     <string name="plain_text_document">Plain text document</string>
     <string name="account_registrations_are_not_supported">Account registrations are not supported</string>
     <string name="no_xmpp_adddress_found">No XMPP address found</string>
+    <string name="account_status_temporary_auth_failure">Temporary authentication failure</string>
+    <string name="delete_avatar">Delete avatar</string>
+    <string name="audio_video_disabled_tor">Calls are disabled when using Tor</string>
+    <string name="switch_to_video">Switch to video</string>
+    <string name="reject_switch_to_video">Reject switch to video request</string>
+    <string name="unified_push_distributor">UnifiedPush Distributor</string>
+    <string name="pref_up_push_account_title">XMPP Account</string>
+    <string name="pref_up_push_account_summary">The account through which push messages will be received.</string>
+    <string name="pref_up_push_server_title">Push Server</string>
+    <string name="pref_up_push_server_summary">A user-chosen push server to relay push messages via XMPP to your device.</string>
+    <string name="no_account_deactivated">None (deactivated)</string>
 
 </resources>

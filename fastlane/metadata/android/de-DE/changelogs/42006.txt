@@ -1,0 +1,2 @@
+* Verifizierung von A/V-Anrufen mit bereits bestehenden OMEMO-Sitzungen
+* Verbesserung der Kompatibilität mit WebRTC-Implementierungen, die nicht von libwebrtc stammen

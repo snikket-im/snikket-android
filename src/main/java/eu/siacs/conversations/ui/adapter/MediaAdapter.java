@@ -34,7 +34,7 @@ import eu.siacs.conversations.ui.util.ViewUtil;
 
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHolder> {
 
-    private static final List<String> DOCUMENT_MIMES = Arrays.asList(
+    public static final List<String> DOCUMENT_MIMES = Arrays.asList(
             "application/pdf",
             "application/vnd.oasis.opendocument.text",
             "application/msword",

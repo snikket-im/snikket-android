@@ -1,0 +1,2 @@
+* Profilbildauswahl auf einigen Android 10 Geräten korrigiert
+* Dateiübertragung für größere Dateien korrigiert

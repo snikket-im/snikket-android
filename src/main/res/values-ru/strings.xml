@@ -138,6 +138,8 @@
     <string name="pref_never_send_crash_summary">Отправляя отчеты об ошибках, вы помогаете разработке этого приложения</string>
     <string name="pref_confirm_messages">Отчёты о получении</string>
     <string name="pref_confirm_messages_summary">Позволяет вашим контактам видеть, когда вы получили и прочитали их сообщения</string>
+    <string name="pref_prevent_screenshots">Запретить скриншоты</string>
+    <string name="pref_prevent_screenshots_summary">Прятать содержимое приложения при переключении приложений и запретить скриншоты</string>
     <string name="pref_ui_options">Интерфейс</string>
     <string name="openpgp_error">OpenKeychain вызвал ошибку.</string>
     <string name="bad_key_for_encryption">Неподходящий ключ для шифрования.</string>
@@ -298,8 +300,6 @@
     <string name="title_pref_enable_quiet_hours">Включить режим «тихих часов»</string>
     <string name="pref_quiet_hours_summary">Уведомления будут отключены во время «тихих часов»</string>
     <string name="pref_expert_options_other">Другие</string>
-    <string name="pref_autojoin">Синхронизировать с закладками</string>
-    <string name="pref_autojoin_summary">Автоматически заходить в конференции при установленном флаге в настройках закладки</string>
     <string name="toast_message_omemo_fingerprint">OMEMO-отпечаток скопирован в буфер обмена</string>
     <string name="conference_banned">Вы заблокированы в этой конференции</string>
     <string name="conference_members_only">Эта конференция — только для участников</string>
@@ -418,8 +418,9 @@
     <string name="pref_display_enter_key">Показывать клавишу ввода</string>
     <string name="pref_display_enter_key_summary">Поменять кнопку смайликов на кнопку ввода</string>
     <string name="audio">аудио</string>
-    <string name="video">звук</string>
+    <string name="video">видео</string>
     <string name="image">изображение</string>
+    <string name="vector_graphic">векторная графика</string>
     <string name="pdf_document">PDF-документ</string>
     <string name="apk">Приложение Android</string>
     <string name="vcard">Контакт</string>
@@ -989,4 +990,5 @@
     <string name="no_active_accounts_support_this">Ни один активный аккаунт не поддерживает эту функцию</string>
     <string name="backup_started_message">Резервное копирование было начато. Вы получите уведомление, как только оно будет завершено. </string>
     <string name="unable_to_enable_video">Невозможно включить видео.</string>
+    <string name="plain_text_document">Текстовые данные</string>
     </resources>

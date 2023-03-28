@@ -1,0 +1,2 @@
+* u ndreq kërkim në Android <= 5
+* optimizim konsumi kujtese

@@ -1,5 +1,7 @@
 package eu.siacs.conversations.crypto.axolotl;
 
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
+
 import android.os.Bundle;
 import android.security.KeyChain;
 import android.util.Log;
@@ -499,7 +501,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             PrivateKey x509PrivateKey = KeyChain.getPrivateKey(mXmppConnectionService, account.getPrivateKeyAlias());
             X509Certificate[] chain = KeyChain.getCertificateChain(mXmppConnectionService, account.getPrivateKeyAlias());
             Signature verifier = Signature.getInstance("sha256WithRSA");
-            verifier.initSign(x509PrivateKey, mXmppConnectionService.getRNG());
+            verifier.initSign(x509PrivateKey, SECURE_RANDOM);
             verifier.update(axolotlPublicKey.serialize());
             byte[] signature = verifier.sign();
             IqPacket packet = mXmppConnectionService.getIqGenerator().publishVerification(signature, chain, getOwnDeviceId());
@@ -708,11 +710,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     }
 
     public void deleteOmemoIdentity() {
-        final String node = AxolotlService.PEP_BUNDLES + ":" + getOwnDeviceId();
-        final IqPacket deleteBundleNode = mXmppConnectionService.getIqGenerator().deleteNode(node);
-        mXmppConnectionService.sendIqPacket(account, deleteBundleNode, null);
+        mXmppConnectionService.deletePepNode(
+                account, AxolotlService.PEP_BUNDLES + ":" + getOwnDeviceId());
         final Set<Integer> ownDeviceIds = getOwnDeviceIds();
-        publishDeviceIdsAndRefineAccessModel(ownDeviceIds == null ? Collections.emptySet() : ownDeviceIds);
+        publishDeviceIdsAndRefineAccessModel(
+                ownDeviceIds == null ? Collections.emptySet() : ownDeviceIds);
     }
 
     public List<Jid> getCryptoTargets(Conversation conversation) {
@@ -1270,7 +1272,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             }
             descriptionTransportBuilder.put(
                     content.getKey(),
-                    new RtpContentMap.DescriptionTransport(descriptionTransport.description, encryptedTransportInfo)
+                    new RtpContentMap.DescriptionTransport(descriptionTransport.senders, descriptionTransport.description, encryptedTransportInfo)
             );
         }
         return Futures.immediateFuture(
@@ -1304,7 +1306,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             omemoVerification.setOrEnsureEqual(decryptedTransport);
             descriptionTransportBuilder.put(
                     content.getKey(),
-                    new RtpContentMap.DescriptionTransport(descriptionTransport.description, decryptedTransport.payload)
+                    new RtpContentMap.DescriptionTransport(descriptionTransport.senders, descriptionTransport.description, decryptedTransport.payload)
             );
         }
         processPostponed();

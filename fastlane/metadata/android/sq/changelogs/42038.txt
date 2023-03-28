@@ -1,0 +1,2 @@
+* Ndreqje të metash të vockla
+* Rikthim i aftësisë për të bërë thirrje përmes JMP-je dhe shërbimesh të tjera (versioni në Playstore)

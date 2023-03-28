@@ -33,6 +33,9 @@
         <item quantity="one">%d conversa não lida</item>
 
     
+        <item quantity="many">%d conversas não lidas</item>
+
+    
         <item quantity="other">%d conversas não lidas</item>
 
     </plurals>
@@ -170,6 +173,7 @@
     <string name="account_status_tls_error_domain">Domínio não verificável</string>
     <string name="account_status_policy_violation">Violação de política</string>
     <string name="account_status_incompatible_server">Servidor incompatível</string>
+    <string name="account_status_incompatible_client">Cliente incompatível</string>
     <string name="account_status_stream_error">Erro de fluxo</string>
     <string name="account_status_stream_opening_error">Erro na abertura do fluxo</string>
     <string name="encryption_choice_unencrypted">Descriptografada</string>
@@ -294,8 +298,8 @@
     <string name="title_pref_enable_quiet_hours">Habilitar horário de sossego</string>
     <string name="pref_quiet_hours_summary">As notificações serão silenciadas no horário de sossego.</string>
     <string name="pref_expert_options_other">Outras</string>
-    <string name="pref_autojoin">Sincronizar com os favoritos</string>
-    <string name="pref_autojoin_summary">Entre nas conversas em grupo automaticamente caso isso esteja definido no favorito</string>
+    <string name="pref_autojoin">Sincronizar favoritos</string>
+    <string name="pref_autojoin_summary">Define a flag \"autojoin\" ao entrar ou sair de uma sala e reage a modificações feitas por outros clientes.</string>
     <string name="toast_message_omemo_fingerprint">Impressão digital OMEMO copiada para a área de transferência</string>
     <string name="conference_banned">Você foi banido desta conversa em grupo</string>
     <string name="conference_members_only">Somente membros podem entrar nessa conversa em grupo</string>
@@ -303,6 +307,7 @@
     <string name="conference_kicked">Você foi retirado desta conversa em grupo</string>
     <string name="conference_shutdown">A conversa em grupo foi encerrada</string>
     <string name="conference_unknown_error">Você não está mais nesta conversa em grupo</string>
+    <string name="conference_technical_problems">Você saiu desta conversa em grupo devido a razões técnicas</string>
     <string name="using_account">usando a conta %s</string>
     <string name="hosted_on">hospedado em %s</string>
     <string name="checking_x">Verificando %s no host HTTP</string>
@@ -417,6 +422,7 @@
     <string name="video">vídeo</string>
     <string name="image">imagem</string>
     <string name="vector_graphic">gráfico vetorial</string>
+    <string name="multimedia_file">arquivo multimídia</string>
     <string name="pdf_document">Documento PDF</string>
     <string name="apk">Aplicativo Android</string>
     <string name="vcard">Contato</string>
@@ -447,6 +453,7 @@
     <string name="dialog_manage_certs_negativebutton">Cancelar</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificado cancelado</item>
+        <item quantity="many">%d certificados cancelados</item>
         <item quantity="other">%d certificados cancelados</item>
     </plurals>
     <string name="pref_quick_action_summary">Troca o botão \"Enviar\" pelo de ação rápida</string>
@@ -465,6 +472,7 @@
     <string name="download_failed_file_not_found">Não foi possível fazer o download: arquivo não encontrado</string>
     <string name="download_failed_could_not_connect">Não foi possível fazer o download: não foi possível conectar ao host</string>
     <string name="download_failed_could_not_write_file">Falha no download: não foi possível salvar o arquivo</string>
+    <string name="download_failed_invalid_file">Falha no download: arquivo inválido</string>
     <string name="account_status_tor_unavailable">Rede Tor não disponível</string>
     <string name="account_status_bind_failure">Falha na associação</string>
     <string name="account_status_host_unknown">O servidor não responde por esse domínio</string>
@@ -504,6 +512,7 @@
     <string name="connected_accounts">%1$d de %2$d contas conectadas</string>
     <plurals name="x_messages">
         <item quantity="one">%d mensagem</item>
+        <item quantity="many">%d mensagens</item>
         <item quantity="other">%d mensagens</item>
     </plurals>
     <string name="load_more_messages">Carregar mais mensagens</string>
@@ -621,7 +630,9 @@
     <string name="pref_clean_private_storage">Limpar o armazenamento privado</string>
     <string name="pref_clean_private_storage_summary">Limpar o armazenamento privado onde os arquivos são mantidos (eles podem ser baixados do servidor novamente)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Eu segui este link a partir de uma fonte segura</string>
-    <string name="verifying_omemo_keys_trusted_source">Você está prestes a verificar as chaves OMEMO de %1$s após ter clicado em um link. Isso só é seguro se você acesso esse link a partir de uma fonte segura, onde somente %2$s poderia tê-lo publicado.</string>
+    <string name="verifying_omemo_keys_trusted_source">Você está prestes a verificar as chaves OMEMO de %1$s após ter clicado em um link. Isso só é seguro se você acessou esse link a partir de uma fonte segura, onde somente %2$s poderia tê-lo publicado.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Você está prestes a verificar as chaves OMEMO de sua própria conta. Isso só é seguro se você acessou esse link a partir de uma fonte segura, onde somente você poderia tê-lo publicado.</string>
+    <string name="continue_btn">Continuar</string>
     <string name="verify_omemo_keys">Verificar chaves OMEMO</string>
     <string name="show_inactive_devices">Exibir os inativos</string>
     <string name="hide_inactive_devices">Ocultar os inativos</string>
@@ -629,26 +640,32 @@
     <string name="distrust_omemo_key_text">Tem certeza que deseja remover a verificação para este dispositivo?\nEste dispositivo e as mensagens oriundas dele serão marcadas como \"não confiáveis\".</string>
     <plurals name="seconds">
         <item quantity="one">%d segundo</item>
+        <item quantity="many">%d segundos</item>
         <item quantity="other">%d segundos</item>
     </plurals>
     <plurals name="minutes">
         <item quantity="one">%d minuto</item>
+        <item quantity="many">%d minutos</item>
         <item quantity="other">%d minutos</item>
     </plurals>
     <plurals name="hours">
         <item quantity="one">%d hora</item>
+        <item quantity="many">%d horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
     <plurals name="days">
         <item quantity="one">%d dia</item>
+        <item quantity="many">%d dias</item>
         <item quantity="other">%d dias</item>
     </plurals>
     <plurals name="weeks">
         <item quantity="one">%d semana</item>
+        <item quantity="many">%d semanas</item>
         <item quantity="other">%d semanas</item>
     </plurals>
     <plurals name="months">
         <item quantity="one">%d mês</item>
+        <item quantity="many">%d meses</item>
         <item quantity="other">%d meses</item>
     </plurals>
     <string name="pref_automatically_delete_messages">Exclusão automática de mensagens</string>
@@ -762,6 +779,7 @@
     <string name="messages_channel_name">Mensagens</string>
     <string name="incoming_calls_channel_name">Chamadas recebidas</string>
     <string name="ongoing_calls_channel_name">Chamadas em andamento</string>
+    <string name="missed_calls_channel_name">Chamadas perdidas</string>
     <string name="silent_messages_channel_name">Silenciar mensagens</string>
     <string name="silent_messages_channel_description">Essa categoria de notificação é utilizada para exibir notificações que não deveriam gerar nenhum som. Por exemplo, quando estiver ativo em outro dispositivo (Período de Espera).</string>
     <string name="delivery_failed_channel_name">Entregas não efetuadas</string>
@@ -902,8 +920,11 @@
     <string name="make_call">Fazer chamada</string>
     <string name="rtp_state_incoming_call">Recebendo chamada</string>
     <string name="rtp_state_incoming_video_call">Recebendo chamada de vídeo</string>
+    <string name="rtp_state_content_add_video">Mudar para videochamada?</string>
+    <string name="rtp_state_content_add">Adicionar outras trilhas?</string>
     <string name="rtp_state_connecting">Conectando</string>
     <string name="rtp_state_connected">Conectado</string>
+    <string name="rtp_state_reconnecting">Reconectando</string>
     <string name="rtp_state_accepting_call">Atendendo chamada</string>
     <string name="rtp_state_ending_call">Encerrando chamada</string>
     <string name="answer_call">Atender</string>
@@ -919,6 +940,8 @@
     <string name="hang_up">Desligar</string>
     <string name="ongoing_call">Chamada em andamento</string>
     <string name="ongoing_video_call">Chamada de vídeo em andamento</string>
+    <string name="reconnecting_call">Reconectando a chamada</string>
+    <string name="reconnecting_video_call">Reconectando a vídeo-chamada</string>
     <string name="disable_tor_to_make_call">Desabilitar o Tor para fazer chamadas</string>
     <string name="incoming_call">Chamada recebida</string>
     <string name="incoming_call_duration">Chamada recebida · %s</string>
@@ -926,6 +949,21 @@
     <string name="outgoing_call">Chamada realizada</string>
     <string name="outgoing_call_duration">Chamada realizada · %s</string>
     <string name="missed_call">Chamada perdida</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d chamada perdida para %2$s</item>
+        <item quantity="many">%1$d chamadas perdidas para %2$s</item>
+        <item quantity="other">%1$d chamadas perdidas para %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d chamada perdida</item>
+        <item quantity="many">%d chamadas perdidas</item>
+        <item quantity="other">%d chamadas perdidas</item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d chamadas perdidas de %2$d contato</item>
+        <item quantity="many">%1$d chamadas perdidas de %2$d contatos</item>
+        <item quantity="other">%1$d chamadas perdidas de %2$d contatos</item>
+    </plurals>
     <string name="audio_call">Chamada de áudio</string>
     <string name="video_call">Chamada de vídeo</string>
     <string name="help">Ajuda</string>
@@ -952,10 +990,12 @@
     <string name="add_contact_or_create_or_join_group_chat">Adicionar contato, criar ou associar-se a uma conversa em grupo ou descobrir canais</string>
     <plurals name="view_users">
         <item quantity="one">Ver %1$d participante</item>
+        <item quantity="many">Ver %1$d participantes</item>
         <item quantity="other">Ver %1$d participantes</item>
     </plurals>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="one">Não foi possível enviar a mensagem</item>
+        <item quantity="many">Não foi possível enviar algumas mensagens</item>
         <item quantity="other">Não foi possível enviar algumas mensagens</item>
     </plurals>
     <string name="failed_deliveries">Entregas não efetuadas</string>
@@ -968,5 +1008,12 @@
     <string name="backup_started_message">O backup foi iniciado. Você receberá uma notificação assim que ele for concluído.</string>
     <string name="unable_to_enable_video">Não foi possível habilitar o vídeo.</string>
     <string name="plain_text_document">Documento em texto puro</string>
+    <string name="account_registrations_are_not_supported">O registro de contas não está ativo</string>
+    <string name="no_xmpp_adddress_found">Não foi encontrado nenhum endereço XMPP</string>
+    <string name="account_status_temporary_auth_failure">Falha temporária na autenticação</string>
+    <string name="delete_avatar">Excluir avatar</string>
+    <string name="audio_video_disabled_tor">As chamadas estão desabilitadas ao usar Tor</string>
+    <string name="switch_to_video">Mudar para vídeo</string>
+    <string name="reject_switch_to_video">Recusar requisição de mudança para vídeo</string>
 
 </resources>

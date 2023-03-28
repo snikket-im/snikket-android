@@ -1,0 +1,3 @@
+* ndreqje për shpërngulje kartelash Jingle IBB
+* ndreqje për saktësime të përsëritura që zënë vend te baza e të dhënave
+* u kalua te Last Message Correction v1.1

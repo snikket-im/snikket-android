@@ -1,0 +1,1 @@
+* Zintegrowano dystrybutora UnifiedPush aby ułatwić przesyłanie wiadomości push do innych aplikacji obsługujących UnifiedPush, takich jak Tusky czy Fedilab

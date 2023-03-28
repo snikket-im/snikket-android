@@ -1,0 +1,4 @@
+* Einführung einer Experteneinstellung zur Channel-Erkennung auf dem lokalen Server anstelle von search.jabber.network
+* Standardmäßig Zustellungshäkchen aktiviert und Einstellung entfernt
+* Standardmäßig 'Sendetaste zeigt Status an' aktiviert und die Einstellung entfernt
+* Einstellungen für Sicherung und Vordergrunddienst in den Hauptbereich verschoben

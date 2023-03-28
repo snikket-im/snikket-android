@@ -132,6 +132,8 @@
     <string name="pref_never_send_crash_summary">Ved at indsende \"stack traces\" hjælper du udviklingen</string>
     <string name="pref_confirm_messages">Bekræft beskeder</string>
     <string name="pref_confirm_messages_summary">Lad dine kontakter vide når du har modtaget og læst deres beskeder</string>
+    <string name="pref_prevent_screenshots">Forbyd skærmbillede</string>
+    <string name="pref_prevent_screenshots_summary">Skjul app indhold i app-skifteren og bloker skærmbilleder</string>
     <string name="pref_ui_options">UI</string>
     <string name="openpgp_error">OpenKeychain producerede en fejl</string>
     <string name="bad_key_for_encryption">Dårlig nøgle til kryptering</string>
@@ -168,6 +170,7 @@
     <string name="account_status_tls_error_domain">Domæne kan ikke verificeres</string>
     <string name="account_status_policy_violation">Brud på retningslinjer</string>
     <string name="account_status_incompatible_server">Inkompatibel server</string>
+    <string name="account_status_incompatible_client">Inkompatibel klient</string>
     <string name="account_status_stream_error">Strømfejl</string>
     <string name="account_status_stream_opening_error">Fejl ved streamåbning</string>
     <string name="encryption_choice_unencrypted">Ukrypteret</string>
@@ -292,8 +295,8 @@
     <string name="title_pref_enable_quiet_hours">Aktiver stilletid</string>
     <string name="pref_quiet_hours_summary">Notifikationer vil være lydløs under stilletid</string>
     <string name="pref_expert_options_other">Andre</string>
-    <string name="pref_autojoin">Synkroniser med bogmærker</string>
-    <string name="pref_autojoin_summary">Deltag automatisk i gruppechat hvis bogmærket tillader det</string>
+    <string name="pref_autojoin">Synkroniser bogmærker</string>
+    <string name="pref_autojoin_summary">Indstil \"autojoin\"-flag, når du går ind i eller forlader en MUC, og reager på ændringer foretaget af andre klienter.</string>
     <string name="toast_message_omemo_fingerprint">OMEMO-fingeraftryk kopieret til udklipsholder</string>
     <string name="conference_banned">Du er udelukket fra denne gruppechat</string>
     <string name="conference_members_only">Denne gruppechat er kun for medlemmer</string>
@@ -301,6 +304,7 @@
     <string name="conference_kicked">Du er blevet smidt ud af denne gruppechat</string>
     <string name="conference_shutdown">Gruppechatten er lukket ned</string>
     <string name="conference_unknown_error">Du er ikke længere i denne gruppechat</string>
+    <string name="conference_technical_problems">Du forlod denne gruppechat af tekniske årsager</string>
     <string name="using_account">anvender konto %s</string>
     <string name="hosted_on">hostet på %s</string>
     <string name="checking_x">Tjekker %s på HTTP vært</string>
@@ -414,6 +418,8 @@
     <string name="audio">lyd</string>
     <string name="video">video</string>
     <string name="image">billede</string>
+    <string name="vector_graphic">vektorgrafik</string>
+    <string name="multimedia_file">multimediefil</string>
     <string name="pdf_document">PDF dokument</string>
     <string name="apk">Android App</string>
     <string name="vcard">Kontakt</string>
@@ -462,6 +468,7 @@
     <string name="download_failed_file_not_found">Download mislykkes: Fil ikke fundet</string>
     <string name="download_failed_could_not_connect">Download mislykkes: Kunne ikke forbinde til vært</string>
     <string name="download_failed_could_not_write_file">Download mislykkes: Kunne ikke skrive til fil</string>
+    <string name="download_failed_invalid_file">Download mislykkes: Ugyldig fil</string>
     <string name="account_status_tor_unavailable">TOR netværk er utilgængelig</string>
     <string name="account_status_bind_failure">Bind fejl</string>
     <string name="account_status_host_unknown">Serveren er ikke ansvarlig for dette domæne</string>
@@ -619,6 +626,8 @@
     <string name="pref_clean_private_storage_summary">Tøm privat lagerplads, hvor filer opbevares (De kan downloades igen fra serveren)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Jeg fulgte dette link fra en pålidelig kilde</string>
     <string name="verifying_omemo_keys_trusted_source">Du er ved bekræfte OMEMO-nøgler af %1$s efter du har klikket på et link.  Dette er kun sikkert, hvis du fulgte linket fra troværdig kilde hvor kun %2$s kunne have offentliggjort dette link.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Du er ved at bekræfte dine OMEMO-nøgler til din konto. Det er kun sikkert, hvis du fulgte linket fra en troværdig kilde, hvor kun du kan have offentliggjort dette link.</string>
+    <string name="continue_btn">Fortsæt</string>
     <string name="verify_omemo_keys">Beskræft OMEMO-nøgler</string>
     <string name="show_inactive_devices">Vis inaktive</string>
     <string name="hide_inactive_devices">Skjul inaktive</string>
@@ -759,6 +768,7 @@
     <string name="messages_channel_name">Beskeder</string>
     <string name="incoming_calls_channel_name">Indkommende opkald</string>
     <string name="ongoing_calls_channel_name">Udgående opkald</string>
+    <string name="missed_calls_channel_name">Mistet opkald</string>
     <string name="silent_messages_channel_name">Lydløse beskeder</string>
     <string name="silent_messages_channel_description">Denne notifikationsgruppe bruges til at vise notifikationer, der ikke bør udløse nogen lyd. For eksempel når du er aktiv på en anden enhed (Fredningsperiode).</string>
     <string name="delivery_failed_channel_name">Mislykkede leverancer</string>
@@ -899,8 +909,11 @@
     <string name="make_call">Lav opkald</string>
     <string name="rtp_state_incoming_call">Indkommende opkald</string>
     <string name="rtp_state_incoming_video_call">Indkommende videoopkald</string>
+    <string name="rtp_state_content_add_video">Skift til videoopkald</string>
+    <string name="rtp_state_content_add">Tilføje yderligere spor?</string>
     <string name="rtp_state_connecting">Forbinder</string>
     <string name="rtp_state_connected">Forbundet</string>
+    <string name="rtp_state_reconnecting">Forbinder igen</string>
     <string name="rtp_state_accepting_call">Accepter opkald</string>
     <string name="rtp_state_ending_call">Afslut opkald</string>
     <string name="answer_call">Svar</string>
@@ -912,9 +925,12 @@
     <string name="rtp_state_connectivity_lost_error">Forbindelsen tabt</string>
     <string name="rtp_state_retracted">Tilbagetrukket opkald</string>
     <string name="rtp_state_application_failure">App fejl</string>
+    <string name="rtp_state_security_error">Bekræftelsesproblem</string>
     <string name="hang_up">Læg på</string>
     <string name="ongoing_call">Udgående opkald</string>
     <string name="ongoing_video_call">Igangværende videoopkald</string>
+    <string name="reconnecting_call">Forbinder igen opkald</string>
+    <string name="reconnecting_video_call">Forbinder igen videoopkald</string>
     <string name="disable_tor_to_make_call">Deaktiver TOR for at lave opkald</string>
     <string name="incoming_call">Indkommende opkald</string>
     <string name="incoming_call_duration">Indkommende opkald · %s</string>
@@ -922,6 +938,18 @@
     <string name="outgoing_call">Udgående opkald</string>
     <string name="outgoing_call_duration">Udgående opkald · %s</string>
     <string name="missed_call">Mistet opkald</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d mistet opkald fra %2$s</item>
+        <item quantity="other">%1$d mistet opkald fra %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d mistet opkald</item>
+        <item quantity="other">%d mistet opkald</item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d mistet opkald fra %2$d kontakt</item>
+        <item quantity="other">%1$d mistet opkald fra %2$d kontakter</item>
+    </plurals>
     <string name="audio_call">Lydopkald</string>
     <string name="video_call">Videoopkald</string>
     <string name="help">Hjælp</string>
@@ -963,4 +991,13 @@
     <string name="no_active_accounts_support_this">Ingen aktive konti understøtter denne funktion</string>
     <string name="backup_started_message">Sikkerhedskopieringen er startet. Du får en notifikation, når den er afsluttet.</string>
     <string name="unable_to_enable_video">Kunne ikke aktivere video.</string>
-    </resources>
+    <string name="plain_text_document">Ren tekstdokument</string>
+    <string name="account_registrations_are_not_supported">Kontoregistrering er ikke understøttet</string>
+    <string name="no_xmpp_adddress_found">Ingen XMPP-adresse fundet</string>
+    <string name="account_status_temporary_auth_failure">Midlertidig godkendelsesfejl</string>
+    <string name="delete_avatar">Slet avatar</string>
+    <string name="audio_video_disabled_tor">Opkald er deaktiveret ved brug af Tor</string>
+    <string name="switch_to_video">Skift til video</string>
+    <string name="reject_switch_to_video">Afvis skift til video anmodning</string>
+
+</resources>

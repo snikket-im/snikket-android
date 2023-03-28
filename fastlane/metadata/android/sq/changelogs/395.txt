@@ -1,0 +1,3 @@
+* shtim “Kthehuni te fjalosje”, te skena e thirrjeve audio
+* Përmirësim shkurtoresh tastiere
+* ndreqje të metash

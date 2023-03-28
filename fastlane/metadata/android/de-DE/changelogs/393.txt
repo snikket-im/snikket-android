@@ -1,0 +1,3 @@
+* Hilfe-Schaltfläche anzeigen, wenn A/V-Anruf fehlschlägt
+* Einige lästige Abstürze behoben
+* Jingle-Verbindungen (Dateiübertragung + Anrufe) mit bloßen JIDs behoben

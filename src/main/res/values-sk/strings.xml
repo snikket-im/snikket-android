@@ -287,8 +287,6 @@
     <string name="title_pref_enable_quiet_hours">Povoliť tichý režim</string>
     <string name="pref_quiet_hours_summary">Upozornenia budú počas tichého režimu stlmené</string>
     <string name="pref_expert_options_other">Ďalší</string>
-    <string name="pref_autojoin">Synchronizovať so záložkami</string>
-    <string name="pref_autojoin_summary">Automaticky sa pripojiť k skupinovému rozhovoru, ak to hovorí záložka</string>
     <string name="toast_message_omemo_fingerprint">OMEMO odtlačok skopírovaný do schránky</string>
     <string name="conference_banned">Ste zakázaný na tomto skupinovom rozhovore</string>
     <string name="conference_members_only">Skupinový rozhovor len pre členov</string>

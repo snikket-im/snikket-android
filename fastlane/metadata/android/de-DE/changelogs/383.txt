@@ -1,0 +1,3 @@
+* Anrufsymbol nach links verschoben, damit die anderen Symbole der Symbolleiste an einer einheitlichen Stelle bleiben
+* Anzeige der Gesprächsdauer bei Sprachanrufen
+* Unterbrechung der Verbindung bei A/V-Anrufen (zwei Personen rufen sich gleichzeitig an)

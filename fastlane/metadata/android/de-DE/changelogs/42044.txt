@@ -1,0 +1,3 @@
+* Nachrichten werden bei Verwendung von SASL2 nicht mehr erneut gesendet
+* Schwarzes Video zwischen einigen Geräten behoben
+* Absturz bei leeren Passwörtern behoben

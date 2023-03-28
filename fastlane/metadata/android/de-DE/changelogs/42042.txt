@@ -1,0 +1,2 @@
+* Wiederholungsschleife auf Servern beheben, die nur sm:2 unterstützen
+* "Umschalten auf Video" nur anzeigen, wenn die Gegenseite Video unterstützt

@@ -15,12 +15,12 @@
 
     <homepage rdf:resource="https://conversations.im/"/>
     <download-page rdf:resource="https://play.google.com/store/apps/details?id=eu.siacs.conversations"/>
-    <bug-database rdf:resource="https://github.com/iNPUTmice/Conversations/issues"/>
+    <bug-database rdf:resource="https://codeberg.org/iNPUTmice/Conversations/issues"/>
     <!-- See https://github.com/ewilderj/doap/issues/53 -->
     <developer-forum rdf:resource="xmpp:conversations@siacs.conference.eu?join"/>
     <support-forum rdf:resource="xmpp:conversations@siacs.conference.eu?join"/>
 
-    <license rdf:resource="https://github.com/iNPUTmice/Conversations/blob/master/LICENSE"/>
+    <license rdf:resource="https://codeberg.org/iNPUTmice/Conversations/src/branch/master/LICENSE"/>
 
     <!-- See https://github.com/ewilderj/doap/issues/49 -->
     <language>en</language>
@@ -53,8 +53,8 @@
 
     <repository>
         <GitRepository>
-            <browse rdf:resource="https://github.com/iNPUTmice/Conversations"/>
-            <location rdf:resource="https://github.com/iNPUTmice/Conversations.git"/>
+            <browse rdf:resource="https://codeberg.org/iNPUTmice/Conversations"/>
+            <location rdf:resource="https://codeberg.org/iNPUTmice/Conversations.git"/>
         </GitRepository>
     </repository> 
 

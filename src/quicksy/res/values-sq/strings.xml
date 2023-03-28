@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_notification_grace_period_summary">Sasia e kohës që Quicksy nuk ndihet, pasi të ketë parë veprimtari në pajisje tjetër</string>
+    <string name="pref_never_send_crash_summary">Duke dërguar “stack traces” ndihmoni në zhvillimin e pandërprerë të Quicksy-t</string>
+    <string name="pref_broadcast_last_activity_summary">Bëjuani të ditur krejt kontakteve tuaja, kur përdorni Quicksy-n</string>
+    <string name="huawei_protected_apps_summary">Që të vazhdoni të merrni njoftime, edhe kur ekrani juaj është i fikur, duhet të shtoni Quicksy-n te lista e aplikacioneve të mbrojtur.</string>
+    <string name="set_profile_picture">Foto profili Quicksy</string>
+    <string name="not_available_in_your_country">Quicksy s’mund të kihet në vendin tuaj.</string>
+    <string name="unable_to_verify_server_identity">S’arrihet të verifikohet identitet shërbyesi.</string>
+    <string name="unknown_security_error">Gabim i panjohur sigurie.</string>
+    <string name="timeout_while_connecting_to_server">Mbarim kohe teksa lidhej me shërbyesin.</string>
+</resources>

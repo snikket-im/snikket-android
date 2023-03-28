@@ -28,7 +28,7 @@
         android:layout_marginRight="-1.5dp"
         android:padding="0dp"
         android:scaleType="fitXY"
-        app:riv_corner_radius="1dp"/>
+        app:riv_corner_radius="4dp"/>
 
     <TextView
         android:id="@+id/status_message"

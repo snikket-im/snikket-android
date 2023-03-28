@@ -1,0 +1,2 @@
+* Verifikim thirrjesh A/V me sesioni OMEMO që ekzistojnë që më parë
+* Përmirësim përputhshmërie me sendërtime WebRTC jo të bazuara libwebrt

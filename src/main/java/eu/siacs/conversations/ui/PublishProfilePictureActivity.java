@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -99,18 +102,25 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
                 xmppConnectionService.publishAvatar(account, avatarUri, this);
             }
         });
-        this.cancelButton.setOnClickListener(v -> {
-            if (mInitialAccountSetup) {
-                final Intent intent = new Intent(getApplicationContext(), StartConversationActivity.class);
-                if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1) {
-                    intent.putExtra("init", true);
-                }
-                StartConversationActivity.addInviteUri(intent, getIntent());
-                intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
-                startActivity(intent);
-            }
-            finish();
-        });
+        this.cancelButton.setOnClickListener(
+                v -> {
+                    if (mInitialAccountSetup) {
+                        final Intent intent =
+                                new Intent(
+                                        getApplicationContext(), StartConversationActivity.class);
+                        if (xmppConnectionService != null
+                                && xmppConnectionService.getAccounts().size() == 1) {
+                            intent.putExtra("init", true);
+                        }
+                        StartConversationActivity.addInviteUri(intent, getIntent());
+                        if (account != null) {
+                            intent.putExtra(
+                                    EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
+                        }
+                        startActivity(intent);
+                    }
+                    finish();
+                });
         this.avatar.setOnClickListener(v -> chooseAvatar(this));
         this.defaultUri = PhoneHelper.getProfilePictureUri(getApplicationContext());
         if (savedInstanceState != null) {
@@ -120,7 +130,25 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_publish_profile_picture, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (item.getItemId() == R.id.action_delete_avatar) {
+            if (xmppConnectionService != null && account != null) {
+                xmppConnectionService.deleteAvatar(account);
+            }
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         if (this.avatarUri != null) {
             outState.putParcelable("uri", this.avatarUri);
         }
