@@ -128,7 +128,7 @@
     <string name="pref_notification_grace_period_summary">Tidsgräns för hur länge notiser ska tystas efter att aktivitet har upptäckts på en av dina andra enheter.</string>
     <string name="pref_advanced_options">Avancerat</string>
     <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
-    <string name="pref_never_send_crash_summary">Genom att skicka in kraschrapporter hjälper du den pågående utvecklingen av Conversations</string>
+    <string name="pref_never_send_crash_summary">Genom att skicka in kraschrapporter hjälper du den pågående utvecklingen</string>
     <string name="pref_confirm_messages">Bekräfta meddelanden</string>
     <string name="pref_confirm_messages_summary">Låt dina kontakter veta när du har mottagit och läst deras meddelanden</string>
     <string name="pref_prevent_screenshots">Förhindra skärmdumpar</string>
@@ -515,7 +515,9 @@
     <string name="no_camera_permission">Ge %1$s åtkomst till kameran</string>
     <string name="sync_with_contacts">Synkronisera med kontakter</string>
     <string name="sync_with_contacts_long">%1$s vill ha behörighet att komma åt din adressbok för att matcha den med din XMPP-kontaktlista.\nDetta visar dina kontakters fullständiga namn och visningsbilder.\n\n%1$s kommer bara att läsa din adressbok och matcha den lokalt, utan att ladda upp något till din server.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy behöver åtkomst till dina kontakters telefonnummer för att ge förslag om möjliga kontakter som redan finns på Quicksy.<br><br>Vi kommer inte att lagra någon kopia av dessa telefonnummer.\n\nLäs vår <a href=\"https://quicksy.im/#privacy\">integritetspolicy</a> för mer information.<br><br>Du kommer nu bli ombedd att ge åtkomst till dina kontakter.]]></string>
+    <string name="sync_with_contacts_quicksy">Quicksy behöver åtkomst till dina kontakters telefonnummer för att ge förslag om möjliga kontakter som redan finns på Quicksy.&lt;br&gt;&lt;br&gt;Vi kommer inte att lagra någon kopia av dessa telefonnummer.
+\n
+\nLäs vår &lt;a href=\"https://quicksy.im/privacy.htm\"&gt;integritetspolicy&lt;/a&gt; för mer information.&lt;br&gt;&lt;br&gt;Du kommer nu bli ombedd att ge åtkomst till dina kontakter.</string>
     <string name="notify_on_all_messages">Notifiera för alla meddelanden</string>
     <string name="notify_only_when_highlighted">Notis endast vid omnämnande</string>
     <string name="notify_never">Notifieringar deaktiverade</string>
@@ -540,7 +542,7 @@
     <string name="security_error_invalid_file_access">Säkerhetsfel: Ogiltig filåtkomst!</string>
     <string name="no_application_to_share_uri">Ingen applikation hittades för att dela URI</string>
     <string name="share_uri_with">Dela URI med …</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy är en spin-off av den populära XMPP-klienten Conversations med automatisk kontaktupptäckt.<br><br>Du registrerar dig med ditt telefonnummer och Quicksy kommer automatiskt – baserat på telefonnumren i din adressbok – att föreslå möjliga kontakter till dig.<br><br>Genom att registrera dig godkänner du vår <a href=\"https://quicksy.im/#privacy\">integritetspolicy</a>.]]></string>
+    <string name="welcome_text_quicksy">Quicksy är en spin-off av den populära XMPP-klienten Conversations med automatisk kontaktupptäckt.&lt;br&gt;&lt;br&gt;Du registrerar dig med ditt telefonnummer och Quicksy kommer automatiskt – baserat på telefonnumren i din adressbok – att föreslå möjliga kontakter till dig.&lt;br&gt;&lt;br&gt;Genom att registrera dig godkänner du vår &lt;a href=\"https://quicksy.im/privacy.htm\"&gt;integritetspolicy&lt;/a&gt;.</string>
     <string name="agree_and_continue">Acceptera och gå vidare</string>
     <string name="magic_create_text">En guide har skapats för kontoskapande på conversations.im.
 \nNär du väljer conversations.im som leverantör kommer du att kunna kommunicera med användare av andra leverantörer genom att ge dem din fullständiga XMPP-adress.</string>
