@@ -1002,4 +1002,5 @@
     <string name="no_account_deactivated">Kein (deaktiviert)</string>
     <string name="unified_push_distributor">UnifiedPush Verteiler</string>
     <string name="pref_up_push_account_summary">Das Konto, über das Push-Nachrichten empfangen werden sollen.</string>
+    <string name="decline">Ablehnen</string>
 </resources>
