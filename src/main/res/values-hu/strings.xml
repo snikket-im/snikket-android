@@ -497,7 +497,6 @@
     <string name="shared_images_with_x">%s partnerrel megosztott képek</string>
     <string name="shared_text_with_x">%s partnerrel megosztott szöveg</string>
     <string name="sync_with_contacts">Szinkronizálás a partnerekkel</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[A Quicksy alkalmazásnak hozzáférés szükséges a partnerei telefonszámához, hogy javaslatokat tegyen a lehetséges partnerekről, akik már csatlakoztak a Quicksy-hez.<br><br>A telefonszámok másolatát nem fogjuk eltárolni.\n\nTovábbi információkért olvassa el az <a href="https://quicksy.im/#privacy">adatvédelmi irányelveinket</a>.<br><br>Most arra fogják kérni, hogy adjon jogosultságot a névjegyek eléréséhez.]]></string>
     <string name="notify_on_all_messages">Értesítés az összes üzenetről</string>
     <string name="notify_only_when_highlighted">Csak akkor értesítsen, ha megemlítik</string>
     <string name="notify_never">Értesítések letiltva</string>
@@ -517,7 +516,6 @@
     <string name="security_error_invalid_file_access">Biztonsági hiba: érvénytelen fájlhozzáférés</string>
     <string name="no_application_to_share_uri">Nem található alkalmazás az URI megosztásához</string>
     <string name="share_uri_with">URI megosztása ezzel…</string>
-    <string name="welcome_text_quicksy"><![CDATA[A Quicksy a népszerű Conversations XMPP kliens mellékhajtása automatikus partnerfelfedezéssel.<br><br>Regisztráljon a telefonszámával, és a Quicksy automatikusan – a címjegyzékében szereplő telefonszámok alapján – javaslatot tesz a lehetséges partnerekre.<br><br>A regisztrációval elfogadja az<a href="https://quicksy.im/#privacy">adatvédelmi irányelveinket</a>.]]></string>
     <string name="agree_and_continue">Elfogadás és folytatás</string>
     <string name="your_full_jid_will_be">A teljes XMPP-címe ez lesz: %s</string>
     <string name="create_account">Fiók létrehozása</string>
@@ -839,7 +837,6 @@
     <string name="discover_channels">Csatornák felderítése</string>
     <string name="search_channels">Csatornák keresése</string>
     <string name="channel_discovery_opt_in_title">Magánélet lehetséges megsértése!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[A csatornafelderítés a <a href="https://search.jabber.network">search.jabber.network</a> nevű, harmadik féltől származó szolgáltatást használja.<br><br>A funkció használata elküldi az IP-címét és a keresési kifejezést annak a szolgáltatásnak. További információkért nézze meg az <a href="https://search.jabber.network/privacy">adatvédelmi irányelveiket</a>.]]></string>
     <string name="i_already_have_an_account">Már van fiókom</string>
     <string name="add_existing_account">Meglévő fiók hozzáadása</string>
     <string name="register_new_account">Új fiók regisztrálása</string>

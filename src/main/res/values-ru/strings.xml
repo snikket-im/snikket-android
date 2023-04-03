@@ -516,7 +516,6 @@
     <string name="no_camera_permission">Предоставить %1$s разрешение на использование камеры</string>
     <string name="sync_with_contacts">Синхронизировать с контактами</string>
     <string name="sync_with_contacts_long">%1$s нужно разрешение на доступ к контактам, чтобы соотнести их с вашими XMPP-контактами.\nЭто позволит отобразить полные имена и аватары контактов.\n\n%1$s сделает это локально, без отправки чего-либо на ваш сервер.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy необходим доступ к телефонным номерам ваших контактов, для обнаружения тех, кто уже использует Quicksy.<br><br>Мы не будем хранить у себя копии этих номеров.\n\nДля более подробной информации читайте нашу <a href="https://quicksy.im/#privacy">политику конфиденциальности</a>.<br><br>Сейчас будет сделан запрос на разрешение доступа к контактам.]]></string>
     <string name="notify_on_all_messages">Все сообщения</string>
     <string name="notify_only_when_highlighted">Уведомлять только при упоминании</string>
     <string name="notify_never">Уведомления выключены</string>
@@ -539,7 +538,6 @@
     <string name="security_error_invalid_file_access">Ошибка безопасности: недействительный доступ к файлу</string>
     <string name="no_application_to_share_uri">Не найдено приложения для передачи URI</string>
     <string name="share_uri_with">Отправить URI…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy — это ответвление XMPP-клиента Conversations с автоматическим обнаружением контактов.<br><br>После авторизации по номеру телефона Quicksy автоматически, основываясь на вашей адресной книге, предложит добавить возможные контакты.<br><br>Регистрируясь, вы соглашаетесь с нашей <a href="https://quicksy.im/#privacy">политикой конфиденциальности</a>.]]></string>
     <string name="agree_and_continue">Согласиться и продолжить</string>
     <string name="magic_create_text">Мы поможем Вам создать аккаунт на conversations.im¹.\nВыбрав conversations.im в качестве провайдера, вы сможете общаться с пользователями других провайдеров, сообщив им свой полный XMPP-адрес.</string>
     <string name="your_full_jid_will_be">Ваш полный XMPP-адрес будет: %s</string>
@@ -887,7 +885,6 @@
     <string name="discover_channels">Найти каналы</string>
     <string name="search_channels">Поиск каналов</string>
     <string name="channel_discovery_opt_in_title">Возможно нарушение конфиденциальности!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Поиск каналов использует сторонний сервис <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Использование этого сервиса требует передачи вашего IP-адреса и поисковых запросов. Для дополнительной информации смотрите <a href="https://search.jabber.network/privacy">Политику конфиденциальности</a>.]]></string>
     <string name="i_already_have_an_account">У меня уже есть аккаунт</string>
     <string name="add_existing_account">Добавить существующий аккаунт</string>
     <string name="register_new_account">Зарегистрировать новую учетную запись</string>

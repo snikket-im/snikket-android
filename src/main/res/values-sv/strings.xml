@@ -515,9 +515,6 @@
     <string name="no_camera_permission">Ge %1$s åtkomst till kameran</string>
     <string name="sync_with_contacts">Synkronisera med kontakter</string>
     <string name="sync_with_contacts_long">%1$s vill ha behörighet att komma åt din adressbok för att matcha den med din XMPP-kontaktlista.\nDetta visar dina kontakters fullständiga namn och visningsbilder.\n\n%1$s kommer bara att läsa din adressbok och matcha den lokalt, utan att ladda upp något till din server.</string>
-    <string name="sync_with_contacts_quicksy">Quicksy behöver åtkomst till dina kontakters telefonnummer för att ge förslag om möjliga kontakter som redan finns på Quicksy.&lt;br&gt;&lt;br&gt;Vi kommer inte att lagra någon kopia av dessa telefonnummer.
-\n
-\nLäs vår &lt;a href=\"https://quicksy.im/privacy.htm\"&gt;integritetspolicy&lt;/a&gt; för mer information.&lt;br&gt;&lt;br&gt;Du kommer nu bli ombedd att ge åtkomst till dina kontakter.</string>
     <string name="notify_on_all_messages">Notifiera för alla meddelanden</string>
     <string name="notify_only_when_highlighted">Notis endast vid omnämnande</string>
     <string name="notify_never">Notifieringar deaktiverade</string>
@@ -542,7 +539,6 @@
     <string name="security_error_invalid_file_access">Säkerhetsfel: Ogiltig filåtkomst!</string>
     <string name="no_application_to_share_uri">Ingen applikation hittades för att dela URI</string>
     <string name="share_uri_with">Dela URI med …</string>
-    <string name="welcome_text_quicksy">Quicksy är en spin-off av den populära XMPP-klienten Conversations med automatisk kontaktupptäckt.&lt;br&gt;&lt;br&gt;Du registrerar dig med ditt telefonnummer och Quicksy kommer automatiskt – baserat på telefonnumren i din adressbok – att föreslå möjliga kontakter till dig.&lt;br&gt;&lt;br&gt;Genom att registrera dig godkänner du vår &lt;a href=\"https://quicksy.im/privacy.htm\"&gt;integritetspolicy&lt;/a&gt;.</string>
     <string name="agree_and_continue">Acceptera och gå vidare</string>
     <string name="magic_create_text">En guide har skapats för kontoskapande på conversations.im.
 \nNär du väljer conversations.im som leverantör kommer du att kunna kommunicera med användare av andra leverantörer genom att ge dem din fullständiga XMPP-adress.</string>
@@ -998,7 +994,6 @@
     <string name="conference_technical_problems">Du lämnade gruppchatten av tekniska skäl</string>
     <string name="multimedia_file">multimedia-fil</string>
     <string name="restore_warning">Använd inte funktionen för återställning av säkerhetskopia för att försöka klona (köra samtidigt) en installation. Återställning av en säkerhetskopia är avsedd för migreringar eller om du har tappat bort den ursprungliga enheten.</string>
-    <string name="channel_discover_opt_in_message">Upptäck kanaler använder en tredjepartstjänst som heter &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Om du använder denna funktion kommer din IP-adress och din sökfråga att överföras till den tjänsten. Läs deras &lt;a href=https://search.jabber.network/privacy&gt;integritetspolicy&lt;/a&gt; för att få veta mer.</string>
     <plurals name="n_missed_calls_from_m_contacts">
         <item quantity="one">%1$d missat samtal från %2$d kontakt</item>
         <item quantity="other">%1$d missade samtal från %2$d kontakter</item>

@@ -825,7 +825,6 @@
     <string name="discover_channels">探索頻道</string>
     <string name="search_channels">搜尋頻道</string>
     <string name="channel_discovery_opt_in_title">可能侵犯私隱！</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[頻道探索使用了名爲<a href=\"https://search.jabber.network\">search.jabber.network</a><br><br>的第三方服務。使用此功能會將你的IP地址和搜尋字詞傳輸到該服務。 有關更多資訊，請參閱其<a href=\"https://search.jabber.network/privacy\">私隱政策</a>。]]></string>
     <string name="i_already_have_an_account">我已經有一個帳戶</string>
     <string name="add_existing_account">添加已有帳戶</string>
     <string name="register_new_account">註冊新帳戶</string>

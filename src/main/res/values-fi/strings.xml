@@ -819,7 +819,6 @@
     <string name="discover_channels">Löydä kanavia</string>
     <string name="search_channels">Hae kanavia</string>
     <string name="channel_discovery_opt_in_title">Mahdollinen yksityisyyden loukkaus!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Kanavan etsintätoiminto käyttää kolmannen osapuolen palvelua nimeltä <a href=\"https://search.jabber.network\">search.jabber.network</a>.<br><br>Sen käyttö lähettää IP-osoitteesi ja hakusanat palvelulle. Katso heidän <a href=\"https://search.jabber.network/privacy\">yksityisyyskäytännöstään</a> lisätietoa.]]></string>
     <string name="i_already_have_an_account">Minulla on jo tili</string>
     <string name="add_existing_account">Lisää olemassa oleva tili</string>
     <string name="register_new_account">Rekisteröi uusi tili</string>

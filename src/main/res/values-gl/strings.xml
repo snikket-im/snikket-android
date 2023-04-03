@@ -522,9 +522,6 @@
     <string name="no_camera_permission">Permitir que %1$s acceda á cámara</string>
     <string name="sync_with_contacts">Sincronice con todos os contactos</string>
     <string name="sync_with_contacts_long">%1$s quere ter permiso para acceder á túa libreta de enderezos para comparala coa lista de contactos XMPP.\nDeste xeito poderá mostrar o nome completo e avatares dos teus contactos.\n\n%1$s só utilizará de xeito local a túa lista de contactos, sen subila a ningún servidor.</string>
-    <string name="sync_with_contacts_quicksy">Quicksy precisa acceder ao número de teléfono dos contactos para facer suxestións sobre posibles contactos que xa están en Quicksy.&lt;br&gt;&lt;br&gt;Non gardaremos unha copia desos números de teléfono.
-\n
-\nPara máis información le a nosa &lt;a href=https://quicksy.im/privacy.htm&gt;política de privacidade&lt;/a&gt;.&lt;br&gt;&lt;br&gt;A continuación pediremos permiso para acceder aos contactos.</string>
     <string name="notify_on_all_messages">Notificar todas as mensaxes</string>
     <string name="notify_only_when_highlighted">Notificar só cando é mencionada</string>
     <string name="notify_never">Notificacións desactivadas</string>
@@ -547,7 +544,6 @@
     <string name="security_error_invalid_file_access">Fallo de seguridade: Acceso non válido ao ficheiro!</string>
     <string name="no_application_to_share_uri">Non se atopou unha app para compartir URI</string>
     <string name="share_uri_with">Compartir URI con…</string>
-    <string name="welcome_text_quicksy">Quicksy é un derivado do popular cliente XMPP Conversations con descubrimento automático de contactos.&lt;br&gt;&lt;br&gt;Podes rexistrarte co teu número de teléfono e Quicksy suxerirache automáticamente —tomando os números da túa libreta de enderezos como referencia— posibles contactos para ti.&lt;br&gt;&lt;br&gt;Ao rexistrarte aceptas a nosa &lt;a href=https://quicksy.im/privacy.htm&gt;política de privacidade&lt;/a&gt;.</string>
     <string name="agree_and_continue">Aceptar e continuar</string>
     <string name="magic_create_text">Tes unha guía para crear unha conta en conversations.im
 \nAo escoller conversations.im como provedor poderás comunicarte con outras usuarias de outros provedores con só darlles o teu enderezo XMPP completo.</string>
@@ -888,7 +884,6 @@
     <string name="discover_channels">Descubrir canles</string>
     <string name="search_channels">Buscar canles</string>
     <string name="channel_discovery_opt_in_title">Posible intrusión na privacidade!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[O descubrimento de canles utiliza un servizo de terceiros chamado <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Ao utilizar esta función transmitirás o teu enderezo IP e termos de busca a ese servizo. Le a súa <a href="https://search.jabber.network/privacy">Política de Privacidade</a> para máis información.]]></string>
     <string name="i_already_have_an_account">Xa teño unha conta</string>
     <string name="add_existing_account">Engadir conta existente</string>
     <string name="register_new_account">Rexistrar unha nova conta</string>

@@ -512,7 +512,6 @@
     <string name="no_camera_permission">%1$s にカメラへのアクセス権を付与</string>
     <string name="sync_with_contacts">連絡先と同期</string>
     <string name="sync_with_contacts_long">%1$s はあなたのアドレス帳にアクセスして、あなたのXMPP 連絡先名簿と照合する権限を求めています。\nこれにより、連絡先のフルネームとアバターが表示されます。\n\n%1$s は、あなたのサーバーに何かをアップロードすることなく、あなたのアドレス帳を読み込んで照合するだけです。</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksyは、既にQuicksyに登録されている連絡先を提案するために、あなたの連絡先の電話番号にアクセスする必要があります。<br><br>Quicksyは、それらの電話番号のコピーを保存することはありません。\n\n詳細は<a href="https://quicksy.im/#privacy">プライバシーポリシー</a>をご覧ください。<br><br>今、連絡先へのアクセス権限を付与するよう求められます。]]></string>
     <string name="notify_on_all_messages">すべてのメッセージで通知</string>
     <string name="notify_only_when_highlighted">メンションされたときにのみ通知</string>
     <string name="notify_never">通知は無効</string>
@@ -535,7 +534,6 @@
     <string name="security_error_invalid_file_access">セキュリティエラー: 不正なファイルアクセス!</string>
     <string name="no_application_to_share_uri">URI を共有するアプリが見つかりません</string>
     <string name="share_uri_with">…で URI を共有</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy は人気のXMPPアプリConversationsの派生で、連絡先の自動検出機能を備えています。<br><br>電話番号を入力して登録すると、アドレス帳に登録されている電話番号をもとに、Quicksyが自動的に連絡先を提案します。<br><br>登録すると、<a href=\"https://quicksy.im/#privacy\">我々のプライバシーポリシー</a>に同意することになります。]]></string>
     <string name="agree_and_continue">同意して続行</string>
     <string name="magic_create_text">conversations.im 上にアカウントを作成する設定の指南です。¹\nconversations.im をプロバイダーとして選択した場合、あなたの完全な XMPP アドレスを他のプロバイダーのユーザーに示すことで、その人と連絡をとることができます。</string>
     <string name="your_full_jid_will_be">あなたの完全なXMPPアドレスは: %s</string>
@@ -867,7 +865,6 @@
     <string name="discover_channels">談話室を発見</string>
     <string name="search_channels">談話室を検索</string>
     <string name="channel_discovery_opt_in_title">プライバシー侵害の可能性あり!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[談話室発見は、第三者のサービスである<a href=\"https://search.jabber.network\">search.jabber.network</a>を利用します。<br><br>この機能を使うと、あなたののIPアドレスや検索キーワードがそのサービスに送信されます。詳しくは、<a href=\"https://search.jabber.network/privacy\">プライバシーポリシー</a>をご覧ください。]]></string>
     <string name="i_already_have_an_account">既にアカウントを持っています</string>
     <string name="add_existing_account">既存アカウントを追加</string>
     <string name="register_new_account">新規アカウントを登録</string>

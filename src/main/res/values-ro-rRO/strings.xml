@@ -528,9 +528,6 @@
 \nAșa v-a afișa numele lor complete și avatarele.
 \n
 \n%1$s va citi și potrivi local fără a fi încărcate pe serverul dumneavoastră.</string>
-    <string name="sync_with_contacts_quicksy">Quicksy are nevoie să poată accesa numerele de telefon ale contactelor dumneavoastră pentru a putea sugera posibile contacte ce sunt deja pe Quicksy.&lt;br&gt;&lt;br&gt;Nu vom stoca o copie a acestor numere the telefon.
-\n
-\nPentru mai multe informații puteți citii &lt;a href=https://quicksy.im/privacy.htm&gt;politica noastră de confidențialitate&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Urmează să fiți întrebați dacă doriți să permiteți accesul la contacte.</string>
     <string name="notify_on_all_messages">Notifică la toate mesajele</string>
     <string name="notify_only_when_highlighted">Notifică doar atunci când cineva vă menționează numele</string>
     <string name="notify_never">Notificări dezactivate</string>
@@ -556,7 +553,6 @@
     <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fișier invalid!</string>
     <string name="no_application_to_share_uri">Nu s-a găsit nici o aplicație care să partajeze adresa</string>
     <string name="share_uri_with">Partajează adresa cu…</string>
-    <string name="welcome_text_quicksy">Quicksy este o versiune a popularului client XMPP Conversations cu descoperire automată a contactelor.&lt;br&gt;&lt;br&gt;Vă înscrieți cu numărul de telefon și Quicksy—pe baza numerelor de telefon din agenda dumneavoastră—vă va sugera automat posibile contacte.&lt;br&gt;&lt;br&gt;Înscriindu-vă sunteți de acord cu &lt;a href=https://quicksy.im/privacy.htm&gt;politica noastră de confidențialitate&lt;/a&gt;.</string>
     <string name="agree_and_continue">Sunt de acord și continuă</string>
     <string name="magic_create_text">Ghidul va configura un cont pe conversations.im.
 \nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
@@ -902,7 +898,6 @@
     <string name="discover_channels">Descoperă canale publice</string>
     <string name="search_channels">Caută canale publice</string>
     <string name="channel_discovery_opt_in_title">Posibilă încălcare a intimității!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Descoperirea de canale publice folosește un serviciu terț numit <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți <a href="https://search.jabber.network/privacy">Politica de confidențialitate</a> a serviciului.]]></string>
     <string name="i_already_have_an_account">Eu am deja un cont</string>
     <string name="add_existing_account">Adaugă un cont existent</string>
     <string name="register_new_account">Înregistrează un cont nou</string>

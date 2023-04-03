@@ -519,7 +519,6 @@
     <string name="no_camera_permission">Giv %1$s adgang til kameraet</string>
     <string name="sync_with_contacts">Synkroniser med kontakter</string>
     <string name="sync_with_contacts_long">%1$s ønsker tilladelse til at få adgang til din adressebog for at matche den med din XMPP kontaktliste.\nDette vil vise dine kontakters fulde navne og avatarer.\n\n%1$s læser kun din adressebog og matcher den lokalt uden at uploade noget til din server.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy har brug for adgang til dine kontaktpersons telefonnumre for at komme med forslag til mulige kontakter, der allerede er på Quicksy.<br><br>Vi gemmer ikke en kopi af disse telefonnumre.\n\nFor mere information, læs vores <a href="https://quicksy.im/#privacy">privatlivspolitik</a>.<br><br>Du vil bedes nu om at give tilladelse til at få adgang til dine kontakter.]]></string>
     <string name="notify_on_all_messages">Underret ved alle beskeder</string>
     <string name="notify_only_when_highlighted">Underret kun når nævnt</string>
     <string name="notify_never">Notifikationer deaktiveret</string>
@@ -542,7 +541,6 @@
     <string name="security_error_invalid_file_access">Sikkerhedsfejl: Ugyldig filadgang!</string>
     <string name="no_application_to_share_uri">Ingen app fundet der kan dele URL</string>
     <string name="share_uri_with">Del URL med…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy er en klone af den populære XMPP klient Conversations med automatisk kontaktopdagelse.<br><br>Du tilmelder dig med dit telefonnummer, og Quicksy vil automatisk - baseret på telefonnumre i din adressebog - foreslå mulige kontakter til dig.<br><br>Når du tilmelder dig, accepterer du vores <a href="https://quicksy.im/#privacy">privatlispolitik</a>.]]></string>
     <string name="agree_and_continue">Accepter og fortsætte</string>
     <string name="magic_create_text">En guide er oprettet til kontooprettelse på conversations.im.¹\nNår du vælger conversations.im som udbyder, kan du kommunikere med brugere fra andre udbydere ved at give dem din fulde XMPP-adresse.</string>
     <string name="your_full_jid_will_be">Din fulde XMPP-adresse vil blive: %s</string>
@@ -881,7 +879,6 @@
     <string name="discover_channels">Find kanaler</string>
     <string name="search_channels">Find kanaler</string>
     <string name="channel_discovery_opt_in_title">Risiko for krænkelse af privatlivet!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Kanalsøgning bruger en tredjepartstjeneste kaldet <a href="https://search.jabber.network">søg.jabber.netværk</a>.<br><br>Brug af denne funktion sender din IP-adresse og søgetermer til denne service. Se deres <a href="https://search.jabber.network/privacy">Privatlivspolitik</a> for mere information.]]></string>
     <string name="i_already_have_an_account">Jeg har allerede en konto</string>
     <string name="add_existing_account">Tilføj eksisterende konto</string>
     <string name="register_new_account">Registrer ny konto</string>

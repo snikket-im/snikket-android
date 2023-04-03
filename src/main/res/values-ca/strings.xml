@@ -497,7 +497,6 @@
     <string name="shared_images_with_x">Imatges compartides amb %s</string>
     <string name="shared_text_with_x">Text compartit amb %s</string>
     <string name="sync_with_contacts">Sincronitza amb contactes</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy necessita accés als números de telèfon dels seus contactes per fer suggeriments sobre possibles contactes que ja estan en Quicksy.<br> <br> No guardarem una còpia d\'aquests números de telèfon.\n\nPer a més informació llegeixi la nostra <a href="https://quicksy.im/#privacy">política de privadesa</a> <br> <br> Ara se us demanarà que concediu permís per accedir als vostres contactes.]]></string>
     <string name="notify_on_all_messages">Notifica a tots els missatges</string>
     <string name="notify_only_when_highlighted">Notifica només quan s\'esmenta</string>
     <string name="notify_never">S\'han desactivat les notificacions</string>
@@ -518,7 +517,6 @@
     <string name="security_error_invalid_file_access">Error de seguretat: Accés invàlid a un arxiu!</string>
     <string name="no_application_to_share_uri">No s\'ha trobat cap aplicació per a compartir URI</string>
     <string name="share_uri_with">Comparteix l\'URI amb…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy és un spin off del popular client XMPP Conversations amb descobriment automàtic de contactes.<br><br>Si es registra amb el seu número de telèfon i Quicksy,--basant-se en els números de telèfon de la seva agenda--li suggereix automàticament possibles contactes.<br><br>En inscriure\'s, accepta nostra <a href="https://quicksy.im/#privacy">política de privacitat</a>.]]></string>
     <string name="agree_and_continue">Acceptar i continuar</string>
     <string name="magic_create_text">S\'ha establert una guia per a la creació de comptes en conversations.im.¹\nEn triar conversations.im com a proveïdor podràs comunicar-te amb usuaris d\'altres proveïdors donant-los la teva adreça XMPP completa.</string>
     <string name="your_full_jid_will_be">La seva adreça XMPP completa serà: %s</string>
@@ -850,7 +848,6 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="discover_channels">Descobreix canals</string>
     <string name="search_channels">Buscar canals</string>
     <string name="channel_discovery_opt_in_title">Possible violació de la privacitat.</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[El descobriment de canals utilitza un servei de tercers anomenat <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>L\'ús d\'aquesta funció transmetrà la seva adreça IP i els termes de cerca a aquest servei. Consulti la seva <a href="https://search.jabber.network/privacy">Política de Privacitat</a> per a obtenir més informació.]]></string>
     <string name="i_already_have_an_account">Ja tinc un compte</string>
     <string name="add_existing_account">Afegir compte existent</string>
     <string name="register_new_account">Registrar un nou compte</string>

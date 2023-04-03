@@ -836,7 +836,6 @@
 \n
 \nTani do t’ju kërkohet t’i çaktivizoni ato.</string>
     <string name="no_keys_just_confirm">I keni vlerësuar në mënyrë të parrezik shenjat e gishtave të këtij personi, për të ripohuar besimin. Duke përzgjedhur “U bë”, thjesht po ripohoni se %s është pjesë e kësaj fjalosjeje në grup.</string>
-    <string name="welcome_text_quicksy">Quicksy është një pjellë e klientit popullor XMPP, Conversations, me zbulim të automatizuar kontaktesh.&lt;br&gt;&lt;br&gt;Regjistroheni me numrin tuaj të telefonit dhe Quicksy do të sugjerojë në mënyrë të automatizuar—bazuar në numrat e telefonave në librin tuaj të adresave—kontakte të mundshëm për ju.&lt;br&gt;&lt;br&gt;Duke u regjistruar, pajtoheni me &lt;a href=https://quicksy.im/#privacy&gt;rregullat tona të privatësisë&lt;/a&gt;.</string>
     <string name="verifying_omemo_keys_trusted_source_account">Ju ndan një hap nga verifikimi i kyçeve OMEMO të llogarisë tuaj. Kjo është e sigurt vetëm nëse e ndoqët këtë lidhje prej një burimi të besuar, ku vetëm ju do të mund ta kishit publikuar këtë lidhje.</string>
     <string name="distrust_omemo_key_text">Jeni i sigurt se doni të hiqet verifikimi i kësaj pajisjeje\?
 \nKësaj pajisjeje dhe mesazheve prej saj do t’u vihet shenjë si “Jo i besuar”.</string>
@@ -935,9 +934,6 @@
 \nKjo do të sjellë shfaqjen e emrave të plotë dhe avatarëve të kontakteve tuaj.
 \n
 \n%1$s vetëm sa do të lexojë librin tuaj të adresave dhe bëjë lokalisht përkimin, pa ngarkuar gjë në shërbyesin tuaj.</string>
-    <string name="sync_with_contacts_quicksy">Që të bëjë sugjerime rreth kontaktesh të mundshëm që përdorin tashëm Quicksy-n, i duhet hyrje në numrat e telefonave të kontakteve.&lt;br&gt;&lt;br&gt;S’do të depozitojmë kopje të këtyre numrave të telefonave.
-\n
-\nPër më tepër hollësi, lexoni &lt;a href=https://quicksy.im/#privacy&gt;rregullat tona të privatësisë&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Tani do t’ju kërkohet të akordoni leje hyrjeje te kontaktet tuaja.</string>
     <string name="pref_picture_compression_summary">Ndihmëz: Përdorni “Zgjidhni kartelë”, në vend se “Zgjidhni foto”, për të dërguar figura të pangjeshura, pavarësisht nga ky rregullim.</string>
     <string name="battery_optimizations_enabled_explained">Pajisja juaj përdor optimizime shumë të thella baterie për %1$s, çka mund të shpjerë në vonesa njoftimesh, ose madje edhe humbje mesazhesh.
 \nRekomandohet të çaktivizohen ato.</string>
@@ -988,7 +984,6 @@
     <string name="enter_password_to_restore">Që të rikthehet kopjeruajtja, jepni fjalëkalimin tuaj për llogarinë %s.</string>
     <string name="restore_warning">Mos përdorni veçorinë e rikthimit të një kopjeruajtje në një përpjekje për të klonuar (xhiruar në të njëjtën kohë) një instalim. Rikthimi i një kopjeruajtje është menduar vetëm për migrime, ose në rast se humbët pajisjen origjinale.</string>
     <string name="no_users_hint_channel">Ky kanal publik s’ka pjesëmarrës. Ftoni kontaktet tuaj, ose përdorni butonin e ndarjes me të tjerët për të dhënë adresën XMPP të tij.</string>
-    <string name="channel_discover_opt_in_message">Zbulimi i kanaleve përdor një shërbim prej pale të tretë, të quajtur &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Përdorimi i kësaj veçorie do t’i transmetojë atij shërbimi adresën tuaj IP dhe termat tuaj të kërkimeve. Për më tepër hollësi, shihni &lt;a href=https://search.jabber.network/privacy&gt;Rregulla Privatësie&lt;/a&gt; prej tyre.</string>
     <string name="sharing_application_not_grant_permission">Aplikacioni dhënës nuk akordoi leje për hyrje në këtë kartelë.</string>
     <string name="pref_channel_discovery_summary">Shumica e përdoruesve duhet të zgjedhin ‘jabber.network’ për sugjerime më të mira nga krejt ekosistemi publik XMPP.</string>
     <string name="add_contact_or_create_or_join_group_chat">Shtoni kontakt, krijoni ose hyni në një fjalosje në grup, ose zbuloni kanale</string>

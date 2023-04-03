@@ -510,7 +510,6 @@
     <string name="no_storage_permission">Autoriser %1$s à accéder au stockage externe</string>
     <string name="no_camera_permission">Autoriser %1$s à accéder à la caméra</string>
     <string name="sync_with_contacts">Synchroniser avec contacts</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy a besoin d\'accéder aux numéros de téléphone de vos contacts pour vous suggérer des contacts éventuels déjà connectés.<br><br> Nous ne stockerons pas de copie de ces numéros.\n\nPour plus d\'informations, lisez notre <a href="https://quicksy.im/#privacy">politique de confidentialité</a>. <br><br>maintenant être invité à donner la permission d\'accéder à vos contacts.]]></string>
     <string name="notify_on_all_messages">Notifier pour tous les messages</string>
     <string name="notify_only_when_highlighted">Notifier seulement en cas de mention</string>
     <string name="notify_never">Notifications désactivées</string>
@@ -533,7 +532,6 @@
     <string name="security_error_invalid_file_access">Erreur de sécurité : accès fichier invalide</string>
     <string name="no_application_to_share_uri">Aucune application disponible pour partager l\'URI</string>
     <string name="share_uri_with">Partager l\'URI avec…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy est une version du populaire client XMPP Conversations avec découverte automatique des contacts.<br><br>Vous vous inscrivez avec votre numéro de téléphone et Quicksy va automatiquement, en fonction des numéros de votre carnet d’adresses, vous suggérer d’éventuels contacts.<br><br> en vous inscrivant, vous acceptez notre <a href="https://quicksy.im/#privacy">politique de confidentialité</a>.]]></string>
     <string name="agree_and_continue">Accepter et continuer</string>
     <string name="magic_create_text">Nous vous guiderons tout au long du processus de création d\'un compte sur conversations.im.¹\nLorsque vous sélectionnerez conversations.im en tant que fournisseur, vous pourrez communiquer avec les utilisateurs d\'autres fournisseurs en leur fournissant votre adresse XMPP complète.</string>
     <string name="your_full_jid_will_be">Votre adresse XMPP complète sera : %s</string>
@@ -875,7 +873,6 @@
     <string name="discover_channels">Découverte des canaux</string>
     <string name="search_channels">Recherche des canaux</string>
     <string name="channel_discovery_opt_in_title">Violation possible de la confidentialité !</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Channel discovery utilise un service tiers appelé <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>L\'utilisation de cette fonction transmettra votre adresse IP et les termes de recherche à ce service. Veuillez consulter leur <a href="https://search.jabber.network/privacy">Politique de confidentialité</a> pour plus d\'information.]]></string>
     <string name="i_already_have_an_account">J\'ai déjà un compte</string>
     <string name="add_existing_account">Ajouter un compte existant</string>
     <string name="register_new_account">Enregistrer un nouveau compte</string>

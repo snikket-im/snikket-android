@@ -515,7 +515,6 @@
     <string name="no_camera_permission">%1$s\'ın kamera erişimine izin ver</string>
     <string name="sync_with_contacts">Kişilerle senkronize et</string>
     <string name="sync_with_contacts_long">%1$s XMPP listenizi telefon rehberinizle eşleştirmek için izin istiyor. Böylelikle, tüm rehberinizindeki kişilerin tam adları ve avatarlarını görebileceksiniz. \n\n%1$s kişilerinizi sunucunuza yüklemeyecek olup, sadece cihazınız üzerinden eşleştirme yapacaktır.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy kişilerinizin telefon numarasına; Quicksy üzerinde olabiliecek bağlantılar hakkında tavsiyede bulunmak için ulaşması gerekmektedir. <br><br>Bu telefon numaralarının  herhangi bir kopyasını depolamayacağız. \n\nDaha fazla bilgi için <a href="https://quicksy.im/#privacy">gizlilik sözleşmemizi</a> okuyun.<br><br>Şimdi kişilerinize ulaşılması için sizden izin istenecek.]]></string>
     <string name="notify_on_all_messages">Tüm iletilerde uyar</string>
     <string name="notify_only_when_highlighted">Yalnızca bahsedilğinde haber ver</string>
     <string name="notify_never">Uyarılar devre dışı</string>
@@ -538,7 +537,6 @@
     <string name="security_error_invalid_file_access">Güvenlik hatası: Geçersiz dosya erişimi!</string>
     <string name="no_application_to_share_uri">URL paylaşacak uygulama bulunamadı</string>
     <string name="share_uri_with">URI paylaş ile...</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy, popüler XMPP sunucusu Conversations\'ın otomatik kişi keşfine sahip bir yan ürünüdür. <br><br>Telefon numarası ile kayıt olursunuz ve Quicksy -adres defterinizdeki numaraları baz alarak- otomatik olarak size olası yeni kişiler önerir.<br><br>Kayıt olarak <a href="https://quicksy.im/#privacy">gizlilik sözleşmemizi</a> onaylamış oluyorsunuz.]]></string>
     <string name="agree_and_continue">Kabul et ve devam et</string>
     <string name="magic_create_text">Conversations\'da hesap kurulum için bir rehber hazırlanmıştır.¹\nConversations.im\'i bir sağlayıcı olarak seçtikten sonra başka sağlayıcılar kullanan kullanıcılarla onlara tam XMPP adresinizi vererek iletişim kurabilirsiniz.</string>
     <string name="your_full_jid_will_be">Tam XMPP adresiniz %s olacak</string>
@@ -877,7 +875,6 @@
     <string name="discover_channels">Kanal keşfet</string>
     <string name="search_channels">Kanal ara</string>
     <string name="channel_discovery_opt_in_title">Olası gizlilik ihlali!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Kanal keşfetme özelliği<a href="https://search.jabber.network">search.jabber.network</a> isimli bir üçüncü parti hizmeti kullanıyor.<br><br>Bu özelliği kullandığınız zaman IP adresiniz ve arama tercihleriniz bu hizmete aktarılacak. Daha fazla bilgi için <a href="https://search.jabber.network/privacy">Gizlilik Politikasını</a> inceleyiniz.]]></string>
     <string name="i_already_have_an_account">Zaten bir hesabım var</string>
     <string name="add_existing_account">Varolan bir hesap ekle</string>
     <string name="register_new_account">Yeni hesap oluştur</string>

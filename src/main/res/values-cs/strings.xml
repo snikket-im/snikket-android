@@ -518,7 +518,6 @@
     <string name="no_camera_permission">Povolit %1$s přístup ke kameře</string>
     <string name="sync_with_contacts">Synchronizovat s kontakty</string>
     <string name="sync_with_contacts_long">%1$s požaduje přístup k Vašim kontaktům za účelem spárování s Vašimi XMPP kontakty.\nU kontaktů se pak zobrazí celé jméno a avatar.\n\n%1$s bude kontakty pouze číst a párovat místně v zařízení, aniž by došlo k nahrání těchto dat na server.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy požaduje přístup k Vašim kontaktům, aby Vám mohl navrhnout uživatele, kteří jej již používají.<br><br>Tyto kontaktní údaje nebudeme kopírovat a ukládat.\n\nVíce informací najdete v našich <a href="https://quicksy.im/#privacy">zásadách pro ochranu osobních údajů</a>. <br><br>Nyní budete požádáni o udělení přístupu k Vašim kontaktům.]]></string>
     <string name="notify_on_all_messages">Upozorňovat na všechny zprávy</string>
     <string name="notify_only_when_highlighted">Upozornit pouze, když mě někdo zmíní</string>
     <string name="notify_never">Upozornění vypnuta</string>
@@ -541,7 +540,6 @@
     <string name="security_error_invalid_file_access">Bezpečnostní chyba: Neplatný přístup k souboru</string>
     <string name="no_application_to_share_uri">Nebyla nalezena aplikace umožňující sdílení URI</string>
     <string name="share_uri_with">Sdílet URI s…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy je aplikace odvozená z populárního XMPP klientu Conversations, s funkcí automatického objevování kontaktů.<br><br>Po zadání Vašeho telefonního čísla Vám Quicksy automaticky—na základě čísel ve Vašem telefonním seznamu—navrhne možné kontakty.<br><br>Přihlášením se do služby potvrzujete souhlas s našimi <a href="https://quicksy.im/#privacy">zásadami pro ochranu osobních údajů</a>.]]></string>
     <string name="agree_and_continue">Souhlasit a pokračovat</string>
     <string name="magic_create_text">Průvodce je nastaven, aby vytvořil účet na serveru conversations.im.¹\nPokud si vyberete conversations.im jako svého poskytovatele, budete moci komunikovat s uživateli u ostatních poskytovatelů, budou-li mít vaši celou XMPP adresu.</string>
     <string name="your_full_jid_will_be">Vaše celá XMPP adresa: %s</string>
@@ -881,7 +879,6 @@
     <string name="discover_channels">Najít kanály</string>
     <string name="search_channels">Prohledat kanály</string>
     <string name="channel_discovery_opt_in_title">Možné porušení soukromí</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Vyhledávání kanálů používá službu třetí strany jménem <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Používání této služby odešle vaši IP adresu a vyhledávaný termín této službě. Pro více informací konzultujte jejich <a href="https://search.jabber.network/privacy">Zásady ochrany osobních údajů</a>.]]></string>
     <string name="i_already_have_an_account">Již mám účet</string>
     <string name="add_existing_account">Přidat existující účet</string>
     <string name="register_new_account">Vytvořit nový účet</string>
