@@ -517,7 +517,7 @@
     <string name="no_camera_permission">Grant %1$s access to the camera</string>
     <string name="sync_with_contacts">Synchronize with contacts</string>
     <string name="sync_with_contacts_long">%1$s wants permission to access your address book to match it with your XMPP contact list.\nThis will display your contacts’ full names and avatars.\n\n%1$s will only read your address book and match it locally without uploading anything to your server.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy needs access to your contacts’ phone numbers to make suggestions about possible contacts who are already on Quicksy.<br><br>We will not store a copy of those phone numbers.\n\nFor more information read our <a href="https://quicksy.im/privacy.htm">privacy policy</a>.<br><br>You will now be asked to grant permission to access your contacts.]]></string>
+    <string name="sync_with_contacts_quicksy_static" translatable="false"><![CDATA[Quicksy stores your contacts’ phone numbers to make suggestions about possible contacts who are already on Quicksy.<br><br>By continuing you agree to our <a href="https://quicksy.im/privacy.htm">Privacy Policy</a> and our <a href="https://quicksy.im/tos.htm">Terms &amp; Conditions</a>.<br><br>You will now be asked to grant permission to access your contacts.]]></string>
     <string name="notify_on_all_messages">Notify on all messages</string>
     <string name="notify_only_when_highlighted">Notify only when mentioned</string>
     <string name="notify_never">Notifications disabled</string>
@@ -542,7 +542,7 @@
     <string name="share_uri_with">Share URI with…</string>
     <string name="welcome_header" translatable="false">Join the Conversation</string>
     <string name="welcome_header_quicksy" translatable="false">Have some Quick Conversations</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy is a spin off of the popular XMPP client Conversations with automatic contact discovery.<br><br>You sign up with your phone number and Quicksy will automatically—based on the phone numbers in your address book—suggest possible contacts to you.<br><br>By signing up you agree to our <a href="https://quicksy.im/privacy.htm">privacy policy</a>.]]></string>
+    <string name="welcome_text_quicksy_static" translatable="false"><![CDATA[Quicksy is a spin off of the popular XMPP client Conversations with automatic contact discovery.<br><br>You sign up with your phone number and Quicksy will automatically—based on the phone numbers in your address book—suggest possible contacts to you.<br>Quicksy stores your contacts’ phone numbers to make suggestions about possible contacts who are already on Quicksy.<br>By signing up you agree to our <a href="https://quicksy.im/privacy.htm">Privacy Policy</a> and our <a href="https://quicksy.im/tos.htm">Terms &amp; Conditions</a>.]]></string>
     <string name="agree_and_continue">Agree and continue</string>
     <string name="magic_create_text">A guide is set up for account creation on conversations.im.\nWhen picking conversations.im as a provider you will be able to communicate with users of other providers by giving them your full XMPP address.</string>
     <string name="your_full_jid_will_be">Your full XMPP address will be: %s</string>
@@ -1005,5 +1005,6 @@
     <string name="pref_up_push_server_title">Push Server</string>
     <string name="pref_up_push_server_summary">A user-chosen push server to relay push messages via XMPP to your device.</string>
     <string name="no_account_deactivated">None (deactivated)</string>
+    <string name="decline">Decline</string>
 
 </resources>

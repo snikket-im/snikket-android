@@ -757,7 +757,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                         final AtomicBoolean requestPermission = new AtomicBoolean(false);
                         builder.setTitle(R.string.sync_with_contacts);
                         if (QuickConversationsService.isQuicksy()) {
-                            builder.setMessage(Html.fromHtml(getString(R.string.sync_with_contacts_quicksy)));
+                            builder.setMessage(Html.fromHtml(getString(R.string.sync_with_contacts_quicksy_static)));
                         } else {
                             builder.setMessage(getString(R.string.sync_with_contacts_long, getString(R.string.app_name)));
                         }
@@ -775,9 +775,11 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                         builder.setOnDismissListener(dialog -> {
                             if (QuickConversationsService.isConversations() && requestPermission.compareAndSet(false, true)) {
                                 requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
-
                             }
                         });
+                        if (QuickConversationsService.isQuicksy()) {
+                            builder.setNegativeButton(R.string.decline, null);
+                        }
                         builder.setCancelable(QuickConversationsService.isQuicksy());
                         final AlertDialog dialog = builder.create();
                         dialog.setCanceledOnTouchOutside(QuickConversationsService.isQuicksy());

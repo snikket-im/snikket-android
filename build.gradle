@@ -91,7 +91,7 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 42051
+        versionCode 42053
         versionName "2.12.2"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
@@ -227,7 +227,7 @@ android {
         }
     }
     lint {
-        disable 'MissingTranslation', 'InvalidPackage', 'AppCompatResource'
+        disable 'MissingTranslation', 'InvalidPackage', 'AppCompatResource', 'ExtraTranslation'
     }
 
     android.applicationVariants.all { variant ->
