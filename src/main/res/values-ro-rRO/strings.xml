@@ -1024,4 +1024,5 @@
     <string name="no_account_deactivated">Nici unul (dezactivat)</string>
     <string name="unified_push_distributor">Distribuitor UnifiedPush</string>
     <string name="pref_up_push_account_summary">Contul prin care vor fi primite notificările push.</string>
+    <string name="decline">Refuză</string>
 </resources>
