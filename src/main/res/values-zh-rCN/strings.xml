@@ -993,4 +993,5 @@
     <string name="unified_push_distributor">UnifiedPush 分发程序</string>
     <string name="pref_up_push_account_summary">将通过该账户接收推送消息。</string>
     <string name="pref_up_push_server_summary">用户选择的推送服务器，通过 XMPP 将推送消息传递到你的设备。</string>
+    <string name="decline">拒绝</string>
 </resources>
