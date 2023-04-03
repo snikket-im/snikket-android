@@ -921,10 +921,8 @@
     <string name="reconnecting_video_call">Επανασύνδεση βίντεοκλήσης</string>
     <string name="disable_tor_to_make_call">Απενεργοποίηστε το Tor για να κάνετε κλήσεις</string>
     <string name="incoming_call">Εισερχόμενη κλήση</string>
-    <string name="incoming_call_duration">Εισερχόμενη κλήση · %s</string>
     <string name="missed_call_timestamp">Αναπάντηση κλήση · %s</string>
     <string name="outgoing_call">Εξερχόμενη κλήση</string>
-    <string name="outgoing_call_duration">Εξερχόμενη κλήση · %s</string>
     <string name="missed_call">Αναπάντηση κλήση</string>
     <string name="audio_call">Κλήση ήχου</string>
     <string name="video_call">Βιντεοκλήση</string>

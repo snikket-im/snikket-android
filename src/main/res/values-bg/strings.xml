@@ -915,10 +915,8 @@
     <string name="ongoing_video_call">Текущо видео-обаждане</string>
     <string name="disable_tor_to_make_call">Изключете Tor, за да правите обаждания</string>
     <string name="incoming_call">Входящо обаждане</string>
-    <string name="incoming_call_duration">Входящо обаждане · %s</string>
     <string name="missed_call_timestamp">Пропуснато обаждане · %s</string>
     <string name="outgoing_call">Изходящо обаждане</string>
-    <string name="outgoing_call_duration">Изходящо обаждане · %s</string>
     <string name="missed_call">Пропуснато обаждане</string>
     <string name="audio_call">Гласово обаждане</string>
     <string name="video_call">Видео обаждане</string>

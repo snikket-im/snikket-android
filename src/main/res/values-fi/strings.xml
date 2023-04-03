@@ -864,10 +864,8 @@
     <string name="ongoing_video_call">Videopuhelu kesken</string>
     <string name="disable_tor_to_make_call">Poista Tor käytöstä soittaaksesi puhelun</string>
     <string name="incoming_call">Saapuva puhelu</string>
-    <string name="incoming_call_duration">Saapuva puhelu · %s</string>
     <string name="missed_call_timestamp">Vastaamaton puhelu · %s</string>
     <string name="outgoing_call">Lähtevä puhelu</string>
-    <string name="outgoing_call_duration">Lähtevä puhelu · %s</string>
     <string name="missed_call">Vastaamaton puhelu</string>
     <string name="audio_call">Äänipuhelu</string>
     <string name="video_call">Videopuhelu</string>

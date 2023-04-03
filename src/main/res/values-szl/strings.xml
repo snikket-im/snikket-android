@@ -964,10 +964,8 @@
     <string name="reconnecting_video_call">Łōnczynie zaś</string>
     <string name="disable_tor_to_make_call">Zastow Tor coby zwōnić</string>
     <string name="incoming_call">Połōnczynie przichodzōnce</string>
-    <string name="incoming_call_duration">Połōnczynie przichodzōnce · %s</string>
     <string name="missed_call_timestamp">Niyôdebrane · %s</string>
     <string name="outgoing_call">Połōnczynie wychodzōnce</string>
-    <string name="outgoing_call_duration">Połōnczynie wychodzōnce · %s</string>
     <string name="missed_call">Niyôdebrane połōnczynie</string>
     <string name="audio_call">Połōnczynie audio</string>
     <string name="video_call">Połōnczynie wideo</string>

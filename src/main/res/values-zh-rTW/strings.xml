@@ -873,10 +873,8 @@
     <string name="reconnecting_video_call">視像通話重新連接中</string>
     <string name="disable_tor_to_make_call">關閉 Tor 以進行通話</string>
     <string name="incoming_call">來電</string>
-    <string name="incoming_call_duration">來電 %s</string>
     <string name="missed_call_timestamp">未接來電 %s</string>
     <string name="outgoing_call">撥出通話</string>
-    <string name="outgoing_call_duration">撥出通話 %s</string>
     <string name="missed_call">未接來電</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="other">來自 %2$s 的 %1$d 個未接來電</item>

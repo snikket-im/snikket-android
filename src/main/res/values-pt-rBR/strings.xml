@@ -941,10 +941,8 @@
     <string name="reconnecting_video_call">Reconectando a vídeo-chamada</string>
     <string name="disable_tor_to_make_call">Desabilitar o Tor para fazer chamadas</string>
     <string name="incoming_call">Chamada recebida</string>
-    <string name="incoming_call_duration">Chamada recebida · %s</string>
     <string name="missed_call_timestamp">Chamada perdida · %s</string>
     <string name="outgoing_call">Chamada realizada</string>
-    <string name="outgoing_call_duration">Chamada realizada · %s</string>
     <string name="missed_call">Chamada perdida</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d chamada perdida para %2$s</item>

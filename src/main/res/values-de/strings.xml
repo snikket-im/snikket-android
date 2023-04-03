@@ -932,10 +932,8 @@
     <string name="reconnecting_video_call">Videoanruf erneut verbinden</string>
     <string name="disable_tor_to_make_call">Deaktiviere Tor, um Anrufe zu tätigen</string>
     <string name="incoming_call">Eingehender Anruf</string>
-    <string name="incoming_call_duration">Eingehender Anruf · %s</string>
     <string name="missed_call_timestamp">Entgangener Anruf · %s</string>
     <string name="outgoing_call">Ausgehender Anruf</string>
-    <string name="outgoing_call_duration">Ausgehender Anruf · %s</string>
     <string name="missed_call">Entgangener Anruf</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d entgangener Anruf von %2$s</item>

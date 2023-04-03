@@ -727,10 +727,8 @@
     <string name="reconnecting_video_call">Po rilidhet thirrje video</string>
     <string name="disable_tor_to_make_call">Që të bëni thirrje, çaktivizoni Tor-in</string>
     <string name="incoming_call">Thirrje ardhëse</string>
-    <string name="incoming_call_duration">Thirrje ardhëse · %s</string>
     <string name="missed_call_timestamp">Thirrje e humbur · %s</string>
     <string name="outgoing_call">Thirrje për</string>
-    <string name="outgoing_call_duration">Thirrje për · %s</string>
     <string name="missed_call">Thirrje e humbur</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d thirrje e humbur, prej %2$s</item>

@@ -893,9 +893,7 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="ongoing_video_call">Trucada de vídeo en curs</string>
     <string name="disable_tor_to_make_call">Desactivar Tor per a fer trucades</string>
     <string name="incoming_call">Trucada entrant</string>
-    <string name="incoming_call_duration">Trucada entrant · %s</string>
     <string name="outgoing_call">Trucada sortint</string>
-    <string name="outgoing_call_duration">Trucada sortint · %s</string>
     <string name="missed_call">Trucada perduda</string>
     <string name="audio_call">Trucada de veu</string>
     <string name="video_call">Trucada de vídeo</string>

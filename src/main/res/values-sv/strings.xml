@@ -877,10 +877,8 @@
     <string name="reconnecting_video_call">Återansluter videosamtalet</string>
     <string name="disable_tor_to_make_call">Inaktivera Tor för att ringa samtal</string>
     <string name="incoming_call">Inkommande samtal</string>
-    <string name="incoming_call_duration">Inkommande samtal · %s</string>
     <string name="missed_call_timestamp">Missat samtal · %s</string>
     <string name="outgoing_call">Utgående samtal</string>
-    <string name="outgoing_call_duration">Pågående samtal · %s</string>
     <string name="missed_call">Missat samtal</string>
     <string name="audio_call">Röstsamtal</string>
     <string name="video_call">Videosamtal</string>

@@ -941,10 +941,8 @@
     <string name="reconnecting_video_call">Riconnessione chiamata video</string>
     <string name="disable_tor_to_make_call">Disattiva Tor per le chiamate</string>
     <string name="incoming_call">Chiamata in arrivo</string>
-    <string name="incoming_call_duration">Chiamata in arrivo · %s</string>
     <string name="missed_call_timestamp">Chiamata persa · %s</string>
     <string name="outgoing_call">Chiamata in uscita</string>
-    <string name="outgoing_call_duration">Chiamata in uscita · %s</string>
     <string name="missed_call">Chiamata persa</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d chiamata persa da %2$s</item>

@@ -914,10 +914,8 @@
     <string name="reconnecting_video_call">ビデオ通話再接続中</string>
     <string name="disable_tor_to_make_call">通話するのに Tor を無効化</string>
     <string name="incoming_call">着信通話</string>
-    <string name="incoming_call_duration">着信通話・%s</string>
     <string name="missed_call_timestamp">不在着信通話・%s</string>
     <string name="outgoing_call">発信通話</string>
-    <string name="outgoing_call_duration">発信通話・%s</string>
     <string name="missed_call">不在着信通話</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="other">%2$sから%1$d件の不在着信</item>

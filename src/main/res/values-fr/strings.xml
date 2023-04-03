@@ -922,10 +922,8 @@
     <string name="reconnecting_video_call">En cours de reconnexion de l\'appel vidéo</string>
     <string name="disable_tor_to_make_call">Désactivez Tor afin de passer des appels</string>
     <string name="incoming_call">Appel entrant</string>
-    <string name="incoming_call_duration">Appel entrant · %s</string>
     <string name="missed_call_timestamp">Appel manqué · %s</string>
     <string name="outgoing_call">Appel sortant</string>
-    <string name="outgoing_call_duration">Appel sortant · %s</string>
     <string name="missed_call">Appel manqué</string>
     <string name="audio_call">Appel audio</string>
     <string name="video_call">Appel vidéo</string>

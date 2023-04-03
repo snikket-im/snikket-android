@@ -949,10 +949,8 @@
     <string name="reconnecting_video_call">Reconectare apel video</string>
     <string name="disable_tor_to_make_call">Dezactivați Tor pentru a face apeluri</string>
     <string name="incoming_call">Apel primit</string>
-    <string name="incoming_call_duration">Apel primit · %s</string>
     <string name="missed_call_timestamp">Apel pierdut · %s</string>
     <string name="outgoing_call">Apel efectuat</string>
-    <string name="outgoing_call_duration">Apel efectuat · %s</string>
     <string name="missed_call">Apel pierdut</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d apel pierdut de la %2$s</item>

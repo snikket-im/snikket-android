@@ -955,10 +955,8 @@
     <string name="reconnecting_video_call">Ponowne łączenie rozmowy wideo</string>
     <string name="disable_tor_to_make_call">Wyłącz Tor aby dzwonić</string>
     <string name="incoming_call">Połączenie przychodzące</string>
-    <string name="incoming_call_duration">Połączenie przychodzące · %s</string>
     <string name="missed_call_timestamp">Nieodebrane połączenie · %s</string>
     <string name="outgoing_call">Połączenie wychodzące</string>
-    <string name="outgoing_call_duration">Połączenie wychodzące · %s</string>
     <string name="missed_call">Nieodebrane połączenie</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d nieodebrana rozmowa od %2$s</item>

@@ -928,10 +928,8 @@
     <string name="reconnecting_video_call">重连视频通话</string>
     <string name="disable_tor_to_make_call">禁用Tor以拨打电话</string>
     <string name="incoming_call">来电</string>
-    <string name="incoming_call_duration">来电 · %s</string>
     <string name="missed_call_timestamp">错过的通话 · %s</string>
     <string name="outgoing_call">去电</string>
-    <string name="outgoing_call_duration">去电 · %s</string>
     <string name="missed_call">未接电话</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="other">%1$d 错过了来自 %2$s 的电话</item>

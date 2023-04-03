@@ -905,10 +905,8 @@
     <string name="ongoing_video_call">Cuộc gọi video đang diễn ra</string>
     <string name="disable_tor_to_make_call">Tắt Tor để tạo cuộc gọi</string>
     <string name="incoming_call">Cuộc gọi đến</string>
-    <string name="incoming_call_duration">Cuộc gọi đến · %s</string>
     <string name="missed_call_timestamp">Cuộc gọi nhỡ · %s</string>
     <string name="outgoing_call">Cuộc gọi đi</string>
-    <string name="outgoing_call_duration">Cuộc gọi đi · %s</string>
     <string name="missed_call">Cuộc gọi nhỡ</string>
     <string name="audio_call">Cuộc gọi âm thanh</string>
     <string name="video_call">Cuộc gọi video</string>

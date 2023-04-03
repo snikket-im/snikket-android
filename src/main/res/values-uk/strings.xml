@@ -895,9 +895,7 @@
     <string name="ongoing_video_call">Активний відеовиклик</string>
     <string name="disable_tor_to_make_call">Вимкнути ToR для здійснення викликів</string>
     <string name="incoming_call">Вхідний виклик</string>
-    <string name="incoming_call_duration">Вхідний виклик · %s</string>
     <string name="outgoing_call">Вихідний виклик</string>
-    <string name="outgoing_call_duration">Вихідний виклик · %s</string>
     <string name="missed_call">Пропущені виклики</string>
     <string name="audio_call">Голосовий виклик</string>
     <string name="video_call">Відеовиклик</string>

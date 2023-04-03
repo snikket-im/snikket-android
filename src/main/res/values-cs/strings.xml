@@ -922,10 +922,8 @@
     <string name="ongoing_video_call">Probíhající videohovor</string>
     <string name="disable_tor_to_make_call">Zakázat hovory přes Tor</string>
     <string name="incoming_call">Příchozí hovor</string>
-    <string name="incoming_call_duration">Příchozí hovor · %s</string>
     <string name="missed_call_timestamp">Zmeškané volání · %s</string>
     <string name="outgoing_call">Odchozí hovor</string>
-    <string name="outgoing_call_duration">Odchozí hovor · %s</string>
     <string name="missed_call">Zmeškané volání</string>
     <string name="audio_call">Hovor</string>
     <string name="video_call">Videohovor</string>

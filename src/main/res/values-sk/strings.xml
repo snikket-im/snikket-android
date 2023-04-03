@@ -511,10 +511,8 @@
     <string name="ongoing_call">Prebiehajúci hovor</string>
     <string name="ongoing_video_call">Prebiehajúci video hovor</string>
     <string name="incoming_call">Prichádzajúci hovor</string>
-    <string name="incoming_call_duration">Prichádzajúci hovor - %s</string>
     <string name="missed_call_timestamp">Zmeškaný hovor - %s</string>
     <string name="outgoing_call">Odchádzajúci hovor</string>
-    <string name="outgoing_call_duration">Odchádzajúci hovor - %s</string>
     <string name="missed_call">Zmeškaný hovor</string>
     <string name="audio_call">Hlasový hovor</string>
     <string name="video_call">Video hovor</string>
