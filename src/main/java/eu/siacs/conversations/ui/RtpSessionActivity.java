@@ -10,6 +10,7 @@ import android.app.PictureInPictureParams;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -406,7 +407,7 @@ public class RtpSessionActivity extends XmppActivity
 
     private void putScreenInCallMode(final Set<Media> media) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        if (!media.contains(Media.VIDEO)) {
+        if (Media.audioOnly(media)) {
             final JingleRtpConnection rtpConnection =
                     rtpConnectionReference != null ? rtpConnectionReference.get() : null;
             final AppRTCAudioManager audioManager =
@@ -416,6 +417,15 @@ public class RtpSessionActivity extends XmppActivity
                             == AppRTCAudioManager.AudioDevice.EARPIECE) {
                 acquireProximityWakeLock();
             }
+        }
+        lockOrientation(media);
+    }
+
+    private void lockOrientation(final Set<Media> media) {
+        if (Media.audioOnly(media)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
     }
 
@@ -1379,6 +1389,7 @@ public class RtpSessionActivity extends XmppActivity
         final AbstractJingleConnection.Id id = requireRtpConnection().getId();
         final boolean verified = requireRtpConnection().isVerified();
         final Set<Media> media = getMedia();
+        lockOrientation(media);
         final ContentAddition contentAddition = getPendingContentAddition();
         final Contact contact = getWith();
         if (account == id.account && id.with.equals(with) && id.sessionId.equals(sessionId)) {
