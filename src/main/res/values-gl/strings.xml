@@ -1005,4 +1005,5 @@
     <string name="pref_up_push_server_title">Servidor Push</string>
     <string name="pref_up_push_server_summary">O servidor elexido pola usuaria para obter as mensaxes push a través de XMPP.</string>
     <string name="no_account_deactivated">Ningún (desactivado)</string>
+    <string name="decline">Rexeitar</string>
 </resources>
