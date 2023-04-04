@@ -1016,4 +1016,9 @@
     <string name="pref_up_push_server_title">Server push</string>
     <string name="pref_up_push_server_summary">Un server scelto dall\'utente per inoltrare i messaggi push via XMPP al tuo dispositivo.</string>
     <string name="no_account_deactivated">Nessuno (disattivato)</string>
+    <string name="decline">Rifiuta</string>
+    <string name="incoming_call_duration_timestamp">Chiamata in arrivo (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">Chiamata in uscita (%s) · %s</string>
+    <string name="outgoing_call_timestamp">Chiamata in uscita · %s</string>
+    <string name="channel_discover_opt_in_message">La scoperta dei canali usa un servizio di terze parti chiamato &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;L\'uso di questa funzione invierà il tuo indirizzo IP e i termini di ricerca a quel servizio. Vedi la sua &lt;a href=https://search.jabber.network/privacy&gt;informativa sulla privacy&lt;/a&gt; per maggiori informazioni.</string>
 </resources>
