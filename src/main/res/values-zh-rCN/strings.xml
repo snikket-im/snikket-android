@@ -994,4 +994,8 @@
     <string name="pref_up_push_account_summary">将通过该账户接收推送消息。</string>
     <string name="pref_up_push_server_summary">用户选择的推送服务器，通过 XMPP 将推送消息传递到你的设备。</string>
     <string name="decline">拒绝</string>
+    <string name="incoming_call_duration_timestamp">来电 (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">去电 (%s) · %s</string>
+    <string name="outgoing_call_timestamp">去电 · %s</string>
+    <string name="channel_discover_opt_in_message">频道发现功能使用第三方服务 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;。&lt;br&gt;&lt;br&gt;使用此功能会发送你的 IP 地址和搜索词条到该服务。更多信息见 &lt;a href=https://search.jabber.network/privacy&gt;隐私政策&lt;/a&gt;。</string>
 </resources>
