@@ -773,7 +773,7 @@
     <string name="silent_messages_channel_description">Diese Benachrichtigungsart wird verwendet, um Benachrichtigungen anzuzeigen, die keinen Ton auslösen sollen. Zum Beispiel, wenn du auf einem anderen Gerät aktiv bist (Schonfrist).</string>
     <string name="delivery_failed_channel_name">Fehlgeschlagene Zustellungen</string>
     <string name="pref_message_notification_settings">Benachrichtigungseinstellungen</string>
-    <string name="pref_incoming_call_notification_settings">Anrufeinstellungen</string>
+    <string name="pref_incoming_call_notification_settings">Einstellungen für die Benachrichtigung bei eingehenden Anrufen</string>
     <string name="pref_more_notification_settings_summary">Wichtigkeit, Klang, Vibrationen</string>
     <string name="video_compression_channel_name">Video komprimieren</string>
     <string name="view_media">Medien anzeigen</string>
@@ -1003,4 +1003,8 @@
     <string name="unified_push_distributor">UnifiedPush Verteiler</string>
     <string name="pref_up_push_account_summary">Das Konto, über das Push-Nachrichten empfangen werden sollen.</string>
     <string name="decline">Ablehnen</string>
+    <string name="incoming_call_duration_timestamp">Eingehender Anruf (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">Ausgehender Anruf (%s) · %s</string>
+    <string name="outgoing_call_timestamp">Ausgehender Anruf · %s</string>
+    <string name="channel_discover_opt_in_message">Die Channelsuche verwendet einen Drittanbieterservice namens &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in deren &lt;a href=https://search.jabber.network/privacy&gt;Datenschutzerklärung&lt;/a&gt;.</string>
 </resources>
