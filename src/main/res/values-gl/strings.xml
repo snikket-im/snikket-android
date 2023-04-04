@@ -1006,4 +1006,8 @@
     <string name="pref_up_push_server_summary">O servidor elexido pola usuaria para obter as mensaxes push a través de XMPP.</string>
     <string name="no_account_deactivated">Ningún (desactivado)</string>
     <string name="decline">Rexeitar</string>
+    <string name="incoming_call_duration_timestamp">Chamada entrante (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">Chamada saínte (%s) · %s</string>
+    <string name="outgoing_call_timestamp">Chamada saínte · %s</string>
+    <string name="channel_discover_opt_in_message">O descubrimento de canles usa un servizo de terceiros chamado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Ao usar esta ferramenta transmites o teu enderezo IP e termos de busca a ese servizo. Para saber máis le a súa &lt;a href=https://search.jabber.network/privacy&gt;Política de Privacidade&lt;/a&gt;.</string>
 </resources>
