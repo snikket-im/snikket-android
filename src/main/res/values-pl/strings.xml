@@ -1035,4 +1035,9 @@
     <string name="pref_up_push_server_title">Serwer push</string>
     <string name="pref_up_push_server_summary">Dowolnie wybrany serwer push do przekazywania wiadomości push przez XMPP na Twoje urządzenie.</string>
     <string name="no_account_deactivated">Brak (nieaktywne)</string>
+    <string name="decline">Odrzuć</string>
+    <string name="incoming_call_duration_timestamp">Połączenie przychodzące (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">Połączenie wychodzące (%s) · %s</string>
+    <string name="channel_discover_opt_in_message">Wykrywanie kanałów korzysta z usługi innej firmy o nazwie &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Użycie tej funkcji spowoduje przesłanie adresu IP i wyszukiwanych terminów do tej usługi. Zobacz ich &lt;a href=https://search.jabber.network/privacy&gt;Politykę prywatności&lt;/a&gt;, aby uzyskać więcej informacji.</string>
+    <string name="outgoing_call_timestamp">Połączenie wychodzące · %s</string>
 </resources>
