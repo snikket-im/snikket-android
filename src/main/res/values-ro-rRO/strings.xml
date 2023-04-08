@@ -187,7 +187,6 @@
     <string name="unpublish_pgp_message">Sigur doriți să vă ștergeți cheia publică OpenPGP din mesajele de prezență?\nContactele dumneavoastră nu vor mai putea să vă trimită mesaje criptate cu OpenPGP.</string>
     <string name="openpgp_has_been_published">Cheia publică OpenPGP a fost publicată.</string>
     <string name="mgmt_account_enable">Activează cont</string>
-    <string name="mgmt_account_are_you_sure">Sigur doriți asta?</string>
     <string name="mgmt_account_delete_confirm_text">Dacă vă ștergeți contul, întregul istoric de conversații va fi pierdut</string>
     <string name="attach_record_voice">Înregistrare voce</string>
     <string name="account_settings_jabber_id">Adresă XMPP</string>
@@ -1028,5 +1027,4 @@
     <string name="incoming_call_duration_timestamp">Apel primit (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">Apel efectuat (%s) · %s</string>
     <string name="outgoing_call_timestamp">Apel efectuat · %s</string>
-    <string name="channel_discover_opt_in_message">Descoperirea de canale publice folosește un serviciu terț numit &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți &lt;a href=https://search.jabber.network/privacy&gt;Politica de confidențialitate&lt;/a&gt; a serviciului.</string>
 </resources>

@@ -106,7 +106,6 @@
     <string name="mgmt_account_publish_avatar">פרסם תמונת פרופיל</string>
     <string name="mgmt_account_publish_pgp">פרסם מפתח ציבורי של OpenPGP</string>
     <string name="mgmt_account_enable">הפעל חשבון</string>
-    <string name="mgmt_account_are_you_sure">האם אתה בטוח?</string>
     <string name="attach_record_voice">הקלט קול</string>
     <string name="account_settings_example_jabber_id">username@example.com</string>
     <string name="password">סיסמה</string>

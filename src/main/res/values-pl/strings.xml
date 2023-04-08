@@ -188,7 +188,6 @@
     <string name="unpublish_pgp_message">Czy na pewno chcesz usunąć klucz publiczny OpenPGP ze swojej propagacji obecności?\nTwoje kontakty nie będą już mogły wysyłać Ci wiadomości zaszyfrowanych OpenPGP.</string>
     <string name="openpgp_has_been_published">Klucz publiczny OpenPGP został opublikowany.</string>
     <string name="mgmt_account_enable">Włącz konto</string>
-    <string name="mgmt_account_are_you_sure">Czy na pewno?</string>
     <string name="mgmt_account_delete_confirm_text">Usunięcie konta usuwa całą historię rozmów</string>
     <string name="attach_record_voice">Nagraj głos</string>
     <string name="account_settings_jabber_id">Adres XMPP</string>
@@ -1038,6 +1037,5 @@
     <string name="decline">Odrzuć</string>
     <string name="incoming_call_duration_timestamp">Połączenie przychodzące (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">Połączenie wychodzące (%s) · %s</string>
-    <string name="channel_discover_opt_in_message">Wykrywanie kanałów korzysta z usługi innej firmy o nazwie &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Użycie tej funkcji spowoduje przesłanie adresu IP i wyszukiwanych terminów do tej usługi. Zobacz ich &lt;a href=https://search.jabber.network/privacy&gt;Politykę prywatności&lt;/a&gt;, aby uzyskać więcej informacji.</string>
     <string name="outgoing_call_timestamp">Połączenie wychodzące · %s</string>
 </resources>

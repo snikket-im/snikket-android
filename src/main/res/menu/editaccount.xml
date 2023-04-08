@@ -56,6 +56,10 @@
         android:title="@string/change_password"/>
 
     <item
+        android:id="@+id/action_delete_account"
+        android:title="@string/mgmt_account_delete"/>
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         app:showAsAction="never"

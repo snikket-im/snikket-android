@@ -184,7 +184,6 @@
     <string name="mgmt_account_publish_pgp">Zverejniť OpenPGP kľúč</string>
     <string name="unpublish_pgp">Odstrániť OpenPGP  verejný kľúč</string>
     <string name="mgmt_account_enable">Povoliť účet</string>
-    <string name="mgmt_account_are_you_sure">Ste si istý?</string>
     <string name="attach_record_voice">Nahrať hlas</string>
     <string name="account_settings_jabber_id">XMPP adresa</string>
     <string name="block_jabber_id">Zablokovať adresu XMPP</string>

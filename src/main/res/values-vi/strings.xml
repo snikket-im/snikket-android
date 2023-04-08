@@ -181,7 +181,6 @@
     <string name="unpublish_pgp_message">Bạn có chắc bạn muốn xoá mã khoá OpenPGP công khai của bạn khỏi sự thông báo có mặt của bạn không?\nCác liên hệ của bạn sẽ không thể gửi các tin nhắn được mã hoá bằng OpenPGP cho bạn nữa.</string>
     <string name="openpgp_has_been_published">Đã xuất bản mã khoá OpenPGP công khai.</string>
     <string name="mgmt_account_enable">Bật tài khoản</string>
-    <string name="mgmt_account_are_you_sure">Bạn chắc chứ?</string>
     <string name="mgmt_account_delete_confirm_text">Việc xoá tài khoản sẽ xoá toàn bộ lịch sử cuộc hội thoại của bạn</string>
     <string name="attach_record_voice">Ghi âm</string>
     <string name="account_settings_jabber_id">Địa chỉ XMPP</string>

@@ -41,6 +41,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -83,6 +85,7 @@ import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.ui.util.SettingsUtils;
+import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
@@ -287,6 +290,66 @@ public abstract class XmppActivity extends ActionBarActivity {
                     finish();
                 });
         builder.create().show();
+    }
+
+    protected void deleteAccount(final Account account) {
+        this.deleteAccount(account, null);
+    }
+
+    protected void deleteAccount(final Account account, final Runnable postDelete) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final View dialogView = getLayoutInflater().inflate(R.layout.dialog_delete_account, null);
+        final CheckBox deleteFromServer =
+                dialogView.findViewById(R.id.delete_from_server);
+        builder.setView(dialogView);
+        builder.setTitle(R.string.mgmt_account_delete);
+        builder.setPositiveButton(getString(R.string.delete),null);
+        builder.setNegativeButton(getString(R.string.cancel), null);
+        final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(dialogInterface->{
+            final Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(v -> {
+                final boolean unregister = deleteFromServer.isChecked();
+                if (unregister) {
+                    if (account.isOnlineAndConnected()) {
+                        deleteFromServer.setEnabled(false);
+                        button.setText(R.string.please_wait);
+                        button.setEnabled(false);
+                        xmppConnectionService.unregisterAccount(account, result -> {
+                            if (result) {
+                                dialog.dismiss();
+                                if (postDelete != null) {
+                                    postDelete.run();
+                                }
+                                if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
+                                    final Intent intent = SignupUtils.getSignUpIntent(this);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
+                            } else {
+                                deleteFromServer.setEnabled(true);
+                                button.setText(R.string.delete);
+                                button.setEnabled(true);
+                                Toast.makeText(this,R.string.could_not_delete_account_from_server,Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(this,R.string.not_connected_try_again,Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    xmppConnectionService.deleteAccount(account);
+                    dialog.dismiss();
+                    if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
+                        final Intent intent = SignupUtils.getSignUpIntent(this);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else if (postDelete != null) {
+                        postDelete.run();
+                    }
+                }
+            });
+        });
+        dialog.show();
     }
 
     abstract void onBackendConnected();

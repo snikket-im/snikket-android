@@ -168,7 +168,6 @@
     <string name="unpublish_pgp_message">Ви впевнені, що хочете вилучити ваш публічний ключ OpenPGP з вашого оголошення про присутність?\nВаші контакти більше не зможуть надсилати вам повідомлення, зашифровані OpenPGP.</string>
     <string name="openpgp_has_been_published">Публічний ключ OpenPGP опубліковано.</string>
     <string name="mgmt_account_enable">Увімкнути обліковий запис</string>
-    <string name="mgmt_account_are_you_sure">Ви впевнені?</string>
     <string name="mgmt_account_delete_confirm_text">Вилучення облікового запису вилучіть всю історію спілкування</string>
     <string name="attach_record_voice">Записати голос</string>
     <string name="account_settings_jabber_id">Адреса XMPP</string>

@@ -648,6 +648,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         final MenuItem showBlocklist = menu.findItem(R.id.action_show_block_list);
         final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
         final MenuItem changePassword = menu.findItem(R.id.action_change_password_on_server);
+        final MenuItem deleteAccount = menu.findItem(R.id.action_delete_account);
         final MenuItem renewCertificate = menu.findItem(R.id.action_renew_certificate);
         final MenuItem mamPrefs = menu.findItem(R.id.action_mam_prefs);
         final MenuItem changePresence = menu.findItem(R.id.action_change_presence);
@@ -663,6 +664,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
             if (!mAccount.getXmppConnection().getFeatures().register()) {
                 changePassword.setVisible(false);
+                deleteAccount.setVisible(false);
             }
             mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
             changePresence.setVisible(!mInitMode);
@@ -670,6 +672,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             showBlocklist.setVisible(false);
             showMoreInfo.setVisible(false);
             changePassword.setVisible(false);
+            deleteAccount.setVisible(false);
             mamPrefs.setVisible(false);
             changePresence.setVisible(false);
         }
@@ -875,6 +878,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             case R.id.action_change_password_on_server:
                 gotoChangePassword(null);
                 break;
+            case R.id.action_delete_account:
+                deleteAccount();
+                break;
             case R.id.action_mam_prefs:
                 editMamPrefs();
                 break;
@@ -886,6 +892,12 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteAccount() {
+        this.deleteAccount(mAccount,()->{
+            finish();
+        });
     }
 
     private boolean inNeedOfSaslAccept() {

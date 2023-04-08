@@ -146,7 +146,6 @@
     <string name="unpublish_pgp">OpenPGP gako publikoa kendu</string>
     <string name="unpublish_pgp_message">Ziur zure OpenPGP gako publikoa zure presentzia eguneraketetatik kendu nahi duzula?\nZure kontaktuek ezin dizute gehiago OpenPGPz enkriptatutako mezuak bidali.</string>
     <string name="mgmt_account_enable">Kontua gaitu</string>
-    <string name="mgmt_account_are_you_sure">Ziur al zaude?</string>
     <string name="attach_record_voice">Ahotsa grabatu</string>
     <string name="account_settings_jabber_id">XMPP helbidea</string>
     <string name="block_jabber_id">XMPP helbidea blokeatu</string>

@@ -150,7 +150,6 @@
     <string name="mgmt_account_publish_pgp">أنشر المفتاح العمومي OpenPGP</string>
     <string name="unpublish_pgp">حذف مفتاح OpenPGP العمومي</string>
     <string name="mgmt_account_enable">تفعيل الحساب</string>
-    <string name="mgmt_account_are_you_sure">هل أنت متأكد ؟</string>
     <string name="attach_record_voice">تسجيل صوت</string>
     <string name="account_settings_jabber_id">عنوان XMPP</string>
     <string name="block_jabber_id">احجب عنوان XMPP</string>

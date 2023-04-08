@@ -198,7 +198,6 @@
 \nTwoje kōntakty niy bydōm już mogły wysyłać ci wiadōmości zaszyfrowanych OpenPGP.</string>
     <string name="openpgp_has_been_published">Klucz publiczny OpenPGP ôstoł ôpublikowany.</string>
     <string name="mgmt_account_enable">Włōncz kōnto</string>
-    <string name="mgmt_account_are_you_sure">Na zicher\?</string>
     <string name="mgmt_account_delete_confirm_text">Wymazanie kōnta wymazuje cołko historyjo godek</string>
     <string name="attach_record_voice">Nagrej głos</string>
     <string name="account_settings_jabber_id">Adresa XMPP</string>

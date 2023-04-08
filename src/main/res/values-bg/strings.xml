@@ -184,7 +184,6 @@
     <string name="unpublish_pgp_message">Наистина ли искате да премахнете своя публичен OpenPGP ключ от известяването си за присъствие?\nКонтактите Ви вече няма да могат да Ви изпращат съобщение, шифровани чрез OpenPGP.</string>
     <string name="openpgp_has_been_published">Публичният OpenPGP ключ е публикуван.</string>
     <string name="mgmt_account_enable">Активиране на профила</string>
-    <string name="mgmt_account_are_you_sure">Наистина ли искате това?</string>
     <string name="mgmt_account_delete_confirm_text">Изтриването на профила Ви ще изтрие и цялата история на разговорите Ви</string>
     <string name="attach_record_voice">Запис на глас</string>
     <string name="account_settings_jabber_id">XMPP адрес</string>

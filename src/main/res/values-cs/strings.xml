@@ -188,7 +188,6 @@
     <string name="unpublish_pgp_message">Skutečně chcete odstranit Váš současný veřejný OpenPGP klíč?\nVaše kontakty Vám nebudou moci nadále posílat zprávy šifrované pomocí OpenPGP. </string>
     <string name="openpgp_has_been_published">OpenPGP veřejný klíč zveřejněn.</string>
     <string name="mgmt_account_enable">Povolit účet</string>
-    <string name="mgmt_account_are_you_sure">Jste si jisti?</string>
     <string name="mgmt_account_delete_confirm_text">Smazáním Vašeho účtu dojde k vymazání celé Vaší historie konverzací. </string>
     <string name="attach_record_voice">Nahrát hlas</string>
     <string name="account_settings_jabber_id">Adresa XMPP</string>

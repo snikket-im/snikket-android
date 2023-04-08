@@ -187,7 +187,6 @@
     <string name="unpublish_pgp_message">¿Estás seguro de que quieres eliminar tu clave pública OpenPGP de tu anuncio de presencia?\nTus contactos no podrán enviarte mensajes cifrados con OpenPGP.</string>
     <string name="openpgp_has_been_published">La clave pública OpenPGP ha sido publicada.</string>
     <string name="mgmt_account_enable">Habilitar</string>
-    <string name="mgmt_account_are_you_sure">¿Estás seguro?</string>
     <string name="mgmt_account_delete_confirm_text">Si eliminas tu cuenta tu historial de conversaciones completo se perderá</string>
     <string name="attach_record_voice">Grabar audio</string>
     <string name="account_settings_jabber_id">Dirección XMPP</string>
@@ -1016,7 +1015,6 @@
     <string name="pref_up_push_server_title">Servidor push</string>
     <string name="pref_up_push_server_summary">Un servidor push elegido por el usuario para transmitir mensajes push a través de XMPP a su dispositivo.</string>
     <string name="no_account_deactivated">Ninguno (desactivado)</string>
-    <string name="channel_discover_opt_in_message">El descubrimiento de canales utiliza un servicio de terceros llamado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;El uso de esta función transmitirá tú dirección IP y términos de búsqueda a ese servicio Consulta tú &lt;a href=https://search.jabber.network/privacy&gt;Política de privacidad&lt;/a&gt; para obtener más información.</string>
     <string name="incoming_call_duration_timestamp">Llamada entrante (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">Llamada saliente (%s) · %s</string>
     <string name="outgoing_call_timestamp">Llamadas salientes · %s</string>

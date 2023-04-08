@@ -184,7 +184,6 @@
     <string name="unpublish_pgp_message">Biztosan el szeretné távolítani az OpenPGP nyilvános kulcsát a jelenléti közleményéből?\nA partnerei többé nem lesznek képesek OpenPGP titkosítású üzeneteket küldeni Önnek.</string>
     <string name="openpgp_has_been_published">Az OpenPGP nyilvános kulcs közzé lett téve.</string>
     <string name="mgmt_account_enable">Fiók engedélyezése</string>
-    <string name="mgmt_account_are_you_sure">Biztos benne?</string>
     <string name="mgmt_account_delete_confirm_text">A fiók törlésével az összes beszélgetési előzményei is eltávolításra kerülnek</string>
     <string name="attach_record_voice">Hang rögzítése</string>
     <string name="account_settings_jabber_id">XMPP-cím</string>

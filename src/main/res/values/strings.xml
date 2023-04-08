@@ -183,8 +183,7 @@
     <string name="unpublish_pgp_message">Are you sure you want to remove your OpenPGP public key from your presence announcement?\nYour contacts will no longer be able to send you OpenPGP encrypted messages.</string>
     <string name="openpgp_has_been_published">OpenPGP public key published.</string>
     <string name="mgmt_account_enable">Enable account</string>
-    <string name="mgmt_account_are_you_sure">Are you sure?</string>
-    <string name="mgmt_account_delete_confirm_text">Deleting your account erases your entire conversation history</string>
+    <string name="mgmt_account_delete_confirm_text">Are you sure you want to delete your account? Deleting your account erases your entire conversation history</string>
     <string name="attach_record_voice">Record voice</string>
     <string name="account_settings_jabber_id">XMPP address</string>
     <string name="block_jabber_id">Block XMPP address</string>
@@ -1007,5 +1006,7 @@
     <string name="pref_up_push_server_summary">A user-chosen push server to relay push messages via XMPP to your device.</string>
     <string name="no_account_deactivated">None (deactivated)</string>
     <string name="decline">Decline</string>
+    <string name="delete_from_server">Remove account from server</string>
+    <string name="could_not_delete_account_from_server">Could not delete account from server</string>
 
 </resources>

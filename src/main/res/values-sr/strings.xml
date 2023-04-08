@@ -183,7 +183,6 @@
     <string name="unpublish_pgp_message">Желите ли заиста да уклоните ваш ОпенПГП кључ из ваше објаве присутности?\nВаши контакти више неће моћи да вам шаљу ОпенПГП шифроване поруке.</string>
     <string name="openpgp_has_been_published">ОпенПГП кључ је објављен.</string>
     <string name="mgmt_account_enable">Укључи налог</string>
-    <string name="mgmt_account_are_you_sure">Да ли сте сигурни?</string>
     <string name="mgmt_account_delete_confirm_text">Брисањем налога бришете и целу историју ваших разговора.</string>
     <string name="attach_record_voice">Сними глас</string>
     <string name="account_settings_jabber_id">ИксМПП адреса</string>

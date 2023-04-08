@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -197,6 +199,12 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
     }
 
     @Override
+    protected void deleteAccount(final Account account) {
+        super.deleteAccount(account);
+        this.selectedAccount = null;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (MenuDoubleTabUtil.shouldIgnoreTap()) {
             return false;
@@ -368,22 +376,6 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
         }
     }
 
-    private void deleteAccount(final Account account) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.mgmt_account_are_you_sure));
-        builder.setIconAttribute(android.R.attr.alertDialogIcon);
-        builder.setMessage(getString(R.string.mgmt_account_delete_confirm_text));
-        builder.setPositiveButton(getString(R.string.delete),
-                (dialog, which) -> {
-                    xmppConnectionService.deleteAccount(account);
-                    selectedAccount = null;
-                    if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
-                        WelcomeActivity.launch(this);
-                    }
-                });
-        builder.setNegativeButton(getString(R.string.cancel), null);
-        builder.create().show();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -179,7 +179,6 @@
     <string name="unpublish_pgp_message">Haluatko varmasti poistaa OpenPGP-avaimesi tilamainostuksistasi?\nYhteystietosi eivät voi enää lähettää sinulle OpenPGP-salattuja viestejä.</string>
     <string name="openpgp_has_been_published">OpenPGP julkinen avain julkaistu.</string>
     <string name="mgmt_account_enable">Ota tunnus käyttöön</string>
-    <string name="mgmt_account_are_you_sure">Oletko varma?</string>
     <string name="mgmt_account_delete_confirm_text">Tilin poistaminen pyyhkii koko keskusteluhistoriasi</string>
     <string name="attach_record_voice">Nauhoita ääntä</string>
     <string name="account_settings_jabber_id">XMPP-osoite</string>

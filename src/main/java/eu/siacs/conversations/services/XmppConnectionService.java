@@ -51,6 +51,7 @@ import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
+import androidx.core.util.Consumer;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
@@ -78,6 +79,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
@@ -2469,6 +2471,20 @@ public class XmppConnectionService extends Service {
                 callback.onPasswordChangeSucceeded();
             } else {
                 callback.onPasswordChangeFailed();
+            }
+        });
+    }
+
+    public void unregisterAccount(final Account account, final Consumer<Boolean> callback) {
+        final IqPacket iqPacket = new IqPacket(IqPacket.TYPE.SET);
+        final Element query = iqPacket.addChild("query",Namespace.REGISTER);
+        query.addChild("remove");
+        sendIqPacket(account, iqPacket, (a, response) -> {
+            if (response.getType() == IqPacket.TYPE.RESULT) {
+                deleteAccount(a);
+                callback.accept(true);
+            } else {
+                callback.accept(false);
             }
         });
     }

@@ -183,7 +183,6 @@
     <string name="unpublish_pgp_message">Вы действительно хотите удалить ваш OpenPGP публичный ключ из опубликованных?\nВаши собеседники не смогут больше отправлять вам зашифрованные OpenPGP сообщения.</string>
     <string name="openpgp_has_been_published">Публичный ключ OpenPGP опубликован.</string>
     <string name="mgmt_account_enable">Включить аккаунт</string>
-    <string name="mgmt_account_are_you_sure">Вы уверены?</string>
     <string name="mgmt_account_delete_confirm_text">Удаление аккаунта также удалит всю историю вашей переписки</string>
     <string name="attach_record_voice">Запись голоса</string>
     <string name="account_settings_jabber_id">XMPP-адрес</string>

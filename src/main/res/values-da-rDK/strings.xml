@@ -185,7 +185,6 @@
     <string name="unpublish_pgp_message">Er du sikker på, at du vil fjerne din OpenPGP-nøgle fra din nærværsmeddelelse?\nDine kontakter kan ikke længere sende dig OpenPGP-krypterede meddelelser.</string>
     <string name="openpgp_has_been_published">OpenPGP offentlig nøgle er offentliggjort</string>
     <string name="mgmt_account_enable">Aktiver konto</string>
-    <string name="mgmt_account_are_you_sure">Er du sikker?</string>
     <string name="mgmt_account_delete_confirm_text">Sletning af din konto sletter hele din samtalehistorik</string>
     <string name="attach_record_voice">Optag lyd</string>
     <string name="account_settings_jabber_id">XMPP-adresse</string>

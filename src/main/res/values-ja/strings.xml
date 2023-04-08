@@ -181,7 +181,6 @@
     <string name="unpublish_pgp_message">出席情報告知から OpenPGP 公開鍵を削除してもよろしいですか?\n連絡先はあなたに OpenPGP 暗号化メッセージを送信できなくなります。</string>
     <string name="openpgp_has_been_published">OpenPGP 公開鍵を公開しました。</string>
     <string name="mgmt_account_enable">アカウントを有効化</string>
-    <string name="mgmt_account_are_you_sure">よろしいですか?</string>
     <string name="mgmt_account_delete_confirm_text">アカウントを削除すると会話履歴がすべて消去されます</string>
     <string name="attach_record_voice">音声を録音</string>
     <string name="account_settings_jabber_id">XMPP アドレス</string>

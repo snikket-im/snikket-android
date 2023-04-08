@@ -172,7 +172,6 @@
     <string name="unpublish_pgp_message">確定要移除上線狀態中的 OpenPGP 公開金鑰嗎？\n這樣一來，你的聯絡人就無法傳送以 OpenPGP 加密的訊息給你了。</string>
     <string name="openpgp_has_been_published">OpenPGP 公開金鑰已發佈 </string>
     <string name="mgmt_account_enable">啟用帳戶</string>
-    <string name="mgmt_account_are_you_sure">確定?</string>
     <string name="mgmt_account_delete_confirm_text">刪除帳戶將清除您全部的會話記錄</string>
     <string name="attach_record_voice">錄音</string>
     <string name="account_settings_jabber_id">XMPP 位址</string>

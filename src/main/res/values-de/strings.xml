@@ -184,7 +184,6 @@
     <string name="unpublish_pgp_message">Bist du sicher, dass du deinen öffentlichen OpenPGP-Schlüssel aus deiner Anwesenheitsmitteilung entfernen möchtest?\nDeine Kontakte können dir dann keine OpenPGP-verschlüsselten Nachrichten senden.</string>
     <string name="openpgp_has_been_published">Öffentlicher OpenPGP-Schlüssel veröffentlicht.</string>
     <string name="mgmt_account_enable">Konto aktivieren </string>
-    <string name="mgmt_account_are_you_sure">Bist du dir sicher?</string>
     <string name="mgmt_account_delete_confirm_text">Die Löschung deines Kontos löscht deinen gesamten Gesprächsverlauf</string>
     <string name="attach_record_voice">Sprache aufzeichnen</string>
     <string name="account_settings_jabber_id">XMPP-Adresse</string>
@@ -1006,5 +1005,4 @@
     <string name="incoming_call_duration_timestamp">Eingehender Anruf (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">Ausgehender Anruf (%s) · %s</string>
     <string name="outgoing_call_timestamp">Ausgehender Anruf · %s</string>
-    <string name="channel_discover_opt_in_message">Die Channelsuche verwendet einen Drittanbieterservice namens &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in deren &lt;a href=https://search.jabber.network/privacy&gt;Datenschutzerklärung&lt;/a&gt;.</string>
 </resources>

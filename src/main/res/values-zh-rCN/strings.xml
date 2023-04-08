@@ -185,7 +185,6 @@
     <string name="unpublish_pgp_message">您确定要从在线状态中移除OpenPGP公钥吗？\n您的联系人将无法再向您发送 OpenPGP 加密信息。</string>
     <string name="openpgp_has_been_published">OpenPGP 公钥已发布。</string>
     <string name="mgmt_account_enable">启用账户</string>
-    <string name="mgmt_account_are_you_sure">确定?</string>
     <string name="mgmt_account_delete_confirm_text">如果您删除帐户，您的所有聊天记录将会丢失</string>
     <string name="attach_record_voice">录制音频</string>
     <string name="account_settings_jabber_id">XMPP地址</string>
@@ -997,5 +996,4 @@
     <string name="incoming_call_duration_timestamp">来电 (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">去电 (%s) · %s</string>
     <string name="outgoing_call_timestamp">去电 · %s</string>
-    <string name="channel_discover_opt_in_message">频道发现功能使用第三方服务 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;。&lt;br&gt;&lt;br&gt;使用此功能会发送你的 IP 地址和搜索词条到该服务。更多信息见 &lt;a href=https://search.jabber.network/privacy&gt;隐私政策&lt;/a&gt;。</string>
 </resources>

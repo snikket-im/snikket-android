@@ -188,7 +188,6 @@
     <string name="unpublish_pgp_message">Tem certeza que deseja remover sua chave pública OpenPGP do seu anúncio de presença?\nSeus contatos não poderão mais enviar mensagens criptografadas com o OpenPGP para você.</string>
     <string name="openpgp_has_been_published">A chave pública do OpenPGP foi publicada.</string>
     <string name="mgmt_account_enable">Habilitar a conta</string>
-    <string name="mgmt_account_are_you_sure">Tem certeza?</string>
     <string name="mgmt_account_delete_confirm_text">Se você excluir a sua conta todo o seu histórico de conversas será apagado</string>
     <string name="attach_record_voice">Gravar voz</string>
     <string name="account_settings_jabber_id">Endereço XMPP</string>

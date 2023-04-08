@@ -185,7 +185,6 @@
     <string name="unpublish_pgp_message">Sei sicuro di volere rimuovere la tua chiave pubblica OpenPGP dalla dichiarazione di presenza?\nI tuoi contatti non potranno più inviarti messaggi cifrati con OpenPGP.</string>
     <string name="openpgp_has_been_published">Chiave pubblica OpenPGP pubblicata.</string>
     <string name="mgmt_account_enable">Attiva profilo</string>
-    <string name="mgmt_account_are_you_sure">Sei sicuro?</string>
     <string name="mgmt_account_delete_confirm_text">L\'eliminazione del tuo profilo cancellerà tutta la cronologia dielle conversazioni</string>
     <string name="attach_record_voice">Registra la voce</string>
     <string name="account_settings_jabber_id">Indirizzo XMPP</string>
@@ -1020,5 +1019,4 @@
     <string name="incoming_call_duration_timestamp">Chiamata in arrivo (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">Chiamata in uscita (%s) · %s</string>
     <string name="outgoing_call_timestamp">Chiamata in uscita · %s</string>
-    <string name="channel_discover_opt_in_message">La scoperta dei canali usa un servizio di terze parti chiamato &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;L\'uso di questa funzione invierà il tuo indirizzo IP e i termini di ricerca a quel servizio. Vedi la sua &lt;a href=https://search.jabber.network/privacy&gt;informativa sulla privacy&lt;/a&gt; per maggiori informazioni.</string>
 </resources>

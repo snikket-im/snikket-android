@@ -118,7 +118,6 @@
     <string name="mgmt_account_publish_pgp">انتشار کلید عمومی OpenPGP</string>
     <string name="unpublish_pgp">حذف کلید عمومی OpenPGP</string>
     <string name="mgmt_account_enable">فعال سازی حساب کاربری</string>
-    <string name="mgmt_account_are_you_sure">آیا مطمئن هستید؟</string>
     <string name="attach_record_voice">ضبط صدا</string>
     <string name="account_settings_example_jabber_id">username@example.com</string>
     <string name="password">کلمه عبور</string>

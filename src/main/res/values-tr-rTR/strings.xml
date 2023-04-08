@@ -182,7 +182,6 @@
     <string name="unpublish_pgp_message">OpenPGP genel anahtarınız Çevrim içi durum anonsunuzdan kaldırmak istediğinizden emin misiniz?\nArtık kişileriniz size şifrelenmiş OpenPGP mesajları gönderemeyecek.</string>
     <string name="openpgp_has_been_published">OpenPGP genel anahtarı yayınlandı.</string>
     <string name="mgmt_account_enable">Hesabı etkinleştir</string>
-    <string name="mgmt_account_are_you_sure">Emin misiniz?</string>
     <string name="mgmt_account_delete_confirm_text">Hesabınızın silinmesi bütün konuşma geçmişinizi siler</string>
     <string name="attach_record_voice">Ses kaydet</string>
     <string name="account_settings_jabber_id">XMPP adresi</string>

@@ -148,7 +148,6 @@
     <string name="unpublish_pgp">Hiq kyç publik OpenPGP</string>
     <string name="openpgp_has_been_published">Kyçi publik OpenPGP u bë publik.</string>
     <string name="mgmt_account_enable">Aktivizoje llogarinë</string>
-    <string name="mgmt_account_are_you_sure">Jeni i sigurt\?</string>
     <string name="attach_record_voice">Incizoni zë</string>
     <string name="account_settings_jabber_id">Adresë XMPP</string>
     <string name="block_jabber_id">Bllokoj adresë XMPP</string>
