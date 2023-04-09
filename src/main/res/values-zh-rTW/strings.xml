@@ -20,7 +20,7 @@
     <string name="action_unblock_participant">解除封鎖成員</string>
     <string name="title_activity_manage_accounts">管理帳戶</string>
     <string name="title_activity_settings">設定</string>
-    <string name="title_activity_sharewith">分享至 Conversation</string>
+    <string name="title_activity_sharewith">分享至會話</string>
     <string name="title_activity_start_conversation">開始會話</string>
     <string name="title_activity_choose_contact">選擇聯絡人</string>
     <string name="title_activity_choose_contacts">選擇聯絡人</string>
@@ -31,7 +31,6 @@
     <string name="minutes_ago">%d 分鐘前</string>
     <plurals name="x_unread_conversations">
         <item quantity="other">%d 則未讀會話</item>
-
     </plurals>
     <string name="sending">正在傳送…</string>
     <string name="message_decrypting">正在解密訊息，請稍候…</string>
@@ -105,7 +104,7 @@
     <string name="no_pgp_keys">未找到 OpenPGP 金鑰</string>
     <string name="pref_general">一般</string>
     <string name="pref_accept_files">接受檔案</string>
-    <string name="pref_accept_files_summary">自動接受小於此大小的檔案</string>
+    <string name="pref_accept_files_summary">自動接受小於此大小的檔案…</string>
     <string name="pref_attachments">附件</string>
     <string name="pref_notification_settings">通知</string>
     <string name="pref_vibrate">震動</string>
@@ -125,11 +124,11 @@
     <string name="pref_prevent_screenshots_summary">在多工畫面隱藏應用程式聯絡人並且封鎖螢幕截圖</string>
     <string name="pref_ui_options">UI</string>
     <string name="openpgp_error">OpenKeychain 產生一個錯誤。</string>
-    <string name="bad_key_for_encryption">錯誤加密金鑰</string>
+    <string name="bad_key_for_encryption">錯誤的加密金鑰。</string>
     <string name="accept">接受</string>
     <string name="error">產生了一個錯誤</string>
     <string name="recording_error">錯誤</string>
-    <string name="your_account">你的帳戶</string>
+    <string name="your_account">您的帳戶</string>
     <string name="send_presence_updates">發送線上連絡人列表更新</string>
     <string name="receive_presence_updates">接收線上連絡人列表更新</string>
     <string name="ask_for_presence_updates">請求線上連絡人列表更新</string>
@@ -146,8 +145,8 @@
     <string name="account_status_connecting">連接中\u2026</string>
     <string name="account_status_offline">離線</string>
     <string name="account_status_unauthorized">未授權</string>
-    <string name="account_status_not_found">未找到伺服器</string>
-    <string name="account_status_no_internet">未連接網路</string>
+    <string name="account_status_not_found">找不到伺服器</string>
+    <string name="account_status_no_internet">沒有連線能力</string>
     <string name="account_status_regis_fail">註冊失敗</string>
     <string name="account_status_regis_conflict">使用者名稱已被使用</string>
     <string name="account_status_regis_success">註冊完成</string>
@@ -170,7 +169,7 @@
     <string name="mgmt_account_publish_pgp">發佈 OpenPGP 公開金鑰</string>
     <string name="unpublish_pgp">移除 OpenPGP 公開金鑰</string>
     <string name="unpublish_pgp_message">確定要移除上線狀態中的 OpenPGP 公開金鑰嗎？\n這樣一來，你的聯絡人就無法傳送以 OpenPGP 加密的訊息給你了。</string>
-    <string name="openpgp_has_been_published">OpenPGP 公開金鑰已發佈 </string>
+    <string name="openpgp_has_been_published">OpenPGP 公開金鑰已發佈。</string>
     <string name="mgmt_account_enable">啟用帳戶</string>
     <string name="mgmt_account_delete_confirm_text">刪除帳戶將清除您全部的會話記錄</string>
     <string name="attach_record_voice">錄音</string>
@@ -929,4 +928,5 @@
     <string name="account_status_temporary_auth_failure">臨時驗證失敗</string>
     <string name="delete_avatar">刪除頭像</string>
     <string name="audio_video_disabled_tor">使用 Tor 時不能進行通話</string>
-    </resources>
+    <string name="pref_broadcast_last_activity_summary">在您使用 Conversations 時讓您的聯絡人知道</string>
+</resources>
