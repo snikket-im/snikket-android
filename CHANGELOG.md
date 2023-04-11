@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.12.3
+
+* Improve support for new emojis
+* Add ability to remove account from server
+* Show timestamp for calls
+
 ### Version 2.12.2
 
 * Increase corner radius on profile pictures
