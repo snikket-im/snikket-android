@@ -188,7 +188,7 @@
     <string name="unpublish_pgp_message">Tes a certeza de que queres eliminar a túa chave pública OpenPGP do  anuncio de presenza? \nOs teus contactos non poderán enviarche mensaxes cifradas con OpenPGP.</string>
     <string name="openpgp_has_been_published">Publicada a chave pública OpenPGP.</string>
     <string name="mgmt_account_enable">Habilitar</string>
-    <string name="mgmt_account_delete_confirm_text">Ao eliminar a conta eliminas todo o historial de conversas</string>
+    <string name="mgmt_account_delete_confirm_text">Tes a certeza de querer eliminar a túa conta\? Ao eliminar a conta eliminas todo o historial de conversas</string>
     <string name="attach_record_voice">Gravar audio</string>
     <string name="account_settings_jabber_id">Enderezo XMPP</string>
     <string name="block_jabber_id">Bloquear enderezo XMPP</string>
@@ -1008,4 +1008,7 @@
     <string name="incoming_call_duration_timestamp">Chamada entrante (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">Chamada saínte (%s) · %s</string>
     <string name="outgoing_call_timestamp">Chamada saínte · %s</string>
+    <string name="channel_discover_opt_in_message">O descubrimento de canles usa un servizo externo chamado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Ao usar esta ferramenta transmitirás o teu enderezo IP e termos de busca a ese servizo. Le a súa &lt;a href=https://search.jabber.network/privacy&gt;Política de Privacidade&lt;/a&gt; para saber máis.</string>
+    <string name="delete_from_server">Eliminar a conta no servidor</string>
+    <string name="could_not_delete_account_from_server">Non se puido eliminar a conta no servidor</string>
 </resources>
