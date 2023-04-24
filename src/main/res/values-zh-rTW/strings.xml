@@ -16,8 +16,8 @@
     <string name="action_unblock_contact">解除封鎖聯絡人</string>
     <string name="action_block_domain">封鎖網域</string>
     <string name="action_unblock_domain">解除封鎖網域</string>
-    <string name="action_block_participant">封鎖成員</string>
-    <string name="action_unblock_participant">解除封鎖成員</string>
+    <string name="action_block_participant">封鎖參與者</string>
+    <string name="action_unblock_participant">解除封鎖參與者</string>
     <string name="title_activity_manage_accounts">管理帳戶</string>
     <string name="title_activity_settings">設定</string>
     <string name="title_activity_sharewith">分享至會話</string>
@@ -40,7 +40,7 @@
     <string name="admin">管理員</string>
     <string name="owner">擁有者</string>
     <string name="moderator">版主</string>
-    <string name="participant">成員</string>
+    <string name="participant">參與者</string>
     <string name="visitor">訪客</string>
     <string name="remove_contact_text">要將 %s 從你的聯絡人清單中移除嗎？與此聯絡人的會話將不會被移除。</string>
     <string name="block_contact_text">要封鎖 %s 向您傳送訊息嗎？</string>
@@ -371,7 +371,7 @@
     <string name="could_not_change_affiliation">無法變更 %s 的關係</string>
     <string name="ban_from_conference">從群組聊天中封鎖</string>
     <string name="ban_from_channel">從頻道中封鎖</string>
-    <string name="removing_from_public_conference">你正在嘗試從公用頻道中移除 %s。只有永遠封鎖此用戶方能做到。</string>
+    <string name="removing_from_public_conference">你正在嘗試從公用頻道中移除 %s。只有永遠封鎖此使用者才能將其將其移除。</string>
     <string name="ban_now">立即封鎖</string>
     <string name="could_not_change_role">無法修改 %s 的角色</string>
     <string name="conference_options">私人群組聊天組態</string>
@@ -480,7 +480,7 @@
     <string name="hostname_or_onion">伺服器- 或 .orion- 位址</string>
     <string name="not_a_valid_port">不是有效的連接埠號碼</string>
     <string name="not_valid_hostname">不是有效的主機名稱</string>
-    <string name="connected_accounts">%2$d / %1$d 個帳戶已連線</string>
+    <string name="connected_accounts">%1$d/%2$d 個帳戶已連線</string>
     <plurals name="x_messages">
         <item quantity="other">%d 則訊息</item>
     </plurals>
@@ -529,7 +529,7 @@
     <string name="device_does_not_support_battery_op">您的裝置不支援選擇退出電池效能最佳化</string>
     <string name="registration_please_wait">註冊失敗：稍後再試一次</string>
     <string name="registration_password_too_weak">註冊失敗：密碼過於貧弱</string>
-    <string name="choose_participants">選擇成員</string>
+    <string name="choose_participants">選擇參與者</string>
     <string name="creating_conference">正在建立群組聊天…</string>
     <string name="invite_again">重新邀請</string>
     <string name="gp_disable">停用</string>
@@ -721,7 +721,7 @@
     <string name="pref_more_notification_settings_summary">重要程度、音效、震動</string>
     <string name="video_compression_channel_name">影片壓縮</string>
     <string name="view_media">檢視媒體</string>
-    <string name="group_chat_members">成員</string>
+    <string name="group_chat_members">參與者</string>
     <string name="media_browser">媒體瀏覽器</string>
     <string name="security_violation_not_attaching_file">由於安全性違規，您的檔案已被刪除。</string>
     <string name="pref_video_compression">影片品質</string>
@@ -815,10 +815,10 @@
     <string name="anyone_can_invite_others">任何人都可以邀請其他人。</string>
     <string name="jabber_ids_are_visible_to_admins">XMPP 位址對管理員可見。</string>
     <string name="jabber_ids_are_visible_to_anyone">XMPP 位址對任何人可見。</string>
-    <string name="no_users_hint_channel">此公開頻道沒有成員，邀請您的聯絡人或使用分享按鈕散佈 XMPP 位址。</string>
-    <string name="no_users_hint_group_chat">此私人群組聊天沒有成員。</string>
+    <string name="no_users_hint_channel">此公用頻道沒有參與者，邀請您的聯絡人或使用分享按鈕散佈 XMPP 位址。</string>
+    <string name="no_users_hint_group_chat">此私人群組聊天沒有參與者。</string>
     <string name="manage_permission">管理權限</string>
-    <string name="search_participants">搜尋成員</string>
+    <string name="search_participants">搜尋參與者</string>
     <string name="file_too_large">檔案過大</string>
     <string name="attach">附加</string>
     <string name="discover_channels">探索頻道</string>
@@ -882,7 +882,7 @@
         <item quantity="other">%d 未接電話</item>
     </plurals>
     <plurals name="n_missed_calls_from_m_contacts">
-        <item quantity="other">來自 %2$d 個聯絡人的 %1$d 個未接電話</item>
+        <item quantity="other">來自 %2$d 位聯絡人的 %1$d 個未接電話</item>
     </plurals>
     <string name="audio_call">語音通話</string>
     <string name="video_call">視訊通話</string>
@@ -909,7 +909,7 @@
     <string name="pause_audio">暫停音訊</string>
     <string name="add_contact_or_create_or_join_group_chat">新增聯絡人、建立或加入群組聊天、或探索頻道</string>
     <plurals name="view_users">
-        <item quantity="other">檢視 %1$d 位成員</item>
+        <item quantity="other">檢視 %1$d 位參與者</item>
     </plurals>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="other">部分訊息無法傳遞</item>
