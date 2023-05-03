@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.12.4
+
+* Revert Target SDK bump (back to 32) to fix various issues on Android 13
+
 ### Version 2.12.3
 
 * Improve support for new emojis
