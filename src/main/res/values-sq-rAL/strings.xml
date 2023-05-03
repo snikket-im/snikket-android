@@ -178,7 +178,6 @@
     <string name="fetching_keys">Po sillen kyçe…</string>
     <string name="done">U bë</string>
     <string name="decrypt">Shfshehtëzoje</string>
-    <string name="bookmarks">Faqerojtës</string>
     <string name="search">Kërko</string>
     <string name="enter_contact">Jepni Kontakt</string>
     <string name="delete_contact">Fshije kontaktin</string>
@@ -368,7 +367,6 @@
     <string name="recently_used">Më të përdorur së fundi</string>
     <string name="choose_quick_action">Zgjidhni veprim të shpejtë</string>
     <string name="search_contacts">Kërko te kontaktet</string>
-    <string name="search_bookmarks">Kërko te faqerojtës</string>
     <string name="send_private_message">Dërgo mesazh privat</string>
     <string name="user_has_left_conference">%1$s e braktisi fjalosjen në grup</string>
     <string name="username">Emër përdoruesi</string>

@@ -224,7 +224,6 @@
     <string name="fetching_keys">Kulcsok lekérése…</string>
     <string name="done">Kész</string>
     <string name="decrypt">Visszafejtés</string>
-    <string name="bookmarks">Könyvjelzők</string>
     <string name="search">Keresés</string>
     <string name="enter_contact">Partner megadása</string>
     <string name="delete_contact">Partner törlése</string>
@@ -443,7 +442,6 @@
     <string name="recently_used">Legutóbb használt</string>
     <string name="choose_quick_action">Gyors művelet kiválasztása</string>
     <string name="search_contacts">Partnerek keresése</string>
-    <string name="search_bookmarks">Könyvjelzők keresése</string>
     <string name="send_private_message">Személyes üzenet küldése</string>
     <string name="user_has_left_conference">%1$s elhagyta a csoportos csevegést</string>
     <string name="username">Felhasználónév</string>

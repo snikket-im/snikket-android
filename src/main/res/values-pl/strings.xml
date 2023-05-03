@@ -230,7 +230,6 @@
     <string name="fetching_keys">Pobieranie kluczy…</string>
     <string name="done">Ukończono</string>
     <string name="decrypt">Odszyfruj</string>
-    <string name="bookmarks">Zakładki</string>
     <string name="search">Szukaj</string>
     <string name="enter_contact">Wpisz kontakt</string>
     <string name="delete_contact">Usuń kontakt</string>
@@ -464,7 +463,6 @@
     <string name="recently_used">Ostatnio używana</string>
     <string name="choose_quick_action">Wybierz szybką akcję</string>
     <string name="search_contacts">Przeszukuj kontakty</string>
-    <string name="search_bookmarks">Przeszukaj zakładki</string>
     <string name="send_private_message">Wyślij wiadomość prywatną</string>
     <string name="user_has_left_conference">%1$s opuścił konferencję</string>
     <string name="username">Nazwa użytkownika</string>
@@ -1038,7 +1036,6 @@
     <string name="incoming_call_duration_timestamp">Połączenie przychodzące (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">Połączenie wychodzące (%s) · %s</string>
     <string name="outgoing_call_timestamp">Połączenie wychodzące · %s</string>
-    <string name="channel_discover_opt_in_message">Wykrywanie kanałów korzysta z usługi innej firmy o nazwie &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Użycie tej funkcji spowoduje przesłanie adresu IP i wyszukiwanych terminów do tej usługi. Zobacz ich &lt;a href=https://search.jabber.network/privacy&gt;Politykę prywatności&lt;/a&gt;, aby uzyskać więcej informacji.</string>
     <string name="delete_from_server">Usuń konto z serwera</string>
     <string name="could_not_delete_account_from_server">Nie można usunąć konta z serwera</string>
 </resources>

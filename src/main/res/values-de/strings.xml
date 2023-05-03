@@ -226,7 +226,6 @@
     <string name="fetching_keys">Schlüssel werden abgerufen…</string>
     <string name="done">Fertig</string>
     <string name="decrypt">Entschlüsseln</string>
-    <string name="bookmarks">Lesezeichen</string>
     <string name="search">Suchen</string>
     <string name="enter_contact">Kontakt eingeben</string>
     <string name="delete_contact">Kontakt löschen</string>
@@ -458,7 +457,6 @@
     <string name="recently_used">Zuletzt verwendet</string>
     <string name="choose_quick_action">Wähle Schnell-Taste</string>
     <string name="search_contacts">Kontakte durchsuchen</string>
-    <string name="search_bookmarks">Lesezeichen durchsuchen</string>
     <string name="send_private_message">Private Nachricht senden</string>
     <string name="user_has_left_conference">%1$s hat den Gruppenchat verlassen</string>
     <string name="username">Benutzername</string>
@@ -1005,7 +1003,6 @@
     <string name="incoming_call_duration_timestamp">Eingehender Anruf (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">Ausgehender Anruf (%s) · %s</string>
     <string name="outgoing_call_timestamp">Ausgehender Anruf · %s</string>
-    <string name="channel_discover_opt_in_message">Die Channelsuche verwendet einen Drittanbieterservice namens &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der &lt;a href=https://search.jabber.network/privacy&gt;Datenschutzerklärung&lt;/a&gt;.</string>
     <string name="delete_from_server">Konto vom Server löschen</string>
     <string name="could_not_delete_account_from_server">Konto konnte nicht vom Server gelöscht werden</string>
 </resources>

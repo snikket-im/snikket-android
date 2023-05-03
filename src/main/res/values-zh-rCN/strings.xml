@@ -227,7 +227,6 @@
     <string name="fetching_keys">获取密钥中…</string>
     <string name="done">完成</string>
     <string name="decrypt">解密</string>
-    <string name="bookmarks">书签</string>
     <string name="search">搜索</string>
     <string name="enter_contact">输入联系人</string>
     <string name="delete_contact">删除联系人</string>
@@ -459,7 +458,6 @@
     <string name="recently_used">刚用过的</string>
     <string name="choose_quick_action">选择快捷操作</string>
     <string name="search_contacts">搜索联系人</string>
-    <string name="search_bookmarks">搜索书签</string>
     <string name="send_private_message">发送私密消息</string>
     <string name="user_has_left_conference">%1$s离开了群聊</string>
     <string name="username">用户名</string>

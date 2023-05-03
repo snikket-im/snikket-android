@@ -102,7 +102,6 @@
     <string name="offering">প্রস্তাব দেওয়া হচ্ছে...</string>
     <string name="waiting">অপেক্ষা করা হচ্ছে...</string>
     <string name="no_pgp_key">কোনো OpenPGP Key খুঁজে পাওয়া যায়নি</string>
-    <string name="bookmarks">বুকমার্ক করা যেগুলি</string>
     <string name="search">খোঁজা যাক</string>
     <string name="block_contact">এই ব্যক্তিকে ব্লক্ করা যাক</string>
     <string name="unblock_contact">ব্লকটা সরিয়ে ফেলা যাক</string>

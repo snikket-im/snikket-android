@@ -222,7 +222,6 @@
     <string name="fetching_keys">Načítavam kľúče...</string>
     <string name="done">Dokončený</string>
     <string name="decrypt">Dešifrovať</string>
-    <string name="bookmarks">Záložky</string>
     <string name="search">Hľadať</string>
     <string name="enter_contact">Vložiť Kontakt</string>
     <string name="delete_contact">Zmazať kontakt</string>

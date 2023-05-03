@@ -221,7 +221,6 @@
     <string name="fetching_keys">Haetaan avaimia...</string>
     <string name="done">Valmis</string>
     <string name="decrypt">Pura salaus</string>
-    <string name="bookmarks">Kirjanmerkit</string>
     <string name="search">Haku</string>
     <string name="enter_contact">Syötä yhteystieto</string>
     <string name="delete_contact">Poista yhteystieto</string>

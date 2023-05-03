@@ -227,7 +227,6 @@
     <string name="fetching_keys">Ricezione chiavi…</string>
     <string name="done">Fatto</string>
     <string name="decrypt">Decripta</string>
-    <string name="bookmarks">Segnalibri</string>
     <string name="search">Cerca</string>
     <string name="enter_contact">Inserisci contatto</string>
     <string name="delete_contact">Elimina contatto</string>
@@ -460,7 +459,6 @@
     <string name="recently_used">Usati recentemente</string>
     <string name="choose_quick_action">Scegli azione rapida</string>
     <string name="search_contacts">Cerca contatti</string>
-    <string name="search_bookmarks">Cerca segnalibri</string>
     <string name="send_private_message">Invia messaggio privato</string>
     <string name="user_has_left_conference">%1$s ha abbandonato la chat di gruppo</string>
     <string name="username">Utente</string>
@@ -1019,7 +1017,6 @@
     <string name="incoming_call_duration_timestamp">Chiamata in arrivo (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">Chiamata in uscita (%s) · %s</string>
     <string name="outgoing_call_timestamp">Chiamata in uscita · %s</string>
-    <string name="channel_discover_opt_in_message">La scoperta dei canali usa un servizio di terze parti chiamato &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;L\'uso di questa funzione invierà il tuo indirizzo IP e i termini di ricerca a quel servizio. Vedi la sua &lt;a href=https://search.jabber.network/privacy&gt;informativa sulla privacy&lt;/a&gt; per maggiori informazioni.</string>
     <string name="delete_from_server">Rimuovi profilo dal server</string>
     <string name="could_not_delete_account_from_server">Impossibile eliminare il profilo dal server</string>
 </resources>

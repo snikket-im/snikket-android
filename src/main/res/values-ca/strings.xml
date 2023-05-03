@@ -216,7 +216,6 @@
     <string name="fetching_keys">S\'estan obtenint les claus…</string>
     <string name="done">Fet</string>
     <string name="decrypt">Desxifra</string>
-    <string name="bookmarks">Marcadors</string>
     <string name="search">Cerca</string>
     <string name="enter_contact">Introduïu un contacte</string>
     <string name="delete_contact">Suprimeix el contacte</string>
@@ -441,7 +440,6 @@
     <string name="recently_used">Ús més recent</string>
     <string name="choose_quick_action">Trieu una acció ràpida</string>
     <string name="search_contacts">Buscar contactes</string>
-    <string name="search_bookmarks">Buscar favorits</string>
     <string name="send_private_message">Envia un missatge privat</string>
     <string name="user_has_left_conference">%1$s ha abandonat el xat de grup</string>
     <string name="username">Nom d\'usuari</string>

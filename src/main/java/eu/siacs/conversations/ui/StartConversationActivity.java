@@ -645,8 +645,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             mSearchEditText.setHint(R.string.search_contacts);
             mSearchEditText.setContentDescription(getString(R.string.search_contacts));
         } else {
-            mSearchEditText.setHint(R.string.search_bookmarks);
-            mSearchEditText.setContentDescription(getString(R.string.search_bookmarks));
+            mSearchEditText.setHint(R.string.search_group_chats);
+            mSearchEditText.setContentDescription(getString(R.string.search_group_chats));
         }
     }
 
@@ -1299,7 +1299,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 case 0:
                     return getResources().getString(R.string.contacts);
                 case 1:
-                    return getResources().getString(R.string.bookmarks);
+                    return getResources().getString(R.string.group_chats);
                 default:
                     return super.getPageTitle(position);
             }

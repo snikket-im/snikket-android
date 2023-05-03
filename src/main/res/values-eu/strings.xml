@@ -178,7 +178,6 @@
     <string name="fetching_keys">Gakoak eskuratzen...</string>
     <string name="done">Eginda</string>
     <string name="decrypt">Desenkriptatu</string>
-    <string name="bookmarks">Laster-markak</string>
     <string name="search">Bilatu</string>
     <string name="enter_contact">Kontaktua sartu</string>
     <string name="delete_contact">Kontaktua ezabatu</string>
@@ -379,7 +378,6 @@
     <string name="recently_used">Azkenengo aldiz erabilitakoa</string>
     <string name="choose_quick_action">Ekintza azkarra aukeratu</string>
     <string name="search_contacts">Kontaktuak bilatu</string>
-    <string name="search_bookmarks">Laster-marketan bilatu</string>
     <string name="send_private_message">Mezu pribatua bidali</string>
     <string name="username">Erabiltzaile izena</string>
     <string name="username_hint">Erabiltzaile izena</string>

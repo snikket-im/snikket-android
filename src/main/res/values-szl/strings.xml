@@ -240,7 +240,6 @@
     <string name="fetching_keys">Pobiyranie kluczy…</string>
     <string name="done">Skōńczōno</string>
     <string name="decrypt">Ôdszyfruj</string>
-    <string name="bookmarks">Zokłodki</string>
     <string name="search">Szukej</string>
     <string name="enter_contact">Wpisz kōntakt</string>
     <string name="delete_contact">Wymaż kōntakt</string>
@@ -477,7 +476,6 @@
     <string name="recently_used">Ôstatnio używano</string>
     <string name="choose_quick_action">Ôbier gibko akcyjo</string>
     <string name="search_contacts">Przeszukej kōntakty</string>
-    <string name="search_bookmarks">Przeszukej zokłodki</string>
     <string name="send_private_message">Wyślij wiadōmość prywatno</string>
     <string name="user_has_left_conference">%1$s już niy je we kōnferyncyji</string>
     <string name="username">Miano ôd używocza</string>

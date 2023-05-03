@@ -222,7 +222,6 @@
     <string name="fetching_keys">Récupération des clés…</string>
     <string name="done">Terminé</string>
     <string name="decrypt">Déchiffrer</string>
-    <string name="bookmarks">Favoris</string>
     <string name="search">Rechercher</string>
     <string name="enter_contact">Ajouter contact</string>
     <string name="delete_contact">Supprimer un contact</string>
@@ -448,7 +447,6 @@
     <string name="recently_used">Dernière utilisée</string>
     <string name="choose_quick_action">Sélectionner l\'action rapide</string>
     <string name="search_contacts"> Rechercher dans les contacts</string>
-    <string name="search_bookmarks">Rechercher des favoris</string>
     <string name="send_private_message">Envoyer un message privé</string>
     <string name="user_has_left_conference">%1$s a quitté le groupe</string>
     <string name="username">Identifiant</string>

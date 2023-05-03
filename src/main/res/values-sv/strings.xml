@@ -227,7 +227,6 @@
     <string name="fetching_keys">Hämtar nycklar …</string>
     <string name="done">Klar</string>
     <string name="decrypt">Avkryptera</string>
-    <string name="bookmarks">Bokmärken</string>
     <string name="search">Sök</string>
     <string name="enter_contact">Fyll i kontakt</string>
     <string name="delete_contact">Ta bort kontakt</string>
@@ -453,7 +452,6 @@
     <string name="recently_used">Senast använd</string>
     <string name="choose_quick_action">Välj snabbfunktion</string>
     <string name="search_contacts">Sök kontakter</string>
-    <string name="search_bookmarks">Sök bokmärken</string>
     <string name="send_private_message">Skicka privat meddelande</string>
     <string name="user_has_left_conference">%1$s har lämnat gruppchatten</string>
     <string name="username">Användarnamn</string>

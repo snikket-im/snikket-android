@@ -224,7 +224,6 @@
     <string name="fetching_keys">Anahtarları alıyor…</string>
     <string name="done">Tamam</string>
     <string name="decrypt">Şifreyi çöz</string>
-    <string name="bookmarks">Yer imleri</string>
     <string name="search">Ara</string>
     <string name="enter_contact">Kişi Girin</string>
     <string name="delete_contact">Kişiyi sil</string>
@@ -453,7 +452,6 @@
     <string name="recently_used">En son kullanılanlar</string>
     <string name="choose_quick_action">Kısayolu seç</string>
     <string name="search_contacts">Kişilerde ara</string>
-    <string name="search_bookmarks">Yer imleri ara</string>
     <string name="send_private_message">Özel ileti gönder</string>
     <string name="user_has_left_conference">%1$s grup konuşmasından ayrıldı</string>
     <string name="username">Kullanıcı adı</string>

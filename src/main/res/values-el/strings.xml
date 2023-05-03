@@ -226,7 +226,6 @@
     <string name="fetching_keys">Μεταφόρτωση κλειδιών...</string>
     <string name="done">Έγινε</string>
     <string name="decrypt">Αποκρυπτογράφηση</string>
-    <string name="bookmarks">Σελιδοδείκτες</string>
     <string name="search">Αναζήτηση</string>
     <string name="enter_contact">Εισαγωγή επαφής</string>
     <string name="delete_contact">Διαγραφή επαφής</string>
@@ -452,7 +451,6 @@
     <string name="recently_used">Πιο πρόσφατα χρησιμοποιημένη</string>
     <string name="choose_quick_action">Επιλογή γρήγορης ενέργειας</string>
     <string name="search_contacts">Αναζήτηση επαφών</string>
-    <string name="search_bookmarks">Αναζήτηση σελιδοδεικτών</string>
     <string name="send_private_message">Αποστολή ιδιωτικού μηνύματος</string>
     <string name="user_has_left_conference">Ο/Η %1$s αποχώρησε από την ομαδική συζήτηση</string>
     <string name="username">Όνομα χρήστη</string>

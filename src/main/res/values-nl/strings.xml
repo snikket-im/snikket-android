@@ -210,7 +210,6 @@
     <string name="fetching_keys">Sleutels ophalen…</string>
     <string name="done">Klaar</string>
     <string name="decrypt">Ontsleutelen</string>
-    <string name="bookmarks">Bladwijzers</string>
     <string name="search">Zoeken</string>
     <string name="enter_contact">Contact invoeren</string>
     <string name="delete_contact">Contact verwijderen</string>
@@ -420,7 +419,6 @@
     <string name="recently_used">Recent gebruikt</string>
     <string name="choose_quick_action">Snelle actie kiezen</string>
     <string name="search_contacts">Contacten zoeken</string>
-    <string name="search_bookmarks">Bladwijzers doorzoeken</string>
     <string name="send_private_message">Privébericht sturen</string>
     <string name="username">Gebruikersnaam</string>
     <string name="username_hint">Gebruikersnaam</string>

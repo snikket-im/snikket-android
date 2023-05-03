@@ -144,7 +144,6 @@
     <string name="fetching_keys">കീകൾ ലഭ്യമാക്കുന്നു...</string>
     <string name="done">ചെയ്തു</string>
     <string name="decrypt">ഡീക്രിപ്റ്റ് ചെയ്യുക</string>
-    <string name="bookmarks">അടയാളകുറിപ്പുകൾ</string>
     <string name="search">തിരയുക</string>
     <string name="enter_contact">കോൺ‌ടാക്റ്റ് നൽകുക</string>
     <string name="delete_contact">കോൺ‌ടാക്റ്റ് ഇല്ലാതാക്കൂ</string>

@@ -223,7 +223,6 @@
     <string name="fetching_keys">Đang nhận khoá...</string>
     <string name="done">Xong</string>
     <string name="decrypt">Giải mã</string>
-    <string name="bookmarks">Dấu trang</string>
     <string name="search">Tìm kiếm</string>
     <string name="enter_contact">Nhập liên hệ</string>
     <string name="delete_contact">Xoá liên hệ</string>
@@ -448,7 +447,6 @@
     <string name="recently_used">Dùng gần đây nhất</string>
     <string name="choose_quick_action">Chọn thao tác nhanh</string>
     <string name="search_contacts">Tìm kiếm liên hệ</string>
-    <string name="search_bookmarks">Tìm kiếm dấu trang</string>
     <string name="send_private_message">Gửi tin nhắn cá nhân</string>
     <string name="user_has_left_conference">%1$s đã rời khỏi cuộc trò chuyện nhóm</string>
     <string name="username">Tên người dùng</string>

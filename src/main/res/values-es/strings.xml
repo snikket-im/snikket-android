@@ -229,7 +229,6 @@
     <string name="fetching_keys">Descargando claves…</string>
     <string name="done">Hecho</string>
     <string name="decrypt">Descifrar</string>
-    <string name="bookmarks">Marcadores</string>
     <string name="search">Buscar</string>
     <string name="enter_contact">Introducir contacto</string>
     <string name="delete_contact">Eliminar contacto</string>
@@ -460,7 +459,6 @@
     <string name="recently_used">Usada más recientemente</string>
     <string name="choose_quick_action">Elegir acción rápida</string>
     <string name="search_contacts">Buscar contactos</string>
-    <string name="search_bookmarks">Buscar marcadores</string>
     <string name="send_private_message">Enviar mensaje privado</string>
     <string name="user_has_left_conference">%1$s ha dejado la conversación</string>
     <string name="username">Usuario</string>
@@ -1019,7 +1017,6 @@
     <string name="outgoing_call_duration_timestamp">Llamada saliente (%s) · %s</string>
     <string name="outgoing_call_timestamp">Llamadas salientes · %s</string>
     <string name="decline">Rechazar</string>
-    <string name="channel_discover_opt_in_message">La búsqueda de canales utiliza un servicio de terceros denominado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Si utiliza esta función, su dirección IP y búsqueda términos transferidos a este servicio. Para obtener más información, consulte la &lt;a href=https://search.jabber.network/privacy&gt;Política de privacidad&lt;/a&gt;.</string>
     <string name="delete_from_server">Eliminar la cuenta del servidor</string>
     <string name="could_not_delete_account_from_server">No se pudo eliminar la cuenta del servidor</string>
 </resources>

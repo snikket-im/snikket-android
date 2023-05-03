@@ -227,7 +227,6 @@
     <string name="fetching_keys">Henter nøgler…</string>
     <string name="done">Færdig</string>
     <string name="decrypt">Dekrypter</string>
-    <string name="bookmarks">Bogmærker</string>
     <string name="search">Find</string>
     <string name="enter_contact">Indtast kontakt</string>
     <string name="delete_contact">Slet kontakt</string>
@@ -457,7 +456,6 @@
     <string name="recently_used">Senest brugt</string>
     <string name="choose_quick_action">Vælg hurtig handling</string>
     <string name="search_contacts">Find kontakter</string>
-    <string name="search_bookmarks">Find bogmærker</string>
     <string name="send_private_message">Send privat besked</string>
     <string name="user_has_left_conference">%1$s har forladt gruppechatten</string>
     <string name="username">Brugernavn</string>

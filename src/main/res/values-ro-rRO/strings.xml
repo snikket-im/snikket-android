@@ -229,7 +229,6 @@
     <string name="fetching_keys">Se preiau cheile…</string>
     <string name="done">Gata</string>
     <string name="decrypt">Decriptează</string>
-    <string name="bookmarks">Semne de carte</string>
     <string name="search">Caută</string>
     <string name="enter_contact">Introduceți contact</string>
     <string name="delete_contact">Șterge contact</string>
@@ -462,7 +461,6 @@
     <string name="recently_used">Folosită recent</string>
     <string name="choose_quick_action">Alegeți acțiunea rapidă</string>
     <string name="search_contacts">Caută contacte</string>
-    <string name="search_bookmarks">Caută semne de carte</string>
     <string name="send_private_message">Trimite mesaj privat</string>
     <string name="user_has_left_conference">%1$s a părăsit discuția de grup</string>
     <string name="username">Nume utilizator</string>
@@ -1028,6 +1026,5 @@
     <string name="outgoing_call_duration_timestamp">Apel efectuat (%s) · %s</string>
     <string name="outgoing_call_timestamp">Apel efectuat · %s</string>
     <string name="could_not_delete_account_from_server">Nu s-a putut șterge contul de pe server</string>
-    <string name="channel_discover_opt_in_message">Descoperirea de canale publice folosește un serviciu terț numit &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți &lt;a href=https://search.jabber.network/privacy&gt;Politica de confidențialitate&lt;/a&gt; a serviciului.</string>
     <string name="delete_from_server">Șterge contul de pe server</string>
 </resources>

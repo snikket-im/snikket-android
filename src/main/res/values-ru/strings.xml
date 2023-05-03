@@ -225,7 +225,6 @@
     <string name="fetching_keys">Получение ключей…</string>
     <string name="done">Готово</string>
     <string name="decrypt">Расшифровать</string>
-    <string name="bookmarks">Закладки</string>
     <string name="search">Поиск</string>
     <string name="enter_contact">Добавить контакт</string>
     <string name="delete_contact">Удалить контакт</string>
@@ -453,7 +452,6 @@
     <string name="recently_used">Последнее выбранное</string>
     <string name="choose_quick_action">Выбрать быстрое действие</string>
     <string name="search_contacts">Поиск контактов</string>
-    <string name="search_bookmarks">Поиск закладок</string>
     <string name="send_private_message">Отправить личное сообщение</string>
     <string name="user_has_left_conference">%1$s покинул конференцию</string>
     <string name="username">Имя пользователя</string>

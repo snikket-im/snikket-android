@@ -226,7 +226,6 @@
     <string name="fetching_keys">Изтегляне на ключове…</string>
     <string name="done">Готово</string>
     <string name="decrypt">Дешифроване</string>
-    <string name="bookmarks">Отметки</string>
     <string name="search">Търсене</string>
     <string name="enter_contact">Въведете контакт</string>
     <string name="delete_contact">Изтриване на контакта</string>
@@ -451,7 +450,6 @@
     <string name="recently_used">Използвани наскоро</string>
     <string name="choose_quick_action">Изберете бързо действие</string>
     <string name="search_contacts">Търсене в контактите</string>
-    <string name="search_bookmarks">Търсене в отметките</string>
     <string name="send_private_message">Изпращане на лично съобщение</string>
     <string name="user_has_left_conference">%1$s напусна груповия разговор</string>
     <string name="username">Потребителско име</string>

@@ -225,7 +225,7 @@
     <string name="fetching_keys">Fetching keys…</string>
     <string name="done">Done</string>
     <string name="decrypt">Decrypt</string>
-    <string name="bookmarks">Bookmarks</string>
+    <string name="group_chats">Group chats</string>
     <string name="search">Search</string>
     <string name="enter_contact">Enter Contact</string>
     <string name="delete_contact">Delete contact</string>
@@ -239,6 +239,7 @@
     <string name="channel_full_jid_example">channel@conference.example.com/nick</string>
     <string name="channel_bare_jid_example">channel@conference.example.com</string>
     <string name="save_as_bookmark">Save as bookmark</string>
+    <string name="save_as_group_chat">Save as group chat</string>
     <string name="delete_bookmark">Delete bookmark</string>
     <string name="destroy_room">Destroy group chat</string>
     <string name="destroy_channel">Destroy channel</string>
@@ -455,7 +456,7 @@
     <string name="recently_used">Most recently used</string>
     <string name="choose_quick_action">Choose quick action</string>
     <string name="search_contacts">Search contacts</string>
-    <string name="search_bookmarks">Search bookmarks</string>
+    <string name="search_group_chats">Search group chats</string>
     <string name="send_private_message">Send private message</string>
     <string name="user_has_left_conference">%1$s has left the group chat</string>
     <string name="username">Username</string>

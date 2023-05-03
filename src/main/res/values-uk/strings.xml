@@ -208,7 +208,6 @@
     <string name="fetching_keys">Отримую ключі…</string>
     <string name="done">Зроблено</string>
     <string name="decrypt">Розшифрувати</string>
-    <string name="bookmarks">Закладки</string>
     <string name="search">Пошук</string>
     <string name="enter_contact">Увести контакт</string>
     <string name="delete_contact">Вилучити контакт</string>
@@ -435,7 +434,6 @@
     <string name="recently_used">Остання, що використана</string>
     <string name="choose_quick_action">Вибрати швидку дію</string>
     <string name="search_contacts">Шукати в контактах</string>
-    <string name="search_bookmarks">Шукати закладки</string>
     <string name="send_private_message">Приватне повідомлення</string>
     <string name="user_has_left_conference">%1$s залишила групу!</string>
     <string name="username">Ім\'я користувача</string>

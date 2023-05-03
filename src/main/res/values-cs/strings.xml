@@ -229,7 +229,6 @@
     <string name="fetching_keys">Získávání klíčů…</string>
     <string name="done">Hotovo</string>
     <string name="decrypt">Dešifrovat</string>
-    <string name="bookmarks">Záložky</string>
     <string name="search">Hledat</string>
     <string name="enter_contact">Vložit kontakt</string>
     <string name="delete_contact">Smazat kontakt</string>
@@ -456,7 +455,6 @@
     <string name="recently_used">Naposledy použitá</string>
     <string name="choose_quick_action">Vybrat rychlou akci</string>
     <string name="search_contacts">Prohledat kontakty</string>
-    <string name="search_bookmarks">Prohledat záložky</string>
     <string name="send_private_message">Poslat soukromou zprávu</string>
     <string name="user_has_left_conference">%1$s opustil(a) skupinový chat</string>
     <string name="username">Uživatelské jméno</string>

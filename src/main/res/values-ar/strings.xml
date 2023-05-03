@@ -182,7 +182,6 @@
     <string name="fetching_keys">جارإحضار المفاتيح ...</string>
     <string name="done">تم</string>
     <string name="decrypt">فك الشيفرة</string>
-    <string name="bookmarks">الفواصل المرجعية</string>
     <string name="search">بحث</string>
     <string name="enter_contact">قم بإدخال جهة إتصال</string>
     <string name="delete_contact">حذف جهة الإتصال</string>
@@ -358,7 +357,6 @@
     <string name="recently_used">التي تم استعمالها كثيرا مؤخرا</string>
     <string name="choose_quick_action">إختر حركة سريعة</string>
     <string name="search_contacts">البحث في جهات الإتصال</string>
-    <string name="search_bookmarks">البحث في الفواصل المرجعية</string>
     <string name="send_private_message">إبعث برسالة على الخاص</string>
     <string name="username">إسم المستخدم</string>
     <string name="username_hint">إسم المستخدم</string>

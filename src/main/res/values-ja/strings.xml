@@ -223,7 +223,6 @@
     <string name="fetching_keys">暗号鍵の取得中…</string>
     <string name="done">完了</string>
     <string name="decrypt">復号</string>
-    <string name="bookmarks">ブックマーク</string>
     <string name="search">検索</string>
     <string name="enter_contact">連絡先を入力</string>
     <string name="delete_contact">連絡先を削除</string>
@@ -451,7 +450,6 @@
     <string name="recently_used">最近使用した</string>
     <string name="choose_quick_action">クイックアクションを選択</string>
     <string name="search_contacts">連絡先を検索</string>
-    <string name="search_bookmarks">ブックマークを検索</string>
     <string name="send_private_message">非公開メッセージを送信</string>
     <string name="user_has_left_conference">%1$s はグループチャットを退出しました</string>
     <string name="username">ユーザー名</string>

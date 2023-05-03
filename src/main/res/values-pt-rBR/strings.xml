@@ -230,7 +230,6 @@
     <string name="fetching_keys">Buscando as chaves...</string>
     <string name="done">Concluído</string>
     <string name="decrypt">Descriptografar</string>
-    <string name="bookmarks">Favoritos</string>
     <string name="search">Pesquisar</string>
     <string name="enter_contact">Digite o contato</string>
     <string name="delete_contact">Excluir contato</string>
@@ -461,7 +460,6 @@
     <string name="recently_used">Usada mais recentemente</string>
     <string name="choose_quick_action">Selecione a ação rápida</string>
     <string name="search_contacts">Pesquisar contatos</string>
-    <string name="search_bookmarks">Pesquisar favoritos</string>
     <string name="send_private_message">Enviar mensagem privada</string>
     <string name="user_has_left_conference">%1$s deixou a conversa em grupo</string>
     <string name="username">Nome de usuário</string>
