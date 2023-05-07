@@ -48,8 +48,8 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.google.android.material:material:1.8.0'
 
-    implementation "androidx.emoji2:emoji2:1.3.0"
-    freeImplementation "androidx.emoji2:emoji2-bundled:1.3.0"
+    implementation "androidx.emoji2:emoji2:1.2.0"
+    freeImplementation "androidx.emoji2:emoji2-bundled:1.2.0"
 
     implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
     //zxing stopped supporting Java 7 so we have to stick with 3.3.3
@@ -90,9 +90,9 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 32
-        versionCode 42056
-        versionName "2.12.4"
+        targetSdkVersion 33
+        versionCode 42058
+        versionName "2.12.5"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId

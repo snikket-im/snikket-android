@@ -40,8 +40,8 @@ public class Compatibility {
     private static final List<String> UNUSED_SETTINGS_PRE_TWENTYSIX =
             Collections.singletonList("message_notification_settings");
 
-    public static boolean hasStoragePermission(Context context) {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+    public static boolean hasStoragePermission(final Context context) {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                 || ContextCompat.checkSelfPermission(
                                 context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         == PackageManager.PERMISSION_GRANTED;
