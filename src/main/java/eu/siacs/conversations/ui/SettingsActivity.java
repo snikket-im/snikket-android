@@ -28,6 +28,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.KeyStoreException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +49,7 @@ import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.TimeFrameUtils;
+import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class SettingsActivity extends XmppActivity implements OnSharedPreferenceChangeListener {
@@ -505,10 +508,39 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         } else if (name.equals(PREVENT_SCREENSHOTS)) {
             SettingsUtils.applyScreenshotPreventionSetting(this);
         } else if (UnifiedPushDistributor.PREFERENCES.contains(name)) {
+            final String pushServerPreference =
+                    Strings.nullToEmpty(preferences.getString(
+                            UnifiedPushDistributor.PREFERENCE_PUSH_SERVER,
+                            getString(R.string.default_push_server))).trim();
+            if (isJidInvalid(pushServerPreference) || isHttpUri(pushServerPreference)) {
+                Toast.makeText(this,R.string.invalid_jid,Toast.LENGTH_LONG).show();
+            }
             if (xmppConnectionService.reconfigurePushDistributor()) {
                 xmppConnectionService.renewUnifiedPushEndpoints();
             }
         }
+    }
+
+    private static boolean isJidInvalid(final String input) {
+        if (Strings.isNullOrEmpty(input)) {
+            return true;
+        }
+        try {
+            Jid.ofEscaped(input);
+            return false;
+        } catch (final IllegalArgumentException e) {
+            return true;
+        }
+    }
+
+    private static boolean isHttpUri(final String input) {
+        final URI uri;
+        try {
+            uri = new URI(input);
+        } catch (final URISyntaxException e) {
+            return false;
+        }
+        return Arrays.asList("http","https").contains(uri.getScheme());
     }
 
     @Override
