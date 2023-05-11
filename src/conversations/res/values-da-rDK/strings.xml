@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pick_a_server">Vælg din XMPP-udbyder</string>
+    <string name="pick_a_server">Vælg din XMPP udbyder</string>
     <string name="use_conversations.im">Brug conversations.im</string>
     <string name="create_new_account">Opret ny konto</string>
     <string name="do_you_have_an_account">Har du allerede en XMPP-konto? Dette kan være tilfældet, hvis du allerede bruger en anden XMPP-klient eller har brugt Conversations før. Hvis ikke, kan du lige nu oprette en ny XMPP-konto.\nTip: Nogle e-mail-udbydere leverer også XMPP-konti.</string>
@@ -12,5 +12,5 @@
     <string name="tap_share_button_send_invite">Tryk på deleknappen for at sende din kontakt en invitation til %1$s.</string>
     <string name="if_contact_is_nearby_use_qr">Hvis din kontakt er i nærheden, kan de også skanne koden nedenfor for at acceptere din invitation.</string>
     <string name="easy_invite_share_text">Deltag med %1$s og chat med mig: %2$s</string>
-    <string name="share_invite_with">Del invitation med...</string>
+    <string name="share_invite_with">Del invitation med…</string>
 </resources>
