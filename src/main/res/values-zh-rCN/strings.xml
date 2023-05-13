@@ -24,7 +24,7 @@
     <string name="title_activity_start_conversation">开始对话</string>
     <string name="title_activity_choose_contact">选择联系人</string>
     <string name="title_activity_choose_contacts">选择联系人</string>
-    <string name="title_activity_share_via_account">通过帐户分享</string>
+    <string name="title_activity_share_via_account">通过账户分享</string>
     <string name="title_activity_block_list">封禁列表</string>
     <string name="just_now">刚刚</string>
     <string name="minute_ago">1分钟前</string>
@@ -185,7 +185,7 @@
     <string name="unpublish_pgp_message">您确定要从在线状态中移除OpenPGP公钥吗？\n您的联系人将无法再向您发送 OpenPGP 加密信息。</string>
     <string name="openpgp_has_been_published">OpenPGP 公钥已发布。</string>
     <string name="mgmt_account_enable">启用账户</string>
-    <string name="mgmt_account_delete_confirm_text">如果您删除帐户，您的所有聊天记录将会丢失</string>
+    <string name="mgmt_account_delete_confirm_text">你确定删除账户吗？如果您删除账户，您的所有聊天记录将会丢失</string>
     <string name="attach_record_voice">录制音频</string>
     <string name="account_settings_jabber_id">XMPP地址</string>
     <string name="block_jabber_id">拦截XMPP地址</string>
@@ -305,7 +305,7 @@
     <string name="conference_shutdown">这个群聊已被关闭</string>
     <string name="conference_unknown_error">您已不在该群组</string>
     <string name="conference_technical_problems">你出于技术原因离开了群聊</string>
-    <string name="using_account">使用帐户%s</string>
+    <string name="using_account">使用账户%s</string>
     <string name="hosted_on">托管于%s</string>
     <string name="checking_x">正在HTTP服务器中检查%s</string>
     <string name="not_connected_try_again">未连接。请稍后重试</string>
@@ -625,7 +625,7 @@
     <string name="pref_clean_private_storage_summary">清除保存私密文件的存储 (可以从服务器上重新下载)</string>
     <string name="i_followed_this_link_from_a_trusted_source">此链接的源头是可信的</string>
     <string name="verifying_omemo_keys_trusted_source">点击链接后将会开始校验%1$s的OMEMO密钥。只有%2$s发布的链接才是安全的。</string>
-    <string name="verifying_omemo_keys_trusted_source_account">您将验证您自己帐户的 OMEMO 密钥。只有当您从可信的来源跟踪此链接时，这才是安全的。“可信”指的是此链接只可能是你在来源中发布的。</string>
+    <string name="verifying_omemo_keys_trusted_source_account">您将验证您自己账户的 OMEMO 密钥。只有当您从可信的来源跟踪此链接时，这才是安全的。“可信”指的是此链接只可能是你在来源中发布的。</string>
     <string name="continue_btn">继续</string>
     <string name="verify_omemo_keys">校验OMEMO密钥</string>
     <string name="show_inactive_devices">显示不活跃设备</string>
@@ -755,7 +755,7 @@
     <string name="foreground_service_channel_description">这个通知类别用于展示一条表明 %1$s 正在运行的永久通知。</string>
     <string name="notification_group_status_information">状态信息</string>
     <string name="error_channel_name">连接问题</string>
-    <string name="error_channel_description">此通知类别用于显示帐户连接问题通知。</string>
+    <string name="error_channel_description">此通知类别用于显示账户连接问题通知。</string>
     <string name="notification_group_messages">消息</string>
     <string name="notification_group_calls">通话</string>
     <string name="messages_channel_name">消息</string>
@@ -897,7 +897,7 @@
     <string name="pref_channel_discovery">频道发现方法</string>
     <string name="backup">备份</string>
     <string name="category_about">关于</string>
-    <string name="please_enable_an_account">请启用一个帐户</string>
+    <string name="please_enable_an_account">请启用一个账户</string>
     <string name="make_call">进行通话</string>
     <string name="rtp_state_incoming_call">来电</string>
     <string name="rtp_state_incoming_video_call">视频来电</string>
@@ -973,7 +973,7 @@
     <string name="invite_to_app">邀请到 Conversations</string>
     <string name="unable_to_parse_invite">无法解析邀请</string>
     <string name="server_does_not_support_easy_onboarding_invites">服务器不支持生成邀请</string>
-    <string name="no_active_accounts_support_this">没有活跃帐户支持此功能</string>
+    <string name="no_active_accounts_support_this">没有活跃账户支持此功能</string>
     <string name="backup_started_message">已启动备份。一旦完成，你会收到通知。</string>
     <string name="unable_to_enable_video">无法启用视频。</string>
     <string name="plain_text_document">纯文本文档</string>
@@ -994,4 +994,10 @@
     <string name="incoming_call_duration_timestamp">来电 (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">去电 (%s) · %s</string>
     <string name="outgoing_call_timestamp">去电 · %s</string>
+    <string name="channel_discover_opt_in_message">频道发现功能使用第三方服务 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;。&lt;br&gt;&lt;br&gt;使用此功能会发送你的 IP 地址和搜索词条到该服务。更多信息见 &lt;a href=https://search.jabber.network/privacy&gt;隐私政策&lt;/a&gt;。</string>
+    <string name="could_not_delete_account_from_server">无法从服务器删除账户</string>
+    <string name="group_chats">群聊</string>
+    <string name="save_as_group_chat">另存为群聊</string>
+    <string name="search_group_chats">搜索群聊</string>
+    <string name="delete_from_server">从服务器删除账户</string>
 </resources>
