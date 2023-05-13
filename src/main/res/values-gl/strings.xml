@@ -1008,4 +1008,8 @@
     <string name="outgoing_call_timestamp">Chamada saínte · %s</string>
     <string name="delete_from_server">Eliminar a conta no servidor</string>
     <string name="could_not_delete_account_from_server">Non se puido eliminar a conta no servidor</string>
+    <string name="save_as_group_chat">Gardar como conversa en grupo</string>
+    <string name="search_group_chats">Buscar conversas en grupo</string>
+    <string name="group_chats">Conversas en grupo</string>
+    <string name="channel_discover_opt_in_message">O descubrimento de canles usa un servizo externo chamado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Ao usar esta ferramenta transmitirás o teu enderezo IP e termos de busca a ese servizo. Le a súa &lt;a href=https://search.jabber.network/privacy&gt;Política de Privacidade&lt;/a&gt; para saber máis.</string>
 </resources>
