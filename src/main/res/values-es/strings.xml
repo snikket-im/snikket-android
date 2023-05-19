@@ -1019,4 +1019,8 @@
     <string name="decline">Rechazar</string>
     <string name="delete_from_server">Eliminar la cuenta del servidor</string>
     <string name="could_not_delete_account_from_server">No se pudo eliminar la cuenta del servidor</string>
+    <string name="group_chats">Chats en grupo</string>
+    <string name="search_group_chats">Buscar un grupo de chats</string>
+    <string name="channel_discover_opt_in_message">La búsqueda de canales utiliza un servicio de terceros denominado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Si utiliza esta función, tu dirección IP y la búsqueda de términos serán transferidos a este servicio. Para obtener más información, consulta la &lt;a href=https://search.jabber.network/privacy&gt;Política de privacidad&lt;/a&gt;.</string>
+    <string name="save_as_group_chat">Guardar como un chat en grupo</string>
 </resources>
