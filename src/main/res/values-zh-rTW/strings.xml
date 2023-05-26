@@ -1016,4 +1016,8 @@
     <string name="reject_switch_to_video">拒絕切換至視訊的要求</string>
     <string name="delete_from_server">從伺服器移除帳戶</string>
     <string name="could_not_delete_account_from_server">無法從伺服器刪除帳戶</string>
+    <string name="search_group_chats">搜尋群組聊天</string>
+    <string name="channel_discover_opt_in_message">頻道探索使用一個名為 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; 的第三方服務，&lt;br&gt;&lt;br&gt;使用此功能會將您的 IP 位址和搜尋詞彙傳送至此服務。更多資訊請參見他們的 &lt;a href=https://search.jabber.network/privacy&gt;隱私權政策&lt;/a&gt;。</string>
+    <string name="group_chats">群組聊天</string>
+    <string name="save_as_group_chat">儲存為群組聊天</string>
 </resources>
