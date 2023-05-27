@@ -35,7 +35,7 @@
     </plurals>
     <string name="sending">enviando…</string>
     <string name="message_decrypting">Descifrando a mensaxe. Agarda por favor…</string>
-    <string name="pgp_message">Mensaxe cifrado con OpenPGP</string>
+    <string name="pgp_message">Mensaxe cifrada con OpenPGP</string>
     <string name="nick_in_use">O alcume xa está en uso</string>
     <string name="invalid_muc_nick">Alcume non válido</string>
     <string name="admin">Admin</string>
@@ -98,10 +98,10 @@
     <string name="send_message_to_x">Enviar mensaxe a 1%s</string>
     <string name="send_omemo_message">Enviar mensaxe cifrada con OMEMO</string>
     <string name="send_omemo_x509_message">Enviar mensaxe cifrada v\\OMEMO</string>
-    <string name="send_pgp_message">Enviar mensaxe cifrado con OpenPGP</string>
+    <string name="send_pgp_message">Enviar mensaxe cifrada con OpenPGP</string>
     <string name="your_nick_has_been_changed">Novo alcume en uso</string>
     <string name="send_unencrypted">Enviar sen cifrar</string>
-    <string name="decryption_failed">Fallou o descifrado. Quizais non teñas a chave privada apropiada.</string>
+    <string name="decryption_failed">Fallou o desencriptado. Quizais non teñas a chave privada apropiada.</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="openkeychain_required_long"><![CDATA[%1$s utiliza <b>OpenKeychain</b> para cifrar e descifrar as mensaxes e xestionar a túas chaves públicas.<br><br>Está baixo licenza  GPLv3+ e dispoñible en F-Droid e Google Play.<br><br><small>(Reinicia %1$s após a instalación.)</small>]]></string>
     <string name="restart">Reiniciar</string>
@@ -176,7 +176,7 @@
     <string name="account_status_incompatible_client">Cliente non compatible</string>
     <string name="account_status_stream_error">Erro de fluxo</string>
     <string name="account_status_stream_opening_error">Fallo ao abrir o fluxo</string>
-    <string name="encryption_choice_unencrypted">Non cifrado</string>
+    <string name="encryption_choice_unencrypted">Sen cifrar</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -669,7 +669,7 @@
     <string name="block_stranger">Bloquear estraño</string>
     <string name="block_entire_domain">Bloquear o dominio ao completo</string>
     <string name="online_right_now">En liña neste momento</string>
-    <string name="retry_decryption">Volver a intentar o descifrado</string>
+    <string name="retry_decryption">Volve intentar o descifrado</string>
     <string name="session_failure">Fallo na sesión</string>
     <string name="sasl_downgrade">Mecanismo SASL desactualizado</string>
     <string name="account_status_regis_web">O servidor require rexistro no sitio web</string>
@@ -705,13 +705,13 @@
     <string name="disable_encryption">Desactivar a encriptación</string>
     <string name="error_trustkey_general">%1$s non pode enviar mensaxes cifradas a %2$s. Podería deberse a que o teu contacto utiliza un servidor sen actualizar ou un cliente que non pode xestionar OMEMO.</string>
     <string name="error_trustkey_device_list">Non se obtivo a lista de dispositivos</string>
-    <string name="error_trustkey_bundle">Non se obtiveron as chaves de cifrado</string>
+    <string name="error_trustkey_bundle">Non se obtiveron as chaves da cifraxe</string>
     <string name="error_trustkey_hint_mutual">Suxestión: Nalgúns casos, isto pode solucionarse engadíndovos mutuamente as vosas listas de contactos.</string>
-    <string name="disable_encryption_message">Tes a certeza de querer desactivar o cifrado OMEMO para esta conversa\?
+    <string name="disable_encryption_message">Tes a certeza de querer desactivar a cifraxe OMEMO para esta conversa\?
 \nIsto permitirá á administración do teu servidor ler as túas mensaxes, pero pode ser a única forma de comunicarse con persoas que usan clientes obsoletos.</string>
     <string name="disable_now">Desactivar agora</string>
     <string name="draft">Borrador:</string>
-    <string name="pref_omemo_setting">Cifrado OMEMO</string>
+    <string name="pref_omemo_setting">Cifraxe OMEMO</string>
     <string name="pref_omemo_setting_summary_always">OMEMO sempre se utilizará para charlas individuais e privadas en grupo.</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO utilizarase por defecto para as novas conversas.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO terá que ser activado explícitamente para novas conversacións.</string>
@@ -963,8 +963,8 @@
     <string name="search_this_conversation">Esta conversa</string>
     <string name="your_avatar">O teu avatar</string>
     <string name="avatar_for_x">Avatar para %s</string>
-    <string name="encrypted_with_omemo">Cifrado con OMEMO</string>
-    <string name="encrypted_with_openpgp">Cifrado con OpenPGP</string>
+    <string name="encrypted_with_omemo">Cifrada con OMEMO</string>
+    <string name="encrypted_with_openpgp">Cifrada con OpenPGP</string>
     <string name="not_encrypted">Sen cifrar</string>
     <string name="exit">Saír</string>
     <string name="record_voice_mail">Gravar correo de voz</string>
