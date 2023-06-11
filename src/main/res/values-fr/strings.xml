@@ -87,7 +87,9 @@
     <string name="clear_conversation_history">Vider l\'historique de la conversation</string>
     <string name="clear_histor_msg">Êtes-vous sûr de vouloir supprimer tous les messages de cette conversation ?\n\n <b>Avertissement :</b> Cela ne supprimera pas les copies des messages qui sont stockés sur d\'autres appareils ou serveurs.</string>
     <string name="delete_file_dialog">Supprimer le fichier</string>
-    <string name="delete_file_dialog_msg">Êtes-vous sûr de vouloir supprimer ce fichier ?\n\n <b>Avertissement :</b> Cela ne supprimera pas les copies de ce fichier qui sont stockés sur d\'autres appareils ou serveurs.</string>
+    <string name="delete_file_dialog_msg">Êtes-vous sûr de vouloir supprimer ce fichier \?
+\n
+\n<b>Avertissement :</b> Cela ne supprimera pas les copies de ce fichier qui sont stockées sur d\'autres appareils ou serveurs. </string>
     <string name="also_end_conversation">Fermez cette conversation après</string>
     <string name="choose_presence">Choisir l\'appareil</string>
     <string name="send_unencrypted_message">Envoyer un message en clair</string>
@@ -122,12 +124,12 @@
     <string name="pref_ringtone">Sonnerie</string>
     <string name="pref_notification_sound">Son des notifications</string>
     <string name="pref_notification_sound_summary">Son de notification pour les nouveaux messages</string>
-    <string name="pref_call_ringtone_summary">Sonnerie d\'appel entrant</string>
+    <string name="pref_call_ringtone_summary">Sonnerie d\'appels entrants</string>
     <string name="pref_notification_grace_period">Période sans notification</string>
     <string name="pref_notification_grace_period_summary">La durée pendant laquelle les notifications sont désactivées après la détection d\'une activité sur l\'un de vos autres appareils.</string>
     <string name="pref_advanced_options">Avancé</string>
     <string name="pref_never_send_crash">Ne pas envoyer de rapports d\'erreurs</string>
-    <string name="pref_never_send_crash_summary">En envoyant des rapports de crash vous aidez le développement de Conversations</string>
+    <string name="pref_never_send_crash_summary">En envoyant des rapports de crash vous aidez le développement</string>
     <string name="pref_confirm_messages">Confirmation de lecture</string>
     <string name="pref_confirm_messages_summary">Informer vos contacts quand vous avez reçu et lu leurs messages</string>
     <string name="pref_prevent_screenshots">Interdire les captures d’écran</string>
@@ -179,9 +181,9 @@
     <string name="mgmt_account_publish_pgp">Publier la clé publique OpenPGP</string>
     <string name="unpublish_pgp">Supprimer la clé publique OpenPGP</string>
     <string name="unpublish_pgp_message">Êtes-vous sûr de vouloir supprimer votre clé publique OpenPGP de votre annonce de présence ?\nVos contacts ne pourront plus vous envoyer de message chiffrés avec OpenPGP.</string>
-    <string name="openpgp_has_been_published">Clé publique OpenPGP publiée</string>
+    <string name="openpgp_has_been_published">Clé publique OpenPGP publiée.</string>
     <string name="mgmt_account_enable">Activer</string>
-    <string name="mgmt_account_delete_confirm_text">Supprimer votre compte effacera l\'historique de vos conversations</string>
+    <string name="mgmt_account_delete_confirm_text">Êtes-vous sûr de vouloir supprimer votre compte \? Supprimer votre compte effacera l\'historique de vos conversations</string>
     <string name="attach_record_voice">Enregistrer un son</string>
     <string name="account_settings_jabber_id">Adresse XMPP</string>
     <string name="block_jabber_id">Bloquer l\'adresse XMPP</string>
@@ -239,12 +241,14 @@
     <string name="destroy_room">Détruire le groupe</string>
     <string name="destroy_channel">Détruire le canal</string>
     <string name="destroy_room_dialog">Voulez-vous vraiment détruire ce groupe ?\n\n<b>Avertissement :</b> le groupe sera complètement supprimé du serveur.</string>
-    <string name="destroy_channel_dialog">Êtes-vous sûr de vouloir détruire ce canal public\? On <b>Avertissement:</b> le canal sera complètement supprimé du serveur.</string>
+    <string name="destroy_channel_dialog">Êtes-vous sûr de vouloir détruire ce canal public \?
+\n
+\n<b>Attention :</b> Le canal sera totalement supprimé du serveur.</string>
     <string name="could_not_destroy_room">Impossible de détruire le groupe</string>
     <string name="could_not_destroy_channel">Impossible de détruire le canal</string>
     <string name="action_edit_subject">Modifier le sujet du groupe</string>
     <string name="topic">Sujet</string>
-    <string name="joining_conference">Rejoindre le groupe</string>
+    <string name="joining_conference">Rejoindre le groupe…</string>
     <string name="leave">Partir</string>
     <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
     <string name="add_back">Ajouter en retour</string>
@@ -404,7 +408,7 @@
     <string name="pref_enter_is_send">Touche Entrée pour envoyer</string>
     <string name="pref_enter_is_send_summary">Utilisez la touche Entrée pour envoyer un message. Vous pourrez toujours utiliser la combinaison Ctrl+Entrée pour envoyer un message, même si cette option est désactivée.</string>
     <string name="pref_display_enter_key">Afficher la touche Entrée</string>
-    <string name="pref_display_enter_key_summary">Remplacer la touche Émoticônes par une touche Entrée.</string>
+    <string name="pref_display_enter_key_summary">Remplacer la touche Émoticônes par la touche Entrée.</string>
     <string name="audio">audio</string>
     <string name="video">vidéo</string>
     <string name="image">image</string>
@@ -487,7 +491,7 @@
     <string name="device_does_not_support_certificates">Votre appareil ne supporte pas la sélection de certificats client !</string>
     <string name="pref_connection_options">Connexion</string>
     <string name="pref_use_tor">Connexion via Tor</string>
-    <string name="pref_use_tor_summary">Rediriger toutes les connexions via le réseau Tor. Nécessite Orbot.</string>
+    <string name="pref_use_tor_summary">Rediriger toutes les connexions vers le réseau Tor. Nécessite Orbot.</string>
     <string name="account_settings_hostname">Nom d\'hôte</string>
     <string name="account_settings_port">Port</string>
     <string name="hostname_or_onion">Adresse du serveur (ou .onion)</string>
@@ -526,11 +530,12 @@
     <string name="send_corrected_message">Envoyer le message corrigé</string>
     <string name="no_keys_just_confirm">Vous avez déjà validé l\'empreinte  de cette personne pour accorder votre confiance. En sélectionnant « Terminé », vous confirmez simplement que %s fait partie de ce groupe.</string>
     <string name="this_account_is_disabled">Vous avez désactivé ce compte</string>
-    <string name="security_error_invalid_file_access">Erreur de sécurité : accès fichier invalide</string>
+    <string name="security_error_invalid_file_access">Erreur de sécurité : accès invalide au fichier !</string>
     <string name="no_application_to_share_uri">Aucune application disponible pour partager l\'URI</string>
     <string name="share_uri_with">Partager l\'URI avec…</string>
     <string name="agree_and_continue">Accepter et continuer</string>
-    <string name="magic_create_text">Nous vous guiderons tout au long du processus de création d\'un compte sur conversations.im.¹\nLorsque vous sélectionnerez conversations.im en tant que fournisseur, vous pourrez communiquer avec les utilisateurs d\'autres fournisseurs en leur fournissant votre adresse XMPP complète.</string>
+    <string name="magic_create_text">Nous vous guiderons tout au long du processus de création d\'un compte sur conversations.im.
+\nLorsque vous sélectionnerez conversations.im en tant que fournisseur, vous pourrez communiquer avec les utilisateurs d\'autres fournisseurs en leur fournissant votre adresse XMPP complète.</string>
     <string name="your_full_jid_will_be">Votre adresse XMPP complète sera : %s</string>
     <string name="create_account">Créer un compte</string>
     <string name="use_own_provider">Utiliser votre propre fournisseur</string>
@@ -704,7 +709,7 @@
     <string name="pref_omemo_setting">Chiffrement OMEMO</string>
     <string name="pref_omemo_setting_summary_always">OMEMO sera toujours utilisé pour des discussions à deux ou les groupes privés.</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO sera utilisé par défaut pour les nouvelles discussions.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO devra être activé manuellement pour chaque nouvelle discussion</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO devra être activé manuellement pour chaque nouvelle discussion.</string>
     <string name="create_shortcut">Créer un raccourci</string>
     <string name="pref_font_size">Taille de police</string>
     <string name="pref_font_size_summary">La taille de police relative utilisée dans l\'application.</string>
@@ -789,7 +794,7 @@
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Nous vous avons envoyé un SMS à<b>%s</b>.]]></string>
     <string name="we_have_sent_you_another_sms">Nous vous avons envoyé un autre SMS avec un code à 6 chiffres.</string>
     <string name="please_enter_pin_below">Veuillez saisir ci-dessous le code PIN à 6 chiffres.</string>
-    <string name="resend_sms">Renvoyer un SMS.</string>
+    <string name="resend_sms">Renvoyer un SMS</string>
     <string name="resend_sms_in">Renvoyer SMS (%s)</string>
     <string name="wait_x">S\'il vous plaît, attendez (%s)</string>
     <string name="back">retour</string>
@@ -966,4 +971,59 @@
     <string name="unable_to_enable_video">Impossible d’activer la vidéo.</string>
     <string name="account_registrations_are_not_supported">La création de nouveaux comptes n’est pas prise en charge</string>
     <string name="no_xmpp_adddress_found">Aucune adresse XMPP trouvée</string>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d appel manqué</item>
+        <item quantity="many">%d appels manqués</item>
+        <item quantity="other">%d appels manqués</item>
+    </plurals>
+    <string name="omemo_fingerprint_x509_selected_message">Empreinte OMEMO (origine du message)</string>
+    <string name="pref_prevent_screenshots_summary">Masquer le contenu de l\'application dans le sélecteur d\'applications et bloquer les captures d\'écran</string>
+    <string name="account_status_incompatible_client">Client incompatible</string>
+    <string name="switch_to_video">Passer en vidéo</string>
+    <string name="backup_started_message">La sauvegarde a débuté. Vous serez notifié une fois terminé.</string>
+    <string name="conference_technical_problems">Vous avez quitté ce groupe pour des raisons techniques</string>
+    <string name="delete_from_server">Supprimer le compte du serveur</string>
+    <string name="sync_with_contacts_long">%1$s souhaite obtenir la permission d\'accéder à votre carnet d\'adresses pour le faire correspondre à votre liste de contacts XMPP.
+\nCela affichera les noms complets et les avatars de vos contacts.
+\n
+\n%1$s ne lira que votre carnet d\'adresses et le comparera localement sans rien télécharger sur votre serveur.</string>
+    <string name="multimedia_file">ficher multimédia</string>
+    <string name="channel_discover_opt_in_message">La découverte des canaux utilise un service tiers appelé &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;L\'utilisation de cette fonction transmet votre adresse IP et votre recherche à ce service. Voir leur &lt;a href=https://search.jabber.network/privacy&gt;Politique de gestion de la vie privée&lt;/a&gt; pour plus d\'informations.</string>
+    <string name="search_group_chats">Rechercher des groupes</string>
+    <string name="outgoing_call_duration_timestamp">Appel sortant (%s) · %s</string>
+    <string name="data_saver_enabled_explained">Votre système d\'exploitation empêche %1$s d\'accéder à l\'internet lorsqu\'il est en arrière-plan. Pour être notifié de nouveaux messages, vous devez permettre à %1$s d\'accéder à Internet lorsque l\'économiseur de données est activé.
+\n%1$s s\'efforcera toujours d\'économiser des données lorsque cela est possible.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Vous êtes sur le point de vérifier les clés OMEMO de votre propre compte. Cette opération n\'est garantie que si vous avez suivi ce lien à partir d\'une source fiable où vous seul pouvez avoir publié ce lien.</string>
+    <string name="missed_calls_channel_name">Appels manqués</string>
+    <string name="rtp_state_content_add_video">Passer à un appel vidéo \?</string>
+    <string name="rtp_state_content_add">Ajouter des traces supplémentaires \?</string>
+    <string name="pref_up_push_account_title">Compte XMPP</string>
+    <string name="pref_up_push_account_summary">Le compte par lequel les messages push seront reçus.</string>
+    <string name="pref_up_push_server_title">Serveur Push</string>
+    <string name="pref_up_push_server_summary">Un serveur push choisi par l\'utilisateur pour relayer les messages push via XMPP vers votre appareil.</string>
+    <string name="no_account_deactivated">Aucun (désactivé)</string>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d appels manqués de %2$d contact</item>
+        <item quantity="many">%1$d appels manqués de %2$d contacts</item>
+        <item quantity="other">%1$d appels manqués de %2$d contacts</item>
+    </plurals>
+    <string name="group_chats">Discussions de groupe</string>
+    <string name="save_as_group_chat">Enregistrer comme groupe</string>
+    <string name="pref_autojoin">Synchroniser les favoris</string>
+    <string name="pref_autojoin_summary">Activer \"Rejoindre automatiquement\" en entrant ou sortant d\'un groupe et réagir aux modifications apportées par d\'autres clients.</string>
+    <string name="vector_graphic">graphique vectoriel</string>
+    <string name="incoming_call_duration_timestamp">Appel entrant (%s) - %s</string>
+    <string name="outgoing_call_timestamp">Appel sortant · %s</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d appel manqué de %2$s</item>
+        <item quantity="many">%1$d appels manqués de %2$s</item>
+        <item quantity="other">%1$d appels manqués de %2$s</item>
+    </plurals>
+    <string name="audio_video_disabled_tor">Les appels sont désactivés lorsque l\'on utilise Tor</string>
+    <string name="reject_switch_to_video">Rejeter la demande de passage en vidéo</string>
+    <string name="decline">Décliner</string>
+    <string name="could_not_delete_account_from_server">Impossible de supprimer le compte du serveur</string>
+    <string name="plain_text_document">Document texte</string>
+    <string name="account_status_temporary_auth_failure">Échec temporaire de l\'authentification</string>
+    <string name="delete_avatar">Supprimer l\'avatar</string>
 </resources>
