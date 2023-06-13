@@ -185,7 +185,7 @@
     <string name="unpublish_pgp_message">Är du säker på att du vill ta bort din OpenPGP publik nyckel från din tillgänglighetsuppdatering?\nDina kontakter kommer inte längre att kunna skicka dig OpenPGP-krypterade meddelande.</string>
     <string name="openpgp_has_been_published">OpenPGP-nyckel har publicerats.</string>
     <string name="mgmt_account_enable">Aktivera konto</string>
-    <string name="mgmt_account_delete_confirm_text">Om du tar bort ditt konto raderas hela din konversationshistorik</string>
+    <string name="mgmt_account_delete_confirm_text">Är du säker på att du vill ta bort ditt konto\? Om du tar bort ditt konto raderas hela din konversationshistorik</string>
     <string name="attach_record_voice">Spela in röst</string>
     <string name="account_settings_jabber_id">XMPP-adress</string>
     <string name="block_jabber_id">Blockera XMPP-adress</string>
