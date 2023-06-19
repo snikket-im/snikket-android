@@ -31,7 +31,6 @@
     <string name="minutes_ago">%d phút trước</string>
     <plurals name="x_unread_conversations">
         <item quantity="other">%d cuộc hội thoại chưa đọc</item>
-
     </plurals>
     <string name="sending">đang gửi...</string>
     <string name="message_decrypting">Đang giải mã tin nhắn. Xin chờ...</string>
@@ -670,7 +669,7 @@
     <string name="mtm_accept_cert">Chấp nhận chứng chỉ không xác định?</string>
     <string name="mtm_trust_anchor">Chứng chỉ máy chủ này không được một người có quyền chứng chỉ đã biết ký.</string>
     <string name="mtm_accept_servername">Chấp nhận tên máy chủ không khớp?</string>
-    <string name="mtm_hostname_mismatch">Máy chủ không thể xác thực với tư cách \&quot;%s\&quot;. Chứng chỉ chỉ hợp lệ cho: </string>
+    <string name="mtm_hostname_mismatch">Máy chủ không thể xác thực với tư cách \"%s\". Chứng chỉ chỉ hợp lệ cho: </string>
     <string name="mtm_connect_anyway">Bạn có muốn vẫn kết nối không?</string>
     <string name="mtm_cert_details">Chi tiết chứng chỉ:</string>
     <string name="once">Một lần</string>
@@ -945,4 +944,6 @@
     <string name="backup_started_message">Việc sao lưu đã được bắt đầu. Bạn sẽ nhận một thông báo khi việc đó đã hoàn tất.</string>
     <string name="unable_to_enable_video">Không thể bật video.</string>
     <string name="plain_text_document">Tài liệu văn bản thuần</string>
-    </resources>
+    <string name="account_status_incompatible_client">Máy khách không tương thích</string>
+    <string name="group_chats">Trò chuyện nhóm</string>
+</resources>
