@@ -298,7 +298,7 @@
                 android:value="eu.siacs.conversations.ui.SettingsActivity" />
         </activity>
         <activity
-            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:name="com.canhub.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".ui.MemorizingActivity" />
 

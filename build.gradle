@@ -15,7 +15,7 @@ apply plugin: 'com.android.application'
 repositories {
     google()
     mavenCentral()
-    jcenter()
+    maven { url='https://jitpack.io'}
 }
 
 configurations {
@@ -40,8 +40,8 @@ dependencies {
     }
     conversationsPlaystoreImplementation("com.android.installreferrer:installreferrer:2.2")
     quicksyPlaystoreImplementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
-    implementation 'org.sufficientlysecure:openpgp-api:10.0'
-    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+    implementation 'com.github.open-keychain.open-keychain:openpgp-api:v5.7.1'
+    implementation("com.github.CanHub:Android-Image-Cropper:2.0.0")
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.exifinterface:exifinterface:1.3.6'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -61,7 +61,10 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation "com.wefika:flowlayout:0.4.1"
     //noinspection GradleDependency
-    implementation 'com.otaliastudios:transcoder:0.9.1'
+    implementation('com.github.natario1:Transcoder:v0.9.1') {
+        exclude group: 'com.otaliastudios.opengl', module: 'egloo'
+    }
+    implementation 'com.github.natario1:Egloo:v0.4.0'
 
     implementation 'org.jxmpp:jxmpp-jid:1.0.3'
     implementation 'org.osmdroid:osmdroid-android:6.1.11'
