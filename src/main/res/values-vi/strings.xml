@@ -32,8 +32,8 @@
     <plurals name="x_unread_conversations">
         <item quantity="other">%d cuộc hội thoại chưa đọc</item>
     </plurals>
-    <string name="sending">đang gửi...</string>
-    <string name="message_decrypting">Đang giải mã tin nhắn. Xin chờ...</string>
+    <string name="sending">đang gửi…</string>
+    <string name="message_decrypting">Đang giải mã tin nhắn. Vui lòng chờ…</string>
     <string name="pgp_message">Tin nhắn mã hoá bằng OpenPGP</string>
     <string name="nick_in_use">Biệt danh đã được sử dụng</string>
     <string name="invalid_muc_nick">Biệt danh không hợp lệ</string>
@@ -52,7 +52,7 @@
     <string name="remove_bookmark_text">Bạn có muốn xoá dấu trang %s không? Các cuộc hội thoại với dấu trang này sẽ không bị xoá.</string>
     <string name="register_account">Đăng ký tài khoản mới trên máy chủ</string>
     <string name="change_password_on_server">Đổi mật k trên máy chủ</string>
-    <string name="share_with">Chia sẻ với...</string>
+    <string name="share_with">Chia sẻ với…</string>
     <string name="start_conversation">Bắt đầu cuộc hội thoại</string>
     <string name="invite_contact">Mời liên hệ</string>
     <string name="invite">Mời</string>
@@ -80,12 +80,14 @@
     <string name="send_failed">thất bại khi chuyển</string>
     <string name="preparing_image">Đang chuẩn bị sẵn sàng để gửi hình ảnh</string>
     <string name="preparing_images">Đang chuẩn bị sẵn sàng để gửi các hình ảnh</string>
-    <string name="sharing_files_please_wait">Đang chia sẻ các tập tin. Xin chờ...</string>
+    <string name="sharing_files_please_wait">Đang chia sẻ các tập tin. Vui lòng chờ…</string>
     <string name="action_clear_history">Xoá lịch sử</string>
     <string name="clear_conversation_history">Xoá lịch sử hội thoại</string>
     <string name="clear_histor_msg">Bạn có muốn xoá tất cả tin nhắn trong cuộc hội thoại này không?\n\n<b>Cảnh báo:</b> Việc này sẽ không ảnh hưởng đến các tin nhắn được lưu trữ trên các thiết bị hoặc máy chủ khác.</string>
     <string name="delete_file_dialog">Xoá tệp</string>
-    <string name="delete_file_dialog_msg">Bạn có chắc bạn muốn xoá tệp này không?\n\n<b>Cảnh báo:</b> Việc này sẽ không xoá các bản sao được lưu trữ trên các thiết bị hoặc máy chủ khác của tệp này.</string>
+    <string name="delete_file_dialog_msg">Bạn có chắc bạn muốn xoá tệp này không\?
+\n
+\n<b>Cảnh báo:</b> Việc này sẽ không xoá các bản sao được lưu trữ trên các thiết bị hoặc máy chủ khác của tệp này. </string>
     <string name="also_end_conversation">Đóng cuộc hội thoại này sau đó</string>
     <string name="choose_presence">Chọn thiết bị</string>
     <string name="send_unencrypted_message">Gửi tin nhắn không mã hoá</string>
@@ -102,15 +104,15 @@
     <string name="restart">Khởi chạy lại</string>
     <string name="install">Cài đặt</string>
     <string name="openkeychain_not_installed">Xin cài đặt OpenKeychain</string>
-    <string name="offering">đang đề xuất...</string>
-    <string name="waiting">đang chờ...</string>
+    <string name="offering">đang đề xuất…</string>
+    <string name="waiting">đang chờ…</string>
     <string name="no_pgp_key">Không tìm thấy khoá OpenPGP</string>
     <string name="contact_has_no_pgp_key">Không thể mã hoá tin nhắn của bạn vì liên hệ của bạn không thông báo mã khoá công khai của họ.\n\n<small>Vui lòng yêu cầu liên hệ của bạn thiết lập OpenPGP.</small></string>
     <string name="no_pgp_keys">Không tìm thấy các khoá OpenPGP</string>
     <string name="contacts_have_no_pgp_keys">Không thể mã hoá tin nhắn của bạn vì các liên hệ của bạn không thông báo mã khoá công khai của họ.\n\n<small>Vui lòng yêu cầu họ thiết lập OpenPGP.</small></string>
     <string name="pref_general">Tổng quan</string>
     <string name="pref_accept_files">Chấp thuận các tập tin</string>
-    <string name="pref_accept_files_summary">Tự động chấp thuận các tập tin nhỏ hơn...</string>
+    <string name="pref_accept_files_summary">Tự động chấp thuận các tập tin nhỏ hơn…</string>
     <string name="pref_attachments">Tập tin đính kèm</string>
     <string name="pref_notification_settings">Thông báo</string>
     <string name="pref_vibrate">Rung</string>
@@ -147,7 +149,9 @@
     <string name="error_compressing_image">Không thể chuyển đổi tệp hình ảnh</string>
     <string name="error_file_not_found">Không tìm thấy tập tin</string>
     <string name="error_io_exception">Lỗi I/O tổng quát. Có lẽ đã hết dung lượng lưu trữ?</string>
-    <string name="error_security_exception_during_image_copy">Ứng dụng mà bạn dùng để chọn hình ảnh này không cung cấp đủ quyền để đọc tệp.\n\n<small>Hãy sử dụng trình quản lý tệp khác để chọn hình ảnh</small></string>
+    <string name="error_security_exception_during_image_copy">Ứng dụng mà bạn dùng để chọn hình ảnh này không cung cấp đủ quyền để đọc tệp.
+\n
+\n<small>Hãy sử dụng trình quản lý tệp khác để chọn hình ảnh</small>.</string>
     <string name="error_security_exception">Ứng dụng bạn dùng để chia sẻ tệp này không cung cấp đủ quyền.</string>
     <string name="account_status_unknown">Không rõ</string>
     <string name="account_status_disabled">Tạm thời tắt</string>
@@ -180,7 +184,7 @@
     <string name="unpublish_pgp_message">Bạn có chắc bạn muốn xoá mã khoá OpenPGP công khai của bạn khỏi sự thông báo có mặt của bạn không?\nCác liên hệ của bạn sẽ không thể gửi các tin nhắn được mã hoá bằng OpenPGP cho bạn nữa.</string>
     <string name="openpgp_has_been_published">Đã xuất bản mã khoá OpenPGP công khai.</string>
     <string name="mgmt_account_enable">Bật tài khoản</string>
-    <string name="mgmt_account_delete_confirm_text">Việc xoá tài khoản sẽ xoá toàn bộ lịch sử cuộc hội thoại của bạn</string>
+    <string name="mgmt_account_delete_confirm_text">Bạn có chắc chắn muốn xóa tài khoản chứ\? Việc xoá tài khoản sẽ xoá toàn bộ lịch sử cuộc hội thoại của bạn</string>
     <string name="attach_record_voice">Ghi âm</string>
     <string name="account_settings_jabber_id">Địa chỉ XMPP</string>
     <string name="block_jabber_id">Chặn địa chỉ XMPP</string>
@@ -219,7 +223,7 @@
     <string name="omemo_fingerprint_x509_selected_message">v\\Mã vân tay OMEMO (nguồn gốc tin nhắn)</string>
     <string name="other_devices">Các thiết bị khác</string>
     <string name="trust_omemo_fingerprints">Tin tưởng các dấu vân tay OMEMO</string>
-    <string name="fetching_keys">Đang nhận khoá...</string>
+    <string name="fetching_keys">Đang nhận khoá…</string>
     <string name="done">Xong</string>
     <string name="decrypt">Giải mã</string>
     <string name="search">Tìm kiếm</string>
@@ -244,7 +248,7 @@
     <string name="could_not_destroy_channel">Không thể phá huỷ kênh</string>
     <string name="action_edit_subject">Chỉnh sửa chủ đề cuộc trò chuyện nhóm</string>
     <string name="topic">Chủ đề</string>
-    <string name="joining_conference">Đang tham gia cuộc trò chuyện nhóm...</string>
+    <string name="joining_conference">Đang tham gia cuộc trò chuyện nhóm…</string>
     <string name="leave">Rời khỏi</string>
     <string name="contact_added_you">Liên hệ đã thêm bạn vào danh bạ</string>
     <string name="add_back">Thêm họ vào</string>
@@ -254,7 +258,7 @@
     <string name="everyone_has_read_up_to_this_point">Mọi người đã đọc cho đến lúc này</string>
     <string name="publish">Đăng</string>
     <string name="touch_to_choose_picture">Nhấn ảnh đại diện để chọn ảnh từ thư viện</string>
-    <string name="publishing">Đang đăng...</string>
+    <string name="publishing">Đang đăng…</string>
     <string name="error_publish_avatar_server_reject">Máy chủ đã từ chối đăng tải của bạn</string>
     <string name="error_publish_avatar_converting">Không thể chuyển đổi hình ảnh</string>
     <string name="error_saving_avatar">Không thể lưu ảnh đại diện vào ổ đĩa</string>
@@ -358,7 +362,7 @@
     <string name="error_trustkeys_title">Có gì đó sai đã xảy ra</string>
     <string name="fetching_history_from_server">Đang nhận lịch sử từ máy chủ</string>
     <string name="no_more_history_on_server">Không còn lịch sử nào trên máy chủ</string>
-    <string name="updating">Đang cập nhật...</string>
+    <string name="updating">Đang cập nhật…</string>
     <string name="password_changed">Đã đổi mật khẩu!</string>
     <string name="could_not_change_password">Không thể đổi mật khẩu</string>
     <string name="change_password">Đổi mật khẩu</string>
@@ -416,9 +420,9 @@
     <string name="sending_x_file">Đang gửi %s</string>
     <string name="offering_x_file">Đang đề xuất %s</string>
     <string name="hide_offline">Ẩn ngoại tuyến</string>
-    <string name="contact_is_typing">%s đang gõ...</string>
+    <string name="contact_is_typing">%s đang gõ…</string>
     <string name="contact_has_stopped_typing">%s đã ngừng gõ</string>
-    <string name="contacts_are_typing">%s đang gõ...</string>
+    <string name="contacts_are_typing">%s đang gõ…</string>
     <string name="contacts_have_stopped_typing">%s đã ngừng gõ</string>
     <string name="pref_chat_states">Thông báo đang gõ</string>
     <string name="pref_chat_states_summary">Để cho các liên hệ của bạn biết khi bạn đang viết tin nhắn cho họ</string>
@@ -460,8 +464,8 @@
     <string name="account_status_host_unknown">Máy chủ không chịu trách nhiệm cho miền này</string>
     <string name="server_info_broken">Bị hỏng</string>
     <string name="pref_presence_settings">Tính khả dụng</string>
-    <string name="pref_away_when_screen_off">Vắng mặt khi thiết bị bị khoá</string>
-    <string name="pref_away_when_screen_off_summary">Hiện là Vắng mặt khi thiết bị bị khoá</string>
+    <string name="pref_away_when_screen_off">Vắng mặt khi đang khóa máy</string>
+    <string name="pref_away_when_screen_off_summary">Hiện trạng thái Vắng mặt khi đang khóa máy</string>
     <string name="pref_dnd_on_silent_mode">Bận ở chế độ im lặng</string>
     <string name="pref_dnd_on_silent_mode_summary">Hiện là Bận khi thiết bị ở chế độ im lặng</string>
     <string name="pref_treat_vibrate_as_silent">Coi chế độ rung như chế độ im lặng</string>
@@ -473,7 +477,7 @@
     <string name="unable_to_parse_certificate">Không thể xử lý chứng chỉ</string>
     <string name="mam_prefs">Cài đặt lưu trữ</string>
     <string name="server_side_mam_prefs">Cài đặt lưu trữ ở phía máy chủ</string>
-    <string name="fetching_mam_prefs">Đang lấy cài đặt lưu trữ. Vui lòng đợi...</string>
+    <string name="fetching_mam_prefs">Đang lấy cài đặt lưu trữ. Vui lòng đợi…</string>
     <string name="unable_to_fetch_mam_prefs">Không thể lấy cài đặt lưu trữ</string>
     <string name="captcha_required">Yêu cầu CAPTCHA</string>
     <string name="captcha_hint">Nhập văn bản trong hình ảnh ở trên</string>
@@ -514,7 +518,9 @@
     <string name="large_images_only">Chỉ các hình ảnh lớn</string>
     <string name="battery_optimizations_enabled">Đã bật tối ưu pin</string>
     <string name="battery_optimizations_enabled_explained">Thiết bị của bạn đang sử dụng tối ưu hoá pin sâu cho %1$s, điều này có thể dẫn đến thông báo bị trì hoãn hay thậm chí là mất tin nhắn.\nChúng tôi khuyên bạn tắt tối ưu hoá pin.</string>
-    <string name="battery_optimizations_enabled_dialog">Thiết bị của bạn đang sử dụng tối ưu hoá pin sâu cho %1$s, điều này có thể dẫn đến thông báo bị trì hoãn hay thậm chí là mất tin nhắn.\nBây giờ bạn sẽ được hỏi để tắt tối ưu hoá pin.</string>
+    <string name="battery_optimizations_enabled_dialog">Thiết bị của bạn đang sử dụng tối ưu hoá pin sâu cho %1$s, điều này có thể dẫn đến thông báo bị trì hoãn hay thậm chí là mất tin nhắn.
+\n
+\nBạn sẽ được yêu cầu tắt tối ưu hoá pin ngay bây giờ.</string>
     <string name="disable">Tắt</string>
     <string name="selection_too_large">Khu vực chọn quá lớn</string>
     <string name="no_accounts">(Không có tài khoản đã kích hoạt)</string>
@@ -525,9 +531,10 @@
     <string name="this_account_is_disabled">Bạn đã tắt tài khoản này</string>
     <string name="security_error_invalid_file_access">Lỗi bảo mật: Truy cập tệp không hợp lệ!</string>
     <string name="no_application_to_share_uri">Không tìm thấy ứng dụng nào để chia sẻ URI</string>
-    <string name="share_uri_with">Chia sẻ URI với...</string>
+    <string name="share_uri_with">Chia sẻ URI với…</string>
     <string name="agree_and_continue">Đồng ý và tiếp tục</string>
-    <string name="magic_create_text">Một hướng dẫn đã được thiết lập cho việc tạo tài khoản trên conversations.im.¹\nKhi chọn conversations.im làm nhà cung cấp, bạn sẽ có thể giao tiếp với những người dùng của các nhà cung cấp khác bằng cách đưa cho họ địa chỉ XMPP đầy đủ của bạn. </string>
+    <string name="magic_create_text">Một hướng dẫn đã được thiết lập cho việc tạo tài khoản trên conversations.im.¹
+\nKhi chọn conversations.im làm nhà cung cấp, bạn sẽ có thể giao tiếp với những người dùng của các nhà cung cấp khác bằng cách đưa cho họ địa chỉ XMPP đầy đủ của bạn.</string>
     <string name="your_full_jid_will_be">Địa chỉ XMPP đầy đủ của bạn sẽ là: %s</string>
     <string name="create_account">Tạo tài khoản</string>
     <string name="use_own_provider">Dùng nhà cung cấp của tôi</string>
@@ -545,7 +552,7 @@
     <string name="registration_please_wait">Đăng ký thất bại: Hãy thử lại sau</string>
     <string name="registration_password_too_weak">Đăng ký thất bại: Mật khẩu quá yếu</string>
     <string name="choose_participants">Chọn các thành viên</string>
-    <string name="creating_conference">Tạo nhóm chat...</string>
+    <string name="creating_conference">Đang tạo nhóm chat…</string>
     <string name="invite_again">Mời lại</string>
     <string name="gp_disable">Tắt</string>
     <string name="gp_short">Ngắn</string>
@@ -608,7 +615,7 @@
     <string name="pref_clean_private_storage">Dọn dẹp bộ nhớ riêng</string>
     <string name="pref_clean_private_storage_summary">Dọn dẹp bộ nhớ riêng nơi các tệp được giữ (Chúng có thể được tải xuống lại từ máy chủ)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Tôi đã đi theo liên kết này từ một nguồn được tin tưởng</string>
-    <string name="verifying_omemo_keys_trusted_source">Bạn sắp xác minh các mã khoá OMEMO của %1$s sau khi nhấn vào một liên kết. Việc này chỉ là bảo mật nếu bạn đã đi theo liên kết này từ một nguồn được tin tưởng, nơi chỉ có %2$s có thể đã xuất bản liên kết này.</string>
+    <string name="verifying_omemo_keys_trusted_source">Bạn chuẩn bị xác minh các khóa OMEMO của %1$s sau khi nhấn vào một liên kết. Việc làm này chỉ an toàn nếu bạn đã đến liên kết này từ một nguồn đáng tin tưởng, chỉ có %2$s mới có thể cho ra liên kết này trước đó.</string>
     <string name="verify_omemo_keys">Xác minh các mã khoá OMEMO</string>
     <string name="show_inactive_devices">Hiện không hoạt động</string>
     <string name="hide_inactive_devices">Ẩn không hoạt động</string>
@@ -711,7 +718,7 @@
     <string name="title_activity_show_location">Hiện vị trí</string>
     <string name="share">Chia sẻ</string>
     <string name="unable_to_start_recording">Không thể bắt đầu ghi lại</string>
-    <string name="please_wait">Vui lòng đợi...</string>
+    <string name="please_wait">Vui lòng đợi…</string>
     <string name="no_microphone_permission">Cấp quyền truy cập micro cho %1$s</string>
     <string name="search_messages">Tìm kiếm tin nhắn</string>
     <string name="gif">GIF</string>
@@ -783,8 +790,8 @@
     <string name="abort_registration_procedure">Bạn có chắc bạn muốn huỷ quá trình đăng ký không?</string>
     <string name="yes">Có</string>
     <string name="no">Không</string>
-    <string name="verifying">Đang xác minh...</string>
-    <string name="requesting_sms">Đang yêu cầu SMS...</string>
+    <string name="verifying">Đang xác minh…</string>
+    <string name="requesting_sms">Đang yêu cầu SMS…</string>
     <string name="incorrect_pin">Mã PIN bạn đã nhập không chính xác.</string>
     <string name="pin_expired">Mã PIN chúng tôi gửi cho bạn đã hết hạn.</string>
     <string name="unknown_api_error_network">Lỗi mạng không xác định.</string>
@@ -813,7 +820,7 @@
     <string name="group_chat_will_make_your_jabber_id_public">Kênh này sẽ làm cho địa chỉ XMPP của bạn trở thành công khai</string>
     <string name="ebook">sách điện tử</string>
     <string name="video_original">Gốc (không nén)</string>
-    <string name="open_with">Mở bằng...</string>
+    <string name="open_with">Mở bằng…</string>
     <string name="set_profile_picture">Ảnh hồ sơ Conversations</string>
     <string name="choose_account">Chọn tài khoản</string>
     <string name="restore_backup">Khôi phục bản sao lưu</string>
@@ -833,7 +840,7 @@
     <string name="please_enter_name">Vui lòng cung cấp tên cho kênh</string>
     <string name="please_enter_xmpp_address">Vui lòng cung cấp địa chỉ XMPP</string>
     <string name="this_is_an_xmpp_address">Đây là một địa chỉ XMPP. Vui lòng cung cấp một cái tên.</string>
-    <string name="creating_channel">Đang tạo kênh công khai...</string>
+    <string name="creating_channel">Đang tạo kênh công khai…</string>
     <string name="channel_already_exists">Kênh này đã tồn tại</string>
     <string name="joined_an_existing_channel">Bạn đã tham gia một kênh đang tồn tại</string>
     <string name="unable_to_set_channel_configuration">Không thể lưu thiết lập kênh</string>
@@ -869,7 +876,7 @@
     <string name="account_already_setup">Tài khoản này đã được thiết lập rồi</string>
     <string name="please_enter_password">Vui lòng nhập mật khẩu cho tài khoản này</string>
     <string name="unable_to_perform_this_action">Không thể thực hiện hành động này</string>
-    <string name="open_join_dialog">Tham gia kênh công khai...</string>
+    <string name="open_join_dialog">Tham gia kênh công khai…</string>
     <string name="sharing_application_not_grant_permission">Ứng dụng chia sẻ đã không cấp quyền truy cập tệp này.</string>
     <string name="group_chats_and_channels"><![CDATA[Cuộc trò chuyện nhóm & Kênh]]></string>
     <string name="jabber_network">jabber.network</string>
@@ -946,4 +953,47 @@
     <string name="plain_text_document">Tài liệu văn bản thuần</string>
     <string name="account_status_incompatible_client">Máy khách không tương thích</string>
     <string name="group_chats">Trò chuyện nhóm</string>
+    <string name="pref_autojoin">Đồng bộ dấu trang</string>
+    <string name="pref_autojoin_summary">Đặt cờ \"autojoin\" khi tham gia hoặc rời khỏi nhóm trò chuyện và phản hồi sự điều chỉnh của người dùng khác.</string>
+    <string name="multimedia_file">tệp tin đa phương tiện</string>
+    <string name="search_group_chats">Tìm kiếm tin nhắn trong nhóm</string>
+    <string name="download_failed_invalid_file">Tải về thất bại: Tệp tin không hợp lệ</string>
+    <string name="missed_calls_channel_name">Cuộc gọi nhỡ</string>
+    <string name="channel_discover_opt_in_message">Khám phá kênh sử dụng một dịch vụ bên thứ ba gọi là &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;SỬ dụng chức năng này sẽ truyền địa chỉ IP của bạn và tìm kiếm điều khoản đến dịch vụ đó. Hãy đọc &lt;a href=https://search.jabber.network/privacy&gt;Chính sách quyền riêng tư&lt;/a&gt; của họ để có thêm thông tin.</string>
+    <string name="rtp_state_content_add_video">Chuyển sang gọi video\?</string>
+    <string name="reconnecting_call">Đang kết nối lại cuộc gọi</string>
+    <string name="outgoing_call_timestamp">Cuộc gọi đi · %s</string>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="other">%1$d đã bỏ lỡ cuộc gọi từ danh bạ %2$d</item>
+    </plurals>
+    <string name="account_registrations_are_not_supported">Đăng ký tài khoản hiện không được hỗ trợ</string>
+    <string name="audio_video_disabled_tor">Cuộc gọi bị vô hiệu hóa khi sử dụng Tor</string>
+    <string name="unified_push_distributor">UnifiedPush Distributor</string>
+    <string name="pref_up_push_account_summary">Tài khoản sẽ nhận được tin nhắn đã đẩy đi.</string>
+    <string name="pref_up_push_account_title">Tài khoản XMPP</string>
+    <string name="pref_up_push_server_title">Máy chủ đẩy</string>
+    <string name="pref_up_push_server_summary">Một máy chủ đẩy do người dùng chọn để phát lại tin nhắn đẩy qua XMPP đến thiết bị của bạn.</string>
+    <string name="no_account_deactivated">Không tồn tại (đã vô hiệu hóa)</string>
+    <string name="decline">Từ chối</string>
+    <string name="save_as_group_chat">Lưu thành nhóm trò chuyện</string>
+    <string name="conference_technical_problems">Bạn đã rời khỏi nhóm trò chuyện này vì lý do kỹ thuật</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Bạn chuẩn bị xác minh các khoá OMEMO cho tài khoản của chính bạn. Việc làm này chỉ an toàn nếu bạn đã đến liên kết này từ một nguồn đáng tin tưởng, chỉ có bạn mới có thể cho ra liên kết này trước đó.</string>
+    <string name="continue_btn">Tiếp tục</string>
+    <string name="rtp_state_reconnecting">Đang kết nối lại</string>
+    <string name="reconnecting_video_call">Đang kết nối lại cuộc gọi video</string>
+    <string name="incoming_call_duration_timestamp">Cuộc gọi đến (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">Cuộc gọi đi (%s) · %s</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="other">%1$d đã bỏ lỡ cuộc gọi từ %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="other">%d đã bỏ lỡ cuộc gọi</item>
+    </plurals>
+    <string name="no_xmpp_adddress_found">Không tìm thấy địa chỉ XMPP</string>
+    <string name="account_status_temporary_auth_failure">Xác thực tạm thời thất bại</string>
+    <string name="delete_avatar">Xóa ảnh đại diện</string>
+    <string name="switch_to_video">Chuyển sang video</string>
+    <string name="reject_switch_to_video">Từ chối yêu cầu chuyển sang video</string>
+    <string name="delete_from_server">Xóa tài khoản khỏi máy chủ</string>
+    <string name="could_not_delete_account_from_server">Không thể xóa tài khoản khỏi máy chủ</string>
 </resources>
