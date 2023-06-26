@@ -114,6 +114,8 @@
                 <action android:name="org.unifiedpush.android.distributor.REGISTER" />
                 <action android:name="org.unifiedpush.android.distributor.UNREGISTER" />
                 <action android:name="org.unifiedpush.android.distributor.feature.BYTES_MESSAGE" />
+                <action android:name="org.unifiedpush.android.distributor.feature.MESSENGER" />
+                <action android:name="org.unifiedpush.android.distributor.feature.APP_VALIDATION" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />

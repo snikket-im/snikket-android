@@ -1,10 +1,13 @@
 package eu.siacs.conversations.services;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Messenger;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.common.base.Charsets;
@@ -46,12 +49,21 @@ public class UnifiedPushDistributor extends BroadcastReceiver {
             return;
         }
         final String action = intent.getAction();
-        final String application = intent.getStringExtra("application");
+        final String application;
+        final Parcelable appByPendingIntent = intent.getParcelableExtra("app");
+        if (appByPendingIntent instanceof PendingIntent) {
+            final PendingIntent pendingIntent = (PendingIntent) appByPendingIntent;
+            application = pendingIntent.getIntentSender().getCreatorPackage();
+            Log.d(Config.LOGTAG,"received application name via pending intent "+ application);
+        } else {
+            application = intent.getStringExtra("application");
+        }
+        final Parcelable messenger = intent.getParcelableExtra("messenger");
         final String instance = intent.getStringExtra("token");
         final List<String> features = intent.getStringArrayListExtra("features");
         switch (Strings.nullToEmpty(action)) {
             case ACTION_REGISTER:
-                register(context, application, instance, features);
+                register(context, application, instance, features, messenger);
                 break;
             case ACTION_UNREGISTER:
                 unregister(context, instance);
@@ -69,7 +81,8 @@ public class UnifiedPushDistributor extends BroadcastReceiver {
             final Context context,
             final String application,
             final String instance,
-            final Collection<String> features) {
+            final Collection<String> features,
+            final Parcelable messenger) {
         if (Strings.isNullOrEmpty(application) || Strings.isNullOrEmpty(instance)) {
             Log.w(Config.LOGTAG, "ignoring invalid UnifiedPush registration");
             return;
@@ -92,6 +105,10 @@ public class UnifiedPushDistributor extends BroadcastReceiver {
                 final Intent serviceIntent = new Intent(context, XmppConnectionService.class);
                 serviceIntent.setAction(XmppConnectionService.ACTION_RENEW_UNIFIED_PUSH_ENDPOINTS);
                 serviceIntent.putExtra("instance", instance);
+                serviceIntent.putExtra("application", application);
+                if (messenger instanceof Messenger) {
+                    serviceIntent.putExtra("messenger", messenger);
+                }
                 Compatibility.startService(context, serviceIntent);
             } else {
                 Log.d(Config.LOGTAG, "not successful. sending error message back to application");
