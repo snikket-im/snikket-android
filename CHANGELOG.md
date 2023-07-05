@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.12.6
+
+* Fix 'q' falsely being recognized as cyrillic
+
 ### Version 2.12.5
 
 * Bump Target SDK to 33 again
