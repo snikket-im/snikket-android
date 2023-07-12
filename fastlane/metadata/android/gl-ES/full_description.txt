@@ -4,7 +4,7 @@ Principios do deseño:
 
 * Ser tan fermosa e doada de usar como sexa posible sen sacrificar a seguridade ou privacidade
 * Apoiarse en protocolos existentes e ben establecidos
-* Non precisar dunha Conta de Google ou concretamente Google Cloud Messagin (GCM)
+* Non precisar dunha Conta de Google ou concretamente Google Cloud Messaging (GCM)
 * Solicitar os mínimos permisos posibles
 
 Características:
@@ -29,7 +29,7 @@ Conversations da soporte a un par delas que axudan a mellorar a experiencia de u
 
 Estes XEPs son - neste intre:
 
-* XEP-0065: SOCKS5 Bytestreams (or mod_proxy65). Usado para a transferencia de ficheiros se as dúas partes están detrás dun cortalumes (NAT).
+* XEP-0065: SOCKS5 Bytestreams (ou mod_proxy65). Usado para a transferencia de ficheiros se as dúas partes están detrás dun cortalumes (NAT).
 * XEP-0163: Personal Eventing Protocol para os avatares
 * XEP-0191: O bloqueo de ordes permiteche bloquear spammer ou contactos sen eliminalos das túas listaxes.
 * XEP-0198: Stream Management permite que XMPP sobreviva a caídas da rede e cambios na conexión TCP.
