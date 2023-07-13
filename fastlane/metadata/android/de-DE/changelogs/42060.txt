@@ -1,0 +1,1 @@
+* Fehlerhafte Erkennung von 'q' als kyrillisch behoben
