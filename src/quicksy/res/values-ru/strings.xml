@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_notification_grace_period_summary">Время, на которое уведомления от Quicksy будут отключены, когда вы пользуетесь аккаунтом на другом устройстве.</string>
+    <string name="pref_notification_grace_period_summary">Время, на которое уведомления от Quicksy будут отключены после активности с другого устройства</string>
     <string name="pref_never_send_crash_summary">Отправляя отчёты об ошибках, вы помогаете в разработке Quicksy</string>
     <string name="pref_broadcast_last_activity_summary">Извещать собеседников, когда вы пользуетесь Quicksy</string>
     <string name="huawei_protected_apps_summary">Чтобы продолжать получать уведомления, даже если экран выключен, вам необходимо добавить Quicksy в список защищенных приложений.</string>
-    <string name="set_profile_picture">Аватар для Quicksy</string>
-    <string name="not_available_in_your_country">Quicksy не доступно в вашем регионе</string>
+    <string name="set_profile_picture">Аватар профиля Quicksy</string>
+    <string name="not_available_in_your_country">Quicksy недоступен в Вашем регионе.</string>
     <string name="unable_to_verify_server_identity">Не удалось подтвердить сервер.</string>
     <string name="unknown_security_error">Неизвестная ошибка безопасности.</string>
     <string name="timeout_while_connecting_to_server">Время ожидания подключения к серверу вышло.</string>
