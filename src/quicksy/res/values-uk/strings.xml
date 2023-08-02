@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_notification_grace_period_summary">Час, протягом якого застосунок дотримується тиші після активності на іншому пристрої.</string>
-    <string name="pref_never_send_crash_summary">Надсилаючи траси стеків виклику, ви допомагаєте розробці цього застосунку.</string>
-    <string name="pref_broadcast_last_activity_summary">Дозволити всім вашим контактам знати, коли ви використовуєте цю програму.</string>
-    <string name="huawei_protected_apps_summary">Щоб продовжувати отримувати сповіщення, навіть коли екран вимкнуто, потрібно додати цю програму до списку захищених.</string>
+    <string name="pref_notification_grace_period_summary">Час, протягом якого застосунок дотримується тиші після виявлення активності на іншому пристрої</string>
+    <string name="pref_never_send_crash_summary">Надсилаючи траси стеку викликів, Ви допомагаєте розробляти Quicksy</string>
+    <string name="pref_broadcast_last_activity_summary">Повідомляти співрозмовникам, що Ви користуєтеся Quicksy</string>
+    <string name="huawei_protected_apps_summary">Щоб отримувати сповіщення навіть коли екран погас, необхідно додати Quicksy до списку захищених програм.</string>
     <string name="set_profile_picture">Зображення профілю для Quicksy</string>
-    <string name="not_available_in_your_country">Цей застосунок не доступний у вашій країні.</string>
+    <string name="not_available_in_your_country">Цей застосунок не доступний у Вашій країні.</string>
     <string name="unable_to_verify_server_identity">Автентичність сервера не підтверджено.</string>
     <string name="unknown_security_error">Невідома помилка безпеки.</string>
     <string name="timeout_while_connecting_to_server">Вичерпано час для встановлення з\'єднання із сервером.</string>
