@@ -1061,4 +1061,6 @@
     <string name="play_audio">Відтворити аудіо</string>
     <string name="pause_audio">Зупинити аудіо</string>
     <string name="no_application_found">Не знайдено застосунку</string>
+    <string name="unified_push_distributor">Дистриб\'ютор UnifiedPush</string>
+    <string name="rtp_state_content_add">Додати ще пісні\?</string>
 </resources>
