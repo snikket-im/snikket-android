@@ -134,6 +134,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         changeOmemoSettingSummary();
 
         if (QuickConversationsService.isQuicksy()
+                || QuickConversationsService.isPlayStoreFlavor()
                 || Strings.isNullOrEmpty(Config.CHANNEL_DISCOVERY)) {
             final PreferenceCategory groupChats =
                     (PreferenceCategory) mSettingsFragment.findPreference("group_chats");

@@ -1,6 +1,7 @@
 package eu.siacs.conversations.services;
 
 import android.content.Intent;
+import android.os.Build;
 
 import eu.siacs.conversations.BuildConfig;
 
@@ -23,6 +24,10 @@ public abstract class AbstractQuickConversationsService {
 
     public static boolean isConversations() {
         return "conversations".equals(BuildConfig.FLAVOR_mode);
+    }
+
+    public static boolean isPlayStoreFlavor() {
+        return "playstore".equals(BuildConfig.FLAVOR_distribution);
     }
 
     public abstract void signalAccountStateChange();

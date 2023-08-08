@@ -323,7 +323,11 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             }
             switch (actionItem.getId()) {
                 case R.id.discover_public_channels:
-                    startActivity(new Intent(this, ChannelDiscoveryActivity.class));
+                    if (QuickConversationsService.isPlayStoreFlavor()) {
+                        throw new IllegalStateException("Channel discovery is not available on Google Play flavor");
+                    } else {
+                        startActivity(new Intent(this, ChannelDiscoveryActivity.class));
+                    }
                     break;
                 case R.id.join_public_channel:
                     showJoinConferenceDialog(prefilled);
@@ -349,6 +353,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         final Menu menu = popupMenu.getMenu();
         for (int i = 0; i < menu.size(); i++) {
             final MenuItem menuItem = menu.getItem(i);
+            if (QuickConversationsService.isPlayStoreFlavor() && menuItem.getItemId() == R.id.discover_public_channels) {
+                continue;
+            }
             final SpeedDialActionItem actionItem = new SpeedDialActionItem.Builder(menuItem.getItemId(), menuItem.getIcon())
                     .setLabel(menuItem.getTitle() != null ? menuItem.getTitle().toString() : null)
                     .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
@@ -800,6 +807,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0)
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);
