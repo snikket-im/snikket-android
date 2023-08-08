@@ -3,6 +3,7 @@ package eu.siacs.conversations.xmpp.jingle;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.os.Build;
 import android.util.Log;
 
 import java.util.Arrays;
@@ -189,7 +190,8 @@ class ToneManager {
 
     private static ToneGenerator getToneGenerator(final boolean ringerModeNormal) {
         try {
-            if (ringerModeNormal) {
+            // when silent and on Android 12+ use STREAM_MUSIC
+            if (ringerModeNormal || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 return new ToneGenerator(AudioManager.STREAM_VOICE_CALL,60);
             } else {
                 return new ToneGenerator(AudioManager.STREAM_MUSIC,100);
