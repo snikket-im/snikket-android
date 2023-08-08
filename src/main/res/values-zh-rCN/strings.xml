@@ -72,7 +72,7 @@
     <string name="send_now">立即发送</string>
     <string name="send_never">不再询问</string>
     <string name="problem_connecting_to_account">账户无法连接</string>
-    <string name="problem_connecting_to_accounts">账户无法连接</string>
+    <string name="problem_connecting_to_accounts">无法连接到多个账户</string>
     <string name="touch_to_fix">点击管理账户</string>
     <string name="attach_file">发送文件</string>
     <string name="not_in_roster">该联系人不在您的通讯录中，需要添加吗 ?</string>
@@ -146,7 +146,7 @@
     <string name="attach_take_picture">拍摄图片</string>
     <string name="preemptively_grant">预先同意订阅请求</string>
     <string name="error_not_an_image_file">您选择的文件不是图像</string>
-    <string name="error_compressing_image">无法转换图片</string>
+    <string name="error_compressing_image">无法转换图片文件</string>
     <string name="error_file_not_found">未找到文件</string>
     <string name="error_io_exception">常规I/O错误。可能是存储空间不足？</string>
     <string name="error_security_exception_during_image_copy">你用来选择图片的应用没有提供读取文件的足够权限。
@@ -381,7 +381,7 @@
     <string name="perform_action_with">选择一个操作</string>
     <string name="no_affiliation">没有从属关系</string>
     <string name="no_role">离线</string>
-    <string name="outcast">已封禁</string>
+    <string name="outcast">已逐出</string>
     <string name="member">成员</string>
     <string name="advanced_mode">高级模式</string>
     <string name="grant_membership">授予成员权限</string>
