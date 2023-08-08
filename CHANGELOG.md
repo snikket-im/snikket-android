@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.12.7
+
+* Remove channel discovery feature from Google Play version
+
 ### Version 2.12.6
 
 * Fix 'q' falsely being recognized as cyrillic
