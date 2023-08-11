@@ -183,7 +183,7 @@
     <string name="unpublish_pgp_message">Вы действительно хотите удалить ваш OpenPGP публичный ключ из опубликованных?\nВаши собеседники не смогут больше отправлять вам зашифрованные OpenPGP сообщения.</string>
     <string name="openpgp_has_been_published">Публичный ключ OpenPGP опубликован.</string>
     <string name="mgmt_account_enable">Включить аккаунт</string>
-    <string name="mgmt_account_delete_confirm_text">Удаление аккаунта также удалит всю историю вашей переписки</string>
+    <string name="mgmt_account_delete_confirm_text">Вы уверены, что хотите удалить свой аккаунт\? Это удалит все истории диалогов</string>
     <string name="attach_record_voice">Запись голоса</string>
     <string name="account_settings_jabber_id">XMPP-адрес</string>
     <string name="block_jabber_id">Заблокировать XMPP-адрес</string>
@@ -536,7 +536,8 @@
     <string name="no_application_to_share_uri">Не найдено приложения для передачи URI</string>
     <string name="share_uri_with">Отправить URI…</string>
     <string name="agree_and_continue">Согласиться и продолжить</string>
-    <string name="magic_create_text">Мы поможем Вам создать аккаунт на conversations.im¹.\nВыбрав conversations.im в качестве провайдера, вы сможете общаться с пользователями других провайдеров, сообщив им свой полный XMPP-адрес.</string>
+    <string name="magic_create_text">Мы поможем Вам создать аккаунт на conversations.im.
+\nВыбрав conversations.im в качестве провайдера, вы сможете общаться с пользователями других провайдеров, сообщив им свой полный XMPP-адрес.</string>
     <string name="your_full_jid_will_be">Ваш полный XMPP-адрес будет: %s</string>
     <string name="create_account">Создать аккаунт</string>
     <string name="use_own_provider">Использовать свой провайдер</string>
@@ -982,4 +983,40 @@
         <item quantity="many">%d пропущеныыз звонков</item>
         <item quantity="other">%d пропущеныыз звонков</item>
     </plurals>
+    <string name="account_status_incompatible_client">Несовместимый клиент</string>
+    <string name="group_chats">Групповые беседы</string>
+    <string name="multimedia_file">медиафайл</string>
+    <string name="continue_btn">Продолжить</string>
+    <string name="pref_up_push_server_title">Сервер уведомлений</string>
+    <string name="unified_push_distributor">Распределитель UnifiedPush</string>
+    <string name="missed_calls_channel_name">Пропущенные звонки</string>
+    <string name="rtp_state_reconnecting">Переподключение</string>
+    <string name="no_xmpp_adddress_found">Адрес XMPP не найден</string>
+    <string name="pref_up_push_account_title">Учётная запись XMPP</string>
+    <string name="conference_technical_problems">Вы покинули эту беседу из-за технических причин</string>
+    <string name="rtp_state_content_add">Добавить дополнительные треки\?</string>
+    <string name="reconnecting_call">Переподключение к звонку</string>
+    <string name="reconnecting_video_call">Переподключение к видеовызову</string>
+    <string name="outgoing_call_timestamp">Исходящий вызов · %s</string>
+    <string name="rtp_state_security_error">Проблема подтверждения</string>
+    <string name="account_status_temporary_auth_failure">Временная ошибка аутентификации</string>
+    <string name="delete_avatar">Удалить аватар</string>
+    <string name="switch_to_video">Переключиться на видео</string>
+    <string name="reject_switch_to_video">Отклонить запрос смены на видео</string>
+    <string name="decline">Отклонить</string>
+    <string name="could_not_delete_account_from_server">Невозможно удалить учётную запись на сервере</string>
+    <string name="delete_from_server">Удалить учётную запись на сервере</string>
+    <string name="save_as_group_chat">Сохранить как групповую беседу</string>
+    <string name="pref_autojoin">Синхронизировать закладки</string>
+    <string name="pref_autojoin_summary">Устанавливать флаг \"автоприсоединение\" при входе в- и выходе из MUC, и реагировать на изменения от других клиентов.</string>
+    <string name="search_group_chats">Поиск по групповым беседам</string>
+    <string name="download_failed_invalid_file">Загрузка провалена: неверный файл</string>
+    <string name="rtp_state_content_add_video">Перейти на видеовызов\?</string>
+    <string name="outgoing_call_duration_timestamp">Исходящий вызов (%s) · %s</string>
+    <string name="incoming_call_duration_timestamp">Входящий вызов (%s) · %s</string>
+    <string name="account_registrations_are_not_supported">Регистрации учётных записей не поддерживаются</string>
+    <string name="audio_video_disabled_tor">Звонки выключены, пока используется Tor</string>
+    <string name="pref_up_push_account_summary">Учётная запись для получения пуш-уведомлений.</string>
+    <string name="pref_up_push_server_summary">Выбираемый пользователем сервер для перенаправления уведомлений на Ваше устройство.</string>
+    <string name="channel_discover_opt_in_message">Обзор каналов использует сторонний сервис &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Эта функция передаст Ваш IP-адрес и ваш поисковый запрос этому сервису. Ознакомьтесь с их &lt;a href=https://search.jabber.network/privacy&gt;Политикой приватности&lt;/a&gt; для получения подробностей.</string>
 </resources>
