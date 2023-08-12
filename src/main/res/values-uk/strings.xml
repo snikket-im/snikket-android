@@ -1057,7 +1057,7 @@
     <string name="could_not_delete_account_from_server">Не вдалося вилучити обліковий запис із сервера</string>
     <string name="failed_deliveries">Ненадіслані повідомлення</string>
     <string name="backup_started_message">Створення резервної копії. Ви отримаєте сповіщення щойно резервування завершиться.</string>
-    <string name="account_status_temporary_auth_failure">Тимчасова помилка авторизації</string>
+    <string name="account_status_temporary_auth_failure">Тимчасова помилка автентифікації</string>
     <string name="play_audio">Відтворити аудіо</string>
     <string name="pause_audio">Зупинити аудіо</string>
     <string name="no_application_found">Не знайдено застосунку</string>
