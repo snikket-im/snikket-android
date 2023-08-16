@@ -38,7 +38,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -69,7 +69,7 @@
             <action android:name="android.intent.action.VIEW" />
         </intent>
         <intent>
-            <action android:name="org.unifiedpush.android.connector.MESSAGE"/>
+            <action android:name="org.unifiedpush.android.connector.MESSAGE" />
         </intent>
     </queries>
 
@@ -119,7 +119,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
-                <data android:scheme="package"/>
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
@@ -309,7 +309,9 @@
             android:label="@string/media_browser" />
 
         <service android:name=".services.ExportBackupService" />
-        <service android:name=".services.ImportBackupService" />
+        <service
+            android:name=".services.ImportBackupService"
+            android:exported="false" />
         <service
             android:name=".services.ContactChooserTargetService"
             android:exported="true"
