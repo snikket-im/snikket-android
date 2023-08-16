@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.12.8
+
+* Disable opening backup files (.ceb) from file manager
+
 ### Version 2.12.7
 
 * Remove channel discovery feature from Google Play version

@@ -1,0 +1,1 @@
+* Disable opening backup files (.ceb) from file manager
