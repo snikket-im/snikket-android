@@ -1,5 +1,7 @@
 package eu.siacs.conversations.utils;
 
+import androidx.annotation.NonNull;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -8,7 +10,7 @@ import eu.siacs.conversations.xmpp.Jid;
 
 public class BackupFileHeader {
 
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     private final String app;
     private final Jid jid;
@@ -17,6 +19,7 @@ public class BackupFileHeader {
     private final byte[] salt;
 
 
+    @NonNull
     @Override
     public String toString() {
         return "BackupFileHeader{" +
@@ -47,8 +50,8 @@ public class BackupFileHeader {
 
     public static BackupFileHeader read(DataInputStream inputStream) throws IOException {
         final int version = inputStream.readInt();
-        if (version > VERSION) {
-            throw new IllegalArgumentException("Backup File version was " + version + " but app only supports up to version " + VERSION);
+        if (version != VERSION) {
+            throw new IllegalArgumentException("Backup File version was " + version + " but app only supports version " + VERSION);
         }
         String app = inputStream.readUTF();
         String jid = inputStream.readUTF();
