@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipException;
 
@@ -89,6 +90,8 @@ public class ImportBackupService extends Service {
                     SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME,
                     SQLiteAxolotlStore.SESSION_TABLENAME,
                     SQLiteAxolotlStore.IDENTITIES_TABLENAME);
+    private static final Pattern COLUMN_PATTERN = Pattern.compile("^[a-zA-Z_]+$");
+
 
     @Override
     public void onCreate() {
@@ -364,13 +367,17 @@ public class ImportBackupService extends Service {
         jsonReader.beginObject();
         while (jsonReader.peek() != JsonToken.END_OBJECT) {
             final String name = jsonReader.nextName();
-            if (jsonReader.peek() == JsonToken.NULL) {
-                jsonReader.nextNull();
-                contentValues.putNull(name);
-            } else if (jsonReader.peek() == JsonToken.NUMBER) {
-                contentValues.put(name, jsonReader.nextLong());
+            if (COLUMN_PATTERN.matcher(name).matches()) {
+                if (jsonReader.peek() == JsonToken.NULL) {
+                    jsonReader.nextNull();
+                    contentValues.putNull(name);
+                } else if (jsonReader.peek() == JsonToken.NUMBER) {
+                    contentValues.put(name, jsonReader.nextLong());
+                } else {
+                    contentValues.put(name, jsonReader.nextString());
+                }
             } else {
-                contentValues.put(name, jsonReader.nextString());
+                throw new IOException(String.format("Unexpected column name %s", name));
             }
         }
         jsonReader.endObject();
