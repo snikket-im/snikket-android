@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.12.9
+
+* Introduce new backup file format
+
 ### Version 2.12.8
 
 * Disable opening backup files (.ceb) from file manager
