@@ -98,11 +98,20 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
     private boolean startRecording() {
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        mRecorder.setAudioEncodingBitRate(96000);
-        mRecorder.setAudioSamplingRate(22050);
-        setupOutputFile();
+        final int outputFormat;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            outputFormat = MediaRecorder.OutputFormat.OGG;
+            mRecorder.setOutputFormat(outputFormat);
+            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);
+            mRecorder.setAudioEncodingBitRate(32000);
+        } else {
+            outputFormat = MediaRecorder.OutputFormat.MPEG_4;
+            mRecorder.setOutputFormat(outputFormat);
+            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+            mRecorder.setAudioEncodingBitRate(96000);
+            mRecorder.setAudioSamplingRate(22050);
+        }
+        setupOutputFile(outputFormat);
         mRecorder.setOutputFile(mOutputFile.getAbsolutePath());
 
         try {
@@ -110,10 +119,10 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
             mRecorder.start();
             mStartTime = SystemClock.elapsedRealtime();
             mHandler.postDelayed(mTickExecutor, 100);
-            Log.d("Voice Recorder", "started recording to " + mOutputFile.getAbsolutePath());
+            Log.d(Config.LOGTAG, "started recording to " + mOutputFile.getAbsolutePath());
             return true;
         } catch (Exception e) {
-            Log.e("Voice Recorder", "prepare() failed " + e.getMessage());
+            Log.e(Config.LOGTAG, "prepare() failed ", e);
             return false;
         }
     }
@@ -175,9 +184,18 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         }
     }
 
-    private File generateOutputFilename() {
+    private File generateOutputFilename(final int outputFormat) {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
-        final String filename = "RECORDING_" + dateFormat.format(new Date()) + ".m4a";
+        final String extension;
+        if (outputFormat == MediaRecorder.OutputFormat.MPEG_4) {
+            extension = "m4a";
+        } else if (outputFormat == MediaRecorder.OutputFormat.OGG) {
+            extension = "oga";
+        } else {
+            throw new IllegalStateException("Unrecognized output format");
+        }
+        final String filename =
+                String.format("RECORDING_%s.%s", dateFormat.format(new Date()), extension);
         final File parentDirectory;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             parentDirectory =
@@ -190,8 +208,8 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         return new File(conversationsDirectory, filename);
     }
 
-    private void setupOutputFile() {
-        mOutputFile = generateOutputFilename();
+    private void setupOutputFile(final int outputFormat) {
+        mOutputFile = generateOutputFilename(outputFormat);
         final File parentDirectory = mOutputFile.getParentFile();
         if (Objects.requireNonNull(parentDirectory).mkdirs()) {
             Log.d(Config.LOGTAG, "created " + parentDirectory.getAbsolutePath());
