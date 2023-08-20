@@ -179,7 +179,7 @@
 \nВаші контакти більше не зможуть надсилати Вам повідомлення, зашифровані OpenPGP.</string>
     <string name="openpgp_has_been_published">Публічний ключ OpenPGP опубліковано.</string>
     <string name="mgmt_account_enable">Увімкнути обліковий запис</string>
-    <string name="mgmt_account_delete_confirm_text">Ви впевнені, що хочете видалити обліковий запис\? Видалення облікового запису знищить усю історію спілкування</string>
+    <string name="mgmt_account_delete_confirm_text">Ви впевнені, що хочете видалити свій обліковий запис\? Видалення облікового запису знищить усю Вашу історію спілкування</string>
     <string name="attach_record_voice">Записати голос</string>
     <string name="account_settings_jabber_id">Адреса XMPP</string>
     <string name="block_jabber_id">Заблокувати адресу XMPP</string>
@@ -530,10 +530,10 @@
     <string name="share_uri_with">Поділитися URI…</string>
     <string name="agree_and_continue">Погодитися та продовжити</string>
     <string name="magic_create_text">Ми допоможемо Вам створити обліковий запис на conversations.im.
-\nВи зможете спілкуватися з користувачами Вашого або будь-якого іншого провайдера, для цього повідомте їм свою повну адресу XMPP.</string>
+\nОбравши conversations.im в якості свого постачальника, Ви зможете спілкуватися з користувачами інших постачальників, для цього повідомте їм свою повну адресу XMPP.</string>
     <string name="your_full_jid_will_be">Ваша повна адреса XMPP: %s</string>
     <string name="create_account">Створити обліковий запис</string>
-    <string name="use_own_provider">Застосувати дані мого власного провайдера</string>
+    <string name="use_own_provider">Застосувати дані мого власного постачальника</string>
     <string name="pick_your_username">Придумайте ім\'я користувача</string>
     <string name="pref_manually_change_presence">Керувати станом вручну</string>
     <string name="pref_manually_change_presence_summary">Показувати доступність під час редагування повідомлення зі статусом.</string>
@@ -1063,4 +1063,5 @@
     <string name="no_application_found">Не знайдено застосунку</string>
     <string name="unified_push_distributor">Дистриб\'ютор UnifiedPush</string>
     <string name="rtp_state_content_add">Додати ще пісні\?</string>
+    <string name="restore_warning_continued">Не намагайтеся відновити резервні копії, які створили не Ви!</string>
 </resources>
