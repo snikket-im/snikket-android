@@ -1000,4 +1000,5 @@
     <string name="save_as_group_chat">另存为群聊</string>
     <string name="search_group_chats">搜索群聊</string>
     <string name="delete_from_server">从服务器删除账户</string>
+    <string name="restore_warning_continued">不要尝试恢复你尚未自行创建的备份！</string>
 </resources>
