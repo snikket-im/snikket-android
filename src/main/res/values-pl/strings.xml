@@ -1042,4 +1042,5 @@
     <string name="channel_discover_opt_in_message">Wykrywanie kanałów korzysta z usługi innego podmiotu o nazwie &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Użycie tej funkcji spowoduje przesłanie adresu IP i wyszukiwanych terminów do tej usługi. Zobacz ich &lt;a href=https://search.jabber.network/privacy&gt;Politykę prywatności&lt;/a&gt;, aby uzyskać więcej informacji.</string>
     <string name="group_chats">Czaty grupowe</string>
     <string name="save_as_group_chat">Zapisz jako czat grupowy</string>
+    <string name="restore_warning_continued">Nie próbuj przywracać kopii zapasowych, których nie utworzono samodzielnie!</string>
 </resources>
