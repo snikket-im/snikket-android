@@ -67,7 +67,7 @@
     <string name="send_never">Ніколи не питати знову</string>
     <string name="problem_connecting_to_account">Не вдалося з\'єднатися з обліковим записом</string>
     <string name="problem_connecting_to_accounts">Не вдалося з\'єднатися з обліковими записами</string>
-    <string name="touch_to_fix">Перейти для керування обліковими записами</string>
+    <string name="touch_to_fix">Торкніться, щоб керувати обліковими записами</string>
     <string name="attach_file">Долучити файл</string>
     <string name="not_in_roster">Цього контакту немає у Вашому списку. Бажаєте додати його\?</string>
     <string name="add_contact">Додати контакт</string>
