@@ -182,7 +182,7 @@
     <string name="unpublish_pgp_message">OpenPGP genel anahtarınız Çevrim içi durum anonsunuzdan kaldırmak istediğinizden emin misiniz?\nArtık kişileriniz size şifrelenmiş OpenPGP mesajları gönderemeyecek.</string>
     <string name="openpgp_has_been_published">OpenPGP genel anahtarı yayınlandı.</string>
     <string name="mgmt_account_enable">Hesabı etkinleştir</string>
-    <string name="mgmt_account_delete_confirm_text">Hesabınızın silinmesi bütün konuşma geçmişinizi siler</string>
+    <string name="mgmt_account_delete_confirm_text">Hesabınızı silmekten emin misiniz\? Hesabınızın silinmesi bütün konuşma geçmişinizi siler</string>
     <string name="attach_record_voice">Ses kaydet</string>
     <string name="account_settings_jabber_id">XMPP adresi</string>
     <string name="block_jabber_id">XMPP adresini engelle</string>
@@ -976,11 +976,14 @@
     <string name="server_does_not_support_easy_onboarding_invites">Sunucu, davet oluşturulmasını desteklemiyor</string>
     <string name="no_active_accounts_support_this">Bu özelliği destekleyen aktif bir hesap yok</string>
     <string name="backup_started_message">Yedekleme başlatıldı. Tamamlandığı zaman bir bildirim alacaksınız.</string>
-    <string name="unable_to_enable_video">Video etkinleştirilemedi</string>
+    <string name="unable_to_enable_video">Video etkinleştirilemedi.</string>
     <string name="plain_text_document">Düz metin dosyası</string>
-    <string name="account_registrations_are_not_supported">Hesap kayıtları desteklenmemektedir.</string>
+    <string name="account_registrations_are_not_supported">Hesap kayıtları desteklenmemektedir</string>
     <string name="no_xmpp_adddress_found">Herhangi bir XMPP adresi bulunamadı</string>
     <string name="account_status_temporary_auth_failure">Geçici doğrulama hatası</string>
     <string name="delete_avatar">Avatar\'ı sil</string>
     <string name="audio_video_disabled_tor">Tor kullanırken çağrılar devre dışı</string>
+    <string name="switch_to_video">Videoya geç</string>
+    <string name="reject_switch_to_video">Videoya geçme isteğini reddet</string>
+    <string name="pref_up_push_account_title">XMPP Hesabı</string>
 </resources>
