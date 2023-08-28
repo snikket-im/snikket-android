@@ -978,10 +978,10 @@
     <string name="unable_to_enable_video">Невозможно включить видео.</string>
     <string name="plain_text_document">Текстовые данные</string>
     <plurals name="n_missed_calls">
-        <item quantity="one">%d пропущеный звонок</item>
-        <item quantity="few">%d пропущенных звонков</item>
-        <item quantity="many">%d пропущеныыз звонков</item>
-        <item quantity="other">%d пропущеныыз звонков</item>
+        <item quantity="one">%d пропущенный вызов</item>
+        <item quantity="few">%d пропущенных вызова</item>
+        <item quantity="many">%d пропущенных вызовов</item>
+        <item quantity="other">%d пропущенных вызовов</item>
     </plurals>
     <string name="account_status_incompatible_client">Несовместимый клиент</string>
     <string name="group_chats">Групповые беседы</string>
@@ -1019,4 +1019,13 @@
     <string name="pref_up_push_account_summary">Учётная запись для получения пуш-уведомлений.</string>
     <string name="pref_up_push_server_summary">Выбираемый пользователем сервер для перенаправления уведомлений на Ваше устройство.</string>
     <string name="channel_discover_opt_in_message">Обзор каналов использует сторонний сервис &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Эта функция передаст Ваш IP-адрес и ваш поисковый запрос этому сервису. Ознакомьтесь с их &lt;a href=https://search.jabber.network/privacy&gt;Политикой приватности&lt;/a&gt; для получения подробностей.</string>
+    <string name="no_account_deactivated">Нет (неактивно)</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Вы подтверждаете ваши собственные OMEMO-ключи. Это безопасно только если вы перешли по ссылке из доверенного источника, где только вы могли разместить эту ссылку.</string>
+    <string name="restore_warning_continued">Не пытайтесь восстановить резервные копии, которые не были созданы вами!</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d пропущенный вызов от %2$s</item>
+        <item quantity="few">%1$d пропущенных вызова от %2$s</item>
+        <item quantity="many">%1$d пропущенных вызовов от %2$s</item>
+        <item quantity="other">%1$d пропущенных вызовов от %2$s</item>
+    </plurals>
 </resources>
