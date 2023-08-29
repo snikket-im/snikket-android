@@ -18,7 +18,7 @@
     <string name="action_unblock_domain">Desbloquear dominio</string>
     <string name="action_block_participant">Bloquear persoa</string>
     <string name="action_unblock_participant">Desbloquear persoa</string>
-    <string name="title_activity_manage_accounts">Xestionar contas</string>
+    <string name="title_activity_manage_accounts">Xestionar Contas</string>
     <string name="title_activity_settings">Axustes</string>
     <string name="title_activity_sharewith">Compartir na conversa</string>
     <string name="title_activity_start_conversation">Iniciar conversa</string>
@@ -354,7 +354,7 @@
     <string name="no_application_found_to_open_file">Non se atopou unha app para abrir o ficheiro</string>
     <string name="no_application_found_to_open_link">Non se atopou app para abrir a ligazón</string>
     <string name="no_application_found_to_view_contact">Non se atopou app para ver o contacto</string>
-    <string name="pref_show_dynamic_tags">Información do estado</string>
+    <string name="pref_show_dynamic_tags">Etiquetas dinámicas</string>
     <string name="pref_show_dynamic_tags_summary">Mostra o estado debaixo do nome do contacto</string>
     <string name="enable_notifications">Habilitar notificacións</string>
     <string name="no_conference_server_found">Non se atopou ningún servidor de conversa en grupo</string>
