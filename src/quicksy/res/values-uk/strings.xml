@@ -5,7 +5,7 @@
     <string name="pref_broadcast_last_activity_summary">Повідомляти співрозмовникам, що Ви користуєтеся Quicksy</string>
     <string name="huawei_protected_apps_summary">Щоб отримувати сповіщення навіть коли екран погас, необхідно додати Quicksy до списку захищених програм.</string>
     <string name="set_profile_picture">Зображення профілю для Quicksy</string>
-    <string name="not_available_in_your_country">Цей застосунок не доступний у Вашій країні.</string>
+    <string name="not_available_in_your_country">Цей застосунок недоступний у Вашій країні.</string>
     <string name="unable_to_verify_server_identity">Автентичність сервера не підтверджено.</string>
     <string name="unknown_security_error">Невідома помилка безпеки.</string>
     <string name="timeout_while_connecting_to_server">Вичерпано час для встановлення з\'єднання із сервером.</string>
