@@ -137,8 +137,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             builder.setMultiChoiceItems(configuration.names, values, (dialog, which, isChecked) -> values[which] = isChecked);
             builder.setNegativeButton(R.string.cancel, null);
             builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
-                Bundle options = configuration.toBundle(values);
+                final Bundle options = configuration.toBundle(values);
                 options.putString("muc#roomconfig_persistentroom", "1");
+                options.putString("{http://prosody.im/protocol/muc}roomconfig_allowmemberinvites", options.getString("muc#roomconfig_allowinvites"));
                 xmppConnectionService.pushConferenceConfiguration(mConversation,
                         options,
                         ConferenceDetailsActivity.this);
