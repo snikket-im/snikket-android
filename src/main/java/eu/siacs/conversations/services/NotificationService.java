@@ -1284,21 +1284,24 @@ public class NotificationService {
                     }
                 }
             }
+            final ShortcutInfoCompat info;
             if (conversation.getMode() == Conversation.MODE_SINGLE) {
                 final Contact contact = conversation.getContact();
                 final Uri systemAccount = contact.getSystemAccount();
                 if (systemAccount != null) {
                     mBuilder.addPerson(systemAccount.toString());
                 }
+                info = mXmppConnectionService.getShortcutService().getShortcutInfoCompat(contact);
+            } else {
+                info =
+                        mXmppConnectionService
+                                .getShortcutService()
+                                .getShortcutInfoCompat(conversation.getMucOptions());
             }
             mBuilder.setWhen(conversation.getLatestMessage().getTimeSent());
             mBuilder.setSmallIcon(R.drawable.ic_notification);
             mBuilder.setDeleteIntent(createDeleteIntent(conversation));
             mBuilder.setContentIntent(createContentIntent(conversation));
-            final ShortcutInfoCompat info =
-                    mXmppConnectionService
-                            .getShortcutService()
-                            .getShortcutInfoCompat(conversation.getContact());
             mBuilder.setShortcutInfo(info);
             if (Build.VERSION.SDK_INT >= 30) {
                 mXmppConnectionService
