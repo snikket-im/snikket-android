@@ -1504,6 +1504,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
             }
             this.message.setTime(timestamp);
             startRinging();
+            sendJingleMessage("ringing");
         } else {
             Log.d(
                     Config.LOGTAG,

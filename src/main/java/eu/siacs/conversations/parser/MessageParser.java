@@ -52,7 +52,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
 
-    private static final List<String> JINGLE_MESSAGE_ELEMENT_NAMES = Arrays.asList("accept", "propose", "proceed", "reject", "retract");
+    private static final List<String> JINGLE_MESSAGE_ELEMENT_NAMES =
+            Arrays.asList("accept", "propose", "proceed", "reject", "retract", "ringing");
 
     public MessageParser(XmppConnectionService service) {
         super(service);

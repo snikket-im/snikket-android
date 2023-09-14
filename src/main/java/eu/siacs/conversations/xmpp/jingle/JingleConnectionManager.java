@@ -266,6 +266,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             return;
         }
         final boolean fromSelf = from.asBareJid().equals(account.getJid().asBareJid());
+        // XEP version 0.6.0 sends proceed, reject, ringing to bare jid
         final boolean addressedDirectly = to != null && to.equals(account.getJid());
         final AbstractJingleConnection.Id id;
         if (fromSelf) {
@@ -474,12 +475,19 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                                     + " to deliver reject");
                 }
             }
+        } else if (addressedDirectly && "ringing".equals(message.getName())) {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + from + " started ringing");
+            updateProposedSessionDiscovered(
+                    account, from, sessionId, DeviceDiscoveryState.DISCOVERED);
         } else {
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid()
-                            + ": retrieved out of order jingle message"
-                            + message);
+                            + ": retrieved out of order jingle message from "
+                            + from
+                            + message
+                            + ", addressedDirectly="
+                            + addressedDirectly);
         }
     }
 
