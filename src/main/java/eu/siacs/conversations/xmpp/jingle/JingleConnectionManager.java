@@ -367,12 +367,14 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                         this.connections.put(id, rtpConnection);
                         rtpConnection.setProposedMedia(ImmutableSet.copyOf(media));
                         rtpConnection.deliveryMessage(from, message, serverMsgId, timestamp);
+                        // TODO actually do the automatic accept?!
                     } else {
                         Log.d(
                                 Config.LOGTAG,
                                 account.getJid().asBareJid()
                                         + ": our session won tie break. waiting for other party to accept. winningSession="
                                         + ourSessionId);
+                        // TODO reject their session with <tie-break/>?
                     }
                     return;
                 }
