@@ -1,0 +1,2 @@
+* Fix avatar selection on some Android 10 devices
+* Fix file transfer for larger files
