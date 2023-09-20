@@ -50,17 +50,19 @@ public class BackupFileHeader {
 
     public static BackupFileHeader read(DataInputStream inputStream) throws IOException {
         final int version = inputStream.readInt();
+        final String app = inputStream.readUTF();
+        final String jid = inputStream.readUTF();
+        long timestamp = inputStream.readLong();
+        final byte[] iv = new byte[12];
+        inputStream.readFully(iv);
+        final byte[] salt = new byte[16];
+        inputStream.readFully(salt);
+        if (version < VERSION) {
+            throw new OutdatedBackupFileVersion();
+        }
         if (version != VERSION) {
             throw new IllegalArgumentException("Backup File version was " + version + " but app only supports version " + VERSION);
         }
-        String app = inputStream.readUTF();
-        String jid = inputStream.readUTF();
-        long timestamp = inputStream.readLong();
-        byte[] iv = new byte[12];
-        inputStream.readFully(iv);
-        byte[] salt = new byte[16];
-        inputStream.readFully(salt);
-
         return new BackupFileHeader(app, Jid.of(jid), timestamp, iv, salt);
 
     }
@@ -83,5 +85,9 @@ public class BackupFileHeader {
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public static class OutdatedBackupFileVersion extends RuntimeException {
+
     }
 }
