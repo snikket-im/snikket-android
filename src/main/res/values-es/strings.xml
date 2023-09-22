@@ -591,7 +591,7 @@
     <string name="contact_asks_for_presence_subscription">El contacto solicita ver tus actualizaciones de estado</string>
     <string name="allow">Permitir</string>
     <string name="no_permission_to_access_x">Sin permiso de acceso a %s</string>
-    <string name="remote_server_not_found">Servidor no encontrado</string>
+    <string name="remote_server_not_found">No se encontró ningún servidor remoto</string>
     <string name="remote_server_timeout">Tiempo de espera agotado al servidor remoto</string>
     <string name="unable_to_update_account">No se ha podido actualizar la cuenta</string>
     <string name="report_jid_as_spammer">Reporta esta dirección XMPP como spam.</string>
@@ -1024,4 +1024,5 @@
     <string name="channel_discover_opt_in_message">La búsqueda de canales utiliza un servicio de terceros denominado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Si utiliza esta función, tu dirección IP y la búsqueda de términos serán transferidos a este servicio. Para obtener más información, consulta la &lt;a href=https://search.jabber.network/privacy&gt;Política de privacidad&lt;/a&gt;.</string>
     <string name="save_as_group_chat">Guardar como un chat en grupo</string>
     <string name="restore_warning_continued">¡No intentes restaurar las copias de seguridad que no creaste tu mismo!</string>
+    <string name="outdated_backup_file_format">Estás intentando importar un formato de copia de seguridad obsoleto</string>
 </resources>
