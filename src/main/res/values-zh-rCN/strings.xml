@@ -1001,4 +1001,5 @@
     <string name="search_group_chats">搜索群聊</string>
     <string name="delete_from_server">从服务器删除账户</string>
     <string name="restore_warning_continued">不要尝试恢复你尚未自行创建的备份！</string>
+    <string name="outdated_backup_file_format">你正尝试导入过时的备份文件格式</string>
 </resources>
