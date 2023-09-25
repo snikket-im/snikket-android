@@ -1367,12 +1367,12 @@ public class XmppConnectionService extends Service {
             if (ongoing != null) {
                 notification = this.mNotificationService.getOngoingCallNotification(ongoing);
                 id = NotificationService.ONGOING_CALL_NOTIFICATION_ID;
-                startForeground(id, notification);
+                startForegroundOrCatch(id, notification);
                 mNotificationService.cancel(NotificationService.FOREGROUND_NOTIFICATION_ID);
             } else {
                 notification = this.mNotificationService.createForegroundNotification();
                 id = NotificationService.FOREGROUND_NOTIFICATION_ID;
-                startForeground(id, notification);
+                startForegroundOrCatch(id, notification);
             }
 
             if (!mForceForegroundService.get()) {
@@ -1390,6 +1390,14 @@ public class XmppConnectionService extends Service {
             mNotificationService.cancel(NotificationService.ONGOING_CALL_NOTIFICATION_ID);
         }
         Log.d(Config.LOGTAG, "ForegroundService: " + (status ? "on" : "off"));
+    }
+
+    private void startForegroundOrCatch(final int id, final Notification notification) {
+        try {
+            startForeground(id, notification);
+        } catch (final IllegalStateException e) {
+            Log.e(Config.LOGTAG,"Could not start foreground service", e);
+        }
     }
 
     public boolean foregroundNotificationNeedsUpdatingWhenErrorStateChanges() {
