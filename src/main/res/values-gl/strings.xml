@@ -1013,4 +1013,5 @@
     <string name="group_chats">Conversas en grupo</string>
     <string name="channel_discover_opt_in_message">O descubrimento de canles usa un servizo externo chamado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Ao usar esta ferramenta transmitirás o teu enderezo IP e termos de busca a ese servizo. Le a súa &lt;a href=https://search.jabber.network/privacy&gt;Política de Privacidade&lt;/a&gt; para saber máis.</string>
     <string name="restore_warning_continued">Non intentes restablecer unha copia de apoio que non tiveses creado ti!</string>
+    <string name="outdated_backup_file_format">Estás intentando importar un ficheiro de apoio co formato antigo</string>
 </resources>
