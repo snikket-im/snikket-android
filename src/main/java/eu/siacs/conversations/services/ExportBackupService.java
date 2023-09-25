@@ -31,10 +31,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.zip.GZIPOutputStream;
 
@@ -57,6 +60,8 @@ import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.Compatibility;
 
 public class ExportBackupService extends Service {
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
     public static final String KEYTYPE = "AES";
     public static final String CIPHERMODE = "AES/GCM/NoPadding";
@@ -296,10 +301,14 @@ public class ExportBackupService extends Service {
                             IV,
                             salt);
             final Progress progress = new Progress(mBuilder, max, count);
+            final String filename =
+                    String.format(
+                            "%s.%s.ceb",
+                            account.getJid().asBareJid().toEscapedString(),
+                            DATE_FORMAT.format(new Date()));
             final File file =
                     new File(
-                            FileBackend.getBackupDirectory(this),
-                            account.getJid().asBareJid().toEscapedString() + ".ceb");
+                            FileBackend.getBackupDirectory(this), filename);
             files.add(file);
             final File directory = file.getParentFile();
             if (directory != null && directory.mkdirs()) {
