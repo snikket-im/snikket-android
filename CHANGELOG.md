@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.12.10
+
+* support per conversation notification settings
+* use opus for voice messages on Android 10
+
 ### Version 2.12.9
 
 * Introduce new backup file format
