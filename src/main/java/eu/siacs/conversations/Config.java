@@ -83,6 +83,8 @@ public final class Config {
 
     public static final boolean XEP_0392 = true; //enables XEP-0392 v0.6.0
 
+
+    // media file formats. Homogenous Android or Conversations only deployments can switch to opus and webp
     public static final int AVATAR_SIZE = 192;
     public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int AVATAR_CHAR_LIMIT = 9400;
@@ -90,6 +92,8 @@ public final class Config {
     public static final int IMAGE_SIZE = 1920;
     public static final Bitmap.CompressFormat IMAGE_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int IMAGE_QUALITY = 75;
+
+    public static final boolean USE_OPUS_VOICE_MESSAGES = false;
 
     public static final int MESSAGE_MERGE_WINDOW = 20;
 

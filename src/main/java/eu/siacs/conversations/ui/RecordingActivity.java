@@ -99,7 +99,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         final int outputFormat;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Config.USE_OPUS_VOICE_MESSAGES && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             outputFormat = MediaRecorder.OutputFormat.OGG;
             mRecorder.setOutputFormat(outputFormat);
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);
