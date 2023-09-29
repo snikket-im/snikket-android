@@ -2624,6 +2624,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
                                     if (port < 0 || port > 65535) {
                                         continue;
                                     }
+
+
+
+
                                     if (Arrays.asList("stun", "stuns", "turn", "turns")
                                                     .contains(type)
                                             && Arrays.asList("udp", "tcp").contains(transport)) {
@@ -2635,20 +2639,22 @@ public class JingleRtpConnection extends AbstractJingleConnection
                                                             + ": skipping invalid combination of udp/tls in external services");
                                             continue;
                                         }
-                                        // TODO Starting on milestone 110, Chromium will perform
-                                        // stricter validation of TURN and STUN URLs passed to the
-                                        // constructor of an RTCPeerConnection. More specifically,
-                                        // STUN URLs will not support a query section, and TURN URLs
-                                        // will support only a transport parameter in their query
-                                        // section.
+
+                                        // STUN URLs do not support a query section since M110
+                                        final String uri;
+                                        if (Arrays.asList("stun","stuns").contains(type)) {
+                                            uri = String.format("%s:%s%s", type, IP.wrapIPv6(host),port);
+                                        } else {
+                                            uri = String.format(
+                                                    "%s:%s:%s?transport=%s",
+                                                    type,
+                                                    IP.wrapIPv6(host),
+                                                    port,
+                                                    transport);
+                                        }
+
                                         final PeerConnection.IceServer.Builder iceServerBuilder =
-                                                PeerConnection.IceServer.builder(
-                                                        String.format(
-                                                                "%s:%s:%s?transport=%s",
-                                                                type,
-                                                                IP.wrapIPv6(host),
-                                                                port,
-                                                                transport));
+                                                PeerConnection.IceServer.builder(uri);
                                         iceServerBuilder.setTlsCertPolicy(
                                                 PeerConnection.TlsCertPolicy
                                                         .TLS_CERT_POLICY_INSECURE_NO_CHECK);
