@@ -1377,6 +1377,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                         id.account.getJid().asBareJid()
                                 + ": unable to transition to accept because already in state="
                                 + this.state);
+                Log.d(Config.LOGTAG, id.account.getJid() + ": received accept from " + from);
             }
         } else {
             Log.d(
