@@ -438,7 +438,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     Log.d(
                             Config.LOGTAG,
                             account.getJid().asBareJid()
-                                    + ": no rtp session proposal found for "
+                                    + ": no rtp session ("
+                                    + sessionId
+                                    + ") proposal found for "
                                     + from
                                     + " to deliver proceed");
                     if (remoteMsgId == null) {

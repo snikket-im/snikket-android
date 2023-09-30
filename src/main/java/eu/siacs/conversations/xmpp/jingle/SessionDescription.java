@@ -291,7 +291,7 @@ public class SessionDescription {
                         throw new IllegalArgumentException(
                                 "A source specific media attribute is missing its value");
                     }
-                    mediaAttributes.put("ssrc", id + " " + parameterName + ":" + parameterValue);
+                    mediaAttributes.put("ssrc", id + " " + parameterName + ":" + parameterValue.trim());
                 }
             }
 
