@@ -2644,7 +2644,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                                         // STUN URLs do not support a query section since M110
                                         final String uri;
                                         if (Arrays.asList("stun","stuns").contains(type)) {
-                                            uri = String.format("%s:%s%s", type, IP.wrapIPv6(host),port);
+                                            uri = String.format("%s:%s:%s", type, IP.wrapIPv6(host),port);
                                         } else {
                                             uri = String.format(
                                                     "%s:%s:%s?transport=%s",
