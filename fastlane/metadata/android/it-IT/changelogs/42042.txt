@@ -1,0 +1,2 @@
+* Corretto un loop di reinvio sui server che supportano solo sm:2
+* Mostra 'Passa al video' solo se l'altra parte supporta il video

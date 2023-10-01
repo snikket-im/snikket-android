@@ -1,0 +1,3 @@
+* Spostata l'icona della chiamata a sinistra per mantenere le altre icone della barra degli strumenti in una posizione coerente
+* Mostra la durata della chiamata durante le chiamate audio
+* Interruzione della parità per le chiamate A/V (due persone che si chiamano contemporaneamente)

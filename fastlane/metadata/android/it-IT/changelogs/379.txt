@@ -1,0 +1,1 @@
+* Chiamate audio/video (richiede il supporto di server sotto forma di server STUN e TURN rilevabili tramite XEP-0215)

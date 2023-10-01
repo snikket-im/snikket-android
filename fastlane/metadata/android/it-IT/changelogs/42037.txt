@@ -1,0 +1,11 @@
+2.10.9
+* Permessi Bluetooth per chiamate A/V (puoi rifiutare)
+* Correto bug chiamando Movim
+* Corretti avatar nelle chat di gruppo
+* Chiedi sempre opt-out di ottimizzazione batteria
+* Flag solo locale su notifiche "x profili connessi"
+* Corretta interazione con plugin di condivisione posizione Google Maps
+* Rimossa nota del costo del server
+* Archivia i file nel posto giusto su Android 11
+* Ricollega chiamata dopo il cambio di rete
+* Mostra JID chiamante e JID profilo nelle chiamate in entrata

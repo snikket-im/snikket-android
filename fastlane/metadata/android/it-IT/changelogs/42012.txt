@@ -1,0 +1,1 @@
+* Corretto l'up/download HTTP per gli utenti che non si fidano delle CA di sistema

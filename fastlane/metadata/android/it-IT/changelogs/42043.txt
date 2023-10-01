@@ -1,0 +1,1 @@
+* Corretta regressione nel trasferimento di file P2P

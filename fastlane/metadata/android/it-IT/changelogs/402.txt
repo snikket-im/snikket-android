@@ -1,0 +1,3 @@
+* Offre la generazione di inviti facili sui server di supporto
+* Visualizzazione delle GIF inviate da Movim
+* Memorizzazione degli avatar nella cache

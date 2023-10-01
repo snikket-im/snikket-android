@@ -1,0 +1,2 @@
+* Correzione di errori minori
+* Ripristino della possibilità di richiamare tramite JMP e altri servizi (versione Playstore)
