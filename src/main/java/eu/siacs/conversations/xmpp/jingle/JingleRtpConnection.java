@@ -1505,7 +1505,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
             }
             this.message.setTime(timestamp);
             startRinging();
-            sendJingleMessage("ringing");
+            if (xmppConnectionService.confirmMessages() && id.getContact().showInContactList()) {
+                sendJingleMessage("ringing");
+            }
         } else {
             Log.d(
                     Config.LOGTAG,

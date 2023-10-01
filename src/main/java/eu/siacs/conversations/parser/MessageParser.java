@@ -849,9 +849,22 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             if (serverMsgId == null) {
                                 serverMsgId = extractStanzaId(account, packet);
                             }
-                            mXmppConnectionService.getJingleConnectionManager().deliverMessage(account, packet.getTo(), packet.getFrom(), child, remoteMsgId, serverMsgId, timestamp);
-                            if (!account.getJid().asBareJid().equals(from.asBareJid()) && remoteMsgId != null) {
-                                processMessageReceipts(account, packet, remoteMsgId, query);
+                            mXmppConnectionService
+                                    .getJingleConnectionManager()
+                                    .deliverMessage(
+                                            account,
+                                            packet.getTo(),
+                                            packet.getFrom(),
+                                            child,
+                                            remoteMsgId,
+                                            serverMsgId,
+                                            timestamp);
+                            final Contact contact = account.getRoster().getContact(from);
+                            if (mXmppConnectionService.confirmMessages()
+                                    && !contact.isSelf()
+                                    && remoteMsgId != null
+                                    && contact.showInContactList()) {
+                                processMessageReceipts(account, packet, remoteMsgId, null);
                             }
                         } else if (query.isCatchup()) {
                             if ("propose".equals(action)) {
