@@ -1,0 +1,2 @@
+* Unterstützung der Benachrichtigungseinstellungen pro Unterhaltung
+* Verwendung von Opus für Sprachnachrichten unter Android 10
