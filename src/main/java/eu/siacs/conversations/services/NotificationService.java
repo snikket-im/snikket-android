@@ -642,6 +642,7 @@ public class NotificationService {
                                 createCallAction(
                                         id.sessionId, XmppConnectionService.ACTION_END_CALL, 104))
                         .build());
+        builder.setLocalOnly(true);
         return builder.build();
     }
 
