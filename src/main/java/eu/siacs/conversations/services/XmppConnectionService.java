@@ -466,14 +466,15 @@ public class XmppConnectionService extends Service {
             } else if (account.getStatus() != Account.State.CONNECTING && account.getStatus() != Account.State.NO_INTERNET) {
                 resetSendingToWaiting(account);
                 if (connection != null && account.getStatus().isAttemptReconnect()) {
-                    final int next = connection.getTimeToNextAttempt();
+                    final boolean aggressive = hasJingleRtpConnection(account);
+                    final int next = connection.getTimeToNextAttempt(aggressive);
                     final boolean lowPingTimeoutMode = isInLowPingTimeoutMode(account);
                     if (next <= 0) {
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": error connecting account. reconnecting now. lowPingTimeout=" + lowPingTimeoutMode);
                         reconnectAccount(account, true, false);
                     } else {
                         final int attempt = connection.getAttempt() + 1;
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": error connecting account. try again in " + next + "s for the " + attempt + " time. lowPingTimeout=" + lowPingTimeoutMode);
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": error connecting account. try again in " + next + "s for the " + attempt + " time. lowPingTimeout=" + lowPingTimeoutMode+", aggressive="+aggressive);
                         scheduleWakeUpCall(next, account.getUuid().hashCode());
                     }
                 }
@@ -948,7 +949,8 @@ public class XmppConnectionService extends Service {
                         scheduleWakeUpCall((int) Math.min(timeout, discoTimeout), account.getUuid().hashCode());
                     }
                 } else {
-                    if (account.getXmppConnection().getTimeToNextAttempt() <= 0) {
+                    final boolean aggressive = hasJingleRtpConnection(account);
+                    if (account.getXmppConnection().getTimeToNextAttempt(aggressive) <= 0) {
                         reconnectAccount(account, true, interactive);
                     }
                 }
@@ -4588,6 +4590,10 @@ public class XmppConnectionService extends Service {
 
     public JingleConnectionManager getJingleConnectionManager() {
         return this.mJingleConnectionManager;
+    }
+
+    private boolean hasJingleRtpConnection(final Account account) {
+        return this.mJingleConnectionManager.hasJingleRtpConnection(account);
     }
 
     public MessageArchiveService getMessageArchiveService() {

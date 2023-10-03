@@ -2483,10 +2483,15 @@ public class XmppConnection implements Runnable {
         return servers.size() > 0 ? servers.get(0) : null;
     }
 
-    public int getTimeToNextAttempt() {
-        final int additionalTime =
-                account.getLastErrorStatus() == Account.State.POLICY_VIOLATION ? 3 : 0;
-        final int interval = Math.min((int) (25 * Math.pow(1.3, (additionalTime + attempt))), 300);
+    public int getTimeToNextAttempt(final boolean aggressive) {
+        final int interval;
+        if (aggressive) {
+            interval = Math.min((int) (3 * Math.pow(1.3,attempt)), 60);
+        } else {
+            final int additionalTime =
+                    account.getLastErrorStatus() == Account.State.POLICY_VIOLATION ? 3 : 0;
+            interval = Math.min((int) (25 * Math.pow(1.3, (additionalTime + attempt))), 300);
+        }
         final int secondsSinceLast =
                 (int) ((SystemClock.elapsedRealtime() - this.lastConnect) / 1000);
         return interval - secondsSinceLast;

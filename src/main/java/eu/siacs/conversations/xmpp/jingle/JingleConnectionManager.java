@@ -158,6 +158,21 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    public boolean hasJingleRtpConnection(final Account account) {
+        for (AbstractJingleConnection connection : this.connections.values()) {
+            if (connection instanceof JingleRtpConnection) {
+                final JingleRtpConnection rtpConnection = (JingleRtpConnection) connection;
+                if (rtpConnection.isTerminated()) {
+                    continue;
+                }
+                if (rtpConnection.id.account == account) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void notifyPhoneCallStarted() {
         for (AbstractJingleConnection connection : connections.values()) {
             if (connection instanceof JingleRtpConnection) {
@@ -169,6 +184,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
         }
     }
+
 
     private Optional<RtpSessionProposal> findMatchingSessionProposal(
             final Account account, final Jid with, final Set<Media> media) {
