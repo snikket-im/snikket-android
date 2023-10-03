@@ -1,17 +1,23 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
@@ -20,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.SessionDescription;
@@ -59,6 +66,9 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         if (fingerprint != null) {
             iceUdpTransportInfo.addChild(fingerprint);
         }
+        for (final String iceOption : IceOption.of(media)) {
+            iceUdpTransportInfo.addChild(new IceOption(iceOption));
+        }
         return iceUdpTransportInfo;
     }
 
@@ -74,6 +84,16 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
     public Fingerprint getFingerprint() {
         final Element fingerprint = this.findChild("fingerprint", Namespace.JINGLE_APPS_DTLS);
         return fingerprint == null ? null : Fingerprint.upgrade(fingerprint);
+    }
+
+    public List<String> getIceOptions() {
+        final ImmutableList.Builder<String> optionBuilder = new ImmutableList.Builder<>();
+        for(final Element child : this.children) {
+            if (Namespace.JINGLE_TRANSPORT_ICE_OPTION.equals(child.getNamespace()) && IceOption.WELL_KNOWN.contains(child.getName())) {
+                optionBuilder.add(child.getName());
+            }
+        }
+        return optionBuilder.build();
     }
 
     public Credentials getCredentials() {
@@ -406,6 +426,31 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
                 return PASSIVE;
             }
             throw new IllegalStateException(this.name() + " can not be flipped");
+        }
+    }
+
+    public static class IceOption extends Element {
+
+        public static final List<String> WELL_KNOWN = Arrays.asList("trickle", "renomination");
+
+        public IceOption(final String name) {
+            super(name, Namespace.JINGLE_TRANSPORT_ICE_OPTION);
+        }
+
+        public static Collection<String> of(SessionDescription.Media media) {
+            final String iceOptions = Iterables.getFirst(media.attributes.get("ice-options"), null);
+            if (Strings.isNullOrEmpty(iceOptions)) {
+                return Collections.emptyList();
+            }
+            final ImmutableList.Builder<String> optionBuilder = new ImmutableList.Builder<>();
+            for (final String iceOption : Splitter.on(' ').split(iceOptions)) {
+                if (WELL_KNOWN.contains(iceOption)) {
+                    optionBuilder.add(iceOption);
+                } else {
+                    Log.w(Config.LOGTAG, "unrecognized ice option: " + iceOption);
+                }
+            }
+            return optionBuilder.build();
         }
     }
 }

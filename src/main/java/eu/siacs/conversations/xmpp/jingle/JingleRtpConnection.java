@@ -15,6 +15,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
 import com.google.common.util.concurrent.FutureCallback;
@@ -236,6 +237,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 break;
             case CONTENT_REMOVE:
                 receiveContentRemove(jinglePacket);
+                break;
+            case CONTENT_MODIFY:
+                receiveContentModify(jinglePacket);
                 break;
             default:
                 respondOk(jinglePacket);
@@ -505,6 +509,14 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 id.getAccount().getJid().asBareJid()
                         + ": remote has accepted content-add "
                         + ContentAddition.summary(receivedContentAccept));
+    }
+
+    private void receiveContentModify(final JinglePacket jinglePacket) {
+        final Map<String, Content.Senders> modification =
+                Maps.transformEntries(
+                        jinglePacket.getJingleContents(), (key, value) -> value.getSenders());
+        respondOk(jinglePacket);
+        Log.d(Config.LOGTAG, "receiveContentModification(" + modification + ")");
     }
 
     private void receiveContentReject(final JinglePacket jinglePacket) {
