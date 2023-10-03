@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.12.11
+
+* Bump libwebrtc dependency to M117 and bump libvpx
+* Go back to AAC for voice messages
+* Support per app language settings
+
 ### Version 2.12.10
 
 * support per conversation notification settings
