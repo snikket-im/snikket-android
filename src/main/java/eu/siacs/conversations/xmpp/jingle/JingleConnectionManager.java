@@ -73,7 +73,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     static String nextRandomId() {
         final byte[] id = new byte[16];
         new SecureRandom().nextBytes(id);
-        return Base64.encodeToString(id, Base64.NO_WRAP | Base64.NO_PADDING);
+        return Base64.encodeToString(id, Base64.NO_WRAP | Base64.NO_PADDING | Base64.URL_SAFE);
     }
 
     public void deliverPacket(final Account account, final JinglePacket packet) {
