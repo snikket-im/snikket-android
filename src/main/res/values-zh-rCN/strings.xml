@@ -20,7 +20,7 @@
     <string name="action_unblock_participant">解封成员</string>
     <string name="title_activity_manage_accounts">管理账户</string>
     <string name="title_activity_settings">设置</string>
-    <string name="title_activity_sharewith">通过Conversations分享</string>
+    <string name="title_activity_sharewith">通过 Conversations 分享</string>
     <string name="title_activity_start_conversation">开始对话</string>
     <string name="title_activity_choose_contact">选择联系人</string>
     <string name="title_activity_choose_contacts">选择联系人</string>
@@ -34,9 +34,9 @@
     </plurals>
     <string name="sending">发送中…</string>
     <string name="message_decrypting">正在解密信息。请稍候……</string>
-    <string name="pgp_message">OpenPGP加密的信息</string>
+    <string name="pgp_message">OpenPGP 加密的信息</string>
     <string name="nick_in_use">用户名已存在</string>
-    <string name="invalid_muc_nick">无效用户名</string>
+    <string name="invalid_muc_nick">无效的用户名</string>
     <string name="admin">管理员</string>
     <string name="owner">所有者</string>
     <string name="moderator">群主</string>
@@ -980,7 +980,7 @@
     <string name="account_registrations_are_not_supported">不支持注册账户</string>
     <string name="no_xmpp_adddress_found">未找到 XMPP 地址</string>
     <string name="account_status_temporary_auth_failure">临时认证失败</string>
-    <string name="delete_avatar">删除群聊</string>
+    <string name="delete_avatar">删除头像</string>
     <string name="audio_video_disabled_tor">使用 Tor 时通话被禁用</string>
     <string name="switch_to_video">切换到视频</string>
     <string name="reject_switch_to_video">拒绝切换到视频的请求</string>
