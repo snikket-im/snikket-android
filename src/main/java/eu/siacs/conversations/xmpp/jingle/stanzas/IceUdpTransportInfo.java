@@ -15,6 +15,11 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.jingle.SessionDescription;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,11 +30,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.jingle.SessionDescription;
 
 public class IceUdpTransportInfo extends GenericTransportInfo {
 
@@ -73,11 +73,18 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
     }
 
     public static IceUdpTransportInfo of(
-            final Credentials credentials,  final Setup setup, final String hash, final String fingerprint) {
+            final Credentials credentials,
+            final Collection<String> iceOptions,
+            final Setup setup,
+            final String hash,
+            final String fingerprint) {
         final IceUdpTransportInfo iceUdpTransportInfo = new IceUdpTransportInfo();
         iceUdpTransportInfo.addChild(Fingerprint.of(setup, hash, fingerprint));
         iceUdpTransportInfo.setAttribute("ufrag", credentials.ufrag);
         iceUdpTransportInfo.setAttribute("pwd", credentials.password);
+        for(final String iceOption : iceOptions) {
+            iceUdpTransportInfo.addChild(new IceOption(iceOption));
+        }
         return iceUdpTransportInfo;
     }
 
@@ -88,8 +95,9 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
 
     public List<String> getIceOptions() {
         final ImmutableList.Builder<String> optionBuilder = new ImmutableList.Builder<>();
-        for(final Element child : this.children) {
-            if (Namespace.JINGLE_TRANSPORT_ICE_OPTION.equals(child.getNamespace()) && IceOption.WELL_KNOWN.contains(child.getName())) {
+        for (final Element child : this.children) {
+            if (Namespace.JINGLE_TRANSPORT_ICE_OPTION.equals(child.getNamespace())
+                    && IceOption.WELL_KNOWN.contains(child.getName())) {
                 optionBuilder.add(child.getName());
             }
         }
@@ -131,6 +139,9 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
                 fingerprint.setAttribute("setup", setup.toString().toLowerCase(Locale.ROOT));
                 transportInfo.addChild(fingerprint);
             }
+        }
+        for (final String iceOption : this.getIceOptions()) {
+            transportInfo.addChild(new IceOption(iceOption));
         }
         return transportInfo;
     }

@@ -210,6 +210,12 @@ public class RtpContentMap {
         throw new IllegalStateException("Content map does not have distinct credentials");
     }
 
+    private Set<String> getCombinedIceOptions() {
+        final Collection<List<String>> combinedIceOptions =
+                Collections2.transform(contents.values(), dt -> dt.transport.getIceOptions());
+        return ImmutableSet.copyOf(Iterables.concat(combinedIceOptions));
+    }
+
     public Set<IceUdpTransportInfo.Credentials> getCredentials() {
         final Set<IceUdpTransportInfo.Credentials> credentials =
                 ImmutableSet.copyOf(
@@ -339,14 +345,11 @@ public class RtpContentMap {
     public RtpContentMap addContent(
             final RtpContentMap modification, final IceUdpTransportInfo.Setup setup) {
         final IceUdpTransportInfo.Credentials credentials = getDistinctCredentials();
+        final Collection<String> iceOptions = getCombinedIceOptions();
         final DTLS dtls = getDistinctDtls();
         final IceUdpTransportInfo iceUdpTransportInfo =
-                IceUdpTransportInfo.of(credentials, setup, dtls.hash, dtls.fingerprint);
+                IceUdpTransportInfo.of(credentials, iceOptions, setup, dtls.hash, dtls.fingerprint);
         final Map<String, DescriptionTransport> combined = merge(contents, modification.contents);
-                /*new ImmutableMap.Builder<String, DescriptionTransport>()
-                        .putAll(contents)
-                        .putAll(modification.contents)
-                        .build();*/
         final Map<String, DescriptionTransport> combinedFixedTransport =
                 Maps.transformValues(
                         combined,
