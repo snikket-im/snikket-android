@@ -13,14 +13,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericTransportInfo;
@@ -29,6 +21,14 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.OmemoVerifiedIceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
 
 public class RtpContentMap {
 
@@ -94,7 +94,7 @@ public class RtpContentMap {
     }
 
     public Set<Content.Senders> getSenders() {
-        return ImmutableSet.copyOf(Collections2.transform(contents.values(),dt -> dt.senders));
+        return ImmutableSet.copyOf(Collections2.transform(contents.values(), dt -> dt.senders));
     }
 
     public List<String> getNames() {
@@ -300,6 +300,57 @@ public class RtpContentMap {
                         dt -> new DescriptionTransport(senders, dt.description, dt.transport)));
     }
 
+    public RtpContentMap modifiedSendersChecked(
+            final boolean isInitiator, final Map<String, Content.Senders> modification) {
+        final ImmutableMap.Builder<String, DescriptionTransport> contentMapBuilder =
+                new ImmutableMap.Builder<>();
+        for (final Map.Entry<String, DescriptionTransport> content : contents.entrySet()) {
+            final String id = content.getKey();
+            final DescriptionTransport descriptionTransport = content.getValue();
+            final Content.Senders currentSenders = descriptionTransport.senders;
+            final Content.Senders targetSenders = modification.get(id);
+            if (targetSenders == null || currentSenders == targetSenders) {
+                contentMapBuilder.put(id, descriptionTransport);
+            } else {
+                checkSenderModification(isInitiator, currentSenders, targetSenders);
+                contentMapBuilder.put(
+                        id,
+                        new DescriptionTransport(
+                                targetSenders,
+                                descriptionTransport.description,
+                                descriptionTransport.transport));
+            }
+        }
+        return new RtpContentMap(this.group, contentMapBuilder.build());
+    }
+
+    private static void checkSenderModification(
+            final boolean isInitiator,
+            final Content.Senders current,
+            final Content.Senders target) {
+        if (isInitiator) {
+            // we were both sending and now other party only wants to receive
+            if (current == Content.Senders.BOTH && target == Content.Senders.INITIATOR) {
+                return;
+            }
+            // only we were sending but now other party wants to send too
+            if (current == Content.Senders.INITIATOR && target == Content.Senders.BOTH) {
+                return;
+            }
+        } else {
+            // we were both sending and now other party only wants to receive
+            if (current == Content.Senders.BOTH && target == Content.Senders.RESPONDER) {
+                return;
+            }
+            // only we were sending but now other party wants to send too
+            if (current == Content.Senders.RESPONDER && target == Content.Senders.BOTH) {
+                return;
+            }
+        }
+        throw new IllegalArgumentException(
+                String.format("Unsupported senders modification %s -> %s", current, target));
+    }
+
     public RtpContentMap toContentModification(final Collection<String> modifications) {
         return new RtpContentMap(
                 this.group,
@@ -323,7 +374,8 @@ public class RtpContentMap {
     }
 
     public RtpContentMap activeContents() {
-        return new RtpContentMap(group, Maps.filterValues(this.contents, dt -> dt.senders != Content.Senders.NONE));
+        return new RtpContentMap(
+                group, Maps.filterValues(this.contents, dt -> dt.senders != Content.Senders.NONE));
     }
 
     public Diff diff(final RtpContentMap rtpContentMap) {
@@ -347,15 +399,32 @@ public class RtpContentMap {
         final IceUdpTransportInfo.Credentials credentials = getDistinctCredentials();
         final Collection<String> iceOptions = getCombinedIceOptions();
         final DTLS dtls = getDistinctDtls();
-        final IceUdpTransportInfo iceUdpTransportInfo =
-                IceUdpTransportInfo.of(credentials, iceOptions, setup, dtls.hash, dtls.fingerprint);
         final Map<String, DescriptionTransport> combined = merge(contents, modification.contents);
         final Map<String, DescriptionTransport> combinedFixedTransport =
                 Maps.transformValues(
                         combined,
-                        dt ->
-                                new DescriptionTransport(
-                                        dt.senders, dt.description, iceUdpTransportInfo));
+                        dt -> {
+                            final IceUdpTransportInfo iceUdpTransportInfo;
+                            if (dt.transport.emptyCredentials()) {
+                                iceUdpTransportInfo =
+                                        IceUdpTransportInfo.of(
+                                                credentials,
+                                                iceOptions,
+                                                setup,
+                                                dtls.hash,
+                                                dtls.fingerprint);
+                            } else {
+                                iceUdpTransportInfo =
+                                        IceUdpTransportInfo.of(
+                                                dt.transport.getCredentials(),
+                                                iceOptions,
+                                                setup,
+                                                dtls.hash,
+                                                dtls.fingerprint);
+                            }
+                            return new DescriptionTransport(
+                                    dt.senders, dt.description, iceUdpTransportInfo);
+                        });
         return new RtpContentMap(modification.group, combinedFixedTransport);
     }
 

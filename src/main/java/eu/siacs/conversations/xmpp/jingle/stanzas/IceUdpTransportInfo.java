@@ -110,6 +110,10 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         return new Credentials(ufrag, password);
     }
 
+    public boolean emptyCredentials() {
+        return Strings.isNullOrEmpty(this.getAttribute("ufrag")) || Strings.isNullOrEmpty(this.getAttribute("pwd"));
+    }
+
     public List<Candidate> getCandidates() {
         final ImmutableList.Builder<Candidate> builder = new ImmutableList.Builder<>();
         for (final Element child : getChildren()) {
