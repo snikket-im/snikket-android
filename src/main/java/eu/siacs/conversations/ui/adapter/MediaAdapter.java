@@ -74,6 +74,8 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
             Log.d(Config.LOGTAG, "mime=" + mime);
             if (mime == null) {
                 attr = R.attr.media_preview_unknown;
+            } else if (mime.equals("audio/x-m4b")) {
+                attr = R.attr.media_preview_audiobook;
             } else if (mime.startsWith("audio/")) {
                 attr = R.attr.media_preview_audio;
             } else if (mime.equals("text/calendar") || (mime.equals("text/x-vcalendar"))) {

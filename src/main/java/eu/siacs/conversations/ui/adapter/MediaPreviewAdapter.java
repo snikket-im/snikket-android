@@ -151,7 +151,7 @@ public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapte
         this.mediaPreviews.clear();
     }
 
-    class MediaPreviewViewHolder extends RecyclerView.ViewHolder {
+    static class MediaPreviewViewHolder extends RecyclerView.ViewHolder {
 
         private final MediaPreviewBinding binding;
 

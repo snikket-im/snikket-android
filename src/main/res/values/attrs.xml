@@ -70,6 +70,7 @@
     <attr name="media_preview_tour" format="reference" />
     <attr name="media_preview_contact" format="reference" />
     <attr name="media_preview_app" format="reference" />
+    <attr name="media_preview_audiobook" format="reference" />
     <attr name="media_preview_calendar" format="reference" />
     <attr name="media_preview_archive" format="reference" />
     <attr name="media_preview_ebook" format="reference" />

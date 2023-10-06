@@ -420,6 +420,7 @@
     <string name="multimedia_file">multimedia file</string>
     <string name="pdf_document">PDF document</string>
     <string name="apk">Android App</string>
+    <string name="audiobook">Audiobook</string>
     <string name="vcard">Contact</string>
     <string name="avatar_has_been_published">Avatar has been published!</string>
     <string name="sending_x_file">Sending %s</string>

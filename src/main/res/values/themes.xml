@@ -88,6 +88,7 @@
         <item name="media_preview_tour" type="reference">@drawable/baseline_tour_black_48</item>
         <item name="media_preview_contact" type="reference">@drawable/ic_person_black_48dp</item>
         <item name="media_preview_app" type="reference">@drawable/ic_android_black_48dp</item>
+        <item name="media_preview_audiobook" type="reference">@drawable/ic_play_lesson_black_24</item>
         <item name="media_preview_calendar" type="reference">@drawable/ic_event_black_48dp</item>
         <item name="media_preview_archive" type="reference">@drawable/ic_archive_black_48dp</item>
         <item name="media_preview_ebook" type="reference">@drawable/ic_book_black_48dp</item>
@@ -244,6 +245,7 @@
         <item name="media_preview_tour" type="reference">@drawable/baseline_tour_white_48</item>
         <item name="media_preview_contact" type="reference">@drawable/ic_person_white_48dp</item>
         <item name="media_preview_app" type="reference">@drawable/ic_android_white_48dp</item>
+        <item name="media_preview_audiobook" type="reference">@drawable/ic_play_lesson_white_48dp</item>
         <item name="media_preview_calendar" type="reference">@drawable/ic_event_white_48dp</item>
         <item name="media_preview_archive" type="reference">@drawable/ic_archive_white_48dp</item>
         <item name="media_preview_ebook" type="reference">@drawable/ic_book_white_48dp</item>

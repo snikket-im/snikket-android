@@ -481,6 +481,8 @@ public class UIHelper {
             return context.getString(R.string.file);
         } else if (MimeUtils.AMBIGUOUS_CONTAINER_FORMATS.contains(mime)) {
             return context.getString(R.string.multimedia_file);
+        } else if (mime.equals("audio/x-m4b")) {
+            return context.getString(R.string.audiobook);
         } else if (mime.startsWith("audio/")) {
             return context.getString(R.string.audio);
         } else if (mime.startsWith("video/")) {
