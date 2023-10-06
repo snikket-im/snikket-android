@@ -136,7 +136,7 @@
     <string name="openpgp_error">OpenKeychain报告一个错误。</string>
     <string name="bad_key_for_encryption">错误的加密密钥。</string>
     <string name="accept">接受</string>
-    <string name="error">产生了一个错误</string>
+    <string name="error">出现了一个错误</string>
     <string name="recording_error">错误</string>
     <string name="your_account">你的账户</string>
     <string name="send_presence_updates">发送在线状态更新</string>
@@ -188,7 +188,7 @@
     <string name="mgmt_account_delete_confirm_text">你确定删除账户吗？如果您删除账户，您的所有聊天记录将会丢失</string>
     <string name="attach_record_voice">录制音频</string>
     <string name="account_settings_jabber_id">XMPP地址</string>
-    <string name="block_jabber_id">拦截XMPP地址</string>
+    <string name="block_jabber_id">封禁XMPP地址</string>
     <string name="account_settings_example_jabber_id">username@example.com</string>
     <string name="password">密码</string>
     <string name="invalid_jid">这不是有效的XMPP地址</string>
@@ -208,13 +208,13 @@
     <string name="server_info_available">有效</string>
     <string name="server_info_unavailable">无效</string>
     <string name="missing_public_keys">缺少公钥</string>
-    <string name="last_seen_now">刚来过</string>
-    <string name="last_seen_min">一分钟前来过</string>
-    <string name="last_seen_mins">%d分钟来过</string>
-    <string name="last_seen_hour">一小时前来过</string>
-    <string name="last_seen_hours">%d小时前来过</string>
-    <string name="last_seen_day">一天前来过</string>
-    <string name="last_seen_days">%d天前来过</string>
+    <string name="last_seen_now">最后上线于刚才</string>
+    <string name="last_seen_min">最后上线于一分钟前</string>
+    <string name="last_seen_mins">最后上线于%d分钟前</string>
+    <string name="last_seen_hour">最后上线于一小时前</string>
+    <string name="last_seen_hours">最后上线于%d小时前</string>
+    <string name="last_seen_day">最后上线于一天前</string>
+    <string name="last_seen_days">最后上线于%d天前</string>
     <string name="install_openkeychain">加密信息。请安装OpenKeychain以解密。</string>
     <string name="openpgp_messages_found">发现新OpenPGP加密信息</string>
     <string name="openpgp_key_id">OpenPGP密钥ID</string>
@@ -277,7 +277,7 @@
     <string name="enable">启用</string>
     <string name="conference_requires_password">需要密码才能进入该群聊</string>
     <string name="enter_password">输入密码</string>
-    <string name="request_presence_updates">请先请求联系人在线状态更新。
+    <string name="request_presence_updates">请先向您的联系人请求在线状态更新。
 \n
 \n<small>这将被用来判断您的联系人正在使用的聊天应用</small>。</string>
     <string name="request_now">现在请求</string>
@@ -298,7 +298,7 @@
     <string name="pref_autojoin">同步书签</string>
     <string name="pref_autojoin_summary">加入或离开多用户聊天时设置 “autojoin\" 标志，并回应其他客户端所做更改。</string>
     <string name="toast_message_omemo_fingerprint">OMEMO指纹已拷贝到剪贴板</string>
-    <string name="conference_banned">您被封禁了</string>
+    <string name="conference_banned">您被此群聊封禁</string>
     <string name="conference_members_only">这个群聊只允许成员聊天</string>
     <string name="conference_resource_constraint">资源限制</string>
     <string name="conference_kicked">您被从此群聊踢出</string>
@@ -336,7 +336,7 @@
     <string name="notification_backup_created_subtitle">此备份文件已经存储在%s</string>
     <string name="restoring_backup">正在恢复备份</string>
     <string name="notification_restored_backup_title">备份已恢复</string>
-    <string name="notification_restored_backup_subtitle">别忘了启用帐号。</string>
+    <string name="notification_restored_backup_subtitle">别忘了启用账户。</string>
     <string name="choose_file">选择文件</string>
     <string name="receiving_x_file">正在下载%1$s(已完成%2$d%%)</string>
     <string name="download_x_file">下载%s</string>
@@ -385,11 +385,11 @@
     <string name="member">成员</string>
     <string name="advanced_mode">高级模式</string>
     <string name="grant_membership">授予成员权限</string>
-    <string name="remove_membership">吊销成员权限</string>
+    <string name="remove_membership">撤销成员权限</string>
     <string name="grant_admin_privileges">授予管理员权限</string>
-    <string name="remove_admin_privileges">吊销管理员权限</string>
+    <string name="remove_admin_privileges">撤销管理员权限</string>
     <string name="grant_owner_privileges">授予所有者权限</string>
-    <string name="remove_owner_privileges">吊销所有者权限</string>
+    <string name="remove_owner_privileges">撤销所有者权限</string>
     <string name="remove_from_room">从群聊中移除</string>
     <string name="remove_from_channel">从频道中移除</string>
     <string name="could_not_change_affiliation">不能修改%s的从属关系</string>
@@ -408,7 +408,7 @@
     <string name="could_not_modify_conference_options">无法更改群聊设置</string>
     <string name="never">从不</string>
     <string name="until_further_notice">直至另行通知</string>
-    <string name="snooze">小睡</string>
+    <string name="snooze">稍后提醒</string>
     <string name="reply">回复</string>
     <string name="mark_as_read">标记为已读</string>
     <string name="pref_input_options">输入</string>
@@ -554,7 +554,7 @@
     <string name="presence_chat">有空聊天</string>
     <string name="presence_online">在线</string>
     <string name="presence_away">离开</string>
-    <string name="presence_xa">没时间</string>
+    <string name="presence_xa">不在</string>
     <string name="presence_dnd">忙碌</string>
     <string name="secure_password_generated">安全密码已生成</string>
     <string name="device_does_not_support_battery_op">该设备不支持禁用电池优化</string>
