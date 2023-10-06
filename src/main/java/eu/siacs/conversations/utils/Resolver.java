@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import de.gultsch.minidns.AndroidDNSClient;
 import de.measite.minidns.AbstractDNSClient;
 import de.measite.minidns.DNSCache;
 import de.measite.minidns.DNSClient;
@@ -274,7 +275,9 @@ public class Resolver {
     private static <D extends Data> ResolverResult<D> resolveWithFallback(DNSName dnsName, Class<D> type, boolean validateHostname) throws IOException {
         final Question question = new Question(dnsName, Record.TYPE.getType(type));
         if (!validateHostname) {
-            return ResolverApi.INSTANCE.resolve(question);
+            final AndroidDNSClient androidDNSClient = new AndroidDNSClient(SERVICE);
+            final ResolverApi resolverApi = new ResolverApi(androidDNSClient);
+            return resolverApi.resolve(question);
         }
         try {
             return DnssecResolverApi.INSTANCE.resolveDnssecReliable(question);
