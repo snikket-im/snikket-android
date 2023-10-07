@@ -1065,4 +1065,5 @@
     <string name="rtp_state_content_add">Додати ще пісні\?</string>
     <string name="restore_warning_continued">Не намагайтеся відновити резервні копії, які створили не Ви!</string>
     <string name="outdated_backup_file_format">Ви намагаєтеся імпортувати файл резервної копії у застарілому форматі</string>
+    <string name="audiobook">Аудіокнига</string>
 </resources>
