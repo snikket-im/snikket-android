@@ -1025,4 +1025,5 @@
     <string name="save_as_group_chat">Guardar como un chat en grupo</string>
     <string name="restore_warning_continued">¡No intentes restaurar las copias de seguridad que no creaste tu mismo!</string>
     <string name="outdated_backup_file_format">Estás intentando importar un formato de copia de seguridad obsoleto</string>
+    <string name="audiobook">Audiolibro</string>
 </resources>
