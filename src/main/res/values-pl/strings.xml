@@ -1044,4 +1044,5 @@
     <string name="save_as_group_chat">Zapisz jako czat grupowy</string>
     <string name="restore_warning_continued">Nie próbuj przywracać kopii zapasowych, których nie utworzono samodzielnie!</string>
     <string name="outdated_backup_file_format">Próbujesz zaimportować plik kopii zapasowej o przestarzałym formacie</string>
+    <string name="audiobook">Audiobook</string>
 </resources>
