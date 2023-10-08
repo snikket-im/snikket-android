@@ -71,7 +71,7 @@ public class WebRTCWrapper {
                     .add("E5823") // Sony z5 compact
                     .add("Redmi Note 5")
                     .add("FP2") // Fairphone FP2
-                    .add("FP4") //Fairphone FP4
+                    .add("FP4") // Fairphone FP4
                     .add("MI 5")
                     .add("GT-I9515") // Samsung Galaxy S4 Value Edition (jfvelte)
                     .add("GT-I9515L") // Samsung Galaxy S4 Value Edition (jfvelte)
