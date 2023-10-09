@@ -82,7 +82,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         iceUdpTransportInfo.addChild(Fingerprint.of(setup, hash, fingerprint));
         iceUdpTransportInfo.setAttribute("ufrag", credentials.ufrag);
         iceUdpTransportInfo.setAttribute("pwd", credentials.password);
-        for(final String iceOption : iceOptions) {
+        for (final String iceOption : iceOptions) {
             iceUdpTransportInfo.addChild(new IceOption(iceOption));
         }
         return iceUdpTransportInfo;
@@ -110,8 +110,10 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         return new Credentials(ufrag, password);
     }
 
-    public boolean emptyCredentials() {
-        return Strings.isNullOrEmpty(this.getAttribute("ufrag")) || Strings.isNullOrEmpty(this.getAttribute("pwd"));
+    public boolean isStub() {
+        return Strings.isNullOrEmpty(this.getAttribute("ufrag"))
+                && Strings.isNullOrEmpty(this.getAttribute("pwd"))
+                && this.children.isEmpty();
     }
 
     public List<Candidate> getCandidates() {
