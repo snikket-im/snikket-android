@@ -1033,4 +1033,5 @@
     <string name="search_group_chats">Caută discuții de grup</string>
     <string name="restore_warning_continued">Nu încercați să restaurați copii de rezervă pe care nu le-ați creat personal!</string>
     <string name="outdated_backup_file_format">Încercați să importați un fișier copie de rezervă format vechi</string>
+    <string name="audiobook">Carte audio</string>
 </resources>
