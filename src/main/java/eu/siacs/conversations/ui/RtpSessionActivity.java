@@ -70,6 +70,7 @@ import eu.siacs.conversations.xmpp.jingle.ContentAddition;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
+import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 
 public class RtpSessionActivity extends XmppActivity
@@ -1484,10 +1485,8 @@ public class RtpSessionActivity extends XmppActivity
             final Account account, Jid with, final RtpEndUserState state, final Set<Media> media) {
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.putExtra(EXTRA_ACCOUNT, account.getJid().toEscapedString());
-        if (account.getRoster()
-                .getContact(with)
-                .getPresences()
-                .anySupport(Namespace.JINGLE_MESSAGE)) {
+        if (RtpCapability.jmiSupport(account.getRoster()
+                .getContact(with))) {
             intent.putExtra(EXTRA_WITH, with.asBareJid().toEscapedString());
         } else {
             intent.putExtra(EXTRA_WITH, with.toEscapedString());
