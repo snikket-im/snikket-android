@@ -14,8 +14,11 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
 import com.google.common.util.concurrent.FutureCallback;
@@ -551,15 +554,17 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void receiveContentModify(final JinglePacket jinglePacket) {
+        // TODO check session accepted
         final Map<String, Content.Senders> modification =
                 Maps.transformEntries(
                         jinglePacket.getJingleContents(), (key, value) -> value.getSenders());
-        respondOk(jinglePacket);
+        final boolean isInitiator = isInitiator();
         final RtpContentMap currentOutgoing = this.outgoingContentAdd;
+        final RtpContentMap remoteContentMap = this.getRemoteContentMap();
         final Set<String> currentOutgoingMediaIds = currentOutgoing == null ? Collections.emptySet() : currentOutgoing.contents.keySet();
         Log.d(Config.LOGTAG, "receiveContentModification(" + modification + ")");
         if (currentOutgoing != null && currentOutgoingMediaIds.containsAll(modification.keySet())) {
-            final boolean isInitiator = isInitiator();
+            respondOk(jinglePacket);
             final RtpContentMap modifiedContentMap;
             try {
                 modifiedContentMap = currentOutgoing.modifiedSendersChecked(isInitiator, modification);
@@ -570,16 +575,70 @@ public class JingleRtpConnection extends AbstractJingleConnection
             }
             this.outgoingContentAdd = modifiedContentMap;
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid()+": processed content-modification for pending content-add");
+        } else if (remoteContentMap != null && remoteContentMap.contents.keySet().containsAll(modification.keySet())) {
+            respondOk(jinglePacket);
+            final RtpContentMap modifiedRemoteContentMap;
+            try {
+                modifiedRemoteContentMap = remoteContentMap.modifiedSendersChecked(isInitiator, modification);
+            } catch (final IllegalArgumentException e) {
+                webRTCWrapper.close();
+                sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
+                return;
+            }
+            final SessionDescription offer;
+            try {
+                offer = SessionDescription.of(modifiedRemoteContentMap, !isInitiator());
+            } catch (final IllegalArgumentException | NullPointerException e) {
+                Log.d(Config.LOGTAG, id.getAccount().getJid().asBareJid() + ": unable convert offer from content-modify to SDP", e);
+                webRTCWrapper.close();
+                sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
+                return;
+            }
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid()+": auto accepting content-modification");
+            this.autoAcceptContentModify(modifiedRemoteContentMap, offer);
         } else {
-            webRTCWrapper.close();
-            sendSessionTerminate(
-                    Reason.FAILED_APPLICATION,
-                    String.format(
-                            "%s only supports %s as a means to modify a not yet accepted %s",
-                            BuildConfig.APP_NAME,
-                            JinglePacket.Action.CONTENT_MODIFY,
-                            JinglePacket.Action.CONTENT_ADD));
+            Log.d(Config.LOGTAG,"received unsupported content modification "+modification);
+            respondWithItemNotFound(jinglePacket);
         }
+    }
+
+    private void autoAcceptContentModify(final RtpContentMap modifiedRemoteContentMap, final SessionDescription offer) {
+        this.setRemoteContentMap(modifiedRemoteContentMap);
+        final org.webrtc.SessionDescription sdp =
+                new org.webrtc.SessionDescription(
+                        org.webrtc.SessionDescription.Type.OFFER, offer.toString());
+        try {
+            this.webRTCWrapper.setRemoteDescription(sdp).get();
+            // auto accept is only done when we already have tracks
+            final SessionDescription answer = setLocalSessionDescription();
+            final RtpContentMap rtpContentMap = RtpContentMap.of(answer, isInitiator());
+            modifyLocalContentMap(rtpContentMap);
+            // we do not need to send an answer but do we have to resend the candidates currently in SDP?
+            //resendCandidatesFromSdp(answer);
+            webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
+        } catch (final Exception e) {
+            Log.d(Config.LOGTAG, "unable to accept content add", Throwables.getRootCause(e));
+            webRTCWrapper.close();
+            sendSessionTerminate(Reason.FAILED_APPLICATION);
+        }
+    }
+
+    private void resendCandidatesFromSdp(final SessionDescription answer) {
+        final ImmutableMultimap.Builder<String, IceUdpTransportInfo.Candidate> candidateBuilder = new ImmutableMultimap.Builder<>();
+        for(final SessionDescription.Media media : answer.media) {
+            final String mid = Iterables.getFirst(media.attributes.get("mid"), null);
+            if (Strings.isNullOrEmpty(mid)) {
+                continue;
+            }
+            for(final String sdpCandidate : media.attributes.get("candidate")) {
+                final IceUdpTransportInfo.Candidate candidate = IceUdpTransportInfo.Candidate.fromSdpAttributeValue(sdpCandidate, null);
+                if (candidate != null) {
+                    candidateBuilder.put(mid,candidate);
+                }
+            }
+        }
+        final ImmutableMultimap<String, IceUdpTransportInfo.Candidate> candidates = candidateBuilder.build();
+        sendTransportInfo(candidates);
     }
 
     private void receiveContentReject(final JinglePacket jinglePacket) {
@@ -1942,6 +2001,11 @@ public class JingleRtpConnection extends AbstractJingleConnection
         send(jinglePacket);
     }
 
+    private void sendTransportInfo(final Multimap<String, IceUdpTransportInfo.Candidate> candidates) {
+        // TODO send all candidates in one transport-info
+    }
+
+
     private void send(final JinglePacket jinglePacket) {
         jinglePacket.setTo(id.with);
         xmppConnectionService.sendIqPacket(id.account, jinglePacket, this::handleIqResponse);
@@ -2026,6 +2090,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private void respondWithOutOfOrder(final JinglePacket jinglePacket) {
         respondWithJingleError(jinglePacket, "out-of-order", "unexpected-request", "wait");
+    }
+
+    private void respondWithItemNotFound(final JinglePacket jinglePacket) {
+        respondWithJingleError(jinglePacket, null, "item-not-found", "cancel");
     }
 
     void respondWithJingleError(
