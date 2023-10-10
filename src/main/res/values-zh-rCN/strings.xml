@@ -699,7 +699,7 @@
     <string name="message">消息</string>
     <string name="private_messages_are_disabled">禁止私信</string>
     <string name="huawei_protected_apps">受保护的应用</string>
-    <string name="huawei_protected_apps_summary">为了在屏幕关闭时也可收到消息提醒，你需要将 Conversations 加入受保护的应用列表。</string>
+    <string name="huawei_protected_apps_summary">为了在屏幕关闭时也能收到消息提醒，你需要将 Conversations 加入受保护的应用列表。</string>
     <string name="mtm_accept_cert">接受未知的证书？</string>
     <string name="mtm_trust_anchor">服务器证书未由已知证书机构签发。</string>
     <string name="mtm_accept_servername">接受不匹配的服务器名称？</string>
