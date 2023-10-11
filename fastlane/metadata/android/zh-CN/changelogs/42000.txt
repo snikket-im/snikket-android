@@ -1,0 +1,4 @@
+* 能够选择来电铃声
+* 修复 OpenKeychain 5.6+ 的 OpenPGP 密钥 ID 发现问题
+* 正确验证 punycode TLS 证书
+* 提高 RTP 会话建立（呼叫）的稳定性
