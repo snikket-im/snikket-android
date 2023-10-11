@@ -150,7 +150,9 @@
     <string name="error_compressing_image">Impossible de convertir l\'image</string>
     <string name="error_file_not_found">Impossible de trouver le fichier</string>
     <string name="error_io_exception">Erreur générale d\'E/S. Avez-vous encore de l\'espace libre ?</string>
-    <string name="error_security_exception_during_image_copy">L\'application utilisée ne donne pas la permission de lire l\'image.\n\n<small>Utilisez une autre application pour choisir une image.</small></string>
+    <string name="error_security_exception_during_image_copy">L\'application utilisée pour sélectionner cette image ne donne pas les autorisations nécessaires afin de lire le fichier.
+\n
+\n<small>Utilisez un autre gestionnaire de fichiers pour choisir une image</small>.</string>
     <string name="error_security_exception">L\'app avec laquelle vous avez partagé ce fichier n\'a pas fourni assez de permissions.</string>
     <string name="account_status_unknown">Inconnu</string>
     <string name="account_status_disabled">Désactivé temporairement</string>
@@ -182,7 +184,7 @@
     <string name="unpublish_pgp">Supprimer la clé publique OpenPGP</string>
     <string name="unpublish_pgp_message">Êtes-vous sûr de vouloir supprimer votre clé publique OpenPGP de votre annonce de présence ?\nVos contacts ne pourront plus vous envoyer de message chiffrés avec OpenPGP.</string>
     <string name="openpgp_has_been_published">Clé publique OpenPGP publiée.</string>
-    <string name="mgmt_account_enable">Activer</string>
+    <string name="mgmt_account_enable">Activer le compter</string>
     <string name="mgmt_account_delete_confirm_text">Êtes-vous sûr de vouloir supprimer votre compte \? Supprimer votre compte effacera l\'historique de vos conversations</string>
     <string name="attach_record_voice">Enregistrer un son</string>
     <string name="account_settings_jabber_id">Adresse XMPP</string>
@@ -276,7 +278,9 @@
     <string name="enable">Activer</string>
     <string name="conference_requires_password">Le groupe requiert un mot de passe</string>
     <string name="enter_password">Entrer le mot de passe</string>
-    <string name="request_presence_updates">Veuillez demander à votre contact de partager ses mises à jour de disponibilité.\n\n<small>Elles seront utilisées pour déterminer l\'application qu\'il utilise.</small></string>
+    <string name="request_presence_updates">Veuillez demander à votre contact de partager ses mises à jour de disponibilité.
+\n
+\n<small>Elles seront utilisées pour déterminer quelle application de discussion il utilise</small>.</string>
     <string name="request_now">Demander maintenant</string>
     <string name="ignore">Ignorer</string>
     <string name="without_mutual_presence_updates"><b>Attention :</b> peut poser problème si l\'un des deux correspondants n\'a pas activé les mises à jour de disponibilité.\n\n<small>Vérifiez dans « Détails du contact » que vous y avez bien souscrit.</small></string>
@@ -521,7 +525,9 @@
     <string name="large_images_only">Grandes images seulement</string>
     <string name="battery_optimizations_enabled">Optimisations de batterie activées</string>
     <string name="battery_optimizations_enabled_explained">Votre appareil applique d\'importantes optimisations de batterie pour %1$s pouvant entraîner des retards de notifications, voire des pertes de messages.\nIl est recommandé de les désactiver.</string>
-    <string name="battery_optimizations_enabled_dialog">Votre appareil applique d\'importantes optimisations de batterie pour %1$s pouvant entraîner des retards de notifications, voire des pertes de messages.\nVous allez être invité à les désactiver.</string>
+    <string name="battery_optimizations_enabled_dialog">Votre appareil applique d\'importantes optimisations de batterie pour %1$s pouvant entraîner des retards de notifications, voire des pertes de messages.
+\n
+\nVous allez être invité à les désactiver.</string>
     <string name="disable">Désactiver</string>
     <string name="selection_too_large">La zone sélectionnée est trop grande</string>
     <string name="no_accounts">(Aucun compte activé)</string>
@@ -785,7 +791,7 @@
     <string name="choose_a_country">Choisissez un pays</string>
     <string name="phone_number">Numéro de téléphone</string>
     <string name="verify_your_phone_number">Vérifier votre numéro de téléphone</string>
-    <string name="enter_country_code_and_phone_number">Quicksy va envoyer un message SMS (des frais opérateurs sont possibles) pour vérifier votre numéro de téléphone. Entrez votre code pays et votre No de téléphone.</string>
+    <string name="enter_country_code_and_phone_number">Quicksy va envoyer un message SMS (des frais opérateurs sont possibles) pour vérifier votre numéro de téléphone. Saisissez votre code de pays et votre numéro de téléphone :</string>
     <string name="we_will_be_verifying"><![CDATA[Nous vérifierons le numéro de téléphone<br/><br/><b>%s</b><br/><br/>. Est-ce correct ou souhaitez-vous modifier le numéro ?]]></string>
     <string name="not_a_valid_phone_number">%s n\'est pas un numéro de téléphone valide.</string>
     <string name="please_enter_your_phone_number">Veuillez saisir votre numéro de téléphone.</string>
@@ -1026,4 +1032,8 @@
     <string name="plain_text_document">Document texte</string>
     <string name="account_status_temporary_auth_failure">Échec temporaire de l\'authentification</string>
     <string name="delete_avatar">Supprimer l\'avatar</string>
+    <string name="outdated_backup_file_format">Vous essayez d\'importer un format de fichier de sauvegarde obsolète</string>
+    <string name="audiobook">Livre audio</string>
+    <string name="unified_push_distributor">Distributeur UnifiedPush</string>
+    <string name="restore_warning_continued">Ne tentez pas de restaurer des sauvegardes que vous n\'avez pas créées vous-même !</string>
 </resources>
