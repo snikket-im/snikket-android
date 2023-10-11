@@ -99,11 +99,11 @@ Learn more about [conversations.im Jabber/XMPP domain hosting](https://account.c
 ##### Running your own
 If you already have a server somewhere and are willing and able to put the necessary work in you can run your own XMPP server.
 
-As of 2019 we recommend you use [ejabberd](https://ejabberd.im). The default configuration file already enables everything you need to pass the [Conversations Compliance Suite](https://compliance.conversations.im). Make sure your Linux distribution ships a fairly recent version.
+As of 2023 XMPP has reached a level of maturity where all major XMPP servers ([ejabberd](https://ejabberd.im), [Prosody](https://prosody.im), [Openfire](https://www.igniterealtime.org/projects/openfire/), [Tigase](https://tigase.net/xmpp-server/)) should work well with Conversations.
 
-With a little bit of effort [Prosody](https://prosody.im) can be configured to support all necessary extensions as well. However you will have to rely on so called [Community Modules](https://modules.prosody.im/) of varying quality. Prosody can be interesting to people who like to modify their server and create / prototype own modules.
+Interoperability with Prosody and ejabberd is tested fairly regularly just because of their market share but we occasionally test with other servers too and fix issues as soon as we are being made aware of them.
 
-Performance wise - for small deployments - both ejabberd and Prosody should be fine. 
+The default configurations are usually fine but you might want to use the [Conversations Compliance Suite](https://compliance.conversations.im) after install just to be sure.
 
 #### Where can I set up a custom hostname / port
 Conversations will automatically look up the SRV records for your domain name
