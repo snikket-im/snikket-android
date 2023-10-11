@@ -61,6 +61,7 @@ import eu.siacs.conversations.utils.IP;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
@@ -352,28 +353,36 @@ public class JingleRtpConnection extends AbstractJingleConnection
             final JinglePacket jinglePacket, final RtpContentMap contentMap) {
         final Set<Map.Entry<String, RtpContentMap.DescriptionTransport>> candidates =
                 contentMap.contents.entrySet();
-        if (this.state == State.SESSION_ACCEPTED) {
-            // zero candidates + modified credentials are an ICE restart offer
-            if (checkForIceRestart(jinglePacket, contentMap)) {
-                return;
-            }
-            respondOk(jinglePacket);
-            try {
-                processCandidates(candidates);
-            } catch (final WebRTCWrapper.PeerConnectionNotInitialized e) {
-                Log.w(
-                        Config.LOGTAG,
-                        id.account.getJid().asBareJid()
-                                + ": PeerConnection was not initialized when processing transport info. this usually indicates a race condition that can be ignored");
-            }
-        } else {
+        final RtpContentMap remote = getRemoteContentMap();
+        final Set<String> remoteContentIds = remote == null ? Collections.emptySet() : remote.contents.keySet();
+        if (Collections.disjoint(remoteContentIds, contentMap.contents.keySet())) {
+            Log.d(Config.LOGTAG,"received transport-info for unknown contents "+contentMap.contents.keySet()+" (known: "+remoteContentIds+")");
             respondOk(jinglePacket);
             pendingIceCandidates.addAll(candidates);
+            return;
+        }
+        if (this.state != State.SESSION_ACCEPTED) {
+            Log.d(Config.LOGTAG,"received transport-info prematurely. adding to backlog");
+            respondOk(jinglePacket);
+            pendingIceCandidates.addAll(candidates);
+            return;
+        }
+        // zero candidates + modified credentials are an ICE restart offer
+        if (checkForIceRestart(jinglePacket, contentMap)) {
+            return;
+        }
+        respondOk(jinglePacket);
+        try {
+            processCandidates(candidates);
+        } catch (final WebRTCWrapper.PeerConnectionNotInitialized e) {
+            Log.w(
+                    Config.LOGTAG,
+                    id.account.getJid().asBareJid()
+                            + ": PeerConnection was not initialized when processing transport info. this usually indicates a race condition that can be ignored");
         }
     }
 
     private void receiveContentAdd(final JinglePacket jinglePacket) {
-        // TODO check if in session accepted
         final RtpContentMap modification;
         try {
             modification = RtpContentMap.of(jinglePacket);
@@ -810,7 +819,23 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
         if (contentAddition.equals(ContentAddition.summary(incomingContentAdd))) {
             this.incomingContentAdd = null;
-            acceptContentAdd(contentAddition, incomingContentAdd);
+            final Set<Content.Senders> senders = incomingContentAdd.getSenders();
+            Log.d(Config.LOGTAG,"senders of incoming content-add: "+senders);
+            if (senders.equals(Content.Senders.receiveOnly(isInitiator()))) {
+                Log.d(Config.LOGTAG,"content addition is receive only. we want to upgrade to 'both'");
+                final RtpContentMap modifiedSenders = incomingContentAdd.modifiedSenders(Content.Senders.BOTH);
+                final JinglePacket proposedContentModification =  modifiedSenders.toStub().toJinglePacket(JinglePacket.Action.CONTENT_MODIFY, id.sessionId);
+                proposedContentModification.setTo(id.with);
+                xmppConnectionService.sendIqPacket(id.account, proposedContentModification, (account, response) -> {
+                    if (response.getType() == IqPacket.TYPE.RESULT) {
+                        Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": remote has accepted our upgrade to senders=both");
+                        acceptContentAdd(ContentAddition.summary(modifiedSenders), modifiedSenders);
+                    } else {
+                        Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": remote has rejected our upgrade to senders=both");
+                        acceptContentAdd(contentAddition, incomingContentAdd);
+                    }
+                });
+            }
         } else {
             throw new IllegalStateException("Accepted content add does not match pending content-add");
         }
@@ -862,6 +887,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     id.getAccount().getJid().asBareJid()
                             + ": sending content-accept "
                             + ContentAddition.summary(contentAcceptMap));
+
+            addIceCandidatesFromBlackLog();
+
             modifyLocalContentMap(rtpContentMap);
             final ListenableFuture<RtpContentMap> future = prepareOutgoingContentMap(contentAcceptMap);
             Futures.addCallback(

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
 
 import java.util.Locale;
 import java.util.Set;
@@ -145,6 +146,10 @@ public class Content extends Element {
             // present, "sendrecv" SHOULD be assumed as the default
             // https://www.rfc-editor.org/rfc/rfc4566
             return BOTH;
+        }
+
+        public static Set<Senders> receiveOnly(final boolean initiator) {
+            return ImmutableSet.of(initiator ? RESPONDER : INITIATOR);
         }
 
         @Override
