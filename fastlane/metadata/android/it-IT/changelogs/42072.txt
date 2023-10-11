@@ -1,0 +1,3 @@
+* Aggiornata la dipendenza libwebrtc a M117 e libvpx
+* Ritorno a AAC per i messaggi vocali
+* Supporta impostazioni di lingua per app
