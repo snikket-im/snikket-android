@@ -93,7 +93,7 @@ public class NetworkDataSource extends DNSDataSource {
             } catch (final IOException e) {
                 ioExceptions.add(e);
             } catch (final InterruptedException e) {
-                return null;
+                throw new IOException(e);
             }
         }
         MultipleIoException.throwIfRequired(ioExceptions);

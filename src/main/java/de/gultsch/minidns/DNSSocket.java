@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
@@ -37,6 +39,7 @@ import javax.net.ssl.SSLSocketFactory;
 final class DNSSocket implements Closeable {
 
     private static final int CONNECT_TIMEOUT = 5_000;
+    public static final int QUERY_TIMEOUT = 5_000;
 
     private final Semaphore semaphore = new Semaphore(1);
     private final Map<Integer, SettableFuture<DNSMessage>> inFlightQueries = new HashMap<>();
@@ -109,6 +112,7 @@ final class DNSSocket implements Closeable {
                 new InetSocketAddress(dnsServer.inetAddress, dnsServer.port);
         final Socket socket = new Socket();
         socket.connect(socketAddress, CONNECT_TIMEOUT);
+        socket.setSoTimeout(QUERY_TIMEOUT);
         return DNSSocket.of(socket);
     }
 
@@ -120,9 +124,11 @@ final class DNSSocket implements Closeable {
             final SocketAddress socketAddress =
                     new InetSocketAddress(dnsServer.inetAddress, dnsServer.port);
             sslSocket = (SSLSocket) factory.createSocket(dnsServer.inetAddress, dnsServer.port);
-            sslSocket.connect(socketAddress, 5_000);
+            sslSocket.connect(socketAddress, CONNECT_TIMEOUT);
+            sslSocket.setSoTimeout(QUERY_TIMEOUT);
         } else {
             sslSocket = (SSLSocket) factory.createSocket(dnsServer.hostname, dnsServer.port);
+            sslSocket.setSoTimeout(QUERY_TIMEOUT);
             final SSLSession session = sslSocket.getSession();
             final Certificate[] peerCertificates = session.getPeerCertificates();
             if (peerCertificates.length == 0 || !(peerCertificates[0] instanceof X509Certificate)) {
@@ -138,7 +144,7 @@ final class DNSSocket implements Closeable {
 
     public DNSMessage query(final DNSMessage query) throws IOException, InterruptedException {
         try {
-            return queryAsync(query).get();
+            return queryAsync(query).get(QUERY_TIMEOUT, TimeUnit.MILLISECONDS);
         } catch (final ExecutionException e) {
             final Throwable cause = e.getCause();
             if (cause instanceof IOException) {
@@ -146,6 +152,8 @@ final class DNSSocket implements Closeable {
             } else {
                 throw new IOException(e);
             }
+        } catch (final TimeoutException e) {
+            throw new IOException(e);
         }
     }
 

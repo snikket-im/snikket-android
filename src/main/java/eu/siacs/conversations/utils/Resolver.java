@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.common.base.Throwables;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.Inet4Address;
@@ -113,7 +115,7 @@ public class Resolver {
         return port == 443 || port == 5223;
     }
 
-    public static List<Result> resolve(String domain) {
+    public static List<Result> resolve(final String domain) {
         final  List<Result> ipResults = fromIpAddress(domain);
         if (ipResults.size() > 0) {
             return ipResults;
@@ -127,8 +129,10 @@ public class Resolver {
                 synchronized (results) {
                     results.addAll(list);
                 }
-            } catch (Throwable throwable) {
-                Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving SRV record (direct TLS)", throwable);
+            } catch (final Throwable throwable) {
+                if (!(Throwables.getRootCause(throwable) instanceof InterruptedException)) {
+                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving SRV record (direct TLS)", throwable);
+                }
             }
         });
         threads[1] = new Thread(() -> {
@@ -137,8 +141,10 @@ public class Resolver {
                 synchronized (results) {
                     results.addAll(list);
                 }
-            } catch (Throwable throwable) {
-                Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving SRV record (STARTTLS)", throwable);
+            } catch (final Throwable throwable) {
+                if (!(Throwables.getRootCause(throwable) instanceof InterruptedException)) {
+                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving SRV record (STARTTLS)", throwable);
+                }
             }
         });
         threads[2] = new Thread(() -> {
@@ -261,8 +267,10 @@ public class Resolver {
                     results.addAll(resolveNoSrvRecords(cname.name, false));
                 }
             }
-        } catch (Throwable throwable) {
-            Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + "error resolving fallback records", throwable);
+        } catch (final Throwable throwable) {
+            if (!(Throwables.getRootCause(throwable) instanceof InterruptedException)) {
+                Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + "error resolving fallback records", throwable);
+            }
         }
         results.add(Result.createDefault(dnsName));
         return results;
