@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_notification_grace_period_summary">发现在其它设备上的活动后，Conversations保持安静的时间</string>
-    <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您可以帮助 Quicksy 的持续开发</string>
-    <string name="pref_broadcast_last_activity_summary">让你的所有联系人知道你使用Quicksy的时间</string>
-    <string name="huawei_protected_apps_summary">为了在屏幕关闭时也能收到消息提醒，您需要将 Quicksy 加入受保护的应用列表。</string>
+    <string name="pref_notification_grace_period_summary">Quicksy 发现其他设备上的活动后保持安静的时间长度</string>
+    <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，你可以帮助 Quicksy 的持续开发</string>
+    <string name="pref_broadcast_last_activity_summary">让所有联系人知道你在使用 Quicksy</string>
+    <string name="huawei_protected_apps_summary">为了在屏幕关闭时也能收到消息提醒，你需要将 Quicksy 加入受保护的应用列表。</string>
     <string name="set_profile_picture">Quicksy 个人资料图片</string>
-    <string name="not_available_in_your_country">Quicksy在您的国家无服务。</string>
+    <string name="not_available_in_your_country">Quicksy 在你所在的国家/地区无法使用。</string>
     <string name="unable_to_verify_server_identity">无法验证服务器身份。</string>
     <string name="unknown_security_error">未知安全错误。</string>
-    <string name="timeout_while_connecting_to_server">连接到服务器时超时。</string>
+    <string name="timeout_while_connecting_to_server">连接服务器超时。</string>
 </resources>
