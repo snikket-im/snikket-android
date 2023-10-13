@@ -2,7 +2,7 @@ Quicksy 是流行的 Jabber/XMPP 客户端 Conversations 的衍生产品，具�
 
 你只需用电话号码注册，Quicksy 就会自动—根据你通讯录中的电话号码—向你推荐可能的联系人。
 
-从本质上讲，Quicksy 是一个成熟的 Jabber 客户端，可让你与任何公共联合服务器上的任何用户进行交流。同样，只需将 +phonenumber@quicksy.im 添加到你的通讯录中，即可从外部联系 Quicksy 上的用户。
+从本质上讲，Quicksy 是一个成熟的 Jabber 客户端，可让你与任何公共联合服务器上的任何用户进行交流。同样，只需将 +phonenumber@quicksy.im 添加到你的联系人列表中，即可从外部联系 Quicksy 上的用户。
 
 除了联系人同步之外，用户界面尽可能地接近 Conversations。这使得用户最终可以从 Quicksy 迁移到 Conversations，而无需重新学习应用程序的工作方式。
 
