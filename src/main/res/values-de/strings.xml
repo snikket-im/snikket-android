@@ -1012,4 +1012,5 @@
     <string name="restore_warning_continued">Versuche nicht, Backups wiederherzustellen, die du nicht selbst erstellt hast!</string>
     <string name="outdated_backup_file_format">Du versuchst, ein veraltetes Sicherungsdateiformat zu importieren</string>
     <string name="audiobook">Hörbuch</string>
+    <string name="reconnect_on_other_host">Verbindung auf anderem Host wiederherstellen</string>
 </resources>
