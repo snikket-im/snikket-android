@@ -11,7 +11,7 @@
     <string name="action_add_account">添加账号</string>
     <string name="action_edit_contact">编辑名称</string>
     <string name="action_add_phone_book">添加到通讯录</string>
-    <string name="action_delete_contact">从通讯录中删除</string>
+    <string name="action_delete_contact">从名册中删除</string>
     <string name="action_block_contact">封禁联系人</string>
     <string name="action_unblock_contact">解封联系人</string>
     <string name="action_block_domain">封禁域名</string>
@@ -205,8 +205,8 @@
     <string name="server_info_mam">XEP-0313：消息存档管理</string>
     <string name="server_info_carbon_messages">XEP-0280：消息抄送</string>
     <string name="server_info_csi">XEP-0352：客户端状态指示</string>
-    <string name="server_info_blocking">XEP-0191：屏蔽指令</string>
-    <string name="server_info_roster_version">XEP-0237：通讯录版本管理</string>
+    <string name="server_info_blocking">XEP-0191：封禁指令</string>
+    <string name="server_info_roster_version">XEP-0237：名册版本控制</string>
     <string name="server_info_stream_management">XEP-0198：流管理</string>
     <string name="server_info_external_service_discovery">XEP-0215：发现外部服务</string>
     <string name="server_info_pep">XEP-0163：个人事件协议（头像/OMEMO）</string>
@@ -1023,4 +1023,5 @@
     <string name="restore_warning_continued">不要尝试恢复你尚未自行创建的备份！</string>
     <string name="outdated_backup_file_format">你正尝试导入过时的备份文件格式</string>
     <string name="audiobook">有声书</string>
+    <string name="reconnect_on_other_host">重新连接其他主机</string>
 </resources>
