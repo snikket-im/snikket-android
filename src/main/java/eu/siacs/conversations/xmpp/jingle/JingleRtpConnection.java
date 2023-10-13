@@ -553,13 +553,13 @@ public class JingleRtpConnection extends AbstractJingleConnection
             sendSessionTerminate(Reason.FAILED_APPLICATION, cause.getMessage());
             return;
         }
-        processCandidates(receivedContentAccept.contents.entrySet());
-        updateEndUserState();
         Log.d(
                 Config.LOGTAG,
                 id.getAccount().getJid().asBareJid()
                         + ": remote has accepted content-add "
                         + ContentAddition.summary(receivedContentAccept));
+        processCandidates(receivedContentAccept.contents.entrySet());
+        updateEndUserState();
     }
 
     private void receiveContentModify(final JinglePacket jinglePacket) {

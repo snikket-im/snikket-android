@@ -787,6 +787,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         BIND_FAILURE,
         HOST_UNKNOWN,
         STREAM_ERROR,
+        SEE_OTHER_HOST,
         STREAM_OPENING_ERROR,
         POLICY_VIOLATION,
         PAYMENT_REQUIRED,
@@ -874,6 +875,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                     return R.string.account_status_stream_opening_error;
                 case PAYMENT_REQUIRED:
                     return R.string.payment_required;
+                case SEE_OTHER_HOST:
+                    return R.string.reconnect_on_other_host;
                 case MISSING_INTERNET_PERMISSION:
                     return R.string.missing_internet_permission;
                 case TEMPORARY_AUTH_FAILURE:

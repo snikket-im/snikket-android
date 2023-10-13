@@ -189,6 +189,8 @@ public class XmppConnection implements Runnable {
     private HashedToken.Mechanism hashTokenRequest;
     private HttpUrl redirectionUrl = null;
     private String verifiedHostname = null;
+    private Resolver.Result currentResolverResult;
+    private Resolver.Result seeOtherHostResolverResult;
     private volatile Thread mThread;
     private CountDownLatch mStreamCountDownLatch;
 
@@ -360,7 +362,12 @@ public class XmppConnection implements Runnable {
                                         + storedBackupResult);
                     }
                 }
-                for (Iterator<Resolver.Result> iterator = results.iterator();
+                final Resolver.Result seeOtherHost = this.seeOtherHostResolverResult;
+                if (seeOtherHost != null) {
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": injected see-other-host on position 0");
+                    results.add(0, seeOtherHost);
+                }
+                for (final Iterator<Resolver.Result> iterator = results.iterator();
                         iterator.hasNext(); ) {
                     final Resolver.Result result = iterator.next();
                     if (Thread.currentThread().isInterrupted()) {
@@ -374,7 +381,6 @@ public class XmppConnection implements Runnable {
                         features.encryptionEnabled = result.isDirectTls();
                         verifiedHostname =
                                 result.isAuthenticated() ? result.getHostname().toString() : null;
-                        Log.d(Config.LOGTAG, "verified hostname " + verifiedHostname);
                         final InetSocketAddress addr;
                         if (result.getIp() != null) {
                             addr = new InetSocketAddress(result.getIp(), result.getPort());
@@ -422,6 +428,8 @@ public class XmppConnection implements Runnable {
                                 mXmppConnectionService.databaseBackend.saveResolverResult(
                                         domain, result);
                             }
+                            this.currentResolverResult = result;
+                            this.seeOtherHostResolverResult = null;
                             break; // successfully connected to server that speaks xmpp
                         } else {
                             FileBackend.close(localSocket);
@@ -2166,6 +2174,21 @@ public class XmppConnection implements Runnable {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": policy violation. " + text);
             failPendingMessages(text);
             throw new StateChangingException(Account.State.POLICY_VIOLATION);
+        } else if (streamError.hasChild("see-other-host")) {
+            final String seeOtherHost = streamError.findChildContent("see-other-host");
+            final Resolver.Result currentResolverResult = this.currentResolverResult;
+            if (Strings.isNullOrEmpty(seeOtherHost) || currentResolverResult == null) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": stream error " + streamError);
+                throw new StateChangingException(Account.State.STREAM_ERROR);
+            }
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": see other host: "+seeOtherHost+" "+currentResolverResult);
+            final Resolver.Result seeOtherResult = currentResolverResult.seeOtherHost(seeOtherHost);
+            if (seeOtherResult != null) {
+                this.seeOtherHostResolverResult = seeOtherResult;
+                throw new StateChangingException(Account.State.SEE_OTHER_HOST);
+            } else {
+                throw new StateChangingException(Account.State.STREAM_ERROR);
+            }
         } else {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": stream error " + streamError);
             throw new StateChangingException(Account.State.STREAM_ERROR);
