@@ -1097,22 +1097,26 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             this.inviter = inviter;
         }
 
-        public boolean execute(Account account) {
-            if (jid != null) {
-                Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, jid, true, false);
-                if (conversation.getMucOptions().online()) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received invite to " + jid + " but muc is considered to be online");
-                    mXmppConnectionService.mucSelfPingAndRejoin(conversation);
-                } else {
-                    conversation.getMucOptions().setPassword(password);
-                    mXmppConnectionService.databaseBackend.updateConversation(conversation);
-                    final Contact contact = inviter != null ? account.getRoster().getContactFromContactList(inviter) : null;
-                    mXmppConnectionService.joinMuc(conversation, contact != null && contact.mutualPresenceSubscription());
-                    mXmppConnectionService.updateConversationUi();
-                }
-                return true;
+        public boolean execute(final Account account) {
+            if (this.jid == null) {
+                return false;
             }
-            return false;
+            final Contact contact = this.inviter != null ? account.getRoster().getContact(this.inviter) : null;
+            if (contact != null && contact.isBlocked()) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ignore invite from "+contact.getJid()+" because contact is blocked");
+                return false;
+            }
+            final Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, jid, true, false);
+            if (conversation.getMucOptions().online()) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received invite to " + jid + " but muc is considered to be online");
+                mXmppConnectionService.mucSelfPingAndRejoin(conversation);
+            } else {
+                conversation.getMucOptions().setPassword(password);
+                mXmppConnectionService.databaseBackend.updateConversation(conversation);
+                mXmppConnectionService.joinMuc(conversation, contact != null && contact.showInContactList());
+                mXmppConnectionService.updateConversationUi();
+            }
+            return true;
         }
     }
 }
