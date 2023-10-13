@@ -12,7 +12,7 @@
     <string name="magic_create_text_fixed">你已受邀加入 %1$s。已为你选择了一个用户名。我们将指导你完成创建账号的过程。
 \n你可以使用完整的 XMPP 地址来与其他提供者的用户进行交流。</string>
     <string name="your_server_invitation">你的服务器邀请</string>
-    <string name="improperly_formatted_provisioning">格式不正确的配置代码</string>
+    <string name="improperly_formatted_provisioning">配置代码格式不当</string>
     <string name="tap_share_button_send_invite">点击分享按钮向你的联系人发送加入 %1$s 的邀请。</string>
     <string name="if_contact_is_nearby_use_qr">如果你的联系人在附近，他们也可以扫描下面的代码来接受你的邀请。</string>
     <string name="easy_invite_share_text">加入 %1$s 和我聊天：%2$s</string>
