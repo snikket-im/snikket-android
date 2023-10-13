@@ -3,7 +3,7 @@
     <string name="pick_a_server">选择你的 XMPP 提供者</string>
     <string name="use_conversations.im">使用 conversations.im</string>
     <string name="create_new_account">创建新账号</string>
-    <string name="do_you_have_an_account">你已经有一个 XMPP 账号了吗？如果你之前使用过其他的 XMPP 客户端，那么你已经拥有这种账号了。如果没有的话，你现在可以创建一个。
+    <string name="do_you_have_an_account">你已经有一个 XMPP 账号了吗？如果你已经在使用不同的 XMPP 客户端或者以前使用过 Conversations，那么你已经拥有这种账号了。如果没有的话，你现在可以创建一个。
 \n提示：有些电子邮件服务也提供 XMPP 账号。</string>
     <string name="server_select_text">XMPP 是独立于提供者的即时消息网络。你可以将此客户端与任意 XMPP 服务器一同使用。
 \n不过，你可以很容易地在 conversations.im 上创建一个账号；它是特别适合与“Conversations”一起使用的提供者。</string>
@@ -16,5 +16,5 @@
     <string name="tap_share_button_send_invite">点击分享按钮向你的联系人发送加入 %1$s 的邀请。</string>
     <string name="if_contact_is_nearby_use_qr">如果你的联系人在附近，他们也可以扫描下面的代码来接受你的邀请。</string>
     <string name="easy_invite_share_text">加入 %1$s 和我聊天：%2$s</string>
-    <string name="share_invite_with">分享邀请…</string>
+    <string name="share_invite_with">分享邀请至…</string>
 </resources>
