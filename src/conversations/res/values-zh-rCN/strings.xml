@@ -4,7 +4,7 @@
     <string name="use_conversations.im">使用 conversations.im</string>
     <string name="create_new_account">创建新账号</string>
     <string name="do_you_have_an_account">你已经有一个 XMPP 账号了吗？如果你已经在使用不同的 XMPP 客户端或者以前使用过 Conversations，那么你已经拥有这种账号了。如果没有的话，你现在可以创建一个。
-\n提示：有些电子邮件服务也提供 XMPP 账号。</string>
+\n提示：有些电子邮件提供者也提供 XMPP 账号。</string>
     <string name="server_select_text">XMPP 是独立于提供者的即时消息网络。你可以将此客户端与任意 XMPP 服务器一同使用。
 \n不过，你可以很容易地在 conversations.im 上创建一个账号；它是特别适合与“Conversations”一起使用的提供者。</string>
     <string name="magic_create_text_on_x">你已受邀加入 %1$s。我们将指导你完成创建账号的过程。
