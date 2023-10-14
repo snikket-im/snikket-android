@@ -1030,7 +1030,7 @@
     <string name="missed_call_timestamp">Пропущений виклик · %s</string>
     <string name="incoming_call_duration_timestamp">Вхідний виклик (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">Вихідний виклик (%s) · %s</string>
-    <string name="rtp_state_reconnecting">Повторне з\'єнання</string>
+    <string name="rtp_state_reconnecting">Повторне з\'єднання</string>
     <string name="reconnecting_call">Повторний виклик</string>
     <string name="reconnecting_video_call">Повторний відеовиклик</string>
     <string name="rtp_state_security_error">Проблема при перевірці</string>
@@ -1066,4 +1066,5 @@
     <string name="restore_warning_continued">Не намагайтеся відновити резервні копії, які створили не Ви!</string>
     <string name="outdated_backup_file_format">Ви намагаєтеся імпортувати файл резервної копії у застарілому форматі</string>
     <string name="audiobook">Аудіокнига</string>
+    <string name="reconnect_on_other_host">Відновити з\'єднання на іншому вузлі</string>
 </resources>
