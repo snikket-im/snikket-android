@@ -1015,4 +1015,5 @@
     <string name="restore_warning_continued">Non intentes restablecer unha copia de apoio que non tiveses creado ti!</string>
     <string name="outdated_backup_file_format">Estás intentando importar un ficheiro de apoio co formato antigo</string>
     <string name="audiobook">Audiolibro</string>
+    <string name="reconnect_on_other_host">Volver conectar noutro servidor</string>
 </resources>
