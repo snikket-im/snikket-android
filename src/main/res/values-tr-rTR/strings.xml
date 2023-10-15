@@ -148,7 +148,9 @@
     <string name="error_compressing_image">Görüntü dosyası dönüştürülemedi.</string>
     <string name="error_file_not_found">Dosya bulunamadı</string>
     <string name="error_io_exception">Genel G/Ç hatası. Depolama yeri kalmamış olabilir mi?</string>
-    <string name="error_security_exception_during_image_copy">Bu görüntüyü seçmekte kullandığınız uygulama, dosyanın okunması için yeterli izinleri sağlayamadı. Görüntüyü seçmek için farklı bir dosya yöneticisi kullan.</string>
+    <string name="error_security_exception_during_image_copy">Bu görüntüyü seçmekte kullandığınız uygulama, dosyanın okunması için yeterli izinleri sağlayamadı.
+\n
+\n<small>Görüntüyü seçmek için farklı bir dosya yöneticisi kullan</small>.</string>
     <string name="error_security_exception">Bu dosyayı paylaşmakta kullandığınız uygulama yeterince yetki sağlamamaktadır. </string>
     <string name="account_status_unknown">Bilinmeyen</string>
     <string name="account_status_disabled">Geçici olarak devre dışı</string>
