@@ -31,7 +31,6 @@ import eu.siacs.conversations.crypto.sasl.HashedToken;
 import eu.siacs.conversations.crypto.sasl.HashedTokenSha256;
 import eu.siacs.conversations.crypto.sasl.HashedTokenSha512;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
-import eu.siacs.conversations.crypto.sasl.ScramPlusMechanism;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.UIHelper;
@@ -326,6 +325,10 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         } else {
             return this.status;
         }
+    }
+
+    public boolean unauthorized() {
+        return this.status == State.UNAUTHORIZED || this.lastErrorStatus == State.UNAUTHORIZED;
     }
 
     public State getLastErrorStatus() {
