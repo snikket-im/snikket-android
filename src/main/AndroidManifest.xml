@@ -78,6 +78,7 @@
         android:allowBackup="true"
         android:appCategory="social"
         android:fullBackupContent="@xml/backup_content"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/new_launcher"
         android:label="@string/app_name"
@@ -88,7 +89,7 @@
         android:theme="@style/ConversationsTheme"
         tools:replace="android:label"
         android:localeConfig="@xml/locales_config"
-        tools:targetApi="q">
+        tools:targetApi="tiramisu">
 
         <meta-data
             android:name="com.google.android.gms.car.application"
@@ -101,7 +102,8 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                    tools:ignore="BatteryLife" />
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />
                 <action android:name="android.media.RINGER_MODE_CHANGED" />
             </intent-filter>
