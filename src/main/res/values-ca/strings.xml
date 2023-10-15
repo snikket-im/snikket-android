@@ -31,10 +31,7 @@
     <string name="minutes_ago">fa %d mins</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%dconverses no llegides </item>
-
-    
         <item quantity="other">%d converses no llegides</item>
-
     </plurals>
     <string name="sending">enviant…</string>
     <string name="message_decrypting">Desxifrant el missatge. Espereu…</string>
@@ -108,7 +105,9 @@
     <string name="no_pgp_key">No s\'ha trobat cap clau OpenPGP</string>
     <string name="contact_has_no_pgp_key">No es va poder xifrar el teu missatge perquè el teu contacte no està anunciant la seva clau pública.\n\n<small> Si us plau, demana-li al seu contacte que configuri OpenPGP.</small></string>
     <string name="no_pgp_keys">No s\'ha trobat cap clau OpenPGP</string>
-    <string name="contacts_have_no_pgp_keys">No es pot encriptar el teu missatge perquè els teus contactes no anuncien les seves claus públiques. Si us plau, demana\'ls que configurin OpenPGP.</string>
+    <string name="contacts_have_no_pgp_keys">No es pot encriptar el teu missatge perquè els teus contactes no anuncien les seves claus públiques.
+\n
+\n<small>Si us plau, demana\'ls que configurin OpenPGP.</small></string>
     <string name="pref_general">General</string>
     <string name="pref_accept_files">Accepta els fitxers</string>
     <string name="pref_accept_files_summary">Accepta fitxers automàticament amb una mida menor a…</string>
@@ -931,4 +930,4 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="unable_to_parse_invite">No es pot processar la invitació</string>
     <string name="server_does_not_support_easy_onboarding_invites">El servidor no admet la generació d\'invitacions</string>
     <string name="no_active_accounts_support_this">Cap compte actiu admet aquesta funció</string>
-    </resources>
+</resources>
