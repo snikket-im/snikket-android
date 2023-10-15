@@ -563,7 +563,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void receiveContentModify(final JinglePacket jinglePacket) {
-        // TODO check session accepted
+        if (this.state != State.SESSION_ACCEPTED) {
+            terminateWithOutOfOrder(jinglePacket);
+            return;
+        }
         final Map<String, Content.Senders> modification =
                 Maps.transformEntries(
                         jinglePacket.getJingleContents(), (key, value) -> value.getSenders());
