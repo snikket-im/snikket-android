@@ -1026,4 +1026,5 @@
     <string name="restore_warning_continued">Non tentare di ripristinare dei backup che non hai creato te stesso!</string>
     <string name="outdated_backup_file_format">Stai tentando di importare un formato di file di backup obsoleto</string>
     <string name="audiobook">Audiolibro</string>
+    <string name="reconnect_on_other_host">Riconnetti su altro host</string>
 </resources>
