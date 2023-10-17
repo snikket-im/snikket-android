@@ -1034,4 +1034,5 @@
     <string name="restore_warning_continued">Nu încercați să restaurați copii de rezervă pe care nu le-ați creat personal!</string>
     <string name="outdated_backup_file_format">Încercați să importați un fișier copie de rezervă format vechi</string>
     <string name="audiobook">Carte audio</string>
+    <string name="reconnect_on_other_host">Reconectat pe altă gazdă</string>
 </resources>
