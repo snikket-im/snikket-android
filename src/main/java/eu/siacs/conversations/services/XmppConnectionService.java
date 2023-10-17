@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
@@ -487,6 +488,7 @@ public class XmppConnectionService extends Service {
     private WakeLock wakeLock;
     private LruCache<String, Bitmap> mBitmapCache;
     private final BroadcastReceiver mInternalEventReceiver = new InternalEventReceiver();
+    private final BroadcastReceiver mInternalRestrictedEventReceiver = new RestrictedEventReceiver(Arrays.asList(TorServiceUtils.ACTION_STATUS));
     private final BroadcastReceiver mInternalScreenEventReceiver = new InternalEventReceiver();
 
     private static String generateFetchKey(Account account, final Avatar avatar) {
@@ -1236,16 +1238,26 @@ public class XmppConnectionService extends Service {
         toggleForegroundService();
         updateUnreadCountBadge();
         toggleScreenEventReceiver();
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(TorServiceUtils.ACTION_STATUS);
+        final IntentFilter systemBroadcastFilter = new IntentFilter();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             scheduleNextIdlePing();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+                systemBroadcastFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             }
-            intentFilter.addAction(NotificationManager.ACTION_INTERRUPTION_FILTER_CHANGED);
+            systemBroadcastFilter.addAction(NotificationManager.ACTION_INTERRUPTION_FILTER_CHANGED);
         }
-        registerReceiver(this.mInternalEventReceiver, intentFilter);
+        ContextCompat.registerReceiver(
+                this,
+                this.mInternalEventReceiver,
+                systemBroadcastFilter,
+                ContextCompat.RECEIVER_NOT_EXPORTED);
+        final IntentFilter exportedBroadcastFilter = new IntentFilter();
+        exportedBroadcastFilter.addAction(TorServiceUtils.ACTION_STATUS);
+        ContextCompat.registerReceiver(
+                this,
+                this.mInternalRestrictedEventReceiver,
+                exportedBroadcastFilter,
+                ContextCompat.RECEIVER_EXPORTED);
         mForceDuringOnCreate.set(false);
         toggleForegroundService();
         setupPhoneStateListener();
@@ -1315,6 +1327,7 @@ public class XmppConnectionService extends Service {
     public void onDestroy() {
         try {
             unregisterReceiver(this.mInternalEventReceiver);
+            unregisterReceiver(this.mInternalRestrictedEventReceiver);
             unregisterReceiver(this.mInternalScreenEventReceiver);
         } catch (final IllegalArgumentException e) {
             //ignored
@@ -1396,9 +1409,26 @@ public class XmppConnectionService extends Service {
 
     private void startForegroundOrCatch(final int id, final Notification notification) {
         try {
-            startForeground(id, notification);
-        } catch (final IllegalStateException e) {
-            Log.e(Config.LOGTAG,"Could not start foreground service", e);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                final int foregroundServiceType;
+                if (getSystemService(PowerManager.class)
+                        .isIgnoringBatteryOptimizations(getPackageName())) {
+                    foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED;
+                } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE;
+                } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA;
+                } else {
+                    foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE;
+                }
+                startForeground(id, notification, foregroundServiceType);
+            } else {
+                startForeground(id, notification);
+            }
+        } catch (final IllegalStateException | SecurityException e) {
+            Log.e(Config.LOGTAG, "Could not start foreground service", e);
         }
     }
 
@@ -5027,8 +5057,27 @@ public class XmppConnectionService extends Service {
     private class InternalEventReceiver extends BroadcastReceiver {
 
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(final Context context, final Intent intent) {
             onStartCommand(intent, 0, 0);
+        }
+    }
+
+    private class RestrictedEventReceiver extends BroadcastReceiver {
+
+        private final Collection<String> allowedActions;
+
+        private RestrictedEventReceiver(final Collection<String> allowedActions) {
+            this.allowedActions = allowedActions;
+        }
+
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            final String action = intent == null ? null : intent.getAction();
+            if (allowedActions.contains(action)) {
+                onStartCommand(intent,0,0);
+            } else {
+                Log.e(Config.LOGTAG,"restricting broadcast of event "+action);
+            }
         }
     }
 
