@@ -1045,4 +1045,5 @@
     <string name="restore_warning_continued">Nie próbuj przywracać kopii zapasowych, których nie utworzono samodzielnie!</string>
     <string name="outdated_backup_file_format">Próbujesz zaimportować plik kopii zapasowej o przestarzałym formacie</string>
     <string name="audiobook">Audiobook</string>
+    <string name="reconnect_on_other_host">Połącz się ponownie na innym hoście</string>
 </resources>
