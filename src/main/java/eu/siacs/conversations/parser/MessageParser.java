@@ -170,14 +170,19 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         return null;
     }
 
-    private Invite extractInvite(Element message) {
+    private Invite extractInvite(final Element message) {
         final Element mucUser = message.findChild("x", Namespace.MUC_USER);
         if (mucUser != null) {
-            Element invite = mucUser.findChild("invite");
+            final Element invite = mucUser.findChild("invite");
             if (invite != null) {
-                String password = mucUser.findChildContent("password");
-                Jid from = InvalidJid.getNullForInvalid(invite.getAttributeAsJid("from"));
-                Jid room = InvalidJid.getNullForInvalid(message.getAttributeAsJid("from"));
+                final String password = mucUser.findChildContent("password");
+                final Jid from = InvalidJid.getNullForInvalid(invite.getAttributeAsJid("from"));
+                final Jid to = InvalidJid.getNullForInvalid(invite.getAttributeAsJid("to"));
+                if (to != null && from == null) {
+                    Log.d(Config.LOGTAG,"do not parse outgoing mediated invite "+message);
+                    return null;
+                }
+                final Jid room = InvalidJid.getNullForInvalid(message.getAttributeAsJid("from"));
                 if (room == null) {
                     return null;
                 }
@@ -454,8 +459,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
         final Invite invite = extractInvite(packet);
         if (invite != null) {
-            if (isTypeGroupChat) {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignoring invite to " + invite.jid + " because type=groupchat");
+            if (invite.jid.asBareJid().equals(account.getJid().asBareJid())) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ignore invite to "+invite.jid+" because it matches account");
+            } else if (isTypeGroupChat) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignoring invite to " + invite.jid + " because it was received as group chat");
             } else if (invite.direct && (mucUserElement != null || invite.inviter == null || mXmppConnectionService.isMuc(account, invite.inviter))) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignoring direct invite to " + invite.jid + " because it was received in MUC");
             } else {
