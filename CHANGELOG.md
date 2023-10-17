@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.12.12
+
+* Support Private DNS (DNS over TLS)
+* Support themed launcher icon
+* Fix rare permission issue when sharing files on Android 11+
+
 ### Version 2.12.11
 
 * Bump libwebrtc dependency to M117 and bump libvpx
