@@ -184,6 +184,8 @@ public class XmppConnectionService extends Service {
     public static final String ACTION_CLEAR_MISSED_CALL_NOTIFICATION = "clear_missed_call_notification";
     public static final String ACTION_DISMISS_ERROR_NOTIFICATIONS = "dismiss_error";
     public static final String ACTION_TRY_AGAIN = "try_again";
+
+    public static final String ACTION_TEMPORARILY_DISABLE = "temporarily_disable";
     public static final String ACTION_IDLE_PING = "idle_ping";
     public static final String ACTION_FCM_TOKEN_REFRESH = "fcm_token_refresh";
     public static final String ACTION_FCM_MESSAGE_RECEIVED = "fcm_message_received";
@@ -452,9 +454,9 @@ public class XmppConnectionService extends Service {
                     joinMuc(conversation);
                 }
                 scheduleWakeUpCall(Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
-            } else if (account.getStatus() == Account.State.OFFLINE || account.getStatus() == Account.State.DISABLED) {
+            } else if (account.getStatus() == Account.State.OFFLINE || account.getStatus() == Account.State.DISABLED || account.getStatus() == Account.State.LOGGED_OUT) {
                 resetSendingToWaiting(account);
-                if (account.isEnabled() && isInLowPingTimeoutMode(account)) {
+                if (account.isConnectionEnabled() && isInLowPingTimeoutMode(account)) {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": went into offline state during low ping mode. reconnecting now");
                     reconnectAccount(account, true, false);
                 } else {
@@ -846,6 +848,9 @@ public class XmppConnectionService extends Service {
                         Log.d(Config.LOGTAG, "received uri permission for " + uri);
                     }
                     return START_STICKY;
+                case ACTION_TEMPORARILY_DISABLE:
+                    toggleSoftDisabled(true);
+                    return START_NOT_STICKY;
             }
         }
         synchronized (this) {
@@ -959,6 +964,16 @@ public class XmppConnectionService extends Service {
             }
         }
         return pingNow;
+    }
+
+    private void toggleSoftDisabled(final boolean softDisabled) {
+        for(final Account account : this.accounts) {
+            if (account.isEnabled()) {
+                if (account.setOption(Account.OPTION_SOFT_DISABLED, softDisabled)) {
+                    updateAccount(account);
+                }
+            }
+        }
     }
 
     public boolean processUnifiedPushMessage(final Account account, final Jid transport, final Element push) {
@@ -1449,7 +1464,7 @@ public class XmppConnectionService extends Service {
     private void logoutAndSave(boolean stop) {
         int activeAccounts = 0;
         for (final Account account : accounts) {
-            if (account.getStatus() != Account.State.DISABLED) {
+            if (account.isConnectionEnabled()) {
                 databaseBackend.writeRoster(account.getRoster());
                 activeAccounts++;
             }
@@ -2808,6 +2823,7 @@ public class XmppConnectionService extends Service {
     }
 
     private void switchToForeground() {
+        toggleSoftDisabled(false);
         final boolean broadcastLastActivity = broadcastLastActivity();
         for (Conversation conversation : getConversations()) {
             if (conversation.getMode() == Conversation.MODE_MULTI) {
@@ -3188,8 +3204,8 @@ public class XmppConnectionService extends Service {
         if (this.accounts == null) {
             return false;
         }
-        for (Account account : this.accounts) {
-            if (account.isEnabled()) {
+        for (final Account account : this.accounts) {
+            if (account.isConnectionEnabled()) {
                 return true;
             }
         }
@@ -3587,23 +3603,23 @@ public class XmppConnectionService extends Service {
         });
     }
 
-    private void disconnect(Account account, boolean force) {
-        if ((account.getStatus() == Account.State.ONLINE)
-                || (account.getStatus() == Account.State.DISABLED)) {
-            final XmppConnection connection = account.getXmppConnection();
-            if (!force) {
-                List<Conversation> conversations = getConversations();
-                for (Conversation conversation : conversations) {
-                    if (conversation.getAccount() == account) {
-                        if (conversation.getMode() == Conversation.MODE_MULTI) {
-                            leaveMuc(conversation, true);
-                        }
+    private void disconnect(final Account account, boolean force) {
+        final XmppConnection connection = account.getXmppConnection();
+        if (connection == null) {
+            return;
+        }
+        if (!force) {
+            final List<Conversation> conversations = getConversations();
+            for (Conversation conversation : conversations) {
+                if (conversation.getAccount() == account) {
+                    if (conversation.getMode() == Conversation.MODE_MULTI) {
+                        leaveMuc(conversation, true);
                     }
                 }
-                sendOfflinePresence(account);
             }
-            connection.disconnect(force);
+            sendOfflinePresence(account);
         }
+        connection.disconnect(force);
     }
 
     @Override
@@ -4093,7 +4109,7 @@ public class XmppConnectionService extends Service {
                 account.setXmppConnection(connection);
             }
             boolean hasInternet = hasInternetConnection();
-            if (account.isEnabled() && hasInternet) {
+            if (account.isConnectionEnabled() && hasInternet) {
                 if (!force) {
                     disconnect(account, false);
                 }
@@ -4581,7 +4597,7 @@ public class XmppConnectionService extends Service {
     public void refreshAllPresences() {
         boolean includeIdleTimestamp = checkListeners() && broadcastLastActivity();
         for (Account account : getAccounts()) {
-            if (account.isEnabled()) {
+            if (account.isConnectionEnabled()) {
                 sendPresence(account, includeIdleTimestamp);
             }
         }

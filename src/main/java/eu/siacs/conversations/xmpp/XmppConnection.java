@@ -233,10 +233,11 @@ public class XmppConnection implements Runnable {
                 return;
             }
             if (account.getStatus() != nextStatus) {
-                if ((nextStatus == Account.State.OFFLINE)
-                        && (account.getStatus() != Account.State.CONNECTING)
-                        && (account.getStatus() != Account.State.ONLINE)
-                        && (account.getStatus() != Account.State.DISABLED)) {
+                if (nextStatus == Account.State.OFFLINE
+                        && account.getStatus() != Account.State.CONNECTING
+                        && account.getStatus() != Account.State.ONLINE
+                        && account.getStatus() != Account.State.DISABLED
+                        && account.getStatus() != Account.State.LOGGED_OUT) {
                     return;
                 }
                 if (nextStatus == Account.State.ONLINE) {

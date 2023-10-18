@@ -359,6 +359,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 
     private void enableAccount(Account account) {
         account.setOption(Account.OPTION_DISABLED, false);
+        account.setOption(Account.OPTION_SOFT_DISABLED, false);
         final XmppConnection connection = account.getXmppConnection();
         if (connection != null) {
             connection.resetEverything();

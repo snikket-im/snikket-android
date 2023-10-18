@@ -153,6 +153,7 @@
     <string name="error_security_exception">The app you used to share this file did not provide enough permissions.</string>
     <string name="account_status_unknown">Unknown</string>
     <string name="account_status_disabled">Temporarily disabled</string>
+    <string name="account_state_logged_out">Logged out</string>
     <string name="account_status_online">Online</string>
     <string name="account_status_connecting">Connecting\u2026</string>
     <string name="account_status_offline">Offline</string>
@@ -538,6 +539,7 @@
     <string name="send_corrected_message">Send corrected message</string>
     <string name="no_keys_just_confirm">You have already validated this persons fingerprint securely to confirm trust. By selecting “Done” you are just confirming that %s is part of this group chat.</string>
     <string name="this_account_is_disabled">You have disabled this account</string>
+    <string name="this_account_is_logged_out">You have logged out of this account</string>
     <string name="security_error_invalid_file_access">Security error: Invalid file access!</string>
     <string name="no_application_to_share_uri">No app found to share URI</string>
     <string name="share_uri_with">Share URI with…</string>
@@ -1013,5 +1015,7 @@
     <string name="decline">Decline</string>
     <string name="delete_from_server">Remove account from server</string>
     <string name="could_not_delete_account_from_server">Could not delete account from server</string>
-
+    <string name="hide_notification">Hide notification</string>
+    <string name="log_out">Log out</string>
+    <string name="log_in">Log in</string>
 </resources>

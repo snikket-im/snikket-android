@@ -149,7 +149,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             if (mInitMode && mAccount != null) {
                 mAccount.setOption(Account.OPTION_DISABLED, false);
             }
-            if (mAccount != null && mAccount.getStatus() == Account.State.DISABLED && !accountInfoEdited) {
+            if (mAccount != null && Arrays.asList(Account.State.DISABLED, Account.State.LOGGED_OUT).contains(mAccount.getStatus()) && !accountInfoEdited) {
+                mAccount.setOption(Account.OPTION_SOFT_DISABLED, false);
                 mAccount.setOption(Account.OPTION_DISABLED, false);
                 if (!xmppConnectionService.updateAccount(mAccount)) {
                     Toast.makeText(EditAccountActivity.this, R.string.unable_to_update_account, Toast.LENGTH_SHORT).show();

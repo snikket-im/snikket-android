@@ -60,7 +60,7 @@ public class AccountUtils {
     public static List<String> getEnabledAccounts(final XmppConnectionService service) {
         final ArrayList<String> accounts = new ArrayList<>();
         for (final Account account : service.getAccounts()) {
-            if (account.getStatus() != Account.State.DISABLED) {
+            if (account.isEnabled()) {
                 if (Config.DOMAIN_LOCK != null) {
                     accounts.add(account.getJid().getEscapedLocal());
                 } else {
