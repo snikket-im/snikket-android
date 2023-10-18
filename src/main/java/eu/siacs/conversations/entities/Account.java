@@ -258,6 +258,9 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean setOption(final int option, final boolean value) {
+        if (value && (option == OPTION_DISABLED || option == OPTION_SOFT_DISABLED)) {
+            this.setStatus(State.OFFLINE);
+        }
         final int before = this.options;
         if (value) {
             this.options |= 1 << option;

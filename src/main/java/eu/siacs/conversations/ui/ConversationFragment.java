@@ -1609,6 +1609,10 @@ public class ConversationFragment extends XmppFragment
                     .show();
             return;
         }
+        final Account account = conversation.getAccount();
+        if (account.setOption(Account.OPTION_SOFT_DISABLED, false)) {
+            activity.xmppConnectionService.updateAccount(account);
+        }
         final Contact contact = conversation.getContact();
         if (RtpCapability.jmiSupport(contact)) {
             triggerRtpSession(contact.getAccount(), contact.getJid().asBareJid(), action);
