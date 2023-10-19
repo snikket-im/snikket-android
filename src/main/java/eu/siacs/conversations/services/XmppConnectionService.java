@@ -859,6 +859,9 @@ public class XmppConnectionService extends Service {
                 return START_STICKY;
             case ACTION_TEMPORARILY_DISABLE:
                 toggleSoftDisabled(true);
+                if (checkListeners()) {
+                    stopSelf();
+                }
                 return START_NOT_STICKY;
         }
         manageAccountConnectionStates(action, intent == null ? null : intent.getExtras());
