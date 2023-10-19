@@ -4118,12 +4118,17 @@ public class XmppConnectionService extends Service {
 
     private void reconnectAccount(final Account account, final boolean force, final boolean interactive) {
         synchronized (account) {
-            XmppConnection connection = account.getXmppConnection();
-            if (connection == null) {
+            final XmppConnection existingConnection = account.getXmppConnection();
+            final XmppConnection connection;
+            if (existingConnection != null) {
+                connection = existingConnection;
+            } else if (account.isConnectionEnabled()) {
                 connection = createConnection(account);
                 account.setXmppConnection(connection);
+            } else {
+                return;
             }
-            boolean hasInternet = hasInternetConnection();
+            final boolean hasInternet = hasInternetConnection();
             if (account.isConnectionEnabled() && hasInternet) {
                 if (!force) {
                     disconnect(account, false);
