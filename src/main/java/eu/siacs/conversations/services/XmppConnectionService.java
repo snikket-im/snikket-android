@@ -85,6 +85,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -202,6 +204,8 @@ public class XmppConnectionService extends Service {
     public final CountDownLatch restoredFromDatabaseLatch = new CountDownLatch(1);
     private final static Executor FILE_OBSERVER_EXECUTOR = Executors.newSingleThreadExecutor();
     private final static Executor FILE_ATTACHMENT_EXECUTOR = Executors.newSingleThreadExecutor();
+
+    private final ScheduledExecutorService internalPingExecutor = Executors.newSingleThreadScheduledExecutor();
     private final static SerialSingleThreadExecutor VIDEO_COMPRESSION_EXECUTOR = new SerialSingleThreadExecutor("VideoCompression");
     private final SerialSingleThreadExecutor mDatabaseWriterExecutor = new SerialSingleThreadExecutor("DatabaseWriter");
     private final SerialSingleThreadExecutor mDatabaseReaderExecutor = new SerialSingleThreadExecutor("DatabaseReader");
@@ -871,6 +875,10 @@ public class XmppConnectionService extends Service {
         return START_STICKY;
     }
 
+    private void manageAccountConnectionStatesInternal() {
+        manageAccountConnectionStates(ACTION_INTERNAL_PING, null);
+    }
+
     private synchronized void manageAccountConnectionStates(final String action, final Bundle extras) {
         final String pushedAccountHash = extras == null ? null : extras.getString("account");
         final boolean interactive = Arrays.asList(ACTION_TRY_AGAIN).contains(action);
@@ -1287,6 +1295,7 @@ public class XmppConnectionService extends Service {
         mForceDuringOnCreate.set(false);
         toggleForegroundService();
         setupPhoneStateListener();
+        internalPingExecutor.scheduleAtFixedRate(this::manageAccountConnectionStatesInternal,10,10,TimeUnit.SECONDS);
     }
 
 
@@ -1360,6 +1369,7 @@ public class XmppConnectionService extends Service {
         }
         destroyed = false;
         fileObserver.stopWatching();
+        internalPingExecutor.shutdown();
         super.onDestroy();
     }
 
