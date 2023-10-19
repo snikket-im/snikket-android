@@ -906,79 +906,75 @@ public class XmppConnectionService extends Service {
     }
 
     private boolean processAccountState(Account account, boolean interactive, boolean isUiAction, boolean isAccountPushed, HashSet<Account> pingCandidates) {
-        boolean pingNow = false;
-        if (account.getStatus().isAttemptReconnect()) {
-            if (!hasInternetConnection()) {
-                account.setStatus(Account.State.NO_INTERNET);
-                if (statusListener != null) {
-                    statusListener.onStatusChanged(account);
-                }
-            } else {
-                if (account.getStatus() == Account.State.NO_INTERNET) {
-                    account.setStatus(Account.State.OFFLINE);
-                    if (statusListener != null) {
-                        statusListener.onStatusChanged(account);
-                    }
-                }
-                if (account.getStatus() == Account.State.ONLINE) {
-                    synchronized (mLowPingTimeoutMode) {
-                        long lastReceived = account.getXmppConnection().getLastPacketReceived();
-                        long lastSent = account.getXmppConnection().getLastPingSent();
-                        long pingInterval = isUiAction ? Config.PING_MIN_INTERVAL * 1000 : Config.PING_MAX_INTERVAL * 1000;
-                        long msToNextPing = (Math.max(lastReceived, lastSent) + pingInterval) - SystemClock.elapsedRealtime();
-                        int pingTimeout = mLowPingTimeoutMode.contains(account.getJid().asBareJid()) ? Config.LOW_PING_TIMEOUT * 1000 : Config.PING_TIMEOUT * 1000;
-                        long pingTimeoutIn = (lastSent + pingTimeout) - SystemClock.elapsedRealtime();
-                        if (lastSent > lastReceived) {
-                            if (pingTimeoutIn < 0) {
-                                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ping timeout");
-                                this.reconnectAccount(account, true, interactive);
-                            } else {
-                                int secs = (int) (pingTimeoutIn / 1000);
-                                this.scheduleWakeUpCall(secs, account.getUuid().hashCode());
-                            }
+        if (!account.getStatus().isAttemptReconnect()) {
+            return false;
+        }
+        if (!hasInternetConnection()) {
+            account.setStatus(Account.State.NO_INTERNET);
+            statusListener.onStatusChanged(account);
+        } else {
+            if (account.getStatus() == Account.State.NO_INTERNET) {
+                account.setStatus(Account.State.OFFLINE);
+                statusListener.onStatusChanged(account);
+            }
+            if (account.getStatus() == Account.State.ONLINE) {
+                synchronized (mLowPingTimeoutMode) {
+                    long lastReceived = account.getXmppConnection().getLastPacketReceived();
+                    long lastSent = account.getXmppConnection().getLastPingSent();
+                    long pingInterval = isUiAction ? Config.PING_MIN_INTERVAL * 1000 : Config.PING_MAX_INTERVAL * 1000;
+                    long msToNextPing = (Math.max(lastReceived, lastSent) + pingInterval) - SystemClock.elapsedRealtime();
+                    int pingTimeout = mLowPingTimeoutMode.contains(account.getJid().asBareJid()) ? Config.LOW_PING_TIMEOUT * 1000 : Config.PING_TIMEOUT * 1000;
+                    long pingTimeoutIn = (lastSent + pingTimeout) - SystemClock.elapsedRealtime();
+                    if (lastSent > lastReceived) {
+                        if (pingTimeoutIn < 0) {
+                            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ping timeout");
+                            this.reconnectAccount(account, true, interactive);
                         } else {
-                            pingCandidates.add(account);
-                            if (isAccountPushed) {
-                                pingNow = true;
-                                if (mLowPingTimeoutMode.add(account.getJid().asBareJid())) {
-                                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": entering low ping timeout mode");
-                                }
-                            } else if (msToNextPing <= 0) {
-                                pingNow = true;
-                            } else {
-                                this.scheduleWakeUpCall((int) (msToNextPing / 1000), account.getUuid().hashCode());
-                                if (mLowPingTimeoutMode.remove(account.getJid().asBareJid())) {
-                                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": leaving low ping timeout mode");
-                                }
+                            int secs = (int) (pingTimeoutIn / 1000);
+                            this.scheduleWakeUpCall(secs, account.getUuid().hashCode());
+                        }
+                    } else {
+                        pingCandidates.add(account);
+                        if (isAccountPushed) {
+                            if (mLowPingTimeoutMode.add(account.getJid().asBareJid())) {
+                                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": entering low ping timeout mode");
+                            }
+                            return true;
+                        } else if (msToNextPing <= 0) {
+                            return true;
+                        } else {
+                            this.scheduleWakeUpCall((int) (msToNextPing / 1000), account.getUuid().hashCode());
+                            if (mLowPingTimeoutMode.remove(account.getJid().asBareJid())) {
+                                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": leaving low ping timeout mode");
                             }
                         }
                     }
-                } else if (account.getStatus() == Account.State.OFFLINE) {
+                }
+            } else if (account.getStatus() == Account.State.OFFLINE) {
+                reconnectAccount(account, true, interactive);
+            } else if (account.getStatus() == Account.State.CONNECTING) {
+                long secondsSinceLastConnect = (SystemClock.elapsedRealtime() - account.getXmppConnection().getLastConnect()) / 1000;
+                long secondsSinceLastDisco = (SystemClock.elapsedRealtime() - account.getXmppConnection().getLastDiscoStarted()) / 1000;
+                long discoTimeout = Config.CONNECT_DISCO_TIMEOUT - secondsSinceLastDisco;
+                long timeout = Config.CONNECT_TIMEOUT - secondsSinceLastConnect;
+                if (timeout < 0) {
+                    Log.d(Config.LOGTAG, account.getJid() + ": time out during connect reconnecting (secondsSinceLast=" + secondsSinceLastConnect + ")");
+                    account.getXmppConnection().resetAttemptCount(false);
                     reconnectAccount(account, true, interactive);
-                } else if (account.getStatus() == Account.State.CONNECTING) {
-                    long secondsSinceLastConnect = (SystemClock.elapsedRealtime() - account.getXmppConnection().getLastConnect()) / 1000;
-                    long secondsSinceLastDisco = (SystemClock.elapsedRealtime() - account.getXmppConnection().getLastDiscoStarted()) / 1000;
-                    long discoTimeout = Config.CONNECT_DISCO_TIMEOUT - secondsSinceLastDisco;
-                    long timeout = Config.CONNECT_TIMEOUT - secondsSinceLastConnect;
-                    if (timeout < 0) {
-                        Log.d(Config.LOGTAG, account.getJid() + ": time out during connect reconnecting (secondsSinceLast=" + secondsSinceLastConnect + ")");
-                        account.getXmppConnection().resetAttemptCount(false);
-                        reconnectAccount(account, true, interactive);
-                    } else if (discoTimeout < 0) {
-                        account.getXmppConnection().sendDiscoTimeout();
-                        scheduleWakeUpCall((int) Math.min(timeout, discoTimeout), account.getUuid().hashCode());
-                    } else {
-                        scheduleWakeUpCall((int) Math.min(timeout, discoTimeout), account.getUuid().hashCode());
-                    }
+                } else if (discoTimeout < 0) {
+                    account.getXmppConnection().sendDiscoTimeout();
+                    scheduleWakeUpCall((int) Math.min(timeout, discoTimeout), account.getUuid().hashCode());
                 } else {
-                    final boolean aggressive = hasJingleRtpConnection(account);
-                    if (account.getXmppConnection().getTimeToNextAttempt(aggressive) <= 0) {
-                        reconnectAccount(account, true, interactive);
-                    }
+                    scheduleWakeUpCall((int) Math.min(timeout, discoTimeout), account.getUuid().hashCode());
+                }
+            } else {
+                final boolean aggressive = hasJingleRtpConnection(account);
+                if (account.getXmppConnection().getTimeToNextAttempt(aggressive) <= 0) {
+                    reconnectAccount(account, true, interactive);
                 }
             }
         }
-        return pingNow;
+        return false;
     }
 
     private void toggleSoftDisabled(final boolean softDisabled) {
