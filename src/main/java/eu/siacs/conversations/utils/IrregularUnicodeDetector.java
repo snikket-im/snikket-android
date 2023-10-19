@@ -60,7 +60,7 @@ public class IrregularUnicodeDetector {
 
 	private static final Map<Character.UnicodeBlock, Character.UnicodeBlock> NORMALIZATION_MAP;
 	private static final LruCache<Jid, PatternTuple> CACHE = new LruCache<>(4096);
-	private static final List<String> AMBIGUOUS_CYRILLIC = Arrays.asList("а","г","е","ѕ","і","ј","ԛ","о","р","с","у","х");
+	private static final List<String> AMBIGUOUS_CYRILLIC = Arrays.asList("а","г","е","ѕ","і","ј","ķ","ԛ","о","р","с","у","х");
 
 	static {
 		Map<Character.UnicodeBlock, Character.UnicodeBlock> temp = new HashMap<>();
