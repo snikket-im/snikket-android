@@ -38,7 +38,6 @@ import javax.net.ssl.SSLSocketFactory;
 
 final class DNSSocket implements Closeable {
 
-    private static final int CONNECT_TIMEOUT = 5_000;
     public static final int QUERY_TIMEOUT = 5_000;
 
     private final Semaphore semaphore = new Semaphore(1);
@@ -111,7 +110,7 @@ final class DNSSocket implements Closeable {
         final SocketAddress socketAddress =
                 new InetSocketAddress(dnsServer.inetAddress, dnsServer.port);
         final Socket socket = new Socket();
-        socket.connect(socketAddress, CONNECT_TIMEOUT);
+        socket.connect(socketAddress, QUERY_TIMEOUT / 2);
         socket.setSoTimeout(QUERY_TIMEOUT);
         return DNSSocket.of(socket);
     }
@@ -119,16 +118,18 @@ final class DNSSocket implements Closeable {
     private static DNSSocket connectTlsSocket(final DNSServer dnsServer) throws IOException {
         Preconditions.checkArgument(dnsServer.uniqueTransport() == Transport.TLS);
         final SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-        final SSLSocket sslSocket;
+        final SSLSocket sslSocket = (SSLSocket) factory.createSocket();
         if (Strings.isNullOrEmpty(dnsServer.hostname)) {
             final SocketAddress socketAddress =
                     new InetSocketAddress(dnsServer.inetAddress, dnsServer.port);
-            sslSocket = (SSLSocket) factory.createSocket(dnsServer.inetAddress, dnsServer.port);
-            sslSocket.connect(socketAddress, CONNECT_TIMEOUT);
+            sslSocket.connect(socketAddress, QUERY_TIMEOUT / 2);
             sslSocket.setSoTimeout(QUERY_TIMEOUT);
+            sslSocket.startHandshake();
         } else {
-            sslSocket = (SSLSocket) factory.createSocket(dnsServer.hostname, dnsServer.port);
+            final SocketAddress socketAddress = new InetSocketAddress(dnsServer.hostname, dnsServer.port);
+            sslSocket.connect(socketAddress, QUERY_TIMEOUT / 2);
             sslSocket.setSoTimeout(QUERY_TIMEOUT);
+            sslSocket.startHandshake();
             final SSLSession session = sslSocket.getSession();
             final Certificate[] peerCertificates = session.getPeerCertificates();
             if (peerCertificates.length == 0 || !(peerCertificates[0] instanceof X509Certificate)) {
