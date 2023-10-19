@@ -8,7 +8,7 @@
     <string name="action_contact_details">Сведения о контакте</string>
     <string name="action_muc_details">Подробности конференции</string>
     <string name="channel_details">Сведения о канале</string>
-    <string name="action_add_account">Добавить аккаунт</string>
+    <string name="action_add_account">Добавить учётную запись</string>
     <string name="action_edit_contact">Редактировать контакт</string>
     <string name="action_add_phone_book">Добавить в адресную книгу</string>
     <string name="action_delete_contact">Удалить из списка</string>
@@ -53,7 +53,7 @@
     <string name="contact_blocked">Контакт заблокирован</string>
     <string name="blocked">Заблокирован</string>
     <string name="remove_bookmark_text">Вы хотите удалить %s из избранного? Беседы, связанные с данной закладкой, будут сохранены.</string>
-    <string name="register_account">Создать новый аккаунт на сервере</string>
+    <string name="register_account">Создать новую учётную запись на сервере</string>
     <string name="change_password_on_server">Изменить пароль на сервере</string>
     <string name="share_with">Поделиться с</string>
     <string name="start_conversation">Начать беседу</string>
@@ -139,7 +139,7 @@
     <string name="accept">Принять</string>
     <string name="error">Произошла ошибка</string>
     <string name="recording_error">Ошибка</string>
-    <string name="your_account">Ваш аккаунт</string>
+    <string name="your_account">Ваша учётная запись</string>
     <string name="send_presence_updates">Отправлять присутствие</string>
     <string name="receive_presence_updates">Получать присутствие</string>
     <string name="ask_for_presence_updates">Запрашивать присутствие</string>
@@ -183,7 +183,7 @@
     <string name="unpublish_pgp_message">Вы действительно хотите удалить ваш OpenPGP публичный ключ из опубликованных?\nВаши собеседники не смогут больше отправлять вам зашифрованные OpenPGP сообщения.</string>
     <string name="openpgp_has_been_published">Публичный ключ OpenPGP опубликован.</string>
     <string name="mgmt_account_enable">Включить аккаунт</string>
-    <string name="mgmt_account_delete_confirm_text">Вы уверены, что хотите удалить свой аккаунт\? Это удалит все истории диалогов</string>
+    <string name="mgmt_account_delete_confirm_text">Вы точно хотите удалить свою учётную запись\? Это удалит все истории диалогов</string>
     <string name="attach_record_voice">Запись голоса</string>
     <string name="account_settings_jabber_id">XMPP-адрес</string>
     <string name="block_jabber_id">Заблокировать XMPP-адрес</string>
@@ -267,7 +267,7 @@
     <string name="private_message_to">отправить %s</string>
     <string name="send_private_message_to">Приватное сообщение %s</string>
     <string name="connect">Подключиться</string>
-    <string name="account_already_exists">Аккаунт уже существует</string>
+    <string name="account_already_exists">Эта учётная запись уже существует</string>
     <string name="next">Далее</string>
     <string name="server_info_session_established">Сеанс установлен</string>
     <string name="skip">Пропустить</string>
@@ -329,7 +329,7 @@
     <string name="notification_backup_created_subtitle">Файлы резервной копии сохранены в %s</string>
     <string name="restoring_backup">Восстановление из резервной копии</string>
     <string name="notification_restored_backup_title">Восстановление из резервной копии выполнено</string>
-    <string name="notification_restored_backup_subtitle">Не забудьте включить аккаунт</string>
+    <string name="notification_restored_backup_subtitle">Не забудьте включить учётную запись.</string>
     <string name="choose_file">Выбрать файл</string>
     <string name="receiving_x_file">%1$s загружается (%2$d%% выполнено)</string>
     <string name="download_x_file">Загрузить %s</string>
@@ -526,12 +526,12 @@
     <string name="battery_optimizations_enabled_dialog">Ваше устройство использует агрессивную оптимизацию энергопотребления %1$s, что может привести к задержке уведомлений и даже потере сообщений.\nСейчас появится предложение её отключить.</string>
     <string name="disable">Запретить</string>
     <string name="selection_too_large">Выбранная область слишком большая</string>
-    <string name="no_accounts">(Нет активных аккаунтов)</string>
+    <string name="no_accounts">(Нет активированных учётных записей)</string>
     <string name="this_field_is_required">Незаполненное поле</string>
     <string name="correct_message">Исправить сообщение</string>
     <string name="send_corrected_message">Отправить исправленное сообщение</string>
     <string name="no_keys_just_confirm">Вы уже подтвердили, что электронный отпечаток принадлежит этому человеку. Выбрав \"Готово\", вы только подтвердите, что %s является участником конференции.</string>
-    <string name="this_account_is_disabled">Вы отключили этот аккаунт</string>
+    <string name="this_account_is_disabled">Вы отключили эту учётную запись</string>
     <string name="security_error_invalid_file_access">Ошибка безопасности: недействительный доступ к файлу</string>
     <string name="no_application_to_share_uri">Не найдено приложения для передачи URI</string>
     <string name="share_uri_with">Отправить URI…</string>
@@ -883,9 +883,9 @@
     <string name="discover_channels">Найти каналы</string>
     <string name="search_channels">Поиск каналов</string>
     <string name="channel_discovery_opt_in_title">Возможно нарушение конфиденциальности!</string>
-    <string name="i_already_have_an_account">У меня уже есть аккаунт</string>
+    <string name="i_already_have_an_account">У меня уже есть учётная запись</string>
     <string name="add_existing_account">Добавить существующий аккаунт</string>
-    <string name="register_new_account">Зарегистрировать новую учетную запись</string>
+    <string name="register_new_account">Создать новую учетную запись</string>
     <string name="this_looks_like_a_domain">Это похоже на имя домена</string>
     <string name="add_anway">Добавить все равно</string>
     <string name="this_looks_like_channel">Это похоже на адрес канала</string>
@@ -930,7 +930,7 @@
     <string name="incoming_call">Входящий вызов</string>
     <string name="missed_call_timestamp">Пропущенный вызов · %s</string>
     <string name="outgoing_call">Исходящий вызов</string>
-    <string name="missed_call">Пропущен вызов</string>
+    <string name="missed_call">Пропущенный вызов</string>
     <string name="audio_call">Аудиовызов</string>
     <string name="video_call">Видеовызов</string>
     <string name="help">Помощь</string>
@@ -989,7 +989,7 @@
     <string name="continue_btn">Продолжить</string>
     <string name="pref_up_push_server_title">Сервер уведомлений</string>
     <string name="unified_push_distributor">Распределитель UnifiedPush</string>
-    <string name="missed_calls_channel_name">Пропущенные звонки</string>
+    <string name="missed_calls_channel_name">Пропущенные вызовы</string>
     <string name="rtp_state_reconnecting">Переподключение</string>
     <string name="no_xmpp_adddress_found">Адрес XMPP не найден</string>
     <string name="pref_up_push_account_title">Учётная запись XMPP</string>
@@ -1028,4 +1028,13 @@
         <item quantity="many">%1$d пропущенных вызовов от %2$s</item>
         <item quantity="other">%1$d пропущенных вызовов от %2$s</item>
     </plurals>
+    <string name="reconnect_on_other_host">Переподключиться на другой сервер</string>
+    <string name="outdated_backup_file_format">Вы попытались импортировать резервную копию в устаревшем формате</string>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d пропущенный вызов от %2$d контакта</item>
+        <item quantity="few">%1$d пропущенных вызова от %2$d контактов</item>
+        <item quantity="many">%1$d пропущенных вызовов от %2$d контактов</item>
+        <item quantity="other">%1$d пропущенных вызовов от %2$d контактов</item>
+    </plurals>
+    <string name="audiobook">Аудиокнига</string>
 </resources>
