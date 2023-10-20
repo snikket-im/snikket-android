@@ -1466,6 +1466,7 @@ public class XmppConnectionService extends Service {
                     foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA;
                 } else {
                     foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE;
+                    Log.w(Config.LOGTAG,"falling back to special use foreground service type");
                 }
                 startForeground(id, notification, foregroundServiceType);
             } else {

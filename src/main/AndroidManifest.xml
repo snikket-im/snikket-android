@@ -110,10 +110,12 @@
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
 
+        <!-- The warning that systemExempted requires alarm permission is incorrect because doze white list is sufficient -->
         <service
             android:name=".services.XmppConnectionService"
             android:exported="false"
-            android:foregroundServiceType="specialUse|systemExempted|microphone|camera">
+            android:foregroundServiceType="specialUse|systemExempted|microphone|camera"
+            tools:ignore="ForegroundServicePermission">
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="im" />
