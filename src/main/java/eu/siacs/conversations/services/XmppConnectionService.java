@@ -1538,16 +1538,9 @@ public class XmppConnectionService extends Service {
         final Intent intent = new Intent(this, EventReceiver.class);
         intent.setAction(ACTION_PING);
         try {
-            final PendingIntent pendingIntent;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                pendingIntent =
-                        PendingIntent.getBroadcast(
-                                this, requestCode, intent, PendingIntent.FLAG_IMMUTABLE);
-            } else {
-                pendingIntent =
-                        PendingIntent.getBroadcast(
-                                this, requestCode, intent, 0);
-            }
+            final PendingIntent pendingIntent =
+                    PendingIntent.getBroadcast(
+                            this, requestCode, intent, PendingIntent.FLAG_IMMUTABLE);
             alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timeToWake, pendingIntent);
         } catch (RuntimeException e) {
             Log.e(Config.LOGTAG, "unable to schedule alarm for ping", e);
