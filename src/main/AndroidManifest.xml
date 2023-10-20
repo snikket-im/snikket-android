@@ -24,7 +24,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <uses-feature
@@ -103,7 +102,6 @@
         android:preserveLegacyExternalStorage="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/ConversationsTheme"
-        tools:replace="android:label"
         tools:targetApi="tiramisu">
 
         <meta-data
