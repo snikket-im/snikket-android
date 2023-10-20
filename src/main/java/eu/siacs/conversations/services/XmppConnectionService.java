@@ -475,7 +475,8 @@ public class XmppConnectionService extends Service {
             } else if (account.getStatus() != Account.State.CONNECTING && account.getStatus() != Account.State.NO_INTERNET) {
                 resetSendingToWaiting(account);
                 if (connection != null && account.getStatus().isAttemptReconnect()) {
-                    final boolean aggressive = hasJingleRtpConnection(account);
+                    final boolean aggressive = account.getStatus() == Account.State.SEE_OTHER_HOST
+                            || hasJingleRtpConnection(account);
                     final int next = connection.getTimeToNextAttempt(aggressive);
                     final boolean lowPingTimeoutMode = isInLowPingTimeoutMode(account);
                     if (next <= 0) {
@@ -485,6 +486,13 @@ public class XmppConnectionService extends Service {
                         final int attempt = connection.getAttempt() + 1;
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": error connecting account. try again in " + next + "s for the " + attempt + " time. lowPingTimeout=" + lowPingTimeoutMode+", aggressive="+aggressive);
                         scheduleWakeUpCall(next, account.getUuid().hashCode());
+                        if (aggressive) {
+                            internalPingExecutor.schedule(
+                                    XmppConnectionService.this::manageAccountConnectionStatesInternal,
+                                    (next * 1000L) + 50,
+                                    TimeUnit.MILLISECONDS
+                            );
+                        }
                     }
                 }
             }
@@ -976,7 +984,7 @@ public class XmppConnectionService extends Service {
                     scheduleWakeUpCall((int) Math.min(timeout, discoTimeout), account.getUuid().hashCode());
                 }
             } else {
-                final boolean aggressive = hasJingleRtpConnection(account);
+                final boolean aggressive = account.getStatus() == Account.State.SEE_OTHER_HOST || hasJingleRtpConnection(account);
                 if (account.getXmppConnection().getTimeToNextAttempt(aggressive) <= 0) {
                     reconnectAccount(account, true, interactive);
                 }
