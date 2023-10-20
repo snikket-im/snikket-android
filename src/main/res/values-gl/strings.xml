@@ -909,7 +909,7 @@
     <string name="rtp_state_incoming_call">Chamada entrante</string>
     <string name="rtp_state_incoming_video_call">Videochamada entrante</string>
     <string name="rtp_state_content_add_video">Cambiar a unha chamada de vídeo?</string>
-    <string name="rtp_state_content_add">Engadir pistas adicionais?</string>
+    <string name="rtp_state_content_add">Engadir rutas adicionais\?</string>
     <string name="rtp_state_connecting">Conectando</string>
     <string name="rtp_state_connected">Conectado</string>
     <string name="rtp_state_reconnecting">Reconectando</string>
