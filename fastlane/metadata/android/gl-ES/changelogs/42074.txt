@@ -1,0 +1,3 @@
+* Soport para DNS Privado (DNS sobre TLS)
+* Soporte para personalizar a icona de inicio
+* Arranxamos un raro problema de permisos ao compartir ficheiros en Android 11+
