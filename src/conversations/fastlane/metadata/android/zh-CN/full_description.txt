@@ -3,32 +3,32 @@
 设计原则：
 
 * 在不牺牲安全性和隐私性的前提下，尽可能美观易用
-* 依托现有的、成熟的协议
-* 不需要 Google 账号或特定的 Google 云通讯服务（GCM）
+* 依赖现有的、成熟的协议
+* 不需要 Google 账号或特定的 Google 云通讯服务 (GCM)
 * 要求尽可能少的权限
 
 特点：
 
 * 使用 <a href="http://conversations.im/omemo/">OMEMO</a> 或 <a href="http://openpgp.org/about/">OpenPGP</a> 进行端对端加密
 * 发送和接收图片
-* 加密音视频通话（DTLS-SRTP）
+* 加密音视频通话 (DTLS-SRTP)
 * 直观的用户界面，遵循 Android 设计准则
-* 为您的联系人添加图片 / 头像
+* 为您的联系人添加图片/头像
 * 与桌面客户端同步
-* 群聊（支持书签功能）
+* 群聊(支持书签功能)
 * 通讯录集成
-* 多账号 / 统一收件箱
+* 多账号/统一收件箱
 * 对电池寿命的影响非常小
 
 Conversations 使在免费的 conversations.im 服务器上创建账号变得非常简单。不过，Conversations 也适用于任何其他 XMPP 服务器。许多 XMPP 服务器都是由志愿者免费运行的。
 
 XMPP 功能：
 
-Conversations 适用于所有 XMPP 服务器。然而，XMPP是一种可扩展的协议。这些扩展在所谓的 XEP 中也是标准化的。Conversations 支持其中的一些扩展，以使整体用户体验更好。有一种可能是您当前的 XMPP 服务器不支持这些扩展。因此，要想充分使用 Conversations 的功能，您应该考虑切换到支持这些扩展的 XMPP 服务器，甚至有更好的方式，或者为您和您的朋友运行自己的 XMPP 服务器。
+Conversations 适用于所有 XMPP 服务器。然而，XMPP 是一种可扩展的协议。这些扩展在所谓的 XEP 中也是标准化的。Conversations 支持其中的一些扩展，以使整体用户体验更好。有一种可能是您当前的 XMPP 服务器不支持这些扩展。因此，要想充分使用 Conversations 的功能，您应该考虑切换到支持这些扩展的 XMPP 服务器，甚至有更好的方式，或者为您和您的朋友运行自己的 XMPP 服务器。
 
 到目前为止，这些 XEP 是：
 
-* XEP-0065：SOCKS5 字节流（or mod_proxy65）。如果双方都在防火墙（NAT）后面，将用于传输文件。
+* XEP-0065：SOCKS5 字节流 (or mod_proxy65)。如果双方都在防火墙 (NAT) 后面，将用于传输文件。
 * XEP-0163：个人事件协议对于头像
 * XEP-0191：屏蔽指令可让您将垃圾邮件发送者列入黑名单或屏蔽的联系人中，而不会将其从花名册中删除。
 * XEP-0198：流管理允许 XMPP 在小规模网络中断和底层 TCP 连接发生变化时继续运行。
