@@ -3,18 +3,18 @@
     <string name="pick_a_server">选择您的 XMPP 提供者</string>
     <string name="use_conversations.im">使用 conversations.im</string>
     <string name="create_new_account">创建新账号</string>
-    <string name="do_you_have_an_account">您已经有一个 XMPP 账号了吗？如果您已经在使用一个不同的 XMPP 客户端或者以前使用过 Conversations，那么您已经拥有这种账号了。如果没有的话，您现在可以创建一个新的 XMPP 账号。
-\n提示：一些电子邮件提供者也提供 XMPP 账号。</string>
-    <string name="server_select_text">XMPP 是一个独立于提供者的即时通讯网络。您可以将此客户端与您选择的任何 XMPP 服务器一起使用。
-\n不过，为了您的方便，我们让您可以轻松地在 conversations.im 上创建一个账号；一个特别适合与 Conversations 一起使用的提供者。</string>
+    <string name="do_you_have_an_account">您已经有 XMPP 账号了吗？如果您已经在使用不同的 XMPP 客户端或者之前使用过 Conversations，那么您已经拥有这种账号了。如果没有的话，您可以立即创建一个。
+\n提示：一些电子邮件服务也提供 XMPP 账号。</string>
+    <string name="server_select_text">XMPP 是独立于提供者的即时通讯网络。您可以将此客户端与您选择的任何 XMPP 服务器一起使用。
+\n不过，您可以轻松地在 conversations.im 上创建账号；它特别适合与 Conversations 一起使用。</string>
     <string name="magic_create_text_on_x">您已受邀加入 %1$s。我们将指导您完成创建账号的过程。
-\n当选择 %1$s 作为提供者时，通过向其他提供者的用户提供您的完整 XMPP 地址，您将能够与他们进行交流。</string>
-    <string name="magic_create_text_fixed">您已受邀加入 %1$s。已为您选择了一个用户名。我们将指导您完成创建账号的过程。
-\n通过向其他提供者的用户提供您的完整 XMPP 地址，您将能够与他们进行交流。</string>
+\n当选择 %1$s 作为提供者时，通过向其他 XMPP 用户提供您的完整地址，就能和他们交流。</string>
+    <string name="magic_create_text_fixed">您已受邀加入 %1$s。已经为您选择了用户名。我们将指导您完成创建账号的过程。
+\n通过向其他 XMPP 用户提供您的完整地址，就能和他们交流。</string>
     <string name="your_server_invitation">您的服务器邀请</string>
-    <string name="improperly_formatted_provisioning">配置代码格式不当</string>
-    <string name="tap_share_button_send_invite">点击分享按钮向您的联系人发送加入 %1$s 的邀请。</string>
-    <string name="if_contact_is_nearby_use_qr">如果您的联系人在附近，他们也可以扫描下方二维码来接受您的邀请。</string>
+    <string name="improperly_formatted_provisioning">配置代码格式不正确</string>
+    <string name="tap_share_button_send_invite">点击分享按钮，向您的联系人发送加入 %1$s 的邀请。</string>
+    <string name="if_contact_is_nearby_use_qr">如果您的联系人在附近，他们也可以扫描下方二维码接受您的邀请。</string>
     <string name="easy_invite_share_text">加入 %1$s 和我聊天：%2$s</string>
     <string name="share_invite_with">分享邀请至…</string>
 </resources>
