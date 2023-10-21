@@ -126,6 +126,7 @@ import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.persistance.UnifiedPushDatabase;
 import eu.siacs.conversations.ui.ChooseAccountForProfilePictureActivity;
+import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.RtpSessionActivity;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.UiCallback;
@@ -5148,5 +5149,19 @@ public class XmppConnectionService extends Service {
         public int hashCode() {
             return Objects.hashCode(id, media, reconnecting);
         }
+    }
+
+    public static void toggleForegroundService(final XmppConnectionService service) {
+        if (service == null) {
+            return;
+        }
+        service.toggleForegroundService();
+    }
+
+    public static void toggleForegroundService(final ConversationsActivity activity) {
+        if (activity == null) {
+            return;
+        }
+        toggleForegroundService(activity.xmppConnectionService);
     }
 }

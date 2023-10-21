@@ -4,6 +4,8 @@ import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
 import static eu.siacs.conversations.ui.XmppActivity.REQUEST_INVITE_TO_CONVERSATION;
 import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
 import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
+import static eu.siacs.conversations.utils.PermissionUtils.audioGranted;
+import static eu.siacs.conversations.utils.PermissionUtils.cameraGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
 
@@ -1868,6 +1870,9 @@ public class ConversationFragment extends XmppFragment
                 activity.xmppConnectionService.restartFileObserver();
             }
             refresh();
+        }
+        if (cameraGranted(grantResults, permissions) || audioGranted(grantResults, permissions)) {
+            XmppConnectionService.toggleForegroundService(activity);
         }
     }
 

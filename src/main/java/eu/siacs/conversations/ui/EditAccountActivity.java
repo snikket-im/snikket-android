@@ -472,6 +472,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (requestCode == REQUEST_BATTERY_OP || requestCode == REQUEST_DATA_SAVER) {
             updateAccountInformation(mAccount == null);
         }
+        if (requestCode == REQUEST_BATTERY_OP) {
+            // the result code is always 0 even when battery permission were granted
+            XmppConnectionService.toggleForegroundService(xmppConnectionService);
+        }
         if (requestCode == REQUEST_CHANGE_STATUS) {
             PresenceTemplate template = mPendingPresenceTemplate.pop();
             if (template != null && resultCode == Activity.RESULT_OK) {
