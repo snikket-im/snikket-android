@@ -7,6 +7,6 @@
     <string name="set_profile_picture">Quicksy 个人资料图片</string>
     <string name="not_available_in_your_country">Quicksy 在您所在的国家/地区无法使用。</string>
     <string name="unable_to_verify_server_identity">无法验证服务器身份。</string>
-    <string name="unknown_security_error">未知安全错误。</string>
+    <string name="unknown_security_error">未知的安全错误。</string>
     <string name="timeout_while_connecting_to_server">连接到服务器时超时。</string>
 </resources>
