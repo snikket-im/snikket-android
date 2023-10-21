@@ -97,4 +97,13 @@ public interface ChannelBindingMechanism {
         messageDigest.update(encodedCertificate);
         return messageDigest.digest();
     }
+
+    static int getPriority(final SaslMechanism mechanism) {
+        if (mechanism instanceof ChannelBindingMechanism) {
+            final ChannelBindingMechanism channelBindingMechanism = (ChannelBindingMechanism) mechanism;
+            return ChannelBinding.priority(channelBindingMechanism.getChannelBinding());
+        } else {
+            return 0;
+        }
+    }
 }

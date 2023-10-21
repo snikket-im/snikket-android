@@ -27,7 +27,7 @@ public class ScramSha256Plus extends ScramPlusMechanism {
 
     @Override
     public int getPriority() {
-        return 40;
+        return 40 + ChannelBinding.priority(this.channelBinding);
     }
 
     @Override
