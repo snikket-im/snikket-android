@@ -828,7 +828,7 @@
     <string name="no_market_app_installed">Не знайдено застосунку для пошуку й встановлення нових застосунків.</string>
     <string name="group_chat_will_make_your_jabber_id_public">Цей канал опублікує Вашу адресу XMPP</string>
     <string name="ebook">Електронна книга</string>
-    <string name="video_original">Оригінал (не стиснений)</string>
+    <string name="video_original">Оригінал (нестиснений)</string>
     <string name="open_with">Відкрити…</string>
     <string name="set_profile_picture">Зображення профілю для Conversations</string>
     <string name="choose_account">Виберіть обліковий запис</string>
@@ -977,7 +977,7 @@
     <string name="pref_up_push_account_title">Обліковий запис XMPP</string>
     <string name="channel_discover_opt_in_message">Пошук каналів використовує сторонній сервіс &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Використання цієї функції передає Вашу IP-адресу та пошукові запити цьому сервісу. Перегляньте їхню &lt;a href=https://search.jabber.network/privacy&gt;Політику конфіденційності&lt;/a&gt;, щоб отримати більше інформації.</string>
     <string name="outgoing_call_timestamp">Вихідний виклик · %s</string>
-    <string name="openkeychain_required_long">%1$s використовує &lt;b&gt;OpenKeychain&lt;/b&gt; для шифрування повідомлень і керування публічними ключами.&lt;br&gt;&lt;br&gt;OpenKeychain поширюється на умовах ліцензії GPLv3+ і доступний для завантаження на F-Droid та Google Play.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Після встановлення необхідно перезапустити %1$s.)&lt;/small&gt;</string>
+    <string name="openkeychain_required_long">%1$s використовує &lt;b&gt;OpenKeychain&lt;/b&gt; для шифрування/дешифрування повідомлень і керування публічними ключами.&lt;br&gt;&lt;br&gt;OpenKeychain поширюється на умовах ліцензії GPLv3+ і доступний для завантаження на F-Droid та Google Play.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Після встановлення необхідно перезапустити %1$s.)&lt;/small&gt;</string>
     <string name="more_options">Додатково</string>
     <string name="unable_to_enable_video">Не вдалося увімкнути відео.</string>
     <string name="no_active_accounts_support_this">Жоден з активних облікових записів не підтримує цієї функції</string>
