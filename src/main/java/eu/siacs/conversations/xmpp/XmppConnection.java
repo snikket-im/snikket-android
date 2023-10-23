@@ -1260,8 +1260,9 @@ public class XmppConnection implements Runnable {
         tagReader.readTag();
         final Socket socket = this.socket;
         final SSLSocket sslSocket = upgradeSocketToTls(socket);
-        tagReader.setInputStream(sslSocket.getInputStream());
-        tagWriter.setOutputStream(sslSocket.getOutputStream());
+        this.socket = sslSocket;
+        this.tagReader.setInputStream(sslSocket.getInputStream());
+        this.tagWriter.setOutputStream(sslSocket.getOutputStream());
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS connection established");
         final boolean quickStart;
         try {
@@ -2218,9 +2219,13 @@ public class XmppConnection implements Runnable {
 
     private boolean establishStream(final SSLSockets.Version sslVersion)
             throws IOException, InterruptedException {
-        final SaslMechanism quickStartMechanism =
-                SaslMechanism.ensureAvailable(account.getQuickStartMechanism(), sslVersion);
         final boolean secureConnection = sslVersion != SSLSockets.Version.NONE;
+        final SaslMechanism quickStartMechanism;
+        if (secureConnection) {
+            quickStartMechanism = SaslMechanism.ensureAvailable(account.getQuickStartMechanism(), sslVersion);
+        } else {
+            quickStartMechanism = null;
+        }
         if (secureConnection
                 && Config.QUICKSTART_ENABLED
                 && quickStartMechanism != null
