@@ -100,7 +100,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                         this.terminatedSessions.asMap().containsKey(PersistableSessionId.of(id));
                 final boolean stranger =
                         isWithStrangerAndStrangerNotificationsAreOff(account, id.with);
-                if (isBusy() || sessionEnded || stranger) {
+                final boolean busy = isBusy();
+                if (busy || sessionEnded || stranger) {
                     Log.d(
                             Config.LOGTAG,
                             id.account.getJid().asBareJid()
@@ -117,6 +118,15 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     sessionTermination.setTo(id.with);
                     sessionTermination.setReason(Reason.BUSY, null);
                     mXmppConnectionService.sendIqPacket(account, sessionTermination, null);
+                    if (busy || stranger) {
+                        writeLogMissedIncoming(
+                                account,
+                                id.with,
+                                id.sessionId,
+                                null,
+                                System.currentTimeMillis(),
+                                stranger);
+                    }
                     return;
                 }
                 connection = new JingleRtpConnection(this, id, from);
@@ -329,6 +339,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                             Config.LOGTAG,
                             id.account.getJid().asBareJid()
                                     + ": updated previous busy because call got picked up by another device");
+                    mXmppConnectionService.getNotificationService().clearMissedCall(previousBusy);
                     return;
                 }
             }
@@ -400,7 +411,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                         isWithStrangerAndStrangerNotificationsAreOff(account, id.with);
                 if (isBusy() || stranger) {
                     writeLogMissedIncoming(
-                            account, id.with.asBareJid(), id.sessionId, serverMsgId, timestamp);
+                            account,
+                            id.with.asBareJid(),
+                            id.sessionId,
+                            serverMsgId,
+                            timestamp,
+                            stranger);
                     if (stranger) {
                         Log.d(
                                 Config.LOGTAG,
@@ -544,10 +560,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
     private void writeLogMissedIncoming(
             final Account account,
-            Jid with,
+            final Jid with,
             final String sessionId,
-            String serverMsgId,
-            long timestamp) {
+            final String serverMsgId,
+            final long timestamp,
+            final boolean stranger) {
         final Conversation conversation =
                 mXmppConnectionService.findOrCreateConversation(
                         account, with.asBareJid(), false, false);
@@ -557,7 +574,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         message.setBody(new RtpSessionStatus(false, 0).toString());
         message.setServerMsgId(serverMsgId);
         message.setTime(timestamp);
+        message.setCounterpart(with);
         writeMessage(message);
+        if (stranger) {
+            return;
+        }
+        mXmppConnectionService.getNotificationService().pushMissedCallNow(message);
     }
 
     private void writeMessage(final Message message) {

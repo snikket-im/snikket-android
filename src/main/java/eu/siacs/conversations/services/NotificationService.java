@@ -773,6 +773,25 @@ public class NotificationService {
         }
     }
 
+    public void clearMissedCall(final Message message) {
+        synchronized (mMissedCalls) {
+            final Iterator<Map.Entry<Conversational,MissedCallsInfo>> iterator = mMissedCalls.entrySet().iterator();
+            while (iterator.hasNext()) {
+                final Map.Entry<Conversational, MissedCallsInfo> entry = iterator.next();
+                final Conversational conversational = entry.getKey();
+                final MissedCallsInfo missedCallsInfo = entry.getValue();
+                if (conversational.getUuid().equals(message.getConversation().getUuid())) {
+                    if (missedCallsInfo.removeMissedCall()) {
+                        cancel(conversational.getUuid(), MISSED_CALL_NOTIFICATION_ID);
+                        Log.d(Config.LOGTAG,conversational.getAccount().getJid().asBareJid()+": dismissed missed call because call was picked up on other device");
+                        iterator.remove();
+                    }
+                }
+            }
+            updateMissedCallNotifications(null);
+        }
+    }
+
     public void clearMissedCalls() {
         synchronized (mMissedCalls) {
             for (final Conversational conversation : mMissedCalls.keySet()) {
@@ -1941,6 +1960,11 @@ public class NotificationService {
         public void newMissedCall(final long time) {
             ++numberOfCalls;
             lastTime = time;
+        }
+
+        public boolean removeMissedCall() {
+            --numberOfCalls;
+            return numberOfCalls <= 0;
         }
 
         public int getNumberOfCalls() {
