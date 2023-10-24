@@ -70,6 +70,9 @@ public class AndroidDNSClient extends AbstractDNSClient {
         for (final DNSServer dnsServer : getDNSServers()) {
             final QuestionServerTuple cacheKey = new QuestionServerTuple(dnsServer, question);
             final DNSMessage cachedResponse = queryCache(cacheKey);
+            if (cachedResponse != null) {
+                return cachedResponse;
+            }
             final DNSMessage response = this.networkDataSource.query(question, dnsServer);
             if (response == null) {
                 continue;
