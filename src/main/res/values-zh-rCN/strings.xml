@@ -129,8 +129,8 @@
     <string name="pref_notification_sound">通知铃声</string>
     <string name="pref_notification_sound_summary">新消息的通知铃声</string>
     <string name="pref_call_ringtone_summary">来电铃声</string>
-    <string name="pref_notification_grace_period">通知宽限期</string>
-    <string name="pref_notification_grace_period_summary">在您的某个其他设备上检测到活动之后，通知静音的时间长度。</string>
+    <string name="pref_notification_grace_period">静默期</string>
+    <string name="pref_notification_grace_period_summary">在您的某个其他设备上检测到活动之后，通知被静音的时间长度。</string>
     <string name="pref_advanced_options">高级</string>
     <string name="pref_never_send_crash">从不发送崩溃报告</string>
     <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您正在帮助此应用的开发</string>
@@ -150,15 +150,15 @@
     <string name="ask_for_presence_updates">请求在线状态更新</string>
     <string name="attach_choose_picture">选择图片</string>
     <string name="attach_take_picture">拍摄图片</string>
-    <string name="preemptively_grant">预先同意状态请求</string>
+    <string name="preemptively_grant">预先同意订阅请求</string>
     <string name="error_not_an_image_file">所选的文件不是图片</string>
     <string name="error_compressing_image">无法转换图片文件</string>
     <string name="error_file_not_found">文件未找到</string>
     <string name="error_io_exception">常规 I/O 错误。也许存储空间已用完\?</string>
-    <string name="error_security_exception_during_image_copy">用来选择图片的应用没有提供读取文件的足够权限。
+    <string name="error_security_exception_during_image_copy">用来选择图片的应用未提供读取文件的足够权限。
 \n
 \n<small>使用不同的文件管理器来选择图片</small>。</string>
-    <string name="error_security_exception">用来分享此文件的应用没有提供足够的权限。</string>
+    <string name="error_security_exception">用来分享此文件的应用未提供足够的权限。</string>
     <string name="account_status_unknown">未知</string>
     <string name="account_status_disabled">暂时禁用</string>
     <string name="account_status_online">在线</string>
@@ -293,20 +293,20 @@
 \n<small>这将用于确定对方正在使用的聊天应用</small>。</string>
     <string name="request_now">立即请求</string>
     <string name="ignore">忽略</string>
-    <string name="without_mutual_presence_updates"><b>警告: </b>在双方没有更新在线状态的情况下发送此消息将会出现未知问题。
+    <string name="without_mutual_presence_updates"><b>警告: </b>在双方未更新在线状态的情况下发送此消息将会出现未知问题。
 \n
-\n<small>前往“联系人详情”以验证在线状态请求。</small></string>
+\n<small>前往“联系人详情”以验证在线状态订阅。</small></string>
     <string name="pref_security_settings">安全</string>
     <string name="pref_allow_message_correction">允许消息更正</string>
     <string name="pref_allow_message_correction_summary">允许对方发送后编辑其消息</string>
     <string name="pref_expert_options">专家设置</string>
     <string name="pref_expert_options_summary">请谨慎设置这些</string>
     <string name="title_activity_about_x">关于 %s</string>
-    <string name="title_pref_quiet_hours">安静时间</string>
+    <string name="title_pref_quiet_hours">免打扰时间</string>
     <string name="title_pref_quiet_hours_start_time">开始时间</string>
     <string name="title_pref_quiet_hours_end_time">结束时间</string>
-    <string name="title_pref_enable_quiet_hours">启用安静时间</string>
-    <string name="pref_quiet_hours_summary">通知将在安静时间静音</string>
+    <string name="title_pref_enable_quiet_hours">启用免打扰时间</string>
+    <string name="pref_quiet_hours_summary">通知将在免打扰时间内静音</string>
     <string name="pref_expert_options_other">其他</string>
     <string name="pref_autojoin">同步书签</string>
     <string name="pref_autojoin_summary">在进入或离开多用户聊天时设置“自动加入”标志，并回应其他客户端所做的改变。</string>
@@ -349,7 +349,7 @@
     <string name="notification_backup_created_subtitle">此备份文件已存储在 %s</string>
     <string name="restoring_backup">正在恢复备份</string>
     <string name="notification_restored_backup_title">已恢复备份</string>
-    <string name="notification_restored_backup_subtitle">不要忘记启用此账号。</string>
+    <string name="notification_restored_backup_subtitle">不要忘记启用账号。</string>
     <string name="choose_file">选择文件</string>
     <string name="receiving_x_file">正在接收 %1$s (%2$d%% 已完成)</string>
     <string name="download_x_file">下载 %s</string>
@@ -379,7 +379,7 @@
     <string name="error_no_keys_to_trust_server_error">对方没有可用的密钥。
 \n无法从服务器获取新密钥。也许是对方的服务器出了问题\?</string>
     <string name="error_no_keys_to_trust_presence">对方没有可用的密钥。
-\n确保双方都请求在线状态。</string>
+\n确保双方都有在线状态订阅。</string>
     <string name="error_trustkeys_title">出了问题</string>
     <string name="fetching_history_from_server">正在从服务器获取历史记录</string>
     <string name="no_more_history_on_server">服务器上没有更多历史记录</string>
@@ -417,7 +417,7 @@
     <string name="members_only">私人，仅限成员</string>
     <string name="non_anonymous">使 XMPP 地址对任何人可见</string>
     <string name="moderated">对频道进行审核</string>
-    <string name="you_are_not_participating">您没有参与</string>
+    <string name="you_are_not_participating">您未参与</string>
     <string name="modified_conference_options">群聊选项修改成功!</string>
     <string name="could_not_modify_conference_options">无法修改群聊选项</string>
     <string name="never">从不</string>
@@ -482,7 +482,7 @@
     <string name="download_failed_could_not_connect">下载失败: 无法连接到主机</string>
     <string name="download_failed_could_not_write_file">下载失败: 无法写入文件</string>
     <string name="download_failed_invalid_file">下载失败: 无效文件</string>
-    <string name="account_status_tor_unavailable">Tor 网络无法使用</string>
+    <string name="account_status_tor_unavailable">Tor 网络不可用</string>
     <string name="account_status_bind_failure">绑定失败</string>
     <string name="account_status_host_unknown">服务器不能为域名做出响应</string>
     <string name="server_info_broken">损坏</string>
@@ -605,7 +605,7 @@
     <string name="payment_required">需要付款</string>
     <string name="missing_internet_permission">授予使用互联网的权限</string>
     <string name="me">我</string>
-    <string name="contact_asks_for_presence_subscription">对方请求获取在线状态</string>
+    <string name="contact_asks_for_presence_subscription">对方请求在线状态订阅</string>
     <string name="allow">允许</string>
     <string name="no_permission_to_access_x">没有权限访问 %s</string>
     <string name="remote_server_not_found">远程服务器未找到</string>
@@ -613,7 +613,7 @@
     <string name="unable_to_update_account">无法更新账号</string>
     <string name="report_jid_as_spammer">举报此 XMPP 地址发送垃圾消息。</string>
     <string name="pref_delete_omemo_identities">删除 OMEMO 身份</string>
-    <string name="pref_delete_omemo_identities_summary">重新生成 OMEMO 密钥。您的所有联系人将必须再次验证您。只有在万不得已的情况下才这样做。</string>
+    <string name="pref_delete_omemo_identities_summary">重新生成 OMEMO 密钥。您的所有联系人将必须再次验证您。仅将此作为最后的方法。</string>
     <string name="delete_selected_keys">删除所选的密钥</string>
     <string name="error_publish_avatar_offline">需要连接到网络才能发布头像。</string>
     <string name="show_error_message">显示出错消息</string>
@@ -628,7 +628,7 @@
     <string name="all_omemo_keys_have_been_verified">您已验证了您拥有的所有 OMEMO 密钥</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_conversation">二维码中不包含此对话的指纹。</string>
     <string name="verified_fingerprints">已验证的指纹</string>
-    <string name="use_camera_icon_to_scan_barcode">使用相机扫描联系人的二维码</string>
+    <string name="use_camera_icon_to_scan_barcode">使用相机扫描对方二维码</string>
     <string name="please_wait_for_keys_to_be_fetched">正在获取密钥，请稍候</string>
     <string name="share_as_barcode">分享为二维码</string>
     <string name="share_as_uri">分享为 XMPP URI</string>
@@ -770,7 +770,7 @@
     <string name="group_chat_name">名称</string>
     <string name="providing_a_name_is_optional">提供名称是可选的</string>
     <string name="create_dialog_group_chat_name">群聊名</string>
-    <string name="conference_destroyed">此群聊已解散</string>
+    <string name="conference_destroyed">已解散此群聊</string>
     <string name="unable_to_save_recording">无法保存录制</string>
     <string name="foreground_service_channel_name">前台服务</string>
     <string name="foreground_service_channel_description">此通知类别用于显示永久通知，表明 %1$s 正在运行。</string>
@@ -784,7 +784,7 @@
     <string name="ongoing_calls_channel_name">正在进行的通话</string>
     <string name="missed_calls_channel_name">未接来电</string>
     <string name="silent_messages_channel_name">静音消息</string>
-    <string name="silent_messages_channel_description">此通知组用于显示不应触发任何声音的通知。 例如，在另一台设备上处于活跃状态时(通知宽限期)。</string>
+    <string name="silent_messages_channel_description">此通知组用于显示不应触发任何声音的通知。 例如，在另一台设备上处于活跃状态时(静默期)。</string>
     <string name="delivery_failed_channel_name">传递失败</string>
     <string name="pref_message_notification_settings">消息通知设置</string>
     <string name="pref_incoming_call_notification_settings">来电通知设置</string>
@@ -819,7 +819,7 @@
     <string name="wait_x">请稍候 (%s)</string>
     <string name="back">返回</string>
     <string name="possible_pin">已自动从剪贴板粘贴可能的 PIN 码。</string>
-    <string name="please_enter_pin">请输入您的 6 位数 PIN 码。</string>
+    <string name="please_enter_pin">请输入您的 6 位数字 PIN 码。</string>
     <string name="abort_registration_procedure">是否确定要中止注册程序\?</string>
     <string name="yes">是</string>
     <string name="no">否</string>
@@ -834,7 +834,7 @@
     <string name="unable_to_find_server">无法找到服务器。</string>
     <string name="something_went_wrong_processing_your_request">处理您的请求时出了问题。</string>
     <string name="invalid_user_input">用户输入无效</string>
-    <string name="temporarily_unavailable">暂时无法使用。稍后再试。</string>
+    <string name="temporarily_unavailable">暂时不可用。稍后再试。</string>
     <string name="no_network_connection">无网络连接。</string>
     <string name="try_again_in_x">请在 %s 后重试</string>
     <string name="rate_limited">您的速率受到限制</string>
@@ -896,7 +896,7 @@
     <string name="search_channels">搜索频道</string>
     <string name="channel_discovery_opt_in_title">可能会侵犯隐私!</string>
     <string name="i_already_have_an_account">我已有账号</string>
-    <string name="add_existing_account">添加现有的账号</string>
+    <string name="add_existing_account">添加已有账号</string>
     <string name="register_new_account">注册新账号</string>
     <string name="this_looks_like_a_domain">这看起来像是域名地址</string>
     <string name="add_anway">无论如何都要添加</string>
@@ -935,7 +935,7 @@
     <string name="rtp_state_ringing">正在响铃</string>
     <string name="rtp_state_declined_or_busy">占线</string>
     <string name="rtp_state_connectivity_error">无法连接通话</string>
-    <string name="rtp_state_connectivity_lost_error">连接丢失</string>
+    <string name="rtp_state_connectivity_lost_error">连接已中断</string>
     <string name="rtp_state_retracted">已撤回通话</string>
     <string name="rtp_state_application_failure">应用错误</string>
     <string name="rtp_state_security_error">验证问题</string>
