@@ -16,6 +16,8 @@ import com.google.common.collect.ImmutableList;
 
 import de.measite.minidns.AbstractDNSClient;
 import de.measite.minidns.DNSMessage;
+import de.measite.minidns.Record;
+import de.measite.minidns.record.Data;
 
 import eu.siacs.conversations.Config;
 
@@ -26,6 +28,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class AndroidDNSClient extends AbstractDNSClient {
+
+    private static final long DNS_MAX_TTL = 86_400L;
 
     private static final LruCache<QuestionServerTuple, DNSMessage> QUERY_CACHE =
             new LruCache<>(1024);
@@ -168,10 +172,23 @@ public class AndroidDNSClient extends AbstractDNSClient {
         }
     }
 
+    private static long ttl(final DNSMessage dnsMessage) {
+        final List<Record<? extends Data>> answerSection = dnsMessage.answerSection;
+        if (answerSection == null || answerSection.isEmpty()) {
+            final List<Record<? extends Data>> authoritySection = dnsMessage.authoritySection;
+            if (authoritySection == null || authoritySection.isEmpty()) {
+                return 0;
+            } else {
+                return Collections.min(Collections2.transform(authoritySection, d -> d.ttl));
+            }
+
+        } else {
+            return Collections.min(Collections2.transform(answerSection, d -> d.ttl));
+        }
+    }
+
     private static long expiresAt(final DNSMessage dnsMessage) {
-        return dnsMessage.receiveTimestamp
-                + (Collections.min(Collections2.transform(dnsMessage.answerSection, d -> d.ttl))
-                        * 1000L);
+        return dnsMessage.receiveTimestamp + (Math.min(DNS_MAX_TTL, ttl(dnsMessage)) * 1000L);
     }
 
     private static long expiresIn(final DNSMessage dnsMessage) {
