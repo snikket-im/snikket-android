@@ -54,6 +54,9 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
 
+    <!-- this foreground service type permission is exclusively used for import and export backup -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -116,7 +119,25 @@
             tools:ignore="ForegroundServicePermission">
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="im" />
+                android:value="xmpp-im" />
+        </service>
+
+        <service
+            android:name=".services.ExportBackupService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <service
+            android:name=".services.ImportBackupService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+        <service
+            android:name=".services.ContactChooserTargetService"
+            android:exported="true"
+            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.chooser.ChooserTargetService" />
+            </intent-filter>
         </service>
 
         <receiver
@@ -330,19 +351,6 @@
         <activity
             android:name=".ui.MediaBrowserActivity"
             android:label="@string/media_browser" />
-
-        <service android:name=".services.ExportBackupService" />
-        <service
-            android:name=".services.ImportBackupService"
-            android:exported="false" />
-        <service
-            android:name=".services.ContactChooserTargetService"
-            android:exported="true"
-            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.chooser.ChooserTargetService" />
-            </intent-filter>
-        </service>
 
         <provider
             android:name="androidx.core.content.FileProvider"
