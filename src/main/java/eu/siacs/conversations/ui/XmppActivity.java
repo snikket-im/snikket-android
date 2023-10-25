@@ -317,22 +317,24 @@ public abstract class XmppActivity extends ActionBarActivity {
                         button.setText(R.string.please_wait);
                         button.setEnabled(false);
                         xmppConnectionService.unregisterAccount(account, result -> {
-                            if (result) {
-                                dialog.dismiss();
-                                if (postDelete != null) {
-                                    postDelete.run();
+                            runOnUiThread(()->{
+                                if (result) {
+                                    dialog.dismiss();
+                                    if (postDelete != null) {
+                                        postDelete.run();
+                                    }
+                                    if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
+                                        final Intent intent = SignupUtils.getSignUpIntent(this);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                    }
+                                } else {
+                                    deleteFromServer.setEnabled(true);
+                                    button.setText(R.string.delete);
+                                    button.setEnabled(true);
+                                    Toast.makeText(this,R.string.could_not_delete_account_from_server,Toast.LENGTH_LONG).show();
                                 }
-                                if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
-                                    final Intent intent = SignupUtils.getSignUpIntent(this);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                }
-                            } else {
-                                deleteFromServer.setEnabled(true);
-                                button.setText(R.string.delete);
-                                button.setEnabled(true);
-                                Toast.makeText(this,R.string.could_not_delete_account_from_server,Toast.LENGTH_LONG).show();
-                            }
+                            });
                         });
                     } else {
                         Toast.makeText(this,R.string.not_connected_try_again,Toast.LENGTH_LONG).show();
