@@ -1,0 +1,1 @@
+* Introducir un nuevo formato de archivo de copia de seguridad

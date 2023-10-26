@@ -1,0 +1,1 @@
+* Corregida una regresión en la transferencia de archivos P2P

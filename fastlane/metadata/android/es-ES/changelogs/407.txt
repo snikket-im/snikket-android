@@ -1,0 +1,3 @@
+* Mostrar botón de llamada para contactos desconectados si previamente anunciaron soporte
+* El botón Atrás ya no finaliza la llamada cuando está conectada.
+* Corrección de errores

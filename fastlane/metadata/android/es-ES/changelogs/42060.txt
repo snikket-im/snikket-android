@@ -1,0 +1,1 @@
+* Arreglar 'q' falsamente siendo reconocido como cirílico

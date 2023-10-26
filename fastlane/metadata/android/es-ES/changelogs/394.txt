@@ -1,0 +1,2 @@
+* Se ha corregido el problema de las notificaciones que no aparecían en determinadas circunstancias.
+* Se han solucionado problemas de compatibilidad y bloqueos relacionados con las llamadas A/V

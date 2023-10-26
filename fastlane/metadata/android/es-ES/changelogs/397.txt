@@ -1,0 +1,3 @@
+* Gestión de archivos GPX
+* Mejorar el rendimiento de la restauración de las copias de seguridad
+* Corrección de errores

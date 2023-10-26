@@ -1,0 +1,11 @@
+Versión 2.10.9
+* Pedir permisos Bluetooth al hacer llamadas A/V (Puede rechazar esto si no utiliza auriculares Bluetooth).
+* Corrección de error al llamar a Movim
+* Corregir avatar incorrecto que se muestra para los chats de grupo
+* Preguntar siempre por las optimizaciones de batería
+* Establecer sólo local bandera en 'x cuentas conectadas' notificaciones
+* Corrección de la interacción con Google Maps Share Location Plugin
+* Eliminar nota a pie de página con respecto a la cuota del servidor
+* Almacenar archivos en la ubicación adecuada para Android 11
+* Intento de reconectar llamada tras cambio de red
+* Mostrar el JID de la persona que llama y el JID de la cuenta en la pantalla de llamada entrante
