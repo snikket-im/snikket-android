@@ -72,7 +72,7 @@ public class PermissionUtils {
 
     public static boolean hasPermission(
             final Activity activity, final List<String> permissions, final int requestCode) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final ImmutableList.Builder<String> missingPermissions = new ImmutableList.Builder<>();
             for (final String permission : permissions) {
                 if (ActivityCompat.checkSelfPermission(activity, permission)
