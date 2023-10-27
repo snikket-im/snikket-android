@@ -103,7 +103,7 @@
     <string name="send_unencrypted">Poslat nešifrované</string>
     <string name="decryption_failed">Zašifrování se nezdařilo. Možná nemáte správný privátní klíč.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long"><![CDATA[%1$s používá <b>OpenKeychain</b> k šifrování a dešifrování zpráv a ke správě Vašich veřejných klíčů.<br><br>OpenKeychain je vydána pod licencí GPLv3+ a dostupná na F-Droid nebo Google Play. <br><br><small>(Po instalaci, prosím, restartujte%1$s.)</small>]]></string>
+    <string name="openkeychain_required_long">%1$s používá &lt;b&gt;OpenKeychain&lt;/b&gt; k šifrování a dešifrování zpráv a ke správě Vašich veřejných klíčů.&lt;br&gt;&lt;br&gt;OpenKeychain je vydána pod licencí GPLv3+ a dostupná na F-Droid nebo Google Play.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Po instalaci, prosím, restartujte %1$s.)&lt;/small&gt;</string>
     <string name="restart">Restartovat</string>
     <string name="install">Instalovat</string>
     <string name="openkeychain_not_installed">Nainstalujte prosím OpenKeychain</string>
