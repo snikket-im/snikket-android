@@ -53,7 +53,7 @@
     <string name="remove_bookmark_text">%s kişisini yer imlerinden çıkarmak ister misiniz? Bu yer imi ile kayıtlı konuşmalar silinmeyecektir.</string>
     <string name="register_account">Sunucuda yeni bir hesap oluştur</string>
     <string name="change_password_on_server">Sunucudaki şifreni değiştir</string>
-    <string name="share_with">Paylaş...</string>
+    <string name="share_with">Paylaş…</string>
     <string name="start_conversation">Konuşma başlat</string>
     <string name="invite_contact">Kişi davet et</string>
     <string name="invite">Davet et </string>
@@ -73,18 +73,20 @@
     <string name="send_now">Şimdi gönder</string>
     <string name="send_never">Bir daha sorma</string>
     <string name="problem_connecting_to_account">Hesaba bağlanılamadı</string>
-    <string name="problem_connecting_to_accounts">Birden fazla hesaba bağlanılamadı.</string>
-    <string name="touch_to_fix">Hesaplarınızı yönetmek için dokununuz.</string>
+    <string name="problem_connecting_to_accounts">Birden fazla hesaba bağlanılamadı</string>
+    <string name="touch_to_fix">Hesaplarınızı yönetmek için dokununuz</string>
     <string name="attach_file">Dosya ekle</string>
     <string name="not_in_roster">Eksik olan bu kişiyi listenize eklemek ister misiniz?</string>
     <string name="add_contact">Kişi ekle</string>
     <string name="send_failed">ulaştırılamadı</string>
-    <string name="preparing_image">Görüntü gönderilmeye hazırlanılıyor.</string>
-    <string name="preparing_images">Görüntüler gönderilmeye hazırlanılıyor.</string>
-    <string name="sharing_files_please_wait">Dosyalar Paylaşılıyor. Lütfen bekleyin...</string>
+    <string name="preparing_image">Görüntü gönderilmeye hazırlanılıyor</string>
+    <string name="preparing_images">Görüntüler gönderilmeye hazırlanılıyor</string>
+    <string name="sharing_files_please_wait">Dosyalar Paylaşılıyor. Lütfen bekleyin…</string>
     <string name="action_clear_history">Geçmişi sil</string>
     <string name="clear_conversation_history">Konuşma geçmişini sil</string>
-    <string name="clear_histor_msg">Bu konuşmadaki tüm mesajları silmek istiyor musunuz? \n\n<b>Uyarı:</b> Bu eylem, diğer aygıt ve sunucularda kayıtlı mesajları etkilemeyecektir. </string>
+    <string name="clear_histor_msg">Bu konuşmadaki tüm mesajları silmek istiyor musunuz\?
+\n
+\n<b>Uyarı:</b> Bu eylem, diğer aygıt ve sunucularda kayıtlı mesajları etkilemeyecektir.</string>
     <string name="delete_file_dialog">Dosyayı sil</string>
     <string name="delete_file_dialog_msg">Bu dosyayı silmek istediğinizden emin misiniz? \n\n<b>Uyarı:</b> Bu eylem, bu dosyanın diğer aygıt ve sunucularda kayıtlı kopyalarını silmeyecektir.</string>
     <string name="also_end_conversation">Devamında bu konuşmayı kapat</string>
@@ -99,7 +101,7 @@
     <string name="send_unencrypted">Şifrelenmemiş gönder</string>
     <string name="decryption_failed">Deşifre edilemedi. Uygun bir özel anahtarınız olmayabilir.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long"><![CDATA[%1$s mesajları şifrelemek, deşifre etmek ve genel anahtarlarınızı yönetmek için <b>OpenKeychain</b> kullanmaktadır. \n\nlt GPLv3+ altında lisanslıdır ve F-Droid ve Google Play\'de mevcuttur. \n\n<br><br><small>(Lütfen devamında %1$s\'ı yeniden başlatın.</small>)]]></string>
+    <string name="openkeychain_required_long">%1$s mesajları şifrelemek, deşifre etmek ve genel anahtarlarınızı yönetmek için &lt;b&gt;OpenKeychain&lt;/b&gt; kullanmaktadır.&lt;br&gt;&lt;br&gt;lt GPLv3+ altında lisanslıdır ve F-Droid ve Google Play\'de mevcuttur.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Lütfen devamında %1$s\'ı yeniden başlatın.)&lt;/small&gt;</string>
     <string name="restart">Yeniden başlat</string>
     <string name="install">Kur</string>
     <string name="openkeychain_not_installed">Lütfen OpenKeychain’i kur</string>
@@ -126,7 +128,7 @@
     <string name="pref_notification_grace_period_summary">Cihazlarınızın birinde faaliyet tespit edilmesinden sonra  zaman hatırlatmalarının susturulma uzunluğu.</string>
     <string name="pref_advanced_options">Gelişmiş</string>
     <string name="pref_never_send_crash">Asla çöküş raporu gönderme</string>
-    <string name="pref_never_send_crash_summary">Yığın izi göndererek gelişime yardımcı oluyorsunuz.</string>
+    <string name="pref_never_send_crash_summary">Yığın izi göndererek gelişime yardımcı oluyorsunuz</string>
     <string name="pref_confirm_messages">İletileri onayla</string>
     <string name="pref_confirm_messages_summary">Onların iletilerini aldığınızda ve okuduğunuzda, kişilerinizin bunu bilmesini sağlayın</string>
     <string name="pref_prevent_screenshots">Ekran görüntülerini engelle</string>
@@ -145,7 +147,7 @@
     <string name="attach_take_picture">Resim çek</string>
     <string name="preemptively_grant">Abonelik isteğini peşinen kabul et</string>
     <string name="error_not_an_image_file">Seçtiğiniz dosya bir görüntü dosyası değil</string>
-    <string name="error_compressing_image">Görüntü dosyası dönüştürülemedi.</string>
+    <string name="error_compressing_image">Görüntü dosyası dönüştürülemedi</string>
     <string name="error_file_not_found">Dosya bulunamadı</string>
     <string name="error_io_exception">Genel G/Ç hatası. Depolama yeri kalmamış olabilir mi?</string>
     <string name="error_security_exception_during_image_copy">Bu görüntüyü seçmekte kullandığınız uygulama, dosyanın okunması için yeterli izinleri sağlayamadı.
@@ -163,7 +165,7 @@
     <string name="account_status_regis_fail">Hesap oluşturulamadı</string>
     <string name="account_status_regis_conflict">Kullanıcı adı kullanılıyor</string>
     <string name="account_status_regis_success">Hesap oluşturuldu</string>
-    <string name="account_status_regis_not_sup">Hesap, sunucu tarafından desteklenmiyor.</string>
+    <string name="account_status_regis_not_sup">Hesap, sunucu tarafından desteklenmiyor</string>
     <string name="account_status_regis_invalid_token">Geçersiz hesak simgesi</string>
     <string name="account_status_tls_error">TLS uzlaşması başarısız</string>
     <string name="account_status_tls_error_domain">Alan adı doğrulanamıyor</string>
@@ -191,7 +193,7 @@
     <string name="account_settings_example_jabber_id">kullanıcıadı@ornek.com</string>
     <string name="password">parola</string>
     <string name="invalid_jid">Bu geçerli bir XMPP adresi değil</string>
-    <string name="error_out_of_memory">Yetersiz bellek. Görüntü çok büyük.</string>
+    <string name="error_out_of_memory">Yetersiz bellek. Görüntü çok büyük</string>
     <string name="add_phone_book_text">%s kişisini listenize eklemek ister misiniz?</string>
     <string name="server_info_show_more">Sunucu bilgisi</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
@@ -243,12 +245,14 @@
     <string name="destroy_room">Grup konuşmasını yoket</string>
     <string name="destroy_channel">Kanalı yoket</string>
     <string name="destroy_room_dialog">Bu grup konuşmasını yoketmek istediğinizden emin misiniz?\n\n<b>Uyarı:</b> Grup konuşması sunucudan tamamen kaldırlacaktır.</string>
-    <string name="destroy_channel_dialog">Bu genel kanalı yoketmek istediğnizden emin misiniz?\n\n<b>Uyarı:</b> Kanal sunucudan tamamen kaldırılacaktır. </string>
+    <string name="destroy_channel_dialog">Bu genel kanalı yoketmek istediğnizden emin misiniz\?
+\n
+\n<b>Uyarı:</b> Kanal sunucudan tamamen kaldırılacaktır.</string>
     <string name="could_not_destroy_room">Grup konuşması yokedilemedi</string>
     <string name="could_not_destroy_channel">Kanal yokedilemedi</string>
     <string name="action_edit_subject">Grup konuşma konusunu düzenle</string>
     <string name="topic">Başlık</string>
-    <string name="joining_conference">Grup konuşmasına bağlanılıyor...</string>
+    <string name="joining_conference">Grup konuşmasına bağlanılıyor…</string>
     <string name="leave">Ayrıl</string>
     <string name="contact_added_you">Kişi sizi listesine ekledi</string>
     <string name="add_back">Siz de ekleyin</string>
@@ -263,7 +267,7 @@
     <string name="error_publish_avatar_converting">Resminiz dönüştürülemedi</string>
     <string name="error_saving_avatar">vatar diske kaydedilemedi</string>
     <string name="or_long_press_for_default">(Veya varsayılan değerlere dönmek için uzun süre basılı tutun)</string>
-    <string name="error_publish_avatar_no_server_support">Sunucunuz avatarların tanıtılmasını desteklemiyor.</string>
+    <string name="error_publish_avatar_no_server_support">Sunucunuz avatarların tanıtılmasını desteklemiyor</string>
     <string name="private_message">fısıldandı</string>
     <string name="private_message_to">%s kişisine</string>
     <string name="send_private_message_to">%s kişisine özel ileti gönder</string>
@@ -276,7 +280,9 @@
     <string name="enable">Etkinleştir</string>
     <string name="conference_requires_password">Grup konuşması şifre talep ediyor</string>
     <string name="enter_password">Parolayı gir</string>
-    <string name="request_presence_updates">Lütfen bağlantınızdan önce çevrim içi durum bildirimi talep edin. \n\n<small>Bu, bağlantınızın hangi konuşma uygulamasını kullandığını belirlemekte kullanılacak</small>. </string>
+    <string name="request_presence_updates">Lütfen bağlantınızdan önce çevrim içi durum bildirimi talep edin.
+\n
+\n<small>Bu, bağlantınızın hangi konuşma uygulamasını kullandığını belirlemekte kullanılacak</small>.</string>
     <string name="request_now">Şimdi iste</string>
     <string name="ignore">Yok say</string>
     <string name="without_mutual_presence_updates"><b>Uyarı:</b> Bu mesajı karşılıklı çevrim içi durum bildirimleri olmadan göndermek, beklenmeyen problemlere neden olabilir. <small>\n\n Çevrim içi durum aboneliklerini doğrulamak için \"Kişi Bilgileri\" kısmına gidin.</small></string>
@@ -332,7 +338,7 @@
     <string name="notification_backup_created_subtitle">Yedekleme dosyaları %s\'da depolandı</string>
     <string name="restoring_backup">Yedekleme yükleniyor</string>
     <string name="notification_restored_backup_title">Yedekleminiz yüklendi</string>
-    <string name="notification_restored_backup_subtitle">Hesabı etkinleştirmeyi unutmayın</string>
+    <string name="notification_restored_backup_subtitle">Hesabı etkinleştirmeyi unutmayın.</string>
     <string name="choose_file">Dosya seç</string>
     <string name="receiving_x_file">%1$s alıyor/(%2$d%% tamamlandı)</string>
     <string name="download_x_file">%s indir</string>
@@ -360,7 +366,8 @@
     <string name="clear_other_devices">Aygıtları sil</string>
     <string name="clear_other_devices_desc">OMEMO bildirimindeki diğer aygıtların hepsini silmek istediğinizden emin misiniz? Aygıtlarınız yeniden bağlandıklarında kendilerini yeniden bildirecekler ama bu süre zarfındaki iletileri alamayabilirler.</string>
     <string name="error_no_keys_to_trust_server_error">Bu kişi için kullanılabilecek bir anahtar bulunmuyor.\nSunucudan yeni anahtarlar alınamıyor. Belki bağlantınızın sunucusunda bir sorun vardır?</string>
-    <string name="error_no_keys_to_trust_presence">Bu kişi için kullanılabilir bir anahtar yok.\İkinizin de çevrim içi durum aboneliği oldudğundan emin olun.</string>
+    <string name="error_no_keys_to_trust_presence">Bu kişi için kullanılabilir bir anahtar yok.
+\nİkinizin de çevrim içi durum aboneliği oldudğundan emin olun.</string>
     <string name="error_trustkeys_title">Bir şeyler ters gitti</string>
     <string name="fetching_history_from_server">Sunucudan geçmiş alınıyor</string>
     <string name="no_more_history_on_server">Sunucuda başka geçmiş kalmadı</string>
@@ -482,7 +489,7 @@
     <string name="unable_to_parse_certificate">Sertifika çözümlenemedi</string>
     <string name="mam_prefs">Arşivleme tercihleri</string>
     <string name="server_side_mam_prefs">Sunucu tarafı arşivleme tercihleri</string>
-    <string name="fetching_mam_prefs">Arşivleme tercihleri alınıyor. Lütfen bekleyin...</string>
+    <string name="fetching_mam_prefs">Arşivleme tercihleri alınıyor. Lütfen bekleyin…</string>
     <string name="unable_to_fetch_mam_prefs">Arşivleme tercihleri alınamadı</string>
     <string name="captcha_required">CAPTCHA gerekli</string>
     <string name="captcha_hint">Resimdeki yazıyı girin</string>
@@ -513,7 +520,10 @@
     <string name="no_storage_permission">%1$s\'ın harici depolama erişimine izin ver</string>
     <string name="no_camera_permission">%1$s\'ın kamera erişimine izin ver</string>
     <string name="sync_with_contacts">Kişilerle senkronize et</string>
-    <string name="sync_with_contacts_long">%1$s XMPP listenizi telefon rehberinizle eşleştirmek için izin istiyor. Böylelikle, tüm rehberinizindeki kişilerin tam adları ve avatarlarını görebileceksiniz. \n\n%1$s kişilerinizi sunucunuza yüklemeyecek olup, sadece cihazınız üzerinden eşleştirme yapacaktır.</string>
+    <string name="sync_with_contacts_long">%1$s XMPP listenizi telefon rehberinizle eşleştirmek için izin istiyor.
+\nBöylelikle, tüm rehberinizindeki kişilerin tam adları ve avatarlarını görebileceksiniz.
+\n
+\n%1$s kişilerinizi sunucunuza yüklemeyecek olup, sadece cihazınız üzerinden eşleştirme yapacaktır.</string>
     <string name="notify_on_all_messages">Tüm iletilerde uyar</string>
     <string name="notify_only_when_highlighted">Yalnızca bahsedilğinde haber ver</string>
     <string name="notify_never">Uyarılar devre dışı</string>
@@ -535,7 +545,7 @@
     <string name="this_account_is_disabled">Bu hesabı devre dışı bıraktınız</string>
     <string name="security_error_invalid_file_access">Güvenlik hatası: Geçersiz dosya erişimi!</string>
     <string name="no_application_to_share_uri">URL paylaşacak uygulama bulunamadı</string>
-    <string name="share_uri_with">URI paylaş ile...</string>
+    <string name="share_uri_with">URI paylaş ile…</string>
     <string name="agree_and_continue">Kabul et ve devam et</string>
     <string name="magic_create_text">Conversations\'da hesap kurulum için bir rehber hazırlanmıştır.¹\nConversations.im\'i bir sağlayıcı olarak seçtikten sonra başka sağlayıcılar kullanan kullanıcılarla onlara tam XMPP adresinizi vererek iletişim kurabilirsiniz.</string>
     <string name="your_full_jid_will_be">Tam XMPP adresiniz %s olacak</string>
@@ -555,7 +565,7 @@
     <string name="registration_please_wait">Hesap oluşturulamadı: Sonra yeniden deneyin</string>
     <string name="registration_password_too_weak">Kayıt Başarısız: Parola çok zayıf</string>
     <string name="choose_participants">Katılımcıları seç</string>
-    <string name="creating_conference">Grup konuşması oluşturuluyor...</string>
+    <string name="creating_conference">Grup konuşması oluşturuluyor…</string>
     <string name="invite_again">Yeniden davet et</string>
     <string name="gp_disable">Devre dışı bırak</string>
     <string name="gp_short">Kısa</string>
@@ -625,7 +635,8 @@
     <string name="show_inactive_devices">Aktif olmayanları göster</string>
     <string name="hide_inactive_devices">Aktif olmayanları sakla</string>
     <string name="distrust_omemo_key">Güvensiz aygıt</string>
-    <string name="distrust_omemo_key_text">Bu cihazın doğrulamasını kaldırmak istediğinizden emin misiniz\? Bu cihaz ve cihazdan gelen mesajlar güvenilmez olarak işaretlenecektir.</string>
+    <string name="distrust_omemo_key_text">Bu cihazın doğrulamasını kaldırmak istediğinizden emin misiniz\?
+\nBu cihaz ve cihazdan gelen mesajlar güvenilmez olarak işaretlenecektir.</string>
     <plurals name="seconds">
         <item quantity="one">%d saniye</item>
         <item quantity="other">%d saniye</item>
@@ -655,7 +666,7 @@
     <string name="encrypting_message">İletiyi şifrelemek</string>
     <string name="not_fetching_history_retention_period">Yerel saklama süresi nedeniyle ileti getirilmiyor.</string>
     <string name="transcoding_video">Video sıkıştırılıyor</string>
-    <string name="corresponding_conversations_closed">Konuşma sonlandı</string>
+    <string name="corresponding_conversations_closed">Konuşma sonlandı.</string>
     <string name="contact_blocked_past_tense">Kişi engellendi.</string>
     <string name="pref_notifications_from_strangers">Yabancılardan bildirimler</string>
     <string name="pref_notifications_from_strangers_summary">Yabancılardan alınan ileti ve aramaları bildir.</string>
@@ -716,8 +727,8 @@
     <string name="small">Küçük</string>
     <string name="medium">Orta</string>
     <string name="large">Büyük</string>
-    <string name="not_encrypted_for_this_device">İleti bu cihaz için şifrelenmedi</string>
-    <string name="omemo_decryption_failed">OMEMO mesajı çözümlenemedi</string>
+    <string name="not_encrypted_for_this_device">İleti bu cihaz için şifrelenmedi.</string>
+    <string name="omemo_decryption_failed">OMEMO mesajı çözümlenemedi.</string>
     <string name="undo">geri al</string>
     <string name="location_disabled">Konum paylaşımı devre dışı bırakıldı</string>
     <string name="action_fix_to_location">Konumu sabitle</string>
@@ -729,7 +740,7 @@
     <string name="title_activity_show_location">Konumu göster</string>
     <string name="share">Paylaş</string>
     <string name="unable_to_start_recording">Kayıt başlatılamadı</string>
-    <string name="please_wait">Lütfen bekleyin...</string>
+    <string name="please_wait">Lütfen bekleyin…</string>
     <string name="no_microphone_permission">%1$s\'ın mikrofon erişimine izin ver</string>
     <string name="search_messages">İleti ara</string>
     <string name="gif">GIF</string>
@@ -755,7 +766,7 @@
     <string name="foreground_service_channel_description">Bu bildirim kategorisi %1$s\'ın çalıştığını sürekli belirtmekte kullanmaktadır.</string>
     <string name="notification_group_status_information">Durum bilgisi</string>
     <string name="error_channel_name">Bağlantı Sorunları</string>
-    <string name="error_channel_description">Bu bildirim kategorisi, bir hesaba bağlanmakta sorun olduğunu belirtmekte kullanılır</string>
+    <string name="error_channel_description">Bu bildirim kategorisi, bir hesaba bağlanmakta sorun olduğunu belirtmekte kullanılır.</string>
     <string name="notification_group_messages">İletiler</string>
     <string name="notification_group_calls">Aramalar</string>
     <string name="messages_channel_name">İletiler</string>
@@ -763,7 +774,7 @@
     <string name="ongoing_calls_channel_name">Yapılan aramalar</string>
     <string name="missed_calls_channel_name">Cevapsız aramalar</string>
     <string name="silent_messages_channel_name">Sessiz iletiler</string>
-    <string name="silent_messages_channel_description">Bu bildirim grubu, bildirimlerin herhangi bir ses çıkarmaması gerektiğini belirtmekte kullanılır. Mesela başka bir cihazda aktif olunduğunda (Mühlet)</string>
+    <string name="silent_messages_channel_description">Bu bildirim grubu, bildirimlerin herhangi bir ses çıkarmaması gerektiğini belirtmekte kullanılır. Mesela başka bir cihazda aktif olunduğunda (Mühlet).</string>
     <string name="delivery_failed_channel_name">Başarısız gönderiler</string>
     <string name="pref_message_notification_settings">İleti bildirim ayarları</string>
     <string name="pref_incoming_call_notification_settings">Gelen arama bildirimleri ayarları</string>
@@ -772,13 +783,13 @@
     <string name="view_media">Medyayı görüntüle</string>
     <string name="group_chat_members">Katılımcılar</string>
     <string name="media_browser">Medya tarayıcısı</string>
-    <string name="security_violation_not_attaching_file">Dosya güvenlik ihlalinden dolayı dahil edilmedi</string>
+    <string name="security_violation_not_attaching_file">Dosya güvenlik ihlalinden dolayı dahil edilmedi.</string>
     <string name="pref_video_compression">Video kalitesi</string>
     <string name="pref_video_compression_summary">Daha düşük kalite, daha ufak dosya anlamına gelir</string>
     <string name="video_360p">Orta (360P)</string>
     <string name="video_720p">Yüksek (720p)</string>
     <string name="cancelled">iptal edildi</string>
-    <string name="already_drafting_message">Zaten taslak halinde bir iletiniz var</string>
+    <string name="already_drafting_message">Zaten taslak halinde bir iletiniz var.</string>
     <string name="feature_not_implemented">Özellik uygulanmadı </string>
     <string name="invalid_country_code">Geçersiz ülke kodu</string>
     <string name="choose_a_country">Bir ülke seçin</string>
@@ -797,25 +808,25 @@
     <string name="resend_sms_in">Tekrar sms gönder (%s)</string>
     <string name="wait_x">Lütfen bekleyin  (%s)</string>
     <string name="back">geri</string>
-    <string name="possible_pin">Olası kod, otomatik olarak panodan yapıştırıldı</string>
+    <string name="possible_pin">Olası kod, otomatik olarak panodan yapıştırıldı.</string>
     <string name="please_enter_pin">Lütfen 6 haneli kodu girin.</string>
     <string name="abort_registration_procedure">Kayıt sürecini iptal etmek istediğinizden emin misiniz?</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
-    <string name="verifying">Doğrulanıyor...</string>
-    <string name="requesting_sms">SMS talep ediliyor...</string>
-    <string name="incorrect_pin">Girdiğiniz kod yanlış</string>
-    <string name="pin_expired">Girdiğiniz kodun tarihi geçmiş</string>
-    <string name="unknown_api_error_network">Bilinmeyen ağ hatası</string>
-    <string name="unknown_api_error_response">Sunucudan bilinmeyen cevap</string>
-    <string name="unable_to_connect_to_server">Sunucuya bağlanılamadı</string>
-    <string name="unable_to_establish_secure_connection">Güvenli bağlantı oluşturulamadı</string>
-    <string name="unable_to_find_server">Sunucu bulunamadı</string>
-    <string name="something_went_wrong_processing_your_request">Talebinizin işlenmesinde bir hata meydana geldi</string>
+    <string name="verifying">Doğrulanıyor…</string>
+    <string name="requesting_sms">SMS talep ediliyor…</string>
+    <string name="incorrect_pin">Girdiğiniz kod yanlış.</string>
+    <string name="pin_expired">Girdiğiniz kodun tarihi geçmiş.</string>
+    <string name="unknown_api_error_network">Bilinmeyen ağ hatası.</string>
+    <string name="unknown_api_error_response">Sunucudan bilinmeyen cevap.</string>
+    <string name="unable_to_connect_to_server">Sunucuya bağlanılamadı.</string>
+    <string name="unable_to_establish_secure_connection">Güvenli bağlantı oluşturulamadı.</string>
+    <string name="unable_to_find_server">Sunucu bulunamadı.</string>
+    <string name="something_went_wrong_processing_your_request">Talebinizin işlenmesinde bir hata meydana geldi.</string>
     <string name="invalid_user_input">Geçersiz kullanıcı girişi</string>
     <string name="temporarily_unavailable">Geçici olarak ulaşılamıyor. Daha sonra tekrar deneyiniz.</string>
-    <string name="no_network_connection">Ağ bağlantısı yok</string>
-    <string name="try_again_in_x">Lütfen %s içerisinde tekrar deneyiniz.</string>
+    <string name="no_network_connection">Ağ bağlantısı yok.</string>
+    <string name="try_again_in_x">Lütfen %s içerisinde tekrar deneyiniz</string>
     <string name="rate_limited">Sınırlandınız</string>
     <string name="too_many_attempts">Çok fazla girişim</string>
     <string name="the_app_is_out_of_date">Bu uygulamamının tarihi geçmiş bir versiyonunu kullanıyorsunuz.</string>
@@ -824,22 +835,22 @@
     <string name="enter_your_name_instructions">Adres defterlerinde sizin kim olduğunuzu bilmeyen kişilerin sizi tanıması için lütfen isminizi girin.</string>
     <string name="your_name">Adınız</string>
     <string name="enter_your_name">Adınızı girin</string>
-    <string name="no_name_set_instructions">Adınızı belirlemek için düzenle tuşunu kullanın</string>
+    <string name="no_name_set_instructions">Adınızı belirlemek için düzenle tuşunu kullanın.</string>
     <string name="reject_request">Talebi reddet</string>
     <string name="install_orbot">Orbot\'u yükle</string>
     <string name="start_orbot">Orbot\'u başlat</string>
-    <string name="no_market_app_installed">Herhangi bir mağaza uygulaması yüklenmedi</string>
-    <string name="group_chat_will_make_your_jabber_id_public">Bu kanal XMPP adresinizi herkese açık hale getirecek.</string>
+    <string name="no_market_app_installed">Herhangi bir mağaza uygulaması yüklenmedi.</string>
+    <string name="group_chat_will_make_your_jabber_id_public">Bu kanal XMPP adresinizi herkese açık hale getirecek</string>
     <string name="ebook">e-kitap</string>
     <string name="video_original">Orijinal (sıkıştırılmamış)</string>
-    <string name="open_with">Şununla aç...</string>
+    <string name="open_with">Şununla aç…</string>
     <string name="set_profile_picture">Conversations profil resmi</string>
     <string name="choose_account">Hesap seç</string>
     <string name="restore_backup">Yedekleri yükle</string>
     <string name="restore">Geri getir</string>
     <string name="enter_password_to_restore"> Yedekleri geri getirmek için %s hesabının şifrenizi girin.</string>
     <string name="restore_warning">Herhangi bir yüklemeyi klonlama (aynı anda çalışan) girişiminde yedekleri geri yükleme özelliğini kullanmayın. Yedeklerin geri yüklenmesi sadece hesap aktarımları veya asıl cihazı kaybetmeniz durumu için kullanılmalıdır.</string>
-    <string name="unable_to_restore_backup">Yedekler geri yüklenemedi</string>
+    <string name="unable_to_restore_backup">Yedekler geri yüklenemedi.</string>
     <string name="unable_to_decrypt_backup">Yedekleme çözülemedi. Şifre doğru mu?</string>
     <string name="backup_channel_name">Yedekleme &amp; Geri yükle</string>
     <string name="enter_jabber_id">XMPP adresini girin</string>
@@ -852,15 +863,15 @@
     <string name="please_enter_name">Lütfen kanal için bir isim belirleyin</string>
     <string name="please_enter_xmpp_address">Lütfen bir XMPP adresi sağlayın</string>
     <string name="this_is_an_xmpp_address">Bu bir XMPP adresi. Lütfen bir isim belirleyin.</string>
-    <string name="creating_channel">Ortak kanal oluşturuluyor...</string>
+    <string name="creating_channel">Ortak kanal oluşturuluyor…</string>
     <string name="channel_already_exists">Bu kanal zaten var</string>
     <string name="joined_an_existing_channel">Varolan bir kanala katıldınız</string>
     <string name="unable_to_set_channel_configuration">Kanal ayarları kaydedilemedi</string>
     <string name="allow_participants_to_edit_subject">Herhangi birinin başlığı düzenlemesine izin ver</string>
     <string name="allow_participants_to_invite_others">Herhangi birinin davet etmesine izin ver</string>
     <string name="anyone_can_edit_subject">Herhangi biri başlığı düzenleyebilir.</string>
-    <string name="owners_can_edit_subject">Yöneticiler başlığı düzenleyebilir</string>
-    <string name="admins_can_edit_subject">Yöneticiler başlığı düzenleyebilir</string>
+    <string name="owners_can_edit_subject">Yöneticiler başlığı düzenleyebilir.</string>
+    <string name="admins_can_edit_subject">Yöneticiler başlığı düzenleyebilir.</string>
     <string name="owners_can_invite_others">Yöneticiler başkalarını davet edebilir.</string>
     <string name="anyone_can_invite_others">Herhangi biri başkalarını davet edebilir.</string>
     <string name="jabber_ids_are_visible_to_admins">XMPP adresleri yöneticelere görünür.</string>
@@ -888,8 +899,8 @@
     <string name="account_already_setup">Bu hesap zaten kurulu vaziyette</string>
     <string name="please_enter_password">Lütfen bu hesabın şifresini girin</string>
     <string name="unable_to_perform_this_action">Eylem gerçekleştirilemedi</string>
-    <string name="open_join_dialog">Ortak kanala katılınıyor</string>
-    <string name="sharing_application_not_grant_permission">Paylaşımda bulunan uygulama dosya erişimi için yetki sağlamıyor</string>
+    <string name="open_join_dialog">Ortak kanala katılınıyor…</string>
+    <string name="sharing_application_not_grant_permission">Paylaşımda bulunan uygulama dosya erişimi için yetki sağlamıyor.</string>
     <string name="group_chats_and_channels"><![CDATA[Grup Konuşmaları & Kanallar]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">Yerel sunucu</string>
