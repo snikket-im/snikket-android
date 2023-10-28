@@ -1259,7 +1259,7 @@ public class XmppConnectionService extends Service {
         if (Config.supportOpenPgp()) {
             this.pgpServiceConnection = new OpenPgpServiceConnection(this, "org.sufficientlysecure.keychain", new OpenPgpServiceConnection.OnBound() {
                 @Override
-                public void onBound(IOpenPgpService2 service) {
+                public void onBound(final IOpenPgpService2 service) {
                     for (Account account : accounts) {
                         final PgpDecryptionService pgp = account.getPgpDecryptionService();
                         if (pgp != null) {
@@ -1269,7 +1269,8 @@ public class XmppConnectionService extends Service {
                 }
 
                 @Override
-                public void onError(Exception e) {
+                public void onError(final Exception exception) {
+                    Log.e(Config.LOGTAG,"could not bind to OpenKeyChain", exception);
                 }
             });
             this.pgpServiceConnection.bindToService();
