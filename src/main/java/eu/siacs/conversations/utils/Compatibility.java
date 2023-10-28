@@ -3,6 +3,7 @@ package eu.siacs.conversations.utils;
 import static eu.siacs.conversations.services.EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
@@ -20,14 +22,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.SettingsFragment;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Compatibility {
 
@@ -41,7 +43,8 @@ public class Compatibility {
             Collections.singletonList("message_notification_settings");
 
     public static boolean hasStoragePermission(final Context context) {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                || Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                 || ContextCompat.checkSelfPermission(
                                 context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         == PackageManager.PERMISSION_GRANTED;
@@ -175,6 +178,17 @@ public class Compatibility {
                     "platform bug detected. Unable to get restrict background status",
                     e);
             return ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED;
+        }
+    }
+
+    public static Bundle pgpStartIntentSenderOptions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            return ActivityOptions.makeBasic()
+                    .setPendingIntentBackgroundActivityStartMode(
+                            ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWED)
+                    .toBundle();
+        } else {
+            return null;
         }
     }
 }

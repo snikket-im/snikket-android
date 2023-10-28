@@ -66,6 +66,7 @@ import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
+import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SignupUtils;
@@ -982,7 +983,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             public void userInputRequired(PendingIntent pi, String object) {
                 mPendingPresenceTemplate.push(template);
                 try {
-                    startIntentSenderForResult(pi.getIntentSender(), REQUEST_CHANGE_STATUS, null, 0, 0, 0);
+                    startIntentSenderForResult(pi.getIntentSender(), REQUEST_CHANGE_STATUS, null, 0, 0, 0, Compatibility.pgpStartIntentSenderOptions());
                 } catch (final IntentSender.SendIntentException ignored) {
                 }
             }

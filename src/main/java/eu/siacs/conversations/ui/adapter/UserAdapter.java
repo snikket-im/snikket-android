@@ -25,6 +25,7 @@ import eu.siacs.conversations.ui.ConferenceDetailsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
+import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHolder> implements View.OnCreateContextMenuListener {
@@ -104,7 +105,7 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
                     PendingIntent intent = pgpEngine.getIntentForKey(user.getPgpKeyId());
                     if (intent != null) {
                         try {
-                            activity.startIntentSenderForResult(intent.getIntentSender(), 0, null, 0, 0, 0);
+                            activity.startIntentSenderForResult(intent.getIntentSender(), 0, null, 0, 0, 0, Compatibility.pgpStartIntentSenderOptions());
                         } catch (IntentSender.SendIntentException ignored) {
 
                         }

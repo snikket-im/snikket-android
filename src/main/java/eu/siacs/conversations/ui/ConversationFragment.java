@@ -481,7 +481,8 @@ public class ConversationFragment extends XmppFragment
                                             null,
                                             0,
                                             0,
-                                            0);
+                                            0,
+                                            Compatibility.pgpStartIntentSenderOptions());
                         } catch (SendIntentException e) {
                             Toast.makeText(
                                             getActivity(),
@@ -3400,7 +3401,7 @@ public class ConversationFragment extends XmppFragment
         try {
             getActivity()
                     .startIntentSenderForResult(
-                            pendingIntent.getIntentSender(), requestCode, null, 0, 0, 0);
+                            pendingIntent.getIntentSender(), requestCode, null, 0, 0, 0, Compatibility.pgpStartIntentSenderOptions());
         } catch (final SendIntentException ignored) {
         }
     }
