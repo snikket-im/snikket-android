@@ -264,7 +264,7 @@
     <string name="error_saving_avatar">Profilbild kann nicht gespeichert werden</string>
     <string name="or_long_press_for_default">(Oder klicke lange, um den Standard wiederherzustellen)</string>
     <string name="error_publish_avatar_no_server_support">Dein Server unterstützt die Veröffentlichung von Profilbildern nicht</string>
-    <string name="private_message">private Nachricht:</string>
+    <string name="private_message">geflüstert</string>
     <string name="private_message_to">an %s</string>
     <string name="send_private_message_to">Private Nachricht an %s senden</string>
     <string name="connect">Verbinden</string>
