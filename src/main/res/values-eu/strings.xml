@@ -642,7 +642,7 @@
     <string name="choose_a_country">Herrialde bat hautatu</string>
     <string name="phone_number">telefono zenbakia</string>
     <string name="verify_your_phone_number">Zure telefono zenbakia egiaztatu</string>
-    <string name="enter_country_code_and_phone_number">Quicksyk SMS mezu bat bidali dizu (baliteke ordaindu behar izatea)  zure telefono zenbakia egiaztatzeko.</string>
+    <string name="enter_country_code_and_phone_number">Quicksyk SMS mezu bat bidali dizu (baliteke ordaindu behar izatea) zure telefono zenbakia egiaztatzeko. Idatzi zure herrialdeko kodea eta telefono zenbakia:</string>
     <string name="we_will_be_verifying"><![CDATA[<br/><br/><b>%s</b><br/><br/>telefono zenbakia egiaztatuko dugu. Zuzena da, edo zenbakia editatu nahiko al zenuke?]]></string>
     <string name="not_a_valid_phone_number">%s ez da telefono zenbaki baliodun bat.</string>
     <string name="please_enter_your_phone_number">Mesedez idatzi zure telefono zenbakia.</string>
@@ -751,4 +751,4 @@
         <item quantity="one">Parte-hartzaile %1$d ikusi</item>
         <item quantity="other">%1$d parte-hartzaile ikusi</item>
     </plurals>
-    </resources>
+</resources>
