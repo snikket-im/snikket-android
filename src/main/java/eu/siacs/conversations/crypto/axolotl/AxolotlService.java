@@ -736,8 +736,12 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         return axolotlStore.getFingerprintCertificate(fingerprint);
     }
 
-    public void setFingerprintTrust(String fingerprint, FingerprintStatus status) {
+    public void setFingerprintTrust(final String fingerprint, final FingerprintStatus status) {
         axolotlStore.setFingerprintStatus(fingerprint, status);
+        // TODO we decided to call this after a fingerprint gets toggled to update the 'your contact
+        //  is using unverified devices text'; however this means the entire screen gets redrawn
+        //  after a toggle which might be annoying or cause other weird UI glitches
+        mXmppConnectionService.updateAccountUi();
     }
 
     private ListenableFuture<XmppAxolotlSession> verifySessionWithPEP(final XmppAxolotlSession session) {

@@ -49,6 +49,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.databinding.ActivityEditAccountBinding;
 import eu.siacs.conversations.databinding.DialogPresenceBinding;
@@ -630,6 +631,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             this.binding.accountRegisterNew.setVisibility(View.GONE);
         }
         this.binding.actionEditYourName.setOnClickListener(this::onEditYourNameClicked);
+        this.binding.scanButton.setOnClickListener((v) -> ScanActivity.scan(this));
     }
 
     private void onEditYourNameClicked(View view) {
@@ -1166,12 +1168,17 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 this.binding.axolotlFingerprintBox.setVisibility(View.GONE);
             }
             boolean hasKeys = false;
+            boolean showUnverifiedWarning = false;
             binding.otherDeviceKeys.removeAllViews();
-            for (XmppAxolotlSession session : mAccount.getAxolotlService().findOwnSessions()) {
-                if (!session.getTrust().isCompromised()) {
+            for (final XmppAxolotlSession session : mAccount.getAxolotlService().findOwnSessions()) {
+                final FingerprintStatus trust = session.getTrust();
+                if (!trust.isCompromised()) {
                     boolean highlight = session.getFingerprint().equals(messageFingerprint);
                     addFingerprintRow(binding.otherDeviceKeys, session, highlight);
                     hasKeys = true;
+                }
+                if (trust.isUnverified()) {
+                    showUnverifiedWarning = true;
                 }
             }
             if (hasKeys && Config.supportOmemo()) { //TODO: either the button should be visible if we print an active device or the device list should be fed with reactived devices
@@ -1182,6 +1189,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 } else {
                     binding.clearDevices.setVisibility(View.VISIBLE);
                 }
+                binding.unverifiedWarning.setVisibility(showUnverifiedWarning ? View.VISIBLE : View.GONE);
+                binding.scanButton.setVisibility(showUnverifiedWarning ? View.VISIBLE : View.GONE);
             } else {
                 this.binding.otherDeviceKeysCard.setVisibility(View.GONE);
             }

@@ -455,6 +455,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             }
             boolean skippedInactive = false;
             boolean showsInactive = false;
+            boolean showUnverifiedWarning = false;
             for (final XmppAxolotlSession session : sessions) {
                 final FingerprintStatus trust = session.getTrust();
                 hasKeys |= !trust.isCompromised();
@@ -470,7 +471,11 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                     boolean highlight = session.getFingerprint().equals(messageFingerprint);
                     addFingerprintRow(binding.detailsContactKeys, session, highlight);
                 }
+                if (trust.isUnverified()) {
+                    showUnverifiedWarning = true;
+                }
             }
+            binding.unverifiedWarning.setVisibility(showUnverifiedWarning ? View.VISIBLE : View.GONE);
             if (showsInactive || skippedInactive) {
                 binding.showInactiveDevices.setText(showsInactive ? R.string.hide_inactive_devices : R.string.show_inactive_devices);
                 binding.showInactiveDevices.setVisibility(View.VISIBLE);
@@ -480,7 +485,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         } else {
             binding.showInactiveDevices.setVisibility(View.GONE);
         }
-        binding.scanButton.setVisibility(hasKeys && isCameraFeatureAvailable() ? View.VISIBLE : View.GONE);
+        final boolean isCameraFeatureAvailable = isCameraFeatureAvailable();
+        binding.scanButton.setVisibility(hasKeys && isCameraFeatureAvailable ? View.VISIBLE : View.GONE);
         if (hasKeys) {
             binding.scanButton.setOnClickListener((v) -> ScanActivity.scan(this));
         }
