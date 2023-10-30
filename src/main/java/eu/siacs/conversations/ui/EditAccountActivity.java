@@ -1162,8 +1162,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                     this.binding.ownFingerprintDesc.setText(R.string.omemo_fingerprint);
                 }
                 this.binding.axolotlFingerprint.setText(CryptoHelper.prettifyFingerprint(ownAxolotlFingerprint.substring(2)));
-                this.binding.actionCopyAxolotlToClipboard.setVisibility(View.VISIBLE);
-                this.binding.actionCopyAxolotlToClipboard.setOnClickListener(v -> copyOmemoFingerprint(ownAxolotlFingerprint));
+                this.binding.showQrCodeButton.setVisibility(View.VISIBLE);
+                this.binding.showQrCodeButton.setOnClickListener(v -> showQrCode());
             } else {
                 this.binding.axolotlFingerprintBox.setVisibility(View.GONE);
             }

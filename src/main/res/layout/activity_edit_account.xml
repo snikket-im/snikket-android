@@ -613,14 +613,14 @@
                                 android:orientation="vertical">
 
                                 <ImageButton
-                                    android:id="@+id/action_copy_axolotl_to_clipboard"
+                                    android:id="@+id/show_qr_code_button"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:alpha="?attr/icon_alpha"
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:contentDescription="@string/copy_omemo_clipboard_description"
                                     android:padding="@dimen/image_button_padding"
-                                    android:src="?attr/icon_copy"
+                                    android:src="?attr/icon_qr_code"
                                     android:visibility="visible" />
 
                                 <ImageButton
