@@ -2007,7 +2007,6 @@ public class JingleRtpConnection extends AbstractJingleConnection
         final JinglePacket jinglePacket =
                 new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
         jinglePacket.setReason(reason, text);
-        Log.d(Config.LOGTAG, jinglePacket.toString());
         send(jinglePacket);
         finish();
     }
@@ -2577,8 +2576,12 @@ public class JingleRtpConnection extends AbstractJingleConnection
             sessionDescription = setLocalSessionDescription();
         } catch (final Exception e) {
             final Throwable cause = Throwables.getRootCause(e);
-            Log.d(Config.LOGTAG, "failed to renegotiate", cause);
             webRTCWrapper.close();
+            if (isTerminated()) {
+                Log.d(Config.LOGTAG, "failed to renegotiate. session was already terminated", cause);
+                return;
+            }
+            Log.d(Config.LOGTAG, "failed to renegotiate. sending session-terminate", cause);
             sendSessionTerminate(Reason.FAILED_APPLICATION, cause.getMessage());
             return;
         }
