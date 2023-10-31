@@ -26,6 +26,19 @@ import com.google.common.io.CountingInputStream;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.axolotl.SQLiteAxolotlStore;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.persistance.DatabaseBackend;
+import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.ui.ManageAccountActivity;
+import eu.siacs.conversations.utils.BackupFileHeader;
+import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
+import eu.siacs.conversations.xmpp.Jid;
+
 import org.bouncycastle.crypto.engines.AESEngine;
 import org.bouncycastle.crypto.io.CipherInputStream;
 import org.bouncycastle.crypto.modes.AEADBlockCipher;
@@ -56,19 +69,6 @@ import java.util.zip.ZipException;
 
 import javax.crypto.BadPaddingException;
 
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.axolotl.SQLiteAxolotlStore;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.persistance.DatabaseBackend;
-import eu.siacs.conversations.persistance.FileBackend;
-import eu.siacs.conversations.ui.ManageAccountActivity;
-import eu.siacs.conversations.utils.BackupFileHeader;
-import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
-import eu.siacs.conversations.xmpp.Jid;
-
 public class ImportBackupService extends Service {
 
     private static final int NOTIFICATION_ID = 21;
@@ -91,7 +91,6 @@ public class ImportBackupService extends Service {
                     SQLiteAxolotlStore.SESSION_TABLENAME,
                     SQLiteAxolotlStore.IDENTITIES_TABLENAME);
     private static final Pattern COLUMN_PATTERN = Pattern.compile("^[a-zA-Z_]+$");
-
 
     @Override
     public void onCreate() {
@@ -167,6 +166,7 @@ public class ImportBackupService extends Service {
                         if (files == null) {
                             continue;
                         }
+                        Log.d(Config.LOGTAG, "looking for backups in " + directory);
                         for (final File file : files) {
                             if (file.isFile() && file.getName().endsWith(".ceb")) {
                                 try {
@@ -179,7 +179,9 @@ public class ImportBackupService extends Service {
                                     } else {
                                         backupFiles.add(backupFile);
                                     }
-                                } catch (IOException | IllegalArgumentException e) {
+                                } catch (final IOException
+                                        | IllegalArgumentException
+                                        | BackupFileHeader.OutdatedBackupFileVersion e) {
                                     Log.d(Config.LOGTAG, "unable to read backup file ", e);
                                 }
                             }
