@@ -31,10 +31,7 @@
     <string name="minutes_ago">%d min. geleden</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d ongelezen gesprek</item>
-
-    
         <item quantity="other">%d ongelezen gesprekken</item>
-
     </plurals>
     <string name="sending">versturen…</string>
     <string name="message_decrypting">Bericht aan het ontsleutelen. Even geduld…</string>
@@ -168,7 +165,8 @@
     <string name="mgmt_account_publish_avatar">Avatar publiceren</string>
     <string name="mgmt_account_publish_pgp">OpenPGP-publieke sleutel publiceren</string>
     <string name="unpublish_pgp">OpenPGP-publieke sleutel verwijderen</string>
-    <string name="unpublish_pgp_message">Weet je zeker dat je je OpenPGP-publieke sleutel uit je aanwezigheidsaankondiging wil verwijderen?\nJe contacten zullen je geen OpenPGP-versleutelde berichten meer kunnen sturen.</string>
+    <string name="unpublish_pgp_message">Weet je zeker dat je je publieke OpenPGP-sleutel uit je aankondiging van aanwezigheid wilt verwijderen\?
+\nJe contacten zullen je geen versleutelde OpenPGP-berichten meer kunnen sturen.</string>
     <string name="openpgp_has_been_published">OpenPGP-publieke sleutel gepubliceerd.</string>
     <string name="mgmt_account_enable">Account inschakelen</string>
     <string name="attach_record_voice">Stem opnemen</string>
@@ -818,4 +816,4 @@
     <string name="unable_to_enable_video">Kan video niet schakelen.</string>
     <string name="plain_text_document">Onversleuteld document</string>
     <string name="account_registrations_are_not_supported">Accountregistraties zijn niet ondersteund</string>
-    </resources>
+</resources>
