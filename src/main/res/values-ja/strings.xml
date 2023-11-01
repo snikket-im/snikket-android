@@ -969,4 +969,18 @@
     <string name="delete_avatar">アバターを削除</string>
     <string name="audio_video_disabled_tor">Tor使用中のため通話できません</string>
     <string name="switch_to_video">ビデオ通話切替</string>
+    <string name="this_account_is_logged_out">このアカウントをログアウトしました</string>
+    <string name="action_directions">ルート</string>
+    <string name="reject_switch_to_video">ビデオ通話を却下する</string>
+    <string name="incoming_call_duration_timestamp">着信通話 (%s) · %s</string>
+    <string name="pref_up_push_account_title">XMPPアカウント</string>
+    <string name="group_chats">グループ</string>
+    <string name="outdated_backup_file_format">選択したファイルは、旧式のファイル形式ので復元できません</string>
+    <string name="search_group_chats">グループを検索</string>
+    <string name="outgoing_call_duration_timestamp">発信通話 (%s) · %s</string>
+    <string name="account_state_logged_out">ログアウトしました</string>
+    <string name="outgoing_call_timestamp">発信通話 · %s</string>
+    <string name="audiobook">オーディオブック</string>
+    <string name="channel_discover_opt_in_message">談話室の発見は&lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;というサービスを利用します.&lt;br&gt;&lt;br&gt;利用するとIPアドレスと検索語はそのサービスに送信されます。詳細についてはそのサービスの&lt;a href=https://search.jabber.network/privacy&gt;個人情報保護方針&lt;/a&gt;を参照してください。</string>
+    <string name="restore_warning_continued">自分で保存したバックアップしか復元しないでください！</string>
 </resources>
