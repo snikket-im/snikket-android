@@ -725,7 +725,7 @@
     <string name="action_unfix_from_location">Відкріпити розташування</string>
     <string name="action_copy_location">Скопіювати місцезнаходження</string>
     <string name="action_share_location">Поділитися місцезнаходженням</string>
-    <string name="action_directions">Шлях</string>
+    <string name="action_directions">Напрямки</string>
     <string name="title_activity_share_location">Поділитися місцезнаходженням</string>
     <string name="title_activity_show_location">Показати місцезнаходження</string>
     <string name="share">Поділитися</string>
@@ -1067,4 +1067,10 @@
     <string name="outdated_backup_file_format">Ви намагаєтеся імпортувати файл резервної копії у застарілому форматі</string>
     <string name="audiobook">Аудіокнига</string>
     <string name="reconnect_on_other_host">Відновити з\'єднання на іншому вузлі</string>
+    <string name="this_account_is_logged_out">Ви вийшли з цього облікового запису</string>
+    <string name="log_in">Увійти</string>
+    <string name="hide_notification">Сховати сповіщення</string>
+    <string name="contact_uses_unverified_keys">Ваш контакт використовує неперевірені пристрої. Відскануйте їх QR-код, щоб виконати перевірку та запобігти активним атакам MITM.</string>
+    <string name="log_out">Вийти</string>
+    <string name="unverified_devices">Ви використовуєте неперевірені пристрої. Відскануйте QR-коди інших Ваших пристроїв, щоб виконати перевірку та запобігти активним атакам MITM.</string>
 </resources>
