@@ -1,1 +1,1 @@
-* Support automatic theme switching on Android 10
+* Soporte para o cambio automático de decorado en Android 10

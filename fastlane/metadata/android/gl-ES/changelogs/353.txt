@@ -1,4 +1,4 @@
-* let users set their own nick name
-* resume download of OMEMO encrypted files
-* Channels now use '#' as symbol in avatar
-* Quicksy uses 'always' as OMEMO encryption default (hides lock icon)
+* permitir que as usuarias elixan o seu propio alcume
+* retomar a descarga de ficheiros cifrados con OMEMO
+* agora as Canles usan '#' como símbolo no avatar
+* Quicksy establece 'sempre' para a cifraxe OMEMO por defecto (agocha a icona do cadeado)

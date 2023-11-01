@@ -1,5 +1,5 @@
-* Implement Extensible SASL Profile, Bind 2.0 and Fast for faster reconnects
-* Implement Channel Binding
-* Add ability to switch from audio call to video call
-* Add ability to delete own avatar
-* Add notification for missed calls
+* Implementamos Extensible SASL Profile, Bind 2.0 e Fast para reconectar máis rápidamente
+* Implementamos Channel Binding
+* Engadimos a posibilidade de pasar de chamada de audio a chamada de vídeo
+* Podes eliminar o teu propio avatar
+* Engadida notificación de chamada perdida

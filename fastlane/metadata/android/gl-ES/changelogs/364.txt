@@ -1,2 +1,2 @@
-* Provide PDF preview on Android 5+
-* Use 12 byte IVs for OMEMO
+* Proporciona vista previa dos PDF en Android 5+
+* Usa 12 byte IVs con OMEMO
