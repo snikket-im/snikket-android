@@ -1027,4 +1027,11 @@
     <string name="outdated_backup_file_format">Estás intentando importar un formato de copia de seguridad obsoleto</string>
     <string name="audiobook">Audiolibro</string>
     <string name="reconnect_on_other_host">Reconectarse a otros hosts</string>
+    <string name="this_account_is_logged_out">Has salido de esta cuenta</string>
+    <string name="log_in">Iniciar sesión</string>
+    <string name="hide_notification">Ocultar la notificación</string>
+    <string name="contact_uses_unverified_keys">Su contacto utiliza dispositivos no verificados. Escanea su código de barras en 2D para realizar la verificación e impedir ataques MITM activos.</string>
+    <string name="log_out">Desconectarse</string>
+    <string name="account_state_logged_out">Desconectado</string>
+    <string name="unverified_devices">Está utilizando dispositivos no verificados. Escanea los códigos de barras en 2D de tus otros dispositivos para realizar la verificación e impedir el ataque MITM activo.</string>
 </resources>
