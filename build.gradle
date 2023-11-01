@@ -111,6 +111,8 @@ android {
         abi {
             universalApk true
             enable true
+            reset()
+            include project.ext.abiCodes.keySet() as String[]
         }
     }
 
@@ -240,7 +242,7 @@ android {
         buildConfig true
     }
 
-    android.applicationVariants.all { variant ->
+    android.applicationVariants.configureEach { variant ->
         variant.outputs.each { output ->
             def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(com.android.build.OutputFile.ABI))
             if (baseAbiVersionCode != null) {
