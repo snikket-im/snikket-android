@@ -1019,5 +1019,5 @@
     <string name="log_out">Log out</string>
     <string name="log_in">Log in</string>
     <string name="contact_uses_unverified_keys">Your contact uses unverified devices. Scan their 2D barcode to perform verification and impede active MITM attacks.</string>
-    <string name="unverified_devices">You are using unverified devices. Scan the 2D barcodes of your other devices to perform verification and impede active MITM attack.</string>
+    <string name="unverified_devices">You are using unverified devices. Scan the 2D barcode on your other devices to perform verification and impede active MITM attacks.</string>
 </resources>
