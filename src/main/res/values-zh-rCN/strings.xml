@@ -109,11 +109,11 @@
     <string name="offering">正在提供…</string>
     <string name="waiting">正在等待…</string>
     <string name="no_pgp_key">未找到 OpenPGP 密钥</string>
-    <string name="contact_has_no_pgp_key">无法加密消息，因为对方未公布其公钥。
+    <string name="contact_has_no_pgp_key">无法加密消息，因为您的联系人未公布其公钥。
 \n
 \n<small>请通知对方设置 OpenPGP。</small></string>
     <string name="no_pgp_keys">未找到 OpenPGP 密钥</string>
-    <string name="contacts_have_no_pgp_keys">无法加密消息，因为对方未公布其公钥。
+    <string name="contacts_have_no_pgp_keys">无法加密消息，因为您的联系人未公布其公钥。
 \n
 \n<small>请通知对方设置 OpenPGP。</small></string>
     <string name="pref_general">常规</string>
@@ -189,7 +189,7 @@
     <string name="mgmt_account_publish_pgp">发布 OpenPGP 公钥</string>
     <string name="unpublish_pgp">移除 OpenPGP 公钥</string>
     <string name="unpublish_pgp_message">是否确定要从在线状态公布中移除 OpenPGP 公钥？
-\n对方将无法再向您发送 OpenPGP 加密消息。</string>
+\n您的联系人将无法再向您发送 OpenPGP 加密消息。</string>
     <string name="openpgp_has_been_published">OpenPGP 公钥已发布。</string>
     <string name="mgmt_account_enable">启用账号</string>
     <string name="mgmt_account_delete_confirm_text">是否确定要删除账号？删除账号会擦除全部对话历史记录</string>
@@ -288,7 +288,7 @@
     <string name="enable">启用</string>
     <string name="conference_requires_password">需要密码才能进入此群聊</string>
     <string name="enter_password">输入密码</string>
-    <string name="request_presence_updates">请先向对方请求在线状态更新。
+    <string name="request_presence_updates">请先向您的联系人请求在线状态更新。
 \n
 \n<small>这将用于确定对方正在使用的聊天应用</small>。</string>
     <string name="request_now">立即请求</string>
@@ -376,9 +376,9 @@
     <string name="regenerate_omemo_key">重新生成 OMEMO 密钥</string>
     <string name="clear_other_devices">清除设备</string>
     <string name="clear_other_devices_desc">是否确定要从 OMEMO 公布中清除所有其他设备？下次连接时，设备将会重新公布，但可能不会收到在此期间发送的消息。</string>
-    <string name="error_no_keys_to_trust_server_error">对方没有可用的密钥。
+    <string name="error_no_keys_to_trust_server_error">此联系人没有可用的密钥。
 \n无法从服务器获取新密钥。也许是对方的服务器出了问题？</string>
-    <string name="error_no_keys_to_trust_presence">对方没有可用的密钥。
+    <string name="error_no_keys_to_trust_presence">此联系人没有可用的密钥。
 \n请确保双方都有在线状态订阅。</string>
     <string name="error_trustkeys_title">出了点问题</string>
     <string name="fetching_history_from_server">正在从服务器获取历史记录</string>
@@ -533,7 +533,7 @@
     <string name="sync_with_contacts_long">%1$s 想要访问通讯录权限来将它与 XMPP 联系人列表相匹配。
 \n这将会显示联系人的全名和头像。
 \n
-\n%1$s 将只会读取通讯录并在本地匹配，不会上传任何东西到服务器。</string>
+\n%1$s 将只会读取通讯录并在本地匹配，不会上传任何内容到服务器。</string>
     <string name="notify_on_all_messages">通知所有消息</string>
     <string name="notify_only_when_highlighted">仅在提及时通知</string>
     <string name="notify_never">通知已禁用</string>
@@ -717,7 +717,7 @@
     <string name="edit_status_message_title">编辑状态信息</string>
     <string name="edit_status_message">编辑状态信息</string>
     <string name="disable_encryption">禁用加密</string>
-    <string name="error_trustkey_general">%1$s 无法发送加密消息到 %2$s。这可能是由于对方使用了过时的服务器或者无法处理 OMEMO 的客户端。</string>
+    <string name="error_trustkey_general">%1$s 无法发送加密消息到 %2$s。这可能是由于您的联系人使用了过时的服务器或者无法处理 OMEMO 的客户端。</string>
     <string name="error_trustkey_device_list">无法获取设备列表</string>
     <string name="error_trustkey_bundle">无法获取密钥</string>
     <string name="error_trustkey_hint_mutual">提示：某些情况下，双方可以添加到联系人列表解决此问题。</string>
@@ -1025,4 +1025,11 @@
     <string name="outdated_backup_file_format">您正尝试导入过时的备份文件格式</string>
     <string name="audiobook">有声读物</string>
     <string name="reconnect_on_other_host">重新连接其他主机</string>
+    <string name="this_account_is_logged_out">您已登出此账号</string>
+    <string name="log_in">登录</string>
+    <string name="hide_notification">隐藏通知</string>
+    <string name="contact_uses_unverified_keys">您的联系人使用未经验证的设备。扫描对方二维码进行验证并阻止主动式中间人攻击。</string>
+    <string name="log_out">登出</string>
+    <string name="account_state_logged_out">已登出</string>
+    <string name="unverified_devices">您正在使用未经验证的设备。扫描您其他设备的二维码进行验证并阻止主动式中间人攻击。</string>
 </resources>
