@@ -1013,4 +1013,11 @@
     <string name="outdated_backup_file_format">Du versuchst, ein veraltetes Sicherungsdateiformat zu importieren</string>
     <string name="audiobook">Hörbuch</string>
     <string name="reconnect_on_other_host">Verbindung auf anderem Host wiederherstellen</string>
+    <string name="this_account_is_logged_out">Du hast dich von diesem Konto abgemeldet</string>
+    <string name="log_in">Anmelden</string>
+    <string name="hide_notification">Benachrichtigung ausblenden</string>
+    <string name="contact_uses_unverified_keys">Dein Kontakt verwendet nicht verifizierte Geräte. Scanne deren 2D-Barcode, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
+    <string name="log_out">Abmelden</string>
+    <string name="account_state_logged_out">Abgemeldet</string>
+    <string name="unverified_devices">Du verwendest nicht verifizierte Geräte. Scanne die 2D-Barcodes deiner anderen Geräte, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
 </resources>
