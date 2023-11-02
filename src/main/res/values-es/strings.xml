@@ -1033,5 +1033,5 @@
     <string name="contact_uses_unverified_keys">Su contacto utiliza dispositivos no verificados. Escanea su código de barras en 2D para realizar la verificación e impedir ataques MITM activos.</string>
     <string name="log_out">Desconectarse</string>
     <string name="account_state_logged_out">Desconectado</string>
-    <string name="unverified_devices">Está utilizando dispositivos no verificados. Escanea los códigos de barras en 2D de tus otros dispositivos para realizar la verificación e impedir el ataque MITM activo.</string>
+    <string name="unverified_devices">Está utilizando dispositivos no verificados. Escanea el código de barras 2D en tus otros dispositivos para realizar la verificación e impedir los ataques MITM activos.</string>
 </resources>
