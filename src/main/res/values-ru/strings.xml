@@ -1037,4 +1037,11 @@
         <item quantity="other">%1$d пропущенных вызовов от %2$d контактов</item>
     </plurals>
     <string name="audiobook">Аудиокнига</string>
+    <string name="this_account_is_logged_out">Вы вышли из этой учётной записи</string>
+    <string name="log_in">Войти</string>
+    <string name="hide_notification">Скрыть уведомление</string>
+    <string name="contact_uses_unverified_keys">Ваш контакт использует неподтверждённые устройства. Отсканируйте его штрих-код для проверки и предотвращения атаки посредника.</string>
+    <string name="log_out">Выйти</string>
+    <string name="account_state_logged_out">Деавторизован</string>
+    <string name="unverified_devices">Вы используете неподтверждённые устройства. Отсканируйте штрих-код на подтверждённом устройстве для проверки и предотвращения атаки посредника.</string>
 </resources>
