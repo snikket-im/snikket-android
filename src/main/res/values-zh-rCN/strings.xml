@@ -73,7 +73,7 @@
     <string name="send_never">不再询问</string>
     <string name="problem_connecting_to_account">无法连接到账号</string>
     <string name="problem_connecting_to_accounts">无法连接到多个账号</string>
-    <string name="touch_to_fix">点击即可管理账号</string>
+    <string name="touch_to_fix">轻击即可管理账号</string>
     <string name="attach_file">附加文件</string>
     <string name="not_in_roster">对方不在您的联系人列表中，是否添加？</string>
     <string name="add_contact">添加联系人</string>
@@ -205,11 +205,11 @@
     <string name="server_info_mam">XEP-0313：消息存档管理</string>
     <string name="server_info_carbon_messages">XEP-0280：消息抄送</string>
     <string name="server_info_csi">XEP-0352：客户端状态指示</string>
-    <string name="server_info_blocking">XEP-0191：屏蔽指令</string>
+    <string name="server_info_blocking">XEP-0191：屏蔽命令</string>
     <string name="server_info_roster_version">XEP-0237：花名册版本控制</string>
     <string name="server_info_stream_management">XEP-0198：流管理</string>
     <string name="server_info_external_service_discovery">XEP-0215：外部服务发现</string>
-    <string name="server_info_pep">XEP-0163：个人事件协议(头像/OMEMO)</string>
+    <string name="server_info_pep">XEP-0163：个人事件协议 (头像/OMEMO)</string>
     <string name="server_info_http_upload">XEP-0363：HTTP 文件上传</string>
     <string name="server_info_push">XEP-0357：推送</string>
     <string name="server_info_available">有效</string>
@@ -227,8 +227,8 @@
     <string name="openpgp_key_id">OpenPGP 密钥 ID</string>
     <string name="omemo_fingerprint">OMEMO 指纹</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO 指纹</string>
-    <string name="omemo_fingerprint_selected_message">OMEMO 指纹(消息来源)</string>
-    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO 指纹(消息来源)</string>
+    <string name="omemo_fingerprint_selected_message">OMEMO 指纹 (消息来源)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO 指纹 (消息来源)</string>
     <string name="other_devices">其他设备</string>
     <string name="trust_omemo_fingerprints">信任 OMEMO 指纹</string>
     <string name="fetching_keys">正在获取密钥…</string>
@@ -269,7 +269,7 @@
     <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s 和其他 %2$d 人已阅读至此</string>
     <string name="everyone_has_read_up_to_this_point">每个人都已阅读至此</string>
     <string name="publish">发布</string>
-    <string name="touch_to_choose_picture">点击头像即可从图库中选择图片</string>
+    <string name="touch_to_choose_picture">轻击头像即可从图库中选择图片</string>
     <string name="publishing">正在发布…</string>
     <string name="error_publish_avatar_server_reject">服务器拒绝了您的发布</string>
     <string name="error_publish_avatar_converting">无法转换图片</string>
@@ -290,7 +290,7 @@
     <string name="enter_password">输入密码</string>
     <string name="request_presence_updates">请先向您的联系人请求在线状态更新。
 \n
-\n<small>这将用于确定对方正在使用的聊天应用</small>。</string>
+\n<small>将用于确定对方正在使用的聊天应用</small>。</string>
     <string name="request_now">立即请求</string>
     <string name="ignore">忽略</string>
     <string name="without_mutual_presence_updates"><b>警告：</b>在双方未更新在线状态的情况下发送此消息将会出现未知问题。
@@ -531,7 +531,7 @@
     <string name="no_camera_permission">授予 %1$s 访问相机的权限</string>
     <string name="sync_with_contacts">与联系人同步</string>
     <string name="sync_with_contacts_long">%1$s 想要访问通讯录权限来将它与 XMPP 联系人列表相匹配。
-\n这将会显示联系人的全名和头像。
+\n将会显示联系人的全名和头像。
 \n
 \n%1$s 将只会读取通讯录并在本地匹配，不会上传任何内容到服务器。</string>
     <string name="notify_on_all_messages">通知所有消息</string>
@@ -543,9 +543,9 @@
     <string name="always">始终</string>
     <string name="large_images_only">仅限大图片</string>
     <string name="battery_optimizations_enabled">电池优化已启用</string>
-    <string name="battery_optimizations_enabled_explained">设备正对 %1$s 实施强力电池优化，这可能会导致通知延迟甚至消息丢失。
+    <string name="battery_optimizations_enabled_explained">设备正对 %1$s 实施强力电池优化，可能会导致通知延迟甚至消息丢失。
 \n建议禁用它们。</string>
-    <string name="battery_optimizations_enabled_dialog">设备正对 %1$s 实施强力电池优化，这可能会导致通知延迟甚至消息丢失。
+    <string name="battery_optimizations_enabled_dialog">设备正对 %1$s 实施强力电池优化，可能会导致通知延迟甚至消息丢失。
 \n
 \n现在将要求您禁用它们。</string>
     <string name="disable">禁用</string>
@@ -638,12 +638,12 @@
     <string name="blindly_trusted_omemo_keys">盲目信任的 OMEMO 密钥，表示它们可能是其他人或者某人可能冒充别人发送消息。</string>
     <string name="not_trusted">不信任的</string>
     <string name="invalid_barcode">二维码无效</string>
-    <string name="pref_clean_cache_summary">清理缓存文件夹(由相机应用使用)</string>
+    <string name="pref_clean_cache_summary">清理缓存文件夹 (由相机应用使用)</string>
     <string name="pref_clean_cache">清理缓存</string>
     <string name="pref_clean_private_storage">清理私人存储空间</string>
-    <string name="pref_clean_private_storage_summary">清理保存文件的私人存储(它们可以从服务器重新下载)</string>
+    <string name="pref_clean_private_storage_summary">清理保存文件的私人存储 (它们可以从服务器重新下载)</string>
     <string name="i_followed_this_link_from_a_trusted_source">我从可信来源收到此链接</string>
-    <string name="verifying_omemo_keys_trusted_source">点击链接后，您将验证 %1$s 的 OMEMO 密钥。只有从可信来源(只有 %2$s 可以发布此链接)收到此链接才是安全的。</string>
+    <string name="verifying_omemo_keys_trusted_source">单击链接后，您将验证 %1$s 的 OMEMO 密钥。只有从可信来源(只有 %2$s 可以发布此链接)收到此链接才是安全的。</string>
     <string name="verifying_omemo_keys_trusted_source_account">您将验证自己账号的 OMEMO 密钥。只有从可信来源(只有您可以发布此链接)收到此链接才是安全的。</string>
     <string name="continue_btn">继续</string>
     <string name="verify_omemo_keys">验证 OMEMO 密钥</string>
@@ -717,12 +717,12 @@
     <string name="edit_status_message_title">编辑状态信息</string>
     <string name="edit_status_message">编辑状态信息</string>
     <string name="disable_encryption">禁用加密</string>
-    <string name="error_trustkey_general">%1$s 无法发送加密消息到 %2$s。这可能是由于您的联系人使用了过时的服务器或者无法处理 OMEMO 的客户端。</string>
+    <string name="error_trustkey_general">%1$s 无法发送加密消息到 %2$s。可能是由于您的联系人使用了过时的服务器或者无法处理 OMEMO 的客户端。</string>
     <string name="error_trustkey_device_list">无法获取设备列表</string>
     <string name="error_trustkey_bundle">无法获取密钥</string>
     <string name="error_trustkey_hint_mutual">提示：某些情况下，双方可以添加到联系人列表解决此问题。</string>
     <string name="disable_encryption_message">是否确定要禁用此对话的 OMEMO 加密？
-\n这将允许服务器管理员读取您的消息，但这可能是与使用过时客户端的用户交流的唯一方法。</string>
+\n将允许服务器管理员读取您的消息，但可能是与使用过时客户端的用户交流的唯一方法。</string>
     <string name="disable_now">立即禁用</string>
     <string name="draft">草稿：</string>
     <string name="pref_omemo_setting">OMEMO 加密</string>
@@ -852,7 +852,7 @@
     <string name="no_market_app_installed">未安装应用商店。</string>
     <string name="group_chat_will_make_your_jabber_id_public">此频道将公开您的 XMPP 地址</string>
     <string name="ebook">电子书</string>
-    <string name="video_original">原始(未压缩)</string>
+    <string name="video_original">原始 (未压缩)</string>
     <string name="open_with">打开为…</string>
     <string name="set_profile_picture">Conversations 个人资料图片</string>
     <string name="choose_account">选择账号</string>
@@ -1007,7 +1007,7 @@
     <string name="reject_switch_to_video">拒绝视频切换请求</string>
     <string name="pref_up_push_account_title">XMPP 账号</string>
     <string name="pref_up_push_server_title">推送服务器</string>
-    <string name="no_account_deactivated">无(已停用)</string>
+    <string name="no_account_deactivated">无 (已停用)</string>
     <string name="unified_push_distributor">UnifiedPush 分发程序</string>
     <string name="pref_up_push_account_summary">接收推送消息的账号。</string>
     <string name="pref_up_push_server_summary">用户选择的推送服务器，通过 XMPP 将推送消息转送至设备。</string>
