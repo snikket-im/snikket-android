@@ -1,2 +1,2 @@
-* Fix avatar selection on some Android 10 devices
-* Fix file transfer for larger files
+* Arranxo da selección do avatar en dispositivos Android 10
+* Arranxo da transferencia de ficheiros moi grandes

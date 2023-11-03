@@ -1,1 +1,1 @@
-* Audio/Video calls (Requires server support in form of STUN and TURN servers discoverable via XEP-0215)
+* Chamadas de Audio/Video (Require soporte no servidor para que os servidores STUN e TURN sexan accesibles vía XEP-0215)
