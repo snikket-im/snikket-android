@@ -312,7 +312,7 @@
     <string name="pref_autojoin_summary">在进入或离开多用户聊天时设置“自动加入”标志，并回应其他客户端所做的改变。</string>
     <string name="toast_message_omemo_fingerprint">OMEMO 指纹已复制到剪贴板</string>
     <string name="conference_banned">此群聊已将您封禁了</string>
-    <string name="conference_members_only">此群聊仅限成员参与</string>
+    <string name="conference_members_only">此群聊仅成员进入</string>
     <string name="conference_resource_constraint">资源限制</string>
     <string name="conference_kicked">此群聊已将您踢出了</string>
     <string name="conference_shutdown">此群聊已关闭</string>
@@ -414,7 +414,7 @@
     <string name="could_not_change_role">无法更改 %s 的角色</string>
     <string name="conference_options">私人群聊配置</string>
     <string name="channel_options">公开频道配置</string>
-    <string name="members_only">私人，仅限成员</string>
+    <string name="members_only">私人，仅成员进入</string>
     <string name="non_anonymous">使 XMPP 地址对任何人可见</string>
     <string name="moderated">对频道进行审核</string>
     <string name="you_are_not_participating">您未参与</string>
@@ -707,7 +707,7 @@
     <string name="mtm_accept_cert">接受未知证书？</string>
     <string name="mtm_trust_anchor">此服务器证书不是由已知的证书颁发机构签发的。</string>
     <string name="mtm_accept_servername">接受不匹配的服务器名称？</string>
-    <string name="mtm_hostname_mismatch">由于\"%s\"，服务器无法验证。证书仅对此有效：</string>
+    <string name="mtm_hostname_mismatch">由于“%s”，服务器无法验证。证书仅对此有效：</string>
     <string name="mtm_connect_anyway">是否仍要连接？</string>
     <string name="mtm_cert_details">证书详情：</string>
     <string name="once">仅一次</string>
@@ -914,7 +914,7 @@
     <string name="group_chats_and_channels">群聊 &amp; 频道</string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">本地服务器</string>
-    <string name="pref_channel_discovery_summary">大多数用户应该选择 \"jabber.network\" 以便从整个公共 XMPP 生态系统中获得更好的建议。</string>
+    <string name="pref_channel_discovery_summary">大多数用户应该选择“jabber.network”以便从整个公共 XMPP 生态系统中获得更好的建议。</string>
     <string name="pref_channel_discovery">频道发现方法</string>
     <string name="backup">备份</string>
     <string name="category_about">关于</string>
