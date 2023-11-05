@@ -28,8 +28,8 @@
     <string name="just_now">щойно</string>
     <string name="minute_ago">1 хвилину тому</string>
     <string name="minutes_ago">%d хвилин тому</string>
-    <string name="sending">відправляю…</string>
-    <string name="message_decrypting">Розшифровую повідомлення. Зачекайте, будь ласка…</string>
+    <string name="sending">надсилання…</string>
+    <string name="message_decrypting">Повідомлення розшифровується. Зачекайте, будь ласка…</string>
     <string name="pgp_message">Повідомлення зашифроване OpenPGP</string>
     <string name="nick_in_use">Таке прізвисько вже використовується</string>
     <string name="invalid_muc_nick">Неприйнятне прізвисько</string>
@@ -68,13 +68,13 @@
     <string name="problem_connecting_to_account">Не вдалося з\'єднатися з обліковим записом</string>
     <string name="problem_connecting_to_accounts">Не вдалося з\'єднатися з обліковими записами</string>
     <string name="touch_to_fix">Торкніться, щоб керувати обліковими записами</string>
-    <string name="attach_file">Долучити файл</string>
+    <string name="attach_file">Прикріпити файл</string>
     <string name="not_in_roster">Цього контакту немає у Вашому списку. Бажаєте додати його\?</string>
     <string name="add_contact">Додати контакт</string>
     <string name="send_failed">не вдалося надіслати</string>
     <string name="preparing_image">Підготовка до передачі зображення</string>
     <string name="preparing_images">Підготовка до передачі зображень</string>
-    <string name="sharing_files_please_wait">Поширюю файли. Зачекайте, будь ласка…</string>
+    <string name="sharing_files_please_wait">Файли надсилаються. Зачекайте, будь ласка…</string>
     <string name="action_clear_history">Стерти історію</string>
     <string name="clear_conversation_history">Стерти історію розмов</string>
     <string name="clear_histor_msg">Дійсно вилучити всі повідомлення цієї розмови\?
@@ -99,8 +99,8 @@
     <string name="restart">Перезапустити</string>
     <string name="install">Встановити</string>
     <string name="openkeychain_not_installed">Будь ласка, встановіть OpenKeychain</string>
-    <string name="offering">пропоную…</string>
-    <string name="waiting">чекаю…</string>
+    <string name="offering">пропонування…</string>
+    <string name="waiting">очікування…</string>
     <string name="no_pgp_key">Не знайдено ключа OpenPGP</string>
     <string name="contact_has_no_pgp_key">Не вдалося зашифрувати повідомлення, оскільки контакт не повідомляє свій публічний ключ.
 \n
@@ -216,7 +216,7 @@
     <string name="omemo_fingerprint_x509">Цифровий підпис v\\OMEMO</string>
     <string name="other_devices">Інші пристрої</string>
     <string name="trust_omemo_fingerprints">Довіряти цифровим підписам OMEMO</string>
-    <string name="fetching_keys">Отримую ключі…</string>
+    <string name="fetching_keys">Отримання ключів…</string>
     <string name="done">Зроблено</string>
     <string name="decrypt">Розшифрувати</string>
     <string name="search">Пошук</string>
@@ -363,9 +363,9 @@
     <string name="error_no_keys_to_trust_presence">Для цього контакту відсутні потрібні ключі.
 \nПеревірте, що ви обмінялися інформацією про присутність.</string>
     <string name="error_trustkeys_title">Щось пішло не так</string>
-    <string name="fetching_history_from_server">Отримую історію з сервера</string>
+    <string name="fetching_history_from_server">Отримання історії з сервера</string>
     <string name="no_more_history_on_server">Більше немає історії на сервері</string>
-    <string name="updating">Оновлюю…</string>
+    <string name="updating">Оновлення…</string>
     <string name="password_changed">Пароль змінено!</string>
     <string name="could_not_change_password">Не вдалося змінити пароль</string>
     <string name="change_password">Змінити пароль</string>
@@ -415,7 +415,7 @@
     <string name="audio">аудіо</string>
     <string name="video">відео</string>
     <string name="image">зображення</string>
-    <string name="pdf_document">PDF документ</string>
+    <string name="pdf_document">документ PDF</string>
     <string name="apk">Програма Android</string>
     <string name="vcard">Контакт</string>
     <string name="avatar_has_been_published">Піктограму користувача опубліковано!</string>
@@ -477,7 +477,7 @@
     <string name="unable_to_parse_certificate">Не вдалося розпізнати сертифікат</string>
     <string name="mam_prefs">Налаштування збереження</string>
     <string name="server_side_mam_prefs">Налаштування збереження на стороні сервера</string>
-    <string name="fetching_mam_prefs">Отримую налаштування збереженя. Будь ласка, зачекайте…</string>
+    <string name="fetching_mam_prefs">Отримання налаштувань збереження. Будь ласка, зачекайте…</string>
     <string name="unable_to_fetch_mam_prefs">Не вдалося отримати налаштування збереження</string>
     <string name="captcha_required">Потрібно розв\'язати головоломку</string>
     <string name="captcha_hint">Уведіть текст із зображення вище</string>
@@ -867,7 +867,7 @@
     <string name="manage_permission">Керувати правами</string>
     <string name="search_participants">Шукати учасників</string>
     <string name="file_too_large">Файл надто великий</string>
-    <string name="attach">Долучити</string>
+    <string name="attach">Прикріпити</string>
     <string name="discover_channels">Пошук каналу</string>
     <string name="search_channels">Шукати канали</string>
     <string name="channel_discovery_opt_in_title">Можливе порушення приватності!</string>
@@ -994,7 +994,7 @@
     <string name="sync_with_contacts_long">%1$s потребує дозволу на доступ до контактів, щоб порівняти їх з Вашими XMPP-контактами.
 \nТаким чином можна буде показувати піктограми і повні імена користувачів.
 \n
-\n%1$s співставлення інформації про контакти відбувається локально, нічого не завантажується на сервер.</string>
+\n%1$s лише прочитає Вашу адресну книгу і співставлятиме інформацію про контакти локально, нічого не завантажуючи на сервер.</string>
     <string name="missed_calls_channel_name">Пропущені виклики</string>
     <string name="data_saver_enabled_explained">Ваша операційна система обмежує для %1$s доступ до Інтернету у фоновому режимі. Щоб отримувати сповіщення про нові повідомлення, Вам потрібно дозволити %1$s необмежений доступ, коли заощадження трафіку увімкнено.
 \n%1$s намагатиметься по можливості економити трафік.</string>
@@ -1073,4 +1073,5 @@
     <string name="contact_uses_unverified_keys">Ваш контакт використовує неперевірені пристрої. Відскануйте їх QR-код, щоб виконати перевірку та запобігти активним атакам MITM.</string>
     <string name="log_out">Вийти</string>
     <string name="unverified_devices">Ви використовуєте неперевірені пристрої. Відскануйте QR-код на інших своїх пристроях, щоб виконати перевірку та запобігти активним атакам MITM.</string>
+    <string name="account_state_logged_out">Ви вийшли</string>
 </resources>
