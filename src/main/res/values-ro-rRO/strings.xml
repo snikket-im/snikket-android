@@ -1035,4 +1035,11 @@
     <string name="outdated_backup_file_format">Încercați să importați un fișier copie de rezervă format vechi</string>
     <string name="audiobook">Carte audio</string>
     <string name="reconnect_on_other_host">Reconectat pe altă gazdă</string>
+    <string name="this_account_is_logged_out">V-ați deconectat de la acest cont</string>
+    <string name="log_in">Conectați-vă</string>
+    <string name="hide_notification">Ascunde notificare</string>
+    <string name="contact_uses_unverified_keys">Persoana de contact utilizează dispozitive neverificate. Scanați codul de bare 2D al acestora pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
+    <string name="log_out">Deconectare</string>
+    <string name="account_state_logged_out">Deconectat</string>
+    <string name="unverified_devices">Folosiți dispozitive neverificate. Scanați codul de bare 2D pe celelalte dispozitive pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
 </resources>
