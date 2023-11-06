@@ -125,7 +125,7 @@
     <string name="pref_notification_grace_period_summary">Час, протягом якого сповіщення вимкнені після виявлення активності на іншому пристрої.</string>
     <string name="pref_advanced_options">Розширені</string>
     <string name="pref_never_send_crash">Не надсилати звіти про збої</string>
-    <string name="pref_never_send_crash_summary">Надсилаючи траси стеку викликів, Ви допомагаєте розробляти застосунок</string>
+    <string name="pref_never_send_crash_summary">Надсилаючи звіти про збої, Ви допомагаєте розвивати застосунок</string>
     <string name="pref_confirm_messages">Підтвердження отримання повідомлень</string>
     <string name="pref_confirm_messages_summary">Повідомляти співрозмовників, що Ви отримали й прочитали їхні повідомлення</string>
     <string name="pref_ui_options">Інтерфейс користувача</string>
@@ -286,7 +286,7 @@
     <string name="pref_allow_message_correction_summary">Дозволити контактам редагувати свої повідомлення після надсилання</string>
     <string name="pref_expert_options">Експертні налаштування</string>
     <string name="pref_expert_options_summary">Будь ласка, будьте обережними з цим</string>
-    <string name="title_activity_about_x">Близько %s</string>
+    <string name="title_activity_about_x">Про %s</string>
     <string name="title_pref_quiet_hours">Години тиші</string>
     <string name="title_pref_quiet_hours_start_time">Час початку</string>
     <string name="title_pref_quiet_hours_end_time">Час завершення</string>
@@ -940,7 +940,7 @@
     </plurals>
     <string name="action_end_conversation">Закрити розмову</string>
     <string name="crash_report_title">Збій %1$s</string>
-    <string name="crash_report_message">Надсилаючи зі свого облікового запису XMPP траси стеку викликів, Ви допомагаєте розробляти %1$s.</string>
+    <string name="crash_report_message">Надсилаючи зі свого облікового запису XMPP звіти про збої, Ви допомагаєте розвивати %1$s.</string>
     <string name="pref_call_ringtone_summary">Мелодія для вхідних викликів</string>
     <string name="pref_prevent_screenshots">Заборонити знімки екрана</string>
     <string name="pref_prevent_screenshots_summary">Ховати вміст застосунку при перемиканні програм і заборонити знімки екрана</string>
@@ -994,7 +994,7 @@
     <string name="sync_with_contacts_long">%1$s потребує дозволу на доступ до контактів, щоб порівняти їх з Вашими XMPP-контактами.
 \nТаким чином можна буде показувати піктограми і повні імена користувачів.
 \n
-\n%1$s лише прочитає Вашу адресну книгу і співставлятиме інформацію про контакти локально, нічого не завантажуючи на сервер.</string>
+\n%1$s лише прочитає Вашу адресну книгу і зіставлятиме інформацію про контакти локально, нічого не завантажуючи на сервер.</string>
     <string name="missed_calls_channel_name">Пропущені виклики</string>
     <string name="data_saver_enabled_explained">Ваша операційна система обмежує для %1$s доступ до Інтернету у фоновому режимі. Щоб отримувати сповіщення про нові повідомлення, Вам потрібно дозволити %1$s необмежений доступ, коли заощадження трафіку увімкнено.
 \n%1$s намагатиметься по можливості економити трафік.</string>
