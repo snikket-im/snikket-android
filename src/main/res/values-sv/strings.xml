@@ -795,7 +795,7 @@
     <string name="back">tillbaka</string>
     <string name="yes">Ja</string>
     <string name="no">Nej</string>
-    <string name="verifying">Bekräftar …</string>
+    <string name="verifying">Bekräftar…</string>
     <string name="unknown_api_error_network">Okänt nätverksfel.</string>
     <string name="too_many_attempts">För många försök</string>
     <string name="the_app_is_out_of_date">Du använder en föråldrad version av denna app.</string>
@@ -950,13 +950,13 @@
     <string name="temporarily_unavailable">Tillfälligt otillgänglig. Försök igen om en stund.</string>
     <string name="no_network_connection">Ingen kontakt med nätverket.</string>
     <string name="try_again_in_x">Prova igen om %s</string>
-    <string name="requesting_sms">Begär sms …</string>
-    <string name="incorrect_pin">Pinkoden är fel.</string>
-    <string name="pin_expired">Pinkoden som vi har skickat dig har utgått.</string>
+    <string name="requesting_sms">Begär sms…</string>
+    <string name="incorrect_pin">Den angivna PIN-koden är felaktig.</string>
+    <string name="pin_expired">PIN-koden som vi skickade till dig, är inte längre giltig.</string>
     <string name="unable_to_find_server">Kunde inte hitta servern.</string>
     <string name="possible_pin">Möjligtvis automatiskt inklistrad PIN från urklipp.</string>
     <string name="please_enter_pin">Var god ange din 6-siffriga pinkod.</string>
-    <string name="abort_registration_procedure">Är du säker på att du vill avbryta registreringen\?</string>
+    <string name="abort_registration_procedure">Är du säker på att du vill avbryta registreringsproceduren\?</string>
     <string name="please_enter_your_phone_number">Var god ange ditt telefonnummer.</string>
     <string name="search_countries">Sök länder</string>
     <string name="verify_x">Verifiera %s</string>
