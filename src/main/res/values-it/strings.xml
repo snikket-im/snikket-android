@@ -1027,4 +1027,11 @@
     <string name="outdated_backup_file_format">Stai tentando di importare un formato di file di backup obsoleto</string>
     <string name="audiobook">Audiolibro</string>
     <string name="reconnect_on_other_host">Riconnetti su altro host</string>
+    <string name="this_account_is_logged_out">Ti sei disconnesso da questo profilo</string>
+    <string name="log_in">Accedi</string>
+    <string name="hide_notification">Nascondi notifica</string>
+    <string name="contact_uses_unverified_keys">Il tuo contatto usa dispositivi non verificati. Scansiona il suo codice a barre 2D per effettuare la verifica e impedire attacchi MITM attivi.</string>
+    <string name="log_out">Disconnetti</string>
+    <string name="account_state_logged_out">Disconnesso</string>
+    <string name="unverified_devices">Stai usando dispositivi non verificati. Scansiona il codice a barre 2D nei tuoi altri dispositivi per effettuare la verifica e impedire attacchi MITM attivi.</string>
 </resources>
