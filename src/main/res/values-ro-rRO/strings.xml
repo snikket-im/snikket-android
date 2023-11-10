@@ -545,7 +545,7 @@
     <string name="this_field_is_required">Acest câmp este obligatoriu</string>
     <string name="correct_message">Corecție mesaj</string>
     <string name="send_corrected_message">Trimite text corectat</string>
-    <string name="no_keys_just_confirm">Ați validat deja amprenta acestei persoane într-un mod securizat pentru a confirma încrederea. Selectând \'Gata\' doar confirmați că %s ia parte la această discuție de grup.</string>
+    <string name="no_keys_just_confirm">Ați avut deja încredere în amprenta acestei persoane. Selectând \'Gata\' doar confirmați că %s ia parte la această discuție de grup.</string>
     <string name="this_account_is_disabled">Ați dezactivat acest cont</string>
     <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fișier invalid!</string>
     <string name="no_application_to_share_uri">Nu s-a găsit nici o aplicație care să partajeze adresa</string>
