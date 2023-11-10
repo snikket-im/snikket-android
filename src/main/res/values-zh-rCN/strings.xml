@@ -554,7 +554,7 @@
     <string name="this_field_is_required">此字段是必需的</string>
     <string name="correct_message">更正消息</string>
     <string name="send_corrected_message">发送更正后的消息</string>
-    <string name="no_keys_just_confirm">您已经安全地验证了此用户的指纹以确认信任。选择“完成”以确认 %s 加入群聊。</string>
+    <string name="no_keys_just_confirm">您已经验证了此用户的指纹。选择“完成”确认 %s 是此群聊的一员。</string>
     <string name="this_account_is_disabled">您已禁用了此账号</string>
     <string name="security_error_invalid_file_access">安全错误：文件访问无效！</string>
     <string name="no_application_to_share_uri">未找到可以分享 URI 的应用</string>
@@ -933,7 +933,7 @@
     <string name="dismiss_call">忽略</string>
     <string name="rtp_state_finding_device">正在发现设备</string>
     <string name="rtp_state_ringing">正在响铃</string>
-    <string name="rtp_state_declined_or_busy">正忙</string>
+    <string name="rtp_state_declined_or_busy">占线</string>
     <string name="rtp_state_connectivity_error">无法连接通话</string>
     <string name="rtp_state_connectivity_lost_error">连接已中断</string>
     <string name="rtp_state_retracted">已撤回通话</string>
@@ -983,7 +983,7 @@
     <string name="pause_audio">暂停音频</string>
     <string name="add_contact_or_create_or_join_group_chat">添加联系人、创建或加入群聊、或发现频道</string>
     <plurals name="view_users">
-        <item quantity="other">查看 %1$d 位参与者</item>
+        <item quantity="other">查看 %1$d 位用户</item>
     </plurals>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="other">无法传递一些消息</item>
