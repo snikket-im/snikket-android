@@ -1001,7 +1001,7 @@
     <string name="pref_picture_compression_summary">提示：使用「選擇檔案」而非「選擇圖片」以傳送未壓縮的個別檔案，不論此設定為何。</string>
     <string name="battery_optimizations_enabled_explained">您的裝置正在為 %1$s 採用強力電池效能最佳化，這可能會導致通知延遲甚至訊息遺失。
 \n建議將其停用。</string>
-    <string name="no_keys_just_confirm">您已經安全地驗證了這個人的指紋以確認信任。透過選取「完成」以確認 %s 加入群組聊天。</string>
+    <string name="no_keys_just_confirm">您已經驗證了這個人的指紋。透過選取「完成」以確認 %s 加入群組聊天。</string>
     <string name="show_inactive_devices">顯示非作用中裝置</string>
     <string name="blindly_trusted_omemo_keys">盲目信任的 OMEMO 金鑰，說明它們可能對其他人或某人可能冒充別人傳送訊息。</string>
     <string name="pref_delete_omemo_identities_summary">重新產生 OMEMO 金鑰，您的所有聯絡人都需要再次驗證，如非必要請勿採取此步驟。</string>
