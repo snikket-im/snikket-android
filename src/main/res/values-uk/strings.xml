@@ -523,7 +523,7 @@
     <string name="this_field_is_required">Це обов\'язкове поле</string>
     <string name="correct_message">Відредагувати</string>
     <string name="send_corrected_message">Відредаговане повідомлення</string>
-    <string name="no_keys_just_confirm">Ви вже довіряєте цій особі. Вибираючи «Зроблено», Ви лише підтверджуєте, що %s є учасником групи.</string>
+    <string name="no_keys_just_confirm">Ви вже довіряєте цифровому підпису цієї особи. Вибираючи «Зроблено», Ви лише підтверджуєте, що %s є учасником групи.</string>
     <string name="this_account_is_disabled">Ви вимкнули цей обліковий запис</string>
     <string name="security_error_invalid_file_access">Помилка безпеки: неправильний доступ до файлу!</string>
     <string name="no_application_to_share_uri">Не знайдено застосунку, щоб поділитися URI</string>
