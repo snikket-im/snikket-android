@@ -247,6 +247,7 @@ public class IqGenerator extends AbstractGenerator {
     public Element publishBookmarkItem(final Bookmark bookmark) {
         final String name = bookmark.getBookmarkName();
         final String nick = bookmark.getNick();
+        final String password = bookmark.getPassword();
         final boolean autojoin = bookmark.autojoin();
         final Element conference = new Element("conference", Namespace.BOOKMARKS2);
         if (name != null) {
@@ -255,7 +256,11 @@ public class IqGenerator extends AbstractGenerator {
         if (nick != null) {
             conference.addChild("nick").setContent(nick);
         }
+        if (password != null) {
+            conference.addChild("password").setContent(password);
+        }
         conference.setAttribute("autojoin",String.valueOf(autojoin));
+        conference.addChild(bookmark.getExtensions());
         return conference;
     }
 
