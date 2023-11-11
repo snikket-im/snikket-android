@@ -537,7 +537,7 @@
     <string name="this_field_is_required">Este campo es requerido</string>
     <string name="correct_message">Corregir mensaje</string>
     <string name="send_corrected_message">Enviar mensaje corregido</string>
-    <string name="no_keys_just_confirm">Ya has validado la huella digital de esta persona de forma segura confirmando su confianza. Seleccionando \'Hecho\', estás confirmando que %s es parte de esta conversación en grupo. </string>
+    <string name="no_keys_just_confirm">Ya has confiado la huella digital de esta persona. Al seleccionar “Listo” solo estás confirmando que %s es parte de este chat grupal.</string>
     <string name="this_account_is_disabled">Has deshabilitado esta cuenta</string>
     <string name="security_error_invalid_file_access">Error de seguridad: ¡Acceso a archivo inválido!</string>
     <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
