@@ -536,7 +536,7 @@
     <string name="this_field_is_required">Este campo é requerido</string>
     <string name="correct_message">Correxir mensaxe</string>
     <string name="send_corrected_message">Enviar mensaxe correxida</string>
-    <string name="no_keys_just_confirm">Xa validaches as impresións dixitais destas persoas de xeito seguro para confiar nelas. Ao escoller \"Feito\" estás simplemente confirmando que %s é parte desta conversa en grupo.</string>
+    <string name="no_keys_just_confirm">Xa confiaches na impresión dixital destas persoas. Ao escoller \"Feito\" estás simplemente confirmando que %s é parte desta conversa en grupo.</string>
     <string name="this_account_is_disabled">Desactivou esta conta</string>
     <string name="security_error_invalid_file_access">Fallo de seguridade: Acceso non válido ao ficheiro!</string>
     <string name="no_application_to_share_uri">Non se atopou unha app para compartir URI</string>
