@@ -4756,10 +4756,10 @@ public class XmppConnectionService extends Service {
         mDatabaseWriterExecutor.execute(runnable);
     }
 
-    public boolean sendBlockRequest(final Blockable blockable, boolean reportSpam) {
+    public boolean sendBlockRequest(final Blockable blockable, final boolean reportSpam, final String serverMsgId) {
         if (blockable != null && blockable.getBlockedJid() != null) {
             final Jid jid = blockable.getBlockedJid();
-            this.sendIqPacket(blockable.getAccount(), getIqGenerator().generateSetBlockRequest(jid, reportSpam), (a, response) -> {
+            this.sendIqPacket(blockable.getAccount(), getIqGenerator().generateSetBlockRequest(jid, reportSpam, serverMsgId), (a, response) -> {
                 if (response.getType() == IqPacket.TYPE.RESULT) {
                     a.getBlocklist().add(jid);
                     updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);

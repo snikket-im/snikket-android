@@ -1020,4 +1020,6 @@
     <string name="log_in">Log in</string>
     <string name="contact_uses_unverified_keys">Your contact uses unverified devices. Scan their 2D barcode to perform verification and impede active MITM attacks.</string>
     <string name="unverified_devices">You are using unverified devices. Scan the 2D barcode on your other devices to perform verification and impede active MITM attacks.</string>
+    <string name="report_spam">Report spam</string>
+    <string name="report_spam_and_block">Report spam and block spammer</string>
 </resources>

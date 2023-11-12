@@ -2689,7 +2689,7 @@ public class XmppConnection implements Runnable {
         }
 
         public boolean spamReporting() {
-            return hasDiscoFeature(account.getDomain(), "urn:xmpp:reporting:reason:spam:0");
+            return hasDiscoFeature(account.getDomain(), Namespace.REPORTING);
         }
 
         public boolean flexibleOfflineMessageRetrieval() {
