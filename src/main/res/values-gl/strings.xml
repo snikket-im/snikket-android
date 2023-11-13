@@ -1023,4 +1023,6 @@
     <string name="log_out">Saír da sesión</string>
     <string name="account_state_logged_out">Sesión pechada</string>
     <string name="unverified_devices">Estás a usar dispositivos non verificados. Escanea os códigos de barras 2D nos teus outros dispositivos para verificalos e impedir ataques MITM.</string>
+    <string name="report_spam_and_block">Informar de spam e bloquear conta</string>
+    <string name="report_spam">Informar de spam</string>
 </resources>
