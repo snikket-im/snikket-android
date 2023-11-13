@@ -862,6 +862,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
                                 acceptContentAdd(contentAddition, incomingContentAdd);
                             }
                         });
+            } else {
+                acceptContentAdd(contentAddition, incomingContentAdd);
             }
         } else {
             throw new IllegalStateException(
