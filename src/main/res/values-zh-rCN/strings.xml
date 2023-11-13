@@ -611,7 +611,7 @@
     <string name="remote_server_not_found">远程服务器未找到</string>
     <string name="remote_server_timeout">远程服务器超时</string>
     <string name="unable_to_update_account">无法更新账号</string>
-    <string name="report_jid_as_spammer">举报此 XMPP 地址发送垃圾消息。</string>
+    <string name="report_jid_as_spammer">报告此 XMPP 地址发送垃圾消息。</string>
     <string name="pref_delete_omemo_identities">删除 OMEMO 身份</string>
     <string name="pref_delete_omemo_identities_summary">重新生成 OMEMO 密钥。您的所有联系人将必须再次验证您。仅将此作为最后的方法。</string>
     <string name="delete_selected_keys">删除已选密钥</string>
@@ -983,7 +983,7 @@
     <string name="pause_audio">暂停音频</string>
     <string name="add_contact_or_create_or_join_group_chat">添加联系人、创建或加入群聊、或发现频道</string>
     <plurals name="view_users">
-        <item quantity="other">查看 %1$d 位用户</item>
+        <item quantity="other">查看 %1$d 位参与者</item>
     </plurals>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="other">无法传递一些消息</item>
@@ -1024,12 +1024,14 @@
     <string name="restore_warning_continued">请勿尝试恢复您尚未自行创建的备份！</string>
     <string name="outdated_backup_file_format">您正尝试导入过时的备份文件格式</string>
     <string name="audiobook">有声读物</string>
-    <string name="reconnect_on_other_host">重新连接其他主机</string>
+    <string name="reconnect_on_other_host">在其他主机上重新连接</string>
     <string name="this_account_is_logged_out">您已登出此账号</string>
-    <string name="log_in">登录</string>
+    <string name="log_in">登入</string>
     <string name="hide_notification">隐藏通知</string>
     <string name="contact_uses_unverified_keys">您的联系人使用未经验证的设备。扫描对方二维码进行验证并阻止主动式中间人攻击。</string>
     <string name="log_out">登出</string>
     <string name="account_state_logged_out">已登出</string>
     <string name="unverified_devices">您正在使用未经验证的设备。扫描您其他设备的二维码进行验证并阻止主动式中间人攻击。</string>
+    <string name="report_spam_and_block">报告垃圾消息并屏蔽垃圾消息发送者</string>
+    <string name="report_spam">报告垃圾消息</string>
 </resources>
