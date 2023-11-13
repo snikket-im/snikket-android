@@ -69,4 +69,5 @@ public final class Namespace {
     public static final String UNIFIED_PUSH = "http://gultsch.de/xmpp/drafts/unified-push";
     public static final String REPORTING = "urn:xmpp:reporting:1";
     public static final String REPORTING_REASON_SPAM = "urn:xmpp:reporting:spam";
+    public static final String SDP_OFFER_ANSWER = "urn:ietf:rfc:3264";
 }

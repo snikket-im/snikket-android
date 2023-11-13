@@ -635,7 +635,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
     }
 
-    private void resendCandidatesFromSdp(final SessionDescription answer) {
+    private static ImmutableMultimap<String, IceUdpTransportInfo.Candidate> parseCandidates(final SessionDescription answer) {
         final ImmutableMultimap.Builder<String, IceUdpTransportInfo.Candidate> candidateBuilder = new ImmutableMultimap.Builder<>();
         for(final SessionDescription.Media media : answer.media) {
             final String mid = Iterables.getFirst(media.attributes.get("mid"), null);
@@ -649,8 +649,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 }
             }
         }
-        final ImmutableMultimap<String, IceUdpTransportInfo.Candidate> candidates = candidateBuilder.build();
-        sendTransportInfo(candidates);
+        return candidateBuilder.build();
     }
 
     private void receiveContentReject(final JinglePacket jinglePacket) {
@@ -1406,8 +1405,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
                             + ": ICE servers got discovered when session was already terminated. nothing to do.");
             return;
         }
+        final boolean includeCandidates = remoteHasSdpOfferAnswer();
         try {
-            setupWebRTC(media, iceServers);
+            setupWebRTC(media, iceServers, !includeCandidates);
         } catch (final WebRTCWrapper.InitializationException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to initialize WebRTC");
             webRTCWrapper.close();
@@ -1421,8 +1421,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             this.webRTCWrapper.setRemoteDescription(sdp).get();
             addIceCandidatesFromBlackLog();
             org.webrtc.SessionDescription webRTCSessionDescription =
-                    this.webRTCWrapper.setLocalDescription().get();
-            prepareSessionAccept(webRTCSessionDescription);
+                    this.webRTCWrapper.setLocalDescription(includeCandidates).get();
+            prepareSessionAccept(webRTCSessionDescription, includeCandidates);
         } catch (final Exception e) {
             failureToAcceptSession(e);
         }
@@ -1459,10 +1459,16 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void prepareSessionAccept(
-            final org.webrtc.SessionDescription webRTCSessionDescription) {
+            final org.webrtc.SessionDescription webRTCSessionDescription, final boolean includeCandidates) {
         final SessionDescription sessionDescription =
                 SessionDescription.parse(webRTCSessionDescription.description);
         final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription, false);
+        final ImmutableMultimap<String, IceUdpTransportInfo.Candidate> candidates;
+        if (includeCandidates) {
+            candidates = parseCandidates(sessionDescription);
+        } else {
+            candidates = ImmutableMultimap.of();
+        }
         this.responderRtpContentMap = respondingRtpContentMap;
         storePeerDtlsSetup(respondingRtpContentMap.getDtlsSetup().flip());
         final ListenableFuture<RtpContentMap> outgoingContentMapFuture =
@@ -1472,8 +1478,18 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 new FutureCallback<RtpContentMap>() {
                     @Override
                     public void onSuccess(final RtpContentMap outgoingContentMap) {
-                        sendSessionAccept(outgoingContentMap);
-                        webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
+                        if (includeCandidates) {
+                            Log.d(
+                                    Config.LOGTAG,
+                                    "including "
+                                            + candidates.size()
+                                            + " candidates in session accept");
+                            sendSessionAccept(outgoingContentMap.withCandidates(candidates));
+                            webRTCWrapper.resetPendingCandidates();
+                        } else {
+                            sendSessionAccept(outgoingContentMap);
+                            webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
+                        }
                     }
 
                     @Override
@@ -1871,8 +1887,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
                             + ": ICE servers got discovered when session was already terminated. nothing to do.");
             return;
         }
+        final boolean includeCandidates = remoteHasSdpOfferAnswer();
         try {
-            setupWebRTC(media, iceServers);
+            setupWebRTC(media, iceServers, !includeCandidates);
         } catch (final WebRTCWrapper.InitializationException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to initialize WebRTC");
             webRTCWrapper.close();
@@ -1881,8 +1898,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
         try {
             org.webrtc.SessionDescription webRTCSessionDescription =
-                    this.webRTCWrapper.setLocalDescription().get();
-            prepareSessionInitiate(webRTCSessionDescription, targetState);
+                    this.webRTCWrapper.setLocalDescription(includeCandidates).get();
+            prepareSessionInitiate(webRTCSessionDescription, includeCandidates, targetState);
         } catch (final Exception e) {
             // TODO sending the error text is worthwhile as well. Especially for FailureToSet
             // exceptions
@@ -1915,10 +1932,16 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void prepareSessionInitiate(
-            final org.webrtc.SessionDescription webRTCSessionDescription, final State targetState) {
+            final org.webrtc.SessionDescription webRTCSessionDescription, final boolean includeCandidates, final State targetState) {
         final SessionDescription sessionDescription =
                 SessionDescription.parse(webRTCSessionDescription.description);
         final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription, true);
+        final ImmutableMultimap<String, IceUdpTransportInfo.Candidate> candidates;
+        if (includeCandidates) {
+            candidates = parseCandidates(sessionDescription);
+        } else {
+            candidates = ImmutableMultimap.of();
+        }
         this.initiatorRtpContentMap = rtpContentMap;
         final ListenableFuture<RtpContentMap> outgoingContentMapFuture =
                 encryptSessionInitiate(rtpContentMap);
@@ -1927,8 +1950,18 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 new FutureCallback<RtpContentMap>() {
                     @Override
                     public void onSuccess(final RtpContentMap outgoingContentMap) {
-                        sendSessionInitiate(outgoingContentMap, targetState);
-                        webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
+                        if (includeCandidates) {
+                            Log.d(
+                                    Config.LOGTAG,
+                                    "including "
+                                            + candidates.size()
+                                            + " candidates in session initiate");
+                            sendSessionInitiate(outgoingContentMap.withCandidates(candidates), targetState);
+                            webRTCWrapper.resetPendingCandidates();
+                        } else {
+                            sendSessionInitiate(outgoingContentMap, targetState);
+                            webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
+                        }
                     }
 
                     @Override
@@ -2030,11 +2063,6 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 transportInfo.toJinglePacket(JinglePacket.Action.TRANSPORT_INFO, id.sessionId);
         send(jinglePacket);
     }
-
-    private void sendTransportInfo(final Multimap<String, IceUdpTransportInfo.Candidate> candidates) {
-        // TODO send all candidates in one transport-info
-    }
-
 
     private void send(final JinglePacket jinglePacket) {
         jinglePacket.setTo(id.with);
@@ -2400,10 +2428,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
         finish();
     }
 
-    private void setupWebRTC(final Set<Media> media, final List<PeerConnection.IceServer> iceServers) throws WebRTCWrapper.InitializationException {
+    private void setupWebRTC(final Set<Media> media, final List<PeerConnection.IceServer> iceServers, final boolean trickle) throws WebRTCWrapper.InitializationException {
         this.jingleConnectionManager.ensureConnectionIsRegistered(this);
         this.webRTCWrapper.setup(this.xmppConnectionService, AppRTCAudioManager.SpeakerPhonePreference.of(media));
-        this.webRTCWrapper.initializePeerConnection(media, iceServers);
+        this.webRTCWrapper.initializePeerConnection(media, iceServers, trickle);
     }
 
     private void acceptCallFromProposed() {
@@ -2736,7 +2764,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
     private SessionDescription setLocalSessionDescription()
             throws ExecutionException, InterruptedException {
         final org.webrtc.SessionDescription sessionDescription =
-                this.webRTCWrapper.setLocalDescription().get();
+                this.webRTCWrapper.setLocalDescription(false).get();
         return SessionDescription.parse(sessionDescription.description);
     }
 
@@ -3024,6 +3052,14 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private boolean remoteHasVideoFeature() {
+        return remoteHasFeature(Namespace.JINGLE_FEATURE_VIDEO);
+    }
+
+    private boolean remoteHasSdpOfferAnswer() {
+        return remoteHasFeature(Namespace.SDP_OFFER_ANSWER);
+    }
+
+    private boolean remoteHasFeature(final String feature) {
         final Contact contact = id.getContact();
         final Presence presence =
                 contact.getPresences().get(Strings.nullToEmpty(id.with.getResource()));
@@ -3031,7 +3067,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 presence == null ? null : presence.getServiceDiscoveryResult();
         final List<String> features =
                 serviceDiscoveryResult == null ? null : serviceDiscoveryResult.getFeatures();
-        return features != null && features.contains(Namespace.JINGLE_FEATURE_VIDEO);
+        return features != null && features.contains(feature);
     }
 
     private interface OnIceServersDiscovered {

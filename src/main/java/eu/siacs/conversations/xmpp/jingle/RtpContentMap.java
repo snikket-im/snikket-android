@@ -8,6 +8,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
@@ -194,6 +195,24 @@ public class RtpContentMap {
                         dt ->
                                 new DescriptionTransport(
                                         dt.senders, null, dt.transport.cloneWrapper())));
+    }
+
+    RtpContentMap withCandidates(
+            ImmutableMultimap<String, IceUdpTransportInfo.Candidate> candidates) {
+        final ImmutableMap.Builder<String, DescriptionTransport> contentBuilder =
+                new ImmutableMap.Builder<>();
+        for (final Map.Entry<String, DescriptionTransport> entry : this.contents.entrySet()) {
+            final String name = entry.getKey();
+            final DescriptionTransport descriptionTransport = entry.getValue();
+            final var transport = descriptionTransport.transport;
+            contentBuilder.put(
+                    name,
+                    new DescriptionTransport(
+                            descriptionTransport.senders,
+                            descriptionTransport.description,
+                            transport.withCandidates(candidates.get(name))));
+        }
+        return new RtpContentMap(group, contentBuilder.build());
     }
 
     public IceUdpTransportInfo.Credentials getDistinctCredentials() {

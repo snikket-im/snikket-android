@@ -94,6 +94,8 @@ public class WebRTCWrapper {
     private TrackWrapper<AudioTrack> localAudioTrack = null;
     private TrackWrapper<VideoTrack> localVideoTrack = null;
     private VideoTrack remoteVideoTrack = null;
+
+    private final SettableFuture<Void> iceGatheringComplete = SettableFuture.create();
     private final PeerConnection.Observer peerConnectionObserver =
             new PeerConnection.Observer() {
                 @Override
@@ -128,8 +130,11 @@ public class WebRTCWrapper {
 
                 @Override
                 public void onIceGatheringChange(
-                        PeerConnection.IceGatheringState iceGatheringState) {
+                        final PeerConnection.IceGatheringState iceGatheringState) {
                     Log.d(EXTENDED_LOGGING_TAG, "onIceGatheringChange(" + iceGatheringState + ")");
+                    if (iceGatheringState == PeerConnection.IceGatheringState.COMPLETE) {
+                        iceGatheringComplete.set(null);
+                    }
                 }
 
                 @Override
@@ -256,7 +261,9 @@ public class WebRTCWrapper {
     }
 
     synchronized void initializePeerConnection(
-            final Set<Media> media, final List<PeerConnection.IceServer> iceServers)
+            final Set<Media> media,
+            final List<PeerConnection.IceServer> iceServers,
+            final boolean trickle)
             throws InitializationException {
         Preconditions.checkState(this.eglBase != null);
         Preconditions.checkNotNull(media);
@@ -283,7 +290,7 @@ public class WebRTCWrapper {
                                         .createAudioDeviceModule())
                         .createPeerConnectionFactory();
 
-        final PeerConnection.RTCConfiguration rtcConfig = buildConfiguration(iceServers);
+        final PeerConnection.RTCConfiguration rtcConfig = buildConfiguration(iceServers, trickle);
         final PeerConnection peerConnection =
                 requirePeerConnectionFactory()
                         .createPeerConnection(rtcConfig, peerConnectionObserver);
@@ -398,21 +405,27 @@ public class WebRTCWrapper {
     }
 
     private static PeerConnection.RTCConfiguration buildConfiguration(
-            final List<PeerConnection.IceServer> iceServers) {
+            final List<PeerConnection.IceServer> iceServers, final boolean trickle) {
         final PeerConnection.RTCConfiguration rtcConfig =
                 new PeerConnection.RTCConfiguration(iceServers);
         rtcConfig.tcpCandidatePolicy =
                 PeerConnection.TcpCandidatePolicy.DISABLED; // XEP-0176 doesn't support tcp
-        rtcConfig.continualGatheringPolicy =
-                PeerConnection.ContinualGatheringPolicy.GATHER_CONTINUALLY;
+        if (trickle) {
+            rtcConfig.continualGatheringPolicy =
+                    PeerConnection.ContinualGatheringPolicy.GATHER_CONTINUALLY;
+        } else {
+            rtcConfig.continualGatheringPolicy =
+                    PeerConnection.ContinualGatheringPolicy.GATHER_ONCE;
+        }
         rtcConfig.sdpSemantics = PeerConnection.SdpSemantics.UNIFIED_PLAN;
         rtcConfig.rtcpMuxPolicy = PeerConnection.RtcpMuxPolicy.NEGOTIATE;
         rtcConfig.enableImplicitRollback = true;
         return rtcConfig;
     }
 
-    void reconfigurePeerConnection(final List<PeerConnection.IceServer> iceServers) {
-        requirePeerConnection().setConfiguration(buildConfiguration(iceServers));
+    void reconfigurePeerConnection(
+            final List<PeerConnection.IceServer> iceServers, final boolean trickle) {
+        requirePeerConnection().setConfiguration(buildConfiguration(iceServers, trickle));
     }
 
     void restartIceAsync() {
@@ -441,6 +454,11 @@ public class WebRTCWrapper {
         Log.d(
                 EXTENDED_LOGGING_TAG,
                 "setIsReadyToReceiveCandidates(" + ready + ") was=" + was + " is=" + is);
+    }
+
+    public void resetPendingCandidates() {
+        this.readyToReceivedIceCandidates.set(true);
+        this.iceCandidates.clear();
     }
 
     synchronized void close() {
@@ -561,7 +579,7 @@ public class WebRTCWrapper {
         throw new IllegalStateException("Local video track does not exist");
     }
 
-    synchronized ListenableFuture<SessionDescription> setLocalDescription() {
+    synchronized ListenableFuture<SessionDescription> setLocalDescription(final boolean waitForCandidates) {
         this.setIsReadyToReceiveIceCandidates(false);
         return Futures.transformAsync(
                 getPeerConnectionFuture(),
@@ -575,7 +593,16 @@ public class WebRTCWrapper {
                             new SetSdpObserver() {
                                 @Override
                                 public void onSetSuccess() {
-                                    future.setFuture(getLocalDescriptionFuture());
+                                    final var delay =
+                                            waitForCandidates
+                                                    ? iceGatheringComplete
+                                                    : Futures.immediateVoidFuture();
+                                    final var delayedSessionDescription =
+                                            Futures.transformAsync(
+                                                    delay,
+                                                    v -> getLocalDescriptionFuture(),
+                                                    MoreExecutors.directExecutor());
+                                    future.setFuture(delayedSessionDescription);
                                 }
 
                                 @Override

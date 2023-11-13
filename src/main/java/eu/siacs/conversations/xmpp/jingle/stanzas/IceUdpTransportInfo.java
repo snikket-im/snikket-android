@@ -12,6 +12,7 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
@@ -148,6 +149,16 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         }
         for (final String iceOption : this.getIceOptions()) {
             transportInfo.addChild(new IceOption(iceOption));
+        }
+        return transportInfo;
+    }
+
+    public IceUdpTransportInfo withCandidates(ImmutableCollection<Candidate> candidates) {
+        final IceUdpTransportInfo transportInfo = new IceUdpTransportInfo();
+        transportInfo.setAttributes(new Hashtable<>(getAttributes()));
+        transportInfo.setChildren(this.getChildren());
+        for(final Candidate candidate : candidates) {
+            transportInfo.addChild(candidate);
         }
         return transportInfo;
     }
