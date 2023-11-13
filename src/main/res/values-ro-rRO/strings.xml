@@ -1042,4 +1042,6 @@
     <string name="log_out">Deconectare</string>
     <string name="account_state_logged_out">Deconectat</string>
     <string name="unverified_devices">Folosiți dispozitive neverificate. Scanați codul de bare 2D pe celelalte dispozitive pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
+    <string name="report_spam_and_block">Raportează spam și blochează spamerul</string>
+    <string name="report_spam">Raportează spam</string>
 </resources>
