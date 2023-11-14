@@ -1528,11 +1528,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
                                             + candidates.size()
                                             + " candidates in session accept");
                             sendSessionAccept(outgoingContentMap.withCandidates(candidates));
-                            webRTCWrapper.resetPendingCandidates();
                         } else {
                             sendSessionAccept(outgoingContentMap);
-                            webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
                         }
+                        webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
                     }
 
                     @Override
@@ -1994,11 +1993,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
                                             + " candidates in session initiate");
                             sendSessionInitiate(
                                     outgoingContentMap.withCandidates(candidates), targetState);
-                            webRTCWrapper.resetPendingCandidates();
                         } else {
                             sendSessionInitiate(outgoingContentMap, targetState);
-                            webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
                         }
+                        webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
                     }
 
                     @Override
