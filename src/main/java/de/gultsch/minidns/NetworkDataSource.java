@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -125,7 +126,7 @@ public class NetworkDataSource extends DNSDataSource {
             socket.send(request);
             final DatagramPacket response = new DatagramPacket(buffer, buffer.length);
             socket.receive(response);
-            DNSMessage dnsMessage = new DNSMessage(response.getData());
+            final DNSMessage dnsMessage = readDNSMessage(response.getData());
             if (dnsMessage.id != message.id) {
                 throw new MiniDNSException.IdMismatch(message, dnsMessage);
             }
@@ -155,6 +156,14 @@ public class NetworkDataSource extends DNSDataSource {
             } else {
                 throw new IOException(cause);
             }
+        }
+    }
+
+    public static DNSMessage readDNSMessage(final byte[] bytes) throws IOException {
+        try {
+            return new DNSMessage(bytes);
+        } catch (final IllegalArgumentException e) {
+            throw new IOException(Throwables.getRootCause(e));
         }
     }
 }

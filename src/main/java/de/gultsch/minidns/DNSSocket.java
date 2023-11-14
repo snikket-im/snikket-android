@@ -126,7 +126,8 @@ final class DNSSocket implements Closeable {
             sslSocket.setSoTimeout(QUERY_TIMEOUT);
             sslSocket.startHandshake();
         } else {
-            final SocketAddress socketAddress = new InetSocketAddress(dnsServer.hostname, dnsServer.port);
+            final SocketAddress socketAddress =
+                    new InetSocketAddress(dnsServer.hostname, dnsServer.port);
             sslSocket.connect(socketAddress, QUERY_TIMEOUT / 2);
             sslSocket.setSoTimeout(QUERY_TIMEOUT);
             sslSocket.startHandshake();
@@ -181,7 +182,7 @@ final class DNSSocket implements Closeable {
         while (read < length) {
             read += this.dataInputStream.read(data, read, length - read);
         }
-        return new DNSMessage(data);
+        return NetworkDataSource.readDNSMessage(data);
     }
 
     @Override
