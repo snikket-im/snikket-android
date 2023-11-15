@@ -1,5 +1,12 @@
 # Changelog
 
+### Version 2.13.0
+
+* Easier access to 'Show QR code'
+* Support PEP Native Bookmarks
+* Add support for SDP Offer / Answer Model (Used by SIP gateways)
+* Raise target API to Android 14
+
 ### Version 2.12.12
 
 * Support Private DNS (DNS over TLS)
