@@ -1034,4 +1034,6 @@
     <string name="log_out">Desconectarse</string>
     <string name="account_state_logged_out">Desconectado</string>
     <string name="unverified_devices">Está utilizando dispositivos no verificados. Escanea el código de barras 2D en tus otros dispositivos para realizar la verificación e impedir los ataques MITM activos.</string>
+    <string name="report_spam_and_block">Informar de spam y bloquear al spammer</string>
+    <string name="report_spam">Informar sobre spam</string>
 </resources>
