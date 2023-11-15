@@ -544,7 +544,7 @@
     <string name="this_field_is_required">To pole jest wymagane</string>
     <string name="correct_message">Popraw wiadomość</string>
     <string name="send_corrected_message">Wyślij poprawioną wiadomość</string>
-    <string name="no_keys_just_confirm">Już zaufałeś temu kontaktowi. Wybierając \'zrobione\' potwierdzasz, że %s jest członkiem tej rozmowy grupowej.</string>
+    <string name="no_keys_just_confirm">Już zaufano temu osobistemu odciskowi palca. Wybierając \"Zrobione\" potwierdzasz, że %s jest członkiem tej rozmowy grupowej.</string>
     <string name="this_account_is_disabled">Wyłączyłeś to konto</string>
     <string name="security_error_invalid_file_access">Błąd bezpieczeństwa: nieprawidłowy dostęp do pliku!</string>
     <string name="no_application_to_share_uri">Nie odnaleziono aplikacji do udostępnienia URI</string>
@@ -1046,4 +1046,13 @@
     <string name="outdated_backup_file_format">Próbujesz zaimportować plik kopii zapasowej o przestarzałym formacie</string>
     <string name="audiobook">Audiobook</string>
     <string name="reconnect_on_other_host">Połącz się ponownie na innym hoście</string>
+    <string name="this_account_is_logged_out">Wylogowano się z tego konta</string>
+    <string name="log_in">Zaloguj się</string>
+    <string name="hide_notification">Ukryj powiadomienie</string>
+    <string name="contact_uses_unverified_keys">Twój kontakt korzysta z niezweryfikowanych urządzeń. Zeskanuj ich kod kreskowy 2D, aby przeprowadzić weryfikację i uniemożliwić aktywne ataki MITM.</string>
+    <string name="report_spam_and_block">Zgłoś spam i zablokuj nadawcę</string>
+    <string name="log_out">Wyloguj się</string>
+    <string name="account_state_logged_out">Wylogowano</string>
+    <string name="unverified_devices">Używasz z niezweryfikowanych urządzeń. Zeskanuj kod kreskowy 2D na innych urządzeniach, aby przeprowadzić weryfikację i uniemożliwić aktywne ataki MITM.</string>
+    <string name="report_spam">Zgłoś spam</string>
 </resources>
