@@ -91,12 +91,12 @@
 \n<b>Achtung:</b> Dies löscht keine Kopien dieser Datei, die auf anderen Geräten oder Servern gespeichert sind. </string>
     <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
     <string name="choose_presence">Gerät auswählen</string>
-    <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>
+    <string name="send_unencrypted_message">Unverschlüsselte Nachricht senden</string>
     <string name="send_message">Nachricht senden</string>
     <string name="send_message_to_x">Nachricht an %s senden</string>
-    <string name="send_omemo_message">OMEMO-verschlüsselt schreiben…</string>
+    <string name="send_omemo_message">OMEMO-verschlüsselte Nachricht senden</string>
     <string name="send_omemo_x509_message">v\\OMEMO-verschlüsselte Nachricht senden</string>
-    <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben…</string>
+    <string name="send_pgp_message">OpenPGP-verschlüsselte Nachricht senden</string>
     <string name="your_nick_has_been_changed">Neuer Nickname wird jetzt verwendet</string>
     <string name="send_unencrypted">Unverschlüsselt senden</string>
     <string name="decryption_failed">Entschlüsselung fehlgeschlagen. Vielleicht hast du nicht den richtigen privaten Schlüssel.</string>
@@ -128,7 +128,7 @@
     <string name="pref_notification_grace_period_summary">Die Zeitspanne, in der Benachrichtigungen nach der Erkennung von Aktivitäten auf einem deiner anderen Geräte unterdrückt werden.</string>
     <string name="pref_advanced_options">Erweitert</string>
     <string name="pref_never_send_crash">Niemals Absturzberichte senden</string>
-    <string name="pref_never_send_crash_summary">Mit dem Einsenden von Absturzberichten hilfst du bei der Weiterentwicklung</string>
+    <string name="pref_never_send_crash_summary">Durch das Einsenden von Absturzberichten hilfst du bei der Weiterentwicklung</string>
     <string name="pref_confirm_messages">Lese- und Empfangsbestätigung senden</string>
     <string name="pref_confirm_messages_summary">Informiere deine Kontakte, wenn du eine Nachricht empfangen und gelesen hast</string>
     <string name="pref_prevent_screenshots">Screenshots verhindern</string>
@@ -264,7 +264,7 @@
     <string name="error_saving_avatar">Profilbild kann nicht gespeichert werden</string>
     <string name="or_long_press_for_default">(Oder klicke lange, um den Standard wiederherzustellen)</string>
     <string name="error_publish_avatar_no_server_support">Dein Server unterstützt die Veröffentlichung von Profilbildern nicht</string>
-    <string name="private_message">private Nachricht:</string>
+    <string name="private_message">private Nachricht</string>
     <string name="private_message_to">an %s</string>
     <string name="send_private_message_to">Private Nachricht an %s senden</string>
     <string name="connect">Verbinden</string>
@@ -880,7 +880,7 @@
     <string name="channel_discovery_opt_in_title">Mögliche Datenschutzverletzung!</string>
     <string name="i_already_have_an_account">Ich habe bereits ein Konto</string>
     <string name="add_existing_account">Vorhandenes Konto hinzufügen</string>
-    <string name="register_new_account">Neues Konto erstellen</string>
+    <string name="register_new_account">Neues Konto registrieren</string>
     <string name="this_looks_like_a_domain">Dies sieht aus wie eine Domain-Adresse</string>
     <string name="add_anway">Trotzdem hinzufügen</string>
     <string name="this_looks_like_channel">Dies sieht aus wie eine Channel-Adresse</string>
@@ -907,12 +907,12 @@
     <string name="rtp_state_incoming_video_call">Eingehender Videoanruf</string>
     <string name="rtp_state_content_add_video">Umschalten auf Videoanruf?</string>
     <string name="rtp_state_content_add">Zusätzliche Audiospuren hinzufügen?</string>
-    <string name="rtp_state_connecting">Verbinden</string>
+    <string name="rtp_state_connecting">Verbindet</string>
     <string name="rtp_state_connected">Verbunden</string>
     <string name="rtp_state_reconnecting">Erneut verbinden</string>
     <string name="rtp_state_accepting_call">Anruf annehmen</string>
     <string name="rtp_state_ending_call">Anruf beenden</string>
-    <string name="answer_call">Annehmen</string>
+    <string name="answer_call">Antworten</string>
     <string name="dismiss_call">Ablehnen</string>
     <string name="rtp_state_finding_device">Entdecke Geräte</string>
     <string name="rtp_state_ringing">Klingelt</string>
@@ -1019,7 +1019,7 @@
     <string name="contact_uses_unverified_keys">Dein Kontakt verwendet nicht verifizierte Geräte. Scanne deren 2D-Barcode, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
     <string name="log_out">Abmelden</string>
     <string name="account_state_logged_out">Abgemeldet</string>
-    <string name="unverified_devices">Du verwendest nicht verifizierte Geräte. Scanne den 2D-Barcode auf deinen anderen Geräten, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
+    <string name="unverified_devices">Du verwendest unverifizierte Geräte. Scanne den 2D-Barcode auf deinen anderen Geräten, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
     <string name="report_spam">Spam melden</string>
     <string name="report_spam_and_block">Spam melden und Spammer blockieren</string>
 </resources>
