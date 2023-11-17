@@ -1019,7 +1019,7 @@
     <string name="contact_uses_unverified_keys">Dein Kontakt verwendet nicht verifizierte Geräte. Scanne deren 2D-Barcode, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
     <string name="log_out">Abmelden</string>
     <string name="account_state_logged_out">Abgemeldet</string>
-    <string name="unverified_devices">Du verwendest nicht verifizierte Geräte. Scanne die 2D-Barcodes deiner anderen Geräte, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
+    <string name="unverified_devices">Du verwendest nicht verifizierte Geräte. Scanne den 2D-Barcode auf deinen anderen Geräten, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
     <string name="report_spam">Spam melden</string>
     <string name="report_spam_and_block">Spam melden und Spammer blockieren</string>
 </resources>
