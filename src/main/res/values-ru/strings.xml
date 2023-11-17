@@ -530,7 +530,7 @@
     <string name="this_field_is_required">Незаполненное поле</string>
     <string name="correct_message">Исправить сообщение</string>
     <string name="send_corrected_message">Отправить исправленное сообщение</string>
-    <string name="no_keys_just_confirm">Вы уже подтвердили, что электронный отпечаток принадлежит этому человеку. Выбрав \"Готово\", вы только подтвердите, что %s является участником конференции.</string>
+    <string name="no_keys_just_confirm">Вы уже пометили отпечаток этого человека как доверенный. Выбрав \"Готово\", вы только подтвердите, что %s является участником конференции.</string>
     <string name="this_account_is_disabled">Вы отключили эту учётную запись</string>
     <string name="security_error_invalid_file_access">Ошибка безопасности: недействительный доступ к файлу</string>
     <string name="no_application_to_share_uri">Не найдено приложения для передачи URI</string>
@@ -1028,7 +1028,7 @@
         <item quantity="many">%1$d пропущенных вызовов от %2$s</item>
         <item quantity="other">%1$d пропущенных вызовов от %2$s</item>
     </plurals>
-    <string name="reconnect_on_other_host">Переподключиться на другой сервер</string>
+    <string name="reconnect_on_other_host">Переподключиться на другом сервере</string>
     <string name="outdated_backup_file_format">Вы попытались импортировать резервную копию в устаревшем формате</string>
     <plurals name="n_missed_calls_from_m_contacts">
         <item quantity="one">%1$d пропущенный вызов от %2$d контакта</item>
@@ -1044,4 +1044,6 @@
     <string name="log_out">Выйти</string>
     <string name="account_state_logged_out">Деавторизован</string>
     <string name="unverified_devices">Вы используете неподтверждённые устройства. Отсканируйте штрих-код на подтверждённом устройстве для проверки и предотвращения атаки посредника.</string>
+    <string name="report_spam_and_block">Пожаловаться на спам и заблокировать</string>
+    <string name="report_spam">Пожаловаться на спам</string>
 </resources>
