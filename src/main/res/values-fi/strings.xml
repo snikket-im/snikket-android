@@ -32,8 +32,8 @@
         <item quantity="one">%d lukematon keskustelu</item>
         <item quantity="other">%d lukematonta keskustelua</item>
     </plurals>
-    <string name="sending">lähettää...</string>
-    <string name="message_decrypting">Puretaan viestin salausta. Odota hetki...</string>
+    <string name="sending">lähettää…</string>
+    <string name="message_decrypting">Puretaan viestin salausta. Odota hetki…</string>
     <string name="pgp_message">OpenPGP-salattu viesti</string>
     <string name="nick_in_use">Nimimerkki on jo käytössä</string>
     <string name="invalid_muc_nick">Nimimerkki on virheellinen</string>
@@ -79,12 +79,14 @@
     <string name="send_failed">toimitus epäonnistui</string>
     <string name="preparing_image">Valmistaudutaan lähettämään kuva</string>
     <string name="preparing_images">Valmistaudutaan lähettämään kuvat</string>
-    <string name="sharing_files_please_wait">Jaetaan tiedostoja. Odota hetki...</string>
+    <string name="sharing_files_please_wait">Jaetaan tiedostoja. Odota hetki…</string>
     <string name="action_clear_history">Pyyhi historia</string>
     <string name="clear_conversation_history">Pyyhi keskusteluhistoria</string>
     <string name="clear_histor_msg">Poistetaanko kaikki keskustelun viestit?\n\n<b>Varoitus:</b> Muilla laitteilla tai palvelimilla säilytettyjä kopioita ei poisteta.</string>
     <string name="delete_file_dialog">Poista tiedosto</string>
-    <string name="delete_file_dialog_msg">Haluatko varmasti poistaa tämän tiedoston?\n\n<b>Varoitus:</b> Muilla laitteilla tai palvelimilla olevia kopioita ei poisteta.</string>
+    <string name="delete_file_dialog_msg">Haluatko varmasti poistaa tämän tiedoston\?
+\n
+\n<b>Varoitus:</b> Muilla laitteilla tai palvelimilla olevia kopioita ei poisteta. </string>
     <string name="also_end_conversation">Päätä keskustelu myös</string>
     <string name="choose_presence">Valitse laite</string>
     <string name="send_unencrypted_message">Lähetä salaamaton viesti</string>
@@ -101,15 +103,15 @@
     <string name="restart">Käynnistä uudelleen</string>
     <string name="install">Asenna</string>
     <string name="openkeychain_not_installed">Asenna OpenKeychain</string>
-    <string name="offering">tarjotaan...</string>
-    <string name="waiting">odotetaan...</string>
+    <string name="offering">tarjotaan…</string>
+    <string name="waiting">odotetaan…</string>
     <string name="no_pgp_key">OpenPGP-avainta ei löydy</string>
     <string name="contact_has_no_pgp_key">Viestin salaaminen ei onnistu koska vastaanottaja ei mainosta julkista avaintaan.\n\n<small>Pyydä kontaktiasi ottamaan OpenPGP käyttöön.</small></string>
     <string name="no_pgp_keys">OpenPGP-avaimia ei löydy</string>
     <string name="contacts_have_no_pgp_keys">Viestin salaaminen ei onnistu koska kontaktisi eivät mainosta julkisia avaimiaan.\n\n<small>Pyydä heitä ottamaan OpenPGP käyttöön.</small></string>
     <string name="pref_general">Yleinen</string>
     <string name="pref_accept_files">Lataa tiedostot</string>
-    <string name="pref_accept_files_summary">Lataa automaattisesti tiedostot jotka ovat pienempiä kuin...</string>
+    <string name="pref_accept_files_summary">Lataa automaattisesti tiedostot jotka ovat pienempiä kuin…</string>
     <string name="pref_attachments">Liitteet</string>
     <string name="pref_notification_settings">Ilmoitus</string>
     <string name="pref_vibrate">Värinä</string>
@@ -215,7 +217,7 @@
     <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-sormenjälki (viestin lähettäjä)</string>
     <string name="other_devices">Muut laitteet</string>
     <string name="trust_omemo_fingerprints">Luota OMEMO-sormenjälkiin</string>
-    <string name="fetching_keys">Haetaan avaimia...</string>
+    <string name="fetching_keys">Haetaan avaimia…</string>
     <string name="done">Valmis</string>
     <string name="decrypt">Pura salaus</string>
     <string name="search">Haku</string>
@@ -240,7 +242,7 @@
     <string name="could_not_destroy_channel">Kanavan tuhoaminen epäonnistui</string>
     <string name="action_edit_subject">Muokkaa ryhmäkeskustelun aihetta</string>
     <string name="topic">Aihe</string>
-    <string name="joining_conference">Liitytään ryhmäkeskusteluun...</string>
+    <string name="joining_conference">Liitytään ryhmäkeskusteluun…</string>
     <string name="leave">Poistu</string>
     <string name="contact_added_you">Yhteystieto lisätty luetteloon</string>
     <string name="add_back">Lisää takaisin</string>
@@ -250,7 +252,7 @@
     <string name="everyone_has_read_up_to_this_point">Kaikki ovat lukeneet tähän asti</string>
     <string name="publish">Julkaise</string>
     <string name="touch_to_choose_picture">Napauta profiilikuvaa valitaksesi kuvan galleriasta</string>
-    <string name="publishing">Julkaistaan...</string>
+    <string name="publishing">Julkaistaan…</string>
     <string name="error_publish_avatar_server_reject">Palvelin hylkäsi julkaisusi</string>
     <string name="error_publish_avatar_converting">Kuvan muuntaminen epäonnistui</string>
     <string name="error_saving_avatar">Profiilikuvan tallentaminen levylle epäonnistui</string>
@@ -352,7 +354,7 @@
     <string name="error_trustkeys_title">Jokin meni pieleen</string>
     <string name="fetching_history_from_server">Haetaan historiaa palvelimelta</string>
     <string name="no_more_history_on_server">Palvelimella ei ollut enempää historiaa</string>
-    <string name="updating">Päivitetään...</string>
+    <string name="updating">Päivitetään…</string>
     <string name="password_changed">Salasana vaihdettu!</string>
     <string name="could_not_change_password">Salasanan vaihto epäonnistui</string>
     <string name="change_password">Vaihda salasana</string>
@@ -407,9 +409,9 @@
     <string name="sending_x_file">Lähetetään %s</string>
     <string name="offering_x_file">Tarjotaan %s</string>
     <string name="hide_offline">Piilota poissaolevat</string>
-    <string name="contact_is_typing">%s kirjoittaa...</string>
+    <string name="contact_is_typing">%s kirjoittaa…</string>
     <string name="contact_has_stopped_typing">%s lopetti kirjoittamisen</string>
-    <string name="contacts_are_typing">%s kirjoittavat...</string>
+    <string name="contacts_are_typing">%s kirjoittavat…</string>
     <string name="contacts_have_stopped_typing">%s lopettivat kirjoittamisen</string>
     <string name="pref_chat_states">Kirjoitusilmoitukset</string>
     <string name="pref_chat_states_summary">Näyttää ytheystiedoillesi kun kirjoitat heille viestiä</string>
@@ -461,7 +463,7 @@
     <string name="unable_to_parse_certificate">Varmenteen jäsennys epäonnistui</string>
     <string name="mam_prefs">Arkistointiasetukset</string>
     <string name="server_side_mam_prefs">Palvelimen arkitsointiasetukset</string>
-    <string name="fetching_mam_prefs">Kysytään arkistointiasetuksia. Odota hetki...</string>
+    <string name="fetching_mam_prefs">Kysytään arkistointiasetuksia. Odota hetki…</string>
     <string name="unable_to_fetch_mam_prefs">Arkistointiasetusten haku epäonnistui</string>
     <string name="captcha_required">CAPTCHA vaaditaan</string>
     <string name="captcha_hint">Kirjoita ylläolevassa kuvassa näkyvä teksti</string>
@@ -507,10 +509,10 @@
     <string name="this_field_is_required">Tämä kenttä on pakollinen</string>
     <string name="correct_message">Korjaa viestiä</string>
     <string name="send_corrected_message">Lähetä korjattu viesti</string>
-    <string name="no_keys_just_confirm">Olet jo varmistanut tämän henkilön OMEMO-sormenjäljen turvallisesti luottamuksen varmistamikseksi. Hyväksymällä varmistat vain että %s on osa tätä ryhmäkeskustelua.</string>
+    <string name="no_keys_just_confirm">Olet jo varmistanut tämän henkilön OMEMO-sormenjäljen. Hyväksymällä vahvistat vain että %s on osa tätä ryhmäkeskustelua.</string>
     <string name="this_account_is_disabled">Olet poistanut tämän tilin käytöstä</string>
     <string name="no_application_to_share_uri">URI:n jakamiseen sopivaa sovellusta ei löytynyt</string>
-    <string name="share_uri_with">Jaa URI sovelluksella...</string>
+    <string name="share_uri_with">Jaa URI sovelluksella…</string>
     <string name="agree_and_continue">Hyväksy ja jatka</string>
     <string name="your_full_jid_will_be">XMPP-osoitteesi tulee olemaan kokonaisuudessaan: %s</string>
     <string name="create_account">Luo tunnus</string>
@@ -529,7 +531,7 @@
     <string name="registration_please_wait">Rekisteröinti epäonnistui: Yritä myöhemmin uudelleen</string>
     <string name="registration_password_too_weak">Rekisteröinti epäonnistui: Salasana on liian heikko</string>
     <string name="choose_participants">Valitse osallistujat</string>
-    <string name="creating_conference">Luodaan ryhmää...</string>
+    <string name="creating_conference">Luodaan ryhmää…</string>
     <string name="invite_again">Kutsu uudestaan</string>
     <string name="gp_disable">Poista käytöstä</string>
     <string name="gp_short">Lyhyt</string>
@@ -567,7 +569,8 @@
     <string name="show_error_message">Näytä virheilmoitus</string>
     <string name="error_message">Virheilmoitus</string>
     <string name="data_saver_enabled">Datansäästö käytössä</string>
-    <string name="data_saver_enabled_explained">Käyttöjärjestelmäsi estää %1$s:tä käyttämästä nettiä ollessaan taustalla. Vastaanottaaksesi ilmoitukset uusista viesteistä, salli %1$s:n käyttää esteettä verkkoa datansäästön ollessa käytössä. %1$s tekee silti parhaansa käyttääkseen mahdollisimman vähän dataa. </string>
+    <string name="data_saver_enabled_explained">Käyttöjärjestelmäsi estää %1$s:tä käyttämästä nettiä ollessaan taustalla. Vastaanottaaksesi ilmoitukset uusista viesteistä, salli %1$s:n käyttää esteettä verkkoa datansäästön ollessa käytössä.
+\n%1$s tekee silti parhaansa käyttääkseen mahdollisimman vähän dataa.</string>
     <string name="device_does_not_support_data_saver">Laitteesi ei tue datansäästön poistamista käytöstä sovellukselle %1$s.</string>
     <string name="error_unable_to_create_temporary_file">Väliaikaisen tiedoston luominen epäonnistui</string>
     <string name="this_device_has_been_verified">Laite on varmennettu</string>
@@ -676,8 +679,8 @@
     <string name="small">Pieni</string>
     <string name="medium">Keksikokoinen</string>
     <string name="large">Suuri</string>
-    <string name="not_encrypted_for_this_device">Viestiä ei salattu tälle laitteelle</string>
-    <string name="omemo_decryption_failed">OMEMO-salatun viestin purku epäonnistui</string>
+    <string name="not_encrypted_for_this_device">Viestiä ei salattu tälle laitteelle.</string>
+    <string name="omemo_decryption_failed">OMEMO-salatun viestin purku epäonnistui.</string>
     <string name="undo">peru</string>
     <string name="location_disabled">Sijainnin jakaminen on pois käytöstä</string>
     <string name="action_copy_location">Kopioi sijainti</string>
@@ -686,7 +689,7 @@
     <string name="title_activity_share_location">Jaa sijainti</string>
     <string name="title_activity_show_location">Näytä sijainti</string>
     <string name="share">Jaa</string>
-    <string name="please_wait">Odota hetki...</string>
+    <string name="please_wait">Odota hetki…</string>
     <string name="no_microphone_permission">Salli %1$s:n käyttää mikrofonia</string>
     <string name="gif">GIF</string>
     <string name="view_conversation">Näytä keskustelu</string>
@@ -724,7 +727,7 @@
     <string name="video_360p">Keski (360p)</string>
     <string name="video_720p">Korkea (720p)</string>
     <string name="cancelled">peruutettu</string>
-    <string name="already_drafting_message">Olet jo aloittanut viestin luonnostelun</string>
+    <string name="already_drafting_message">Olet jo aloittanut viestin luonnostelun.</string>
     <string name="feature_not_implemented">Ominaisuutta ei ole toteutettu</string>
     <string name="invalid_country_code">Virheellinen maakoodi</string>
     <string name="choose_a_country">Valitse maa</string>
@@ -742,13 +745,13 @@
     <string name="resend_sms_in">Lähetä uusi tekstivieti (%s)</string>
     <string name="wait_x">Odota (%s)</string>
     <string name="back">takaisin</string>
-    <string name="possible_pin">Mahdollinen PIN-koodi liitettiin leikepöydältä automaattisesti</string>
+    <string name="possible_pin">Mahdollinen PIN-koodi liitettiin leikepöydältä automaattisesti.</string>
     <string name="please_enter_pin">Syötä 6-numeroinen PIN-koodisi.</string>
     <string name="abort_registration_procedure">Haluatko varmasti perua rekisteröintiprosessin?</string>
     <string name="yes">Kyllä</string>
     <string name="no">Ei</string>
-    <string name="verifying">Varmistetaan...</string>
-    <string name="requesting_sms">Pyydetään tekstiviestiä</string>
+    <string name="verifying">Varmistetaan…</string>
+    <string name="requesting_sms">Pyydetään tekstiviestiä…</string>
     <string name="incorrect_pin">Syöttämäsi PIN-koodi on väärä.</string>
     <string name="pin_expired">Lähettämämme PIN-koodi on vanhentunut.</string>
     <string name="unknown_api_error_network">Tuntematon verkkovirhe.</string>
@@ -757,7 +760,7 @@
     <string name="unable_to_establish_secure_connection">Turvallinen yhteys epäonnistui.</string>
     <string name="unable_to_find_server">Palvelinta ei löytynyt.</string>
     <string name="something_went_wrong_processing_your_request">Pyyntösi käsittelyssä tapahtui jokin virhe.</string>
-    <string name="no_network_connection">Ei verkkoyhteyttä</string>
+    <string name="no_network_connection">Ei verkkoyhteyttä.</string>
     <string name="try_again_in_x">Odota %s ja yritä uudelleen</string>
     <string name="too_many_attempts">Liian monta yritystä</string>
     <string name="the_app_is_out_of_date">Käytät vanhentunutta versiota tästä sovelluksesta.</string>
@@ -773,7 +776,7 @@
     <string name="group_chat_will_make_your_jabber_id_public">Tämä kanava julkaisee XMPP-osoitteesi</string>
     <string name="ebook">e-kirja</string>
     <string name="video_original">Alkuperäinen (pakkaamaton)</string>
-    <string name="open_with">Avaa sovelluksella...</string>
+    <string name="open_with">Avaa sovelluksella…</string>
     <string name="set_profile_picture">Conversations-profiilikuva</string>
     <string name="choose_account">Valitse tili</string>
     <string name="restore_backup">Palauta varmuuskopiosta</string>
@@ -793,7 +796,7 @@
     <string name="please_enter_name">Anna kanavalle nimi</string>
     <string name="please_enter_xmpp_address">Anna XMPP-osoite</string>
     <string name="this_is_an_xmpp_address">Tämä on XMPP-osoite. Anna nimi sen sijaan.</string>
-    <string name="creating_channel">Luodaan julkista kanavaa...</string>
+    <string name="creating_channel">Luodaan julkista kanavaa…</string>
     <string name="channel_already_exists">Kanava on jo olemassa</string>
     <string name="joined_an_existing_channel">Liityit olemassa olevalle kanavalle</string>
     <string name="unable_to_set_channel_configuration">Kanavan asetuksia ei saatu tallennettua</string>
@@ -827,7 +830,7 @@
     <string name="account_already_setup">Tämä tili on jo asennettu</string>
     <string name="please_enter_password">Syötä tämän tilin salasana</string>
     <string name="unable_to_perform_this_action">Toiminnon suorittaminen epäonnistui</string>
-    <string name="open_join_dialog">Liity julkiselle kanavalle...</string>
+    <string name="open_join_dialog">Liity julkiselle kanavalle…</string>
     <string name="sharing_application_not_grant_permission">Jakava sovellus ei antanut tarvittavaa lupaa lukea tiedostoa.</string>
     <string name="group_chats_and_channels"><![CDATA[Ryhmäkeskustelut ja kanavat]]></string>
     <string name="jabber_network">jabber.network</string>
@@ -902,7 +905,7 @@
     <string name="server_does_not_support_easy_onboarding_invites">Palvelin ei tue kutsujen luomista</string>
     <string name="no_active_accounts_support_this">Yksikään aktiivinen tili ei tue tätä toimintoa</string>
     <string name="backup_started_message">Varmuuskopion teko aloitettu. Saat ilmoituksen kun se on valmis.</string>
-    <string name="unable_to_enable_video">Videon käyttöönotto epäonnistui</string>
+    <string name="unable_to_enable_video">Videon käyttöönotto epäonnistui.</string>
     <string name="plain_text_document">Perustekstiasiakirja</string>
     <string name="pref_omemo_setting_summary_always">OMEMO:a käytetään aina kaikissa yksityisissä keskusteluissa.</string>
     <string name="search_contacts">Etsi yhteystiedoista</string>
@@ -914,4 +917,35 @@
 \n&lt;br&gt;&lt;br&gt;Tämän ominaisuuden käyttö lähettää IP-osoitteesi ja hakusanasi palvelulle. Lue lisää heidän &lt;a href=https://search.jabber.network/privacy
 \n&gt;yksityisyyskäytännöstään&lt;/a&gt; (englanniksi).</string>
     <string name="search_messages">Hae viesteistä</string>
+    <string name="this_account_is_logged_out">Olet kirjautunut ulos tältä tililtä</string>
+    <string name="missed_calls_channel_name">Vastaamattomat puhelut</string>
+    <string name="pref_incoming_call_notification_settings">Saapuvien puheluiden ilmoitusasetukset</string>
+    <string name="temporarily_unavailable">Ei käytössä hetkellisesti. Yritä myöhemmin uudestaan.</string>
+    <string name="reconnecting_video_call">Yhdistetään videopuhelua uudestaan</string>
+    <string name="incoming_call_duration_timestamp">Saapuva puhelu (%s) · %s</string>
+    <string name="reconnecting_call">Yhdistetään puhelua uudestaan</string>
+    <string name="pref_autojoin">Synkronoi kirjanmerkit</string>
+    <string name="outgoing_call_duration_timestamp">Lähtevä puhelu (%s) · %s</string>
+    <string name="download_failed_invalid_file">Lataus epäonnistui: Kelvoton tiedosto</string>
+    <string name="pref_broadcast_last_activity">Julkaise käyttö</string>
+    <string name="continue_btn">Jatka</string>
+    <string name="account_state_logged_out">Kirjautunut ulos</string>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d vastaamaton puhelu</item>
+        <item quantity="other">%d vastaamatonta puhelua</item>
+    </plurals>
+    <string name="rtp_state_reconnecting">Yhdistetään uudelleen</string>
+    <string name="outgoing_call_timestamp">Lähtevä puhelu · %s</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d vastaamaton puhelu henkilöltä %2$s</item>
+        <item quantity="other">%1$d vastaamatonta puhelua henkilöltä %2$s</item>
+    </plurals>
+    <string name="dialog_manage_certs_positivebutton">Poista valinta</string>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d vastaamatonta puhelua %2$d henkilöltä</item>
+        <item quantity="other">%1$d vastaamatonta puhelua %2$d henkilöltä</item>
+    </plurals>
+    <string name="audiobook">Äänikirja</string>
+    <string name="silent_messages_channel_name">Hiljaiset viestit</string>
+    <string name="rtp_state_content_add_video">Vaihdetaanko videopuheluun\?</string>
 </resources>
