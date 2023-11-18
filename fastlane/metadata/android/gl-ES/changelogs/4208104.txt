@@ -1,0 +1,4 @@
+* Acceso mais rápido á 'Mostrar código QR'
+* Soporte para a PEP Marcadores Nativos
+* Engadido soporte para SDP Offer / Answer Model (usado por pasarelas SIP)
+* Establecida a API de Android 14 como obxectivo
