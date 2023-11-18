@@ -30,10 +30,7 @@
     <string name="minutes_ago">%d minuuttia sitten</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d lukematon keskustelu</item>
-
-    
         <item quantity="other">%d lukematonta keskustelua</item>
-
     </plurals>
     <string name="sending">lähettää...</string>
     <string name="message_decrypting">Puretaan viestin salausta. Odota hetki...</string>
@@ -154,7 +151,7 @@
     <string name="account_status_unknown">Tuntematon</string>
     <string name="account_status_disabled">Väliaikaisesti poistettu käytöstä</string>
     <string name="account_status_online">Paikalla</string>
-    <string name="account_status_connecting">Yhdistäää\u2026</string>
+    <string name="account_status_connecting">Yhdistää…</string>
     <string name="account_status_offline">Poissa</string>
     <string name="account_status_unauthorized">Ei sallittu</string>
     <string name="account_status_not_found">Palvelinta ei löydy</string>
@@ -179,7 +176,7 @@
     <string name="unpublish_pgp_message">Haluatko varmasti poistaa OpenPGP-avaimesi tilamainostuksistasi?\nYhteystietosi eivät voi enää lähettää sinulle OpenPGP-salattuja viestejä.</string>
     <string name="openpgp_has_been_published">OpenPGP julkinen avain julkaistu.</string>
     <string name="mgmt_account_enable">Ota tunnus käyttöön</string>
-    <string name="mgmt_account_delete_confirm_text">Tilin poistaminen pyyhkii koko keskusteluhistoriasi</string>
+    <string name="mgmt_account_delete_confirm_text">Haluatko varmasti poistaa tilisi\? Tilin poistaminen pyyhkii koko keskusteluhistoriasi</string>
     <string name="attach_record_voice">Nauhoita ääntä</string>
     <string name="account_settings_jabber_id">XMPP-osoite</string>
     <string name="block_jabber_id">Estä XMPP-osoite</string>
@@ -454,7 +451,7 @@
     <string name="pref_away_when_screen_off">Poissa kun laite on lukittu</string>
     <string name="pref_away_when_screen_off_summary">Näytä minut poissaolevana kun näyttö on lukittu</string>
     <string name="pref_dnd_on_silent_mode">Kiireinen kun laite on äänetön</string>
-    <string name="pref_dnd_on_silent_mode_summary">Näytä minut kiireisenä kun laite on äänettömänäq</string>
+    <string name="pref_dnd_on_silent_mode_summary">Näytä minut kiireisenä kun laite on äänettömänä</string>
     <string name="pref_treat_vibrate_as_silent">Kohtele vain värinä -tilaa äänettömän lailla</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Näytä minut kiireisenä kun laite on vain värinä -tilassa</string>
     <string name="pref_show_connection_options">Laajemmat yhteysasetukset</string>
@@ -652,7 +649,7 @@
     <string name="mtm_accept_cert">Hyväksytäänkö tuntematon varmenne?</string>
     <string name="mtm_trust_anchor">Palvelimen varmenne ei ole luotetun myöntäjän allekirjoittama.</string>
     <string name="mtm_accept_servername">Hyväksytäänkö eriävä palvelimen nimi?</string>
-    <string name="mtm_hostname_mismatch">Palvelin ei voinut tunnistautua olevansa verkkotunnusta \&quot;%s\&quot;. Varmenne sisältää vain seuraavat verkkotunnukset:</string>
+    <string name="mtm_hostname_mismatch">Palvelin ei voinut tunnistautua olevansa verkkotunnusta \"%s\". Varmenne sisältää vain seuraavat verkkotunnukset:</string>
     <string name="mtm_connect_anyway">Haluatko yhdistää joka tapauksessa?</string>
     <string name="mtm_cert_details">Varmenteen tiedot:</string>
     <string name="once">Kerran</string>
@@ -670,7 +667,7 @@
     <string name="disable_now">Poista käytöstä nyt</string>
     <string name="draft">Luonnos:</string>
     <string name="pref_omemo_setting">OMEMO-salaus</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO:a ei koskaan käytetä oletuksena uusissa keskusteluissa.</string>
+    <string name="pref_omemo_setting_summary_default_on">Uusissa keskusteluissa OMEMO otetaan oletuksena käyttöön.</string>
     <string name="create_shortcut">Luo pikakuvake</string>
     <string name="pref_font_size">Kirjasinkoko</string>
     <string name="pref_font_size_summary">Kirjasimen suhteellinen koko sovelluksen sisällä.</string>
@@ -907,4 +904,14 @@
     <string name="backup_started_message">Varmuuskopion teko aloitettu. Saat ilmoituksen kun se on valmis.</string>
     <string name="unable_to_enable_video">Videon käyttöönotto epäonnistui</string>
     <string name="plain_text_document">Perustekstiasiakirja</string>
-    </resources>
+    <string name="pref_omemo_setting_summary_always">OMEMO:a käytetään aina kaikissa yksityisissä keskusteluissa.</string>
+    <string name="search_contacts">Etsi yhteystiedoista</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO täytyy ottaa käyttöön käsin uusissa keskusteluissa.</string>
+    <string name="group_chats">Ryhmäkeskustelut</string>
+    <string name="search_group_chats">Etsi ryhmäkeskusteluista</string>
+    <string name="pref_start_search">Suoraan hakuun</string>
+    <string name="channel_discover_opt_in_message">Kanavien löytö käyttää kolmannen osapuolen palvelua nimeltä &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.
+\n&lt;br&gt;&lt;br&gt;Tämän ominaisuuden käyttö lähettää IP-osoitteesi ja hakusanasi palvelulle. Lue lisää heidän &lt;a href=https://search.jabber.network/privacy
+\n&gt;yksityisyyskäytännöstään&lt;/a&gt; (englanniksi).</string>
+    <string name="search_messages">Hae viesteistä</string>
+</resources>
