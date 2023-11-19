@@ -91,12 +91,12 @@
 \n<b>Achtung:</b> Dies löscht keine Kopien dieser Datei, die auf anderen Geräten oder Servern gespeichert sind. </string>
     <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
     <string name="choose_presence">Gerät auswählen</string>
-    <string name="send_unencrypted_message">Unverschlüsselte Nachricht senden</string>
+    <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>
     <string name="send_message">Nachricht senden</string>
     <string name="send_message_to_x">Nachricht an %s senden</string>
-    <string name="send_omemo_message">OMEMO-verschlüsselte Nachricht senden</string>
+    <string name="send_omemo_message">OMEMO-verschlüsselt schreiben…</string>
     <string name="send_omemo_x509_message">v\\OMEMO-verschlüsselte Nachricht senden</string>
-    <string name="send_pgp_message">OpenPGP-verschlüsselte Nachricht senden</string>
+    <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben…</string>
     <string name="your_nick_has_been_changed">Neuer Nickname wird jetzt verwendet</string>
     <string name="send_unencrypted">Unverschlüsselt senden</string>
     <string name="decryption_failed">Entschlüsselung fehlgeschlagen. Vielleicht hast du nicht den richtigen privaten Schlüssel.</string>
@@ -534,7 +534,7 @@
     <string name="this_field_is_required">Dieses Feld ist erforderlich</string>
     <string name="correct_message">Nachricht korrigieren</string>
     <string name="send_corrected_message">Korrigierte Nachricht senden</string>
-    <string name="no_keys_just_confirm">Du hast den Fingerabdruck dieser Person bereits verifiziert. Durch Auswählen von \"Fertig\" bestätigst du, dass %s Teil dieses Gruppenchats ist.</string>
+    <string name="no_keys_just_confirm">Du hast den Fingerabdruck dieser Person bereits verifiziert. Durch Auswählen von \"Fertig\" bestätigst du nur, dass %s Teil dieses Gruppenchats ist.</string>
     <string name="this_account_is_disabled">Du hast dieses Konto deaktiviert</string>
     <string name="security_error_invalid_file_access">Sicherheitsfehler: Dateizugriff nicht erlaubt!</string>
     <string name="no_application_to_share_uri">Keine App zum Teilen der URI gefunden</string>
@@ -880,7 +880,7 @@
     <string name="channel_discovery_opt_in_title">Mögliche Datenschutzverletzung!</string>
     <string name="i_already_have_an_account">Ich habe bereits ein Konto</string>
     <string name="add_existing_account">Vorhandenes Konto hinzufügen</string>
-    <string name="register_new_account">Neues Konto registrieren</string>
+    <string name="register_new_account">Neues Konto erstellen</string>
     <string name="this_looks_like_a_domain">Dies sieht aus wie eine Domain-Adresse</string>
     <string name="add_anway">Trotzdem hinzufügen</string>
     <string name="this_looks_like_channel">Dies sieht aus wie eine Channel-Adresse</string>
@@ -912,7 +912,7 @@
     <string name="rtp_state_reconnecting">Erneut verbinden</string>
     <string name="rtp_state_accepting_call">Anruf annehmen</string>
     <string name="rtp_state_ending_call">Anruf beenden</string>
-    <string name="answer_call">Antworten</string>
+    <string name="answer_call">Annehmen</string>
     <string name="dismiss_call">Ablehnen</string>
     <string name="rtp_state_finding_device">Entdecke Geräte</string>
     <string name="rtp_state_ringing">Klingelt</string>
@@ -1019,7 +1019,7 @@
     <string name="contact_uses_unverified_keys">Dein Kontakt verwendet nicht verifizierte Geräte. Scanne deren 2D-Barcode, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
     <string name="log_out">Abmelden</string>
     <string name="account_state_logged_out">Abgemeldet</string>
-    <string name="unverified_devices">Du verwendest unverifizierte Geräte. Scanne den 2D-Barcode auf deinen anderen Geräten, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
+    <string name="unverified_devices">Du verwendest nicht verifizierte Geräte. Scanne den 2D-Barcode auf deinen anderen Geräten, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
     <string name="report_spam">Spam melden</string>
     <string name="report_spam_and_block">Spam melden und Spammer blockieren</string>
 </resources>
