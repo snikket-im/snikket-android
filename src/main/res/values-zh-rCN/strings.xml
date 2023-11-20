@@ -102,8 +102,8 @@
     <string name="send_unencrypted">发送未加密的</string>
     <string name="decryption_failed">解密失败。也许您没有正确的私钥。</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">%1$s 使用 &lt;b&gt;OpenKeychain&lt;/b&gt; 来加密和解密消息并管理公钥。&lt;br&gt;&lt;br&gt;它在 GPLv3+ 许可证下授权并可在 F-Droid 和 Google Play 上获得。&lt;br&gt;&lt;br&gt;&lt;small&gt;(请之后重新启动 %1$s。)&lt;/small&gt;</string>
-    <string name="restart">重新启动</string>
+    <string name="openkeychain_required_long">%1$s 使用 &lt;b&gt;OpenKeychain&lt;/b&gt; 来加密和解密消息并管理公钥。&lt;br&gt;&lt;br&gt;它在 GPLv3+ 许可证下授权并可在 F-Droid 和 Google Play 上获得。&lt;br&gt;&lt;br&gt;&lt;small&gt;（请之后重启 %1$s。）&lt;/small&gt;</string>
+    <string name="restart">重启</string>
     <string name="install">安装</string>
     <string name="openkeychain_not_installed">请安装 OpenKeychain</string>
     <string name="offering">正在提供…</string>
@@ -643,8 +643,8 @@
     <string name="pref_clean_private_storage">清理私人存储空间</string>
     <string name="pref_clean_private_storage_summary">清理保存文件的私人存储 (它们可以从服务器重新下载)</string>
     <string name="i_followed_this_link_from_a_trusted_source">我从可信来源收到此链接</string>
-    <string name="verifying_omemo_keys_trusted_source">单击链接后，您将验证 %1$s 的 OMEMO 密钥。只有从可信来源(只有 %2$s 可以发布此链接)收到此链接才是安全的。</string>
-    <string name="verifying_omemo_keys_trusted_source_account">您将验证自己账号的 OMEMO 密钥。只有从可信来源(只有您可以发布此链接)收到此链接才是安全的。</string>
+    <string name="verifying_omemo_keys_trusted_source">单击链接后，您将验证 %1$s 的 OMEMO 密钥。只有从可信来源（只有 %2$s 可以发布此链接）收到此链接才是安全的。</string>
+    <string name="verifying_omemo_keys_trusted_source_account">您将验证自己账号的 OMEMO 密钥。只有从可信来源（只有您可以发布此链接）收到此链接才是安全的。</string>
     <string name="continue_btn">继续</string>
     <string name="verify_omemo_keys">验证 OMEMO 密钥</string>
     <string name="show_inactive_devices">显示非活动设备</string>
@@ -784,7 +784,7 @@
     <string name="ongoing_calls_channel_name">正在进行的通话</string>
     <string name="missed_calls_channel_name">未接来电</string>
     <string name="silent_messages_channel_name">静音消息</string>
-    <string name="silent_messages_channel_description">此通知组用于显示不应触发任何声音的通知。例如，在另一台设备上处于活动状态时(静默期)。</string>
+    <string name="silent_messages_channel_description">此通知组用于显示不应触发任何声音的通知。例如，在另一台设备上处于活动状态时（静默期）。</string>
     <string name="delivery_failed_channel_name">传递失败</string>
     <string name="pref_message_notification_settings">消息通知设置</string>
     <string name="pref_incoming_call_notification_settings">来电通知设置</string>
@@ -805,7 +805,7 @@
     <string name="choose_a_country">选择国家/地区</string>
     <string name="phone_number">电话号码</string>
     <string name="verify_your_phone_number">验证您的电话号码</string>
-    <string name="enter_country_code_and_phone_number">Quicksy 将发送短信(运营商可能收费)来验证电话号码。请输入您的国家/地区代码和电话号码：</string>
+    <string name="enter_country_code_and_phone_number">Quicksy 将发送短信（运营商可能收费）来验证电话号码。请输入您的国家/地区代码和电话号码：</string>
     <string name="we_will_be_verifying">我们将验证这个电话号码<br/><br/><b>%s</b><br/><br/>可以吗？是否编辑号码？</string>
     <string name="not_a_valid_phone_number">%s 不是有效的电话号码。</string>
     <string name="please_enter_your_phone_number">请输入您的电话号码。</string>
@@ -859,7 +859,7 @@
     <string name="restore_backup">恢复备份</string>
     <string name="restore">恢复</string>
     <string name="enter_password_to_restore">输入 %s 账号的密码以恢复备份。</string>
-    <string name="restore_warning">请勿使用恢复备份功能尝试克隆(同时运行)安装。恢复备份仅适用于迁移或您丢失原始设备的情况。</string>
+    <string name="restore_warning">请勿使用恢复备份功能尝试克隆（同时运行）安装。恢复备份仅适用于迁移或您丢失原始设备的情况。</string>
     <string name="unable_to_restore_backup">无法恢复备份。</string>
     <string name="unable_to_decrypt_backup">无法解密备份。密码是否正确？</string>
     <string name="backup_channel_name">备份 &amp; 恢复</string>
@@ -926,7 +926,7 @@
     <string name="rtp_state_content_add">添加额外轨道？</string>
     <string name="rtp_state_connecting">正在连接</string>
     <string name="rtp_state_connected">已连接</string>
-    <string name="rtp_state_reconnecting">正在重新连接</string>
+    <string name="rtp_state_reconnecting">正在重连</string>
     <string name="rtp_state_accepting_call">正在接受通话</string>
     <string name="rtp_state_ending_call">正在结束通话</string>
     <string name="answer_call">应答</string>
@@ -942,8 +942,8 @@
     <string name="hang_up">挂断</string>
     <string name="ongoing_call">正在进行的通话</string>
     <string name="ongoing_video_call">正在进行的视频通话</string>
-    <string name="reconnecting_call">正在重新连接通话</string>
-    <string name="reconnecting_video_call">正在重新连接视频通话</string>
+    <string name="reconnecting_call">正在重连通话</string>
+    <string name="reconnecting_video_call">正在重连视频通话</string>
     <string name="disable_tor_to_make_call">禁用 Tor 以进行通话</string>
     <string name="incoming_call">来电</string>
     <string name="missed_call_timestamp">未接来电 · %s</string>
