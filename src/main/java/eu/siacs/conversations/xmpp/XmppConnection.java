@@ -1414,7 +1414,8 @@ public class XmppConnection implements Runnable {
 
     private void authenticate() throws IOException {
         final boolean isSecure = isSecure();
-        if (isSecure && this.streamFeatures.hasChild("authentication", Namespace.SASL_2)) {authenticate(SaslMechanism.Version.SASL_2);
+        if (isSecure && this.streamFeatures.hasChild("authentication", Namespace.SASL_2)) {
+            authenticate(SaslMechanism.Version.SASL_2);
         } else if (isSecure && this.streamFeatures.hasChild("mechanisms", Namespace.SASL)) {
             authenticate(SaslMechanism.Version.SASL);
         } else {
