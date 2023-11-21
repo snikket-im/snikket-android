@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.bind;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 
 import java.util.Arrays;
@@ -27,7 +28,12 @@ public class Bind2 {
         if (inlineBind2Inline == null) {
             return Collections.emptyList();
         }
-        return Collections2.transform(
-                inlineBind2Inline.getChildren(), c -> c == null ? null : c.getAttribute("var"));
+        return Collections2.filter(
+                Collections2.transform(
+                        Collections2.filter(
+                                inlineBind2Inline.getChildren(),
+                                c -> "feature".equals(c.getName())),
+                        c -> c.getAttribute("var")),
+                Predicates.notNull());
     }
 }
