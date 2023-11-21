@@ -604,10 +604,10 @@ public class XmppConnection implements Runnable {
             } else if (nextTag.isStart("enabled", Namespace.STREAM_MANAGEMENT)) {
                 final Element enabled = tagReader.readElement(nextTag);
                 processEnabled(enabled);
-            } else if (nextTag.isStart("resumed")) {
+            } else if (nextTag.isStart("resumed", Namespace.STREAM_MANAGEMENT)) {
                 final Element resumed = tagReader.readElement(nextTag);
                 processResumed(resumed);
-            } else if (nextTag.isStart("r")) {
+            } else if (nextTag.isStart("r", Namespace.STREAM_MANAGEMENT)) {
                 tagReader.readElement(nextTag);
                 if (Config.EXTENDED_SM_LOGGING) {
                     Log.d(
@@ -618,7 +618,7 @@ public class XmppConnection implements Runnable {
                 }
                 final AckPacket ack = new AckPacket(this.stanzasReceived);
                 tagWriter.writeStanzaAsync(ack);
-            } else if (nextTag.isStart("a")) {
+            } else if (nextTag.isStart("a", Namespace.STREAM_MANAGEMENT)) {
                 boolean accountUiNeedsRefresh = false;
                 synchronized (NotificationService.CATCHUP_LOCK) {
                     if (mWaitingForSmCatchup.compareAndSet(true, false)) {
@@ -661,15 +661,22 @@ public class XmppConnection implements Runnable {
                 if (acknowledgedMessages) {
                     mXmppConnectionService.updateConversationUi();
                 }
-            } else if (nextTag.isStart("failed")) {
+            } else if (nextTag.isStart("failed", Namespace.STREAM_MANAGEMENT)) {
                 final Element failed = tagReader.readElement(nextTag);
                 processFailed(failed, true);
-            } else if (nextTag.isStart("iq")) {
+            } else if (nextTag.isStart("iq", Namespace.JABBER_CLIENT)) {
                 processIq(nextTag);
-            } else if (nextTag.isStart("message")) {
+            } else if (nextTag.isStart("message", Namespace.JABBER_CLIENT)) {
                 processMessage(nextTag);
-            } else if (nextTag.isStart("presence")) {
+            } else if (nextTag.isStart("presence", Namespace.JABBER_CLIENT)) {
                 processPresence(nextTag);
+            } else {
+                Log.e(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": Encountered unknown stream element"
+                                + nextTag.identifier());
+                throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
             }
             nextTag = tagReader.readTag();
         }
@@ -2263,7 +2270,7 @@ public class XmppConnection implements Runnable {
         }
         stream.setAttribute("version", "1.0");
         stream.setAttribute("xml:lang", LocalizedContent.STREAM_LANGUAGE);
-        stream.setAttribute("xmlns", "jabber:client");
+        stream.setAttribute("xmlns", Namespace.JABBER_CLIENT);
         stream.setAttribute("xmlns:stream", Namespace.STREAMS);
         tagWriter.writeTag(stream, flush);
     }
