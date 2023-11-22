@@ -647,6 +647,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             throw new IllegalStateException(
                     String.format("Unable to finish connection with id=%s", id.toString()));
         }
+        // update chat UI to remove 'ongoing call' icon
+        mXmppConnectionService.updateConversationUi();
     }
 
     public boolean fireJingleRtpConnectionStateUpdates() {
