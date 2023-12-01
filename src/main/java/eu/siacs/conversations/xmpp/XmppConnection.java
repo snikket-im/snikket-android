@@ -16,6 +16,7 @@ import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -165,7 +166,7 @@ public class XmppConnection implements Runnable {
     private boolean isBound = false;
     private Element streamFeatures;
     private Element boundStreamFeatures;
-    private String streamId = null;
+    private StreamId streamId = null;
     private int stanzasReceived = 0;
     private int stanzasSent = 0;
     private int stanzasSentBeforeAuthentication;
@@ -365,6 +366,12 @@ public class XmppConnection implements Runnable {
                                         + ": loaded backup resolver result from db: "
                                         + storedBackupResult);
                     }
+                }
+                final StreamId streamId = this.streamId;
+                final Resolver.Result resumeLocation = streamId == null ? null : streamId.location;
+                if (resumeLocation != null) {
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": injected resume location on position 0");
+                    results.add(0, resumeLocation);
                 }
                 final Resolver.Result seeOtherHost = this.seeOtherHostResolverResult;
                 if (seeOtherHost != null) {
@@ -988,18 +995,27 @@ public class XmppConnection implements Runnable {
     }
 
     private void processEnabled(final Element enabled) {
-        final String streamId;
+        final String id;
         if (enabled.getAttributeAsBoolean("resume")) {
-            streamId = enabled.getAttribute("id");
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid().toString()
-                            + ": stream management enabled (resumable)");
+            id = enabled.getAttribute("id");
+        } else {
+            id = null;
+        }
+        final String locationAttribute = enabled.getAttribute("location");
+        final Resolver.Result currentResolverResult = this.currentResolverResult;
+        final Resolver.Result location;
+        if (Strings.isNullOrEmpty(locationAttribute) || currentResolverResult == null) {
+            location = null;
+        } else {
+            location = currentResolverResult.seeOtherHost(locationAttribute);
+        }
+        final StreamId streamId = id == null ? null : new StreamId(id, location);
+        if (streamId == null) {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": stream management enabled");
         } else {
             Log.d(
                     Config.LOGTAG,
-                    account.getJid().asBareJid().toString() + ": stream management enabled");
-            streamId = null;
+                    account.getJid().asBareJid() + ": stream management enabled. resume at: " + streamId.location);
         }
         this.streamId = streamId;
         this.stanzasReceived = 0;
@@ -1408,7 +1424,7 @@ public class XmppConnection implements Runnable {
                                 + ": resuming after stanza #"
                                 + stanzasReceived);
             }
-            final ResumePacket resume = new ResumePacket(this.streamId, stanzasReceived);
+            final ResumePacket resume = new ResumePacket(this.streamId.id, stanzasReceived);
             this.mSmCatchupMessageCounter.set(0);
             this.mWaitingForSmCatchup.set(true);
             this.tagWriter.writeStanzaAsync(resume);
@@ -1589,7 +1605,7 @@ public class XmppConnection implements Runnable {
             authenticate.addChild(generateBindRequest(bind));
         }
         if (inlineStreamManagement && streamId != null) {
-            final ResumePacket resume = new ResumePacket(this.streamId, stanzasReceived);
+            final ResumePacket resume = new ResumePacket(this.streamId.id, stanzasReceived);
             this.mSmCatchupMessageCounter.set(0);
             this.mWaitingForSmCatchup.set(true);
             authenticate.addChild(resume);
@@ -2671,6 +2687,25 @@ public class XmppConnection implements Runnable {
 
         public static SaslMechanism mechanism(final LoginInfo loginInfo) {
             return loginInfo == null ? null : loginInfo.saslMechanism;
+        }
+    }
+
+    private static class StreamId {
+        public final String id;
+        public final Resolver.Result location;
+
+        private StreamId(String id, Resolver.Result location) {
+            this.id = id;
+            this.location = location;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this)
+                    .add("id", id)
+                    .add("location", location)
+                    .toString();
         }
     }
 
