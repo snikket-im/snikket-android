@@ -112,6 +112,7 @@ public class UnifiedPushBroker {
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid() + ": try to renew UnifiedPush " + renewal);
+            UnifiedPushDistributor.quickLog(service,String.format("%s: try to renew UnifiedPush %s", account.getJid(), renewal.toString()));
             final String hashedApplication =
                     UnifiedPushDistributor.hash(account.getUuid(), renewal.application);
             final String hashedInstance =
@@ -186,7 +187,16 @@ public class UnifiedPushBroker {
                             + renewal.instance
                             + " was updated to "
                             + endpoint);
-            final UnifiedPushDatabase.ApplicationEndpoint applicationEndpoint = new UnifiedPushDatabase.ApplicationEndpoint(renewal.application, endpoint);
+            UnifiedPushDistributor.quickLog(
+                    service,
+                    "endpoint for "
+                            + renewal.application
+                            + "/"
+                            + renewal.instance
+                            + " was updated to "
+                            + endpoint);
+            final UnifiedPushDatabase.ApplicationEndpoint applicationEndpoint =
+                    new UnifiedPushDatabase.ApplicationEndpoint(renewal.application, endpoint);
             sendEndpoint(messenger, renewal.instance, applicationEndpoint);
         }
     }

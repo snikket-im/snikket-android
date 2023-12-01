@@ -41,6 +41,8 @@ public final class Config {
 
     public static final String LOGTAG = BuildConfig.APP_NAME.toLowerCase(Locale.US);
 
+    public static final boolean QUICK_LOG = false;
+
     public static final Jid BUG_REPORTS = Jid.of("bugs@conversations.im");
     public static final Uri HELP = Uri.parse("https://help.conversations.im");
 
