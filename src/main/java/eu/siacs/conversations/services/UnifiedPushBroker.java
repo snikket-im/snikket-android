@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -87,12 +88,30 @@ public class UnifiedPushBroker {
             if (transport.account.isEnabled()) {
                 renewUnifiedEndpoint(transportOptional.get(), pushTargetMessenger);
             } else {
+                if (pushTargetMessenger.messenger != null) {
+                    sendRegistrationDelayed(pushTargetMessenger.messenger,"account is disabled");
+                }
                 Log.d(Config.LOGTAG, "skipping UnifiedPush endpoint renewal. Account is disabled");
             }
         } else {
+            if (pushTargetMessenger.messenger != null) {
+                sendRegistrationDelayed(pushTargetMessenger.messenger,"no transport selected");
+            }
             Log.d(Config.LOGTAG, "skipping UnifiedPush endpoint renewal. No transport selected");
         }
         return transportOptional;
+    }
+
+    private void sendRegistrationDelayed(final Messenger messenger, final String error) {
+        final Intent intent = new Intent(UnifiedPushDistributor.ACTION_REGISTRATION_DELAYED);
+        intent.putExtra(UnifiedPushDistributor.EXTRA_MESSAGE, error);
+        final var message = new Message();
+        message.obj = intent;
+        try {
+            messenger.send(message);
+        } catch (final RemoteException e) {
+            Log.d(Config.LOGTAG,"unable to tell messenger of delayed registration",e);
+        }
     }
 
     private void renewUnifiedEndpoint(final Transport transport, final PushTargetMessenger pushTargetMessenger) {
@@ -346,11 +365,17 @@ public class UnifiedPushBroker {
         service.sendBroadcast(updateIntent);
     }
 
-    private static Intent endpointIntent(final String instance, final UnifiedPushDatabase.ApplicationEndpoint endpoint) {
+    private Intent endpointIntent(final String instance, final UnifiedPushDatabase.ApplicationEndpoint endpoint) {
         final Intent intent = new Intent(UnifiedPushDistributor.ACTION_NEW_ENDPOINT);
         intent.setPackage(endpoint.application);
         intent.putExtra("token", instance);
         intent.putExtra("endpoint", endpoint.endpoint);
+        final var distributorVerificationIntent = new Intent();
+        distributorVerificationIntent.setPackage(service.getPackageName());
+        final var pendingIntent =
+                PendingIntent.getBroadcast(
+                        service, 0, distributorVerificationIntent, PendingIntent.FLAG_IMMUTABLE);
+        intent.putExtra("distributor", pendingIntent);
         return intent;
     }
 
@@ -378,7 +403,7 @@ public class UnifiedPushBroker {
 
     public static class PushTargetMessenger {
         private final UnifiedPushDatabase.PushTarget pushTarget;
-        private final Messenger messenger;
+        public final Messenger messenger;
 
         public PushTargetMessenger(UnifiedPushDatabase.PushTarget pushTarget, Messenger messenger) {
             this.pushTarget = pushTarget;

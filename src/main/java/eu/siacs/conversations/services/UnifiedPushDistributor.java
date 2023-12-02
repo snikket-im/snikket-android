@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcelable;
+import android.os.RemoteException;
 import android.util.Log;
 
 import com.google.common.base.Charsets;
@@ -33,9 +35,16 @@ public class UnifiedPushDistributor extends BroadcastReceiver {
             "org.unifiedpush.android.distributor.feature.BYTES_MESSAGE";
     public static final String ACTION_REGISTRATION_FAILED =
             "org.unifiedpush.android.connector.REGISTRATION_FAILED";
+
+    // this action is only used in 'messenger' communication to tell the app that a registration is
+    // probably fine but can not be processed right now; for example due to spotty internet
+    public static final String ACTION_REGISTRATION_DELAYED =
+            "org.unifiedpush.android.connector.REGISTRATION_DELAYED";
     public static final String ACTION_MESSAGE = "org.unifiedpush.android.connector.MESSAGE";
     public static final String ACTION_NEW_ENDPOINT =
             "org.unifiedpush.android.connector.NEW_ENDPOINT";
+
+    public static final String EXTRA_MESSAGE = "message";
 
     public static final String PREFERENCE_ACCOUNT = "up_push_account";
     public static final String PREFERENCE_PUSH_SERVER = "up_push_server";
@@ -50,9 +59,8 @@ public class UnifiedPushDistributor extends BroadcastReceiver {
         }
         final String action = intent.getAction();
         final String application;
-        final Parcelable appByPendingIntent = intent.getParcelableExtra("app");
-        if (appByPendingIntent instanceof PendingIntent) {
-            final PendingIntent pendingIntent = (PendingIntent) appByPendingIntent;
+        final Parcelable appVerification = intent.getParcelableExtra("app");
+        if (appVerification instanceof PendingIntent pendingIntent) {
             application = pendingIntent.getIntentSender().getCreatorPackage();
             Log.d(Config.LOGTAG,"received application name via pending intent "+ application);
         } else {
@@ -62,18 +70,12 @@ public class UnifiedPushDistributor extends BroadcastReceiver {
         final String instance = intent.getStringExtra("token");
         final List<String> features = intent.getStringArrayListExtra("features");
         switch (Strings.nullToEmpty(action)) {
-            case ACTION_REGISTER:
-                register(context, application, instance, features, messenger);
-                break;
-            case ACTION_UNREGISTER:
-                unregister(context, instance);
-                break;
-            case Intent.ACTION_PACKAGE_FULLY_REMOVED:
-                unregisterApplication(context, intent.getData());
-                break;
-            default:
-                Log.d(Config.LOGTAG, "UnifiedPushDistributor received unknown action " + action);
-                break;
+            case ACTION_REGISTER -> register(context, application, instance, features, messenger);
+            case ACTION_UNREGISTER -> unregister(context, instance);
+            case Intent.ACTION_PACKAGE_FULLY_REMOVED ->
+                    unregisterApplication(context, intent.getData());
+            default ->
+                    Log.d(Config.LOGTAG, "UnifiedPushDistributor received unknown action " + action);
         }
     }
 
@@ -114,15 +116,41 @@ public class UnifiedPushDistributor extends BroadcastReceiver {
             } else {
                 Log.d(Config.LOGTAG, "not successful. sending error message back to application");
                 final Intent registrationFailed = new Intent(ACTION_REGISTRATION_FAILED);
+                registrationFailed.putExtra(EXTRA_MESSAGE, "instance already exits");
                 registrationFailed.setPackage(application);
                 registrationFailed.putExtra("token", instance);
-                context.sendBroadcast(registrationFailed);
+                if (messenger instanceof Messenger m) {
+                    final var message = new Message();
+                    message.obj = registrationFailed;
+                    try {
+                        m.send(message);
+                    } catch (final RemoteException e) {
+                        context.sendBroadcast(registrationFailed);
+                    }
+                } else {
+                    context.sendBroadcast(registrationFailed);
+                }
             }
         } else {
+            if (messenger instanceof Messenger m) {
+                sendRegistrationFailed(m,"Your application is not registered to receive messages");
+            }
             Log.d(
                     Config.LOGTAG,
                     "ignoring invalid UnifiedPush registration. Unknown application "
                             + application);
+        }
+    }
+
+    private void sendRegistrationFailed(final Messenger messenger, final String error) {
+        final Intent intent = new Intent(ACTION_REGISTRATION_FAILED);
+        intent.putExtra(EXTRA_MESSAGE, error);
+        final var message = new Message();
+        message.obj = intent;
+        try {
+            messenger.send(message);
+        } catch (final RemoteException e) {
+            Log.d(Config.LOGTAG,"unable to tell messenger of failed registration",e);
         }
     }
 
