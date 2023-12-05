@@ -29,8 +29,15 @@ import eu.siacs.conversations.utils.Compatibility;
 
 public class UnifiedPushDistributor extends BroadcastReceiver {
 
+    // distributor actions (these are actios used for connector->distributor broadcasts)
+    // we, the distributor, have a broadcast receiver listening for those actions
+
     public static final String ACTION_REGISTER = "org.unifiedpush.android.distributor.REGISTER";
     public static final String ACTION_UNREGISTER = "org.unifiedpush.android.distributor.UNREGISTER";
+
+
+    // connector actions (these are actions used for distributor->connector broadcasts)
+    public static final String ACTION_UNREGISTERED = "org.unifiedpush.android.connector.UNREGISTERED";
     public static final String ACTION_BYTE_MESSAGE =
             "org.unifiedpush.android.distributor.feature.BYTES_MESSAGE";
     public static final String ACTION_REGISTRATION_FAILED =
@@ -172,6 +179,7 @@ public class UnifiedPushDistributor extends BroadcastReceiver {
         if (unifiedPushDatabase.deleteInstance(instance)) {
             quickLog(context, String.format("successfully unregistered token %s from UnifiedPushed (application requested unregister)", instance));
             Log.d(Config.LOGTAG, "successfully removed " + instance + " from UnifiedPush");
+            // TODO send UNREGISTERED broadcast back to app?!
         }
     }
 

@@ -10,10 +10,18 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.io.BaseEncoding;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -239,6 +247,9 @@ public class UnifiedPushBroker {
     public boolean reconfigurePushDistributor() {
         final boolean enabled = getTransport().isPresent();
         setUnifiedPushDistributorEnabled(enabled);
+        if (!enabled) {
+            unregisterCurrentPushTargets();
+        }
         return enabled;
     }
 
@@ -259,6 +270,43 @@ public class UnifiedPushBroker {
                     PackageManager.DONT_KILL_APP);
             Log.d(Config.LOGTAG, "UnifiedPushDistributor has been disabled");
         }
+    }
+
+    private void unregisterCurrentPushTargets() {
+        final var future = deletePushTargets();
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(
+                            final List<UnifiedPushDatabase.PushTarget> pushTargets) {
+                        broadcastUnregistered(pushTargets);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.d(
+                                Config.LOGTAG,
+                                "could not delete endpoints after UnifiedPushDistributor was disabled");
+                    }
+                },
+                MoreExecutors.directExecutor());
+    }
+
+    private ListenableFuture<List<UnifiedPushDatabase.PushTarget>> deletePushTargets() {
+        return Futures.submit(() -> UnifiedPushDatabase.getInstance(service).deletePushTargets(),SCHEDULER);
+    }
+
+    private void broadcastUnregistered(final List<UnifiedPushDatabase.PushTarget> pushTargets) {
+        for(final UnifiedPushDatabase.PushTarget pushTarget : pushTargets) {
+            Log.d(Config.LOGTAG,"sending unregistered to "+pushTarget);
+            broadcastUnregistered(pushTarget);
+        }
+    }
+
+    private void broadcastUnregistered(final UnifiedPushDatabase.PushTarget pushTarget) {
+        final var intent = unregisteredIntent(pushTarget);
+        service.sendBroadcast(intent);
     }
 
     public boolean processPushMessage(
@@ -355,6 +403,7 @@ public class UnifiedPushBroker {
         updateIntent.putExtra("token", target.instance);
         updateIntent.putExtra("bytesMessage", payload);
         updateIntent.putExtra("message", new String(payload, StandardCharsets.UTF_8));
+        // TODO add distributor verification?
         service.sendBroadcast(updateIntent);
     }
 
@@ -370,6 +419,19 @@ public class UnifiedPushBroker {
         intent.setPackage(endpoint.application);
         intent.putExtra("token", instance);
         intent.putExtra("endpoint", endpoint.endpoint);
+        final var distributorVerificationIntent = new Intent();
+        distributorVerificationIntent.setPackage(service.getPackageName());
+        final var pendingIntent =
+                PendingIntent.getBroadcast(
+                        service, 0, distributorVerificationIntent, PendingIntent.FLAG_IMMUTABLE);
+        intent.putExtra("distributor", pendingIntent);
+        return intent;
+    }
+
+    private Intent unregisteredIntent(final UnifiedPushDatabase.PushTarget pushTarget) {
+        final Intent intent = new Intent(UnifiedPushDistributor.ACTION_UNREGISTERED);
+        intent.setPackage(pushTarget.application);
+        intent.putExtra("token", pushTarget.instance);
         final var distributorVerificationIntent = new Intent();
         distributorVerificationIntent.setPackage(service.getPackageName());
         final var pendingIntent =
