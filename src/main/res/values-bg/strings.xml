@@ -31,10 +31,7 @@
     <string name="minutes_ago">преди %d минути</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d непрочетен разговор</item>
-
-    
         <item quantity="other">%d непрочетени разговора</item>
-
     </plurals>
     <string name="sending">изпращане…</string>
     <string name="message_decrypting">Дешифроване на съобщението. Моля, изчакайте…</string>
@@ -519,7 +516,9 @@
     <string name="large_images_only">Само за големи изображения</string>
     <string name="battery_optimizations_enabled">Оптимизациите за използв. на батерията са вкл.</string>
     <string name="battery_optimizations_enabled_explained">Устройството Ви прилага сериозни оптимизации за използването на батерията върху %1$s, които може да доведат до забавени известия и дори пропуснати съобщения.\nПрепоръчително е да ги изключите.</string>
-    <string name="battery_optimizations_enabled_dialog">Устройството Ви прилага сериозни оптимизации за използването на батерията върху %1$s, които може да доведат до забавени известия и дори пропуснати съобщения.\nСега ще бъдете помолен(а) да ги изключите.</string>
+    <string name="battery_optimizations_enabled_dialog">Устройството Ви прилага сериозни оптимизации за използването на батерията върху %1$s, които може да доведат до забавени известия и дори пропуснати съобщения.
+\n
+\nСега ще бъдете помолен(а) да ги изключите.</string>
     <string name="disable">Изключване</string>
     <string name="selection_too_large">Избраната област е твърде голяма</string>
     <string name="no_accounts">(Няма активирани профили)</string>
@@ -955,4 +954,4 @@
     <string name="backup_started_message">Създаването на резервно копие е стартирано. Ще получите известие, когато приключи.</string>
     <string name="unable_to_enable_video">Видеото не може да бъде включено.</string>
     <string name="plain_text_document">Обикновен текстов документ</string>
-    </resources>
+</resources>
