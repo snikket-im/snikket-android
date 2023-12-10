@@ -78,11 +78,7 @@ Conversations is entirely open source and licensed under GPLv3. So if you are a
 software developer you can check out the sources from GitHub and use Gradle to
 build your apk file.
 
-The more convenient way — which not only gives you automatic updates but also
-supports the further development of Conversations — is to buy the App in the
-Google [Play Store](https://play.google.com/store/apps/details?id=eu.siacs.conversations&referrer=utm_source%3Dcodeberg).
-
-Buying the App from the Play Store will also give you access to our [beta test](#beta).
+Conversations is available on [Google Play](https://play.google.com/store/apps/details?id=eu.siacs.conversations) and on [F-Droid](https://f-droid.org/en/packages/eu.siacs.conversations/).
 
 #### I don't have a Google Account but I would still like to make a donation
 
@@ -349,16 +345,6 @@ this.)
 #### What is Blind Trust Before Verification / why are messages marked with a red lock?
 
 Read more about the concept on https://gultsch.de/trust.html
-
-#### What happened to OTR support?
-OTR was removed because it was highly unreliable. It didn’t work with multiple devices and was never really specified to work with XMPP. The codebase was a mess (There was an HTML parser in there for crying out loud to deal with the garbage some OTR clients would send.) Verification was implemented in a non-blocking way. It would tell you if the current session was using an unknown fingerprint but it didn’t actively stopped you from sending messages until you have confirmed the new fingerprint. (Like Conversations would do now with BTBV after verification or when BTBV is turned off.) Considering the previous points there was little to no desire from my point to fix this potential security issue or clean up the code base. Another reason for the removal was that people would use it *accidentally* even to communicate between two Conversations clients because they read somewhere that OTR is good.
-
-### What clients do I use on other platforms
-There are XMPP Clients available for all major platforms.
-#### Windows / Linux
-For your desktop computer we recommend that you use [Gajim](https://gajim.org). You need to install the `OMEMO` plugin to get the best compatibility with Conversations. Plugins can be installed from within the app, from your distribution, or from flatpak if you installed it from there.
-#### iOS
-Unfortunately we don‘t have a recommendation for iPhones right now. There are three clients available [Siskin](https://siskin.im/), [ChatSecure](https://chatsecure.org/) and [Monal](https://monal.im/). Each with their own pros and cons.
 
 
 ### Development
