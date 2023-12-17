@@ -1,0 +1,12 @@
+Rozmowy głosowe i wideo już są! Teraz możesz rozmawiać ze swoimi przyjaciółmi
+i rodziną, jakby znów był 2019 rok... twarzą w (wirtualną) twarz.
+
+Do poprawnego działania rozmów, ty i twój kontakt musicie używać
+najnowszej wersji aplikacji Snikket (lub innej, kompatybilnej aplikacji) oraz
+serwera Snikket.
+
+W tej wersji:
+
+- Dodano obsługę podglądu plików PDF (dostępne w Androidzie 5+)
+- Obsługę przełączania motywów dla Androida 10
+- Naprawiono wybór awatara na niektórych urządzeniach z Androidem 10

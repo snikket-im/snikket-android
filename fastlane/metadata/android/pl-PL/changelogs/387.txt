@@ -1,0 +1,3 @@
+* Dodano możliwość przypięcia ulubionych czatów na górze listy rozmów
+* Naprawiono echo podczas rozmów na niektórych urządzeniach
+* Poprawiono niezawodność podczas zmiany sieci przy trwających połączeniach
