@@ -1,0 +1,12 @@
+Sono arrivate le chiamate vocali e le videochiamate! Ora potete comunicare con i vostri amici e familiari
+e familiari come se fosse di nuovo il 2019... faccia a faccia (virtuale).
+
+Affinché la funzione di chiamata funzioni, sia voi che il vostro contatto dovete usare
+l'ultima versione dell'app Snikket (o altro software compatibile) e
+è necessario che sia attiva l'ultima versione del servizio Snikket.
+
+Incluse in questa versione:
+
+  - Aggiunta del supporto per l'anteprima PDF (disponibile su Android 5+)
+  - Supporto per il cambio di tema su Android 10
+  - Sistemata la selezione dell'immagine del profilo su alcuni dispositivi Android 10
