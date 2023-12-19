@@ -1,0 +1,1 @@
+* Интегрирован UnifiedPush Distributor для облегчения отправки push-сообщений в другие приложения с поддержкой UnifiedPush, такие как Tusky и Fedilab
