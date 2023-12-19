@@ -403,7 +403,12 @@ public class UnifiedPushBroker {
         updateIntent.putExtra("token", target.instance);
         updateIntent.putExtra("bytesMessage", payload);
         updateIntent.putExtra("message", new String(payload, StandardCharsets.UTF_8));
-        // TODO add distributor verification?
+        final var distributorVerificationIntent = new Intent();
+        distributorVerificationIntent.setPackage(service.getPackageName());
+        final var pendingIntent =
+                PendingIntent.getBroadcast(
+                        service, 0, distributorVerificationIntent, PendingIntent.FLAG_IMMUTABLE);
+        updateIntent.putExtra("distributor", pendingIntent);
         service.sendBroadcast(updateIntent);
     }
 

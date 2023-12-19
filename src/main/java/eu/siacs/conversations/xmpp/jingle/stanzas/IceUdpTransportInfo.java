@@ -15,11 +15,13 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.SessionDescription;
+import eu.siacs.conversations.xmpp.jingle.transports.Transport;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -195,7 +197,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         }
     }
 
-    public static class Candidate extends Element {
+    public static class Candidate extends Element implements Transport.Candidate {
 
         private Candidate() {
             super("candidate");
@@ -396,7 +398,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             return fingerprint;
         }
 
-        private static Fingerprint of(ArrayListMultimap<String, String> attributes) {
+        private static Fingerprint of(final Multimap<String, String> attributes) {
             final String fingerprint = Iterables.getFirst(attributes.get("fingerprint"), null);
             final String setup = Iterables.getFirst(attributes.get("setup"), null);
             if (setup != null && fingerprint != null) {

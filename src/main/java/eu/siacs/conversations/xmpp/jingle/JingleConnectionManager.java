@@ -29,10 +29,13 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
+import eu.siacs.conversations.xmpp.jingle.stanzas.IbbTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Propose;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
+import eu.siacs.conversations.xmpp.jingle.transports.InbandBytestreamsTransport;
+import eu.siacs.conversations.xmpp.jingle.transports.Transport;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
@@ -61,8 +64,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     private final Cache<PersistableSessionId, TerminatedRtpSession> terminatedSessions =
             CacheBuilder.newBuilder().expireAfterWrite(24, TimeUnit.HOURS).build();
 
-    private final HashMap<Jid, JingleCandidate> primaryCandidates = new HashMap<>();
-
     public JingleConnectionManager(XmppConnectionService service) {
         super(service);
         this.toneManager = new ToneManager(service);
@@ -90,7 +91,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             final String descriptionNamespace =
                     content == null ? null : content.getDescriptionNamespace();
             final AbstractJingleConnection connection;
-            if (FileTransferDescription.NAMESPACES.contains(descriptionNamespace)) {
+            if (Namespace.JINGLE_APPS_FILE_TRANSFER.equals(descriptionNamespace)) {
                 connection = new JingleFileTransferConnection(this, id, from);
             } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace)
                     && isUsingClearNet(account)) {
@@ -593,13 +594,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         if (old != null) {
             old.cancel();
         }
-        final Account account = message.getConversation().getAccount();
-        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(message);
         final JingleFileTransferConnection connection =
-                new JingleFileTransferConnection(this, id, account.getJid());
-        mXmppConnectionService.markMessage(message, Message.STATUS_WAITING);
-        this.connections.put(id, connection);
-        connection.init(message);
+                new JingleFileTransferConnection(this, message);
+        this.connections.put(connection.getId(), connection);
+        connection.sendSessionInitialize();
     }
 
     public Optional<OngoingRtpSession> getOngoingRtpConnection(final Contact contact) {
@@ -656,60 +654,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
         }
         return firedUpdates;
-    }
-
-    void getPrimaryCandidate(
-            final Account account,
-            final boolean initiator,
-            final OnPrimaryCandidateFound listener) {
-        if (Config.DISABLE_PROXY_LOOKUP) {
-            listener.onPrimaryCandidateFound(false, null);
-            return;
-        }
-        if (this.primaryCandidates.containsKey(account.getJid().asBareJid())) {
-            listener.onPrimaryCandidateFound(
-                    true, this.primaryCandidates.get(account.getJid().asBareJid()));
-            return;
-        }
-
-        final Jid proxy =
-                account.getXmppConnection().findDiscoItemByFeature(Namespace.BYTE_STREAMS);
-        if (proxy == null) {
-            listener.onPrimaryCandidateFound(false, null);
-            return;
-        }
-        final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
-        iq.setTo(proxy);
-        iq.query(Namespace.BYTE_STREAMS);
-        account.getXmppConnection()
-                .sendIqPacket(
-                        iq,
-                        (a, response) -> {
-                            final Element streamhost =
-                                    response.query()
-                                            .findChild("streamhost", Namespace.BYTE_STREAMS);
-                            final String host =
-                                    streamhost == null ? null : streamhost.getAttribute("host");
-                            final String port =
-                                    streamhost == null ? null : streamhost.getAttribute("port");
-                            if (host != null && port != null) {
-                                try {
-                                    JingleCandidate candidate =
-                                            new JingleCandidate(nextRandomId(), true);
-                                    candidate.setHost(host);
-                                    candidate.setPort(Integer.parseInt(port));
-                                    candidate.setType(JingleCandidate.TYPE_PROXY);
-                                    candidate.setJid(proxy);
-                                    candidate.setPriority(655360 + (initiator ? 30 : 0));
-                                    primaryCandidates.put(a.getJid().asBareJid(), candidate);
-                                    listener.onPrimaryCandidateFound(true, candidate);
-                                } catch (final NumberFormatException e) {
-                                    listener.onPrimaryCandidateFound(false, null);
-                                }
-                            } else {
-                                listener.onPrimaryCandidateFound(false, null);
-                            }
-                        });
     }
 
     public void retractSessionProposal(final Account account, final Jid with) {
@@ -810,36 +754,53 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         return false;
     }
 
-    public void deliverIbbPacket(Account account, IqPacket packet) {
+    public void deliverIbbPacket(final Account account, final IqPacket packet) {
         final String sid;
         final Element payload;
+        final InbandBytestreamsTransport.PacketType packetType;
         if (packet.hasChild("open", Namespace.IBB)) {
+            packetType = InbandBytestreamsTransport.PacketType.OPEN;
             payload = packet.findChild("open", Namespace.IBB);
             sid = payload.getAttribute("sid");
         } else if (packet.hasChild("data", Namespace.IBB)) {
+            packetType = InbandBytestreamsTransport.PacketType.DATA;
             payload = packet.findChild("data", Namespace.IBB);
             sid = payload.getAttribute("sid");
         } else if (packet.hasChild("close", Namespace.IBB)) {
+            packetType = InbandBytestreamsTransport.PacketType.CLOSE;
             payload = packet.findChild("close", Namespace.IBB);
             sid = payload.getAttribute("sid");
         } else {
+            packetType = null;
             payload = null;
             sid = null;
         }
-        if (sid != null) {
-            for (final AbstractJingleConnection connection : this.connections.values()) {
-                if (connection instanceof JingleFileTransferConnection fileTransfer) {
-                    final JingleTransport transport = fileTransfer.getTransport();
-                    if (transport instanceof JingleInBandTransport inBandTransport) {
-                        if (inBandTransport.matches(account, sid)) {
-                            inBandTransport.deliverPayload(packet, payload);
+        if (sid == null) {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid()+": unable to deliver ibb packet. missing sid");
+            account.getXmppConnection()
+                    .sendIqPacket(packet.generateResponse(IqPacket.TYPE.ERROR), null);
+            return;
+        }
+        for (final AbstractJingleConnection connection : this.connections.values()) {
+            if (connection instanceof JingleFileTransferConnection fileTransfer) {
+                final Transport transport = fileTransfer.getTransport();
+                if (transport instanceof InbandBytestreamsTransport inBandTransport) {
+                    if (sid.equals(inBandTransport.getStreamId())) {
+                        if (inBandTransport.deliverPacket(packetType, packet.getFrom(), payload)) {
+                            account.getXmppConnection()
+                                    .sendIqPacket(
+                                            packet.generateResponse(IqPacket.TYPE.RESULT), null);
+                        } else {
+                            account.getXmppConnection()
+                                    .sendIqPacket(
+                                            packet.generateResponse(IqPacket.TYPE.ERROR), null);
                         }
                         return;
                     }
                 }
             }
         }
-        Log.d(Config.LOGTAG, "unable to deliver ibb packet: " + packet);
+        Log.d(Config.LOGTAG, account.getJid().asBareJid()+": unable to deliver ibb packet with sid="+sid);
         account.getXmppConnection()
                 .sendIqPacket(packet.generateResponse(IqPacket.TYPE.ERROR), null);
     }

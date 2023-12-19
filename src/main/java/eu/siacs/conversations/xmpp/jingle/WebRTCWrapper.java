@@ -406,7 +406,7 @@ public class WebRTCWrapper {
         }
     }
 
-    private static PeerConnection.RTCConfiguration buildConfiguration(
+    public static PeerConnection.RTCConfiguration buildConfiguration(
             final List<PeerConnection.IceServer> iceServers, final boolean trickle) {
         final PeerConnection.RTCConfiguration rtcConfig =
                 new PeerConnection.RTCConfiguration(iceServers);
@@ -774,7 +774,7 @@ public class WebRTCWrapper {
         void onRenegotiationNeeded();
     }
 
-    private abstract static class SetSdpObserver implements SdpObserver {
+    public abstract static class SetSdpObserver implements SdpObserver {
 
         @Override
         public void onCreateSuccess(org.webrtc.SessionDescription sessionDescription) {
@@ -800,12 +800,12 @@ public class WebRTCWrapper {
 
     public static class PeerConnectionNotInitialized extends IllegalStateException {
 
-        private PeerConnectionNotInitialized() {
+        public PeerConnectionNotInitialized() {
             super("initialize PeerConnection first");
         }
     }
 
-    private static class FailureToSetDescriptionException extends IllegalArgumentException {
+    public static class FailureToSetDescriptionException extends IllegalArgumentException {
         public FailureToSetDescriptionException(String message) {
             super(message);
         }

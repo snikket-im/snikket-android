@@ -10,12 +10,17 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
+import eu.siacs.conversations.xmpp.jingle.stanzas.GenericTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
+import eu.siacs.conversations.xmpp.jingle.stanzas.WebRTCDataChannelTransportInfo;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +33,8 @@ public class SessionDescription {
     public static final String LINE_DIVIDER = "\r\n";
     private static final String HARDCODED_MEDIA_PROTOCOL =
             "UDP/TLS/RTP/SAVPF"; // probably only true for DTLS-SRTP aka when we have a fingerprint
+    private static final String HARDCODED_APPLICATION_PROTOCOL = "UDP/DTLS/SCTP";
+    private static final String FORMAT_WEBRTC_DATA_CHANNEL = "webrtc-datachannel";
     private static final int HARDCODED_MEDIA_PORT = 9;
     private static final Collection<String> HARDCODED_ICE_OPTIONS =
             Collections.singleton("trickle");
@@ -52,9 +59,8 @@ public class SessionDescription {
         this.media = media;
     }
 
-    private static void appendAttributes(
-            StringBuilder s, ArrayListMultimap<String, String> attributes) {
-        for (Map.Entry<String, String> attribute : attributes.entries()) {
+    private static void appendAttributes(StringBuilder s, Multimap<String, String> attributes) {
+        for (final Map.Entry<String, String> attribute : attributes.entries()) {
             final String key = attribute.getKey();
             final String value = attribute.getValue();
             s.append("a=").append(key);
@@ -79,24 +85,20 @@ public class SessionDescription {
             final char key = pair[0].charAt(0);
             final String value = pair[1];
             switch (key) {
-                case 'v':
-                    sessionDescriptionBuilder.setVersion(ignorantIntParser(value));
-                    break;
-                case 'c':
+                case 'v' -> sessionDescriptionBuilder.setVersion(ignorantIntParser(value));
+                case 'c' -> {
                     if (currentMediaBuilder != null) {
                         currentMediaBuilder.setConnectionData(value);
                     } else {
                         sessionDescriptionBuilder.setConnectionData(value);
                     }
-                    break;
-                case 's':
-                    sessionDescriptionBuilder.setName(value);
-                    break;
-                case 'a':
+                }
+                case 's' -> sessionDescriptionBuilder.setName(value);
+                case 'a' -> {
                     final Pair<String, String> attribute = parseAttribute(value);
                     attributeMap.put(attribute.first, attribute.second);
-                    break;
-                case 'm':
+                }
+                case 'm' -> {
                     if (currentMediaBuilder == null) {
                         sessionDescriptionBuilder.setAttributes(attributeMap);
                     } else {
@@ -118,7 +120,7 @@ public class SessionDescription {
                     } else {
                         Log.d(Config.LOGTAG, "skipping media line " + line);
                     }
-                    break;
+                }
             }
         }
         if (currentMediaBuilder != null) {
@@ -131,6 +133,56 @@ public class SessionDescription {
         return sessionDescriptionBuilder.createSessionDescription();
     }
 
+    public static SessionDescription of(final FileTransferContentMap contentMap) {
+        final SessionDescriptionBuilder sessionDescriptionBuilder = new SessionDescriptionBuilder();
+        final ArrayListMultimap<String, String> attributeMap = ArrayListMultimap.create();
+        final ImmutableList.Builder<Media> mediaListBuilder = new ImmutableList.Builder<>();
+
+        final Group group = contentMap.group;
+        if (group != null) {
+            final String semantics = group.getSemantics();
+            checkNoWhitespace(semantics, "group semantics value must not contain any whitespace");
+            final var idTags = group.getIdentificationTags();
+            for (final String content : idTags) {
+                checkNoWhitespace(content, "group content names must not contain any whitespace");
+            }
+            attributeMap.put("group", group.getSemantics() + " " + Joiner.on(' ').join(idTags));
+        }
+
+        // TODO my-media-stream can be removed I think
+        attributeMap.put("msid-semantic", " WMS my-media-stream");
+
+        for (final Map.Entry<
+                        String, DescriptionTransport<FileTransferDescription, GenericTransportInfo>>
+                entry : contentMap.contents.entrySet()) {
+            final var dt = entry.getValue();
+            final WebRTCDataChannelTransportInfo webRTCDataChannelTransportInfo;
+            if (dt.transport instanceof WebRTCDataChannelTransportInfo transportInfo) {
+                webRTCDataChannelTransportInfo = transportInfo;
+            } else {
+                throw new IllegalArgumentException("Transport is not of type WebRTCDataChannel");
+            }
+            final String name = entry.getKey();
+            checkNoWhitespace(name, "content name must not contain any whitespace");
+
+            final MediaBuilder mediaBuilder = new MediaBuilder();
+            mediaBuilder.setMedia("application");
+            mediaBuilder.setConnectionData(HARDCODED_CONNECTION);
+            mediaBuilder.setPort(HARDCODED_MEDIA_PORT);
+            mediaBuilder.setProtocol(HARDCODED_APPLICATION_PROTOCOL);
+            mediaBuilder.setAttributes(
+                    transportInfoMediaAttributes(webRTCDataChannelTransportInfo));
+            mediaBuilder.setFormat(FORMAT_WEBRTC_DATA_CHANNEL);
+            mediaListBuilder.add(mediaBuilder.createMedia());
+        }
+
+        sessionDescriptionBuilder.setVersion(0);
+        sessionDescriptionBuilder.setName("-");
+        sessionDescriptionBuilder.setMedia(mediaListBuilder.build());
+        sessionDescriptionBuilder.setAttributes(attributeMap);
+        return sessionDescriptionBuilder.createSessionDescription();
+    }
+
     public static SessionDescription of(
             final RtpContentMap contentMap, final boolean isInitiatorContentMap) {
         final SessionDescriptionBuilder sessionDescriptionBuilder = new SessionDescriptionBuilder();
@@ -140,58 +192,27 @@ public class SessionDescription {
         if (group != null) {
             final String semantics = group.getSemantics();
             checkNoWhitespace(semantics, "group semantics value must not contain any whitespace");
-            attributeMap.put(
-                    "group",
-                    group.getSemantics()
-                            + " "
-                            + Joiner.on(' ').join(group.getIdentificationTags()));
+            final var idTags = group.getIdentificationTags();
+            for (final String content : idTags) {
+                checkNoWhitespace(content, "group content names must not contain any whitespace");
+            }
+            attributeMap.put("group", group.getSemantics() + " " + Joiner.on(' ').join(idTags));
         }
 
+        // TODO my-media-stream can be removed I think
         attributeMap.put("msid-semantic", " WMS my-media-stream");
 
-        for (final Map.Entry<String, RtpContentMap.DescriptionTransport> entry :
-                contentMap.contents.entrySet()) {
+        for (final Map.Entry<String, DescriptionTransport<RtpDescription, IceUdpTransportInfo>>
+                entry : contentMap.contents.entrySet()) {
             final String name = entry.getKey();
-            RtpContentMap.DescriptionTransport descriptionTransport = entry.getValue();
-            RtpDescription description = descriptionTransport.description;
-            IceUdpTransportInfo transport = descriptionTransport.transport;
+            checkNoWhitespace(name, "content name must not contain any whitespace");
+            final DescriptionTransport<RtpDescription, IceUdpTransportInfo> descriptionTransport =
+                    entry.getValue();
+            final RtpDescription description = descriptionTransport.description;
             final ArrayListMultimap<String, String> mediaAttributes = ArrayListMultimap.create();
-            final String ufrag = transport.getAttribute("ufrag");
-            final String pwd = transport.getAttribute("pwd");
-            if (Strings.isNullOrEmpty(ufrag)) {
-                throw new IllegalArgumentException(
-                        "Transport element is missing required ufrag attribute");
-            }
-            checkNoWhitespace(ufrag, "ufrag value must not contain any whitespaces");
-            mediaAttributes.put("ice-ufrag", ufrag);
-            if (Strings.isNullOrEmpty(pwd)) {
-                throw new IllegalArgumentException(
-                        "Transport element is missing required pwd attribute");
-            }
-            checkNoWhitespace(pwd, "pwd value must not contain any whitespaces");
-            mediaAttributes.put("ice-pwd", pwd);
-            final List<String> negotiatedIceOptions = transport.getIceOptions();
-            final Collection<String> iceOptions =
-                    negotiatedIceOptions.isEmpty() ? HARDCODED_ICE_OPTIONS : negotiatedIceOptions;
-            mediaAttributes.put("ice-options", Joiner.on(' ').join(iceOptions));
-            final IceUdpTransportInfo.Fingerprint fingerprint = transport.getFingerprint();
-            if (fingerprint != null) {
-                final String hashFunction = fingerprint.getHash();
-                final String hash = fingerprint.getContent();
-                if (Strings.isNullOrEmpty(hashFunction) || Strings.isNullOrEmpty(hash)) {
-                    throw new IllegalArgumentException("DTLS-SRTP missing hash");
-                }
-                checkNoWhitespace(
-                        hashFunction, "DTLS-SRTP hash function must not contain whitespace");
-                checkNoWhitespace(hash, "DTLS-SRTP hash must not contain whitespace");
-                mediaAttributes.put("fingerprint", hashFunction + " " + hash);
-                final IceUdpTransportInfo.Setup setup = fingerprint.getSetup();
-                if (setup != null) {
-                    mediaAttributes.put("setup", setup.toString().toLowerCase(Locale.ROOT));
-                }
-            }
+            mediaAttributes.putAll(transportInfoMediaAttributes(descriptionTransport.transport));
             final ImmutableList.Builder<Integer> formatBuilder = new ImmutableList.Builder<>();
-            for (RtpDescription.PayloadType payloadType : description.getPayloadTypes()) {
+            for (final RtpDescription.PayloadType payloadType : description.getPayloadTypes()) {
                 final String id = payloadType.getId();
                 if (Strings.isNullOrEmpty(id)) {
                     throw new IllegalArgumentException("Payload type is missing id");
@@ -353,6 +374,69 @@ public class SessionDescription {
         return sessionDescriptionBuilder.createSessionDescription();
     }
 
+    private static Multimap<String, String> transportInfoMediaAttributes(
+            final IceUdpTransportInfo transport) {
+        final ArrayListMultimap<String, String> mediaAttributes = ArrayListMultimap.create();
+        final String ufrag = transport.getAttribute("ufrag");
+        final String pwd = transport.getAttribute("pwd");
+        if (Strings.isNullOrEmpty(ufrag)) {
+            throw new IllegalArgumentException(
+                    "Transport element is missing required ufrag attribute");
+        }
+        checkNoWhitespace(ufrag, "ufrag value must not contain any whitespaces");
+        mediaAttributes.put("ice-ufrag", ufrag);
+        if (Strings.isNullOrEmpty(pwd)) {
+            throw new IllegalArgumentException(
+                    "Transport element is missing required pwd attribute");
+        }
+        checkNoWhitespace(pwd, "pwd value must not contain any whitespaces");
+        mediaAttributes.put("ice-pwd", pwd);
+        final List<String> negotiatedIceOptions = transport.getIceOptions();
+        final Collection<String> iceOptions =
+                negotiatedIceOptions.isEmpty() ? HARDCODED_ICE_OPTIONS : negotiatedIceOptions;
+        mediaAttributes.put("ice-options", Joiner.on(' ').join(iceOptions));
+        final IceUdpTransportInfo.Fingerprint fingerprint = transport.getFingerprint();
+        if (fingerprint != null) {
+            final String hashFunction = fingerprint.getHash();
+            final String hash = fingerprint.getContent();
+            if (Strings.isNullOrEmpty(hashFunction) || Strings.isNullOrEmpty(hash)) {
+                throw new IllegalArgumentException("DTLS-SRTP missing hash");
+            }
+            checkNoWhitespace(hashFunction, "DTLS-SRTP hash function must not contain whitespace");
+            checkNoWhitespace(hash, "DTLS-SRTP hash must not contain whitespace");
+            mediaAttributes.put("fingerprint", hashFunction + " " + hash);
+            final IceUdpTransportInfo.Setup setup = fingerprint.getSetup();
+            if (setup != null) {
+                mediaAttributes.put("setup", setup.toString().toLowerCase(Locale.ROOT));
+            }
+        }
+        return ImmutableMultimap.copyOf(mediaAttributes);
+    }
+
+    private static Multimap<String, String> transportInfoMediaAttributes(
+            final WebRTCDataChannelTransportInfo transport) {
+        final ArrayListMultimap<String, String> mediaAttributes = ArrayListMultimap.create();
+        final var iceUdpTransportInfo = transport.innerIceUdpTransportInfo();
+        if (iceUdpTransportInfo == null) {
+            throw new IllegalArgumentException(
+                    "Transport element is missing inner ice-udp transport");
+        }
+        mediaAttributes.putAll(transportInfoMediaAttributes(iceUdpTransportInfo));
+        final Integer sctpPort = transport.getSctpPort();
+        if (sctpPort == null) {
+            throw new IllegalArgumentException(
+                    "Transport element is missing required sctp-port attribute");
+        }
+        mediaAttributes.put("sctp-port", String.valueOf(sctpPort));
+        final Integer maxMessageSize = transport.getMaxMessageSize();
+        if (maxMessageSize == null) {
+            throw new IllegalArgumentException(
+                    "Transport element is missing required max-message-size");
+        }
+        mediaAttributes.put("max-message-size", String.valueOf(maxMessageSize));
+        return ImmutableMultimap.copyOf(mediaAttributes);
+    }
+
     public static String checkNoWhitespace(final String input, final String message) {
         if (CharMatcher.whitespace().matchesAnyOf(input)) {
             throw new IllegalArgumentException(message);
@@ -421,7 +505,7 @@ public class SessionDescription {
                     .append(' ')
                     .append(media.protocol)
                     .append(' ')
-                    .append(Joiner.on(' ').join(media.formats))
+                    .append(media.format)
                     .append(LINE_DIVIDER);
             s.append("c=").append(media.connectionData).append(LINE_DIVIDER);
             appendAttributes(s, media.attributes);
@@ -433,21 +517,21 @@ public class SessionDescription {
         public final String media;
         public final int port;
         public final String protocol;
-        public final List<Integer> formats;
+        public final String format;
         public final String connectionData;
-        public final ArrayListMultimap<String, String> attributes;
+        public final Multimap<String, String> attributes;
 
         public Media(
                 String media,
                 int port,
                 String protocol,
-                List<Integer> formats,
+                String format,
                 String connectionData,
-                ArrayListMultimap<String, String> attributes) {
+                Multimap<String, String> attributes) {
             this.media = media;
             this.port = port;
             this.protocol = protocol;
-            this.formats = formats;
+            this.format = format;
             this.connectionData = connectionData;
             this.attributes = attributes;
         }
