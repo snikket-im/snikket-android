@@ -1,0 +1,8 @@
+Ulteriori miglioramenti per le chiamate audio/video!
+
+* Il pulsante per avviare una chiamata è ora visualizzato in modo più coerente; questo dovrebbe essere particolarmente utile per le chiamate con persone che utilizzano applicazioni iOS (compresa l'applicazione beta di Snikket).
+* La pressione del tasto indietro non interrompe più la chiamata, così è possibile continuare a parlare mentre si cerca qualcosa.
+* Sssh! Silenzia immediatamente le notifiche delle chiamate in arrivo con il tasto volume giù.
+* Risolti alcuni bug minori sull'affidabilità delle chiamate e migliorata la visualizzazione delle chiamate perse in una chat.
+
+Un'altra cosa... È ora possibile invitare nuovi contatti al proprio server Snikket dall'interno dell'applicazione! Controllare il menu principale. Attualmente questa funzione è riservata agli amministratori, ma sarà configurabile in futuro.

@@ -1,0 +1,15 @@
+* Chiamate: Riproduzione dei toni di chiamata e di occupato sull'altoparlante durante le videochiamate
+* Chiamate: Offrire la registrazione di un messaggio vocale quando l'utente chiamato è occupato
+* Chiamate: Aggiunto 'Torna alla chat' alla schermata delle chiamate audio
+* Chiamate: Risolti alcuni problemi di compatibilità e stabilità
+* Chiamate: Mostra il pulsante di aiuto se la chiamata fallisce
+* Chiamate: Riduzione dell'eco durante le chiamate su alcuni dispositivi
+* Condivisione file: Gestione dei file GPX
+* Ricerca: Aggiunta della possibilità di effettuare ricerche all'interno delle conversazioni
+* Notifiche: Mostra una notifica se la consegna del messaggio fallisce
+* Notifiche: Risolto malfunzionamento delle notifiche non visualizzate in determinate condizioni
+* Tor: Aggiunto pulsante per avviare Orbot dalla notifica, se necessario
+* Backup/ripristino: Migliorate le prestazioni per il ripristino del backup
+* Usabilità: Migliorare le scorciatoie da tastiera
+* Account: Correzione del login quando le password contengono caratteri speciali
+* Molte altre correzioni di bug e miglioramenti della stabilità!

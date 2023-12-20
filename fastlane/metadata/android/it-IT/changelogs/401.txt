@@ -1,0 +1,3 @@
+* Ricerca: Risolto il problema della ricerca dei messaggi su Android 5 e precedenti
+* Ottimizzazione del consumo di memoria dell'app
+* Modifiche per migliorare l'interfaccia utente della chiamata su schermi piccoli
