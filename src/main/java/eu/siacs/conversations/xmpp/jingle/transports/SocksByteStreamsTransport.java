@@ -54,6 +54,7 @@ import java.util.Comparator;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
@@ -145,7 +146,8 @@ public class SocksByteStreamsTransport implements Transport {
                 this.transportCallback != null, "transport callback needs to be set");
         // TODO this needs to go into a variable so we can cancel it
         final var connectionFinder =
-                new ConnectionFinder(theirCandidates, theirDestination, useTor);
+                new ConnectionFinder(
+                        theirCandidates, theirDestination, selectedByThemCandidate, useTor);
         new Thread(connectionFinder).start();
         Futures.addCallback(
                 connectionFinder.connectionFuture,
@@ -281,7 +283,8 @@ public class SocksByteStreamsTransport implements Transport {
                 proxyFuture,
                 proxy -> {
                     final var connectionFinder =
-                            new ConnectionFinder(ImmutableList.of(proxy), ourDestination, useTor);
+                            new ConnectionFinder(
+                                    ImmutableList.of(proxy), ourDestination, null, useTor);
                     new Thread(connectionFinder).start();
                     return Futures.transform(
                             connectionFinder.connectionFuture,
@@ -703,22 +706,36 @@ public class SocksByteStreamsTransport implements Transport {
 
         private final ImmutableList<Candidate> candidates;
         private final String destination;
+
+        private final ListenableFuture<Connection> selectedByThemCandidate;
         private final boolean useTor;
 
         private ConnectionFinder(
                 final ImmutableList<Candidate> candidates,
                 final String destination,
+                final ListenableFuture<Connection> selectedByThemCandidate,
                 final boolean useTor) {
             this.candidates = candidates;
             this.destination = destination;
+            this.selectedByThemCandidate = selectedByThemCandidate;
             this.useTor = useTor;
         }
 
         @Override
         public void run() {
             for (final Candidate candidate : this.candidates) {
-                // TODO we can check if there is already something in `selectedByThemCandidate` with
-                // a higher priority and abort
+                final Integer selectedByThemCandidatePriority =
+                        getSelectedByThemCandidatePriority();
+                if (selectedByThemCandidatePriority != null
+                        && selectedByThemCandidatePriority > candidate.priority) {
+                    Log.d(
+                            Config.LOGTAG,
+                            "The candidate selected by peer had a higher priority then anything we could try");
+                    connectionFuture.setException(
+                            new CandidateErrorException(
+                                    "The candidate selected by peer had a higher priority then anything we could try"));
+                    return;
+                }
                 try {
                     connectionFuture.set(connect(candidate));
                     Log.d(Config.LOGTAG, "connected to " + candidate);
@@ -750,6 +767,20 @@ public class SocksByteStreamsTransport implements Transport {
             SocksSocketFactory.createSocksConnection(socket, destination, 0);
             socket.setSoTimeout(0);
             return new Connection(candidate, socket);
+        }
+
+        private Integer getSelectedByThemCandidatePriority() {
+            final var future = this.selectedByThemCandidate;
+            if (future != null && future.isDone()) {
+                try {
+                    final var connection = future.get();
+                    return connection.candidate.priority;
+                } catch (ExecutionException | InterruptedException e) {
+                    return null;
+                }
+            } else {
+                return null;
+            }
         }
     }
 
