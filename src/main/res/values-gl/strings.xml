@@ -157,7 +157,7 @@
 \n<small>Usa un xestor de ficheiros diferente para escoller a imaxe</small>.</string>
     <string name="error_security_exception">A app que usaches para compartir este ficheiro non concedeu os permisos suficientes.</string>
     <string name="account_status_unknown">Descoñecido</string>
-    <string name="account_status_disabled">Desactivado temporalmente</string>
+    <string name="account_status_disabled">Desactivada temporalmente</string>
     <string name="account_status_online">Conectado</string>
     <string name="account_status_connecting">Conectando\u2026</string>
     <string name="account_status_offline">Desconectado</string>
@@ -251,7 +251,7 @@
     <string name="could_not_destroy_room">Non se desfixo a conversa en grupo</string>
     <string name="could_not_destroy_channel">Non se puido eliminar a canle</string>
     <string name="action_edit_subject">Editar o tema da conversa en grupo</string>
-    <string name="topic">Asunto</string>
+    <string name="topic">Tema</string>
     <string name="joining_conference">Entrando na conversa en grupo…</string>
     <string name="leave">Saír</string>
     <string name="contact_added_you">Contacto engadido a túa lista de contactos</string>
@@ -792,7 +792,7 @@
     <string name="phone_number">número de teléfono</string>
     <string name="verify_your_phone_number">Valida o teu número de teléfono</string>
     <string name="enter_country_code_and_phone_number">Quicksy vaiche enviar unha mensaxe SMS (podería ter custos) para validar o teu número de teléfono. Escribe o código de país e número de teléfono:</string>
-    <string name="we_will_be_verifying"><![CDATA[Validaremos o número de teléfono<br/><br/><b>%s</b><br/><br/>É correcto, ou quere modificar o número?]]></string>
+    <string name="we_will_be_verifying">Validaremos o número de teléfono<br/><br/><b>%s</b><br/><br/>É correcto, ou queres modificar o número?</string>
     <string name="not_a_valid_phone_number">%s non é un número de teléfono válido.</string>
     <string name="please_enter_your_phone_number">Por favor escribe o teu número de teléfono.</string>
     <string name="search_countries">Buscar países</string>
@@ -863,11 +863,11 @@
     <string name="channel_already_exists">Esta canle xa existe</string>
     <string name="joined_an_existing_channel">Entraches nunha canle existente</string>
     <string name="unable_to_set_channel_configuration">Non se gardaron os axustes da canle</string>
-    <string name="allow_participants_to_edit_subject">Permitir que calquera cambie o asunto</string>
+    <string name="allow_participants_to_edit_subject">Permitir que calquera cambie o tema</string>
     <string name="allow_participants_to_invite_others">Permitir que calquera poida convidar</string>
-    <string name="anyone_can_edit_subject">Calquera pode editar o asunto.</string>
-    <string name="owners_can_edit_subject">As propietarias poden editar o asunto.</string>
-    <string name="admins_can_edit_subject">Admins poden editar o asunto.</string>
+    <string name="anyone_can_edit_subject">Calquera pode editar o tema.</string>
+    <string name="owners_can_edit_subject">As propietarias poden editar o tema.</string>
+    <string name="admins_can_edit_subject">Admins poden editar o tema.</string>
     <string name="owners_can_invite_others">Propietarias poden convidar a outras.</string>
     <string name="anyone_can_invite_others">Calquera pode convidar a outras.</string>
     <string name="jabber_ids_are_visible_to_admins">Os enderezos XMPP son visibles para a administración.</string>
