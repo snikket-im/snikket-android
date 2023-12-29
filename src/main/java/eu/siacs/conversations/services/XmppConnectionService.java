@@ -1144,6 +1144,7 @@ public class XmppConnectionService extends Service {
     @SuppressLint("TrulyRandom")
     @Override
     public void onCreate() {
+        org.jxmpp.stringprep.libidn.LibIdnXmppStringprep.setup();
         if (Compatibility.runsTwentySix()) {
             mNotificationService.initializeChannels();
         }
