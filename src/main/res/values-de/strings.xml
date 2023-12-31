@@ -91,12 +91,12 @@
 \n<b>Achtung:</b> Dies löscht keine Kopien dieser Datei, die auf anderen Geräten oder Servern gespeichert sind. </string>
     <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
     <string name="choose_presence">Gerät auswählen</string>
-    <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>
+    <string name="send_unencrypted_message">Unverschlüsselt schreiben</string>
     <string name="send_message">Nachricht senden</string>
     <string name="send_message_to_x">Nachricht an %s senden</string>
-    <string name="send_omemo_message">OMEMO-verschlüsselt schreiben…</string>
+    <string name="send_omemo_message">OMEMO-verschlüsselt schreiben</string>
     <string name="send_omemo_x509_message">v\\OMEMO-verschlüsselte Nachricht senden</string>
-    <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben…</string>
+    <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben</string>
     <string name="your_nick_has_been_changed">Neuer Nickname wird jetzt verwendet</string>
     <string name="send_unencrypted">Unverschlüsselt senden</string>
     <string name="decryption_failed">Entschlüsselung fehlgeschlagen. Vielleicht hast du nicht den richtigen privaten Schlüssel.</string>
