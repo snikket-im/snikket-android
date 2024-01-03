@@ -2,9 +2,9 @@ Versione 2.10.9
 * Richiesta di permessi Bluetooth quando si effettuano chiamate A/V (si può rifiutare se non si usano auricolari Bluetooth).
 * Correzione di un bug quando si chiama Movim
 * Correzione dell'avatar errato mostrato nelle chat di gruppo.
-* Chiedere sempre la deisabilitazione dell'ottimizzazione della batteria
+* Chiedere sempre la disabilitazione delle ottimizzazioni della batteria
 * Impostare il flag solo locale sulle notifiche "x account connessi".
-* Correggere l'interazione con il plugin di condivisione della posizione di Google Maps.
+* Corretta l'interazione con il plugin di condivisione della posizione di Google Maps.
 * Rimuovere la nota a piè di pagina relativa al costo del server
 * Memorizzare i file nella posizione appropriata per Android 11
 * Tentativo di ricollegare la chiamata dopo il cambio di rete

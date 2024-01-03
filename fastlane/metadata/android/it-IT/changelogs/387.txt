@@ -1,3 +1,3 @@
-* Aggiungere la possibilità di appuntare le chat preferite all'inizio dell'elenco delle chat.
-* Correggere l'eco durante le chiamate su alcuni dispositivi
-* Migliorare l'affidabilità quando si cambia rete durante le chiamate
+* Aggiunta la possibilità di appuntare le chat preferite all'inizio dell'elenco delle chat.
+* Corretto l'eco durante le chiamate su alcuni dispositivi
+* Migliorata l'affidabilità quando si cambia rete durante le chiamate
