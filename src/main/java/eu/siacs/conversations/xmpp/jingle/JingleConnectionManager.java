@@ -663,7 +663,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
-    private void retractSessionProposal(RtpSessionProposal rtpSessionProposal) {
+    private void retractSessionProposal(final RtpSessionProposal rtpSessionProposal) {
         final Account account = rtpSessionProposal.account;
         toneManager.transition(RtpEndUserState.ENDED, rtpSessionProposal.media);
         Log.d(
@@ -673,6 +673,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                         + rtpSessionProposal.with);
         this.rtpSessionProposals.remove(rtpSessionProposal);
         rtpSessionProposal.callIntegration.retracted();
+        mXmppConnectionService.notifyJingleRtpConnectionUpdate(
+                account,
+                rtpSessionProposal.with,
+                rtpSessionProposal.sessionId,
+                RtpEndUserState.RETRACTED);
         final MessagePacket messagePacket =
                 mXmppConnectionService.getMessageGenerator().sessionRetract(rtpSessionProposal);
         writeLogMissedOutgoing(
@@ -749,7 +754,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 if (proposal.account == account && with.asBareJid().equals(proposal.with)) {
                     // CallIntegrationConnectionService starts RtpSessionActivity with ACTION_VIEW
                     // and an EXTRA_LAST_REPORTED_STATE of DISCOVERING devices. however due to
-                    // possible race conditions the state might have already moved on so we are going
+                    // possible race conditions the state might have already moved on so we are
+                    // going
                     // to update the UI
                     final RtpEndUserState endUserState = state.toEndUserState();
                     mXmppConnectionService.notifyJingleRtpConnectionUpdate(
