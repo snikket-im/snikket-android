@@ -1,7 +1,5 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import android.os.Bundle;
-import android.telecom.TelecomManager;
 import android.util.Base64;
 import android.util.Log;
 
@@ -31,9 +29,7 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
-import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
-import eu.siacs.conversations.xmpp.jingle.stanzas.IbbTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Propose;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
@@ -384,7 +380,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                         rtpConnection.setProposedMedia(ImmutableSet.copyOf(media));
                         rtpConnection.deliveryMessage(from, message, serverMsgId, timestamp);
 
-                        CallIntegrationConnectionService.addNewIncomingCall(getXmppConnectionService(), id);
+                        CallIntegrationConnectionService.addNewIncomingCall(
+                                getXmppConnectionService(), id);
                         // TODO actually do the automatic accept?!
                     } else {
                         Log.d(
@@ -435,7 +432,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     rtpConnection.setProposedMedia(ImmutableSet.copyOf(media));
                     rtpConnection.deliveryMessage(from, message, serverMsgId, timestamp);
 
-                    CallIntegrationConnectionService.addNewIncomingCall(getXmppConnectionService(), id);
+                    CallIntegrationConnectionService.addNewIncomingCall(
+                            getXmppConnectionService(), id);
                 }
             } else {
                 Log.d(
@@ -454,7 +452,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 if (proposal != null) {
                     rtpSessionProposals.remove(proposal);
                     final JingleRtpConnection rtpConnection =
-                            new JingleRtpConnection(this, id, account.getJid(), proposal.callIntegration);
+                            new JingleRtpConnection(
+                                    this, id, account.getJid(), proposal.callIntegration);
                     rtpConnection.setProposedMedia(proposal.media);
                     this.connections.put(id, rtpConnection);
                     rtpConnection.transitionOrThrow(AbstractJingleConnection.State.PROPOSED);
@@ -726,10 +725,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 throw new IllegalStateException(
                         "There is already a running RTP session. This should have been caught by the UI");
             }
-            final CallIntegration callIntegration = new CallIntegration(mXmppConnectionService.getApplicationContext());
+            final CallIntegration callIntegration =
+                    new CallIntegration(mXmppConnectionService.getApplicationContext());
             callIntegration.setInitialAudioDevice(CallIntegration.initialAudioDevice(media));
             final RtpSessionProposal proposal =
                     RtpSessionProposal.of(account, with.asBareJid(), media, callIntegration);
+            callIntegration.setCallback(new ProposalStateCallback(proposal));
             this.rtpSessionProposals.put(proposal, DeviceDiscoveryState.SEARCHING);
             mXmppConnectionService.notifyJingleRtpConnectionUpdate(
                     account, proposal.with, proposal.sessionId, RtpEndUserState.FINDING_DEVICE);
@@ -775,7 +776,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             sid = null;
         }
         if (sid == null) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid()+": unable to deliver ibb packet. missing sid");
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid() + ": unable to deliver ibb packet. missing sid");
             account.getXmppConnection()
                     .sendIqPacket(packet.generateResponse(IqPacket.TYPE.ERROR), null);
             return;
@@ -799,7 +802,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 }
             }
         }
-        Log.d(Config.LOGTAG, account.getJid().asBareJid()+": unable to deliver ibb packet with sid="+sid);
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid() + ": unable to deliver ibb packet with sid=" + sid);
         account.getXmppConnection()
                 .sendIqPacket(packet.generateResponse(IqPacket.TYPE.ERROR), null);
     }
@@ -882,7 +887,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             if (endUserState == RtpEndUserState.RINGING) {
                 sessionProposal.callIntegration.setDialing();
             }
-            //toneManager.transition(endUserState, sessionProposal.media);
+            // toneManager.transition(endUserState, sessionProposal.media);
             mXmppConnectionService.notifyJingleRtpConnectionUpdate(
                     account, sessionProposal.with, sessionProposal.sessionId, endUserState);
             Log.d(
@@ -1013,7 +1018,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         private final Account account;
         private final CallIntegration callIntegration;
 
-        private RtpSessionProposal(Account account, Jid with, String sessionId, Set<Media> media, final CallIntegration callIntegration) {
+        private RtpSessionProposal(
+                Account account,
+                Jid with,
+                String sessionId,
+                Set<Media> media,
+                final CallIntegration callIntegration) {
             this.account = account;
             this.with = with;
             this.sessionId = sessionId;
@@ -1021,8 +1031,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             this.callIntegration = callIntegration;
         }
 
-        public static RtpSessionProposal of(Account account, Jid with, Set<Media> media, final CallIntegration callIntegration) {
-            return new RtpSessionProposal(account, with, nextRandomId(), media,callIntegration);
+        public static RtpSessionProposal of(
+                Account account,
+                Jid with,
+                Set<Media> media,
+                final CallIntegration callIntegration) {
+            return new RtpSessionProposal(account, with, nextRandomId(), media, callIntegration);
         }
 
         @Override
@@ -1058,5 +1072,28 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         public CallIntegration getCallIntegration() {
             return this.callIntegration;
         }
+    }
+
+    public class ProposalStateCallback implements CallIntegration.Callback {
+
+        private final RtpSessionProposal proposal;
+
+        public ProposalStateCallback(final RtpSessionProposal proposal) {
+            this.proposal = proposal;
+        }
+
+        @Override
+        public void onCallIntegrationShowIncomingCallUi() {}
+
+        @Override
+        public void onCallIntegrationDisconnect() {
+            Log.d(Config.LOGTAG, "a phone call has just been started. retracting proposal");
+            retractSessionProposal(this.proposal);
+        }
+
+        @Override
+        public void onAudioDeviceChanged(
+                CallIntegration.AudioDevice selectedAudioDevice,
+                Set<CallIntegration.AudioDevice> availableAudioDevices) {}
     }
 }
