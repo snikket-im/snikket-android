@@ -198,6 +198,7 @@ public class XmppConnectionService extends Service {
     public static final String ACTION_DISMISS_CALL = "dismiss_call";
     public static final String ACTION_END_CALL = "end_call";
     public static final String ACTION_PROVISION_ACCOUNT = "provision_account";
+    public static final String ACTION_CALL_INTEGRATION_SERVICE_STARTED = "call_integration_service_started";
     private static final String ACTION_POST_CONNECTIVITY_CHANGE = "eu.siacs.conversations.POST_CONNECTIVITY_CHANGE";
     public static final String ACTION_RENEW_UNIFIED_PUSH_ENDPOINTS = "eu.siacs.conversations.UNIFIED_PUSH_RENEW";
     public static final String ACTION_QUICK_LOG = "eu.siacs.conversations.QUICK_LOG";
@@ -301,16 +302,6 @@ public class XmppConnectionService extends Service {
                 }
             }
             return false;
-        }
-    };
-    private final AtomicBoolean isPhoneInCall = new AtomicBoolean(false);
-    private final PhoneStateListener phoneStateListener = new PhoneStateListener() {
-        @Override
-        public void onCallStateChanged(final int state, final String phoneNumber) {
-            isPhoneInCall.set(state != TelephonyManager.CALL_STATE_IDLE);
-            if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
-                mJingleConnectionManager.notifyPhoneCallStarted();
-            }
         }
     };
 
@@ -1288,6 +1279,8 @@ public class XmppConnectionService extends Service {
         toggleSetProfilePictureActivity(hasEnabledAccounts);
         reconfigurePushDistributor();
 
+        CallIntegrationConnectionService.registerPhoneAccounts(this, this.accounts);
+
         restoreFromDatabase();
 
         if (QuickConversationsService.isContactListIntegration(this)
@@ -1351,22 +1344,9 @@ public class XmppConnectionService extends Service {
                 ContextCompat.RECEIVER_EXPORTED);
         mForceDuringOnCreate.set(false);
         toggleForegroundService();
-        setupPhoneStateListener();
         internalPingExecutor.scheduleAtFixedRate(this::manageAccountConnectionStatesInternal,10,10,TimeUnit.SECONDS);
     }
 
-
-    private void setupPhoneStateListener() {
-        final TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        if (telephonyManager == null || Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            return;
-        }
-        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
-    }
-
-    public boolean isPhoneInCall() {
-        return isPhoneInCall.get();
-    }
 
     private void checkForDeletedFiles() {
         if (destroyed) {
@@ -4413,7 +4393,7 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public void notifyJingleRtpConnectionUpdate(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
+    public void notifyJingleRtpConnectionUpdate(CallIntegration.AudioDevice selectedAudioDevice, Set<CallIntegration.AudioDevice> availableAudioDevices) {
         for (OnJingleRtpConnectionUpdate listener : threadSafeList(this.onJingleRtpConnectionUpdate)) {
             listener.onAudioDeviceChanged(selectedAudioDevice, availableAudioDevices);
         }
@@ -5110,7 +5090,7 @@ public class XmppConnectionService extends Service {
     public interface OnJingleRtpConnectionUpdate {
         void onJingleRtpConnectionUpdate(final Account account, final Jid with, final String sessionId, final RtpEndUserState state);
 
-        void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices);
+        void onAudioDeviceChanged(CallIntegration.AudioDevice selectedAudioDevice, Set<CallIntegration.AudioDevice> availableAudioDevices);
     }
 
     public interface OnAccountUpdate {

@@ -86,6 +86,7 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.http.HttpDownloadConnection;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.CallIntegrationConnectionService;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -1652,13 +1653,14 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void triggerRtpSession(final Account account, final Jid with, final String action) {
-        final Intent intent = new Intent(activity, RtpSessionActivity.class);
+        CallIntegrationConnectionService.placeCall(requireActivity(),account,with,RtpSessionActivity.actionToMedia(action));
+        /*final Intent intent = new Intent(activity, RtpSessionActivity.class);
         intent.setAction(action);
         intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, account.getJid().toEscapedString());
         intent.putExtra(RtpSessionActivity.EXTRA_WITH, with.toEscapedString());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     private void handleAttachmentSelection(MenuItem item) {

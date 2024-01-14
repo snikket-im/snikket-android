@@ -89,7 +89,8 @@ class ToneManager {
         }
         switch (state) {
             case RINGING:
-                scheduleWaitingTone();
+                // ringing can be removed as this is now handled by 'CallIntegration'
+                //scheduleWaitingTone();
                 break;
             case CONNECTED:
                 scheduleConnected();

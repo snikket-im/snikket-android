@@ -49,6 +49,8 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.AppRTCAudioManager;
+import eu.siacs.conversations.services.CallIntegration;
+import eu.siacs.conversations.services.CallIntegrationConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MainThreadExecutor;
@@ -133,7 +135,7 @@ public class RtpSessionActivity extends XmppActivity
                 }
             };
 
-    private static Set<Media> actionToMedia(final String action) {
+    public static Set<Media> actionToMedia(final String action) {
         if (ACTION_MAKE_VIDEO_CALL.equals(action)) {
             return ImmutableSet.of(Media.AUDIO, Media.VIDEO);
         } else {
@@ -416,11 +418,11 @@ public class RtpSessionActivity extends XmppActivity
         if (Media.audioOnly(media)) {
             final JingleRtpConnection rtpConnection =
                     rtpConnectionReference != null ? rtpConnectionReference.get() : null;
-            final AppRTCAudioManager audioManager =
-                    rtpConnection == null ? null : rtpConnection.getAudioManager();
-            if (audioManager == null
-                    || audioManager.getSelectedAudioDevice()
-                            == AppRTCAudioManager.AudioDevice.EARPIECE) {
+            final CallIntegration callIntegration =
+                    rtpConnection == null ? null : rtpConnection.getCallIntegration();
+            if (callIntegration == null
+                    || callIntegration.getSelectedAudioDevice()
+                            == CallIntegration.AudioDevice.EARPIECE) {
                 acquireProximityWakeLock();
             }
         }
@@ -466,8 +468,8 @@ public class RtpSessionActivity extends XmppActivity
     }
 
     private void putProximityWakeLockInProperState(
-            final AppRTCAudioManager.AudioDevice audioDevice) {
-        if (audioDevice == AppRTCAudioManager.AudioDevice.EARPIECE) {
+            final CallIntegration.AudioDevice audioDevice) {
+        if (audioDevice == CallIntegration.AudioDevice.EARPIECE) {
             acquireProximityWakeLock();
         } else {
             releaseProximityWakeLock();
@@ -581,12 +583,7 @@ public class RtpSessionActivity extends XmppActivity
                     .getJingleConnectionManager()
                     .proposeJingleRtpSession(account, with, media);
         } else {
-            final String sessionId =
-                    xmppConnectionService
-                            .getJingleConnectionManager()
-                            .initializeRtpSession(account, with, media);
-            initializeActivityWithRunningRtpSession(account, with, sessionId);
-            resetIntent(account, with, sessionId);
+            throw new IllegalStateException("We should not be initializing direct calls from the RtpSessionActivity. Go through CallIntegrationConnectionService.placeCall instead!");
         }
         putScreenInCallMode(media);
     }
@@ -1032,10 +1029,10 @@ public class RtpSessionActivity extends XmppActivity
                 updateInCallButtonConfigurationVideo(
                         rtpConnection.isVideoEnabled(), rtpConnection.isCameraSwitchable());
             } else {
-                final AppRTCAudioManager audioManager = requireRtpConnection().getAudioManager();
+                final CallIntegration callIntegration = requireRtpConnection().getCallIntegration();
                 updateInCallButtonConfigurationSpeaker(
-                        audioManager.getSelectedAudioDevice(),
-                        audioManager.getAudioDevices().size());
+                        callIntegration.getSelectedAudioDevice(),
+                        callIntegration.getAudioDevices().size());
                 this.binding.inCallActionFarRight.setVisibility(View.GONE);
             }
             if (media.contains(Media.AUDIO)) {
@@ -1053,7 +1050,7 @@ public class RtpSessionActivity extends XmppActivity
 
     @SuppressLint("RestrictedApi")
     private void updateInCallButtonConfigurationSpeaker(
-            final AppRTCAudioManager.AudioDevice selectedAudioDevice, final int numberOfChoices) {
+            final CallIntegration.AudioDevice selectedAudioDevice, final int numberOfChoices) {
         switch (selectedAudioDevice) {
             case EARPIECE -> {
                 this.binding.inCallActionRight.setImageResource(
@@ -1294,19 +1291,19 @@ public class RtpSessionActivity extends XmppActivity
 
     private void switchToEarpiece(View view) {
         requireRtpConnection()
-                .getAudioManager()
-                .setDefaultAudioDevice(AppRTCAudioManager.AudioDevice.EARPIECE);
+                .getCallIntegration()
+                .setAudioDevice(CallIntegration.AudioDevice.EARPIECE);
         acquireProximityWakeLock();
     }
 
     private void switchToSpeaker(View view) {
         requireRtpConnection()
-                .getAudioManager()
-                .setDefaultAudioDevice(AppRTCAudioManager.AudioDevice.SPEAKER_PHONE);
+                .getCallIntegration()
+                .setAudioDevice(CallIntegration.AudioDevice.SPEAKER_PHONE);
         releaseProximityWakeLock();
     }
 
-    private void retry(View view) {
+    private void retry(final View view) {
         final Intent intent = getIntent();
         final Account account = extractAccount(intent);
         final Jid with = Jid.ofEscaped(intent.getStringExtra(EXTRA_WITH));
@@ -1315,7 +1312,7 @@ public class RtpSessionActivity extends XmppActivity
         final Set<Media> media = actionToMedia(lastAction == null ? action : lastAction);
         this.rtpConnectionReference = null;
         Log.d(Config.LOGTAG, "attempting retry with " + with.toEscapedString());
-        proposeJingleRtpSession(account, with, media);
+        CallIntegrationConnectionService.placeCall(this,account,with,media);
     }
 
     private void exit(final View view) {
@@ -1411,8 +1408,8 @@ public class RtpSessionActivity extends XmppActivity
 
     @Override
     public void onAudioDeviceChanged(
-            final AppRTCAudioManager.AudioDevice selectedAudioDevice,
-            final Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
+            final CallIntegration.AudioDevice selectedAudioDevice,
+            final Set<CallIntegration.AudioDevice> availableAudioDevices) {
         Log.d(
                 Config.LOGTAG,
                 "onAudioDeviceChanged in activity: selected:"
@@ -1428,11 +1425,11 @@ public class RtpSessionActivity extends XmppActivity
                         "onAudioDeviceChanged() nothing to do because end card has been reached");
             } else {
                 if (Media.audioOnly(media) && endUserState == RtpEndUserState.CONNECTED) {
-                    final AppRTCAudioManager audioManager =
-                            requireRtpConnection().getAudioManager();
+                    final CallIntegration callIntegration =
+                            requireRtpConnection().getCallIntegration();
                     updateInCallButtonConfigurationSpeaker(
-                            audioManager.getSelectedAudioDevice(),
-                            audioManager.getAudioDevices().size());
+                            callIntegration.getSelectedAudioDevice(),
+                            callIntegration.getAudioDevices().size());
                 }
                 Log.d(
                         Config.LOGTAG,
