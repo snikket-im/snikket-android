@@ -636,17 +636,16 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public boolean fireJingleRtpConnectionStateUpdates() {
-        boolean firedUpdates = false;
         for (final AbstractJingleConnection connection : this.connections.values()) {
             if (connection instanceof JingleRtpConnection jingleRtpConnection) {
                 if (jingleRtpConnection.isTerminated()) {
                     continue;
                 }
                 jingleRtpConnection.fireStateUpdate();
-                firedUpdates = true;
+                return true;
             }
         }
-        return firedUpdates;
+        return false;
     }
 
     public void retractSessionProposal(final Account account, final Jid with) {
@@ -745,8 +744,16 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         synchronized (this.rtpSessionProposals) {
             for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry :
                     this.rtpSessionProposals.entrySet()) {
+                final var state = entry.getValue();
                 final RtpSessionProposal proposal = entry.getKey();
                 if (proposal.account == account && with.asBareJid().equals(proposal.with)) {
+                    // CallIntegrationConnectionService starts RtpSessionActivity with ACTION_VIEW
+                    // and an EXTRA_LAST_REPORTED_STATE of DISCOVERING devices. however due to
+                    // possible race conditions the state might have already moved on so we are going
+                    // to update the UI
+                    final RtpEndUserState endUserState = state.toEndUserState();
+                    mXmppConnectionService.notifyJingleRtpConnectionUpdate(
+                            account, proposal.with, proposal.sessionId, endUserState);
                     return true;
                 }
             }

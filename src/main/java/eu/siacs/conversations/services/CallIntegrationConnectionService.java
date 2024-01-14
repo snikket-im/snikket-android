@@ -29,6 +29,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
+import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -83,6 +84,7 @@ public class CallIntegrationConnectionService extends ConnectionService {
         }
         final Account account = service.findAccountByUuid(phoneAccountHandle.getId());
         final Intent intent = new Intent(this, RtpSessionActivity.class);
+        intent.setAction(Intent.ACTION_VIEW);
         intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, account.getJid().toEscapedString());
         intent.putExtra(RtpSessionActivity.EXTRA_WITH, jid.toEscapedString());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -93,10 +95,17 @@ public class CallIntegrationConnectionService extends ConnectionService {
                     service.getJingleConnectionManager()
                             .proposeJingleRtpSession(account, jid, media);
 
+            intent.putExtra(
+                    RtpSessionActivity.EXTRA_LAST_REPORTED_STATE,
+                    RtpEndUserState.FINDING_DEVICE.toString());
             if (Media.audioOnly(media)) {
-                intent.setAction(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+                intent.putExtra(
+                        RtpSessionActivity.EXTRA_LAST_ACTION,
+                        RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
             } else {
-                intent.setAction(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
+                intent.putExtra(
+                        RtpSessionActivity.EXTRA_LAST_ACTION,
+                        RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
             }
             callIntegration = proposal.getCallIntegration();
         } else {

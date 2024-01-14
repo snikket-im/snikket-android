@@ -467,8 +467,7 @@ public class RtpSessionActivity extends XmppActivity
         }
     }
 
-    private void putProximityWakeLockInProperState(
-            final CallIntegration.AudioDevice audioDevice) {
+    private void putProximityWakeLockInProperState(final CallIntegration.AudioDevice audioDevice) {
         if (audioDevice == CallIntegration.AudioDevice.EARPIECE) {
             acquireProximityWakeLock();
         } else {
@@ -583,7 +582,8 @@ public class RtpSessionActivity extends XmppActivity
                     .getJingleConnectionManager()
                     .proposeJingleRtpSession(account, with, media);
         } else {
-            throw new IllegalStateException("We should not be initializing direct calls from the RtpSessionActivity. Go through CallIntegrationConnectionService.placeCall instead!");
+            throw new IllegalStateException(
+                    "We should not be initializing direct calls from the RtpSessionActivity. Go through CallIntegrationConnectionService.placeCall instead!");
         }
         putScreenInCallMode(media);
     }
@@ -1312,7 +1312,7 @@ public class RtpSessionActivity extends XmppActivity
         final Set<Media> media = actionToMedia(lastAction == null ? action : lastAction);
         this.rtpConnectionReference = null;
         Log.d(Config.LOGTAG, "attempting retry with " + with.toEscapedString());
-        CallIntegrationConnectionService.placeCall(this,account,with,media);
+        CallIntegrationConnectionService.placeCall(this, account, with, media);
     }
 
     private void exit(final View view) {
