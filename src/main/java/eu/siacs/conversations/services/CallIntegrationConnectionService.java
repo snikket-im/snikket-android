@@ -181,6 +181,10 @@ public class CallIntegrationConnectionService extends ConnectionService {
         }
     }
 
+    public static void unregisterPhoneAccount(final Context context, final Account account) {
+        context.getSystemService(TelecomManager.class).unregisterPhoneAccount(getHandle(context, account));
+    }
+
     public static PhoneAccountHandle getHandle(final Context context, final Account account) {
         final var competentName =
                 new ComponentName(context, CallIntegrationConnectionService.class);
