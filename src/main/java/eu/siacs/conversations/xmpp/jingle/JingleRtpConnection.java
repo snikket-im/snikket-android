@@ -2,6 +2,7 @@ package eu.siacs.conversations.xmpp.jingle;
 
 import android.content.Intent;
 import android.telecom.TelecomManager;
+import android.telecom.VideoProfile;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -2838,6 +2839,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     void setProposedMedia(final Set<Media> media) {
         this.proposedMedia = media;
+        this.callIntegration.setVideoState(
+                Media.audioOnly(media)
+                        ? VideoProfile.STATE_AUDIO_ONLY
+                        : VideoProfile.STATE_BIDIRECTIONAL);
         this.callIntegration.setInitialAudioDevice(CallIntegration.initialAudioDevice(media));
     }
 

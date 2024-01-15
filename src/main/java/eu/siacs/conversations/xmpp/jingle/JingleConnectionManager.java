@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import android.telecom.VideoProfile;
 import android.util.Base64;
 import android.util.Log;
 
@@ -732,6 +733,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
             final CallIntegration callIntegration =
                     new CallIntegration(mXmppConnectionService.getApplicationContext());
+            callIntegration.setVideoState(
+                    Media.audioOnly(media)
+                            ? VideoProfile.STATE_AUDIO_ONLY
+                            : VideoProfile.STATE_BIDIRECTIONAL);
             callIntegration.setInitialAudioDevice(CallIntegration.initialAudioDevice(media));
             final RtpSessionProposal proposal =
                     RtpSessionProposal.of(account, with.asBareJid(), media, callIntegration);
@@ -1111,13 +1116,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 Set<CallIntegration.AudioDevice> availableAudioDevices) {}
 
         @Override
-        public void onCallIntegrationReject() {
-
-        }
+        public void onCallIntegrationReject() {}
 
         @Override
-        public void onCallIntegrationAnswer() {
-
-        }
+        public void onCallIntegrationAnswer() {}
     }
 }
