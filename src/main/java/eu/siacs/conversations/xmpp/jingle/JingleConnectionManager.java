@@ -512,8 +512,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             Log.d(
                     Config.LOGTAG,
                     account.getJid()
-                            + ": retrieved out of order jingle message from "
+                            + ": received out of order jingle message from="
                             + from
+                            + ", message="
                             + message
                             + ", addressedDirectly="
                             + addressedDirectly);
