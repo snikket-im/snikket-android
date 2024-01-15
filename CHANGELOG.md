@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.13.1
+
+* Support P2P file transfer via WebRTC data channels
+* Fix interoperability issues with Bind 2.0 on ejabberd
+* Bundle Let’s Encrypt root certificates for Android <= 7
+
 ### Version 2.13.0
 
 * Easier access to 'Show QR code'
