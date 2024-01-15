@@ -60,7 +60,7 @@ public class CallIntegration extends Connection {
 
     @Override
     public void onAnswer() {
-        Log.d(Config.LOGTAG, "onAnswer()");
+        this.callback.onCallIntegrationAnswer();
     }
 
     @Override
@@ -71,12 +71,13 @@ public class CallIntegration extends Connection {
 
     @Override
     public void onReject() {
-        Log.d(Config.LOGTAG, "onReject()");
+        this.callback.onCallIntegrationReject();
     }
 
     @Override
     public void onReject(final String replyMessage) {
         Log.d(Config.LOGTAG, "onReject(" + replyMessage + ")");
+        this.callback.onCallIntegrationReject();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
@@ -404,5 +405,9 @@ public class CallIntegration extends Connection {
         void onAudioDeviceChanged(
                 CallIntegration.AudioDevice selectedAudioDevice,
                 Set<CallIntegration.AudioDevice> availableAudioDevices);
+
+        void onCallIntegrationReject();
+
+        void onCallIntegrationAnswer();
     }
 }
