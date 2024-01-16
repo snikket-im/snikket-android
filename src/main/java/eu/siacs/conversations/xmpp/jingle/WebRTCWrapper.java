@@ -222,9 +222,7 @@ public class WebRTCWrapper {
         }
     }
 
-    public void setup(
-            final XmppConnectionService service,
-            @Nonnull final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference)
+    public void setup(final XmppConnectionService service)
             throws InitializationException {
         try {
             PeerConnectionFactory.initialize(

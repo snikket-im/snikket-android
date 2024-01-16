@@ -23,6 +23,7 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import org.webrtc.ThreadUtils;
 
@@ -44,8 +45,6 @@ public class AppRTCAudioManager {
 
     private final Context apprtcContext;
     // Contains speakerphone setting: auto, true or false
-    @Nullable
-    private SpeakerPhonePreference speakerPhonePreference;
     // Handles all tasks related to Bluetooth headset devices.
     private final AppRTCBluetoothManager bluetoothManager;
     @Nullable
@@ -70,12 +69,7 @@ public class AppRTCAudioManager {
     // TODO(henrika): always set to AudioDevice.NONE today. Add support for
     // explicit selection based on choice by userSelectedAudioDevice.
     private CallIntegration.AudioDevice userSelectedAudioDevice;
-    // Proximity sensor object. It measures the proximity of an object in cm
-    // relative to the view screen of a device and can therefore be used to
-    // assist device switching (close to ear <=> use headset earpiece if
-    // available, far from ear <=> use speaker phone).
-    @Nullable
-    private AppRTCProximitySensor proximitySensor;
+
     // Contains a list of available audio devices. A Set collection is used to
     // avoid duplicate elements.
     private Set<CallIntegration.AudioDevice> audioDevices = new HashSet<>();
@@ -86,7 +80,6 @@ public class AppRTCAudioManager {
     private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
 
     public AppRTCAudioManager(final Context context) {
-        ThreadUtils.checkIsOnMainThread();
         apprtcContext = context;
         audioManager = ((AudioManager) context.getSystemService(Context.AUDIO_SERVICE));
         bluetoothManager = AppRTCBluetoothManager.create(context, this);
@@ -98,26 +91,8 @@ public class AppRTCAudioManager {
         } else {
             defaultAudioDevice = CallIntegration.AudioDevice.SPEAKER_PHONE;
         }
-        // Create and initialize the proximity sensor.
-        // Tablet devices (e.g. Nexus 7) does not support proximity sensors.
-        // Note that, the sensor will not be active until start() has been called.
-        proximitySensor = AppRTCProximitySensor.create(context,
-                // This method will be called each time a state change is detected.
-                // Example: user holds his hand over the device (closer than ~5 cm),
-                // or removes his hand from the device.
-                this::onProximitySensorChangedState);
         Log.d(Config.LOGTAG, "defaultAudioDevice: " + defaultAudioDevice);
         AppRTCUtils.logDeviceInfo(Config.LOGTAG);
-    }
-
-    public void switchSpeakerPhonePreference(final SpeakerPhonePreference speakerPhonePreference) {
-        this.speakerPhonePreference = speakerPhonePreference;
-        if (speakerPhonePreference == SpeakerPhonePreference.EARPIECE && hasEarpiece()) {
-            defaultAudioDevice = CallIntegration.AudioDevice.EARPIECE;
-        } else {
-            defaultAudioDevice = CallIntegration.AudioDevice.SPEAKER_PHONE;
-        }
-        updateAudioDeviceState();
     }
 
     public static boolean isMicrophoneAvailable() {
@@ -153,30 +128,6 @@ public class AppRTCAudioManager {
             audioRecord.release();
         } catch (Exception e) {
             //ignore
-        }
-    }
-
-    /**
-     * This method is called when the proximity sensor reports a state change,
-     * e.g. from "NEAR to FAR" or from "FAR to NEAR".
-     */
-    private void onProximitySensorChangedState() {
-        if (speakerPhonePreference != SpeakerPhonePreference.AUTO) {
-            return;
-        }
-        // The proximity sensor should only be activated when there are exactly two
-        // available audio devices.
-        if (audioDevices.size() == 2 && audioDevices.contains(CallIntegration.AudioDevice.EARPIECE)
-                && audioDevices.contains(CallIntegration.AudioDevice.SPEAKER_PHONE)) {
-            if (proximitySensor.sensorReportsNearState()) {
-                // Sensor reports that a "handset is being held up to a person's ear",
-                // or "something is covering the light sensor".
-                setAudioDeviceInternal(CallIntegration.AudioDevice.EARPIECE);
-            } else {
-                // Sensor reports that a "handset is removed from a person's ear", or
-                // "the light sensor is no longer covered".
-                setAudioDeviceInternal(CallIntegration.AudioDevice.SPEAKER_PHONE);
-            }
         }
     }
 
@@ -280,6 +231,7 @@ public class AppRTCAudioManager {
 
     @SuppressWarnings("deprecation")
     public void stop() {
+        Log.d(Config.LOGTAG,"appRtpAudioManager.stop()");
         Log.d(Config.LOGTAG, AppRTCAudioManager.class.getName() + ".stop()");
         ThreadUtils.checkIsOnMainThread();
         if (amState != AudioManagerState.RUNNING) {
@@ -296,12 +248,8 @@ public class AppRTCAudioManager {
         // Abandon audio focus. Gives the previous focus owner, if any, focus.
         audioManager.abandonAudioFocus(audioFocusChangeListener);
         audioFocusChangeListener = null;
-        Log.d(Config.LOGTAG, "Abandoned audio focus for VOICE_CALL streams");
-        if (proximitySensor != null) {
-            proximitySensor.stop();
-            proximitySensor = null;
-        }
         audioManagerEvents = null;
+        Log.d(Config.LOGTAG,"appRtpAudioManager.stopped()");
     }
 
     /**
@@ -375,7 +323,6 @@ public class AppRTCAudioManager {
      * Returns the currently selected audio device.
      */
     public CallIntegration.AudioDevice getSelectedAudioDevice() {
-        ThreadUtils.checkIsOnMainThread();
         return selectedAudioDevice;
     }
 
@@ -574,6 +521,10 @@ public class AppRTCAudioManager {
         Log.d(Config.LOGTAG, "--- updateAudioDeviceState done");
     }
 
+    public void executeOnMain(final Runnable runnable) {
+        ContextCompat.getMainExecutor(apprtcContext).execute(runnable);
+    }
+
     /**
      * AudioManager state.
      */
@@ -581,18 +532,6 @@ public class AppRTCAudioManager {
         UNINITIALIZED,
         PREINITIALIZED,
         RUNNING,
-    }
-
-    public enum SpeakerPhonePreference {
-        AUTO, EARPIECE, SPEAKER;
-
-        public static SpeakerPhonePreference of(final Set<Media> media) {
-            if (media.contains(Media.VIDEO)) {
-                return SPEAKER;
-            } else {
-                return EARPIECE;
-            }
-        }
     }
 
     /**

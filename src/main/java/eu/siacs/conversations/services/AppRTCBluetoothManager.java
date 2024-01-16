@@ -68,8 +68,6 @@ public class AppRTCBluetoothManager {
             };
 
     protected AppRTCBluetoothManager(Context context, AppRTCAudioManager audioManager) {
-        Log.d(Config.LOGTAG, "ctor");
-        ThreadUtils.checkIsOnMainThread();
         apprtcContext = context;
         apprtcAudioManager = audioManager;
         this.audioManager = getAudioManager(context);

@@ -11,6 +11,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -42,8 +43,8 @@ public class CallIntegration extends Connection {
             this.appRTCAudioManager = null;
         } else {
             this.appRTCAudioManager = new AppRTCAudioManager(context);
-            this.appRTCAudioManager.start(this::onAudioDeviceChanged);
-            // TODO WebRTCWrapper would issue one call to  eventCallback.onAudioDeviceChanged
+            ContextCompat.getMainExecutor(context)
+                    .execute(() -> this.appRTCAudioManager.start(this::onAudioDeviceChanged));
         }
         setRingbackRequested(true);
     }
@@ -149,6 +150,12 @@ public class CallIntegration extends Connection {
         final var available = getAudioDevices();
         if (available.contains(audioDevice)) {
             this.setAudioDevice(audioDevice);
+        } else {
+            Log.d(
+                    Config.LOGTAG,
+                    "application requested to switch to "
+                            + audioDevice
+                            + " but device was not available");
         }
     }
 
@@ -269,7 +276,8 @@ public class CallIntegration extends Connection {
     }
 
     private void setAudioDeviceFallback(final AudioDevice audioDevice) {
-        requireAppRtcAudioManager().setDefaultAudioDevice(audioDevice);
+        final var audioManager = requireAppRtcAudioManager();
+        audioManager.executeOnMain(() -> audioManager.setDefaultAudioDevice(audioDevice));
     }
 
     @NonNull
@@ -287,7 +295,7 @@ public class CallIntegration extends Connection {
         if (state == STATE_DISCONNECTED) {
             final var audioManager = this.appRTCAudioManager;
             if (audioManager != null) {
-                audioManager.stop();
+                audioManager.executeOnMain(audioManager::stop);
             }
         }
     }
@@ -382,8 +390,11 @@ public class CallIntegration extends Connection {
             return;
         }
         final var audioManager = requireAppRtcAudioManager();
-        this.onAudioDeviceChanged(
-                audioManager.getSelectedAudioDevice(), audioManager.getAudioDevices());
+        audioManager.executeOnMain(
+                () ->
+                        this.onAudioDeviceChanged(
+                                audioManager.getSelectedAudioDevice(),
+                                audioManager.getAudioDevices()));
     }
 
     /** AudioDevice is the names of possible audio devices that we currently support. */

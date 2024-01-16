@@ -122,6 +122,7 @@ public class CallIntegrationConnectionService extends ConnectionService {
 
     public Connection onCreateIncomingConnection(
             final PhoneAccountHandle phoneAccountHandle, final ConnectionRequest request) {
+        Log.d(Config.LOGTAG, "onCreateIncomingConnection()");
         final var service = ServiceConnectionService.get(this.serviceFuture);
         final Bundle extras = request.getExtras();
         final Bundle extraExtras = extras.getBundle(TelecomManager.EXTRA_INCOMING_CALL_EXTRAS);
@@ -182,7 +183,8 @@ public class CallIntegrationConnectionService extends ConnectionService {
     }
 
     public static void unregisterPhoneAccount(final Context context, final Account account) {
-        context.getSystemService(TelecomManager.class).unregisterPhoneAccount(getHandle(context, account));
+        context.getSystemService(TelecomManager.class)
+                .unregisterPhoneAccount(getHandle(context, account));
     }
 
     public static PhoneAccountHandle getHandle(final Context context, final Account account) {

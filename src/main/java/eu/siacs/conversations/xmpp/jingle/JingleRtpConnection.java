@@ -2300,8 +2300,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
             final boolean trickle)
             throws WebRTCWrapper.InitializationException {
         this.jingleConnectionManager.ensureConnectionIsRegistered(this);
-        this.webRTCWrapper.setup(
-                this.xmppConnectionService, AppRTCAudioManager.SpeakerPhonePreference.of(media));
+        this.webRTCWrapper.setup(this.xmppConnectionService);
         this.webRTCWrapper.initializePeerConnection(media, iceServers, trickle);
     }
 
