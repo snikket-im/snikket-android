@@ -145,6 +145,13 @@ public class CallIntegration extends Connection {
         }
     }
 
+    public void setAudioDeviceWhenAvailable(final AudioDevice audioDevice) {
+        final var available = getAudioDevices();
+        if (available.contains(audioDevice)) {
+            this.setAudioDevice(audioDevice);
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private Set<AudioDevice> getAudioDevicesUpsideDownCake() {
         return ImmutableSet.copyOf(

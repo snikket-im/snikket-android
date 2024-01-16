@@ -2610,6 +2610,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
     private void modifyLocalContentMap(final RtpContentMap rtpContentMap) {
         final RtpContentMap activeContents = rtpContentMap.activeContents();
         setLocalContentMap(activeContents);
+        this.callIntegration.setAudioDeviceWhenAvailable(
+                CallIntegration.initialAudioDevice(activeContents.getMedia()));
         updateEndUserState();
     }
 
