@@ -595,6 +595,7 @@
     <string name="me">Me</string>
     <string name="contact_asks_for_presence_subscription">Contact asks for presence subscription</string>
     <string name="allow">Allow</string>
+    <string name="no_permission_to_place_call">No permission to place phone call</string>
     <string name="no_permission_to_access_x">No permission to access %s</string>
     <string name="remote_server_not_found">Remote server not found</string>
     <string name="remote_server_timeout">Remote server timeout</string>

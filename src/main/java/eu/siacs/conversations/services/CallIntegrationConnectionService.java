@@ -1,9 +1,11 @@
 package eu.siacs.conversations.services;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
 import android.telecom.VideoProfile;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -25,6 +28,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.RtpSessionActivity;
 import eu.siacs.conversations.xmpp.Jid;
@@ -221,7 +225,6 @@ public class CallIntegrationConnectionService extends ConnectionService {
             final Account account,
             final Jid with,
             final Set<Media> media) {
-        Log.d(Config.LOGTAG, "place call media=" + media);
         if (CallIntegration.selfManaged()) {
             final var extras = new Bundle();
             extras.putParcelable(
@@ -231,6 +234,12 @@ public class CallIntegrationConnectionService extends ConnectionService {
                     Media.audioOnly(media)
                             ? VideoProfile.STATE_AUDIO_ONLY
                             : VideoProfile.STATE_BIDIRECTIONAL);
+            if (service.checkSelfPermission(Manifest.permission.MANAGE_OWN_CALLS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(service, R.string.no_permission_to_place_call, Toast.LENGTH_SHORT)
+                        .show();
+                return;
+            }
             service.getSystemService(TelecomManager.class)
                     .placeCall(CallIntegration.address(with), extras);
         } else {

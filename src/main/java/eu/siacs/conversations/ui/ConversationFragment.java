@@ -1981,26 +1981,22 @@ public class ConversationFragment extends XmppFragment
     }
 
     private boolean hasPermissions(int requestCode, List<String> permissions) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            final List<String> missingPermissions = new ArrayList<>();
-            for (String permission : permissions) {
-                if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU || Config.ONLY_INTERNAL_STORAGE) && permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    continue;
-                }
-                if (activity.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                    missingPermissions.add(permission);
-                }
+        final List<String> missingPermissions = new ArrayList<>();
+        for (String permission : permissions) {
+            if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU || Config.ONLY_INTERNAL_STORAGE) && permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                continue;
             }
-            if (missingPermissions.size() == 0) {
-                return true;
-            } else {
-                requestPermissions(
-                        missingPermissions.toArray(new String[0]),
-                        requestCode);
-                return false;
+            if (activity.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                missingPermissions.add(permission);
             }
-        } else {
+        }
+        if (missingPermissions.size() == 0) {
             return true;
+        } else {
+            requestPermissions(
+                    missingPermissions.toArray(new String[0]),
+                    requestCode);
+            return false;
         }
     }
 
