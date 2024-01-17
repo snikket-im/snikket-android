@@ -20,6 +20,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
@@ -33,6 +34,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CallIntegration extends Connection {
 
+    private static final int DEFAULT_VOLUME = 80;
+
+    private final Context context;
+
     private final AppRTCAudioManager appRTCAudioManager;
     private AudioDevice initialAudioDevice = null;
     private final AtomicBoolean initialAudioDeviceConfigured = new AtomicBoolean(false);
@@ -43,6 +48,7 @@ public class CallIntegration extends Connection {
     private Callback callback = null;
 
     public CallIntegration(final Context context) {
+        this.context = context.getApplicationContext();
         if (selfManaged()) {
             setConnectionProperties(Connection.PROPERTY_SELF_MANAGED);
             this.appRTCAudioManager = null;
@@ -297,7 +303,9 @@ public class CallIntegration extends Connection {
     @Override
     public void onStateChanged(final int state) {
         Log.d(Config.LOGTAG, "onStateChanged(" + state + ")");
-        if (state == STATE_DISCONNECTED) {
+        if (state == STATE_ACTIVE) {
+            playConnectedSound();
+        } else if (state == STATE_DISCONNECTED) {
             final var audioManager = this.appRTCAudioManager;
             if (audioManager != null) {
                 audioManager.executeOnMain(audioManager::stop);
@@ -305,9 +313,15 @@ public class CallIntegration extends Connection {
         }
     }
 
+    private void playConnectedSound() {
+        final var mediaPlayer = MediaPlayer.create(context, R.raw.connected);
+        mediaPlayer.setVolume(DEFAULT_VOLUME / 100f, DEFAULT_VOLUME / 100f);
+        mediaPlayer.start();
+    }
+
     public void success() {
         Log.d(Config.LOGTAG, "CallIntegration.success()");
-        final var toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+        final var toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, DEFAULT_VOLUME);
         toneGenerator.startTone(ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
         this.destroyWithDelay(new DisconnectCause(DisconnectCause.LOCAL, null), 375);
     }
@@ -323,7 +337,7 @@ public class CallIntegration extends Connection {
 
     public void error() {
         Log.d(Config.LOGTAG, "CallIntegration.error()");
-        final var toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
+        final var toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, DEFAULT_VOLUME);
         toneGenerator.startTone(ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
         this.destroyWithDelay(new DisconnectCause(DisconnectCause.ERROR, null), 375);
         this.destroyWith(new DisconnectCause(DisconnectCause.ERROR, null));
