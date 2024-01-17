@@ -34,7 +34,6 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.RtpSessionStatus;
-import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.services.CallIntegration;
 import eu.siacs.conversations.ui.RtpSessionActivity;
 import eu.siacs.conversations.xml.Element;
@@ -73,7 +72,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     public static final List<State> STATES_SHOWING_ONGOING_CALL =
             Arrays.asList(
-                    State.PROCEED, State.SESSION_INITIALIZED_PRE_APPROVED, State.SESSION_ACCEPTED);
+                    State.PROPOSED,
+                    State.PROCEED,
+                    State.SESSION_INITIALIZED_PRE_APPROVED,
+                    State.SESSION_ACCEPTED);
     private static final long BUSY_TIME_OUT = 30;
 
     private final WebRTCWrapper webRTCWrapper = new WebRTCWrapper(this);

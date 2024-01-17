@@ -532,6 +532,8 @@ public class RtpSessionActivity extends XmppActivity
             setWith(account.getRoster().getContact(with), null);
         } else if (Intent.ACTION_VIEW.equals(action)) {
             final String extraLastState = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
+            final String lastAction = intent.getStringExtra(EXTRA_LAST_ACTION);
+            final Set<Media> media = actionToMedia(lastAction);
             final RtpEndUserState state =
                     extraLastState == null ? null : RtpEndUserState.valueOf(extraLastState);
             if (state != null) {
@@ -548,10 +550,13 @@ public class RtpSessionActivity extends XmppActivity
                     .fireJingleRtpConnectionStateUpdates()) {
                 return;
             }
-            if (END_CARD.contains(state)
-                    || xmppConnectionService
-                            .getJingleConnectionManager()
-                            .hasMatchingProposal(account, with)) {
+            if (END_CARD.contains(state)) {
+                return;
+            }
+            if (xmppConnectionService
+                    .getJingleConnectionManager()
+                    .hasMatchingProposal(account, with)) {
+                putScreenInCallMode(media);
                 return;
             }
             Log.d(Config.LOGTAG, "restored state (" + state + ") was not an end card. finishing");
