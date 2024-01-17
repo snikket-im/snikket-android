@@ -1312,7 +1312,7 @@ public class RtpSessionActivity extends XmppActivity
         final Set<Media> media = actionToMedia(lastAction == null ? action : lastAction);
         this.rtpConnectionReference = null;
         Log.d(Config.LOGTAG, "attempting retry with " + with.toEscapedString());
-        CallIntegrationConnectionService.placeCall(this, account, with, media);
+        CallIntegrationConnectionService.placeCall(xmppConnectionService, account, with, media);
     }
 
     private void exit(final View view) {

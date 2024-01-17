@@ -18,6 +18,8 @@ import android.telecom.TelecomManager;
 import android.telecom.VideoProfile;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
@@ -44,6 +46,7 @@ public class CallIntegrationConnectionService extends ConnectionService {
 
     @Override
     public void onCreate() {
+        Log.d(Config.LOGTAG, "CallIntegrationService.onCreate()");
         super.onCreate();
         this.serviceFuture = ServiceConnectionService.bindService(this);
     }
@@ -62,38 +65,39 @@ public class CallIntegrationConnectionService extends ConnectionService {
         this.unbindService(serviceConnection);
     }
 
-    @Override
-    public Connection onCreateOutgoingConnection(
-            final PhoneAccountHandle phoneAccountHandle, final ConnectionRequest request) {
-        Log.d(Config.LOGTAG, "onCreateOutgoingConnection(" + request.getAddress() + ")");
-        final var uri = request.getAddress();
-        final var jid = Jid.ofEscaped(uri.getSchemeSpecificPart());
-        final var extras = request.getExtras();
-        final int videoState = extras.getInt(TelecomManager.EXTRA_START_CALL_WITH_VIDEO_STATE);
-        final Set<Media> media =
-                videoState == VideoProfile.STATE_AUDIO_ONLY
-                        ? ImmutableSet.of(Media.AUDIO)
-                        : ImmutableSet.of(Media.AUDIO, Media.VIDEO);
-        Log.d(Config.LOGTAG, "jid=" + jid);
-        Log.d(Config.LOGTAG, "phoneAccountHandle:" + phoneAccountHandle.getId());
-        Log.d(Config.LOGTAG, "media " + media);
-        final var service = ServiceConnectionService.get(this.serviceFuture);
+    private static Connection createOutgoingRtpConnection(
+            final XmppConnectionService service,
+            final String phoneAccountHandle,
+            final Jid with,
+            final Set<Media> media) {
         if (service == null) {
+            Log.d(
+                    Config.LOGTAG,
+                    "CallIntegrationConnection service was unable to bind to XmppConnectionService");
             return Connection.createFailedConnection(
                     new DisconnectCause(DisconnectCause.ERROR, "service connection not found"));
         }
-        final Account account = service.findAccountByUuid(phoneAccountHandle.getId());
-        final Intent intent = new Intent(this, RtpSessionActivity.class);
+        final var account = service.findAccountByUuid(phoneAccountHandle);
+        return createOutgoingRtpConnection(service, account, with, media);
+    }
+
+    private static Connection createOutgoingRtpConnection(
+            @NonNull final XmppConnectionService service,
+            @NonNull final Account account,
+            final Jid with,
+            final Set<Media> media) {
+        Log.d(Config.LOGTAG, "create outgoing rtp connection!");
+        final Intent intent = new Intent(service, RtpSessionActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
         intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, account.getJid().toEscapedString());
-        intent.putExtra(RtpSessionActivity.EXTRA_WITH, jid.toEscapedString());
+        intent.putExtra(RtpSessionActivity.EXTRA_WITH, with.toEscapedString());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         final CallIntegration callIntegration;
-        if (jid.isBareJid()) {
+        if (with.isBareJid()) {
             final var proposal =
                     service.getJingleConnectionManager()
-                            .proposeJingleRtpSession(account, jid, media);
+                            .proposeJingleRtpSession(account, with, media);
 
             intent.putExtra(
                     RtpSessionActivity.EXTRA_LAST_REPORTED_STATE,
@@ -110,16 +114,35 @@ public class CallIntegrationConnectionService extends ConnectionService {
             callIntegration = proposal.getCallIntegration();
         } else {
             final JingleRtpConnection jingleRtpConnection =
-                    service.getJingleConnectionManager().initializeRtpSession(account, jid, media);
+                    service.getJingleConnectionManager().initializeRtpSession(account, with, media);
             final String sessionId = jingleRtpConnection.getId().sessionId;
             intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, sessionId);
             callIntegration = jingleRtpConnection.getCallIntegration();
         }
-        Log.d(Config.LOGTAG, "start activity!");
-        startActivity(intent);
+        service.startActivity(intent);
         return callIntegration;
     }
 
+    @Override
+    public Connection onCreateOutgoingConnection(
+            final PhoneAccountHandle phoneAccountHandle, final ConnectionRequest request) {
+        Log.d(Config.LOGTAG, "onCreateOutgoingConnection(" + request.getAddress() + ")");
+        final var uri = request.getAddress();
+        final var jid = Jid.ofEscaped(uri.getSchemeSpecificPart());
+        final var extras = request.getExtras();
+        final int videoState = extras.getInt(TelecomManager.EXTRA_START_CALL_WITH_VIDEO_STATE);
+        final Set<Media> media =
+                videoState == VideoProfile.STATE_AUDIO_ONLY
+                        ? ImmutableSet.of(Media.AUDIO)
+                        : ImmutableSet.of(Media.AUDIO, Media.VIDEO);
+        Log.d(Config.LOGTAG, "jid=" + jid);
+        Log.d(Config.LOGTAG, "phoneAccountHandle:" + phoneAccountHandle.getId());
+        Log.d(Config.LOGTAG, "media " + media);
+        final var service = ServiceConnectionService.get(this.serviceFuture);
+        return createOutgoingRtpConnection(service, phoneAccountHandle.getId(), jid, media);
+    }
+
+    @Override
     public Connection onCreateIncomingConnection(
             final PhoneAccountHandle phoneAccountHandle, final ConnectionRequest request) {
         Log.d(Config.LOGTAG, "onCreateIncomingConnection()");
@@ -194,22 +217,42 @@ public class CallIntegrationConnectionService extends ConnectionService {
     }
 
     public static void placeCall(
-            final Context context, final Account account, final Jid with, final Set<Media> media) {
+            final XmppConnectionService service,
+            final Account account,
+            final Jid with,
+            final Set<Media> media) {
         Log.d(Config.LOGTAG, "place call media=" + media);
-        final var extras = new Bundle();
-        extras.putParcelable(
-                TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE, getHandle(context, account));
-        extras.putInt(
-                TelecomManager.EXTRA_START_CALL_WITH_VIDEO_STATE,
-                Media.audioOnly(media)
-                        ? VideoProfile.STATE_AUDIO_ONLY
-                        : VideoProfile.STATE_BIDIRECTIONAL);
-        context.getSystemService(TelecomManager.class)
-                .placeCall(CallIntegration.address(with), extras);
+        if (CallIntegration.selfManaged()) {
+            final var extras = new Bundle();
+            extras.putParcelable(
+                    TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE, getHandle(service, account));
+            extras.putInt(
+                    TelecomManager.EXTRA_START_CALL_WITH_VIDEO_STATE,
+                    Media.audioOnly(media)
+                            ? VideoProfile.STATE_AUDIO_ONLY
+                            : VideoProfile.STATE_BIDIRECTIONAL);
+            service.getSystemService(TelecomManager.class)
+                    .placeCall(CallIntegration.address(with), extras);
+        } else {
+            final var connection = createOutgoingRtpConnection(service, account, with, media);
+            if (connection != null) {
+                Log.d(
+                        Config.LOGTAG,
+                        "not adding outgoing call to TelecomManager on Android "
+                                + Build.VERSION.RELEASE);
+            }
+        }
     }
 
     public static void addNewIncomingCall(
             final Context context, final AbstractJingleConnection.Id id) {
+        if (CallIntegration.notSelfManaged()) {
+            Log.d(
+                    Config.LOGTAG,
+                    "not adding incoming call to TelecomManager on Android "
+                            + Build.VERSION.RELEASE);
+            return;
+        }
         final var phoneAccountHandle =
                 CallIntegrationConnectionService.getHandle(context, id.account);
         final var bundle = new Bundle();

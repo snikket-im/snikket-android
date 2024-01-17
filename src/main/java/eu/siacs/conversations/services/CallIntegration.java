@@ -381,6 +381,10 @@ public class CallIntegration extends Connection {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
+    public static boolean notSelfManaged() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.O;
+    }
+
     public void setInitialAudioDevice(final AudioDevice audioDevice) {
         Log.d(Config.LOGTAG, "setInitialAudioDevice(" + audioDevice + ")");
         this.initialAudioDevice = audioDevice;

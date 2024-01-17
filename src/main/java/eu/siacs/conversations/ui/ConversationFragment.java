@@ -1653,7 +1653,7 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void triggerRtpSession(final Account account, final Jid with, final String action) {
-        CallIntegrationConnectionService.placeCall(requireActivity(),account,with,RtpSessionActivity.actionToMedia(action));
+        CallIntegrationConnectionService.placeCall(activity.xmppConnectionService, account,with,RtpSessionActivity.actionToMedia(action));
     }
 
     private void handleAttachmentSelection(MenuItem item) {
