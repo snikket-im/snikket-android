@@ -54,9 +54,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class JingleConnectionManager extends AbstractConnectionManager {
-    static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE =
+    public static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE =
             Executors.newSingleThreadScheduledExecutor();
-    final ToneManager toneManager;
     private final HashMap<RtpSessionProposal, DeviceDiscoveryState> rtpSessionProposals =
             new HashMap<>();
     private final ConcurrentHashMap<AbstractJingleConnection.Id, AbstractJingleConnection>
@@ -67,7 +66,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
     public JingleConnectionManager(XmppConnectionService service) {
         super(service);
-        this.toneManager = new ToneManager(service);
     }
 
     static String nextRandomId() {
@@ -490,7 +488,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     proposal.callIntegration.busy();
                     writeLogMissedOutgoing(
                             account, proposal.with, proposal.sessionId, serverMsgId, timestamp);
-                    toneManager.transition(RtpEndUserState.DECLINED_OR_BUSY, proposal.media);
                     mXmppConnectionService.notifyJingleRtpConnectionUpdate(
                             account,
                             proposal.with,
@@ -667,7 +664,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
     private void retractSessionProposal(final RtpSessionProposal rtpSessionProposal) {
         final Account account = rtpSessionProposal.account;
-        toneManager.transition(RtpEndUserState.ENDED, rtpSessionProposal.media);
         Log.d(
                 Config.LOGTAG,
                 account.getJid().asBareJid()
@@ -713,7 +709,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     if (preexistingState != null
                             && preexistingState != DeviceDiscoveryState.FAILED) {
                         final RtpEndUserState endUserState = preexistingState.toEndUserState();
-                        toneManager.transition(endUserState, media);
                         mXmppConnectionService.notifyJingleRtpConnectionUpdate(
                                 account, with, proposal.sessionId, endUserState);
                         return proposal;

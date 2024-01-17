@@ -2,8 +2,6 @@ package eu.siacs.conversations.xmpp.jingle;
 
 import android.content.Context;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import com.google.common.base.Optional;
@@ -15,8 +13,6 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.services.AppRTCAudioManager;
-import eu.siacs.conversations.services.CallIntegration;
 import eu.siacs.conversations.services.XmppConnectionService;
 
 import org.webrtc.AudioSource;
@@ -52,7 +48,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-@SuppressWarnings("UnstableApiUsage")
 public class WebRTCWrapper {
 
     private static final String EXTENDED_LOGGING_TAG = WebRTCWrapper.class.getSimpleName();
@@ -205,7 +200,6 @@ public class WebRTCWrapper {
             };
     @Nullable private PeerConnectionFactory peerConnectionFactory = null;
     @Nullable private PeerConnection peerConnection = null;
-    private ToneManager toneManager = null;
     private Context context = null;
     private EglBase eglBase = null;
     private VideoSourceWrapper videoSourceWrapper;
@@ -222,8 +216,7 @@ public class WebRTCWrapper {
         }
     }
 
-    public void setup(final XmppConnectionService service)
-            throws InitializationException {
+    public void setup(final XmppConnectionService service) throws InitializationException {
         try {
             PeerConnectionFactory.initialize(
                     PeerConnectionFactory.InitializationOptions.builder(service)
@@ -238,7 +231,6 @@ public class WebRTCWrapper {
             throw new InitializationException("Unable to create EGL base", e);
         }
         this.context = service;
-        this.toneManager = service.getJingleConnectionManager().toneManager;
     }
 
     synchronized void initializePeerConnection(

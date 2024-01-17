@@ -1,6 +1,8 @@
 package eu.siacs.conversations.services;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.net.Uri;
 import android.os.Build;
 import android.telecom.CallAudioState;
@@ -20,11 +22,13 @@ import com.google.common.collect.Lists;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.Media;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CallIntegration extends Connection {
@@ -32,6 +36,7 @@ public class CallIntegration extends Connection {
     private final AppRTCAudioManager appRTCAudioManager;
     private AudioDevice initialAudioDevice = null;
     private final AtomicBoolean initialAudioDeviceConfigured = new AtomicBoolean(false);
+    private final AtomicBoolean delayedDestructionInitiated = new AtomicBoolean(false);
 
     private List<CallEndpoint> availableEndpoints = Collections.emptyList();
 
@@ -302,7 +307,9 @@ public class CallIntegration extends Connection {
 
     public void success() {
         Log.d(Config.LOGTAG, "CallIntegration.success()");
-        this.destroyWith(new DisconnectCause(DisconnectCause.LOCAL, null));
+        final var toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+        toneGenerator.startTone(ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
+        this.destroyWithDelay(new DisconnectCause(DisconnectCause.LOCAL, null), 375);
     }
 
     public void accepted() {
@@ -316,6 +323,9 @@ public class CallIntegration extends Connection {
 
     public void error() {
         Log.d(Config.LOGTAG, "CallIntegration.error()");
+        final var toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
+        toneGenerator.startTone(ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
+        this.destroyWithDelay(new DisconnectCause(DisconnectCause.ERROR, null), 375);
         this.destroyWith(new DisconnectCause(DisconnectCause.ERROR, null));
     }
 
@@ -332,16 +342,33 @@ public class CallIntegration extends Connection {
 
     public void busy() {
         Log.d(Config.LOGTAG, "CallIntegration.busy()");
-        this.destroyWith(new DisconnectCause(DisconnectCause.BUSY, null));
+        final var toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
+        toneGenerator.startTone(ToneGenerator.TONE_CDMA_NETWORK_BUSY, 2500);
+        this.destroyWithDelay(new DisconnectCause(DisconnectCause.BUSY, null), 2500);
+    }
+
+    private void destroyWithDelay(final DisconnectCause disconnectCause, final int delay) {
+        if (this.delayedDestructionInitiated.compareAndSet(false, true)) {
+            JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(
+                    () -> {
+                        this.setDisconnected(disconnectCause);
+                        this.destroy();
+                    },
+                    delay,
+                    TimeUnit.MILLISECONDS);
+        } else {
+            Log.w(Config.LOGTAG, "CallIntegration destruction has already been scheduled!");
+        }
     }
 
     private void destroyWith(final DisconnectCause disconnectCause) {
-        if (this.getState() == STATE_DISCONNECTED) {
+        if (this.getState() == STATE_DISCONNECTED || this.delayedDestructionInitiated.get()) {
             Log.d(Config.LOGTAG, "CallIntegration has already been destroyed");
             return;
         }
         this.setDisconnected(disconnectCause);
         this.destroy();
+        Log.d(Config.LOGTAG, "destroyed!");
     }
 
     public static Uri address(final Jid contact) {
@@ -349,7 +376,7 @@ public class CallIntegration extends Connection {
     }
 
     public void verifyDisconnected() {
-        if (this.getState() == STATE_DISCONNECTED) {
+        if (this.getState() == STATE_DISCONNECTED || this.delayedDestructionInitiated.get()) {
             return;
         }
         throw new AssertionError("CallIntegration has not been disconnected");

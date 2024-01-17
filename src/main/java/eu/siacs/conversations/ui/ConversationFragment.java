@@ -1633,7 +1633,7 @@ public class ConversationFragment extends XmppFragment
             activity.xmppConnectionService.updateAccount(account);
         }
         final Contact contact = conversation.getContact();
-        if (Config.USE_JINGLE_DIRECT_INIT && RtpCapability.jmiSupport(contact)) {
+        if (Config.USE_JINGLE_MESSAGE_INIT && RtpCapability.jmiSupport(contact)) {
             triggerRtpSession(contact.getAccount(), contact.getJid().asBareJid(), action);
         } else {
             final RtpCapability.Capability capability;

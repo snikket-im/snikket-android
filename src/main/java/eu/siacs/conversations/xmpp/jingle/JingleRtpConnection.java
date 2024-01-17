@@ -2727,7 +2727,6 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private void updateEndUserState() {
         final RtpEndUserState endUserState = getEndUserState();
-        jingleConnectionManager.toneManager.transition(isInitiator(), endUserState, getMedia());
         this.updateCallIntegrationState();
         xmppConnectionService.notifyJingleRtpConnectionUpdate(
                 id.account, id.with, id.sessionId, endUserState);

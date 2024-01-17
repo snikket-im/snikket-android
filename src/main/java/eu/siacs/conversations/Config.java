@@ -120,7 +120,7 @@ public final class Config {
     public static final boolean DISABLE_PROXY_LOOKUP =
             false; // disables STUN/TURN and Proxy65 look up (useful to debug IBB fallback)
     public static final boolean USE_DIRECT_JINGLE_CANDIDATES = true;
-    public static final boolean USE_JINGLE_DIRECT_INIT = true;
+    public static final boolean USE_JINGLE_MESSAGE_INIT = true;
     public static final boolean DISABLE_HTTP_UPLOAD = false;
     public static final boolean EXTENDED_SM_LOGGING = false; // log stanza counts
     public static final boolean BACKGROUND_STANZA_LOGGING =
