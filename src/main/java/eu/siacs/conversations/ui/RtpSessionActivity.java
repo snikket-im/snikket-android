@@ -95,6 +95,7 @@ public class RtpSessionActivity extends XmppActivity
                     RtpEndUserState.APPLICATION_ERROR,
                     RtpEndUserState.SECURITY_ERROR,
                     RtpEndUserState.DECLINED_OR_BUSY,
+                    RtpEndUserState.CONTACT_OFFLINE,
                     RtpEndUserState.CONNECTIVITY_ERROR,
                     RtpEndUserState.CONNECTIVITY_LOST_ERROR,
                     RtpEndUserState.RETRACTED);
@@ -881,6 +882,7 @@ public class RtpSessionActivity extends XmppActivity
             case FINDING_DEVICE -> setTitle(R.string.rtp_state_finding_device);
             case RINGING -> setTitle(R.string.rtp_state_ringing);
             case DECLINED_OR_BUSY -> setTitle(R.string.rtp_state_declined_or_busy);
+            case CONTACT_OFFLINE -> setTitle(R.string.rtp_state_contact_offline);
             case CONNECTIVITY_ERROR -> setTitle(R.string.rtp_state_connectivity_error);
             case CONNECTIVITY_LOST_ERROR -> setTitle(R.string.rtp_state_connectivity_lost_error);
             case RETRACTED -> setTitle(R.string.rtp_state_retracted);
@@ -974,7 +976,8 @@ public class RtpSessionActivity extends XmppActivity
             this.binding.acceptCall.setOnClickListener((v -> acceptContentAdd(contentAddition)));
             this.binding.acceptCall.setImageResource(R.drawable.ic_baseline_check_24);
             this.binding.acceptCall.setVisibility(View.VISIBLE);
-        } else if (state == RtpEndUserState.DECLINED_OR_BUSY) {
+        } else if (asList(RtpEndUserState.DECLINED_OR_BUSY, RtpEndUserState.CONTACT_OFFLINE)
+                .contains(state)) {
             this.binding.rejectCall.setContentDescription(getString(R.string.exit));
             this.binding.rejectCall.setOnClickListener(this::exit);
             this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);

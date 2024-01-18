@@ -83,6 +83,12 @@ public class Presences {
         }
     }
 
+    public boolean isEmpty() {
+        synchronized (this.presences) {
+            return this.presences.isEmpty();
+        }
+    }
+
     public String[] toResourceArray() {
         synchronized (this.presences) {
             final String[] presencesArray = new String[presences.size()];

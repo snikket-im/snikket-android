@@ -303,6 +303,7 @@ public class CallIntegration extends Connection {
     @Override
     public void onStateChanged(final int state) {
         Log.d(Config.LOGTAG, "onStateChanged(" + state + ")");
+        // TODO devices before selfManaged() will likely have to play their own ringback sound
         if (state == STATE_ACTIVE) {
             playConnectedSound();
         } else if (state == STATE_DISCONNECTED) {

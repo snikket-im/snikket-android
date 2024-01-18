@@ -97,15 +97,26 @@ public class CallIntegrationConnectionService extends ConnectionService {
         intent.putExtra(RtpSessionActivity.EXTRA_WITH, with.toEscapedString());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        final CallIntegration callIntegration;
+        final Connection callIntegration;
         if (with.isBareJid()) {
-            final var proposal =
-                    service.getJingleConnectionManager()
-                            .proposeJingleRtpSession(account, with, media);
-
-            intent.putExtra(
-                    RtpSessionActivity.EXTRA_LAST_REPORTED_STATE,
-                    RtpEndUserState.FINDING_DEVICE.toString());
+            final var contact = account.getRoster().getContact(with);
+            if (Config.JINGLE_MESSAGE_INIT_STRICT_OFFLINE_CHECK
+                    && contact.getPresences().isEmpty()) {
+                intent.putExtra(
+                        RtpSessionActivity.EXTRA_LAST_REPORTED_STATE,
+                        RtpEndUserState.CONTACT_OFFLINE.toString());
+                callIntegration =
+                        Connection.createFailedConnection(
+                                new DisconnectCause(DisconnectCause.ERROR, "contact is offline"));
+            } else {
+                final var proposal =
+                        service.getJingleConnectionManager()
+                                .proposeJingleRtpSession(account, with, media);
+                intent.putExtra(
+                        RtpSessionActivity.EXTRA_LAST_REPORTED_STATE,
+                        RtpEndUserState.FINDING_DEVICE.toString());
+                callIntegration = proposal.getCallIntegration();
+            }
             if (Media.audioOnly(media)) {
                 intent.putExtra(
                         RtpSessionActivity.EXTRA_LAST_ACTION,
@@ -115,7 +126,6 @@ public class CallIntegrationConnectionService extends ConnectionService {
                         RtpSessionActivity.EXTRA_LAST_ACTION,
                         RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
             }
-            callIntegration = proposal.getCallIntegration();
         } else {
             final JingleRtpConnection jingleRtpConnection =
                     service.getJingleConnectionManager().initializeRtpSession(account, with, media);

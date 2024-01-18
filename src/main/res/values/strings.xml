@@ -929,6 +929,7 @@
     <string name="rtp_state_finding_device">Discovering devices</string>
     <string name="rtp_state_ringing">Ringing</string>
     <string name="rtp_state_declined_or_busy">Busy</string>
+    <string name="rtp_state_contact_offline">Contact is not available</string>
     <string name="rtp_state_connectivity_error">Could not connect call</string>
     <string name="rtp_state_connectivity_lost_error">Connection lost</string>
     <string name="rtp_state_retracted">Retracted call</string>
