@@ -746,6 +746,16 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    public void sendJingleMessageFinish(
+            final Contact contact, final String sessionId, final Reason reason) {
+        final var account = contact.getAccount();
+        final MessagePacket messagePacket =
+                mXmppConnectionService
+                        .getMessageGenerator()
+                        .sessionFinish(contact.getJid(), sessionId, reason);
+        mXmppConnectionService.sendMessagePacket(account, messagePacket);
+    }
+
     public boolean hasMatchingProposal(final Account account, final Jid with) {
         synchronized (this.rtpSessionProposals) {
             for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry :

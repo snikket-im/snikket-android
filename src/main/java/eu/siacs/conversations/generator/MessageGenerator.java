@@ -21,6 +21,7 @@ import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
+import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public class MessageGenerator extends AbstractGenerator {
@@ -228,6 +229,20 @@ public class MessageGenerator extends AbstractGenerator {
         return packet;
     }
 
+    public MessagePacket sessionFinish(
+            final Jid with, final String sessionId, final Reason reason) {
+        final MessagePacket packet = new MessagePacket();
+        packet.setType(MessagePacket.TYPE_CHAT);
+        packet.setTo(with);
+        packet.setId(JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX + sessionId);
+        final Element finish = packet.addChild("finish", Namespace.JINGLE_MESSAGE);
+        finish.setAttribute("id", sessionId);
+        final Element reasonElement = finish.addChild("reason", Namespace.JINGLE);
+        reasonElement.addChild(reason.toString());
+        packet.addChild("store", "urn:xmpp:hints");
+        return packet;
+    }
+
     public MessagePacket sessionProposal(final JingleConnectionManager.RtpSessionProposal proposal) {
         final MessagePacket packet = new MessagePacket();
         packet.setType(MessagePacket.TYPE_CHAT); //we want to carbon copy those
@@ -238,7 +253,6 @@ public class MessageGenerator extends AbstractGenerator {
         for (final Media media : proposal.media) {
             propose.addChild("description", Namespace.JINGLE_APPS_RTP).setAttribute("media", media.toString());
         }
-
         packet.addChild("request", "urn:xmpp:receipts");
         packet.addChild("store", "urn:xmpp:hints");
         return packet;

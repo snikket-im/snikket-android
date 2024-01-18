@@ -53,7 +53,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
 
     private static final List<String> JINGLE_MESSAGE_ELEMENT_NAMES =
-            Arrays.asList("accept", "propose", "proceed", "reject", "retract", "ringing");
+            Arrays.asList("accept", "propose", "proceed", "reject", "retract", "ringing", "finish");
 
     public MessageParser(XmppConnectionService service) {
         super(service);
@@ -913,6 +913,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                     Log.d(Config.LOGTAG, "unable to find original rtp session message for received propose");
                                 }
 
+                            } else if ("finish".equals(action)) {
+                                Log.d(Config.LOGTAG,"received JMI 'finish' during MAM catch-up. Can be used to update success/failure and duration");
                             }
                         } else {
                             //MAM reloads (non catchups
