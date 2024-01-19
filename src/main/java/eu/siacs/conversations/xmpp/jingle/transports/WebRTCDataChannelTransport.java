@@ -174,7 +174,14 @@ public class WebRTCDataChannelTransport implements Transport {
     }
 
     private void onIceConnectionFailed() {
-        this.transportCallback.onTransportSetupFailed();
+        final var callback = this.transportCallback;
+        if (callback == null) {
+            Log.d(
+                    Config.LOGTAG,
+                    "not calling onTransportSetupFailed(). Transport likely has been replaced");
+            return;
+        }
+        callback.onTransportSetupFailed();
     }
 
     private void setDataChannel(final DataChannel dataChannel) {

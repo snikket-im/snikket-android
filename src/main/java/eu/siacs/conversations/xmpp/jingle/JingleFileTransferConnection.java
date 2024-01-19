@@ -212,7 +212,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
                 jinglePacket.setSecurity(
                         Iterables.getOnlyElement(contentMap.contents.keySet()), xmppAxolotlMessage);
             }
-            Log.d(Config.LOGTAG, "--> " + jinglePacket.toString());
             jinglePacket.setTo(id.with);
             xmppConnectionService.sendIqPacket(
                     id.account,
@@ -235,7 +234,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
     }
 
     private void receiveSessionAccept(final JinglePacket jinglePacket) {
-        Log.d(Config.LOGTAG, "receive session accept " + jinglePacket);
+        Log.d(Config.LOGTAG, "receive file transfer session accept");
         if (isResponder()) {
             receiveOutOfOrderAction(jinglePacket, JinglePacket.Action.SESSION_ACCEPT);
             return;
@@ -450,7 +449,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
         setLocalContentMap(contentMap);
         final var jinglePacket =
                 contentMap.toJinglePacket(JinglePacket.Action.SESSION_ACCEPT, id.sessionId);
-        Log.d(Config.LOGTAG, "--> " + jinglePacket.toString());
         send(jinglePacket);
         // this needs to come after session-accept or else our candidate-error might arrive first
         this.transport.connect();
@@ -537,7 +535,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
     }
 
     private void receiveSessionInfo(final JinglePacket jinglePacket) {
-        Log.d(Config.LOGTAG, "<-- " + jinglePacket);
         respondOk(jinglePacket);
         final var sessionInfo = FileTransferDescription.getSessionInfo(jinglePacket);
         if (sessionInfo instanceof FileTransferDescription.Checksum checksum) {
@@ -723,7 +720,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
             receiveOutOfOrderAction(jinglePacket, JinglePacket.Action.TRANSPORT_REPLACE);
             return;
         }
-        Log.d(Config.LOGTAG, "receive transport replace " + jinglePacket);
         final GenericTransportInfo transportInfo;
         try {
             transportInfo = FileTransferContentMap.of(jinglePacket).requireOnlyTransportInfo();
@@ -746,7 +742,16 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
     private void receiveTransportReplace(
             final JinglePacket jinglePacket, final GenericTransportInfo transportInfo) {
         respondOk(jinglePacket);
-        // TODO kill current transport
+        final Transport currentTransport = this.transport;
+        if (currentTransport != null) {
+            Log.d(
+                    Config.LOGTAG,
+                    "terminating "
+                            + currentTransport.getClass().getSimpleName()
+                            + " upon receiving transport-replace");
+            currentTransport.setTransportCallback(null);
+            currentTransport.terminate();
+        }
         final Transport nextTransport;
         try {
             nextTransport = setupTransport(transportInfo);
@@ -755,6 +760,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
             return;
         }
         this.transport = nextTransport;
+        Log.d(
+                Config.LOGTAG,
+                "replacing transport with " + nextTransport.getClass().getSimpleName());
         this.transport.setTransportCallback(this);
         final var transportInfoFuture = nextTransport.asTransportInfo();
         Futures.addCallback(
@@ -781,7 +789,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
                 contentMap
                         .transportInfo()
                         .toJinglePacket(JinglePacket.Action.TRANSPORT_ACCEPT, id.sessionId);
-        Log.d(Config.LOGTAG, "sending transport accept " + jinglePacket);
         send(jinglePacket);
         transport.connect();
     }
@@ -961,7 +968,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
                 new JinglePacket(JinglePacket.Action.SESSION_INFO, this.id.sessionId);
         jinglePacket.addJingleChild(sessionInfo.asElement());
         jinglePacket.setTo(this.id.with);
-        Log.d(Config.LOGTAG, "--> " + jinglePacket);
         send(jinglePacket);
     }
 
@@ -984,6 +990,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
         transport.terminate();
         if (isInitiator()) {
             this.transport = setupLastResortTransport();
+            Log.d(
+                    Config.LOGTAG,
+                    "replacing transport with " + this.transport.getClass().getSimpleName());
             this.transport.setTransportCallback(this);
             final var transportInfoFuture = this.transport.asTransportInfo();
             Futures.addCallback(
@@ -1013,7 +1022,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
                 contentMap
                         .transportInfo()
                         .toJinglePacket(JinglePacket.Action.TRANSPORT_REPLACE, id.sessionId);
-        Log.d(Config.LOGTAG, "sending transport replace " + jinglePacket);
         send(jinglePacket);
     }
 
@@ -1041,7 +1049,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
         }
         final JinglePacket jinglePacket =
                 transportInfo.toJinglePacket(JinglePacket.Action.TRANSPORT_INFO, id.sessionId);
-        Log.d(Config.LOGTAG, "--> " + jinglePacket);
         send(jinglePacket);
     }
 
