@@ -556,6 +556,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
     }
 
     private void receiveSessionTerminate(final JinglePacket jinglePacket) {
+        respondOk(jinglePacket);
         final JinglePacket.ReasonWrapper wrapper = jinglePacket.getReason();
         final State previous = this.state;
         Log.d(
@@ -745,16 +746,17 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
     private void receiveTransportReplace(
             final JinglePacket jinglePacket, final GenericTransportInfo transportInfo) {
         respondOk(jinglePacket);
-        final Transport transport;
+        // TODO kill current transport
+        final Transport nextTransport;
         try {
-            transport = setupTransport(transportInfo);
+            nextTransport = setupTransport(transportInfo);
         } catch (final RuntimeException e) {
             sendSessionTerminate(Reason.of(e), e.getMessage());
             return;
         }
-        this.transport = transport;
+        this.transport = nextTransport;
         this.transport.setTransportCallback(this);
-        final var transportInfoFuture = transport.asTransportInfo();
+        final var transportInfoFuture = nextTransport.asTransportInfo();
         Futures.addCallback(
                 transportInfoFuture,
                 new FutureCallback<>() {
