@@ -135,7 +135,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
             connections.put(id, connection);
 
-            CallIntegrationConnectionService.addNewIncomingCall(getXmppConnectionService(), id);
+            if (connection instanceof JingleRtpConnection) {
+                CallIntegrationConnectionService.addNewIncomingCall(getXmppConnectionService(), id);
+            }
 
             mXmppConnectionService.updateConversationUi();
             connection.deliverPacket(packet);
