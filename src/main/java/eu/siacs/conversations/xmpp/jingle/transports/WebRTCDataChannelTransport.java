@@ -191,7 +191,6 @@ public class WebRTCDataChannelTransport implements Transport {
                 new OnMessageObserver() {
                     @Override
                     public void onMessage(final DataChannel.Buffer buffer) {
-                        Log.d(Config.LOGTAG, "onMessage() (the other one)");
                         try {
                             WebRTCDataChannelTransport.this.writableByteChannel.write(buffer.data);
                         } catch (final IOException e) {
@@ -584,8 +583,7 @@ public class WebRTCDataChannelTransport implements Transport {
                         Log.d(Config.LOGTAG, "DataChannelWriter reached EOF");
                         return;
                     }
-                    dataChannel.send(
-                            new DataChannel.Buffer(ByteBuffer.wrap(buffer, 0, count), true));
+                    send(ByteBuffer.wrap(buffer, 0, count));
                 }
             } catch (final InterruptedException | InterruptedIOException e) {
                 if (isSending.get()) {
@@ -595,6 +593,16 @@ public class WebRTCDataChannelTransport implements Transport {
                 Log.d(Config.LOGTAG, "DataChannelWriter terminated", e);
             } finally {
                 Closeables.closeQuietly(inputStream);
+            }
+        }
+
+        private void send(final ByteBuffer byteBuffer) throws IOException {
+            try {
+                dataChannel.send(new DataChannel.Buffer(byteBuffer, true));
+            } catch (final IllegalStateException e) {
+                // dataChannel can be 'disposed' if we waited too long between `isSending` check and
+                // actually trying to send
+                throw new IOException(e);
             }
         }
 
