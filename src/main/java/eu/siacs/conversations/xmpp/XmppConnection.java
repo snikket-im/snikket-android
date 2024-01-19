@@ -2739,12 +2739,16 @@ public class XmppConnection implements Runnable {
                         Log.d(
                                 Config.LOGTAG,
                                 account.getJid().asBareJid()
-                                        + ": received ping response after sending initial presence");
+                                        + ": got ping response after sending initial presence");
                         XmppConnection.this.offlineMessagesRetrieved = true;
                     });
         } else {
             this.offlineMessagesRetrieved = true;
         }
+    }
+
+    public boolean isOfflineMessagesRetrieved() {
+        return this.offlineMessagesRetrieved;
     }
 
     private class MyKeyManager implements X509KeyManager {

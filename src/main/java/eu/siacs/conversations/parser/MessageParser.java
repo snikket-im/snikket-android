@@ -378,6 +378,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         final Element result = MessageArchiveService.Version.findResult(original);
         final String queryId = result == null ? null : result.getAttribute("queryid");
         final MessageArchiveService.Query query = queryId == null ? null : mXmppConnectionService.getMessageArchiveService().findQuery(queryId);
+        final boolean offlineMessagesRetrieved = account.getXmppConnection().isOfflineMessagesRetrieved();
         if (query != null && query.validFrom(original.getFrom())) {
             final Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", query.version.namespace);
             if (f == null) {
@@ -852,7 +853,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         if (sessionId == null) {
                             break;
                         }
-                        if (query == null) {
+                        if (query == null && offlineMessagesRetrieved) {
                             if (serverMsgId == null) {
                                 serverMsgId = extractStanzaId(account, packet);
                             }
@@ -873,24 +874,25 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                     && contact.showInContactList()) {
                                 processMessageReceipts(account, packet, remoteMsgId, null);
                             }
-                        } else if (query.isCatchup()) {
+                        } else if ((query != null && query.isCatchup()) || !offlineMessagesRetrieved) {
                             if ("propose".equals(action)) {
                                 final Element description = child.findChild("description");
-                                final String namespace = description == null ? null : description.getNamespace();
+                                final String namespace =
+                                        description == null ? null : description.getNamespace();
                                 if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
-                                    final Conversation c = mXmppConnectionService.findOrCreateConversation(account, counterpart.asBareJid(), false, false);
-                                    final Message preExistingMessage = c.findRtpSession(sessionId, status);
+                                    final Conversation c =
+                                            mXmppConnectionService.findOrCreateConversation(
+                                                    account, counterpart.asBareJid(), false, false);
+                                    final Message preExistingMessage =
+                                            c.findRtpSession(sessionId, status);
                                     if (preExistingMessage != null) {
                                         preExistingMessage.setServerMsgId(serverMsgId);
                                         mXmppConnectionService.updateMessage(preExistingMessage);
                                         break;
                                     }
-                                    final Message message = new Message(
-                                            c,
-                                            status,
-                                            Message.TYPE_RTP_SESSION,
-                                            sessionId
-                                    );
+                                    final Message message =
+                                            new Message(
+                                                    c, status, Message.TYPE_RTP_SESSION, sessionId);
                                     message.setServerMsgId(serverMsgId);
                                     message.setTime(timestamp);
                                     message.setBody(new RtpSessionStatus(false, 0).toString());
@@ -898,9 +900,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                     mXmppConnectionService.databaseBackend.createMessage(message);
                                 }
                             } else if ("proceed".equals(action)) {
-                                //status needs to be flipped to find the original propose
-                                final Conversation c = mXmppConnectionService.findOrCreateConversation(account, counterpart.asBareJid(), false, false);
-                                final int s = packet.fromAccount(account) ? Message.STATUS_RECEIVED : Message.STATUS_SEND;
+                                // status needs to be flipped to find the original propose
+                                final Conversation c =
+                                        mXmppConnectionService.findOrCreateConversation(
+                                                account, counterpart.asBareJid(), false, false);
+                                final int s =
+                                        packet.fromAccount(account)
+                                                ? Message.STATUS_RECEIVED
+                                                : Message.STATUS_SEND;
                                 final Message message = c.findRtpSession(sessionId, s);
                                 if (message != null) {
                                     message.setBody(new RtpSessionStatus(true, 0).toString());
@@ -910,11 +917,15 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                     message.setTime(timestamp);
                                     mXmppConnectionService.updateMessage(message, true);
                                 } else {
-                                    Log.d(Config.LOGTAG, "unable to find original rtp session message for received propose");
+                                    Log.d(
+                                            Config.LOGTAG,
+                                            "unable to find original rtp session message for received propose");
                                 }
 
                             } else if ("finish".equals(action)) {
-                                Log.d(Config.LOGTAG,"received JMI 'finish' during MAM catch-up. Can be used to update success/failure and duration");
+                                Log.d(
+                                        Config.LOGTAG,
+                                        "received JMI 'finish' during MAM catch-up. Can be used to update success/failure and duration");
                             }
                         } else {
                             //MAM reloads (non catchups
