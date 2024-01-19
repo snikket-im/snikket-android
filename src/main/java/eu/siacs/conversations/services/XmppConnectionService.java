@@ -371,14 +371,19 @@ public class XmppConnectionService extends Service {
             }
             final boolean flexible = account.getXmppConnection().getFeatures().flexibleOfflineMessageRetrieval();
             final boolean catchup = getMessageArchiveService().inCatchup(account);
+            final boolean trackOfflineMessageRetrieval;
             if (flexible && catchup && account.getXmppConnection().isMamPreferenceAlways()) {
+                trackOfflineMessageRetrieval = false;
                 sendIqPacket(account, mIqGenerator.purgeOfflineMessages(), (acc, packet) -> {
                     if (packet.getType() == IqPacket.TYPE.RESULT) {
                         Log.d(Config.LOGTAG, acc.getJid().asBareJid() + ": successfully purged offline messages");
                     }
                 });
+            } else {
+                trackOfflineMessageRetrieval = true;
             }
             sendPresence(account);
+            account.getXmppConnection().trackOfflineMessageRetrieval(trackOfflineMessageRetrieval);
             if (mPushManagementService.available(account)) {
                 mPushManagementService.registerPushTokenOnServer(account);
             }
