@@ -659,12 +659,17 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 }
             }
             if (matchingProposal != null) {
-                retractSessionProposal(matchingProposal);
+                retractSessionProposal(matchingProposal, false);
             }
         }
     }
 
     private void retractSessionProposal(final RtpSessionProposal rtpSessionProposal) {
+        retractSessionProposal(rtpSessionProposal, true);
+    }
+
+    private void retractSessionProposal(
+            final RtpSessionProposal rtpSessionProposal, final boolean refresh) {
         final Account account = rtpSessionProposal.account;
         Log.d(
                 Config.LOGTAG,
@@ -673,11 +678,13 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                         + rtpSessionProposal.with);
         this.rtpSessionProposals.remove(rtpSessionProposal);
         rtpSessionProposal.callIntegration.retracted();
-        mXmppConnectionService.notifyJingleRtpConnectionUpdate(
-                account,
-                rtpSessionProposal.with,
-                rtpSessionProposal.sessionId,
-                RtpEndUserState.RETRACTED);
+        if (refresh) {
+            mXmppConnectionService.notifyJingleRtpConnectionUpdate(
+                    account,
+                    rtpSessionProposal.with,
+                    rtpSessionProposal.sessionId,
+                    RtpEndUserState.RETRACTED);
+        }
         final MessagePacket messagePacket =
                 mXmppConnectionService.getMessageGenerator().sessionRetract(rtpSessionProposal);
         writeLogMissedOutgoing(
