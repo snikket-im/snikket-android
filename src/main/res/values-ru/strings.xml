@@ -55,7 +55,7 @@
     <string name="remove_bookmark_text">Вы хотите удалить %s из избранного? Беседы, связанные с данной закладкой, будут сохранены.</string>
     <string name="register_account">Создать новую учётную запись на сервере</string>
     <string name="change_password_on_server">Изменить пароль на сервере</string>
-    <string name="share_with">Поделиться с</string>
+    <string name="share_with">Поделиться с…</string>
     <string name="start_conversation">Начать беседу</string>
     <string name="invite_contact">Пригласить контакт</string>
     <string name="invite">Пригласить</string>
@@ -88,7 +88,9 @@
     <string name="clear_conversation_history">Очистить историю</string>
     <string name="clear_histor_msg">Вы хотите удалить все сообщения в этой беседе?\n\n<b>Внимание:</b> Данная операция не повлияет на сообщения, хранящиеся на других устройствах или серверах.</string>
     <string name="delete_file_dialog">Удалить файл</string>
-    <string name="delete_file_dialog_msg">Вы уверены, что хотите удалить этот файл?\n\n<b>Предупреждение:</b> Данная операция не удалит копии этого файла, хранящиеся на других устройствах или серверах.</string>
+    <string name="delete_file_dialog_msg">Вы уверены, что хотите удалить этот файл?
+\n
+\n<b>Предупреждение:</b> Данная операция не удалит копии этого файла, хранящиеся на других устройствах или серверах. </string>
     <string name="also_end_conversation">Закрыть эту беседу</string>
     <string name="choose_presence">Выберите устройство</string>
     <string name="send_unencrypted_message">Нешифрованное сообщение</string>
@@ -97,7 +99,7 @@
     <string name="send_omemo_message">OMEMO-зашифр. сообщение</string>
     <string name="send_omemo_x509_message">v\\OMEMO-зашифр. сообщение</string>
     <string name="send_pgp_message">OpenPGP зашифр. сообщение</string>
-    <string name="your_nick_has_been_changed">Имя уже используется</string>
+    <string name="your_nick_has_been_changed">Используется новое имя</string>
     <string name="send_unencrypted">Отправить в незашифрованном виде</string>
     <string name="decryption_failed">Расшифровка не удалась. Вероятно, что у вас нет надлежащего ключа.</string>
     <string name="openkeychain_required">Установите OpenKeychain</string>
@@ -128,7 +130,7 @@
     <string name="pref_notification_grace_period_summary">Время, на которое уведомления будут отключены, когда вы пользуетесь аккаунтом на другом устройстве.</string>
     <string name="pref_advanced_options">Дополнительно</string>
     <string name="pref_never_send_crash">Не отправлять отчёты об ошибках</string>
-    <string name="pref_never_send_crash_summary">Отправляя отчеты об ошибках, вы помогаете разработке этого приложения</string>
+    <string name="pref_never_send_crash_summary">Отправляя отчёты об ошибках, вы помогаете разработке Quicksy</string>
     <string name="pref_confirm_messages">Отчёты о получении</string>
     <string name="pref_confirm_messages_summary">Позволяет вашим контактам видеть, когда вы получили и прочитали их сообщения</string>
     <string name="pref_prevent_screenshots">Запретить скриншоты</string>
@@ -523,7 +525,9 @@
     <string name="large_images_only">Только большие изображения</string>
     <string name="battery_optimizations_enabled">Оптимизации энергопотребления разрешены</string>
     <string name="battery_optimizations_enabled_explained">Ваше устройство использует агрессивную оптимизацию энергопотребления %1$s, что может привести к задержке уведомлений и даже потере сообщений.\nРекомендуем её отключить.</string>
-    <string name="battery_optimizations_enabled_dialog">Ваше устройство использует агрессивную оптимизацию энергопотребления %1$s, что может привести к задержке уведомлений и даже потере сообщений.\nСейчас появится предложение её отключить.</string>
+    <string name="battery_optimizations_enabled_dialog">Ваше устройство использует агрессивную оптимизацию энергопотребления %1$s, что может привести к задержке уведомлений и даже потере сообщений.
+\n
+\nСейчас появится предложение её отключить.</string>
     <string name="disable">Запретить</string>
     <string name="selection_too_large">Выбранная область слишком большая</string>
     <string name="no_accounts">(Нет активированных учётных записей)</string>
@@ -532,7 +536,7 @@
     <string name="send_corrected_message">Отправить исправленное сообщение</string>
     <string name="no_keys_just_confirm">Вы уже пометили отпечаток этого человека как доверенный. Выбрав \"Готово\", вы только подтвердите, что %s является участником конференции.</string>
     <string name="this_account_is_disabled">Вы отключили эту учётную запись</string>
-    <string name="security_error_invalid_file_access">Ошибка безопасности: недействительный доступ к файлу</string>
+    <string name="security_error_invalid_file_access">Ошибка безопасности: недействительный доступ к файлу!</string>
     <string name="no_application_to_share_uri">Не найдено приложения для передачи URI</string>
     <string name="share_uri_with">Отправить URI…</string>
     <string name="agree_and_continue">Согласиться и продолжить</string>
@@ -543,7 +547,7 @@
     <string name="use_own_provider">Использовать свой провайдер</string>
     <string name="pick_your_username">Выберите имя пользователя</string>
     <string name="pref_manually_change_presence">Управлять доступностью вручную</string>
-    <string name="pref_manually_change_presence_summary">Устанавливать свою доступность при редактировании статусного сообщения</string>
+    <string name="pref_manually_change_presence_summary">Устанавливать свою доступность при редактировании статусного сообщения.</string>
     <string name="status_message">Статусное собщение</string>
     <string name="presence_chat">Свободен для общения</string>
     <string name="presence_online">В сети</string>
@@ -615,7 +619,7 @@
     <string name="invalid_barcode">Некорректный 2D штрихкод</string>
     <string name="pref_clean_cache_summary">Очистить кэш (используется камерой)</string>
     <string name="pref_clean_cache">Очистить кэш</string>
-    <string name="pref_clean_private_storage">Очистить приватное хранилище.</string>
+    <string name="pref_clean_private_storage">Очистить приватное хранилище</string>
     <string name="pref_clean_private_storage_summary">Очистить закрытое хранилище, где хранятся файлы (Файлы можно заново скачать с сервера)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Открывать ссылки из надёжного источника</string>
     <string name="verifying_omemo_keys_trusted_source">Вы подтверждаете OMEMO-ключи %1$s после нажатия на ссылку. Это безопасно только если вы перешли по ссылке из доверенного источника, где только %2$s мог разместить эту ссылку.</string>
@@ -623,7 +627,8 @@
     <string name="show_inactive_devices">Показывать неактивные</string>
     <string name="hide_inactive_devices">Скрыть неактивные</string>
     <string name="distrust_omemo_key">Прекратить доверять устройству</string>
-    <string name="distrust_omemo_key_text">Вы действительно хотите удалить устройство из доверенных?\Устройство и сообщения, полученные с этого устройства, будут помечаться как недоверенные.</string>
+    <string name="distrust_omemo_key_text">Вы действительно хотите удалить устройство из доверенных?
+\nЭто устройство и сообщения, полученные с него, будут помечаться как недоверенные.</string>
     <plurals name="seconds">
         <item quantity="one">%d секунда</item>
         <item quantity="few">%d секунды</item>
@@ -666,7 +671,7 @@
     <string name="not_fetching_history_retention_period">Не загружаем сообщения, в соответствии с локальным сроком хранения.</string>
     <string name="transcoding_video">Сжимание видео</string>
     <string name="corresponding_conversations_closed">Соответствующие беседы закрыты.</string>
-    <string name="contact_blocked_past_tense">Контакт заблокирован</string>
+    <string name="contact_blocked_past_tense">Контакт заблокирован.</string>
     <string name="pref_notifications_from_strangers">Уведомления от неизвестных контактов</string>
     <string name="pref_notifications_from_strangers_summary">Уведомлять о сообщениях и звонках от незнакомых контактов.</string>
     <string name="received_message_from_stranger">Получено сообщение от неизвестного контакта</string>
@@ -827,7 +832,7 @@
     <string name="try_again_in_x">Пожалуйста, попробуйте еще раз через %s</string>
     <string name="rate_limited">У вас есть ограничение скорости</string>
     <string name="too_many_attempts">Слишком много попыток</string>
-    <string name="the_app_is_out_of_date">Вы используете устаревшую версию приложения</string>
+    <string name="the_app_is_out_of_date">Вы используете устаревшую версию этого приложения.</string>
     <string name="update">Обновить</string>
     <string name="logged_in_with_another_device">Этот номер телефона в данный момент авторизирован на другом устройстве.</string>
     <string name="enter_your_name_instructions">Пожалуйста, введите ваше имя, чтобы другие люди, у которых нет вас в списке контактов, знали кто вы.</string>
@@ -865,7 +870,7 @@
     <string name="channel_already_exists">Этот канал уже существует</string>
     <string name="joined_an_existing_channel">Вы присоединились к существующему каналу</string>
     <string name="unable_to_set_channel_configuration">Не удалось сохранить настройки канала</string>
-    <string name="allow_participants_to_edit_subject">Разрешить всем редактировать тему.</string>
+    <string name="allow_participants_to_edit_subject">Разрешить всем редактировать тему</string>
     <string name="allow_participants_to_invite_others">Разрешить всем приглашать других</string>
     <string name="anyone_can_edit_subject">Кто угодно может редактировать тему.</string>
     <string name="owners_can_edit_subject">Владельцы могут редактировать тему.</string>
@@ -993,7 +998,7 @@
     <string name="rtp_state_reconnecting">Переподключение</string>
     <string name="no_xmpp_adddress_found">Адрес XMPP не найден</string>
     <string name="pref_up_push_account_title">Учётная запись XMPP</string>
-    <string name="conference_technical_problems">Вы покинули эту беседу из-за технических причин</string>
+    <string name="conference_technical_problems">Вы покинули данный групповой чат по техническим причинам</string>
     <string name="rtp_state_content_add">Добавить дополнительные треки\?</string>
     <string name="reconnecting_call">Переподключение к звонку</string>
     <string name="reconnecting_video_call">Переподключение к видеовызову</string>
@@ -1010,7 +1015,7 @@
     <string name="pref_autojoin">Синхронизировать закладки</string>
     <string name="pref_autojoin_summary">Устанавливать флаг \"автоприсоединение\" при входе в- и выходе из MUC, и реагировать на изменения от других клиентов.</string>
     <string name="search_group_chats">Поиск по групповым беседам</string>
-    <string name="download_failed_invalid_file">Загрузка провалена: неверный файл</string>
+    <string name="download_failed_invalid_file">Загрузка неудачна: Неизвестный файл</string>
     <string name="rtp_state_content_add_video">Перейти на видеовызов\?</string>
     <string name="outgoing_call_duration_timestamp">Исходящий вызов (%s) · %s</string>
     <string name="incoming_call_duration_timestamp">Входящий вызов (%s) · %s</string>
