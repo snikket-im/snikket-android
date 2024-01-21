@@ -122,6 +122,7 @@ public class RtpSessionActivity extends XmppActivity
             new ImmutableList.Builder<RtpEndUserState>()
                     .add(RtpEndUserState.FINDING_DEVICE)
                     .add(RtpEndUserState.RINGING)
+                    .add(RtpEndUserState.ACCEPTING_CALL)
                     .add(RtpEndUserState.CONNECTING)
                     .addAll(STATES_CONSIDERED_CONNECTED)
                     .build();
