@@ -30,6 +30,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.CryptoFailedException;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
@@ -68,7 +69,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class JingleRtpConnection extends AbstractJingleConnection
-        implements WebRTCWrapper.EventCallback, CallIntegration.Callback {
+        implements WebRTCWrapper.EventCallback, CallIntegration.Callback, OngoingRtpSession {
 
     public static final List<State> STATES_SHOWING_ONGOING_CALL =
             Arrays.asList(
@@ -2645,6 +2646,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         return this.sessionDuration.elapsed(TimeUnit.MILLISECONDS);
     }
 
+    @Override
     public CallIntegration getCallIntegration() {
         return this.callIntegration;
     }
@@ -2868,6 +2870,21 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private boolean remoteHasSdpOfferAnswer() {
         return remoteHasFeature(Namespace.SDP_OFFER_ANSWER);
+    }
+
+    @Override
+    public Account getAccount() {
+        return id.account;
+    }
+
+    @Override
+    public Jid getWith() {
+        return id.with;
+    }
+
+    @Override
+    public String getSessionId() {
+        return id.sessionId;
     }
 
     private interface OnIceServersDiscovered {

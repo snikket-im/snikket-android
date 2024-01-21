@@ -601,11 +601,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     public Optional<OngoingRtpSession> getOngoingRtpConnection(final Contact contact) {
         for (final Map.Entry<AbstractJingleConnection.Id, AbstractJingleConnection> entry :
                 this.connections.entrySet()) {
-            if (entry.getValue() instanceof JingleRtpConnection) {
+            if (entry.getValue() instanceof JingleRtpConnection jingleRtpConnection) {
                 final AbstractJingleConnection.Id id = entry.getKey();
                 if (id.account == contact.getAccount()
                         && id.with.asBareJid().equals(contact.getJid().asBareJid())) {
-                    return Optional.of(id);
+                    return Optional.of(jingleRtpConnection);
                 }
             }
         }
@@ -765,9 +765,22 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         mXmppConnectionService.sendMessagePacket(account, messagePacket);
     }
 
+    public Optional<RtpSessionProposal> matchingProposal(final Account account, final Jid with) {
+        synchronized (this.rtpSessionProposals) {
+            for (final Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry :
+                    this.rtpSessionProposals.entrySet()) {
+                final RtpSessionProposal proposal = entry.getKey();
+                if (proposal.account == account && with.asBareJid().equals(proposal.with)) {
+                    return Optional.of(proposal);
+                }
+            }
+        }
+        return Optional.absent();
+    }
+
     public boolean hasMatchingProposal(final Account account, final Jid with) {
         synchronized (this.rtpSessionProposals) {
-            for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry :
+            for (final Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry :
                     this.rtpSessionProposals.entrySet()) {
                 final var state = entry.getValue();
                 final RtpSessionProposal proposal = entry.getKey();
@@ -1102,8 +1115,14 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             return sessionId;
         }
 
+        @Override
         public CallIntegration getCallIntegration() {
             return this.callIntegration;
+        }
+
+        @Override
+        public Set<Media> getMedia() {
+            return this.media;
         }
     }
 
@@ -1126,8 +1145,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
         @Override
         public void onAudioDeviceChanged(
-                CallIntegration.AudioDevice selectedAudioDevice,
-                Set<CallIntegration.AudioDevice> availableAudioDevices) {}
+                final CallIntegration.AudioDevice selectedAudioDevice,
+                final Set<CallIntegration.AudioDevice> availableAudioDevices) {
+            mXmppConnectionService.notifyJingleRtpConnectionUpdate(
+                    selectedAudioDevice, availableAudioDevices);
+        }
 
         @Override
         public void onCallIntegrationReject() {}
