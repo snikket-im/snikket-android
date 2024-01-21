@@ -159,14 +159,15 @@ public class CallIntegration extends Connection {
 
     public void setAudioDeviceWhenAvailable(final AudioDevice audioDevice) {
         final var available = getAudioDevices();
-        if (available.contains(audioDevice)) {
+        if (available.contains(audioDevice) && !available.contains(AudioDevice.BLUETOOTH)) {
             this.setAudioDevice(audioDevice);
         } else {
             Log.d(
                     Config.LOGTAG,
                     "application requested to switch to "
                             + audioDevice
-                            + " but device was not available");
+                            + " but we won't because available devices are "
+                            + available);
         }
     }
 
@@ -407,13 +408,14 @@ public class CallIntegration extends Connection {
             final Set<CallIntegration.AudioDevice> availableAudioDevices) {
         if (this.initialAudioDevice != null
                 && this.initialAudioDeviceConfigured.compareAndSet(false, true)) {
-            if (availableAudioDevices.contains(this.initialAudioDevice)) {
+            if (availableAudioDevices.contains(this.initialAudioDevice)
+                    && !availableAudioDevices.contains(AudioDevice.BLUETOOTH)) {
                 setAudioDevice(this.initialAudioDevice);
                 Log.d(Config.LOGTAG, "configured initial audio device");
             } else {
                 Log.d(
                         Config.LOGTAG,
-                        "initial audio device not available. available devices: "
+                        "not setting initial audio device. available devices: "
                                 + availableAudioDevices);
             }
         }
