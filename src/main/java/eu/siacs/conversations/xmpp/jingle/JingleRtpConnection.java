@@ -1986,6 +1986,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     protected void sendSessionTerminate(final Reason reason, final String text) {
         sendSessionTerminate(reason, text, this::writeLogMessage);
+        sendJingleMessageFinish(reason);
     }
 
     private void sendTransportInfo(
@@ -2356,6 +2357,15 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
         messagePacket.addChild("store", "urn:xmpp:hints");
         xmppConnectionService.sendMessagePacket(id.account, messagePacket);
+    }
+
+    private void sendJingleMessageFinish(final Reason reason) {
+        final var account = id.getAccount();
+        final MessagePacket messagePacket =
+                xmppConnectionService
+                        .getMessageGenerator()
+                        .sessionFinish(id.with, id.sessionId, reason);
+        xmppConnectionService.sendMessagePacket(account, messagePacket);
     }
 
     private boolean isOmemoEnabled() {

@@ -234,7 +234,6 @@ public class MessageGenerator extends AbstractGenerator {
         final MessagePacket packet = new MessagePacket();
         packet.setType(MessagePacket.TYPE_CHAT);
         packet.setTo(with);
-        packet.setId(JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX + sessionId);
         final Element finish = packet.addChild("finish", Namespace.JINGLE_MESSAGE);
         finish.setAttribute("id", sessionId);
         final Element reasonElement = finish.addChild("reason", Namespace.JINGLE);
