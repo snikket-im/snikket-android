@@ -1156,5 +1156,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
         @Override
         public void onCallIntegrationAnswer() {}
+
+        @Override
+        public void onCallIntegrationSilence() {
+
+        }
     }
 }

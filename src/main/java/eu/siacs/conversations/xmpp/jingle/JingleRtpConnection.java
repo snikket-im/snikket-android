@@ -2719,6 +2719,11 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     @Override
+    public void onCallIntegrationSilence() {
+        xmppConnectionService.getNotificationService().stopSoundAndVibration();
+    }
+
+    @Override
     public void onAudioDeviceChanged(
             final CallIntegration.AudioDevice selectedAudioDevice,
             final Set<CallIntegration.AudioDevice> availableAudioDevices) {

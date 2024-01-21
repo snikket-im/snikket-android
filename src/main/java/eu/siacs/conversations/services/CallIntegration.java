@@ -301,6 +301,11 @@ public class CallIntegration extends Connection {
     }
 
     @Override
+    public void onSilence() {
+        this.callback.onCallIntegrationSilence();
+    }
+
+    @Override
     public void onStateChanged(final int state) {
         Log.d(Config.LOGTAG, "onStateChanged(" + state + ")");
         // TODO devices before selfManaged() will likely have to play their own ringback sound
@@ -473,5 +478,7 @@ public class CallIntegration extends Connection {
         void onCallIntegrationReject();
 
         void onCallIntegrationAnswer();
+
+        void onCallIntegrationSilence();
     }
 }
