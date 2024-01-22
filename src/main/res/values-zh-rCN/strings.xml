@@ -554,7 +554,7 @@
     <string name="this_field_is_required">此字段是必需的</string>
     <string name="correct_message">更正消息</string>
     <string name="send_corrected_message">发送更正后的消息</string>
-    <string name="no_keys_just_confirm">您已经验证了此用户的指纹。选择“完成”确认 %s 是此群聊的一员。</string>
+    <string name="no_keys_just_confirm">您已信任此人的指纹。选择“完成”即表示您确认 %s 是此群聊的一员。</string>
     <string name="this_account_is_disabled">您已禁用了此账号</string>
     <string name="security_error_invalid_file_access">安全错误：文件访问无效！</string>
     <string name="no_application_to_share_uri">未找到可以分享 URI 的应用</string>
