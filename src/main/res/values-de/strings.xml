@@ -596,7 +596,7 @@
     <string name="pref_delete_omemo_identities_summary">Erzeuge neue OMEMO-Schlüssel. Alle deine Kontakte müssen sie erneut verifizieren. Verwende dies nur als letztes Mittel.</string>
     <string name="delete_selected_keys">Ausgewählte Schlüssel löschen</string>
     <string name="error_publish_avatar_offline">Du musst verbunden sein, um deinen Profilbild zu veröffentlichen.</string>
-    <string name="show_error_message">Zeige Fehlermeldung</string>
+    <string name="show_error_message">Fehlermeldung anzeigen</string>
     <string name="error_message">Fehlermeldung</string>
     <string name="data_saver_enabled">Datensparmodus aktiv</string>
     <string name="data_saver_enabled_explained">Dein Betriebssystem verhindert, dass %1$s im Hintergrund auf das Internet zugreift. Um Benachrichtigungen erhalten zu können, solltest du %1$s den Zugang erlauben, wenn der Datensparmodus aktiv ist.\n%1$s wird dennoch versuchen, so viele Daten wie möglich einzusparen.</string>
@@ -1021,5 +1021,5 @@
     <string name="account_state_logged_out">Abgemeldet</string>
     <string name="unverified_devices">Du verwendest nicht verifizierte Geräte. Scanne den 2D-Barcode auf deinen anderen Geräten, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
     <string name="report_spam">Spam melden</string>
-    <string name="report_spam_and_block">Spam melden und Spammer blockieren</string>
+    <string name="report_spam_and_block">Spam melden und Spammer sperren</string>
 </resources>
