@@ -1232,52 +1232,68 @@ public class XmppConnection implements Runnable {
                             + "'");
             return;
         }
-        if (packet instanceof JinglePacket) {
+        if (packet instanceof JinglePacket jinglePacket && isBound) {
             if (this.jingleListener != null) {
-                this.jingleListener.onJinglePacketReceived(account, (JinglePacket) packet);
+                this.jingleListener.onJinglePacketReceived(account, jinglePacket);
             }
         } else {
-            OnIqPacketReceived callback = null;
-            synchronized (this.packetCallbacks) {
-                final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple =
-                        packetCallbacks.get(packet.getId());
-                if (packetCallbackDuple != null) {
-                    // Packets to the server should have responses from the server
-                    if (packetCallbackDuple.first.toServer(account)) {
-                        if (packet.fromServer(account)) {
-                            callback = packetCallbackDuple.second;
-                            packetCallbacks.remove(packet.getId());
-                        } else {
-                            Log.e(
-                                    Config.LOGTAG,
-                                    account.getJid().asBareJid().toString()
-                                            + ": ignoring spoofed iq packet");
-                        }
-                    } else {
-                        if (packet.getFrom() != null
-                                && packet.getFrom().equals(packetCallbackDuple.first.getTo())) {
-                            callback = packetCallbackDuple.second;
-                            packetCallbacks.remove(packet.getId());
-                        } else {
-                            Log.e(
-                                    Config.LOGTAG,
-                                    account.getJid().asBareJid().toString()
-                                            + ": ignoring spoofed iq packet");
-                        }
-                    }
-                } else if (packet.getType() == IqPacket.TYPE.GET
-                        || packet.getType() == IqPacket.TYPE.SET) {
-                    callback = this.unregisteredIqListener;
-                }
+            final OnIqPacketReceived callback = getIqPacketReceivedCallback(packet);
+            if (callback == null) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid().toString()
+                                + ": no callback registered for IQ from "
+                                + packet.getFrom());
+                return;
             }
-            if (callback != null) {
-                try {
-                    callback.onIqPacketReceived(account, packet);
-                } catch (StateChangingError error) {
-                    throw new StateChangingException(error.state);
+            try {
+                callback.onIqPacketReceived(account, packet);
+            } catch (final StateChangingError error) {
+                throw new StateChangingException(error.state);
+            }
+        }
+    }
+
+    private OnIqPacketReceived getIqPacketReceivedCallback(final IqPacket stanza)
+            throws StateChangingException {
+        final boolean isRequest =
+                stanza.getType() == IqPacket.TYPE.GET || stanza.getType() == IqPacket.TYPE.SET;
+        if (isRequest) {
+            if (isBound) {
+                return this.unregisteredIqListener;
+            } else {
+                throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            }
+        } else {
+            synchronized (this.packetCallbacks) {
+                final var pair = packetCallbacks.get(stanza.getId());
+                if (pair == null) {
+                    return null;
+                }
+                if (pair.first.toServer(account)) {
+                    if (stanza.fromServer(account)) {
+                        packetCallbacks.remove(stanza.getId());
+                        return pair.second;
+                    } else {
+                        Log.e(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid().toString()
+                                        + ": ignoring spoofed iq packet");
+                    }
+                } else {
+                    if (stanza.getFrom() != null && stanza.getFrom().equals(pair.first.getTo())) {
+                        packetCallbacks.remove(stanza.getId());
+                        return pair.second;
+                    } else {
+                        Log.e(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid().toString()
+                                        + ": ignoring spoofed iq packet");
+                    }
                 }
             }
         }
+        return null;
     }
 
     private void processMessage(final Tag currentTag) throws IOException {
