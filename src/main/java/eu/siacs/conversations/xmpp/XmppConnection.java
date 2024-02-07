@@ -1232,6 +1232,12 @@ public class XmppConnection implements Runnable {
                             + "'");
             return;
         }
+        if (Thread.currentThread().isInterrupted()) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid() + "Not processing iq. Thread was interrupted");
+            return;
+        }
         if (packet instanceof JinglePacket jinglePacket && isBound) {
             if (this.jingleListener != null) {
                 this.jingleListener.onJinglePacketReceived(account, jinglePacket);
@@ -1308,11 +1314,18 @@ public class XmppConnection implements Runnable {
                             + "'");
             return;
         }
+        if (Thread.currentThread().isInterrupted()) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + "Not processing message. Thread was interrupted");
+            return;
+        }
         this.messageListener.onMessagePacketReceived(account, packet);
     }
 
     private void processPresence(final Tag currentTag) throws IOException {
-        PresencePacket packet = (PresencePacket) processPacket(currentTag, PACKET_PRESENCE);
+        final PresencePacket packet = (PresencePacket) processPacket(currentTag, PACKET_PRESENCE);
         if (!packet.valid()) {
             Log.e(
                     Config.LOGTAG,
@@ -1321,6 +1334,13 @@ public class XmppConnection implements Runnable {
                             + "' to='"
                             + packet.getTo()
                             + "'");
+            return;
+        }
+        if (Thread.currentThread().isInterrupted()) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + "Not processing presence. Thread was interrupted");
             return;
         }
         this.presenceListener.onPresencePacketReceived(account, packet);
