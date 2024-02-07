@@ -211,6 +211,25 @@ public class CallIntegrationConnectionService extends ConnectionService {
     }
 
     public static void registerPhoneAccount(final Context context, final Account account) {
+        try {
+            registerPhoneAccountOrThrow(context, account);
+        } catch (final IllegalArgumentException e) {
+            Toast.makeText(context, R.string.call_integration_not_available, Toast.LENGTH_LONG)
+                    .show();
+        }
+    }
+
+    public static void registerPhoneAccountOrThrow(final Context context, final Account account) {
+        final var handle = getHandle(context, account);
+        final var telecomManager = context.getSystemService(TelecomManager.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (telecomManager.getOwnSelfManagedPhoneAccounts().contains(handle)) {
+                Log.d(
+                        Config.LOGTAG,
+                        "a phone account for " + account.getJid().asBareJid() + " already exists");
+                return;
+            }
+        }
         final var builder =
                 PhoneAccount.builder(getHandle(context, account), account.getJid().asBareJid());
         builder.setSupportedUriSchemes(Collections.singletonList("xmpp"));
@@ -220,14 +239,21 @@ public class CallIntegrationConnectionService extends ConnectionService {
                             | PhoneAccount.CAPABILITY_SUPPORTS_VIDEO_CALLING);
         }
         final var phoneAccount = builder.build();
-
-        context.getSystemService(TelecomManager.class).registerPhoneAccount(phoneAccount);
+        telecomManager.registerPhoneAccount(phoneAccount);
     }
 
     public static void registerPhoneAccounts(
             final Context context, final Collection<Account> accounts) {
         for (final Account account : accounts) {
-            registerPhoneAccount(context, account);
+            try {
+                registerPhoneAccountOrThrow(context, account);
+            } catch (final IllegalArgumentException e) {
+                Log.w(
+                        Config.LOGTAG,
+                        "could not register phone account for " + account.getJid().asBareJid(),
+                        e);
+                return;
+            }
         }
     }
 
