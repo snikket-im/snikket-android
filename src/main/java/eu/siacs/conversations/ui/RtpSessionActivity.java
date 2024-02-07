@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.opengl.GLException;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -836,8 +837,12 @@ public class RtpSessionActivity extends XmppActivity
         surfaceViewRenderer.setVisibility(View.VISIBLE);
         try {
             surfaceViewRenderer.init(requireRtpConnection().getEglBaseContext(), null);
-        } catch (final IllegalStateException e) {
-            // Log.d(Config.LOGTAG, "SurfaceViewRenderer was already initialized");
+        } catch (final IllegalStateException ignored) {
+            // SurfaceViewRenderer was already initialized
+        } catch (final RuntimeException e) {
+            if (Throwables.getRootCause(e) instanceof GLException glException) {
+                Log.w(Config.LOGTAG, "could not set up hardware renderer", glException);
+            }
         }
         surfaceViewRenderer.setEnableHardwareScaler(true);
     }
