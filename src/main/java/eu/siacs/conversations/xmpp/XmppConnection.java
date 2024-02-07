@@ -526,8 +526,7 @@ public class XmppConnection implements Runnable {
         tagReader.setInputStream(socket.getInputStream());
         tagWriter.beginDocument();
         final boolean quickStart;
-        if (socket instanceof SSLSocket) {
-            final SSLSocket sslSocket = (SSLSocket) socket;
+        if (socket instanceof SSLSocket sslSocket) {
             SSLSockets.log(account, sslSocket);
             quickStart = establishStream(SSLSockets.version(sslSocket));
         } else {
@@ -537,7 +536,16 @@ public class XmppConnection implements Runnable {
         if (Thread.currentThread().isInterrupted()) {
             throw new InterruptedException();
         }
-        final boolean success = tag != null && tag.isStart("stream", Namespace.STREAMS);
+        if (tag == null) {
+            return false;
+        }
+        final boolean success = tag.isStart("stream", Namespace.STREAMS);
+        if (success) {
+            final var from = tag.getAttribute("from");
+            if (from == null || !from.equals(account.getServer())) {
+                throw new StateChangingException(Account.State.HOST_UNKNOWN);
+            }
+        }
         if (success && quickStart) {
             this.quickStartInProgress = true;
         }
