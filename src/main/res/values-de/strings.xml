@@ -320,8 +320,8 @@
     <string name="jabber_id_copied_to_clipboard">XMPP-Adresse in Zwischenablage kopiert</string>
     <string name="error_message_copied_to_clipboard">Fehlermeldung in Zwischenablage kopiert</string>
     <string name="web_address">Internetadresse</string>
-    <string name="scan_qr_code">Barcode scannen</string>
-    <string name="show_qr_code">Barcode anzeigen</string>
+    <string name="scan_qr_code">QR-Code scannen</string>
+    <string name="show_qr_code">QR-Code anzeigen</string>
     <string name="show_block_list">Sperrliste anzeigen</string>
     <string name="account_details">Kontodetails</string>
     <string name="confirm">Bestätigen</string>
@@ -616,7 +616,7 @@
     <string name="pref_blind_trust_before_verification_summary">Neuen Geräten von nicht verifizierten Kontakten vertrauen, aber bei verifizierten Kontakten eine manuelle Bestätigung der neuen Geräte verlangen.</string>
     <string name="blindly_trusted_omemo_keys">Blind vertraute OMEMO-Schlüssel bedeutet, dass es sich um eine andere Person handeln könnte oder dass jemand sie abgehört haben könnte.</string>
     <string name="not_trusted">Nicht vertraut</string>
-    <string name="invalid_barcode">Ungültiger Barcode</string>
+    <string name="invalid_barcode">Ungültiger QR-Code</string>
     <string name="pref_clean_cache_summary">Cache-Ordner löschen (von der Kamera-App genutzt)</string>
     <string name="pref_clean_cache">Lösche Cache</string>
     <string name="pref_clean_private_storage">Lösche privaten Speicher</string>
@@ -1016,10 +1016,10 @@
     <string name="this_account_is_logged_out">Du hast dich von diesem Konto abgemeldet</string>
     <string name="log_in">Anmelden</string>
     <string name="hide_notification">Benachrichtigung ausblenden</string>
-    <string name="contact_uses_unverified_keys">Dein Kontakt verwendet nicht verifizierte Geräte. Scanne deren 2D-Barcode, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
+    <string name="contact_uses_unverified_keys">Dein Kontakt verwendet nicht verifizierte Geräte. Scanne deren QR-Code, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
     <string name="log_out">Abmelden</string>
     <string name="account_state_logged_out">Abgemeldet</string>
-    <string name="unverified_devices">Du verwendest nicht verifizierte Geräte. Scanne den 2D-Barcode auf deinen anderen Geräten, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
+    <string name="unverified_devices">Du verwendest nicht verifizierte Geräte. Scanne den QR-Code auf deinen anderen Geräten, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
     <string name="report_spam">Spam melden</string>
     <string name="report_spam_and_block">Spam melden und Spammer sperren</string>
 </resources>
