@@ -321,7 +321,7 @@
     <string name="jabber_id_copied_to_clipboard">Dirección XMPP copiada al portapapeles</string>
     <string name="error_message_copied_to_clipboard">Mensaje de error copiado al portapapeles </string>
     <string name="web_address">dirección web</string>
-    <string name="scan_qr_code">Escanear código QR</string>
+    <string name="scan_qr_code">Escanear el código QR</string>
     <string name="show_qr_code">Mostrar código QR</string>
     <string name="show_block_list">Mostrar contactos bloqueados</string>
     <string name="account_details">Detalles de la cuenta</string>
@@ -1030,10 +1030,10 @@
     <string name="this_account_is_logged_out">Has salido de esta cuenta</string>
     <string name="log_in">Iniciar sesión</string>
     <string name="hide_notification">Ocultar la notificación</string>
-    <string name="contact_uses_unverified_keys">Su contacto utiliza dispositivos no verificados. Escanea su código de barras en 2D para realizar la verificación e impedir ataques MITM activos.</string>
+    <string name="contact_uses_unverified_keys">Tu contacto utiliza dispositivos no verificados. Escanea su código QR para realizar la verificación e impedir ataques MITM activos.</string>
     <string name="log_out">Desconectarse</string>
     <string name="account_state_logged_out">Desconectado</string>
-    <string name="unverified_devices">Está utilizando dispositivos no verificados. Escanea el código de barras 2D en tus otros dispositivos para realizar la verificación e impedir los ataques MITM activos.</string>
+    <string name="unverified_devices">Está utilizando dispositivos no verificados. Escanea el código QR en tus otros dispositivos para realizar la verificación e impedir ataques MITM activos.</string>
     <string name="report_spam_and_block">Informar de spam y bloquear al spammer</string>
     <string name="report_spam">Informar sobre spam</string>
 </resources>
