@@ -320,8 +320,8 @@
     <string name="jabber_id_copied_to_clipboard">Copied XMPP address to clipboard</string>
     <string name="error_message_copied_to_clipboard">Copied error message to clipboard</string>
     <string name="web_address">web address</string>
-    <string name="scan_qr_code">Scan 2D Barcode</string>
-    <string name="show_qr_code">Show 2D Barcode</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="show_qr_code">Show QR Code</string>
     <string name="show_block_list">Show block list</string>
     <string name="account_details">Account details</string>
     <string name="confirm">Confirm</string>
@@ -623,7 +623,7 @@
     <string name="pref_blind_trust_before_verification_summary">Trust new devices from non-verified contacts, but prompt manual confirmation of new devices for verified contacts.</string>
     <string name="blindly_trusted_omemo_keys">Blindly trusted OMEMO keys, meaning they could be someone else or someone could have tapped in.</string>
     <string name="not_trusted">Untrusted</string>
-    <string name="invalid_barcode">Invalid 2D barcode</string>
+    <string name="invalid_barcode">Invalid QR Code</string>
     <string name="pref_clean_cache_summary">Clean cache folder (used by camera app)</string>
     <string name="pref_clean_cache">Clean cache</string>
     <string name="pref_clean_private_storage">Clean private storage</string>
@@ -1018,8 +1018,8 @@
     <string name="hide_notification">Hide notification</string>
     <string name="log_out">Log out</string>
     <string name="log_in">Log in</string>
-    <string name="contact_uses_unverified_keys">Your contact uses unverified devices. Scan their 2D barcode to perform verification and impede active MITM attacks.</string>
-    <string name="unverified_devices">You are using unverified devices. Scan the 2D barcode on your other devices to perform verification and impede active MITM attacks.</string>
+    <string name="contact_uses_unverified_keys">Your contact uses unverified devices. Scan their QR Code to perform verification and impede active MITM attacks.</string>
+    <string name="unverified_devices">You are using unverified devices. Scan the QR Code on your other devices to perform verification and impede active MITM attacks.</string>
     <string name="report_spam">Report spam</string>
     <string name="report_spam_and_block">Report spam and block spammer</string>
 </resources>
