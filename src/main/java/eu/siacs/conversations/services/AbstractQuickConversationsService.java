@@ -30,6 +30,10 @@ public abstract class AbstractQuickConversationsService {
         return "playstore".equals(BuildConfig.FLAVOR_distribution);
     }
 
+    public static boolean isQuicksyPlayStore() {
+        return isQuicksy() && isPlayStoreFlavor();
+    }
+
     public abstract void signalAccountStateChange();
 
     public abstract boolean isSynchronizing();
