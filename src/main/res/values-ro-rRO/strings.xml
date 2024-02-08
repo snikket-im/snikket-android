@@ -323,8 +323,8 @@
     <string name="jabber_id_copied_to_clipboard">Adresă XMPP copiată în memorie</string>
     <string name="error_message_copied_to_clipboard">Mesaj de eroare copiat în memorie</string>
     <string name="web_address">adresă web</string>
-    <string name="scan_qr_code">Scanează cod de bare 2D</string>
-    <string name="show_qr_code">Arată cod de bare 2D</string>
+    <string name="scan_qr_code">Scanează cod QR</string>
+    <string name="show_qr_code">Arată cod QR</string>
     <string name="show_block_list">Listă contacte blocate</string>
     <string name="account_details">Detalii cont</string>
     <string name="confirm">Confirmă</string>
@@ -627,7 +627,7 @@
     <string name="pref_blind_trust_before_verification_summary">Ai încredere în toate dispozitivele noi ale contactelor care nu au fost verificate anterior, dar cere confirmarea manuală pentru dispozitivele noi ale contactelor verificate.</string>
     <string name="blindly_trusted_omemo_keys">Încredere oarbă în aceste chei OMEMO, aceasta înseamnă că ar putea fi altcineva sau cineva și-a strecurat propriile chei.</string>
     <string name="not_trusted">De neîncredere</string>
-    <string name="invalid_barcode">Cod de bare 2D invalid</string>
+    <string name="invalid_barcode">Cod QR invalid</string>
     <string name="pref_clean_cache_summary">Curățare dosar temporar (folosit de aplicația cameră foto)</string>
     <string name="pref_clean_cache">Curăța memoria temporară</string>
     <string name="pref_clean_private_storage">Curăță stocarea privată</string>
@@ -1038,10 +1038,10 @@
     <string name="this_account_is_logged_out">V-ați deconectat de la acest cont</string>
     <string name="log_in">Conectați-vă</string>
     <string name="hide_notification">Ascunde notificare</string>
-    <string name="contact_uses_unverified_keys">Persoana de contact utilizează dispozitive neverificate. Scanați codul de bare 2D al acestora pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
+    <string name="contact_uses_unverified_keys">Persoana de contact utilizează dispozitive neverificate. Scanați codul QR al acestora pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
     <string name="log_out">Deconectare</string>
     <string name="account_state_logged_out">Deconectat</string>
-    <string name="unverified_devices">Folosiți dispozitive neverificate. Scanați codul de bare 2D pe celelalte dispozitive pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
+    <string name="unverified_devices">Folosiți dispozitive neverificate. Scanați codul QR pe celelalte dispozitive pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
     <string name="report_spam_and_block">Raportează spam și blochează spamerul</string>
     <string name="report_spam">Raportează spam</string>
 </resources>
