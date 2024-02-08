@@ -602,7 +602,7 @@
     <string name="pref_blind_trust_before_verification_summary">Автоматично довіряти всім новим пристроям співрозмовників, які ще не пройшли перевірки, запитувати підтвердження вручну щоразу, як перевірений контакт додає свій новий пристрій.</string>
     <string name="blindly_trusted_omemo_keys">Ключі OMEMO, яким Ви довіряєте наосліп, тобто співрозмовник може бути не тим, кому Ви довіряєте.</string>
     <string name="not_trusted">Недовірений</string>
-    <string name="invalid_barcode">Недійсний QR-код </string>
+    <string name="invalid_barcode">Недійсний QR-код</string>
     <string name="pref_clean_cache_summary">Очистити теку з кешем (використовується застосунком Камера)</string>
     <string name="pref_clean_cache">Очистити кеш</string>
     <string name="pref_clean_private_storage">Очистити приватне сховище</string>
