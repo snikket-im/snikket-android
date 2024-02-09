@@ -1044,4 +1044,6 @@
     <string name="unverified_devices">Folosiți dispozitive neverificate. Scanați codul QR pe celelalte dispozitive pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
     <string name="report_spam_and_block">Raportează spam și blochează spamerul</string>
     <string name="report_spam">Raportează spam</string>
+    <string name="welcome_header_quicksy">Bine ați venit la Quicksy!</string>
+    <string name="quicksy_wants_your_consent">Quicksy vă solicită consimțământul pentru a utiliza datele dumneavoastră</string>
 </resources>
