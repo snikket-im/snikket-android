@@ -1162,8 +1162,7 @@ public class XmppConnection implements Runnable {
                                     + mStanzaQueue.keyAt(i));
                 }
                 final AbstractAcknowledgeableStanza stanza = mStanzaQueue.valueAt(i);
-                if (stanza instanceof MessagePacket && acknowledgedListener != null) {
-                    final MessagePacket packet = (MessagePacket) stanza;
+                if (stanza instanceof MessagePacket packet && acknowledgedListener != null) {
                     final String id = packet.getId();
                     final Jid to = packet.getTo();
                     if (id != null && to != null) {
@@ -1846,8 +1845,10 @@ public class XmppConnection implements Runnable {
         resetAttemptCount(true);
         resetStreamId();
         clearIqCallbacks();
-        this.stanzasSent = 0;
-        mStanzaQueue.clear();
+        synchronized (this.mStanzaQueue) {
+            this.stanzasSent = 0;
+            this.mStanzaQueue.clear();
+        }
         this.redirectionUrl = null;
         synchronized (this.disco) {
             disco.clear();
@@ -2332,8 +2333,7 @@ public class XmppConnection implements Runnable {
         synchronized (this.mStanzaQueue) {
             for (int i = 0; i < mStanzaQueue.size(); ++i) {
                 final AbstractAcknowledgeableStanza stanza = mStanzaQueue.valueAt(i);
-                if (stanza instanceof MessagePacket) {
-                    final MessagePacket packet = (MessagePacket) stanza;
+                if (stanza instanceof MessagePacket packet) {
                     final String id = packet.getId();
                     final Jid to = packet.getTo();
                     mXmppConnectionService.markMessage(
@@ -2458,9 +2458,7 @@ public class XmppConnection implements Runnable {
                                 + " do not write stanza to unbound stream "
                                 + packet.toString());
             }
-            if (packet instanceof AbstractAcknowledgeableStanza) {
-                AbstractAcknowledgeableStanza stanza = (AbstractAcknowledgeableStanza) packet;
-
+            if (packet instanceof AbstractAcknowledgeableStanza stanza) {
                 if (this.mStanzaQueue.size() != 0) {
                     int currentHighestKey = this.mStanzaQueue.keyAt(this.mStanzaQueue.size() - 1);
                     if (currentHighestKey != stanzasSent) {
@@ -2857,11 +2855,6 @@ public class XmppConnection implements Runnable {
 
         public boolean bookmarksConversion() {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.BOOKMARKS_CONVERSION)
-                    && pepPublishOptions();
-        }
-
-        public boolean avatarConversion() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.AVATAR_CONVERSION)
                     && pepPublishOptions();
         }
 
