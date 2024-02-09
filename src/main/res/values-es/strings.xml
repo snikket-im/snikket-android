@@ -1036,4 +1036,6 @@
     <string name="unverified_devices">Está utilizando dispositivos no verificados. Escanea el código QR en tus otros dispositivos para realizar la verificación e impedir ataques MITM activos.</string>
     <string name="report_spam_and_block">Informar de spam y bloquear al spammer</string>
     <string name="report_spam">Informar sobre spam</string>
+    <string name="welcome_header_quicksy">¡Bienvenido a Quicksy!</string>
+    <string name="quicksy_wants_your_consent">Quicksy pide tu consentimiento para utilizar tus datos</string>
 </resources>
