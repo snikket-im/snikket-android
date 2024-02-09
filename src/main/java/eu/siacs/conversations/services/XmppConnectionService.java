@@ -40,8 +40,6 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.security.KeyChain;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -1284,15 +1282,13 @@ public class XmppConnectionService extends Service {
         toggleSetProfilePictureActivity(hasEnabledAccounts);
         reconfigurePushDistributor();
 
-        CallIntegrationConnectionService.registerPhoneAccounts(this, this.accounts);
+        CallIntegrationConnectionService.togglePhoneAccountsAsync(this, this.accounts);
 
         restoreFromDatabase();
 
         if (QuickConversationsService.isContactListIntegration(this)
-                && (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-                        || ContextCompat.checkSelfPermission(
-                                        this, Manifest.permission.READ_CONTACTS)
-                                == PackageManager.PERMISSION_GRANTED)) {
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+                        == PackageManager.PERMISSION_GRANTED) {
             startContactObserver();
         }
         FILE_OBSERVER_EXECUTOR.execute(fileBackend::deleteHistoricAvatarPath);
@@ -2465,7 +2461,7 @@ public class XmppConnectionService extends Service {
     public void createAccount(final Account account) {
         account.initAccountServices(this);
         databaseBackend.createAccount(account);
-        CallIntegrationConnectionService.registerPhoneAccount(this, account);
+        CallIntegrationConnectionService.togglePhoneAccountAsync(this, account);
         this.accounts.add(account);
         this.reconnectAccountInBackground(account);
         updateAccountUi();
@@ -2589,6 +2585,7 @@ public class XmppConnectionService extends Service {
             toggleForegroundService();
             syncEnabledAccountSetting();
             mChannelDiscoveryService.cleanCache();
+            CallIntegrationConnectionService.togglePhoneAccountAsync(this, account);
             return true;
         } else {
             return false;

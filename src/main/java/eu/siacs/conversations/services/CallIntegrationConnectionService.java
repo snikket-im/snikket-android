@@ -22,6 +22,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -44,10 +45,15 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class CallIntegrationConnectionService extends ConnectionService {
+
+    private static final ExecutorService ACCOUNT_REGISTRATION_EXECUTOR =
+            Executors.newSingleThreadExecutor();
 
     private ListenableFuture<ServiceConnectionService> serviceFuture;
 
@@ -210,16 +216,36 @@ public class CallIntegrationConnectionService extends ConnectionService {
         return jingleRtpConnection.getCallIntegration();
     }
 
-    public static void registerPhoneAccount(final Context context, final Account account) {
-        try {
-            registerPhoneAccountOrThrow(context, account);
-        } catch (final IllegalArgumentException e) {
-            Toast.makeText(context, R.string.call_integration_not_available, Toast.LENGTH_LONG)
-                    .show();
+    public static void togglePhoneAccountAsync(final Context context, final Account account) {
+        ACCOUNT_REGISTRATION_EXECUTOR.execute(() -> togglePhoneAccount(context, account));
+    }
+
+    private static void togglePhoneAccount(final Context context, final Account account) {
+        if (account.isEnabled()) {
+            registerPhoneAccount(context, account);
+        } else {
+            unregisterPhoneAccount(context, account);
         }
     }
 
-    public static void registerPhoneAccountOrThrow(final Context context, final Account account) {
+    private static void registerPhoneAccount(final Context context, final Account account) {
+        try {
+            registerPhoneAccountOrThrow(context, account);
+        } catch (final IllegalArgumentException e) {
+            Log.w(
+                    Config.LOGTAG,
+                    "could not register phone account for " + account.getJid().asBareJid(),
+                    e);
+            ContextCompat.getMainExecutor(context)
+                    .execute(() -> showCallIntegrationNotAvailable(context));
+        }
+    }
+
+    private static void showCallIntegrationNotAvailable(final Context context) {
+        Toast.makeText(context, R.string.call_integration_not_available, Toast.LENGTH_LONG).show();
+    }
+
+    private static void registerPhoneAccountOrThrow(final Context context, final Account account) {
         final var handle = getHandle(context, account);
         final var telecomManager = context.getSystemService(TelecomManager.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -242,24 +268,39 @@ public class CallIntegrationConnectionService extends ConnectionService {
         telecomManager.registerPhoneAccount(phoneAccount);
     }
 
-    public static void registerPhoneAccounts(
+    public static void togglePhoneAccountsAsync(
+            final Context context, final Collection<Account> accounts) {
+        ACCOUNT_REGISTRATION_EXECUTOR.execute(() -> togglePhoneAccounts(context, accounts));
+    }
+
+    private static void togglePhoneAccounts(
             final Context context, final Collection<Account> accounts) {
         for (final Account account : accounts) {
-            try {
-                registerPhoneAccountOrThrow(context, account);
-            } catch (final IllegalArgumentException e) {
-                Log.w(
-                        Config.LOGTAG,
-                        "could not register phone account for " + account.getJid().asBareJid(),
-                        e);
-                return;
+            if (account.isEnabled()) {
+                try {
+                    registerPhoneAccountOrThrow(context, account);
+                } catch (final IllegalArgumentException e) {
+                    Log.w(
+                            Config.LOGTAG,
+                            "could not register phone account for " + account.getJid().asBareJid(),
+                            e);
+                }
+            } else {
+                unregisterPhoneAccount(context, account);
             }
         }
     }
 
     public static void unregisterPhoneAccount(final Context context, final Account account) {
-        context.getSystemService(TelecomManager.class)
-                .unregisterPhoneAccount(getHandle(context, account));
+        final var handle = getHandle(context, account);
+        final var telecomManager = context.getSystemService(TelecomManager.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (telecomManager.getOwnSelfManagedPhoneAccounts().contains(handle)) {
+                telecomManager.unregisterPhoneAccount(handle);
+            }
+        } else {
+            telecomManager.unregisterPhoneAccount(handle);
+        }
     }
 
     public static PhoneAccountHandle getHandle(final Context context, final Account account) {
@@ -288,8 +329,13 @@ public class CallIntegrationConnectionService extends ConnectionService {
                         .show();
                 return;
             }
-            service.getSystemService(TelecomManager.class)
-                    .placeCall(CallIntegration.address(with), extras);
+            try {
+                service.getSystemService(TelecomManager.class)
+                        .placeCall(CallIntegration.address(with), extras);
+            } catch (final SecurityException e) {
+                Toast.makeText(service, R.string.call_integration_not_available, Toast.LENGTH_LONG)
+                        .show();
+            }
         } else {
             final var connection = createOutgoingRtpConnection(service, account, with, media);
             if (connection != null) {
@@ -319,8 +365,15 @@ public class CallIntegrationConnectionService extends ConnectionService {
         final var extras = new Bundle();
         extras.putString("sid", id.sessionId);
         bundle.putBundle(TelecomManager.EXTRA_INCOMING_CALL_EXTRAS, extras);
-        context.getSystemService(TelecomManager.class)
-                .addNewIncomingCall(phoneAccountHandle, bundle);
+        try {
+            context.getSystemService(TelecomManager.class)
+                    .addNewIncomingCall(phoneAccountHandle, bundle);
+        } catch (final SecurityException e) {
+            Log.e(
+                    Config.LOGTAG,
+                    id.account.getJid().asBareJid() + ": call integration not available",
+                    e);
+        }
     }
 
     public static class ServiceConnectionService {
