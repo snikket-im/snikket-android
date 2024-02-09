@@ -116,19 +116,19 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
             outputFormat = MediaRecorder.OutputFormat.OGG;
             mRecorder.setOutputFormat(outputFormat);
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);
-            mRecorder.setAudioEncodingBitRate(32000);
+            mRecorder.setAudioEncodingBitRate(32_000);
         } else {
             outputFormat = MediaRecorder.OutputFormat.MPEG_4;
             mRecorder.setOutputFormat(outputFormat);
             if (AAC_SENSITIVE_DEVICES.contains(Build.MODEL)) {
                 // Changing these three settings for AAC sensitive devices might lead to sporadically truncated (cut-off) voice messages.
                 mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
-                mRecorder.setAudioSamplingRate(24000);
-                mRecorder.setAudioEncodingBitRate(28000);
+                mRecorder.setAudioSamplingRate(24_000);
+                mRecorder.setAudioEncodingBitRate(28_000);
             } else {
                 mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-                mRecorder.setAudioSamplingRate(22050);
-                mRecorder.setAudioEncodingBitRate(96000);
+                mRecorder.setAudioSamplingRate(22_050);
+                mRecorder.setAudioEncodingBitRate(64_000);
             }
         }
         setupOutputFile(outputFormat);
