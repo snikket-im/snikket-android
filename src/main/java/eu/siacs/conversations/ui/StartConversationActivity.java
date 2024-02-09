@@ -762,10 +762,11 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                     if (QuickConversationsService.isQuicksy() || shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         final AtomicBoolean requestPermission = new AtomicBoolean(false);
-                        builder.setTitle(R.string.sync_with_contacts);
                         if (QuickConversationsService.isQuicksy()) {
+                            builder.setTitle(R.string.quicksy_wants_your_consent);
                             builder.setMessage(Html.fromHtml(getString(R.string.sync_with_contacts_quicksy_static)));
                         } else {
+                            builder.setTitle(R.string.sync_with_contacts);
                             builder.setMessage(getString(R.string.sync_with_contacts_long, getString(R.string.app_name)));
                         }
                         @StringRes int confirmButtonText;
