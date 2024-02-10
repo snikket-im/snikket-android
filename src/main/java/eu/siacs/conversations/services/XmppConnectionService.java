@@ -1444,7 +1444,7 @@ public class XmppConnectionService extends Service {
         toggleForegroundService(false);
     }
 
-    private void toggleForegroundService(boolean force) {
+    private void toggleForegroundService(final boolean force) {
         final boolean status;
         final OngoingCall ongoing = ongoingCall.get();
         if (force || mForceDuringOnCreate.get() || mForceForegroundService.get() || ongoing != null || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
@@ -1453,12 +1453,12 @@ public class XmppConnectionService extends Service {
             if (ongoing != null) {
                 notification = this.mNotificationService.getOngoingCallNotification(ongoing);
                 id = NotificationService.ONGOING_CALL_NOTIFICATION_ID;
-                startForegroundOrCatch(id, notification);
+                startForegroundOrCatch(id, notification, true);
                 mNotificationService.cancel(NotificationService.FOREGROUND_NOTIFICATION_ID);
             } else {
                 notification = this.mNotificationService.createForegroundNotification();
                 id = NotificationService.FOREGROUND_NOTIFICATION_ID;
-                startForegroundOrCatch(id, notification);
+                startForegroundOrCatch(id, notification, false);
             }
 
             if (!mForceForegroundService.get()) {
@@ -1478,11 +1478,17 @@ public class XmppConnectionService extends Service {
         Log.d(Config.LOGTAG, "ForegroundService: " + (status ? "on" : "off"));
     }
 
-    private void startForegroundOrCatch(final int id, final Notification notification) {
+    private void startForegroundOrCatch(
+            final int id, final Notification notification, final boolean requireMicrophone) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 final int foregroundServiceType;
-                if (getSystemService(PowerManager.class)
+                if (requireMicrophone
+                        && ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+                                == PackageManager.PERMISSION_GRANTED) {
+                    foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE;
+                    Log.d(Config.LOGTAG, "defaulting to microphone foreground service type");
+                } else if (getSystemService(PowerManager.class)
                         .isIgnoringBatteryOptimizations(getPackageName())) {
                     foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED;
                 } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
@@ -1493,7 +1499,7 @@ public class XmppConnectionService extends Service {
                     foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA;
                 } else {
                     foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE;
-                    Log.w(Config.LOGTAG,"falling back to special use foreground service type");
+                    Log.w(Config.LOGTAG, "falling back to special use foreground service type");
                 }
                 startForeground(id, notification, foregroundServiceType);
             } else {
