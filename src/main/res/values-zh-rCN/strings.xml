@@ -1034,4 +1034,6 @@
     <string name="unverified_devices">您正在使用未经验证的设备。扫描您其他设备的二维码进行验证并阻止主动式中间人攻击。</string>
     <string name="report_spam_and_block">报告垃圾消息并屏蔽垃圾消息发送者</string>
     <string name="report_spam">报告垃圾消息</string>
+    <string name="welcome_header_quicksy">欢迎使用 Quicksy！</string>
+    <string name="quicksy_wants_your_consent">Quicksy 请求您同意使用您的数据</string>
 </resources>
