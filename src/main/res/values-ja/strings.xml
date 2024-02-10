@@ -906,12 +906,12 @@
     <string name="rtp_state_security_error">検証に問題</string>
     <string name="hang_up">通話を切る</string>
     <string name="ongoing_call">継続中の通話</string>
-    <string name="ongoing_video_call">継続中の映像通話</string>
+    <string name="ongoing_video_call">継続中のビデオ通話</string>
     <string name="reconnecting_call">通話再接続中</string>
     <string name="reconnecting_video_call">ビデオ通話再接続中</string>
     <string name="disable_tor_to_make_call">通話するのに Tor を無効化</string>
     <string name="incoming_call">着信通話</string>
-    <string name="missed_call_timestamp">不在着信通話・%s</string>
+    <string name="missed_call_timestamp">不在着信・%s</string>
     <string name="outgoing_call">発信通話</string>
     <string name="missed_call">不在着信</string>
     <plurals name="n_missed_calls_from_x">
