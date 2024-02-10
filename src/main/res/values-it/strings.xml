@@ -321,8 +321,8 @@
     <string name="jabber_id_copied_to_clipboard">Indirizzo XMPP copiato negli appunti</string>
     <string name="error_message_copied_to_clipboard">Messaggio di errore copiato negli appunti</string>
     <string name="web_address">indirizzo web</string>
-    <string name="scan_qr_code">Scansiona codice a barre 2D</string>
-    <string name="show_qr_code">Mostra codice a barre 2D</string>
+    <string name="scan_qr_code">Scansiona codice QR</string>
+    <string name="show_qr_code">Mostra codice QR</string>
     <string name="show_block_list">Mostra la lista nera</string>
     <string name="account_details">Dettagli del profilo</string>
     <string name="confirm">Conferma</string>
@@ -619,7 +619,7 @@
     <string name="pref_blind_trust_before_verification_summary">Fidati di nuovi dispositivi da contatti non verificati, ma chiedi una conferma manuale per nuovi dispositivi da contatti verificati.</string>
     <string name="blindly_trusted_omemo_keys">Chiavi OMEMO accettate ciecamente, perciò potrebbero essere di qualcun altro o qualcuno potrebbe essersi intromesso.</string>
     <string name="not_trusted">Non fidato</string>
-    <string name="invalid_barcode">Codice a barre 2D non valido</string>
+    <string name="invalid_barcode">Codice QR non valido</string>
     <string name="pref_clean_cache_summary">Svuota la cartella della cache (usata dall\'app fotocamera)</string>
     <string name="pref_clean_cache">Svuota cache</string>
     <string name="pref_clean_private_storage">Svuota archivio privato</string>
@@ -1030,10 +1030,12 @@
     <string name="this_account_is_logged_out">Ti sei disconnesso da questo profilo</string>
     <string name="log_in">Accedi</string>
     <string name="hide_notification">Nascondi notifica</string>
-    <string name="contact_uses_unverified_keys">Il tuo contatto usa dispositivi non verificati. Scansiona il suo codice a barre 2D per effettuare la verifica e impedire attacchi MITM attivi.</string>
+    <string name="contact_uses_unverified_keys">Il tuo contatto usa dispositivi non verificati. Scansiona il suo codice QR per effettuare la verifica e impedire attacchi MITM attivi.</string>
     <string name="log_out">Disconnetti</string>
     <string name="account_state_logged_out">Disconnesso</string>
-    <string name="unverified_devices">Stai usando dispositivi non verificati. Scansiona il codice a barre 2D nei tuoi altri dispositivi per effettuare la verifica e impedire attacchi MITM attivi.</string>
+    <string name="unverified_devices">Stai usando dispositivi non verificati. Scansiona il codice QR nei tuoi altri dispositivi per effettuare la verifica e impedire attacchi MITM attivi.</string>
     <string name="report_spam_and_block">Segnala spam e blocca l\'utente</string>
     <string name="report_spam">Segnala spam</string>
+    <string name="welcome_header_quicksy">Benvenuti su Quicksy!</string>
+    <string name="quicksy_wants_your_consent">Quicksy ti chiede il consenso per usare i tuoi dati</string>
 </resources>
