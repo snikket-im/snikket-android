@@ -7,7 +7,7 @@
     <string name="action_end_conversation">会話を閉じる</string>
     <string name="action_contact_details">連絡先の詳細</string>
     <string name="action_muc_details">グループチャットの詳細</string>
-    <string name="channel_details">談話室の詳細</string>
+    <string name="channel_details">チャンネルの詳細</string>
     <string name="action_add_account">アカウントを追加</string>
     <string name="action_edit_contact">名前を編集</string>
     <string name="action_add_phone_book">アドレス帳に追加</string>
@@ -34,7 +34,7 @@
     </plurals>
     <string name="sending">送信中…</string>
     <string name="message_decrypting">メッセージを復号しています。しばらくお待ちください…</string>
-    <string name="pgp_message">OpenPGP 暗号化メッセージ</string>
+    <string name="pgp_message">OpenPGPで暗号化されたメッセージ</string>
     <string name="nick_in_use">ニックネームは既に使用されています</string>
     <string name="invalid_muc_nick">このニックネームは使えません</string>
     <string name="admin">管理者</string>
@@ -42,11 +42,11 @@
     <string name="moderator">調停者</string>
     <string name="participant">参加者</string>
     <string name="visitor">訪問者</string>
-    <string name="remove_contact_text">連絡先名簿から %s を削除しますか? この連絡先との会話は削除されません。</string>
-    <string name="block_contact_text">%s からあなたに送信されるメッセージをブロックしますか?</string>
+    <string name="remove_contact_text">連絡先リストから%sを削除しますか? この連絡先との会話は削除されません。</string>
+    <string name="block_contact_text">%sからあなたに送信されるメッセージをブロックしますか？</string>
     <string name="unblock_contact_text">%s のブロックを解除し、あなたにメッセージを送信できるようにしますか?</string>
-    <string name="block_domain_text">%s からの連絡をすべてブロックしますか?</string>
-    <string name="unblock_domain_text">%s からすべての連絡先のブロックを解除しますか?</string>
+    <string name="block_domain_text">%sの連絡先をすべてブロックしますか？</string>
+    <string name="unblock_domain_text">%sのすべての連絡先のブロックを解除しますか？</string>
     <string name="contact_blocked">連絡先をブロックしました</string>
     <string name="blocked">ブロックしました</string>
     <string name="remove_bookmark_text">%s のブックマークを削除しますか? このブックマークとの会話は削除されません。</string>
@@ -68,14 +68,14 @@
     <string name="save">保存</string>
     <string name="ok">OK</string>
     <string name="crash_report_title">%1$s がクラッシュしました</string>
-    <string name="crash_report_message">あなたの XMPP アカウントを使用してスタックトレースの送信をすることで、 %1$s の継続的な開発を支援します。</string>
+    <string name="crash_report_message">あなたのXMPPアカウントを使用してスタックトレースを送信すると、 %1$sの実施中の開発の支援となります。</string>
     <string name="send_now">今すぐ送信</string>
     <string name="send_never">今後は表示しない</string>
     <string name="problem_connecting_to_account">アカウントに接続できません</string>
     <string name="problem_connecting_to_accounts">複数のアカウントに接続できません</string>
     <string name="touch_to_fix">タップしてアカウントを管理</string>
     <string name="attach_file">ファイルを添付</string>
-    <string name="not_in_roster">連絡先が連絡先名簿にありません。名簿に追加しますか?</string>
+    <string name="not_in_roster">連絡先が連絡先リストにありません。リストに追加しますか？</string>
     <string name="add_contact">連絡先を追加</string>
     <string name="send_failed">配信に失敗しました</string>
     <string name="preparing_image">送信用画像の準備中</string>
@@ -105,8 +105,10 @@
     <string name="offering">依頼中…</string>
     <string name="waiting">待機中…</string>
     <string name="no_pgp_key">OpenPGP 鍵が見つかりません</string>
-    <string name="contact_has_no_pgp_key">連絡先が公開鍵を通知しないため、あなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
-    <string name="no_pgp_keys">OpenPGP 鍵が見つかりません</string>
+    <string name="contact_has_no_pgp_key">連絡先が公開鍵を通知していないため、あなたのメッセージを暗号化することができません。
+\n
+\n<small>連絡先にOpenPGPを設定するように依頼してください。</small></string>
+    <string name="no_pgp_keys">OpenPGPの鍵が見つかりません</string>
     <string name="contacts_have_no_pgp_keys">連絡先が公開鍵を通知しないため、あなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
     <string name="pref_general">全般</string>
     <string name="pref_accept_files">ファイルを受取</string>
@@ -122,10 +124,10 @@
     <string name="pref_notification_sound_summary">新着メッセージの通知音</string>
     <string name="pref_call_ringtone_summary">着信通話の呼出音</string>
     <string name="pref_notification_grace_period">猶予期間</string>
-    <string name="pref_notification_grace_period_summary">別のデバイスでの操作を検知した際に、通知を止める時間の長さ</string>
+    <string name="pref_notification_grace_period_summary">別のデバイスでの操作を検知した際に、通知を止める時間の長さ。</string>
     <string name="pref_advanced_options">詳細</string>
     <string name="pref_never_send_crash">クラッシュレポートを送信しない</string>
-    <string name="pref_never_send_crash_summary">スタックトレースを送信すると、 Conversations の開発を支援します</string>
+    <string name="pref_never_send_crash_summary">スタックトレースを送信すると、 開発の助けとなります</string>
     <string name="pref_confirm_messages">メッセージを確認</string>
     <string name="pref_confirm_messages_summary">あなたがメッセージを受信して読んだときに、連絡先に知らせる</string>
     <string name="pref_prevent_screenshots">スクリーンショットを防ぐ</string>
@@ -907,9 +909,9 @@
     <string name="hang_up">通話を切る</string>
     <string name="ongoing_call">継続中の通話</string>
     <string name="ongoing_video_call">継続中のビデオ通話</string>
-    <string name="reconnecting_call">通話再接続中</string>
-    <string name="reconnecting_video_call">ビデオ通話再接続中</string>
-    <string name="disable_tor_to_make_call">通話するのに Tor を無効化</string>
+    <string name="reconnecting_call">通話に再接続中</string>
+    <string name="reconnecting_video_call">ビデオ通話に再接続中</string>
+    <string name="disable_tor_to_make_call">通話を行う際にはTorを無効にしてください</string>
     <string name="incoming_call">着信通話</string>
     <string name="missed_call_timestamp">不在着信・%s</string>
     <string name="outgoing_call">発信通話</string>
