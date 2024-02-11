@@ -1,7 +1,5 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.common.base.CaseFormat;
@@ -9,9 +7,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.crypto.axolotl.AxolotlService;
-import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
@@ -119,39 +114,6 @@ public class JinglePacket extends IqPacket {
     public void addJingleChild(final Element child) {
         final Element jingle = findChild("jingle", Namespace.JINGLE);
         jingle.addChild(child);
-    }
-
-    public void setSecurity(final String name, final XmppAxolotlMessage xmppAxolotlMessage) {
-        final Element security = new Element("security", Namespace.JINGLE_ENCRYPTED_TRANSPORT);
-        security.setAttribute("name", name);
-        security.setAttribute("cipher", "urn:xmpp:ciphers:aes-128-gcm-nopadding");
-        security.setAttribute("type", AxolotlService.PEP_PREFIX);
-        security.addChild(xmppAxolotlMessage.toElement());
-        addJingleChild(security);
-    }
-
-    public XmppAxolotlMessage getSecurity(final String nameNeedle) {
-        final Element jingle = findChild("jingle", Namespace.JINGLE);
-        if (jingle == null) {
-            return null;
-        }
-        for (final Element child : jingle.getChildren()) {
-            if ("security".equals(child.getName())
-                    && Namespace.JINGLE_ENCRYPTED_TRANSPORT.equals(child.getNamespace())) {
-                final String name = child.getAttribute("name");
-                final String type = child.getAttribute("type");
-                final String cipher = child.getAttribute("cipher");
-                if (nameNeedle.equals(name)
-                        && AxolotlService.PEP_PREFIX.equals(type)
-                        && "urn:xmpp:ciphers:aes-128-gcm-nopadding".equals(cipher)) {
-                    final var encrypted = child.findChild("encrypted", AxolotlService.PEP_PREFIX);
-                    if (encrypted != null) {
-                        return XmppAxolotlMessage.fromElement(encrypted, getFrom().asBareJid());
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     public String getSessionId() {

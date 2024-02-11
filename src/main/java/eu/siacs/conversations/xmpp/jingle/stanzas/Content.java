@@ -9,8 +9,11 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.SessionDescription;
 
 import java.util.Locale;
@@ -100,6 +103,37 @@ public class Content extends Element {
         } else {
             return null;
         }
+    }
+
+    public void setSecurity(final XmppAxolotlMessage xmppAxolotlMessage) {
+        final String contentName = this.getContentName();
+        final Element security = new Element("security", Namespace.JINGLE_ENCRYPTED_TRANSPORT);
+        security.setAttribute("name", contentName);
+        security.setAttribute("cipher", "urn:xmpp:ciphers:aes-128-gcm-nopadding");
+        security.setAttribute("type", AxolotlService.PEP_PREFIX);
+        security.addChild(xmppAxolotlMessage.toElement());
+        this.addChild(security);
+    }
+
+    public XmppAxolotlMessage getSecurity(final Jid from) {
+        final String contentName = this.getContentName();
+        for (final Element child : this.children) {
+            if ("security".equals(child.getName())
+                    && Namespace.JINGLE_ENCRYPTED_TRANSPORT.equals(child.getNamespace())) {
+                final String name = child.getAttribute("name");
+                final String type = child.getAttribute("type");
+                final String cipher = child.getAttribute("cipher");
+                if (contentName.equals(name)
+                        && AxolotlService.PEP_PREFIX.equals(type)
+                        && "urn:xmpp:ciphers:aes-128-gcm-nopadding".equals(cipher)) {
+                    final var encrypted = child.findChild("encrypted", AxolotlService.PEP_PREFIX);
+                    if (encrypted != null) {
+                        return XmppAxolotlMessage.fromElement(encrypted, from.asBareJid());
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public void setTransport(GenericTransportInfo transportInfo) {

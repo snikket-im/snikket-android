@@ -209,8 +209,12 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
                 this.transportSecurity =
                         new TransportSecurity(
                                 xmppAxolotlMessage.getInnerKey(), xmppAxolotlMessage.getIV());
-                jinglePacket.setSecurity(
-                        Iterables.getOnlyElement(contentMap.contents.keySet()), xmppAxolotlMessage);
+                final var contents = jinglePacket.getJingleContents();
+                final var rawContent =
+                        contents.get(Iterables.getOnlyElement(contentMap.contents.keySet()));
+                if (rawContent != null) {
+                    rawContent.setSecurity(xmppAxolotlMessage);
+                }
             }
             jinglePacket.setTo(id.with);
             xmppConnectionService.sendIqPacket(
@@ -327,8 +331,10 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
             return;
         }
         final XmppAxolotlMessage.XmppAxolotlKeyTransportMessage keyTransportMessage;
+        final var contents = jinglePacket.getJingleContents();
+        final var rawContent = contents.get(Iterables.getOnlyElement(contentMap.contents.keySet()));
         final var security =
-                jinglePacket.getSecurity(Iterables.getOnlyElement(contentMap.contents.keySet()));
+                rawContent == null ? null : rawContent.getSecurity(jinglePacket.getFrom());
         if (security != null) {
             Log.d(Config.LOGTAG, "found security element!");
             keyTransportMessage =
@@ -349,7 +355,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
 
         if (transition(State.SESSION_INITIALIZED, () -> setRemoteContentMap(contentMap))) {
             respondOk(jinglePacket);
-            Log.d(Config.LOGTAG, jinglePacket.toString());
             Log.d(
                     Config.LOGTAG,
                     "got file offer " + file + " jet=" + Objects.nonNull(keyTransportMessage));
