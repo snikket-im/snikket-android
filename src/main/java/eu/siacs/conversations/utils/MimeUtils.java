@@ -68,6 +68,7 @@ public final class MimeUtils {
         // by guessExtensionFromMimeType.
         add("application/andrew-inset", "ez");
         add("application/dsptype", "tsp");
+        add("application/json", "json");
         add("application/epub+zip", "epub");
         add("application/gpx+xml", "gpx");
         add("application/hta", "hta");
