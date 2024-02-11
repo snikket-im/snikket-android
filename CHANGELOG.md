@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.13.2
+
+* minor bug fixes
+* slight modifications in Quicksy onboard flow
+
 ### Version 2.13.1
 
 * Support P2P file transfer via WebRTC data channels
