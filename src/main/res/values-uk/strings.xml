@@ -1076,4 +1076,6 @@
     <string name="account_state_logged_out">Ви вийшли</string>
     <string name="report_spam_and_block">Повідомити про спам і заблокувати спамера</string>
     <string name="report_spam">Повідомити про спам</string>
+    <string name="welcome_header_quicksy">Вітаємо у Quicksy!</string>
+    <string name="quicksy_wants_your_consent">Quicksy просить згоду на використання Ваших даних</string>
 </resources>
