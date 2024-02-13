@@ -13,14 +13,12 @@ import android.provider.Settings;
 public class PhoneHelper {
 
     @SuppressLint("HardwareIds")
-    public static String getAndroidId(Context context) {
+    public static String getAndroidId(final Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
-    public static Uri getProfilePictureUri(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && context.checkSelfPermission(Manifest.permission.READ_CONTACTS)
-                        != PackageManager.PERMISSION_GRANTED) {
+    public static Uri getProfilePictureUri(final Context context) {
+        if (context.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             return null;
         }
         final String[] projection = new String[] {Profile._ID, Profile.PHOTO_URI};

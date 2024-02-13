@@ -913,27 +913,45 @@ public class XmppConnectionService extends Service {
         manageAccountConnectionStates(ACTION_INTERNAL_PING, null);
     }
 
-    private synchronized void manageAccountConnectionStates(final String action, final Bundle extras) {
+    private synchronized void manageAccountConnectionStates(
+            final String action, final Bundle extras) {
         final String pushedAccountHash = extras == null ? null : extras.getString("account");
-        final boolean interactive = Arrays.asList(ACTION_TRY_AGAIN).contains(action);
+        final boolean interactive = java.util.Objects.equals(ACTION_TRY_AGAIN, action);
         WakeLockHelper.acquire(wakeLock);
-        boolean pingNow = ConnectivityManager.CONNECTIVITY_ACTION.equals(action) || (Config.POST_CONNECTIVITY_CHANGE_PING_INTERVAL > 0 && ACTION_POST_CONNECTIVITY_CHANGE.equals(action));
+        boolean pingNow =
+                ConnectivityManager.CONNECTIVITY_ACTION.equals(action)
+                        || (Config.POST_CONNECTIVITY_CHANGE_PING_INTERVAL > 0
+                                && ACTION_POST_CONNECTIVITY_CHANGE.equals(action));
         final HashSet<Account> pingCandidates = new HashSet<>();
-        final String androidId = PhoneHelper.getAndroidId(this);
+        final String androidId = pushedAccountHash == null ? null : PhoneHelper.getAndroidId(this);
         for (final Account account : accounts) {
-            final boolean pushWasMeantForThisAccount = CryptoHelper.getAccountFingerprint(account, androidId).equals(pushedAccountHash);
-            pingNow |= processAccountState(account,
-                    interactive,
-                    "ui".equals(action),
-                    pushWasMeantForThisAccount,
-                    pingCandidates);
+            final boolean pushWasMeantForThisAccount =
+                    androidId != null
+                            && CryptoHelper.getAccountFingerprint(account, androidId)
+                                    .equals(pushedAccountHash);
+            pingNow |=
+                    processAccountState(
+                            account,
+                            interactive,
+                            "ui".equals(action),
+                            pushWasMeantForThisAccount,
+                            pingCandidates);
         }
         if (pingNow) {
-            for (Account account : pingCandidates) {
+            for (final Account account : pingCandidates) {
                 final boolean lowTimeout = isInLowPingTimeoutMode(account);
                 account.getXmppConnection().sendPing();
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + " send ping (action=" + action + ",lowTimeout=" + lowTimeout + ")");
-                scheduleWakeUpCall(lowTimeout ? Config.LOW_PING_TIMEOUT : Config.PING_TIMEOUT, account.getUuid().hashCode());
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + " send ping (action="
+                                + action
+                                + ",lowTimeout="
+                                + lowTimeout
+                                + ")");
+                scheduleWakeUpCall(
+                        lowTimeout ? Config.LOW_PING_TIMEOUT : Config.PING_TIMEOUT,
+                        account.getUuid().hashCode());
             }
         }
         WakeLockHelper.release(wakeLock);
