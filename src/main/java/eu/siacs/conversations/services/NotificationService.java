@@ -115,6 +115,7 @@ public class NotificationService {
     private long mLastNotification;
 
     private static final String INCOMING_CALLS_NOTIFICATION_CHANNEL = "incoming_calls_channel";
+    private static final String MESSAGES_NOTIFICATION_CHANNEL = "messages";
     private Ringtone currentlyPlayingRingtone = null;
     private ScheduledFuture<?> vibrationFuture;
 
@@ -244,7 +245,7 @@ public class NotificationService {
 
         final NotificationChannel messagesChannel =
                 new NotificationChannel(
-                        "messages",
+                        MESSAGES_NOTIFICATION_CHANNEL,
                         c.getString(R.string.messages_channel_name),
                         NotificationManager.IMPORTANCE_HIGH);
         messagesChannel.setShowBadge(true);
@@ -1112,7 +1113,7 @@ public class NotificationService {
         final Builder mBuilder =
                 new NotificationCompat.Builder(
                         mXmppConnectionService,
-                        quietHours ? "quiet_hours" : (notify ? "messages" : "silent_messages"));
+                        quietHours ? "quiet_hours" : (notify ? MESSAGES_NOTIFICATION_CHANNEL : "silent_messages"));
         final NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
         style.setBigContentTitle(
                 mXmppConnectionService
@@ -1178,160 +1179,161 @@ public class NotificationService {
 
     private Builder buildSingleConversations(
             final ArrayList<Message> messages, final boolean notify, final boolean quietHours) {
-        final Builder mBuilder =
-                new NotificationCompat.Builder(
-                        mXmppConnectionService,
-                        quietHours ? "quiet_hours" : (notify ? "messages" : "silent_messages"));
-        if (messages.size() >= 1) {
-            final Conversation conversation = (Conversation) messages.get(0).getConversation();
-            mBuilder.setLargeIcon(
+        final var channel = quietHours ? "quiet_hours" : (notify ? MESSAGES_NOTIFICATION_CHANNEL : "silent_messages");
+        final Builder notificationBuilder =
+                new NotificationCompat.Builder(mXmppConnectionService, channel);
+        if (messages.isEmpty()) {
+            return notificationBuilder;
+        }
+        final Conversation conversation = (Conversation) messages.get(0).getConversation();
+        notificationBuilder.setLargeIcon(
+                mXmppConnectionService
+                        .getAvatarService()
+                        .get(
+                                conversation,
+                                AvatarService.getSystemUiAvatarSize(mXmppConnectionService)));
+        notificationBuilder.setContentTitle(conversation.getName());
+        if (Config.HIDE_MESSAGE_TEXT_IN_NOTIFICATION) {
+            int count = messages.size();
+            notificationBuilder.setContentText(
                     mXmppConnectionService
-                            .getAvatarService()
-                            .get(
-                                    conversation,
-                                    AvatarService.getSystemUiAvatarSize(mXmppConnectionService)));
-            mBuilder.setContentTitle(conversation.getName());
-            if (Config.HIDE_MESSAGE_TEXT_IN_NOTIFICATION) {
-                int count = messages.size();
-                mBuilder.setContentText(
-                        mXmppConnectionService
-                                .getResources()
-                                .getQuantityString(R.plurals.x_messages, count, count));
+                            .getResources()
+                            .getQuantityString(R.plurals.x_messages, count, count));
+        } else {
+            final Message message;
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
+                    && (message = getImage(messages)) != null) {
+                modifyForImage(notificationBuilder, message, messages);
             } else {
-                Message message;
-                // TODO starting with Android 9 we might want to put images in MessageStyle
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
-                        && (message = getImage(messages)) != null) {
-                    modifyForImage(mBuilder, message, messages);
-                } else {
-                    modifyForTextOnly(mBuilder, messages);
-                }
-                RemoteInput remoteInput =
-                        new RemoteInput.Builder("text_reply")
-                                .setLabel(
-                                        UIHelper.getMessageHint(
-                                                mXmppConnectionService, conversation))
-                                .build();
-                PendingIntent markAsReadPendingIntent = createReadPendingIntent(conversation);
-                NotificationCompat.Action markReadAction =
-                        new NotificationCompat.Action.Builder(
-                                        R.drawable.ic_drafts_white_24dp,
-                                        mXmppConnectionService.getString(R.string.mark_as_read),
-                                        markAsReadPendingIntent)
-                                .setSemanticAction(
-                                        NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ)
-                                .setShowsUserInterface(false)
-                                .build();
-                final String replyLabel = mXmppConnectionService.getString(R.string.reply);
-                final String lastMessageUuid = Iterables.getLast(messages).getUuid();
-                final NotificationCompat.Action replyAction =
-                        new NotificationCompat.Action.Builder(
-                                        R.drawable.ic_send_text_offline,
-                                        replyLabel,
-                                        createReplyIntent(conversation, lastMessageUuid, false))
-                                .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_REPLY)
-                                .setShowsUserInterface(false)
-                                .addRemoteInput(remoteInput)
-                                .build();
-                final NotificationCompat.Action wearReplyAction =
-                        new NotificationCompat.Action.Builder(
-                                        R.drawable.ic_wear_reply,
-                                        replyLabel,
-                                        createReplyIntent(conversation, lastMessageUuid, true))
-                                .addRemoteInput(remoteInput)
-                                .build();
-                mBuilder.extend(
-                        new NotificationCompat.WearableExtender().addAction(wearReplyAction));
-                int addedActionsCount = 1;
-                mBuilder.addAction(markReadAction);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    mBuilder.addAction(replyAction);
-                    ++addedActionsCount;
-                }
+                modifyForTextOnly(notificationBuilder, messages);
+            }
+            RemoteInput remoteInput =
+                    new RemoteInput.Builder("text_reply")
+                            .setLabel(UIHelper.getMessageHint(mXmppConnectionService, conversation))
+                            .build();
+            PendingIntent markAsReadPendingIntent = createReadPendingIntent(conversation);
+            NotificationCompat.Action markReadAction =
+                    new NotificationCompat.Action.Builder(
+                                    R.drawable.ic_drafts_white_24dp,
+                                    mXmppConnectionService.getString(R.string.mark_as_read),
+                                    markAsReadPendingIntent)
+                            .setSemanticAction(
+                                    NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ)
+                            .setShowsUserInterface(false)
+                            .build();
+            final String replyLabel = mXmppConnectionService.getString(R.string.reply);
+            final String lastMessageUuid = Iterables.getLast(messages).getUuid();
+            final NotificationCompat.Action replyAction =
+                    new NotificationCompat.Action.Builder(
+                                    R.drawable.ic_send_text_offline,
+                                    replyLabel,
+                                    createReplyIntent(conversation, lastMessageUuid, false))
+                            .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_REPLY)
+                            .setShowsUserInterface(false)
+                            .addRemoteInput(remoteInput)
+                            .build();
+            final NotificationCompat.Action wearReplyAction =
+                    new NotificationCompat.Action.Builder(
+                                    R.drawable.ic_wear_reply,
+                                    replyLabel,
+                                    createReplyIntent(conversation, lastMessageUuid, true))
+                            .addRemoteInput(remoteInput)
+                            .build();
+            notificationBuilder.extend(
+                    new NotificationCompat.WearableExtender().addAction(wearReplyAction));
+            int addedActionsCount = 1;
+            notificationBuilder.addAction(markReadAction);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                notificationBuilder.addAction(replyAction);
+                ++addedActionsCount;
+            }
 
-                if (displaySnoozeAction(messages)) {
-                    String label = mXmppConnectionService.getString(R.string.snooze);
-                    PendingIntent pendingSnoozeIntent = createSnoozeIntent(conversation);
-                    NotificationCompat.Action snoozeAction =
-                            new NotificationCompat.Action.Builder(
-                                            R.drawable.ic_notifications_paused_white_24dp,
-                                            label,
-                                            pendingSnoozeIntent)
-                                    .build();
-                    mBuilder.addAction(snoozeAction);
-                    ++addedActionsCount;
-                }
-                if (addedActionsCount < 3) {
-                    final Message firstLocationMessage = getFirstLocationMessage(messages);
-                    if (firstLocationMessage != null) {
-                        final PendingIntent pendingShowLocationIntent =
-                                createShowLocationIntent(firstLocationMessage);
-                        if (pendingShowLocationIntent != null) {
-                            final String label =
-                                    mXmppConnectionService
-                                            .getResources()
-                                            .getString(R.string.show_location);
-                            NotificationCompat.Action locationAction =
-                                    new NotificationCompat.Action.Builder(
-                                                    R.drawable.ic_room_white_24dp,
-                                                    label,
-                                                    pendingShowLocationIntent)
-                                            .build();
-                            mBuilder.addAction(locationAction);
-                            ++addedActionsCount;
-                        }
-                    }
-                }
-                if (addedActionsCount < 3) {
-                    Message firstDownloadableMessage = getFirstDownloadableMessage(messages);
-                    if (firstDownloadableMessage != null) {
-                        String label =
+            if (displaySnoozeAction(messages)) {
+                String label = mXmppConnectionService.getString(R.string.snooze);
+                PendingIntent pendingSnoozeIntent = createSnoozeIntent(conversation);
+                NotificationCompat.Action snoozeAction =
+                        new NotificationCompat.Action.Builder(
+                                        R.drawable.ic_notifications_paused_white_24dp,
+                                        label,
+                                        pendingSnoozeIntent)
+                                .build();
+                notificationBuilder.addAction(snoozeAction);
+                ++addedActionsCount;
+            }
+            if (addedActionsCount < 3) {
+                final Message firstLocationMessage = getFirstLocationMessage(messages);
+                if (firstLocationMessage != null) {
+                    final PendingIntent pendingShowLocationIntent =
+                            createShowLocationIntent(firstLocationMessage);
+                    if (pendingShowLocationIntent != null) {
+                        final String label =
                                 mXmppConnectionService
                                         .getResources()
-                                        .getString(
-                                                R.string.download_x_file,
-                                                UIHelper.getFileDescriptionString(
-                                                        mXmppConnectionService,
-                                                        firstDownloadableMessage));
-                        PendingIntent pendingDownloadIntent =
-                                createDownloadIntent(firstDownloadableMessage);
-                        NotificationCompat.Action downloadAction =
+                                        .getString(R.string.show_location);
+                        NotificationCompat.Action locationAction =
                                 new NotificationCompat.Action.Builder(
-                                                R.drawable.ic_file_download_white_24dp,
+                                                R.drawable.ic_room_white_24dp,
                                                 label,
-                                                pendingDownloadIntent)
+                                                pendingShowLocationIntent)
                                         .build();
-                        mBuilder.addAction(downloadAction);
+                        notificationBuilder.addAction(locationAction);
                         ++addedActionsCount;
                     }
                 }
             }
-            final ShortcutInfoCompat info;
-            if (conversation.getMode() == Conversation.MODE_SINGLE) {
-                final Contact contact = conversation.getContact();
-                final Uri systemAccount = contact.getSystemAccount();
-                if (systemAccount != null) {
-                    mBuilder.addPerson(systemAccount.toString());
+            if (addedActionsCount < 3) {
+                Message firstDownloadableMessage = getFirstDownloadableMessage(messages);
+                if (firstDownloadableMessage != null) {
+                    String label =
+                            mXmppConnectionService
+                                    .getResources()
+                                    .getString(
+                                            R.string.download_x_file,
+                                            UIHelper.getFileDescriptionString(
+                                                    mXmppConnectionService,
+                                                    firstDownloadableMessage));
+                    PendingIntent pendingDownloadIntent =
+                            createDownloadIntent(firstDownloadableMessage);
+                    NotificationCompat.Action downloadAction =
+                            new NotificationCompat.Action.Builder(
+                                            R.drawable.ic_file_download_white_24dp,
+                                            label,
+                                            pendingDownloadIntent)
+                                    .build();
+                    notificationBuilder.addAction(downloadAction);
+                    ++addedActionsCount;
                 }
-                info = mXmppConnectionService.getShortcutService().getShortcutInfoCompat(contact);
-            } else {
-                info =
-                        mXmppConnectionService
-                                .getShortcutService()
-                                .getShortcutInfoCompat(conversation.getMucOptions());
             }
-            mBuilder.setWhen(conversation.getLatestMessage().getTimeSent());
-            mBuilder.setSmallIcon(R.drawable.ic_notification);
-            mBuilder.setDeleteIntent(createDeleteIntent(conversation));
-            mBuilder.setContentIntent(createContentIntent(conversation));
-            mBuilder.setShortcutInfo(info);
+        }
+        final ShortcutInfoCompat info;
+        if (conversation.getMode() == Conversation.MODE_SINGLE) {
+            final Contact contact = conversation.getContact();
+            final Uri systemAccount = contact.getSystemAccount();
+            if (systemAccount != null) {
+                notificationBuilder.addPerson(systemAccount.toString());
+            }
+            info = mXmppConnectionService.getShortcutService().getShortcutInfoCompat(contact);
+        } else {
+            info =
+                    mXmppConnectionService
+                            .getShortcutService()
+                            .getShortcutInfoCompat(conversation.getMucOptions());
+        }
+        notificationBuilder.setWhen(conversation.getLatestMessage().getTimeSent());
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+        notificationBuilder.setDeleteIntent(createDeleteIntent(conversation));
+        notificationBuilder.setContentIntent(createContentIntent(conversation));
+        if (channel.equals(MESSAGES_NOTIFICATION_CHANNEL)) {
+            // when do not want 'customized' notifications for silent notifications in their
+            // respective channels
+            notificationBuilder.setShortcutInfo(info);
             if (Build.VERSION.SDK_INT >= 30) {
                 mXmppConnectionService
                         .getSystemService(ShortcutManager.class)
                         .pushDynamicShortcut(info.toShortcutInfo());
             }
         }
-        return mBuilder;
+        return notificationBuilder;
     }
 
     private void modifyForImage(
