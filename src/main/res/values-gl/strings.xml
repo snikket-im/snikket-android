@@ -39,7 +39,7 @@
     <string name="nick_in_use">O alcume xa está en uso</string>
     <string name="invalid_muc_nick">Alcume non válido</string>
     <string name="admin">Admin</string>
-    <string name="owner">Dono</string>
+    <string name="owner">Dona</string>
     <string name="moderator">Moderador</string>
     <string name="participant">Participante</string>
     <string name="visitor">Visitante</string>
@@ -300,7 +300,7 @@
     <string name="pref_autojoin_summary">Poñer marca de \"autojoin\" ao entrar ou deixar unha MUC e reaccionar ás modificacións feitas desde outros clientes.</string>
     <string name="toast_message_omemo_fingerprint">Copiouse a impresión dixital OMEMO ao portapapeis</string>
     <string name="conference_banned">Non podes acceder a esta conversa en grupo</string>
-    <string name="conference_members_only">Esta conversa en grupo é so para membros</string>
+    <string name="conference_members_only">Este chat en grupo é so para membros</string>
     <string name="conference_resource_constraint">Restrición do recurso</string>
     <string name="conference_kicked">Xa foi expulsado de esta conversa en grupo</string>
     <string name="conference_shutdown">A conversa en grupo foi apagada</string>
@@ -750,7 +750,7 @@
     <string name="pref_start_search_summary">Na pantalla \'Iniciar Conversa\' abrir teclado e pór o cursor no campo de busca</string>
     <string name="group_chat_avatar">Avatar da conversa de grupo</string>
     <string name="host_does_not_support_group_chat_avatars">O servidor non soporta o avatar na conversa de grupo</string>
-    <string name="only_the_owner_can_change_group_chat_avatar">Só o dono pode cambiar o avatar da conversa de grupo</string>
+    <string name="only_the_owner_can_change_group_chat_avatar">Só a propietaria pode cambiar o avatar da conversa</string>
     <string name="contact_name">Nome do contacto</string>
     <string name="nickname">Alcume</string>
     <string name="group_chat_name">Nome</string>
