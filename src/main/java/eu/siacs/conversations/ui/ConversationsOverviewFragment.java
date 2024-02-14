@@ -57,12 +57,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.FragmentConversationsOverviewBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
 import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
@@ -304,13 +306,19 @@ public class ConversationsOverviewFragment extends XmppFragment {
 		return binding.getRoot();
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-		menuInflater.inflate(R.menu.fragment_conversations_overview, menu);
-		AccountUtils.showHideMenuItems(menu);
-		final MenuItem easyOnboardInvite = menu.findItem(R.id.action_easy_invite);
-		easyOnboardInvite.setVisible(EasyOnboardingInvite.anyHasSupport(activity == null ? null : activity.xmppConnectionService));
-	}
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.fragment_conversations_overview, menu);
+        AccountUtils.showHideMenuItems(menu);
+        final MenuItem easyOnboardInvite = menu.findItem(R.id.action_easy_invite);
+        easyOnboardInvite.setVisible(
+                EasyOnboardingInvite.anyHasSupport(
+                        activity == null ? null : activity.xmppConnectionService));
+        final MenuItem privacyPolicyMenuItem = menu.findItem(R.id.action_privacy_policy);
+        privacyPolicyMenuItem.setVisible(
+                BuildConfig.PRIVACY_POLICY != null
+                        && QuickConversationsService.isPlayStoreFlavor());
+    }
 
 	@Override
 	public void onBackendConnected() {

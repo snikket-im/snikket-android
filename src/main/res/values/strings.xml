@@ -1023,4 +1023,5 @@
     <string name="unverified_devices">You are using unverified devices. Scan the QR Code on your other devices to perform verification and impede active MITM attacks.</string>
     <string name="report_spam">Report spam</string>
     <string name="report_spam_and_block">Report spam and block spammer</string>
+    <string name="privacy_policy">Privacy policy</string>
 </resources>
