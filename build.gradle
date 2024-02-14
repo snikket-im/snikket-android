@@ -105,7 +105,7 @@ android {
         def appName = "Conversations"
         resValue "string", "app_name", appName
         buildConfigField "String", "APP_NAME", "\"$appName\""
-        buildConfigField "String", "PRIVACY_POLICY", "null"
+        buildConfigField "String", "PRIVACY_POLICY", "\"https://conversations.im/privacy.html\""
     }
 
     splits {

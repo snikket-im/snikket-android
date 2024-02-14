@@ -30,6 +30,10 @@ public abstract class AbstractQuickConversationsService {
         return "playstore".equals(BuildConfig.FLAVOR_distribution);
     }
 
+    public static boolean isFreeOrQuicksyFlavor() {
+        return  "free".equals(BuildConfig.FLAVOR_distribution) || "quicksy".equals(BuildConfig.FLAVOR_mode);
+    }
+
     public static boolean isQuicksyPlayStore() {
         return isQuicksy() && isPlayStoreFlavor();
     }

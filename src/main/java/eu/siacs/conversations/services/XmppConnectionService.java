@@ -1290,7 +1290,11 @@ public class XmppConnectionService extends Service {
 
         restoreFromDatabase();
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+        if (QuickConversationsService.isFreeOrQuicksyFlavor()
+                && (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                        || ContextCompat.checkSelfPermission(
+                                        this, Manifest.permission.READ_CONTACTS)
+                                == PackageManager.PERMISSION_GRANTED)) {
             startContactObserver();
         }
         FILE_OBSERVER_EXECUTOR.execute(fileBackend::deleteHistoricAvatarPath);

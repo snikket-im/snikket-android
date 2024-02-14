@@ -761,7 +761,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     }
 
     private void askForContactsPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (QuickConversationsService.isFreeOrQuicksyFlavor() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                 if (mRequestedContactsPermission.compareAndSet(false, true)) {
                     if (QuickConversationsService.isQuicksy() || shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
@@ -840,8 +840,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
     @Override
     protected void onBackendConnected() {
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+        if (QuickConversationsService.isFreeOrQuicksyFlavor()
+                && (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                        || checkSelfPermission(Manifest.permission.READ_CONTACTS)
+                                == PackageManager.PERMISSION_GRANTED)) {
             xmppConnectionService.getQuickConversationsService().considerSyncBackground(false);
         }
         if (mPostponedActivityResult != null) {
