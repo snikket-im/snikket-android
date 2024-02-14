@@ -316,8 +316,8 @@
     <string name="jabber_id_copied_to_clipboard">XMPP-адрес скопирован в буфер обмена</string>
     <string name="error_message_copied_to_clipboard">Сообщение об ошибке скопировано в буфер обмена</string>
     <string name="web_address">веб-адрес</string>
-    <string name="scan_qr_code">Сканировать 2D штрихкод</string>
-    <string name="show_qr_code">Показать 2D штрихкод</string>
+    <string name="scan_qr_code">Сканировать QR-код</string>
+    <string name="show_qr_code">Показать QR-код</string>
     <string name="show_block_list">Показать чёрный список</string>
     <string name="account_details">Сведения об учётной записи</string>
     <string name="confirm">Подтвердить</string>
@@ -616,7 +616,7 @@
     <string name="pref_blind_trust_before_verification_summary">Автоматически доверять всем новым устройствам контактов, которые не были подтверждены ранее, но запрашивать ручное подтверждение каждый раз, когда подтвержденный контакт добавляет новое устройство.</string>
     <string name="blindly_trusted_omemo_keys">Принятие OMEMO-ключей вслепую. Это означает, что собеседник может оказаться недоверенным лицом.</string>
     <string name="not_trusted">Недоверенный</string>
-    <string name="invalid_barcode">Некорректный 2D штрихкод</string>
+    <string name="invalid_barcode">Некорректный QR-код</string>
     <string name="pref_clean_cache_summary">Очистить кэш (используется камерой)</string>
     <string name="pref_clean_cache">Очистить кэш</string>
     <string name="pref_clean_private_storage">Очистить приватное хранилище</string>
@@ -1045,10 +1045,10 @@
     <string name="this_account_is_logged_out">Вы вышли из этой учётной записи</string>
     <string name="log_in">Войти</string>
     <string name="hide_notification">Скрыть уведомление</string>
-    <string name="contact_uses_unverified_keys">Ваш контакт использует неподтверждённые устройства. Отсканируйте его штрих-код для проверки и предотвращения атаки посредника.</string>
+    <string name="contact_uses_unverified_keys">Ваш контакт использует неподтверждённые устройства. Отсканируйте его QR-код для проверки и предотвращения атаки посредника.</string>
     <string name="log_out">Выйти</string>
     <string name="account_state_logged_out">Деавторизован</string>
-    <string name="unverified_devices">Вы используете неподтверждённые устройства. Отсканируйте штрих-код на подтверждённом устройстве для проверки и предотвращения атаки посредника.</string>
+    <string name="unverified_devices">Вы используете неподтверждённые устройства. Отсканируйте QR-код на подтверждённом устройстве для проверки и предотвращения атаки посредника.</string>
     <string name="report_spam_and_block">Пожаловаться на спам и заблокировать</string>
     <string name="report_spam">Пожаловаться на спам</string>
 </resources>
