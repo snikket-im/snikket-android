@@ -1036,4 +1036,6 @@
     <string name="report_spam">报告垃圾消息</string>
     <string name="welcome_header_quicksy">欢迎使用 Quicksy！</string>
     <string name="quicksy_wants_your_consent">Quicksy 请求您同意使用您的数据</string>
+    <string name="privacy_policy">隐私政策</string>
+    <string name="contact_list_integration_not_available">通讯录集成不可用</string>
 </resources>
