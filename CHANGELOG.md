@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.13.3
+
+* Provide easier access to 'Privacy Policy' on Play Store version (Quicksy and Conversations)
+* Remove address book integration on Play Store version of Conversations
+
 ### Version 2.13.2
 
 * minor bug fixes
