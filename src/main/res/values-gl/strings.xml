@@ -1027,4 +1027,6 @@
     <string name="report_spam">Informar de spam</string>
     <string name="welcome_header_quicksy">Benvida a Quicksy!</string>
     <string name="quicksy_wants_your_consent">Quicksy solicita permiso para usar os teus datos</string>
+    <string name="privacy_policy">Política de privacidade</string>
+    <string name="contact_list_integration_not_available">Non está dispoñible a integración coa libreta de enderezos</string>
 </resources>
