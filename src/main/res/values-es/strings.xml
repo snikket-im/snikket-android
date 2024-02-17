@@ -1038,4 +1038,6 @@
     <string name="report_spam">Informar sobre spam</string>
     <string name="welcome_header_quicksy">¡Bienvenido a Quicksy!</string>
     <string name="quicksy_wants_your_consent">Quicksy pide tu consentimiento para utilizar tus datos</string>
+    <string name="privacy_policy">Política de privacidad</string>
+    <string name="contact_list_integration_not_available">La integración de la agenda no está disponible</string>
 </resources>
