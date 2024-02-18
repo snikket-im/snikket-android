@@ -1022,4 +1022,8 @@
     <string name="unverified_devices">Du verwendest nicht verifizierte Geräte. Scanne den QR-Code auf deinen anderen Geräten, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
     <string name="report_spam">Spam melden</string>
     <string name="report_spam_and_block">Spam melden und Spammer sperren</string>
+    <string name="welcome_header_quicksy">Willkommen bei Quicksy!</string>
+    <string name="privacy_policy">Datenschutzbestimmungen</string>
+    <string name="quicksy_wants_your_consent">Quicksy bittet dich um deine Zustimmung zur Verwendung deiner Daten</string>
+    <string name="contact_list_integration_not_available">Adressbuchintegration ist nicht verfügbar</string>
 </resources>
