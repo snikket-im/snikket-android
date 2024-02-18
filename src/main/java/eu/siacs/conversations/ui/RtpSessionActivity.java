@@ -6,7 +6,6 @@ import static java.util.Arrays.asList;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.PictureInPictureParams;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -18,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.os.SystemClock;
 import android.util.Log;
 import android.util.Rational;
 import android.view.KeyEvent;
@@ -48,7 +46,6 @@ import eu.siacs.conversations.databinding.ActivityRtpSessionBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.services.CallIntegration;
 import eu.siacs.conversations.services.CallIntegrationConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -364,7 +361,7 @@ public class RtpSessionActivity extends XmppActivity
         final List<String> permissions = permissions(getMedia());
         if (PermissionUtils.hasPermission(this, permissions, REQUEST_ACCEPT_CALL)) {
             putScreenInCallMode();
-            checkRecorderAndAcceptCall();
+            acceptCall();
         }
     }
 
@@ -381,8 +378,7 @@ public class RtpSessionActivity extends XmppActivity
         return permissions.build();
     }
 
-    private void checkRecorderAndAcceptCall() {
-        checkMicrophoneAvailabilityAsync();
+    private void acceptCall() {
         try {
             requireRtpConnection().acceptCall();
         } catch (final IllegalStateException e) {
@@ -390,40 +386,6 @@ public class RtpSessionActivity extends XmppActivity
         }
     }
 
-    private void checkMicrophoneAvailabilityAsync() {
-        new Thread(new MicrophoneAvailabilityCheck(this)).start();
-    }
-
-    private static class MicrophoneAvailabilityCheck implements Runnable {
-
-        private final WeakReference<Activity> activityReference;
-
-        private MicrophoneAvailabilityCheck(final Activity activity) {
-            this.activityReference = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void run() {
-            final long start = SystemClock.elapsedRealtime();
-            final boolean isMicrophoneAvailable = AppRTCAudioManager.isMicrophoneAvailable();
-            final long stop = SystemClock.elapsedRealtime();
-            Log.d(Config.LOGTAG, "checking microphone availability took " + (stop - start) + "ms");
-            if (isMicrophoneAvailable) {
-                return;
-            }
-            final Activity activity = activityReference.get();
-            if (activity == null) {
-                return;
-            }
-            activity.runOnUiThread(
-                    () ->
-                            Toast.makeText(
-                                            activity,
-                                            R.string.microphone_unavailable,
-                                            Toast.LENGTH_LONG)
-                                    .show());
-        }
-    }
 
     private void putScreenInCallMode() {
         putScreenInCallMode(requireRtpConnection().getMedia());
@@ -597,7 +559,6 @@ public class RtpSessionActivity extends XmppActivity
 
     private void proposeJingleRtpSession(
             final Account account, final Jid with, final Set<Media> media) {
-        checkMicrophoneAvailabilityAsync();
         if (with.isBareJid()) {
             xmppConnectionService
                     .getJingleConnectionManager()
@@ -617,7 +578,7 @@ public class RtpSessionActivity extends XmppActivity
                 PermissionUtils.removeBluetoothConnect(permissions, grantResults);
         if (PermissionUtils.allGranted(permissionResult.grantResults)) {
             if (requestCode == REQUEST_ACCEPT_CALL) {
-                checkRecorderAndAcceptCall();
+                acceptCall();
             } else if (requestCode == REQUEST_ACCEPT_CONTENT) {
                 acceptContentAdd();
             } else if (requestCode == REQUEST_ADD_CONTENT) {

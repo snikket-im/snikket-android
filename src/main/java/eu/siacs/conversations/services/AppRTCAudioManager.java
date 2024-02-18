@@ -95,44 +95,9 @@ public class AppRTCAudioManager {
         AppRTCUtils.logDeviceInfo(Config.LOGTAG);
     }
 
-    public static boolean isMicrophoneAvailable() {
-        microphoneLatch = new CountDownLatch(1);
-        AudioRecord audioRecord = null;
-        boolean available = true;
-        try {
-            final int sampleRate = 44100;
-            final int channel = AudioFormat.CHANNEL_IN_MONO;
-            final int format = AudioFormat.ENCODING_PCM_16BIT;
-            final int bufferSize = AudioRecord.getMinBufferSize(sampleRate, channel, format);
-            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate, channel, format, bufferSize);
-            audioRecord.startRecording();
-            final short[] buffer = new short[bufferSize];
-            final int audioStatus = audioRecord.read(buffer, 0, bufferSize);
-            if (audioStatus == AudioRecord.ERROR_INVALID_OPERATION || audioStatus == AudioRecord.STATE_UNINITIALIZED)
-                available = false;
-        } catch (Exception e) {
-            available = false;
-        } finally {
-            release(audioRecord);
-
-        }
-        microphoneLatch.countDown();
-        return available;
-    }
-
-    private static void release(final AudioRecord audioRecord) {
-        if (audioRecord == null) {
-            return;
-        }
-        try {
-            audioRecord.release();
-        } catch (Exception e) {
-            //ignore
-        }
-    }
 
     @SuppressWarnings("deprecation")
-    public void start(AudioManagerEvents audioManagerEvents) {
+    public void start(final AudioManagerEvents audioManagerEvents) {
         Log.d(Config.LOGTAG, AppRTCAudioManager.class.getName() + ".start()");
         ThreadUtils.checkIsOnMainThread();
         if (amState == AudioManagerState.RUNNING) {
