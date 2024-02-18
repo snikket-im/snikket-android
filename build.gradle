@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.0-rc03'
+        classpath 'com.android.tools.build:gradle:8.2.2'
     }
 }
 
@@ -35,13 +35,13 @@ dependencies {
 
     implementation 'androidx.viewpager:viewpager:1.0.0'
 
-    playstoreImplementation('com.google.firebase:firebase-messaging:23.4.0') {
+    playstoreImplementation('com.google.firebase:firebase-messaging:23.4.1') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
     conversationsPlaystoreImplementation("com.android.installreferrer:installreferrer:2.2")
-    quicksyPlaystoreImplementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
+    quicksyPlaystoreImplementation 'com.google.android.gms:play-services-auth-api-phone:18.0.2'
     implementation 'com.github.open-keychain.open-keychain:openpgp-api:v5.7.1'
     implementation("com.github.CanHub:Android-Image-Cropper:2.0.0")
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -81,7 +81,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.12.0"
 
     implementation 'com.google.guava:guava:32.1.3-android'
-    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.13.17'
+    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.13.28'
     implementation 'im.conversations.webrtc:webrtc-android:119.0.0'
 }
 
