@@ -338,12 +338,13 @@ public class XmppConnection implements Runnable {
                 }
             } else {
                 final String domain = account.getServer();
-                final List<Resolver.Result> results;
+                final List<Resolver.Result> results = new ArrayList<>();
                 final boolean hardcoded = extended && !account.getHostname().isEmpty();
                 if (hardcoded) {
-                    results = Resolver.fromHardCoded(account.getHostname(), account.getPort());
+                    results.addAll(
+                            Resolver.fromHardCoded(account.getHostname(), account.getPort()));
                 } else {
-                    results = Resolver.resolve(domain);
+                    results.addAll(Resolver.resolve(domain));
                 }
                 if (Thread.currentThread().isInterrupted()) {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": Thread was interrupted");

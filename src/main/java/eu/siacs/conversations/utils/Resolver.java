@@ -166,15 +166,15 @@ public class Resolver {
                 threads[2].interrupt();
                 synchronized (results) {
                     Collections.sort(results);
-                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": " + results.toString());
-                    return new ArrayList<>(results);
+                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": " + results);
+                    return results;
                 }
             } else {
                 threads[2].join();
                 synchronized (fallbackResults) {
                     Collections.sort(fallbackResults);
-                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": " + fallbackResults.toString());
-                    return new ArrayList<>(fallbackResults);
+                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": " + fallbackResults);
+                    return fallbackResults;
                 }
             }
         } catch (InterruptedException e) {
@@ -257,7 +257,7 @@ public class Resolver {
     }
 
     private static List<Result> resolveNoSrvRecords(DNSName dnsName, boolean withCnames) {
-        List<Result> results = new ArrayList<>();
+        final List<Result> results = new ArrayList<>();
         try {
             for (A a : resolveWithFallback(dnsName, A.class, false).getAnswersOrEmptySet()) {
                 results.add(Result.createDefault(dnsName, a.getInetAddress()));
