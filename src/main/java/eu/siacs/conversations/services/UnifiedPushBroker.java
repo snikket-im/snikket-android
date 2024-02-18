@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
@@ -85,24 +86,24 @@ public class UnifiedPushBroker {
         service.sendPresencePacket(account, presence);
     }
 
-    public Optional<Transport> renewUnifiedPushEndpoints() {
-        return renewUnifiedPushEndpoints(null);
+    public void renewUnifiedPushEndpoints() {
+        renewUnifiedPushEndpoints(null);
     }
 
-    public Optional<Transport> renewUnifiedPushEndpoints(final PushTargetMessenger pushTargetMessenger) {
+    public Optional<Transport> renewUnifiedPushEndpoints(@Nullable final PushTargetMessenger pushTargetMessenger) {
         final Optional<Transport> transportOptional = getTransport();
         if (transportOptional.isPresent()) {
             final Transport transport = transportOptional.get();
             if (transport.account.isEnabled()) {
                 renewUnifiedEndpoint(transportOptional.get(), pushTargetMessenger);
             } else {
-                if (pushTargetMessenger.messenger != null) {
+                if (pushTargetMessenger != null && pushTargetMessenger.messenger != null) {
                     sendRegistrationDelayed(pushTargetMessenger.messenger,"account is disabled");
                 }
                 Log.d(Config.LOGTAG, "skipping UnifiedPush endpoint renewal. Account is disabled");
             }
         } else {
-            if (pushTargetMessenger.messenger != null) {
+            if (pushTargetMessenger != null && pushTargetMessenger.messenger != null) {
                 sendRegistrationDelayed(pushTargetMessenger.messenger,"no transport selected");
             }
             Log.d(Config.LOGTAG, "skipping UnifiedPush endpoint renewal. No transport selected");
