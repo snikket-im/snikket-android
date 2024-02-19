@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.13.4
+
+* Fix minor regressions introduced with 2.13.1
+
 ### Version 2.13.3
 
 * Provide easier access to 'Privacy Policy' on Play Store version (Quicksy and Conversations)

@@ -1,0 +1,1 @@
+* Fix minor regressions introduced with 2.13.1
