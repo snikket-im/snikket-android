@@ -1290,7 +1290,7 @@ public class XmppConnectionService extends Service {
 
         restoreFromDatabase();
 
-        if (QuickConversationsService.isFreeOrQuicksyFlavor()
+        if (QuickConversationsService.isContactListIntegration(this)
                 && (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
                         || ContextCompat.checkSelfPermission(
                                         this, Manifest.permission.READ_CONTACTS)

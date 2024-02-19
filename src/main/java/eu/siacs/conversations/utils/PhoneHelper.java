@@ -10,6 +10,8 @@ import android.os.Build;
 import android.provider.ContactsContract.Profile;
 import android.provider.Settings;
 
+import com.google.common.base.Strings;
+
 import eu.siacs.conversations.services.QuickConversationsService;
 
 public class PhoneHelper {
@@ -20,27 +22,25 @@ public class PhoneHelper {
     }
 
     public static Uri getProfilePictureUri(final Context context) {
-        if (!QuickConversationsService.isFreeOrQuicksyFlavor()
+        if (!QuickConversationsService.isContactListIntegration(context)
                 || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                         && context.checkSelfPermission(Manifest.permission.READ_CONTACTS)
                                 != PackageManager.PERMISSION_GRANTED)) {
             return null;
         }
         final String[] projection = new String[] {Profile._ID, Profile.PHOTO_URI};
-        final Cursor cursor;
-        try {
-            cursor =
-                    context.getContentResolver()
-                            .query(Profile.CONTENT_URI, projection, null, null, null);
-        } catch (Throwable e) {
-            return null;
+        try (final Cursor cursor =
+                context.getContentResolver()
+                        .query(Profile.CONTENT_URI, projection, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                final var photoUri = cursor.getString(1);
+                if (Strings.isNullOrEmpty(photoUri)) {
+                    return null;
+                }
+                return Uri.parse(photoUri);
+            }
         }
-        if (cursor == null) {
-            return null;
-        }
-        final String uri = cursor.moveToFirst() ? cursor.getString(1) : null;
-        cursor.close();
-        return uri == null ? null : Uri.parse(uri);
+        return null;
     }
 
     public static boolean isEmulator() {

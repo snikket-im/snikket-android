@@ -120,13 +120,13 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     private void checkContactPermissionAndShowAddDialog() {
         if (hasContactsPermission()) {
             showAddToPhoneBookDialog();
-        } else if (QuickConversationsService.isFreeOrQuicksyFlavor() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        } else if (QuickConversationsService.isContactListIntegration(this) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
         }
     }
 
     private boolean hasContactsPermission() {
-        if (QuickConversationsService.isFreeOrQuicksyFlavor() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (QuickConversationsService.isContactListIntegration(this) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
         } else {
             return true;
@@ -525,7 +525,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     }
 
     private void onBadgeClick(final View view) {
-        if (QuickConversationsService.isFreeOrQuicksyFlavor()) {
+        if (QuickConversationsService.isContactListIntegration(this)) {
             final Uri systemAccount = contact.getSystemAccount();
             if (systemAccount == null) {
                 checkContactPermissionAndShowAddDialog();

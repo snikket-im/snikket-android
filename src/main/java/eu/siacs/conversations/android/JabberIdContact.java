@@ -62,8 +62,8 @@ public class JabberIdContact extends AbstractPhoneContact {
         return jid;
     }
 
-    public static Map<Jid, JabberIdContact> load(Context context) {
-        if (!QuickConversationsService.isFreeOrQuicksyFlavor()
+    public static Map<Jid, JabberIdContact> load(final Context context) {
+        if (!QuickConversationsService.isContactListIntegration(context)
                 || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                         && context.checkSelfPermission(Manifest.permission.READ_CONTACTS)
                                 != PackageManager.PERMISSION_GRANTED)) {

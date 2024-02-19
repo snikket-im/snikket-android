@@ -518,8 +518,8 @@
     <string name="no_storage_permission">Grant %1$s access to external storage</string>
     <string name="no_camera_permission">Grant %1$s access to the camera</string>
     <string name="quicksy_wants_your_consent">Quicksy asks for your consent to use your data</string>
-    <string name="sync_with_contacts">Synchronize with contacts</string>
-    <string name="sync_with_contacts_long">%1$s wants permission to access your address book to match it with your XMPP contact list.\nThis will display your contacts’ full names and avatars.\n\n%1$s will only read your address book and match it locally without uploading anything to your server.</string>
+    <string name="sync_with_contacts">Contact list integration</string>
+    <string name="sync_with_contacts_long">%1$s processes your contact list locally, on your device, to show you the names and profile pictures for matching contacts on XMPP.\n\nNo contact list data ever leaves your device!</string>
     <string name="sync_with_contacts_quicksy_static" translatable="false"><![CDATA[Quicksy syncs your contact list in regular intervals to make suggestions about possible contacts, who are already using the app, even when the app is closed or not in use.<br><br>Find more information in our <a href="https://quicksy.im/privacy.htm">Privacy Policy</a>.]]></string>
     <string name="notify_on_all_messages">Notify on all messages</string>
     <string name="notify_only_when_highlighted">Notify only when mentioned</string>
@@ -1024,5 +1024,5 @@
     <string name="report_spam">Report spam</string>
     <string name="report_spam_and_block">Report spam and block spammer</string>
     <string name="privacy_policy">Privacy policy</string>
-    <string name="contact_list_integration_not_available">Address book integration is not available</string>
+    <string name="contact_list_integration_not_available">Contact list integration is not available</string>
 </resources>
