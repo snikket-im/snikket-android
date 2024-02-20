@@ -31,13 +31,8 @@
     <string name="minutes_ago">%d minut tymu</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d niyprzeczytano kōnwersacyjo</item>
-
-    
         <item quantity="few">%d niyprzeczytane kōnwersacyje</item>
-
-    
         <item quantity="other">%d niyprzeczytanych kōnwersacyji</item>
-
     </plurals>
     <string name="sending">wysyłanie…</string>
     <string name="message_decrypting">Ôdszyfrowowanie wiadōmości. To weźnie ino chwila…</string>
@@ -1010,4 +1005,4 @@
     <string name="plain_text_document">Dokumynt ze samym tekstym</string>
     <string name="account_registrations_are_not_supported">Registracyjo kōnt niy je spiyrano</string>
     <string name="no_xmpp_adddress_found">Żodno adresa XMPP niyznojdziōno</string>
-    </resources>
+</resources>
