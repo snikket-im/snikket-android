@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+    <!-- Remove this line if Google Play Store is giving you a hard time -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
     <application android:icon="@mipmap/new_launcher">
 
         <meta-data
