@@ -519,7 +519,10 @@
     <string name="no_storage_permission">Permitir a %1$s acceder al almacenamiento externo</string>
     <string name="no_camera_permission">Permitir a %1$s acceder a la cámara</string>
     <string name="sync_with_contacts">Sincronizar contactos</string>
-    <string name="sync_with_contacts_long">%1$s quiere permiso para acceder a tu agenda de contactos y cruzarla con tu lista de contactos de XMPP.\nEsto permitirá mostrar el nombre completo y los avatares de tus contactos.\n\n%1$s solo leerá tu agenda de contactos y la cruzará localmente sin subir nada a tu servidor.</string>
+    <string name="sync_with_contacts_long">%1$s quiere permiso para acceder a tu agenda de contactos y cruzarla con tu lista de contactos de XMPP.
+\nEsto permitirá mostrar el nombre completo y los avatares de tus contactos.
+\n
+\n%1$s solo leerá tu agenda de contactos y la cruzará localmente sin subir nada a tu servidor.</string>
     <string name="notify_on_all_messages">Notificar para todos los mensajes</string>
     <string name="notify_only_when_highlighted">Notificar solo cuando eres mencionado</string>
     <string name="notify_never">Notificaciones deshabilitadas</string>
