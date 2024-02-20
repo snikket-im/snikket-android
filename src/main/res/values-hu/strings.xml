@@ -31,10 +31,7 @@
     <string name="minutes_ago">%d perce</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d olvasatlan beszélgetés</item>
-
-    
         <item quantity="other">%d olvasatlan beszélgetés</item>
-
     </plurals>
     <string name="sending">küldés…</string>
     <string name="message_decrypting">Üzenet visszafejtése. Kérem várjon…</string>
@@ -890,4 +887,4 @@
         <item quantity="one">%1$d résztvevő megtekintése</item>
         <item quantity="other">%1$d résztvevő megtekintése</item>
     </plurals>
-    </resources>
+</resources>
