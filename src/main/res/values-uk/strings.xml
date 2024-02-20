@@ -507,7 +507,7 @@
     <string name="shared_image_with_x">Зображення надіслано %s</string>
     <string name="shared_images_with_x">Зображення надіслано %s</string>
     <string name="shared_text_with_x">Текст надіслано %s</string>
-    <string name="sync_with_contacts">Синхронізувати контакти</string>
+    <string name="sync_with_contacts">Інтеграція зі списком контактів</string>
     <string name="notify_on_all_messages">Сповіщати про всі повідомлення</string>
     <string name="notify_only_when_highlighted">Сповіщати, лише якщо згадують</string>
     <string name="notify_never">Сповіщення вимкнено</string>
@@ -991,10 +991,9 @@
     <string name="pref_up_push_server_summary">Оберіть сервер для доставки push-повідомлень через XMPP на Ваш пристрій.</string>
     <string name="error_security_exception">Застосунок для передачі зображення не надав достатніх дозволів.</string>
     <string name="audio_video_disabled_tor">Виклики вимкнені при використанні Tor</string>
-    <string name="sync_with_contacts_long">%1$s потребує дозволу на доступ до контактів, щоб порівняти їх з Вашими XMPP-контактами.
-\nТаким чином можна буде показувати піктограми і повні імена користувачів.
+    <string name="sync_with_contacts_long">%1$s обробляє Ваш список контактів локально, на Вашому пристрої, щоб показати імена та зображення профілю для відповідних контактів у XMPP.
 \n
-\n%1$s лише прочитає Вашу адресну книгу і зіставлятиме інформацію про контакти локально, нічого не завантажуючи на сервер.</string>
+\nУсі дані списку контактів залишаються на Вашому пристрої!</string>
     <string name="missed_calls_channel_name">Пропущені виклики</string>
     <string name="data_saver_enabled_explained">Ваша операційна система обмежує для %1$s доступ до Інтернету у фоновому режимі. Щоб отримувати сповіщення про нові повідомлення, Вам потрібно дозволити %1$s необмежений доступ, коли заощадження трафіку увімкнено.
 \n%1$s намагатиметься по можливості економити трафік.</string>
@@ -1079,5 +1078,5 @@
     <string name="welcome_header_quicksy">Вітаємо у Quicksy!</string>
     <string name="quicksy_wants_your_consent">Quicksy просить згоду на використання Ваших даних</string>
     <string name="privacy_policy">Політика конфіденційності</string>
-    <string name="contact_list_integration_not_available">Інтеграція адресної книги недоступна</string>
+    <string name="contact_list_integration_not_available">Інтеграція зі списком контактів недоступна</string>
 </resources>
