@@ -514,7 +514,10 @@
     <string name="no_storage_permission">Giv %1$s adgang til ekstern lagerplads</string>
     <string name="no_camera_permission">Giv %1$s adgang til kameraet</string>
     <string name="sync_with_contacts">Synkroniser med kontakter</string>
-    <string name="sync_with_contacts_long">%1$s ønsker tilladelse til at få adgang til din adressebog for at matche den med din XMPP kontaktliste.\nDette vil vise dine kontakters fulde navne og avatarer.\n\n%1$s læser kun din adressebog og matcher den lokalt uden at uploade noget til din server.</string>
+    <string name="sync_with_contacts_long">%1$s ønsker tilladelse til at få adgang til din adressebog for at matche den med din XMPP kontaktliste.
+\nDette vil vise dine kontakters fulde navne og avatarer.
+\n
+\n%1$s læser kun din adressebog og matcher den lokalt uden at uploade noget til din server.</string>
     <string name="notify_on_all_messages">Underret ved alle beskeder</string>
     <string name="notify_only_when_highlighted">Underret kun når nævnt</string>
     <string name="notify_never">Notifikationer deaktiveret</string>
