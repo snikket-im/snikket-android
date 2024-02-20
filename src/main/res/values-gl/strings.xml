@@ -518,7 +518,10 @@
     <string name="no_storage_permission">Permitir que %1$s acceda ao almacenaxe externo</string>
     <string name="no_camera_permission">Permitir que %1$s acceda á cámara</string>
     <string name="sync_with_contacts">Sincronice con todos os contactos</string>
-    <string name="sync_with_contacts_long">%1$s quere ter permiso para acceder á túa libreta de enderezos para comparala coa lista de contactos XMPP.\nDeste xeito poderá mostrar o nome completo e avatares dos teus contactos.\n\n%1$s só utilizará de xeito local a túa lista de contactos, sen subila a ningún servidor.</string>
+    <string name="sync_with_contacts_long">%1$s quere ter permiso para acceder á túa libreta de enderezos para comparala coa lista de contactos XMPP.
+\nDeste xeito poderá mostrar o nome completo e avatares dos teus contactos.
+\n
+\n%1$s só utilizará de xeito local a túa lista de contactos, sen subila a ningún servidor.</string>
     <string name="notify_on_all_messages">Notificar todas as mensaxes</string>
     <string name="notify_only_when_highlighted">Notificar só cando é mencionada</string>
     <string name="notify_never">Notificacións desactivadas</string>
