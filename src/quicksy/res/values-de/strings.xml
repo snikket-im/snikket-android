@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_notification_grace_period_summary">Zeitspanne, in der Quicksy still bleibt, nachdem es Aktivitäten auf einem anderen Gerät erkannt hat</string>
-    <string name="pref_never_send_crash_summary">Mit dem Einsenden von Absturzberichten hilfst du bei der Weiterentwicklung von Quicksy</string>
+    <string name="pref_never_send_crash_summary">Durch das Einsenden von Absturzberichten hilfst du bei der Weiterentwicklung von Quicksy</string>
     <string name="pref_broadcast_last_activity_summary">Informiere deine Kontakte, wann du Quicksy nutzt</string>
     <string name="huawei_protected_apps_summary">Um weiterhin Benachrichtigungen zu erhalten, auch wenn der Bildschirm ausgeschaltet ist, musst du Quicksy zur Liste der geschützten Apps hinzufügen.</string>
     <string name="set_profile_picture">Quicksy Profilbild</string>
