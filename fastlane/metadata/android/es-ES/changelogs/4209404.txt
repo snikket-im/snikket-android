@@ -1,0 +1,1 @@
+* Se corrigieron problemas menores introducidos en 2.13.1
