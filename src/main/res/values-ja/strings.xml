@@ -510,7 +510,10 @@
     <string name="no_storage_permission">%1$s に外部ストレージへのアクセス権を付与してください</string>
     <string name="no_camera_permission">%1$s にカメラへのアクセス権を付与</string>
     <string name="sync_with_contacts">連絡先と同期</string>
-    <string name="sync_with_contacts_long">%1$s はあなたのアドレス帳にアクセスして、あなたのXMPP 連絡先名簿と照合する権限を求めています。\nこれにより、連絡先のフルネームとアバターが表示されます。\n\n%1$s は、あなたのサーバーに何かをアップロードすることなく、あなたのアドレス帳を読み込んで照合するだけです。</string>
+    <string name="sync_with_contacts_long">%1$s はあなたのアドレス帳にアクセスして、あなたのXMPP 連絡先名簿と照合する権限を求めています。
+\nこれにより、連絡先のフルネームとアバターが表示されます。
+\n
+\n%1$s は、あなたのサーバーに何かをアップロードすることなく、あなたのアドレス帳を読み込んで照合するだけです。</string>
     <string name="notify_on_all_messages">すべてのメッセージで通知</string>
     <string name="notify_only_when_highlighted">メンションされたときにのみ通知</string>
     <string name="notify_never">通知は無効</string>
