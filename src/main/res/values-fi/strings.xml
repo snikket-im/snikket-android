@@ -493,7 +493,10 @@
     <string name="no_storage_permission">Salli %1$s:n käyttää ulkoista tallennustilaa</string>
     <string name="no_camera_permission">Salli %1$s:n käyttää kameraa </string>
     <string name="sync_with_contacts">Synkronoi yhteystietojen kanssa</string>
-    <string name="sync_with_contacts_long">%1$s haluaa pääsyn osoitekirjaasi yhdistääkseen sen XMPP-yhteystietojesi kanssa.\nTämä näyttää yhteystietojesi koko nimen ja kuvan.\n\n%1$s pelkästään lukee osoitekirjaasi ja vertailee niitä paikallisesti, lähettämättä mitään palvelimelle.</string>
+    <string name="sync_with_contacts_long">%1$s haluaa pääsyn osoitekirjaasi yhdistääkseen sen XMPP-yhteystietojesi kanssa.
+\nTämä näyttää yhteystietojesi koko nimen ja kuvan.
+\n
+\n%1$s pelkästään lukee osoitekirjaasi ja vertailee niitä paikallisesti, lähettämättä mitään palvelimelle.</string>
     <string name="notify_on_all_messages">Ilmoita kaikista uusista viesteistä</string>
     <string name="notify_only_when_highlighted">Ilmoita vain kun minut mainitaan</string>
     <string name="notify_never">Ilmoitukset pois käytöstä</string>
