@@ -254,8 +254,8 @@
     <string name="jabber_id_copied_to_clipboard">Adresa XMPP u kopjua në clipboard</string>
     <string name="error_message_copied_to_clipboard">Mesazhi i gabimit u kopjua në të papastër</string>
     <string name="web_address">adresë web</string>
-    <string name="scan_qr_code">Skano Kod me vija 2D</string>
-    <string name="show_qr_code">Shfaq Kod me vija 2D</string>
+    <string name="scan_qr_code">Skano Kod QR</string>
+    <string name="show_qr_code">Shfaq Kod QR</string>
     <string name="show_block_list">Shfaqe listë bllokimesh</string>
     <string name="account_details">Hollësi llogarie</string>
     <string name="confirm">Ripohojeni</string>
@@ -403,7 +403,7 @@
     <string name="account_settings_port">Portë</string>
     <string name="not_a_valid_port">Ky s’është numër i vlefshëm porte</string>
     <string name="not_valid_hostname">Ky s’është një strehëemër i vlefshëm</string>
-    <string name="sync_with_contacts">Njëkohësoje me kontaktet</string>
+    <string name="sync_with_contacts">Integrim liste kontaktesh</string>
     <string name="notify_on_all_messages">Njofto për krejt mesazhet</string>
     <string name="notify_only_when_highlighted">Njoftomë vetëm kur përmendem</string>
     <string name="notify_never">Njoftime të çaktivizuara</string>
@@ -480,7 +480,7 @@
     <string name="share_as_http">Ndajeni me të tjerë si lidhje HTTP</string>
     <string name="pref_blind_trust_before_verification">Besim i Verbër Para Verifikimi</string>
     <string name="not_trusted">Jo i besuar</string>
-    <string name="invalid_barcode">Kod 2D me vija i pavlefshëm</string>
+    <string name="invalid_barcode">Kod QR i pavlefshëm</string>
     <string name="pref_clean_cache">Spastro fshehtinën</string>
     <string name="pref_clean_private_storage">Spastro depozitë private</string>
     <string name="continue_btn">Vazhdoni</string>
@@ -830,7 +830,7 @@
     <string name="battery_optimizations_enabled_dialog">Pajisja juaj përdor optimizime shumë të thella baterie për %1$s, çka mund të shpjerë në vonesa njoftimesh, ose madje edhe humbje mesazhesh.
 \n
 \nTani do t’ju kërkohet t’i çaktivizoni ato.</string>
-    <string name="no_keys_just_confirm">I keni vlerësuar në mënyrë të parrezik shenjat e gishtave të këtij personi, për të ripohuar besimin. Duke përzgjedhur “U bë”, thjesht po ripohoni se %s është pjesë e kësaj fjalosjeje në grup.</string>
+    <string name="no_keys_just_confirm">I keni besuar tashmë shenjat e gishtave të këtij personi. Duke përzgjedhur “U bë”, thjesht po ripohoni se %s është pjesë e kësaj fjalosjeje në grup.</string>
     <string name="verifying_omemo_keys_trusted_source_account">Ju ndan një hap nga verifikimi i kyçeve OMEMO të llogarisë tuaj. Kjo është e sigurt vetëm nëse e ndoqët këtë lidhje prej një burimi të besuar, ku vetëm ju do të mund ta kishit publikuar këtë lidhje.</string>
     <string name="distrust_omemo_key_text">Jeni i sigurt se doni të hiqet verifikimi i kësaj pajisjeje\?
 \nKësaj pajisjeje dhe mesazheve prej saj do t’u vihet shenjë si “Jo i besuar”.</string>
@@ -869,7 +869,7 @@
     <string name="error_security_exception">Aplikacioni që përdorët për të dhënë këtë kartelë, nuk jep leje të mjaftueshme.</string>
     <string name="unpublish_pgp_message">Jeni i sigurt se doni të hiqet kyçi juaj publik OpenPGP nga njoftimi juaj për prani\?
 \nKontaktet tuaj s’do të jenë më në gjendje t’ju dërgojnë mesazhe të fshehtëzuar me OpenPGP.</string>
-    <string name="mgmt_account_delete_confirm_text">Fshirja e llogarisë tuaj fshin krejt historikun e bisedave tuaja</string>
+    <string name="mgmt_account_delete_confirm_text">Jeni i sigurt se doni të fshihet llogaria juaj? Fshirja e saj shkakton fshirjen e krejt historikut të bisedave tuaja</string>
     <string name="install_openkeychain">Mesazh i fshehtëzuar. Që ta shfshehtëzoni, ju lutemi, instaloni OpenKeychain.</string>
     <string name="omemo_fingerprint_selected_message">Shenja gishtash OMEMO (origjinë mesazhi)</string>
     <string name="omemo_fingerprint_x509_selected_message">Shenja gishtash v\\OMEMO (origjinë mesazhi)</string>
@@ -925,10 +925,9 @@
     <string name="shared_images_with_x">Figurat iu dhanë %s</string>
     <string name="shared_text_with_x">Teksti iu dha %s</string>
     <string name="no_storage_permission">Akordoji %1$s hyrje te depozitë e jashtme</string>
-    <string name="sync_with_contacts_long">%1$s dëshiron leje të përdorë librin tuaj të adresave, për përkim me listën tuaj të kontakteve XMPP.
-\nKjo do të sjellë shfaqjen e emrave të plotë dhe avatarëve të kontakteve tuaj.
+    <string name="sync_with_contacts_long">%1$s e përpunon lokalisht listën tuaj të kontakteve, në pajisjen tuaj, për t’ju shfaqur emrat dhe foto profili për kontakte me përkim në XMPP.
 \n
-\n%1$s vetëm sa do të lexojë librin tuaj të adresave dhe bëjë lokalisht përkimin, pa ngarkuar gjë në shërbyesin tuaj.</string>
+\nNga pajisja juaj s’del kurrë ndonjë e dhënë liste kontaktesh!</string>
     <string name="pref_picture_compression_summary">Ndihmëz: Përdorni “Zgjidhni kartelë”, në vend se “Zgjidhni foto”, për të dërguar figura të pangjeshura, pavarësisht nga ky rregullim.</string>
     <string name="battery_optimizations_enabled_explained">Pajisja juaj përdor optimizime shumë të thella baterie për %1$s, çka mund të shpjerë në vonesa njoftimesh, ose madje edhe humbje mesazhesh.
 \nRekomandohet të çaktivizohen ato.</string>
@@ -993,4 +992,49 @@
         <item quantity="one">%1$d thirrje të humbur prej %2$d kontakti</item>
         <item quantity="other">%1$d thirrje të humbur prej %2$d kontaktesh</item>
     </plurals>
+    <string name="restore_warning_continued">Mos u rrekni të riktheni kopjeruajtje që s’i keni krijuar ju vetë!</string>
+    <string name="rtp_state_content_add">Të shtohen pjesë shtesë?</string>
+    <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
+    <string name="reconnect_on_other_host">Rilidhu te një tjetër strehë</string>
+    <string name="rate_limited">Ju është kufizuar shpejtësia</string>
+    <string name="jabber_network">jabber.network</string>
+    <string name="search_group_chats">kërkoni në fjalosje grupesh</string>
+    <string name="group_chats">Fjalosje në grup</string>
+    <string name="save_as_group_chat">Ruaje si fjalosjeje grupi</string>
+    <string name="unverified_devices">Po përdorni pajisje të paverifikuara. Që të kryhet verifikimi dhe të pengohen sulme MITM, skanoni Kodin QR në pajisjet tuaja të tjera.</string>
+    <string name="title_activity_block_list">Listë bllokimesh</string>
+    <string name="account_state_logged_out">I dalë</string>
+    <string name="server_info_csi">XEP-0352: Client State Indication</string>
+    <string name="server_info_blocking">XEP-0191: Blocking Command</string>
+    <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
+    <string name="server_info_external_service_discovery">XEP-0215: External Service Discovery</string>
+    <string name="server_info_push">XEP-0357: Push</string>
+    <string name="missing_public_keys">Njoftime për mungesë kyçi publik</string>
+    <string name="publish">Publikoje</string>
+    <string name="quote">Citim</string>
+    <string name="pref_input_options">Ç’jepet</string>
+    <string name="audiobook">Audiolibër</string>
+    <string name="pref_presence_settings">Pasje</string>
+    <string name="hostname_or_onion">Shërbyes A- ose adresë Onion</string>
+    <string name="quicksy_wants_your_consent">Quicksy kërkon pranimin tuaj që të përdorë të dhëna tuajat</string>
+    <string name="this_account_is_logged_out">Keni dalë nga kjo llogari</string>
+    <string name="welcome_header_quicksy">Mirë se vini te Quicksy!</string>
+    <string name="pref_manually_change_presence_summary">Caktoni gjendjen tuaj, kur përpunoni mesazhin për të.</string>
+    <string name="blindly_trusted_omemo_keys">Kyçe OMEMO të besuar verbërisht, që do të thotë mund të jetë dikush tjetër, ose dikush ka arritur të përgjojë.</string>
+    <string name="no_market_app_installed">S’ka aplikacion tregu të instaluar.</string>
+    <string name="outdated_backup_file_format">Po rrekeni të importoni një format të vjetruar kartelash kopjeruajtje</string>
+    <string name="incoming_call_duration_timestamp">Thirrje ardhëse (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">Thirrje për (%s) · %s</string>
+    <string name="outgoing_call_timestamp">Thirrje për · %s</string>
+    <string name="decline">Hidhe poshtë</string>
+    <string name="delete_from_server">Hiqe llogarinë nga shërbyesi</string>
+    <string name="could_not_delete_account_from_server">S’u fshi dot llogari nga shërbyesi</string>
+    <string name="hide_notification">Fshihe njoftimin</string>
+    <string name="log_out">Dilni</string>
+    <string name="log_in">Hyni</string>
+    <string name="report_spam">Raportoni mesazh të padëshiruar</string>
+    <string name="report_spam_and_block">Raportoni mesazh të padëshiruar dhe bllokoni dërguesin</string>
+    <string name="privacy_policy">Rregulla privatësie</string>
+    <string name="contact_list_integration_not_available">Integrimi i listës së kontakteve s’është i mundshmë</string>
+    <string name="contact_uses_unverified_keys">Kontakti juaj përdor pajisje të paverifikuara. Që të kryhet verifikimi dhe të pengohen sulme MITM, skanoni Kodin e tij QR.</string>
 </resources>
