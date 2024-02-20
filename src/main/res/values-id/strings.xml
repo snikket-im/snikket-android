@@ -31,7 +31,6 @@
     <string name="minutes_ago">%d min lalu</string>
     <plurals name="x_unread_conversations">
         <item quantity="other">%d percakapan belum dibaca</item>
-
     </plurals>
     <string name="sending">mengirim...</string>
     <string name="message_decrypting">Mendekripsi pesan. Mohon tunggu…</string>
@@ -488,4 +487,4 @@
     <string name="xmpp_address">alamat XMPP</string>
     <string name="creating_channel">Buat channel publik...</string>
     <string name="rtp_state_declined_or_busy">Sibuk</string>
-    </resources>
+</resources>
