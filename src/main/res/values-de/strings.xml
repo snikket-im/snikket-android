@@ -515,11 +515,10 @@
     <string name="shared_text_with_x">Text mit %s geteilt</string>
     <string name="no_storage_permission"> %1$s den Zugriff auf den externen Speicher gewähren</string>
     <string name="no_camera_permission">%1$s den Zugriff auf die Kamera gewähren</string>
-    <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
-    <string name="sync_with_contacts_long">%1$s möchte die Erlaubnis, auf deine Kontakte zuzugreifen, um sie mit deiner XMPP-Kontaktliste abzugleichen.
-\nDadurch werden die vollständigen Namen und Profilbilder deiner Kontakte angezeigt.
+    <string name="sync_with_contacts">Kontaktlistenintegration</string>
+    <string name="sync_with_contacts_long">%1$s verarbeitet deine Kontaktliste lokal auf deinem Gerät, um dir die Namen und Profilbilder von passenden Kontakten auf XMPP zu zeigen.
 \n
-\n%1$s liest nur dein Adressbuch und gleicht es lokal ab, ohne dass etwas auf deinen Server hochgeladen wird.</string>
+\nKeine Daten der Kontaktliste verlassen jemals dein Gerät!</string>
     <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
     <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich erwähnt werde</string>
     <string name="notify_never">Benachrichtigungen deaktiviert</string>
@@ -1028,5 +1027,5 @@
     <string name="welcome_header_quicksy">Willkommen bei Quicksy!</string>
     <string name="privacy_policy">Datenschutzbestimmungen</string>
     <string name="quicksy_wants_your_consent">Quicksy bittet dich um deine Zustimmung zur Verwendung deiner Daten</string>
-    <string name="contact_list_integration_not_available">Adressbuchintegration ist nicht verfügbar</string>
+    <string name="contact_list_integration_not_available">Kontaktlistenintegration ist nicht verfügbar</string>
 </resources>
