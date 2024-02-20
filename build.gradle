@@ -97,15 +97,14 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 34
-        versionCode 42092
-        versionName "2.13.3"
+        versionCode 42094
+        versionName "2.13.4"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
         def appName = "Conversations"
         resValue "string", "app_name", appName
         buildConfigField "String", "APP_NAME", "\"$appName\""
-        buildConfigField "String", "PRIVACY_POLICY", "\"https://conversations.im/privacy.html\""
     }
 
     splits {
@@ -150,6 +149,7 @@ android {
 
         conversations {
             dimension "mode"
+            buildConfigField "String", "PRIVACY_POLICY", "\"https://conversations.im/privacy.html\""
         }
 
         playstore {
