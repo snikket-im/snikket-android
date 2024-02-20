@@ -507,7 +507,10 @@
     <string name="no_storage_permission">Cấp quyền truy cập bộ nhớ cho %1$s</string>
     <string name="no_camera_permission">Cấp quyền truy cập máy ảnh cho %1$s</string>
     <string name="sync_with_contacts">Đồng bộ với danh bạ</string>
-    <string name="sync_with_contacts_long">%1$s muốn quyền truy cập sổ địa chỉ của bạn để nối nó với danh sách liên hệ XMPP của bạn.\nViệc này sẽ hiển thị họ tên và ảnh đại diện của các liên hệ của bạn.\n\n%1$s sẽ chỉ đọc sổ địa chỉ của bạn và nối nó một cách cục bộ mà không tải gì cả lên máy chủ của bạn.</string>
+    <string name="sync_with_contacts_long">%1$s muốn quyền truy cập sổ địa chỉ của bạn để nối nó với danh sách liên hệ XMPP của bạn.
+\nViệc này sẽ hiển thị họ tên và ảnh đại diện của các liên hệ của bạn.
+\n
+\n%1$s sẽ chỉ đọc sổ địa chỉ của bạn và nối nó một cách cục bộ mà không tải gì cả lên máy chủ của bạn.</string>
     <string name="notify_on_all_messages">Thông báo tất cả tin nhắn</string>
     <string name="notify_only_when_highlighted">Chỉ thông báo khi được nhắc đến</string>
     <string name="notify_never">Đã tắt thông báo</string>
