@@ -524,7 +524,10 @@
     <string name="no_storage_permission">Pozwól %1$s na dostęp do zewnętrznego magazynu</string>
     <string name="no_camera_permission">Pozwól %1$s na dostępu do aparatu</string>
     <string name="sync_with_contacts">Synchronizuj z kontaktami</string>
-    <string name="sync_with_contacts_long">%1$s potrzebuje dostępu do twojej książki adresowej aby dopasować ją z twoją listą kontaktów XMPP.\nDzięki temu wyświetlone zostaną pełne nazwy i awatary kontaktów.\n\n%1$s użyje książki adresowej wyłącznie do lokalnego dopasowania bez wysyłania czegokolwiek na serwer.</string>
+    <string name="sync_with_contacts_long">%1$s potrzebuje dostępu do twojej książki adresowej aby dopasować ją z twoją listą kontaktów XMPP.
+\nDzięki temu wyświetlone zostaną pełne nazwy i awatary kontaktów.
+\n
+\n%1$s użyje książki adresowej wyłącznie do lokalnego dopasowania bez wysyłania czegokolwiek na serwer.</string>
     <string name="notify_on_all_messages">Powiadom o wszystkich wiadomościach</string>
     <string name="notify_only_when_highlighted">Powiadamiaj tylko w przypadku wzmianki o mnie</string>
     <string name="notify_never">Powiadomienia wyłączone</string>
