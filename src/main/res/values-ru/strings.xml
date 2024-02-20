@@ -514,7 +514,10 @@
     <string name="no_storage_permission">Предоставить %1$s разрешение на использование внешнего накопителя</string>
     <string name="no_camera_permission">Предоставить %1$s разрешение на использование камеры</string>
     <string name="sync_with_contacts">Синхронизировать с контактами</string>
-    <string name="sync_with_contacts_long">%1$s нужно разрешение на доступ к контактам, чтобы соотнести их с вашими XMPP-контактами.\nЭто позволит отобразить полные имена и аватары контактов.\n\n%1$s сделает это локально, без отправки чего-либо на ваш сервер.</string>
+    <string name="sync_with_contacts_long">%1$s нужно разрешение на доступ к контактам, чтобы соотнести их с вашими XMPP-контактами.
+\nЭто позволит отобразить полные имена и аватары контактов.
+\n
+\n%1$s сделает это локально, без отправки чего-либо на ваш сервер.</string>
     <string name="notify_on_all_messages">Все сообщения</string>
     <string name="notify_only_when_highlighted">Уведомлять только при упоминании</string>
     <string name="notify_never">Уведомления выключены</string>
