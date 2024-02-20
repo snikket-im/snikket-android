@@ -511,7 +511,10 @@
     <string name="no_storage_permission">Povolit %1$s přístup k externímu úložišti</string>
     <string name="no_camera_permission">Povolit %1$s přístup ke kameře</string>
     <string name="sync_with_contacts">Synchronizovat s kontakty</string>
-    <string name="sync_with_contacts_long">%1$s požaduje přístup k Vašim kontaktům za účelem spárování s Vašimi XMPP kontakty.\nU kontaktů se pak zobrazí celé jméno a avatar.\n\n%1$s bude kontakty pouze číst a párovat místně v zařízení, aniž by došlo k nahrání těchto dat na server.</string>
+    <string name="sync_with_contacts_long">%1$s požaduje přístup k Vašim kontaktům za účelem spárování s Vašimi XMPP kontakty.
+\nU kontaktů se pak zobrazí celé jméno a avatar.
+\n
+\n%1$s bude kontakty pouze číst a párovat místně v zařízení, aniž by došlo k nahrání těchto dat na server.</string>
     <string name="notify_on_all_messages">Upozorňovat na všechny zprávy</string>
     <string name="notify_only_when_highlighted">Upozornit pouze, když mě někdo zmíní</string>
     <string name="notify_never">Upozornění vypnuta</string>
