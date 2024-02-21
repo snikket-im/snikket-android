@@ -529,11 +529,10 @@
     <string name="shared_text_with_x">文本已分享给 %s</string>
     <string name="no_storage_permission">授予 %1$s 访问外部存储的权限</string>
     <string name="no_camera_permission">授予 %1$s 访问相机的权限</string>
-    <string name="sync_with_contacts">与联系人同步</string>
-    <string name="sync_with_contacts_long">%1$s 想要访问通讯录权限来将它与 XMPP 联系人列表相匹配。
-\n将会显示联系人的全名和头像。
+    <string name="sync_with_contacts">联系人列表集成</string>
+    <string name="sync_with_contacts_long">%1$s 在您的设备上本地处理您的联系人列表，以向您显示 XMPP 上匹配联系人的名称和个人资料图片。
 \n
-\n%1$s 将只会读取通讯录并在本地匹配，不会上传任何内容到服务器。</string>
+\n任何联系人列表数据都不会离开您的设备！</string>
     <string name="notify_on_all_messages">通知所有消息</string>
     <string name="notify_only_when_highlighted">仅在提及时通知</string>
     <string name="notify_never">通知已禁用</string>
@@ -1037,5 +1036,5 @@
     <string name="welcome_header_quicksy">欢迎使用 Quicksy！</string>
     <string name="quicksy_wants_your_consent">Quicksy 请求您同意使用您的数据</string>
     <string name="privacy_policy">隐私政策</string>
-    <string name="contact_list_integration_not_available">通讯录集成不可用</string>
+    <string name="contact_list_integration_not_available">联系人列表集成不可用</string>
 </resources>
