@@ -520,11 +520,10 @@
     <string name="shared_text_with_x">Text partajat cu %s</string>
     <string name="no_storage_permission">Permiteți %1$s acces la stocarea externă</string>
     <string name="no_camera_permission">Permiteți %1$s acces la camera foto</string>
-    <string name="sync_with_contacts">Sincronizează cu contactele</string>
-    <string name="sync_with_contacts_long">%1$s dorește permisiunea de a vă accesa contactele pentru a putea potrivi lista de contacte XMPP cu cea din dispozitiv.
-\nAșa v-a afișa numele lor complete și avatarele.
+    <string name="sync_with_contacts">Integrarea listei de contacte</string>
+    <string name="sync_with_contacts_long">%1$s procesează lista de contacte la nivel local, pe dispozitiv, pentru a vă arăta numele și pozele de profil ale contactelor pe care le aveți și pe XMPP.
 \n
-\n%1$s va citi și potrivi local fără a fi încărcate pe serverul dumneavoastră.</string>
+\nDatele din lista de contacte nu părăsesc niciodată dispozitivul dumneavoastră!</string>
     <string name="notify_on_all_messages">Notifică la toate mesajele</string>
     <string name="notify_only_when_highlighted">Notifică doar atunci când cineva vă menționează numele</string>
     <string name="notify_never">Notificări dezactivate</string>
@@ -1046,6 +1045,6 @@
     <string name="report_spam">Raportează spam</string>
     <string name="welcome_header_quicksy">Bine ați venit la Quicksy!</string>
     <string name="quicksy_wants_your_consent">Quicksy vă solicită consimțământul pentru a utiliza datele dumneavoastră</string>
-    <string name="contact_list_integration_not_available">Integrarea agendei nu este disponibilă</string>
+    <string name="contact_list_integration_not_available">Integrarea listei de contacte nu este disponibilă</string>
     <string name="privacy_policy">Politica de confidențialitate</string>
 </resources>
