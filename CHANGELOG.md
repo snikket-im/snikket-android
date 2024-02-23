@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.14.0
+
+* Improve integration of A/V calls into the operating system
+
 ### Version 2.13.4
 
 * Fix minor regressions introduced with 2.13.1
