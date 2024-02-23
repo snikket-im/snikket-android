@@ -1047,4 +1047,7 @@
     <string name="quicksy_wants_your_consent">Quicksy vă solicită consimțământul pentru a utiliza datele dumneavoastră</string>
     <string name="contact_list_integration_not_available">Integrarea listei de contacte nu este disponibilă</string>
     <string name="privacy_policy">Politica de confidențialitate</string>
+    <string name="no_permission_to_place_call">Nu este permisă efectuarea de apeluri</string>
+    <string name="call_integration_not_available">Integrarea apelurilor nu este disponibilă!</string>
+    <string name="rtp_state_contact_offline">Contactul nu este disponibil</string>
 </resources>
