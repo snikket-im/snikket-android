@@ -43,11 +43,8 @@ public class Compatibility {
             Collections.singletonList("message_notification_settings");
 
     public static boolean hasStoragePermission(final Context context) {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-                || Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-                || ContextCompat.checkSelfPermission(
-                                context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU || ContextCompat.checkSelfPermission(
+                context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
     public static boolean s() {
@@ -178,6 +175,17 @@ public class Compatibility {
                     "platform bug detected. Unable to get restrict background status",
                     e);
             return ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static boolean isActiveNetworkMetered(
+            @NonNull final ConnectivityManager connectivityManager) {
+        try {
+            return connectivityManager.isActiveNetworkMetered();
+        } catch (final RuntimeException e) {
+            // when in doubt better assume it's metered
+            return true;
         }
     }
 

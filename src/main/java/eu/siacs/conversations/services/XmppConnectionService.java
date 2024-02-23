@@ -1054,15 +1054,13 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean isDataSaverDisabled() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            final ConnectivityManager connectivityManager =
-                    (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-            return !connectivityManager.isActiveNetworkMetered()
-                    || Compatibility.getRestrictBackgroundStatus(connectivityManager)
-                            == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED;
-        } else {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             return true;
         }
+        final ConnectivityManager connectivityManager = getSystemService(ConnectivityManager.class);
+        return !Compatibility.isActiveNetworkMetered(connectivityManager)
+                || Compatibility.getRestrictBackgroundStatus(connectivityManager)
+                        == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED;
     }
 
     private void directReply(final Conversation conversation, final String body, final String lastMessageUuid, final boolean dismissAfterReply) {
