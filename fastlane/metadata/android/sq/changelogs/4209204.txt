@@ -1,0 +1,2 @@
+* Furnizim hyrjeje më të lehtë te “Rregulla Privatësie” në versionin Play Store (Quicksy dhe Conversations)
+* Heqje integrimi libri adresash te versioni në Play Store i Conversations

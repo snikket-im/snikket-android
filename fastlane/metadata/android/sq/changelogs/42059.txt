@@ -1,0 +1,2 @@
+* Kalim i versionit për Target SDK sërish në 33
+* Ndreqje problemesh për shërbyes që mbulojnë SASL2 me/pa Administrim brendazi Rrjedhash

@@ -1,0 +1,3 @@
+* Kalim versioni për varësi libwebrtc në M117 dhe ndryshim edhe për libvpx
+* Rikthim te AAC për mesazhe zanorë
+* Mbulim rregullimesh gjuhe sipas aplikacioni

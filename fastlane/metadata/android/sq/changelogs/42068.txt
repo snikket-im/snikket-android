@@ -1,0 +1,2 @@
+* mbulim rregullimesh njoftimi bazuar në bisedë specifike
+* përdorim opus-i për mesazhe zanorë në Android 10

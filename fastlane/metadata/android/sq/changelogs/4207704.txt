@@ -1,0 +1,3 @@
+* Mbulim për DNS Private (DNS përmes TLS)
+* Mbulim për ikonë nisësi të përshtatur nga temë
+* Ndreqje problemi të rrallë me leje, kur ndahen kartela në Android 11+
