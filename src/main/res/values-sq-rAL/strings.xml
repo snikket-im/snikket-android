@@ -1037,4 +1037,9 @@
     <string name="privacy_policy">Rregulla privatësie</string>
     <string name="contact_list_integration_not_available">Integrimi i listës së kontakteve s’është i mundshmë</string>
     <string name="contact_uses_unverified_keys">Kontakti juaj përdor pajisje të paverifikuara. Që të kryhet verifikimi dhe të pengohen sulme MITM, skanoni Kodin e tij QR.</string>
+    <string name="rtp_state_contact_offline">Kontakti s’është gati</string>
+    <string name="call_integration_not_available">S’ka integrim thirrjesh!</string>
+    <string name="no_permission_to_place_call">Pa leje për bërje thirrjesh</string>
+    <string name="sasl_downgrade">U kalua në version të mëparshëm SASL-i</string>
+    <string name="channel_discover_opt_in_message">Pikasje kanalesh përdor një shërbim palë të tretë të quajtur &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Përdorim i kësaj veçorie do t’i transmetojë atij shërbimi adresën tuaj IP dhe terma kërkimesh. Për më tepër hollësi, shihni &lt;a href=https://search.jabber.network/privacy&gt;Rregullat e tyre mbi Privatësinë&lt;/a&gt;.</string>
 </resources>
