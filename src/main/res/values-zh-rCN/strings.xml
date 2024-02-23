@@ -1037,4 +1037,7 @@
     <string name="quicksy_wants_your_consent">Quicksy 请求您同意使用您的数据</string>
     <string name="privacy_policy">隐私政策</string>
     <string name="contact_list_integration_not_available">联系人列表集成不可用</string>
+    <string name="rtp_state_contact_offline">联系人不可用</string>
+    <string name="no_permission_to_place_call">没有拨打电话的权限</string>
+    <string name="call_integration_not_available">呼叫集成不可用！</string>
 </resources>
