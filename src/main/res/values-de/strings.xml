@@ -1028,4 +1028,7 @@
     <string name="privacy_policy">Datenschutzbestimmungen</string>
     <string name="quicksy_wants_your_consent">Quicksy bittet dich um deine Zustimmung zur Verwendung deiner Daten</string>
     <string name="contact_list_integration_not_available">Kontaktlistenintegration ist nicht verfügbar</string>
+    <string name="call_integration_not_available">Anrufintegration nicht verfügbar!</string>
+    <string name="no_permission_to_place_call">Keine Berechtigung für Telefonanrufe</string>
+    <string name="rtp_state_contact_offline">Kontakt ist nicht verfügbar</string>
 </resources>
