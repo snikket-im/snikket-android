@@ -1031,4 +1031,7 @@
     <string name="quicksy_wants_your_consent">Quicksy solicita permiso para usar os teus datos</string>
     <string name="privacy_policy">Política de privacidade</string>
     <string name="contact_list_integration_not_available">Non está dispoñible a integración coa lista de contactos</string>
+    <string name="no_permission_to_place_call">Sen permiso para chamar por teléfono</string>
+    <string name="call_integration_not_available">Non está dispoñible o servizo de chamadas!</string>
+    <string name="rtp_state_contact_offline">O contacto non está dispoñible</string>
 </resources>
