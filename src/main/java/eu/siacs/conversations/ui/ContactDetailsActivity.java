@@ -119,7 +119,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     private void checkContactPermissionAndShowAddDialog() {
         if (hasContactsPermission()) {
             showAddToPhoneBookDialog();
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        } else if (Config.CONTACTS_INTEGRATION && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
         }
     }
