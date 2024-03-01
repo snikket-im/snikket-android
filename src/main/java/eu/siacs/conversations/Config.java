@@ -59,6 +59,10 @@ public final class Config {
 
     public static final long CONTACT_SYNC_RETRY_INTERVAL = 1000L * 60 * 5;
 
+    // 2024-02-14: Contacts integration has been removed from Play Store builds, at least for now,
+    // due to Google aggressively delisting XMPP apps that use it, claiming that the apps are uploading
+    // contact lists to the server (even though they are not).
+    public static final boolean CONTACTS_INTEGRATION = BuildConfig.CONTACTS_INTEGRATION;
 
     public static final boolean QUICKSTART_ENABLED = true;
 

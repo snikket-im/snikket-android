@@ -86,13 +86,13 @@ ext {
 
 android {
     namespace 'eu.siacs.conversations'
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 32
-        versionCode 42050
-        versionName "2.12.2"
+        targetSdkVersion 33
+        versionCode 42051
+        versionName "2.12.2-2"
         archivesBaseName += "-$versionName"
         applicationId "org.snikket.android"
         resValue "string", "applicationId", applicationId
@@ -142,10 +142,12 @@ android {
         playstore {
             dimension "distribution"
             versionNameSuffix "+playstore"
+            buildConfigField "boolean", "CONTACTS_INTEGRATION", "false"
         }
         free {
             dimension "distribution"
             versionNameSuffix "+free"
+            buildConfigField "boolean", "CONTACTS_INTEGRATION", "true"
         }
     }
 
