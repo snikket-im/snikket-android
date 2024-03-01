@@ -370,29 +370,35 @@ public class FileBackend {
         }
     }
 
-    public static boolean weOwnFile(final Uri uri) {
-        if (uri == null || !ContentResolver.SCHEME_FILE.equals(uri.getScheme())) {
-            return false;
-        } else {
-            return weOwnFileLollipop(uri);
+    public static boolean dangerousFile(final Uri uri) {
+        if (uri == null || Strings.isNullOrEmpty(uri.getScheme())) {
+            return true;
         }
+        if (ContentResolver.SCHEME_FILE.equals(uri.getScheme())) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                // On Android 7 (and apps that target 7) it is now longer possible to share files
+                // with a file scheme. By now you should probably not be running apps that target
+                // anything less than 7 any more
+                return true;
+            } else {
+                return isFileOwnedByProcess(uri);
+            }
+        }
+        return false;
     }
 
-    private static boolean weOwnFileLollipop(final Uri uri) {
+    private static boolean isFileOwnedByProcess(final Uri uri) {
         final String path = uri.getPath();
         if (path == null) {
-            return false;
+            return true;
         }
-        try {
-            File file = new File(path);
-            FileDescriptor fd =
-                    ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
-                            .getFileDescriptor();
-            StructStat st = Os.fstat(fd);
+        try (final var pfd =
+                ParcelFileDescriptor.open(new File(path), ParcelFileDescriptor.MODE_READ_ONLY)) {
+            final FileDescriptor fd = pfd.getFileDescriptor();
+            final StructStat st = Os.fstat(fd);
             return st.st_uid == android.os.Process.myUid();
-        } catch (FileNotFoundException e) {
-            return false;
-        } catch (Exception e) {
+        } catch (final Exception e) {
+            // when in doubt. better safe than sorry
             return true;
         }
     }

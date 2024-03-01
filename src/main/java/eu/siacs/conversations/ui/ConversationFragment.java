@@ -2619,10 +2619,10 @@ public class ConversationFragment extends XmppFragment
         final Iterator<Uri> iterator = uris.iterator();
         while (iterator.hasNext()) {
             final Uri uri = iterator.next();
-            if (FileBackend.weOwnFile(uri)) {
+            if (FileBackend.dangerousFile(uri)) {
                 iterator.remove();
                 Toast.makeText(
-                                getActivity(),
+                                requireActivity(),
                                 R.string.security_violation_not_attaching_file,
                                 Toast.LENGTH_SHORT)
                         .show();
