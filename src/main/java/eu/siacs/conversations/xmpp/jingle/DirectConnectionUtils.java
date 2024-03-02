@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import com.google.common.collect.ImmutableList;
+
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -15,13 +17,13 @@ import eu.siacs.conversations.xmpp.Jid;
 
 public class DirectConnectionUtils {
 
-    private static List<InetAddress> getLocalAddresses() {
-        final List<InetAddress> addresses = new ArrayList<>();
+    public static List<InetAddress> getLocalAddresses() {
+        final ImmutableList.Builder<InetAddress> inetAddresses = new ImmutableList.Builder<>();
         final Enumeration<NetworkInterface> interfaces;
         try {
             interfaces = NetworkInterface.getNetworkInterfaces();
-        } catch (SocketException e) {
-            return addresses;
+        } catch (final SocketException e) {
+            return inetAddresses.build();
         }
         while (interfaces.hasMoreElements()) {
             NetworkInterface networkInterface = interfaces.nextElement();
@@ -34,31 +36,15 @@ public class DirectConnectionUtils {
                 if (inetAddress instanceof Inet6Address) {
                     //let's get rid of scope
                     try {
-                        addresses.add(Inet6Address.getByAddress(inetAddress.getAddress()));
+                        inetAddresses.add(Inet6Address.getByAddress(inetAddress.getAddress()));
                     } catch (UnknownHostException e) {
                         //ignored
                     }
                 } else {
-                    addresses.add(inetAddress);
+                    inetAddresses.add(inetAddress);
                 }
             }
         }
-        return addresses;
+        return inetAddresses.build();
     }
-
-    public static List<JingleCandidate> getLocalCandidates(Jid jid) {
-        SecureRandom random = new SecureRandom();
-        ArrayList<JingleCandidate> candidates = new ArrayList<>();
-        for (InetAddress inetAddress : getLocalAddresses()) {
-            final JingleCandidate candidate = new JingleCandidate(UUID.randomUUID().toString(), true);
-            candidate.setHost(inetAddress.getHostAddress());
-            candidate.setPort(random.nextInt(60000) + 1024);
-            candidate.setType(JingleCandidate.TYPE_DIRECT);
-            candidate.setJid(jid);
-            candidate.setPriority(8257536 + candidates.size());
-            candidates.add(candidate);
-        }
-        return candidates;
-    }
-
 }

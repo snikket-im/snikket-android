@@ -1,0 +1,1 @@
+* Ljud- och bildsamtal (Kräver serverstöd i form av STUN- och TURN-servrar som kan hittas via XEP-0215)

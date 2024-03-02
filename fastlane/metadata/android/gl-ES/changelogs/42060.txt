@@ -1,0 +1,1 @@
+* Arranxa o problema de considerar o 'q' como cirílico

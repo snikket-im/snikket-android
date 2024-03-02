@@ -1,0 +1,3 @@
+* Mostra barre nere quando il video remoto non corrisponde alle proporzioni dello schermo
+* Migliorate le prestazioni della ricerca
+* Aggiunta un'impostazione per impedire gli screenshot

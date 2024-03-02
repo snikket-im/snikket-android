@@ -1,0 +1,2 @@
+* Feedback acustico (composizione, inizio e fine chiamata) per le chiamate vocali.
+* Risolto un problema con la ripetizione di una videochiamata fallita

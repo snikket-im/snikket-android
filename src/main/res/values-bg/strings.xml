@@ -31,10 +31,7 @@
     <string name="minutes_ago">преди %d минути</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d непрочетен разговор</item>
-
-    
         <item quantity="other">%d непрочетени разговора</item>
-
     </plurals>
     <string name="sending">изпращане…</string>
     <string name="message_decrypting">Дешифроване на съобщението. Моля, изчакайте…</string>
@@ -184,7 +181,6 @@
     <string name="unpublish_pgp_message">Наистина ли искате да премахнете своя публичен OpenPGP ключ от известяването си за присъствие?\nКонтактите Ви вече няма да могат да Ви изпращат съобщение, шифровани чрез OpenPGP.</string>
     <string name="openpgp_has_been_published">Публичният OpenPGP ключ е публикуван.</string>
     <string name="mgmt_account_enable">Активиране на профила</string>
-    <string name="mgmt_account_are_you_sure">Наистина ли искате това?</string>
     <string name="mgmt_account_delete_confirm_text">Изтриването на профила Ви ще изтрие и цялата история на разговорите Ви</string>
     <string name="attach_record_voice">Запис на глас</string>
     <string name="account_settings_jabber_id">XMPP адрес</string>
@@ -227,7 +223,6 @@
     <string name="fetching_keys">Изтегляне на ключове…</string>
     <string name="done">Готово</string>
     <string name="decrypt">Дешифроване</string>
-    <string name="bookmarks">Отметки</string>
     <string name="search">Търсене</string>
     <string name="enter_contact">Въведете контакт</string>
     <string name="delete_contact">Изтриване на контакта</string>
@@ -452,7 +447,6 @@
     <string name="recently_used">Използвани наскоро</string>
     <string name="choose_quick_action">Изберете бързо действие</string>
     <string name="search_contacts">Търсене в контактите</string>
-    <string name="search_bookmarks">Търсене в отметките</string>
     <string name="send_private_message">Изпращане на лично съобщение</string>
     <string name="user_has_left_conference">%1$s напусна груповия разговор</string>
     <string name="username">Потребителско име</string>
@@ -512,7 +506,6 @@
     <string name="no_camera_permission">Дайте на %1$s разрешение за достъп до камерата</string>
     <string name="sync_with_contacts">Синхронизиране с контактите</string>
     <string name="sync_with_contacts_long">%1$s иска разрешение за достъп до адресната Ви книга, за да потърси съвпадения със списъка от контакти в XMPP.\nТова ще покаже пълните имена и аватари на контактите Ви.\n\n%1$s само ще прочете адресната книга и ще потърси съвпадения на това устройство – нищо няма да се качва на сървъра Ви.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy се нуждае от достъп до телефонните номера на контактите Ви, за да прави предложения относно контакти, които вероятно вече са регистрирани в системата на Quicksy.<br><br>Ние няма да пазим копия на тези телефонни номера.\n\nЗа повече информация, прочетете <a href="https://quicksy.im/#privacy">декларацията ни за поверителност</a>.<br><br>Сега ще Ви помолим да дадете достъп до контактите си.]]></string>
     <string name="notify_on_all_messages">Известяване за всички съобщения</string>
     <string name="notify_only_when_highlighted">Известяване само при споменаване</string>
     <string name="notify_never">Известията са изключени</string>
@@ -523,7 +516,9 @@
     <string name="large_images_only">Само за големи изображения</string>
     <string name="battery_optimizations_enabled">Оптимизациите за използв. на батерията са вкл.</string>
     <string name="battery_optimizations_enabled_explained">Устройството Ви прилага сериозни оптимизации за използването на батерията върху %1$s, които може да доведат до забавени известия и дори пропуснати съобщения.\nПрепоръчително е да ги изключите.</string>
-    <string name="battery_optimizations_enabled_dialog">Устройството Ви прилага сериозни оптимизации за използването на батерията върху %1$s, които може да доведат до забавени известия и дори пропуснати съобщения.\nСега ще бъдете помолен(а) да ги изключите.</string>
+    <string name="battery_optimizations_enabled_dialog">Устройството Ви прилага сериозни оптимизации за използването на батерията върху %1$s, които може да доведат до забавени известия и дори пропуснати съобщения.
+\n
+\nСега ще бъдете помолен(а) да ги изключите.</string>
     <string name="disable">Изключване</string>
     <string name="selection_too_large">Избраната област е твърде голяма</string>
     <string name="no_accounts">(Няма активирани профили)</string>
@@ -535,7 +530,6 @@
     <string name="security_error_invalid_file_access">Грешка в сигурността: неправилен достъп до файл!</string>
     <string name="no_application_to_share_uri">Няма намерено приложение за споделяне на адреса</string>
     <string name="share_uri_with">Споделяне на адреса с…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy е производен вариант на популярния клиент за XMPP – Conversations, който включва автоматично откриване на контакти.<br><br>Трябва да се регистрирате чрез телефонния си номер, след което Quicksy автоматично ще претърси телефонните номера в указателя Ви и ще Ви предложи контакти в приложението.<br><br>Регистрирайки се, Вие се съгласявате с нашата <a href=\"https://quicksy.im/#privacy\">декларация за поверителност</a>.]]></string>
     <string name="agree_and_continue">Съгласяване и продължаване</string>
     <string name="magic_create_text">На conversations.im има ръководство за създаване на профил.\nИзбирайки conversations.im за доставчик, Вие ще можете да общувате и с потребители на други доставчици, като им предоставите своя пълен адрес за XMPP.</string>
     <string name="your_full_jid_will_be">Пълният Ви XMPP адрес ще бъде: %s</string>
@@ -871,7 +865,6 @@
     <string name="discover_channels">Откриване на канали</string>
     <string name="search_channels">Търсене на канали</string>
     <string name="channel_discovery_opt_in_title">Възможно нарушаване на декларацията за поверителност!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Откриването на канали използва външна услуга, която се нарича <a href=\"https://search.jabber.network\">search.jabber.network</a>.<br><br>Ако използвате тази функционалност, Вашият IP адрес и въведеният текст за търсене ще бъдат изпратени до сървъра на тази услуга. Разгледайте нейната <a href=\"https://search.jabber.network/privacy\">Декларация за поверителност</a> за повече информация.]]></string>
     <string name="i_already_have_an_account">Вече имам профил</string>
     <string name="add_existing_account">Добавяне на съществуващ профил</string>
     <string name="register_new_account">Регистриране на нов профил</string>
@@ -918,10 +911,8 @@
     <string name="ongoing_video_call">Текущо видео-обаждане</string>
     <string name="disable_tor_to_make_call">Изключете Tor, за да правите обаждания</string>
     <string name="incoming_call">Входящо обаждане</string>
-    <string name="incoming_call_duration">Входящо обаждане · %s</string>
     <string name="missed_call_timestamp">Пропуснато обаждане · %s</string>
     <string name="outgoing_call">Изходящо обаждане</string>
-    <string name="outgoing_call_duration">Изходящо обаждане · %s</string>
     <string name="missed_call">Пропуснато обаждане</string>
     <string name="audio_call">Гласово обаждане</string>
     <string name="video_call">Видео обаждане</string>
@@ -963,4 +954,4 @@
     <string name="backup_started_message">Създаването на резервно копие е стартирано. Ще получите известие, когато приключи.</string>
     <string name="unable_to_enable_video">Видеото не може да бъде включено.</string>
     <string name="plain_text_document">Обикновен текстов документ</string>
-    </resources>
+</resources>

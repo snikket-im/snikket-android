@@ -1,0 +1,2 @@
+* supporta impostazioni di notifica per singola conversazione
+* usa opus per i messaggi vocali su Android 10

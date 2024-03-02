@@ -1,0 +1,2 @@
+* Corrección de fallos en la representación de algunas citas
+* Corrección del fallo en la pantalla de bienvenida

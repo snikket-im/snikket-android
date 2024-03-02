@@ -1,0 +1,1 @@
+* Increase corner radius on profile pictures

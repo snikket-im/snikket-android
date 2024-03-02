@@ -8,7 +8,7 @@ Snikket for Android is based on [Conversations](https://conversations.im/) by Da
 
 The official Conversations repository is available at: https://codeberg.org/iNPUTmice/Conversations
 
-Copyright (c) 2014-2023 Daniel Gultsch and Snikket Community Interest Company.
+Copyright (c) 2014-2024 Daniel Gultsch and Snikket Community Interest Company.
 
 Snikket and the Snikket logo are trademarks of Snikket Community Interest Company.
 

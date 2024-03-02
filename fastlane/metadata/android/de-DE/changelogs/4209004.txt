@@ -1,0 +1,2 @@
+* kleinere Fehlerbehebungen
+* Geringfügige Änderungen beim Quicksy-Onboarding

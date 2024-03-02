@@ -12,5 +12,5 @@
     <string name="tap_share_button_send_invite">Πατήστε το πλήκτρο διαμοιρασμού για να στείλετε στην επαφή σας μια πρόσκληση στο %1$s.</string>
     <string name="if_contact_is_nearby_use_qr">Αν η επαφή σας βρίσκεται κοντά σας, μπορεί επίσης να σαρώσει τον κωδικό παρακάτω για να αποδεχτεί την πρόσκλησή σας.</string>
     <string name="easy_invite_share_text">Μπείτε στο %1$s και συνομιλήστε μαζί μου: %2$s</string>
-    <string name="share_invite_with">Διαμοιρασμός πρόσκλησης με...</string>
+    <string name="share_invite_with">Διαμοιρασμός πρόσκλησης με…</string>
 </resources>

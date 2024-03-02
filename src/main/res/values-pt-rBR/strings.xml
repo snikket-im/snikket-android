@@ -188,7 +188,6 @@
     <string name="unpublish_pgp_message">Tem certeza que deseja remover sua chave pública OpenPGP do seu anúncio de presença?\nSeus contatos não poderão mais enviar mensagens criptografadas com o OpenPGP para você.</string>
     <string name="openpgp_has_been_published">A chave pública do OpenPGP foi publicada.</string>
     <string name="mgmt_account_enable">Habilitar a conta</string>
-    <string name="mgmt_account_are_you_sure">Tem certeza?</string>
     <string name="mgmt_account_delete_confirm_text">Se você excluir a sua conta todo o seu histórico de conversas será apagado</string>
     <string name="attach_record_voice">Gravar voz</string>
     <string name="account_settings_jabber_id">Endereço XMPP</string>
@@ -231,7 +230,6 @@
     <string name="fetching_keys">Buscando as chaves...</string>
     <string name="done">Concluído</string>
     <string name="decrypt">Descriptografar</string>
-    <string name="bookmarks">Favoritos</string>
     <string name="search">Pesquisar</string>
     <string name="enter_contact">Digite o contato</string>
     <string name="delete_contact">Excluir contato</string>
@@ -462,7 +460,6 @@
     <string name="recently_used">Usada mais recentemente</string>
     <string name="choose_quick_action">Selecione a ação rápida</string>
     <string name="search_contacts">Pesquisar contatos</string>
-    <string name="search_bookmarks">Pesquisar favoritos</string>
     <string name="send_private_message">Enviar mensagem privada</string>
     <string name="user_has_left_conference">%1$s deixou a conversa em grupo</string>
     <string name="username">Nome de usuário</string>
@@ -524,7 +521,6 @@
     <string name="no_camera_permission">Permita o acesso do %1$s à câmera</string>
     <string name="sync_with_contacts">Sincronizar com os contatos</string>
     <string name="sync_with_contacts_long">%1$s gostaria de obter a permissão para acessar seu livro de endereços e fazer a correspondência entre ele e a sua lista de contatos do XMPP. Isso permitirá exibir os nomes completos e avatares dos seus contatos.\n\n%1$s fará a leitura e a correspondência do seu livro de endereços localmente, sem enviar os seus contatos para o servidor em uso.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy precisa acessar os números de telefone dos seus contatos para sugerir possíveis contatos que já estejam no Quicksy.<br><br>Nós não armazenaremos nenhuma cópia desses números de telefone.\n\nPara maiores informações, leia nossa  <a href="https://quicksy.im/#privacy">política de privacidade</a>.<br><br>Agora você será solicitado a fornecer permissões de acesso aos seus contatos.]]></string>
     <string name="notify_on_all_messages">Notificar em todas as mensagens</string>
     <string name="notify_only_when_highlighted">Notificar somente quando for mencionado</string>
     <string name="notify_never">Notificações desabilitadas</string>
@@ -547,7 +543,6 @@
     <string name="security_error_invalid_file_access">Erro de segurança: Acesso inválido ao arquivo!</string>
     <string name="no_application_to_share_uri">Não foi encontrado nenhum aplicativo para compartilhar a URI</string>
     <string name="share_uri_with">Compartilhar a URI com...</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy é um derivado do popular cliente para XMPP Conversations, com a descoberta automática de contatos.<br><br>Você se registra com o seu número de telefone e o Quicksy sugere automaticamente - baseado nos números de telefone do seu livro de endereços - possíveis contatos para você..<br><br>Ao se registrar você concorda com nossa <a href="https://quicksy.im/#privacy">política de privacidade</a>.]]></string>
     <string name="agree_and_continue">Concordar e continuar</string>
     <string name="magic_create_text">Você será guiado ao longo do processo de criação de conta no conversations.im.¹\nAo usar o conversations.im você também poderá se comunicar com usuários de outros provedores. Basta fornecer a eles o sua endereço XMPP completo.</string>
     <string name="your_full_jid_will_be">Seu endereço XMPP completo será: %s</string>
@@ -892,7 +887,6 @@
     <string name="discover_channels">Descobrir canais</string>
     <string name="search_channels">Pesquisar canais</string>
     <string name="channel_discovery_opt_in_title">Provável violação de privacidade!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[A descoberta de canais utiliza um serviço de terceiros chamado <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Ao usar esse recurso, você enviará o seu endereço IP e termos de pesquisa para esse serviço. Veja sua <a href="https://search.jabber.network/privacy">Política de Privacidade</a> para maiores informações.]]></string>
     <string name="i_already_have_an_account">Eu já tenho uma conta.</string>
     <string name="add_existing_account">Adicionar uma conta já existente</string>
     <string name="register_new_account">Registrar uma nova conta</string>
@@ -944,10 +938,8 @@
     <string name="reconnecting_video_call">Reconectando a vídeo-chamada</string>
     <string name="disable_tor_to_make_call">Desabilitar o Tor para fazer chamadas</string>
     <string name="incoming_call">Chamada recebida</string>
-    <string name="incoming_call_duration">Chamada recebida · %s</string>
     <string name="missed_call_timestamp">Chamada perdida · %s</string>
     <string name="outgoing_call">Chamada realizada</string>
-    <string name="outgoing_call_duration">Chamada realizada · %s</string>
     <string name="missed_call">Chamada perdida</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d chamada perdida para %2$s</item>

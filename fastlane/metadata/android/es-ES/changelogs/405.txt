@@ -1,0 +1,1 @@
+* Quicksy: Recibir automáticamente SMS de verificación

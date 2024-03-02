@@ -31,10 +31,7 @@
     <string name="minutes_ago">%d min. geleden</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d ongelezen gesprek</item>
-
-    
         <item quantity="other">%d ongelezen gesprekken</item>
-
     </plurals>
     <string name="sending">versturen…</string>
     <string name="message_decrypting">Bericht aan het ontsleutelen. Even geduld…</string>
@@ -168,10 +165,10 @@
     <string name="mgmt_account_publish_avatar">Avatar publiceren</string>
     <string name="mgmt_account_publish_pgp">OpenPGP-publieke sleutel publiceren</string>
     <string name="unpublish_pgp">OpenPGP-publieke sleutel verwijderen</string>
-    <string name="unpublish_pgp_message">Weet je zeker dat je je OpenPGP-publieke sleutel uit je aanwezigheidsaankondiging wil verwijderen?\nJe contacten zullen je geen OpenPGP-versleutelde berichten meer kunnen sturen.</string>
+    <string name="unpublish_pgp_message">Weet je zeker dat je je publieke OpenPGP-sleutel uit je aankondiging van aanwezigheid wilt verwijderen\?
+\nJe contacten zullen je geen versleutelde OpenPGP-berichten meer kunnen sturen.</string>
     <string name="openpgp_has_been_published">OpenPGP-publieke sleutel gepubliceerd.</string>
     <string name="mgmt_account_enable">Account inschakelen</string>
-    <string name="mgmt_account_are_you_sure">Weet je het zeker?</string>
     <string name="attach_record_voice">Stem opnemen</string>
     <string name="account_settings_jabber_id">XMPP-adres</string>
     <string name="block_jabber_id">XMPP-adres blokkeren</string>
@@ -211,7 +208,6 @@
     <string name="fetching_keys">Sleutels ophalen…</string>
     <string name="done">Klaar</string>
     <string name="decrypt">Ontsleutelen</string>
-    <string name="bookmarks">Bladwijzers</string>
     <string name="search">Zoeken</string>
     <string name="enter_contact">Contact invoeren</string>
     <string name="delete_contact">Contact verwijderen</string>
@@ -421,7 +417,6 @@
     <string name="recently_used">Recent gebruikt</string>
     <string name="choose_quick_action">Snelle actie kiezen</string>
     <string name="search_contacts">Contacten zoeken</string>
-    <string name="search_bookmarks">Bladwijzers doorzoeken</string>
     <string name="send_private_message">Privébericht sturen</string>
     <string name="username">Gebruikersnaam</string>
     <string name="username_hint">Gebruikersnaam</string>
@@ -461,7 +456,6 @@
     </plurals>
     <string name="load_more_messages">Laad meer berichten</string>
     <string name="sync_with_contacts">Synchroniseer met contacten</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy heeft toegang nodig tot de telefoonnummers van je contacten om je te kunnen tonen welke contacten al Quicksy gebruiken.<br><br>We bewaren geen kopie van deze telefoonnummers.\n\nVoor meer informatie, bekijk ons <a href="https://quicksy.im/#privacy">privacybeleid</a>.<br><br>Je wordt nu gevraagd om toegang te verlenen tot je contactpersonen.]]></string>
     <string name="notify_on_all_messages">Melding bij alle berichten</string>
     <string name="notify_only_when_highlighted">Melding enkel wanneer aangesproken</string>
     <string name="notify_never">Meldingen uitgeschakeld</string>
@@ -478,7 +472,6 @@
     <string name="send_corrected_message">Gecorrigeerd bericht versturen</string>
     <string name="this_account_is_disabled">Je hebt deze account uitgeschakeld</string>
     <string name="share_uri_with">URI delen met…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy is een afgeleide van de populaire XMPP-cliënt Conversations, met automatische contactontdekking.<br><br>Je meldt je aan met je telefoonnummer en Quicksy zal automatisch—gebaseerd op de telefoonnummers in je adresboek—mogelijke contacten aanbevelen.<br><br>Door je aan te melden, stem je in met ons <a href="https://quicksy.im/#privacy">privacybeleid</a>.]]></string>
     <string name="your_full_jid_will_be">Je volledige XMPP-adres zal %s zijn</string>
     <string name="create_account">Account aanmaken</string>
     <string name="use_own_provider">Gebruik mijn eigen provider</string>
@@ -772,7 +765,6 @@
     <string name="discover_channels">Kanalen ontdekken</string>
     <string name="search_channels">Kanalen doorzoeken</string>
     <string name="channel_discovery_opt_in_title">Mogelijke privacyschending!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Kanaalontdekking maakt gebruik van een derdepartijdienst genaamd <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Door deze functie te gebruiken, zullen je IP-adres en zoekopdrachten naar die dienst verstuurd worden. Bekijk hun <a href="https://search.jabber.network/privacy">privacybeleid</a> voor meer informatie.]]></string>
     <string name="i_already_have_an_account">Ik heb al een account</string>
     <string name="add_existing_account">Bestaande account toevoegen</string>
     <string name="register_new_account">Nieuwe account registreren</string>
@@ -824,4 +816,4 @@
     <string name="unable_to_enable_video">Kan video niet schakelen.</string>
     <string name="plain_text_document">Onversleuteld document</string>
     <string name="account_registrations_are_not_supported">Accountregistraties zijn niet ondersteund</string>
-    </resources>
+</resources>

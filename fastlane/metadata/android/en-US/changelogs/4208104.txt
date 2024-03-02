@@ -1,0 +1,4 @@
+* Easier access to 'Show QR code'
+* Support PEP Native Bookmarks
+* Add support for SDP Offer / Answer Model (Used by SIP gateways)
+* Raise target API to Android 14

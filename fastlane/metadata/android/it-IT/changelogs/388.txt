@@ -1,0 +1,3 @@
+* Riduzione dell'eco durante le chiamate su alcuni dispositivi
+* Corretto l'accesso quando le password contengono caratteri speciali
+* Riproduzione dei toni di chiamata e di occupato sull'altoparlante durante le videochiamate

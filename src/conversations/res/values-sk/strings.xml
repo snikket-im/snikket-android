@@ -10,5 +10,5 @@
     <string name="tap_share_button_send_invite">Ťuknite na tlačidlo zdieľať na odoslanie pozvánky do %1$s vášmu kontaktu.</string>
     <string name="if_contact_is_nearby_use_qr">Ak je váš kontakt blízko, na prijatie vašej pozvánky si môže nasnímať kód nižšie.</string>
     <string name="easy_invite_share_text">Pripojte sa k %1$sa rozprávajte sa so mnou: %2$s</string>
-    <string name="share_invite_with">Zdieľať pozvánku s...</string>
+    <string name="share_invite_with">Zdieľať pozvánku s…</string>
 </resources>

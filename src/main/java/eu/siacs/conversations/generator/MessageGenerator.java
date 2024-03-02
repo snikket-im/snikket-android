@@ -194,8 +194,8 @@ public class MessageGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public MessagePacket invite(Conversation conversation, Jid contact) {
-        MessagePacket packet = new MessagePacket();
+    public MessagePacket invite(final Conversation conversation, final Jid contact) {
+        final MessagePacket packet = new MessagePacket();
         packet.setTo(conversation.getJid().asBareJid());
         packet.setFrom(conversation.getAccount().getJid());
         Element x = new Element("x");

@@ -1,0 +1,3 @@
+* Reducir el eco durante las llamadas en algunos dispositivos
+* Arreglar el inicio de sesión cuando las contraseñas contienen caracteres especiales
+* Reproducir tonos de marcado y ocupado en el altavoz durante las videollamadas

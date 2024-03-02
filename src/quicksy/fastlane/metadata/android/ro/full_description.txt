@@ -1,0 +1,14 @@
+Quicksy este un derivat al popularului client Jabber/XMPP Conversations cu descoperire automată a contactelor.
+
+Vă înscrieți cu numărul de telefon, iar Quicksy vă va sugera automat, pe baza numerelor de telefon din agenda dvs., posibile contacte.
+
+Sub capota Quicksy este un client Jabber complet care vă permite să comunicați cu orice utilizator de pe orice server public federat. De asemenea, utilizatorii de pe Quicksy pot fi contactați din exterior prin simpla adăugare a +numărdetelefon@quicksy.im la lista dvs. de contacte.
+
+În afară de sincronizarea contactelor, interfața utilizatorului este în mod deliberat cât mai apropiată de Conversations. Acest lucru permite utilizatorilor să migreze în cele din urmă de la Quicksy la Conversations fără a fi nevoiți să învețe din nou cum funcționează aplicația.
+
+Contactele sugerate constau din alți utilizatori Quicksy și utilizatori obișnuiți de Jabber/XMPP care și-au introdus adresa XMPP în Directorul Quicksy (https://quicksy.im/#get-listed).
+
+NOTĂ: Pentru a vă introduce (https://quicksy.im/enter/) adresa XMPP în Directorul
+Quicksy este necesară o taxă de înregistrare unică.
+
+Citiți Politica de confidențialitate (https://quicksy.im/#privacy) pentru mai multe informații.

@@ -6,7 +6,7 @@
     <string name="set_profile_picture">Quicksy-profilbild</string>
     <string name="unable_to_verify_server_identity">Det gick inte att verifiera serveridentiteten.</string>
     <string name="timeout_while_connecting_to_server">Timeout under anslutning till servern.</string>
-    <string name="pref_never_send_crash_summary">Genom att skicka in stack traces hjälper du den pågående utvecklingen av Quicksy</string>
-    <string name="huawei_protected_apps_summary">För att fortsätta ta emot aviseringar, även när skärmen är avstängd, måste du lägga till Quicksy i listan över skyddade appar.</string>
+    <string name="pref_never_send_crash_summary">Genom att skicka in kraschrapporter hjälper du den pågående utvecklingen av Quicksy</string>
+    <string name="huawei_protected_apps_summary">För att fortsätta ta emot aviseringar även när skärmen är avstängd, måste du lägga till Quicksy i listan över skyddade appar.</string>
     <string name="pref_notification_grace_period_summary">Hur lång tid Quicksy håller tyst efter att ha sett aktivitet på en annan enhet</string>
 </resources>

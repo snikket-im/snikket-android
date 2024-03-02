@@ -1,0 +1,3 @@
+* Support P2P file transfer via WebRTC data channels
+* Fix interoperability issues with Bind 2.0 on ejabberd
+* Bundle Let’s Encrypt root certificates for Android <= 7

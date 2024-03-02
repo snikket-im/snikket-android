@@ -43,8 +43,8 @@ public class Emoticons {
 
     private static final UnicodeRange MISC_SYMBOLS_AND_PICTOGRAPHS = new UnicodeRange(0x1F300, 0x1F5FF);
     private static final UnicodeRange SUPPLEMENTAL_SYMBOLS = new UnicodeRange(0x1F900, 0x1F9FF);
-    private static final UnicodeRange EMOTICONS = new UnicodeRange(0x1F600, 0x1F64F);
-    private static final UnicodeRange TRANSPORT_SYMBOLS = new UnicodeRange(0x1F680, 0x1F6FF);
+    private static final UnicodeRange EMOTICONS = new UnicodeRange(0x1F600, 0x1FAF6);
+    //private static final UnicodeRange TRANSPORT_SYMBOLS = new UnicodeRange(0x1F680, 0x1F6FF);
     private static final UnicodeRange MISC_SYMBOLS = new UnicodeRange(0x2600, 0x26FF);
     private static final UnicodeRange DINGBATS = new UnicodeRange(0x2700, 0x27BF);
     private static final UnicodeRange ENCLOSED_ALPHANUMERIC_SUPPLEMENT = new UnicodeRange(0x1F100, 0x1F1FF);
@@ -69,7 +69,7 @@ public class Emoticons {
             MISC_SYMBOLS_AND_PICTOGRAPHS,
             SUPPLEMENTAL_SYMBOLS,
             EMOTICONS,
-            TRANSPORT_SYMBOLS,
+            //TRANSPORT_SYMBOLS,
             MISC_SYMBOLS,
             DINGBATS,
             ENCLOSED_ALPHANUMERIC_SUPPLEMENT,

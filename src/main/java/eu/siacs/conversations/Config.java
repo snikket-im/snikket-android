@@ -41,6 +41,8 @@ public final class Config {
 
     public static final String LOGTAG = BuildConfig.APP_NAME.toLowerCase(Locale.US);
 
+    public static final boolean QUICK_LOG = false;
+
     public static final Jid BUG_REPORTS = Jid.of("bugs@snikket.org");
     public static final Uri HELP = Uri.parse("https://snikket.org/faq/?ref=app");
 
@@ -87,6 +89,8 @@ public final class Config {
 
     public static final boolean XEP_0392 = true; //enables XEP-0392 v0.6.0
 
+
+    // media file formats. Homogenous Android or Conversations only deployments can switch to opus and webp
     public static final int AVATAR_SIZE = 192;
     public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int AVATAR_CHAR_LIMIT = 9400;
@@ -94,6 +98,8 @@ public final class Config {
     public static final int IMAGE_SIZE = 1920;
     public static final Bitmap.CompressFormat IMAGE_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int IMAGE_QUALITY = 75;
+
+    public static final boolean USE_OPUS_VOICE_MESSAGES = false;
 
     public static final int MESSAGE_MERGE_WINDOW = 20;
 
@@ -115,10 +121,7 @@ public final class Config {
     public static final boolean OMEMO_PADDING = false;
     public static final boolean PUT_AUTH_TAG_INTO_KEY = true;
     public static final boolean AUTOMATICALLY_COMPLETE_SESSIONS = true;
-
-    public static final boolean USE_BOOKMARKS2 = false;
-
-    public static final boolean DISABLE_PROXY_LOOKUP = false; //useful to debug ibb
+    public static final boolean DISABLE_PROXY_LOOKUP = false; //disables STUN/TURN and Proxy65 look up (useful to debug IBB fallback)
     public static final boolean USE_DIRECT_JINGLE_CANDIDATES = true;
     public static final boolean DISABLE_HTTP_UPLOAD = false;
     public static final boolean EXTENDED_SM_LOGGING = false; // log stanza counts

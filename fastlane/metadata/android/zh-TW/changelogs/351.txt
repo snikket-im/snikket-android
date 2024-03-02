@@ -1,0 +1,3 @@
+* 修復 Jingle IBB 檔案傳輸問題
+* 修復重複更正填充數據庫的問題
+* 切換至 Last Message Correction 版本 1.1

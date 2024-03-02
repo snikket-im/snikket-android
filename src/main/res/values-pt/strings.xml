@@ -128,7 +128,6 @@
     <string name="mgmt_account_publish_pgp">Publicar chave pública OpenPGP</string>
     <string name="unpublish_pgp">Remover chave pública OpenPGP</string>
     <string name="mgmt_account_enable">Ativar conta</string>
-    <string name="mgmt_account_are_you_sure">Tem a certeza?</string>
     <string name="attach_record_voice">Gravar voz</string>
     <string name="account_settings_example_jabber_id">nomedeutilizador@exemplo.com</string>
     <string name="password">Palavra-passe</string>

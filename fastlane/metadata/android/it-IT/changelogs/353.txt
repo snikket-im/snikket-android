@@ -1,0 +1,4 @@
+* Consente agli utenti di impostare il proprio nick name
+* Riprende il download dei file criptati OMEMO
+* I canali ora usano '#' come simbolo nell'avatar.
+* Quicksy imposta "sempre" come crittografia OMEMO in modo predefinito (nasconde l'icona del lucchetto)

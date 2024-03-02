@@ -1,6 +1,8 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.google.common.primitives.Longs;
 
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
@@ -23,16 +25,9 @@ public class IbbTransportInfo extends GenericTransportInfo {
         return this.getAttribute("sid");
     }
 
-    public int getBlockSize() {
+    public Long getBlockSize() {
         final String blockSize = this.getAttribute("block-size");
-        if (blockSize == null) {
-            return 0;
-        }
-        try {
-            return Integer.parseInt(blockSize);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+        return Strings.isNullOrEmpty(blockSize) ? null : Longs.tryParse(blockSize);
     }
 
     public static IbbTransportInfo upgrade(final Element element) {

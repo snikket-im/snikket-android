@@ -247,6 +247,7 @@ public class IqGenerator extends AbstractGenerator {
     public Element publishBookmarkItem(final Bookmark bookmark) {
         final String name = bookmark.getBookmarkName();
         final String nick = bookmark.getNick();
+        final String password = bookmark.getPassword();
         final boolean autojoin = bookmark.autojoin();
         final Element conference = new Element("conference", Namespace.BOOKMARKS2);
         if (name != null) {
@@ -255,7 +256,11 @@ public class IqGenerator extends AbstractGenerator {
         if (nick != null) {
             conference.addChild("nick").setContent(nick);
         }
+        if (password != null) {
+            conference.addChild("password").setContent(password);
+        }
         conference.setAttribute("autojoin",String.valueOf(autojoin));
+        conference.addChild(bookmark.getExtensions());
         return conference;
     }
 
@@ -339,12 +344,18 @@ public class IqGenerator extends AbstractGenerator {
         return iq;
     }
 
-    public IqPacket generateSetBlockRequest(final Jid jid, boolean reportSpam) {
+    public IqPacket generateSetBlockRequest(final Jid jid, final boolean reportSpam, final String serverMsgId) {
         final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
         final Element block = iq.addChild("block", Namespace.BLOCKING);
         final Element item = block.addChild("item").setAttribute("jid", jid);
         if (reportSpam) {
-            item.addChild("report", "urn:xmpp:reporting:0").addChild("spam");
+            final Element report = item.addChild("report", Namespace.REPORTING);
+            report.setAttribute("reason", Namespace.REPORTING_REASON_SPAM);
+            if (serverMsgId != null) {
+                final Element stanzaId = report.addChild("stanza-id", Namespace.STANZA_IDS);
+                stanzaId.setAttribute("by", jid);
+                stanzaId.setAttribute("id", serverMsgId);
+            }
         }
         Log.d(Config.LOGTAG, iq.toString());
         return iq;

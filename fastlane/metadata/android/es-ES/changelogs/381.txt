@@ -1,0 +1,2 @@
+* Respuesta audible (marcación, llamada iniciada, llamada finalizada) para llamadas de voz.
+* Solucionado el problema de reintento de videollamada fallida

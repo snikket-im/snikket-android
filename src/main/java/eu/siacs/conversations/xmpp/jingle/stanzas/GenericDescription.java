@@ -8,6 +8,7 @@ public class GenericDescription extends Element {
 
     GenericDescription(String name, final String namespace) {
         super(name, namespace);
+        Preconditions.checkArgument("description".equals(name));
     }
 
     public static GenericDescription upgrade(final Element element) {

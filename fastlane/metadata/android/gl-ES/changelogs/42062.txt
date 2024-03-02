@@ -1,0 +1,1 @@
+* Desactiva a apertura de ficheiros de copia de apoio (.ceb) desde o xestor de ficheiros

@@ -30,7 +30,7 @@ public class PublishOptions {
         options.putString("pubsub#persist_items", "true");
         options.putString("pubsub#access_model", "whitelist");
         options.putString("pubsub#send_last_published_item", "never");
-        options.putString("pubsub#max_items", "128"); //YOLO!
+        options.putString("pubsub#max_items", "max");
 
         options.putString("pubsub#notify_delete", "true");
         options.putString("pubsub#notify_retract", "true"); //one could also set notify=true on the retract

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="huawei_protected_apps_summary">برای دریافت اعلان‌ها حتی وقتی که صفحه خاموش است باید این برنامه را به فهرست برنامه‌های محافظت‌شده بیفزایید.</string>
+    <string name="pref_never_send_crash_summary">با فرستادن گزارش‌های خرابی به توسعهٔ این برنامه کمک خواهید کرد</string>
+    <string name="unable_to_verify_server_identity">تأیید هویت سرور ممکن نیست.</string>
+    <string name="unknown_security_error">خطای امنیتی ناشناخته.</string>
+    <string name="timeout_while_connecting_to_server">پاسخی هنگام اتصال به سرور دریافت نشد.</string>
+    <string name="not_available_in_your_country">این برنامه در کشور شما دردسترس نیست.</string>
+    <string name="set_profile_picture">تصویر نمایهٔ Quicksy</string>
+    <string name="pref_notification_grace_period_summary">مدت زمانی که این برنامه خاموش می‌ماند پس از این که فعالیت روی دستگاه دیگری کشف شد</string>
+    <string name="pref_broadcast_last_activity_summary">بگذارید همهٔ مخاطبانتان بدانند چه وقتی این برنامه را به‌کار می‌برید</string>
+</resources>

@@ -3,4 +3,18 @@
     <string name="pick_a_server">لطفا سرویس دهنده پیام خود را انتخاب نمائید. برای مثال artalk.im</string>
     <string name="use_conversations.im">از Conversations.im استفاده کنید</string>
     <string name="create_new_account">حساب کاربری جدیدی بسازید</string>
-    </resources>
+    <string name="easy_invite_share_text">عضو %1$s شو و با من گفتگو کن: %2$s</string>
+    <string name="magic_create_text_on_x">شما به %1$s دعوت شده‌اید. ما شما را در ساخت حسابتان راهنمایی می‌کنیم.
+\nوقتی شما %1$s را به عنوان سرویس‌دهندهٔ خود برگزینید، خواهید توانست با کاربران بقیهٔ سرویس‌دهنده‌ها نیز ارتباط داشته باشید. کافی است نشانی کامل XMPP خود را به آن‌ها بدهید.</string>
+    <string name="do_you_have_an_account">آیا خودتان حساب XMPP دارید؟ اگر جایی دیگری با همین برنامه یا برنامه‌های مشابه کار می‌کنید باید داشته باشید. اگر حساب XMPP ندارید، همین‌جا می‌توانید یکی بسازید.
+\nنکته: برخی از سرویس‌دهنده‌های ایمیل به شما حساب XMPP هم ارائه می‌دهند.</string>
+    <string name="if_contact_is_nearby_use_qr">اگر مخاطب شما نزدیکتان است، می‌تواند برای پذیرش دعوت‌نامه کد زیر را اسکن کند.</string>
+    <string name="share_invite_with">هم‌رسانی دعوت‌نامه با…</string>
+    <string name="server_select_text">شبکهٔ XMPP مستقل از سرویس‌دهنده‌هایش است. بنابراین شما می‌توانید این برنامه را با هر سرویس‌دهنده‌ای که می‌خواهید به کار ببرید.
+\nولی برای راحتی شما، ما امکان ساخت حساب روی سرور conversations.im را می‌دهیم؛ سرویس‌دهنده‌ای که برای کار با این برنامه بهینه شده است.</string>
+    <string name="magic_create_text_fixed">شما به %1$s دعوت شده‌اید و یک نام کاربری برایتان برگزیده شده است. ما شما را در ساخت حسابتان راهنمایی می‌کنیم.
+\nشما خواهید توانست با کاربران بقیهٔ سرویس‌دهنده‌ها نیز ارتباط داشته باشید. کافی است نشانی کامل XMPP خود را به آن‌ها بدهید.</string>
+    <string name="improperly_formatted_provisioning">کد مورد نظر اشتباه ساخته شده است</string>
+    <string name="tap_share_button_send_invite">روی گزینهٔ هم‌رسانی بزنید تا مخاطب خود را به %1$s دعوت کنید.</string>
+    <string name="your_server_invitation">دعوت‌نامهٔ سرور شما</string>
+</resources>

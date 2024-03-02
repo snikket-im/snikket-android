@@ -1,0 +1,3 @@
+* Corrección del reenvío de mensajes al utilizar SASL2
+* Corregir vídeo negro entre algunos dispositivos
+* Arreglar fallo en contraseñas vacías

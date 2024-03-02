@@ -1,0 +1,2 @@
+* Corretta la selezione dell'avatar su alcuni dispositivi Android 10
+* Corretto il trasferimento di file più grandi

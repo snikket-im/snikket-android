@@ -1,0 +1,1 @@
+* Supporto del cambio automatico dei temi su Android 10

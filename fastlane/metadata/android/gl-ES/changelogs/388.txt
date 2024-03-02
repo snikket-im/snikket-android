@@ -1,0 +1,3 @@
+* Reduce echo during calls on some devices
+* Fix login when passwords contains special characters
+* Play dial and busy tones on speaker during video calls

@@ -1,0 +1,3 @@
+*Subir a dependencia libwebrtc a M117 e tamén libvpx
+* Volver a AAC para as mensaxes de voz
+* Soporte para indicar na app os axustes do idioma

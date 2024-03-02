@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission
         android:name="android.permission.READ_PHONE_STATE"
         android:maxSdkVersion="22" />
@@ -18,7 +17,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <uses-feature
@@ -37,6 +35,20 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!--    New permissions required to run as foreground service on Android 14.
+            SYSTEM_EXEMPTED is used when the app is on the doze allow list. This is normal
+            and the expected default behaviour. The other two hijack RECORD_AUDIO and CAMERA if they
+            happen to be granted. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+
+    <!-- this foreground service type permission is exclusively used for import and export backup -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -67,7 +79,7 @@
             <action android:name="android.intent.action.VIEW" />
         </intent>
         <intent>
-            <action android:name="org.unifiedpush.android.connector.MESSAGE"/>
+            <action android:name="org.unifiedpush.android.connector.MESSAGE" />
         </intent>
     </queries>
 
@@ -75,30 +87,60 @@
     <application
         android:allowBackup="true"
         android:appCategory="social"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_content"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/new_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:localeConfig="@xml/locales_config"
         android:networkSecurityConfig="@xml/network_security_configuration"
         android:preserveLegacyExternalStorage="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/ConversationsTheme"
-        tools:replace="android:label"
-        tools:targetApi="q">
+        tools:targetApi="tiramisu">
 
         <meta-data
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
 
-        <service android:name=".services.XmppConnectionService" />
+        <!-- The warning that systemExempted requires alarm permission is incorrect because doze white list is sufficient -->
+        <service
+            android:name=".services.XmppConnectionService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse|systemExempted|microphone|camera"
+            tools:ignore="ForegroundServicePermission">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="xmpp-im" />
+        </service>
+
+        <service
+            android:name=".services.ExportBackupService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <service
+            android:name=".services.ImportBackupService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+        <service
+            android:name=".services.ContactChooserTargetService"
+            android:exported="true"
+            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.chooser.ChooserTargetService" />
+            </intent-filter>
+        </service>
 
         <receiver
             android:name=".services.EventReceiver"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action
+                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                    tools:ignore="BatteryLife" />
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />
                 <action android:name="android.media.RINGER_MODE_CHANGED" />
             </intent-filter>
@@ -112,10 +154,12 @@
                 <action android:name="org.unifiedpush.android.distributor.REGISTER" />
                 <action android:name="org.unifiedpush.android.distributor.UNREGISTER" />
                 <action android:name="org.unifiedpush.android.distributor.feature.BYTES_MESSAGE" />
+                <action android:name="org.unifiedpush.android.distributor.feature.MESSENGER" />
+                <action android:name="org.unifiedpush.android.distributor.feature.APP_VALIDATION" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
-                <data android:scheme="package"/>
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
@@ -143,7 +187,6 @@
         </activity>
         <activity
             android:name=".ui.ConversationsActivity"
-            android:label="@string/app_name"
             android:launchMode="singleTask"
             android:minWidth="300dp"
             android:minHeight="300dp"
@@ -155,8 +198,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ui.UriHandlerActivity"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -258,7 +300,6 @@
         <activity
             android:name=".ui.ShareWithActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:launchMode="singleTop">
 
             <intent-filter>
@@ -296,24 +337,13 @@
                 android:value="eu.siacs.conversations.ui.SettingsActivity" />
         </activity>
         <activity
-            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:name="com.canhub.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".ui.MemorizingActivity" />
 
         <activity
             android:name=".ui.MediaBrowserActivity"
             android:label="@string/media_browser" />
-
-        <service android:name=".services.ExportBackupService" />
-        <service android:name=".services.ImportBackupService" />
-        <service
-            android:name=".services.ContactChooserTargetService"
-            android:exported="true"
-            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.chooser.ChooserTargetService" />
-            </intent-filter>
-        </service>
 
         <provider
             android:name="androidx.core.content.FileProvider"

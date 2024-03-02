@@ -156,7 +156,8 @@ public class PgpDecryptionService {
 									&& manager.getAutoAcceptFileSize() > 0) {
 								manager.createNewDownloadConnection(message);
 							}
-						} catch (IOException e) {
+						} catch (final IOException e) {
+							Log.d(Config.LOGTAG,"decryption failed", e);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
 						}
 						mXmppConnectionService.updateMessage(message);
@@ -170,6 +171,7 @@ public class PgpDecryptionService {
 						}
 						break;
 					case OpenPgpApi.RESULT_CODE_ERROR:
+						Log.d(Config.LOGTAG,"decryption failed (api error)");
 						message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
 						mXmppConnectionService.updateMessage(message);
 						break;

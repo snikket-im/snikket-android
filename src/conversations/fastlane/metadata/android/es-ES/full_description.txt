@@ -1,0 +1,39 @@
+Fácil de usar, fiable y con poca batería. Con soporte integrado para imágenes, chats de grupo y cifrado e2e.
+
+Principios de diseño:
+
+* Ser lo más bonito y fácil de usar posible sin sacrificar la seguridad ni la privacidad.
+* Basarse en protocolos existentes y bien establecidos.
+* No requerir una cuenta de Google o, específicamente, Google Cloud Messaging (GCM).
+* Requerir el menor número de permisos posible
+
+Características:
+
+* Cifrado de extremo a extremo con <a href="http://conversations.im/omemo/">OMEMO</a> o <a href="http://openpgp.org/about/">OpenPGP</a>.
+* Envío y recepción de imágenes
+* Llamadas de audio y vídeo cifradas (DTLS-SRTP)
+* Interfaz de usuario intuitiva que sigue las directrices de diseño de Android
+* Imágenes / Avatares para tus contactos
+* Sincronización con el cliente de escritorio
+* Conferencias (con soporte para marcadores)
+* Integración de la libreta de direcciones
+* Múltiples cuentas / bandeja de entrada unificada
+* Muy bajo impacto en la duración de la batería
+
+Conversations hace que sea muy fácil crear una cuenta en el servidor gratuito conversations.im. Sin embargo, Conversations también funciona con cualquier otro servidor XMPP. Muchos servidores XMPP están gestionados por voluntarios y son gratuitos.
+
+Características de XMPP:
+
+Conversations funciona con todos los servidores XMPP existentes. Sin embargo, XMPP es un protocolo extensible. Estas extensiones también están estandarizadas en los llamados XEP. Conversations soporta un par de ellas para mejorar la experiencia general del usuario. Existe la posibilidad de que su actual servidor XMPP no soporte estas extensiones. Por lo tanto, para sacar el máximo provecho de Conversaciones deberías considerar o bien cambiar a un servidor XMPP que lo haga o - mejor aún - ejecutar tu propio servidor XMPP para ti y tus amigos.
+
+Estos XEPs son (por el momento):
+
+* XEP-0065: SOCKS5 Bytestreams (o mod_proxy65). Se utilizará para transferir archivos si ambas partes están detrás de un cortafuegos (NAT).
+* XEP-0163: Protocolo de Evento Personal para avatares
+* XEP-0191: El comando de bloqueo te permite hacer una lista negra de spammers o bloquear contactos sin eliminarlos de tu lista.
+* XEP-0198: Stream Management permite a XMPP sobrevivir a pequeños cortes de red y cambios de la conexión TCP subyacente.
+* XEP-0280: Message Carbons que sincroniza automáticamente los mensajes que envías a tu cliente de escritorio y por lo tanto te permite cambiar sin problemas de tu cliente móvil a tu cliente de escritorio y viceversa en una sola conversación.
+* XEP-0237: Versionado de listas, principalmente para ahorrar ancho de banda en conexiones móviles deficientes.
+* XEP-0313: Gestión de Archivo de Mensajes sincroniza el historial de mensajes con el servidor. Ponerse al día con los mensajes que fueron enviados mientras Conversaciones estaba fuera de línea.
+* XEP-0352: Indicación del Estado del Cliente permite al servidor saber si Conversaciones está o no en segundo plano. Permite al servidor ahorrar ancho de banda reteniendo paquetes sin importancia.
+* XEP-0363: Carga de Archivos HTTP permite compartir archivos en conferencias y con contactos sin conexión. Requiere un componente adicional en su servidor.

@@ -1,0 +1,3 @@
+* Mostrar botón de ayuda si falla la llamada A/V
+* Corregidos algunos fallos molestos
+* Corregidas conexiones Jingle (transferencia de archivos + llamadas) con JIDs sin ocultar

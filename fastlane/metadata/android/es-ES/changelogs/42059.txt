@@ -1,0 +1,2 @@
+* Actualizar Target SDK a 33 de nuevo
+* Corrección de problemas en servidores que soportan SASL2 sin Stream Management en línea

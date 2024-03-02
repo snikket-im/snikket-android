@@ -27,11 +27,7 @@ public abstract class AbstractGenerator {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
     private final String[] FEATURES = {
             Namespace.JINGLE,
-
-            //Jingle File Transfer
-            FileTransferDescription.Version.FT_3.getNamespace(),
-            FileTransferDescription.Version.FT_4.getNamespace(),
-            FileTransferDescription.Version.FT_5.getNamespace(),
+            Namespace.JINGLE_APPS_FILE_TRANSFER,
             Namespace.JINGLE_TRANSPORTS_S5B,
             Namespace.JINGLE_TRANSPORTS_IBB,
             Namespace.JINGLE_ENCRYPTED_TRANSPORT,
@@ -124,6 +120,7 @@ public abstract class AbstractGenerator {
         if (!mXmppConnectionService.useTorToConnect() && !account.isOnion()) {
             features.addAll(Arrays.asList(PRIVACY_SENSITIVE));
             features.addAll(Arrays.asList(VOIP_NAMESPACES));
+            features.add(Namespace.JINGLE_TRANSPORT_WEBRTC_DATA_CHANNEL);
         }
         if (mXmppConnectionService.broadcastLastActivity()) {
             features.add(Namespace.IDLE);

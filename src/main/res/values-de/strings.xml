@@ -128,7 +128,7 @@
     <string name="pref_notification_grace_period_summary">Die Zeitspanne, in der Benachrichtigungen nach der Erkennung von Aktivitäten auf einem deiner anderen Geräte unterdrückt werden.</string>
     <string name="pref_advanced_options">Erweitert</string>
     <string name="pref_never_send_crash">Niemals Absturzberichte senden</string>
-    <string name="pref_never_send_crash_summary">Mit dem Einsenden von Absturzberichten hilfst du bei der Weiterentwicklung</string>
+    <string name="pref_never_send_crash_summary">Durch das Einsenden von Absturzberichten hilfst du bei der Weiterentwicklung</string>
     <string name="pref_confirm_messages">Lese- und Empfangsbestätigung senden</string>
     <string name="pref_confirm_messages_summary">Informiere deine Kontakte, wenn du eine Nachricht empfangen und gelesen hast</string>
     <string name="pref_prevent_screenshots">Screenshots verhindern</string>
@@ -184,8 +184,7 @@
     <string name="unpublish_pgp_message">Bist du sicher, dass du deinen öffentlichen OpenPGP-Schlüssel aus deiner Anwesenheitsmitteilung entfernen möchtest?\nDeine Kontakte können dir dann keine OpenPGP-verschlüsselten Nachrichten senden.</string>
     <string name="openpgp_has_been_published">Öffentlicher OpenPGP-Schlüssel veröffentlicht.</string>
     <string name="mgmt_account_enable">Konto aktivieren </string>
-    <string name="mgmt_account_are_you_sure">Bist du dir sicher?</string>
-    <string name="mgmt_account_delete_confirm_text">Die Löschung deines Kontos löscht deinen gesamten Gesprächsverlauf</string>
+    <string name="mgmt_account_delete_confirm_text">Bist du sicher, dass du dein Konto möchtest\? Dies wird deinen gesamten Gesprächsverlauf entfernen</string>
     <string name="attach_record_voice">Sprache aufzeichnen</string>
     <string name="account_settings_jabber_id">XMPP-Adresse</string>
     <string name="block_jabber_id">XMPP-Adresse sperren</string>
@@ -227,7 +226,6 @@
     <string name="fetching_keys">Schlüssel werden abgerufen…</string>
     <string name="done">Fertig</string>
     <string name="decrypt">Entschlüsseln</string>
-    <string name="bookmarks">Lesezeichen</string>
     <string name="search">Suchen</string>
     <string name="enter_contact">Kontakt eingeben</string>
     <string name="delete_contact">Kontakt löschen</string>
@@ -266,7 +264,7 @@
     <string name="error_saving_avatar">Profilbild kann nicht gespeichert werden</string>
     <string name="or_long_press_for_default">(Oder klicke lange, um den Standard wiederherzustellen)</string>
     <string name="error_publish_avatar_no_server_support">Dein Server unterstützt die Veröffentlichung von Profilbildern nicht</string>
-    <string name="private_message">private Nachricht:</string>
+    <string name="private_message">private Nachricht</string>
     <string name="private_message_to">an %s</string>
     <string name="send_private_message_to">Private Nachricht an %s senden</string>
     <string name="connect">Verbinden</string>
@@ -322,8 +320,8 @@
     <string name="jabber_id_copied_to_clipboard">XMPP-Adresse in Zwischenablage kopiert</string>
     <string name="error_message_copied_to_clipboard">Fehlermeldung in Zwischenablage kopiert</string>
     <string name="web_address">Internetadresse</string>
-    <string name="scan_qr_code">Barcode scannen</string>
-    <string name="show_qr_code">Barcode anzeigen</string>
+    <string name="scan_qr_code">QR-Code scannen</string>
+    <string name="show_qr_code">QR-Code anzeigen</string>
     <string name="show_block_list">Sperrliste anzeigen</string>
     <string name="account_details">Kontodetails</string>
     <string name="confirm">Bestätigen</string>
@@ -459,7 +457,6 @@
     <string name="recently_used">Zuletzt verwendet</string>
     <string name="choose_quick_action">Wähle Schnell-Taste</string>
     <string name="search_contacts">Kontakte durchsuchen</string>
-    <string name="search_bookmarks">Lesezeichen durchsuchen</string>
     <string name="send_private_message">Private Nachricht senden</string>
     <string name="user_has_left_conference">%1$s hat den Gruppenchat verlassen</string>
     <string name="username">Benutzername</string>
@@ -520,7 +517,6 @@
     <string name="no_camera_permission">%1$s den Zugriff auf die Kamera gewähren</string>
     <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
     <string name="sync_with_contacts_long">%1$s möchte die Erlaubnis, auf deine Kontakte zuzugreifen, um sie mit deiner XMPP-Kontaktliste abzugleichen.\nDadurch werden die vollständigen Namen und Profilbilder deiner Kontakte angezeigt.\n\n%1$s liest nur dein Adressbuch und gleicht es lokal ab, ohne dass etwas auf deinen Server hochgeladen wird.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy benötigt Zugriff auf die Telefonnummern deiner Kontakte, um Vorschläge für mögliche Kontakte zu machen, die bereits bei Quicksy sind.<br><br>Wir werden keine Kopie dieser Telefonnummern speichern.\n\nFür weitere Informationen lies unsere <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a>.<br><br>Du wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.]]></string>
     <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
     <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich erwähnt werde</string>
     <string name="notify_never">Benachrichtigungen deaktiviert</string>
@@ -538,12 +534,11 @@
     <string name="this_field_is_required">Dieses Feld ist erforderlich</string>
     <string name="correct_message">Nachricht korrigieren</string>
     <string name="send_corrected_message">Korrigierte Nachricht senden</string>
-    <string name="no_keys_just_confirm">Du hast den Fingerabdruck dieser Person bereits sicher verifiziert, um das Vertrauen zu bestätigen. Durch Auswählen von \"Fertig\" bestätigst du, dass %s Teil dieses Gruppenchats ist.</string>
+    <string name="no_keys_just_confirm">Du hast den Fingerabdruck dieser Person bereits verifiziert. Durch Auswählen von \"Fertig\" bestätigst du nur, dass %s Teil dieses Gruppenchats ist.</string>
     <string name="this_account_is_disabled">Du hast dieses Konto deaktiviert</string>
     <string name="security_error_invalid_file_access">Sicherheitsfehler: Dateizugriff nicht erlaubt!</string>
     <string name="no_application_to_share_uri">Keine App zum Teilen der URI gefunden</string>
     <string name="share_uri_with">Teile URI mit…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy ist ein Ableger des beliebten XMPP-Clients Conversations mit automatischer Kontakterkennung.<br><br>Du registrierst dich mit deiner Telefonnummer und Quicksy wird automatisch auf der Grundlage der Telefonnummern in deinem Adressbuch mögliche Kontakte vorschlagen.<br><br>Mit der Anmeldung erklärst du dich mit unserer <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a> einverstanden.]]></string>
     <string name="agree_and_continue">Zustimmen und fortfahren</string>
     <string name="magic_create_text">Ein Guide hilft bei der Kontoerstellung auf conversations.im.
 \nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige XMPP-Adresse gibst.</string>
@@ -590,7 +585,7 @@
     <string name="payment_required">Bezahlung erforderlich</string>
     <string name="missing_internet_permission">Berechtigung zur Nutzung des Internets erteilen</string>
     <string name="me">Ich</string>
-    <string name="contact_asks_for_presence_subscription">Kontakt möchte Online-Status abbonieren</string>
+    <string name="contact_asks_for_presence_subscription">Kontakt möchte Online-Status abonnieren</string>
     <string name="allow">Erlauben</string>
     <string name="no_permission_to_access_x">Keine Berechtigung um auf %s zuzugreifen</string>
     <string name="remote_server_not_found">Remote-Server nicht gefunden</string>
@@ -601,7 +596,7 @@
     <string name="pref_delete_omemo_identities_summary">Erzeuge neue OMEMO-Schlüssel. Alle deine Kontakte müssen sie erneut verifizieren. Verwende dies nur als letztes Mittel.</string>
     <string name="delete_selected_keys">Ausgewählte Schlüssel löschen</string>
     <string name="error_publish_avatar_offline">Du musst verbunden sein, um deinen Profilbild zu veröffentlichen.</string>
-    <string name="show_error_message">Zeige Fehlermeldung</string>
+    <string name="show_error_message">Fehlermeldung anzeigen</string>
     <string name="error_message">Fehlermeldung</string>
     <string name="data_saver_enabled">Datensparmodus aktiv</string>
     <string name="data_saver_enabled_explained">Dein Betriebssystem verhindert, dass %1$s im Hintergrund auf das Internet zugreift. Um Benachrichtigungen erhalten zu können, solltest du %1$s den Zugang erlauben, wenn der Datensparmodus aktiv ist.\n%1$s wird dennoch versuchen, so viele Daten wie möglich einzusparen.</string>
@@ -621,7 +616,7 @@
     <string name="pref_blind_trust_before_verification_summary">Neuen Geräten von nicht verifizierten Kontakten vertrauen, aber bei verifizierten Kontakten eine manuelle Bestätigung der neuen Geräte verlangen.</string>
     <string name="blindly_trusted_omemo_keys">Blind vertraute OMEMO-Schlüssel bedeutet, dass es sich um eine andere Person handeln könnte oder dass jemand sie abgehört haben könnte.</string>
     <string name="not_trusted">Nicht vertraut</string>
-    <string name="invalid_barcode">Ungültiger Barcode</string>
+    <string name="invalid_barcode">Ungültiger QR-Code</string>
     <string name="pref_clean_cache_summary">Cache-Ordner löschen (von der Kamera-App genutzt)</string>
     <string name="pref_clean_cache">Lösche Cache</string>
     <string name="pref_clean_private_storage">Lösche privaten Speicher</string>
@@ -775,7 +770,7 @@
     <string name="silent_messages_channel_description">Diese Benachrichtigungsart wird verwendet, um Benachrichtigungen anzuzeigen, die keinen Ton auslösen sollen. Zum Beispiel, wenn du auf einem anderen Gerät aktiv bist (Schonfrist).</string>
     <string name="delivery_failed_channel_name">Fehlgeschlagene Zustellungen</string>
     <string name="pref_message_notification_settings">Benachrichtigungseinstellungen</string>
-    <string name="pref_incoming_call_notification_settings">Anrufeinstellungen</string>
+    <string name="pref_incoming_call_notification_settings">Einstellungen für die Benachrichtigung bei eingehenden Anrufen</string>
     <string name="pref_more_notification_settings_summary">Wichtigkeit, Klang, Vibrationen</string>
     <string name="video_compression_channel_name">Video komprimieren</string>
     <string name="view_media">Medien anzeigen</string>
@@ -883,7 +878,6 @@
     <string name="discover_channels">Channels entdecken</string>
     <string name="search_channels">Channels suchen</string>
     <string name="channel_discovery_opt_in_title">Mögliche Datenschutzverletzung!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Die Channelsuche verwendet einen Drittanbieterservice namens <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der <a href="https://search.jabber.network/privacy">Datenschutzerklärung</a>.]]></string>
     <string name="i_already_have_an_account">Ich habe bereits ein Konto</string>
     <string name="add_existing_account">Vorhandenes Konto hinzufügen</string>
     <string name="register_new_account">Neues Konto erstellen</string>
@@ -913,7 +907,7 @@
     <string name="rtp_state_incoming_video_call">Eingehender Videoanruf</string>
     <string name="rtp_state_content_add_video">Umschalten auf Videoanruf?</string>
     <string name="rtp_state_content_add">Zusätzliche Audiospuren hinzufügen?</string>
-    <string name="rtp_state_connecting">Verbinden</string>
+    <string name="rtp_state_connecting">Verbindet</string>
     <string name="rtp_state_connected">Verbunden</string>
     <string name="rtp_state_reconnecting">Erneut verbinden</string>
     <string name="rtp_state_accepting_call">Anruf annehmen</string>
@@ -935,10 +929,8 @@
     <string name="reconnecting_video_call">Videoanruf erneut verbinden</string>
     <string name="disable_tor_to_make_call">Deaktiviere Tor, um Anrufe zu tätigen</string>
     <string name="incoming_call">Eingehender Anruf</string>
-    <string name="incoming_call_duration">Eingehender Anruf · %s</string>
     <string name="missed_call_timestamp">Entgangener Anruf · %s</string>
     <string name="outgoing_call">Ausgehender Anruf</string>
-    <string name="outgoing_call_duration">Ausgehender Anruf · %s</string>
     <string name="missed_call">Entgangener Anruf</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d entgangener Anruf von %2$s</item>
@@ -1007,4 +999,31 @@
     <string name="no_account_deactivated">Kein (deaktiviert)</string>
     <string name="unified_push_distributor">UnifiedPush Verteiler</string>
     <string name="pref_up_push_account_summary">Das Konto, über das Push-Nachrichten empfangen werden sollen.</string>
+    <string name="decline">Ablehnen</string>
+    <string name="incoming_call_duration_timestamp">Eingehender Anruf (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">Ausgehender Anruf (%s) · %s</string>
+    <string name="outgoing_call_timestamp">Ausgehender Anruf · %s</string>
+    <string name="delete_from_server">Konto vom Server löschen</string>
+    <string name="could_not_delete_account_from_server">Konto konnte nicht vom Server gelöscht werden</string>
+    <string name="group_chats">Gruppenchats</string>
+    <string name="save_as_group_chat">Als Gruppenchat speichern</string>
+    <string name="search_group_chats">Gruppenchats durchsuchen</string>
+    <string name="channel_discover_opt_in_message">Die Channelsuche verwendet einen Drittanbieterservice namens &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der &lt;a href=https://search.jabber.network/privacy&gt;Datenschutzerklärung&lt;/a&gt;.</string>
+    <string name="restore_warning_continued">Versuche nicht, Backups wiederherzustellen, die du nicht selbst erstellt hast!</string>
+    <string name="outdated_backup_file_format">Du versuchst, ein veraltetes Sicherungsdateiformat zu importieren</string>
+    <string name="audiobook">Hörbuch</string>
+    <string name="reconnect_on_other_host">Verbindung auf anderem Host wiederherstellen</string>
+    <string name="this_account_is_logged_out">Du hast dich von diesem Konto abgemeldet</string>
+    <string name="log_in">Anmelden</string>
+    <string name="hide_notification">Benachrichtigung ausblenden</string>
+    <string name="contact_uses_unverified_keys">Dein Kontakt verwendet nicht verifizierte Geräte. Scanne deren QR-Code, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
+    <string name="log_out">Abmelden</string>
+    <string name="account_state_logged_out">Abgemeldet</string>
+    <string name="unverified_devices">Du verwendest nicht verifizierte Geräte. Scanne den QR-Code auf deinen anderen Geräten, um eine Verifizierung durchzuführen und aktive MITM-Angriffe zu verhindern.</string>
+    <string name="report_spam">Spam melden</string>
+    <string name="report_spam_and_block">Spam melden und Spammer sperren</string>
+    <string name="welcome_header_quicksy">Willkommen bei Quicksy!</string>
+    <string name="privacy_policy">Datenschutzbestimmungen</string>
+    <string name="quicksy_wants_your_consent">Quicksy bittet dich um deine Zustimmung zur Verwendung deiner Daten</string>
+    <string name="contact_list_integration_not_available">Adressbuchintegration ist nicht verfügbar</string>
 </resources>

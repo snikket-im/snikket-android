@@ -1,0 +1,2 @@
+* soporte para los ajustes de la notificación de la conversación
+* usar opus para mensajes de voz en Android 10

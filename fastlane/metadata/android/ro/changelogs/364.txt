@@ -1,0 +1,2 @@
+* Furnizarea de previzualizări PDF pe Android 5+
+* Folosirea IV-urilor de 12 biți pentru OMEMO

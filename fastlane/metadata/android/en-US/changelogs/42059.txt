@@ -1,0 +1,2 @@
+* Bump Target SDK to 33 again
+* Fix issues on servers supporting SASL2 w/o inline Stream Management

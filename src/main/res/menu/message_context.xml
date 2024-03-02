@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/action_report_and_block"
+        android:title="@string/report_spam"
+        android:visible="false" />
+
+    <item
         android:id="@+id/open_with"
         android:title="@string/open_with"
         android:visible="false" />

@@ -1,0 +1,2 @@
+* Corrección de errores menores
+* Restaurar la capacidad de llamar a través de JMP y otros servicios (versión Playstore)

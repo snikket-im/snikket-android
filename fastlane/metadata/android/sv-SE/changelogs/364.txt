@@ -1,0 +1,2 @@
+* PDF-förhandsvisning på Android 5+
+* Använd 12-bitars IV:s för OMEMO

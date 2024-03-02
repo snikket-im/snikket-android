@@ -49,6 +49,11 @@
         android:orderInCategory="90"
         android:title="@string/action_account"
         app:showAsAction="never" />
+    <item android:id="@+id/action_privacy_policy"
+        android:visible="false"
+        android:orderInCategory="98"
+        android:title="@string/privacy_policy"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

@@ -1,0 +1,2 @@
+* Verifica delle chiamate A/V con le sessioni OMEMO preesistenti
+* Miglioramento della compatibilità con le implementazioni WebRTC non libwebrtc

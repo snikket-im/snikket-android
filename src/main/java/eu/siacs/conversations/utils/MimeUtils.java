@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +68,7 @@ public final class MimeUtils {
         // by guessExtensionFromMimeType.
         add("application/andrew-inset", "ez");
         add("application/dsptype", "tsp");
+        add("application/json", "json");
         add("application/epub+zip", "epub");
         add("application/gpx+xml", "gpx");
         add("application/hta", "hta");
@@ -260,7 +263,8 @@ public final class MimeUtils {
         add("audio/mpeg", "mpga");
         add("audio/mpeg", "mpega");
         add("audio/mpeg", "mp2");
-        add("audio/mpeg", "m4a");
+        add("audio/mp4", "m4a");
+        add("audio/x-m4b", "m4b");
         add("audio/mpegurl", "m3u");
         add("audio/ogg", "oga");
         add("audio/opus", "opus");
@@ -413,6 +417,9 @@ public final class MimeUtils {
         applyOverrides();
     }
 
+    // mime types that are more reliant by path
+    private static final Collection<String> PATH_PRECEDENCE_MIME_TYPE = Arrays.asList("audio/x-m4b");
+
     private static void add(String mimeType, String extension) {
         // If we have an existing x -> y mapping, we do not want to
         // override it with another mapping x -> y2.
@@ -537,44 +544,49 @@ public final class MimeUtils {
     }
 
     public static String guessMimeTypeFromUriAndMime(final Context context, final Uri uri, final String mime) {
-        Log.d(Config.LOGTAG, "guessMimeTypeFromUriAndMime " + uri + " and mime=" + mime);
-        if (mime == null || mime.equals("application/octet-stream")) {
-            final String guess = guessMimeTypeFromUri(context, uri);
-            if (guess != null) {
-                return guess;
-            } else {
-                return mime;
-            }
+        Log.d(Config.LOGTAG, "guessMimeTypeFromUriAndMime(" + uri + "," + mime+")");
+        final String mimeFromUri = guessMimeTypeFromUri(context, uri);
+        Log.d(Config.LOGTAG,"mimeFromUri:"+mimeFromUri);
+        if (PATH_PRECEDENCE_MIME_TYPE.contains(mimeFromUri)) {
+            return mimeFromUri;
+        } else if (mime == null || mime.equals("application/octet-stream")) {
+            return mimeFromUri;
+        } else {
+            return mime;
         }
-        return guessMimeTypeFromUri(context, uri);
     }
 
-    public static String guessMimeTypeFromUri(Context context, Uri uri) {
-        // try the content resolver
-        String mimeType;
+    public static String guessMimeTypeFromUri(final Context context, final Uri uri) {
+        final String mimeTypeContentResolver = guessFromContentResolver(context, uri);
+        final String mimeTypeFromQueryParameter = uri.getQueryParameter("mimeType");
+        final String name = "content".equals(uri.getScheme()) ? getDisplayName(context, uri) : null;
+        final String mimeTypeFromName = Strings.isNullOrEmpty(name) ? null : guessFromPath(name);
+        final String path = uri.getPath();
+        final String mimeTypeFromPath = Strings.isNullOrEmpty(path) ? null : guessFromPath(path);
+        if (PATH_PRECEDENCE_MIME_TYPE.contains(mimeTypeFromName)) {
+            return mimeTypeFromName;
+        }
+        if (PATH_PRECEDENCE_MIME_TYPE.contains(mimeTypeFromPath)) {
+            return mimeTypeFromPath;
+        }
+        if (mimeTypeContentResolver != null && !"application/octet-stream".equals(mimeTypeContentResolver)) {
+            return mimeTypeContentResolver;
+        }
+        if (mimeTypeFromName != null) {
+            return mimeTypeFromName;
+        }
+        if (mimeTypeFromQueryParameter != null) {
+            return mimeTypeFromQueryParameter;
+        }
+        return mimeTypeFromPath;
+    }
+
+    private static String guessFromContentResolver(final Context context, final Uri uri) {
         try {
-            mimeType = context.getContentResolver().getType(uri);
-        } catch (final Throwable throwable) {
-            mimeType = null;
+            return context.getContentResolver().getType(uri);
+        } catch (final Throwable e) {
+            return null;
         }
-        // try the extension
-        if (mimeType == null || mimeType.equals("application/octet-stream")) {
-            final String path = uri.getPath();
-            if (path != null) {
-                mimeType = guessFromPath(path);
-            }
-        }
-        if (mimeType == null && "content".equals(uri.getScheme())) {
-            final String name = getDisplayName(context, uri);
-            if (name != null) {
-                mimeType = guessFromPath(name);
-            }
-        }
-        // sometimes this works (as with the commit content api)
-        if (mimeType == null) {
-            mimeType = uri.getQueryParameter("mimeType");
-        }
-        return mimeType;
     }
 
     private static String getDisplayName(final Context context, final Uri uri) {

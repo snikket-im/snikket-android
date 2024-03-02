@@ -97,6 +97,10 @@ public class FingerprintStatus implements Comparable<FingerprintStatus> {
         return trust == Trust.TRUSTED || isVerified();
     }
 
+    public boolean isUnverified() {
+        return trust == Trust.TRUSTED;
+    }
+
     public boolean isVerified() {
         return trust == Trust.VERIFIED || trust == Trust.VERIFIED_X509;
     }

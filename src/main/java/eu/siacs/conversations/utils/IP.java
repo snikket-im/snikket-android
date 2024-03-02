@@ -1,5 +1,7 @@
 package eu.siacs.conversations.utils;
 
+import com.google.common.net.InetAddresses;
+
 import java.util.regex.Pattern;
 
 public class IP {
@@ -25,6 +27,16 @@ public class IP {
         } else {
             return host;
         }
+    }
+
+    public static String unwrapIPv6(final String host) {
+        if (host.length() > 2 && host.charAt(0) == '[' && host.charAt(host.length() - 1) == ']') {
+            final String ip = host.substring(1,host.length() -1);
+            if (InetAddresses.isInetAddress(ip)) {
+                return ip;
+            }
+        }
+        return host;
     }
 
 }

@@ -1,0 +1,2 @@
+* Reestructuración de la interfaz de inicio de sesión con certificado
+* Añadir la posibilidad de anclar chats en la parte superior (añadir a favoritos)

@@ -1,0 +1,4 @@
+* Possibilità di selezionare la suoneria delle chiamate in arrivo
+* Correzione del rilevamento dell'id della chiave OpenPGP per OpenKeychain 5.6+
+* Verifica corretta dei certificati TLS con codice punycode
+* Miglioramento della stabilità della creazione di sessioni RTP (chiamate)

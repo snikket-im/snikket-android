@@ -1,0 +1,2 @@
+* Refacerea logării cu UI pentru certificate
+* Adăugarea abilității de a fixa conversații sus (adăugarea la favorite)

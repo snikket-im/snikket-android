@@ -1,0 +1,2 @@
+* Ziel-SDK wieder auf 33 erhöht
+* Behebt Probleme auf Servern, die SASL2 ohne Inline Stream Management unterstützen

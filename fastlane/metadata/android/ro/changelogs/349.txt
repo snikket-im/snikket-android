@@ -1,0 +1,4 @@
+* Introducerea setărilor pentru experți pentru a efectua descoperirea canalelor pe serverul local în loc de search.jabber.network
+* Activarea marcajelor de verificare a livrării în mod implicit și eliminarea setării
+* Activarea "Butonul de trimitere indică starea" în mod implicit și eliminarea setării
+*Mutarea setărilor Serviciului de rezervă și ale Serviciului de prim-plan în ecranul principal

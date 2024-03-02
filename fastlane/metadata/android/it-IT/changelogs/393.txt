@@ -1,0 +1,3 @@
+* Mostra il pulsante di aiuto se la chiamata A/V fallisce
+* Risolti alcuni fastidiosi arresti anomali
+* Corrette le connessioni Jingle (trasferimento di file + chiamate) con JID nudi

@@ -1,20 +1,23 @@
 package eu.siacs.conversations.ui;
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityEnterNameBinding;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.services.AbstractQuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.AccountUtils;
 
-public class EnterNameActivity extends XmppActivity implements XmppConnectionService.OnAccountUpdate {
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class EnterNameActivity extends XmppActivity
+        implements XmppConnectionService.OnAccountUpdate {
 
     private ActivityEnterNameBinding binding;
 
@@ -28,23 +31,28 @@ public class EnterNameActivity extends XmppActivity implements XmppConnectionSer
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_enter_name);
         setSupportActionBar((Toolbar) this.binding.toolbar);
         this.binding.next.setOnClickListener(this::next);
-        this.setNick.set(savedInstanceState != null && savedInstanceState.getBoolean("set_nick",false));
+        this.setNick.set(
+                savedInstanceState != null && savedInstanceState.getBoolean("set_nick", false));
     }
 
-    private void next(View view) {
-        if (account != null) {
-
-            String name = this.binding.name.getText().toString().trim();
-
-            account.setDisplayName(name);
-
-            xmppConnectionService.publishDisplayName(account);
-
-            Intent intent = new Intent(this, PublishProfilePictureActivity.class);
-            intent.putExtra(PublishProfilePictureActivity.EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
-            intent.putExtra("setup", true);
-            startActivity(intent);
+    private void next(final View view) {
+        if (account == null) {
+            return;
         }
+        final String name = this.binding.name.getText().toString().trim();
+        account.setDisplayName(name);
+        xmppConnectionService.publishDisplayName(account);
+        final Intent intent;
+        if (AbstractQuickConversationsService.isQuicksyPlayStore()) {
+            intent = new Intent(getApplicationContext(), StartConversationActivity.class);
+            intent.putExtra("init", true);
+            intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
+        } else {
+            intent = new Intent(this, PublishProfilePictureActivity.class);
+            intent.putExtra("setup", true);
+        }
+        intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
+        startActivity(intent);
         finish();
     }
 
@@ -66,7 +74,7 @@ public class EnterNameActivity extends XmppActivity implements XmppConnectionSer
     }
 
     private void checkSuggestPreviousNick() {
-        String displayName = this.account == null ? null : this.account.getDisplayName();
+        final String displayName = this.account == null ? null : this.account.getDisplayName();
         if (displayName != null) {
             if (setNick.compareAndSet(false, true) && this.binding.name.getText().length() == 0) {
                 this.binding.name.getText().append(displayName);

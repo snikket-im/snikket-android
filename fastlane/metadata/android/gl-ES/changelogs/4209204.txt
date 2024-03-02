@@ -1,0 +1,2 @@
+* Acceso máis doado á 'Política de Privacidade' na versión da Play Store (Quicksy e Conversations)
+* Retirada a integración coa libreta de enderezo na versión de Conversations da Play Store

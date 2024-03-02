@@ -1,0 +1,4 @@
+* Introducir configuración experta para realizar el descubrimiento de canales en el servidor local en lugar de search.jabber.network
+* Habilitar las marcas de verificación de entrega por defecto y eliminar la configuración
+* Habilitar «Enviar botón indica estado» por defecto y eliminar la configuración
+* Mover los ajustes de copia de seguridad y servicio en primer plano a la pantalla principal

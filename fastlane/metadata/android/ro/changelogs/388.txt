@@ -1,0 +1,3 @@
+* Reducerea ecoului în timpul apelurilor pe unele dispozitive
+* Repararea logării când parolele conțin caractere speciale
+* Redarea tonurilor de apel și ocupat pe difuzor în timpul apelurilor video

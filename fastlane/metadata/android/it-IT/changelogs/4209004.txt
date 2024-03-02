@@ -1,0 +1,2 @@
+* correzioni minori
+* piccole modifiche nel flusso di configurazione di Quicksy

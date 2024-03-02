@@ -18,7 +18,7 @@ public class Propose extends Element {
         for (final Element child : this.children) {
             if ("description".equals(child.getName())) {
                 final String namespace = child.getNamespace();
-                if (FileTransferDescription.NAMESPACES.contains(namespace)) {
+                if (Namespace.JINGLE_APPS_FILE_TRANSFER.equals(namespace)) {
                     builder.add(FileTransferDescription.upgrade(child));
                 } else if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
                     builder.add(RtpDescription.upgrade(child));

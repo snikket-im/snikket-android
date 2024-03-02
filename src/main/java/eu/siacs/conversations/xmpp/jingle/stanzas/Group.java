@@ -41,7 +41,7 @@ public class Group extends Element {
     }
 
     public static Group ofSdpString(final String input) {
-        ImmutableList.Builder<String> tagBuilder = new ImmutableList.Builder<>();
+        final ImmutableList.Builder<String> tagBuilder = new ImmutableList.Builder<>();
         final String[] parts = input.split(" ");
         if (parts.length >= 2) {
             final String semantics = parts[0];

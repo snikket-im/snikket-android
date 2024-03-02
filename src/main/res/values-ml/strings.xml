@@ -120,7 +120,6 @@
     <string name="mgmt_account_publish_avatar">അവതാർ പ്രസിദ്ധീകരിക്കൂ</string>
     <string name="mgmt_account_publish_pgp">OpenPGP പബ്ലിക് കീ പ്രസിദ്ധീകരിക്കുക</string>
     <string name="unpublish_pgp">OpenPGP പബ്ലിക് കീ നീക്കം ചെയ്യുക</string>
-    <string name="mgmt_account_are_you_sure">നിങ്ങള്ക്ക് ഉറപ്പാണോ?</string>
     <string name="attach_record_voice">ശബ്‌ദം റെക്കോർഡുചെയ്യൂ</string>
     <string name="account_settings_jabber_id">XMPP വിലാസം</string>
     <string name="block_jabber_id">XMPP വിലാസം തടയുക</string>
@@ -145,7 +144,6 @@
     <string name="fetching_keys">കീകൾ ലഭ്യമാക്കുന്നു...</string>
     <string name="done">ചെയ്തു</string>
     <string name="decrypt">ഡീക്രിപ്റ്റ് ചെയ്യുക</string>
-    <string name="bookmarks">അടയാളകുറിപ്പുകൾ</string>
     <string name="search">തിരയുക</string>
     <string name="enter_contact">കോൺ‌ടാക്റ്റ് നൽകുക</string>
     <string name="delete_contact">കോൺ‌ടാക്റ്റ് ഇല്ലാതാക്കൂ</string>

@@ -59,6 +59,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
                 viewHolder.binding.accountStatus.setTextColor(StyledAttributes.getColor(activity, R.attr.TextColorOnline));
                 break;
             case DISABLED:
+            case LOGGED_OUT:
             case CONNECTING:
                 viewHolder.binding.accountStatus.setTextColor(StyledAttributes.getColor(activity, android.R.attr.textColorSecondary));
                 break;

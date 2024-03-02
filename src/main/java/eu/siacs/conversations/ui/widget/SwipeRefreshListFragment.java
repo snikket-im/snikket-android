@@ -26,7 +26,6 @@ import android.widget.ListView;
 import androidx.fragment.app.ListFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 
 /**
@@ -57,7 +56,7 @@ public class SwipeRefreshListFragment extends ListFragment {
 
         final Context context = getActivity();
         if (context != null) {
-            mSwipeRefreshLayout.setColorSchemeColors(StyledAttributes.getColor(context, R.attr.colorAccent));
+            mSwipeRefreshLayout.setColorSchemeColors(StyledAttributes.getColor(context, androidx.appcompat.R.attr.colorAccent));
         }
 
         if (onRefreshListener != null) {

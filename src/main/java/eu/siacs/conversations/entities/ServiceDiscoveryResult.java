@@ -17,6 +17,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import eu.siacs.conversations.xml.Element;
@@ -100,9 +101,9 @@ public class ServiceDiscoveryResult {
 
 	public ServiceDiscoveryResult(Cursor cursor) throws JSONException {
 		this(
-				cursor.getString(cursor.getColumnIndex(HASH)),
-				Base64.decode(cursor.getString(cursor.getColumnIndex(VER)), Base64.DEFAULT),
-				new JSONObject(cursor.getString(cursor.getColumnIndex(RESULT)))
+				cursor.getString(cursor.getColumnIndexOrThrow(HASH)),
+				Base64.decode(cursor.getString(cursor.getColumnIndexOrThrow(VER)), Base64.DEFAULT),
+				new JSONObject(cursor.getString(cursor.getColumnIndexOrThrow(RESULT)))
 		);
 	}
 
@@ -209,24 +210,23 @@ public class ServiceDiscoveryResult {
 					.append("<");
 		}
 
-		List<String> features = this.getFeatures();
+		final List<String> features = this.getFeatures();
 		Collections.sort(features);
-
-		for (String feature : features) {
+		for (final String feature : features) {
 			s.append(clean(feature)).append("<");
 		}
 
-		Collections.sort(forms, (lhs, rhs) -> lhs.getFormType().compareTo(rhs.getFormType()));
-
-		for (Data form : forms) {
+		Collections.sort(forms, Comparator.comparing(Data::getFormType));
+		for (final Data form : forms) {
 			s.append(clean(form.getFormType())).append("<");
-			List<Field> fields = form.getFields();
-			Collections.sort(fields, (lhs, rhs) -> Strings.nullToEmpty(lhs.getFieldName()).compareTo(Strings.nullToEmpty(rhs.getFieldName())));
-			for (Field field : fields) {
+			final List<Field> fields = form.getFields();
+			Collections.sort(
+                    fields, Comparator.comparing(lhs -> Strings.nullToEmpty(lhs.getFieldName())));
+			for (final Field field : fields) {
 				s.append(Strings.nullToEmpty(field.getFieldName())).append("<");
-				List<String> values = field.getValues();
-				Collections.sort(values);
-				for (String value : values) {
+				final List<String> values = field.getValues();
+				Collections.sort(values, Comparator.comparing(ServiceDiscoveryResult::blankNull));
+				for (final String value : values) {
 					s.append(blankNull(value)).append("<");
 				}
 			}

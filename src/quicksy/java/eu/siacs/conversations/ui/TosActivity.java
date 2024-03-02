@@ -66,7 +66,7 @@ public class TosActivity extends XmppActivity {
             startActivity(intent);
             finish();
         });
-        welcomeText.setText(Html.fromHtml(getString(R.string.welcome_text_quicksy)));
+        welcomeText.setText(Html.fromHtml(getString(R.string.welcome_text_quicksy_static)));
         welcomeText.setMovementMethod(LinkMovementMethod.getInstance());
 
     }

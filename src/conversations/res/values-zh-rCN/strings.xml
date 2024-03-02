@@ -2,15 +2,19 @@
 <resources>
     <string name="pick_a_server">选择您的 XMPP 提供者</string>
     <string name="use_conversations.im">使用 conversations.im</string>
-    <string name="create_new_account">创建新账户</string>
-    <string name="do_you_have_an_account">您有 XMPP 账户吗？如果您之前使用过其他的 XMPP 客户端，那么您已经拥有这种账户了。如果没有的话，您现在可以创建一个。\n提示：有些电子邮件服务也提供XMPP账户。</string>
-    <string name="server_select_text">XMPP 是独立于提供者的即时消息网络。您可以将此客户端与任意 XMPP 服务器一同使用。\n不过，您可以很容易地在 conversations.im 上创建账户；它是特别适合与“Conversations”一起使用的提供者。</string>
-    <string name="magic_create_text_on_x">您已受邀加入 %1$s。我们将指导您完成创建帐户的过程。\n使用 %1$s 作为提供者时，您可以通过您的完整 XMPP 地址与其他提供者的用户进行交流。</string>
-    <string name="magic_create_text_fixed">您已受邀加入 %1$s。已为您选择了一个用户名。我们将指导您完成创建帐户的过程。\n您可以使用完整的 XMPP 地址来与其他提供者的用户进行交流。</string>
-    <string name="your_server_invitation">你的服务器邀请</string>
-    <string name="improperly_formatted_provisioning">格式不正确的配置代码</string>
-    <string name="tap_share_button_send_invite">点击分享按钮向您的联系人发送加入 %1$s 的邀请。</string>
-    <string name="if_contact_is_nearby_use_qr">如果你的联系人在附近，他们也可以扫描下面的代码来接受你的邀请。</string>
+    <string name="create_new_account">创建新账号</string>
+    <string name="do_you_have_an_account">您已经有 XMPP 账号了吗？如果您之前使用过 Conversations 或其他 XMPP 客户端，那么您已经有账号了。如果没有，您可以立即创建一个。
+\n提示：一些电子邮件服务也提供 XMPP 账号。</string>
+    <string name="server_select_text">XMPP 是独立于提供者的即时通讯网络。您选择的任何 XMPP 服务器都可以使用此客户端。
+\n不过，您可以轻松地在 conversations.im 上创建账号；特别适合与 Conversations 使用的提供者。</string>
+    <string name="magic_create_text_on_x">您已受邀加入 %1$s。我们将指导您创建账号。
+\n当选择 %1$s 作为提供者时，向其他 XMPP 用户提供您的完整地址，就能和对方交流。</string>
+    <string name="magic_create_text_fixed">您已受邀加入 %1$s。已为您选择了用户名。我们将指导您创建账号。
+\n向其他 XMPP 用户提供您的完整地址，就能和对方交流。</string>
+    <string name="your_server_invitation">您的服务器邀请</string>
+    <string name="improperly_formatted_provisioning">配置代码格式不正确</string>
+    <string name="tap_share_button_send_invite">轻击分享按钮，向您的联系人发送加入 %1$s 的邀请。</string>
+    <string name="if_contact_is_nearby_use_qr">如果您的联系人在附近，对方也可以扫描下方二维码接受邀请。</string>
     <string name="easy_invite_share_text">加入 %1$s 和我聊天：%2$s</string>
-    <string name="share_invite_with">分享邀请…</string>
+    <string name="share_invite_with">分享邀请至…</string>
 </resources>

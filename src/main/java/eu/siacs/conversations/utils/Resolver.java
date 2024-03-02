@@ -6,6 +6,11 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.common.base.Strings;
+import com.google.common.base.Throwables;
+import com.google.common.net.InetAddresses;
+import com.google.common.primitives.Ints;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.Inet4Address;
@@ -15,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import de.gultsch.minidns.AndroidDNSClient;
 import de.measite.minidns.AbstractDNSClient;
 import de.measite.minidns.DNSCache;
 import de.measite.minidns.DNSClient;
@@ -112,7 +118,7 @@ public class Resolver {
         return port == 443 || port == 5223;
     }
 
-    public static List<Result> resolve(String domain) {
+    public static List<Result> resolve(final String domain) {
         final  List<Result> ipResults = fromIpAddress(domain);
         if (ipResults.size() > 0) {
             return ipResults;
@@ -126,8 +132,10 @@ public class Resolver {
                 synchronized (results) {
                     results.addAll(list);
                 }
-            } catch (Throwable throwable) {
-                Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving SRV record (direct TLS)", throwable);
+            } catch (final Throwable throwable) {
+                if (!(Throwables.getRootCause(throwable) instanceof InterruptedException)) {
+                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving SRV record (direct TLS)", throwable);
+                }
             }
         });
         threads[1] = new Thread(() -> {
@@ -136,8 +144,10 @@ public class Resolver {
                 synchronized (results) {
                     results.addAll(list);
                 }
-            } catch (Throwable throwable) {
-                Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving SRV record (STARTTLS)", throwable);
+            } catch (final Throwable throwable) {
+                if (!(Throwables.getRootCause(throwable) instanceof InterruptedException)) {
+                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving SRV record (STARTTLS)", throwable);
+                }
             }
         });
         threads[2] = new Thread(() -> {
@@ -156,15 +166,15 @@ public class Resolver {
                 threads[2].interrupt();
                 synchronized (results) {
                     Collections.sort(results);
-                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": " + results.toString());
-                    return new ArrayList<>(results);
+                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": " + results);
+                    return results;
                 }
             } else {
                 threads[2].join();
                 synchronized (fallbackResults) {
                     Collections.sort(fallbackResults);
-                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": " + fallbackResults.toString());
-                    return new ArrayList<>(fallbackResults);
+                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": " + fallbackResults);
+                    return fallbackResults;
                 }
             }
         } catch (InterruptedException e) {
@@ -247,7 +257,7 @@ public class Resolver {
     }
 
     private static List<Result> resolveNoSrvRecords(DNSName dnsName, boolean withCnames) {
-        List<Result> results = new ArrayList<>();
+        final List<Result> results = new ArrayList<>();
         try {
             for (A a : resolveWithFallback(dnsName, A.class, false).getAnswersOrEmptySet()) {
                 results.add(Result.createDefault(dnsName, a.getInetAddress()));
@@ -260,8 +270,10 @@ public class Resolver {
                     results.addAll(resolveNoSrvRecords(cname.name, false));
                 }
             }
-        } catch (Throwable throwable) {
-            Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + "error resolving fallback records", throwable);
+        } catch (final Throwable throwable) {
+            if (!(Throwables.getRootCause(throwable) instanceof InterruptedException)) {
+                Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + "error resolving fallback records", throwable);
+            }
         }
         results.add(Result.createDefault(dnsName));
         return results;
@@ -274,7 +286,9 @@ public class Resolver {
     private static <D extends Data> ResolverResult<D> resolveWithFallback(DNSName dnsName, Class<D> type, boolean validateHostname) throws IOException {
         final Question question = new Question(dnsName, Record.TYPE.getType(type));
         if (!validateHostname) {
-            return ResolverApi.INSTANCE.resolve(question);
+            final AndroidDNSClient androidDNSClient = new AndroidDNSClient(SERVICE);
+            final ResolverApi resolverApi = new ResolverApi(androidDNSClient);
+            return resolverApi.resolve(question);
         }
         try {
             return DnssecResolverApi.INSTANCE.resolveDnssecReliable(question);
@@ -434,6 +448,65 @@ public class Resolver {
             contentValues.put(DIRECT_TLS, directTls ? 1 : 0);
             contentValues.put(AUTHENTICATED, authenticated ? 1 : 0);
             return contentValues;
+        }
+
+        public Result seeOtherHost(final String seeOtherHost) {
+            final String hostname = seeOtherHost.trim();
+            if (hostname.isEmpty()) {
+                return null;
+            }
+            final Result result = new Result();
+            result.directTls = this.directTls;
+            final int portSegmentStart = hostname.lastIndexOf(':');
+            if (hostname.charAt(hostname.length() - 1) != ']'
+                    && portSegmentStart >= 0
+                    && hostname.length() >= portSegmentStart + 1) {
+                final String hostPart = hostname.substring(0, portSegmentStart);
+                final String portPart = hostname.substring(portSegmentStart + 1);
+                final Integer port = Ints.tryParse(portPart);
+                if (port == null || Strings.isNullOrEmpty(hostPart)) {
+                    return null;
+                }
+                final String host = eu.siacs.conversations.utils.IP.unwrapIPv6(hostPart);
+                result.port = port;
+                if (InetAddresses.isInetAddress(host)) {
+                    final InetAddress inetAddress;
+                    try {
+                        inetAddress = InetAddresses.forString(host);
+                    } catch (final IllegalArgumentException e) {
+                        return null;
+                    }
+                    result.ip = inetAddress;
+                } else {
+                    if (hostPart.trim().isEmpty()) {
+                        return null;
+                    }
+                    try {
+                        result.hostname = DNSName.from(hostPart.trim());
+                    } catch (final Exception e) {
+                        return null;
+                    }
+                }
+            } else {
+                final String host = eu.siacs.conversations.utils.IP.unwrapIPv6(hostname);
+                if (InetAddresses.isInetAddress(host)) {
+                    final InetAddress inetAddress;
+                    try {
+                        inetAddress = InetAddresses.forString(host);
+                    } catch (final IllegalArgumentException e) {
+                        return null;
+                    }
+                    result.ip = inetAddress;
+                } else {
+                    try {
+                        result.hostname = DNSName.from(hostname);
+                    } catch (final Exception e) {
+                        return null;
+                    }
+                }
+                result.port = port;
+            }
+            return result;
         }
     }
 

@@ -1,0 +1,2 @@
+* Corrección del bucle de reenvío en servidores que sólo admiten sm:2
+* Mostrar "Cambiar a vídeo" sólo si la otra parte admite vídeo

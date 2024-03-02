@@ -1,0 +1,3 @@
+* Handle GPX files
+* Improve performance for backup restore
+* bug fixes

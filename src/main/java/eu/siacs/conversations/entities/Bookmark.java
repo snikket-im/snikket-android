@@ -25,6 +25,7 @@ public class Bookmark extends Element implements ListItem {
 	private final Account account;
 	private WeakReference<Conversation> conversation;
 	private Jid jid;
+	protected Element extensions = new Element("extensions", Namespace.BOOKMARKS2);
 
 	public Bookmark(final Account account, final Jid jid) {
 		super("conference");
@@ -101,7 +102,16 @@ public class Bookmark extends Element implements ListItem {
 		bookmark.setBookmarkName(conference.getAttribute("name"));
 		bookmark.setAutojoin(conference.getAttributeAsBoolean("autojoin"));
 		bookmark.setNick(conference.findChildContent("nick"));
+		bookmark.setPassword(conference.findChildContent("password"));
+		final Element extensions = conference.findChild("extensions", Namespace.BOOKMARKS2);
+		if (extensions != null) {
+			bookmark.extensions = extensions;
+		}
 		return bookmark;
+	}
+
+	public Element getExtensions() {
+		return extensions;
 	}
 
 	public void setAutojoin(boolean autojoin) {

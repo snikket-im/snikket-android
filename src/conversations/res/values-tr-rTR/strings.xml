@@ -11,6 +11,6 @@
     <string name="improperly_formatted_provisioning">Yanlış ayarlanmış düzenleme kodu</string>
     <string name="tap_share_button_send_invite">Kişinize, %1$s grubuna davet etmek için Paylaş düğmesine basın.</string>
     <string name="if_contact_is_nearby_use_qr">Kişiniz yakınınızda ise, aşağıdaki kodu tarayak daveti kabul edebilirler.</string>
-    <string name="easy_invite_share_text">%1$s grubuna katıl ve benimle sohpet et: %2$s</string>
-    <string name="share_invite_with">Daveti şununla paylaş...</string>
+    <string name="easy_invite_share_text">%1$s grubuna katıl ve benimle sohbet et: %2$s</string>
+    <string name="share_invite_with">Daveti şununla paylaş…</string>
 </resources>

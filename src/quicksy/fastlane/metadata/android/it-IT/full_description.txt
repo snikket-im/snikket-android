@@ -1,0 +1,14 @@
+Quicksy è uno spin off del popolare client Jabber/XMPP Conversations con ricerca automatica dei contatti.
+
+Ti registri con il numero di telefono e Quicksy ti proporrà automaticamente, in base ai numeri di telefono nella tua rubrica, i possibili contatti.
+
+Sotto il cofano Quicksy è un vero e proprio client Jabber che ti consente di comunicare con qualsiasi utente su qualsiasi server federato pubblicamente. Allo stesso modo gli utenti su Quicksy possono essere contattati dall'esterno semplicemente aggiungendo +numeroditelefono@quicksy.im al tuo elenco di contatti.
+
+A parte la sincronizzazione dei contatti, l'interfaccia utente è deliberatamente il più possibile simile a quella di Conversations. Ciò permette agli utenti eventualmente di migrare da Quicksy a Conversations senza il bisogno di imparare di nuovo come funziona l'app.
+
+I contatti proposti consistono in altri utenti di Quicksy e utenti regolari di Jabber/XMPP che hanno inserito il loro ID Jabber nella Directory di Quicksy (https://quicksy.im/#get-listed).
+
+NOTA: per inserire (https://quicksy.im/enter/) il tuo ID Jabber nella Directory
+di Quicksy è richiesto un pagamento una tantum per la registrazione.
+
+Leggi l'informativa sulla privacy (https://quicksy.im/#privacy) per maggiori informazioni.

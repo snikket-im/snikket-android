@@ -1,0 +1,2 @@
+* Arranxo do reenvío contínuo en servidores que só teñen soporte sm:2
+* Mostrar 'Cambiar a vídeo' só se a outra parte tamén soporta chamada de vídeo

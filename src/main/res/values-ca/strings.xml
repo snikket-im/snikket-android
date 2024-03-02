@@ -31,10 +31,7 @@
     <string name="minutes_ago">fa %d mins</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%dconverses no llegides </item>
-
-    
         <item quantity="other">%d converses no llegides</item>
-
     </plurals>
     <string name="sending">enviant…</string>
     <string name="message_decrypting">Desxifrant el missatge. Espereu…</string>
@@ -87,7 +84,9 @@
     <string name="clear_conversation_history">Neteja l\'historial de la conversa</string>
     <string name="clear_histor_msg">Vols esborrar tots els missatges d\'aquesta conversa?\n\n<b>  Advertiment: </b> Això no influirà en els missatges emmagatzemats en altres dispositius o servidors.</string>
     <string name="delete_file_dialog">Eliminar fitxer</string>
-    <string name="delete_file_dialog_msg">Estàs segur que vols esborrar aquest fitxer?\n\n <b> Advertiment: </b> Això no eliminarà les còpies d\'aquest fitxer que estiguin emmagatzemades en altres dispositius o servidors.</string>
+    <string name="delete_file_dialog_msg">Estàs segur que vols esborrar aquest fitxer\?
+\n
+\n<b>Advertiment:</b> Això no eliminarà les còpies d\'aquest fitxer que estiguin emmagatzemades en altres dispositius o servidors. </string>
     <string name="also_end_conversation">Tanca aquesta conversa després</string>
     <string name="choose_presence">Tria el dispositiu</string>
     <string name="send_unencrypted_message">Envia un missatge no xifrat</string>
@@ -108,7 +107,9 @@
     <string name="no_pgp_key">No s\'ha trobat cap clau OpenPGP</string>
     <string name="contact_has_no_pgp_key">No es va poder xifrar el teu missatge perquè el teu contacte no està anunciant la seva clau pública.\n\n<small> Si us plau, demana-li al seu contacte que configuri OpenPGP.</small></string>
     <string name="no_pgp_keys">No s\'ha trobat cap clau OpenPGP</string>
-    <string name="contacts_have_no_pgp_keys">No es pot encriptar el teu missatge perquè els teus contactes no anuncien les seves claus públiques. Si us plau, demana\'ls que configurin OpenPGP.</string>
+    <string name="contacts_have_no_pgp_keys">No es pot encriptar el teu missatge perquè els teus contactes no anuncien les seves claus públiques.
+\n
+\n<small>Si us plau, demana\'ls que configurin OpenPGP.</small></string>
     <string name="pref_general">General</string>
     <string name="pref_accept_files">Accepta els fitxers</string>
     <string name="pref_accept_files_summary">Accepta fitxers automàticament amb una mida menor a…</string>
@@ -144,8 +145,10 @@
     <string name="error_not_an_image_file">El fitxer triat no és una imatge</string>
     <string name="error_compressing_image">No es va poder convertir l\'arxiu d\'imatge</string>
     <string name="error_file_not_found">No s\'ha trobat el fitxer</string>
-    <string name="error_io_exception">Error d\'E/S general. Pot ser que us hagueu quedat sense espai d\'emmagatzematge.</string>
-    <string name="error_security_exception_during_image_copy">L\'aplicació que vas usar per a seleccionar aquesta imatge no va proporcionar suficients permisos per a llegir l\'arxiu.\n\n<small>Utilitza un gestor d\'arxius diferent per a triar una imatge</small>. </string>
+    <string name="error_io_exception">Error d\'E/S general. Pot ser que us hagueu quedat sense espai d\'emmagatzematge\?</string>
+    <string name="error_security_exception_during_image_copy">L\'aplicació que vas usar per a seleccionar aquesta imatge no va proporcionar suficients permisos per a llegir l\'arxiu.
+\n
+\n<small>Utilitza un gestor d\'arxius diferent per a triar una imatge</small>.</string>
     <string name="account_status_unknown">Desconegut</string>
     <string name="account_status_disabled">Inhabilitat temporalment</string>
     <string name="account_status_online">En línia</string>
@@ -176,7 +179,6 @@
     <string name="unpublish_pgp_message">Esteu segur que voleu eliminar la vostra clau pública d\'OpenPGP de l\'anunci de la vostra presència?\nEls vostres contactes ja no podran enviar missatges xifrats amb OpenPGP.</string>
     <string name="openpgp_has_been_published">S\'ha publicat la clau pública de OpenPGP.</string>
     <string name="mgmt_account_enable">Habilita el compte</string>
-    <string name="mgmt_account_are_you_sure">N\'esteu segur?</string>
     <string name="mgmt_account_delete_confirm_text">En esborrar el teu compte s\'esborra tot l\'historial de converses</string>
     <string name="attach_record_voice">Enregistra veu</string>
     <string name="account_settings_jabber_id">Adreça XMPP</string>
@@ -217,7 +219,6 @@
     <string name="fetching_keys">S\'estan obtenint les claus…</string>
     <string name="done">Fet</string>
     <string name="decrypt">Desxifra</string>
-    <string name="bookmarks">Marcadors</string>
     <string name="search">Cerca</string>
     <string name="enter_contact">Introduïu un contacte</string>
     <string name="delete_contact">Suprimeix el contacte</string>
@@ -268,7 +269,9 @@
     <string name="enable">Habilita</string>
     <string name="conference_requires_password">El xat de grup requereix contrasenya</string>
     <string name="enter_password">Introduïu la contrasenya</string>
-    <string name="request_presence_updates">Si us plau, sol·liciti primer les actualitzacions de presència al seu contacte.\n\n<small>Això s\'usarà per a determinar quina aplicació de xat està usant el teu contacte</small>. </string>
+    <string name="request_presence_updates">Si us plau, sol·liciti primer les actualitzacions de presència al seu contacte.
+\n
+\n<small>Això s\'usarà per a determinar quina aplicació de xat està usant el teu contacte</small>.</string>
     <string name="request_now">Sol·licita ara</string>
     <string name="ignore">Ignora</string>
     <string name="without_mutual_presence_updates"><b>Advertiment::</b> Enviar això sense actualitzacions de presència mútua podria causar problemes inesperats.\n\n<small> Vagi a \"Dades de contacte\" per a verificar les seves subscripcions de presència.</small></string>
@@ -354,8 +357,8 @@
     <string name="error_trustkeys_title">Alguna cosa ha anat malament</string>
     <string name="fetching_history_from_server">Anar a cercar la història als servidors</string>
     <string name="no_more_history_on_server">No hi ha més histories al servidor</string>
-    <string name="updating">Actualitzant</string>
-    <string name="password_changed">Contrasenya canviada</string>
+    <string name="updating">Actualitzant…</string>
+    <string name="password_changed">Contrasenya canviada!</string>
     <string name="could_not_change_password">No s\'ha pogut canviar la contrasenya</string>
     <string name="change_password">Cambiar contrasenya</string>
     <string name="current_password">Contrasenya actual</string>
@@ -363,7 +366,7 @@
     <string name="password_should_not_be_empty">La contrasenya no pot estar buida</string>
     <string name="enable_all_accounts">Habilitar tots els comptes</string>
     <string name="disable_all_accounts">Deshabilitar tots els comptes</string>
-    <string name="perform_action_with">Realitzar l\'acció amb…</string>
+    <string name="perform_action_with">Realitzar l\'acció amb</string>
     <string name="no_affiliation">Cap afiliació</string>
     <string name="no_role">Fora de línia</string>
     <string name="outcast">Outcast</string>
@@ -389,7 +392,7 @@
     <string name="non_anonymous">Fer que les direccions XMPP siguin visibles per a qualsevol</string>
     <string name="moderated">Fer que el canal sigui moderat</string>
     <string name="you_are_not_participating">No esteu participant</string>
-    <string name="modified_conference_options">S\'han modificat les opcions de xat en grup.</string>
+    <string name="modified_conference_options">S\'han modificat les opcions de xat en grup!</string>
     <string name="could_not_modify_conference_options">No s\'han pogut modificar les opcions de xat de grup</string>
     <string name="never">Mai</string>
     <string name="until_further_notice">Fins nou avís</string>
@@ -442,7 +445,6 @@
     <string name="recently_used">Ús més recent</string>
     <string name="choose_quick_action">Trieu una acció ràpida</string>
     <string name="search_contacts">Buscar contactes</string>
-    <string name="search_bookmarks">Buscar favorits</string>
     <string name="send_private_message">Envia un missatge privat</string>
     <string name="user_has_left_conference">%1$s ha abandonat el xat de grup</string>
     <string name="username">Nom d\'usuari</string>
@@ -475,9 +477,9 @@
     <string name="certificate_chain_is_not_trusted">Cadena de certificats no fiable</string>
     <string name="jid_does_not_match_certificate">La direcció XMPP no coincideix amb el certificat</string>
     <string name="action_renew_certificate">Renova el certificat</string>
-    <string name="error_fetching_omemo_key">S\'ha produït un error en obtenir la clau OMEMO!.</string>
+    <string name="error_fetching_omemo_key">S\'ha produït un error en obtenir la clau OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Clau OMEMO verificada amb certificat!</string>
-    <string name="device_does_not_support_certificates">El vostre dispositiu no admet la selecció de certificats de client.</string>
+    <string name="device_does_not_support_certificates">El vostre dispositiu no admet la selecció de certificats de client!</string>
     <string name="pref_connection_options">Connexió</string>
     <string name="pref_use_tor">Connectar mitjançant Tor</string>
     <string name="pref_use_tor_summary">Tunelar totes les connexions a través de la xarxa Tor. Requereix Orbot</string>
@@ -497,7 +499,6 @@
     <string name="shared_images_with_x">Imatges compartides amb %s</string>
     <string name="shared_text_with_x">Text compartit amb %s</string>
     <string name="sync_with_contacts">Sincronitza amb contactes</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy necessita accés als números de telèfon dels seus contactes per fer suggeriments sobre possibles contactes que ja estan en Quicksy.<br> <br> No guardarem una còpia d\'aquests números de telèfon.\n\nPer a més informació llegeixi la nostra <a href="https://quicksy.im/#privacy">política de privadesa</a> <br> <br> Ara se us demanarà que concediu permís per accedir als vostres contactes.]]></string>
     <string name="notify_on_all_messages">Notifica a tots els missatges</string>
     <string name="notify_only_when_highlighted">Notifica només quan s\'esmenta</string>
     <string name="notify_never">S\'han desactivat les notificacions</string>
@@ -518,7 +519,6 @@
     <string name="security_error_invalid_file_access">Error de seguretat: Accés invàlid a un arxiu!</string>
     <string name="no_application_to_share_uri">No s\'ha trobat cap aplicació per a compartir URI</string>
     <string name="share_uri_with">Comparteix l\'URI amb…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy és un spin off del popular client XMPP Conversations amb descobriment automàtic de contactes.<br><br>Si es registra amb el seu número de telèfon i Quicksy,--basant-se en els números de telèfon de la seva agenda--li suggereix automàticament possibles contactes.<br><br>En inscriure\'s, accepta nostra <a href="https://quicksy.im/#privacy">política de privacitat</a>.]]></string>
     <string name="agree_and_continue">Acceptar i continuar</string>
     <string name="magic_create_text">S\'ha establert una guia per a la creació de comptes en conversations.im.¹\nEn triar conversations.im com a proveïdor podràs comunicar-te amb usuaris d\'altres proveïdors donant-los la teva adreça XMPP completa.</string>
     <string name="your_full_jid_will_be">La seva adreça XMPP completa serà: %s</string>
@@ -778,8 +778,8 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="abort_registration_procedure">Està segur que vol avortar el procediment de registre?</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
-    <string name="verifying">Verificant...</string>
-    <string name="requesting_sms">Sol·licitud de SMS...</string>
+    <string name="verifying">Verificant…</string>
+    <string name="requesting_sms">Sol·licitud de SMS…</string>
     <string name="incorrect_pin">El pin que has introduït és incorrecte.</string>
     <string name="pin_expired">El pin que li hem enviat ha caducat.</string>
     <string name="unknown_api_error_network">Error de xarxa desconegut.</string>
@@ -808,7 +808,7 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="group_chat_will_make_your_jabber_id_public">Aquest canal farà pública la seva adreça XMPP</string>
     <string name="ebook">Llibre electrònic</string>
     <string name="video_original">Original (sense comprimir)</string>
-    <string name="open_with">Obrir amb...</string>
+    <string name="open_with">Obrir amb…</string>
     <string name="set_profile_picture">Foto de perfil de Snikket</string>
     <string name="choose_account">Triï el compte</string>
     <string name="restore_backup">Restaurar còpia de seguretat</string>
@@ -828,7 +828,7 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="please_enter_name">Indiqui un nom per al canal</string>
     <string name="please_enter_xmpp_address">Indiqui una direcció XMPP</string>
     <string name="this_is_an_xmpp_address">Aquesta és una direcció XMPP. Si us plau, proporcioni un nom.</string>
-    <string name="creating_channel">Creant un canal públic...</string>
+    <string name="creating_channel">Creant un canal públic…</string>
     <string name="channel_already_exists">Aquest canal ja existeix</string>
     <string name="joined_an_existing_channel">T\'has unit a un canal existent</string>
     <string name="unable_to_set_channel_configuration">No s\'ha pogut guardar la configuració del canal</string>
@@ -849,8 +849,7 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="attach">Adjuntar</string>
     <string name="discover_channels">Descobreix canals</string>
     <string name="search_channels">Buscar canals</string>
-    <string name="channel_discovery_opt_in_title">Possible violació de la privacitat.</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[El descobriment de canals utilitza un servei de tercers anomenat <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>L\'ús d\'aquesta funció transmetrà la seva adreça IP i els termes de cerca a aquest servei. Consulti la seva <a href="https://search.jabber.network/privacy">Política de Privacitat</a> per a obtenir més informació.]]></string>
+    <string name="channel_discovery_opt_in_title">Possible violació de la privacitat!</string>
     <string name="i_already_have_an_account">Ja tinc un compte</string>
     <string name="add_existing_account">Afegir compte existent</string>
     <string name="register_new_account">Registrar un nou compte</string>
@@ -865,7 +864,7 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="account_already_setup">Aquest compte ja està configurada</string>
     <string name="please_enter_password">Si us plau, introdueixi la contrasenya d\'aquest compte</string>
     <string name="unable_to_perform_this_action">No s\'ha pogut realitzar aquesta acció</string>
-    <string name="open_join_dialog">Unir-se al canal públic...</string>
+    <string name="open_join_dialog">Unir-se al canal públic…</string>
     <string name="sharing_application_not_grant_permission">L\'aplicació per a compartir no va donar permís per a accedir a aquest arxiu.</string>
     <string name="group_chats_and_channels"><![CDATA[Xats de grup i canals]]></string>
     <string name="jabber_network">jabber.network</string>
@@ -896,9 +895,7 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="ongoing_video_call">Trucada de vídeo en curs</string>
     <string name="disable_tor_to_make_call">Desactivar Tor per a fer trucades</string>
     <string name="incoming_call">Trucada entrant</string>
-    <string name="incoming_call_duration">Trucada entrant · %s</string>
     <string name="outgoing_call">Trucada sortint</string>
-    <string name="outgoing_call_duration">Trucada sortint · %s</string>
     <string name="missed_call">Trucada perduda</string>
     <string name="audio_call">Trucada de veu</string>
     <string name="video_call">Trucada de vídeo</string>
@@ -939,4 +936,4 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="unable_to_parse_invite">No es pot processar la invitació</string>
     <string name="server_does_not_support_easy_onboarding_invites">El servidor no admet la generació d\'invitacions</string>
     <string name="no_active_accounts_support_this">Cap compte actiu admet aquesta funció</string>
-    </resources>
+</resources>

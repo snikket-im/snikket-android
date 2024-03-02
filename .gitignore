@@ -11,6 +11,7 @@ src/quicksyPlaystore/res/values/push.xml
 build/
 captures/
 signing.properties
+signing.managed.properties
 # Ignore Gradle GUI config
 gradle-app.setting
 

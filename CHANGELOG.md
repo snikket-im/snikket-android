@@ -1,5 +1,80 @@
 # Changelog
 
+### Version 2.13.4
+
+* Fix minor regressions introduced with 2.13.1
+
+### Version 2.13.3
+
+* Provide easier access to 'Privacy Policy' on Play Store version (Quicksy and Conversations)
+* Remove address book integration on Play Store version of Conversations
+
+### Version 2.13.2
+
+* minor bug fixes
+* slight modifications in Quicksy onboard flow
+
+### Version 2.13.1
+
+* Support P2P file transfer via WebRTC data channels
+* Fix interoperability issues with Bind 2.0 on ejabberd
+* Bundle Let’s Encrypt root certificates for Android <= 7
+
+### Version 2.13.0
+
+* Easier access to 'Show QR code'
+* Support PEP Native Bookmarks
+* Add support for SDP Offer / Answer Model (Used by SIP gateways)
+* Raise target API to Android 14
+
+### Version 2.12.12
+
+* Support Private DNS (DNS over TLS)
+* Support themed launcher icon
+* Fix rare permission issue when sharing files on Android 11+
+
+### Version 2.12.11
+
+* Bump libwebrtc dependency to M117 and bump libvpx
+* Go back to AAC for voice messages
+* Support per app language settings
+
+### Version 2.12.10
+
+* support per conversation notification settings
+* use opus for voice messages on Android 10
+
+### Version 2.12.9
+
+* Introduce new backup file format
+
+### Version 2.12.8
+
+* Disable opening backup files (.ceb) from file manager
+
+### Version 2.12.7
+
+* Remove channel discovery feature from Google Play version
+
+### Version 2.12.6
+
+* Fix 'q' falsely being recognized as cyrillic
+
+### Version 2.12.5
+
+* Bump Target SDK to 33 again
+* Fix issues on servers supporting SASL2 w/o inline Stream Management
+
+### Version 2.12.4
+
+* Revert Target SDK bump (back to 32) to fix various issues on Android 13
+
+### Version 2.12.3
+
+* Improve support for new emojis
+* Add ability to remove account from server
+* Show timestamp for calls
+
 ### Version 2.12.2
 
 * Increase corner radius on profile pictures

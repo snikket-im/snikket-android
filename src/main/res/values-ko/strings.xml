@@ -123,7 +123,6 @@
     <string name="mgmt_account_publish_avatar">아바타 공개 </string>
     <string name="mgmt_account_publish_pgp">OpenPGP 공개 키 공개 </string>
     <string name="mgmt_account_enable">계정 사용 </string>
-    <string name="mgmt_account_are_you_sure">확실합니까? </string>
     <string name="attach_record_voice">녹음 </string>
     <string name="account_settings_example_jabber_id">username@example.com</string>
     <string name="password">암호 </string>

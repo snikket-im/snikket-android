@@ -11,4 +11,5 @@
     <string name="tap_share_button_send_invite">Tik op de delen knop om een uitnodiging te versturen naar %1$s</string>
     <string name="if_contact_is_nearby_use_qr">Als je contactpersoon in de buurt is, kan deze ook onderstaande code scannen om de uitnodiging te aanvaarden.</string>
     <string name="share_invite_with">Deel de uitnodiging met ...</string>
+    <string name="easy_invite_share_text">Vergezel %1$s en chat met mij: %2$s</string>
 </resources>

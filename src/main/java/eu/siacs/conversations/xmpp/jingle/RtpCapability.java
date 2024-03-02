@@ -1,9 +1,11 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +77,18 @@ public class RtpCapability {
             }
         }
         return result;
+    }
+
+    // do all devices that support Rtp Call also support JMI?
+    public static boolean jmiSupport(final Contact contact) {
+        return !Collections2.transform(
+                Collections2.filter(
+                        contact.getPresences().getPresences(),
+                        p -> RtpCapability.check(p) != RtpCapability.Capability.NONE),
+                p -> {
+                    ServiceDiscoveryResult disco = p.getServiceDiscoveryResult();
+                    return disco != null && disco.getFeatures().contains(Namespace.JINGLE_MESSAGE);
+                }).contains(false);
     }
 
     public enum Capability {

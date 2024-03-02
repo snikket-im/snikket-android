@@ -1,0 +1,1 @@
+* Apeluri Audio/Video (Necesită suport pe server în formă de servere STUN și TURN descoperibile prin XEP-0125)

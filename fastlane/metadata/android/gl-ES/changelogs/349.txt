@@ -1,0 +1,4 @@
+* Introdución do axuste de experta para realizar o descubrimento de canle no servidor local e non buscar en search.jabber.network
+* Activadas as marcas de comprobación de entrega por defecto e eliminación do axuste
+* Activar por defecto 'O botón enviar indica estado' e eliminar o axuste
+* Mover os axustes Copia de Apoio e Servizo en primeiro plano á pantalla principal

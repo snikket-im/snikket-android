@@ -1,0 +1,39 @@
+Helppokäyttöinen, luotettava ja vähän akkua käyttävä. Sisäänrakennettu tuki kuville, ryhmille ja päästä päähän -salaukselle.
+
+Periaatteet:
+
+* Ole niin kaunis ja helppokäyttöinen kuin on mahdolista turvallisuudesta ja ykstyisyydestä tinkimättä
+* Käytä valmiita ja vakiintuneita protokollia
+* Älä riipu Google-tunnuksesta äläkä Google Cloud Messaging -palvelusta (GCM)
+* Vaadi niin vähän käyttöoikeuksia kuin mahdollista
+
+Ominaisuudet:
+
+* Päästä päähän -salaus joko <a href="http://conversations.im/omemo/">OMEMO:lla</a> tai <a href="http://openpgp.org/about/">OpenPGP:llä</a>
+* Lähetä ja vastaanota kuvia
+* Salatut ääni- ja videopuhelut (DTLS-SRTP)
+* Intuitiivinen käyttöliittymä joka noudattaa Androidin muotoilukieltä
+* Profiilikuvat yhteystiedoille
+* Synkronoi työpöytäversion kanssa
+* Konferenssit (kirjanmerkkituella)
+* Osoitekirjaintegrointi
+* Useampi tili yhdessä näkymässä
+* Todella pieni akun kulutus
+
+Conversations:lla on helppo luoda tili conversations.im-palvelimella. Silti Conversations toimii myös minkä tahansa muun XMPP-palvelimen kanssa. Monia XMPP-palvelimia ylläpidetään ilmaiseksi vapaaehtoisvoimin.
+
+XMPP-ominaisuudet:
+
+Conversations toimii kaikkien XMPP-palvelinten kanssa. XMPP on kuitenkin laajennettava protokolla. Nämä laajennukset on standardoitu niin kutsuttuina XEP:inä. Conversations tukee muutamaa näistä tehdäkseen käyttäjäkokemuksesta paremman. On mahdollista että nykyinen XMPP-palvelimesi ei tue kaikkia näitä laajennoksia. Siispä saadaksesi kaiken ilon irti Conversationsista kannattaa harkita joko sellaiseen palvelimeen, joka tukee näitä, vaihtamista tai oman XMPP-palvelimen ylläpitämistä itsellesi ja kavereillesi.
+
+XEP:t ovat tällä hetkellä:
+
+* XEP-0065: SOCKS5 Bytestreams (tai mod_proxy65). Käytetään tiedostojen siirtoon jos molemmat osapuolet ovat palomuurin tai NAT:n takana.
+* XEP-0163: Personal Eventing Protocol profiilikuville
+* XEP-0191: Blocking command lets you blacklist spammers or block contacts without removing them from your roster.
+* XEP-0198: Stream Management mahdollistaa XMPP:n selviämisen pienestä verkon pätkimisestä ja TCP-yhteyden muutoksista.
+* XEP-0280: Kopiot lähettämistäsi viesteistä muille laitteillesi. Mahdolistaa laitteiden vaihdon kesken keskustelun täysin saumoitta.
+* XEP-0237: Roster Versioning säästää dataa heikoila yhteyksillä
+* XEP-0313: Message Archive Management synchronize message history with the server. Catch up with messages that were sent while Conversations was offline.
+* XEP-0352: Client State Indication lets the server know whether or not Conversations is in the background. Allows the server to save bandwidth by withholding unimportant packages.
+* XEP-0363: HTTP File Upload allows you to share files in conferences and with offline contacts. Requires an additional component on your server.

@@ -154,6 +154,7 @@
     <string name="error_security_exception">The app you used to share this file did not provide enough permissions.</string>
     <string name="account_status_unknown">Unknown</string>
     <string name="account_status_disabled">Temporarily disabled</string>
+    <string name="account_state_logged_out">Logged out</string>
     <string name="account_status_online">Online</string>
     <string name="account_status_connecting">Connecting\u2026</string>
     <string name="account_status_offline">Offline</string>
@@ -184,8 +185,7 @@
     <string name="unpublish_pgp_message">Are you sure you want to remove your OpenPGP public key from your presence announcement?\nYour contacts will no longer be able to send you OpenPGP encrypted messages.</string>
     <string name="openpgp_has_been_published">OpenPGP public key published.</string>
     <string name="mgmt_account_enable">Enable account</string>
-    <string name="mgmt_account_are_you_sure">Are you sure?</string>
-    <string name="mgmt_account_delete_confirm_text">Deleting your account erases your entire conversation history</string>
+    <string name="mgmt_account_delete_confirm_text">Are you sure you want to delete your account? Deleting your account erases your entire conversation history</string>
     <string name="attach_record_voice">Record voice</string>
     <string name="account_settings_jabber_id">XMPP address</string>
     <string name="block_jabber_id">Block XMPP address</string>
@@ -227,7 +227,7 @@
     <string name="fetching_keys">Fetching keys…</string>
     <string name="done">Done</string>
     <string name="decrypt">Decrypt</string>
-    <string name="bookmarks">Bookmarks</string>
+    <string name="group_chats">Group chats</string>
     <string name="search">Search</string>
     <string name="enter_contact">Enter Contact</string>
     <string name="delete_contact">Delete contact</string>
@@ -241,6 +241,7 @@
     <string name="channel_full_jid_example">channel@conference.example.com/nick</string>
     <string name="channel_bare_jid_example">channel@conference.example.com</string>
     <string name="save_as_bookmark">Save as bookmark</string>
+    <string name="save_as_group_chat">Save as group chat</string>
     <string name="delete_bookmark">Delete bookmark</string>
     <string name="destroy_room">Destroy group chat</string>
     <string name="destroy_channel">Destroy channel</string>
@@ -320,8 +321,8 @@
     <string name="jabber_id_copied_to_clipboard">Copied XMPP address to clipboard</string>
     <string name="error_message_copied_to_clipboard">Copied error message to clipboard</string>
     <string name="web_address">web address</string>
-    <string name="scan_qr_code">Scan 2D Barcode</string>
-    <string name="show_qr_code">Show 2D Barcode</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="show_qr_code">Show QR Code</string>
     <string name="show_block_list">Show block list</string>
     <string name="account_details">Account details</string>
     <string name="confirm">Confirm</string>
@@ -421,6 +422,7 @@
     <string name="multimedia_file">multimedia file</string>
     <string name="pdf_document">PDF document</string>
     <string name="apk">Android App</string>
+    <string name="audiobook">Audiobook</string>
     <string name="vcard">Contact</string>
     <string name="avatar_has_been_published">Avatar has been published!</string>
     <string name="sending_x_file">Sending %s</string>
@@ -457,7 +459,7 @@
     <string name="recently_used">Most recently used</string>
     <string name="choose_quick_action">Choose quick action</string>
     <string name="search_contacts">Search contacts</string>
-    <string name="search_bookmarks">Search bookmarks</string>
+    <string name="search_group_chats">Search group chats</string>
     <string name="send_private_message">Send private message</string>
     <string name="user_has_left_conference">%1$s has left the group chat</string>
     <string name="username">Username</string>
@@ -516,9 +518,10 @@
     <string name="shared_text_with_x">Text shared with %s</string>
     <string name="no_storage_permission">Grant %1$s access to external storage</string>
     <string name="no_camera_permission">Grant %1$s access to the camera</string>
-    <string name="sync_with_contacts">Synchronize with contacts</string>
-    <string name="sync_with_contacts_long">%1$s wants permission to access your address book to match it with your XMPP contact list.\nThis will display your contacts’ full names and avatars.\n\n%1$s will only read your address book and match it locally without uploading anything to your server.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy needs access to your contacts’ phone numbers to make suggestions about possible contacts who are already on Quicksy.<br><br>We will not store a copy of those phone numbers.\n\nFor more information read our <a href="https://quicksy.im/#privacy">privacy policy</a>.<br><br>You will now be asked to grant permission to access your contacts.]]></string>
+    <string name="quicksy_wants_your_consent">Quicksy asks for your consent to use your data</string>
+    <string name="sync_with_contacts">Contact list integration</string>
+    <string name="sync_with_contacts_long">%1$s processes your contact list locally, on your device, to show you the names and profile pictures for matching contacts on XMPP.\n\nNo contact list data ever leaves your device!</string>
+    <string name="sync_with_contacts_quicksy_static" translatable="false"><![CDATA[Quicksy syncs your contact list in regular intervals to make suggestions about possible contacts, who are already using the app, even when the app is closed or not in use.<br><br>Find more information in our <a href="https://quicksy.im/privacy.htm">Privacy Policy</a>.]]></string>
     <string name="notify_on_all_messages">Notify on all messages</string>
     <string name="notify_only_when_highlighted">Notify only when mentioned</string>
     <string name="notify_never">Notifications disabled</string>
@@ -536,14 +539,15 @@
     <string name="this_field_is_required">This field is required</string>
     <string name="correct_message">Correct message</string>
     <string name="send_corrected_message">Send corrected message</string>
-    <string name="no_keys_just_confirm">You have already validated this persons fingerprint securely to confirm trust. By selecting “Done” you are just confirming that %s is part of this group chat.</string>
+    <string name="no_keys_just_confirm">You have already trusted this persons fingerprint. By selecting “Done” you are just confirming that %s is part of this group chat.</string>
     <string name="this_account_is_disabled">You have disabled this account</string>
+    <string name="this_account_is_logged_out">You have logged out of this account</string>
     <string name="security_error_invalid_file_access">Security error: Invalid file access!</string>
     <string name="no_application_to_share_uri">No app found to share URI</string>
     <string name="share_uri_with">Share URI with…</string>
     <string name="welcome_header" translatable="false">Join the Conversation</string>
-    <string name="welcome_header_quicksy" translatable="false">Have some Quick Conversations</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy is a spin off of the popular XMPP client Conversations with automatic contact discovery.<br><br>You sign up with your phone number and Quicksy will automatically—based on the phone numbers in your address book—suggest possible contacts to you.<br><br>By signing up you agree to our <a href="https://quicksy.im/#privacy">privacy policy</a>.]]></string>
+    <string name="welcome_header_quicksy">Welcome to Quicksy!</string>
+    <string name="welcome_text_quicksy_static" translatable="false"><![CDATA[· Quicksy syncs your contact list in regular intervals to make suggestions about possible contacts who are already on Quicksy even when the app is closed or not in use.<br>· Quicksy shares and stores images, audio recordings, videos and other media to deliver them to the intended recipients. Files will be stored for up to 30 days.<br><br>Find more information in our <a href="https://quicksy.im/privacy.htm">Privacy Policy</a>.]]></string>
     <string name="agree_and_continue">Agree and continue</string>
     <string name="magic_create_text">A guide is set up for account creation on conversations.im.\nWhen picking conversations.im as a provider you will be able to communicate with users of other providers by giving them your full XMPP address.</string>
     <string name="your_full_jid_will_be">Your full XMPP address will be: %s</string>
@@ -589,6 +593,7 @@
     <string name="type_web">Web browser</string>
     <string name="type_console">Console</string>
     <string name="payment_required">Payment required</string>
+    <string name="reconnect_on_other_host">Reconnect on other host</string>
     <string name="missing_internet_permission">Grant permission to use the Internet</string>
     <string name="me">Me</string>
     <string name="contact_asks_for_presence_subscription">Contact asks for presence subscription</string>
@@ -622,7 +627,7 @@
     <string name="pref_blind_trust_before_verification_summary">Trust new devices from non-verified contacts, but prompt manual confirmation of new devices for verified contacts.</string>
     <string name="blindly_trusted_omemo_keys">Blindly trusted OMEMO keys, meaning they could be someone else or someone could have tapped in.</string>
     <string name="not_trusted">Untrusted</string>
-    <string name="invalid_barcode">Invalid 2D barcode</string>
+    <string name="invalid_barcode">Invalid QR Code</string>
     <string name="pref_clean_cache_summary">Clean cache folder (used by camera app)</string>
     <string name="pref_clean_cache">Clean cache</string>
     <string name="pref_clean_private_storage">Clean private storage</string>
@@ -849,6 +854,7 @@
     <string name="restore">Restore</string>
     <string name="enter_password_to_restore">Enter your password for the account %s to restore the backup.</string>
     <string name="restore_warning">Do not use the restore backup feature in an attempt to clone (run simultaneously) an installation. Restoring a backup is only meant for migrations or in case you’ve lost the original device.</string>
+    <string name="restore_warning_continued">Do not attempt to restore backups that you have not created yourself!</string>
     <string name="unable_to_restore_backup">Could not restore backup.</string>
     <string name="unable_to_decrypt_backup">Could not decrypt backup. Is the password correct?</string>
     <string name="backup_channel_name">Backup &amp; Restore</string>
@@ -896,6 +902,7 @@
     <string name="event">Event</string>
     <string name="open_backup">Open backup</string>
     <string name="not_a_backup_file">The file you selected is not a Snikket backup file</string>
+    <string name="outdated_backup_file_format">You are trying to import an outdated backup file format</string>
     <string name="account_already_setup">This account has already been setup</string>
     <string name="please_enter_password">Please enter the password for this account</string>
     <string name="unable_to_perform_this_action">Could not perform this action</string>
@@ -936,10 +943,11 @@
     <string name="reconnecting_video_call">Reconnecting video call</string>
     <string name="disable_tor_to_make_call">Disable Tor to make calls</string>
     <string name="incoming_call">Incoming call</string>
-    <string name="incoming_call_duration">Incoming call · %s</string>
+    <string name="incoming_call_duration_timestamp">Incoming call (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">Outgoing call (%s) · %s</string>
     <string name="missed_call_timestamp">Missed call · %s</string>
     <string name="outgoing_call">Outgoing call</string>
-    <string name="outgoing_call_duration">Outgoing call · %s</string>
+    <string name="outgoing_call_timestamp">Outgoing call · %s</string>
     <string name="missed_call">Missed call</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d missed call from %2$s</item>
@@ -1008,5 +1016,16 @@
     <string name="pref_up_push_server_title">Push Server</string>
     <string name="pref_up_push_server_summary">A user-chosen push server to relay push messages via XMPP to your device.</string>
     <string name="no_account_deactivated">None (deactivated)</string>
-
+    <string name="decline">Decline</string>
+    <string name="delete_from_server">Remove account from server</string>
+    <string name="could_not_delete_account_from_server">Could not delete account from server</string>
+    <string name="hide_notification">Hide notification</string>
+    <string name="log_out">Log out</string>
+    <string name="log_in">Log in</string>
+    <string name="contact_uses_unverified_keys">Your contact uses unverified devices. Scan their QR Code to perform verification and impede active MITM attacks.</string>
+    <string name="unverified_devices">You are using unverified devices. Scan the QR Code on your other devices to perform verification and impede active MITM attacks.</string>
+    <string name="report_spam">Report spam</string>
+    <string name="report_spam_and_block">Report spam and block spammer</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="contact_list_integration_not_available">Contact list integration is not available</string>
 </resources>

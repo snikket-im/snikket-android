@@ -1,0 +1,1 @@
+* Stöd för XMPP-uri-parametrarna ?register och ?register;preauth

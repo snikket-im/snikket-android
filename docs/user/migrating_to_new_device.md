@@ -22,12 +22,11 @@ This tutorial explains how you can transfer your Conversations data from an old 
 ## 3. Import the backup (new device)
 1. Install Conversations on your new device.
 2. Open Conversations for the first time.
-3. Tap on "Use other server"
-4. Tap on the three dot menu in the upper right corner and tap on "Import backup"
-5. If your backup files are not listed, tap on the cloud symbol in the upper right corner to choose the files from the where you saved them.
-6. Enter your account password to decrypt the backup.
-7. Remember to activate your account (head back to "manage accounts", see step 1.2).
-8. Check if chats work.
+3. Tap on the three dot menu in the upper right corner and tap on "Import backup"
+4. If your backup files are not listed, tap on the cloud symbol in the upper right corner to choose the files from where you saved them.
+5. Enter your account password to decrypt the backup.
+6. Remember to activate your account (head back to "manage accounts", see step 1.2).
+7. Check if chats work.
 
 Once confirmed that the new device is running fine you can just uninstall the app from the old device.
 

@@ -2,6 +2,7 @@ package eu.siacs.conversations.xml;
 
 public final class Namespace {
     public static final String STREAMS = "http://etherx.jabber.org/streams";
+    public static final String JABBER_CLIENT = "jabber:client";
     public static final String DISCO_ITEMS = "http://jabber.org/protocol/disco#items";
     public static final String DISCO_INFO = "http://jabber.org/protocol/disco#info";
     public static final String EXTERNAL_SERVICE_DISCOVERY = "urn:xmpp:extdisco:2";
@@ -46,7 +47,11 @@ public final class Namespace {
     public static final String JINGLE_TRANSPORTS_S5B = "urn:xmpp:jingle:transports:s5b:1";
     public static final String JINGLE_TRANSPORTS_IBB = "urn:xmpp:jingle:transports:ibb:1";
     public static final String JINGLE_TRANSPORT_ICE_UDP = "urn:xmpp:jingle:transports:ice-udp:1";
+    public static final String JINGLE_TRANSPORT_WEBRTC_DATA_CHANNEL = "urn:xmpp:jingle:transports:webrtc-datachannel:1";
+    public static final String JINGLE_TRANSPORT = "urn:xmpp:jingle:transports:dtls-sctp:1";
     public static final String JINGLE_APPS_RTP = "urn:xmpp:jingle:apps:rtp:1";
+
+    public static final String JINGLE_APPS_FILE_TRANSFER = "urn:xmpp:jingle:apps:file-transfer:5";
     public static final String JINGLE_APPS_DTLS = "urn:xmpp:jingle:apps:dtls:0";
     public static final String JINGLE_APPS_GROUPING = "urn:xmpp:jingle:apps:grouping:0";
     public static final String JINGLE_FEATURE_AUDIO = "urn:xmpp:jingle:apps:rtp:audio";
@@ -59,11 +64,16 @@ public final class Namespace {
     public static final String PUSH = "urn:xmpp:push:0";
     public static final String COMMANDS = "http://jabber.org/protocol/commands";
     public static final String MUC_USER = "http://jabber.org/protocol/muc#user";
-    public static final String BOOKMARKS2 = "urn:xmpp:bookmarks:0";
+    public static final String BOOKMARKS2 = "urn:xmpp:bookmarks:1";
     public static final String BOOKMARKS2_COMPAT = BOOKMARKS2 + "#compat";
     public static final String INVITE = "urn:xmpp:invite";
     public static final String PARS = "urn:xmpp:pars:0";
     public static final String EASY_ONBOARDING_INVITE = "urn:xmpp:invite#invite";
     public static final String OMEMO_DTLS_SRTP_VERIFICATION = "http://gultsch.de/xmpp/drafts/omemo/dlts-srtp-verification";
+    public static final String JINGLE_TRANSPORT_ICE_OPTION = "http://gultsch.de/xmpp/drafts/jingle/transports/ice-udp/option";
     public static final String UNIFIED_PUSH = "http://gultsch.de/xmpp/drafts/unified-push";
+    public static final String REPORTING = "urn:xmpp:reporting:1";
+    public static final String REPORTING_REASON_SPAM = "urn:xmpp:reporting:spam";
+    public static final String SDP_OFFER_ANSWER = "urn:ietf:rfc:3264";
+    public static final String HASHES = "urn:xmpp:hashes:2";
 }

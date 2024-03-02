@@ -1,0 +1,2 @@
+* Corrección de un problema que impedía comprimir algunos vídeos.
+* Corrección de un fallo poco frecuente al abrir una notificación

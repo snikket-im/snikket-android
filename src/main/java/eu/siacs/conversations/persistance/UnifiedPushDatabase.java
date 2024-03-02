@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableList;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -127,6 +128,23 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
             }
         }
         return null;
+    }
+
+    public List<PushTarget> deletePushTargets() {
+        final SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        final ImmutableList.Builder<PushTarget> builder = new ImmutableList.Builder<>();
+        try (final Cursor cursor = sqLiteDatabase.query("push",new String[]{"application","instance"},null,null,null,null,null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                builder.add(new PushTarget(
+                        cursor.getString(cursor.getColumnIndexOrThrow("application")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("instance"))));
+            }
+        } catch (final Exception e) {
+            Log.d(Config.LOGTAG,"unable to retrieve push targets",e);
+            return builder.build();
+        }
+        sqLiteDatabase.delete("push",null,null);
+        return builder.build();
     }
 
     public boolean hasEndpoints(final UnifiedPushBroker.Transport transport) {

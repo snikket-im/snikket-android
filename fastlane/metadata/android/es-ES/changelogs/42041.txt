@@ -1,0 +1,5 @@
+* Implementación del perfil SASL extensible, Bind 2.0 y Fast para reconexiones más rápidas.
+* Implementación de Channel Binding
+* Añadir la posibilidad de cambiar de llamada de audio a videollamada
+* Añadir la posibilidad de eliminar el propio avatar
+* Notificación de llamadas perdidas

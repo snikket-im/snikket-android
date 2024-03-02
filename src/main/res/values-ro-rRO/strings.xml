@@ -187,8 +187,7 @@
     <string name="unpublish_pgp_message">Sigur doriți să vă ștergeți cheia publică OpenPGP din mesajele de prezență?\nContactele dumneavoastră nu vor mai putea să vă trimită mesaje criptate cu OpenPGP.</string>
     <string name="openpgp_has_been_published">Cheia publică OpenPGP a fost publicată.</string>
     <string name="mgmt_account_enable">Activează cont</string>
-    <string name="mgmt_account_are_you_sure">Sigur doriți asta?</string>
-    <string name="mgmt_account_delete_confirm_text">Dacă vă ștergeți contul, întregul istoric de conversații va fi pierdut</string>
+    <string name="mgmt_account_delete_confirm_text">Sigur doriți să vă ștergeți contul\? Dacă vă ștergeți contul, întregul istoric de conversații va fi pierdut</string>
     <string name="attach_record_voice">Înregistrare voce</string>
     <string name="account_settings_jabber_id">Adresă XMPP</string>
     <string name="block_jabber_id">Blochează adresă XMPP</string>
@@ -230,7 +229,6 @@
     <string name="fetching_keys">Se preiau cheile…</string>
     <string name="done">Gata</string>
     <string name="decrypt">Decriptează</string>
-    <string name="bookmarks">Semne de carte</string>
     <string name="search">Caută</string>
     <string name="enter_contact">Introduceți contact</string>
     <string name="delete_contact">Șterge contact</string>
@@ -325,8 +323,8 @@
     <string name="jabber_id_copied_to_clipboard">Adresă XMPP copiată în memorie</string>
     <string name="error_message_copied_to_clipboard">Mesaj de eroare copiat în memorie</string>
     <string name="web_address">adresă web</string>
-    <string name="scan_qr_code">Scanează cod de bare 2D</string>
-    <string name="show_qr_code">Arată cod de bare 2D</string>
+    <string name="scan_qr_code">Scanează cod QR</string>
+    <string name="show_qr_code">Arată cod QR</string>
     <string name="show_block_list">Listă contacte blocate</string>
     <string name="account_details">Detalii cont</string>
     <string name="confirm">Confirmă</string>
@@ -463,7 +461,6 @@
     <string name="recently_used">Folosită recent</string>
     <string name="choose_quick_action">Alegeți acțiunea rapidă</string>
     <string name="search_contacts">Caută contacte</string>
-    <string name="search_bookmarks">Caută semne de carte</string>
     <string name="send_private_message">Trimite mesaj privat</string>
     <string name="user_has_left_conference">%1$s a părăsit discuția de grup</string>
     <string name="username">Nume utilizator</string>
@@ -528,7 +525,6 @@
 \nAșa v-a afișa numele lor complete și avatarele.
 \n
 \n%1$s va citi și potrivi local fără a fi încărcate pe serverul dumneavoastră.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy are nevoie să poată accesa numerele de telefon ale contactelor dumneavoastră pentru a putea sugera posibile contacte ce sunt deja pe Quicksy.<br><br>Nu vom stoca o copie a acestor numere the telefon.\n\nPentru mai multe informații puteți citii <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.<br><br>Urmează să fiți întrebați dacă doriți să permiteți accesul la contacte.]]></string>
     <string name="notify_on_all_messages">Notifică la toate mesajele</string>
     <string name="notify_only_when_highlighted">Notifică doar atunci când cineva vă menționează numele</string>
     <string name="notify_never">Notificări dezactivate</string>
@@ -549,12 +545,11 @@
     <string name="this_field_is_required">Acest câmp este obligatoriu</string>
     <string name="correct_message">Corecție mesaj</string>
     <string name="send_corrected_message">Trimite text corectat</string>
-    <string name="no_keys_just_confirm">Ați validat deja amprenta acestei persoane într-un mod securizat pentru a confirma încrederea. Selectând \'Gata\' doar confirmați că %s ia parte la această discuție de grup.</string>
+    <string name="no_keys_just_confirm">Ați avut deja încredere în amprenta acestei persoane. Selectând \'Gata\' doar confirmați că %s ia parte la această discuție de grup.</string>
     <string name="this_account_is_disabled">Ați dezactivat acest cont</string>
     <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fișier invalid!</string>
     <string name="no_application_to_share_uri">Nu s-a găsit nici o aplicație care să partajeze adresa</string>
     <string name="share_uri_with">Partajează adresa cu…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy este o versiune a popularului client XMPP Conversations cu descoperire automată a contactelor.<br><br>Vă înscrieți cu numărul de telefon și Quicksy—pe baza numerelor de telefon din agenda dumneavoastră—vă va sugera automat posibile contacte.<br><br>Înscriindu-vă sunteți de acord cu <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.]]></string>
     <string name="agree_and_continue">Sunt de acord și continuă</string>
     <string name="magic_create_text">Ghidul va configura un cont pe conversations.im.
 \nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
@@ -632,7 +627,7 @@
     <string name="pref_blind_trust_before_verification_summary">Ai încredere în toate dispozitivele noi ale contactelor care nu au fost verificate anterior, dar cere confirmarea manuală pentru dispozitivele noi ale contactelor verificate.</string>
     <string name="blindly_trusted_omemo_keys">Încredere oarbă în aceste chei OMEMO, aceasta înseamnă că ar putea fi altcineva sau cineva și-a strecurat propriile chei.</string>
     <string name="not_trusted">De neîncredere</string>
-    <string name="invalid_barcode">Cod de bare 2D invalid</string>
+    <string name="invalid_barcode">Cod QR invalid</string>
     <string name="pref_clean_cache_summary">Curățare dosar temporar (folosit de aplicația cameră foto)</string>
     <string name="pref_clean_cache">Curăța memoria temporară</string>
     <string name="pref_clean_private_storage">Curăță stocarea privată</string>
@@ -900,7 +895,6 @@
     <string name="discover_channels">Descoperă canale publice</string>
     <string name="search_channels">Caută canale publice</string>
     <string name="channel_discovery_opt_in_title">Posibilă încălcare a intimității!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Descoperirea de canale publice folosește un serviciu terț numit <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți <a href="https://search.jabber.network/privacy">Politica de confidențialitate</a> a serviciului.]]></string>
     <string name="i_already_have_an_account">Eu am deja un cont</string>
     <string name="add_existing_account">Adaugă un cont existent</string>
     <string name="register_new_account">Înregistrează un cont nou</string>
@@ -952,10 +946,8 @@
     <string name="reconnecting_video_call">Reconectare apel video</string>
     <string name="disable_tor_to_make_call">Dezactivați Tor pentru a face apeluri</string>
     <string name="incoming_call">Apel primit</string>
-    <string name="incoming_call_duration">Apel primit · %s</string>
     <string name="missed_call_timestamp">Apel pierdut · %s</string>
     <string name="outgoing_call">Apel efectuat</string>
-    <string name="outgoing_call_duration">Apel efectuat · %s</string>
     <string name="missed_call">Apel pierdut</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d apel pierdut de la %2$s</item>
@@ -1029,4 +1021,29 @@
     <string name="no_account_deactivated">Nici unul (dezactivat)</string>
     <string name="unified_push_distributor">Distribuitor UnifiedPush</string>
     <string name="pref_up_push_account_summary">Contul prin care vor fi primite notificările push.</string>
+    <string name="decline">Refuză</string>
+    <string name="incoming_call_duration_timestamp">Apel primit (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">Apel efectuat (%s) · %s</string>
+    <string name="outgoing_call_timestamp">Apel efectuat · %s</string>
+    <string name="could_not_delete_account_from_server">Nu s-a putut șterge contul de pe server</string>
+    <string name="delete_from_server">Șterge contul de pe server</string>
+    <string name="group_chats">Discuții de grup</string>
+    <string name="channel_discover_opt_in_message">Descoperirea de canale publice folosește un serviciu terț numit &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți &lt;a href=https://search.jabber.network/privacy&gt;Politica de confidențialitate&lt;/a&gt; a serviciului.</string>
+    <string name="save_as_group_chat">Salvare ca discuție de grup</string>
+    <string name="search_group_chats">Caută discuții de grup</string>
+    <string name="restore_warning_continued">Nu încercați să restaurați copii de rezervă pe care nu le-ați creat personal!</string>
+    <string name="outdated_backup_file_format">Încercați să importați un fișier copie de rezervă format vechi</string>
+    <string name="audiobook">Carte audio</string>
+    <string name="reconnect_on_other_host">Reconectat pe altă gazdă</string>
+    <string name="this_account_is_logged_out">V-ați deconectat de la acest cont</string>
+    <string name="log_in">Conectați-vă</string>
+    <string name="hide_notification">Ascunde notificare</string>
+    <string name="contact_uses_unverified_keys">Persoana de contact utilizează dispozitive neverificate. Scanați codul QR al acestora pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
+    <string name="log_out">Deconectare</string>
+    <string name="account_state_logged_out">Deconectat</string>
+    <string name="unverified_devices">Folosiți dispozitive neverificate. Scanați codul QR pe celelalte dispozitive pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
+    <string name="report_spam_and_block">Raportează spam și blochează spamerul</string>
+    <string name="report_spam">Raportează spam</string>
+    <string name="welcome_header_quicksy">Bine ați venit la Quicksy!</string>
+    <string name="quicksy_wants_your_consent">Quicksy vă solicită consimțământul pentru a utiliza datele dumneavoastră</string>
 </resources>

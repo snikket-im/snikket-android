@@ -150,7 +150,6 @@
     <string name="mgmt_account_publish_pgp">أنشر المفتاح العمومي OpenPGP</string>
     <string name="unpublish_pgp">حذف مفتاح OpenPGP العمومي</string>
     <string name="mgmt_account_enable">تفعيل الحساب</string>
-    <string name="mgmt_account_are_you_sure">هل أنت متأكد ؟</string>
     <string name="attach_record_voice">تسجيل صوت</string>
     <string name="account_settings_jabber_id">عنوان XMPP</string>
     <string name="block_jabber_id">احجب عنوان XMPP</string>
@@ -183,7 +182,6 @@
     <string name="fetching_keys">جارإحضار المفاتيح ...</string>
     <string name="done">تم</string>
     <string name="decrypt">فك الشيفرة</string>
-    <string name="bookmarks">الفواصل المرجعية</string>
     <string name="search">بحث</string>
     <string name="enter_contact">قم بإدخال جهة إتصال</string>
     <string name="delete_contact">حذف جهة الإتصال</string>
@@ -359,7 +357,6 @@
     <string name="recently_used">التي تم استعمالها كثيرا مؤخرا</string>
     <string name="choose_quick_action">إختر حركة سريعة</string>
     <string name="search_contacts">البحث في جهات الإتصال</string>
-    <string name="search_bookmarks">البحث في الفواصل المرجعية</string>
     <string name="send_private_message">إبعث برسالة على الخاص</string>
     <string name="username">إسم المستخدم</string>
     <string name="username_hint">إسم المستخدم</string>
@@ -624,7 +621,7 @@
     <string name="ebook">كتاب إلكتروني</string>
     <string name="video_original">أصلي (غير مضغوط)</string>
     <string name="open_with">إفتح بـ...</string>
-    <string name="set_profile_picture">صورة حساب كونفرسايشنز</string>
+    <string name="set_profile_picture">صورة حساب Conversations</string>
     <string name="choose_account">إختيار الحساب</string>
     <string name="restore_backup">استرجِع نسخة احتياطية</string>
     <string name="restore">استرجِع</string>
@@ -655,4 +652,23 @@
     <string name="please_enter_password">يرجى إدخال الكلمة السرية للحساب</string>
     <string name="rtp_state_declined_or_busy">مشغول</string>
     <string name="more_options">خيارات أخرى</string>
-    </resources>
+    <string name="also_end_conversation">قم بإنهاء هذه المحادثة بعد ذلك</string>
+    <string name="huawei_protected_apps_summary">للمواصلة في إستقبال التنبيهات، حتى والشاشة مغلقة، يجب عليك أن تضيف تطبيق Conversations إلى قائمة التطبيقات المحميّة.</string>
+    <string name="account_status_regis_not_sup">إنشاء الحسابات غير مدعومة مِن طرف الخادم</string>
+    <string name="error_publish_avatar_no_server_support">خادمك لا يدعم نشر الصور الرمزية</string>
+    <string name="server_info_external_service_discovery">XEP-0215: استكشاف خدمة خارجية</string>
+    <string name="group_chats">محادثات جماعية</string>
+    <string name="pref_never_send_crash_summary">عبر إرسال أثار الأخطاء تقوم بالمساعدة في التطوير</string>
+    <string name="touch_to_choose_picture">اضغط على الصورة الرمزية لاختيار صورة مِن المعرض</string>
+    <string name="pref_call_ringtone_summary">نغمة المكالمات الواردة</string>
+    <string name="touch_to_fix">اضغط لإدارة حساباتك</string>
+    <string name="openpgp_error">لقد أَبلَغَ OpenKeychain عند حدوث خطأ.</string>
+    <string name="openpgp_has_been_published">تم نشر مفتاح OpenPGP العمومي.</string>
+    <string name="pref_prevent_screenshots">منع أخذ لقطات للشاشة</string>
+    <string name="last_seen_day">آخِر ظهور البارحة</string>
+    <string name="last_seen_hour">آخر ظهور منذ ساعة</string>
+    <string name="save_as_group_chat">احفظه كمحادثة جماعية</string>
+    <string name="account_status_regis_invalid_token">رمز التسجيل غير صالح</string>
+    <string name="bad_key_for_encryption">مفتاح تعمية خاطئ.</string>
+    <string name="invalid_jid">هذا ليس عنوان XMPP صالح</string>
+</resources>

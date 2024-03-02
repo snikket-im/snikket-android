@@ -1,0 +1,3 @@
+* Mover el icono de llamada a la izquierda para mantener otros iconos de la barra de herramientas en un lugar coherente.
+* Mostrar la duración de la llamada durante las llamadas de audio
+* Desempate en las llamadas A/V (dos personas que se llaman al mismo tiempo)

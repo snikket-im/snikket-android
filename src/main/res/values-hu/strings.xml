@@ -184,7 +184,6 @@
     <string name="unpublish_pgp_message">Biztosan el szeretné távolítani az OpenPGP nyilvános kulcsát a jelenléti közleményéből?\nA partnerei többé nem lesznek képesek OpenPGP titkosítású üzeneteket küldeni Önnek.</string>
     <string name="openpgp_has_been_published">Az OpenPGP nyilvános kulcs közzé lett téve.</string>
     <string name="mgmt_account_enable">Fiók engedélyezése</string>
-    <string name="mgmt_account_are_you_sure">Biztos benne?</string>
     <string name="mgmt_account_delete_confirm_text">A fiók törlésével az összes beszélgetési előzményei is eltávolításra kerülnek</string>
     <string name="attach_record_voice">Hang rögzítése</string>
     <string name="account_settings_jabber_id">XMPP-cím</string>
@@ -225,7 +224,6 @@
     <string name="fetching_keys">Kulcsok lekérése…</string>
     <string name="done">Kész</string>
     <string name="decrypt">Visszafejtés</string>
-    <string name="bookmarks">Könyvjelzők</string>
     <string name="search">Keresés</string>
     <string name="enter_contact">Partner megadása</string>
     <string name="delete_contact">Partner törlése</string>
@@ -444,7 +442,6 @@
     <string name="recently_used">Legutóbb használt</string>
     <string name="choose_quick_action">Gyors művelet kiválasztása</string>
     <string name="search_contacts">Partnerek keresése</string>
-    <string name="search_bookmarks">Könyvjelzők keresése</string>
     <string name="send_private_message">Személyes üzenet küldése</string>
     <string name="user_has_left_conference">%1$s elhagyta a csoportos csevegést</string>
     <string name="username">Felhasználónév</string>
@@ -497,7 +494,6 @@
     <string name="shared_images_with_x">%s partnerrel megosztott képek</string>
     <string name="shared_text_with_x">%s partnerrel megosztott szöveg</string>
     <string name="sync_with_contacts">Szinkronizálás a partnerekkel</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[A Quicksy alkalmazásnak hozzáférés szükséges a partnerei telefonszámához, hogy javaslatokat tegyen a lehetséges partnerekről, akik már csatlakoztak a Quicksy-hez.<br><br>A telefonszámok másolatát nem fogjuk eltárolni.\n\nTovábbi információkért olvassa el az <a href="https://quicksy.im/#privacy">adatvédelmi irányelveinket</a>.<br><br>Most arra fogják kérni, hogy adjon jogosultságot a névjegyek eléréséhez.]]></string>
     <string name="notify_on_all_messages">Értesítés az összes üzenetről</string>
     <string name="notify_only_when_highlighted">Csak akkor értesítsen, ha megemlítik</string>
     <string name="notify_never">Értesítések letiltva</string>
@@ -517,7 +513,6 @@
     <string name="security_error_invalid_file_access">Biztonsági hiba: érvénytelen fájlhozzáférés</string>
     <string name="no_application_to_share_uri">Nem található alkalmazás az URI megosztásához</string>
     <string name="share_uri_with">URI megosztása ezzel…</string>
-    <string name="welcome_text_quicksy"><![CDATA[A Quicksy a népszerű Conversations XMPP kliens mellékhajtása automatikus partnerfelfedezéssel.<br><br>Regisztráljon a telefonszámával, és a Quicksy automatikusan – a címjegyzékében szereplő telefonszámok alapján – javaslatot tesz a lehetséges partnerekre.<br><br>A regisztrációval elfogadja az<a href="https://quicksy.im/#privacy">adatvédelmi irányelveinket</a>.]]></string>
     <string name="agree_and_continue">Elfogadás és folytatás</string>
     <string name="your_full_jid_will_be">A teljes XMPP-címe ez lesz: %s</string>
     <string name="create_account">Fiók létrehozása</string>
@@ -839,7 +834,6 @@
     <string name="discover_channels">Csatornák felderítése</string>
     <string name="search_channels">Csatornák keresése</string>
     <string name="channel_discovery_opt_in_title">Magánélet lehetséges megsértése!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[A csatornafelderítés a <a href="https://search.jabber.network">search.jabber.network</a> nevű, harmadik féltől származó szolgáltatást használja.<br><br>A funkció használata elküldi az IP-címét és a keresési kifejezést annak a szolgáltatásnak. További információkért nézze meg az <a href="https://search.jabber.network/privacy">adatvédelmi irányelveiket</a>.]]></string>
     <string name="i_already_have_an_account">Már van fiókom</string>
     <string name="add_existing_account">Meglévő fiók hozzáadása</string>
     <string name="register_new_account">Új fiók regisztrálása</string>
@@ -884,9 +878,7 @@
     <string name="ongoing_video_call">Kimenő videohívás</string>
     <string name="disable_tor_to_make_call">Tor letiltása a hívások indításához</string>
     <string name="incoming_call">Bejövő hívás</string>
-    <string name="incoming_call_duration">Bejövő hívás · %s</string>
     <string name="outgoing_call">Kimenő hívás</string>
-    <string name="outgoing_call_duration">Kimenő hívás · %s</string>
     <string name="missed_call">Nem fogadott hívás</string>
     <string name="audio_call">Hanghívás</string>
     <string name="video_call">Videohívás</string>
