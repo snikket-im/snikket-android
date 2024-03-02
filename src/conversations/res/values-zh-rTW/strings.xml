@@ -3,14 +3,18 @@
     <string name="pick_a_server">挑選您的 XMPP 提供者</string>
     <string name="use_conversations.im">使用 conversations.im</string>
     <string name="create_new_account">建立新帳戶</string>
-    <string name="do_you_have_an_account">您已經擁有一個 XMPP 賬戶嗎？如果您之前使用過其他 XMPP 客戶端或 Conversations 的話，那麼您已經擁有 XMPP 賬戶了。如果沒有賬戶的話，您可以現在建立一個。\n提示：有些電子郵件服務供應商也會提供 XMPP 賬戶。</string>
-    <string name="server_select_text">XMPP 是提供者無關的即時訊息網絡。 任何你選擇的 XMPP 伺服器都可在此客戶端上使用。\n不過，我們令它在 Coversations.im 中建立帳戶變得更方便； Conversations.im 是特別適合 Conversations 的提供者</string>
-    <string name="magic_create_text_on_x">你已受邀參加 %1$s 。 我們將指導你完成建立帳戶的過程。選擇 %1$s 作爲提供者後，你可以將你完整的 XMPP 地址交給使用其他提供者的用戶，你便能與他們交流。</string>
-    <string name="magic_create_text_fixed">您已被邀請參加 %1$s 。 我們已經爲你選擇了一個用戶名。 我們將指導你完成建立帳戶的過程。\n將你完整的 XMPP 地址交給使用其他提供者的用戶後，你便能與他們交流。</string>
+    <string name="do_you_have_an_account">您已經擁有一個 XMPP 帳戶了嗎？如果您之前使用過其他 XMPP 用戶端或 Conversations 的話，那麼您已經擁有 XMPP 帳戶了。若沒有，您現在就建立一個新的 XMPP 帳戶。
+\n提示：部分電子郵件提供者也會提供 XMPP 帳戶。</string>
+    <string name="server_select_text">XMPP 是提供者無關的即時訊息網路。任何您選擇的 XMPP 伺服器都可在此用戶端上使用。
+\n不過，我們令它在 Coversations.im 中建立帳戶變得更方便；conversations.im 是特別適合 Conversations 的提供者。</string>
+    <string name="magic_create_text_on_x">你已受邀參加 %1$s 。我們將指引您完成建立帳戶的過程。
+\n選擇 %1$s 作為提供者後，您可以將您完整的 XMPP 位址交給使用其他提供者的使用者，以便能與他們進行交流。</string>
+    <string name="magic_create_text_fixed">你已受邀參加 %1$s 。我們已經為您挑選了一個使用者名稱。我們將指引您完成建立帳戶的過程。
+\n您可以將您完整的 XMPP 位址交給使用其他提供者的使用者，以便能與他們進行交流。</string>
     <string name="your_server_invitation">您的伺服器邀請</string>
-    <string name="improperly_formatted_provisioning">配置代碼格式不正確</string>
-    <string name="tap_share_button_send_invite">輕觸分享按鍵向您的聯絡人發送加入 %1$s 的邀請。</string>
-    <string name="if_contact_is_nearby_use_qr">如果你的聯絡人就在附近，他們也可以掃描下面的代碼來接受你的邀請。</string>
-    <string name="easy_invite_share_text">加入 %1$s 和我聊天：%2$s</string>
-    <string name="share_invite_with">分享邀請到...</string>
+    <string name="improperly_formatted_provisioning">佈建代碼格式不正確</string>
+    <string name="tap_share_button_send_invite">輕觸分享按鍵以向您的聯絡人傳送加入 %1$s 的邀請。</string>
+    <string name="if_contact_is_nearby_use_qr">如果您的聯絡人就在附近，他們也可以掃描下面的代碼以接受您的邀請。</string>
+    <string name="easy_invite_share_text">加入 %1$s 與我聊天：%2$s</string>
+    <string name="share_invite_with">分享邀請至…</string>
 </resources>

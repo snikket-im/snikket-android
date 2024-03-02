@@ -1,0 +1,1 @@
+* Aumentar el radio de las esquinas en las fotos de perfil

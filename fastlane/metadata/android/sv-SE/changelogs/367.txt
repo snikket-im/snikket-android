@@ -1,0 +1,2 @@
+* Fix för avatar-val på vissa Android 10-enheter
+* Fix för överföring av större filer

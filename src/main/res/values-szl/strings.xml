@@ -198,7 +198,6 @@
 \nTwoje kōntakty niy bydōm już mogły wysyłać ci wiadōmości zaszyfrowanych OpenPGP.</string>
     <string name="openpgp_has_been_published">Klucz publiczny OpenPGP ôstoł ôpublikowany.</string>
     <string name="mgmt_account_enable">Włōncz kōnto</string>
-    <string name="mgmt_account_are_you_sure">Na zicher\?</string>
     <string name="mgmt_account_delete_confirm_text">Wymazanie kōnta wymazuje cołko historyjo godek</string>
     <string name="attach_record_voice">Nagrej głos</string>
     <string name="account_settings_jabber_id">Adresa XMPP</string>
@@ -241,7 +240,6 @@
     <string name="fetching_keys">Pobiyranie kluczy…</string>
     <string name="done">Skōńczōno</string>
     <string name="decrypt">Ôdszyfruj</string>
-    <string name="bookmarks">Zokłodki</string>
     <string name="search">Szukej</string>
     <string name="enter_contact">Wpisz kōntakt</string>
     <string name="delete_contact">Wymaż kōntakt</string>
@@ -478,7 +476,6 @@
     <string name="recently_used">Ôstatnio używano</string>
     <string name="choose_quick_action">Ôbier gibko akcyjo</string>
     <string name="search_contacts">Przeszukej kōntakty</string>
-    <string name="search_bookmarks">Przeszukej zokłodki</string>
     <string name="send_private_message">Wyślij wiadōmość prywatno</string>
     <string name="user_has_left_conference">%1$s już niy je we kōnferyncyji</string>
     <string name="username">Miano ôd używocza</string>
@@ -543,9 +540,6 @@
 \nTo pokoże jejich połne miana i awatary.
 \n
 \n%1$s ino przeczyto twoje kōntakty i dopasuje je lokalnie, bez wysyłanio na twōj serwer.</string>
-    <string name="sync_with_contacts_quicksy">Quicksy potrzebuje dostympu do numerōw telefōnōw twojich kōntaktōw, coby zasugerować ci kōntakty, co już używajōm Quicksy. &lt;br&gt;&lt;br&gt;Niy trzimiymy kopiji tych numerōw.
-\n
-\nAby dostać wiyncyj informacyje przeczytej naszo polityka prywatności&lt;/a&gt;. &lt;br&gt;&lt;br&gt;Teroz pojawi sie prośba ô zwōlo na dostymp do twojich kōntaktōw.</string>
     <string name="notify_on_all_messages">Powiadōm ô wszyskich wiadōmościach</string>
     <string name="notify_only_when_highlighted">Powiadōmiej ino w przipodku spōmniynio ô mie</string>
     <string name="notify_never">Powiadōmiynia zastawiōne</string>
@@ -571,7 +565,6 @@
     <string name="security_error_invalid_file_access">Feler bezpieczyństwa: niynoleżny dostymp do zbioru!</string>
     <string name="no_application_to_share_uri">Niy szło znojś aplikacyje do udostympniynio URI</string>
     <string name="share_uri_with">Udostympnij URI ze pōmocōm…</string>
-    <string name="welcome_text_quicksy">Quicksy to modyfikacyjo popularnego klijynta XMPP Conversations, z autōmatycznym wykrywaniym kōntaktōw.&lt;br&gt;&lt;br&gt;Zapisujesz sie przi użyciu numeru telefōnu i Quicksy autōmatycznie — podle numerōw telefōnōw we adresowyj ksiōnżce — zasugeruje potyncjalne kōntakty dlo ciebie.&lt;br&gt;&lt;br&gt;Bez zapisanie sie zgodzosz sie na naszo &lt;a href=https://quicksy.im/#privacy&gt;polityka prywatności&lt;/a&gt;.</string>
     <string name="agree_and_continue">Zgodzōm sie, kōntynuuj</string>
     <string name="magic_create_text">Pokludzymy cie bez proces tworzynio kōnta na conversations.im.¹
 \nKej ôbieresz conversations.im za liferanta, to poradzisz kōmunikować sie ze używoczami inkszych liferantōw, jeźli podosz im swoja połno adresa XMPP.</string>
@@ -919,7 +912,6 @@
     <string name="discover_channels">Ôdkryj kanały</string>
     <string name="search_channels">Wyszukej kanał</string>
     <string name="channel_discovery_opt_in_title">Możliwe naruszynie prywatności!</string>
-    <string name="channel_discover_opt_in_message">Ôdkrywanie kanałōw używo usugi trzecij fiyrmy &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;. &lt;br&gt;&lt;br&gt;Użycie tyj funkcyje prześle dō nij twoja adresa IP jak tyż kryteria wyszukowanio. Wejzdrzij na &lt;a href=https://search.jabber.network/privacy&gt;Polityka Prywatności&lt;/a&gt;, coby dostać wiyncyj informacyji.</string>
     <string name="i_already_have_an_account">Już mōm kōnto</string>
     <string name="add_existing_account">Przidej kōnto, co juz istniyje</string>
     <string name="register_new_account">Zaregistruj nowe kōnto</string>
@@ -969,10 +961,8 @@
     <string name="reconnecting_video_call">Łōnczynie zaś</string>
     <string name="disable_tor_to_make_call">Zastow Tor coby zwōnić</string>
     <string name="incoming_call">Połōnczynie przichodzōnce</string>
-    <string name="incoming_call_duration">Połōnczynie przichodzōnce · %s</string>
     <string name="missed_call_timestamp">Niyôdebrane · %s</string>
     <string name="outgoing_call">Połōnczynie wychodzōnce</string>
-    <string name="outgoing_call_duration">Połōnczynie wychodzōnce · %s</string>
     <string name="missed_call">Niyôdebrane połōnczynie</string>
     <string name="audio_call">Połōnczynie audio</string>
     <string name="video_call">Połōnczynie wideo</string>

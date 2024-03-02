@@ -1,0 +1,1 @@
+* Disattiva l'apertura dei file di backup (.ceb) dal file manager

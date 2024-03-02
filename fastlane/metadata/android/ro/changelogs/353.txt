@@ -1,0 +1,4 @@
+* utilizatorii pot să își seteze propria poreclă
+* continuarea descărcării de fișiere criptate OMEMO
+* Canalele folosesc '#' ca simbol în avatar
+* Quicksy folosește 'mereu' ca și criptare implicită OMEMO (ascunde iconița lacăt)

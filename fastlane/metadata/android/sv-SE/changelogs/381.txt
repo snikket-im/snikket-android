@@ -1,0 +1,2 @@
+* Ljudsignaler för ljudsamtal (uppringning, samtal startat och samtal avslutat)
+* Fix för problem med återuppringning vid misslyckat videosamtal

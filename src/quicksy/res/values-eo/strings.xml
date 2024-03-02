@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="huawei_protected_apps_summary">Por daŭre ricevi sciigojn, eĉ kiam la ekrano estas malŝaltita, vi devas aldoni Quicksy al la listo de protektitaj programoj.</string>
+    <string name="pref_never_send_crash_summary">Sendante stakspurojn vi helpas la daŭran disvolviĝon de Quicksy</string>
+    <string name="unable_to_verify_server_identity">Ne eblas kontroli servilan identecon.</string>
+    <string name="unknown_security_error">Nekonata sekureca eraro.</string>
+    <string name="timeout_while_connecting_to_server">Eltempiĝo dum konektante al servilo.</string>
+    <string name="not_available_in_your_country">Quicksy ne haveblas en via lando.</string>
+    <string name="set_profile_picture">Quicksy profilbildo</string>
+    <string name="pref_notification_grace_period_summary">La tempodaŭro Quicksy silentas post vidado de agado sur alia aparato</string>
+    <string name="pref_broadcast_last_activity_summary">Sciigi ĉiujn viajn kontaktojn kiam vi uzas Quicksy</string>
+</resources>

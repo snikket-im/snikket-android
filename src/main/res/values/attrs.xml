@@ -70,6 +70,7 @@
     <attr name="media_preview_tour" format="reference" />
     <attr name="media_preview_contact" format="reference" />
     <attr name="media_preview_app" format="reference" />
+    <attr name="media_preview_audiobook" format="reference" />
     <attr name="media_preview_calendar" format="reference" />
     <attr name="media_preview_archive" format="reference" />
     <attr name="media_preview_ebook" format="reference" />
@@ -80,7 +81,7 @@
     <attr name="icon_add_group" format="reference" />
     <attr name="icon_add_person" format="reference" />
     <attr name="icon_cancel" format="reference" />
-    <attr name="icon_copy" format="reference" />
+    <attr name="icon_qr_code" format="reference" />
     <attr name="icon_discard" format="reference" />
     <attr name="icon_download" format="reference" />
     <attr name="icon_edit" format="reference" />

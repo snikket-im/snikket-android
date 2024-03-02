@@ -117,4 +117,14 @@ public enum ChannelBinding {
                 throw new AssertionError("Missing short name for " + channelBinding);
         }
     }
+
+    public static int priority(final ChannelBinding channelBinding) {
+        if (Arrays.asList(TLS_EXPORTER,TLS_UNIQUE).contains(channelBinding)) {
+            return 2;
+        } else if (channelBinding == ChannelBinding.TLS_SERVER_END_POINT) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

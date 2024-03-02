@@ -1,0 +1,1 @@
+* Desactivar la apertura de archivos de copia de seguridad (.ceb) desde el gestor de archivos

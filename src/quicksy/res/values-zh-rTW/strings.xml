@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_notification_grace_period_summary">發現在其它設備上的活動後，Quicksy 保持安靜的時間</string>
-    <string name="pref_never_send_crash_summary">發送堆疊跟蹤説明以幫助 Quicksy 持續開發</string>
-    <string name="pref_broadcast_last_activity_summary">讓你的所有聯絡人知道你何時使用 Quicksy</string>
-    <string name="huawei_protected_apps_summary">爲了在螢幕關閉時也能收到通知，你需要將 Quicksy 加入受保護的應用程式列表。</string>
+    <string name="pref_notification_grace_period_summary">發現在其它裝置上的活動後，Quicksy 保持安靜的時間長度</string>
+    <string name="pref_never_send_crash_summary">透過傳送堆疊追蹤以協助 Quicksy 持續開發</string>
+    <string name="pref_broadcast_last_activity_summary">讓您的所有聯絡人知道你何時使用 Quicksy</string>
+    <string name="huawei_protected_apps_summary">為了在螢幕關閉時也能收到通知，您需要將 Quicksy 加入受保護的應用程式清單。</string>
     <string name="set_profile_picture">Quicksy 設定檔圖片</string>
-    <string name="not_available_in_your_country">Quicksy 在您的國家無法使用。</string>
-    <string name="unable_to_verify_server_identity">無法驗證伺服器身分。</string>
+    <string name="not_available_in_your_country">Quicksy 無法在您的國家使用。</string>
+    <string name="unable_to_verify_server_identity">無法驗證伺服器識別碼。</string>
     <string name="unknown_security_error">未知安全性錯誤。</string>
-    <string name="timeout_while_connecting_to_server">連線伺服器逾時。</string>
+    <string name="timeout_while_connecting_to_server">伺服器連線逾時。</string>
 </resources>

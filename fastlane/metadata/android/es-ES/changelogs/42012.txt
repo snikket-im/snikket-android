@@ -1,0 +1,1 @@
+* Corrección de la carga/descarga HTTP para usuarios que no confían en las CA del sistema

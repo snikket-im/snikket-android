@@ -1,0 +1,1 @@
+* Risolti i problemi di "assenza di connettività" su Android 7.1

@@ -1,0 +1,4 @@
+* Introdotta l'impostazione per esperti per eseguire la ricerca dei canali sul server locale invece che su search.jabber.network
+* Attivati i segni di spunta per la consegna in modo predefinito e rimossa l'impostazione
+* Attivato "Il pulsante di invio indica lo stato" in modo predefinito e rimossa l'impostazione
+* Spostate le impostazioni del servizio di backup e di primo piano nella schermata principale

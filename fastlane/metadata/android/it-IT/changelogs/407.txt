@@ -1,0 +1,3 @@
+* Mostra il pulsante di chiamata per i contatti offline se hanno precedentemente annunciato il supporto
+* Il pulsante Indietro non termina più la chiamata quando questa è connessa
+* Correzioni di errori

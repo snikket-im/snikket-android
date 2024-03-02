@@ -1,0 +1,3 @@
+* Support Private DNS (DNS over TLS)
+* Support themed launcher icon
+* Fix rare permission issue when sharing files on Android 11+

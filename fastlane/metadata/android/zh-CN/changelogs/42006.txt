@@ -1,0 +1,2 @@
+* 使用预先存在的 OMEMO 会话验证音频/视频通话
+* 提高与非 libwebrtc WebRTC 实现的兼容性

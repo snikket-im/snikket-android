@@ -1,0 +1,2 @@
+* Corretto il problema di alcuni video che non vengono compressi
+* Corretti rari arresti anomali all'apertura delle notifiche

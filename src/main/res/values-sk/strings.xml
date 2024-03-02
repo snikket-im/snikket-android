@@ -184,7 +184,6 @@
     <string name="mgmt_account_publish_pgp">Zverejniť OpenPGP kľúč</string>
     <string name="unpublish_pgp">Odstrániť OpenPGP  verejný kľúč</string>
     <string name="mgmt_account_enable">Povoliť účet</string>
-    <string name="mgmt_account_are_you_sure">Ste si istý?</string>
     <string name="attach_record_voice">Nahrať hlas</string>
     <string name="account_settings_jabber_id">XMPP adresa</string>
     <string name="block_jabber_id">Zablokovať adresu XMPP</string>
@@ -223,7 +222,6 @@
     <string name="fetching_keys">Načítavam kľúče...</string>
     <string name="done">Dokončený</string>
     <string name="decrypt">Dešifrovať</string>
-    <string name="bookmarks">Záložky</string>
     <string name="search">Hľadať</string>
     <string name="enter_contact">Vložiť Kontakt</string>
     <string name="delete_contact">Zmazať kontakt</string>
@@ -511,10 +509,8 @@
     <string name="ongoing_call">Prebiehajúci hovor</string>
     <string name="ongoing_video_call">Prebiehajúci video hovor</string>
     <string name="incoming_call">Prichádzajúci hovor</string>
-    <string name="incoming_call_duration">Prichádzajúci hovor - %s</string>
     <string name="missed_call_timestamp">Zmeškaný hovor - %s</string>
     <string name="outgoing_call">Odchádzajúci hovor</string>
-    <string name="outgoing_call_duration">Odchádzajúci hovor - %s</string>
     <string name="missed_call">Zmeškaný hovor</string>
     <string name="audio_call">Hlasový hovor</string>
     <string name="video_call">Video hovor</string>

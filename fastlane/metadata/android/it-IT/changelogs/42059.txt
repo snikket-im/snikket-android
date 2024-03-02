@@ -1,0 +1,2 @@
+* Aggiornato l'SDK di destinazione di nuovo alla versione 33
+* Corretti problemi sui server che supportano SASL2 senza gestione inline dei flussi

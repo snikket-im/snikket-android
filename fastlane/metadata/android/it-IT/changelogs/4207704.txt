@@ -1,0 +1,3 @@
+* Supporto per DNS Privato (DNS over TLS)
+* Supporto per icona del launcher a tema
+* Risolto un raro problema di autorizzazione durante la condivisione di file su Android 11+

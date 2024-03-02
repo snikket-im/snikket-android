@@ -1,0 +1,2 @@
+* Arranxos menores
+* Restablecida a posibilidade de chamar vía JMP e outros servizos (versión Playstore)

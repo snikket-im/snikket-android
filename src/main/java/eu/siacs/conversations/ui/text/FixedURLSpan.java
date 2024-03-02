@@ -75,9 +75,7 @@ public class FixedURLSpan extends URLSpan {
 			}
 		}
 		final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-		}
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
 		//intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
 		try {
 			context.startActivity(intent);

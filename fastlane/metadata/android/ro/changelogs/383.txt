@@ -1,0 +1,3 @@
+* Mutarea iconiței de apel către stânga pentru a ține celelalte iconițe din bara de instrumente într-un loc consistent
+* Afișarea durației apelurilor în timpul apelurilor audio
+* Ruperea egalității pentru apeluri audio/video (aceleași două persoane care se sună între ele în același timp)

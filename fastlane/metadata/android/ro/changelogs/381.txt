@@ -1,0 +1,2 @@
+* Feedback auditoriu (apelare, apel început, apel terminat) pentru apeluri vocale
+* Problemă rezolvată cu reîncercarea apelului video eșuat

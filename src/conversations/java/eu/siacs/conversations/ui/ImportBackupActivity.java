@@ -30,6 +30,7 @@ import eu.siacs.conversations.databinding.DialogEnterPasswordBinding;
 import eu.siacs.conversations.services.ImportBackupService;
 import eu.siacs.conversations.ui.adapter.BackupFileAdapter;
 import eu.siacs.conversations.ui.util.SettingsUtils;
+import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.ThemeHelper;
 
 public class ImportBackupActivity extends ActionBarActivity implements ServiceConnection, ImportBackupService.OnBackupFilesLoaded, BackupFileAdapter.OnItemClickedListener, ImportBackupService.OnBackupProcessed {
@@ -131,6 +132,8 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
         try {
             final ImportBackupService.BackupFile backupFile = ImportBackupService.BackupFile.read(this, uri);
             showEnterPasswordDialog(backupFile, finishOnCancel);
+        } catch (final BackupFileHeader.OutdatedBackupFileVersion e) {
+            Snackbar.make(binding.coordinator, R.string.outdated_backup_file_format, Snackbar.LENGTH_LONG).show();
         } catch (final IOException | IllegalArgumentException e) {
             Log.d(Config.LOGTAG, "unable to open backup file " + uri, e);
             Snackbar.make(binding.coordinator, R.string.not_a_backup_file, Snackbar.LENGTH_LONG).show();

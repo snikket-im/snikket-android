@@ -1,0 +1,2 @@
+* Corrette le notifiche che non vengono visualizzate in determinate condizioni
+* Corretti i problemi di compatibilità e gli arresti anomali relativi alle chiamate A/V

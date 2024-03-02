@@ -173,7 +173,6 @@
     <string name="unpublish_pgp_message">Yakin ingin menghapus kunci publik OpenPGP Anda dari pengumuman kehadiran?\nKontak Anda tidak lagi dapat mengirimi Anda pesan terenkripsi OpenPGP.</string>
     <string name="openpgp_has_been_published">Kunci publik OpenPGP diumumkan</string>
     <string name="mgmt_account_enable">Aktifkan Akun</string>
-    <string name="mgmt_account_are_you_sure">Apakah Anda yakin.?</string>
     <string name="mgmt_account_delete_confirm_text">Menghapus akun akan menghilangkan semua riwayat percakapan</string>
     <string name="attach_record_voice">Rekam suara</string>
     <string name="account_settings_jabber_id">alamat XMPP</string>
@@ -214,7 +213,6 @@
     <string name="fetching_keys">Mengambil kunci…</string>
     <string name="done">Selesai</string>
     <string name="decrypt">Deskripsi</string>
-    <string name="bookmarks">Bookmark</string>
     <string name="search">Cari</string>
     <string name="enter_contact">Masukkan kontak</string>
     <string name="delete_contact">Hapus kontak</string>

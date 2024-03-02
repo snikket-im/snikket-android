@@ -7,7 +7,7 @@
     <string name="action_end_conversation">会話を閉じる</string>
     <string name="action_contact_details">連絡先の詳細</string>
     <string name="action_muc_details">グループチャットの詳細</string>
-    <string name="channel_details">談話室の詳細</string>
+    <string name="channel_details">チャンネルの詳細</string>
     <string name="action_add_account">アカウントを追加</string>
     <string name="action_edit_contact">名前を編集</string>
     <string name="action_add_phone_book">アドレス帳に追加</string>
@@ -34,7 +34,7 @@
     </plurals>
     <string name="sending">送信中…</string>
     <string name="message_decrypting">メッセージを復号しています。しばらくお待ちください…</string>
-    <string name="pgp_message">OpenPGP 暗号化メッセージ</string>
+    <string name="pgp_message">OpenPGPで暗号化されたメッセージ</string>
     <string name="nick_in_use">ニックネームは既に使用されています</string>
     <string name="invalid_muc_nick">このニックネームは使えません</string>
     <string name="admin">管理者</string>
@@ -42,11 +42,11 @@
     <string name="moderator">調停者</string>
     <string name="participant">参加者</string>
     <string name="visitor">訪問者</string>
-    <string name="remove_contact_text">連絡先名簿から %s を削除しますか? この連絡先との会話は削除されません。</string>
-    <string name="block_contact_text">%s からあなたに送信されるメッセージをブロックしますか?</string>
+    <string name="remove_contact_text">連絡先リストから%sを削除しますか? この連絡先との会話は削除されません。</string>
+    <string name="block_contact_text">%sからあなたに送信されるメッセージをブロックしますか？</string>
     <string name="unblock_contact_text">%s のブロックを解除し、あなたにメッセージを送信できるようにしますか?</string>
-    <string name="block_domain_text">%s からの連絡をすべてブロックしますか?</string>
-    <string name="unblock_domain_text">%s からすべての連絡先のブロックを解除しますか?</string>
+    <string name="block_domain_text">%sの連絡先をすべてブロックしますか？</string>
+    <string name="unblock_domain_text">%sのすべての連絡先のブロックを解除しますか？</string>
     <string name="contact_blocked">連絡先をブロックしました</string>
     <string name="blocked">ブロックしました</string>
     <string name="remove_bookmark_text">%s のブックマークを削除しますか? このブックマークとの会話は削除されません。</string>
@@ -68,14 +68,14 @@
     <string name="save">保存</string>
     <string name="ok">OK</string>
     <string name="crash_report_title">%1$s がクラッシュしました</string>
-    <string name="crash_report_message">あなたの XMPP アカウントを使用してスタックトレースの送信をすることで、 %1$s の継続的な開発を支援します。</string>
+    <string name="crash_report_message">あなたのXMPPアカウントを使用してスタックトレースを送信すると、 %1$sの実施中の開発の支援となります。</string>
     <string name="send_now">今すぐ送信</string>
     <string name="send_never">今後は表示しない</string>
     <string name="problem_connecting_to_account">アカウントに接続できません</string>
     <string name="problem_connecting_to_accounts">複数のアカウントに接続できません</string>
     <string name="touch_to_fix">タップしてアカウントを管理</string>
     <string name="attach_file">ファイルを添付</string>
-    <string name="not_in_roster">連絡先が連絡先名簿にありません。名簿に追加しますか?</string>
+    <string name="not_in_roster">連絡先が連絡先リストにありません。リストに追加しますか？</string>
     <string name="add_contact">連絡先を追加</string>
     <string name="send_failed">配信に失敗しました</string>
     <string name="preparing_image">送信用画像の準備中</string>
@@ -105,8 +105,10 @@
     <string name="offering">依頼中…</string>
     <string name="waiting">待機中…</string>
     <string name="no_pgp_key">OpenPGP 鍵が見つかりません</string>
-    <string name="contact_has_no_pgp_key">連絡先が公開鍵を通知しないため、あなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
-    <string name="no_pgp_keys">OpenPGP 鍵が見つかりません</string>
+    <string name="contact_has_no_pgp_key">連絡先が公開鍵を通知していないため、あなたのメッセージを暗号化することができません。
+\n
+\n<small>連絡先にOpenPGPを設定するように依頼してください。</small></string>
+    <string name="no_pgp_keys">OpenPGPの鍵が見つかりません</string>
     <string name="contacts_have_no_pgp_keys">連絡先が公開鍵を通知しないため、あなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
     <string name="pref_general">全般</string>
     <string name="pref_accept_files">ファイルを受取</string>
@@ -122,12 +124,12 @@
     <string name="pref_notification_sound_summary">新着メッセージの通知音</string>
     <string name="pref_call_ringtone_summary">着信通話の呼出音</string>
     <string name="pref_notification_grace_period">猶予期間</string>
-    <string name="pref_notification_grace_period_summary">別のデバイスでの操作を検知した際に、通知を止める時間の長さ</string>
+    <string name="pref_notification_grace_period_summary">別のデバイスでの操作を検知した際に、通知を止める時間の長さ。</string>
     <string name="pref_advanced_options">詳細</string>
     <string name="pref_never_send_crash">クラッシュレポートを送信しない</string>
-    <string name="pref_never_send_crash_summary">スタックトレースを送信して、Snikket の継続的な開発を支援します</string>
-    <string name="pref_confirm_messages">メッセージの確認</string>
-    <string name="pref_confirm_messages_summary">あなたがメッセージを受信して読んだときに、連絡先に知らせます</string>
+    <string name="pref_never_send_crash_summary">スタックトレースを送信すると、 開発の助けとなります</string>
+    <string name="pref_confirm_messages">メッセージを確認</string>
+    <string name="pref_confirm_messages_summary">あなたがメッセージを受信して読んだときに、連絡先に知らせる</string>
     <string name="pref_prevent_screenshots">スクリーンショットを防ぐ</string>
     <string name="pref_prevent_screenshots_summary">アプリスイッチャー内でアプリの内容を隠し、スクリーンショットを防ぐ</string>
     <string name="pref_ui_options">UI</string>
@@ -181,8 +183,7 @@
     <string name="unpublish_pgp_message">出席情報告知から OpenPGP 公開鍵を削除してもよろしいですか?\n連絡先はあなたに OpenPGP 暗号化メッセージを送信できなくなります。</string>
     <string name="openpgp_has_been_published">OpenPGP 公開鍵を公開しました。</string>
     <string name="mgmt_account_enable">アカウントを有効化</string>
-    <string name="mgmt_account_are_you_sure">よろしいですか?</string>
-    <string name="mgmt_account_delete_confirm_text">アカウントを削除すると会話履歴がすべて消去されます</string>
+    <string name="mgmt_account_delete_confirm_text">アカウントを削除してよろしいですか？アカウントを削除すると会話履歴がすべて消去されます</string>
     <string name="attach_record_voice">音声を録音</string>
     <string name="account_settings_jabber_id">XMPP アドレス</string>
     <string name="block_jabber_id">XMPP アドレスをブロック</string>
@@ -224,7 +225,6 @@
     <string name="fetching_keys">暗号鍵の取得中…</string>
     <string name="done">完了</string>
     <string name="decrypt">復号</string>
-    <string name="bookmarks">ブックマーク</string>
     <string name="search">検索</string>
     <string name="enter_contact">連絡先を入力</string>
     <string name="delete_contact">連絡先を削除</string>
@@ -293,10 +293,10 @@
     <string name="pref_expert_options_other">その他</string>
     <string name="pref_autojoin">ブックマーク同期</string>
     <string name="toast_message_omemo_fingerprint">OMEMO フィンガープリントをクリップボードにコピーしました</string>
-    <string name="conference_banned">このグループチャットから出禁にされています</string>
+    <string name="conference_banned">このグループチャットへの参加はブロックされています</string>
     <string name="conference_members_only">このグループチャットはメンバー制です</string>
     <string name="conference_resource_constraint">リソース制限</string>
-    <string name="conference_kicked">このグループチャットから蹴り出されています</string>
+    <string name="conference_kicked">このグループチャットから退出させられました</string>
     <string name="conference_shutdown">このグループチャットは閉鎖されました</string>
     <string name="conference_unknown_error">あなたはもうこのグループチャットに参加していません</string>
     <string name="conference_technical_problems">技術的理由の為、あなたはこのグループチャットを離れました</string>
@@ -452,7 +452,6 @@
     <string name="recently_used">最近使用した</string>
     <string name="choose_quick_action">クイックアクションを選択</string>
     <string name="search_contacts">連絡先を検索</string>
-    <string name="search_bookmarks">ブックマークを検索</string>
     <string name="send_private_message">非公開メッセージを送信</string>
     <string name="user_has_left_conference">%1$s はグループチャットを退出しました</string>
     <string name="username">ユーザー名</string>
@@ -512,7 +511,6 @@
     <string name="no_camera_permission">%1$s にカメラへのアクセス権を付与</string>
     <string name="sync_with_contacts">連絡先と同期</string>
     <string name="sync_with_contacts_long">%1$s はあなたのアドレス帳にアクセスして、あなたのXMPP 連絡先名簿と照合する権限を求めています。\nこれにより、連絡先のフルネームとアバターが表示されます。\n\n%1$s は、あなたのサーバーに何かをアップロードすることなく、あなたのアドレス帳を読み込んで照合するだけです。</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksyは、既にQuicksyに登録されている連絡先を提案するために、あなたの連絡先の電話番号にアクセスする必要があります。<br><br>Quicksyは、それらの電話番号のコピーを保存することはありません。\n\n詳細は<a href="https://quicksy.im/#privacy">プライバシーポリシー</a>をご覧ください。<br><br>今、連絡先へのアクセス権限を付与するよう求められます。]]></string>
     <string name="notify_on_all_messages">すべてのメッセージで通知</string>
     <string name="notify_only_when_highlighted">メンションされたときにのみ通知</string>
     <string name="notify_never">通知は無効</string>
@@ -535,7 +533,6 @@
     <string name="security_error_invalid_file_access">セキュリティエラー: 不正なファイルアクセス!</string>
     <string name="no_application_to_share_uri">URI を共有するアプリが見つかりません</string>
     <string name="share_uri_with">…で URI を共有</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy は人気のXMPPアプリConversationsの派生で、連絡先の自動検出機能を備えています。<br><br>電話番号を入力して登録すると、アドレス帳に登録されている電話番号をもとに、Quicksyが自動的に連絡先を提案します。<br><br>登録すると、<a href=\"https://quicksy.im/#privacy\">我々のプライバシーポリシー</a>に同意することになります。]]></string>
     <string name="agree_and_continue">同意して続行</string>
     <string name="magic_create_text">conversations.im 上にアカウントを作成する設定の指南です。¹\nconversations.im をプロバイダーとして選択した場合、あなたの完全な XMPP アドレスを他のプロバイダーのユーザーに示すことで、その人と連絡をとることができます。</string>
     <string name="your_full_jid_will_be">あなたの完全なXMPPアドレスは: %s</string>
@@ -867,7 +864,6 @@
     <string name="discover_channels">談話室を発見</string>
     <string name="search_channels">談話室を検索</string>
     <string name="channel_discovery_opt_in_title">プライバシー侵害の可能性あり!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[談話室発見は、第三者のサービスである<a href=\"https://search.jabber.network\">search.jabber.network</a>を利用します。<br><br>この機能を使うと、あなたののIPアドレスや検索キーワードがそのサービスに送信されます。詳しくは、<a href=\"https://search.jabber.network/privacy\">プライバシーポリシー</a>をご覧ください。]]></string>
     <string name="i_already_have_an_account">既にアカウントを持っています</string>
     <string name="add_existing_account">既存アカウントを追加</string>
     <string name="register_new_account">新規アカウントを登録</string>
@@ -902,26 +898,24 @@
     <string name="rtp_state_ending_call">通話終了</string>
     <string name="answer_call">応答</string>
     <string name="dismiss_call">拒否</string>
-    <string name="rtp_state_finding_device">デバイス発見</string>
-    <string name="rtp_state_ringing">鳴動</string>
+    <string name="rtp_state_finding_device">デバイスを探索中</string>
+    <string name="rtp_state_ringing">呼び出し中</string>
     <string name="rtp_state_declined_or_busy">取込中</string>
     <string name="rtp_state_connectivity_error">通話に接続できません</string>
     <string name="rtp_state_connectivity_lost_error">接続切断</string>
     <string name="rtp_state_retracted">撤回された通話</string>
     <string name="rtp_state_application_failure">アプリの失敗</string>
     <string name="rtp_state_security_error">検証に問題</string>
-    <string name="hang_up">電話を切る</string>
+    <string name="hang_up">通話を切る</string>
     <string name="ongoing_call">継続中の通話</string>
-    <string name="ongoing_video_call">継続中の映像通話</string>
-    <string name="reconnecting_call">通話再接続中</string>
-    <string name="reconnecting_video_call">ビデオ通話再接続中</string>
-    <string name="disable_tor_to_make_call">通話するのに Tor を無効化</string>
+    <string name="ongoing_video_call">継続中のビデオ通話</string>
+    <string name="reconnecting_call">通話に再接続中</string>
+    <string name="reconnecting_video_call">ビデオ通話に再接続中</string>
+    <string name="disable_tor_to_make_call">通話を行う際にはTorを無効にしてください</string>
     <string name="incoming_call">着信通話</string>
-    <string name="incoming_call_duration">着信通話・%s</string>
-    <string name="missed_call_timestamp">不在着信通話・%s</string>
+    <string name="missed_call_timestamp">不在着信・%s</string>
     <string name="outgoing_call">発信通話</string>
-    <string name="outgoing_call_duration">発信通話・%s</string>
-    <string name="missed_call">不在着信通話</string>
+    <string name="missed_call">不在着信</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="other">%2$sから%1$d件の不在着信</item>
     </plurals>
@@ -940,7 +934,7 @@
     <string name="return_to_ongoing_call">継続中の通話に戻る</string>
     <string name="could_not_switch_camera">カメラを切り替えできません</string>
     <string name="add_to_favorites">最上に留める</string>
-    <string name="remove_from_favorites">最上から留めるのをやめる</string>
+    <string name="remove_from_favorites">最上部へのピン止めを外す</string>
     <string name="gpx_track">GPX 追跡</string>
     <string name="could_not_correct_message">メッセージを修正できません</string>
     <string name="search_all_conversations">すべての会話</string>
@@ -952,9 +946,9 @@
     <string name="not_encrypted">非暗号化</string>
     <string name="exit">終了</string>
     <string name="record_voice_mail">音声メールを録音</string>
-    <string name="play_audio">音声再生</string>
-    <string name="pause_audio">音声一時中断</string>
-    <string name="add_contact_or_create_or_join_group_chat">連絡先を追加、作成またはグループチャットに参加、または談話室を発見する</string>
+    <string name="play_audio">音声を再生</string>
+    <string name="pause_audio">音声を一時停止</string>
+    <string name="add_contact_or_create_or_join_group_chat">連絡先を追加、作成またはグループチャットに参加、またはチャンネルを発見する</string>
     <plurals name="view_users">
         <item quantity="other">%1$d人の参加者を表示</item>
     </plurals>
@@ -964,7 +958,7 @@
     <string name="failed_deliveries">配信に失敗</string>
     <string name="more_options">更なるオプション</string>
     <string name="no_application_found">アプリケーションが見つかりません</string>
-    <string name="invite_to_app">会話に招待</string>
+    <string name="invite_to_app">Conversationsに招待</string>
     <string name="unable_to_parse_invite">招待を解析できません</string>
     <string name="server_does_not_support_easy_onboarding_invites">サーバーは招待の作成をサポートしていません</string>
     <string name="no_active_accounts_support_this">この機能をサポートするアクティブなアカウントがありません</string>
@@ -976,5 +970,33 @@
     <string name="account_status_temporary_auth_failure">一時的な認証失敗</string>
     <string name="delete_avatar">アバターを削除</string>
     <string name="audio_video_disabled_tor">Tor使用中のため通話できません</string>
-    <string name="switch_to_video">ビデオ通話切替</string>
+    <string name="switch_to_video">ビデオ通話へ切替</string>
+    <string name="this_account_is_logged_out">このアカウントをログアウトしました</string>
+    <string name="action_directions">ルート</string>
+    <string name="reject_switch_to_video">ビデオ通話を拒否</string>
+    <string name="incoming_call_duration_timestamp">着信中の通話 (%s) · %s</string>
+    <string name="pref_up_push_account_title">XMPPアカウント</string>
+    <string name="group_chats">グループ</string>
+    <string name="outdated_backup_file_format">選択したファイルは、旧式のファイル形式ので復元できません</string>
+    <string name="search_group_chats">グループを検索</string>
+    <string name="outgoing_call_duration_timestamp">発信中の通話 (%s) · %s</string>
+    <string name="account_state_logged_out">ログアウトしました</string>
+    <string name="outgoing_call_timestamp">発信通話 · %s</string>
+    <string name="audiobook">オーディオブック</string>
+    <string name="channel_discover_opt_in_message">談話室の発見は&lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;というサービスを利用します.&lt;br&gt;&lt;br&gt;利用するとIPアドレスと検索語はそのサービスに送信されます。詳細についてはそのサービスの&lt;a href=https://search.jabber.network/privacy&gt;個人情報保護方針&lt;/a&gt;を参照してください。</string>
+    <string name="restore_warning_continued">自分で保存したバックアップしか復元しないでください！</string>
+    <string name="pref_up_push_server_summary">XMPP経由でPushメッセージを端末に転送するユーザー指定のPushサーバー。</string>
+    <string name="log_in">ログイン</string>
+    <string name="hide_notification">通知を表示しない</string>
+    <string name="delete_from_server">アカウントをサーバーから削除</string>
+    <string name="log_out">ログアウト</string>
+    <string name="no_account_deactivated">なし（無効）</string>
+    <string name="decline">拒否</string>
+    <string name="pref_up_push_server_title">Pushサーバー</string>
+    <string name="save_as_group_chat">グループチャットとして保存</string>
+    <string name="unified_push_distributor">UnifiedPushディストリビューター</string>
+    <string name="report_spam">スパムを報告</string>
+    <string name="pref_up_push_account_summary">Pushメッセージを受信する際に経由するアカウント。</string>
+    <string name="could_not_delete_account_from_server">サーバーからアカウントを削除できませんでした</string>
+    <string name="category_about">概要</string>
 </resources>

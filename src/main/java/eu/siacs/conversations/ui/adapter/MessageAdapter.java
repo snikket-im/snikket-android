@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -696,7 +697,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             final long duration = rtpSessionStatus.duration;
             if (received) {
                 if (duration > 0) {
-                    viewHolder.status_message.setText(activity.getString(R.string.incoming_call_duration, TimeFrameUtils.resolve(activity, duration)));
+                    viewHolder.status_message.setText(activity.getString(R.string.incoming_call_duration_timestamp, TimeFrameUtils.resolve(activity, duration), UIHelper.readableTimeDifferenceFull(activity, message.getTimeSent())));
                 } else if (rtpSessionStatus.successful) {
                     viewHolder.status_message.setText(R.string.incoming_call);
                 } else {
@@ -704,9 +705,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 }
             } else {
                 if (duration > 0) {
-                    viewHolder.status_message.setText(activity.getString(R.string.outgoing_call_duration, TimeFrameUtils.resolve(activity, duration)));
+                    viewHolder.status_message.setText(activity.getString(R.string.outgoing_call_duration_timestamp, TimeFrameUtils.resolve(activity, duration), UIHelper.readableTimeDifferenceFull(activity, message.getTimeSent())));
                 } else {
-                    viewHolder.status_message.setText(R.string.outgoing_call);
+                    viewHolder.status_message.setText(activity.getString(R.string.outgoing_call_timestamp, UIHelper.readableTimeDifferenceFull(activity, message.getTimeSent())));
                 }
             }
             viewHolder.indicatorReceived.setImageResource(RtpSessionStatus.getDrawable(received, rtpSessionStatus.successful, isDarkTheme));
@@ -873,7 +874,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     public void openDownloadable(Message message) {
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ConversationFragment.registerPendingMessage(activity, message);
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, ConversationsActivity.REQUEST_OPEN_MESSAGE);
             return;

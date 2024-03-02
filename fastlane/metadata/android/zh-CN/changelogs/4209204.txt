@@ -1,0 +1,2 @@
+* 在 Play 商店版本（Quicksy 和 Conversations）上提供对“隐私政策”的更轻松访问
+* 移除 Play 商店版本的 Conversations 上的通讯录集成

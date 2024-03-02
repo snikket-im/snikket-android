@@ -46,6 +46,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.services.AbstractQuickConversationsService;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.MediaAdapter;
@@ -119,13 +120,13 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     private void checkContactPermissionAndShowAddDialog() {
         if (hasContactsPermission()) {
             showAddToPhoneBookDialog();
-        } else if (Config.CONTACTS_INTEGRATION && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        } else if (QuickConversationsService.isContactListIntegration(this) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
         }
     }
 
     private boolean hasContactsPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (QuickConversationsService.isContactListIntegration(this) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
         } else {
             return true;
@@ -455,6 +456,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             }
             boolean skippedInactive = false;
             boolean showsInactive = false;
+            boolean showUnverifiedWarning = false;
             for (final XmppAxolotlSession session : sessions) {
                 final FingerprintStatus trust = session.getTrust();
                 hasKeys |= !trust.isCompromised();
@@ -470,7 +472,11 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                     boolean highlight = session.getFingerprint().equals(messageFingerprint);
                     addFingerprintRow(binding.detailsContactKeys, session, highlight);
                 }
+                if (trust.isUnverified()) {
+                    showUnverifiedWarning = true;
+                }
             }
+            binding.unverifiedWarning.setVisibility(showUnverifiedWarning ? View.VISIBLE : View.GONE);
             if (showsInactive || skippedInactive) {
                 binding.showInactiveDevices.setText(showsInactive ? R.string.hide_inactive_devices : R.string.show_inactive_devices);
                 binding.showInactiveDevices.setVisibility(View.VISIBLE);
@@ -480,7 +486,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         } else {
             binding.showInactiveDevices.setVisibility(View.GONE);
         }
-        binding.scanButton.setVisibility(hasKeys && isCameraFeatureAvailable() ? View.VISIBLE : View.GONE);
+        final boolean isCameraFeatureAvailable = isCameraFeatureAvailable();
+        binding.scanButton.setVisibility(hasKeys && isCameraFeatureAvailable ? View.VISIBLE : View.GONE);
         if (hasKeys) {
             binding.scanButton.setOnClickListener((v) -> ScanActivity.scan(this));
         }
@@ -517,18 +524,30 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         }
     }
 
-    private void onBadgeClick(View view) {
-        final Uri systemAccount = contact.getSystemAccount();
-        if (systemAccount == null) {
-            checkContactPermissionAndShowAddDialog();
-        } else {
-            final Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(systemAccount);
-            try {
-                startActivity(intent);
-            } catch (final ActivityNotFoundException e) {
-                Toast.makeText(this, R.string.no_application_found_to_view_contact, Toast.LENGTH_SHORT).show();
+    private void onBadgeClick(final View view) {
+        if (QuickConversationsService.isContactListIntegration(this)) {
+            final Uri systemAccount = contact.getSystemAccount();
+            if (systemAccount == null) {
+                checkContactPermissionAndShowAddDialog();
+            } else {
+                final Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(systemAccount);
+                try {
+                    startActivity(intent);
+                } catch (final ActivityNotFoundException e) {
+                    Toast.makeText(
+                                    this,
+                                    R.string.no_application_found_to_view_contact,
+                                    Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
+        } else {
+            Toast.makeText(
+                            this,
+                            R.string.contact_list_integration_not_available,
+                            Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 

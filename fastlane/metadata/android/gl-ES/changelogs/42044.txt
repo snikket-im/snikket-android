@@ -1,0 +1,3 @@
+* Arranxo do reenvío usando SASL2
+* Arranxo dos vídeos en negro nalgúns dispositivos
+* Arranxo do fallo ao usar un contrasinal baleiro

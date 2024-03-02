@@ -1,0 +1,2 @@
+* 在 Android 5+ 上提供 PDF 預覽
+* 在 OMEMO 中使用 12 字節的 IV

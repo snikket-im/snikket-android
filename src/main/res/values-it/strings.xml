@@ -185,8 +185,7 @@
     <string name="unpublish_pgp_message">Sei sicuro di volere rimuovere la tua chiave pubblica OpenPGP dalla dichiarazione di presenza?\nI tuoi contatti non potranno più inviarti messaggi cifrati con OpenPGP.</string>
     <string name="openpgp_has_been_published">Chiave pubblica OpenPGP pubblicata.</string>
     <string name="mgmt_account_enable">Attiva profilo</string>
-    <string name="mgmt_account_are_you_sure">Sei sicuro?</string>
-    <string name="mgmt_account_delete_confirm_text">L\'eliminazione del tuo profilo cancellerà tutta la cronologia dielle conversazioni</string>
+    <string name="mgmt_account_delete_confirm_text">Vuoi davvero eliminare il tuo profilo\? La sua eliminazione cancellerà tutta la cronologia delle conversazioni</string>
     <string name="attach_record_voice">Registra la voce</string>
     <string name="account_settings_jabber_id">Indirizzo XMPP</string>
     <string name="block_jabber_id">Blocca indirizzo XMPP</string>
@@ -228,7 +227,6 @@
     <string name="fetching_keys">Ricezione chiavi…</string>
     <string name="done">Fatto</string>
     <string name="decrypt">Decripta</string>
-    <string name="bookmarks">Segnalibri</string>
     <string name="search">Cerca</string>
     <string name="enter_contact">Inserisci contatto</string>
     <string name="delete_contact">Elimina contatto</string>
@@ -256,7 +254,7 @@
     <string name="contact_added_you">Il contatto ti ha aggiunto alla sua lista contatti</string>
     <string name="add_back">Aggiungi anche tu</string>
     <string name="contact_has_read_up_to_this_point">%s ha letto fino a questo punto</string>
-    <string name="contacts_have_read_up_to_this_point">%s ha letto fino a questo punto</string>
+    <string name="contacts_have_read_up_to_this_point">%s hanno letto fino a questo punto</string>
     <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s + altri %2$d hanno letto fino a questo punto</string>
     <string name="everyone_has_read_up_to_this_point">Tutti hanno letto fino a questo punto</string>
     <string name="publish">Pubblica</string>
@@ -323,8 +321,8 @@
     <string name="jabber_id_copied_to_clipboard">Indirizzo XMPP copiato negli appunti</string>
     <string name="error_message_copied_to_clipboard">Messaggio di errore copiato negli appunti</string>
     <string name="web_address">indirizzo web</string>
-    <string name="scan_qr_code">Scansiona codice a barre 2D</string>
-    <string name="show_qr_code">Mostra codice a barre 2D</string>
+    <string name="scan_qr_code">Scansiona codice QR</string>
+    <string name="show_qr_code">Mostra codice QR</string>
     <string name="show_block_list">Mostra la lista nera</string>
     <string name="account_details">Dettagli del profilo</string>
     <string name="confirm">Conferma</string>
@@ -461,7 +459,6 @@
     <string name="recently_used">Usati recentemente</string>
     <string name="choose_quick_action">Scegli azione rapida</string>
     <string name="search_contacts">Cerca contatti</string>
-    <string name="search_bookmarks">Cerca segnalibri</string>
     <string name="send_private_message">Invia messaggio privato</string>
     <string name="user_has_left_conference">%1$s ha abbandonato la chat di gruppo</string>
     <string name="username">Utente</string>
@@ -523,7 +520,6 @@
     <string name="no_camera_permission">Dai a %1$s l\'accesso alla fotocamera</string>
     <string name="sync_with_contacts">Sincronizza con i contatti</string>
     <string name="sync_with_contacts_long">%1$s vuole l\'autorizzazione ad accedere alla tua rubrica per confrontarla con la lista di contatti in XMPP.\nCiò mostrerà i nomi ed avatar dei contatti.\n\n%1$s leggerà solamente la rubrica e la confronterà localmente senza inviare nulla al tuo server.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy richiede l\'accesso ai numeri di telefono dei tuoi contatti per dare suggerimenti su possibili contatti già presenti su Quicksy.<br><br>Non salveremo una copia di quei numeri di telefono.\n\nPer maggiori informazioni leggi la nostra <a href="https://quicksy.im/#privacy">politica sulla privacy</a>.<br><br>Ti verrà ora chiesta l\'autorizzazione di accedere ai tuoi contatti.]]></string>
     <string name="notify_on_all_messages">Notifica per tutti i messaggi</string>
     <string name="notify_only_when_highlighted">Notifica solo quando menzionato</string>
     <string name="notify_never">Notifiche disattivate</string>
@@ -541,12 +537,11 @@
     <string name="this_field_is_required">Questo campo è obbligatorio</string>
     <string name="correct_message">Correggi messaggio</string>
     <string name="send_corrected_message">Invia messaggio corretto</string>
-    <string name="no_keys_just_confirm">Hai già validato l\'impronta di questa persona in modo sicuro per confermarne la fiducia. Selezionando “Fatto” stai solo confermando che %s fa parte di questa chat di gruppo.</string>
+    <string name="no_keys_just_confirm">Ti stai già fidando dell\'impronta di questa persona. Selezionando “Fatto” stai solo confermando che %s fa parte di questa chat di gruppo.</string>
     <string name="this_account_is_disabled">Hai disattivato questo profilo</string>
     <string name="security_error_invalid_file_access">Errore di sicurezza: accesso file non valido!</string>
     <string name="no_application_to_share_uri">Nessuna app trovata per condividere l\'URI</string>
     <string name="share_uri_with">Condividi URI con…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy è una variante del popolare client XMPP Conversations con ricerca automatica dei contatti.<br><br>Ti registri con il tuo numero di telefono e Quicksy ti suggerirà—in base ai numeri di telefono nella tua rubrica—automaticamente i possibili contatti.<br><br>Registrandoti accetti la nostra <a href="https://quicksy.im/#privacy">politica sulla privacy</a>.]]></string>
     <string name="agree_and_continue">Accetta e continua</string>
     <string name="magic_create_text">È disponibile una guida per la creazione di un profilo su conversations.im.
 \nQuando scegli conversations.im come fornitore potrai comunicare con utenti di altri fornitori dando il tuo indirizzo XMPP completo.</string>
@@ -624,7 +619,7 @@
     <string name="pref_blind_trust_before_verification_summary">Fidati di nuovi dispositivi da contatti non verificati, ma chiedi una conferma manuale per nuovi dispositivi da contatti verificati.</string>
     <string name="blindly_trusted_omemo_keys">Chiavi OMEMO accettate ciecamente, perciò potrebbero essere di qualcun altro o qualcuno potrebbe essersi intromesso.</string>
     <string name="not_trusted">Non fidato</string>
-    <string name="invalid_barcode">Codice a barre 2D non valido</string>
+    <string name="invalid_barcode">Codice QR non valido</string>
     <string name="pref_clean_cache_summary">Svuota la cartella della cache (usata dall\'app fotocamera)</string>
     <string name="pref_clean_cache">Svuota cache</string>
     <string name="pref_clean_private_storage">Svuota archivio privato</string>
@@ -892,7 +887,6 @@
     <string name="discover_channels">Individua i canali</string>
     <string name="search_channels">Cerca i canali</string>
     <string name="channel_discovery_opt_in_title">Possibile violazione della privacy!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[La ricerca dei canali usa un servizio di terze parti chiamato <a href=\"https://search.jabber.network\">search.jabber.network</a>.<br><br>L\'uso di questa funzione trasmetterà il tuo indirizzo IP e i termini di ricerca a quel servizio. Vedi la loro <a href=\"https://search.jabber.network/privacy\">informativa sulla privacy</a> per maggiori informazioni.]]></string>
     <string name="i_already_have_an_account">Ho già un profilo</string>
     <string name="add_existing_account">Aggiungi un profilo esistente</string>
     <string name="register_new_account">Registra un nuovo profilo</string>
@@ -944,10 +938,8 @@
     <string name="reconnecting_video_call">Riconnessione chiamata video</string>
     <string name="disable_tor_to_make_call">Disattiva Tor per le chiamate</string>
     <string name="incoming_call">Chiamata in arrivo</string>
-    <string name="incoming_call_duration">Chiamata in arrivo · %s</string>
     <string name="missed_call_timestamp">Chiamata persa · %s</string>
     <string name="outgoing_call">Chiamata in uscita</string>
-    <string name="outgoing_call_duration">Chiamata in uscita · %s</string>
     <string name="missed_call">Chiamata persa</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d chiamata persa da %2$s</item>
@@ -1021,4 +1013,29 @@
     <string name="pref_up_push_server_title">Server push</string>
     <string name="pref_up_push_server_summary">Un server scelto dall\'utente per inoltrare i messaggi push via XMPP al tuo dispositivo.</string>
     <string name="no_account_deactivated">Nessuno (disattivato)</string>
+    <string name="decline">Rifiuta</string>
+    <string name="incoming_call_duration_timestamp">Chiamata in arrivo (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">Chiamata in uscita (%s) · %s</string>
+    <string name="outgoing_call_timestamp">Chiamata in uscita · %s</string>
+    <string name="delete_from_server">Rimuovi profilo dal server</string>
+    <string name="could_not_delete_account_from_server">Impossibile eliminare il profilo dal server</string>
+    <string name="group_chats">Chat di gruppo</string>
+    <string name="save_as_group_chat">Salva come chat di gruppo</string>
+    <string name="search_group_chats">Cerca chat di gruppo</string>
+    <string name="channel_discover_opt_in_message">La scoperta dei canali usa un servizio di terze parti chiamato &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;L\'uso di questa funzione invierà il tuo indirizzo IP e i termini di ricerca a quel servizio. Vedi la sua &lt;a href=https://search.jabber.network/privacy&gt;informativa sulla privacy&lt;/a&gt; per maggiori informazioni.</string>
+    <string name="restore_warning_continued">Non tentare di ripristinare dei backup che non hai creato te stesso!</string>
+    <string name="outdated_backup_file_format">Stai tentando di importare un formato di file di backup obsoleto</string>
+    <string name="audiobook">Audiolibro</string>
+    <string name="reconnect_on_other_host">Riconnetti su altro host</string>
+    <string name="this_account_is_logged_out">Ti sei disconnesso da questo profilo</string>
+    <string name="log_in">Accedi</string>
+    <string name="hide_notification">Nascondi notifica</string>
+    <string name="contact_uses_unverified_keys">Il tuo contatto usa dispositivi non verificati. Scansiona il suo codice QR per effettuare la verifica e impedire attacchi MITM attivi.</string>
+    <string name="log_out">Disconnetti</string>
+    <string name="account_state_logged_out">Disconnesso</string>
+    <string name="unverified_devices">Stai usando dispositivi non verificati. Scansiona il codice QR nei tuoi altri dispositivi per effettuare la verifica e impedire attacchi MITM attivi.</string>
+    <string name="report_spam_and_block">Segnala spam e blocca l\'utente</string>
+    <string name="report_spam">Segnala spam</string>
+    <string name="welcome_header_quicksy">Benvenuti su Quicksy!</string>
+    <string name="quicksy_wants_your_consent">Quicksy ti chiede il consenso per usare i tuoi dati</string>
 </resources>

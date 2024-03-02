@@ -31,7 +31,6 @@ import eu.siacs.conversations.crypto.sasl.HashedToken;
 import eu.siacs.conversations.crypto.sasl.HashedTokenSha256;
 import eu.siacs.conversations.crypto.sasl.HashedTokenSha512;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
-import eu.siacs.conversations.crypto.sasl.ScramPlusMechanism;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.UIHelper;
@@ -71,6 +70,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public static final int OPTION_UNVERIFIED = 8;
     public static final int OPTION_FIXED_USERNAME = 9;
     public static final int OPTION_QUICKSTART_AVAILABLE = 10;
+    public static final int OPTION_SOFT_DISABLED = 11;
 
     private static final String KEY_PGP_SIGNATURE = "pgp_signature";
     private static final String KEY_PGP_ID = "pgp_id";
@@ -249,11 +249,18 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         return !isOptionSet(Account.OPTION_DISABLED);
     }
 
+    public boolean isConnectionEnabled() {
+        return !isOptionSet(Account.OPTION_DISABLED) && !isOptionSet(Account.OPTION_SOFT_DISABLED);
+    }
+
     public boolean isOptionSet(final int option) {
         return ((options & (1 << option)) != 0);
     }
 
     public boolean setOption(final int option, final boolean value) {
+        if (value && (option == OPTION_DISABLED || option == OPTION_SOFT_DISABLED)) {
+            this.setStatus(State.OFFLINE);
+        }
         final int before = this.options;
         if (value) {
             this.options |= 1 << option;
@@ -323,9 +330,15 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public State getStatus() {
         if (isOptionSet(OPTION_DISABLED)) {
             return State.DISABLED;
+        } else if (isOptionSet(OPTION_SOFT_DISABLED)) {
+            return State.LOGGED_OUT;
         } else {
             return this.status;
         }
+    }
+
+    public boolean unauthorized() {
+        return this.status == State.UNAUTHORIZED || this.lastErrorStatus == State.UNAUTHORIZED;
     }
 
     public State getLastErrorStatus() {
@@ -762,6 +775,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public enum State {
         DISABLED(false, false),
+        LOGGED_OUT(false,false),
         OFFLINE(false),
         CONNECTING(false),
         ONLINE(false),
@@ -787,6 +801,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         BIND_FAILURE,
         HOST_UNKNOWN,
         STREAM_ERROR,
+        SEE_OTHER_HOST,
         STREAM_OPENING_ERROR,
         POLICY_VIOLATION,
         PAYMENT_REQUIRED,
@@ -820,6 +835,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
             switch (this) {
                 case DISABLED:
                     return R.string.account_status_disabled;
+                case LOGGED_OUT:
+                    return R.string.account_state_logged_out;
                 case ONLINE:
                     return R.string.account_status_online;
                 case CONNECTING:
@@ -874,6 +891,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                     return R.string.account_status_stream_opening_error;
                 case PAYMENT_REQUIRED:
                     return R.string.payment_required;
+                case SEE_OTHER_HOST:
+                    return R.string.reconnect_on_other_host;
                 case MISSING_INTERNET_PERMISSION:
                     return R.string.missing_internet_permission;
                 case TEMPORARY_AUTH_FAILURE:

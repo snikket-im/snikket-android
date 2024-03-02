@@ -52,7 +52,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
 
-    private static final List<String> JINGLE_MESSAGE_ELEMENT_NAMES = Arrays.asList("accept", "propose", "proceed", "reject", "retract");
+    private static final List<String> JINGLE_MESSAGE_ELEMENT_NAMES =
+            Arrays.asList("accept", "propose", "proceed", "reject", "retract", "ringing");
 
     public MessageParser(XmppConnectionService service) {
         super(service);
@@ -169,14 +170,19 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         return null;
     }
 
-    private Invite extractInvite(Element message) {
+    private Invite extractInvite(final Element message) {
         final Element mucUser = message.findChild("x", Namespace.MUC_USER);
         if (mucUser != null) {
-            Element invite = mucUser.findChild("invite");
+            final Element invite = mucUser.findChild("invite");
             if (invite != null) {
-                String password = mucUser.findChildContent("password");
-                Jid from = InvalidJid.getNullForInvalid(invite.getAttributeAsJid("from"));
-                Jid room = InvalidJid.getNullForInvalid(message.getAttributeAsJid("from"));
+                final String password = mucUser.findChildContent("password");
+                final Jid from = InvalidJid.getNullForInvalid(invite.getAttributeAsJid("from"));
+                final Jid to = InvalidJid.getNullForInvalid(invite.getAttributeAsJid("to"));
+                if (to != null && from == null) {
+                    Log.d(Config.LOGTAG,"do not parse outgoing mediated invite "+message);
+                    return null;
+                }
+                final Jid room = InvalidJid.getNullForInvalid(message.getAttributeAsJid("from"));
                 if (room == null) {
                     return null;
                 }
@@ -453,8 +459,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
         final Invite invite = extractInvite(packet);
         if (invite != null) {
-            if (isTypeGroupChat) {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignoring invite to " + invite.jid + " because type=groupchat");
+            if (invite.jid.asBareJid().equals(account.getJid().asBareJid())) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ignore invite to "+invite.jid+" because it matches account");
+            } else if (isTypeGroupChat) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignoring invite to " + invite.jid + " because it was received as group chat");
             } else if (invite.direct && (mucUserElement != null || invite.inviter == null || mXmppConnectionService.isMuc(account, invite.inviter))) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignoring direct invite to " + invite.jid + " because it was received in MUC");
             } else {
@@ -782,7 +790,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             }
 
             if (isTypeGroupChat) {
-                if (packet.hasChild("subject")) { //TODO usually we would want to check for lack of body; however some servers do set a body :(
+                if (packet.hasChild("subject") && !packet.hasChild("thread")) { // We already know it has no body per above
                     if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
                         conversation.setHasMessagesLeftOnServer(conversation.countMessages() > 0);
                         final LocalizedContent subject = packet.findInternationalizedChildContentInDefaultNamespace("subject");
@@ -848,9 +856,22 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             if (serverMsgId == null) {
                                 serverMsgId = extractStanzaId(account, packet);
                             }
-                            mXmppConnectionService.getJingleConnectionManager().deliverMessage(account, packet.getTo(), packet.getFrom(), child, remoteMsgId, serverMsgId, timestamp);
-                            if (!account.getJid().asBareJid().equals(from.asBareJid()) && remoteMsgId != null) {
-                                processMessageReceipts(account, packet, remoteMsgId, query);
+                            mXmppConnectionService
+                                    .getJingleConnectionManager()
+                                    .deliverMessage(
+                                            account,
+                                            packet.getTo(),
+                                            packet.getFrom(),
+                                            child,
+                                            remoteMsgId,
+                                            serverMsgId,
+                                            timestamp);
+                            final Contact contact = account.getRoster().getContact(from);
+                            if (mXmppConnectionService.confirmMessages()
+                                    && !contact.isSelf()
+                                    && remoteMsgId != null
+                                    && contact.showInContactList()) {
+                                processMessageReceipts(account, packet, remoteMsgId, null);
                             }
                         } else if (query.isCatchup()) {
                             if ("propose".equals(action)) {
@@ -1083,22 +1104,26 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             this.inviter = inviter;
         }
 
-        public boolean execute(Account account) {
-            if (jid != null) {
-                Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, jid, true, false);
-                if (conversation.getMucOptions().online()) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received invite to " + jid + " but muc is considered to be online");
-                    mXmppConnectionService.mucSelfPingAndRejoin(conversation);
-                } else {
-                    conversation.getMucOptions().setPassword(password);
-                    mXmppConnectionService.databaseBackend.updateConversation(conversation);
-                    final Contact contact = inviter != null ? account.getRoster().getContactFromContactList(inviter) : null;
-                    mXmppConnectionService.joinMuc(conversation, contact != null && contact.mutualPresenceSubscription());
-                    mXmppConnectionService.updateConversationUi();
-                }
-                return true;
+        public boolean execute(final Account account) {
+            if (this.jid == null) {
+                return false;
             }
-            return false;
+            final Contact contact = this.inviter != null ? account.getRoster().getContact(this.inviter) : null;
+            if (contact != null && contact.isBlocked()) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ignore invite from "+contact.getJid()+" because contact is blocked");
+                return false;
+            }
+            final Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, jid, true, false);
+            if (conversation.getMucOptions().online()) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received invite to " + jid + " but muc is considered to be online");
+                mXmppConnectionService.mucSelfPingAndRejoin(conversation);
+            } else {
+                conversation.getMucOptions().setPassword(password);
+                mXmppConnectionService.databaseBackend.updateConversation(conversation);
+                mXmppConnectionService.joinMuc(conversation, contact != null && contact.showInContactList());
+                mXmppConnectionService.updateConversationUi();
+            }
+            return true;
         }
     }
 }

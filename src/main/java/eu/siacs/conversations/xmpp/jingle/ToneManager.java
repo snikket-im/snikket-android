@@ -3,6 +3,7 @@ package eu.siacs.conversations.xmpp.jingle;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.os.Build;
 import android.util.Log;
 
 import java.util.Arrays;
@@ -14,9 +15,11 @@ import eu.siacs.conversations.Config;
 
 import static java.util.Arrays.asList;
 
+import androidx.core.content.ContextCompat;
+
 class ToneManager {
 
-    private final ToneGenerator toneGenerator;
+    private ToneGenerator toneGenerator;
     private final Context context;
 
     private ToneState state = null;
@@ -26,14 +29,6 @@ class ToneManager {
     private boolean appRtcAudioManagerHasControl = false;
 
     ToneManager(final Context context) {
-        ToneGenerator toneGenerator;
-        try {
-            toneGenerator = new ToneGenerator(AudioManager.STREAM_VOICE_CALL, 60);
-        } catch (final RuntimeException e) {
-            Log.e(Config.LOGTAG, "unable to instantiate ToneGenerator", e);
-            toneGenerator = null;
-        }
-        this.toneGenerator = toneGenerator;
         this.context = context;
     }
 
@@ -166,16 +161,44 @@ class ToneManager {
         if (currentTone != null) {
             currentTone.cancel(true);
         }
-        if (toneGenerator != null) {
+        stopTone(toneGenerator);
+    }
+
+    private static void stopTone(final ToneGenerator toneGenerator) {
+        if (toneGenerator == null) {
+            return;
+        }
+        try {
             toneGenerator.stopTone();
+        } catch (final RuntimeException e) {
+            Log.w(Config.LOGTAG,"tone has already stopped");
         }
     }
 
     public void startTone(final int toneType, final int durationMs) {
+        if (this.toneGenerator != null) {
+            this.toneGenerator.release();;
+
+        }
+        final AudioManager audioManager = ContextCompat.getSystemService(context, AudioManager.class);
+        final boolean ringerModeNormal = audioManager == null || audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL;
+        this.toneGenerator = getToneGenerator(ringerModeNormal);
         if (toneGenerator != null) {
             this.toneGenerator.startTone(toneType, durationMs);
-        } else {
-            Log.e(Config.LOGTAG, "failed to start tone. ToneGenerator doesn't exist");
+        }
+    }
+
+    private static ToneGenerator getToneGenerator(final boolean ringerModeNormal) {
+        try {
+            // when silent and on Android 12+ use STREAM_MUSIC
+            if (ringerModeNormal || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                return new ToneGenerator(AudioManager.STREAM_VOICE_CALL,60);
+            } else {
+                return new ToneGenerator(AudioManager.STREAM_MUSIC,100);
+            }
+        } catch (final Exception e) {
+            Log.d(Config.LOGTAG,"could not create tone generator",e);
+            return null;
         }
     }
 

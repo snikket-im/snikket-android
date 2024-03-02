@@ -170,7 +170,9 @@ public class MucOptions {
     }
 
     public boolean participantsCanChangeSubject() {
-        final Field field = getRoomInfoForm().getFieldByName("muc#roominfo_changesubject");
+        final Field configField = getRoomInfoForm().getFieldByName("muc#roomconfig_changesubject");
+        final Field infoField = getRoomInfoForm().getFieldByName("muc#roominfo_changesubject");
+        final Field field = configField != null ? configField : infoField;
         return field != null && "1".equals(field.getValue());
     }
 

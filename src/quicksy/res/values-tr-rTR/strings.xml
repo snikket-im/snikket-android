@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_notification_grace_period_summary">Başka bir aygıt üstünde etkinlik algılandığında Quicksy\'nin sessiz kalma süresi</string>
-    <string name="pref_never_send_crash_summary">Çöküş raporu göndermeniz Quicksy\'nin geliştirlmesinde katkıda bulunacaktır.</string>
+    <string name="pref_never_send_crash_summary">Çöküş raporu göndermeniz Quicksy\'nin geliştirlmesinde katkıda bulunacaktır</string>
     <string name="pref_broadcast_last_activity_summary">Tüm kişileriniz ne zaman Quicksy kullandığınızı görsün</string>
     <string name="huawei_protected_apps_summary">Ekranınız kapalıyken bile bildirim almak için Quicksy\'i korunan uygulamalara eklemelisiniz.</string>
     <string name="set_profile_picture">Quicksy profil resmi</string>

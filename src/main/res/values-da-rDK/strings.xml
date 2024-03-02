@@ -31,10 +31,7 @@
     <string name="minutes_ago">%d minutter siden</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d ulæst samtale</item>
-
-    
         <item quantity="other">%d ulæst samtaler</item>
-
     </plurals>
     <string name="sending">sender…</string>
     <string name="message_decrypting">Dekrypter besked. Vent venligst…</string>
@@ -89,7 +86,9 @@
     <string name="clear_conversation_history">Ryd samtalehistorik</string>
     <string name="clear_histor_msg">Vil du slette alle beskeder i denne samtale?\n\n<b>Advarsel:</b> Dette vil ikke påvirke beskeder gemt på andre enheder eller servere.</string>
     <string name="delete_file_dialog">Slet fil</string>
-    <string name="delete_file_dialog_msg">Er du sikker på, at du vil slette denne fil?\n\n<b>Advarsel:</b> Dette sletter ikke kopier af denne fil, der er gemt på andre enheder eller servere.</string>
+    <string name="delete_file_dialog_msg">Er du sikker på, at du vil slette denne fil\?
+\n
+\n<b>Advarsel:</b> Dette sletter ikke kopier af denne fil, der er gemt på andre enheder eller servere. </string>
     <string name="also_end_conversation">Luk efterfølgende denne samtale</string>
     <string name="choose_presence">Vælg enhed</string>
     <string name="send_unencrypted_message">Send ukrypteret besked</string>
@@ -129,14 +128,14 @@
     <string name="pref_notification_grace_period_summary">Tidsintervallet hvor notifikationer er lydløs efter at have registreret aktivitet på en af dine andre enheder.</string>
     <string name="pref_advanced_options">Advanceret</string>
     <string name="pref_never_send_crash">Send aldrig fejlrapporter</string>
-    <string name="pref_never_send_crash_summary">Ved at indsende \"stack traces\" hjælper du udviklingen</string>
+    <string name="pref_never_send_crash_summary">Ved at indsende stakspor hjælper du udviklingen</string>
     <string name="pref_confirm_messages">Bekræft beskeder</string>
     <string name="pref_confirm_messages_summary">Lad dine kontakter vide når du har modtaget og læst deres beskeder</string>
     <string name="pref_prevent_screenshots">Forbyd skærmbillede</string>
     <string name="pref_prevent_screenshots_summary">Skjul app indhold i app-skifteren og bloker skærmbilleder</string>
     <string name="pref_ui_options">UI</string>
-    <string name="openpgp_error">OpenKeychain producerede en fejl</string>
-    <string name="bad_key_for_encryption">Dårlig nøgle til kryptering</string>
+    <string name="openpgp_error">OpenKeychain producerede en fejl.</string>
+    <string name="bad_key_for_encryption">Dårlig nøgle til kryptering.</string>
     <string name="accept">Accepter</string>
     <string name="error">Der er sket en fejl</string>
     <string name="recording_error">Fejl</string>
@@ -183,10 +182,9 @@
     <string name="mgmt_account_publish_pgp">Offentliggør OpenPGP offentlig nøgle</string>
     <string name="unpublish_pgp">Fjern OpenPGP offentlig nøgle</string>
     <string name="unpublish_pgp_message">Er du sikker på, at du vil fjerne din OpenPGP-nøgle fra din nærværsmeddelelse?\nDine kontakter kan ikke længere sende dig OpenPGP-krypterede meddelelser.</string>
-    <string name="openpgp_has_been_published">OpenPGP offentlig nøgle er offentliggjort</string>
+    <string name="openpgp_has_been_published">OpenPGP offentlig nøgle er offentliggjort.</string>
     <string name="mgmt_account_enable">Aktiver konto</string>
-    <string name="mgmt_account_are_you_sure">Er du sikker?</string>
-    <string name="mgmt_account_delete_confirm_text">Sletning af din konto sletter hele din samtalehistorik</string>
+    <string name="mgmt_account_delete_confirm_text">Er du sikker på, at du vil slette din konto\? Sletning af din konto sletter hele din samtalehistorik</string>
     <string name="attach_record_voice">Optag lyd</string>
     <string name="account_settings_jabber_id">XMPP-adresse</string>
     <string name="block_jabber_id">Bloker XMPP-adresse</string>
@@ -228,7 +226,6 @@
     <string name="fetching_keys">Henter nøgler…</string>
     <string name="done">Færdig</string>
     <string name="decrypt">Dekrypter</string>
-    <string name="bookmarks">Bogmærker</string>
     <string name="search">Find</string>
     <string name="enter_contact">Indtast kontakt</string>
     <string name="delete_contact">Slet kontakt</string>
@@ -423,7 +420,7 @@
     <string name="pdf_document">PDF dokument</string>
     <string name="apk">Android App</string>
     <string name="vcard">Kontakt</string>
-    <string name="avatar_has_been_published">Avatar er blevet offentliggjort</string>
+    <string name="avatar_has_been_published">Avatar er blevet offentliggjort!</string>
     <string name="sending_x_file">Sender %s</string>
     <string name="offering_x_file">Tilbyder %s</string>
     <string name="hide_offline">Skjul offline</string>
@@ -458,7 +455,6 @@
     <string name="recently_used">Senest brugt</string>
     <string name="choose_quick_action">Vælg hurtig handling</string>
     <string name="search_contacts">Find kontakter</string>
-    <string name="search_bookmarks">Find bogmærker</string>
     <string name="send_private_message">Send privat besked</string>
     <string name="user_has_left_conference">%1$s har forladt gruppechatten</string>
     <string name="username">Brugernavn</string>
@@ -519,7 +515,6 @@
     <string name="no_camera_permission">Giv %1$s adgang til kameraet</string>
     <string name="sync_with_contacts">Synkroniser med kontakter</string>
     <string name="sync_with_contacts_long">%1$s ønsker tilladelse til at få adgang til din adressebog for at matche den med din XMPP kontaktliste.\nDette vil vise dine kontakters fulde navne og avatarer.\n\n%1$s læser kun din adressebog og matcher den lokalt uden at uploade noget til din server.</string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy har brug for adgang til dine kontaktpersons telefonnumre for at komme med forslag til mulige kontakter, der allerede er på Quicksy.<br><br>Vi gemmer ikke en kopi af disse telefonnumre.\n\nFor mere information, læs vores <a href="https://quicksy.im/#privacy">privatlivspolitik</a>.<br><br>Du vil bedes nu om at give tilladelse til at få adgang til dine kontakter.]]></string>
     <string name="notify_on_all_messages">Underret ved alle beskeder</string>
     <string name="notify_only_when_highlighted">Underret kun når nævnt</string>
     <string name="notify_never">Notifikationer deaktiveret</string>
@@ -542,9 +537,9 @@
     <string name="security_error_invalid_file_access">Sikkerhedsfejl: Ugyldig filadgang!</string>
     <string name="no_application_to_share_uri">Ingen app fundet der kan dele URL</string>
     <string name="share_uri_with">Del URL med…</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy er en klone af den populære XMPP klient Conversations med automatisk kontaktopdagelse.<br><br>Du tilmelder dig med dit telefonnummer, og Quicksy vil automatisk - baseret på telefonnumre i din adressebog - foreslå mulige kontakter til dig.<br><br>Når du tilmelder dig, accepterer du vores <a href="https://quicksy.im/#privacy">privatlispolitik</a>.]]></string>
     <string name="agree_and_continue">Accepter og fortsætte</string>
-    <string name="magic_create_text">En guide er oprettet til kontooprettelse på conversations.im.¹\nNår du vælger conversations.im som udbyder, kan du kommunikere med brugere fra andre udbydere ved at give dem din fulde XMPP-adresse.</string>
+    <string name="magic_create_text">En guide er oprettet til kontooprettelse på conversations.im.
+\nNår du vælger conversations.im som udbyder, vil du være i stand til at kommunikere med brugere af andre udbydere ved at give dem din fulde XMPP-adresse.</string>
     <string name="your_full_jid_will_be">Din fulde XMPP-adresse vil blive: %s</string>
     <string name="create_account">Opret konto</string>
     <string name="use_own_provider">Brug min egen udbyder</string>
@@ -694,7 +689,7 @@
     <string name="mtm_accept_cert">Accepter ukendt certifikat?</string>
     <string name="mtm_trust_anchor">Serverens certifikat er ikke underskrevet af en kendt Certifikat Autoritet.</string>
     <string name="mtm_accept_servername">Accepter fejlbehæftet servernavn?</string>
-    <string name="mtm_hostname_mismatch">Server kunne ikke godkendes som \&quot;%s\&quot;. Certifikatet er kun gyldig for:</string>
+    <string name="mtm_hostname_mismatch">Server kunne ikke godkendes som \"%s\". Certifikatet er kun gyldig for:</string>
     <string name="mtm_connect_anyway">Vil du fortsætte alligevel?</string>
     <string name="mtm_cert_details">Certifikatdetaljer:</string>
     <string name="once">En gang</string>
@@ -712,7 +707,7 @@
     <string name="disable_now">Deaktiver nu</string>
     <string name="draft">Udkast:</string>
     <string name="pref_omemo_setting">OMEMO-kryptering</string>
-    <string name="pref_omemo_setting_summary_always">OMEMO vil altid blive brugt for en-til-en og private gruppechats</string>
+    <string name="pref_omemo_setting_summary_always">OMEMO vil altid blive brugt for en-til-en og private gruppechats.</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO vil blive brugt som standard for nye samtaler.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO skal være tændt udtrykkeligt for nye samtaler.</string>
     <string name="create_shortcut">Opret genvej</string>
@@ -821,7 +816,7 @@
     <string name="something_went_wrong_processing_your_request">Noget gik galt ved behandlingen af din anmodning.</string>
     <string name="invalid_user_input">Ugyldig brugerindtastning</string>
     <string name="temporarily_unavailable">Midlertidig utilgængelig. Prøv igen senere.</string>
-    <string name="no_network_connection">Ingen netværksforbindelse</string>
+    <string name="no_network_connection">Ingen netværksforbindelse.</string>
     <string name="try_again_in_x">Prøv venligst igen om %s</string>
     <string name="rate_limited">Du er begrænset</string>
     <string name="too_many_attempts">For mange forsøg</string>
@@ -831,7 +826,7 @@
     <string name="enter_your_name_instructions">Indtast dit navn for at lade folk, der ikke har dig i deres adressebog, vide, hvem du er.</string>
     <string name="your_name">Dit navn</string>
     <string name="enter_your_name">Indtast dit navn</string>
-    <string name="no_name_set_instructions">Brug redigeringsknappen for at instille dit navn</string>
+    <string name="no_name_set_instructions">Brug redigeringsknappen for at indstille dit navn.</string>
     <string name="reject_request">Afvis anmodning</string>
     <string name="install_orbot">Installer Orbot</string>
     <string name="start_orbot">Start Orbot</string>
@@ -846,7 +841,7 @@
     <string name="restore">Gendan</string>
     <string name="enter_password_to_restore">Indtast din adgangskode til kontoen %s for at gendanne backuppen.</string>
     <string name="restore_warning">Brug ikke gendannelsessikkerhedsfunktionen i et forsøg på at klone (køre samtidigt) en installation. Gendannelse af en backup er kun beregnet til migreringer, eller hvis du har mistet den originale enhed.</string>
-    <string name="unable_to_restore_backup">Kunne ikke gendan backup</string>
+    <string name="unable_to_restore_backup">Kunne ikke gendan backup.</string>
     <string name="unable_to_decrypt_backup">Kunne ikke dekryptere backup. Er adgangskoden korrekt?</string>
     <string name="backup_channel_name">Backup &amp; Gendan</string>
     <string name="enter_jabber_id">Indtast XMPP-adresse</string>
@@ -858,21 +853,21 @@
     <string name="xmpp_address">XMPP-adresse</string>
     <string name="please_enter_name">Angiv venligst et navn til kanalen</string>
     <string name="please_enter_xmpp_address">Angiv venligst en XMPP-adresse</string>
-    <string name="this_is_an_xmpp_address">Dette er en XMPP-adresse. Angiv venligst et navn</string>
+    <string name="this_is_an_xmpp_address">Dette er en XMPP-adresse. Angiv venligst et navn.</string>
     <string name="creating_channel">Opret offentlig kanal…</string>
     <string name="channel_already_exists">Denne kanal eksister allerede</string>
     <string name="joined_an_existing_channel">Du sluttede dig til en eksisterende kanal</string>
     <string name="unable_to_set_channel_configuration">Kunne ikke gemme kanalkonfiguration</string>
     <string name="allow_participants_to_edit_subject">Tillad enhver at redigere emnet</string>
     <string name="allow_participants_to_invite_others">Tillad alle at invitere andre</string>
-    <string name="anyone_can_edit_subject">Alle kan redigere titlen</string>
+    <string name="anyone_can_edit_subject">Alle kan redigere titlen.</string>
     <string name="owners_can_edit_subject">Ejere kan redigere emnet.</string>
     <string name="admins_can_edit_subject">Administrator kan redigere emnet.</string>
     <string name="owners_can_invite_others">Ejere kan invitere andre.</string>
     <string name="anyone_can_invite_others">Alle kan invitere andre.</string>
     <string name="jabber_ids_are_visible_to_admins">XMPP-adresser er synlig for administratorerne.</string>
     <string name="jabber_ids_are_visible_to_anyone">XMPP-adresser er synlige for alle.</string>
-    <string name="no_users_hint_channel">Denne offentlige kanal har ingen deltagere. Inviter dine kontakter eller brug deleknappen til distribuere dens XMPP-adresse</string>
+    <string name="no_users_hint_channel">Denne offentlige kanal har ingen deltagere. Inviter dine kontakter eller brug deleknappen til distribuere dens XMPP-adresse.</string>
     <string name="no_users_hint_group_chat">Denne private gruppechat har ingen medlemmer.</string>
     <string name="manage_permission">Administrer rettigheder</string>
     <string name="search_participants">Find deltagere</string>
@@ -881,7 +876,6 @@
     <string name="discover_channels">Find kanaler</string>
     <string name="search_channels">Find kanaler</string>
     <string name="channel_discovery_opt_in_title">Risiko for krænkelse af privatlivet!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Kanalsøgning bruger en tredjepartstjeneste kaldet <a href="https://search.jabber.network">søg.jabber.netværk</a>.<br><br>Brug af denne funktion sender din IP-adresse og søgetermer til denne service. Se deres <a href="https://search.jabber.network/privacy">Privatlivspolitik</a> for mere information.]]></string>
     <string name="i_already_have_an_account">Jeg har allerede en konto</string>
     <string name="add_existing_account">Tilføj eksisterende konto</string>
     <string name="register_new_account">Registrer ny konto</string>
@@ -909,7 +903,7 @@
     <string name="make_call">Lav opkald</string>
     <string name="rtp_state_incoming_call">Indkommende opkald</string>
     <string name="rtp_state_incoming_video_call">Indkommende videoopkald</string>
-    <string name="rtp_state_content_add_video">Skift til videoopkald</string>
+    <string name="rtp_state_content_add_video">Skift til videoopkald\?</string>
     <string name="rtp_state_content_add">Tilføje yderligere spor?</string>
     <string name="rtp_state_connecting">Forbinder</string>
     <string name="rtp_state_connected">Forbundet</string>
@@ -933,10 +927,8 @@
     <string name="reconnecting_video_call">Forbinder igen videoopkald</string>
     <string name="disable_tor_to_make_call">Deaktiver TOR for at lave opkald</string>
     <string name="incoming_call">Indkommende opkald</string>
-    <string name="incoming_call_duration">Indkommende opkald · %s</string>
     <string name="missed_call_timestamp">Mistet opkald · %s</string>
     <string name="outgoing_call">Udgående opkald</string>
-    <string name="outgoing_call_duration">Udgående opkald · %s</string>
     <string name="missed_call">Mistet opkald</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d mistet opkald fra %2$s</item>
@@ -999,5 +991,17 @@
     <string name="audio_video_disabled_tor">Opkald er deaktiveret ved brug af Tor</string>
     <string name="switch_to_video">Skift til video</string>
     <string name="reject_switch_to_video">Afvis skift til video anmodning</string>
-
+    <string name="decline">Afvis</string>
+    <string name="could_not_delete_account_from_server">Kunne ikke slette konto fra server</string>
+    <string name="pref_up_push_account_title">XMPP Konto</string>
+    <string name="pref_up_push_server_title">Push Server</string>
+    <string name="no_account_deactivated">Ingen (deaktiveret)</string>
+    <string name="pref_up_push_account_summary">Den konto, hvorigennem push-beskeder modtages.</string>
+    <string name="unified_push_distributor">UnifiedPush-distributør</string>
+    <string name="outgoing_call_timestamp">Udgående opkald · %s</string>
+    <string name="outgoing_call_duration_timestamp">Udgående opkald (%s) · %s</string>
+    <string name="channel_discover_opt_in_message">Kanalopdagelse bruger en tredjepartstjeneste kaldet &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Brug af denne funktion vil overføre din IP-adresse og søgetermer til den service. Se deres &lt;a href=https://search.jabber.network/privacy&gt;privatlivspolitik&lt;/a&gt; for at få flere oplysninger.</string>
+    <string name="incoming_call_duration_timestamp">Indkommende opkald (%s) · %s</string>
+    <string name="delete_from_server">Fjern konto fra server</string>
+    <string name="pref_up_push_server_summary">En brugervalgt push-server til at videresende push-meddelelser via XMPP til din enhed.</string>
 </resources>

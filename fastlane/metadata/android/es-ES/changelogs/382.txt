@@ -1,0 +1,2 @@
+* Añadir botón para cambiar de cámara durante la videollamada
+* Corregidas las llamadas de voz en tablets

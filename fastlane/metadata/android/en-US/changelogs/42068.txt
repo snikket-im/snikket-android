@@ -1,0 +1,2 @@
+* support per conversation notification settings
+* use opus for voice messages on Android 10

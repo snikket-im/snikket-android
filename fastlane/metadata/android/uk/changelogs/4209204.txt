@@ -1,0 +1,2 @@
+* Простіший доступ до «Політики конфіденційності» у версії Play Store (Quicksy та Conversations)
+* Видалено інтеграцію адресної книги у версії Conversations для Play Store

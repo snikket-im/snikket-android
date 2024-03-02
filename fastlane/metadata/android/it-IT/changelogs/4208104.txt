@@ -1,0 +1,4 @@
+* Accesso più facile a 'Mostra codice QR'
+* Supporto per PEP Native Bookmarks
+* Aggiunto supporto per il modello Offerta / Risposta SDP (usato dai gateway SIP)
+* Aumentata l'API di destinazione ad Android 14

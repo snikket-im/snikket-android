@@ -1,0 +1,7 @@
+steps:
+    build:
+        image: codeberg.org/freeyourgadget/android-fdroid-tools:latest
+        commands:
+            - ./gradlew clean
+            - ./gradlew assembleConversationsFreeDebug
+            - ./gradlew assembleQuicksyFreeDebug

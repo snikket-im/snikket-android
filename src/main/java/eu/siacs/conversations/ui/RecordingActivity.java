@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 
+import com.google.common.collect.ImmutableSet;
+
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -25,6 +27,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -95,14 +98,40 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         }
     }
 
+    private static final Set<String> AAC_SENSITIVE_DEVICES =
+            new ImmutableSet.Builder<String>()
+                    .add("FP4")             // Fairphone 4 https://codeberg.org/monocles/monocles_chat/issues/133
+                    .add("ONEPLUS A6000")   // OnePlus 6 https://github.com/iNPUTmice/Conversations/issues/4329
+                    .add("ONEPLUS A6003")   // OnePlus 6 https://github.com/iNPUTmice/Conversations/issues/4329
+                    .add("ONEPLUS A6010")   // OnePlus 6T https://codeberg.org/monocles/monocles_chat/issues/133
+                    .add("ONEPLUS A6013")   // OnePlus 6T https://codeberg.org/monocles/monocles_chat/issues/133
+                    .add("Pixel 4a")        // Pixel 4a https://github.com/iNPUTmice/Conversations/issues/4223
+                    .build();
+
     private boolean startRecording() {
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        mRecorder.setAudioEncodingBitRate(96000);
-        mRecorder.setAudioSamplingRate(22050);
-        setupOutputFile();
+        final int outputFormat;
+        if (Config.USE_OPUS_VOICE_MESSAGES && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            outputFormat = MediaRecorder.OutputFormat.OGG;
+            mRecorder.setOutputFormat(outputFormat);
+            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);
+            mRecorder.setAudioEncodingBitRate(32_000);
+        } else {
+            outputFormat = MediaRecorder.OutputFormat.MPEG_4;
+            mRecorder.setOutputFormat(outputFormat);
+            if (AAC_SENSITIVE_DEVICES.contains(Build.MODEL)) {
+                // Changing these three settings for AAC sensitive devices might lead to sporadically truncated (cut-off) voice messages.
+                mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
+                mRecorder.setAudioSamplingRate(24_000);
+                mRecorder.setAudioEncodingBitRate(28_000);
+            } else {
+                mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                mRecorder.setAudioSamplingRate(22_050);
+                mRecorder.setAudioEncodingBitRate(64_000);
+            }
+        }
+        setupOutputFile(outputFormat);
         mRecorder.setOutputFile(mOutputFile.getAbsolutePath());
 
         try {
@@ -110,10 +139,10 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
             mRecorder.start();
             mStartTime = SystemClock.elapsedRealtime();
             mHandler.postDelayed(mTickExecutor, 100);
-            Log.d("Voice Recorder", "started recording to " + mOutputFile.getAbsolutePath());
+            Log.d(Config.LOGTAG, "started recording to " + mOutputFile.getAbsolutePath());
             return true;
         } catch (Exception e) {
-            Log.e("Voice Recorder", "prepare() failed " + e.getMessage());
+            Log.e(Config.LOGTAG, "prepare() failed ", e);
             return false;
         }
     }
@@ -175,9 +204,18 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         }
     }
 
-    private File generateOutputFilename() {
+    private File generateOutputFilename(final int outputFormat) {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
-        final String filename = "RECORDING_" + dateFormat.format(new Date()) + ".m4a";
+        final String extension;
+        if (outputFormat == MediaRecorder.OutputFormat.MPEG_4) {
+            extension = "m4a";
+        } else if (outputFormat == MediaRecorder.OutputFormat.OGG) {
+            extension = "oga";
+        } else {
+            throw new IllegalStateException("Unrecognized output format");
+        }
+        final String filename =
+                String.format("RECORDING_%s.%s", dateFormat.format(new Date()), extension);
         final File parentDirectory;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             parentDirectory =
@@ -190,8 +228,8 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         return new File(conversationsDirectory, filename);
     }
 
-    private void setupOutputFile() {
-        mOutputFile = generateOutputFilename();
+    private void setupOutputFile(final int outputFormat) {
+        mOutputFile = generateOutputFilename(outputFormat);
         final File parentDirectory = mOutputFile.getParentFile();
         if (Objects.requireNonNull(parentDirectory).mkdirs()) {
             Log.d(Config.LOGTAG, "created " + parentDirectory.getAbsolutePath());

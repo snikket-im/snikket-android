@@ -1,0 +1,4 @@
+* 更容易访问“显示二维码”
+* 支持 PEP Native Bookmarks
+* 添加对 SDP 请求/响应模型的支持（由 SIP 网关使用）
+* 将目标 API 提升到 Android 14

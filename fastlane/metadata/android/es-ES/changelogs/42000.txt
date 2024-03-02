@@ -1,0 +1,4 @@
+* Posibilidad de seleccionar el tono de la llamada entrante
+* Corrección de la identificación de claves OpenPGP para OpenKeychain 5.6+.
+* Verificación correcta de los certificados TLS punycode
+* Mejora de la estabilidad del establecimiento de sesiones RTP (llamadas)

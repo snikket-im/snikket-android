@@ -1,0 +1,2 @@
+* Adăugarea butonului pentru a schimba camera în timpul apelului video
+* Repararea apelurilor voce pe tablete

@@ -184,7 +184,6 @@
     <string name="unpublish_pgp_message">Είστε βέβαιοι ότι θέλετε να αφαιρέσετε το δημόσιο κλειδί σας OpenPGP από την ανακοίνωση παρουσίας σας;\nΟι επαφές σας δεν θα είναι πλέον δυνατόν να σας στείλουν κρυπτογραφημένα μηνύματα με OpenPGP.</string>
     <string name="openpgp_has_been_published">Το δημόσιο κλειδί OpenPGP έχει δημοσιευτεί.</string>
     <string name="mgmt_account_enable">Ενεργοποίηση λογαριασμού</string>
-    <string name="mgmt_account_are_you_sure">Είστε βέβαιοι;</string>
     <string name="mgmt_account_delete_confirm_text">Η διαγραφή του λογαριασμού σας διαγράφει όλο το ιστορικό συζητήσεών σας</string>
     <string name="attach_record_voice">Εγγραφή φωνής</string>
     <string name="account_settings_jabber_id">Διεύθυνση XMPP</string>
@@ -227,7 +226,6 @@
     <string name="fetching_keys">Μεταφόρτωση κλειδιών...</string>
     <string name="done">Έγινε</string>
     <string name="decrypt">Αποκρυπτογράφηση</string>
-    <string name="bookmarks">Σελιδοδείκτες</string>
     <string name="search">Αναζήτηση</string>
     <string name="enter_contact">Εισαγωγή επαφής</string>
     <string name="delete_contact">Διαγραφή επαφής</string>
@@ -453,7 +451,6 @@
     <string name="recently_used">Πιο πρόσφατα χρησιμοποιημένη</string>
     <string name="choose_quick_action">Επιλογή γρήγορης ενέργειας</string>
     <string name="search_contacts">Αναζήτηση επαφών</string>
-    <string name="search_bookmarks">Αναζήτηση σελιδοδεικτών</string>
     <string name="send_private_message">Αποστολή ιδιωτικού μηνύματος</string>
     <string name="user_has_left_conference">Ο/Η %1$s αποχώρησε από την ομαδική συζήτηση</string>
     <string name="username">Όνομα χρήστη</string>
@@ -513,7 +510,6 @@
     <string name="no_camera_permission">Απόδοση δικαιώματος στο %1$s για πρόσβαση στην φωτογραφική μηχανή</string>
     <string name="sync_with_contacts">Συγχρονισμός με επαφές</string>
     <string name="sync_with_contacts_long">Το %1$s ζητάει το δικαίωμα να έχει πρόσβαση στο βιβλίο διευθύνσεων για να το ταιριάξει με την λίστα επαφών XMPP σας.\nΑυτή η ενέργεια θα εμφανίσει τα πλήρη ονόματα και τις εικόνες προφίλ των επαφών σας.\n\nΤο %1$s θα διαβάσει μόνο το βιβλίο διευθύνσεών σας και θα το ταιριάξει τοπικά χωρίς να μεταφορτώσει κανένα στοιχείο στον διακομιστή σας. </string>
-    <string name="sync_with_contacts_quicksy"><![CDATA[Το Quicksy χρειάζεται να έχει πρόσβαση στους τηλεφωνικούς αριθμούς των επαφών σας για να προτείνει πιθανές επαφές που χρησιμοποιούν ήδη το Quicksy.<br><br>Δεν θα αποθηκευτεί αντίγραφο αυτών των τηλεφωνικών αριθμών.\n\nΓια περισσότερες πληροφορίες διαβάστε την <a href="https://quicksy.im/#privacy">πολιτική απορρήτου</a> μας.<br><br>Θα σας ζητηθεί τώρα να δώσετε το δικαίωμα για πρόσβαση στις επαφές σας.]]></string>
     <string name="notify_on_all_messages">Ειδοποίηση για όλα τα μηνύματα</string>
     <string name="notify_only_when_highlighted">Ειδοποίηση μόνο όταν αναφέρεται το όνομά μου</string>
     <string name="notify_never">Οι ειδοποιήσεις απενεργοποιήθηκαν</string>
@@ -536,7 +532,6 @@
     <string name="security_error_invalid_file_access">Σφάλμα ασφάλειας: Μη έγκυρη πρόσβαση σε αρχείο!</string>
     <string name="no_application_to_share_uri">Δεν βρέθηκε εφαρμογή για να μοιραστείτε την διεύθυνση URI</string>
     <string name="share_uri_with">Διαμοιρασμός της διεύθυνσης URI με...</string>
-    <string name="welcome_text_quicksy"><![CDATA[Το Quicksy είναι ένα παρακλάδι του δημοφιλούς προγράμματος XMPP Conversations με αυτόματη εύρεση επαφών.<br><br>Εγγράφεστε με τον τηλεφωνικό σας αριθμό και το Quicksy αυτόματα — με βάση τους τηλεφωνικούς αριθμούς στο βιβλίο διευθύνσεών σας — προτείνει πιθανές επαφές για εσάς.<br><br>Με την εγγραφή σας συμφωνείτε με την <a href="https://quicksy.im/#privacy">πολιτική απορρήτου</a> μας.]]></string>
     <string name="agree_and_continue">Συμφωνώ και προχωρήστε</string>
     <string name="magic_create_text">Θα καθοδηγηθείτε στη διαδικασία δημιουργίας ενός λογαριασμού στο conversations.im.¹\nΕπιλέγοντας το conversations.im ως πάροχο θα μπορείτε να επικοινωνείτε με χρήστες άλλων παρόχων δίνοντάς τους την πλήρη διεύθυνση XMPP σας.</string>
     <string name="your_full_jid_will_be">Η πλήρης ταυτότητα XMPP σας θα είναι: %s</string>
@@ -874,7 +869,6 @@
     <string name="discover_channels">Εύρεση καναλιών</string>
     <string name="search_channels">Αναζήτηση καναλιών</string>
     <string name="channel_discovery_opt_in_title">Πιθανή παραβίαση ιδιωτικότητας!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Η εύρεση καναλιού χρησιμοποιεί μια τρίτη υπηρεσία που λέγεται <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Χρησιμοποιώντας αυτή τη λειτουργία θα μεταβιβαστεί η διεύθυνση IP σας και οι όροι αναζήτησης σε αυτή την υπηρεσία. Δείτε την <a href="https://search.jabber.network/privacy">Πολιτική Ιδιωτικότητας</a> της για περισσότερες πληροφορίες.]]></string>
     <string name="i_already_have_an_account">Έχω ήδη λογαριασμό</string>
     <string name="add_existing_account">Προσθήκη υπάρχοντος λογαριασμού</string>
     <string name="register_new_account">Εγγραφή νέου λογαριασμού</string>
@@ -924,10 +918,8 @@
     <string name="reconnecting_video_call">Επανασύνδεση βίντεοκλήσης</string>
     <string name="disable_tor_to_make_call">Απενεργοποίηστε το Tor για να κάνετε κλήσεις</string>
     <string name="incoming_call">Εισερχόμενη κλήση</string>
-    <string name="incoming_call_duration">Εισερχόμενη κλήση · %s</string>
     <string name="missed_call_timestamp">Αναπάντηση κλήση · %s</string>
     <string name="outgoing_call">Εξερχόμενη κλήση</string>
-    <string name="outgoing_call_duration">Εξερχόμενη κλήση · %s</string>
     <string name="missed_call">Αναπάντηση κλήση</string>
     <string name="audio_call">Κλήση ήχου</string>
     <string name="video_call">Βιντεοκλήση</string>

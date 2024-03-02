@@ -1,0 +1,2 @@
+* Arranxo da selección do avatar en dispositivos Android 10
+* Arranxo da transferencia de ficheiros moi grandes

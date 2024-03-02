@@ -133,7 +133,6 @@
     <string name="unpublish_pgp">Fjern offentlig OpenPGP-nøkkel</string>
     <string name="unpublish_pgp_message">Er du sikker på at du vil fjerne din offentlige OpenPGP-nøkkel fra din tilstedeværelseskunngjøring?\nDine kontakter vil ikke lenger kunne sende deg OpenPGP-krypterte meldinger.</string>
     <string name="mgmt_account_enable">Skru på konto</string>
-    <string name="mgmt_account_are_you_sure">Bekreft.</string>
     <string name="attach_record_voice">Ta opp stemme</string>
     <string name="account_settings_example_jabber_id">brukernavn@eksempel.no</string>
     <string name="password">Passord</string>

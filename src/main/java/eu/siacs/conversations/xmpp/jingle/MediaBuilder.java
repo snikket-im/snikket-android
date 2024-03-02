@@ -1,6 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Multimap;
 
 import java.util.List;
 
@@ -8,9 +9,9 @@ public class MediaBuilder {
     private String media;
     private int port;
     private String protocol;
-    private List<Integer> formats;
+    private String format;
     private String connectionData;
-    private ArrayListMultimap<String,String> attributes;
+    private Multimap<String, String> attributes;
 
     public MediaBuilder setMedia(String media) {
         this.media = media;
@@ -27,8 +28,13 @@ public class MediaBuilder {
         return this;
     }
 
-    public MediaBuilder setFormats(List<Integer> formats) {
-        this.formats = formats;
+    public MediaBuilder setFormats(final List<Integer> formats) {
+        this.format = Joiner.on(' ').join(formats);
+        return this;
+    }
+
+    public MediaBuilder setFormat(final String format) {
+        this.format = format;
         return this;
     }
 
@@ -37,12 +43,13 @@ public class MediaBuilder {
         return this;
     }
 
-    public MediaBuilder setAttributes(ArrayListMultimap<String,String> attributes) {
+    public MediaBuilder setAttributes(Multimap<String, String> attributes) {
         this.attributes = attributes;
         return this;
     }
 
     public SessionDescription.Media createMedia() {
-        return new SessionDescription.Media(media, port, protocol, formats, connectionData, attributes);
+        return new SessionDescription.Media(
+                media, port, protocol, format, connectionData, attributes);
     }
 }

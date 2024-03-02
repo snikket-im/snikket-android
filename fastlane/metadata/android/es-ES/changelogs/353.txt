@@ -1,0 +1,4 @@
+* Permitir a los usuarios establecer su propio apodo
+* reanudar la descarga de archivos encriptados OMEMO
+* Los canales ahora usan '#' como símbolo en el avatar
+* Quicksy utiliza «siempre» como cifrado OMEMO por defecto (oculta el icono del candado)

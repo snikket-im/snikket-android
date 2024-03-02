@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_notification_grace_period_summary">別のデバイスで活動を見た後、Quicksy を静かにする時間の長さ</string>
-    <string name="pref_never_send_crash_summary">スタックトレースを送信することで、あなたは Quicksy の継続的な開発を支援しています</string>
+    <string name="pref_never_send_crash_summary">スタックトレースを送信すると、 Quicksyの開発の助けとなります</string>
     <string name="pref_broadcast_last_activity_summary">Quicksy を使用するときに、すべての連絡先に知らせましょう</string>
     <string name="huawei_protected_apps_summary">画面がオフになっている場合でも通知を受信し続けるには、保護されたアプリのリストに Quicksy を追加する必要があります。</string>
     <string name="set_profile_picture">Quicksy プロフィール写真</string>
