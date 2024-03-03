@@ -83,6 +83,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -879,7 +880,12 @@ public class XmppConnectionService extends Service {
                 }
                 return START_NOT_STICKY;
         }
-        manageAccountConnectionStates(action, intent == null ? null : intent.getExtras());
+        final var extras =  intent == null ? null : intent.getExtras();
+        try {
+            internalPingExecutor.execute(() -> manageAccountConnectionStates(action, extras));
+        } catch (final RejectedExecutionException e) {
+            Log.e(Config.LOGTAG, "can not schedule connection states manager");
+        }
         if (SystemClock.elapsedRealtime() - mLastExpiryRun.get() >= Config.EXPIRY_INTERVAL) {
             expireOldMessages();
         }
@@ -959,7 +965,7 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    private boolean processAccountState(Account account, boolean interactive, boolean isUiAction, boolean isAccountPushed, HashSet<Account> pingCandidates) {
+    private boolean processAccountState(final Account account, final boolean interactive, final boolean isUiAction, final boolean isAccountPushed, final HashSet<Account> pingCandidates) {
         if (!account.getStatus().isAttemptReconnect()) {
             return false;
         }
