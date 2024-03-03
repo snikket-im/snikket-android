@@ -4,7 +4,8 @@
     <string name="use_conversations.im">Użyj conversations.im</string>
     <string name="create_new_account">Stwōrz nowe kōnto</string>
     <string name="do_you_have_an_account">Mosz już kōnto XMPP? Tak może być, jeźli już używosz inkszego klijynta XMPP aboś używoł abo używała wcześnij  Conversations. Jak niy, to możesz stworzić teroz nowe kōnto XMPP.\nDorada: Niykerzi liferańcio emaili dowajōm tyż kōnta XMPP.</string>
-    <string name="server_select_text">XMPP to je nec wartkich wiadōmości niyzależny ôd liferanta. Możesz używać tego klijynta ze serwerym XMPP, jaki sie wybieresz.\nAle dlo twojij wygody ułacniyli my tworzynie kōnt na conversations.im; liferańcie ekstra dopasowanym do używanio ze Conversations.</string>
+    <string name="server_select_text">XMPP to je nec wartkich wiadōmości niyzależny ôd liferanta. Możesz używać tego klijynta ze serwerym XMPP, jaki sie wybieresz.
+\nAle dlo twojij wygody ułacniyli my tworzynie kōnt na conversations.im; liferańcie ekstra dopasowanym do używanio ze Conversations.</string>
     <string name="magic_create_text_on_x">Mosz zaproszynie na %1$s. Pokludzymy cie bez proces tworzynio kōnta.\nPo wybraniu %1$s za liferanta, poradzisz kōmunikować sie ze używoczami ôd inkszych liferantōw bez danie im swojij połnyj adresy XMPP.</string>
     <string name="magic_create_text_fixed">Mosz zaproszynie na %1$s. Miano ôd używocza już je do ciebie wybrane. Pokludzymy cie bez proces tworzynio kōnta.\nBydzie szło kōmunikować sie ze używoczami ôd inkszych liferantōw bez danie im swojij połnyj adresy XMPP.</string>
     <string name="your_server_invitation">Twoje zaproszynie na serwer</string>
