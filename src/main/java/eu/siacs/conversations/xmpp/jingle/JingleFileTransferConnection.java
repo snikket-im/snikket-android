@@ -843,6 +843,8 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
         if (transport == null) {
             return;
         }
+        // TODO consider setting transport callback to null. requires transport to handle null callback
+        //transport.setTransportCallback(null);
         transport.terminate();
         this.transport = null;
     }
@@ -980,7 +982,10 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
     public void onTransportSetupFailed() {
         final var transport = this.transport;
         if (transport == null) {
-            // this really is not supposed to happen
+            // this can happen on IQ timeouts
+            if (isTerminated()) {
+                return;
+            }
             sendSessionTerminate(Reason.FAILED_APPLICATION, null);
             return;
         }
