@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="server_select_text">XMPP është një rrjet shkëmbimi mesazhesh të atypëratyshëm i pavarur nga shërbimet. Këtë klient mund ta përdorni me cilindo shërbyes XMPP që zgjidhni.
+    <string name="server_select_text">XMPP është një rrjet shkëmbimi mesazhesh të atypëratyshëm i pavarur nga shërbimet. Këtë aplikacion mund ta përdorni me cilindo shërbyes XMPP që zgjidhni.
 \nMegjithatë, për lehtësi, e kemi bërë të kollajshme të krijohet një llogari te conversations.im, një shërbim posaçërisht i përshtatshëm për përdorim me Conversations.</string>
     <string name="magic_create_text_on_x">Jeni ftuar te %1$s. Do t’ju udhëheqim përmes procesit të krijimit të një llogarie.
 \nKur zgjidhet %1$s si shërbim, do të jeni në gjendje të komunikoni me përdorues nga shërbime të tjera duke u dhënë adresën tuaj të plotë XMPP.</string>
