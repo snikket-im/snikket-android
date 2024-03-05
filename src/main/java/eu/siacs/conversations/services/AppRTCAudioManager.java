@@ -16,6 +16,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.AudioDeviceInfo;
 import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -25,11 +26,14 @@ import com.google.common.collect.ImmutableSet;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.AppRTCUtils;
+import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 
 import org.webrtc.ThreadUtils;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /** AppRTCAudioManager manages all audio related parts of the AppRTC demo. */
 public class AppRTCAudioManager {
@@ -66,6 +70,7 @@ public class AppRTCAudioManager {
     private final BroadcastReceiver wiredHeadsetReceiver;
     // Callback method for changes in audio focus.
     @Nullable private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
+    private ScheduledFuture<?> ringBackFuture;
 
     public AppRTCAudioManager(final Context context) {
         apprtcContext = context;
@@ -452,6 +457,29 @@ public class AppRTCAudioManager {
 
     public void executeOnMain(final Runnable runnable) {
         ContextCompat.getMainExecutor(apprtcContext).execute(runnable);
+    }
+
+    public void startRingBack() {
+        this.ringBackFuture =
+                JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(
+                        () -> {
+                            final var toneGenerator =
+                                    new ToneGenerator(
+                                            AudioManager.STREAM_MUSIC,
+                                            CallIntegration.DEFAULT_VOLUME);
+                            toneGenerator.startTone(ToneGenerator.TONE_CDMA_DIAL_TONE_LITE, 750);
+                        },
+                        0,
+                        3,
+                        TimeUnit.SECONDS);
+    }
+
+    public void stopRingBack() {
+        final var future = this.ringBackFuture;
+        if (future == null || future.isDone()) {
+            return;
+        }
+        future.cancel(true);
     }
 
     /** AudioManager state. */

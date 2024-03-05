@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CallIntegration extends Connection {
 
-    private static final int DEFAULT_VOLUME = 80;
+    public static final int DEFAULT_VOLUME = 80;
 
     private final Context context;
 
@@ -309,7 +309,13 @@ public class CallIntegration extends Connection {
     @Override
     public void onStateChanged(final int state) {
         Log.d(Config.LOGTAG, "onStateChanged(" + state + ")");
-        // TODO devices before selfManaged() will likely have to play their own ringback sound
+        if (notSelfManaged()) {
+            if (state == STATE_DIALING) {
+                requireAppRtcAudioManager().startRingBack();
+            } else {
+                requireAppRtcAudioManager().stopRingBack();
+            }
+        }
         if (state == STATE_ACTIVE) {
             playConnectedSound();
         } else if (state == STATE_DISCONNECTED) {
