@@ -314,7 +314,7 @@ public class CallIntegrationConnectionService extends ConnectionService {
             final Account account,
             final Jid with,
             final Set<Media> media) {
-        if (CallIntegration.selfManaged()) {
+        if (CallIntegration.selfManaged(service)) {
             final var extras = new Bundle();
             extras.putParcelable(
                     TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE, getHandle(service, account));
@@ -349,7 +349,7 @@ public class CallIntegrationConnectionService extends ConnectionService {
 
     public static void addNewIncomingCall(
             final Context context, final AbstractJingleConnection.Id id) {
-        if (CallIntegration.notSelfManaged()) {
+        if (CallIntegration.notSelfManaged(context)) {
             Log.d(
                     Config.LOGTAG,
                     "not adding incoming call to TelecomManager on Android "

@@ -1,6 +1,7 @@
 package eu.siacs.conversations.services;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.net.Uri;
@@ -50,7 +51,12 @@ public class CallIntegration extends Connection {
     public CallIntegration(final Context context) {
         this.context = context.getApplicationContext();
         if (selfManaged()) {
-            setConnectionProperties(Connection.PROPERTY_SELF_MANAGED);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                setConnectionProperties(Connection.PROPERTY_SELF_MANAGED);
+            } else {
+                throw new AssertionError(
+                        "Trying to set connection properties on unsupported version");
+            }
             this.appRTCAudioManager = null;
         } else {
             this.appRTCAudioManager = new AppRTCAudioManager(context);
@@ -151,7 +157,11 @@ public class CallIntegration extends Connection {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             setAudioDeviceUpsideDownCake(audioDevice);
         } else if (selfManaged()) {
-            setAudioDeviceOreo(audioDevice);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                setAudioDeviceOreo(audioDevice);
+            } else {
+                throw new AssertionError("Trying to set audio devices on unsupported version");
+            }
         } else {
             setAudioDeviceFallback(audioDevice);
         }
@@ -309,7 +319,7 @@ public class CallIntegration extends Connection {
     @Override
     public void onStateChanged(final int state) {
         Log.d(Config.LOGTAG, "onStateChanged(" + state + ")");
-        if (notSelfManaged()) {
+        if (notSelfManaged(context)) {
             if (state == STATE_DIALING) {
                 requireAppRtcAudioManager().startRingBack();
             } else {
@@ -432,18 +442,24 @@ public class CallIntegration extends Connection {
         callback.onAudioDeviceChanged(selectedAudioDevice, availableAudioDevices);
     }
 
-    public static boolean selfManaged() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    private boolean selfManaged() {
+        return selfManaged(context);
     }
 
-    public static boolean notSelfManaged() {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.O;
+    public static boolean selfManaged(final Context context) {
+        final var packageManager = context.getPackageManager();
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                && packageManager.hasSystemFeature(PackageManager.FEATURE_TELEPHONY);
+    }
+
+    public static boolean notSelfManaged(final Context context) {
+        return !selfManaged(context);
     }
 
     public void setInitialAudioDevice(final AudioDevice audioDevice) {
         Log.d(Config.LOGTAG, "setInitialAudioDevice(" + audioDevice + ")");
         this.initialAudioDevice = audioDevice;
-        if (CallIntegration.selfManaged()) {
+        if (selfManaged()) {
             // once the 'CallIntegration' gets added to the system we receive calls to update audio
             // state
             return;

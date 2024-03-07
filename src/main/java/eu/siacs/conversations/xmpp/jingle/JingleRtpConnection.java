@@ -1692,7 +1692,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         ringingTimeoutFuture =
                 jingleConnectionManager.schedule(
                         this::ringingTimeout, BUSY_TIME_OUT, TimeUnit.SECONDS);
-        if (CallIntegration.selfManaged()) {
+        if (CallIntegration.selfManaged(xmppConnectionService)) {
             return;
         }
         xmppConnectionService.getNotificationService().startRinging(id, getMedia());
