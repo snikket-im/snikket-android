@@ -1560,17 +1560,18 @@ public class ConversationFragment extends XmppFragment
                     RtpSessionActivity.EXTRA_ACCOUNT,
                     id.getAccount().getJid().asBareJid().toEscapedString());
             intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.getWith().toEscapedString());
-            if (id instanceof AbstractJingleConnection.Id) {
+            if (id instanceof AbstractJingleConnection) {
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.getSessionId());
-            } else if (id instanceof JingleConnectionManager.RtpSessionProposal) {
-                if (((JingleConnectionManager.RtpSessionProposal) id).media.contains(Media.VIDEO)) {
+                startActivity(intent);
+            } else if (id instanceof JingleConnectionManager.RtpSessionProposal proposal) {
+                if (proposal.media.contains(Media.VIDEO)) {
                     intent.setAction(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
                 } else {
                     intent.setAction(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
                 }
+                startActivity(intent);
             }
-            startActivity(intent);
         }
     }
 
