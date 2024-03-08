@@ -329,8 +329,8 @@
     <string name="jabber_id_copied_to_clipboard">Kopierade XMPP-adress till urklipp</string>
     <string name="error_message_copied_to_clipboard">Kopierade felmeddelandet till urklipp</string>
     <string name="web_address">webbadress</string>
-    <string name="scan_qr_code">Scanna 2D-streckkod</string>
-    <string name="show_qr_code">Visa 2D-streckkod</string>
+    <string name="scan_qr_code">Scanna QR-kod</string>
+    <string name="show_qr_code">Visa QR-kod</string>
     <string name="show_block_list">Visa blockeringslista</string>
     <string name="account_details">Kontodetaljer</string>
     <string name="confirm">Bekräfta</string>
@@ -524,7 +524,7 @@
     <string name="shared_text_with_x">Text delades med %s</string>
     <string name="no_storage_permission">Bevilja %1$s åtkomst till extern lagring</string>
     <string name="no_camera_permission">Bevilja %1$s åtkomst till kameran</string>
-    <string name="sync_with_contacts">Synkronisera med kontakter</string>
+    <string name="sync_with_contacts">Kontaktlistintegration</string>
     <string name="sync_with_contacts_long">%1$s vill ha behörighet att komma åt din adressbok för att matcha den med din XMPP-kontaktlista.
 \nDetta kommer att visa dina kontakters fullständiga namn och visningsbilder.
 \n
@@ -1045,4 +1045,5 @@
     <string name="channel_discover_opt_in_message">Funktionen Channel Discovery, använder en tredjepartstjänst som heter &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Om du använder den här funktionen, överförs din IP-adress och din söktermer till den tjänsten. Se deras &lt;a href=https://search.jabber.network/privacy&gt;sekretesspolicy&lt;/a&gt; för mer information.</string>
     <string name="restore_warning_continued">Försök inte att återställa säkerhetskopior som du inte har skapat själv!</string>
     <string name="could_not_delete_account_from_server">Det gick inte att ta bort kontot från servern</string>
+    <string name="quicksy_wants_your_consent">Quicksy ber om ditt samtycke för att använda dina uppgifter</string>
 </resources>
