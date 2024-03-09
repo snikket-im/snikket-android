@@ -324,7 +324,7 @@
     <string name="jabber_id_copied_to_clipboard">Skopiowano adres XMPP do schowka</string>
     <string name="error_message_copied_to_clipboard">Skopiowano komunikat błędu do schowka</string>
     <string name="web_address">adres URL</string>
-    <string name="scan_qr_code">Zeskanuj kod</string>
+    <string name="scan_qr_code">Zeskanuj kod QR</string>
     <string name="show_qr_code">Pokaż kod QR</string>
     <string name="show_block_list">Wyświetl listę banów</string>
     <string name="account_details">Szczegóły konta</string>
@@ -523,11 +523,10 @@
     <string name="shared_text_with_x">Tekst udostępniony %s</string>
     <string name="no_storage_permission">Pozwól %1$s na dostęp do zewnętrznego magazynu</string>
     <string name="no_camera_permission">Pozwól %1$s na dostępu do aparatu</string>
-    <string name="sync_with_contacts">Synchronizuj z kontaktami</string>
-    <string name="sync_with_contacts_long">%1$s potrzebuje dostępu do twojej książki adresowej aby dopasować ją z twoją listą kontaktów XMPP.
-\nDzięki temu wyświetlone zostaną pełne nazwy i awatary kontaktów.
+    <string name="sync_with_contacts">Integracja listy kontaktów</string>
+    <string name="sync_with_contacts_long">%1$s przetwarza twoje kontakty lokalnie, na twoim urządzeniu, by pokazać nazwę i awatar profilu zgodny z kontaktami z XMPP.
 \n
-\n%1$s użyje książki adresowej wyłącznie do lokalnego dopasowania bez wysyłania czegokolwiek na serwer.</string>
+\nŻaden kontakt nie opuści twojego urządzenia!</string>
     <string name="notify_on_all_messages">Powiadom o wszystkich wiadomościach</string>
     <string name="notify_only_when_highlighted">Powiadamiaj tylko w przypadku wzmianki o mnie</string>
     <string name="notify_never">Powiadomienia wyłączone</string>
@@ -629,7 +628,7 @@
     <string name="pref_blind_trust_before_verification_summary">Automatycznie ufaj wszystkim nowym urządzeniom kontaktów, którzy nie zostali zweryfikowani wcześniej i poproś o ręczne potwierdzenie za każdym razem, kiedy zweryfikowany kontakt dodaje nowe urządzenie.</string>
     <string name="blindly_trusted_omemo_keys">Ślepo zaufane klucze OMEMO, to jest mogą należeć do kogoś innego lub ktoś może się podszywać.</string>
     <string name="not_trusted">Niezaufane</string>
-    <string name="invalid_barcode">Nieprawidłowy kod kreskowy 2D</string>
+    <string name="invalid_barcode">Nieprawidłowy kod QR</string>
     <string name="pref_clean_cache_summary">Wyczyść cache (używane przez aparat)</string>
     <string name="pref_clean_cache">Wyczyść cache</string>
     <string name="pref_clean_private_storage">Wyczyść prywatny magazyn</string>
@@ -1052,10 +1051,14 @@
     <string name="this_account_is_logged_out">Wylogowano się z tego konta</string>
     <string name="log_in">Zaloguj się</string>
     <string name="hide_notification">Ukryj powiadomienie</string>
-    <string name="contact_uses_unverified_keys">Twój kontakt korzysta z niezweryfikowanych urządzeń. Zeskanuj ich kod kreskowy 2D, aby przeprowadzić weryfikację i uniemożliwić aktywne ataki MITM.</string>
+    <string name="contact_uses_unverified_keys">Twój kontakt korzysta z niezweryfikowanych urządzeń. Zeskanuj ich kod QR, aby przeprowadzić weryfikację i uniemożliwić aktywne ataki MITM.</string>
     <string name="report_spam_and_block">Zgłoś spam i zablokuj nadawcę</string>
     <string name="log_out">Wyloguj się</string>
     <string name="account_state_logged_out">Wylogowano</string>
-    <string name="unverified_devices">Używasz z niezweryfikowanych urządzeń. Zeskanuj kod kreskowy 2D na innych urządzeniach, aby przeprowadzić weryfikację i uniemożliwić aktywne ataki MITM.</string>
+    <string name="unverified_devices">Korzystasz z niezweryfikowanych urządzeń. Zeskanuj kod QR na innych urządzeniach, aby przeprowadzić weryfikację i uniemożliwić aktywne ataki MITM.</string>
     <string name="report_spam">Zgłoś spam</string>
+    <string name="privacy_policy">Polityka prywatności</string>
+    <string name="welcome_header_quicksy">Witamy w Quicksy!</string>
+    <string name="rtp_state_contact_offline">Kontakt nie jest dostępny</string>
+    <string name="contact_list_integration_not_available">Integracja listy kontaktów nie jest dostępna</string>
 </resources>
