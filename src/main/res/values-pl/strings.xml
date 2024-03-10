@@ -1061,4 +1061,7 @@
     <string name="welcome_header_quicksy">Witamy w Quicksy!</string>
     <string name="rtp_state_contact_offline">Kontakt nie jest dostępny</string>
     <string name="contact_list_integration_not_available">Integracja listy kontaktów nie jest dostępna</string>
+    <string name="quicksy_wants_your_consent">Quicksy pyta o pozwolenie na użycie twoich danych</string>
+    <string name="no_permission_to_place_call">Brak pozwolenia na wypisanie numeru telefonu</string>
+    <string name="call_integration_not_available">Integracja połączeń nie jest dostępna!</string>
 </resources>
