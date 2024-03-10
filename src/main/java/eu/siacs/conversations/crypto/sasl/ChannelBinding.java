@@ -10,14 +10,14 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableBiMap;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.SSLSockets;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public enum ChannelBinding {
     NONE,
@@ -104,22 +104,17 @@ public enum ChannelBinding {
     }
 
     private static String shortName(final ChannelBinding channelBinding) {
-        switch (channelBinding) {
-            case TLS_UNIQUE:
-                return "UNIQ";
-            case TLS_EXPORTER:
-                return "EXPR";
-            case TLS_SERVER_END_POINT:
-                return "ENDP";
-            case NONE:
-                return "NONE";
-            default:
-                throw new AssertionError("Missing short name for " + channelBinding);
-        }
+        return switch (channelBinding) {
+            case TLS_UNIQUE -> "UNIQ";
+            case TLS_EXPORTER -> "EXPR";
+            case TLS_SERVER_END_POINT -> "ENDP";
+            case NONE -> "NONE";
+            default -> throw new AssertionError("Missing short name for " + channelBinding);
+        };
     }
 
     public static int priority(final ChannelBinding channelBinding) {
-        if (Arrays.asList(TLS_EXPORTER,TLS_UNIQUE).contains(channelBinding)) {
+        if (Arrays.asList(TLS_EXPORTER, TLS_UNIQUE).contains(channelBinding)) {
             return 2;
         } else if (channelBinding == ChannelBinding.TLS_SERVER_END_POINT) {
             return 1;
