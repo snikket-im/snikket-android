@@ -1057,4 +1057,7 @@
     <string name="contact_list_integration_not_available">Интеграция списка контактов недоступна</string>
     <string name="quicksy_wants_your_consent">Quicksy запрашивает ваше согласие на использование ваших данных</string>
     <string name="welcome_header_quicksy">Добро пожаловать в Quicksy!</string>
+    <string name="rtp_state_contact_offline">Контакт недоступен</string>
+    <string name="call_integration_not_available">Интеграция вызовов недоступна!</string>
+    <string name="no_permission_to_place_call">Нет разрешения на телефонный звонок</string>
 </resources>
