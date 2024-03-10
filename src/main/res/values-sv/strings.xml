@@ -1026,7 +1026,7 @@
     <string name="log_in">Logga in</string>
     <string name="hide_notification">Dölj notis</string>
     <string name="reconnect_on_other_host">Återanslut på annan värd</string>
-    <string name="contact_uses_unverified_keys">Din kontakt använder overifierade enheter. Skanna deras 2D-streckkod för att utföra en verifiering och för att förhindra aktiva MITM-attacker.</string>
+    <string name="contact_uses_unverified_keys">Din kontakt använder overifierade enheter. Skanna deras QR-kod för att utföra en verifiering och för att förhindra aktiva MITM-attacker.</string>
     <string name="delete_from_server">Ta bort kontot från servern</string>
     <string name="report_spam_and_block">Rapportera spam och blockera spammaren</string>
     <string name="incoming_call_duration_timestamp">Inkommande samtal (%s) · %s</string>
@@ -1037,7 +1037,7 @@
     <string name="decline">Neka</string>
     <string name="outgoing_call_duration_timestamp">Utgående samtal (%s) · %s</string>
     <string name="account_state_logged_out">Utloggad</string>
-    <string name="unverified_devices">Du använder overifierade enheter. Skanna 2D-streckkoden på dina andra enheter, för att utföra en verifiering och för att förhindra aktiva MITM-attacker.</string>
+    <string name="unverified_devices">Du använder overifierade enheter. Skanna QR-kod på dina andra enheter, för att utföra en verifiering och för att förhindra aktiva MITM-attacker.</string>
     <string name="outgoing_call_timestamp">Utgående samtal · %s</string>
     <string name="save_as_group_chat">Spara som gruppchatt</string>
     <string name="audiobook">Ljudbok</string>
@@ -1046,4 +1046,8 @@
     <string name="restore_warning_continued">Försök inte att återställa säkerhetskopior som du inte har skapat själv!</string>
     <string name="could_not_delete_account_from_server">Det gick inte att ta bort kontot från servern</string>
     <string name="quicksy_wants_your_consent">Quicksy ber om ditt samtycke för att använda dina uppgifter</string>
+    <string name="privacy_policy">Integritetspolicy</string>
+    <string name="contact_list_integration_not_available">Integrering av kontaktlista är inte tillgängligt</string>
+    <string name="call_integration_not_available">Samtalsintegration inte tillgänglig!</string>
+    <string name="rtp_state_contact_offline">Kontakten är inte tillgänglig</string>
 </resources>
