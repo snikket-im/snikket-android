@@ -1048,4 +1048,8 @@
     <string name="no_permission_to_place_call">Nu este permisă efectuarea de apeluri</string>
     <string name="call_integration_not_available">Integrarea apelurilor nu este disponibilă!</string>
     <string name="rtp_state_contact_offline">Contactul nu este disponibil</string>
+    <string name="remove_bookmark_and_close">Ați dori să ștergeți semnul de carte pentru %s și să închideți conversația?</string>
+    <string name="remove_bookmark">Ați dori să ștergeți semnul de carte pentru %s?</string>
+    <string name="delete_and_close">Șterge și închide</string>
+    <string name="channel_discover_opt_in_message">Descoperirea de canale publice folosește un serviciu terț numit &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți &lt;a href=https://search.jabber.network/privacy&gt;Politica de confidențialitate&lt;/a&gt; a serviciului.</string>
 </resources>
