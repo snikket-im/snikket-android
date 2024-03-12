@@ -52,7 +52,6 @@
     <string name="unblock_domain_text">Odblokować wszystkie kontakty z %s?</string>
     <string name="contact_blocked">Kontakt zablokowany</string>
     <string name="blocked">Zablokowane</string>
-    <string name="remove_bookmark_text">Czy chcesz usunąć zakładkę %s? Rozmowy z tą zakładką nie zostaną usunięte.</string>
     <string name="register_account">Zarejestruj nowe konto na serwerze</string>
     <string name="change_password_on_server">Zmień hasło na serwerze</string>
     <string name="share_with">Udostępnij…</string>
@@ -1041,7 +1040,6 @@
     <string name="delete_from_server">Usuń konto z serwera</string>
     <string name="could_not_delete_account_from_server">Nie można usunąć konta z serwera</string>
     <string name="search_group_chats">Wyszukaj czatów grupowych</string>
-    <string name="channel_discover_opt_in_message">Wykrywanie kanałów korzysta z usługi innego podmiotu o nazwie &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Użycie tej funkcji spowoduje przesłanie adresu IP i wyszukiwanych terminów do tej usługi. Zobacz ich &lt;a href=https://search.jabber.network/privacy&gt;Politykę prywatności&lt;/a&gt;, aby uzyskać więcej informacji.</string>
     <string name="group_chats">Czaty grupowe</string>
     <string name="save_as_group_chat">Zapisz jako czat grupowy</string>
     <string name="restore_warning_continued">Nie próbuj przywracać kopii zapasowych, których nie utworzono samodzielnie!</string>

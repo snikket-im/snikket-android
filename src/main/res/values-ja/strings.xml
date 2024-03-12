@@ -49,7 +49,6 @@
     <string name="unblock_domain_text">%sのすべての連絡先のブロックを解除しますか？</string>
     <string name="contact_blocked">連絡先をブロックしました</string>
     <string name="blocked">ブロックしました</string>
-    <string name="remove_bookmark_text">%s のブックマークを削除しますか? このブックマークとの会話は削除されません。</string>
     <string name="register_account">サーバーに新規アカウントを登録</string>
     <string name="change_password_on_server">サーバーのパスワードを変更</string>
     <string name="share_with">…で共有</string>
@@ -987,7 +986,6 @@
     <string name="account_state_logged_out">ログアウトしました</string>
     <string name="outgoing_call_timestamp">発信通話 · %s</string>
     <string name="audiobook">オーディオブック</string>
-    <string name="channel_discover_opt_in_message">談話室の探索は&lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;というサービスを利用します.&lt;br&gt;&lt;br&gt;利用するとIPアドレスと検索語はそのサービスに送信されます。詳細についてはそのサービスの&lt;a href=https://search.jabber.network/privacy&gt;個人情報保護方針&lt;/a&gt;を参照してください。</string>
     <string name="restore_warning_continued">自分で保存したバックアップしか復元しないでください！</string>
     <string name="pref_up_push_server_summary">XMPP経由でPushメッセージを端末に転送するユーザー指定のPushサーバー。</string>
     <string name="log_in">ログイン</string>

@@ -50,7 +50,6 @@
     <string name="unblock_domain_text">Alle Kontakte von %s entsperren?</string>
     <string name="contact_blocked">Kontakt gesperrt</string>
     <string name="blocked">Gesperrt</string>
-    <string name="remove_bookmark_text">Möchtest du %s als Lesezeichen entfernen? Unterhaltungen mit diesem Lesezeichen werden dabei nicht entfernt.</string>
     <string name="register_account">Neues Konto auf Server erstellen</string>
     <string name="change_password_on_server">Passwort ändern</string>
     <string name="share_with">Teilen mit…</string>
@@ -1010,7 +1009,6 @@
     <string name="group_chats">Gruppenchats</string>
     <string name="save_as_group_chat">Als Gruppenchat speichern</string>
     <string name="search_group_chats">Gruppenchats durchsuchen</string>
-    <string name="channel_discover_opt_in_message">Die Channelsuche verwendet einen Drittanbieterservice namens &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der &lt;a href=https://search.jabber.network/privacy&gt;Datenschutzerklärung&lt;/a&gt;.</string>
     <string name="restore_warning_continued">Versuche nicht, Backups wiederherzustellen, die du nicht selbst erstellt hast!</string>
     <string name="outdated_backup_file_format">Du versuchst, ein veraltetes Sicherungsdateiformat zu importieren</string>
     <string name="audiobook">Hörbuch</string>

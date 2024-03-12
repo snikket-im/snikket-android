@@ -50,7 +50,6 @@
     <string name="unblock_domain_text">%s üzerinden gelen kişilerdeki engellemeyi kaldırmak istiyor musunuz?</string>
     <string name="contact_blocked">Kişi engellendi</string>
     <string name="blocked">Engellendi</string>
-    <string name="remove_bookmark_text">%s kişisini yer imlerinden çıkarmak ister misiniz? Bu yer imi ile kayıtlı konuşmalar silinmeyecektir.</string>
     <string name="register_account">Sunucuda yeni bir hesap oluştur</string>
     <string name="change_password_on_server">Sunucudaki şifreni değiştir</string>
     <string name="share_with">Paylaş…</string>

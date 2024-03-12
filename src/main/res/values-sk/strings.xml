@@ -59,7 +59,6 @@
     <string name="unblock_domain_text">Odblokovať všetky kontakty od %s?</string>
     <string name="contact_blocked">Kontakt zablokovaný</string>
     <string name="blocked">Zablokovaný</string>
-    <string name="remove_bookmark_text">Chcete vymazať %sako záložku? Rozhovory s touto záložkou nebudú zmazané.</string>
     <string name="register_account">Registrovať nový účet na serveri</string>
     <string name="change_password_on_server">Zmeniť heslo na serveri</string>
     <string name="share_with">Zdieľať s</string>

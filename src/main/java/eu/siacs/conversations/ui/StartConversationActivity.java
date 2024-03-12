@@ -502,17 +502,25 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     }
 
     protected void deleteConference() {
-        int position = conference_context_id;
+        final int position = conference_context_id;
         final Bookmark bookmark = (Bookmark) conferences.get(position);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final var conversation = bookmark.getConversation();
+        final boolean hasConversation = conversation != null;
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setNegativeButton(R.string.cancel, null);
         builder.setTitle(R.string.delete_bookmark);
-        builder.setMessage(JidDialog.style(this, R.string.remove_bookmark_text, bookmark.getJid().toEscapedString()));
-        builder.setPositiveButton(R.string.delete, (dialog, which) -> {
+        if (hasConversation) {
+            builder.setMessage(JidDialog.style(this, R.string.remove_bookmark_and_close, bookmark.getJid().toEscapedString()));
+        } else {
+            builder.setMessage(JidDialog.style(this, R.string.remove_bookmark, bookmark.getJid().toEscapedString()));
+        }
+        builder.setPositiveButton(hasConversation ? R.string.delete_and_close : R.string.delete, (dialog, which) -> {
             bookmark.setConversation(null);
             final Account account = bookmark.getAccount();
             xmppConnectionService.deleteBookmark(account, bookmark);
+            if (conversation != null) {
+                xmppConnectionService.archiveConversation(conversation);
+            }
             filter(mSearchEditText.getText().toString());
         });
         builder.create().show();
@@ -1245,7 +1253,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         }
 
         @Override
-        public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo) {
+        public void onCreateContextMenu(@NonNull final ContextMenu menu, @NonNull final View v, final ContextMenuInfo menuInfo) {
             super.onCreateContextMenu(menu, v, menuInfo);
             final StartConversationActivity activity = (StartConversationActivity) getActivity();
             if (activity == null) {
@@ -1258,6 +1266,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 final Bookmark bookmark = (Bookmark) activity.conferences.get(acmi.position);
                 final Conversation conversation = bookmark.getConversation();
                 final MenuItem share = menu.findItem(R.id.context_share_uri);
+                final MenuItem delete = menu.findItem(R.id.context_delete_conference);
+                if (conversation != null) {
+                    delete.setTitle(R.string.delete_and_close);
+                } else {
+                    delete.setTitle(R.string.delete_bookmark);
+                }
                 share.setVisible(conversation == null || !conversation.isPrivateAndNonAnonymous());
             } else if (mResContextMenu == R.menu.contact_context) {
                 activity.contact_context_id = acmi.position;

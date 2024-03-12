@@ -840,7 +840,6 @@
     <string name="remove_contact_text">Do të donit të hiqet %s prej listës tuaj të kontakteve\? Bisedat me këtë kontakt s’do të hiqen.</string>
     <string name="block_contact_text">Do të donit t’i bllokohet %s dërgimi i mesazheve për ju\?</string>
     <string name="unblock_contact_text">Do të donit të zhbllokohet %s dhe të lejohet t’ju dërgojë mesazhe\?</string>
-    <string name="remove_bookmark_text">Do të donit të hiqet %s si faqerojtës\? Bisedat me këtë faqerojtës s’do të hiqen.</string>
     <string name="crash_report_message">Përdorimi i llogarisë tuaj XMPP për të dërguar “stack traces” ndihmon zhvillimin e pandërprerë të %1$s.</string>
     <string name="clear_histor_msg">Doni të fshihen krejt mesazhet te kjo bisedë\?
 \n
@@ -1041,5 +1040,4 @@
     <string name="call_integration_not_available">S’ka integrim thirrjesh!</string>
     <string name="no_permission_to_place_call">Pa leje për bërje thirrjesh</string>
     <string name="sasl_downgrade">U kalua në version të mëparshëm SASL-i</string>
-    <string name="channel_discover_opt_in_message">Pikasje kanalesh përdor një shërbim palë të tretë të quajtur &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Përdorim i kësaj veçorie do t’i transmetojë atij shërbimi adresën tuaj IP dhe terma kërkimesh. Për më tepër hollësi, shihni &lt;a href=https://search.jabber.network/privacy&gt;Rregullat e tyre mbi Privatësinë&lt;/a&gt;.</string>
 </resources>

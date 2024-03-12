@@ -582,7 +582,6 @@
     <string name="server_info_stream_management">XEP-0198: Stream Management</string>
     <string name="search_all_conversations">همهٔ گفتگوها</string>
     <string name="disable_notifications">قطع اعلان‌ها</string>
-    <string name="remove_bookmark_text">آیا می‌خواهید نشانک‌گذاری %s را بردارید؟ گفتگوها با این نشانک پاک نخواهند شد.</string>
     <string name="return_to_ongoing_call">بازگشت به تماس جاری</string>
     <string name="last_seen_min">آخرین بار یک دقیقه پیش</string>
     <string name="could_not_change_affiliation">تغییر نسبت %s ممکن نبود</string>
@@ -983,7 +982,6 @@
     <string name="this_account_is_disabled">شما این حساب را غیرفعال کرده‌اید</string>
     <string name="pref_connection_options">اتصال</string>
     <string name="contact_asks_for_presence_subscription">مخاطب می‌خواهد وضعیت وصل‌بودن شما را بداند</string>
-    <string name="channel_discover_opt_in_message">کاوش کانال‌ها یک سرویس خارجی به نام &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; را به‌کار می‌برد.&lt;br&gt;&lt;br&gt;به‌کاربردن این ویژگی نشانی IP و کلمات مورد جستجوی شما را به این سرویس می‌فرستد. برای اطلاعات بیشتر &lt;a href=https://search.jabber.network/privacy&gt;سیاست محرمانگی&lt;/a&gt; آن‌ها را ببینید.</string>
     <string name="incorrect_pin">کدی که وارد کردید نادرست است.</string>
     <string name="phone_number">شماره تلفن</string>
     <string name="pref_theme_automatic">خودکار</string>
