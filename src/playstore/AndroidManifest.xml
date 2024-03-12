@@ -3,7 +3,7 @@
 
 
     <!-- Remove this line if Google Play Store is giving you a hard time -->
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <!-- <uses-permission android:name="android.permission.READ_CONTACTS"/> -->
 
     <application android:icon="@mipmap/new_launcher">
 
