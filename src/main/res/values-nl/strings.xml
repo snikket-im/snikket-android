@@ -815,4 +815,5 @@
     <string name="unable_to_enable_video">Kan video niet schakelen.</string>
     <string name="plain_text_document">Onversleuteld document</string>
     <string name="account_registrations_are_not_supported">Accountregistraties zijn niet ondersteund</string>
+    <string name="pref_never_send_crash_summary">Door crashrapportages te versturen help je de ontwikkeling</string>
 </resources>
