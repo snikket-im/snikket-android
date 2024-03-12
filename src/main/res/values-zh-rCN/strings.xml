@@ -1038,4 +1038,7 @@
     <string name="rtp_state_contact_offline">联系人不可用</string>
     <string name="no_permission_to_place_call">没有拨打电话的权限</string>
     <string name="call_integration_not_available">呼叫集成不可用！</string>
+    <string name="remove_bookmark_and_close">是否移除 %s 的书签并关闭对话？</string>
+    <string name="remove_bookmark">是否移除 %s 的书签？</string>
+    <string name="delete_and_close">删除 &amp; 关闭</string>
 </resources>
