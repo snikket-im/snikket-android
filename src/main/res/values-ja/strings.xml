@@ -198,7 +198,7 @@
     <string name="server_info_blocking">XEP-0191: ブロッキング コマンド</string>
     <string name="server_info_roster_version">XEP-0237: 名簿バージョン管理</string>
     <string name="server_info_stream_management">XEP-0198: ストリーム管理</string>
-    <string name="server_info_external_service_discovery">XEP-0215: 外部サービスの発見</string>
+    <string name="server_info_external_service_discovery">XEP-0215: 外部サービス探索</string>
     <string name="server_info_pep">XEP-0163: PEP (アバター / OMEMO)</string>
     <string name="server_info_http_upload">XEP-0363: HTTP ファイルアップロード</string>
     <string name="server_info_push">XEP-0357: プッシュ</string>
@@ -886,8 +886,8 @@
     <string name="group_chats_and_channels"><![CDATA[グループチャットと談話室]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">ローカルサーバー</string>
-    <string name="pref_channel_discovery_summary">ほとんどのユーザーは、公開されている XMPP エコシステム全体からより良い提案を得るために、‘jabber.network’を選択するはずです。</string>
-    <string name="pref_channel_discovery">談話室の発見方法</string>
+    <string name="pref_channel_discovery_summary">ほとんどのユーザーは、公開 XMPP エコシステム全体からより適切な提案を得るために「jabber.network」を選択する必要があります。</string>
+    <string name="pref_channel_discovery">談話室の探索方法</string>
     <string name="backup">バックアップ</string>
     <string name="please_enable_an_account">アカウントを有効化してください</string>
     <string name="make_call">通話をする</string>
@@ -1011,4 +1011,11 @@
     <string name="welcome_header_quicksy">Quicksy へようこそ !</string>
     <string name="contact_uses_unverified_keys">連絡先は未検証のデバイスを使用しています。 QR コードをスキャンして検証を実行し、アクティブな MITM 攻撃を阻止してください。</string>
     <string name="unverified_devices">未検証のデバイスを使用しています。他のデバイスで QR コードをスキャンして検証を実行し、アクティブな MITM 攻撃を阻止してください。</string>
+    <string name="no_permission_to_place_call">電話をかける権限がありません</string>
+    <string name="remove_bookmark_and_close">%s のブックマークを削除して会話を閉じますか ?</string>
+    <string name="remove_bookmark">%s のブックマークを削除しますか ?</string>
+    <string name="channel_discover_opt_in_message">談話室の探索には &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; というサードパーティのサービスを利用します。&lt;br&gt;&lt;br&gt;この機能を使用すると、IP アドレスと検索語がこのサービスに送信されます。詳細は、&lt;a href=https://search.jabber.network/privacy&gt;プライバシーポリシー&lt;/a&gt;をご覧ください。</string>
+    <string name="call_integration_not_available">通話の統合は利用できません。</string>
+    <string name="rtp_state_contact_offline">連絡先は利用できません</string>
+    <string name="delete_and_close">削除して閉じる</string>
 </resources>
