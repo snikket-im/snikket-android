@@ -1043,4 +1043,8 @@
     <string name="no_permission_to_place_call">Sin permiso para llamar por teléfono</string>
     <string name="rtp_state_contact_offline">Contacto no disponible</string>
     <string name="call_integration_not_available">¡Sin integración de llamadas!</string>
+    <string name="channel_discover_opt_in_message">El observador de canales utiliza un servicio de terceros llamado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;El uso de esta función transmitirá a ese servicio su dirección IP. y términos de búsqueda. Para obtener más detalles, consulte su &lt;a href=https://search.jabber.network/privacy&gt;Política de privacidad&lt;/a&gt;.</string>
+    <string name="delete_and_close">Borrar y cerrar</string>
+    <string name="remove_bookmark">¿Quieres eliminar el marcador de %s ?</string>
+    <string name="remove_bookmark_and_close">¿Quieres eliminar el marcador de %s y cerrar la conversación?</string>
 </resources>
