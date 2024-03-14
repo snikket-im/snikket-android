@@ -513,7 +513,7 @@
     <string name="shared_text_with_x">Texte partagé avec %s</string>
     <string name="no_storage_permission">Autoriser %1$s à accéder au stockage externe</string>
     <string name="no_camera_permission">Autoriser %1$s à accéder à la caméra</string>
-    <string name="sync_with_contacts">Synchroniser avec contacts</string>
+    <string name="sync_with_contacts">Intégration de la liste de contacts</string>
     <string name="notify_on_all_messages">Notifier pour tous les messages</string>
     <string name="notify_only_when_highlighted">Notifier seulement en cas de mention</string>
     <string name="notify_never">Notifications désactivées</string>
@@ -1047,4 +1047,6 @@
     <string name="rtp_state_contact_offline">Contact non disponible</string>
     <string name="hide_notification">Cacher la notification</string>
     <string name="log_out">Se déconnecter</string>
+    <string name="contact_list_integration_not_available">L\'intégration de la liste de contacts n\'est pas disponible</string>
+    <string name="delete_and_close">Supprimer &amp; Fermer</string>
 </resources>
