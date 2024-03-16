@@ -447,9 +447,16 @@ public class CallIntegration extends Connection {
     }
 
     public static boolean selfManaged(final Context context) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasSystemFeature(context);
+    }
+
+    public static boolean hasSystemFeature(final Context context) {
         final var packageManager = context.getPackageManager();
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                && packageManager.hasSystemFeature(PackageManager.FEATURE_TELEPHONY);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return packageManager.hasSystemFeature(PackageManager.FEATURE_TELECOM);
+        } else {
+            return packageManager.hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE);
+        }
     }
 
     public static boolean notSelfManaged(final Context context) {

@@ -1286,7 +1286,9 @@ public class XmppConnectionService extends Service {
         toggleSetProfilePictureActivity(hasEnabledAccounts);
         reconfigurePushDistributor();
 
-        CallIntegrationConnectionService.togglePhoneAccountsAsync(this, this.accounts);
+        if (CallIntegration.hasSystemFeature(this)) {
+            CallIntegrationConnectionService.togglePhoneAccountsAsync(this, this.accounts);
+        }
 
         restoreFromDatabase();
 
@@ -2465,7 +2467,9 @@ public class XmppConnectionService extends Service {
     public void createAccount(final Account account) {
         account.initAccountServices(this);
         databaseBackend.createAccount(account);
-        CallIntegrationConnectionService.togglePhoneAccountAsync(this, account);
+        if (CallIntegration.hasSystemFeature(this)) {
+            CallIntegrationConnectionService.togglePhoneAccountAsync(this, account);
+        }
         this.accounts.add(account);
         this.reconnectAccountInBackground(account);
         updateAccountUi();
@@ -2589,7 +2593,9 @@ public class XmppConnectionService extends Service {
             toggleForegroundService();
             syncEnabledAccountSetting();
             mChannelDiscoveryService.cleanCache();
-            CallIntegrationConnectionService.togglePhoneAccountAsync(this, account);
+            if (CallIntegration.hasSystemFeature(this)) {
+                CallIntegrationConnectionService.togglePhoneAccountAsync(this, account);
+            }
             return true;
         } else {
             return false;
