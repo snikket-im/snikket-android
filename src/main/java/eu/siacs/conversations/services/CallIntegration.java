@@ -43,6 +43,7 @@ public class CallIntegration extends Connection {
     private AudioDevice initialAudioDevice = null;
     private final AtomicBoolean initialAudioDeviceConfigured = new AtomicBoolean(false);
     private final AtomicBoolean delayedDestructionInitiated = new AtomicBoolean(false);
+    private final AtomicBoolean isDestroyed = new AtomicBoolean(false);
 
     private List<CallEndpoint> availableEndpoints = Collections.emptyList();
 
@@ -363,7 +364,6 @@ public class CallIntegration extends Connection {
         final var toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, DEFAULT_VOLUME);
         toneGenerator.startTone(ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
         this.destroyWithDelay(new DisconnectCause(DisconnectCause.ERROR, null), 375);
-        this.destroyWith(new DisconnectCause(DisconnectCause.ERROR, null));
     }
 
     public void retracted() {
@@ -389,7 +389,7 @@ public class CallIntegration extends Connection {
             JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(
                     () -> {
                         this.setDisconnected(disconnectCause);
-                        this.destroy();
+                        this.destroyCallIntegration();
                     },
                     delay,
                     TimeUnit.MILLISECONDS);
@@ -404,7 +404,7 @@ public class CallIntegration extends Connection {
             return;
         }
         this.setDisconnected(disconnectCause);
-        this.destroy();
+        this.destroyCallIntegration();
         Log.d(Config.LOGTAG, "destroyed!");
     }
 
@@ -470,6 +470,15 @@ public class CallIntegration extends Connection {
                         this.onAudioDeviceChanged(
                                 audioManager.getSelectedAudioDevice(),
                                 audioManager.getAudioDevices()));
+    }
+
+    private void destroyCallIntegration() {
+        super.destroy();
+        this.isDestroyed.set(true);
+    }
+
+    public boolean isDestroyed() {
+        return this.isDestroyed.get();
     }
 
     /** AudioDevice is the names of possible audio devices that we currently support. */

@@ -347,14 +347,14 @@ public class CallIntegrationConnectionService extends ConnectionService {
         }
     }
 
-    public static void addNewIncomingCall(
+    public static boolean addNewIncomingCall(
             final Context context, final AbstractJingleConnection.Id id) {
         if (CallIntegration.notSelfManaged(context)) {
             Log.d(
                     Config.LOGTAG,
                     "not adding incoming call to TelecomManager on Android "
                             + Build.VERSION.RELEASE);
-            return;
+            return true;
         }
         final var phoneAccountHandle =
                 CallIntegrationConnectionService.getHandle(context, id.account);
@@ -373,7 +373,9 @@ public class CallIntegrationConnectionService extends ConnectionService {
                     Config.LOGTAG,
                     id.account.getJid().asBareJid() + ": call integration not available",
                     e);
+            return false;
         }
+        return true;
     }
 
     public static class ServiceConnectionService {

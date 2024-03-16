@@ -109,13 +109,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                                     + sessionEnded
                                     + ", stranger="
                                     + stranger);
-                    mXmppConnectionService.sendIqPacket(
-                            account, packet.generateResponse(IqPacket.TYPE.RESULT), null);
-                    final JinglePacket sessionTermination =
-                            new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
-                    sessionTermination.setTo(id.with);
-                    sessionTermination.setReason(Reason.BUSY, null);
-                    mXmppConnectionService.sendIqPacket(account, sessionTermination, null);
+                    sendSessionTerminate(account, packet, id);
                     if (busy || stranger) {
                         writeLogMissedIncoming(
                                 account,
@@ -136,7 +130,21 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             connections.put(id, connection);
 
             if (connection instanceof JingleRtpConnection) {
-                CallIntegrationConnectionService.addNewIncomingCall(getXmppConnectionService(), id);
+                if (!CallIntegrationConnectionService.addNewIncomingCall(
+                        mXmppConnectionService, id)) {
+                    connections.remove(id);
+                    Log.e(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid() + ": could not add incoming call");
+                    sendSessionTerminate(account, packet, id);
+                    writeLogMissedIncoming(
+                            account,
+                            id.with,
+                            id.sessionId,
+                            null,
+                            System.currentTimeMillis(),
+                            false);
+                }
             }
 
             mXmppConnectionService.updateConversationUi();
@@ -147,14 +155,24 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    private void sendSessionTerminate(final Account account, final IqPacket request, final AbstractJingleConnection.Id id) {
+        mXmppConnectionService.sendIqPacket(
+                account, request.generateResponse(IqPacket.TYPE.RESULT), null);
+        final JinglePacket sessionTermination =
+                new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
+        sessionTermination.setTo(id.with);
+        sessionTermination.setReason(Reason.BUSY, null);
+        mXmppConnectionService.sendIqPacket(account, sessionTermination, null);
+    }
+
     private boolean isUsingClearNet(final Account account) {
         return !account.isOnion() && !mXmppConnectionService.useTorToConnect();
     }
 
     public boolean isBusy() {
-        for (AbstractJingleConnection connection : this.connections.values()) {
-            if (connection instanceof JingleRtpConnection) {
-                if (connection.isTerminated()) {
+        for (final AbstractJingleConnection connection : this.connections.values()) {
+            if (connection instanceof JingleRtpConnection rtpConnection) {
+                if (connection.isTerminated() && rtpConnection.getCallIntegration().isDestroyed()) {
                     continue;
                 }
                 return true;
