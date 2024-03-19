@@ -1138,23 +1138,23 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean isScreenLocked() {
-        final KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        final PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        final KeyguardManager keyguardManager = getSystemService(KeyguardManager.class);
+        final PowerManager powerManager = getSystemService(PowerManager.class);
         final boolean locked = keyguardManager != null && keyguardManager.isKeyguardLocked();
-        final boolean interactive = powerManager != null && powerManager.isInteractive();
+        final boolean interactive;
+        try {
+            interactive = powerManager != null && powerManager.isInteractive();
+        } catch (final Exception e) {
+            return false;
+        }
         return locked || !interactive;
     }
 
     private boolean isPhoneSilenced() {
-        final boolean notificationDnd;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            final NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            final int filter = notificationManager == null ? NotificationManager.INTERRUPTION_FILTER_UNKNOWN : notificationManager.getCurrentInterruptionFilter();
-            notificationDnd = filter >= NotificationManager.INTERRUPTION_FILTER_PRIORITY;
-        } else {
-            notificationDnd = false;
-        }
-        final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        final NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        final int filter = notificationManager == null ? NotificationManager.INTERRUPTION_FILTER_UNKNOWN : notificationManager.getCurrentInterruptionFilter();
+        final boolean notificationDnd = filter >= NotificationManager.INTERRUPTION_FILTER_PRIORITY;
+        final AudioManager audioManager = getSystemService(AudioManager.class);
         final int ringerMode = audioManager == null ? AudioManager.RINGER_MODE_NORMAL : audioManager.getRingerMode();
         try {
             if (treatVibrateAsSilent()) {
@@ -1162,7 +1162,7 @@ public class XmppConnectionService extends Service {
             } else {
                 return notificationDnd || ringerMode == AudioManager.RINGER_MODE_SILENT;
             }
-        } catch (Throwable throwable) {
+        } catch (final Throwable throwable) {
             Log.d(Config.LOGTAG, "platform bug in isPhoneSilenced (" + throwable.getMessage() + ")");
             return notificationDnd;
         }
