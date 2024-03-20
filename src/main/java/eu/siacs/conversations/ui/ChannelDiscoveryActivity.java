@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.common.base.Strings;
@@ -130,7 +131,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     }
 
     @Override
-    public boolean onMenuItemActionExpand(MenuItem item) {
+    public boolean onMenuItemActionExpand(@NonNull MenuItem item) {
         mSearchEditText.post(() -> {
             mSearchEditText.requestFocus();
             final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -140,7 +141,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     }
 
     @Override
-    public boolean onMenuItemActionCollapse(MenuItem item) {
+    public boolean onMenuItemActionCollapse(@NonNull MenuItem item) {
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
         mSearchEditText.setText("");
@@ -189,7 +190,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         if (mMenuSearchView != null && mMenuSearchView.isActionViewExpanded()) {
             savedInstanceState.putString("search", mSearchEditText != null ? mSearchEditText.getText().toString() : null);
         }
@@ -248,40 +249,47 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         final Room room = adapter.getCurrent();
-        if (room != null) {
-            switch (item.getItemId()) {
-                case R.id.share_with:
-                    StartConversationActivity.shareAsChannel(this, room.address);
-                    return true;
-                case R.id.open_join_dialog:
-                    final Intent intent = new Intent(this, StartConversationActivity.class);
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.putExtra("force_dialog", true);
-                    intent.setData(Uri.parse(String.format("xmpp:%s?join", room.address)));
-                    startActivity(intent);
-                    return true;
-            }
+        if (room == null) {
+            return false;
         }
-        return false;
+        final int itemId = item.getItemId();
+        if (itemId == R.id.share_with) {
+            StartConversationActivity.shareAsChannel(this, room.address);
+            return true;
+        } else if (itemId == R.id.open_join_dialog) {
+            final Intent intent = new Intent(this, StartConversationActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.putExtra("force_dialog", true);
+            intent.setData(Uri.parse(String.format("xmpp:%s?join", room.address)));
+            startActivity(intent);
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void joinChannelSearchResult(String selectedAccount, Room result) {
-        final Jid jid = Config.DOMAIN_LOCK == null ? Jid.ofEscaped(selectedAccount) : Jid.ofLocalAndDomainEscaped(selectedAccount, Config.DOMAIN_LOCK);
+    public void joinChannelSearchResult(final String selectedAccount, final Room result) {
+        final Jid jid =
+                Config.DOMAIN_LOCK == null
+                        ? Jid.ofEscaped(selectedAccount)
+                        : Jid.ofLocalAndDomainEscaped(selectedAccount, Config.DOMAIN_LOCK);
         final boolean syncAutoJoin = getBooleanPreference("autojoin", R.bool.autojoin);
         final Account account = xmppConnectionService.findAccountByJid(jid);
-        final Conversation conversation = xmppConnectionService.findOrCreateConversation(account, result.getRoom(), true, true, true);
-        Bookmark bookmark = conversation.getBookmark();
-        if (bookmark != null) {
-            if (!bookmark.autojoin() && syncAutoJoin) {
-                bookmark.setAutojoin(true);
-                xmppConnectionService.createBookmark(account, bookmark);
-            }
-        } else {
-            bookmark = new Bookmark(account, conversation.getJid().asBareJid());
+        final Conversation conversation =
+                xmppConnectionService.findOrCreateConversation(
+                        account, result.getRoom(), true, true, true);
+        final var existingBookmark = conversation.getBookmark();
+        if (existingBookmark == null) {
+            final var bookmark = new Bookmark(account, conversation.getJid().asBareJid());
             bookmark.setAutojoin(syncAutoJoin);
             xmppConnectionService.createBookmark(account, bookmark);
+        } else {
+            if (!existingBookmark.autojoin() && syncAutoJoin) {
+                existingBookmark.setAutojoin(true);
+                xmppConnectionService.createBookmark(account, existingBookmark);
+            }
         }
         switchToConversation(conversation);
     }
