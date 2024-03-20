@@ -1058,4 +1058,8 @@
     <string name="rtp_state_contact_offline">Контакт недоступен</string>
     <string name="call_integration_not_available">Интеграция вызовов недоступна!</string>
     <string name="no_permission_to_place_call">Нет разрешения на телефонный звонок</string>
+    <string name="remove_bookmark">Вы хотите удалить закладку для «%s»?</string>
+    <string name="delete_and_close">Закрыть и удалить</string>
+    <string name="channel_discover_opt_in_message">Обзор каналов использует сторонний сервис &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Эта функция передаст Ваш IP-адрес и ваш поисковый запрос этому сервису. Ознакомьтесь с его &lt;a href=https://search.jabber.network/privacy&gt;Политикой конфиденциальности&lt;/a&gt; для получения подробностей.</string>
+    <string name="remove_bookmark_and_close">Вы хотите удалить закладку для %s и закрыть беседу?</string>
 </resources>
