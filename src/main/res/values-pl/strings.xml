@@ -1062,4 +1062,8 @@
     <string name="quicksy_wants_your_consent">Quicksy pyta o pozwolenie na użycie twoich danych</string>
     <string name="no_permission_to_place_call">Brak pozwolenia na wypisanie numeru telefonu</string>
     <string name="call_integration_not_available">Integracja połączeń nie jest dostępna!</string>
+    <string name="channel_discover_opt_in_message">Odkrywanie kanałów używa usługi firmy trzeciej &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Używanie tej funkcji spowoduje transmisję twojego adresu IP oraz kryteriów wyszukiwania. Sprawdź ich &lt;a href=https://search.jabber.network/privacy&gt;politykę prywatności&lt;/a&gt; aby uzyskać więcej informacji.</string>
+    <string name="remove_bookmark">Czy chcesz usunąć zakładkę dla %s?</string>
+    <string name="delete_and_close">Usuń i zamknij</string>
+    <string name="remove_bookmark_and_close">Czy chcesz usunąć zakładkę dla %s i zamknąć rozmowę?</string>
 </resources>
