@@ -128,31 +128,29 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 return;
             }
             connections.put(id, connection);
-
-            if (connection instanceof JingleRtpConnection) {
-                if (!CallIntegrationConnectionService.addNewIncomingCall(
-                        mXmppConnectionService, id)) {
-                    connections.remove(id);
-                    Log.e(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid() + ": could not add incoming call");
-                    sendSessionTerminate(account, packet, id);
-                    writeLogMissedIncoming(
-                            account,
-                            id.with,
-                            id.sessionId,
-                            null,
-                            System.currentTimeMillis(),
-                            false);
-                }
-            }
-
             mXmppConnectionService.updateConversationUi();
             connection.deliverPacket(packet);
+            if (connection instanceof JingleRtpConnection rtpConnection) {
+                addNewIncomingCall(rtpConnection);
+            }
         } else {
             Log.d(Config.LOGTAG, "unable to route jingle packet: " + packet);
             respondWithJingleError(account, packet, "unknown-session", "item-not-found", "cancel");
         }
+    }
+
+    private void addNewIncomingCall(final JingleRtpConnection rtpConnection) {
+        if (rtpConnection.isTerminated()) {
+            Log.d(
+                    Config.LOGTAG,
+                    "skip call integration because something must have gone during initiate");
+            return;
+        }
+        if (CallIntegrationConnectionService.addNewIncomingCall(
+                mXmppConnectionService, rtpConnection.getId())) {
+            return;
+        }
+        rtpConnection.integrationFailure();
     }
 
     private void sendSessionTerminate(final Account account, final IqPacket request, final AbstractJingleConnection.Id id) {
@@ -398,9 +396,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                         this.connections.put(id, rtpConnection);
                         rtpConnection.setProposedMedia(ImmutableSet.copyOf(media));
                         rtpConnection.deliveryMessage(from, message, serverMsgId, timestamp);
-
-                        CallIntegrationConnectionService.addNewIncomingCall(
-                                getXmppConnectionService(), id);
+                        addNewIncomingCall(rtpConnection);
                         // TODO actually do the automatic accept?!
                     } else {
                         Log.d(
@@ -450,9 +446,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     this.connections.put(id, rtpConnection);
                     rtpConnection.setProposedMedia(ImmutableSet.copyOf(media));
                     rtpConnection.deliveryMessage(from, message, serverMsgId, timestamp);
-
-                    CallIntegrationConnectionService.addNewIncomingCall(
-                            getXmppConnectionService(), id);
+                    addNewIncomingCall(rtpConnection);
                 }
             } else {
                 Log.d(

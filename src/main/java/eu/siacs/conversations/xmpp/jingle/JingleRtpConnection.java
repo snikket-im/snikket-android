@@ -2237,6 +2237,24 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
     }
 
+    public synchronized void integrationFailure() {
+        final var state = getState();
+        if (state == State.PROPOSED) {
+            Log.e(
+                    Config.LOGTAG,
+                    id.account.getJid().asBareJid()
+                            + ": failed call integration in state proposed");
+            rejectCallFromProposed();
+        } else if (state == State.SESSION_INITIALIZED) {
+            Log.e(Config.LOGTAG, id.account.getJid().asBareJid() + ": failed call integration");
+            this.webRTCWrapper.close();
+            sendSessionTerminate(Reason.FAILED_APPLICATION, "CallIntegration failed");
+        } else {
+            throw new IllegalStateException(
+                    String.format("Can not fail integration in state %s", state));
+        }
+    }
+
     public synchronized void endCall() {
         if (isTerminated()) {
             Log.w(
