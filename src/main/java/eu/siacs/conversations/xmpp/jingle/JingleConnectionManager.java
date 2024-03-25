@@ -498,8 +498,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             final RtpSessionProposal proposal =
                     getRtpSessionProposal(account, from.asBareJid(), sessionId);
             synchronized (rtpSessionProposals) {
-                // TODO remove the remove()!= null check to ensure we always call busy()
-                if (proposal != null && rtpSessionProposals.remove(proposal) != null) {
+                if (proposal != null) {
+                    rtpSessionProposals.remove(proposal);
                     proposal.callIntegration.busy();
                     writeLogMissedOutgoing(
                             account, proposal.with, proposal.sessionId, serverMsgId, timestamp);
@@ -758,7 +758,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             final RtpSessionProposal proposal =
                     RtpSessionProposal.of(account, with.asBareJid(), media, callIntegration);
             callIntegration.setCallback(new ProposalStateCallback(proposal));
-            // TODO ensure that there is no previous proposal?!
             this.rtpSessionProposals.put(proposal, DeviceDiscoveryState.SEARCHING);
             mXmppConnectionService.notifyJingleRtpConnectionUpdate(
                     account, proposal.with, proposal.sessionId, RtpEndUserState.FINDING_DEVICE);
