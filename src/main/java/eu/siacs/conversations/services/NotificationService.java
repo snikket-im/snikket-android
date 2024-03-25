@@ -502,11 +502,9 @@ public class NotificationService {
     public synchronized void startRinging(
             final AbstractJingleConnection.Id id, final Set<Media> media) {
         showIncomingCallNotification(id, media);
-        final NotificationManager notificationManager =
-                (NotificationManager)
-                        mXmppConnectionService.getSystemService(Context.NOTIFICATION_SERVICE);
+        final NotificationManager notificationManager = mXmppConnectionService.getSystemService(NotificationManager.class);
         final int currentInterruptionFilter;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && notificationManager != null) {
+        if (notificationManager != null) {
             currentInterruptionFilter = notificationManager.getCurrentInterruptionFilter();
         } else {
             currentInterruptionFilter = 1; // INTERRUPTION_FILTER_ALL
@@ -524,6 +522,10 @@ public class NotificationService {
                         new VibrationRunnable(), 0, 3, TimeUnit.SECONDS);
         if (currentVibrationFuture != null) {
             currentVibrationFuture.cancel(true);
+        }
+        final var preexistingRingtone = this.currentlyPlayingRingtone;
+        if (preexistingRingtone != null) {
+            preexistingRingtone.stop();
         }
         final SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);

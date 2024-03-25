@@ -2691,6 +2691,15 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     @Override
     public void onCallIntegrationShowIncomingCallUi() {
+        if (isTerminated()) {
+            // there might be race conditions with the call integration service invoking this
+            // callback when the rtp session has already ended. It should be enough to just return
+            // instead of throwing an exception. however throwing an exception gives us a sense of
+            // if and how frequently this happens
+            throw new IllegalStateException(
+                    "CallIntegration requested incoming call UI but session was already terminated");
+        }
+        // TODO apparently this can be called too early as well?
         xmppConnectionService.getNotificationService().startRinging(id, getMedia());
     }
 
