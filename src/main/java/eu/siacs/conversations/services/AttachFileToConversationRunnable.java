@@ -99,17 +99,25 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
 
         final boolean highQuality = "720".equals(getVideoCompression());
 
-        final Future<Void> future = Transcoder.into(file.getAbsolutePath()).
+        final Future<Void> future;
+        try {
+            future = Transcoder.into(file.getAbsolutePath()).
                 addDataSource(mXmppConnectionService, uri)
                 .setVideoTrackStrategy(highQuality ? TranscoderStrategies.VIDEO_720P : TranscoderStrategies.VIDEO_360P)
                 .setAudioTrackStrategy(highQuality ? TranscoderStrategies.AUDIO_HQ : TranscoderStrategies.AUDIO_MQ)
                 .setListener(this)
                 .transcode();
+        } catch (final RuntimeException e) {
+            // transcode can already throw if there is an invalid file format or a platform bug
+            mXmppConnectionService.stopForcingForegroundNotification();
+            processAsFile();
+            return;
+        }
         try {
             future.get();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new AssertionError(e);
-        } catch (ExecutionException e) {
+        } catch (final ExecutionException e) {
             if (e.getCause() instanceof Error) {
                 mXmppConnectionService.stopForcingForegroundNotification();
                 processAsFile();
