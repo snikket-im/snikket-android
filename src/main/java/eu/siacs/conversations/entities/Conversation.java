@@ -85,6 +85,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     private ChatState mOutgoingChatState = Config.DEFAULT_CHAT_STATE;
     private ChatState mIncomingChatState = Config.DEFAULT_CHAT_STATE;
     private String mFirstMamReference = null;
+    private String displayState = null;
 
     public Conversation(final String name, final Account account, final Jid contactJid,
                         final int mode) {
@@ -1119,6 +1120,14 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     @Override
     public String getAvatarName() {
         return getName().toString();
+    }
+
+    public void setDisplayState(final String stanzaId) {
+        this.displayState = stanzaId;
+    }
+
+    public String getDisplayState() {
+        return this.displayState;
     }
 
     public interface OnMessageFound {
