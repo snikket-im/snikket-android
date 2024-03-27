@@ -2,6 +2,7 @@ package eu.siacs.conversations.services;
 
 import static eu.siacs.conversations.utils.Compatibility.s;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
@@ -10,6 +11,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.pm.ShortcutManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -29,6 +31,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationCompat.BigPictureStyle;
 import androidx.core.app.NotificationCompat.Builder;
@@ -1694,8 +1697,7 @@ public class NotificationService {
     }
 
     private boolean wasHighlightedOrPrivate(final Message message) {
-        if (message.getConversation() instanceof Conversation) {
-            Conversation conversation = (Conversation) message.getConversation();
+        if (message.getConversation() instanceof Conversation conversation) {
             final String nick = conversation.getMucOptions().getActualNick();
             final Pattern highlight = generateNickHighlightPattern(nick);
             if (message.getBody() == null || nick == null) {
@@ -1825,10 +1827,17 @@ public class NotificationService {
             }
         }
         if (mXmppConnectionService.foregroundNotificationNeedsUpdatingWhenErrorStateChanges()) {
-            notify(FOREGROUND_NOTIFICATION_ID, createForegroundNotification());
+            try {
+                notify(FOREGROUND_NOTIFICATION_ID, createForegroundNotification());
+            } catch (final RuntimeException e) {
+                Log.d(
+                        Config.LOGTAG,
+                        "not refreshing foreground service notification because service has died",
+                        e);
+            }
         }
         final Notification.Builder mBuilder = new Notification.Builder(mXmppConnectionService);
-        if (errors.size() == 0) {
+        if (errors.isEmpty()) {
             cancel(ERROR_NOTIFICATION_ID);
             return;
         } else if (errors.size() == 1) {
@@ -1840,10 +1849,23 @@ public class NotificationService {
                     mXmppConnectionService.getString(R.string.problem_connecting_to_accounts));
             mBuilder.setContentText(mXmppConnectionService.getString(R.string.touch_to_fix));
         }
-        mBuilder.addAction(
-                R.drawable.ic_autorenew_white_24dp,
-                mXmppConnectionService.getString(R.string.try_again),
-                pendingServiceIntent(mXmppConnectionService, XmppConnectionService.ACTION_TRY_AGAIN, 45));
+        try {
+            mBuilder.addAction(
+                    R.drawable.ic_autorenew_white_24dp,
+                    mXmppConnectionService.getString(R.string.try_again),
+                    pendingServiceIntent(
+                            mXmppConnectionService, XmppConnectionService.ACTION_TRY_AGAIN, 45));
+            mBuilder.setDeleteIntent(
+                    pendingServiceIntent(
+                            mXmppConnectionService,
+                            XmppConnectionService.ACTION_DISMISS_ERROR_NOTIFICATIONS,
+                            69));
+        } catch (final RuntimeException e) {
+            Log.d(
+                    Config.LOGTAG,
+                    "not including some actions in error notification because service has died",
+                    e);
+        }
         if (torNotAvailable) {
             if (TorServiceUtils.isOrbotInstalled(mXmppConnectionService)) {
                 mBuilder.addAction(
@@ -1871,7 +1893,6 @@ public class NotificationService {
                                         : PendingIntent.FLAG_UPDATE_CURRENT));
             }
         }
-        mBuilder.setDeleteIntent(pendingServiceIntent(mXmppConnectionService,XmppConnectionService.ACTION_DISMISS_ERROR_NOTIFICATIONS, 69));
         mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);
         mBuilder.setSmallIcon(R.drawable.ic_warning_white_24dp);
         mBuilder.setLocalOnly(true);
@@ -1912,27 +1933,37 @@ public class NotificationService {
         notify(FOREGROUND_NOTIFICATION_ID, notification);
     }
 
-    private void notify(String tag, int id, Notification notification) {
-        final NotificationManagerCompat notificationManager =
-                NotificationManagerCompat.from(mXmppConnectionService);
+    private void notify(final String tag, final int id, final Notification notification) {
+        if (ActivityCompat.checkSelfPermission(
+                        mXmppConnectionService, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        final var notificationManager =
+                mXmppConnectionService.getSystemService(NotificationManager.class);
         try {
             notificationManager.notify(tag, id, notification);
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             Log.d(Config.LOGTAG, "unable to make notification", e);
         }
     }
 
-    public void notify(int id, Notification notification) {
-        final NotificationManagerCompat notificationManager =
-                NotificationManagerCompat.from(mXmppConnectionService);
+    public void notify(final int id, final Notification notification) {
+        if (ActivityCompat.checkSelfPermission(
+                        mXmppConnectionService, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        final var notificationManager =
+                mXmppConnectionService.getSystemService(NotificationManager.class);
         try {
             notificationManager.notify(id, notification);
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             Log.d(Config.LOGTAG, "unable to make notification", e);
         }
     }
 
-    public void cancel(int id) {
+    public void cancel(final int id) {
         final NotificationManagerCompat notificationManager =
                 NotificationManagerCompat.from(mXmppConnectionService);
         try {
