@@ -2,6 +2,15 @@ package eu.siacs.conversations.generator;
 
 import android.util.Base64;
 
+import eu.siacs.conversations.BuildConfig;
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.XmppConnection;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -12,54 +21,42 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import eu.siacs.conversations.BuildConfig;
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.axolotl.AxolotlService;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.PhoneHelper;
-import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
-
 public abstract class AbstractGenerator {
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+    private static final SimpleDateFormat DATE_FORMAT =
+            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
     private final String[] FEATURES = {
-            Namespace.JINGLE,
-            Namespace.JINGLE_APPS_FILE_TRANSFER,
-            Namespace.JINGLE_TRANSPORTS_S5B,
-            Namespace.JINGLE_TRANSPORTS_IBB,
-            Namespace.JINGLE_ENCRYPTED_TRANSPORT,
-            Namespace.JINGLE_ENCRYPTED_TRANSPORT_OMEMO,
-            "http://jabber.org/protocol/muc",
-            "jabber:x:conference",
-            Namespace.OOB,
-            "http://jabber.org/protocol/caps",
-            "http://jabber.org/protocol/disco#info",
-            "urn:xmpp:avatar:metadata+notify",
-            Namespace.NICK + "+notify",
-            "urn:xmpp:ping",
-            "jabber:iq:version",
-            "http://jabber.org/protocol/chatstates"
+        Namespace.JINGLE,
+        Namespace.JINGLE_APPS_FILE_TRANSFER,
+        Namespace.JINGLE_TRANSPORTS_S5B,
+        Namespace.JINGLE_TRANSPORTS_IBB,
+        Namespace.JINGLE_ENCRYPTED_TRANSPORT,
+        Namespace.JINGLE_ENCRYPTED_TRANSPORT_OMEMO,
+        "http://jabber.org/protocol/muc",
+        "jabber:x:conference",
+        Namespace.OOB,
+        "http://jabber.org/protocol/caps",
+        "http://jabber.org/protocol/disco#info",
+        "urn:xmpp:avatar:metadata+notify",
+        Namespace.NICK + "+notify",
+        "urn:xmpp:ping",
+        "jabber:iq:version",
+        "http://jabber.org/protocol/chatstates",
+        Namespace.MDS_DISPLAYED + "+notify"
     };
     private final String[] MESSAGE_CONFIRMATION_FEATURES = {
-            "urn:xmpp:chat-markers:0",
-            "urn:xmpp:receipts"
+        "urn:xmpp:chat-markers:0", "urn:xmpp:receipts"
     };
-    private final String[] MESSAGE_CORRECTION_FEATURES = {
-            "urn:xmpp:message-correct:0"
-    };
+    private final String[] MESSAGE_CORRECTION_FEATURES = {"urn:xmpp:message-correct:0"};
     private final String[] PRIVACY_SENSITIVE = {
-            "urn:xmpp:time" //XEP-0202: Entity Time leaks time zone
+        "urn:xmpp:time" // XEP-0202: Entity Time leaks time zone
     };
     private final String[] VOIP_NAMESPACES = {
-            Namespace.JINGLE_TRANSPORT_ICE_UDP,
-            Namespace.JINGLE_FEATURE_AUDIO,
-            Namespace.JINGLE_FEATURE_VIDEO,
-            Namespace.JINGLE_APPS_RTP,
-            Namespace.JINGLE_APPS_DTLS,
-            Namespace.JINGLE_MESSAGE
+        Namespace.JINGLE_TRANSPORT_ICE_UDP,
+        Namespace.JINGLE_FEATURE_AUDIO,
+        Namespace.JINGLE_FEATURE_VIDEO,
+        Namespace.JINGLE_APPS_RTP,
+        Namespace.JINGLE_APPS_DTLS,
+        Namespace.JINGLE_MESSAGE
     };
     protected XmppConnectionService mXmppConnectionService;
 
@@ -90,7 +87,11 @@ public abstract class AbstractGenerator {
 
     String getCapHash(final Account account) {
         StringBuilder s = new StringBuilder();
-        s.append("client/").append(getIdentityType()).append("//").append(getIdentityName()).append('<');
+        s.append("client/")
+                .append(getIdentityType())
+                .append("//")
+                .append(getIdentityName())
+                .append('<');
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("SHA-1");

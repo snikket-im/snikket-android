@@ -271,6 +271,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     mXmppConnectionService.updateConversationUi();
                 }
             }
+        } else if (Namespace.MDS_DISPLAYED.equals(node) && account.getJid().asBareJid().equals(from)) {
+            final Element item = items.findChild("item");
+            mXmppConnectionService.processMdsItem(account, item);
         } else {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + " received pubsub notification for node=" + node);
         }
@@ -985,12 +988,18 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 }
             }
         }
-        Element displayed = packet.findChild("displayed", "urn:xmpp:chat-markers:0");
+        final Element displayed = packet.findChild("displayed", "urn:xmpp:chat-markers:0");
         if (displayed != null) {
             final String id = displayed.getAttribute("id");
             final Jid sender = InvalidJid.getNullForInvalid(displayed.getAttributeAsJid("sender"));
             if (packet.fromAccount(account) && !selfAddressed) {
-                dismissNotification(account, counterpart, query, id);
+                final Conversation c =
+                        mXmppConnectionService.find(account, counterpart.asBareJid());
+                final Message message =
+                        (c == null || id == null) ? null : c.findReceivedWithRemoteId(id);
+                if (message != null && (query == null || query.isCatchup())) {
+                    mXmppConnectionService.markReadUpTo(c, message);
+                }
                 if (query == null) {
                     activateGracePeriod(account);
                 }
@@ -1012,7 +1021,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     final boolean trueJidMatchesAccount = account.getJid().asBareJid().equals(trueJid == null ? null : trueJid.asBareJid());
                     if (trueJidMatchesAccount || conversation.getMucOptions().isSelf(counterpart)) {
                         if (!message.isRead() && (query == null || query.isCatchup())) { //checking if message is unread fixes race conditions with reflections
-                            mXmppConnectionService.markRead(conversation);
+                            mXmppConnectionService.markReadUpTo(conversation, message);
                         }
                     } else if (!counterpart.isBareJid() && trueJid != null) {
                         final ReadByMarker readByMarker = ReadByMarker.from(counterpart, trueJid);

@@ -24,6 +24,7 @@ public final class Namespace {
     public static final String TLS = "urn:ietf:params:xml:ns:xmpp-tls";
     public static final String PUBSUB = "http://jabber.org/protocol/pubsub";
     public static final String PUBSUB_PUBLISH_OPTIONS = PUBSUB + "#publish-options";
+    public static final String PUBSUB_CONFIG_NODE_MAX = PUBSUB + "#config-node-max";
     public static final String PUBSUB_ERROR = PUBSUB + "#errors";
     public static final String PUBSUB_OWNER = PUBSUB + "#owner";
     public static final String NICK = "http://jabber.org/protocol/nick";
@@ -76,4 +77,6 @@ public final class Namespace {
     public static final String REPORTING_REASON_SPAM = "urn:xmpp:reporting:spam";
     public static final String SDP_OFFER_ANSWER = "urn:ietf:rfc:3264";
     public static final String HASHES = "urn:xmpp:hashes:2";
+    public static final String MDS_DISPLAYED = "urn:xmpp:mds:displayed:0";
+    public static final String MDS_SERVER_ASSIST = "urn:xmpp:mds:server-assist:0";
 }

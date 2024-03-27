@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import org.json.JSONArray;
@@ -437,6 +438,17 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         return null;
     }
 
+    public Message findReceivedWithRemoteId(final String id) {
+        synchronized (this.messages) {
+            for (final Message message : this.messages) {
+                if (message.getStatus() == Message.STATUS_RECEIVED && id.equals(message.getRemoteMsgId())) {
+                    return message;
+                }
+            }
+        }
+        return null;
+    }
+
     public Message findMessageWithServerMsgId(String id) {
         synchronized (this.messages) {
             for (Message message : this.messages) {
@@ -576,20 +588,20 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         }
     }
 
-    public List<Message> markRead(String upToUuid) {
-        final List<Message> unread = new ArrayList<>();
+    public List<Message> markRead(final String upToUuid) {
+        final ImmutableList.Builder<Message> unread = new ImmutableList.Builder<>();
         synchronized (this.messages) {
-            for (Message message : this.messages) {
+            for (final Message message : this.messages) {
                 if (!message.isRead()) {
                     message.markRead();
                     unread.add(message);
                 }
                 if (message.getUuid().equals(upToUuid)) {
-                    return unread;
+                    return unread.build();
                 }
             }
         }
-        return unread;
+        return unread.build();
     }
 
     public Message getLatestMessage() {

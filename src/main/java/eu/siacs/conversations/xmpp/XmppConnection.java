@@ -2968,6 +2968,10 @@ public class XmppConnection implements Runnable {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUBSUB_PUBLISH_OPTIONS);
         }
 
+        public boolean pepConfigNodeMax() {
+            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUBSUB_CONFIG_NODE_MAX);
+        }
+
         public boolean pepOmemoWhitelisted() {
             return hasDiscoFeature(
                     account.getJid().asBareJid(), AxolotlService.PEP_OMEMO_WHITELISTED);
@@ -3067,6 +3071,14 @@ public class XmppConnection implements Runnable {
 
         public boolean externalServiceDiscovery() {
             return hasDiscoFeature(account.getDomain(), Namespace.EXTERNAL_SERVICE_DISCOVERY);
+        }
+
+        public boolean mds() {
+            return pepPublishOptions() && pepConfigNodeMax();
+        }
+
+        public boolean mdsServerAssist() {
+            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.MDS_DISPLAYED);
         }
     }
 }
