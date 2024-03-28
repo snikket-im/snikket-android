@@ -243,7 +243,7 @@ public class XmppConnectionService extends Service {
     private final ChannelDiscoveryService mChannelDiscoveryService = new ChannelDiscoveryService(this);
     private final ShortcutService mShortcutService = new ShortcutService(this);
     private final AtomicBoolean mInitialAddressbookSyncCompleted = new AtomicBoolean(false);
-    private final AtomicBoolean mForceForegroundService = new AtomicBoolean(false);
+    private final AtomicBoolean mOngoingVideoTranscoding = new AtomicBoolean(false);
     private final AtomicBoolean mForceDuringOnCreate = new AtomicBoolean(false);
     private final AtomicReference<OngoingCall> ongoingCall = new AtomicReference<>();
     private final OnMessagePacketReceived mMessageParser = new MessageParser(this);
@@ -526,13 +526,13 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public void startForcingForegroundNotification() {
-        mForceForegroundService.set(true);
+    public void startOngoingVideoTranscodingForegroundNotification() {
+        mOngoingVideoTranscoding.set(true);
         toggleForegroundService();
     }
 
-    public void stopForcingForegroundNotification() {
-        mForceForegroundService.set(false);
+    public void stopOngoingVideoTranscodingForegroundNotification() {
+        mOngoingVideoTranscoding.set(false);
         toggleForegroundService();
     }
 
@@ -1467,35 +1467,47 @@ public class XmppConnectionService extends Service {
     private void toggleForegroundService(final boolean force) {
         final boolean status;
         final OngoingCall ongoing = ongoingCall.get();
-        if (force || mForceDuringOnCreate.get() || mForceForegroundService.get() || ongoing != null || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
+        final boolean ongoingVideoTranscoding = mOngoingVideoTranscoding.get();
+        final int id;
+        if (force
+                || mForceDuringOnCreate.get()
+                || ongoingVideoTranscoding
+                || ongoing != null
+                || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
             final Notification notification;
-            final int id;
             if (ongoing != null) {
                 notification = this.mNotificationService.getOngoingCallNotification(ongoing);
                 id = NotificationService.ONGOING_CALL_NOTIFICATION_ID;
                 startForegroundOrCatch(id, notification, true);
-                mNotificationService.cancel(NotificationService.FOREGROUND_NOTIFICATION_ID);
+            } else if (ongoingVideoTranscoding) {
+                notification = this.mNotificationService.getIndeterminateVideoTranscoding();
+                id = NotificationService.ONGOING_VIDEO_TRANSCODING_NOTIFICATION_ID;
+                startForegroundOrCatch(id, notification, false);
             } else {
                 notification = this.mNotificationService.createForegroundNotification();
                 id = NotificationService.FOREGROUND_NOTIFICATION_ID;
                 startForegroundOrCatch(id, notification, false);
             }
-
-            if (!mForceForegroundService.get()) {
-                mNotificationService.notify(id, notification);
-            }
+            mNotificationService.notify(id, notification);
             status = true;
         } else {
+            id = 0;
             stopForeground(true);
             status = false;
         }
-        if (!mForceForegroundService.get()) {
-            mNotificationService.cancel(NotificationService.FOREGROUND_NOTIFICATION_ID);
+
+        for (final int toBeRemoved :
+                Collections2.filter(
+                        Arrays.asList(
+                                NotificationService.FOREGROUND_NOTIFICATION_ID,
+                                NotificationService.ONGOING_CALL_NOTIFICATION_ID,
+                                NotificationService.ONGOING_VIDEO_TRANSCODING_NOTIFICATION_ID),
+                        i -> i != id)) {
+            mNotificationService.cancel(toBeRemoved);
         }
-        if (ongoing == null) {
-            mNotificationService.cancel(NotificationService.ONGOING_CALL_NOTIFICATION_ID);
-        }
-        Log.d(Config.LOGTAG, "ForegroundService: " + (status ? "on" : "off"));
+        Log.d(
+                Config.LOGTAG,
+                "ForegroundService: " + (status ? "on" : "off") + ", notification: " + id);
     }
 
     private void startForegroundOrCatch(
@@ -1531,13 +1543,13 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean foregroundNotificationNeedsUpdatingWhenErrorStateChanges() {
-        return !mForceForegroundService.get() && ongoingCall.get() == null && Compatibility.keepForegroundService(this) && hasEnabledAccounts();
+        return !mOngoingVideoTranscoding.get() && ongoingCall.get() == null && Compatibility.keepForegroundService(this) && hasEnabledAccounts();
     }
 
     @Override
     public void onTaskRemoved(final Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-        if ((Compatibility.keepForegroundService(this) && hasEnabledAccounts()) || mForceForegroundService.get() || ongoingCall.get() != null) {
+        if ((Compatibility.keepForegroundService(this) && hasEnabledAccounts()) || mOngoingVideoTranscoding.get() || ongoingCall.get() != null) {
             Log.d(Config.LOGTAG, "ignoring onTaskRemoved because foreground service is activated");
         } else {
             this.logoutAndSave(false);

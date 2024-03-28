@@ -30,6 +30,7 @@ import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -108,6 +109,7 @@ public class NotificationService {
     public static final int ONGOING_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 10;
     public static final int MISSED_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 12;
     private static final int DELIVERY_FAILED_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 13;
+    public static final int ONGOING_VIDEO_TRANSCODING_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 14;
     private final XmppConnectionService mXmppConnectionService;
     private final LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<>();
     private final HashMap<Conversation, AtomicInteger> mBacklogMessageCounter = new HashMap<>();
@@ -1919,18 +1921,33 @@ public class NotificationService {
         notify(ERROR_NOTIFICATION_ID, mBuilder.build());
     }
 
-    void updateFileAddingNotification(int current, Message message) {
-        Notification.Builder mBuilder = new Notification.Builder(mXmppConnectionService);
-        mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.transcoding_video));
-        mBuilder.setProgress(100, current, false);
-        mBuilder.setSmallIcon(R.drawable.ic_hourglass_empty_white_24dp);
-        mBuilder.setContentIntent(createContentIntent(message.getConversation()));
-        mBuilder.setOngoing(true);
-        if (Compatibility.runsTwentySix()) {
-            mBuilder.setChannelId("compression");
+    void updateFileAddingNotification(final int current, final Message message) {
+
+        final Notification notification = videoTranscoding(current, message);
+        notify(ONGOING_VIDEO_TRANSCODING_NOTIFICATION_ID, notification);
+    }
+
+    private Notification videoTranscoding(final int current, @Nullable final Message message) {
+        final Notification.Builder builder = new Notification.Builder(mXmppConnectionService);
+        builder.setContentTitle(mXmppConnectionService.getString(R.string.transcoding_video));
+        if (current >= 0) {
+            builder.setProgress(100, current, false);
+        } else {
+            builder.setProgress(100, 0, true);
         }
-        Notification notification = mBuilder.build();
-        notify(FOREGROUND_NOTIFICATION_ID, notification);
+        builder.setSmallIcon(R.drawable.ic_hourglass_empty_white_24dp);
+        if (message != null) {
+            builder.setContentIntent(createContentIntent(message.getConversation()));
+        }
+        builder.setOngoing(true);
+        if (Compatibility.runsTwentySix()) {
+            builder.setChannelId("compression");
+        }
+        return builder.build();
+    }
+
+    public Notification getIndeterminateVideoTranscoding() {
+        return videoTranscoding(-1, null);
     }
 
     private void notify(final String tag, final int id, final Notification notification) {

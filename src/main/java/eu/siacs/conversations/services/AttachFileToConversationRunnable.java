@@ -90,7 +90,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
 
     private void processAsVideo() throws FileNotFoundException {
         Log.d(Config.LOGTAG, "processing file as video");
-        mXmppConnectionService.startForcingForegroundNotification();
+        mXmppConnectionService.startOngoingVideoTranscodingForegroundNotification();
         mXmppConnectionService.getFileBackend().setupRelativeFilePath(message, String.format("%s.%s", message.getUuid(), "mp4"));
         final DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
         if (Objects.requireNonNull(file.getParentFile()).mkdirs()) {
@@ -109,7 +109,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
                 .transcode();
         } catch (final RuntimeException e) {
             // transcode can already throw if there is an invalid file format or a platform bug
-            mXmppConnectionService.stopForcingForegroundNotification();
+            mXmppConnectionService.stopOngoingVideoTranscodingForegroundNotification();
             processAsFile();
             return;
         }
@@ -119,7 +119,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
             throw new AssertionError(e);
         } catch (final ExecutionException e) {
             if (e.getCause() instanceof Error) {
-                mXmppConnectionService.stopForcingForegroundNotification();
+                mXmppConnectionService.stopOngoingVideoTranscodingForegroundNotification();
                 processAsFile();
             } else {
                 Log.d(Config.LOGTAG, "ignoring execution exception. Should get handled by onTranscodeFiled() instead", e);
@@ -138,7 +138,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
 
     @Override
     public void onTranscodeCompleted(int successCode) {
-        mXmppConnectionService.stopForcingForegroundNotification();
+        mXmppConnectionService.stopOngoingVideoTranscodingForegroundNotification();
         final File file = mXmppConnectionService.getFileBackend().getFile(message);
         long convertedFileSize = mXmppConnectionService.getFileBackend().getFile(message).getSize();
         Log.d(Config.LOGTAG, "originalFileSize=" + originalFileSize + " convertedFileSize=" + convertedFileSize);
@@ -162,13 +162,13 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
 
     @Override
     public void onTranscodeCanceled() {
-        mXmppConnectionService.stopForcingForegroundNotification();
+        mXmppConnectionService.stopOngoingVideoTranscodingForegroundNotification();
         processAsFile();
     }
 
     @Override
     public void onTranscodeFailed(@NonNull @NotNull Throwable exception) {
-        mXmppConnectionService.stopForcingForegroundNotification();
+        mXmppConnectionService.stopOngoingVideoTranscodingForegroundNotification();
         Log.d(Config.LOGTAG, "video transcoding failed", exception);
         processAsFile();
     }
