@@ -481,12 +481,19 @@
             <xmpp:version>0.1.0</xmpp:version>
         </xmpp:SupportedXep>
     </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0490.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>0.1.0</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
 
     <release>
         <Version>
-            <revision>2.13.4</revision>
-            <created>2024-02-20</created>
-            <file-release rdf:resource="https://codeberg.org/iNPUTmice/Conversations/archive/2.13.4.tar.gz"/>
+            <revision>2.14.0</revision>
+            <created>2024-03-22</created>
+            <file-release rdf:resource="https://codeberg.org/iNPUTmice/Conversations/archive/2.14.0.tar.gz"/>
         </Version>
     </release>
 </Project>
