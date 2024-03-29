@@ -40,6 +40,7 @@ import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -51,6 +52,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class CallIntegrationConnectionService extends ConnectionService {
+
+    private static final String EXTRA_ADDRESS = "eu.siacs.conversations.address";
+    private static final String EXTRA_SESSION_ID = "eu.siacs.conversations.sid";
 
     private static final ExecutorService ACCOUNT_REGISTRATION_EXECUTOR =
             Executors.newSingleThreadExecutor();
@@ -160,8 +164,17 @@ public class CallIntegrationConnectionService extends ConnectionService {
             final PhoneAccountHandle phoneAccountHandle, final ConnectionRequest request) {
         Log.d(Config.LOGTAG, "onCreateOutgoingConnection(" + request.getAddress() + ")");
         final var uri = request.getAddress();
-        final var jid = Jid.ofEscaped(uri.getSchemeSpecificPart());
         final var extras = request.getExtras();
+        if (uri == null || !Arrays.asList("xmpp", "tel").contains(uri.getScheme())) {
+            return Connection.createFailedConnection(
+                    new DisconnectCause(DisconnectCause.ERROR, "invalid address"));
+        }
+        final Jid jid;
+        if ("tel".equals(uri.getScheme())) {
+            jid = Jid.ofEscaped(extras.getString(EXTRA_ADDRESS));
+        } else {
+            jid = Jid.ofEscaped(uri.getSchemeSpecificPart());
+        }
         final int videoState = extras.getInt(TelecomManager.EXTRA_START_CALL_WITH_VIDEO_STATE);
         final Set<Media> media =
                 videoState == VideoProfile.STATE_AUDIO_ONLY
@@ -183,7 +196,7 @@ public class CallIntegrationConnectionService extends ConnectionService {
         final Bundle extraExtras = extras.getBundle(TelecomManager.EXTRA_INCOMING_CALL_EXTRAS);
         final String incomingCallAddress =
                 extras.getString(TelecomManager.EXTRA_INCOMING_CALL_ADDRESS);
-        final String sid = extraExtras == null ? null : extraExtras.getString("sid");
+        final String sid = extraExtras == null ? null : extraExtras.getString(EXTRA_SESSION_ID);
         Log.d(Config.LOGTAG, "sid " + sid);
         final Uri uri = incomingCallAddress == null ? null : Uri.parse(incomingCallAddress);
         Log.d(Config.LOGTAG, "uri=" + uri);
@@ -329,9 +342,19 @@ public class CallIntegrationConnectionService extends ConnectionService {
                         .show();
                 return;
             }
+            final Uri address;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                // Android 9+ supports putting xmpp uris into the address
+                address = CallIntegration.address(with);
+            } else {
+                // for Android 8 we need to put in a fake tel uri
+                final var outgoingCallExtras = new Bundle();
+                outgoingCallExtras.putString(EXTRA_ADDRESS, with.toEscapedString());
+                extras.putBundle(TelecomManager.EXTRA_OUTGOING_CALL_EXTRAS, outgoingCallExtras);
+                address = Uri.parse("tel:0");
+            }
             try {
-                service.getSystemService(TelecomManager.class)
-                        .placeCall(CallIntegration.address(with), extras);
+                service.getSystemService(TelecomManager.class).placeCall(address, extras);
             } catch (final SecurityException e) {
                 Toast.makeText(service, R.string.call_integration_not_available, Toast.LENGTH_LONG)
                         .show();
@@ -363,7 +386,7 @@ public class CallIntegrationConnectionService extends ConnectionService {
                 TelecomManager.EXTRA_INCOMING_CALL_ADDRESS,
                 CallIntegration.address(id.with).toString());
         final var extras = new Bundle();
-        extras.putString("sid", id.sessionId);
+        extras.putString(EXTRA_SESSION_ID, id.sessionId);
         bundle.putBundle(TelecomManager.EXTRA_INCOMING_CALL_EXTRAS, extras);
         try {
             context.getSystemService(TelecomManager.class)
