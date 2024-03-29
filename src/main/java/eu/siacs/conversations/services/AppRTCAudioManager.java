@@ -466,7 +466,7 @@ public class AppRTCAudioManager {
                             final var toneGenerator =
                                     new ToneGenerator(
                                             AudioManager.STREAM_MUSIC,
-                                            CallIntegration.DEFAULT_VOLUME);
+                                            CallIntegration.DEFAULT_TONE_VOLUME);
                             toneGenerator.startTone(ToneGenerator.TONE_CDMA_DIAL_TONE_LITE, 750);
                         },
                         0,

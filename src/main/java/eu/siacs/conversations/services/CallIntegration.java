@@ -2,6 +2,7 @@ package eu.siacs.conversations.services;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.net.Uri;
@@ -35,7 +36,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CallIntegration extends Connection {
 
-    public static final int DEFAULT_VOLUME = 80;
+    public static final int DEFAULT_TONE_VOLUME = 60;
+    private static final int DEFAULT_MEDIA_PLAYER_VOLUME = 90;
 
     private final Context context;
 
@@ -338,14 +340,25 @@ public class CallIntegration extends Connection {
     }
 
     private void playConnectedSound() {
-        final var mediaPlayer = MediaPlayer.create(context, R.raw.connected);
-        mediaPlayer.setVolume(DEFAULT_VOLUME / 100f, DEFAULT_VOLUME / 100f);
+        final var audioAttributes =
+                new AudioAttributes.Builder()
+                        .setLegacyStreamType(AudioManager.STREAM_VOICE_CALL)
+                        .build();
+        final var mediaPlayer =
+                MediaPlayer.create(
+                        context,
+                        R.raw.connected,
+                        audioAttributes,
+                        AudioManager.AUDIO_SESSION_ID_GENERATE);
+        mediaPlayer.setVolume(
+                DEFAULT_MEDIA_PLAYER_VOLUME / 100f, DEFAULT_MEDIA_PLAYER_VOLUME / 100f);
         mediaPlayer.start();
     }
 
     public void success() {
         Log.d(Config.LOGTAG, "CallIntegration.success()");
-        final var toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, DEFAULT_VOLUME);
+        final var toneGenerator =
+                new ToneGenerator(AudioManager.STREAM_VOICE_CALL, DEFAULT_TONE_VOLUME);
         toneGenerator.startTone(ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
         this.destroyWithDelay(new DisconnectCause(DisconnectCause.LOCAL, null), 375);
     }
@@ -361,7 +374,8 @@ public class CallIntegration extends Connection {
 
     public void error() {
         Log.d(Config.LOGTAG, "CallIntegration.error()");
-        final var toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, DEFAULT_VOLUME);
+        final var toneGenerator =
+                new ToneGenerator(AudioManager.STREAM_VOICE_CALL, DEFAULT_TONE_VOLUME);
         toneGenerator.startTone(ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
         this.destroyWithDelay(new DisconnectCause(DisconnectCause.ERROR, null), 375);
     }
@@ -379,7 +393,7 @@ public class CallIntegration extends Connection {
 
     public void busy() {
         Log.d(Config.LOGTAG, "CallIntegration.busy()");
-        final var toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
+        final var toneGenerator = new ToneGenerator(AudioManager.STREAM_VOICE_CALL, 80);
         toneGenerator.startTone(ToneGenerator.TONE_CDMA_NETWORK_BUSY, 2500);
         this.destroyWithDelay(new DisconnectCause(DisconnectCause.BUSY, null), 2500);
     }
