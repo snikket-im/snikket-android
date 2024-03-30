@@ -76,15 +76,20 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
     public void deliverPacket(final Account account, final JinglePacket packet) {
         final String sessionId = packet.getSessionId();
+        final JinglePacket.Action action = packet.getAction();
         if (sessionId == null) {
             respondWithJingleError(account, packet, "unknown-session", "item-not-found", "cancel");
+            return;
+        }
+        if (action == null) {
+            respondWithJingleError(account, packet, null, "bad-request", "cancel");
             return;
         }
         final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, packet);
         final AbstractJingleConnection existingJingleConnection = connections.get(id);
         if (existingJingleConnection != null) {
             existingJingleConnection.deliverPacket(packet);
-        } else if (packet.getAction() == JinglePacket.Action.SESSION_INITIATE) {
+        } else if (action == JinglePacket.Action.SESSION_INITIATE) {
             final Jid from = packet.getFrom();
             final Content content = packet.getJingleContent();
             final String descriptionNamespace =
@@ -153,7 +158,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         rtpConnection.integrationFailure();
     }
 
-    private void sendSessionTerminate(final Account account, final IqPacket request, final AbstractJingleConnection.Id id) {
+    private void sendSessionTerminate(
+            final Account account, final IqPacket request, final AbstractJingleConnection.Id id) {
         mXmppConnectionService.sendIqPacket(
                 account, request.generateResponse(IqPacket.TYPE.RESULT), null);
         final JinglePacket sessionTermination =
@@ -255,9 +261,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     void respondWithJingleError(
             final Account account,
             final IqPacket original,
-            String jingleCondition,
-            String condition,
-            String conditionType) {
+            final String jingleCondition,
+            final String condition,
+            final String conditionType) {
         final IqPacket response = original.generateResponse(IqPacket.TYPE.ERROR);
         final Element error = response.addChild("error");
         error.setAttribute("type", conditionType);
@@ -1171,8 +1177,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         public void onCallIntegrationAnswer() {}
 
         @Override
-        public void onCallIntegrationSilence() {
-
-        }
+        public void onCallIntegrationSilence() {}
     }
 }
