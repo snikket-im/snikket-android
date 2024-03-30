@@ -3074,7 +3074,9 @@ public class XmppConnection implements Runnable {
         }
 
         public boolean mds() {
-            return pepPublishOptions() && pepConfigNodeMax();
+            return pepPublishOptions()
+                    && pepConfigNodeMax()
+                    && Config.MESSAGE_DISPLAYED_SYNCHRONIZATION;
         }
 
         public boolean mdsServerAssist() {

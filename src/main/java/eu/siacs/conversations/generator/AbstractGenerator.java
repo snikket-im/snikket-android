@@ -24,7 +24,7 @@ import java.util.TimeZone;
 public abstract class AbstractGenerator {
     private static final SimpleDateFormat DATE_FORMAT =
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
-    private final String[] FEATURES = {
+    private final String[] STATIC_FEATURES = {
         Namespace.JINGLE,
         Namespace.JINGLE_APPS_FILE_TRANSFER,
         Namespace.JINGLE_TRANSPORTS_S5B,
@@ -40,8 +40,7 @@ public abstract class AbstractGenerator {
         Namespace.NICK + "+notify",
         "urn:xmpp:ping",
         "jabber:iq:version",
-        "http://jabber.org/protocol/chatstates",
-        Namespace.MDS_DISPLAYED + "+notify"
+        "http://jabber.org/protocol/chatstates"
     };
     private final String[] MESSAGE_CONFIRMATION_FEATURES = {
         "urn:xmpp:chat-markers:0", "urn:xmpp:receipts"
@@ -108,7 +107,10 @@ public abstract class AbstractGenerator {
 
     public List<String> getFeatures(Account account) {
         final XmppConnection connection = account.getXmppConnection();
-        final ArrayList<String> features = new ArrayList<>(Arrays.asList(FEATURES));
+        final ArrayList<String> features = new ArrayList<>(Arrays.asList(STATIC_FEATURES));
+        if (Config.MESSAGE_DISPLAYED_SYNCHRONIZATION) {
+            features.add(Namespace.MDS_DISPLAYED + "+notify");
+        }
         if (mXmppConnectionService.confirmMessages()) {
             features.addAll(Arrays.asList(MESSAGE_CONFIRMATION_FEATURES));
         }

@@ -271,11 +271,17 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     mXmppConnectionService.updateConversationUi();
                 }
             }
-        } else if (Namespace.MDS_DISPLAYED.equals(node) && account.getJid().asBareJid().equals(from)) {
+        } else if (Config.MESSAGE_DISPLAYED_SYNCHRONIZATION
+                && Namespace.MDS_DISPLAYED.equals(node)
+                && account.getJid().asBareJid().equals(from)) {
             final Element item = items.findChild("item");
             mXmppConnectionService.processMdsItem(account, item);
         } else {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + " received pubsub notification for node=" + node);
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + " received pubsub notification for node="
+                            + node);
         }
     }
 
