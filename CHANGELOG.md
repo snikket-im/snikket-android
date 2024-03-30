@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.14.1
+
+* Fix A/V calls on Android 8
+* Fix race conditions in new call integration
+* Fix video compression sticking around
+
 ### Version 2.14.0
 
 * Improve integration of A/V calls into the operating system
