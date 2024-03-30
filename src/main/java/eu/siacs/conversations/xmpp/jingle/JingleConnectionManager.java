@@ -505,6 +505,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     getRtpSessionProposal(account, from.asBareJid(), sessionId);
             synchronized (rtpSessionProposals) {
                 if (proposal != null) {
+                    setTerminalSessionState(proposal, RtpEndUserState.DECLINED_OR_BUSY);
                     rtpSessionProposals.remove(proposal);
                     proposal.callIntegration.busy();
                     writeLogMissedOutgoing(
@@ -938,7 +939,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             final DeviceDiscoveryState currentState =
                     sessionProposal == null ? null : rtpSessionProposals.get(sessionProposal);
             if (currentState == null) {
-                Log.d(Config.LOGTAG, "unable to find session proposal for session id " + sessionId);
+                Log.d(
+                        Config.LOGTAG,
+                        "unable to find session proposal for session id "
+                                + sessionId
+                                + " target="
+                                + target);
                 return;
             }
             if (currentState == DeviceDiscoveryState.DISCOVERED) {
@@ -947,14 +953,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                         "session proposal already at discovered. not going to fall back");
                 return;
             }
-            this.rtpSessionProposals.put(sessionProposal, target);
-            final RtpEndUserState endUserState = target.toEndUserState();
-            if (endUserState == RtpEndUserState.RINGING) {
-                sessionProposal.callIntegration.setDialing();
-            }
-            // toneManager.transition(endUserState, sessionProposal.media);
-            mXmppConnectionService.notifyJingleRtpConnectionUpdate(
-                    account, sessionProposal.with, sessionProposal.sessionId, endUserState);
+
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid()
@@ -962,6 +961,30 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                             + sessionId
                             + " as "
                             + target);
+
+            final RtpEndUserState endUserState = target.toEndUserState();
+
+            if (target == DeviceDiscoveryState.FAILED) {
+                Log.d(Config.LOGTAG, "removing session proposal after failure");
+                setTerminalSessionState(sessionProposal, endUserState);
+                this.rtpSessionProposals.remove(sessionProposal);
+                sessionProposal.getCallIntegration().error();
+                mXmppConnectionService.notifyJingleRtpConnectionUpdate(
+                        account,
+                        sessionProposal.with,
+                        sessionProposal.sessionId,
+                        endUserState);
+                return;
+            }
+
+            this.rtpSessionProposals.put(sessionProposal, target);
+
+            if (endUserState == RtpEndUserState.RINGING) {
+                sessionProposal.callIntegration.setDialing();
+            }
+
+            mXmppConnectionService.notifyJingleRtpConnectionUpdate(
+                    account, sessionProposal.with, sessionProposal.sessionId, endUserState);
         }
     }
 
@@ -1020,6 +1043,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 PersistableSessionId.of(id), new TerminatedRtpSession(state, media));
     }
 
+    void setTerminalSessionState(final RtpSessionProposal proposal, final RtpEndUserState state) {
+        this.terminatedSessions.put(
+                PersistableSessionId.of(proposal), new TerminatedRtpSession(state, proposal.media));
+    }
+
     public TerminatedRtpSession getTerminalSessionState(final Jid with, final String sessionId) {
         return this.terminatedSessions.getIfPresent(new PersistableSessionId(with, sessionId));
     }
@@ -1033,8 +1061,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             this.sessionId = sessionId;
         }
 
-        public static PersistableSessionId of(AbstractJingleConnection.Id id) {
+        public static PersistableSessionId of(final AbstractJingleConnection.Id id) {
             return new PersistableSessionId(id.with, id.sessionId);
+        }
+
+        public static PersistableSessionId of(final RtpSessionProposal proposal) {
+            return new PersistableSessionId(proposal.with, proposal.sessionId);
         }
 
         @Override

@@ -131,6 +131,7 @@ public class CallIntegrationConnectionService extends ConnectionService {
                 intent.putExtra(
                         RtpSessionActivity.EXTRA_LAST_REPORTED_STATE,
                         RtpEndUserState.FINDING_DEVICE.toString());
+                intent.putExtra(RtpSessionActivity.EXTRA_PROPOSED_SESSION_ID, proposal.sessionId);
                 callIntegration = proposal.getCallIntegration();
             }
             if (Media.audioOnly(media)) {

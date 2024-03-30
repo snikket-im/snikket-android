@@ -80,6 +80,7 @@ public class RtpSessionActivity extends XmppActivity
 
     public static final String EXTRA_WITH = "with";
     public static final String EXTRA_SESSION_ID = "session_id";
+    public static final String EXTRA_PROPOSED_SESSION_ID = "proposed_session_id";
     public static final String EXTRA_LAST_REPORTED_STATE = "last_reported_state";
     public static final String EXTRA_LAST_ACTION = "last_action";
     public static final String ACTION_ACCEPT_CALL = "action_accept_call";
@@ -386,7 +387,6 @@ public class RtpSessionActivity extends XmppActivity
         }
     }
 
-
     private void putScreenInCallMode() {
         putScreenInCallMode(requireRtpConnection().getMedia());
     }
@@ -509,6 +509,16 @@ public class RtpSessionActivity extends XmppActivity
             proposeJingleRtpSession(account, with, actionToMedia(action));
             setWith(account.getRoster().getContact(with), null);
         } else if (Intent.ACTION_VIEW.equals(action)) {
+            final String proposedSessionId = intent.getStringExtra(EXTRA_PROPOSED_SESSION_ID);
+            final JingleConnectionManager.TerminatedRtpSession terminatedRtpSession =
+                    xmppConnectionService
+                            .getJingleConnectionManager()
+                            .getTerminalSessionState(with, proposedSessionId);
+            if (terminatedRtpSession != null) {
+                // termination (due to message error or 'busy' was faster than opening the activity
+                initializeWithTerminatedSessionState(account, with, terminatedRtpSession);
+                return;
+            }
             final String extraLastState = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
             final String lastAction = intent.getStringExtra(EXTRA_LAST_ACTION);
             final Set<Media> media = actionToMedia(lastAction);
@@ -1007,7 +1017,7 @@ public class RtpSessionActivity extends XmppActivity
     private void updateInCallButtonConfiguration(
             final RtpEndUserState state, final Set<Media> media) {
         if (STATES_CONSIDERED_CONNECTED.contains(state) && !isPictureInPicture()) {
-            Preconditions.checkArgument(media.size() > 0, "Media must not be empty");
+            Preconditions.checkArgument(!media.isEmpty(), "Media must not be empty");
             if (media.contains(Media.VIDEO)) {
                 final JingleRtpConnection rtpConnection = requireRtpConnection();
                 updateInCallButtonConfigurationVideo(
@@ -1028,7 +1038,13 @@ public class RtpSessionActivity extends XmppActivity
         } else if (STATES_SHOWING_SPEAKER_CONFIGURATION.contains(state)
                 && !isPictureInPicture()
                 && Media.audioOnly(media)) {
-            final CallIntegration callIntegration = requireCallIntegration();
+            final CallIntegration callIntegration;
+            try {
+                callIntegration = requireCallIntegration();
+            } catch (final IllegalStateException e) {
+                Log.e(Config.LOGTAG, "can not update InCallButtonConfiguration in state " + state);
+                return;
+            }
             updateInCallButtonConfigurationSpeaker(
                     callIntegration.getSelectedAudioDevice(),
                     callIntegration.getAudioDevices().size());
