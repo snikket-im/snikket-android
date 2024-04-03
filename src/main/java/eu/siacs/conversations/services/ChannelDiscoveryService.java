@@ -1,5 +1,8 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
+
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,7 +11,33 @@ import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.TrustManagers;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Room;
+import eu.siacs.conversations.http.HttpConnectionManager;
+import eu.siacs.conversations.http.services.MuclumbusService;
+import eu.siacs.conversations.parser.IqParser;
+import eu.siacs.conversations.utils.TLSSocketFactory;
+import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+
+import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,23 +47,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Room;
-import eu.siacs.conversations.http.HttpConnectionManager;
-import eu.siacs.conversations.http.services.MuclumbusService;
-import eu.siacs.conversations.parser.IqParser;
-import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.OnIqPacketReceived;
-import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
 
 public class ChannelDiscoveryService {
 
@@ -55,6 +69,24 @@ public class ChannelDiscoveryService {
             return;
         }
         final OkHttpClient.Builder builder = HttpConnectionManager.OK_HTTP_CLIENT.newBuilder();
+        try {
+            final X509TrustManager trustManager;
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+                trustManager = TrustManagers.defaultWithBundledLetsEncrypt(service);
+            } else {
+                trustManager = TrustManagers.createDefaultTrustManager();
+            }
+            final SSLSocketFactory socketFactory =
+                    new TLSSocketFactory(new X509TrustManager[] {trustManager}, SECURE_RANDOM);
+            builder.sslSocketFactory(socketFactory, trustManager);
+        } catch (final IOException
+                | KeyManagementException
+                | NoSuchAlgorithmException
+                | KeyStoreException
+                | CertificateException e) {
+            Log.d(Config.LOGTAG, "not reconfiguring service to work with bundled LetsEncrypt");
+            throw new RuntimeException(e);
+        }
         if (service.useTorToConnect()) {
             builder.proxy(HttpConnectionManager.getProxy());
         }
