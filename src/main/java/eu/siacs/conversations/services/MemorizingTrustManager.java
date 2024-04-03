@@ -176,7 +176,7 @@ public class MemorizingTrustManager {
         this.appTrustManager = getTrustManager(appKeyStore);
         try {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
-                this.defaultTrustManager = defaultWithBundledLetsEncrypt(context);
+                this.defaultTrustManager = TrustManagers.defaultWithBundledLetsEncrypt(context);
             } else {
                 this.defaultTrustManager = TrustManagers.createDefaultTrustManager();
             }
@@ -186,17 +186,6 @@ public class MemorizingTrustManager {
                 | IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static X509TrustManager defaultWithBundledLetsEncrypt(final Context context)
-            throws NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
-        final BundledTrustManager bundleTrustManager =
-                BundledTrustManager.builder()
-                        .loadKeyStore(
-                                context.getResources().openRawResource(R.raw.letsencrypt),
-                                "letsencrypt")
-                        .build();
-        return CombiningTrustManager.combineWithDefault(bundleTrustManager);
     }
 
     private static boolean isIp(final String server) {
