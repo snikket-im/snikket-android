@@ -460,6 +460,9 @@ public class RtpSessionActivity extends XmppActivity
     public void onNewIntent(final Intent intent) {
         Log.d(Config.LOGTAG, this.getClass().getName() + ".onNewIntent()");
         super.onNewIntent(intent);
+        if (intent == null) {
+            return;
+        }
         setIntent(intent);
         if (xmppConnectionService == null) {
             Log.d(
@@ -467,32 +470,21 @@ public class RtpSessionActivity extends XmppActivity
                     "RtpSessionActivity: background service wasn't bound in onNewIntent()");
             return;
         }
-        final Account account = extractAccount(intent);
-        final String action = intent.getAction();
-        final Jid with = Jid.ofEscaped(intent.getStringExtra(EXTRA_WITH));
-        final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
-        if (sessionId != null) {
-            Log.d(Config.LOGTAG, "reinitializing from onNewIntent()");
-            if (initializeActivityWithRunningRtpSession(account, with, sessionId)) {
-                return;
-            }
-            if (ACTION_ACCEPT_CALL.equals(intent.getAction())) {
-                Log.d(Config.LOGTAG, "accepting call from onNewIntent()");
-                requestPermissionsAndAcceptCall();
-                resetIntent(intent.getExtras());
-            }
-        } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(action)) {
-            proposeJingleRtpSession(account, with, actionToMedia(action));
-            setWith(account.getRoster().getContact(with), null);
-        } else {
-            throw new IllegalStateException("received onNewIntent without sessionId");
-        }
+        initializeWithIntent(Event.ON_NEW_INTENT, intent);
     }
 
     @Override
     void onBackendConnected() {
-        final Intent intent = getIntent();
+        final var intent = getIntent();
+        if (intent == null) {
+            return;
+        }
+        initializeWithIntent(Event.ON_BACKEND_CONNECTED, intent);
+    }
+
+    private void initializeWithIntent(final Event event, @NonNull final Intent intent) {
         final String action = intent.getAction();
+        Log.d(Config.LOGTAG, "initializeWithIntent(" + event + "," + action + ")");
         final Account account = extractAccount(intent);
         final Jid with = Jid.ofEscaped(intent.getStringExtra(EXTRA_WITH));
         final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
@@ -505,9 +497,6 @@ public class RtpSessionActivity extends XmppActivity
                 requestPermissionsAndAcceptCall();
                 resetIntent(intent.getExtras());
             }
-        } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(action)) {
-            proposeJingleRtpSession(account, with, actionToMedia(action));
-            setWith(account.getRoster().getContact(with), null);
         } else if (Intent.ACTION_VIEW.equals(action)) {
             final String proposedSessionId = intent.getStringExtra(EXTRA_PROPOSED_SESSION_ID);
             final JingleConnectionManager.TerminatedRtpSession terminatedRtpSession =
@@ -520,8 +509,6 @@ public class RtpSessionActivity extends XmppActivity
                 return;
             }
             final String extraLastState = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
-            final String lastAction = intent.getStringExtra(EXTRA_LAST_ACTION);
-            final Set<Media> media = actionToMedia(lastAction);
             final RtpEndUserState state =
                     extraLastState == null ? null : RtpEndUserState.valueOf(extraLastState);
             if (state != null) {
@@ -541,6 +528,8 @@ public class RtpSessionActivity extends XmppActivity
             if (END_CARD.contains(state)) {
                 return;
             }
+            final String lastAction = intent.getStringExtra(EXTRA_LAST_ACTION);
+            final Set<Media> media = actionToMedia(lastAction);
             if (xmppConnectionService
                     .getJingleConnectionManager()
                     .hasMatchingProposal(account, with)) {
@@ -565,19 +554,6 @@ public class RtpSessionActivity extends XmppActivity
         } else {
             binding.withJid.setVisibility(View.GONE);
         }
-    }
-
-    private void proposeJingleRtpSession(
-            final Account account, final Jid with, final Set<Media> media) {
-        if (with.isBareJid()) {
-            xmppConnectionService
-                    .getJingleConnectionManager()
-                    .proposeJingleRtpSession(account, with, media);
-        } else {
-            throw new IllegalStateException(
-                    "We should not be initializing direct calls from the RtpSessionActivity. Go through CallIntegrationConnectionService.placeCall instead!");
-        }
-        putScreenInCallMode(media);
     }
 
     @Override
@@ -1525,5 +1501,10 @@ public class RtpSessionActivity extends XmppActivity
 
     private static boolean emptyReference(final WeakReference<?> weakReference) {
         return weakReference == null || weakReference.get() == null;
+    }
+
+    private enum Event {
+        ON_BACKEND_CONNECTED,
+        ON_NEW_INTENT
     }
 }

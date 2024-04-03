@@ -127,6 +127,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -1556,20 +1557,25 @@ public class ConversationFragment extends XmppFragment
         if (ongoingRtpSession.isPresent()) {
             final OngoingRtpSession id = ongoingRtpSession.get();
             final Intent intent = new Intent(getActivity(), RtpSessionActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
             intent.putExtra(
                     RtpSessionActivity.EXTRA_ACCOUNT,
                     id.getAccount().getJid().asBareJid().toEscapedString());
             intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.getWith().toEscapedString());
             if (id instanceof AbstractJingleConnection) {
-                intent.setAction(Intent.ACTION_VIEW);
                 intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.getSessionId());
                 startActivity(intent);
             } else if (id instanceof JingleConnectionManager.RtpSessionProposal proposal) {
-                if (proposal.media.contains(Media.VIDEO)) {
-                    intent.setAction(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
+                if (Media.audioOnly(proposal.media)) {
+                    intent.putExtra(
+                            RtpSessionActivity.EXTRA_LAST_ACTION,
+                            RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
                 } else {
-                    intent.setAction(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+                    intent.putExtra(
+                            RtpSessionActivity.EXTRA_LAST_ACTION,
+                            RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
                 }
+                intent.putExtra(RtpSessionActivity.EXTRA_PROPOSED_SESSION_ID, proposal.sessionId);
                 startActivity(intent);
             }
         }
