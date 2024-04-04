@@ -603,7 +603,7 @@
     <string name="resend_sms">Ridërgo SMS</string>
     <string name="resend_sms_in">Ridërgo SMS (%s)</string>
     <string name="wait_x">Ju lutemi, pritni (%s)</string>
-    <string name="back">mbrapsht</string>
+    <string name="back">Mbrapsht</string>
     <string name="abort_registration_procedure">Jeni i sigurt se doni të ndëpritet procedura e regjistrimit\?</string>
     <string name="yes">Po</string>
     <string name="verifying">Po verifikohet…</string>
@@ -1027,4 +1027,13 @@
     <string name="remove_bookmark_and_close">Doni të hiqet faqerojtësi për %s dhe të mbyllet biseda?</string>
     <string name="delete_and_close">Fshije &amp; Mbylle</string>
     <string name="remove_bookmark">Doni të hiqet faqerojtësi për %s?</string>
+    <string name="channel_discover_opt_in_message">Pikasja e kanaleve përdor një shërbim palë të tretë të quajtur &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Përdorimi i kësaj veçorie do t’i transmetojë atij shërbimi adresën tuaj IP dhe terma kërkimesh. Për më tepër hollësi, shihni &lt;a href=https://search.jabber.network/privacy&gt;Rregullat e tyre mbi Privatësinë&lt;/a&gt;.</string>
+    <string name="pref_use_colorful_bubbles_summary">Flluska të ngjyrosura fjalosjeje ndihmojnë të dalloni mesazhe të dërguar dhe të marrë</string>
+    <string name="pref_dynamic_colors">Ngjyra dinamike</string>
+    <string name="pref_dynamic_colors_summary">Ngjyra Sistemi (Material You)</string>
+    <string name="possible_pin">U ngjit automatikisht nga e papastra PIN i mundshëm.</string>
+    <string name="no_certificate_selected">S’u përzgjodh dëshmi klienti!</string>
+    <string name="pref_use_colorful_bubbles">Flluska fjalosjeje të ngjyrosura</string>
+    <string name="title_activity_share_with">Ndajeni me të tjerë me…</string>
+    <string name="start_chat">Nisni fjalosje</string>
 </resources>
