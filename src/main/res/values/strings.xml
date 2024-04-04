@@ -20,7 +20,7 @@
     <string name="action_unblock_participant">Unblock participant</string>
     <string name="title_activity_manage_accounts">Manage Accounts</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_sharewith">Share with Conversation</string>
+    <string name="title_activity_share_with">Share with…</string>
     <string name="title_activity_start_conversation">Start Conversation</string>
     <string name="title_activity_choose_contact">Choose Contact</string>
     <string name="title_activity_choose_contacts">Choose Contacts</string>
@@ -581,8 +581,8 @@
     <string name="pref_theme_automatic">Automatic</string>
     <string name="pref_theme_light">Light</string>
     <string name="pref_theme_dark">Dark</string>
-    <string name="pref_use_green_background">Green Background</string>
-    <string name="pref_use_green_background_summary">Use green background for received messages</string>
+    <string name="pref_use_colorful_bubbles">Colorful chat bubbles</string>
+    <string name="pref_use_colorful_bubbles_summary">Colorful chat bubbles help to distinguish send and received messages</string>
     <string name="unable_to_connect_to_keychain">Could not connect to OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">This device is no longer in use</string>
     <string name="type_pc">Computer</string>
@@ -723,13 +723,10 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO will be used by default for new conversations.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO will have to be turned on explicitly for new conversations.</string>
     <string name="create_shortcut">Create Shortcut</string>
-    <string name="pref_font_size">Font Size</string>
-    <string name="pref_font_size_summary">The relative font size used within the app.</string>
     <string name="default_on">On by default</string>
     <string name="default_off">Off by default</string>
-    <string name="small">Small</string>
-    <string name="medium">Medium</string>
-    <string name="large">Large</string>
+    <string name="pref_dynamic_colors">Dynamic colors</string>
+    <string name="pref_dynamic_colors_summary">System colors (Material You)</string>
     <string name="not_encrypted_for_this_device">Message was not encrypted for this device.</string>
     <string name="omemo_decryption_failed">Failed to decrypt OMEMO message.</string>
     <string name="undo">undo</string>
@@ -810,7 +807,7 @@
     <string name="resend_sms">Resend SMS</string>
     <string name="resend_sms_in">Resend SMS (%s)</string>
     <string name="wait_x">Please wait (%s)</string>
-    <string name="back">back</string>
+    <string name="back">Back</string>
     <string name="possible_pin">Automatically pasted possible pin from clipboard.</string>
     <string name="please_enter_pin">Please enter your 6 digit pin.</string>
     <string name="abort_registration_procedure">Are you sure you want to abort the registration procedure?</string>
@@ -1030,4 +1027,6 @@
     <string name="contact_list_integration_not_available">Contact list integration is not available</string>
     <string name="call_integration_not_available">Call integration not available!</string>
     <string name="delete_and_close">Delete &amp; Close</string>
+    <string name="start_chat">Start chat</string>
+    <string name="no_certificate_selected">No client certificate selected!</string>
 </resources>

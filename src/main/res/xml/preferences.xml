@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="?attr/color_background_secondary"
     android:key="main_screen">
 
     <PreferenceCategory
@@ -15,8 +14,9 @@
                 android:targetPackage="com.huawei.systemmanager" />
         </PreferenceScreen>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_privacy"
-        android:key="privacy">
+    <PreferenceCategory
+        android:key="privacy"
+        android:title="@string/pref_privacy">
         <CheckBoxPreference
             android:defaultValue="@bool/confirm_messages"
             android:key="confirm_messages"
@@ -164,17 +164,7 @@
             android:summary="@string/pref_accept_files_summary"
             android:title="@string/pref_accept_files" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_ui_options">
-        <CheckBoxPreference
-            android:defaultValue="@bool/use_green_background"
-            android:key="use_green_background"
-            android:summary="@string/pref_use_green_background_summary"
-            android:title="@string/pref_use_green_background" />
-        <CheckBoxPreference
-            android:defaultValue="@bool/show_dynamic_tags"
-            android:key="show_dynamic_tags"
-            android:summary="@string/pref_show_dynamic_tags_summary"
-            android:title="@string/pref_show_dynamic_tags" />
+    <PreferenceCategory android:key="ui" android:title="@string/pref_ui_options">
         <ListPreference
             android:defaultValue="@string/theme"
             android:entries="@array/themes"
@@ -182,6 +172,20 @@
             android:key="theme"
             android:summary="@string/pref_theme_options_summary"
             android:title="@string/pref_theme_options" />
+        <CheckBoxPreference
+            android:key="dynamic_colors"
+            android:summary="@string/pref_dynamic_colors_summary"
+            android:title="@string/pref_dynamic_colors" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/use_green_background"
+            android:key="use_green_background"
+            android:summary="@string/pref_use_colorful_bubbles_summary"
+            android:title="@string/pref_use_colorful_bubbles" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/show_dynamic_tags"
+            android:key="show_dynamic_tags"
+            android:summary="@string/pref_show_dynamic_tags_summary"
+            android:title="@string/pref_show_dynamic_tags" />
         <ListPreference
             android:defaultValue="@string/quick_action"
             android:dialogTitle="@string/choose_quick_action"
@@ -190,13 +194,6 @@
             android:key="quick_action"
             android:summary="@string/pref_quick_action_summary"
             android:title="@string/pref_quick_action" />
-        <ListPreference
-            android:defaultValue="@string/default_font_size"
-            android:entries="@array/font_size_entries"
-            android:entryValues="@array/font_size_entry_values"
-            android:key="font_size"
-            android:summary="@string/pref_font_size_summary"
-            android:title="@string/pref_font_size" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="backup_category"

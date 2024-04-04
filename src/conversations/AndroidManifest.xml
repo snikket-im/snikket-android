@@ -5,6 +5,7 @@
         <activity
             android:name=".ui.ManageAccountActivity"
             android:label="@string/title_activity_manage_accounts"
+            android:theme="@style/Theme.Conversations3"
             android:launchMode="singleTask" />
         <activity
             android:name=".ui.WelcomeActivity"

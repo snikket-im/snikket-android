@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Avblockera deltagare</string>
     <string name="title_activity_manage_accounts">Hantera konton</string>
     <string name="title_activity_settings">Inställningar</string>
-    <string name="title_activity_sharewith">Dela med konversation</string>
     <string name="title_activity_start_conversation">Starta konversation</string>
     <string name="title_activity_choose_contact">Välj kontakt</string>
     <string name="title_activity_choose_contacts">Välj kontakter</string>
@@ -587,8 +586,6 @@
     <string name="pref_theme_automatic">Automatisk</string>
     <string name="pref_theme_light">Ljus</string>
     <string name="pref_theme_dark">Mörk</string>
-    <string name="pref_use_green_background">Grön bakgrund</string>
-    <string name="pref_use_green_background_summary">Använd grön bakgrund för mottagna meddelanden</string>
     <string name="unable_to_connect_to_keychain">Det gick inte att ansluta till OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Den här enheten används inte längre</string>
     <string name="type_pc">Dator</string>
@@ -730,13 +727,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO kommer att användas som standard för nya konversationer.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO måste manuellt aktiveras för varje ny konversation.</string>
     <string name="create_shortcut">Skapa genväg</string>
-    <string name="pref_font_size">Textstorlek</string>
-    <string name="pref_font_size_summary">Den relativa teckenstorleken som används i appen.</string>
     <string name="default_on">På som standard</string>
     <string name="default_off">Av som standard</string>
-    <string name="small">Liten</string>
-    <string name="medium">Medium</string>
-    <string name="large">Stor</string>
     <string name="not_encrypted_for_this_device">Meddelandet krypterades inte för den här enheten.</string>
     <string name="omemo_decryption_failed">Det gick inte att dekryptera OMEMO-meddelandet.</string>
     <string name="undo">ångra</string>

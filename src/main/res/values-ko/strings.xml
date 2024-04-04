@@ -14,7 +14,6 @@
     <string name="action_unblock_domain">도메인 차단 해제 </string>
     <string name="title_activity_manage_accounts">계정 관리 </string>
     <string name="title_activity_settings">설정 </string>
-    <string name="title_activity_sharewith">대화 공유 </string>
     <string name="title_activity_start_conversation">대화 시작 </string>
     <string name="title_activity_block_list">목록 차단 </string>
     <string name="just_now">방금 </string>
@@ -362,8 +361,6 @@
     <string name="pref_privacy">프라이버시</string>
     <string name="pref_theme_options">테마</string>
     <string name="pref_theme_options_summary">색상 팔레트를 선택</string>
-    <string name="pref_use_green_background">초록색 배경</string>
-    <string name="pref_use_green_background_summary">받은 메시지에 녹색 배경을 사용합니다</string>
     <string name="this_device_is_no_longer_in_use">이 장치는 현재 사용되고 있지 않습니다</string>
     <string name="type_pc">컴퓨터</string>
     <string name="type_phone">휴대폰</string>
@@ -395,7 +392,6 @@
     <string name="verify_omemo_keys">OMEMO 키를 검증</string>
     <string name="pref_automatically_delete_messages_description">설정된 기간보다 오래된 메시지를 장치에서 자동으로 삭제합니다.</string>
     <string name="message_copied_to_clipboard">메세지가 클립보드에 복사되었습니다 </string>
-    <string name="medium">중간</string>
     <string name="title_activity_show_location">위치 표시 </string>
     <string name="rtp_state_declined_or_busy">바쁨</string>
 </resources>

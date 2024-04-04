@@ -6,9 +6,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize" />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -23,10 +32,10 @@
                     android:id="@+id/instructions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     android:gravity="center_horizontal"
-                    android:padding="16dp"
                     android:text="@string/enter_your_name_instructions"
-                    android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+                    android:textAppearance="?textAppearanceBodyMedium" />
 
                 <LinearLayout
                     android:id="@+id/name_box"
@@ -37,27 +46,32 @@
                     android:layout_centerHorizontal="true"
                     android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/name"
-                        style="@style/Widget.Conversations.EditText"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/your_name"
-                        android:imeOptions="flagNoExtractUi"
-                        android:longClickable="false" />
+                        android:hint="@string/your_name">
+
+                        <EditText
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:imeOptions="flagNoExtractUi" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
 
                 </LinearLayout>
 
                 <Button
                     android:id="@+id/next"
-                    style="@style/Widget.Conversations.Button.Borderless"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:text="@string/next"
-                    android:textColor="?colorAccent" />
+                    android:layout_margin="16dp"
+                    android:text="@string/next" />
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>

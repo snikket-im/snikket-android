@@ -38,6 +38,9 @@ import android.os.Parcelable;
 
 import com.google.common.base.MoreObjects;
 
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.utils.MimeUtils;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -45,9 +48,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-
-import eu.siacs.conversations.utils.Compatibility;
-import eu.siacs.conversations.utils.MimeUtils;
 
 public class Attachment implements Parcelable {
 
@@ -71,17 +71,18 @@ public class Attachment implements Parcelable {
         return 0;
     }
 
-    public static final Creator<Attachment> CREATOR = new Creator<Attachment>() {
-        @Override
-        public Attachment createFromParcel(Parcel in) {
-            return new Attachment(in);
-        }
+    public static final Creator<Attachment> CREATOR =
+            new Creator<Attachment>() {
+                @Override
+                public Attachment createFromParcel(Parcel in) {
+                    return new Attachment(in);
+                }
 
-        @Override
-        public Attachment[] newArray(int size) {
-            return new Attachment[size];
-        }
-    };
+                @Override
+                public Attachment[] newArray(int size) {
+                    return new Attachment[size];
+                }
+            };
 
     public String getMime() {
         return mime;
@@ -103,7 +104,10 @@ public class Attachment implements Parcelable {
     }
 
     public enum Type {
-        FILE, IMAGE, LOCATION, RECORDING
+        FILE,
+        IMAGE,
+        LOCATION,
+        RECORDING
     }
 
     private final Uri uri;
@@ -125,8 +129,8 @@ public class Attachment implements Parcelable {
         this.uuid = UUID.randomUUID();
     }
 
-    public static boolean canBeSendInband(final List<Attachment> attachments) {
-        for (Attachment attachment : attachments) {
+    public static boolean canBeSendInBand(final List<Attachment> attachments) {
+        for (final Attachment attachment : attachments) {
             if (attachment.type != Type.LOCATION) {
                 return false;
             }
@@ -135,8 +139,28 @@ public class Attachment implements Parcelable {
     }
 
     public static List<Attachment> of(final Context context, Uri uri, Type type) {
-        final String mime = type == Type.LOCATION ? null : MimeUtils.guessMimeTypeFromUri(context, uri);
+        final String mime =
+                type == Type.LOCATION ? null : MimeUtils.guessMimeTypeFromUri(context, uri);
         return Collections.singletonList(new Attachment(uri, type, mime));
+    }
+
+    public static Attachment of(final Message message) {
+        final UUID uuid = UUID.fromString(message.getUuid());
+        if (message.isGeoUri()) {
+            return new Attachment(uuid, Uri.EMPTY, Type.LOCATION, null);
+        }
+        final String mime = message.getMimeType();
+        if (MimeUtils.AMBIGUOUS_CONTAINER_FORMATS.contains(mime)) {
+            final Message.FileParams fileParams = message.getFileParams();
+            if (fileParams.width > 0 && fileParams.height > 0) {
+                return new Attachment(uuid, Uri.EMPTY, Type.FILE, "video/*");
+            } else if (fileParams.runtime > 0) {
+                return new Attachment(uuid, Uri.EMPTY, Type.FILE, "audio/*");
+            } else {
+                return new Attachment(uuid, Uri.EMPTY, Type.FILE, "application/octet-stream");
+            }
+        }
+        return new Attachment(uuid, Uri.EMPTY, Type.FILE, mime);
     }
 
     public static List<Attachment> of(final Context context, List<Uri> uris, final String type) {
@@ -146,16 +170,25 @@ public class Attachment implements Parcelable {
                 continue;
             }
             final String mime = MimeUtils.guessMimeTypeFromUriAndMime(context, uri, type);
-            attachments.add(new Attachment(uri, mime != null && isImage(mime) ? Type.IMAGE : Type.FILE, mime));
+            attachments.add(
+                    new Attachment(
+                            uri, mime != null && isImage(mime) ? Type.IMAGE : Type.FILE, mime));
         }
         return attachments;
     }
 
     public static Attachment of(UUID uuid, final File file, String mime) {
-        return new Attachment(uuid, Uri.fromFile(file), mime != null && (isImage(mime) || mime.startsWith("video/")) ? Type.IMAGE : Type.FILE, mime);
+        return new Attachment(
+                uuid,
+                Uri.fromFile(file),
+                mime != null && (isImage(mime) || mime.startsWith("video/"))
+                        ? Type.IMAGE
+                        : Type.FILE,
+                mime);
     }
 
-    public static List<Attachment> extractAttachments(final Context context, final Intent intent, Type type) {
+    public static List<Attachment> extractAttachments(
+            final Context context, final Intent intent, Type type) {
         List<Attachment> uris = new ArrayList<>();
         if (intent == null) {
             return uris;
@@ -167,7 +200,8 @@ public class Attachment implements Parcelable {
             if (clipData != null) {
                 for (int i = 0; i < clipData.getItemCount(); ++i) {
                     final Uri uri = clipData.getItemAt(i).getUri();
-                    final String mime = MimeUtils.guessMimeTypeFromUriAndMime(context, uri, contentType);
+                    final String mime =
+                            MimeUtils.guessMimeTypeFromUriAndMime(context, uri, contentType);
                     uris.add(new Attachment(uri, type, mime));
                 }
             }
@@ -179,13 +213,12 @@ public class Attachment implements Parcelable {
     }
 
     public boolean renderThumbnail() {
-        return type == Type.IMAGE || (type == Type.FILE && mime != null && renderFileThumbnail(mime));
+        return type == Type.IMAGE
+                || (type == Type.FILE && mime != null && renderFileThumbnail(mime));
     }
 
     private static boolean renderFileThumbnail(final String mime) {
-        return mime.startsWith("video/")
-                || isImage(mime)
-                || "application/pdf".equals(mime);
+        return mime.startsWith("video/") || isImage(mime) || "application/pdf".equals(mime);
     }
 
     public Uri getUri() {

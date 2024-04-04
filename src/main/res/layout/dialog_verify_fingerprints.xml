@@ -3,21 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="?attr/dialog_horizontal_padding"
-    android:paddingRight="?attr/dialog_horizontal_padding"
-    android:paddingBottom="?attr/dialog_vertical_padding"
-    android:paddingTop="?attr/dialog_vertical_padding">
+    android:padding="?dialogPreferredPadding">
 
     <TextView
         android:id="@+id/warning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+        android:textAppearance="?textAppearanceBodyMedium" />
+
     <CheckBox
-        android:layout_marginTop="8dp"
         android:id="@+id/trusted_source"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/i_followed_this_link_from_a_trusted_source" />
 
 </LinearLayout>

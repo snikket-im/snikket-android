@@ -49,6 +49,8 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_show_location);
         setSupportActionBar(binding.toolbar);
 
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
+
         configureActionBar(getSupportActionBar());
         setupMapView(this.binding.map, this.loc);
 

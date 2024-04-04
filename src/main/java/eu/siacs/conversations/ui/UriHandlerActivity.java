@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UriHandlerActivity extends AppCompatActivity {
+public class UriHandlerActivity extends BaseActivity {
 
     public static final String ACTION_SCAN_QR_CODE = "scan_qr_code";
     private static final String EXTRA_ALLOW_PROVISIONING = "extra_allow_provisioning";

@@ -17,7 +17,7 @@ import org.openintents.openpgp.util.OpenPgpUtils;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
-import eu.siacs.conversations.databinding.ContactBinding;
+import eu.siacs.conversations.databinding.ItemContactBinding;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -62,7 +62,7 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        return new ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.contact, viewGroup, false));
+        return new ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.item_contact, viewGroup, false));
     }
 
     @Override
@@ -129,11 +129,11 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
         MucDetailsContextMenuHelper.onCreateContextMenu(menu,v);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final ContactBinding binding;
+        private final ItemContactBinding binding;
 
-        private ViewHolder(ContactBinding binding) {
+        private ViewHolder(ItemContactBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

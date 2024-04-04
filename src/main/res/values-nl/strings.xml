@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Deelnemer deblokkeren</string>
     <string name="title_activity_manage_accounts">Accounts beheren</string>
     <string name="title_activity_settings">Instellingen</string>
-    <string name="title_activity_sharewith">Delen in gesprek</string>
     <string name="title_activity_start_conversation">Gesprek starten</string>
     <string name="title_activity_choose_contact">Contact kiezen</string>
     <string name="title_activity_choose_contacts">Contacten kiezen</string>
@@ -498,8 +497,6 @@
     <string name="pref_theme_options">Thema</string>
     <string name="pref_theme_options_summary">Kies het kleurenpalet</string>
     <string name="pref_theme_automatic">Automatisch</string>
-    <string name="pref_use_green_background">Groene achtergrond</string>
-    <string name="pref_use_green_background_summary">Gebruik groene achtergrond voor ontvangen berichten</string>
     <string name="this_device_is_no_longer_in_use">Dit apparaat wordt niet meer gebruikt</string>
     <string name="type_pc">Computer</string>
     <string name="type_phone">Mobiele telefoon</string>
@@ -616,13 +613,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO zal standaard gebruikt worden voor nieuwe gesprekken.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO zal uitdrukkelijk ingeschakeld moeten worden voor nieuwe gesprekken.</string>
     <string name="create_shortcut">Snelkoppeling aanmaken</string>
-    <string name="pref_font_size">Lettergrootte</string>
-    <string name="pref_font_size_summary">De relatieve lettergrootte in de app.</string>
     <string name="default_on">Standaard aan</string>
     <string name="default_off">Standaard uit</string>
-    <string name="small">Klein</string>
-    <string name="medium">Gemiddeld</string>
-    <string name="large">Groot</string>
     <string name="not_encrypted_for_this_device">Bericht is niet versleuteld voor dit apparaat.</string>
     <string name="omemo_decryption_failed">Kan OMEMO-bericht niet ontsleutelen.</string>
     <string name="undo">ongedaan maken</string>

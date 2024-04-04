@@ -33,6 +33,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,7 +42,6 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.MTMDecision;
 import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.ui.util.SettingsUtils;
-import eu.siacs.conversations.utils.ThemeHelper;
 
 public class MemorizingActivity extends AppCompatActivity implements OnClickListener, OnCancelListener {
 
@@ -53,10 +54,7 @@ public class MemorizingActivity extends AppCompatActivity implements OnClickList
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		LOGGER.log(Level.FINE, "onCreate");
-		setTheme(ThemeHelper.find(this));
 		super.onCreate(savedInstanceState);
-		getLayoutInflater().inflate(R.layout.toolbar, findViewById(android.R.id.content));
-		setSupportActionBar(findViewById(R.id.toolbar));
 	}
 
 	@Override
@@ -69,7 +67,7 @@ public class MemorizingActivity extends AppCompatActivity implements OnClickList
 		int titleId = i.getIntExtra(MemorizingTrustManager.DECISION_TITLE_ID, R.string.mtm_accept_cert);
 		String cert = i.getStringExtra(MemorizingTrustManager.DECISION_INTENT_CERT);
 		LOGGER.log(Level.FINE, "onResume with " + i.getExtras() + " decId=" + decisionId + " data: " + i.getData());
-		dialog = new AlertDialog.Builder(this).setTitle(titleId)
+		dialog = new MaterialAlertDialogBuilder(this).setTitle(titleId)
 			.setMessage(cert)
 			.setPositiveButton(R.string.always, this)
 			.setNeutralButton(R.string.once, this)

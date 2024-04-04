@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">解除封鎖參與者</string>
     <string name="title_activity_manage_accounts">管理帳戶</string>
     <string name="title_activity_settings">設定</string>
-    <string name="title_activity_sharewith">分享至會話</string>
     <string name="title_activity_start_conversation">開始會話</string>
     <string name="title_activity_choose_contact">選擇聯絡人</string>
     <string name="title_activity_choose_contacts">選擇聯絡人</string>
@@ -539,8 +538,6 @@
     <string name="pref_theme_automatic">自動</string>
     <string name="pref_theme_light">淺色</string>
     <string name="pref_theme_dark">深色</string>
-    <string name="pref_use_green_background">綠色背景</string>
-    <string name="pref_use_green_background_summary">為接收的訊息使用綠色背景</string>
     <string name="unable_to_connect_to_keychain">無法連線至 OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">此裝置已不再使用</string>
     <string name="type_pc">電腦</string>
@@ -658,13 +655,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO 將預設用於新會話。</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO 將明確用於新會話。</string>
     <string name="create_shortcut">建立捷徑</string>
-    <string name="pref_font_size">字型大小</string>
-    <string name="pref_font_size_summary">應用程式中使用的相對字型大小。</string>
     <string name="default_on">預設開啟</string>
     <string name="default_off">預設關閉</string>
-    <string name="small">小</string>
-    <string name="medium">中</string>
-    <string name="large">大</string>
     <string name="not_encrypted_for_this_device">訊息未對此裝置加密。</string>
     <string name="omemo_decryption_failed">無法解密 OMEMO 訊息。</string>
     <string name="undo">復原</string>

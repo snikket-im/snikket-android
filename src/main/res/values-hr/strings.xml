@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Deblokiraj sudionika</string>
     <string name="title_activity_manage_accounts">Upravljanje računima</string>
     <string name="title_activity_settings">Postavke</string>
-    <string name="title_activity_sharewith">Dijeli s Conversation</string>
     <string name="title_activity_start_conversation">Započni razgovor</string>
     <string name="title_activity_choose_contact">Odaberite Kontakt</string>
     <string name="title_activity_choose_contacts">Odaberite kontakte</string>

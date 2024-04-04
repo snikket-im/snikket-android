@@ -14,14 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.databinding.DataBindingUtil;
 
-import org.whispersystems.libsignal.IdentityKey;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -40,6 +33,14 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 
+import org.whispersystems.libsignal.IdentityKey;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdated {
 	private final Map<String, Boolean> ownKeysToTrust = new HashMap<>();
@@ -70,12 +71,14 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.binding = DataBindingUtil.setContentView(this, R.layout.activity_trust_keys);
+		Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
 		this.contactJids = new ArrayList<>();
-		for (String jid : getIntent().getStringArrayExtra("contacts")) {
+		final var intent = getIntent();
+		final String[] contacts = intent == null ? null : intent.getStringArrayExtra("contacts");
+		for (final String jid : (contacts == null ? new String[0] : contacts)) {
 			try {
 				this.contactJids.add(Jid.of(jid));
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
+			} catch (final IllegalArgumentException ignored) {
 			}
 		}
 
@@ -100,7 +103,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.trust_keys, menu);
 		MenuItem scanQrCode = menu.findItem(R.id.action_scan_qr_code);
-		scanQrCode.setVisible((ownKeysToTrust.size() > 0 || foreignActuallyHasKeys()) && isCameraFeatureAvailable());
+		scanQrCode.setVisible((!ownKeysToTrust.isEmpty() || foreignActuallyHasKeys()) && isCameraFeatureAvailable());
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -191,7 +194,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 							}
 					);
 				}
-				if (fingerprints.size() == 0) {
+				if (fingerprints.isEmpty()) {
 					keysCardBinding.noKeysToAccept.setVisibility(View.VISIBLE);
 					if (hasNoOtherTrustedKeys(jid)) {
 						if (!mAccount.getRoster().getContact(jid).mutualPresenceSubscription()) {
@@ -254,8 +257,8 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 		}
 	}
 
-	private void disableEncryptionDialog(View view) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	private void disableEncryptionDialog(final View view) {
+		final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
 		builder.setTitle(R.string.disable_encryption);
 		builder.setMessage(R.string.disable_encryption_message);
 		builder.setPositiveButton(R.string.disable_now, (dialog, which) -> {
@@ -279,7 +282,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 	private boolean foreignActuallyHasKeys() {
 		synchronized (this.foreignKeysToTrust) {
 			for (Map.Entry<Jid, Map<String, Boolean>> entry : foreignKeysToTrust.entrySet()) {
-				if (entry.getValue().size() > 0) {
+				if (!entry.getValue().isEmpty()) {
 					return true;
 				}
 			}
@@ -305,7 +308,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			foreignKeysToTrust.clear();
 			for (Jid jid : contactJids) {
 				Set<IdentityKey> foreignKeysSet = service.getKeysWithTrust(FingerprintStatus.createActiveUndecided(), jid);
-				if (hasNoOtherTrustedKeys(jid) && ownKeysSet.size() == 0) {
+				if (hasNoOtherTrustedKeys(jid) && ownKeysSet.isEmpty()) {
 					foreignKeysSet.addAll(service.getKeysWithTrust(FingerprintStatus.createActive(false), jid));
 				}
 				Map<String, Boolean> foreignFingerprints = new HashMap<>();
@@ -315,7 +318,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 						foreignFingerprints.put(fingerprint, false);
 					}
 				}
-				if (foreignFingerprints.size() > 0 || !acceptedTargets.contains(jid)) {
+				if (!foreignFingerprints.isEmpty() || !acceptedTargets.contains(jid)) {
 					foreignKeysToTrust.put(jid, foreignFingerprints);
 				}
 			}

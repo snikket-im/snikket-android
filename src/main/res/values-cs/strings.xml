@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Odblokovat účatníka</string>
     <string name="title_activity_manage_accounts">Nastavení účtů</string>
     <string name="title_activity_settings">Nastavení</string>
-    <string name="title_activity_sharewith">Sdílet s konverzací</string>
     <string name="title_activity_start_conversation">Začít konverzaci</string>
     <string name="title_activity_choose_contact">Vybrat kontakt</string>
     <string name="title_activity_choose_contacts">Vybrat kontakty</string>
@@ -572,8 +571,6 @@
     <string name="pref_theme_automatic">Automaticky</string>
     <string name="pref_theme_light">Světlý vzhled</string>
     <string name="pref_theme_dark">Tmavý vzhled</string>
-    <string name="pref_use_green_background">Zelené pozadí</string>
-    <string name="pref_use_green_background_summary">Použít zelené pozadí pro přijaté zprávy</string>
     <string name="unable_to_connect_to_keychain">Nelze se spojit s OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Tento přístoj již není používán</string>
     <string name="type_pc">Počítač</string>
@@ -720,13 +717,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO bude použito jako výchozí pro nové konverzace.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO bude nutné zapnout ručně pro každou novou konverzaci.</string>
     <string name="create_shortcut">Vytvořit zástupce</string>
-    <string name="pref_font_size">Velikost písma</string>
-    <string name="pref_font_size_summary">Relativní velikost písma v aplikaci.</string>
     <string name="default_on">Zapnuto jako výchozí</string>
     <string name="default_off">Vypnuto jako výchozí</string>
-    <string name="small">Malé</string>
-    <string name="medium">Střední</string>
-    <string name="large">Velké</string>
     <string name="not_encrypted_for_this_device">Zpráva nebyla pro toto zařízení zašifrována.</string>
     <string name="omemo_decryption_failed">Chyba při dešifrování OMEMO zprávy.</string>
     <string name="undo">zpět</string>

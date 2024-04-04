@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Katılımcının engelini kaldır</string>
     <string name="title_activity_manage_accounts">Hesapları yönet</string>
     <string name="title_activity_settings">Ayarlar</string>
-    <string name="title_activity_sharewith">Konuşmayla paylaş</string>
     <string name="title_activity_start_conversation">Konuşma Başlat</string>
     <string name="title_activity_choose_contact">Kişi Seç</string>
     <string name="title_activity_choose_contacts">Kişi Seç</string>
@@ -578,8 +577,6 @@
     <string name="pref_theme_automatic">Otomatik</string>
     <string name="pref_theme_light">Aydınlık</string>
     <string name="pref_theme_dark">Karanlık</string>
-    <string name="pref_use_green_background">Yeşil arka plan</string>
-    <string name="pref_use_green_background_summary">Gelen iletiler için yeşil arka plan kullan</string>
     <string name="unable_to_connect_to_keychain">OpenKeychain\'e bağlanılamadı</string>
     <string name="this_device_is_no_longer_in_use">Bu aygıt artık kullanılmıyor</string>
     <string name="type_pc">Bilgisayar</string>
@@ -719,13 +716,8 @@
     <string name="pref_omemo_setting_summary_default_on">Yeni konuşmalarda OMEMO varsayılan olarak kullanılacak.</string>
     <string name="pref_omemo_setting_summary_default_off">Özellikle yeni konuşmalarda OMEMO aktif hale getirilecek.</string>
     <string name="create_shortcut">Kısayol oluştur</string>
-    <string name="pref_font_size">Yazı tipi boyutu</string>
-    <string name="pref_font_size_summary">Uygulamaya kıyasla kullanılan yazı tipi boyutu.</string>
     <string name="default_on">Varsayılan olarak aktif</string>
     <string name="default_off">Varsayılan olarak devre dışı</string>
-    <string name="small">Küçük</string>
-    <string name="medium">Orta</string>
-    <string name="large">Büyük</string>
     <string name="not_encrypted_for_this_device">İleti bu cihaz için şifrelenmedi.</string>
     <string name="omemo_decryption_failed">OMEMO mesajı çözümlenemedi.</string>
     <string name="undo">geri al</string>

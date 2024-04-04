@@ -10,6 +10,8 @@ import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -72,8 +74,7 @@ public class ExceptionHelper {
                     report.append("SHA-1: ").append(CryptoHelper.getFingerprintCert(packageInfo.signatures[0].toByteArray())).append('\n');
                 }
                 report.append('\n');
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (final Exception e) {
                 return false;
             }
             String line;
@@ -83,7 +84,7 @@ public class ExceptionHelper {
             }
             file.close();
             activity.deleteFile(FILENAME);
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
             builder.setTitle(activity.getString(R.string.crash_report_title, activity.getString(R.string.app_name)));
             builder.setMessage(activity.getString(R.string.crash_report_message, activity.getString(R.string.app_name)));
             builder.setPositiveButton(activity.getText(R.string.send_now), (dialog, which) -> {

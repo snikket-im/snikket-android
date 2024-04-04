@@ -45,7 +45,7 @@ public class ShortcutActivity extends AbstractSearchableListItemActivity {
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         ActionBar bar = getSupportActionBar();
         if(bar != null){

@@ -546,8 +546,6 @@
     <string name="pref_theme_automatic">Automaattinen</string>
     <string name="pref_theme_light">Vaalea</string>
     <string name="pref_theme_dark">Tumma</string>
-    <string name="pref_use_green_background">Vihreä tausta</string>
-    <string name="pref_use_green_background_summary">Näytä vastaanotetut viestit vihreällä taustalla</string>
     <string name="unable_to_connect_to_keychain">OpenKeychainiin ei saatu yhteyttä</string>
     <string name="this_device_is_no_longer_in_use">Laite ei ole enää käytössä</string>
     <string name="type_pc">Tietokone</string>
@@ -674,13 +672,8 @@
     <string name="pref_omemo_setting">OMEMO-salaus</string>
     <string name="pref_omemo_setting_summary_default_on">Uusissa keskusteluissa OMEMO otetaan oletuksena käyttöön.</string>
     <string name="create_shortcut">Luo pikakuvake</string>
-    <string name="pref_font_size">Kirjasinkoko</string>
-    <string name="pref_font_size_summary">Kirjasimen suhteellinen koko sovelluksen sisällä.</string>
     <string name="default_on">Käytössä oletuksena</string>
     <string name="default_off">Oletuksena pois käytöstä</string>
-    <string name="small">Pieni</string>
-    <string name="medium">Keksikokoinen</string>
-    <string name="large">Suuri</string>
     <string name="not_encrypted_for_this_device">Viestiä ei salattu tälle laitteelle.</string>
     <string name="omemo_decryption_failed">OMEMO-salatun viestin purku epäonnistui.</string>
     <string name="undo">peru</string>

@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Sblocca partecipante</string>
     <string name="title_activity_manage_accounts">Gestisci profili</string>
     <string name="title_activity_settings">Impostazioni</string>
-    <string name="title_activity_sharewith">Condividi con Conversation</string>
     <string name="title_activity_start_conversation">Inizia una conversazione</string>
     <string name="title_activity_choose_contact">Scegli un contatto</string>
     <string name="title_activity_choose_contacts">Scegli i contatti</string>
@@ -578,8 +577,6 @@
     <string name="pref_theme_automatic">Automatico</string>
     <string name="pref_theme_light">Chiaro</string>
     <string name="pref_theme_dark">Scuro</string>
-    <string name="pref_use_green_background">Sfondo verde</string>
-    <string name="pref_use_green_background_summary">Usa uno sfondo verde per i messaggi ricevuti</string>
     <string name="unable_to_connect_to_keychain">Impossibile connettersi a OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Questo dispositivo non è più in uso</string>
     <string name="type_pc">Computer</string>
@@ -724,13 +721,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO verrà usato in modo predefinito nelle nuove conversazioni.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO dovrà essere attivato a mano nelle nuove conversazioni.</string>
     <string name="create_shortcut">Crea scorciatoia</string>
-    <string name="pref_font_size">Dimensione dei caratteri</string>
-    <string name="pref_font_size_summary">La dimensione dei caratteri usata all\'interno dell\'app.</string>
     <string name="default_on">On in modo predefinito</string>
     <string name="default_off">Off in modo predefinito</string>
-    <string name="small">Piccolo</string>
-    <string name="medium">Medio</string>
-    <string name="large">Grande</string>
     <string name="not_encrypted_for_this_device">Il messaggio non è stato criptato per questo dispositivo.</string>
     <string name="omemo_decryption_failed">Decifrazione del messaggio OMEMO fallita.</string>
     <string name="undo">annulla</string>

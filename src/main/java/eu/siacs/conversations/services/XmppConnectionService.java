@@ -4760,9 +4760,6 @@ public class XmppConnectionService extends Service {
         if (Config.QUICKSY_DOMAIN != null) {
             hosts.remove(Config.QUICKSY_DOMAIN.toEscapedString()); //we only want to show this when we type a e164 number
         }
-        if (Config.DOMAIN_LOCK != null) {
-            hosts.add(Config.DOMAIN_LOCK);
-        }
         if (Config.MAGIC_CREATE_DOMAIN != null) {
             hosts.add(Config.MAGIC_CREATE_DOMAIN);
         }

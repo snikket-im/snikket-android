@@ -74,7 +74,7 @@ dependencies {
     implementation 'org.hsluv:hsluv:0.2'
     implementation 'org.conscrypt:conscrypt-android:2.5.2'
     implementation 'me.drakeet.support:toastcompat:1.1.0'
-    implementation "com.leinardi.android:speed-dial:3.2.0"
+    implementation "com.leinardi.android:speed-dial:3.3.0"
 
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"

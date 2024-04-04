@@ -13,18 +13,18 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Locale;
-
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.databinding.SearchResultItemBinding;
+import eu.siacs.conversations.databinding.ItemChannelDiscoveryBinding;
 import eu.siacs.conversations.entities.Room;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.xmpp.Jid;
 
+import java.util.Locale;
+
 public class ChannelSearchResultAdapter extends ListAdapter<Room, ChannelSearchResultAdapter.ViewHolder> implements View.OnCreateContextMenuListener {
 
-    private static final DiffUtil.ItemCallback<Room> DIFF = new DiffUtil.ItemCallback<Room>() {
+    private static final DiffUtil.ItemCallback<Room> DIFF = new DiffUtil.ItemCallback<>() {
         @Override
         public boolean areItemsTheSame(@NonNull Room a, @NonNull Room b) {
             return a.address != null && a.address.equals(b.address);
@@ -45,7 +45,7 @@ public class ChannelSearchResultAdapter extends ListAdapter<Room, ChannelSearchR
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.search_result_item, viewGroup, false));
+        return new ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.item_channel_discovery, viewGroup, false));
     }
 
     @Override
@@ -99,9 +99,9 @@ public class ChannelSearchResultAdapter extends ListAdapter<Room, ChannelSearchR
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final SearchResultItemBinding binding;
+        private final ItemChannelDiscoveryBinding binding;
 
-        private ViewHolder(SearchResultItemBinding binding) {
+        private ViewHolder(final ItemChannelDiscoveryBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Odblokovať účastníka</string>
     <string name="title_activity_manage_accounts">Nastavenie účtov</string>
     <string name="title_activity_settings">Nastavenia</string>
-    <string name="title_activity_sharewith">Zdieľať s konverzáciou</string>
     <string name="title_activity_start_conversation">Začať konverzáciu</string>
     <string name="title_activity_choose_contact">Vybrať Kontakt</string>
     <string name="title_activity_choose_contacts">Vyberte Kontakty</string>
@@ -446,8 +445,6 @@
     <string name="pref_privacy">Súkromie</string>
     <string name="pref_theme_options">Téma</string>
     <string name="pref_theme_options_summary">Zvoľte si farebnú schému</string>
-    <string name="pref_use_green_background">Zelené pozadie</string>
-    <string name="pref_use_green_background_summary">Použiť zelené pozadie pre prijaté správy</string>
     <string name="pref_delete_omemo_identities">Vymazať OMEMO identifikátory</string>
     <string name="pref_delete_omemo_identities_summary">Re-generuje vaše kľúče OMEMO. Všetky vaše kontakty vás budú musieť znova overiť. Použite to ako poslednú možnosť.</string>
     <string name="delete_selected_keys">Odstrániť označené kľúče</string>
@@ -466,7 +463,6 @@
     <string name="pref_omemo_setting">OMEMO šifrovanie</string>
     <string name="pref_omemo_setting_summary_always">OMEMO bude vždy používané pre individuálne a súkromné skupinové rozhovory.</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO bude predvolene zapnuté pre všetky rozhovory.</string>
-    <string name="pref_font_size">Veľkosť písma</string>
     <string name="default_on">Predvolene zapnuté</string>
     <string name="default_off">Predvolene vypnuté</string>
     <string name="omemo_decryption_failed">Nepodarilo sa dešifrovať OMEMO správu.</string>

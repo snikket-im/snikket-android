@@ -57,15 +57,6 @@ public class ShareViaAccountActivity extends XmppActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        final int theme = findTheme();
-        if (this.mTheme != theme) {
-            recreate();
-        }
-    }
-
-    @Override
     void onBackendConnected() {
         final int numAccounts = xmppConnectionService.getAccounts().size();
 

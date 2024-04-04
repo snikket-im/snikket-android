@@ -26,8 +26,6 @@ import android.widget.ListView;
 import androidx.fragment.app.ListFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import eu.siacs.conversations.ui.util.StyledAttributes;
-
 /**
  * Subclass of {@link androidx.fragment.app.ListFragment} which provides automatic support for
  * providing the 'swipe-to-refresh' UX gesture by wrapping the the content view in a
@@ -56,7 +54,8 @@ public class SwipeRefreshListFragment extends ListFragment {
 
         final Context context = getActivity();
         if (context != null) {
-            mSwipeRefreshLayout.setColorSchemeColors(StyledAttributes.getColor(context, androidx.appcompat.R.attr.colorAccent));
+            // TODO are default colors fine here?
+            //mSwipeRefreshLayout.setColorSchemeColors(StyledAttributes.getColor(context, androidx.appcompat.R.attr.colorAccent));
         }
 
         if (onRefreshListener != null) {

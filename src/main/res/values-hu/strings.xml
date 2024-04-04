@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Résztvevő tiltásának feloldása</string>
     <string name="title_activity_manage_accounts">Fiókok kezelése</string>
     <string name="title_activity_settings">Beállítások</string>
-    <string name="title_activity_sharewith">Megosztás a Conversations alkalmazással</string>
     <string name="title_activity_start_conversation">Beszélgetés indítása</string>
     <string name="title_activity_choose_contact">Partner kiválasztása</string>
     <string name="title_activity_choose_contacts">Partnerek kiválasztása</string>
@@ -541,8 +540,6 @@
     <string name="pref_theme_automatic">Automatikus</string>
     <string name="pref_theme_light">Világos</string>
     <string name="pref_theme_dark">Sötét</string>
-    <string name="pref_use_green_background">Zöld háttér</string>
-    <string name="pref_use_green_background_summary">Zöld háttér használata a fogadott üzenetekhez</string>
     <string name="this_device_is_no_longer_in_use">Ez az eszköz többé nincs használatban</string>
     <string name="type_pc">Számítógép</string>
     <string name="type_phone">Mobiltelefon</string>
@@ -669,13 +666,8 @@
     <string name="pref_omemo_setting_summary_default_on">Az OMEMO lesz alapértelmezetten használva az új beszélgetésekhez.</string>
     <string name="pref_omemo_setting_summary_default_off">Az OMEMO-t kifejezetten be kell majd kapcsolni az új beszélgetésekhez.</string>
     <string name="create_shortcut">Gyorsbillentyű létrehozása</string>
-    <string name="pref_font_size">Betűméret</string>
-    <string name="pref_font_size_summary">Az alkalmazáson belül használt relatív betűméret.</string>
     <string name="default_on">Alapértelmezetten be</string>
     <string name="default_off">Alapértelmezetten ki</string>
-    <string name="small">Kicsi</string>
-    <string name="medium">Közepes</string>
-    <string name="large">Nagy</string>
     <string name="not_encrypted_for_this_device">Az üzenet nem volt titkosított ehhez az eszközhöz.</string>
     <string name="omemo_decryption_failed">Nem sikerült az OMEMO üzenet visszafejtése.</string>
     <string name="undo">visszavonás</string>

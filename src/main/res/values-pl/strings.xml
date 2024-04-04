@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Odblokuj użytkownika</string>
     <string name="title_activity_manage_accounts">Zarządzaj kontami</string>
     <string name="title_activity_settings">Ustawienia</string>
-    <string name="title_activity_sharewith">Udostępnij w konwersacji</string>
     <string name="title_activity_start_conversation">Rozpocznij konwersację</string>
     <string name="title_activity_choose_contact">Wybierz kontakt</string>
     <string name="title_activity_choose_contacts">Wybierz kontakty</string>
@@ -584,8 +583,6 @@
     <string name="pref_theme_automatic">Automatycznie</string>
     <string name="pref_theme_light">Jasny</string>
     <string name="pref_theme_dark">Ciemny</string>
-    <string name="pref_use_green_background">Zielone tło</string>
-    <string name="pref_use_green_background_summary">Używaj zielonego tła dla otrzymanych wiadomości</string>
     <string name="unable_to_connect_to_keychain">Nie można połączyć się z OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Urządzenie to nie jest już używane</string>
     <string name="type_pc">Komputer</string>
@@ -737,13 +734,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO będzie używane domyślnie dla nowych rozmów.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO będzie musiało być włączone ręcznie dla nowych rozmów.</string>
     <string name="create_shortcut">Utwórz Skrót</string>
-    <string name="pref_font_size">Rozmiar Czcionki</string>
-    <string name="pref_font_size_summary">Relatywny rozmiar czcionki używany wewnątrz aplikacji.</string>
     <string name="default_on">Włączone domyślnie</string>
     <string name="default_off">Wyłączone domyślnie</string>
-    <string name="small">Mała</string>
-    <string name="medium">Średnia</string>
-    <string name="large">Duża</string>
     <string name="not_encrypted_for_this_device">Wiadomość nie była zaszyfrowana dla tego urządzenia.</string>
     <string name="omemo_decryption_failed">Błąd odszyfrowywania wiadomości OMEMO.</string>
     <string name="undo">cofnij</string>
@@ -1062,7 +1054,6 @@
     <string name="quicksy_wants_your_consent">Quicksy pyta o pozwolenie na użycie twoich danych</string>
     <string name="no_permission_to_place_call">Brak pozwolenia na wypisanie numeru telefonu</string>
     <string name="call_integration_not_available">Integracja połączeń nie jest dostępna!</string>
-    <string name="channel_discover_opt_in_message">Odkrywanie kanałów używa usługi firmy trzeciej &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Używanie tej funkcji spowoduje transmisję twojego adresu IP oraz kryteriów wyszukiwania. Sprawdź ich &lt;a href=https://search.jabber.network/privacy&gt;politykę prywatności&lt;/a&gt; aby uzyskać więcej informacji.</string>
     <string name="remove_bookmark">Czy chcesz usunąć zakładkę dla %s?</string>
     <string name="delete_and_close">Usuń i zamknij</string>
     <string name="remove_bookmark_and_close">Czy chcesz usunąć zakładkę dla %s i zamknąć rozmowę?</string>

@@ -22,7 +22,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 
+import com.google.android.material.color.DynamicColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -37,8 +40,10 @@ import java.util.Collections;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.Conversations;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
+import eu.siacs.conversations.databinding.ActivitySettingsBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.ExportBackupService;
@@ -46,10 +51,8 @@ import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.UnifiedPushDistributor;
 import eu.siacs.conversations.ui.util.SettingsUtils;
-import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.TimeFrameUtils;
-import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class SettingsActivity extends XmppActivity implements OnSharedPreferenceChangeListener {
@@ -74,7 +77,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        final ActivitySettingsBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_settings);
         FragmentManager fm = getFragmentManager();
         mSettingsFragment = (SettingsFragment) fm.findFragmentById(R.id.settings_content);
         if (mSettingsFragment == null
@@ -83,13 +86,8 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             fm.beginTransaction().replace(R.id.settings_content, mSettingsFragment).commit();
         }
         mSettingsFragment.setActivityIntent(getIntent());
-        this.mTheme = findTheme();
-        setTheme(this.mTheme);
-        getWindow()
-                .getDecorView()
-                .setBackgroundColor(
-                        StyledAttributes.getColor(this, R.attr.color_background_primary));
-        setSupportActionBar(findViewById(R.id.toolbar));
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
+        setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar());
     }
 
@@ -185,6 +183,12 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             }
         }
 
+        final PreferenceCategory uiPreferenceCategory = (PreferenceCategory) mSettingsFragment.findPreference("ui");
+        final Preference dynamicColorsPreference = mSettingsFragment.findPreference("dynamic_colors");
+        if (dynamicColorsPreference != null && !DynamicColors.isDynamicColorAvailable()) {
+            uiPreferenceCategory.removePreference(dynamicColorsPreference);
+        }
+
         ListPreference automaticMessageDeletionList =
                 (ListPreference) mSettingsFragment.findPreference(AUTOMATIC_MESSAGE_DELETION);
         if (automaticMessageDeletionList != null) {
@@ -204,36 +208,6 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             automaticMessageDeletionList.setEntryValues(entryValues);
         }
 
-        boolean removeLocation =
-                new Intent("eu.siacs.conversations.location.request")
-                                .resolveActivity(getPackageManager())
-                        == null;
-        boolean removeVoice =
-                new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
-                                .resolveActivity(getPackageManager())
-                        == null;
-
-        ListPreference quickAction =
-                (ListPreference) mSettingsFragment.findPreference("quick_action");
-        if (quickAction != null && (removeLocation || removeVoice)) {
-            ArrayList<CharSequence> entries =
-                    new ArrayList<>(Arrays.asList(quickAction.getEntries()));
-            ArrayList<CharSequence> entryValues =
-                    new ArrayList<>(Arrays.asList(quickAction.getEntryValues()));
-            int index = entryValues.indexOf("location");
-            if (index > 0 && removeLocation) {
-                entries.remove(index);
-                entryValues.remove(index);
-            }
-            index = entryValues.indexOf("voice");
-            if (index > 0 && removeVoice) {
-                entries.remove(index);
-                entryValues.remove(index);
-            }
-            quickAction.setEntries(entries.toArray(new CharSequence[entries.size()]));
-            quickAction.setEntryValues(entryValues.toArray(new CharSequence[entryValues.size()]));
-        }
-
         final Preference removeCertsPreference =
                 mSettingsFragment.findPreference("remove_trusted_certificates");
         if (removeCertsPreference != null) {
@@ -242,17 +216,16 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
                         final MemorizingTrustManager mtm =
                                 xmppConnectionService.getMemorizingTrustManager();
                         final ArrayList<String> aliases = Collections.list(mtm.getCertificates());
-                        if (aliases.size() == 0) {
+                        if (aliases.isEmpty()) {
                             displayToast(getString(R.string.toast_no_trusted_certs));
                             return true;
                         }
                         final ArrayList<Integer> selectedItems = new ArrayList<>();
-                        final AlertDialog.Builder dialogBuilder =
-                                new AlertDialog.Builder(SettingsActivity.this);
+                        final MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(SettingsActivity.this);
                         dialogBuilder.setTitle(
                                 getResources().getString(R.string.dialog_manage_certs_title));
                         dialogBuilder.setMultiChoiceItems(
-                                aliases.toArray(new CharSequence[aliases.size()]),
+                                aliases.toArray(new CharSequence[0]),
                                 null,
                                 (dialog, indexSelected, isChecked) -> {
                                     if (isChecked) {
@@ -262,7 +235,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
                                     }
                                     ((AlertDialog) dialog)
                                             .getButton(DialogInterface.BUTTON_POSITIVE)
-                                            .setEnabled(selectedItems.size() > 0);
+                                            .setEnabled(!selectedItems.isEmpty());
                                 });
 
                         dialogBuilder.setPositiveButton(
@@ -273,13 +246,12 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
                                     if (count > 0) {
                                         for (int i = 0; i < count; i++) {
                                             try {
-                                                Integer item =
-                                                        Integer.valueOf(
+                                                final int item =
+                                                        Integer.parseInt(
                                                                 selectedItems.get(i).toString());
                                                 String alias = aliases.get(item);
                                                 mtm.deleteCertificate(alias);
-                                            } catch (KeyStoreException e) {
-                                                e.printStackTrace();
+                                            } catch (final KeyStoreException e) {
                                                 displayToast("Error: " + e.getLocalizedMessage());
                                             }
                                         }
@@ -372,10 +344,8 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
 
     private boolean isCallable(final Intent i) {
         return i != null
-                && getPackageManager()
-                                .queryIntentActivities(i, PackageManager.MATCH_DEFAULT_ONLY)
-                                .size()
-                        > 0;
+                && !getPackageManager()
+                .queryIntentActivities(i, PackageManager.MATCH_DEFAULT_ONLY).isEmpty();
     }
 
     private boolean cleanCache() {
@@ -413,7 +383,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
     }
 
     private boolean deleteOmemoIdentities() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.pref_delete_omemo_identities);
         final List<CharSequence> accounts = new ArrayList<>();
         for (Account account : xmppConnectionService.getAccounts()) {
@@ -502,10 +472,12 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         } else if (name.equals(AUTOMATIC_MESSAGE_DELETION)) {
             xmppConnectionService.expireOldMessages(true);
         } else if (name.equals(THEME)) {
-            final int theme = findTheme();
-            if (this.mTheme != theme) {
-                recreate();
-            }
+            final var value = preferences.getString(THEME,getString(R.string.theme));
+            final int desiredNightMode = Conversations.getDesiredNightMode(value);
+            setDesiredNightMode(desiredNightMode);
+        } else if (name.equals("dynamic_colors")) {
+            final var value = preferences.getBoolean("dynamic_colors",false);
+            setDynamicColors(value);
         } else if (name.equals(PREVENT_SCREENSHOTS)) {
             SettingsUtils.applyScreenshotPreventionSetting(this);
         } else if (UnifiedPushDistributor.PREFERENCES.contains(name)) {
@@ -572,7 +544,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
 
     private void createBackup() {
         ContextCompat.startForegroundService(this, new Intent(this, ExportBackupService.class));
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setMessage(R.string.backup_started_message);
         builder.setPositiveButton(R.string.ok, null);
         builder.create().show();

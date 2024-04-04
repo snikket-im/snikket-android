@@ -30,6 +30,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 import java.util.Collection;
@@ -144,7 +147,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         } else {
             value = jid.toEscapedString();
         }
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(getString(R.string.action_add_phone_book));
         builder.setMessage(getString(R.string.add_phone_book_text, value));
         builder.setNegativeButton(getString(R.string.cancel), null);
@@ -215,6 +218,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         }
         this.messageFingerprint = getIntent().getStringExtra("fingerprint");
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_contact_details);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar());
@@ -238,14 +242,9 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     @Override
     public void onStart() {
         super.onStart();
-        final int theme = findTheme();
-        if (this.mTheme != theme) {
-            recreate();
-        } else {
-            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            this.showDynamicTags = preferences.getBoolean(SettingsActivity.SHOW_DYNAMIC_TAGS, false);
-            this.showLastSeen = preferences.getBoolean("last_activity", false);
-        }
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        this.showDynamicTags = preferences.getBoolean(SettingsActivity.SHOW_DYNAMIC_TAGS, false);
+        this.showLastSeen = preferences.getBoolean("last_activity", false);
         binding.mediaWrapper.setVisibility(Compatibility.hasStoragePermission(this) ? View.VISIBLE : View.GONE);
         mMediaAdapter.setAttachments(Collections.emptyList());
     }
@@ -268,8 +267,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         if (MenuDoubleTabUtil.shouldIgnoreTap()) {
             return false;
         }
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setNegativeButton(getString(R.string.cancel), null);
         switch (menuItem.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -281,6 +278,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 shareLink(false);
                 break;
             case R.id.action_delete_contact:
+                final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+                builder.setNegativeButton(getString(R.string.cancel), null);
                 builder.setTitle(getString(R.string.action_delete_contact))
                         .setMessage(JidDialog.style(this, R.string.remove_contact_text, contact.getJid().toEscapedString()))
                         .setPositiveButton(getString(R.string.delete),
@@ -431,12 +430,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         }
 
         binding.detailsContactjid.setText(IrregularUnicodeDetector.style(this, contact.getJid()));
-        String account;
-        if (Config.DOMAIN_LOCK != null) {
-            account = contact.getAccount().getJid().getEscapedLocal();
-        } else {
-            account = contact.getAccount().getJid().asBareJid().toEscapedString();
-        }
+        final String account = contact.getAccount().getJid().asBareJid().toEscapedString();
         binding.detailsAccount.setText(getString(R.string.using_account, account));
         AvatarWorkerTask.loadAvatar(contact, binding.detailsContactBadge, R.dimen.avatar_on_details_screen_size);
         binding.detailsContactBadge.setOnClickListener(this::onBadgeClick);
@@ -498,7 +492,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             TextView keyType = view.findViewById(R.id.key_type);
             keyType.setText(R.string.openpgp_key_id);
             if ("pgp".equals(messageFingerprint)) {
-                keyType.setTextAppearance(this, R.style.TextAppearance_Conversations_Caption_Highlight);
+                keyType.setTextColor(MaterialColors.getColor(keyType, com.google.android.material.R.attr.colorPrimaryVariant));
             }
             key.setText(OpenPgpUtils.convertKeyIdToHex(contact.getPgpKeyId()));
             final OnClickListener openKey = v -> launchOpenKeyChain(contact.getPgpKeyId());
@@ -510,7 +504,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         binding.keysWrapper.setVisibility(hasKeys ? View.VISIBLE : View.GONE);
 
         List<ListItem.Tag> tagList = contact.getTags(this);
-        if (tagList.size() == 0 || !this.showDynamicTags) {
+        if (tagList.isEmpty() || !this.showDynamicTags) {
             binding.tags.setVisibility(View.GONE);
         } else {
             binding.tags.setVisibility(View.VISIBLE);

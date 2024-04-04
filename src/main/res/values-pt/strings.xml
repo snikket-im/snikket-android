@@ -14,7 +14,6 @@
     <string name="action_unblock_domain">Desbloquear domínio</string>
     <string name="title_activity_manage_accounts">Gerir contas</string>
     <string name="title_activity_settings">Definições</string>
-    <string name="title_activity_sharewith">Compartilhar conversa</string>
     <string name="title_activity_start_conversation">Iniciar conversa</string>
     <string name="title_activity_choose_contact">Escolher contacto</string>
     <string name="title_activity_choose_contacts">Escolher contactos</string>
@@ -390,8 +389,6 @@
     <string name="pref_privacy">Privacidade</string>
     <string name="pref_theme_options">Tema</string>
     <string name="pref_theme_options_summary">Escolher a palete de cores</string>
-    <string name="pref_use_green_background">Fundo Verde</string>
-    <string name="pref_use_green_background_summary">Usar fundo verde para mensagens recebidas</string>
     <string name="this_device_is_no_longer_in_use">Este dispositivo já não está em uso</string>
     <string name="type_pc">Computador</string>
     <string name="type_phone">Telefone móvel</string>
@@ -409,7 +406,6 @@
     <string name="error_message">Mensagem de Erro</string>
     <string name="data_saver_enabled">Poupança de dados ligada</string>
     <string name="message_copied_to_clipboard">Mensagem copiada para a área de transferência</string>
-    <string name="medium">Médio</string>
     <string name="title_activity_show_location">Exibir localização</string>
     <string name="rtp_state_declined_or_busy">Ocupado</string>
 </resources>

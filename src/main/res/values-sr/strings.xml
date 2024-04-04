@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Одблокирај учесника</string>
     <string name="title_activity_manage_accounts">Управљање налозима</string>
     <string name="title_activity_settings">Поставке</string>
-    <string name="title_activity_sharewith">Подели у преписци</string>
     <string name="title_activity_start_conversation">Почни преписку</string>
     <string name="title_activity_choose_contact">Изабери контакт</string>
     <string name="title_activity_choose_contacts">Изабери контакте</string>
@@ -550,8 +549,6 @@
     <string name="pref_theme_automatic">Аутопатски</string>
     <string name="pref_theme_light">Светла</string>
     <string name="pref_theme_dark">Тамна</string>
-    <string name="pref_use_green_background">Зелена позадина</string>
-    <string name="pref_use_green_background_summary">Зелена позадина за примљене поруке</string>
     <string name="unable_to_connect_to_keychain">Не могу да се повежем са Отвореним кључарником</string>
     <string name="this_device_is_no_longer_in_use">Овај уређај више није у употреби</string>
     <string name="type_pc">Рачунар</string>
@@ -648,10 +645,8 @@
     <string name="draft">Нацрт:</string>
     <string name="pref_omemo_setting_summary_always">ОМЕМО ће увек бити у употреби за један-на-један и приватна групна ћаскања.</string>
     <string name="create_shortcut">Направи пречицу</string>
-    <string name="pref_font_size">Величина фонта</string>
     <string name="default_on">Подразумевано укључено</string>
     <string name="default_off">Подразумевано искључено</string>
-    <string name="medium">Средњи</string>
     <string name="undo">врати</string>
     <string name="location_disabled">Дељење локације је искључено</string>
     <string name="action_copy_location">Копирај локацију</string>

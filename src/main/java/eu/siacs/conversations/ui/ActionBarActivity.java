@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 
-public abstract class ActionBarActivity extends AppCompatActivity {
+public abstract class ActionBarActivity extends BaseActivity {
     public static void configureActionBar(ActionBar actionBar) {
         configureActionBar(actionBar, true);
     }

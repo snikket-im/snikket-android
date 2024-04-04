@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Débloquer le participant</string>
     <string name="title_activity_manage_accounts">Gestion des comptes</string>
     <string name="title_activity_settings">Paramètres</string>
-    <string name="title_activity_sharewith">Partager avec Conversations</string>
     <string name="title_activity_start_conversation">Démarrer une conversation</string>
     <string name="title_activity_choose_contact">Choisir un contact</string>
     <string name="title_activity_choose_contacts">Choisir les contacts</string>
@@ -572,8 +571,6 @@
     <string name="pref_theme_automatic">Automatique</string>
     <string name="pref_theme_light">Clair</string>
     <string name="pref_theme_dark">Sombre</string>
-    <string name="pref_use_green_background">Fond vert</string>
-    <string name="pref_use_green_background_summary">Utiliser un fond vert pour les messages reçus</string>
     <string name="unable_to_connect_to_keychain">Impossible de se connecter à OpenKeyChain</string>
     <string name="this_device_is_no_longer_in_use">Cet appareil n\'est plus utilisé</string>
     <string name="type_pc">Ordinateur</string>
@@ -716,13 +713,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO sera utilisé par défaut pour les nouvelles discussions.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO devra être activé manuellement pour chaque nouvelle discussion.</string>
     <string name="create_shortcut">Créer un raccourci</string>
-    <string name="pref_font_size">Taille de police</string>
-    <string name="pref_font_size_summary">La taille de police relative utilisée dans l\'application.</string>
     <string name="default_on">Activé par défaut</string>
     <string name="default_off">Désactivé par défaut</string>
-    <string name="small">Petite</string>
-    <string name="medium">Moyenne</string>
-    <string name="large">Grande</string>
     <string name="not_encrypted_for_this_device">Le message n\'était pas chiffré pour cet appareil.</string>
     <string name="omemo_decryption_failed">Échec de déchiffrement du message OMEMO.</string>
     <string name="undo">annuler</string>

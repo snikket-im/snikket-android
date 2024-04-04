@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Bỏ chặn thành viên</string>
     <string name="title_activity_manage_accounts">Quản lý tài khoản</string>
     <string name="title_activity_settings">Cài đặt</string>
-    <string name="title_activity_sharewith">Chia sẻ qua Conversation</string>
     <string name="title_activity_start_conversation">Khởi chạy Conversation</string>
     <string name="title_activity_choose_contact">Chọn liên hệ</string>
     <string name="title_activity_choose_contacts">Chọn liên hệ</string>
@@ -568,8 +567,6 @@
     <string name="pref_theme_automatic">Tự động</string>
     <string name="pref_theme_light">Sáng</string>
     <string name="pref_theme_dark">Tối</string>
-    <string name="pref_use_green_background">Nền xanh lá cây</string>
-    <string name="pref_use_green_background_summary">Dùng nền xanh lá cây cho tin nhắn nhận được</string>
     <string name="unable_to_connect_to_keychain">Không thể kết nối với OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Thiết bị này không còn được dùng nữa</string>
     <string name="type_pc">Máy tính</string>
@@ -700,13 +697,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO sẽ được sử dụng theo mặc định cho các cuộc hội thoại mới.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO sẽ phải được bật một cách rõ ràng cho các cuộc hội thoại mới.</string>
     <string name="create_shortcut">Tạo lối tắt</string>
-    <string name="pref_font_size">Cỡ chữ</string>
-    <string name="pref_font_size_summary">Cỡ chữ tương đối được sử dụng trong ứng dụng.</string>
     <string name="default_on">Bật theo mặc định</string>
     <string name="default_off">Tắt theo mặc định</string>
-    <string name="small">Nhỏ</string>
-    <string name="medium">Trung bình</string>
-    <string name="large">Lớn</string>
     <string name="not_encrypted_for_this_device">Tin nhắn đã không được mã hoá cho thiết bị này.</string>
     <string name="omemo_decryption_failed">Giải mã tin nhắn OMEMO thất bại.</string>
     <string name="undo">hoàn tác</string>

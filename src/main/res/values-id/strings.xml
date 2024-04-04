@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Buka blok partisipan</string>
     <string name="title_activity_manage_accounts">Pengaturan Akun</string>
     <string name="title_activity_settings">Pengaturan</string>
-    <string name="title_activity_sharewith">Bagikan dengan Conversation</string>
     <string name="title_activity_start_conversation">Mulai Percakapan</string>
     <string name="title_activity_choose_contact">Pilih kontak</string>
     <string name="title_activity_choose_contacts">Pilih beberapa kontak</string>
@@ -420,8 +419,6 @@
     <string name="pref_privacy">Privasi</string>
     <string name="pref_theme_options">Tema</string>
     <string name="pref_theme_automatic">Otomatis</string>
-    <string name="pref_use_green_background">Latar Hijau</string>
-    <string name="pref_use_green_background_summary">Gunakan latar hijau untuk pesan masuk</string>
     <string name="this_device_is_no_longer_in_use">Perangkat ini tidak dipergunakan lagi</string>
     <string name="type_pc">Komputer</string>
     <string name="type_phone">Ponsel</string>
@@ -452,9 +449,6 @@
     <string name="contact_blocked_past_tense">Kontak diblokir</string>
     <string name="server_info_partial">sebagian</string>
     <string name="message_copied_to_clipboard">Pesan disalin ke clipboard</string>
-    <string name="small">Kecil</string>
-    <string name="medium">Sedang</string>
-    <string name="large">Besar</string>
     <string name="action_share_location">Bagikan Lokasi</string>
     <string name="title_activity_share_location">Bagikan lokasi</string>
     <string name="title_activity_show_location">Tampilkan lokasi</string>

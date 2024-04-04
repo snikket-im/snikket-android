@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Desbloquear participante</string>
     <string name="title_activity_manage_accounts">Gestionar Cuentas</string>
     <string name="title_activity_settings">Ajustes</string>
-    <string name="title_activity_sharewith">Compartir con Conversación</string>
     <string name="title_activity_start_conversation">Nueva Conversación</string>
     <string name="title_activity_choose_contact">Seleccionar Contacto</string>
     <string name="title_activity_choose_contacts">Seleccionar Contactos</string>
@@ -577,8 +576,6 @@
     <string name="pref_theme_automatic">Automático</string>
     <string name="pref_theme_light">Claro</string>
     <string name="pref_theme_dark">Oscuro</string>
-    <string name="pref_use_green_background">Fondo verde</string>
-    <string name="pref_use_green_background_summary">Usar fondo verde para mensajes recibidos</string>
     <string name="unable_to_connect_to_keychain">No se ha podido conectar a OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Este dispositivo ya no está en uso</string>
     <string name="type_pc">Ordenador</string>
@@ -723,13 +720,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO será usado por defecto para nuevas conversaciones.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO tendrá que ser explícitamente activado para nuevas conversaciones.</string>
     <string name="create_shortcut">Crear acceso directo</string>
-    <string name="pref_font_size">Tamaño de fuente</string>
-    <string name="pref_font_size_summary">Tamaño de fuente usado en la aplicación.</string>
     <string name="default_on">Activo por defecto</string>
     <string name="default_off">Desactivado por defecto</string>
-    <string name="small">Pequeño</string>
-    <string name="medium">Mediano</string>
-    <string name="large">Grande</string>
     <string name="not_encrypted_for_this_device">El mensaje no fue cifrado para este dispositivo.</string>
     <string name="omemo_decryption_failed">Error al descifrar el mensaje cifrado con OMEMO.</string>
     <string name="undo">deshacer</string>
@@ -1043,7 +1035,6 @@
     <string name="no_permission_to_place_call">Sin permiso para llamar por teléfono</string>
     <string name="rtp_state_contact_offline">Contacto no disponible</string>
     <string name="call_integration_not_available">¡Sin integración de llamadas!</string>
-    <string name="channel_discover_opt_in_message">El observador de canales utiliza un servicio de terceros llamado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;El uso de esta función transmitirá a ese servicio su dirección IP. y términos de búsqueda. Para obtener más detalles, consulte su &lt;a href=https://search.jabber.network/privacy&gt;Política de privacidad&lt;/a&gt;.</string>
     <string name="delete_and_close">Borrar y cerrar</string>
     <string name="remove_bookmark">¿Quieres eliminar el marcador de %s ?</string>
     <string name="remove_bookmark_and_close">¿Quieres eliminar el marcador de %s y cerrar la conversación?</string>

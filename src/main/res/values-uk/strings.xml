@@ -19,7 +19,6 @@
     <string name="action_unblock_participant">Розблокувати учасника</string>
     <string name="title_activity_manage_accounts">Мої облікові записи</string>
     <string name="title_activity_settings">Налаштування</string>
-    <string name="title_activity_sharewith">Поділитися розмовою</string>
     <string name="title_activity_start_conversation">Почати розмову</string>
     <string name="title_activity_choose_contact">Вибрати контакт</string>
     <string name="title_activity_choose_contacts">Вибрати контакти</string>
@@ -561,8 +560,6 @@
     <string name="pref_theme_automatic">Автоматично</string>
     <string name="pref_theme_light">Світла</string>
     <string name="pref_theme_dark">Темна</string>
-    <string name="pref_use_green_background">Зелене тло</string>
-    <string name="pref_use_green_background_summary">Використовувати зелене тло для отриманих повідомлень</string>
     <string name="unable_to_connect_to_keychain">Не вдалося зв\'язатися з OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Цей пристрій більше не використовується</string>
     <string name="type_pc">Комп\'ютер</string>
@@ -709,13 +706,8 @@
     <string name="pref_omemo_setting_summary_default_on">Типово для нових розмов використовуватиметься OMEMO.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO потрібно буде вмикати окремо для кожної нової розмови.</string>
     <string name="create_shortcut">Створити ярлик</string>
-    <string name="pref_font_size">Розмір шрифту</string>
-    <string name="pref_font_size_summary">Розмір шрифту в застосунку.</string>
     <string name="default_on">Типово ввімкнено</string>
     <string name="default_off">Типово вимкнено</string>
-    <string name="small">Малий</string>
-    <string name="medium">Середній</string>
-    <string name="large">Великий</string>
     <string name="not_encrypted_for_this_device">Повідомлення не було зашифровано для цього пристрою.</string>
     <string name="omemo_decryption_failed">Не вдалося розшифрувати повідомлення OMEMO.</string>
     <string name="undo">скасувати</string>
@@ -1081,7 +1073,6 @@
     <string name="rtp_state_contact_offline">Контакт недоступний</string>
     <string name="call_integration_not_available">Інтеграція викликів недоступна!</string>
     <string name="delete_and_close">Видалити і закрити</string>
-    <string name="channel_discover_opt_in_message">Пошук каналів використовує сторонній сервіс &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Використання цієї функції передає Вашу IP-адресу та пошукові запити цьому сервісу. Перегляньте їхню &lt;a href=https://search.jabber.network/privacy&gt;Політику конфіденційності&lt;/a&gt;, щоб отримати більше інформації.</string>
     <string name="remove_bookmark_and_close">Бажаєте видалити закладку %s і закрити розмову?</string>
     <string name="remove_bookmark">Бажаєте видалити закладку %s?</string>
 </resources>

@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Деблокиране на участника</string>
     <string name="title_activity_manage_accounts">Управление на профилите</string>
     <string name="title_activity_settings">Настройки</string>
-    <string name="title_activity_sharewith">Споделяне в разговора</string>
     <string name="title_activity_start_conversation">Започване на разговор</string>
     <string name="title_activity_choose_contact">Изберете контакт</string>
     <string name="title_activity_choose_contacts">Изберете контакти</string>
@@ -565,8 +564,6 @@
     <string name="pref_theme_automatic">Автоматично</string>
     <string name="pref_theme_light">Светла</string>
     <string name="pref_theme_dark">Тъмна</string>
-    <string name="pref_use_green_background">Зелен фон</string>
-    <string name="pref_use_green_background_summary">Получените съобщения ще бъдат на зелен фон</string>
     <string name="unable_to_connect_to_keychain">Свързването с OpenKeychain е невъзможно</string>
     <string name="this_device_is_no_longer_in_use">Това устройство вече не се използва</string>
     <string name="type_pc">Компютър</string>
@@ -703,13 +700,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO ще се използва по подразбиране за новите разговори.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO ще трябва да се включва изрично за новите разговори.</string>
     <string name="create_shortcut">Създаване на пряк път</string>
-    <string name="pref_font_size">Размер на шрифта</string>
-    <string name="pref_font_size_summary">Относителен размер на шрифта в приложението.</string>
     <string name="default_on">ВКЛ по подразбиране</string>
     <string name="default_off">ИЗКЛ по подразбиране</string>
-    <string name="small">Малък</string>
-    <string name="medium">Среден</string>
-    <string name="large">Голям</string>
     <string name="not_encrypted_for_this_device">Съобщението не е било шифровано за това устройство.</string>
     <string name="omemo_decryption_failed">Съобщението OMEMO не може да бъде дешифровано.</string>
     <string name="undo">отмяна</string>

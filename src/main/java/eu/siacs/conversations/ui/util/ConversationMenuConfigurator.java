@@ -102,14 +102,16 @@ public class ConversationMenuConfigurator {
 			return;
 		}
 
-		if (conversation.getNextEncryption() != Message.ENCRYPTION_NONE) {
-			menuSecure.setIcon(R.drawable.ic_lock_white_24dp);
+		if (next == Message.ENCRYPTION_NONE) {
+			menuSecure.setIcon(R.drawable.ic_lock_open_outline_24dp);
+		} else {
+			menuSecure.setIcon(R.drawable.ic_lock_24dp);
 		}
 
 		pgp.setVisible(Config.supportOpenPgp());
 		none.setVisible(Config.supportUnencrypted() || conversation.getMode() == Conversation.MODE_MULTI);
 		axolotl.setVisible(Config.supportOmemo());
-		switch (conversation.getNextEncryption()) {
+		switch (next) {
 			case Message.ENCRYPTION_PGP:
 				menuSecure.setTitle(R.string.encrypted_with_openpgp);
 				pgp.setChecked(true);

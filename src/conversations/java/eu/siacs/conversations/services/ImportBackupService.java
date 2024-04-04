@@ -225,7 +225,7 @@ public class ImportBackupService extends Service {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(getBaseContext(), "backup");
         mBuilder.setContentTitle(getString(R.string.restoring_backup))
-                .setSmallIcon(R.drawable.ic_unarchive_white_24dp)
+                .setSmallIcon(R.drawable.ic_unarchive_24dp)
                 .setProgress(max, progress, max == 1 && progress == 0);
         return mBuilder.build();
     }
@@ -415,7 +415,7 @@ public class ImportBackupService extends Service {
                                         ? PendingIntent.FLAG_IMMUTABLE
                                                 | PendingIntent.FLAG_UPDATE_CURRENT
                                         : PendingIntent.FLAG_UPDATE_CURRENT))
-                .setSmallIcon(R.drawable.ic_unarchive_white_24dp);
+                .setSmallIcon(R.drawable.ic_unarchive_24dp);
         notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 

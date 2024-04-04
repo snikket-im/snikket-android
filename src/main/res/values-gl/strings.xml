@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Desbloquear persoa</string>
     <string name="title_activity_manage_accounts">Xestionar Contas</string>
     <string name="title_activity_settings">Axustes</string>
-    <string name="title_activity_sharewith">Compartir na conversa</string>
     <string name="title_activity_start_conversation">Iniciar conversa</string>
     <string name="title_activity_choose_contact">Escoller Contacto</string>
     <string name="title_activity_choose_contacts">Seleccionar contactos</string>
@@ -576,8 +575,6 @@
     <string name="pref_theme_automatic">Automático</string>
     <string name="pref_theme_light">Claro</string>
     <string name="pref_theme_dark">Escuro</string>
-    <string name="pref_use_green_background">Fondo verde</string>
-    <string name="pref_use_green_background_summary">Utilizar fondo verde para mensaxes recibidas</string>
     <string name="unable_to_connect_to_keychain">Non se puido conectar con OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Este dispositivo xa non está en uso</string>
     <string name="type_pc">Computadora</string>
@@ -717,13 +714,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO utilizarase por defecto para as novas conversas.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO terá que ser activado explícitamente para novas conversacións.</string>
     <string name="create_shortcut">Crear acceso directo</string>
-    <string name="pref_font_size">Tamaño da letra</string>
-    <string name="pref_font_size_summary">O tamaño relativo da letra que utiliza a app.</string>
     <string name="default_on">Activado por defecto</string>
     <string name="default_off">Desactivado por defecto</string>
-    <string name="small">Pequena</string>
-    <string name="medium">Mediana</string>
-    <string name="large">Grande</string>
     <string name="not_encrypted_for_this_device">A mensaxe non foi cifrada para este disposivivo.</string>
     <string name="omemo_decryption_failed">Fallo ao descifrar a mensaxe OMEMO.</string>
     <string name="undo">desfacer</string>
@@ -1035,5 +1027,4 @@
     <string name="remove_bookmark_and_close">Queres eliminar o marcador para %s e pechar a conversa?</string>
     <string name="remove_bookmark">Queres eliminar o marcador para %s?</string>
     <string name="delete_and_close">Eliminar e Pechar</string>
-    <string name="channel_discover_opt_in_message">O descubrimento de canles usa un servicio alleo chamado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Ao usar esta ferramenta transmites o teu enderezo IP e os termos de busca a ese servizo. Le a súa &lt;a href=https://search.jabber.network/privacy&gt;Política de Privacidade&lt;/a&gt; para saber máis.</string>
 </resources>

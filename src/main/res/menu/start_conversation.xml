@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/action_search"
-        android:icon="?attr/icon_search"
+        android:icon="@drawable/ic_search_24dp"
         android:title="@string/search"
         app:actionLayout="@layout/actionview_search"
         app:showAsAction="collapseActionView|always" />
     <item
         android:id="@+id/action_scan_qr_code"
-        android:icon="?attr/icon_scan_qr_code"
+        android:icon="@drawable/ic_qr_code_scanner_24dp"
         android:title="@string/scan_qr_code"
         app:showAsAction="always" />
 

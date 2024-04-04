@@ -12,6 +12,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -200,7 +202,7 @@ public final class MucDetailsContextMenuHelper {
                 activity.xmppConnectionService.changeRoleInConference(conversation, user.getName(), MucOptions.Role.NONE);
             }
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
             builder.setTitle(R.string.ban_from_conference);
             String jid = user.getRealJid().asBareJid().toString();
             SpannableString message = new SpannableString(activity.getString(R.string.removing_from_public_conference, jid));

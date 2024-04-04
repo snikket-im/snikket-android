@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Frigiv deltager</string>
     <string name="title_activity_manage_accounts">Håndter konti</string>
     <string name="title_activity_settings">Indstillinger</string>
-    <string name="title_activity_sharewith">Del med Conversation</string>
     <string name="title_activity_start_conversation">Start Conversation</string>
     <string name="title_activity_choose_contact">Vælg kontakt</string>
     <string name="title_activity_choose_contacts">Vælg kontakter</string>
@@ -573,8 +572,6 @@
     <string name="pref_theme_automatic">Automatisk</string>
     <string name="pref_theme_light">Lys</string>
     <string name="pref_theme_dark">Mørk</string>
-    <string name="pref_use_green_background">Grøn baggrund</string>
-    <string name="pref_use_green_background_summary">Brug grøn baggrund til modtaget beskeder</string>
     <string name="unable_to_connect_to_keychain">Kunne ikke forbinde til OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Denne enhed er ikke længere i brug</string>
     <string name="type_pc">Computer</string>
@@ -713,13 +710,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO vil blive brugt som standard for nye samtaler.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO skal være tændt udtrykkeligt for nye samtaler.</string>
     <string name="create_shortcut">Opret genvej</string>
-    <string name="pref_font_size">Skriftstørrelse</string>
-    <string name="pref_font_size_summary">Den relative skriftstørrelse brugt inde i appen.</string>
     <string name="default_on">Til som standard</string>
     <string name="default_off">Fra som standard</string>
-    <string name="small">Lille</string>
-    <string name="medium">Mellem</string>
-    <string name="large">Stor</string>
     <string name="not_encrypted_for_this_device">Besked var ikke krypteret på denne enhed.</string>
     <string name="omemo_decryption_failed">Dekryptering af OMEMO-besked mislykkes.</string>
     <string name="undo">fortryd</string>

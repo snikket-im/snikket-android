@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity im
 	private final MenuItem.OnActionExpandListener mOnActionExpandListener = new MenuItem.OnActionExpandListener() {
 
 		@Override
-		public boolean onMenuItemActionExpand(final MenuItem item) {
+		public boolean onMenuItemActionExpand(@NonNull final MenuItem item) {
 			mSearchEditText.post(() -> {
 				mSearchEditText.requestFocus();
 				final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -45,7 +46,7 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity im
 		}
 
 		@Override
-		public boolean onMenuItemActionCollapse(final MenuItem item) {
+		public boolean onMenuItemActionCollapse(@NonNull final MenuItem item) {
 			final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
 			mSearchEditText.setText("");
@@ -92,6 +93,7 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity im
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.binding = DataBindingUtil.setContentView(this,R.layout.activity_choose_contact);
+		Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
 		setSupportActionBar(binding.toolbar);
 		configureActionBar(getSupportActionBar());
 		this.binding.chooseContactList.setFastScrollEnabled(true);

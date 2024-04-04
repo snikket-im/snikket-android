@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Desbloquejar participant</string>
     <string name="title_activity_manage_accounts">Gestiona els comptes</string>
     <string name="title_activity_settings">Configuració</string>
-    <string name="title_activity_sharewith">Compartir amb Conversations</string>
     <string name="title_activity_start_conversation">Comença una conversa</string>
     <string name="title_activity_choose_contact">Tria el contacte</string>
     <string name="title_activity_choose_contacts">Seleccionar contactes</string>
@@ -551,8 +550,6 @@
     <string name="pref_theme_automatic">Automàtic</string>
     <string name="pref_theme_light">Clar</string>
     <string name="pref_theme_dark">Fosc</string>
-    <string name="pref_use_green_background">Fons verd</string>
-    <string name="pref_use_green_background_summary">Utilitzeu fons verd per als missatges rebuts</string>
     <string name="unable_to_connect_to_keychain">No s\'ha pogut connectar amb OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Aquest dispositiu ja no està en ús</string>
     <string name="type_pc">Ordinador</string>
@@ -687,13 +684,8 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="pref_omemo_setting_summary_default_on">OMEMO s\'utilitzarà per defecte per a les noves converses.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO haurà de ser activat explícitament per a noves converses.</string>
     <string name="create_shortcut">Crear accés directe</string>
-    <string name="pref_font_size">Grandària de la font</string>
-    <string name="pref_font_size_summary">La grandària relativa de la font utilitzada dins de l\'aplicació.</string>
     <string name="default_on">Activat per defecte</string>
     <string name="default_off">Desactivat per defecte</string>
-    <string name="small">Petita</string>
-    <string name="medium">Mitjana</string>
-    <string name="large">Gran</string>
     <string name="not_encrypted_for_this_device">El missatge no està xifrat per a aquest dispositiu.</string>
     <string name="omemo_decryption_failed">No s\'ha pogut desxifrar el missatge OMEMO.</string>
     <string name="undo">desfer</string>

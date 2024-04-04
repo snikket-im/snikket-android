@@ -1,21 +1,32 @@
 package eu.siacs.conversations.ui.adapter;
 
-import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.AttrRes;
 import androidx.annotation.DimenRes;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.core.widget.ImageViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.color.MaterialColors;
+import com.google.common.base.Strings;
+
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ItemMediaBinding;
+import eu.siacs.conversations.services.ExportBackupService;
+import eu.siacs.conversations.ui.XmppActivity;
+import eu.siacs.conversations.ui.util.Attachment;
+import eu.siacs.conversations.ui.util.ViewUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -23,25 +34,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.databinding.MediaBinding;
-import eu.siacs.conversations.services.ExportBackupService;
-import eu.siacs.conversations.ui.XmppActivity;
-import eu.siacs.conversations.ui.util.Attachment;
-import eu.siacs.conversations.ui.util.StyledAttributes;
-import eu.siacs.conversations.ui.util.ViewUtil;
-
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHolder> {
 
-    public static final List<String> DOCUMENT_MIMES = Arrays.asList(
-            "application/pdf",
-            "application/vnd.oasis.opendocument.text",
-            "application/msword",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "text/x-tex",
-            "text/plain"
-    );
+    public static final List<String> DOCUMENT_MIMES =
+            Arrays.asList(
+                    "application/pdf",
+                    "application/vnd.oasis.opendocument.text",
+                    "application/msword",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "text/x-tex",
+                    "text/plain");
+    public static final List<String> CODE_MIMES = Arrays.asList("text/html", "text/xml");
 
     private final ArrayList<Attachment> attachments = new ArrayList<>();
 
@@ -55,58 +58,77 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     }
 
     @SuppressWarnings("rawtypes")
-    public static void setMediaSize(RecyclerView recyclerView, int mediaSize) {
+    public static void setMediaSize(final RecyclerView recyclerView, int mediaSize) {
         final RecyclerView.Adapter adapter = recyclerView.getAdapter();
-        if (adapter instanceof MediaAdapter) {
-            ((MediaAdapter) adapter).setMediaSize(mediaSize);
+        if (adapter instanceof MediaAdapter mediaAdapter) {
+            mediaAdapter.setMediaSize(mediaSize);
         }
     }
 
-    private static @AttrRes
-    int getImageAttr(Attachment attachment) {
-        final @AttrRes int attr;
+    public static @DrawableRes int getImageDrawable(final Attachment attachment) {
         if (attachment.getType() == Attachment.Type.LOCATION) {
-            attr = R.attr.media_preview_location;
+            return R.drawable.ic_location_pin_48dp;
         } else if (attachment.getType() == Attachment.Type.RECORDING) {
-            attr = R.attr.media_preview_recording;
+            return R.drawable.ic_mic_48dp;
         } else {
-            final String mime = attachment.getMime();
-            Log.d(Config.LOGTAG, "mime=" + mime);
-            if (mime == null) {
-                attr = R.attr.media_preview_unknown;
-            } else if (mime.equals("audio/x-m4b")) {
-                attr = R.attr.media_preview_audiobook;
-            } else if (mime.startsWith("audio/")) {
-                attr = R.attr.media_preview_audio;
-            } else if (mime.equals("text/calendar") || (mime.equals("text/x-vcalendar"))) {
-                attr = R.attr.media_preview_calendar;
-            } else if (mime.equals("text/x-vcard")) {
-                attr = R.attr.media_preview_contact;
-            } else if (mime.equals("application/vnd.android.package-archive")) {
-                attr = R.attr.media_preview_app;
-            } else if (mime.equals("application/zip") || mime.equals("application/rar")) {
-                attr = R.attr.media_preview_archive;
-            } else if (mime.equals("application/epub+zip") || mime.equals("application/vnd.amazon.mobi8-ebook")) {
-                attr = R.attr.media_preview_ebook;
-            } else if (mime.equals(ExportBackupService.MIME_TYPE)) {
-                attr = R.attr.media_preview_backup;
-            } else if (DOCUMENT_MIMES.contains(mime)) {
-                attr = R.attr.media_preview_document;
-            } else if (mime.equals("application/gpx+xml")) {
-                attr = R.attr.media_preview_tour;
-            } else if (mime.startsWith("image/")) {
-                attr = R.attr.media_preview_image;
-            } else {
-                attr = R.attr.media_preview_unknown;
-            }
+            return getImageDrawable(attachment.getMime());
         }
-        return attr;
     }
 
-    static void renderPreview(Context context, Attachment attachment, ImageView imageView) {
-        imageView.setBackgroundColor(StyledAttributes.getColor(context, R.attr.color_background_tertiary));
-        imageView.setImageAlpha(Math.round(StyledAttributes.getFloat(context, R.attr.icon_alpha) * 255));
-        imageView.setImageDrawable(StyledAttributes.getDrawable(context, getImageAttr(attachment)));
+    private static @DrawableRes int getImageDrawable(final String mime) {
+
+        // TODO ideas for more mime types: XML, HTML documents, GPG/PGP files, eml files,
+        // spreadsheets (table symbol)
+
+        // add bz2 and tar.gz to archive detection
+
+        if (Strings.isNullOrEmpty(mime)) {
+            return R.drawable.ic_help_center_48dp;
+        } else if (mime.equals("audio/x-m4b")) {
+            return R.drawable.ic_play_lesson_48dp;
+        } else if (mime.startsWith("audio/")) {
+            return R.drawable.ic_headphones_48dp;
+        } else if (mime.equals("text/calendar") || (mime.equals("text/x-vcalendar"))) {
+            return R.drawable.ic_event_48dp;
+        } else if (mime.equals("text/x-vcard")) {
+            return R.drawable.ic_person_48dp;
+        } else if (mime.equals("application/vnd.android.package-archive")) {
+            return R.drawable.ic_adb_48dp;
+        } else if (mime.equals("application/zip") || mime.equals("application/rar")) {
+            return R.drawable.ic_archive_48dp;
+        } else if (mime.equals("application/epub+zip")
+                || mime.equals("application/vnd.amazon.mobi8-ebook")) {
+            return R.drawable.ic_book_48dp;
+        } else if (mime.equals(ExportBackupService.MIME_TYPE)) {
+            return R.drawable.ic_backup_48dp;
+        } else if (DOCUMENT_MIMES.contains(mime)) {
+            return R.drawable.ic_description_48dp;
+        } else if (mime.equals("application/gpx+xml")) {
+            return R.drawable.ic_tour_48dp;
+        } else if (mime.startsWith("image/")) {
+            return R.drawable.ic_image_48dp;
+        } else if (mime.startsWith("video/")) {
+            return R.drawable.ic_movie_48dp;
+        } else if (CODE_MIMES.contains(mime)) {
+            return R.drawable.ic_code_48dp;
+        } else if (mime.equals("message/rfc822")) {
+            return R.drawable.ic_email_48dp;
+        } else {
+            return R.drawable.ic_help_center_48dp;
+        }
+    }
+
+    static void renderPreview(final Attachment attachment, final ImageView imageView) {
+        ImageViewCompat.setImageTintList(
+                imageView,
+                ColorStateList.valueOf(
+                        MaterialColors.getColor(
+                                imageView, com.google.android.material.R.attr.colorOnSurface)));
+        imageView.setImageResource(getImageDrawable(attachment));
+        imageView.setBackgroundColor(
+                MaterialColors.getColor(
+                        imageView,
+                        com.google.android.material.R.attr.colorSurfaceContainerHighest));
     }
 
     private static boolean cancelPotentialWork(Attachment attachment, ImageView imageView) {
@@ -126,8 +148,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
         if (imageView != null) {
             final Drawable drawable = imageView.getDrawable();
-            if (drawable instanceof AsyncDrawable) {
-                final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+            if (drawable instanceof AsyncDrawable asyncDrawable) {
                 return asyncDrawable.getBitmapWorkerTask();
             }
         }
@@ -137,8 +158,9 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     @NonNull
     @Override
     public MediaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        MediaBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.media, parent, false);
+        final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        ItemMediaBinding binding =
+                DataBindingUtil.inflate(layoutInflater, R.layout.item_media, parent, false);
         return new MediaViewHolder(binding);
     }
 
@@ -146,16 +168,15 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     public void onBindViewHolder(@NonNull MediaViewHolder holder, int position) {
         final Attachment attachment = attachments.get(position);
         if (attachment.renderThumbnail()) {
-            holder.binding.media.setImageAlpha(255);
             loadPreview(attachment, holder.binding.media);
         } else {
             cancelPotentialWork(attachment, holder.binding.media);
-            renderPreview(activity, attachment, holder.binding.media);
+            renderPreview(attachment, holder.binding.media);
         }
         holder.binding.getRoot().setOnClickListener(v -> ViewUtil.view(activity, attachment));
     }
 
-    public void setAttachments(List<Attachment> attachments) {
+    public void setAttachments(final List<Attachment> attachments) {
         this.attachments.clear();
         this.attachments.addAll(attachments);
         notifyDataSetChanged();
@@ -167,16 +188,21 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
 
     private void loadPreview(Attachment attachment, ImageView imageView) {
         if (cancelPotentialWork(attachment, imageView)) {
-            final Bitmap bm = activity.xmppConnectionService.getFileBackend().getPreviewForUri(attachment, mediaSize, true);
+            final Bitmap bm =
+                    activity.xmppConnectionService
+                            .getFileBackend()
+                            .getPreviewForUri(attachment, mediaSize, true);
             if (bm != null) {
                 cancelPotentialWork(attachment, imageView);
                 imageView.setImageBitmap(bm);
-                imageView.setBackgroundColor(0x00000000);
+                imageView.setBackgroundColor(Color.TRANSPARENT);
             } else {
+                // TODO consider if this is still a good, general purpose loading color
                 imageView.setBackgroundColor(0xff333333);
                 imageView.setImageDrawable(null);
                 final BitmapWorkerTask task = new BitmapWorkerTask(mediaSize, imageView);
-                final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);
+                final AsyncDrawable asyncDrawable =
+                        new AsyncDrawable(activity.getResources(), null, task);
                 imageView.setImageDrawable(asyncDrawable);
                 try {
                     task.execute(attachment);
@@ -204,11 +230,11 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         }
     }
 
-    class MediaViewHolder extends RecyclerView.ViewHolder {
+    static class MediaViewHolder extends RecyclerView.ViewHolder {
 
-        private final MediaBinding binding;
+        private final ItemMediaBinding binding;
 
-        MediaViewHolder(MediaBinding binding) {
+        MediaViewHolder(ItemMediaBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -225,13 +251,15 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         }
 
         @Override
-        protected Bitmap doInBackground(Attachment... params) {
+        protected Bitmap doInBackground(final Attachment... params) {
             this.attachment = params[0];
             final XmppActivity activity = XmppActivity.find(imageViewReference);
             if (activity == null) {
                 return null;
             }
-            return activity.xmppConnectionService.getFileBackend().getPreviewForUri(this.attachment, mediaSize, false);
+            return activity.xmppConnectionService
+                    .getFileBackend()
+                    .getPreviewForUri(this.attachment, mediaSize, false);
         }
 
         @Override

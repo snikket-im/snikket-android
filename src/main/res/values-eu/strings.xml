@@ -19,7 +19,6 @@
     <string name="action_unblock_participant">Parte-hartzaileari blokeoa kendu</string>
     <string name="title_activity_manage_accounts">Kontuak kudeatu</string>
     <string name="title_activity_settings">Ezarpenak</string>
-    <string name="title_activity_sharewith">Elkarrizketa batekin partekatu</string>
     <string name="title_activity_start_conversation">Elkarrizketa hasi</string>
     <string name="title_activity_choose_contact">Kontaktua hautatu</string>
     <string name="title_activity_choose_contacts">Kontaktuak hautatu</string>
@@ -460,8 +459,6 @@
     <string name="pref_theme_options">Gaia</string>
     <string name="pref_theme_options_summary">Kolore paleta hautatu</string>
     <string name="pref_theme_automatic">Automatikoa</string>
-    <string name="pref_use_green_background">Atzealde berdea</string>
-    <string name="pref_use_green_background_summary">Atzealde berdea erabili jasotako mezuentzat</string>
     <string name="this_device_is_no_longer_in_use">Gailu hau ez da gehiago erabiltzen</string>
     <string name="type_pc">Ordenagailua</string>
     <string name="type_phone">Mugikorra</string>
@@ -578,13 +575,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO elkarrizketa berrietan lehenetsi bezala erabiliko da</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO esplizituki piztu beharko da elkarrizketa berrietarako</string>
     <string name="create_shortcut">Lasterbidea sortu</string>
-    <string name="pref_font_size">Letraren neurria</string>
-    <string name="pref_font_size_summary">Aplikazioaren barruan erabiliko den letraren neurri erlatiboa.</string>
     <string name="default_on">Piztuta lehenetsi bezala</string>
     <string name="default_off">Itzalita lehenetsi bezala</string>
-    <string name="small">Txikia</string>
-    <string name="medium">Ertaina</string>
-    <string name="large">Handia</string>
     <string name="not_encrypted_for_this_device">Mezua ez da enkriptatu gailu honentzat.</string>
     <string name="omemo_decryption_failed">Ezin izan da OMEMO mezua desenkriptatu.</string>
     <string name="undo">desegin</string>

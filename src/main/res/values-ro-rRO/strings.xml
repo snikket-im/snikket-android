@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Deblochează participant</string>
     <string name="title_activity_manage_accounts">Configurează conturile</string>
     <string name="title_activity_settings">Setări</string>
-    <string name="title_activity_sharewith">Partajează într-o conversație</string>
     <string name="title_activity_start_conversation">Pornește o conversație</string>
     <string name="title_activity_choose_contact">Alegeți contactul</string>
     <string name="title_activity_choose_contacts">Alegeți contactele</string>
@@ -582,8 +581,6 @@
     <string name="pref_theme_automatic">Automată</string>
     <string name="pref_theme_light">Luminoasă</string>
     <string name="pref_theme_dark">Întunecată</string>
-    <string name="pref_use_green_background">Fundal verde</string>
-    <string name="pref_use_green_background_summary">Pentru mesajele primite</string>
     <string name="unable_to_connect_to_keychain">Nu s-a putut face conectarea la OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Acest dispozitiv nu mai este în uz</string>
     <string name="type_pc">PC</string>
@@ -728,13 +725,8 @@
     <string name="pref_omemo_setting_summary_default_on">Va fi folosită în mod implicit pentru discuțiile noi.</string>
     <string name="pref_omemo_setting_summary_default_off">Va trebui să fie pornită în mod explicit pentru discuțiile noi.</string>
     <string name="create_shortcut">Creează scurtătură</string>
-    <string name="pref_font_size">Mărime text</string>
-    <string name="pref_font_size_summary">Dimensiunea relativă a fontului folosită în aplicație.</string>
     <string name="default_on">Activată implicit</string>
     <string name="default_off">Dezactivată implicit</string>
-    <string name="small">Mică</string>
-    <string name="medium">Medie</string>
-    <string name="large">Mare</string>
     <string name="not_encrypted_for_this_device">Mesajul nu a fost criptat pentru acest dispozitiv.</string>
     <string name="omemo_decryption_failed">Nu s-a reușit decriptarea mesajului OMEMO.</string>
     <string name="undo">anulează</string>
@@ -1051,5 +1043,4 @@
     <string name="remove_bookmark_and_close">Ați dori să ștergeți semnul de carte pentru %s și să închideți conversația?</string>
     <string name="remove_bookmark">Ați dori să ștergeți semnul de carte pentru %s?</string>
     <string name="delete_and_close">Șterge și închide</string>
-    <string name="channel_discover_opt_in_message">Descoperirea de canale publice folosește un serviciu terț numit &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți &lt;a href=https://search.jabber.network/privacy&gt;Politica de confidențialitate&lt;/a&gt; a serviciului.</string>
 </resources>

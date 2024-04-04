@@ -3,19 +3,30 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/color_background_secondary">
+        android:layout_height="match_parent">
 
-        <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <androidx.cardview.widget.CardView
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_below="@id/app_bar_layout"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin">
+            android:layout_marginBottom="@dimen/activity_vertical_margin">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -27,14 +38,14 @@
                     android:id="@+id/account_image_wrapper"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="@dimen/publish_avatar_top_margin"
-                    android:background="@drawable/account_image_border">
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/background_account_profile_picture">
 
                     <ImageView
                         android:id="@+id/account_image"
                         android:layout_width="@dimen/publish_avatar_size"
-                        android:layout_height="@dimen/publish_avatar_size"/>
+                        android:layout_height="@dimen/publish_avatar_size" />
                 </FrameLayout>
 
                 <TextView
@@ -42,58 +53,56 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/touch_to_choose_picture"
-                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+                    android:textAppearance="?textAppearanceBodyMedium" />
 
                 <TextView
                     android:id="@+id/secondary_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/or_long_press_for_default"
-                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+                    android:textAppearance="?textAppearanceBodyMedium" />
 
                 <TextView
                     android:id="@+id/hint_or_warning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
-                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+                    android:layout_marginBottom="8dp"
+                    android:textAppearance="?textAppearanceBodyMedium"
+                    android:textColor="?colorError" />
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/button_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true">
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
 
             <Button
                 android:id="@+id/cancel_button"
-                style="@style/Widget.Conversations.Button.Borderless"
-                android:layout_width="0dp"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/cancel"/>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:layout_marginBottom="7dp"
-                android:layout_marginTop="7dp"
-                android:background="?attr/divider"/>
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:text="@string/cancel" />
 
             <Button
                 android:id="@+id/publish_button"
-                style="@style/Widget.Conversations.Button.Borderless"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
                 android:enabled="false"
-                android:text="@string/publish"/>
-        </LinearLayout>
+                android:text="@string/publish" />
+        </RelativeLayout>
+
 
     </RelativeLayout>
 </layout>

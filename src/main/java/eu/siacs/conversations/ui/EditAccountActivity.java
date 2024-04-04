@@ -33,9 +33,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AlertDialog.Builder;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.CharMatcher;
 
@@ -98,7 +99,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private Jid jidToEdit;
     private boolean mInitMode = false;
     private Boolean mForceRegister = null;
-    private boolean mUsernameMode = Config.DOMAIN_LOCK != null;
+    private boolean mUsernameMode = false;
     private boolean mShowOptions = false;
     private Account mAccount;
     private final OnClickListener mCancelButtonClickListener = v -> {
@@ -609,6 +610,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             this.mSavedInstanceInit = savedInstanceState.getBoolean("initMode", false);
         }
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_account);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         setSupportActionBar(binding.toolbar);
         binding.accountJid.addTextChangedListener(this.mTextWatcher);
         binding.accountJid.setOnFocusChangeListener(this.mEditTextFocusListener);
@@ -697,13 +699,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         final Intent intent = getIntent();
-        final int theme = findTheme();
-        if (this.mTheme != theme) {
-            recreate();
-        } else if (intent != null) {
+        if (intent != null) {
             try {
                 this.jidToEdit = Jid.ofEscaped(intent.getStringExtra("jid"));
             } catch (final IllegalArgumentException | NullPointerException ignored) {
@@ -758,7 +757,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     private void displayVerificationWarningDialog(final XmppUri xmppUri) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.verify_omemo_keys);
         View view = getLayoutInflater().inflate(R.layout.dialog_verify_fingerprints, null);
         final CheckBox isTrustedSource = view.findViewById(R.id.trusted_source);
@@ -773,7 +772,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             }
         });
         builder.setNegativeButton(R.string.cancel, (dialog, which) -> finish());
-        AlertDialog dialog = builder.create();
+        final var dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnCancelListener(d -> finish());
         dialog.show();
@@ -835,7 +834,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             this.binding.accountJidLayout.setHint(getString(R.string.username_hint));
         } else {
             final KnownHostsAdapter mKnownHostsAdapter = new KnownHostsAdapter(this,
-                    R.layout.simple_list_item,
+                    R.layout.item_autocomplete,
                     xmppConnectionService.getKnownHosts());
             this.binding.accountJid.setAdapter(mKnownHostsAdapter);
         }
@@ -853,7 +852,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (mAccount != null && mAccount.getJid().getDomain() != null) {
             return mAccount.getServer();
         } else {
-            return Config.DOMAIN_LOCK;
+            return null;
         }
     }
 
@@ -940,7 +939,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private void changePresence() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean manualStatus = sharedPreferences.getBoolean(SettingsActivity.MANUALLY_CHANGE_PRESENCE, getResources().getBoolean(R.bool.manually_change_presence));
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         final DialogPresenceBinding binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.dialog_presence, null, false);
         String current = mAccount.getPresenceStatusMessage();
         if (current != null && !current.trim().isEmpty()) {
@@ -949,7 +948,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         setAvailabilityRadioButton(mAccount.getPresenceStatus(), binding);
         binding.show.setVisibility(manualStatus ? View.VISIBLE : View.GONE);
         List<PresenceTemplate> templates = xmppConnectionService.getPresenceTemplates(mAccount);
-        PresenceTemplateAdapter presenceTemplateAdapter = new PresenceTemplateAdapter(this, R.layout.simple_list_item, templates);
+        PresenceTemplateAdapter presenceTemplateAdapter = new PresenceTemplateAdapter(this, R.layout.item_autocomplete, templates);
         binding.statusMessage.setAdapter(presenceTemplateAdapter);
         binding.statusMessage.setOnItemClickListener((parent, view, position, id) -> {
             PresenceTemplate template = (PresenceTemplate) parent.getItemAtPosition(position);
@@ -1144,7 +1143,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 this.binding.pgpFingerprint.setText(OpenPgpUtils.convertKeyIdToHex(pgpKeyId));
                 this.binding.pgpFingerprint.setOnClickListener(openPgp);
                 if ("pgp".equals(messageFingerprint)) {
-                    this.binding.pgpFingerprintDesc.setTextAppearance(this, R.style.TextAppearance_Conversations_Caption_Highlight);
+                    this.binding.pgpFingerprintDesc.setTextColor(MaterialColors.getColor(binding.pgpFingerprintDesc, com.google.android.material.R.attr.colorPrimaryVariant));
                 }
                 this.binding.pgpFingerprintDesc.setOnClickListener(openPgp);
                 this.binding.actionDeletePgp.setOnClickListener(delete);
@@ -1155,10 +1154,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             if (ownAxolotlFingerprint != null && Config.supportOmemo()) {
                 this.binding.axolotlFingerprintBox.setVisibility(View.VISIBLE);
                 if (ownAxolotlFingerprint.equals(messageFingerprint)) {
-                    this.binding.ownFingerprintDesc.setTextAppearance(this, R.style.TextAppearance_Conversations_Caption_Highlight);
+                    this.binding.ownFingerprintDesc.setTextColor(MaterialColors.getColor(binding.ownFingerprintDesc, com.google.android.material.R.attr.colorPrimaryVariant));
                     this.binding.ownFingerprintDesc.setText(R.string.omemo_fingerprint_selected_message);
                 } else {
-                    this.binding.ownFingerprintDesc.setTextAppearance(this, R.style.TextAppearance_Conversations_Caption);
+                    this.binding.ownFingerprintDesc.setTextColor(MaterialColors.getColor(binding.ownFingerprintDesc, com.google.android.material.R.attr.colorOnSurface));
                     this.binding.ownFingerprintDesc.setText(R.string.omemo_fingerprint);
                 }
                 this.binding.axolotlFingerprint.setText(CryptoHelper.prettifyFingerprint(ownAxolotlFingerprint.substring(2)));
@@ -1222,10 +1221,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private void updateDisplayName(String displayName) {
         if (TextUtils.isEmpty(displayName)) {
             this.binding.yourName.setText(R.string.no_name_set_instructions);
-            this.binding.yourName.setTextAppearance(this, R.style.TextAppearance_Conversations_Body1_Tertiary);
+            this.binding.yourName.setTextColor(MaterialColors.getColor(binding.yourName, com.google.android.material.R.attr.colorOnSurfaceVariant));
         } else {
             this.binding.yourName.setText(displayName);
-            this.binding.yourName.setTextAppearance(this, R.style.TextAppearance_Conversations_Body1);
+            this.binding.yourName.setTextColor(MaterialColors.getColor(binding.yourName, com.google.android.material.R.attr.colorOnSurfaceVariant));
         }
     }
 
@@ -1249,7 +1248,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     private void showDeletePgpDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.unpublish_pgp);
         builder.setMessage(R.string.unpublish_pgp_message);
         builder.setNegativeButton(R.string.cancel, null);
@@ -1279,7 +1278,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                     Toast.makeText(EditAccountActivity.this, getString(R.string.device_does_not_support_data_saver, getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
                 }
             });
-        } else if (showBatteryWarning && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        } else if (showBatteryWarning) {
             this.binding.osOptimizationDisable.setText(R.string.disable);
             this.binding.osOptimizationHeadline.setText(R.string.battery_optimizations_enabled);
             this.binding.osOptimizationBody.setText(getString(R.string.battery_optimizations_enabled_explained, getString(R.string.app_name)));
@@ -1297,7 +1296,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     public void showWipePepDialog() {
-        Builder builder = new Builder(this);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(getString(R.string.clear_other_devices));
         builder.setIconAttribute(android.R.attr.alertDialogIcon);
         builder.setMessage(getString(R.string.clear_other_devices_desc));
@@ -1324,7 +1323,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             if (mCaptchaDialog != null && mCaptchaDialog.isShowing()) {
                 mCaptchaDialog.dismiss();
             }
-            final Builder builder = new Builder(EditAccountActivity.this);
+            final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(EditAccountActivity.this);
             final View view = getLayoutInflater().inflate(R.layout.captcha, null);
             final ImageView imageView = view.findViewById(R.id.captcha);
             final EditText input = view.findViewById(R.id.input);
@@ -1372,7 +1371,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             if (mFetchingMamPrefsToast != null) {
                 mFetchingMamPrefsToast.cancel();
             }
-            Builder builder = new Builder(EditAccountActivity.this);
+            final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(EditAccountActivity.this);
             builder.setTitle(R.string.server_side_mam_prefs);
             String defaultAttr = prefs.getAttribute("default");
             final List<String> defaults = Arrays.asList("never", "roster", "always");

@@ -179,6 +179,7 @@ public class RtpSessionActivity extends XmppActivity
                                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_rtp_session);
         setSupportActionBar(binding.toolbar);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
     }
 
     @Override
@@ -920,34 +921,34 @@ public class RtpSessionActivity extends XmppActivity
         } else if (state == RtpEndUserState.INCOMING_CALL) {
             this.binding.rejectCall.setContentDescription(getString(R.string.dismiss_call));
             this.binding.rejectCall.setOnClickListener(this::rejectCall);
-            this.binding.rejectCall.setImageResource(R.drawable.ic_call_end_white_48dp);
+            this.binding.rejectCall.setImageResource(R.drawable.ic_call_end_24dp);
             this.binding.rejectCall.setVisibility(View.VISIBLE);
             this.binding.endCall.setVisibility(View.INVISIBLE);
             this.binding.acceptCall.setContentDescription(getString(R.string.answer_call));
             this.binding.acceptCall.setOnClickListener(this::acceptCall);
-            this.binding.acceptCall.setImageResource(R.drawable.ic_call_white_48dp);
+            this.binding.acceptCall.setImageResource(R.drawable.ic_call_24dp);
             this.binding.acceptCall.setVisibility(View.VISIBLE);
         } else if (state == RtpEndUserState.INCOMING_CONTENT_ADD) {
             this.binding.rejectCall.setContentDescription(
                     getString(R.string.reject_switch_to_video));
             this.binding.rejectCall.setOnClickListener(this::rejectContentAdd);
-            this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);
+            this.binding.rejectCall.setImageResource(R.drawable.ic_clear_24dp);
             this.binding.rejectCall.setVisibility(View.VISIBLE);
             this.binding.endCall.setVisibility(View.INVISIBLE);
             this.binding.acceptCall.setContentDescription(getString(R.string.accept));
             this.binding.acceptCall.setOnClickListener((v -> acceptContentAdd(contentAddition)));
-            this.binding.acceptCall.setImageResource(R.drawable.ic_baseline_check_24);
+            this.binding.acceptCall.setImageResource(R.drawable.ic_check_24dp);
             this.binding.acceptCall.setVisibility(View.VISIBLE);
         } else if (asList(RtpEndUserState.DECLINED_OR_BUSY, RtpEndUserState.CONTACT_OFFLINE)
                 .contains(state)) {
             this.binding.rejectCall.setContentDescription(getString(R.string.exit));
             this.binding.rejectCall.setOnClickListener(this::exit);
-            this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);
+            this.binding.rejectCall.setImageResource(R.drawable.ic_clear_24dp);
             this.binding.rejectCall.setVisibility(View.VISIBLE);
             this.binding.endCall.setVisibility(View.INVISIBLE);
             this.binding.acceptCall.setContentDescription(getString(R.string.record_voice_mail));
             this.binding.acceptCall.setOnClickListener(this::recordVoiceMail);
-            this.binding.acceptCall.setImageResource(R.drawable.ic_voicemail_white_24dp);
+            this.binding.acceptCall.setImageResource(R.drawable.ic_voicemail_24dp);
             this.binding.acceptCall.setVisibility(View.VISIBLE);
         } else if (asList(
                         RtpEndUserState.CONNECTIVITY_ERROR,
@@ -958,18 +959,18 @@ public class RtpSessionActivity extends XmppActivity
                 .contains(state)) {
             this.binding.rejectCall.setContentDescription(getString(R.string.exit));
             this.binding.rejectCall.setOnClickListener(this::exit);
-            this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);
+            this.binding.rejectCall.setImageResource(R.drawable.ic_clear_24dp);
             this.binding.rejectCall.setVisibility(View.VISIBLE);
             this.binding.endCall.setVisibility(View.INVISIBLE);
             this.binding.acceptCall.setContentDescription(getString(R.string.try_again));
             this.binding.acceptCall.setOnClickListener(this::retry);
-            this.binding.acceptCall.setImageResource(R.drawable.ic_replay_white_48dp);
+            this.binding.acceptCall.setImageResource(R.drawable.ic_replay_24dp);
             this.binding.acceptCall.setVisibility(View.VISIBLE);
         } else {
             this.binding.rejectCall.setVisibility(View.INVISIBLE);
             this.binding.endCall.setContentDescription(getString(R.string.hang_up));
             this.binding.endCall.setOnClickListener(this::endCall);
-            this.binding.endCall.setImageResource(R.drawable.ic_call_end_white_48dp);
+            this.binding.endCall.setImageResource(R.drawable.ic_call_end_24dp);
             this.binding.endCall.setVisibility(View.VISIBLE);
             this.binding.acceptCall.setVisibility(View.INVISIBLE);
         }
@@ -1038,7 +1039,7 @@ public class RtpSessionActivity extends XmppActivity
         switch (selectedAudioDevice) {
             case EARPIECE -> {
                 this.binding.inCallActionRight.setImageResource(
-                        R.drawable.ic_volume_off_black_24dp);
+                        R.drawable.ic_volume_off_24dp);
                 if (numberOfChoices >= 2) {
                     this.binding.inCallActionRight.setOnClickListener(this::switchToSpeaker);
                 } else {
@@ -1047,12 +1048,12 @@ public class RtpSessionActivity extends XmppActivity
                 }
             }
             case WIRED_HEADSET -> {
-                this.binding.inCallActionRight.setImageResource(R.drawable.ic_headset_black_24dp);
+                this.binding.inCallActionRight.setImageResource(R.drawable.ic_headset_mic_24dp);
                 this.binding.inCallActionRight.setOnClickListener(null);
                 this.binding.inCallActionRight.setClickable(false);
             }
             case SPEAKER_PHONE -> {
-                this.binding.inCallActionRight.setImageResource(R.drawable.ic_volume_up_black_24dp);
+                this.binding.inCallActionRight.setImageResource(R.drawable.ic_volume_up_24dp);
                 if (numberOfChoices >= 2) {
                     this.binding.inCallActionRight.setOnClickListener(this::switchToEarpiece);
                 } else {
@@ -1062,7 +1063,7 @@ public class RtpSessionActivity extends XmppActivity
             }
             case BLUETOOTH -> {
                 this.binding.inCallActionRight.setImageResource(
-                        R.drawable.ic_bluetooth_audio_black_24dp);
+                        R.drawable.ic_bluetooth_audio_24dp);
                 this.binding.inCallActionRight.setOnClickListener(null);
                 this.binding.inCallActionRight.setClickable(false);
             }
@@ -1076,17 +1077,17 @@ public class RtpSessionActivity extends XmppActivity
         this.binding.inCallActionRight.setVisibility(View.VISIBLE);
         if (isCameraSwitchable) {
             this.binding.inCallActionFarRight.setImageResource(
-                    R.drawable.ic_flip_camera_android_black_24dp);
+                    R.drawable.ic_flip_camera_android_24dp);
             this.binding.inCallActionFarRight.setVisibility(View.VISIBLE);
             this.binding.inCallActionFarRight.setOnClickListener(this::switchCamera);
         } else {
             this.binding.inCallActionFarRight.setVisibility(View.GONE);
         }
         if (videoEnabled) {
-            this.binding.inCallActionRight.setImageResource(R.drawable.ic_videocam_black_24dp);
+            this.binding.inCallActionRight.setImageResource(R.drawable.ic_videocam_24dp);
             this.binding.inCallActionRight.setOnClickListener(this::disableVideo);
         } else {
-            this.binding.inCallActionRight.setImageResource(R.drawable.ic_videocam_off_black_24dp);
+            this.binding.inCallActionRight.setImageResource(R.drawable.ic_videocam_off_24dp);
             this.binding.inCallActionRight.setOnClickListener(this::enableVideo);
         }
     }
@@ -1140,10 +1141,10 @@ public class RtpSessionActivity extends XmppActivity
     @SuppressLint("RestrictedApi")
     private void updateInCallButtonConfigurationMicrophone(final boolean microphoneEnabled) {
         if (microphoneEnabled) {
-            this.binding.inCallActionLeft.setImageResource(R.drawable.ic_mic_black_24dp);
+            this.binding.inCallActionLeft.setImageResource(R.drawable.ic_mic_24dp);
             this.binding.inCallActionLeft.setOnClickListener(this::disableMicrophone);
         } else {
-            this.binding.inCallActionLeft.setImageResource(R.drawable.ic_mic_off_black_24dp);
+            this.binding.inCallActionLeft.setImageResource(R.drawable.ic_mic_off_24dp);
             this.binding.inCallActionLeft.setOnClickListener(this::enableMicrophone);
         }
         this.binding.inCallActionLeft.setVisibility(View.VISIBLE);

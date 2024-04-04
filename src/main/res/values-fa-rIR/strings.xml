@@ -15,7 +15,6 @@
     <string name="action_unblock_domain">باز کردن دامنه</string>
     <string name="title_activity_manage_accounts">مدیریت حساب ها</string>
     <string name="title_activity_settings">تنظیمات</string>
-    <string name="title_activity_sharewith">به اشتراک گذاری با Conversation</string>
     <string name="title_activity_start_conversation">شروع گفتگو</string>
     <string name="title_activity_choose_contact">انتخاب مخاطب</string>
     <string name="title_activity_choose_contacts">انتخاب مخاطبین</string>
@@ -148,12 +147,8 @@
     <string name="gp_medium">متوسط</string>
     <string name="mtm_accept_cert">تأییدیهٔ امنیتی ناشناخته پذیرفته شود؟</string>
     <string name="disable_now">هم اکنون غیرفعال کن</string>
-    <string name="pref_font_size">اندازهٔ قلم</string>
     <string name="default_on">فعال به صورت پیش‌فرض</string>
     <string name="default_off">غیرفعال به صورت پیش‌فرض</string>
-    <string name="small">کوچک</string>
-    <string name="medium">متوسط</string>
-    <string name="large">بزرگ</string>
     <string name="not_encrypted_for_this_device">پیام برای این دستگاه رمز نشده.</string>
     <string name="action_copy_location">کپی موقعیت مکانی</string>
     <string name="action_share_location">هم‌رسانی موقعیت مکانی</string>
@@ -962,13 +957,11 @@
     <string name="retry_decryption">رمزگشایی دوباره</string>
     <string name="only_the_owner_can_change_group_chat_avatar">تنها مالک می‌تواند تصویر نمایهٔ گفتگوی عمومی را عوض کند</string>
     <string name="error_channel_description">این نوع از اعلان وقتی نمایش می‌یابد که در اتصال یک حساب مشکلی وجود داشته باشد.</string>
-    <string name="pref_use_green_background_summary">برای پیام‌های ورودی پس‌زمینهٔ سبز بگذار</string>
     <string name="set_profile_picture">تصویر نمایهٔ Conversations</string>
     <string name="shared_file_with_x">پرونده با %s هم‌رسانی شد</string>
     <string name="type_tablet">تبلت</string>
     <string name="view_media">دیدن رسانه</string>
     <string name="no_microphone_permission">به %1$s اجازهٔ دسترسی به میکروفن بده</string>
-    <string name="pref_use_green_background">پس‌زمینهٔ سبز</string>
     <string name="providing_a_name_is_optional">ارائهٔ نام اختیاری است</string>
     <string name="share_as_http">هم‌رسانی به شکل پیوند HTTP</string>
     <string name="account_status_host_unknown">این سرور مسئول این دامنه نیست</string>
@@ -995,7 +988,6 @@
     <string name="pref_use_share_location_plugin">افزونهٔ هم‌رسانی موقعیت مکانی</string>
     <string name="all_omemo_keys_have_been_verified">شما همهٔ کلیدهای OMEMO را که در اختیارتان است تأیید کرده‌اید</string>
     <string name="error_unable_to_create_temporary_file">ساخت پروندهٔ موقتی ممکن نبود</string>
-    <string name="pref_font_size_summary">اندازهٔ نسبی قلم به کار رفته در برنامه.</string>
     <string name="error_trustkey_hint_mutual">نکته: این مشکل را می‌توان گاهی با افزودن متقابل به فهرست مخاطبانتان حل کرد.</string>
     <string name="distrust_omemo_key_text">آیا می‌خواهید تأیید این دستگاه را بردارید؟
 \nاین دستگاه و پیغام‌ها از آن به عنوان اعتمادنشده علامت‌گذاری خواهند شد.</string>

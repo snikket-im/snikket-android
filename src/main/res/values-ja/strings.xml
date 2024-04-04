@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">参加者のブロックを解除</string>
     <string name="title_activity_manage_accounts">アカウントを管理</string>
     <string name="title_activity_settings">設定</string>
-    <string name="title_activity_sharewith">会話で共有</string>
     <string name="title_activity_start_conversation">会話を開始</string>
     <string name="title_activity_choose_contact">連絡先を選択</string>
     <string name="title_activity_choose_contacts">連絡先を選択</string>
@@ -568,8 +567,6 @@
     <string name="pref_theme_automatic">自動</string>
     <string name="pref_theme_light">明</string>
     <string name="pref_theme_dark">暗</string>
-    <string name="pref_use_green_background">緑の背景</string>
-    <string name="pref_use_green_background_summary">受信したメッセージに緑の背景を使用します</string>
     <string name="unable_to_connect_to_keychain">OpenKeychain に接続できません</string>
     <string name="this_device_is_no_longer_in_use">このデバイスは、現在使用されていません</string>
     <string name="type_pc">コンピューター</string>
@@ -703,13 +700,8 @@
     <string name="pref_omemo_setting_summary_default_on">デフォルトで新しい会話で OMEMO を使用します。</string>
     <string name="pref_omemo_setting_summary_default_off">新しい会話をするためには、OMEMOを明示的にオンにする必要があります。</string>
     <string name="create_shortcut">ショートカットを作成</string>
-    <string name="pref_font_size">フォントの大きさ</string>
-    <string name="pref_font_size_summary">このアプリで使用される相対的なフォントの大きさ</string>
     <string name="default_on">デフォルトでオン</string>
     <string name="default_off">デフォルトでオフ</string>
-    <string name="small">小</string>
-    <string name="medium">中</string>
-    <string name="large">大</string>
     <string name="not_encrypted_for_this_device">このデバイス向けにメッセージは暗号化されませんでした。</string>
     <string name="omemo_decryption_failed">OMEMO メッセージの復号に失敗しました。</string>
     <string name="undo">元に戻す</string>
@@ -1014,7 +1006,6 @@
     <string name="no_permission_to_place_call">電話をかける権限がありません</string>
     <string name="remove_bookmark_and_close">%s のブックマークを削除して会話を閉じますか ?</string>
     <string name="remove_bookmark">%s のブックマークを削除しますか ?</string>
-    <string name="channel_discover_opt_in_message">談話室の探索には &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; というサードパーティのサービスを利用します。&lt;br&gt;&lt;br&gt;この機能を使用すると、IP アドレスと検索語がこのサービスに送信されます。詳細は、&lt;a href=https://search.jabber.network/privacy&gt;プライバシーポリシー&lt;/a&gt;をご覧ください。</string>
     <string name="call_integration_not_available">通話の統合は利用できません。</string>
     <string name="rtp_state_contact_offline">連絡先は利用できません</string>
     <string name="delete_and_close">削除して閉じる</string>

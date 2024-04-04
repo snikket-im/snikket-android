@@ -16,10 +16,4 @@ public class ConversationActivity extends AppCompatActivity {
 		startActivity(new Intent(this, ConversationsActivity.class));
 		finish();
 	}
-
-	@Override
-	protected void onResume(){
-		super.onResume();
-		SettingsUtils.applyScreenshotPreventionSetting(this);
-	}
 }

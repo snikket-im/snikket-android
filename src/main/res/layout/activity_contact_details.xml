@@ -6,12 +6,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/color_background_secondary"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize" />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <ScrollView
             android:layout_width="fill_parent"
@@ -23,13 +30,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin">
+                    android:layout_marginBottom="@dimen/activity_vertical_margin">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -41,8 +48,8 @@
                             android:layout_width="@dimen/avatar_on_details_screen_size"
                             android:layout_height="@dimen/avatar_on_details_screen_size"
                             android:layout_alignParentTop="true"
-                            app:riv_corner_radius="8dp"
-                            android:scaleType="centerCrop" />
+                            android:scaleType="centerCrop"
+                            app:riv_corner_radius="8dp" />
 
                         <LinearLayout
                             android:id="@+id/details_jidbox"
@@ -57,33 +64,36 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/account_settings_example_jabber_id"
-                                android:textAppearance="@style/TextAppearance.Conversations.Title" />
+                                android:textAppearance="?textAppearanceTitleMedium" />
 
                             <com.wefika.flowlayout.FlowLayout
                                 android:id="@+id/tags"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="-2dp"
                                 android:layout_marginTop="4dp"
-                                android:orientation="horizontal"></com.wefika.flowlayout.FlowLayout>
+                                android:layout_marginBottom="4dp"
+                                android:orientation="horizontal" />
 
                             <TextView
                                 android:id="@+id/details_lastseen"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+                                android:textAppearance="?textAppearanceTitleSmall"
+                                tools:text="@string/just_now" />
 
                             <TextView
                                 android:id="@+id/status_message"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+                                android:textAppearance="?textAppearanceBodyMedium"
+                                tools:text="Hey there! I’m using Conversations" />
 
                             <Button
                                 android:id="@+id/add_contact_button"
+                                style="@style/Widget.Material3.Button.ElevatedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
@@ -91,42 +101,38 @@
 
                             <CheckBox
                                 android:id="@+id/details_send_presence"
-                                style="@style/Widget.Conversations.CheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="@string/send_presence_updates"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+                                android:text="@string/send_presence_updates" />
 
                             <CheckBox
                                 android:id="@+id/details_receive_presence"
-                                style="@style/Widget.Conversations.CheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/receive_presence_updates"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+                                android:text="@string/receive_presence_updates" />
                         </LinearLayout>
 
                         <TextView
                             android:id="@+id/details_account"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
                             android:layout_below="@+id/details_jidbox"
+                            android:layout_alignParentEnd="true"
                             android:layout_marginTop="32dp"
                             android:text="@string/using_account"
-                            android:textAppearance="@style/TextAppearance.Conversations.Caption" />
+                            android:textAppearance="?textAppearanceLabelMedium" />
                     </RelativeLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/media_wrapper"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin">
+                    android:layout_marginBottom="@dimen/activity_vertical_margin">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -137,42 +143,39 @@
                             android:id="@+id/media"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="-2dp"
+                            android:layout_marginEnd="-2dp"
                             android:orientation="horizontal"
-                            android:paddingEnd="@dimen/card_padding_regular"
                             android:paddingStart="@dimen/card_padding_regular"
                             android:paddingTop="@dimen/card_padding_regular"
-                            android:paddingBottom="@dimen/card_padding_list"
-                            android:layout_marginStart="-2dp"
-                            android:layout_marginEnd="-2dp"/>
+                            android:paddingEnd="@dimen/card_padding_regular"
+                            android:paddingBottom="@dimen/card_padding_list" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_gravity="end"
                             android:orientation="horizontal"
-                            android:layout_gravity="end">
+                            android:layout_margin="16dp">
 
                             <Button
                                 android:id="@+id/show_media"
-                                style="@style/Widget.Conversations.Button.Borderless"
+                                style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:minWidth="0dp"
-                                android:paddingLeft="16dp"
-                                android:paddingRight="16dp"
-                                android:text="@string/view_media"
-                                android:textColor="?attr/colorAccent" />
+                                android:text="@string/view_media" />
                         </LinearLayout>
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/keys_wrapper"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin">
+                    android:layout_marginBottom="@dimen/activity_vertical_margin">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -184,19 +187,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:padding="@dimen/card_padding_list"/>
+                            android:padding="@dimen/card_padding_list" />
 
                         <LinearLayout
                             android:id="@+id/unverified_warning"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="@dimen/card_padding_list">
+
                             <TextView
-                                android:layout_marginHorizontal="@dimen/list_padding"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1.Secondary"
-                                android:text="@string/contact_uses_unverified_keys"/>
+                                android:layout_marginHorizontal="@dimen/list_padding"
+                                android:text="@string/contact_uses_unverified_keys"
+                                android:textAppearance="?textAppearanceBodyMedium"
+                                android:textColor="?colorOnSurfaceVariant" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -208,28 +213,26 @@
 
                             <Button
                                 android:id="@+id/scan_button"
-                                style="@style/Widget.Conversations.Button.Borderless"
+                                style="@style/Widget.Material3.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:minWidth="0dp"
                                 android:paddingLeft="16dp"
                                 android:paddingRight="16dp"
-                                android:text="@string/scan_qr_code"
-                                android:textColor="?attr/colorAccent" />
+                                android:text="@string/scan_qr_code" />
 
                             <Button
                                 android:id="@+id/show_inactive_devices"
-                                style="@style/Widget.Conversations.Button.Borderless"
+                                style="@style/Widget.Material3.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:minWidth="0dp"
                                 android:paddingLeft="16dp"
                                 android:paddingRight="16dp"
-                                android:text="@string/show_inactive_devices"
-                                android:textColor="?attr/colorAccent" />
+                                android:text="@string/show_inactive_devices" />
                         </LinearLayout>
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

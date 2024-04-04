@@ -13,15 +13,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.common.base.Strings;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.databinding.EnterJidDialogBinding;
+import eu.siacs.conversations.databinding.DialogEnterJidBinding;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
@@ -46,28 +48,28 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
     private KnownHostsAdapter knownHostsAdapter;
     private Collection<String> whitelistedDomains = Collections.emptyList();
 
-    private EnterJidDialogBinding binding;
+    private DialogEnterJidBinding binding;
     private AlertDialog dialog;
     private boolean sanityCheckJid = false;
 
     private boolean issuedWarning = false;
 
     public static EnterJidDialog newInstance(
-            final List<String> activatedAccounts,
+            final ArrayList<String> activatedAccounts,
             final String title,
             final String positiveButton,
             final String prefilledJid,
             final String account,
             boolean allowEditJid,
             final boolean sanity_check_jid) {
-        EnterJidDialog dialog = new EnterJidDialog();
+        final EnterJidDialog dialog = new EnterJidDialog();
         Bundle bundle = new Bundle();
         bundle.putString(TITLE_KEY, title);
         bundle.putString(POSITIVE_BUTTON_KEY, positiveButton);
         bundle.putString(PREFILLED_JID_KEY, prefilledJid);
         bundle.putString(ACCOUNT_KEY, account);
         bundle.putBoolean(ALLOW_EDIT_JID_KEY, allowEditJid);
-        bundle.putStringArrayList(ACCOUNTS_LIST_KEY, (ArrayList<String>) activatedAccounts);
+        bundle.putStringArrayList(ACCOUNTS_LIST_KEY, activatedAccounts);
         bundle.putBoolean(SANITY_CHECK_JID, sanity_check_jid);
         dialog.setArguments(bundle);
         return dialog;
@@ -91,16 +93,16 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getArguments().getString(TITLE_KEY));
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
+        final var arguments = getArguments();
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
+        builder.setTitle(arguments.getString(TITLE_KEY));
         binding =
-                DataBindingUtil.inflate(
-                        getActivity().getLayoutInflater(), R.layout.enter_jid_dialog, null, false);
-        this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.simple_list_item);
+                DataBindingUtil.inflate(requireActivity().getLayoutInflater(), R.layout.dialog_enter_jid, null, false);
+        this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.item_autocomplete);
         binding.jid.setAdapter(this.knownHostsAdapter);
         binding.jid.addTextChangedListener(this);
-        String prefilledJid = getArguments().getString(PREFILLED_JID_KEY);
+        final String prefilledJid = arguments.getString(PREFILLED_JID_KEY);
         if (prefilledJid != null) {
             binding.jid.append(prefilledJid);
             if (!getArguments().getBoolean(ALLOW_EDIT_JID_KEY)) {
@@ -114,18 +116,18 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
 
         DelayedHintHelper.setHint(R.string.account_settings_example_jabber_id, binding.jid);
 
-        String account = getArguments().getString(ACCOUNT_KEY);
-        if (account == null) {
+        final String account = getArguments().getString(ACCOUNT_KEY);
+        if (Strings.isNullOrEmpty(account)) {
             StartConversationActivity.populateAccountSpinner(
                     getActivity(),
-                    getArguments().getStringArrayList(ACCOUNTS_LIST_KEY),
+                    arguments.getStringArrayList(ACCOUNTS_LIST_KEY),
                     binding.account);
         } else {
-            ArrayAdapter<String> adapter =
-                    new ArrayAdapter<>(
-                            getActivity(), R.layout.simple_list_item, new String[] {account});
+            final ArrayAdapter<String> adapter =
+                    new ArrayAdapter<>(requireActivity(), R.layout.item_autocomplete, new String[] {account});
+            binding.account.setText(account);
             binding.account.setEnabled(false);
-            adapter.setDropDownViewResource(R.layout.simple_list_item);
+            adapter.setDropDownViewResource(R.layout.item_autocomplete);
             binding.account.setAdapter(adapter);
         }
 
@@ -135,9 +137,7 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
         this.dialog = builder.create();
 
         View.OnClickListener dialogOnClick =
-                v -> {
-                    handleEnter(binding, account);
-                };
+                v -> handleEnter(binding, account);
 
         binding.jid.setOnEditorActionListener(
                 (v, actionId, event) -> {
@@ -150,21 +150,13 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
         return dialog;
     }
 
-    private void handleEnter(EnterJidDialogBinding binding, String account) {
+    private void handleEnter(DialogEnterJidBinding binding, String account) {
         final Jid accountJid;
         if (!binding.account.isEnabled() && account == null) {
             return;
         }
         try {
-            if (Config.DOMAIN_LOCK != null) {
-                accountJid =
-                        Jid.ofEscaped(
-                                (String) binding.account.getSelectedItem(),
-                                Config.DOMAIN_LOCK,
-                                null);
-            } else {
-                accountJid = Jid.ofEscaped((String) binding.account.getSelectedItem());
-            }
+                accountJid = Jid.ofEscaped((String) binding.account.getEditableText().toString());
         } catch (final IllegalArgumentException e) {
             return;
         }

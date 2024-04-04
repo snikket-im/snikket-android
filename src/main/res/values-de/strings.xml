@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Teilnehmer entsperren</string>
     <string name="title_activity_manage_accounts">Konten verwalten</string>
     <string name="title_activity_settings">Einstellungen</string>
-    <string name="title_activity_sharewith">Mit Unterhaltung teilen</string>
     <string name="title_activity_start_conversation">Unterhaltung beginnen</string>
     <string name="title_activity_choose_contact">Kontakt auswählen</string>
     <string name="title_activity_choose_contacts">Kontakte auswählen</string>
@@ -574,8 +573,6 @@
     <string name="pref_theme_automatic">Automatisch</string>
     <string name="pref_theme_light">Hell</string>
     <string name="pref_theme_dark">Dunkel</string>
-    <string name="pref_use_green_background">Grüner Hintergrund</string>
-    <string name="pref_use_green_background_summary">Für empfangene Nachrichten grünen Hintergrund verwenden</string>
     <string name="unable_to_connect_to_keychain">Verbindung zu OpenKeychain konnte nicht hergestellt werden</string>
     <string name="this_device_is_no_longer_in_use">Dieses Gerät ist nicht länger in Benutzung</string>
     <string name="type_pc">Computer</string>
@@ -714,13 +711,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO wird standardmäßig für neue Unterhaltungen verwendet.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO muss für neue Unterhaltungen explizit eingeschaltet werden.</string>
     <string name="create_shortcut">Verknüpfung erstellen</string>
-    <string name="pref_font_size">Schriftgröße</string>
-    <string name="pref_font_size_summary">Die verwendete relative Schriftgröße innerhalb der App.</string>
     <string name="default_on">Standardmäßig eingeschaltet</string>
     <string name="default_off">Standardmäßig ausgeschaltet</string>
-    <string name="small">Klein</string>
-    <string name="medium">Mittel</string>
-    <string name="large">Groß</string>
     <string name="not_encrypted_for_this_device">Die Nachricht wurde nicht für dieses Gerät verschlüsselt.</string>
     <string name="omemo_decryption_failed">OMEMO-Nachricht konnte nicht entschlüsselt werden.</string>
     <string name="undo">rückgängig</string>
@@ -1032,5 +1024,4 @@
     <string name="remove_bookmark_and_close">Möchtest du das Lesezeichen für %s entfernen und die Unterhaltung schließen?</string>
     <string name="delete_and_close">Löschen &amp; Schließen</string>
     <string name="remove_bookmark">Willst du das Lesezeichen für %s entfernen?</string>
-    <string name="channel_discover_opt_in_message">Die Channelsuche verwendet einen Drittanbieterservice namens &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der &lt;a href=https://search.jabber.network/privacy&gt;Datenschutzerklärung&lt;/a&gt;.</string>
 </resources>

@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -55,7 +54,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.common.collect.Iterables;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
@@ -109,7 +111,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     private ListItemAdapter mContactsAdapter;
     private final List<ListItem> conferences = new ArrayList<>();
     private ListItemAdapter mConferenceAdapter;
-    private final List<String> mActivatedAccounts = new ArrayList<>();
+    private final ArrayList<String> mActivatedAccounts = new ArrayList<>();
     private EditText mSearchEditText;
     private final AtomicBoolean mRequestedContactsPermission = new AtomicBoolean(false);
     private final AtomicBoolean mOpenedFab = new AtomicBoolean(false);
@@ -220,19 +222,20 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         }
     };
 
-    public static void populateAccountSpinner(Context context, List<String> accounts, Spinner spinner) {
-        if (accounts.size() > 0) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.simple_list_item, accounts);
-            adapter.setDropDownViewResource(R.layout.simple_list_item);
-            spinner.setAdapter(adapter);
-            spinner.setEnabled(true);
-        } else {
+    public static void populateAccountSpinner(final Context context, final List<String> accounts, final AutoCompleteTextView spinner) {
+        if (accounts.isEmpty()) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
-                    R.layout.simple_list_item,
+                    R.layout.item_autocomplete,
                     Collections.singletonList(context.getString(R.string.no_accounts)));
-            adapter.setDropDownViewResource(R.layout.simple_list_item);
+            adapter.setDropDownViewResource(R.layout.item_autocomplete);
             spinner.setAdapter(adapter);
             spinner.setEnabled(false);
+        } else {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.item_autocomplete, accounts);
+            adapter.setDropDownViewResource(R.layout.item_autocomplete);
+            spinner.setAdapter(adapter);
+            spinner.setEnabled(true);
+            spinner.setText(Iterables.getFirst(accounts,null),false);
         }
     }
 
@@ -273,6 +276,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_start_conversation);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar());
 
@@ -363,7 +367,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             }
             final SpeedDialActionItem actionItem = new SpeedDialActionItem.Builder(menuItem.getItemId(), menuItem.getIcon())
                     .setLabel(menuItem.getTitle() != null ? menuItem.getTitle().toString() : null)
-                    .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
+                    .setFabImageTintColor(MaterialColors.getColor(speedDialView, com.google.android.material.R.attr.colorOnSurface))
+                    .setFabBackgroundColor(MaterialColors.getColor(speedDialView, com.google.android.material.R.attr.colorSurfaceContainerHighest))
                     .create();
             speedDialView.addActionItem(actionItem);
         }
@@ -394,13 +399,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     @Override
     public void onStart() {
         super.onStart();
-        final int theme = findTheme();
-        if (this.mTheme != theme) {
-            recreate();
-        } else {
-            if (pendingViewIntent.peek() == null) {
-                askForContactsPermissions();
-            }
+        if (pendingViewIntent.peek() == null) {
+            askForContactsPermissions();
         }
         mConferenceAdapter.refreshSettings();
         mContactsAdapter.refreshSettings();
@@ -490,7 +490,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     protected void deleteContact() {
         final int position = contact_context_id;
         final Contact contact = (Contact) contacts.get(position);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setNegativeButton(R.string.cancel, null);
         builder.setTitle(R.string.action_delete_contact);
         builder.setMessage(JidDialog.style(this, R.string.remove_contact_text, contact.getJid().toEscapedString()));
@@ -506,7 +506,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         final Bookmark bookmark = (Bookmark) conferences.get(position);
         final var conversation = bookmark.getConversation();
         final boolean hasConversation = conversation != null;
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setNegativeButton(R.string.cancel, null);
         builder.setTitle(R.string.delete_bookmark);
         if (hasConversation) {
@@ -611,18 +611,14 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         dialog.show(ft, FRAGMENT_TAG_DIALOG);
     }
 
-    public static Account getSelectedAccount(Context context, Spinner spinner) {
+    public static Account getSelectedAccount(final Context context, final AutoCompleteTextView spinner) {
         if (spinner == null || !spinner.isEnabled()) {
             return null;
         }
         if (context instanceof XmppActivity) {
-            Jid jid;
+            final Jid jid;
             try {
-                if (Config.DOMAIN_LOCK != null) {
-                    jid = Jid.ofEscaped((String) spinner.getSelectedItem(), Config.DOMAIN_LOCK, null);
-                } else {
-                    jid = Jid.ofEscaped((String) spinner.getSelectedItem());
-                }
+                jid = Jid.ofEscaped(spinner.getText().toString());
             } catch (final IllegalArgumentException e) {
                 return null;
             }
@@ -792,7 +788,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                     if (requiresConsent
                             || shouldShowRequestPermissionRationale(
                                     Manifest.permission.READ_CONTACTS)) {
-                        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
                         final AtomicBoolean requestPermission = new AtomicBoolean(false);
                         if (QuickConversationsService.isQuicksy()) {
                             builder.setTitle(R.string.quicksy_wants_your_consent);
@@ -1007,7 +1003,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     }
 
     private void displayVerificationWarningDialog(final Contact contact, final Invite invite) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.verify_omemo_keys);
         View view = getLayoutInflater().inflate(R.layout.dialog_verify_fingerprints, null);
         final CheckBox isTrustedSource = view.findViewById(R.id.trusted_source);
@@ -1104,7 +1100,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     }
 
     @Override
-    public void onCreateDialogPositiveClick(Spinner spinner, String name) {
+    public void onCreateDialogPositiveClick(AutoCompleteTextView spinner, String name) {
         if (!xmppConnectionServiceBound) {
             return;
         }
@@ -1122,7 +1118,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     }
 
     @Override
-    public void onJoinDialogPositiveClick(Dialog dialog, Spinner spinner, TextInputLayout layout, AutoCompleteTextView jid, boolean isBookmarkChecked) {
+    public void onJoinDialogPositiveClick(Dialog dialog, AutoCompleteTextView spinner, TextInputLayout layout, AutoCompleteTextView jid, boolean isBookmarkChecked) {
         if (!xmppConnectionServiceBound) {
             return;
         }

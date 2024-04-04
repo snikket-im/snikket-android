@@ -11,6 +11,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
@@ -33,10 +36,7 @@ public abstract class OmemoActivity extends XmppActivity {
 		Object account = v.getTag(R.id.TAG_ACCOUNT);
 		Object fingerprint = v.getTag(R.id.TAG_FINGERPRINT);
 		Object fingerprintStatus = v.getTag(R.id.TAG_FINGERPRINT_STATUS);
-		if (account != null
-				&& fingerprint != null
-				&& account instanceof Account
-				&& fingerprintStatus != null
+		if (account instanceof Account
 				&& fingerprint instanceof String
 				&& fingerprintStatus instanceof FingerprintStatus) {
 			getMenuInflater().inflate(R.menu.omemo_key_context, menu);
@@ -130,8 +130,8 @@ public abstract class OmemoActivity extends XmppActivity {
 		binding.tglTrust.setChecked(status.isTrusted());
 
 		if (status.isActive()) {
-			binding.key.setTextAppearance(this,R.style.TextAppearance_Conversations_Fingerprint);
-			binding.keyType.setTextAppearance(this,R.style.TextAppearance_Conversations_Caption);
+			binding.key.setTextColor(MaterialColors.getColor(binding.key, com.google.android.material.R.attr.colorOnSurface));
+			binding.keyType.setTextColor(MaterialColors.getColor(binding.keyType, com.google.android.material.R.attr.colorOnSurface));
 			if (status.isVerified()) {
 				binding.verifiedFingerprint.setVisibility(View.VISIBLE);
 				binding.verifiedFingerprint.setAlpha(1.0f);
@@ -157,8 +157,8 @@ public abstract class OmemoActivity extends XmppActivity {
 				toast = v -> hideToast();
 			}
 		} else {
-			binding.key.setTextAppearance(this,R.style.TextAppearance_Conversations_Fingerprint_Disabled);
-			binding.keyType.setTextAppearance(this,R.style.TextAppearance_Conversations_Caption_Disabled);
+			binding.key.setTextColor(MaterialColors.getColor(binding.key, com.google.android.material.R.attr.colorOnSurfaceVariant));
+			binding.keyType.setTextColor(MaterialColors.getColor(binding.keyType, com.google.android.material.R.attr.colorOnSurfaceVariant));
 			toast = v -> replaceToast(getString(R.string.this_device_is_no_longer_in_use), false);
 			if (status.isVerified()) {
 				binding.tglTrust.setVisibility(View.GONE);
@@ -181,7 +181,7 @@ public abstract class OmemoActivity extends XmppActivity {
 			binding.keyType.setVisibility(View.GONE);
 		}
 		if (highlight) {
-			binding.keyType.setTextAppearance(this,R.style.TextAppearance_Conversations_Caption_Highlight);
+			binding.keyType.setTextColor(MaterialColors.getColor(binding.keyType, com.google.android.material.R.attr.colorPrimaryVariant));
 			binding.keyType.setText(getString(x509 ? R.string.omemo_fingerprint_x509_selected_message : R.string.omemo_fingerprint_selected_message));
 		} else {
 			binding.keyType.setText(getString(x509 ? R.string.omemo_fingerprint_x509 : R.string.omemo_fingerprint));
@@ -191,7 +191,7 @@ public abstract class OmemoActivity extends XmppActivity {
 	}
 
 	public void showPurgeKeyDialog(final Account account, final String fingerprint) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
 		builder.setTitle(R.string.distrust_omemo_key);
 		builder.setMessage(R.string.distrust_omemo_key_text);
 		builder.setNegativeButton(getString(R.string.cancel), null);

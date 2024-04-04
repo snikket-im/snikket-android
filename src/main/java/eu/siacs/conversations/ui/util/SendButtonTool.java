@@ -31,8 +31,15 @@ package eu.siacs.conversations.ui.util;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
+import android.content.res.Configuration;
 import android.preference.PreferenceManager;
+import android.view.View;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.core.content.ContextCompat;
+
+import com.google.android.material.color.MaterialColors;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
@@ -42,149 +49,90 @@ import eu.siacs.conversations.utils.UIHelper;
 
 public class SendButtonTool {
 
-	public static SendButtonAction getAction(final Activity activity, final Conversation c, final String text) {
-		if (activity == null) {
-			return SendButtonAction.TEXT;
-		}
-		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-		final boolean empty = text.length() == 0;
-		final boolean conference = c.getMode() == Conversation.MODE_MULTI;
-		if (c.getCorrectingMessage() != null && (empty || text.equals(c.getCorrectingMessage().getBody()))) {
-			return SendButtonAction.CANCEL;
-		} else if (conference && !c.getAccount().httpUploadAvailable()) {
-			if (empty && c.getNextCounterpart() != null) {
-				return SendButtonAction.CANCEL;
-			} else {
-				return SendButtonAction.TEXT;
-			}
-		} else {
-			if (empty) {
-				if (conference && c.getNextCounterpart() != null) {
-					return SendButtonAction.CANCEL;
-				} else {
-					String setting = preferences.getString("quick_action", activity.getResources().getString(R.string.quick_action));
-					if (!"none".equals(setting) && UIHelper.receivedLocationQuestion(c.getLatestMessage())) {
-						return SendButtonAction.SEND_LOCATION;
-					} else {
-						if ("recent".equals(setting)) {
-							setting = preferences.getString(ConversationFragment.RECENTLY_USED_QUICK_ACTION, SendButtonAction.TEXT.toString());
-							return SendButtonAction.valueOfOrDefault(setting);
-						} else {
-							return SendButtonAction.valueOfOrDefault(setting);
-						}
-					}
-				}
-			} else {
-				return SendButtonAction.TEXT;
-			}
-		}
-	}
+    public static SendButtonAction getAction(
+            final Activity activity, final Conversation c, final String text) {
+        if (activity == null) {
+            return SendButtonAction.TEXT;
+        }
+        final SharedPreferences preferences =
+                PreferenceManager.getDefaultSharedPreferences(activity);
+        final boolean empty = text.isEmpty();
+        final boolean conference = c.getMode() == Conversation.MODE_MULTI;
+        if (c.getCorrectingMessage() != null
+                && (empty || text.equals(c.getCorrectingMessage().getBody()))) {
+            return SendButtonAction.CANCEL;
+        } else if (conference && !c.getAccount().httpUploadAvailable()) {
+            if (empty && c.getNextCounterpart() != null) {
+                return SendButtonAction.CANCEL;
+            } else {
+                return SendButtonAction.TEXT;
+            }
+        } else {
+            if (empty) {
+                if (conference && c.getNextCounterpart() != null) {
+                    return SendButtonAction.CANCEL;
+                } else {
+                    String setting =
+                            preferences.getString(
+                                    "quick_action",
+                                    activity.getResources().getString(R.string.quick_action));
+                    if (!"none".equals(setting)
+                            && UIHelper.receivedLocationQuestion(c.getLatestMessage())) {
+                        return SendButtonAction.SEND_LOCATION;
+                    } else {
+                        if ("recent".equals(setting)) {
+                            setting =
+                                    preferences.getString(
+                                            ConversationFragment.RECENTLY_USED_QUICK_ACTION,
+                                            SendButtonAction.TEXT.toString());
+                            return SendButtonAction.valueOfOrDefault(setting);
+                        } else {
+                            return SendButtonAction.valueOfOrDefault(setting);
+                        }
+                    }
+                }
+            } else {
+                return SendButtonAction.TEXT;
+            }
+        }
+    }
 
-	public static int getSendButtonImageResource(Activity activity, SendButtonAction action, Presence.Status status) {
-		switch (action) {
-			case TEXT:
-				switch (status) {
-					case CHAT:
-					case ONLINE:
-						return R.drawable.ic_send_text_online;
-					case AWAY:
-						return R.drawable.ic_send_text_away;
-					case XA:
-					case DND:
-						return R.drawable.ic_send_text_dnd;
-					default:
-						return getThemeResource(activity, R.attr.ic_send_text_offline, R.drawable.ic_send_text_offline);
-				}
-			case RECORD_VIDEO:
-				switch (status) {
-					case CHAT:
-					case ONLINE:
-						return R.drawable.ic_send_videocam_online;
-					case AWAY:
-						return R.drawable.ic_send_videocam_away;
-					case XA:
-					case DND:
-						return R.drawable.ic_send_videocam_dnd;
-					default:
-						return getThemeResource(activity, R.attr.ic_send_videocam_offline, R.drawable.ic_send_videocam_offline);
-				}
-			case TAKE_PHOTO:
-				switch (status) {
-					case CHAT:
-					case ONLINE:
-						return R.drawable.ic_send_photo_online;
-					case AWAY:
-						return R.drawable.ic_send_photo_away;
-					case XA:
-					case DND:
-						return R.drawable.ic_send_photo_dnd;
-					default:
-						return getThemeResource(activity, R.attr.ic_send_photo_offline, R.drawable.ic_send_photo_offline);
-				}
-			case RECORD_VOICE:
-				switch (status) {
-					case CHAT:
-					case ONLINE:
-						return R.drawable.ic_send_voice_online;
-					case AWAY:
-						return R.drawable.ic_send_voice_away;
-					case XA:
-					case DND:
-						return R.drawable.ic_send_voice_dnd;
-					default:
-						return getThemeResource(activity, R.attr.ic_send_voice_offline, R.drawable.ic_send_voice_offline);
-				}
-			case SEND_LOCATION:
-				switch (status) {
-					case CHAT:
-					case ONLINE:
-						return R.drawable.ic_send_location_online;
-					case AWAY:
-						return R.drawable.ic_send_location_away;
-					case XA:
-					case DND:
-						return R.drawable.ic_send_location_dnd;
-					default:
-						return getThemeResource(activity, R.attr.ic_send_location_offline, R.drawable.ic_send_location_offline);
-				}
-			case CANCEL:
-				switch (status) {
-					case CHAT:
-					case ONLINE:
-						return R.drawable.ic_send_cancel_online;
-					case AWAY:
-						return R.drawable.ic_send_cancel_away;
-					case XA:
-					case DND:
-						return R.drawable.ic_send_cancel_dnd;
-					default:
-						return getThemeResource(activity, R.attr.ic_send_cancel_offline, R.drawable.ic_send_cancel_offline);
-				}
-			case CHOOSE_PICTURE:
-				switch (status) {
-					case CHAT:
-					case ONLINE:
-						return R.drawable.ic_send_picture_online;
-					case AWAY:
-						return R.drawable.ic_send_picture_away;
-					case XA:
-					case DND:
-						return R.drawable.ic_send_picture_dnd;
-					default:
-						return getThemeResource(activity, R.attr.ic_send_picture_offline, R.drawable.ic_send_picture_offline);
-				}
-		}
-		return getThemeResource(activity, R.attr.ic_send_text_offline, R.drawable.ic_send_text_offline);
-	}
+    public @DrawableRes static int getSendButtonImageResource(final SendButtonAction action) {
+        return switch (action) {
+            case TEXT -> R.drawable.ic_send_24dp;
+            case TAKE_PHOTO -> R.drawable.ic_camera_alt_24dp;
+            case SEND_LOCATION -> R.drawable.ic_location_pin_24dp;
+            case CHOOSE_PICTURE -> R.drawable.ic_image_24dp;
+            case RECORD_VIDEO -> R.drawable.ic_videocam_24dp;
+            case RECORD_VOICE -> R.drawable.ic_mic_24dp;
+            case CANCEL -> R.drawable.ic_cancel_24dp;
+        };
+    }
 
-	private static int getThemeResource(Activity activity, int r_attr_name, int r_drawable_def) {
-		int[] attrs = {r_attr_name};
-		TypedArray ta = activity.getTheme().obtainStyledAttributes(attrs);
-
-		int res = ta.getResourceId(0, r_drawable_def);
-		ta.recycle();
-
-		return res;
-	}
-
+    public @ColorInt static int getSendButtonColor(final View view, final Presence.Status status) {
+        final boolean nightMode =
+                (view.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                        == Configuration.UI_MODE_NIGHT_YES;
+        return switch (status) {
+            case OFFLINE -> MaterialColors.getColor(
+                    view, com.google.android.material.R.attr.colorOnSurface);
+            case ONLINE, CHAT -> MaterialColors.harmonizeWithPrimary(
+                    view.getContext(),
+                    ContextCompat.getColor(
+                            view.getContext(), nightMode ? R.color.green_200 : R.color.green_800));
+            case AWAY -> MaterialColors.harmonizeWithPrimary(
+                    view.getContext(),
+                    ContextCompat.getColor(
+                            view.getContext(), nightMode ? R.color.amber_200 : R.color.amber_800));
+            case XA -> MaterialColors.harmonizeWithPrimary(
+                    view.getContext(),
+                    ContextCompat.getColor(
+                            view.getContext(),
+                            nightMode ? R.color.orange_200 : R.color.orange_800));
+            case DND -> MaterialColors.harmonizeWithPrimary(
+                    view.getContext(),
+                    ContextCompat.getColor(
+                            view.getContext(), nightMode ? R.color.red_200 : R.color.red_800));
+        };
+    }
 }

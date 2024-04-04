@@ -15,7 +15,6 @@
     <string name="action_unblock_domain">Avblokker domene</string>
     <string name="title_activity_manage_accounts">Kontobehandling</string>
     <string name="title_activity_settings">Innstillinger</string>
-    <string name="title_activity_sharewith">Del med Conversation</string>
     <string name="title_activity_start_conversation">Start samtale</string>
     <string name="title_activity_choose_contact">Velg kontakt</string>
     <string name="title_activity_share_via_account">Del via konto</string>
@@ -394,8 +393,6 @@
     <string name="pref_privacy">Personvern</string>
     <string name="pref_theme_options">Drakt</string>
     <string name="pref_theme_options_summary">Velg fargepalett </string>
-    <string name="pref_use_green_background">Grønn bakgrunn</string>
-    <string name="pref_use_green_background_summary">Bruk grønn bakgrunn for mottatte meldinger</string>
     <string name="this_device_is_no_longer_in_use">Denne enheten er ikke lenger i bruk</string>
     <string name="type_pc">Datamaskin</string>
     <string name="type_phone">Mobiltelefon</string>
@@ -462,7 +459,6 @@
     <string name="private_messages_are_disabled">Private meldinger er skrudd av</string>
     <string name="huawei_protected_apps">Beskyttede programmer</string>
     <string name="huawei_protected_apps_summary">For å motta merknader, selv når skjermen er skrudd av, må du legge til Conversations i listen over beskyttede programmer.</string>
-    <string name="medium">Middels</string>
     <string name="title_activity_show_location">Vis plasseringsdata</string>
     <string name="create_dialog_group_chat_name">Gruppesludringsnavn</string>
     <string name="create_group_chat">Opprett gruppesludring</string>

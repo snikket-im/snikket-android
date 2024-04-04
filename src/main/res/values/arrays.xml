@@ -94,17 +94,6 @@
 		<item>@string/default_on</item>
 		<item>@string/default_off</item>
 	</string-array>
-	<string-array name="font_size_entry_values">
-		<item>small</item>
-		<item>medium</item>
-		<item>large</item>
-	</string-array>
-	<string-array name="font_size_entries">
-		<item>@string/small</item>
-		<item>@string/medium</item>
-		<item>@string/large</item>
-	</string-array>
-
 	<string-array name="video_compression_values">
 		<item>360</item>
 		<item>720</item>

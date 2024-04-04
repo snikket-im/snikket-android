@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">ব্যক্তিটিকে ব্লক্ করার আর দরকার নেই</string>
     <string name="title_activity_manage_accounts">অ্যকাউন্টগুলো নিয়ন্ত্রণ করা যাক</string>
     <string name="title_activity_settings">সেটিংস</string>
-    <string name="title_activity_sharewith">Conversations-এর মাধ্যমে share করা হোক</string>
     <string name="title_activity_start_conversation">কথোপকথন শুরু করা যাক</string>
     <string name="title_activity_choose_contact">Contact নির্বাচন করুন</string>
     <string name="title_activity_choose_contacts">Contact সমূহ নির্বাচন করুন</string>

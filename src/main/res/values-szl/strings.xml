@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Ôdblokuj kōntakt</string>
     <string name="title_activity_manage_accounts">Sztelōnki kōnt</string>
     <string name="title_activity_settings">Sztelōnki</string>
-    <string name="title_activity_sharewith">Udostympnij we godce</string>
     <string name="title_activity_start_conversation">Zacznij godka</string>
     <string name="title_activity_choose_contact">Ôbier kōntakt</string>
     <string name="title_activity_choose_contacts">Ôbier kōntakty</string>
@@ -593,8 +592,6 @@
     <string name="pref_theme_automatic">Autōmatycznie</string>
     <string name="pref_theme_light">Jasny</string>
     <string name="pref_theme_dark">Ciymny</string>
-    <string name="pref_use_green_background">Zielōny zadek</string>
-    <string name="pref_use_green_background_summary">Używej zielōnego zadku dlo dostanych wiadōmości</string>
     <string name="unable_to_connect_to_keychain">Niy idzie sie połōnczyć z OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Ta maszina juz niy je używano</string>
     <string name="type_pc">Kōmputer</string>
@@ -742,13 +739,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO bydzie używane wychodnie przi nowych godkach.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO bydzie musiało być włōnczōne ryncznie przi nowych godkach.</string>
     <string name="create_shortcut">Stwōrz Skrōt</string>
-    <string name="pref_font_size">Srogość czciōnki</string>
-    <string name="pref_font_size_summary">Relatywno srogość czciōnki używanyj we aplikacyji.</string>
     <string name="default_on">Włōnczōne wychodnie</string>
     <string name="default_off">Zastawiōne wychodnie</string>
-    <string name="small">Mało</string>
-    <string name="medium">Strzednio</string>
-    <string name="large">Srogo</string>
     <string name="not_encrypted_for_this_device">Wiadōmość niy była zaszyfrowano dlo tyj masziny.</string>
     <string name="omemo_decryption_failed">Niy szło ôdszyfrować wiadōmości OMEMO.</string>
     <string name="undo">cofnij</string>

@@ -17,13 +17,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
-import java.security.SecureRandom;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.databinding.CreatePublicChannelDialogBinding;
+import eu.siacs.conversations.databinding.DialogCreatePublicChannelBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
@@ -44,7 +45,7 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
     private boolean nameEntered = false;
     private boolean skipTetxWatcher = false;
 
-    public static CreatePublicChannelDialog newInstance(List<String> accounts) {
+    public static CreatePublicChannelDialog newInstance(final List<String> accounts) {
         CreatePublicChannelDialog dialog = new CreatePublicChannelDialog();
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(ACCOUNTS_LIST_KEY, (ArrayList<String>) accounts);
@@ -63,9 +64,9 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         jidWasModified = savedInstanceState != null && savedInstanceState.getBoolean("jid_was_modified_false", false);
         nameEntered = savedInstanceState != null && savedInstanceState.getBoolean("name_entered", false);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
         builder.setTitle(R.string.create_public_channel);
-        final CreatePublicChannelDialogBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.create_public_channel_dialog, null, false);
+        final DialogCreatePublicChannelBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.dialog_create_public_channel, null, false);
         binding.account.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -107,7 +108,7 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
         builder.setPositiveButton(nameEntered ? R.string.create : R.string.next, null);
         builder.setNegativeButton(nameEntered ? R.string.back : R.string.cancel, null);
         DelayedHintHelper.setHint(R.string.channel_bare_jid_example, binding.jid);
-        this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.simple_list_item);
+        this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.item_autocomplete);
         binding.jid.setAdapter(knownHostsAdapter);
         final AlertDialog dialog = builder.create();
         binding.groupChatName.setOnEditorActionListener((v, actionId, event) -> {
@@ -121,7 +122,7 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
         return dialog;
     }
 
-    private void updateJidSuggestion(CreatePublicChannelDialogBinding binding) {
+    private void updateJidSuggestion(final DialogCreatePublicChannelBinding binding) {
         if (jidWasModified) {
             return;
         }
@@ -138,7 +139,7 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
         super.onSaveInstanceState(outState);
     }
 
-    private static String getJidSuggestion(CreatePublicChannelDialogBinding binding) {
+    private static String getJidSuggestion(final DialogCreatePublicChannelBinding binding) {
         final Account account = StartConversationActivity.getSelectedAccount(binding.getRoot().getContext(), binding.account);
         final XmppConnection connection = account == null ? null : account.getXmppConnection();
         if (connection == null) {
@@ -169,7 +170,7 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
         return name.replaceAll("\\s+","-");
     }
 
-    private void goBack(AlertDialog dialog, CreatePublicChannelDialogBinding binding) {
+    private void goBack(AlertDialog dialog, DialogCreatePublicChannelBinding binding) {
         if (nameEntered) {
             nameEntered = false;
             updateInputs(binding, true);
@@ -179,7 +180,7 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
         }
     }
 
-    private void submit(AlertDialog dialog, CreatePublicChannelDialogBinding binding) {
+    private void submit(AlertDialog dialog, DialogCreatePublicChannelBinding binding) {
         final Context context = binding.getRoot().getContext();
         final Editable nameText = binding.groupChatName.getText();
         final String name = nameText == null ? "" : nameText.toString().trim();
@@ -227,7 +228,7 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
     }
 
 
-    private void updateInputs(CreatePublicChannelDialogBinding binding, boolean requestFocus) {
+    private void updateInputs(final DialogCreatePublicChannelBinding binding, final boolean requestFocus) {
         binding.xmppAddressLayout.setVisibility(nameEntered ? View.VISIBLE : View.GONE);
         binding.nameLayout.setVisibility(nameEntered ? View.GONE : View.VISIBLE);
         if (!requestFocus) {
@@ -265,7 +266,7 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
             mListener = (CreatePublicChannelDialogListener) context;

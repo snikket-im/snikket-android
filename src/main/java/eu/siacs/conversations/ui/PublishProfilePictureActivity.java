@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.databinding.DataBindingUtil;
 
 import com.canhub.cropper.CropImage;
 
@@ -25,6 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ActivityPublishProfilePictureBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
@@ -77,7 +79,6 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     public void onAvatarPublicationFailed(int res) {
         runOnUiThread(() -> {
             hintOrWarning.setText(res);
-            hintOrWarning.setTextAppearance(this,R.style.TextAppearance_Conversations_Body1_Warning);
             hintOrWarning.setVisibility(View.VISIBLE);
             publishing = false;
             togglePublishButton(true, R.string.publish);
@@ -87,8 +88,12 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_publish_profile_picture);
-        setSupportActionBar(findViewById(R.id.toolbar));
+
+        ActivityPublishProfilePictureBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_publish_profile_picture);
+
+        setSupportActionBar(binding.toolbar);
+
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
 
         this.avatar = findViewById(R.id.account_image);
         this.cancelButton = findViewById(R.id.cancel_button);
@@ -220,7 +225,7 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         final Intent intent = getIntent();
         this.mInitialAccountSetup = intent != null && intent.getBooleanExtra("setup", false);
@@ -261,7 +266,6 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
         if (bm == null) {
             togglePublishButton(false, R.string.publish);
             this.hintOrWarning.setVisibility(View.VISIBLE);
-            this.hintOrWarning.setTextAppearance(this,R.style.TextAppearance_Conversations_Body1_Warning);
             this.hintOrWarning.setText(R.string.error_publish_avatar_converting);
             return;
         }
@@ -272,7 +276,6 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
         } else {
             togglePublishButton(false, R.string.publish);
             this.hintOrWarning.setVisibility(View.VISIBLE);
-            this.hintOrWarning.setTextAppearance(this,R.style.TextAppearance_Conversations_Body1_Warning);
             if (account.getStatus() == Account.State.ONLINE) {
                 this.hintOrWarning.setText(R.string.error_publish_avatar_no_server_support);
             } else {

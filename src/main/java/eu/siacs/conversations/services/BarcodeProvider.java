@@ -48,7 +48,11 @@ public class BarcodeProvider extends ContentProvider implements ServiceConnectio
 		return Uri.parse("content://" + packageId + AUTHORITY + "/" + account.getJid().asBareJid() + ".png");
 	}
 
-	public static Bitmap create2dBarcodeBitmap(String input, int size) {
+	public static Bitmap create2dBarcodeBitmap(final String input, final int size) {
+		return create2dBarcodeBitmap(input, size, Color.BLACK, Color.WHITE);
+	}
+
+	public static Bitmap create2dBarcodeBitmap(final String input, final int size, final int black, final int white) {
 		try {
 			final QRCodeWriter barcodeWriter = new QRCodeWriter();
 			final Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
@@ -61,14 +65,14 @@ public class BarcodeProvider extends ContentProvider implements ServiceConnectio
 			for (int y = 0; y < height; y++) {
 				final int offset = y * width;
 				for (int x = 0; x < width; x++) {
-					pixels[offset + x] = result.get(x, y) ? Color.BLACK : Color.WHITE;
+					pixels[offset + x] = result.get(x, y) ? black : white;
 				}
 			}
 			final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 			bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 			return bitmap;
 		} catch (final Exception e) {
-			e.printStackTrace();
+			Log.e(Config.LOGTAG,"could not generate QR code image",e);
 			return null;
 		}
 	}

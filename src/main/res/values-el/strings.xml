@@ -20,7 +20,6 @@
     <string name="action_unblock_participant">Άρση αποκλεισμού συμμετέχοντα</string>
     <string name="title_activity_manage_accounts">Διαχείριση Λογαριασμών</string>
     <string name="title_activity_settings">Ρυθμίσεις</string>
-    <string name="title_activity_sharewith">Διαμοιρασμός με Συζήτηση</string>
     <string name="title_activity_start_conversation">Έναρξη Συζήτησης</string>
     <string name="title_activity_choose_contact">Επιλογή επαφής</string>
     <string name="title_activity_choose_contacts">Επιλογή επαφών</string>
@@ -564,8 +563,6 @@
     <string name="pref_theme_automatic">Αυτόματο</string>
     <string name="pref_theme_light">Ανοιχτόχρωμο</string>
     <string name="pref_theme_dark">Σκουρόχρωμο</string>
-    <string name="pref_use_green_background">Πράσινο φόντο</string>
-    <string name="pref_use_green_background_summary">Χρήση πράσινου φόντου για εισερχόμενα μηνύματα</string>
     <string name="unable_to_connect_to_keychain">Αδυναμία σύνδεσης στο OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Αυτή η συσκευή δεν χρησιμοποιείται πλέον</string>
     <string name="type_pc">Υπολογιστής</string>
@@ -704,13 +701,8 @@
     <string name="pref_omemo_setting_summary_default_on">Η κρυπτογράφηση OMEMO θα προεπιλέγεται για νέες συζητήσεις.</string>
     <string name="pref_omemo_setting_summary_default_off">Η κρυπτογράφηση OMEMO θα πρέπει να επιλεγεί χειροκίνητα για νέες συζητήσεις.</string>
     <string name="create_shortcut">Δημιουργία συντόμευσης</string>
-    <string name="pref_font_size">Μέγεθος γραμματοσειράς</string>
-    <string name="pref_font_size_summary">Το σχετικό μέγεθος γραμματοσειράς που χρησιμοποιείται στην εφαρμογή.</string>
     <string name="default_on">Ενεργοποιημένο από προεπιλογή</string>
     <string name="default_off">Απενεργοποιημένο από προεπιλογή</string>
-    <string name="small">Μικρό</string>
-    <string name="medium">Μεσαίο</string>
-    <string name="large">Μεγάλο</string>
     <string name="not_encrypted_for_this_device">Το μήνυμα δεν κρυπτογραφήθηκε για αυτή τη συσκευή.</string>
     <string name="omemo_decryption_failed">Αποτυχία αποκρυπτογράφησης μηνύματος OMEMO.</string>
     <string name="undo">αναίρεση</string>
