@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.14.2
+
+* Restore access to Channel Discovery for Android 6+7
+* Improve logging for failed call integration
+
 ### Version 2.14.1
 
 * Fix A/V calls on Android 8

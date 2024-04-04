@@ -1,0 +1,2 @@
+* Restore access to Channel Discovery for Android 6+7
+* Improve logging for failed call integration
