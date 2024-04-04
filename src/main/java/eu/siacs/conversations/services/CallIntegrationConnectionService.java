@@ -357,6 +357,7 @@ public class CallIntegrationConnectionService extends ConnectionService {
             try {
                 service.getSystemService(TelecomManager.class).placeCall(address, extras);
             } catch (final SecurityException e) {
+                Log.e(Config.LOGTAG, "call integration not available", e);
                 Toast.makeText(service, R.string.call_integration_not_available, Toast.LENGTH_LONG)
                         .show();
             }
