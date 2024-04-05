@@ -28,7 +28,6 @@
     <plurals name="x_unread_conversations">
         <item quantity="one">%d nepřečtená konverzace</item>
         <item quantity="few">%d nepřečtené konverzace</item>
-        <item quantity="many">%d nepřečtených konverzací</item>
         <item quantity="other">%d nepřečtených konverzací</item>
     </plurals>
     <string name="sending">odesílám…</string>
@@ -80,7 +79,9 @@
     <string name="sharing_files_please_wait">Sdílení souborů. Chvíli strpení…</string>
     <string name="action_clear_history">Smazat historii</string>
     <string name="clear_conversation_history">Smaže historii konverzací</string>
-    <string name="clear_histor_msg">Opravdu chcete smazat všechny zprávy v této konverzace?\n\n<b>Varování</b>Toto neovlivní zprávy uložené na jiných zařízeních či serverech.</string>
+    <string name="clear_histor_msg">Opravdu chcete smazat všechny zprávy v této konverzace?
+\n
+\n<b>Varování</b>Toto neovlivní zprávy uložené na jiných zařízeních či serverech.</string>
     <string name="delete_file_dialog">Smazat soubor</string>
     <string name="delete_file_dialog_msg">Opravdu chcete smazat tento soubor\?
 \n
@@ -176,7 +177,7 @@
     <string name="unpublish_pgp_message">Skutečně chcete odstranit Váš současný veřejný OpenPGP klíč?\nVaše kontakty Vám nebudou moci nadále posílat zprávy šifrované pomocí OpenPGP. </string>
     <string name="openpgp_has_been_published">OpenPGP veřejný klíč zveřejněn.</string>
     <string name="mgmt_account_enable">Povolit účet</string>
-    <string name="mgmt_account_delete_confirm_text">Opravdu chcete svůj účet smazat\? Smazáním Vašeho účtu dojde k vymazání celé Vaší historie konverzací</string>
+    <string name="mgmt_account_delete_confirm_text">Opravdu chcete svůj účet smazat? Smazáním Vašeho účtu dojde k vymazání celé Vaší historie konverzací</string>
     <string name="attach_record_voice">Nahrát hlas</string>
     <string name="account_settings_jabber_id">Adresa XMPP</string>
     <string name="block_jabber_id">Blokovat XMPP adresu</string>
@@ -701,7 +702,8 @@
     <string name="error_trustkey_device_list">Nelze získat seznam zařízení</string>
     <string name="error_trustkey_bundle">Nelze získat šifrovací klíče</string>
     <string name="error_trustkey_hint_mutual">Tip: V některých případech může být řešení vzájemné přidání kontaktů do seznamu kontaktů.</string>
-    <string name="disable_encryption_message">Opravdu chcete vypnout OMEMO šifrování pro tuto konverzaci?\nTím umožníte správci Vašeho serveru číst Vaše zprávy. Zároveň to však může být jediný způsob, jak komunikovat s kontakty, které používají zastaralé verze klientů.</string>
+    <string name="disable_encryption_message">Opravdu chcete vypnout OMEMO šifrování pro tuto konverzaci?
+\nTím umožníte správci Vašeho serveru číst Vaše zprávy. Zároveň to však může být jediný způsob, jak komunikovat s kontakty, které používají zastaralé verze klientů.</string>
     <string name="disable_now">Vypnout hned</string>
     <string name="draft">Koncept:</string>
     <string name="pref_omemo_setting">OMEMO šifrování</string>
