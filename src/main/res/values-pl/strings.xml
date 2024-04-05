@@ -80,7 +80,9 @@
     <string name="sharing_files_please_wait">Udostępnianie plików. Proszę czekać…</string>
     <string name="action_clear_history">Wyczyść historię</string>
     <string name="clear_conversation_history">Wyczyść historię konwersacji</string>
-    <string name="clear_histor_msg">Czy chcesz usunąć wszystkie wiadomości w tej rozmowie?\n\n<b>Ostrzeżenie:</b> To nie ma wpływu na wiadomości składowane na innych urządzeniach lub serwerach.</string>
+    <string name="clear_histor_msg">Czy chcesz usunąć wszystkie wiadomości w tej rozmowie?
+\n
+\n<b>Ostrzeżenie:</b> To nie ma wpływu na wiadomości składowane na innych urządzeniach lub serwerach.</string>
     <string name="delete_file_dialog">Usuń plik</string>
     <string name="delete_file_dialog_msg">Czy na pewno usunąć ten plik\?
 \n
@@ -181,7 +183,7 @@
     <string name="unpublish_pgp_message">Czy na pewno chcesz usunąć klucz publiczny OpenPGP ze swojej propagacji obecności?\nTwoje kontakty nie będą już mogły wysyłać Ci wiadomości zaszyfrowanych OpenPGP.</string>
     <string name="openpgp_has_been_published">Klucz publiczny OpenPGP został opublikowany.</string>
     <string name="mgmt_account_enable">Włącz konto</string>
-    <string name="mgmt_account_delete_confirm_text">Czy na pewno chcesz usunąć swoje konto\? Usunięcie konta usuwa całą historię rozmów</string>
+    <string name="mgmt_account_delete_confirm_text">Czy na pewno chcesz usunąć swoje konto? Usunięcie konta usuwa całą historię rozmów</string>
     <string name="attach_record_voice">Nagraj głos</string>
     <string name="account_settings_jabber_id">Adres XMPP</string>
     <string name="block_jabber_id">Zablokuj adres XMPP</string>
@@ -717,7 +719,7 @@
     <string name="error_trustkey_device_list">Nie powiodło się pobranie listy urządzeń</string>
     <string name="error_trustkey_bundle">Nie powiodło się pobranie kluczy szyfrowania</string>
     <string name="error_trustkey_hint_mutual">Podpowiedź: W niektórych przypadkach może pomóc wzajemne dodanie się do listy kontaktów.</string>
-    <string name="disable_encryption_message">Czy na pewno chcesz wyłączyć szyfrowanie OMEMO dla tej konwersacji\?
+    <string name="disable_encryption_message">Czy na pewno chcesz wyłączyć szyfrowanie OMEMO dla tej konwersacji?
 \nAdministrator twojego serwera będzie mógł czytać twoje wiadomości, ale może to być jedyny sposób aby komunikować się z ludźmi korzystającymi z przestarzałych klientów.</string>
     <string name="disable_now">Wyłącz teraz</string>
     <string name="draft">Szkic:</string>
