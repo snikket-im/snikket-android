@@ -78,7 +78,9 @@
     <string name="sharing_files_please_wait">Fájlok megosztása. Kérem várjon…</string>
     <string name="action_clear_history">Előzmények törlése</string>
     <string name="clear_conversation_history">Beszélgetés előzményeinek törlése</string>
-    <string name="clear_histor_msg">Biztosan törölni szeretné az összes üzenetet a beszélgetésen belül?\n\n<b>Figyelmeztetés:</b> Ez nem fogja érinteni a más eszközökön vagy kiszolgálókon tárolt üzeneteket.</string>
+    <string name="clear_histor_msg">Biztosan törölni szeretné az összes üzenetet a beszélgetésen belül?
+\n
+\n<b>Figyelmeztetés:</b> Ez nem fogja érinteni a más eszközökön vagy kiszolgálókon tárolt üzeneteket.</string>
     <string name="delete_file_dialog">Fájl törlése</string>
     <string name="delete_file_dialog_msg">Biztosan törölni szeretné ezt a fájlt?\n\n<b>Figyelmeztetés:</b> Ez nem fogja törölni a fájlnak azon másolatait, amelyek más eszközökön vagy kiszolgálókon vannak tárolva.</string>
     <string name="choose_presence">Eszköz kiválasztása</string>
@@ -651,7 +653,8 @@
     <string name="error_trustkey_device_list">Nem sikerült lekérni az eszközlistát</string>
     <string name="error_trustkey_bundle">Nem sikerült lekérni a titkosítási kulcsokat</string>
     <string name="error_trustkey_hint_mutual">Tipp: bizonyos esetekben ez megoldható azzal, hogy hozzáadják egymást a partnerlistákhoz.</string>
-    <string name="disable_encryption_message">Biztosan le szeretné tiltani az OMEMO titkosítást ennél a beszélgetésnél?\nEz lehetővé fogja tenni a kiszolgáló rendszergazdájának, hogy elolvassa az üzeneteket, de ez lehet az egyetlen módja annak, hogy kommunikáljon az elavult programokat használó emberekkel.</string>
+    <string name="disable_encryption_message">Biztosan le szeretné tiltani az OMEMO titkosítást ennél a beszélgetésnél?
+\nEz lehetővé fogja tenni a kiszolgáló rendszergazdájának, hogy elolvassa az üzeneteket, de ez lehet az egyetlen módja annak, hogy kommunikáljon az elavult programokat használó emberekkel.</string>
     <string name="disable_now">Letiltás most</string>
     <string name="draft">Vázlat:</string>
     <string name="pref_omemo_setting">OMEMO titkosítás</string>
