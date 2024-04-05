@@ -837,8 +837,7 @@ public class NotificationService {
     }
 
     private void setNotificationColor(final Builder mBuilder) {
-        // TODO can we use themed colors?
-        mBuilder.setColor(ContextCompat.getColor(mXmppConnectionService, R.color.md_theme_light_primary));
+        mBuilder.setColor(ContextCompat.getColor(mXmppConnectionService, R.color.green_600));
     }
 
     public void updateNotification() {
@@ -1181,7 +1180,7 @@ public class NotificationService {
         mBuilder.setGroupSummary(true);
         mBuilder.setGroup(MESSAGES_GROUP);
         mBuilder.setDeleteIntent(createDeleteIntent(null));
-        mBuilder.setSmallIcon(R.drawable.ic_notification);
+        mBuilder.setSmallIcon(R.drawable.ic_app_icon_notification);
         return mBuilder;
     }
 
@@ -1328,7 +1327,7 @@ public class NotificationService {
                             .getShortcutInfoCompat(conversation.getMucOptions());
         }
         notificationBuilder.setWhen(conversation.getLatestMessage().getTimeSent());
-        notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+        notificationBuilder.setSmallIcon(R.drawable.ic_app_icon_notification);
         notificationBuilder.setDeleteIntent(createDeleteIntent(conversation));
         notificationBuilder.setContentIntent(createContentIntent(conversation));
         if (channel.equals(MESSAGES_NOTIFICATION_CHANNEL)) {

@@ -55,7 +55,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:cursorVisible="false"
-                            android:drawableEnd="@drawable/ic_arrow_drop_down_black_18dp"
+                            android:drawableEnd="@drawable/ic_arrow_drop_down_18dp"
                             android:focusable="false"
                             android:gravity="bottom|center_horizontal"
                             android:imeOptions="flagNoExtractUi"
