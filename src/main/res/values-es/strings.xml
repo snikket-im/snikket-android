@@ -40,7 +40,7 @@
     <string name="moderator">Moderador</string>
     <string name="participant">Participante</string>
     <string name="visitor">Visitante</string>
-    <string name="remove_contact_text">¿Quieres eliminar a %s de tu lista de contactos? Las conversaciones con este contacto no se eliminarán. </string>
+    <string name="remove_contact_text">¿Quieres eliminar a %s de tu lista de contactos? Las conversaciones con este contacto no se eliminarán.</string>
     <string name="block_contact_text">¿Quieres bloquear a %s para que no pueda enviarte mensajes?</string>
     <string name="unblock_contact_text">¿Quieres desbloquear a %s y permitirle que te envíe mensajes?</string>
     <string name="block_domain_text">¿Bloquear todos los contactos de %s?</string>
@@ -79,7 +79,9 @@
     <string name="sharing_files_please_wait">Compartiendo el archivo, por favor espere…</string>
     <string name="action_clear_history">Limpiar historial</string>
     <string name="clear_conversation_history">Limpiar historial de conversación</string>
-    <string name="clear_histor_msg">¿Quieres borrar todos los mensajes de esta conversación?\n\n<b>Aviso:</b> Esto no afectará a los mensajes guardados en otros dispositivos o servidores.</string>
+    <string name="clear_histor_msg">¿Quieres borrar todos los mensajes de esta conversación?
+\n
+\n<b>Aviso:</b> Esto no afectará a los mensajes guardados en otros dispositivos o servidores.</string>
     <string name="delete_file_dialog">Eliminar fichero</string>
     <string name="delete_file_dialog_msg">¿Está seguro de que desea eliminar este archivo\?
 \n
@@ -180,7 +182,7 @@
     <string name="unpublish_pgp_message">¿Estás seguro de que quieres eliminar tu clave pública OpenPGP de tu anuncio de presencia?\nTus contactos no podrán enviarte mensajes cifrados con OpenPGP.</string>
     <string name="openpgp_has_been_published">La clave pública OpenPGP ha sido publicada.</string>
     <string name="mgmt_account_enable">Habilitar</string>
-    <string name="mgmt_account_delete_confirm_text">¿Estás seguro de que desea eliminar tu cuenta\? Eliminar tú cuenta borrando todo tu historial de conversaciones</string>
+    <string name="mgmt_account_delete_confirm_text">¿Estás seguro de que desea eliminar tu cuenta? Eliminar tú cuenta borrando todo tu historial de conversaciones</string>
     <string name="attach_record_voice">Grabar audio</string>
     <string name="account_settings_jabber_id">Dirección XMPP</string>
     <string name="block_jabber_id">Bloquear dirección XMPP</string>
@@ -704,7 +706,8 @@
     <string name="error_trustkey_device_list">No se ha podido conseguir la lista de dispositivos </string>
     <string name="error_trustkey_bundle">No se han podido conseguir las claves de cifrado</string>
     <string name="error_trustkey_hint_mutual">Consejo: En algunas ocasiones esto puede corregirse agregando a tu contacto a tu lista de contactos. Tu contacto deberá asegurarse también que estás en su lista de contactos.</string>
-    <string name="disable_encryption_message">¿Estás seguro de que quieres deshabilitar el cifrado OMEMO para esta conversación?\nEsto permitiría al administrador de tu servidor leer tus mensajes, aunque esta podría ser la única via de comunicación con personas que usen clientes desactualizados.</string>
+    <string name="disable_encryption_message">¿Estás seguro de que quieres deshabilitar el cifrado OMEMO para esta conversación?
+\nEsto permitiría al administrador de tu servidor leer tus mensajes, aunque esta podría ser la única via de comunicación con personas que usen clientes desactualizados.</string>
     <string name="disable_now">Deshabilitar ahora</string>
     <string name="draft">Borrador:</string>
     <string name="pref_omemo_setting">Cifrado OMEMO</string>
