@@ -77,7 +77,9 @@
     <string name="sharing_files_please_wait">Đang chia sẻ các tập tin. Vui lòng chờ…</string>
     <string name="action_clear_history">Xoá lịch sử</string>
     <string name="clear_conversation_history">Xoá lịch sử hội thoại</string>
-    <string name="clear_histor_msg">Bạn có muốn xoá tất cả tin nhắn trong cuộc hội thoại này không?\n\n<b>Cảnh báo:</b> Việc này sẽ không ảnh hưởng đến các tin nhắn được lưu trữ trên các thiết bị hoặc máy chủ khác.</string>
+    <string name="clear_histor_msg">Bạn có muốn xoá tất cả tin nhắn trong cuộc hội thoại này không?
+\n
+\n<b>Cảnh báo:</b> Việc này sẽ không ảnh hưởng đến các tin nhắn được lưu trữ trên các thiết bị hoặc máy chủ khác.</string>
     <string name="delete_file_dialog">Xoá tệp</string>
     <string name="delete_file_dialog_msg">Bạn có chắc bạn muốn xoá tệp này không\?
 \n
@@ -177,7 +179,7 @@
     <string name="unpublish_pgp_message">Bạn có chắc bạn muốn xoá mã khoá OpenPGP công khai của bạn khỏi sự thông báo có mặt của bạn không?\nCác liên hệ của bạn sẽ không thể gửi các tin nhắn được mã hoá bằng OpenPGP cho bạn nữa.</string>
     <string name="openpgp_has_been_published">Đã xuất bản mã khoá OpenPGP công khai.</string>
     <string name="mgmt_account_enable">Bật tài khoản</string>
-    <string name="mgmt_account_delete_confirm_text">Bạn có chắc chắn muốn xóa tài khoản chứ\? Việc xoá tài khoản sẽ xoá toàn bộ lịch sử cuộc hội thoại của bạn</string>
+    <string name="mgmt_account_delete_confirm_text">Bạn có chắc chắn muốn xóa tài khoản chứ? Việc xoá tài khoản sẽ xoá toàn bộ lịch sử cuộc hội thoại của bạn</string>
     <string name="attach_record_voice">Ghi âm</string>
     <string name="account_settings_jabber_id">Địa chỉ XMPP</string>
     <string name="block_jabber_id">Chặn địa chỉ XMPP</string>
@@ -681,7 +683,8 @@
     <string name="error_trustkey_device_list">Không thể lấy danh sách thiết bị</string>
     <string name="error_trustkey_bundle">Không thể lấy mã khoá mã hoá</string>
     <string name="error_trustkey_hint_mutual">Gợi ý: Trong một số trường hợp, điều này có thể được sửa bằng cách thêm lẫn nhau vào danh sách liên hệ của bạn.</string>
-    <string name="disable_encryption_message">Bạn có chắc bạn muốn tắt mã hoá OMEMO cho cuộc hội thoại này không?\nViệc này sẽ cho phép quản trị viên máy chủ đọc các tin nhắn của bạn, nhưng việc này có thể là cách duy nhất để giao tiếp với những người sử dụng các ứng dụng khách lỗi thời.</string>
+    <string name="disable_encryption_message">Bạn có chắc bạn muốn tắt mã hoá OMEMO cho cuộc hội thoại này không?
+\nViệc này sẽ cho phép quản trị viên máy chủ đọc các tin nhắn của bạn, nhưng việc này có thể là cách duy nhất để giao tiếp với những người sử dụng các ứng dụng khách lỗi thời.</string>
     <string name="disable_now">Tắt ngay</string>
     <string name="draft">Bản nháp:</string>
     <string name="pref_omemo_setting">Mã hoá OMEMO</string>
