@@ -910,8 +910,8 @@
     <string name="delete_avatar">刪除頭像</string>
     <string name="audio_video_disabled_tor">使用 Tor 時通話已停用</string>
     <string name="pref_broadcast_last_activity_summary">在您使用 Conversations 時讓您的聯絡人知道</string>
-    <string name="clear_histor_msg">您確定要刪除此會話中的所有訊息嗎？
-\n
+    <string name="clear_histor_msg">您確定要刪除此會話中的所有訊息嗎？ 
+\n 
 \n<b>警告：</b>這將不會影響儲存在其他裝置或伺服器上的訊息。</string>
     <string name="crash_report_message">使用您的 XMPP 帳戶傳送堆疊追蹤以協助 %1$s 的持續開發。</string>
     <string name="error_security_exception_during_image_copy">您用來選取此圖像的應用程式沒有足夠的權限以讀取此檔案。
