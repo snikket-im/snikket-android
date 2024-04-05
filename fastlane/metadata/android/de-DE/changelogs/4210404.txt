@@ -1,0 +1,3 @@
+* Behebung von A/V-Anrufen unter Android 8
+* Behebung von Problemen bei der Integration neuer Anrufe
+* Behebt das Problem mit der Videokompression
