@@ -27,16 +27,8 @@
     <string name="minutes_ago">pred %d minútami</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%dneprečítaný rozhovor</item>
-
-    
         <item quantity="few">%dneprečítaných rozhovorov</item>
-
-    
-        <item quantity="many">%dneprečítaných rozhovorov</item>
-
-    
         <item quantity="other">%dneprečítaných rozhovorov</item>
-
     </plurals>
     <string name="sending">posielam...</string>
     <string name="message_decrypting">Dešifrujem správu. Čakajte, prosím…</string>
@@ -87,7 +79,9 @@
     <string name="sharing_files_please_wait">Zdieľam súbory. Prosím čakajte...</string>
     <string name="action_clear_history">Vymazať históriu</string>
     <string name="clear_conversation_history">Vymazať históriu konverzácií</string>
-    <string name="clear_histor_msg">Chcete vymazať všetky správy v tomto rozhovore?\n\n<b>Upozornenie:</b>Nebude to mať vplyv na správy uložené na ostatných zariadeniach alebo serveroch.</string>
+    <string name="clear_histor_msg">Chcete vymazať všetky správy v tomto rozhovore?
+\n
+\n<b>Upozornenie:</b>Nebude to mať vplyv na správy uložené na ostatných zariadeniach alebo serveroch.</string>
     <string name="delete_file_dialog">Zmazať súbor</string>
     <string name="delete_file_dialog_msg">Ste si istý, že chcete tento súbor zmazať?\n\n<b>Upozornenie:</b>Nevymažú sa kópie súborov, ktoré sú uložené na ostatných zariadeniach alebo serveroch.</string>
     <string name="choose_presence">Zvoliť zariadenie</string>
@@ -510,4 +504,4 @@
     <string name="encrypted_with_omemo">Zašifrované s OMEMO</string>
     <string name="failed_deliveries">Zlyhané doručenia</string>
     <string name="more_options">Viac možnosťí</string>
-    </resources>
+</resources>
