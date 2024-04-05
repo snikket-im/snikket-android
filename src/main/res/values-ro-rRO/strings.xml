@@ -26,9 +26,9 @@
     <string name="minute_ago">acum un minut</string>
     <string name="minutes_ago">acum %d minute</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d conversație necitită</item>
-        <item quantity="few">%d conversații necitite</item>
-        <item quantity="other">%d de conversații necitite</item>
+        <item quantity="one">%d discuție necitită</item>
+        <item quantity="few">%d discuții necitite</item>
+        <item quantity="other">%d de discuții necitite</item>
     </plurals>
     <string name="sending">trimitere…</string>
     <string name="message_decrypting">Decriptare mesaj. Vă rugăm să așteptați…</string>
@@ -40,7 +40,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Participant</string>
     <string name="visitor">Vizitator</string>
-    <string name="remove_contact_text">Ați dori să ștergeți pe %s din lista de contacte? Conversațiile asociate cu acest contact nu vor fi șterse.</string>
+    <string name="remove_contact_text">Ați dori să ștergeți pe %s din lista de contacte? Discuția cu acest contact nu va fi ștersă.</string>
     <string name="block_contact_text">Ați dori să blocați pe %s ca să nu vă mai trimită mesaje?</string>
     <string name="unblock_contact_text">Ați dori să deblocați pe %s și să îi permiteți să vă trimită mesaje?</string>
     <string name="block_domain_text">Blochează toate contactele de la %s?</string>
@@ -78,8 +78,8 @@
     <string name="preparing_images">Se pregătește trimiterea imaginilor</string>
     <string name="sharing_files_please_wait">Trimitere fișiere. Vă rugăm să așteptați…</string>
     <string name="action_clear_history">Șterge istoric</string>
-    <string name="clear_conversation_history">Șterge istoricul conversației</string>
-    <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această conversație?
+    <string name="clear_conversation_history">Șterge istoricul discuției</string>
+    <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această discuție?
 \n
 \n<b>Atenție:</b> Această acțiune nu va afecta mesajele aflate pe alte dispozitive sau servere.</string>
     <string name="delete_file_dialog">Șterge fișierul</string>
@@ -182,7 +182,7 @@
     <string name="unpublish_pgp_message">Sigur doriți să vă ștergeți cheia publică OpenPGP din mesajele de prezență?\nContactele dumneavoastră nu vor mai putea să vă trimită mesaje criptate cu OpenPGP.</string>
     <string name="openpgp_has_been_published">Cheia publică OpenPGP a fost publicată.</string>
     <string name="mgmt_account_enable">Activează cont</string>
-    <string name="mgmt_account_delete_confirm_text">Sigur doriți să vă ștergeți contul? Dacă vă ștergeți contul, întregul istoric de conversații va fi pierdut</string>
+    <string name="mgmt_account_delete_confirm_text">Sigur doriți să vă ștergeți contul? Dacă vă ștergeți contul, întregul istoric de discuții va fi pierdut</string>
     <string name="attach_record_voice">Înregistrare voce</string>
     <string name="account_settings_jabber_id">Adresă XMPP</string>
     <string name="block_jabber_id">Blochează adresă XMPP</string>
@@ -711,7 +711,7 @@
     <string name="error_trustkey_device_list">Nu s-a putut descărca lista dispozitivelor</string>
     <string name="error_trustkey_bundle">Nu s-au putut descărca cheile de criptare</string>
     <string name="error_trustkey_hint_mutual">Sugestie: În unele cazuri se poate rezolva dacă vă adăugați reciproc în lista de contacte.</string>
-    <string name="disable_encryption_message">Sigur doriți să dezactivați criptarea OMEMO pentru această conversație?
+    <string name="disable_encryption_message">Sigur doriți să dezactivați criptarea OMEMO pentru această discuție?
 \nAstfel veți permite administratorilor serverului să vă citească mesajele, dar se poate ca ăsta să fie singurul mod în care puteți să comunicați cu persoanele care folosesc clienți învechiți.</string>
     <string name="disable_now">Dezactivează acum</string>
     <string name="draft">Ciornă:</string>
@@ -739,14 +739,14 @@
     <string name="no_microphone_permission">Permiteți %1$s acces la microfon</string>
     <string name="search_messages">Caută mesaje</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Arată conversația</string>
+    <string name="view_conversation">Arată discuția</string>
     <string name="pref_use_share_location_plugin">Extensia Share Location</string>
     <string name="pref_use_share_location_plugin_summary">Folosește extensia Share Location în loc de harta inclusă</string>
     <string name="copy_link">Copiază adresa web</string>
     <string name="copy_jabber_id">Copiază adresa XMPP</string>
     <string name="p1_s3_filetransfer">Partajare fișiere prin HTTP pentru S3</string>
     <string name="pref_start_search">Activează direct căutarea</string>
-    <string name="pref_start_search_summary">În ecranul \"Pornește o conversație\" focalizează câmpul de căutare și arată tastatura</string>
+    <string name="pref_start_search_summary">În ecranul \"Pornește discuție\" focalizează câmpul de căutare și arată tastatura</string>
     <string name="group_chat_avatar">Avatar discuție de grup</string>
     <string name="host_does_not_support_group_chat_avatars">Serverul gazdă nu suporta avatare pentru grupuri</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Doar proprietarul grupului poate schimba avatarul</string>
@@ -802,7 +802,7 @@
     <string name="resend_sms">Retrimitere SMS</string>
     <string name="resend_sms_in">Retrimite SMS (%s)</string>
     <string name="wait_x">Vă rugăm să așteptați (%s)</string>
-    <string name="back">înapoi</string>
+    <string name="back">Înapoi</string>
     <string name="possible_pin">S-a copiat automat un posibil cod din memorie.</string>
     <string name="please_enter_pin">Vă rugăm să vă introduceți codul de 6 cifre.</string>
     <string name="abort_registration_procedure">Sigur doriți să anulați procedura de înregistrare?</string>
@@ -960,8 +960,8 @@
     <string name="remove_from_favorites">Anulează fixarea</string>
     <string name="gpx_track">Traseu GPX</string>
     <string name="could_not_correct_message">Nu s-a putut corecta mesajul</string>
-    <string name="search_all_conversations">Toate conversațiile</string>
-    <string name="search_this_conversation">Această conversație</string>
+    <string name="search_all_conversations">Toate discuțiile</string>
+    <string name="search_this_conversation">Această discuție</string>
     <string name="your_avatar">Avatarul dumneavoastră</string>
     <string name="avatar_for_x">Avatar pentru %s</string>
     <string name="encrypted_with_omemo">Criptare OMEMO</string>
@@ -1034,7 +1034,23 @@
     <string name="no_permission_to_place_call">Nu este permisă efectuarea de apeluri</string>
     <string name="call_integration_not_available">Integrarea apelurilor nu este disponibilă!</string>
     <string name="rtp_state_contact_offline">Contactul nu este disponibil</string>
-    <string name="remove_bookmark_and_close">Ați dori să ștergeți semnul de carte pentru %s și să închideți conversația?</string>
+    <string name="remove_bookmark_and_close">Ați dori să ștergeți semnul de carte pentru %s și să arhivați discuția?</string>
     <string name="remove_bookmark">Ați dori să ștergeți semnul de carte pentru %s?</string>
-    <string name="delete_and_close">Șterge și închide</string>
+    <string name="delete_and_close">Șterge și închide discuția</string>
+    <string name="pref_use_colorful_bubbles_summary">Bule de chat colorate ajută la distingerea mesajelor trimise și primite</string>
+    <string name="title_activity_share_with">Partajează cu…</string>
+    <string name="pref_use_colorful_bubbles">Bule de chat colorate</string>
+    <string name="pref_dynamic_colors">Culori dinamice</string>
+    <string name="pref_dynamic_colors_summary">Culori de sistem (Material You)</string>
+    <string name="action_archive_chat">Arhivează discuția</string>
+    <string name="archive_this_chat">Arhivează această discuție</string>
+    <string name="title_undo_swipe_out_chat">Discuție arhivată!</string>
+    <string name="channel_discover_opt_in_message">Descoperirea de canale publice folosește un serviciu terț numit &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți &lt;a href=https://search.jabber.network/privacy&gt;Politica de confidențialitate&lt;/a&gt; a serviciului.</string>
+    <string name="switch_to_chat">Treci la discutie</string>
+    <string name="no_certificate_selected">Nu a fost selectat un certificat client!</string>
+    <string name="start_chat">Începe discuție</string>
+    <string name="corresponding_chats_closed">Discuțiile aferente au fost arhivate.</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">Codul de bare nu conține o amprentă pentru această discuție.</string>
+    <string name="welcome_header">Alăturați-vă conversației</string>
+    <string name="title_activity_new_chat">Discuție nouă</string>
 </resources>
