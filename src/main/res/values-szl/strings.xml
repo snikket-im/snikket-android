@@ -40,7 +40,7 @@
     <string name="moderator">Moderatōr</string>
     <string name="participant">Uczestnik</string>
     <string name="visitor">Gość</string>
-    <string name="remove_contact_text">Chcesz wymazać kōntakt %s ze listy\? Godki ze tym kōntaktym niy bydōm wymazane.</string>
+    <string name="remove_contact_text">Chcesz wymazać kōntakt %s ze listy? Godki ze tym kōntaktym niy bydōm wymazane.</string>
     <string name="block_contact_text">Na zicher chcesz zablokować wiadōmości ôd kōntaktu %s\?</string>
     <string name="unblock_contact_text">Na zicher chcesz ôdblokować wiadōmości ôd kōntaktu %s\?</string>
     <string name="block_domain_text">Zablokować wszyjske kōntakty ze %s\?</string>
@@ -79,8 +79,8 @@
     <string name="sharing_files_please_wait">Udostympnianie zbiorōw. Czekej…</string>
     <string name="action_clear_history">Wymaż historyjo</string>
     <string name="clear_conversation_history">Wymaż historyjo kōnwersacyje</string>
-    <string name="clear_histor_msg">Chcesz wymazać wszyjske wiadōmości we tyj godce\?
-\n
+    <string name="clear_histor_msg">Chcesz wymazać wszyjske wiadōmości we tyj godce? 
+\n 
 \n<b>Pozōr:</b> To niy wpływo na wiadōmości trzimane na inkszych maszinach abo serwerach.</string>
     <string name="delete_file_dialog">Wymaż zbiōr</string>
     <string name="delete_file_dialog_msg">Na zicher wymazać tyn zbiōr\?
@@ -722,7 +722,7 @@
     <string name="error_trustkey_device_list">Niy podarziło sie pobranie listy maszin</string>
     <string name="error_trustkey_bundle">Niy podarziło sie pobranie kluczy szyfrowanio</string>
     <string name="error_trustkey_hint_mutual">Podpowiydź: W niykerych przipodkach może pōmōc wzajymne przidanie sie do listy kōntaktōw.</string>
-    <string name="disable_encryption_message">Na zicher chcesz zastawić szyfrowanie OMEMO dlo tyj kōnwersacyje\?
+    <string name="disable_encryption_message">Na zicher chcesz zastawić szyfrowanie OMEMO dlo tyj kōnwersacyje?
 \nAdministratōr twojigo serwera bydzie mōg czytać twoje wiadōmości, ale może to być jedyny spōsōb, coby kōmunikować sie z ludźmi, co używajōm starych klijyntōw.</string>
     <string name="disable_now">Zastow teroz</string>
     <string name="draft">Cychōnek:</string>
