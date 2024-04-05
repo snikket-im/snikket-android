@@ -26,7 +26,8 @@
     <string name="minute_ago">fa 1 min</string>
     <string name="minutes_ago">fa %d mins</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%dconverses no llegides </item>
+        <item quantity="one">%dconverses no llegides</item>
+        <item quantity="many"></item>
         <item quantity="other">%d converses no llegides</item>
     </plurals>
     <string name="sending">enviant…</string>
@@ -76,7 +77,9 @@
     <string name="sharing_files_please_wait">S\'estan compartint els fitxers. Espereu…</string>
     <string name="action_clear_history">Neteja l\'historial</string>
     <string name="clear_conversation_history">Neteja l\'historial de la conversa</string>
-    <string name="clear_histor_msg">Vols esborrar tots els missatges d\'aquesta conversa?\n\n<b>  Advertiment: </b> Això no influirà en els missatges emmagatzemats en altres dispositius o servidors.</string>
+    <string name="clear_histor_msg">Vols esborrar tots els missatges d\'aquesta conversa?
+\n
+\n<b> Advertiment: </b> Això no influirà en els missatges emmagatzemats en altres dispositius o servidors.</string>
     <string name="delete_file_dialog">Eliminar fitxer</string>
     <string name="delete_file_dialog_msg">Estàs segur que vols esborrar aquest fitxer\?
 \n
@@ -667,8 +670,8 @@ d\'afegir Converses a la llista d\'aplicacions protegides.</string>
     <string name="error_trustkey_device_list">No s\'ha pogut obtenir la llista de dispositius</string>
     <string name="error_trustkey_bundle">No s\'han pogut obtenir les claus d\'encriptació</string>
     <string name="error_trustkey_hint_mutual">Suggeriment: en alguns casos això es pot resoldre afegint les vostres llistes de contactes.</string>
-    <string name="disable_encryption_message">Estàs segur que vols desactivar el xifratge OMEMO per a aquesta conversa?\nAixò permetrà 
-que l\'administrador del servidor llegeixi els missatges, però pot ser l\'única forma de comunicar-se amb persones que utilitzin clients obsolets.</string>
+    <string name="disable_encryption_message">Estàs segur que vols desactivar el xifratge OMEMO per a aquesta conversa?
+\nAixò permetrà que l\'administrador del servidor llegeixi els missatges, però pot ser l\'única forma de comunicar-se amb persones que utilitzin clients obsolets.</string>
     <string name="disable_now">Desactiva ara</string>
     <string name="draft">Esborrany:</string>
     <string name="pref_omemo_setting">Encriptació OMEMO</string>
