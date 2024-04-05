@@ -22,10 +22,7 @@
     <string name="minutes_ago">%d മിനിറ്റ് മുമ്പ്</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d വായിക്കാത്ത സംഭാഷണം</item>
-
-    
         <item quantity="other">%d വായിക്കാത്ത സംഭാഷണങ്ങൾ</item>
-
     </plurals>
     <string name="sending">അയയ്ക്കുന്നു...</string>
     <string name="pgp_message">OpenPGP സുരക്ഷിതമാക്കിയ സന്ദേശം</string>
@@ -325,4 +322,4 @@
     <string name="more_options">കൂടുതൽ ഓപ്ഷനുകൾ</string>
     <string name="invite_to_app">Conversations-ലേക്ക് ക്ഷണിക്കുക</string>
     <string name="backup_started_message">ബാക്കപ്പ് ആരംഭിച്ചു. അത് പൂർത്തിയായിക്കഴിഞ്ഞാൽ നിങ്ങൾക്ക് ഒരു അറിയിപ്പ് ലഭിക്കും.</string>
-    </resources>
+</resources>
