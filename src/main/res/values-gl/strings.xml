@@ -788,7 +788,7 @@
     <string name="resend_sms">Reenviar SMS</string>
     <string name="resend_sms_in">Reenviar SMS (%s)</string>
     <string name="wait_x">Agarda por favor (%s)</string>
-    <string name="back">atrás</string>
+    <string name="back">Volver</string>
     <string name="possible_pin">Copiado automático desde o portapapeis.</string>
     <string name="please_enter_pin">Por favor, escribe o pin de 6 díxitos.</string>
     <string name="abort_registration_procedure">Seguro que quere cancelar o proceso de rexistro?</string>
@@ -1018,4 +1018,9 @@
     <string name="remove_bookmark_and_close">Queres eliminar o marcador para %s e pechar a conversa?</string>
     <string name="remove_bookmark">Queres eliminar o marcador para %s?</string>
     <string name="delete_and_close">Eliminar e Pechar</string>
+    <string name="pref_use_colorful_bubbles_summary">As burburllas de cores nos chats axudan a distinguir as mensaxes enviadas e recibidas</string>
+    <string name="pref_use_colorful_bubbles">Burbullas coloridas nos chats</string>
+    <string name="pref_dynamic_colors">Cores dinámicas</string>
+    <string name="pref_dynamic_colors_summary">Cores do sistema (Material You)</string>
+    <string name="title_activity_share_with">Compartir con…</string>
 </resources>
