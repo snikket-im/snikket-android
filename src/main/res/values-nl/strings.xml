@@ -39,7 +39,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Deelnemer</string>
     <string name="visitor">Bezoeker</string>
-    <string name="remove_contact_text">Wil je %s uit je contactenlijst verwijderen? De gesprekken met deze  contactpersoon zullen niet worden verwijderd.</string>
+    <string name="remove_contact_text">Wil je %s uit je contactenlijst verwijderen? De gesprekken met deze contactpersoon zullen niet worden verwijderd.</string>
     <string name="block_contact_text">Wil je alle berichten van %s blokkeren?</string>
     <string name="unblock_contact_text">Wil je %s deblokkeren en er weer berichten van kunnen ontvangen?</string>
     <string name="block_domain_text">Alle contacten van %s blokkeren?</string>
@@ -598,7 +598,8 @@
     <string name="edit_status_message">Statusbericht bewerken</string>
     <string name="disable_encryption">Versleuteling uitschakelen</string>
     <string name="error_trustkey_hint_mutual">Tip: in sommige gevallen kan dit opgelost worden door elkaar toe te voegen aan je contacten.</string>
-    <string name="disable_encryption_message">Weet je zeker dat je OMEMO-versleuteling voor dit gesprek wil uitschakelen?\nDit zal je serverbeheerder de mogelijkheid geven je berichten in te kijken, maar is mogelijk de enige manier om te communiceren met anderen die gebruik maken van verouderde cliënten.</string>
+    <string name="disable_encryption_message">Weet je zeker dat je OMEMO-versleuteling voor dit gesprek wil uitschakelen?
+\nDit zal je serverbeheerder de mogelijkheid geven je berichten in te kijken, maar is mogelijk de enige manier om te communiceren met anderen die gebruik maken van verouderde cliënten.</string>
     <string name="disable_now">Nu uitschakelen</string>
     <string name="draft">Ontwerp:</string>
     <string name="pref_omemo_setting">OMEMO-versleuteling</string>
