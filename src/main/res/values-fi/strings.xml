@@ -77,7 +77,9 @@
     <string name="sharing_files_please_wait">Jaetaan tiedostoja. Odota hetki…</string>
     <string name="action_clear_history">Pyyhi historia</string>
     <string name="clear_conversation_history">Pyyhi keskusteluhistoria</string>
-    <string name="clear_histor_msg">Poistetaanko kaikki keskustelun viestit?\n\n<b>Varoitus:</b> Muilla laitteilla tai palvelimilla säilytettyjä kopioita ei poisteta.</string>
+    <string name="clear_histor_msg">Poistetaanko kaikki keskustelun viestit?
+\n
+\n<b>Varoitus:</b> Muilla laitteilla tai palvelimilla säilytettyjä kopioita ei poisteta.</string>
     <string name="delete_file_dialog">Poista tiedosto</string>
     <string name="delete_file_dialog_msg">Haluatko varmasti poistaa tämän tiedoston\?
 \n
@@ -172,7 +174,7 @@
     <string name="unpublish_pgp_message">Haluatko varmasti poistaa OpenPGP-avaimesi tilamainostuksistasi?\nYhteystietosi eivät voi enää lähettää sinulle OpenPGP-salattuja viestejä.</string>
     <string name="openpgp_has_been_published">OpenPGP julkinen avain julkaistu.</string>
     <string name="mgmt_account_enable">Ota tunnus käyttöön</string>
-    <string name="mgmt_account_delete_confirm_text">Haluatko varmasti poistaa tilisi\? Tilin poistaminen pyyhkii koko keskusteluhistoriasi</string>
+    <string name="mgmt_account_delete_confirm_text">Haluatko varmasti poistaa tilisi? Tilin poistaminen pyyhkii koko keskusteluhistoriasi</string>
     <string name="attach_record_voice">Nauhoita ääntä</string>
     <string name="account_settings_jabber_id">XMPP-osoite</string>
     <string name="block_jabber_id">Estä XMPP-osoite</string>
@@ -659,7 +661,8 @@
     <string name="error_trustkey_device_list">Laiteluettelon lataus epäonnistui</string>
     <string name="error_trustkey_bundle">Salausavainten lataus epäonnistui</string>
     <string name="error_trustkey_hint_mutual">Vinkki: Jossain tapauksissa tämä ratkeaa kun molemmat osapuolet lisäävät toisena yhteystietoihinsa.</string>
-    <string name="disable_encryption_message">Haluatko varmasti poistaa OMEMO-salauksen käytöstä tässä keskustelussa?\nPalvelimen ylläpitäjä voi tällöin lukea viestinne, mutta se voi olla ainoa mahdollinen tapa keskustella vanhentunutta sovellusta käyttävän henkilön kanssa.</string>
+    <string name="disable_encryption_message">Haluatko varmasti poistaa OMEMO-salauksen käytöstä tässä keskustelussa?
+\nPalvelimen ylläpitäjä voi tällöin lukea viestinne, mutta se voi olla ainoa mahdollinen tapa keskustella vanhentunutta sovellusta käyttävän henkilön kanssa.</string>
     <string name="disable_now">Poista käytöstä nyt</string>
     <string name="draft">Luonnos:</string>
     <string name="pref_omemo_setting">OMEMO-salaus</string>
