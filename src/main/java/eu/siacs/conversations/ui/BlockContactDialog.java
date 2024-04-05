@@ -72,7 +72,7 @@ public final class BlockContactDialog {
 			} else {
 				boolean toastShown = false;
 				if (xmppActivity.xmppConnectionService.sendBlockRequest(blockable, binding.reportSpam.isChecked(), serverMsgId)) {
-					Toast.makeText(xmppActivity, R.string.corresponding_conversations_closed, Toast.LENGTH_SHORT).show();
+					Toast.makeText(xmppActivity, R.string.corresponding_chats_closed, Toast.LENGTH_SHORT).show();
 					toastShown = true;
 				}
 				if (xmppActivity instanceof ContactDetailsActivity) {

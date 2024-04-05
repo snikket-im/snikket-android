@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Definições</string>
-    <string name="action_add">Nova conversa</string>
     <string name="action_accounts">Gerir contas</string>
     <string name="action_contact_details">Detalhes do contacto</string>
     <string name="action_add_account">Adicionar conta</string>
@@ -14,7 +13,6 @@
     <string name="action_unblock_domain">Desbloquear domínio</string>
     <string name="title_activity_manage_accounts">Gerir contas</string>
     <string name="title_activity_settings">Definições</string>
-    <string name="title_activity_start_conversation">Iniciar conversa</string>
     <string name="title_activity_choose_contact">Escolher contacto</string>
     <string name="title_activity_choose_contacts">Escolher contactos</string>
     <string name="title_activity_block_list">Bloquear lista</string>
@@ -40,7 +38,6 @@
     <string name="register_account">Registe uma nova conta no servidor</string>
     <string name="change_password_on_server">Altere a senha no servidor</string>
     <string name="share_with">Compartilhar com...</string>
-    <string name="start_conversation">Iniciar conversa</string>
     <string name="invite_contact">Convidar contacto</string>
     <string name="contacts">Contactos</string>
     <string name="contact">Contacto</string>
@@ -295,7 +292,6 @@
     <string name="send_location">Enviar localização</string>
     <string name="show_location">Exibir localização</string>
     <string name="location">Localização</string>
-    <string name="title_undo_swipe_out_conversation">Conversa fechada</string>
     <string name="pref_dont_trust_system_cas_title">Não confiar nas CAs do sistema</string>
     <string name="pref_dont_trust_system_cas_summary">Todos os certificados têm que ser aprovados manualmente</string>
     <string name="pref_remove_trusted_certificates_title">Remover certificados</string>

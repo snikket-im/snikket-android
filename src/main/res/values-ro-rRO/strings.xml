@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Setări</string>
-    <string name="action_add">Conversație nouă</string>
     <string name="action_accounts">Configurează conturile</string>
     <string name="action_account">Configurează contul</string>
-    <string name="action_end_conversation">Închide conversația</string>
     <string name="action_contact_details">Detalii contact</string>
     <string name="action_muc_details">Detalii discuție de grup</string>
     <string name="channel_details">Detalii canal</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Deblochează participant</string>
     <string name="title_activity_manage_accounts">Configurează conturile</string>
     <string name="title_activity_settings">Setări</string>
-    <string name="title_activity_start_conversation">Pornește o conversație</string>
     <string name="title_activity_choose_contact">Alegeți contactul</string>
     <string name="title_activity_choose_contacts">Alegeți contactele</string>
     <string name="title_activity_share_via_account">Partajează cu cont</string>
@@ -53,7 +50,6 @@
     <string name="register_account">Înregistrează un cont nou pe server</string>
     <string name="change_password_on_server">Schimbă parola pe server</string>
     <string name="share_with">Partajează cu…</string>
-    <string name="start_conversation">Pornește o conversație</string>
     <string name="invite_contact">Invită contact</string>
     <string name="invite">Invită</string>
     <string name="contacts">Contacte</string>
@@ -88,7 +84,6 @@
     <string name="delete_file_dialog_msg">Sigur doriți să ștergeți acest fișier\?
 \n
 \n<b>Atenție:</b> Această acțiune nu va șterge copiile acestui fișier care sunt stocate pe alte dispozitive sau servere. </string>
-    <string name="also_end_conversation">Închide conversația după ștergere</string>
     <string name="choose_presence">Alege dispozitiv</string>
     <string name="send_unencrypted_message">Trimite mesaje necriptate</string>
     <string name="send_message">Trimite mesaj</string>
@@ -437,7 +432,6 @@
     <string name="show_location">Arată locația</string>
     <string name="no_application_found_to_display_location">Nu s-a găsit nici o aplicație care să afișeze locația</string>
     <string name="location">Locatie</string>
-    <string name="title_undo_swipe_out_conversation">Conversație închisă</string>
     <string name="title_undo_swipe_out_group_chat">A părăsit discuția de grup privată</string>
     <string name="title_undo_swipe_out_channel">A părăsit canalul public</string>
     <string name="pref_dont_trust_system_cas_title">Nu ai încredere în CA din sistem</string>
@@ -611,7 +605,6 @@
     <string name="this_device_has_been_verified">Acest dispozitiv a fost verificat</string>
     <string name="copy_fingerprint">Copiază amprenta</string>
     <string name="all_omemo_keys_have_been_verified">Ați verificat toate cheile OMEMO pe care le aveți</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Codul de bare nu conține amprente pentru această conversație.</string>
     <string name="verified_fingerprints">Amprente verificate</string>
     <string name="use_camera_icon_to_scan_barcode">Folosește camera pentru a scana codul de bare al contactului</string>
     <string name="please_wait_for_keys_to_be_fetched">Vă rugăm să așteptați până se preiau cheile</string>
@@ -671,7 +664,6 @@
     <string name="encrypting_message">Mesajul se criptează</string>
     <string name="not_fetching_history_retention_period">Politica de retenție locală împiedică descărcarea altor mesaje.</string>
     <string name="transcoding_video">Se comprimă clipul video</string>
-    <string name="corresponding_conversations_closed">Conversațiile corespunzătoare au fost închise.</string>
     <string name="contact_blocked_past_tense">Contact blocat.</string>
     <string name="pref_notifications_from_strangers">Notificări de la persoane necunoscute</string>
     <string name="pref_notifications_from_strangers_summary">Permite notificări pentru mesaje și apeluri de la persoane care nu sunt în lista de contacte.</string>
@@ -957,7 +949,6 @@
     <string name="audio_call">Apel audio</string>
     <string name="video_call">Apel video</string>
     <string name="help">Ajutor</string>
-    <string name="switch_to_conversation">Comutare la discuție</string>
     <string name="microphone_unavailable">Microfonul nu este disponibil</string>
     <string name="only_one_call_at_a_time">Puteți avea un singur apel simultan.</string>
     <string name="return_to_ongoing_call">Reveniți la apelul în curs</string>

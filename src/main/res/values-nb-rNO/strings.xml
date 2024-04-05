@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Innstillinger</string>
-    <string name="action_add">Ny samtale</string>
     <string name="action_accounts">Kontobehandling</string>
     <string name="action_contact_details">Kontaktdetaljer</string>
     <string name="action_muc_details">Gruppesludringsdetaljer</string>
@@ -15,7 +14,6 @@
     <string name="action_unblock_domain">Avblokker domene</string>
     <string name="title_activity_manage_accounts">Kontobehandling</string>
     <string name="title_activity_settings">Innstillinger</string>
-    <string name="title_activity_start_conversation">Start samtale</string>
     <string name="title_activity_choose_contact">Velg kontakt</string>
     <string name="title_activity_share_via_account">Del via konto</string>
     <string name="title_activity_block_list">Blokkeringsliste</string>
@@ -40,7 +38,6 @@
     <string name="register_account">Registrer ny konto på tjeneren</string>
     <string name="change_password_on_server">Endre passord på tjeneren</string>
     <string name="share_with">Del med...</string>
-    <string name="start_conversation">Start samtale</string>
     <string name="invite_contact">Inviter kontakt</string>
     <string name="contacts">Kontakter</string>
     <string name="contact">Kontakt</string>
@@ -302,7 +299,6 @@
     <string name="send_location">Send plasseringsdata</string>
     <string name="show_location">Vis plasseringsdata</string>
     <string name="location">Plasseringsdata</string>
-    <string name="title_undo_swipe_out_conversation">Samtale lukket</string>
     <string name="pref_dont_trust_system_cas_title">Ikke stol på systemets CA-er</string>
     <string name="pref_dont_trust_system_cas_summary">Alle sertifikat må godkjennes manuelt</string>
     <string name="pref_remove_trusted_certificates_title">Fjern sertifikater</string>
@@ -434,7 +430,6 @@
     <string name="encrypting_message">Krypterer melding</string>
     <string name="not_fetching_history_retention_period">Henter ikke inn meldinger på grunn av lokal oppbevaringsperiode.</string>
     <string name="transcoding_video">Komprimerer video</string>
-    <string name="corresponding_conversations_closed">Samsvarende samtaler lukket.</string>
     <string name="contact_blocked_past_tense">Kontakt blokkert.</string>
     <string name="pref_notifications_from_strangers">Varslinger fra fremmede</string>
     <string name="received_message_from_stranger">Mottok melding fra fremmed</string>

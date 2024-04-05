@@ -154,7 +154,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 					title = R.string.title_undo_swipe_out_channel;
 				}
 			} else {
-				title = R.string.title_undo_swipe_out_conversation;
+				title = R.string.title_undo_swipe_out_chat;
 			}
 
 			final Snackbar snackbar = Snackbar.make(binding.list, title, 5000)

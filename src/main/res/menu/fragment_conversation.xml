@@ -113,7 +113,7 @@
     <item
         android:id="@+id/action_archive"
         android:orderInCategory="60"
-        android:title="@string/action_end_conversation"
+        android:title="@string/action_archive_chat"
         app:showAsAction="never" />
     <item
         android:orderInCategory="70"

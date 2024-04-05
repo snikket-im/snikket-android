@@ -155,7 +155,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 		} else {
 			reloadFingerprints();
 			Log.d(Config.LOGTAG, "xmpp uri was: " + uri.getJid() + " has Fingerprints: " + uri.hasFingerprints());
-			Toast.makeText(this, R.string.barcode_does_not_contain_fingerprints_for_this_conversation, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.barcode_does_not_contain_fingerprints_for_this_chat, Toast.LENGTH_SHORT).show();
 		}
 		populateView();
 	}

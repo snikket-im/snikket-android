@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">设置</string>
-    <string name="action_add">新对话</string>
     <string name="action_accounts">管理账号</string>
     <string name="action_account">管理账号</string>
-    <string name="action_end_conversation">关闭对话</string>
     <string name="action_contact_details">联系人详情</string>
     <string name="action_muc_details">群聊详情</string>
     <string name="channel_details">频道详情</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">解除屏蔽参与者</string>
     <string name="title_activity_manage_accounts">管理账号</string>
     <string name="title_activity_settings">设置</string>
-    <string name="title_activity_start_conversation">开始对话</string>
     <string name="title_activity_choose_contact">选择联系人</string>
     <string name="title_activity_choose_contacts">选择联系人</string>
     <string name="title_activity_share_via_account">通过账号分享</string>
@@ -51,7 +48,6 @@
     <string name="register_account">在服务器上注册新账号</string>
     <string name="change_password_on_server">在服务器上修改密码</string>
     <string name="share_with">分享至…</string>
-    <string name="start_conversation">开始对话</string>
     <string name="invite_contact">邀请联系人</string>
     <string name="invite">邀请</string>
     <string name="contacts">联系人</string>
@@ -88,7 +84,6 @@
     <string name="delete_file_dialog_msg">是否确定要删除此文件？
 \n
 \n<b>警告：</b>存储在其他设备或服务器上此文件的副本将不会删除。 </string>
-    <string name="also_end_conversation">之后关闭此对话</string>
     <string name="choose_presence">选择设备</string>
     <string name="send_unencrypted_message">发送未加密消息</string>
     <string name="send_message">发送消息</string>
@@ -450,7 +445,6 @@
     <string name="show_location">显示位置</string>
     <string name="no_application_found_to_display_location">未找到可以显示位置的应用</string>
     <string name="location">位置</string>
-    <string name="title_undo_swipe_out_conversation">对话已关闭</string>
     <string name="title_undo_swipe_out_group_chat">离开私人群聊</string>
     <string name="title_undo_swipe_out_channel">离开公开频道</string>
     <string name="pref_dont_trust_system_cas_title">不信任系统证书颁发机构</string>
@@ -621,7 +615,6 @@
     <string name="this_device_has_been_verified">此设备已经过验证</string>
     <string name="copy_fingerprint">复制指纹</string>
     <string name="all_omemo_keys_have_been_verified">您已验证您拥有的所有 OMEMO 密钥</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">二维码中不包含此对话的指纹。</string>
     <string name="verified_fingerprints">已验证的指纹</string>
     <string name="use_camera_icon_to_scan_barcode">使用相机扫描对方二维码</string>
     <string name="please_wait_for_keys_to_be_fetched">正在获取密钥，请稍候</string>
@@ -670,7 +663,6 @@
     <string name="encrypting_message">正在加密消息</string>
     <string name="not_fetching_history_retention_period">由于本地保留期限设置，无法获取消息。</string>
     <string name="transcoding_video">正在压缩视频</string>
-    <string name="corresponding_conversations_closed">相应的对话已关闭。</string>
     <string name="contact_blocked_past_tense">联系人已屏蔽。</string>
     <string name="pref_notifications_from_strangers">陌生人的通知</string>
     <string name="pref_notifications_from_strangers_summary">收到陌生人的消息和来电时通知。</string>
@@ -951,7 +943,6 @@
     <string name="audio_call">音频通话</string>
     <string name="video_call">视频通话</string>
     <string name="help">帮助</string>
-    <string name="switch_to_conversation">切换到对话</string>
     <string name="microphone_unavailable">麦克风无法使用</string>
     <string name="only_one_call_at_a_time">一次只能打一通电话。</string>
     <string name="return_to_ongoing_call">返回到正在进行的通话</string>

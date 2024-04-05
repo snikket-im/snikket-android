@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Inställningar</string>
-    <string name="action_add">Ny konversation</string>
     <string name="action_accounts">Hantera konton</string>
     <string name="action_account">Hantera konto</string>
-    <string name="action_end_conversation">Stäng konversation</string>
     <string name="action_contact_details">Kontaktdetaljer</string>
     <string name="action_muc_details">Gruppchattdetaljer</string>
     <string name="channel_details">Gruppdetaljer</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Avblockera deltagare</string>
     <string name="title_activity_manage_accounts">Hantera konton</string>
     <string name="title_activity_settings">Inställningar</string>
-    <string name="title_activity_start_conversation">Starta konversation</string>
     <string name="title_activity_choose_contact">Välj kontakt</string>
     <string name="title_activity_choose_contacts">Välj kontakter</string>
     <string name="title_activity_share_via_account">Dela via konto</string>
@@ -52,7 +49,6 @@
     <string name="register_account">Registrera ett nytt konto på servern</string>
     <string name="change_password_on_server">Byt lösenord på servern</string>
     <string name="share_with">Dela med…</string>
-    <string name="start_conversation">Börja konversation</string>
     <string name="invite_contact">Bjud in kontakt</string>
     <string name="invite">Bjud in</string>
     <string name="contacts">Kontakter</string>
@@ -89,7 +85,6 @@
     <string name="delete_file_dialog_msg">Är du säker på att du vill ta bort den här filen\?
 \n
 \n<b>Varning:</b> Den här åtgärden kommer inte att ta bort kopior av den här filen som finns lagrad på andra enheter eller servrar. </string>
-    <string name="also_end_conversation">Stäng den här konversation efteråt</string>
     <string name="choose_presence">Välj enhet</string>
     <string name="send_unencrypted_message">Skicka okrypterat meddelande</string>
     <string name="send_message">Skicka meddelande</string>
@@ -443,7 +438,6 @@
     <string name="show_location">Visa position</string>
     <string name="no_application_found_to_display_location">Ingen app hittades för att kunna visa platsen</string>
     <string name="location">Position</string>
-    <string name="title_undo_swipe_out_conversation">Konversation stängd</string>
     <string name="title_undo_swipe_out_group_chat">Lämnade privat gruppchatt</string>
     <string name="title_undo_swipe_out_channel">Lämnade publik kanal</string>
     <string name="pref_dont_trust_system_cas_title">Lita inte på systemets certifikatutfärdare</string>
@@ -617,7 +611,6 @@
     <string name="this_device_has_been_verified">Den här enheten har verifierats</string>
     <string name="copy_fingerprint">Kopiera fingeravtryck</string>
     <string name="all_omemo_keys_have_been_verified">Du har verifierat alla OMEMO-nycklar i din ägo</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Streckkoden innehåller inga fingeravtryck för den här konversationen.</string>
     <string name="verified_fingerprints">Verifierade fingeravtryck</string>
     <string name="use_camera_icon_to_scan_barcode">Använd kameran för att skanna en kontakts streckkod</string>
     <string name="please_wait_for_keys_to_be_fetched">Var god vänta på att nycklarna ska hämtas</string>
@@ -672,7 +665,6 @@
     <string name="encrypting_message">Krypterar meddelande</string>
     <string name="not_fetching_history_retention_period">Hämtar inte meddelanden på grund av lokal lagringsperiod.</string>
     <string name="transcoding_video">Komprimerar video</string>
-    <string name="corresponding_conversations_closed">Motsvarande konversationer avslutades.</string>
     <string name="contact_blocked_past_tense">Kontakt blockerad.</string>
     <string name="pref_notifications_from_strangers">Aviseringar från främlingar</string>
     <string name="pref_notifications_from_strangers_summary">Motta aviseringar för meddelanden och samtal från främlingar.</string>
@@ -892,7 +884,6 @@
     <string name="audio_call">Röstsamtal</string>
     <string name="video_call">Videosamtal</string>
     <string name="help">Hjälp</string>
-    <string name="switch_to_conversation">Växla till konversation</string>
     <string name="microphone_unavailable">Din mikrofon är inte tillgänglig</string>
     <string name="only_one_call_at_a_time">Du kan bara ha ett samtal åt gången.</string>
     <string name="return_to_ongoing_call">Återgå till pågående samtal</string>

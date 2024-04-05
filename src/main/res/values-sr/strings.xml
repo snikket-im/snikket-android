@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Поставке</string>
-    <string name="action_add">Нова преписка</string>
     <string name="action_accounts">Управљај налозима</string>
     <string name="action_account">Управљај налогом</string>
-    <string name="action_end_conversation">Затвори преписку</string>
     <string name="action_contact_details">Детаљи контакта</string>
     <string name="action_muc_details">Детаљи групног ћаскања</string>
     <string name="channel_details">Детаљи канала</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Одблокирај учесника</string>
     <string name="title_activity_manage_accounts">Управљање налозима</string>
     <string name="title_activity_settings">Поставке</string>
-    <string name="title_activity_start_conversation">Почни преписку</string>
     <string name="title_activity_choose_contact">Изабери контакт</string>
     <string name="title_activity_choose_contacts">Изабери контакте</string>
     <string name="title_activity_share_via_account">Подели преко налога</string>
@@ -53,7 +50,6 @@
     <string name="register_account">Региструј нови налог на серверу</string>
     <string name="change_password_on_server">Промени лозинку на серверу</string>
     <string name="share_with">Подели помоћу…</string>
-    <string name="start_conversation">Почни преписку</string>
     <string name="invite_contact">Позови контакт</string>
     <string name="invite">Позови</string>
     <string name="contacts">Контакти</string>
@@ -86,7 +82,6 @@
     <string name="clear_histor_msg">Желите ли да обришете све поруке из ове преписке?\n\n<b>Упозорење:</b> Ово неће утицати на поруке складиштене на осталим уређајима или серверима.</string>
     <string name="delete_file_dialog">Обриши датотеку</string>
     <string name="delete_file_dialog_msg">Желите ли да обришете ову датотеку?\n\n<b>Упозорење:</b> Ово неће утицати на копије ове датотеке складиштене на осталим уређајима или серверима.</string>
-    <string name="also_end_conversation">Затвори ову преписку након тога</string>
     <string name="choose_presence">Изаберите уређај</string>
     <string name="send_unencrypted_message">Пошаљи нешифровану поруку</string>
     <string name="send_message">Пошаљи поруку</string>
@@ -418,7 +413,6 @@
     <string name="show_location">Прикажи локацију</string>
     <string name="no_application_found_to_display_location">Нема апликације за приказ локације</string>
     <string name="location">Локација</string>
-    <string name="title_undo_swipe_out_conversation">Преписка затворена</string>
     <string name="title_undo_swipe_out_group_chat">Напустили сте групно ћаскање</string>
     <string name="title_undo_swipe_out_channel">Напустили сте јавни канал</string>
     <string name="pref_dont_trust_system_cas_title">Не поуздај се у системска сертификациона тела</string>
@@ -624,7 +618,6 @@
     <string name="pref_automatically_delete_messages_description">Аутоматско брисање порука са овог уређаја које су старије од постављеног времена.</string>
     <string name="encrypting_message">Шифрујем поруку</string>
     <string name="transcoding_video">Компресујем видео</string>
-    <string name="corresponding_conversations_closed">Одговарајуће преписке затворене.</string>
     <string name="contact_blocked_past_tense">Контакт блокиран.</string>
     <string name="pref_notifications_from_strangers">Обавештења од непознатих</string>
     <string name="received_message_from_stranger">Примљена порука од незнанца</string>

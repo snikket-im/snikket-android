@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Настройки</string>
-    <string name="action_add">Новая беседа</string>
     <string name="action_accounts">Управление аккаунтами</string>
     <string name="action_account">Управление аккаунтом</string>
-    <string name="action_end_conversation">Закрыть беседу</string>
     <string name="action_contact_details">Сведения о контакте</string>
     <string name="action_muc_details">Подробности конференции</string>
     <string name="channel_details">Сведения о канале</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Разблокировать участника</string>
     <string name="title_activity_manage_accounts">Управление аккаунтами</string>
     <string name="title_activity_settings">Настройки</string>
-    <string name="title_activity_start_conversation">Начать беседу</string>
     <string name="title_activity_choose_contact">Выберите контакт</string>
     <string name="title_activity_choose_contacts">Выберите контакты</string>
     <string name="title_activity_share_via_account">Поделиться через аккаунт</string>
@@ -54,7 +51,6 @@
     <string name="register_account">Создать новую учётную запись на сервере</string>
     <string name="change_password_on_server">Изменить пароль на сервере</string>
     <string name="share_with">Поделиться с…</string>
-    <string name="start_conversation">Начать беседу</string>
     <string name="invite_contact">Пригласить контакт</string>
     <string name="invite">Пригласить</string>
     <string name="contacts">Контакты</string>
@@ -89,7 +85,6 @@
     <string name="delete_file_dialog_msg">Вы уверены, что хотите удалить этот файл?
 \n
 \n<b>Предупреждение:</b> Данная операция не удалит копии этого файла, хранящиеся на других устройствах или серверах. </string>
-    <string name="also_end_conversation">Закрыть эту беседу</string>
     <string name="choose_presence">Выберите устройство</string>
     <string name="send_unencrypted_message">Нешифрованное сообщение</string>
     <string name="send_message">Сообщение</string>
@@ -429,7 +424,6 @@
     <string name="show_location">Показать местоположение</string>
     <string name="no_application_found_to_display_location">Не найдено приложения для отображения местоположения</string>
     <string name="location">Местоположение</string>
-    <string name="title_undo_swipe_out_conversation">Беседа окончена</string>
     <string name="title_undo_swipe_out_group_chat">Покинул приватную конференцию</string>
     <string name="title_undo_swipe_out_channel">Покинул публичный канал</string>
     <string name="pref_dont_trust_system_cas_title">Не доверять системным УЦ</string>
@@ -603,7 +597,6 @@
     <string name="this_device_has_been_verified">Это устройство было подтверждено</string>
     <string name="copy_fingerprint">Копировать отпечаток</string>
     <string name="all_omemo_keys_have_been_verified">Все имеющиеся у вас OMEMO-ключи были подтверждены</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Штрих-код не содержит цифрового отпечатка для этой беседы.</string>
     <string name="verified_fingerprints">Подтверждённые отпечатки</string>
     <string name="use_camera_icon_to_scan_barcode">Используйте камеру для сканирования штрихкода контакта</string>
     <string name="please_wait_for_keys_to_be_fetched">Подождите получения ключей</string>
@@ -668,7 +661,6 @@
     <string name="encrypting_message">Зашифровать сообщение</string>
     <string name="not_fetching_history_retention_period">Не загружаем сообщения, в соответствии с локальным сроком хранения.</string>
     <string name="transcoding_video">Сжимание видео</string>
-    <string name="corresponding_conversations_closed">Соответствующие беседы закрыты.</string>
     <string name="contact_blocked_past_tense">Контакт заблокирован.</string>
     <string name="pref_notifications_from_strangers">Уведомления от неизвестных контактов</string>
     <string name="pref_notifications_from_strangers_summary">Уведомлять о сообщениях и звонках от незнакомых контактов.</string>
@@ -932,7 +924,6 @@
     <string name="audio_call">Аудиовызов</string>
     <string name="video_call">Видеовызов</string>
     <string name="help">Помощь</string>
-    <string name="switch_to_conversation">Переключиться на беседу</string>
     <string name="microphone_unavailable">Микрофон недоступен</string>
     <string name="only_one_call_at_a_time">Нельзя одновременно совершать больше одного вызова.</string>
     <string name="return_to_ongoing_call">Вернуться к текущему вызову</string>

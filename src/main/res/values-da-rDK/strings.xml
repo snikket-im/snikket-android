@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Indstillinger</string>
-    <string name="action_add">Ny samtale</string>
     <string name="action_accounts">Håndter konti</string>
     <string name="action_account">Håndter konto</string>
-    <string name="action_end_conversation">Afslut samtale</string>
     <string name="action_contact_details">Kontaktdeltaljer</string>
     <string name="action_muc_details">Gruppechat detaljer</string>
     <string name="channel_details">Kanaldetaljer  </string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Frigiv deltager</string>
     <string name="title_activity_manage_accounts">Håndter konti</string>
     <string name="title_activity_settings">Indstillinger</string>
-    <string name="title_activity_start_conversation">Start Conversation</string>
     <string name="title_activity_choose_contact">Vælg kontakt</string>
     <string name="title_activity_choose_contacts">Vælg kontakter</string>
     <string name="title_activity_share_via_account">Del via konto</string>
@@ -52,7 +49,6 @@
     <string name="register_account">Register ny konto på server</string>
     <string name="change_password_on_server">Ændr adgangskode på server</string>
     <string name="share_with">Del med…</string>
-    <string name="start_conversation">Start samtale</string>
     <string name="invite_contact">Inviter kontakt</string>
     <string name="invite">Inviter</string>
     <string name="contacts">Kontakter</string>
@@ -87,7 +83,6 @@
     <string name="delete_file_dialog_msg">Er du sikker på, at du vil slette denne fil\?
 \n
 \n<b>Advarsel:</b> Dette sletter ikke kopier af denne fil, der er gemt på andre enheder eller servere. </string>
-    <string name="also_end_conversation">Luk efterfølgende denne samtale</string>
     <string name="choose_presence">Vælg enhed</string>
     <string name="send_unencrypted_message">Send ukrypteret besked</string>
     <string name="send_message">Send besked</string>
@@ -432,7 +427,6 @@
     <string name="show_location">Vis placering</string>
     <string name="no_application_found_to_display_location">Ingen app fundet der kan vise placering</string>
     <string name="location">Placering</string>
-    <string name="title_undo_swipe_out_conversation">Samtale afsluttet</string>
     <string name="title_undo_swipe_out_group_chat">Forlod privat gruppechat</string>
     <string name="title_undo_swipe_out_channel">Forlod offentlig kanal</string>
     <string name="pref_dont_trust_system_cas_title">Stol ikke på system-CA\'er</string>
@@ -602,7 +596,6 @@
     <string name="this_device_has_been_verified">Den enhed er blevet bekræftet</string>
     <string name="copy_fingerprint">Kopier fingeraftryk</string>
     <string name="all_omemo_keys_have_been_verified">Du har bekræftet alle OMEMO-nøglerne i din besiddelse</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Stregkoden indeholder ingen fingeraftryk for denne samtale.</string>
     <string name="verified_fingerprints">Bekræft fingeraftryk</string>
     <string name="use_camera_icon_to_scan_barcode">Brug kameraet til at skanne en kontakt’s stregkode</string>
     <string name="please_wait_for_keys_to_be_fetched">Vent til nøglerne hentes</string>
@@ -656,7 +649,6 @@
     <string name="encrypting_message">Krypter beskeden</string>
     <string name="not_fetching_history_retention_period">Henter ikke meddelelser på grund af lokal opbevaringsperiode.</string>
     <string name="transcoding_video">Komprimerer video</string>
-    <string name="corresponding_conversations_closed">Tilsvarende samtaler lukket.</string>
     <string name="contact_blocked_past_tense">Kontakt blokeret.</string>
     <string name="pref_notifications_from_strangers">Notifikationer fra fremmede</string>
     <string name="pref_notifications_from_strangers_summary">Underret ved beskeder og opkald modtaget fra fremmede.</string>
@@ -939,7 +931,6 @@
     <string name="audio_call">Lydopkald</string>
     <string name="video_call">Videoopkald</string>
     <string name="help">Hjælp</string>
-    <string name="switch_to_conversation">Skift til samtale</string>
     <string name="microphone_unavailable">Din mikrofon er utilgængelig</string>
     <string name="only_one_call_at_a_time">Du kan kun have et opkald af gangen.</string>
     <string name="return_to_ongoing_call">Returner til igangværende opkald</string>

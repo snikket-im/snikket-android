@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Preferències</string>
-    <string name="action_add">Nova conversa</string>
     <string name="action_accounts">Gestiona els comptes</string>
     <string name="action_account">Administrar compte</string>
-    <string name="action_end_conversation">Conversa pròxima</string>
     <string name="action_contact_details">Detalls del contacte</string>
     <string name="action_muc_details">Detalls del xat de grup</string>
     <string name="channel_details">Detalls del canal</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Desbloquejar participant</string>
     <string name="title_activity_manage_accounts">Gestiona els comptes</string>
     <string name="title_activity_settings">Configuració</string>
-    <string name="title_activity_start_conversation">Comença una conversa</string>
     <string name="title_activity_choose_contact">Tria el contacte</string>
     <string name="title_activity_choose_contacts">Seleccionar contactes</string>
     <string name="title_activity_share_via_account">Comparteix mitjançant compte</string>
@@ -52,7 +49,6 @@
     <string name="register_account">Registra un compte nou al servidor</string>
     <string name="change_password_on_server">Canvia la contrasenya al servidor</string>
     <string name="share_with">Comparteix amb…</string>
-    <string name="start_conversation">Comença la conversa</string>
     <string name="invite_contact">Convida un contacte</string>
     <string name="invite">Convida</string>
     <string name="contacts">Contactes</string>
@@ -85,7 +81,6 @@
     <string name="delete_file_dialog_msg">Estàs segur que vols esborrar aquest fitxer\?
 \n
 \n<b>Advertiment:</b> Això no eliminarà les còpies d\'aquest fitxer que estiguin emmagatzemades en altres dispositius o servidors. </string>
-    <string name="also_end_conversation">Tanca aquesta conversa després</string>
     <string name="choose_presence">Tria el dispositiu</string>
     <string name="send_unencrypted_message">Envia un missatge no xifrat</string>
     <string name="send_message">Envia un missatge</string>
@@ -422,7 +417,6 @@
     <string name="show_location">Mostrar localització</string>
     <string name="no_application_found_to_display_location">No s\'ha trobat cap aplicació per a mostrar la ubicació</string>
     <string name="location">Localització</string>
-    <string name="title_undo_swipe_out_conversation">Conversa tancada</string>
     <string name="title_undo_swipe_out_group_chat">Deixar el xat de grup privat</string>
     <string name="title_undo_swipe_out_channel">Canal públic de l\'esquerra</string>
     <string name="pref_dont_trust_system_cas_title">No confiar en les CAs del sistema</string>
@@ -577,7 +571,6 @@
     <string name="error_unable_to_create_temporary_file">No s\'ha pogut crear l\'arxiu temporal</string>
     <string name="this_device_has_been_verified">S\'ha verificat aquest dispositiu</string>
     <string name="copy_fingerprint">Copieu l\'empremta digital</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">El codi de barres no conté empremtes dactilars per a aquesta conversa.</string>
     <string name="verified_fingerprints">Empremtes digitals verificades</string>
     <string name="use_camera_icon_to_scan_barcode">Utilitzeu la càmera per escanejar el codi de barres d\'un contacte</string>
     <string name="please_wait_for_keys_to_be_fetched">Espereu que es puguin obtenir les claus</string>
@@ -629,7 +622,6 @@
     <string name="encrypting_message">Xifrant el missatge</string>
     <string name="not_fetching_history_retention_period">No es recullen missatges deguts al període de retenció local.</string>
     <string name="transcoding_video">S\'està comprimint el vídeo</string>
-    <string name="corresponding_conversations_closed">S\'han tancat les converses corresponents.</string>
     <string name="contact_blocked_past_tense">Contacte bloquejat.</string>
     <string name="pref_notifications_from_strangers">Notificacions d\'estranys</string>
     <string name="pref_notifications_from_strangers_summary">Notificar per a missatges i trucades rebudes d\'estranys.</string>
@@ -891,7 +883,6 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
     <string name="audio_call">Trucada de veu</string>
     <string name="video_call">Trucada de vídeo</string>
     <string name="help">Ajuda</string>
-    <string name="switch_to_conversation">Passar a la conversa</string>
     <string name="microphone_unavailable">El seu micròfon no està disponible</string>
     <string name="only_one_call_at_a_time">Només pots tenir una trucada alhora.</string>
     <string name="return_to_ongoing_call">Tornar a la trucada en curs</string>

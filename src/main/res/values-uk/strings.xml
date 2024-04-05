@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Налаштування</string>
-    <string name="action_add">Нова розмова</string>
     <string name="action_accounts">Мої облікові записи</string>
     <string name="action_account">Мій обліковий запис</string>
     <string name="action_contact_details">Деталі контакту</string>
@@ -19,7 +18,6 @@
     <string name="action_unblock_participant">Розблокувати учасника</string>
     <string name="title_activity_manage_accounts">Мої облікові записи</string>
     <string name="title_activity_settings">Налаштування</string>
-    <string name="title_activity_start_conversation">Почати розмову</string>
     <string name="title_activity_choose_contact">Вибрати контакт</string>
     <string name="title_activity_choose_contacts">Вибрати контакти</string>
     <string name="title_activity_share_via_account">Поділитися через обліковий запис</string>
@@ -47,7 +45,6 @@
     <string name="register_account">Зареєструвати новий обліковий запис на сервері</string>
     <string name="change_password_on_server">Змінити пароль</string>
     <string name="share_with">Поділитися…</string>
-    <string name="start_conversation">Почати розмову</string>
     <string name="invite_contact">Запросити до групи</string>
     <string name="invite">Запросити</string>
     <string name="contacts">Контакти</string>
@@ -82,7 +79,6 @@
     <string name="delete_file_dialog_msg">Ви впевнені, що хочете вилучити цей файл\?
 \n
 \n<b>Увага:</b> Це не вилучить копії цього файлу, які зберігаються на інших пристроях чи серверах. </string>
-    <string name="also_end_conversation">Завершити цю розмову пізніше</string>
     <string name="choose_presence">Вибрати пристрій</string>
     <string name="send_unencrypted_message">Незашифроване повідомлення</string>
     <string name="send_message">Надіслати повідомлення</string>
@@ -430,7 +426,6 @@
     <string name="show_location">Показати місцезнаходження</string>
     <string name="no_application_found_to_display_location">Не знайдено застосунку, щоб показати місцезнаходження</string>
     <string name="location">Місцезнаходження</string>
-    <string name="title_undo_swipe_out_conversation">Розмову закрито</string>
     <string name="title_undo_swipe_out_group_chat">Залишити приватну групу</string>
     <string name="title_undo_swipe_out_channel">Залишити публічний канал</string>
     <string name="pref_dont_trust_system_cas_title">Не довіряти системним центрам сертифікації</string>
@@ -587,7 +582,6 @@
     <string name="error_unable_to_create_temporary_file">Не вдалося створити тимчасовий файл</string>
     <string name="this_device_has_been_verified">Цей пристрій перевірено</string>
     <string name="copy_fingerprint">Копіювати цифровий підпис</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">QR-код не містить цифрових підписів для цієї розмови.</string>
     <string name="verified_fingerprints">Перевірені цифрові підписи</string>
     <string name="use_camera_icon_to_scan_barcode">Використайте камеру для сканування QR-коду контакту</string>
     <string name="please_wait_for_keys_to_be_fetched">Зачекайте поки ключі отримуються</string>
@@ -652,7 +646,6 @@
     <string name="encrypting_message">Зашифровую повідомлення</string>
     <string name="not_fetching_history_retention_period">Повідомлення не завантажуються з огляду на локально встановлений строк зберігання.</string>
     <string name="transcoding_video">Стиснення відео</string>
-    <string name="corresponding_conversations_closed">Відповідні розмови завершено.</string>
     <string name="contact_blocked_past_tense">Контакт заблоковано.</string>
     <string name="pref_notifications_from_strangers">Сповіщення від незнайомців</string>
     <string name="pref_notifications_from_strangers_summary">Сповіщати про повідомлення і виклики від незнайомців.</string>
@@ -912,7 +905,6 @@
     <string name="audio_call">Голосовий виклик</string>
     <string name="video_call">Відеовиклик</string>
     <string name="help">Допомога</string>
-    <string name="switch_to_conversation">Перейти до розмови</string>
     <string name="microphone_unavailable">Недоступний мікрофон</string>
     <string name="only_one_call_at_a_time">Водночас можливо здійснювати лише один виклик.</string>
     <string name="return_to_ongoing_call">Назад до активного виклику</string>
@@ -929,7 +921,6 @@
         <item quantity="many">%1$d пропущених викликів від %2$d контактів</item>
         <item quantity="other">%1$d пропущених викликів від %2$d контактів</item>
     </plurals>
-    <string name="action_end_conversation">Закрити розмову</string>
     <string name="crash_report_title">Збій %1$s</string>
     <string name="crash_report_message">Надсилаючи зі свого облікового запису XMPP звіти про збої, Ви допомагаєте розвивати %1$s.</string>
     <string name="pref_call_ringtone_summary">Мелодія для вхідних викликів</string>

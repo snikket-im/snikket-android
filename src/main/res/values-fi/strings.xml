@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Asetukset</string>
-    <string name="action_add">Uusi keskustelu</string>
     <string name="action_accounts">Hallitse tilejä</string>
     <string name="action_account">Hallinnoi tiliä</string>
-    <string name="action_end_conversation">Päätä keskustelu</string>
     <string name="action_contact_details">Yhteystiedot</string>
     <string name="action_muc_details">Ryhmäkeskustelun tiedot</string>
     <string name="channel_details">Kanavan tiedot</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Peru osallistujan esto</string>
     <string name="title_activity_manage_accounts">Hallitse tilejä</string>
     <string name="title_activity_settings">Asetukset</string>
-    <string name="title_activity_start_conversation">Aloita keskustelu</string>
     <string name="title_activity_choose_contact">Valitse yhteystieto</string>
     <string name="title_activity_choose_contacts">Valitse yhteystiedot</string>
     <string name="title_activity_share_via_account">Jaa tilillä</string>
@@ -51,7 +48,6 @@
     <string name="blocked">Estetty</string>
     <string name="register_account">Rekisteröi uusi tili palvelimella</string>
     <string name="change_password_on_server">Vaihda salasanaa palvelimelle</string>
-    <string name="start_conversation">Aloita keskustelu</string>
     <string name="invite_contact">Kutsu yhteystieto</string>
     <string name="invite">Kutsu</string>
     <string name="contacts">Yhteystiedot</string>
@@ -86,7 +82,6 @@
     <string name="delete_file_dialog_msg">Haluatko varmasti poistaa tämän tiedoston\?
 \n
 \n<b>Varoitus:</b> Muilla laitteilla tai palvelimilla olevia kopioita ei poisteta. </string>
-    <string name="also_end_conversation">Päätä keskustelu myös</string>
     <string name="choose_presence">Valitse laite</string>
     <string name="send_unencrypted_message">Lähetä salaamaton viesti</string>
     <string name="send_message">Lähetä viesti</string>
@@ -418,7 +413,6 @@
     <string name="show_location">Näytä sijainti</string>
     <string name="no_application_found_to_display_location">Sijainnin näyttämiseen sopivaa sovellusta ei löytynyt</string>
     <string name="location">Sijainti</string>
-    <string name="title_undo_swipe_out_conversation">Keskustelu suljettu</string>
     <string name="title_undo_swipe_out_group_chat">Poistuit yksityisestä ryhmäkeskustelusta</string>
     <string name="title_undo_swipe_out_channel">Poistuit julkisesta kanavasta</string>
     <string name="pref_dont_trust_system_cas_title">Älä luota varmenteiden myöntäjiin</string>
@@ -576,7 +570,6 @@
     <string name="this_device_has_been_verified">Laite on varmennettu</string>
     <string name="copy_fingerprint">Kopioi sormenjälki</string>
     <string name="all_omemo_keys_have_been_verified">Olet varmentanut kaikki hallussasi olevat OMEMO-avaimet</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Viivakoodi ei sisällä tähän keskusteluun liittyviä sormenjälkiä.</string>
     <string name="verified_fingerprints">Varmennetut sormenjäljet</string>
     <string name="use_camera_icon_to_scan_barcode">Käytä kameraa yhteystietosi viivakoodin lukemiseen</string>
     <string name="please_wait_for_keys_to_be_fetched">Odota hetki, avaimia ladataan</string>
@@ -863,7 +856,6 @@
     <string name="audio_call">Äänipuhelu</string>
     <string name="video_call">Videopuhelu</string>
     <string name="help">Apua</string>
-    <string name="switch_to_conversation">Vaihda keskusteluun</string>
     <string name="microphone_unavailable">Mikrofoni ei käytettävissä</string>
     <string name="only_one_call_at_a_time">Voit osallistua vain yhteen puheluun kerrallaan.</string>
     <string name="return_to_ongoing_call">Takaisin keskeneräiseen puheluun</string>

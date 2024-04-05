@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">הגדרות</string>
-    <string name="action_add">שיחה חדשה</string>
     <string name="action_accounts">נהל חשבונות</string>
     <string name="action_contact_details">פרטי איש קשר</string>
     <string name="action_add_account">הוסף חשבון</string>
@@ -13,7 +12,6 @@
     <string name="action_unblock_domain">בטל חסימת דומיין</string>
     <string name="title_activity_manage_accounts">נהל חשבונות</string>
     <string name="title_activity_settings">הגדרות</string>
-    <string name="title_activity_start_conversation">התחל דיון</string>
     <string name="title_activity_block_list">רשימת חסימה</string>
     <string name="just_now">ממש עכשיו</string>
     <string name="minute_ago">לפני דקה</string>
@@ -235,7 +233,6 @@
     <string name="send_location">שלח מיקום</string>
     <string name="show_location">הראה מיקום</string>
     <string name="location">מיקום</string>
-    <string name="title_undo_swipe_out_conversation">השיחה נסגרה</string>
     <string name="pref_dont_trust_system_cas_title">אל תסמוך על ה- CAs של המערכת</string>
     <string name="pref_dont_trust_system_cas_summary">כל החתימות הדיגטליות יצטרכו לעבור אימות ידני</string>
     <string name="pref_remove_trusted_certificates_title">מחק חתימות דיגטליות</string>

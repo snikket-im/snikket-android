@@ -9,7 +9,7 @@
     <item
         android:id="@+id/action_goto_chat"
         android:icon="@drawable/ic_forum_24dp"
-        android:title="@string/switch_to_conversation"
+        android:title="@string/switch_to_chat"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_switch_to_video"

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Настройки</string>
-    <string name="action_add">Нов разговор</string>
     <string name="action_accounts">Управление на профилите</string>
     <string name="action_account">Управление на профила</string>
-    <string name="action_end_conversation">Затваряне на разговора</string>
     <string name="action_contact_details">Подробности за контакта</string>
     <string name="action_muc_details">Подробности за груповия разговор</string>
     <string name="channel_details">Подробности за канала</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Деблокиране на участника</string>
     <string name="title_activity_manage_accounts">Управление на профилите</string>
     <string name="title_activity_settings">Настройки</string>
-    <string name="title_activity_start_conversation">Започване на разговор</string>
     <string name="title_activity_choose_contact">Изберете контакт</string>
     <string name="title_activity_choose_contacts">Изберете контакти</string>
     <string name="title_activity_share_via_account">Споделяне чрез профил</string>
@@ -52,7 +49,6 @@
     <string name="register_account">Регистриране на нов профил на сървъра</string>
     <string name="change_password_on_server">Промяна на паролата в сървъра</string>
     <string name="share_with">Споделяне с…</string>
-    <string name="start_conversation">Започване на разговор</string>
     <string name="invite_contact">Поканете контакт</string>
     <string name="invite">Поканете</string>
     <string name="contacts">Контакти</string>
@@ -85,7 +81,6 @@
     <string name="clear_histor_msg">Наистина ли искате да изтриете всички съобщения в този разговор?\n\n<b>Внимание:</b> Това няма да изтрие съобщенията, които се съхраняват на други устройства или сървъри.</string>
     <string name="delete_file_dialog">Изтриване на файла</string>
     <string name="delete_file_dialog_msg">Наистина ли искате да изтриете този файл?\n\n<b>Внимание:</b> Това няма да изтрие копията на файла, които се съхраняват на други устройства или сървъри.</string>
-    <string name="also_end_conversation">Затваряне на този разговор след това</string>
     <string name="choose_presence">Изберете устройство</string>
     <string name="send_unencrypted_message">Изпр. на нешифр. съобщение</string>
     <string name="send_message">Изпращане на съобщение</string>
@@ -424,7 +419,6 @@
     <string name="show_location">Показване на местоположението</string>
     <string name="no_application_found_to_display_location">Няма намерено приложение за показване на местоположението</string>
     <string name="location">Местоположение</string>
-    <string name="title_undo_swipe_out_conversation">Conversation се затвори</string>
     <string name="title_undo_swipe_out_group_chat">Напуснахте частния групов разговор</string>
     <string name="title_undo_swipe_out_channel">Напуснахте публичния канал</string>
     <string name="pref_dont_trust_system_cas_title">Да не се вярва на системните сертификати</string>
@@ -594,7 +588,6 @@
     <string name="this_device_has_been_verified">Това устройство е потвърдено</string>
     <string name="copy_fingerprint">Копиране на отпечатъка</string>
     <string name="all_omemo_keys_have_been_verified">Потвърдили сте всички ключове OMEMO, които притежавате</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Баркодът не съдържа отпечатъци за този разговор.</string>
     <string name="verified_fingerprints">Потвърдени отпечатъци</string>
     <string name="use_camera_icon_to_scan_barcode">Използвайте камерата, за да сканирате баркода на контакт</string>
     <string name="please_wait_for_keys_to_be_fetched">Моля, изчакайте получаването на ключовете</string>
@@ -646,7 +639,6 @@
     <string name="encrypting_message">Шифроване на съобщението</string>
     <string name="not_fetching_history_retention_period">Съобщенията не се изтеглят поради местния период на задържане.</string>
     <string name="transcoding_video">Компресиране на видеото</string>
-    <string name="corresponding_conversations_closed">Съответстващите разговори са затворени.</string>
     <string name="contact_blocked_past_tense">Контактът е блокиран.</string>
     <string name="pref_notifications_from_strangers">Известия от непознати</string>
     <string name="pref_notifications_from_strangers_summary">Известяване за съобщения и обаждания от непознати.</string>
@@ -911,7 +903,6 @@
     <string name="audio_call">Гласово обаждане</string>
     <string name="video_call">Видео обаждане</string>
     <string name="help">Помо</string>
-    <string name="switch_to_conversation">Превключване към разговор</string>
     <string name="microphone_unavailable">Микрофонът не е наличен</string>
     <string name="only_one_call_at_a_time">Не може да има повече от едно обаждане едновременно.</string>
     <string name="return_to_ongoing_call">Обратно към текущия разговор</string>

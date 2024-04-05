@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Instellingen</string>
-    <string name="action_add">Nieuw gesprek</string>
     <string name="action_accounts">Accounts beheren</string>
     <string name="action_account">Account beheren</string>
-    <string name="action_end_conversation">Gesprek sluiten</string>
     <string name="action_contact_details">Contactgegevens</string>
     <string name="action_muc_details">Gespreksgegevens</string>
     <string name="channel_details">Kanaalinformatie</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Deelnemer deblokkeren</string>
     <string name="title_activity_manage_accounts">Accounts beheren</string>
     <string name="title_activity_settings">Instellingen</string>
-    <string name="title_activity_start_conversation">Gesprek starten</string>
     <string name="title_activity_choose_contact">Contact kiezen</string>
     <string name="title_activity_choose_contacts">Contacten kiezen</string>
     <string name="title_activity_share_via_account">Delen via account</string>
@@ -52,7 +49,6 @@
     <string name="register_account">Nieuwe account op server registreren</string>
     <string name="change_password_on_server">Wachtwoord op server veranderen</string>
     <string name="share_with">Delen met…</string>
-    <string name="start_conversation">Gesprek beginnen</string>
     <string name="invite_contact">Contact uitnodigen</string>
     <string name="invite">Uitnodigen</string>
     <string name="contacts">Contacten</string>
@@ -84,7 +80,6 @@
     <string name="clear_conversation_history">Gespreksgeschiedenis wissen</string>
     <string name="delete_file_dialog">Bestand verwijderen</string>
     <string name="delete_file_dialog_msg">Weet je zeker dat je dit bestand wil verwijderen?\n\n<b>Waarschuwing:</b> Dit zal kopieën van dit bericht die opgeslagen zijn op andere apparaten of servers niet verwijderen.</string>
-    <string name="also_end_conversation">Dit gesprek nadien sluiten</string>
     <string name="choose_presence">Apparaat kiezen</string>
     <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
     <string name="send_message">Verstuur bericht</string>
@@ -395,7 +390,6 @@
     <string name="show_location">Locatie weergeven</string>
     <string name="no_application_found_to_display_location">Geen app om locatie weer te geven</string>
     <string name="location">Locatie</string>
-    <string name="title_undo_swipe_out_conversation">Gesprek gesloten</string>
     <string name="title_undo_swipe_out_group_chat">Privégroep verlaten</string>
     <string name="title_undo_swipe_out_channel">Openbaar kanaal verlaten</string>
     <string name="pref_dont_trust_system_cas_title">Systeem-CA\'s niet vertrouwen</string>
@@ -565,7 +559,6 @@
     <string name="encrypting_message">Bericht wordt versleuteld</string>
     <string name="not_fetching_history_retention_period">Berichten worden niet opgehaald wegens lokale bewaarperiode.</string>
     <string name="transcoding_video">Video wordt gecomprimeerd</string>
-    <string name="corresponding_conversations_closed">Bijbehorende gesprekken gesloten.</string>
     <string name="contact_blocked_past_tense">Contact geblokkeerd.</string>
     <string name="pref_notifications_from_strangers">Meldingen van onbekenden</string>
     <string name="received_message_from_stranger">Bericht ontvangen van onbekende</string>

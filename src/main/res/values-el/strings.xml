@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Ρυθμίσεις</string>
-    <string name="action_add">Νέα συζήτηση</string>
     <string name="action_accounts">Διαχείριση λογαριασμών</string>
     <string name="action_account">Διαχείριση λογαριασμού</string>
-    <string name="action_end_conversation">Τερματισμός συζήτησης</string>
     <string name="action_contact_details">Λεπτομέρειες επαφής</string>
     <string name="action_muc_details">Λεπτομέρειες ομαδικής συζήτησης</string>
     <string name="channel_details">Λεπτομέρειες καναλιού</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Άρση αποκλεισμού συμμετέχοντα</string>
     <string name="title_activity_manage_accounts">Διαχείριση Λογαριασμών</string>
     <string name="title_activity_settings">Ρυθμίσεις</string>
-    <string name="title_activity_start_conversation">Έναρξη Συζήτησης</string>
     <string name="title_activity_choose_contact">Επιλογή επαφής</string>
     <string name="title_activity_choose_contacts">Επιλογή επαφών</string>
     <string name="title_activity_share_via_account">Διαμοιρασμός μέσω λογαριασμού</string>
@@ -52,7 +49,6 @@
     <string name="register_account">Εγγραφή νέου λογαριασμού στον διακομιστή</string>
     <string name="change_password_on_server">Αλλαγή συνθηματικού στον διακομιστή</string>
     <string name="share_with">Διαμοιρασμός με...</string>
-    <string name="start_conversation">Έναρξη συζήτησης</string>
     <string name="invite_contact">Πρόσκληση επαφής</string>
     <string name="invite">Πρόσκληση</string>
     <string name="contacts">Επαφές</string>
@@ -85,7 +81,6 @@
     <string name="clear_histor_msg">Θέλετε να διαγράψετε όλα τα μηνύματα αυτής της συζήτησης;\n\n<b>Προσοχή:</b> Αυτή η ενέργεια δεν θα επηρεάσει μηνύματα που είναι αποθηκευμένα σε άλλες συσκευές ή εξυπηρετητές.</string>
     <string name="delete_file_dialog">Διαγραφή αρχείου</string>
     <string name="delete_file_dialog_msg">Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτό το αρχείο;\n\n<b>Προσοχή:</b> Αυτή η ενέργεια δεν θα διαγράψει αντίγραφα αυτού του αρχείου που είναι αποθηκευμένα σε άλλες συσκευές ή εξυπηρετητές.</string>
-    <string name="also_end_conversation">Κλείσιμο της συζήτησης αμέσως μετά</string>
     <string name="choose_presence">Επιλογή συσκευής</string>
     <string name="send_unencrypted_message">Αποστολή μη κρυπτογραφημένου μηνύματος</string>
     <string name="send_message">Αποστολή μηνύματος</string>
@@ -425,7 +420,6 @@
     <string name="show_location">Εμφάνιση τοποθεσίας</string>
     <string name="no_application_found_to_display_location">Δεν βρέθηκε εφαρμογή για την απεικόνιση τοποθεσίας</string>
     <string name="location">Τοποθεσία</string>
-    <string name="title_undo_swipe_out_conversation">Η συζήτηση έκλεισε</string>
     <string name="title_undo_swipe_out_group_chat">Αποχώρησε από την συζήτηση ιδιωτικής ομάδας</string>
     <string name="title_undo_swipe_out_channel">Αποχώρησε από το δημόσιο κανάλι</string>
     <string name="pref_dont_trust_system_cas_title">Μη έμπιστες αρχές πιστοποίησης συστήματος</string>
@@ -593,7 +587,6 @@
     <string name="this_device_has_been_verified">Αυτή η συσκευή έχει επαληθευτεί</string>
     <string name="copy_fingerprint">Αντιγραφή αποτυπώματος</string>
     <string name="all_omemo_keys_have_been_verified">Έχετε επαληθεύσει όλα τα κλειδιά OMEMO που κατέχετε</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Ο γραμμοκώδικας δεν περιέχει αποτυπώματα για την συζήτηση αυτή.</string>
     <string name="verified_fingerprints">Επαληθευμένα αποτυπώματα</string>
     <string name="use_camera_icon_to_scan_barcode">Χρήση της φωτογραφικής μηχανής για την σάρωση του γραμμοκώδικα της επαφής</string>
     <string name="please_wait_for_keys_to_be_fetched">Παρακαλώ περιμένετε την μεταφόρτωση των κλειδιών</string>
@@ -647,7 +640,6 @@
     <string name="encrypting_message">Κρυπτογράφηση μηνύματος</string>
     <string name="not_fetching_history_retention_period">Χωρίς μεταφόρτωση μηνυμάτων λόγω τοπικού χρόνου διατήρησης.</string>
     <string name="transcoding_video">Συμπίεση βίντεο</string>
-    <string name="corresponding_conversations_closed">Οι αντίστοιχες συζητήσεις έκλεισαν.</string>
     <string name="contact_blocked_past_tense">Η επαφή αποκλείστηκε.</string>
     <string name="pref_notifications_from_strangers">Ειδοποιήσεις από άγνωστους</string>
     <string name="pref_notifications_from_strangers_summary">Ειδοποίηση για μηνύματα και κλήσεις που προέρχονται από άγνωστους.</string>
@@ -915,7 +907,6 @@
     <string name="audio_call">Κλήση ήχου</string>
     <string name="video_call">Βιντεοκλήση</string>
     <string name="help">Βοήθεια</string>
-    <string name="switch_to_conversation">Εναλλαγή στη συζήτηση</string>
     <string name="microphone_unavailable">Το μικρόφωνο δεν είναι διαθέσιμο</string>
     <string name="only_one_call_at_a_time">Μπορείτε να κάνετε μόνο μια κλήση τη φορά.</string>
     <string name="return_to_ongoing_call">Επιστροφή στην κλήση σε εξέλιξη</string>

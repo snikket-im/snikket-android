@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Ajustes</string>
-    <string name="action_add">Nueva conversación</string>
     <string name="action_accounts">Gestionar cuentas</string>
     <string name="action_account">Gestionar cuenta</string>
-    <string name="action_end_conversation">Cerrar conversación</string>
     <string name="action_contact_details">Detalles del contacto</string>
     <string name="action_muc_details">Detalles de conversación</string>
     <string name="channel_details">Detalles del canal</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Desbloquear participante</string>
     <string name="title_activity_manage_accounts">Gestionar Cuentas</string>
     <string name="title_activity_settings">Ajustes</string>
-    <string name="title_activity_start_conversation">Nueva Conversación</string>
     <string name="title_activity_choose_contact">Seleccionar Contacto</string>
     <string name="title_activity_choose_contacts">Seleccionar Contactos</string>
     <string name="title_activity_share_via_account">Compartir via cuenta</string>
@@ -53,7 +50,6 @@
     <string name="register_account">Registrar nueva cuenta en servidor</string>
     <string name="change_password_on_server">Cambiar contraseña en servidor</string>
     <string name="share_with">Compartir con…</string>
-    <string name="start_conversation">Comenzar conversación</string>
     <string name="invite_contact">Invitar a contacto</string>
     <string name="invite">Invitar</string>
     <string name="contacts">Contactos</string>
@@ -88,7 +84,6 @@
     <string name="delete_file_dialog_msg">¿Está seguro de que desea eliminar este archivo\?
 \n
 \n<b>Advertencia:</b> Esto no eliminará las copias de este archivo almacenadas en otros dispositivos o servidores. </string>
-    <string name="also_end_conversation">Cerrar esta conversación después</string>
     <string name="choose_presence">Seleccionar dispositivo</string>
     <string name="send_unencrypted_message">Enviar mensaje sin cifrar</string>
     <string name="send_message">Enviar mensaje</string>
@@ -435,7 +430,6 @@
     <string name="show_location">Mostrar ubicación</string>
     <string name="no_application_found_to_display_location">No se ha encontrado ninguna aplicación para mostrar la ubicación</string>
     <string name="location">Ubicación</string>
-    <string name="title_undo_swipe_out_conversation">Conversación cerrada</string>
     <string name="title_undo_swipe_out_group_chat">Dejar la conversación en grupo</string>
     <string name="title_undo_swipe_out_channel">Dejar el canal público</string>
     <string name="pref_dont_trust_system_cas_title">No confiar en los CAs del sistema</string>
@@ -606,7 +600,6 @@
     <string name="this_device_has_been_verified">Este dispositivo ha sido verificado</string>
     <string name="copy_fingerprint">Copiar huella digital</string>
     <string name="all_omemo_keys_have_been_verified">Has verificado todas las huellas digitales OMEMO en tu posesión</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">El código QR no contiene huellas digitales para esta conversación. </string>
     <string name="verified_fingerprints">Huellas digitales verificadas</string>
     <string name="use_camera_icon_to_scan_barcode">Usa la cámara para escanear el código QR del contacto</string>
     <string name="please_wait_for_keys_to_be_fetched">Por favor, espera a que las claves sean recuperadas</string>
@@ -666,7 +659,6 @@
     <string name="encrypting_message">Cifrando mensaje</string>
     <string name="not_fetching_history_retention_period">No buscar mensajes más antiguos que el establecido en el marco de tiempo.</string>
     <string name="transcoding_video">Comprimiendo video</string>
-    <string name="corresponding_conversations_closed">Conversación correspondiente cerrada.</string>
     <string name="contact_blocked_past_tense">Contacto bloqueado.</string>
     <string name="pref_notifications_from_strangers">Notificaciones de desconocidos</string>
     <string name="pref_notifications_from_strangers_summary">Notificar de nuevos mensajes y llamadas recibidas de contactos desconocidos.</string>
@@ -952,7 +944,6 @@
     <string name="audio_call">Audio llamada</string>
     <string name="video_call">Video llamada</string>
     <string name="help">Ayuda</string>
-    <string name="switch_to_conversation">Cambiar a conversación</string>
     <string name="microphone_unavailable">Tu micrófono no está disponible</string>
     <string name="only_one_call_at_a_time">Solo se puede hacer una llamada a la vez.</string>
     <string name="return_to_ongoing_call">Volver a la llamada en curso</string>

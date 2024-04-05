@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">الإعدادات</string>
-    <string name="action_add">محادثة جديدة</string>
     <string name="action_accounts">إدارة الحسابات</string>
     <string name="action_account">إدارة الحساب</string>
-    <string name="action_end_conversation">أغلق المحادثة</string>
     <string name="action_contact_details">بيانات جهة الإتصال</string>
     <string name="action_muc_details">تفاصيل مجموعة المحادثة</string>
     <string name="channel_details">تفاصيل القناة</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">إلغاء حجب المشارِك</string>
     <string name="title_activity_manage_accounts">إدارة الحسابات</string>
     <string name="title_activity_settings">إعدادات</string>
-    <string name="title_activity_start_conversation">ابدأ محادثة</string>
     <string name="title_activity_choose_contact">إختيار جهة إتصال</string>
     <string name="title_activity_choose_contacts">إختار جهات الإتصال</string>
     <string name="title_activity_share_via_account">شارك عبر حساب</string>
@@ -48,7 +45,6 @@
     <string name="register_account">تسجيل حساب جديد في سيرفر</string>
     <string name="change_password_on_server">تغيير كلمة المرور في سيرفر</string>
     <string name="share_with">مشاركة مع</string>
-    <string name="start_conversation">إبداء المحادثة</string>
     <string name="invite_contact">دعوة جهة إتصال</string>
     <string name="invite">دعوة</string>
     <string name="contacts">جهات الإتصال</string>
@@ -342,7 +338,6 @@
     <string name="send_location">إرسل موقعك</string>
     <string name="show_location">أظهر الموقع</string>
     <string name="location">الموقع</string>
-    <string name="title_undo_swipe_out_conversation">تم إغلاق المحادثة</string>
     <string name="pref_dont_trust_system_cas_title">لا تثق في سلطات شهادات النظام</string>
     <string name="pref_dont_trust_system_cas_summary">تقبل أية شهادة يدويا</string>
     <string name="pref_remove_trusted_certificates_title">حذف شهادات</string>
@@ -644,7 +639,6 @@
     <string name="please_enter_password">يرجى إدخال الكلمة السرية للحساب</string>
     <string name="rtp_state_declined_or_busy">مشغول</string>
     <string name="more_options">خيارات أخرى</string>
-    <string name="also_end_conversation">قم بإنهاء هذه المحادثة بعد ذلك</string>
     <string name="huawei_protected_apps_summary">للمواصلة في إستقبال التنبيهات، حتى والشاشة مغلقة، يجب عليك أن تضيف تطبيق Conversations إلى قائمة التطبيقات المحميّة.</string>
     <string name="account_status_regis_not_sup">إنشاء الحسابات غير مدعومة مِن طرف الخادم</string>
     <string name="error_publish_avatar_no_server_support">خادمك لا يدعم نشر الصور الرمزية</string>

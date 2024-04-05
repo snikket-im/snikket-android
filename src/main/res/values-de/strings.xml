@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Einstellungen</string>
-    <string name="action_add">Neue Unterhaltung</string>
     <string name="action_accounts">Konten verwalten</string>
     <string name="action_account">Konto verwalten</string>
-    <string name="action_end_conversation">Unterhaltung beenden</string>
     <string name="action_contact_details">Kontaktdetails</string>
     <string name="action_muc_details">Gruppenchatdetails</string>
     <string name="channel_details">Channeldetails</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Teilnehmer entsperren</string>
     <string name="title_activity_manage_accounts">Konten verwalten</string>
     <string name="title_activity_settings">Einstellungen</string>
-    <string name="title_activity_start_conversation">Unterhaltung beginnen</string>
     <string name="title_activity_choose_contact">Kontakt auswählen</string>
     <string name="title_activity_choose_contacts">Kontakte auswählen</string>
     <string name="title_activity_share_via_account">Teilen über Konto</string>
@@ -52,7 +49,6 @@
     <string name="register_account">Neues Konto auf Server erstellen</string>
     <string name="change_password_on_server">Passwort ändern</string>
     <string name="share_with">Teilen mit…</string>
-    <string name="start_conversation">Unterhaltung beginnen</string>
     <string name="invite_contact">Kontakt einladen</string>
     <string name="invite">Einladen</string>
     <string name="contacts">Kontakte</string>
@@ -87,7 +83,6 @@
     <string name="delete_file_dialog_msg">Bist du sicher, dass du diese Datei löschen möchtest\?
 \n
 \n<b>Achtung:</b> Dies löscht keine Kopien dieser Datei, die auf anderen Geräten oder Servern gespeichert sind. </string>
-    <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
     <string name="choose_presence">Gerät auswählen</string>
     <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>
     <string name="send_message">Nachricht senden</string>
@@ -434,7 +429,6 @@
     <string name="show_location">Standort anzeigen</string>
     <string name="no_application_found_to_display_location">Keine App für die Standortanzeige gefunden</string>
     <string name="location">Standort</string>
-    <string name="title_undo_swipe_out_conversation">Unterhaltung beendet</string>
     <string name="title_undo_swipe_out_group_chat">Privaten Gruppenchat verlassen</string>
     <string name="title_undo_swipe_out_channel">Öffentlichen Channel verlassen</string>
     <string name="pref_dont_trust_system_cas_title">Zertifizierungsstellen nicht vertrauen</string>
@@ -603,7 +597,6 @@
     <string name="this_device_has_been_verified">Dieses Gerät wurde überprüft</string>
     <string name="copy_fingerprint">Fingerabdruck kopieren</string>
     <string name="all_omemo_keys_have_been_verified">Du hast alle in deinem Besitz befindlichen OMEMO-Schlüssel überprüft</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Der Barcode enthält keine Fingerabdrücke für diese Unterhaltung.</string>
     <string name="verified_fingerprints">Überprüfte Fingerabdrücke</string>
     <string name="use_camera_icon_to_scan_barcode">Nutze die Kamera, um Barcodes deiner Kontakte zu scannen</string>
     <string name="please_wait_for_keys_to_be_fetched">Bitte warten, bis die Schlüssel abgerufen werden</string>
@@ -657,7 +650,6 @@
     <string name="encrypting_message">Nachricht wird verschlüsselt</string>
     <string name="not_fetching_history_retention_period">Nachrichten werden aufgrund der eingestellten lokalen Speicherfrist nicht abgerufen. </string>
     <string name="transcoding_video">Video wird komprimiert</string>
-    <string name="corresponding_conversations_closed">Zugehörige Unterhaltung beendet.</string>
     <string name="contact_blocked_past_tense">Kontakt gesperrt.</string>
     <string name="pref_notifications_from_strangers">Benachrichtigungen von Unbekannten</string>
     <string name="pref_notifications_from_strangers_summary">Benachrichtigen bei Erhalt von Nachrichten und Anrufen von Unbekannten.</string>
@@ -940,7 +932,6 @@
     <string name="audio_call">Audioanruf</string>
     <string name="video_call">Videoanruf</string>
     <string name="help">Hilfe</string>
-    <string name="switch_to_conversation">Zur Unterhaltung wechseln</string>
     <string name="microphone_unavailable">Dein Mikrofon ist nicht verfügbar</string>
     <string name="only_one_call_at_a_time">Du kannst immer nur einen Anruf zur gleichen Zeit machen.</string>
     <string name="return_to_ongoing_call">Zurück zum laufenden Aufruf</string>

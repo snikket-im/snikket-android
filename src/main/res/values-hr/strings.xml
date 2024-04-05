@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Postavke</string>
-    <string name="action_add">Novi razgovor</string>
     <string name="action_accounts">Upravljanje računima</string>
     <string name="action_account">Upravljaj računom</string>
-    <string name="action_end_conversation">Zatvori razgovor</string>
     <string name="action_contact_details">Kontakt podaci</string>
     <string name="action_muc_details">Pojedinosti grupnog razgovora</string>
     <string name="channel_details">Detalji kanala</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Deblokiraj sudionika</string>
     <string name="title_activity_manage_accounts">Upravljanje računima</string>
     <string name="title_activity_settings">Postavke</string>
-    <string name="title_activity_start_conversation">Započni razgovor</string>
     <string name="title_activity_choose_contact">Odaberite Kontakt</string>
     <string name="title_activity_choose_contacts">Odaberite kontakte</string>
     <string name="title_activity_share_via_account">Dijeli putem računa</string>
@@ -58,7 +55,6 @@
     <string name="register_account">Registrirajte novi račun na poslužitelju</string>
     <string name="change_password_on_server">Promjena lozinke na poslužitelju</string>
     <string name="share_with">Podijeli s…</string>
-    <string name="start_conversation">Započni razgovor</string>
     <string name="invite_contact">Pozovi kontakt</string>
     <string name="invite">Pozovi</string>
     <string name="contacts">Kontakti</string>

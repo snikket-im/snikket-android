@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">設定</string>
-    <string name="action_add">新しい会話</string>
     <string name="action_accounts">アカウントを管理</string>
     <string name="action_account">アカウントを管理</string>
-    <string name="action_end_conversation">会話を閉じる</string>
     <string name="action_contact_details">連絡先の詳細</string>
     <string name="action_muc_details">グループチャットの詳細</string>
     <string name="channel_details">談話室の詳細</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">参加者のブロックを解除</string>
     <string name="title_activity_manage_accounts">アカウントを管理</string>
     <string name="title_activity_settings">設定</string>
-    <string name="title_activity_start_conversation">会話を開始</string>
     <string name="title_activity_choose_contact">連絡先を選択</string>
     <string name="title_activity_choose_contacts">連絡先を選択</string>
     <string name="title_activity_share_via_account">アカウントで共有</string>
@@ -51,7 +48,6 @@
     <string name="register_account">サーバーに新規アカウントを登録</string>
     <string name="change_password_on_server">サーバーのパスワードを変更</string>
     <string name="share_with">…で共有</string>
-    <string name="start_conversation">会話を始める</string>
     <string name="invite_contact">連絡先を招待</string>
     <string name="invite">招待</string>
     <string name="contacts">連絡先</string>
@@ -84,7 +80,6 @@
     <string name="clear_histor_msg">この会話のすべてのメッセージを削除してもよろしいですか?\n\n<b>警告:</b> 他のデバイスやサーバーに保存されているメッセージのコピーには影響しません。</string>
     <string name="delete_file_dialog">ファイルを削除</string>
     <string name="delete_file_dialog_msg">このファイルを削除してもよろしいですか?\n\n<b>警告:</b> これは、他のデバイスやサーバーに保存されているファイルのコピーは削除しません。</string>
-    <string name="also_end_conversation">この後、この会話を閉じる</string>
     <string name="choose_presence">デバイスを選択</string>
     <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>
     <string name="send_message">メッセージを送信</string>
@@ -430,7 +425,6 @@
     <string name="show_location">位置を表示</string>
     <string name="no_application_found_to_display_location">位置を表示するアプリケーションが見つかりません</string>
     <string name="location">位置</string>
-    <string name="title_undo_swipe_out_conversation">会話が閉じられました</string>
     <string name="title_undo_swipe_out_group_chat">非公開グループチャットを退出しました</string>
     <string name="title_undo_swipe_out_channel">公開談話室を退出しました</string>
     <string name="pref_dont_trust_system_cas_title">システムの CA を信頼しない</string>
@@ -597,7 +591,6 @@
     <string name="this_device_has_been_verified">このデバイスは検証済です</string>
     <string name="copy_fingerprint">指紋をコピー</string>
     <string name="all_omemo_keys_have_been_verified">所有するすべての OMEMO 鍵を検証しました</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">バーコードに、この会話の指紋が含まれていません。</string>
     <string name="verified_fingerprints">指紋を検証しました</string>
     <string name="use_camera_icon_to_scan_barcode">カメラを使用して連絡先のバーコードをスキャンします</string>
     <string name="please_wait_for_keys_to_be_fetched">鍵が取得されるのをお待ちください</string>
@@ -646,7 +639,6 @@
     <string name="encrypting_message">メッセージの暗号化中</string>
     <string name="not_fetching_history_retention_period">ローカル保存期間のためにメッセージを取得しません。</string>
     <string name="transcoding_video">ビデオを圧縮中</string>
-    <string name="corresponding_conversations_closed">対応する会話が閉じられました。</string>
     <string name="contact_blocked_past_tense">連絡先をブロックしました</string>
     <string name="pref_notifications_from_strangers">見知らぬ人からの通知</string>
     <string name="pref_notifications_from_strangers_summary">見知らぬ人から受信したメッセージと通話を通知します。</string>
@@ -923,7 +915,6 @@
     <string name="audio_call">音声通話</string>
     <string name="video_call">映像通話</string>
     <string name="help">ヘルプ</string>
-    <string name="switch_to_conversation">会話に切り替え</string>
     <string name="microphone_unavailable">マイクが利用できません</string>
     <string name="only_one_call_at_a_time">1度に1回線の通話のみ。</string>
     <string name="return_to_ongoing_call">継続中の通話に戻る</string>

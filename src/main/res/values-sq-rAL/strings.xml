@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_add">Bisedë e re</string>
     <string name="action_accounts">Administroni llogari</string>
     <string name="action_account">Administroni llogari</string>
-    <string name="action_end_conversation">Mbylle bisedën</string>
     <string name="action_contact_details">Hollësi kontakti</string>
     <string name="action_muc_details">Hollësi fjalosjeje grupi</string>
     <string name="channel_details">Hollësi kanali</string>
@@ -18,7 +16,6 @@
     <string name="action_unblock_participant">Zhbllokoje pjesëmarrësin</string>
     <string name="title_activity_manage_accounts">Administroni Llogari</string>
     <string name="title_activity_settings">Formësime</string>
-    <string name="title_activity_start_conversation">Nisni Bisedë</string>
     <string name="title_activity_choose_contact">Zgjidhni Kontakt</string>
     <string name="title_activity_choose_contacts">Zgjidhni Kontakte</string>
     <string name="title_activity_share_via_account">Jepe përmes llogarie</string>
@@ -42,7 +39,6 @@
     <string name="register_account">Regjistroni llogari të re në shërbyes</string>
     <string name="change_password_on_server">Ndryshoni fjalëkalim te shërbyesi</string>
     <string name="share_with">Ndajeni me…</string>
-    <string name="start_conversation">Nisni bisedë</string>
     <string name="invite_contact">Ftoni kontakt</string>
     <string name="invite">Ftoni</string>
     <string name="contacts">Kontakte</string>
@@ -71,7 +67,6 @@
     <string name="action_clear_history">Spastro historikun</string>
     <string name="clear_conversation_history">Spastoni Historik Bisedash</string>
     <string name="delete_file_dialog">Fshije kartelën</string>
-    <string name="also_end_conversation">Mbylle këtë bisedë më pas</string>
     <string name="choose_presence">Zgjidhni pajisje</string>
     <string name="send_unencrypted_message">Dërgoni mesazh të pafshehtëzuar</string>
     <string name="send_message">Dërgoni mesazh</string>
@@ -351,7 +346,6 @@
     <string name="show_location">Shfaq vendndodhje</string>
     <string name="no_application_found_to_display_location">S’u gjet aplikacion për shfaqje të vendndodhjes</string>
     <string name="location">Vendndodhje</string>
-    <string name="title_undo_swipe_out_conversation">Biseda u mbyll</string>
     <string name="title_undo_swipe_out_group_chat">Braktisi fjalosje private në grup</string>
     <string name="title_undo_swipe_out_channel">Braktisi kanal majtas</string>
     <string name="pref_dont_trust_system_cas_summary">Krejt dëshmitë duhet të miratohen dorazi</string>
@@ -469,7 +463,6 @@
     <string name="pref_delete_omemo_identities">Fshini identitete OMEMO</string>
     <string name="delete_selected_keys">Fshi kyçet e përzgjedhur</string>
     <string name="copy_fingerprint">Kopjo shenja gishtash</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Kodi me vija nuk përmban shenja gishtash për këtë bisedë.</string>
     <string name="verified_fingerprints">Shenja gishtash të verifikuar</string>
     <string name="use_camera_icon_to_scan_barcode">Përdorni kamerën e telefonit tuaj që të skanoni një kod me vija</string>
     <string name="please_wait_for_keys_to_be_fetched">Ju lutemi, pritni të sillen kyçet</string>
@@ -504,7 +497,6 @@
     <string name="pref_automatically_delete_messages">Fshirje e automatizuar mesazhesh</string>
     <string name="encrypting_message">Po fshehtëzohet meszhi</string>
     <string name="transcoding_video">Po ngjishet video</string>
-    <string name="corresponding_conversations_closed">Biseda përkatëse u mbyll.</string>
     <string name="contact_blocked_past_tense">Kontakti u bllokua.</string>
     <string name="pref_notifications_from_strangers">Njoftime prej të panjohurish</string>
     <string name="received_message_from_stranger">U mor mesazh prej të panjohuri</string>
@@ -802,7 +794,6 @@
     <string name="audio_call">Thirrje audio</string>
     <string name="video_call">Thirrje video</string>
     <string name="help">Ndihmë</string>
-    <string name="switch_to_conversation">Kalo te bisedë</string>
     <string name="return_to_ongoing_call">Rikthehu te thirrja që po bëhej</string>
     <plurals name="x_messages">
         <item quantity="one">%d mesazh</item>

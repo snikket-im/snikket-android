@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">সেটিংস</string>
-    <string name="action_add">নতুন কথোপকথন</string>
     <string name="action_accounts">অ্যকাউন্টগুলো নিয়ন্ত্রণ করা যাক</string>
     <string name="action_account">অ্যকাউন্টটি নিয়ন্ত্রণ করা যাক</string>
-    <string name="action_end_conversation">কথা বন্ধ করা যাক</string>
     <string name="action_contact_details">বিশদ বিবরণ</string>
     <string name="action_muc_details">গ্রুপ চ্যাটের বিশদ বিবরণ</string>
     <string name="channel_details">চ্যনেলের বিশদ বিবরণ</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">ব্যক্তিটিকে ব্লক্ করার আর দরকার নেই</string>
     <string name="title_activity_manage_accounts">অ্যকাউন্টগুলো নিয়ন্ত্রণ করা যাক</string>
     <string name="title_activity_settings">সেটিংস</string>
-    <string name="title_activity_start_conversation">কথোপকথন শুরু করা যাক</string>
     <string name="title_activity_choose_contact">Contact নির্বাচন করুন</string>
     <string name="title_activity_choose_contacts">Contact সমূহ নির্বাচন করুন</string>
     <string name="title_activity_share_via_account">অ্যকাউন্টের মাধ্যমে share করা যাক</string>
@@ -53,7 +50,6 @@
     <string name="register_account">সার্ভারে একটি নতুন অ্যকাউন্ট খোলা যাক</string>
     <string name="change_password_on_server">সার্ভারে পাসওয়ার্ড বদলে ফেলা যাক</string>
     <string name="share_with">শেয়ার করা হোক...</string>
-    <string name="start_conversation">কথোপকথন শুরু করা যাক</string>
     <string name="invite_contact">ব্যক্তিকে আমন্ত্রণ জানানো হোক</string>
     <string name="invite">আমন্ত্রণ</string>
     <string name="contacts">পরিচিত মানুষজন</string>
@@ -84,7 +80,6 @@
     <string name="clear_conversation_history">Conversation-এর সব প্রতিলিপি মুছে ফেলা যাক</string>
     <string name="clear_histor_msg">এই কথোপকথনের সবকটি বার্তাই কি মুছে ফেলতে চান?\n‌\n<b>সতর্ক থাকবেন:</b> সার্ভার বা অন্য যন্ত্রে থাকা বার্তা কিন্তু অপরিআর্তিতই থাকবে।</string>
     <string name="delete_file_dialog">ফাইলটি মুছে ফেলা হোক</string>
-    <string name="also_end_conversation">এই কথোপকথনটি পরে সমাপ্ত করা হোক</string>
     <string name="choose_presence">যন্ত্র নির্বাচন করা যাক</string>
     <string name="send_unencrypted_message">অসাঙ্কেতিক বার্তাই পাঠানো হোক</string>
     <string name="send_message">বার্তা পাঠানো হোক</string>

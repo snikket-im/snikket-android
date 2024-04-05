@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">設定</string>
-    <string name="action_add">新會話</string>
     <string name="action_accounts">管理帳戶</string>
     <string name="action_account">管理帳戶</string>
-    <string name="action_end_conversation">關閉會話</string>
     <string name="action_contact_details">聯絡人詳細資料</string>
     <string name="action_muc_details">群組聊天詳細資料</string>
     <string name="channel_details">頻道詳細資料</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">解除封鎖參與者</string>
     <string name="title_activity_manage_accounts">管理帳戶</string>
     <string name="title_activity_settings">設定</string>
-    <string name="title_activity_start_conversation">開始會話</string>
     <string name="title_activity_choose_contact">選擇聯絡人</string>
     <string name="title_activity_choose_contacts">選擇聯絡人</string>
     <string name="title_activity_share_via_account">透過帳戶分享</string>
@@ -51,7 +48,6 @@
     <string name="register_account">在伺服器上註冊新帳戶</string>
     <string name="change_password_on_server">在伺服器上變更密碼</string>
     <string name="share_with">分享至…</string>
-    <string name="start_conversation">開始會話</string>
     <string name="invite_contact">邀請聯絡人</string>
     <string name="invite">邀請</string>
     <string name="contacts">聯絡人</string>
@@ -81,7 +77,6 @@
     <string name="action_clear_history">清除歷史記錄</string>
     <string name="clear_conversation_history">清除會話記錄</string>
     <string name="delete_file_dialog">刪除檔案</string>
-    <string name="also_end_conversation">之後關閉此會話</string>
     <string name="choose_presence">選擇裝置</string>
     <string name="send_unencrypted_message">傳送未加密的訊息</string>
     <string name="send_message">傳送訊息</string>
@@ -410,7 +405,6 @@
     <string name="show_location">顯示位置</string>
     <string name="no_application_found_to_display_location">找不到可以顯示位置的應用程式</string>
     <string name="location">位置</string>
-    <string name="title_undo_swipe_out_conversation">會話已關閉</string>
     <string name="title_undo_swipe_out_group_chat">離開私人群組聊天</string>
     <string name="title_undo_swipe_out_channel">離開了公用頻道</string>
     <string name="pref_dont_trust_system_cas_title">不要信任系統 CA</string>
@@ -566,7 +560,6 @@
     <string name="this_device_has_been_verified">此裝置已驗證</string>
     <string name="copy_fingerprint">複製指紋</string>
     <string name="all_omemo_keys_have_been_verified">您已驗證您持有的所有 OMEMO 金鑰</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">條碼中沒有此會話的指紋。</string>
     <string name="verified_fingerprints">已驗證的指紋</string>
     <string name="use_camera_icon_to_scan_barcode">使用相機掃描聯絡人的條碼</string>
     <string name="please_wait_for_keys_to_be_fetched">請等候金鑰擷取</string>
@@ -607,7 +600,6 @@
     <string name="encrypting_message">正在加密訊息</string>
     <string name="not_fetching_history_retention_period">因本機保留期間設定，未擷取訊息。</string>
     <string name="transcoding_video">正在壓縮影片</string>
-    <string name="corresponding_conversations_closed">對應會話已關閉。</string>
     <string name="contact_blocked_past_tense">聯絡人已封鎖。</string>
     <string name="pref_notifications_from_strangers">陌生人訊息通知</string>
     <string name="received_message_from_stranger">已接收來自陌生人的訊息</string>
@@ -876,7 +868,6 @@
     <string name="audio_call">語音通話</string>
     <string name="video_call">視訊通話</string>
     <string name="help">說明</string>
-    <string name="switch_to_conversation">切換至會話</string>
     <string name="microphone_unavailable">您的麥克風無法使用</string>
     <string name="only_one_call_at_a_time">同時間只能進行一通電話。</string>
     <string name="return_to_ongoing_call">返回正在進行的通話</string>

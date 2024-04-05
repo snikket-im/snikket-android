@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Axustes</string>
-    <string name="action_add">Nova conversa</string>
     <string name="action_accounts">Xestionar contas</string>
     <string name="action_account">Xestionar conta</string>
-    <string name="action_end_conversation">Pechar conversa</string>
     <string name="action_contact_details">Detalles do contacto</string>
     <string name="action_muc_details">Detalles da conversa de grupo</string>
     <string name="channel_details">Detalles da canle</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Desbloquear persoa</string>
     <string name="title_activity_manage_accounts">Xestionar Contas</string>
     <string name="title_activity_settings">Axustes</string>
-    <string name="title_activity_start_conversation">Iniciar conversa</string>
     <string name="title_activity_choose_contact">Escoller Contacto</string>
     <string name="title_activity_choose_contacts">Seleccionar contactos</string>
     <string name="title_activity_share_via_account">Compartir coa conta</string>
@@ -52,7 +49,6 @@
     <string name="register_account">Rexistrar nova conta no servidor</string>
     <string name="change_password_on_server">Cambiar o contrasinal no servidor</string>
     <string name="share_with">Compartir con…</string>
-    <string name="start_conversation">Comezar conversa</string>
     <string name="invite_contact">Convidar contacto</string>
     <string name="invite">Convidar</string>
     <string name="contacts">Contactos</string>
@@ -89,7 +85,6 @@
     <string name="delete_file_dialog_msg">Tes a certeza de querer eliminar este ficheiro\?
 \n
 \n<b>Aviso:</b> Esto non eliminará as copias de este ficheiro que están gardadas noutros dispositivos ou servidores. </string>
-    <string name="also_end_conversation">Pechar a conversa tras baleirar</string>
     <string name="choose_presence">Escoller dispositivo</string>
     <string name="send_unencrypted_message">Enviar mensaxe non cifrada</string>
     <string name="send_message">Enviar mensaxe</string>
@@ -436,7 +431,6 @@
     <string name="show_location">Mostrar localización</string>
     <string name="no_application_found_to_display_location">Non se atopou unha app para mostrar a localización</string>
     <string name="location">Localización</string>
-    <string name="title_undo_swipe_out_conversation">Pechouse a conversa</string>
     <string name="title_undo_swipe_out_group_chat">Deixar o grupo de conversa privada</string>
     <string name="title_undo_swipe_out_channel">Deixar a canle pública</string>
     <string name="pref_dont_trust_system_cas_title">Non confiar nas CAs do sistema</string>
@@ -605,7 +599,6 @@
     <string name="this_device_has_been_verified">Este dispositivo foi verificado</string>
     <string name="copy_fingerprint">Copiar impresión dixital</string>
     <string name="all_omemo_keys_have_been_verified">Verificaches tódalas chaves OMEMO da túa propiedade</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">O código de barras non contén impresións dixitais para esta conversa.</string>
     <string name="verified_fingerprints">Impresións dixitais verificadas</string>
     <string name="use_camera_icon_to_scan_barcode">Utilice a cámara para escanear o código de barras do contacto</string>
     <string name="please_wait_for_keys_to_be_fetched">Por favor agarde mentras se obteñen as chaves</string>
@@ -659,7 +652,6 @@
     <string name="encrypting_message">Cifrando mensaxe</string>
     <string name="not_fetching_history_retention_period">Sen obtención de mensaxes debido ao período de retención local.</string>
     <string name="transcoding_video">Comprimindo vídeo</string>
-    <string name="corresponding_conversations_closed">Conversas correpondentes pechadas.</string>
     <string name="contact_blocked_past_tense">Contacto bloqueado.</string>
     <string name="pref_notifications_from_strangers">Notificacións de estraños</string>
     <string name="pref_notifications_from_strangers_summary">Notificar as mensaxes e chamadas recibidas por parte de extraños.</string>
@@ -943,7 +935,6 @@
     <string name="audio_call">Chamada de audio</string>
     <string name="video_call">Chamada de vídeo</string>
     <string name="help">Axuda</string>
-    <string name="switch_to_conversation">Ir á conversa</string>
     <string name="microphone_unavailable">O micrófono non está dispoñible</string>
     <string name="only_one_call_at_a_time">Só podes manter unha chamada en cada momento.</string>
     <string name="return_to_ongoing_call">Volver á chamada activa</string>

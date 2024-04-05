@@ -248,7 +248,7 @@
         <activity
             android:name=".ui.StartConversationActivity"
             android:exported="true"
-            android:label="@string/title_activity_start_conversation"
+            android:label="@string/title_activity_new_chat"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

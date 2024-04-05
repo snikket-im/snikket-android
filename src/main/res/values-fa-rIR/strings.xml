@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">تنظیمات</string>
-    <string name="action_add">مکالمه جدید</string>
     <string name="action_accounts">مدیریت حساب های کاربری</string>
     <string name="action_contact_details">جزییات مخاطب</string>
     <string name="action_muc_details">جزئیات چت گروهی</string>
@@ -15,7 +14,6 @@
     <string name="action_unblock_domain">باز کردن دامنه</string>
     <string name="title_activity_manage_accounts">مدیریت حساب ها</string>
     <string name="title_activity_settings">تنظیمات</string>
-    <string name="title_activity_start_conversation">شروع گفتگو</string>
     <string name="title_activity_choose_contact">انتخاب مخاطب</string>
     <string name="title_activity_choose_contacts">انتخاب مخاطبین</string>
     <string name="title_activity_share_via_account">به اشتراک گذاری با حساب</string>
@@ -38,7 +36,6 @@
     <string name="register_account">ثبت نام حساب جدید بر روی سرور</string>
     <string name="change_password_on_server">تغییر رمز عبور بر روی سرور</string>
     <string name="share_with">هم‌رسانی با…</string>
-    <string name="start_conversation">شروع گفتگو</string>
     <string name="invite_contact">دعوت از مخاطب</string>
     <string name="contacts">مخاطبین</string>
     <string name="contact">مخاطب</string>
@@ -160,7 +157,6 @@
     <string name="view_conversation">دیدن گفتگو</string>
     <string name="toast_message_omemo_fingerprint">اثر انگشت OMEMO کپی شد</string>
     <string name="show_block_list">نمایش مسدودسازی‌ها</string>
-    <string name="also_end_conversation">سپس این گفتگو را ببند</string>
     <string name="pref_up_push_server_summary">سرور push دلخواه کاربر برای رساندن اعلان‌های push از راه XMPP به دستگاه شما.</string>
     <string name="connect">وصل شدن</string>
     <string name="log_in">ورود</string>
@@ -390,7 +386,6 @@
     <string name="conference_resource_constraint">محدودیت منابع</string>
     <string name="leave">ترک</string>
     <string name="skip">چشم‌پوشی</string>
-    <string name="action_end_conversation">بستن گفتگو</string>
     <string name="multimedia_file">پروندهٔ چندرسانه‌ای</string>
     <string name="preparing_image">آماده‌سازی برای فرستادن عکس</string>
     <string name="send_private_message_to">فرستادن پیام خصوصی به %s</string>
@@ -479,7 +474,6 @@
     <string name="confirm">تأیید</string>
     <string name="encrypted_with_openpgp">رمزشده با OpenPGP</string>
     <string name="audio_call">تماس صوتی</string>
-    <string name="switch_to_conversation">بازگشت به گفتگو</string>
     <string name="enable">فعال‌کردن</string>
     <string name="could_not_modify_conference_options">تغییر تنظیمات گفتگوی گروهی ممکن نبود</string>
     <string name="pref_expert_options">تنظیمات پیشرفته</string>
@@ -523,7 +517,6 @@
     <string name="title_undo_swipe_out_channel">کانال عمومی را ترک کرد</string>
     <string name="remove_from_favorites">برداشتن سنجاق از بالا</string>
     <string name="not_encrypted">رمزنشده</string>
-    <string name="title_undo_swipe_out_conversation">گفتگو بسته شد</string>
     <string name="pref_up_push_account_summary">حسابی که از راه آن اعلان‌های push دریافت می‌شوند.</string>
     <string name="pref_notification_grace_period_summary">مدت زمانی که اعلان‌های این برنامه، پس از این که شما روی دستگاه‌های دیگرتان فعالیت می‌کنید، خاموش می‌مانند.</string>
     <string name="member">عضو</string>
@@ -790,7 +783,6 @@
     <string name="location_disabled">هم‌رسانی موقعیت مکانی غیرفعال است</string>
     <string name="unable_to_fetch_mam_prefs">دریافت ترجیحات آرشیوگیری ممکن نبود</string>
     <string name="nickname">نام نمایشی</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">بارکد شامل اثر انگشت دیجیتالی این گفتگو نیست.</string>
     <string name="pref_delete_omemo_identities">حذف هویت‌های OMEMO</string>
     <string name="verifying_omemo_keys_trusted_source_account">شما قرار است کلیدهای OMEMO حساب خودتان را تأیید کنید. این کار فقط وقتی امن است که شما این پیوند را از منبع مورد اعتمادی گرفته باشید که فقط خودتان می‌توانستید منتشرش کنید.</string>
     <string name="account_already_setup">این حساب قبلاً ساخته شده است</string>
@@ -944,7 +936,6 @@
     <string name="verified_omemo_key_with_certificate">کلید OMEMO با تأییدیهٔ امنیتی تأیید شد!</string>
     <string name="pref_notifications_from_strangers">اعلان‌ها از غریبه‌ها</string>
     <string name="invalid_user_input">ورودی نامعتبر از کاربر</string>
-    <string name="corresponding_conversations_closed">گفتگوهای مربوطه بسته شده‌اند.</string>
     <string name="battery_optimizations_enabled_dialog">دستگاه شما شدیداً‌مصرف باتری را برای %1$s بهینه می‌کند که ممکن است باعث تأخیر در اعلان‌ها یا حتی ازدست‌رفتن پیام‌ها شود.
 \n
 \nهم‌اینک از شما خواسته می‌شود که آن را غیرفعال کنید.</string>
