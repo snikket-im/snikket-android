@@ -78,7 +78,9 @@
     <string name="sharing_files_please_wait">Споделяне на файлове. Моля, изчакайте…</string>
     <string name="action_clear_history">Изчистване на историята</string>
     <string name="clear_conversation_history">Изчистване на историята на разговорите</string>
-    <string name="clear_histor_msg">Наистина ли искате да изтриете всички съобщения в този разговор?\n\n<b>Внимание:</b> Това няма да изтрие съобщенията, които се съхраняват на други устройства или сървъри.</string>
+    <string name="clear_histor_msg">Наистина ли искате да изтриете всички съобщения в този разговор?
+\n
+\n<b>Внимание:</b> Това няма да изтрие съобщенията, които се съхраняват на други устройства или сървъри.</string>
     <string name="delete_file_dialog">Изтриване на файла</string>
     <string name="delete_file_dialog_msg">Наистина ли искате да изтриете този файл?\n\n<b>Внимание:</b> Това няма да изтрие копията на файла, които се съхраняват на други устройства или сървъри.</string>
     <string name="choose_presence">Изберете устройство</string>
@@ -684,7 +686,8 @@
     <string name="error_trustkey_device_list">Неуспешно получаване на списъка с устройства</string>
     <string name="error_trustkey_bundle">Неуспешно получаване на ключове за шифроване</string>
     <string name="error_trustkey_hint_mutual">Съвет: В някои случаи това може да се оправи, ако се добавите един друг в списъците си с контакти.</string>
-    <string name="disable_encryption_message">Наистина ли искате да изключите шифроването чрез OMEMO за този разговор?\nТова ще позволи на администратора Ви да чете съобщенията Ви, но пък най-вероятно е единственият начин за общуване с хората, използващи стари клиенти.</string>
+    <string name="disable_encryption_message">Наистина ли искате да изключите шифроването чрез OMEMO за този разговор?
+\nТова ще позволи на администратора Ви да чете съобщенията Ви, но пък най-вероятно е единственият начин за общуване с хората, използващи стари клиенти.</string>
     <string name="disable_now">Изключване сега</string>
     <string name="draft">Чернова:</string>
     <string name="pref_omemo_setting">Шифроване OMEMO</string>
