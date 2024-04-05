@@ -79,7 +79,9 @@
     <string name="sharing_files_please_wait">Делим фајлове, сачекајте…</string>
     <string name="action_clear_history">Очисти историјат</string>
     <string name="clear_conversation_history">Брисање историјата преписки</string>
-    <string name="clear_histor_msg">Желите ли да обришете све поруке из ове преписке?\n\n<b>Упозорење:</b> Ово неће утицати на поруке складиштене на осталим уређајима или серверима.</string>
+    <string name="clear_histor_msg">Желите ли да обришете све поруке из ове преписке?
+\n
+\n<b>Упозорење:</b> Ово неће утицати на поруке складиштене на осталим уређајима или серверима.</string>
     <string name="delete_file_dialog">Обриши датотеку</string>
     <string name="delete_file_dialog_msg">Желите ли да обришете ову датотеку?\n\n<b>Упозорење:</b> Ово неће утицати на копије ове датотеке складиштене на осталим уређајима или серверима.</string>
     <string name="choose_presence">Изаберите уређај</string>
