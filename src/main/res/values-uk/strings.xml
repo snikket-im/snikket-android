@@ -35,7 +35,7 @@
     <string name="moderator">Модератор</string>
     <string name="participant">Учасник</string>
     <string name="visitor">Гість</string>
-    <string name="remove_contact_text">Бажаєте вилучити %s зі свого списку контактів\? Розмови з цим контактом не буде вилучено.</string>
+    <string name="remove_contact_text">Бажаєте вилучити %s зі свого списку контактів? Розмови з цим контактом не буде вилучено.</string>
     <string name="block_contact_text">Бажаєте заборонити %s надсилати Вам повідомлення\?</string>
     <string name="unblock_contact_text">Бажаєте розблокувати %s та дозволити цій особі надсилати Вам повідомлення\?</string>
     <string name="block_domain_text">Заблокувати всі контакти з %s\?</string>
@@ -72,8 +72,8 @@
     <string name="sharing_files_please_wait">Файли надсилаються. Зачекайте, будь ласка…</string>
     <string name="action_clear_history">Стерти історію</string>
     <string name="clear_conversation_history">Стерти історію розмов</string>
-    <string name="clear_histor_msg">Дійсно вилучити всі повідомлення цієї розмови\?
-\n
+    <string name="clear_histor_msg">Дійсно вилучити всі повідомлення цієї розмови? 
+\n 
 \n<b>Увага:</b> Повідомлення, збережені на інших пристроях або серверах, і надалі залишаться там.</string>
     <string name="delete_file_dialog">Вилучити файл</string>
     <string name="delete_file_dialog_msg">Ви впевнені, що хочете вилучити цей файл\?
@@ -173,7 +173,7 @@
 \nВаші контакти більше не зможуть надсилати Вам повідомлення, зашифровані OpenPGP.</string>
     <string name="openpgp_has_been_published">Публічний ключ OpenPGP опубліковано.</string>
     <string name="mgmt_account_enable">Увімкнути обліковий запис</string>
-    <string name="mgmt_account_delete_confirm_text">Ви впевнені, що хочете видалити свій обліковий запис\? Видалення облікового запису знищить усю Вашу історію спілкування</string>
+    <string name="mgmt_account_delete_confirm_text">Ви впевнені, що хочете видалити свій обліковий запис? Видалення облікового запису знищить усю Вашу історію спілкування</string>
     <string name="attach_record_voice">Записати голос</string>
     <string name="account_settings_jabber_id">Адреса XMPP</string>
     <string name="block_jabber_id">Заблокувати адресу XMPP</string>
@@ -690,7 +690,7 @@
     <string name="error_trustkey_device_list">Неможливо отримати перелік пристроїв</string>
     <string name="error_trustkey_bundle">Неможливо отримати пакети пристроїв</string>
     <string name="error_trustkey_hint_mutual">Підказка: В деяких випадках це можна виправити, якщо додати один одного у свої списки контактів.</string>
-    <string name="disable_encryption_message">Дійсно вимкнути шифрування OMEMO\?
+    <string name="disable_encryption_message">Дійсно вимкнути шифрування OMEMO?
 \nПісля цього в адміністратора Вашого сервера буде можливість мати доступ до Ваших повідомлень. Проте, це може бути єдиним способом спілкуватися з людьми, які використовують застарілі застосунки.</string>
     <string name="disable_now">Вимкнути зараз</string>
     <string name="draft">Чернетка:</string>
