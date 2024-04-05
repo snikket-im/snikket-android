@@ -78,8 +78,8 @@
     <string name="sharing_files_please_wait">Dosyalar Paylaşılıyor. Lütfen bekleyin…</string>
     <string name="action_clear_history">Geçmişi sil</string>
     <string name="clear_conversation_history">Konuşma geçmişini sil</string>
-    <string name="clear_histor_msg">Bu konuşmadaki tüm mesajları silmek istiyor musunuz\?
-\n
+    <string name="clear_histor_msg">Bu konuşmadaki tüm mesajları silmek istiyor musunuz? 
+\n 
 \n<b>Uyarı:</b> Bu eylem, diğer aygıt ve sunucularda kayıtlı mesajları etkilemeyecektir.</string>
     <string name="delete_file_dialog">Dosyayı sil</string>
     <string name="delete_file_dialog_msg">Bu dosyayı silmek istediğinizden emin misiniz? \n\n<b>Uyarı:</b> Bu eylem, bu dosyanın diğer aygıt ve sunucularda kayıtlı kopyalarını silmeyecektir.</string>
@@ -179,7 +179,7 @@
     <string name="unpublish_pgp_message">OpenPGP genel anahtarınız Çevrim içi durum anonsunuzdan kaldırmak istediğinizden emin misiniz?\nArtık kişileriniz size şifrelenmiş OpenPGP mesajları gönderemeyecek.</string>
     <string name="openpgp_has_been_published">OpenPGP genel anahtarı yayınlandı.</string>
     <string name="mgmt_account_enable">Hesabı etkinleştir</string>
-    <string name="mgmt_account_delete_confirm_text">Hesabınızı silmekten emin misiniz\? Hesabınızın silinmesi bütün konuşma geçmişinizi siler</string>
+    <string name="mgmt_account_delete_confirm_text">Hesabınızı silmekten emin misiniz? Hesabınızın silinmesi bütün konuşma geçmişinizi siler</string>
     <string name="attach_record_voice">Ses kaydet</string>
     <string name="account_settings_jabber_id">XMPP adresi</string>
     <string name="block_jabber_id">XMPP adresini engelle</string>
@@ -700,7 +700,8 @@
     <string name="error_trustkey_device_list">Aygıt listesi alınamadı</string>
     <string name="error_trustkey_bundle">Şifreleme anahtarları alınamadı</string>
     <string name="error_trustkey_hint_mutual">İpucu: Kimi durumlarda bu sorun, birbirinizi kişi listenize eklemenizle çözülebilir.</string>
-    <string name="disable_encryption_message">Bu konuşma için OMEMO şifrelemesini devre dışı bırakmak istediğinizden emin misiniz?\nBu, sunucu yöneticinizin mesajlarınızı okumasını mümkün kılsa da, tarihi geçmiş istemcileri kullanan insanlarla iletişim kurmanın tek yolu olabilir.</string>
+    <string name="disable_encryption_message">Bu konuşma için OMEMO şifrelemesini devre dışı bırakmak istediğinizden emin misiniz?
+\nBu, sunucu yöneticinizin mesajlarınızı okumasını mümkün kılsa da, tarihi geçmiş istemcileri kullanan insanlarla iletişim kurmanın tek yolu olabilir.</string>
     <string name="disable_now">Şimdi devre dışı bırak</string>
     <string name="draft">Taslak:</string>
     <string name="pref_omemo_setting">OMEMO Şifrelemesi</string>
