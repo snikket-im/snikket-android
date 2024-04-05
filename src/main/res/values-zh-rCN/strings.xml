@@ -77,8 +77,8 @@
     <string name="sharing_files_please_wait">分享文件中。请稍候…</string>
     <string name="action_clear_history">清空历史记录</string>
     <string name="clear_conversation_history">清空对话历史记录</string>
-    <string name="clear_histor_msg">是否要删除此对话中的所有消息？
-\n
+    <string name="clear_histor_msg">是否要删除此对话中的所有消息？ 
+\n 
 \n<b>警告：</b>存储在其他设备或服务器上的消息将不受影响。</string>
     <string name="delete_file_dialog">删除文件</string>
     <string name="delete_file_dialog_msg">是否确定要删除此文件？
