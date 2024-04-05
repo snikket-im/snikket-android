@@ -1,0 +1,3 @@
+* Arranxo das chamadas de A/V en Android 8
+* Arranxo das prioridades na novas chamadas integradas
+* Arranxo do antigo problema coa compresión do vídeo
