@@ -77,7 +77,9 @@
     <string name="sharing_files_please_wait">ファイル共有中。しばらくお待ちください…</string>
     <string name="action_clear_history">履歴を消去</string>
     <string name="clear_conversation_history">会話履歴を消去</string>
-    <string name="clear_histor_msg">この会話のすべてのメッセージを削除してもよろしいですか?\n\n<b>警告:</b> 他のデバイスやサーバーに保存されているメッセージのコピーには影響しません。</string>
+    <string name="clear_histor_msg">この会話のすべてのメッセージを削除してもよろしいですか?
+\n
+\n<b>警告:</b> 他のデバイスやサーバーに保存されているメッセージのコピーには影響しません。</string>
     <string name="delete_file_dialog">ファイルを削除</string>
     <string name="delete_file_dialog_msg">このファイルを削除してもよろしいですか?\n\n<b>警告:</b> これは、他のデバイスやサーバーに保存されているファイルのコピーは削除しません。</string>
     <string name="choose_presence">デバイスを選択</string>
@@ -684,7 +686,8 @@
     <string name="error_trustkey_device_list">デバイスの一覧を取得できません</string>
     <string name="error_trustkey_bundle">暗号化の鍵を取得できません</string>
     <string name="error_trustkey_hint_mutual">ヒント: お互いが連絡先リストに加えればこの問題は解決するでしょう。</string>
-    <string name="disable_encryption_message">この会話で OMEMO の暗号化を無効化してもよろしいですか?\nこれにより、サーバー管理者がメッセージを読むことが可能になりますが、時代遅れのクライアントを使っている人と連絡をとるには、この方法しかないかもしれません。</string>
+    <string name="disable_encryption_message">この会話で OMEMO の暗号化を無効化してもよろしいですか?
+\nこれにより、サーバー管理者がメッセージを読むことが可能になりますが、時代遅れのクライアントを使っている人と連絡をとるには、この方法しかないかもしれません。</string>
     <string name="disable_now">今すぐ無効化</string>
     <string name="draft">下書き:</string>
     <string name="pref_omemo_setting">OMEMO 暗号化</string>
