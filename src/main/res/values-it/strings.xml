@@ -79,7 +79,9 @@
     <string name="sharing_files_please_wait">Condivisione file. Attendere prego…</string>
     <string name="action_clear_history">Svuota la cronologia</string>
     <string name="clear_conversation_history">Svuota la cronologia della conversazione</string>
-    <string name="clear_histor_msg">Vuoi eliminare tutti i messaggi in questa conversazione?\n\n<b>Attenzione:</b> ciò non influenzerà i messaggi salvati su altri dispositivi o server.</string>
+    <string name="clear_histor_msg">Vuoi eliminare tutti i messaggi in questa conversazione?
+\n
+\n<b>Attenzione:</b> ciò non influenzerà i messaggi salvati su altri dispositivi o server.</string>
     <string name="delete_file_dialog">Elimina file</string>
     <string name="delete_file_dialog_msg">Sei sicuro di voler eliminare questo file?\n\n<b>Attenzione:</b> non verranno eliminate copie di questo file memorizzate in altri dispositivi o server. </string>
     <string name="choose_presence">Scegli un dispositivo</string>
@@ -178,7 +180,7 @@
     <string name="unpublish_pgp_message">Sei sicuro di volere rimuovere la tua chiave pubblica OpenPGP dalla dichiarazione di presenza?\nI tuoi contatti non potranno più inviarti messaggi cifrati con OpenPGP.</string>
     <string name="openpgp_has_been_published">Chiave pubblica OpenPGP pubblicata.</string>
     <string name="mgmt_account_enable">Attiva profilo</string>
-    <string name="mgmt_account_delete_confirm_text">Vuoi davvero eliminare il tuo profilo\? La sua eliminazione cancellerà tutta la cronologia delle conversazioni</string>
+    <string name="mgmt_account_delete_confirm_text">Vuoi davvero eliminare il tuo profilo? La sua eliminazione cancellerà tutta la cronologia delle conversazioni</string>
     <string name="attach_record_voice">Registra la voce</string>
     <string name="account_settings_jabber_id">Indirizzo XMPP</string>
     <string name="block_jabber_id">Blocca indirizzo XMPP</string>
@@ -705,7 +707,8 @@
     <string name="error_trustkey_device_list">Impossibile ricevere l\'elenco dispositivi</string>
     <string name="error_trustkey_bundle">Impossibile ricevere le chiavi di cifratura</string>
     <string name="error_trustkey_hint_mutual">Suggerimento: in alcuni casi può essere risolto aggiungendo a vicenda la vostra lista di contatti.</string>
-    <string name="disable_encryption_message">Sei sicuro di disattivare la cifratura OMEMO per questa conversazione?\nCiò permetterà all\'amministratore del server di leggere i tuoi messaggi, ma potrebbe essere il solo modo di comunicare con persone che usano client obsoleti.</string>
+    <string name="disable_encryption_message">Sei sicuro di disattivare la cifratura OMEMO per questa conversazione?
+\nCiò permetterà all\'amministratore del server di leggere i tuoi messaggi, ma potrebbe essere il solo modo di comunicare con persone che usano client obsoleti.</string>
     <string name="disable_now">Disattiva adesso</string>
     <string name="draft">Bozza:</string>
     <string name="pref_omemo_setting">Cifratura OMEMO</string>
