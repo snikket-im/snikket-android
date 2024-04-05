@@ -27,13 +27,8 @@
     <string name="minutes_ago">prije %d min</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d nepročitan razgovor</item>
-
-    
         <item quantity="few">%d nepročitanih razgovora</item>
-
-    
         <item quantity="other">%d nepročitani razgovori</item>
-
     </plurals>
     <string name="sending">slanje…</string>
     <string name="message_decrypting">Dešifriranje poruke. Molimo pričekajte…</string>
@@ -45,7 +40,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Sudionik</string>
     <string name="visitor">Posjetitelj</string>
-    <string name="remove_contact_text">Želite li ukloniti  %s s popisa kontakata? Razgovori s ovim kontaktom neće biti uklonjeni.</string>
+    <string name="remove_contact_text">Želite li ukloniti %s s popisa kontakata? Razgovori s ovim kontaktom neće biti uklonjeni.</string>
     <string name="block_contact_text">Želite li blokirati %s da vam šalje poruke?</string>
     <string name="unblock_contact_text">Želite li deblokirati %s i dopustiti im da vam šalju poruke?</string>
     <string name="block_domain_text">Blokirati sve kontakte iz %s?</string>
@@ -81,4 +76,4 @@
     <string name="sharing_files_please_wait">Dijeljenje datoteka. Molimo pričekajte…</string>
     <string name="action_clear_history">Obriši povijest</string>
     <string name="clear_conversation_history">Obriši povijest razgovora</string>
-    </resources>
+</resources>
