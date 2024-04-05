@@ -52,7 +52,7 @@
     <string name="send_failed">전송 실패 </string>
     <string name="sharing_files_please_wait">파일을 공유중입니다. 기다리세요...</string>
     <string name="action_clear_history">기록 삭제 </string>
-    <string name="clear_conversation_history">대화 기록 삭제 </string>
+    <string name="clear_conversation_history">대화 기록 삭제</string>
     <string name="choose_presence">기기 선택</string>
     <string name="send_unencrypted_message">암호화하지 않은 메세지 전송</string>
     <string name="send_message_to_x">%s 에게 매세지 보내기 </string>
