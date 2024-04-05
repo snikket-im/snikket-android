@@ -79,7 +79,9 @@
     <string name="sharing_files_please_wait">Trimitere fișiere. Vă rugăm să așteptați…</string>
     <string name="action_clear_history">Șterge istoric</string>
     <string name="clear_conversation_history">Șterge istoricul conversației</string>
-    <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această conversație?\n\n<b>Atenție:</b> Această acțiune nu va afecta mesajele aflate pe alte dispozitive sau servere.</string>
+    <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această conversație?
+\n
+\n<b>Atenție:</b> Această acțiune nu va afecta mesajele aflate pe alte dispozitive sau servere.</string>
     <string name="delete_file_dialog">Șterge fișierul</string>
     <string name="delete_file_dialog_msg">Sigur doriți să ștergeți acest fișier\?
 \n
@@ -180,7 +182,7 @@
     <string name="unpublish_pgp_message">Sigur doriți să vă ștergeți cheia publică OpenPGP din mesajele de prezență?\nContactele dumneavoastră nu vor mai putea să vă trimită mesaje criptate cu OpenPGP.</string>
     <string name="openpgp_has_been_published">Cheia publică OpenPGP a fost publicată.</string>
     <string name="mgmt_account_enable">Activează cont</string>
-    <string name="mgmt_account_delete_confirm_text">Sigur doriți să vă ștergeți contul\? Dacă vă ștergeți contul, întregul istoric de conversații va fi pierdut</string>
+    <string name="mgmt_account_delete_confirm_text">Sigur doriți să vă ștergeți contul? Dacă vă ștergeți contul, întregul istoric de conversații va fi pierdut</string>
     <string name="attach_record_voice">Înregistrare voce</string>
     <string name="account_settings_jabber_id">Adresă XMPP</string>
     <string name="block_jabber_id">Blochează adresă XMPP</string>
@@ -709,7 +711,8 @@
     <string name="error_trustkey_device_list">Nu s-a putut descărca lista dispozitivelor</string>
     <string name="error_trustkey_bundle">Nu s-au putut descărca cheile de criptare</string>
     <string name="error_trustkey_hint_mutual">Sugestie: În unele cazuri se poate rezolva dacă vă adăugați reciproc în lista de contacte.</string>
-    <string name="disable_encryption_message">Sigur doriți să dezactivați criptarea OMEMO pentru această conversație?\nAstfel veți permite administratorilor serverului să vă citească mesajele, dar se poate ca ăsta să fie singurul mod în care puteți să comunicați cu persoanele care folosesc clienți învechiți.</string>
+    <string name="disable_encryption_message">Sigur doriți să dezactivați criptarea OMEMO pentru această conversație?
+\nAstfel veți permite administratorilor serverului să vă citească mesajele, dar se poate ca ăsta să fie singurul mod în care puteți să comunicați cu persoanele care folosesc clienți învechiți.</string>
     <string name="disable_now">Dezactivează acum</string>
     <string name="draft">Ciornă:</string>
     <string name="pref_omemo_setting">Criptare OMEMO</string>
