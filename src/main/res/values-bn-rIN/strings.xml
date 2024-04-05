@@ -27,10 +27,7 @@
     <string name="minutes_ago">%d মিনিট আগে</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%dটাই কথোপকথন পড়া বাকি</item>
-
-    
         <item quantity="other">%dকথোেকথন পড়া হয়নি</item>
-
     </plurals>
     <string name="sending">পাঠানো হচ্ছে...</string>
     <string name="message_decrypting">অপেক্ষা করুন, সাঙ্কেতিক সন্দেশ পঠিত হচ্ছে...</string>
@@ -78,7 +75,9 @@
     <string name="sharing_files_please_wait">ফাইলগুলো শেয়ার করা হচ্ছে, অপেক্ষা করুন</string>
     <string name="action_clear_history">প্রতিলিপি মুছে ফেলা যাক</string>
     <string name="clear_conversation_history">Conversation-এর সব প্রতিলিপি মুছে ফেলা যাক</string>
-    <string name="clear_histor_msg">এই কথোপকথনের সবকটি বার্তাই কি মুছে ফেলতে চান?\n‌\n<b>সতর্ক থাকবেন:</b> সার্ভার বা অন্য যন্ত্রে থাকা বার্তা কিন্তু অপরিআর্তিতই থাকবে।</string>
+    <string name="clear_histor_msg">এই কথোপকথনের সবকটি বার্তাই কি মুছে ফেলতে চান?
+\n‌
+\n<b>সতর্ক থাকবেন:</b> সার্ভার বা অন্য যন্ত্রে থাকা বার্তা কিন্তু অপরিআর্তিতই থাকবে।</string>
     <string name="delete_file_dialog">ফাইলটি মুছে ফেলা হোক</string>
     <string name="choose_presence">যন্ত্র নির্বাচন করা যাক</string>
     <string name="send_unencrypted_message">অসাঙ্কেতিক বার্তাই পাঠানো হোক</string>
@@ -108,4 +107,4 @@
     <string name="create_private_group_chat">ব্যক্তিগত গ্রুপ চ্যাট তৈরি করুন</string>
     <string name="create_public_channel">পাবলিক চ্যানেল তৈরি করা যাক</string>
     <string name="discover_channels">বর্তমান চ্যানেলগুলির মধ্যে থেকে খোঁজা যাক</string>
-    </resources>
+</resources>
