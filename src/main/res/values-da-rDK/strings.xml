@@ -78,7 +78,9 @@
     <string name="sharing_files_please_wait">Deler filer. Vent venligst…</string>
     <string name="action_clear_history">Ryd historik</string>
     <string name="clear_conversation_history">Ryd samtalehistorik</string>
-    <string name="clear_histor_msg">Vil du slette alle beskeder i denne samtale?\n\n<b>Advarsel:</b> Dette vil ikke påvirke beskeder gemt på andre enheder eller servere.</string>
+    <string name="clear_histor_msg">Vil du slette alle beskeder i denne samtale?
+\n
+\n<b>Advarsel:</b> Dette vil ikke påvirke beskeder gemt på andre enheder eller servere.</string>
     <string name="delete_file_dialog">Slet fil</string>
     <string name="delete_file_dialog_msg">Er du sikker på, at du vil slette denne fil\?
 \n
@@ -177,7 +179,7 @@
     <string name="unpublish_pgp_message">Er du sikker på, at du vil fjerne din OpenPGP-nøgle fra din nærværsmeddelelse?\nDine kontakter kan ikke længere sende dig OpenPGP-krypterede meddelelser.</string>
     <string name="openpgp_has_been_published">OpenPGP offentlig nøgle er offentliggjort.</string>
     <string name="mgmt_account_enable">Aktiver konto</string>
-    <string name="mgmt_account_delete_confirm_text">Er du sikker på, at du vil slette din konto\? Sletning af din konto sletter hele din samtalehistorik</string>
+    <string name="mgmt_account_delete_confirm_text">Er du sikker på, at du vil slette din konto? Sletning af din konto sletter hele din samtalehistorik</string>
     <string name="attach_record_voice">Optag lyd</string>
     <string name="account_settings_jabber_id">XMPP-adresse</string>
     <string name="block_jabber_id">Bloker XMPP-adresse</string>
@@ -694,7 +696,8 @@
     <string name="error_trustkey_device_list">Kunne ikke hente enhedsliste</string>
     <string name="error_trustkey_bundle">Kunne ikke hente krypteringsnøgler</string>
     <string name="error_trustkey_hint_mutual">Tip: I nogle tilfælde kan dette løses ved at tilføje hinanden dine kontaktlister.</string>
-    <string name="disable_encryption_message">Er du sikker på, at du vil deaktivere OMEMO-kryptering til denne samtale?\nDette giver din serveradministrator mulighed for at læse dine meddelelser, men det er muligvis den eneste måde at kommunikere med folk, der bruger forældede klienter.</string>
+    <string name="disable_encryption_message">Er du sikker på, at du vil deaktivere OMEMO-kryptering til denne samtale?
+\nDette giver din serveradministrator mulighed for at læse dine meddelelser, men det er muligvis den eneste måde at kommunikere med folk, der bruger forældede klienter.</string>
     <string name="disable_now">Deaktiver nu</string>
     <string name="draft">Udkast:</string>
     <string name="pref_omemo_setting">OMEMO-kryptering</string>
@@ -786,7 +789,7 @@
     <string name="wait_x">Vent venligst (%s)</string>
     <string name="back">Tilbage</string>
     <string name="possible_pin">Indsat automatisk mulig pinkode fra udklipsholder.</string>
-    <string name="please_enter_pin">Indtast venligst din 6 cifret pinkode. </string>
+    <string name="please_enter_pin">Indtast venligst din 6 cifret pinkode.</string>
     <string name="abort_registration_procedure">Er du sikker på at du afbryde registreringsproceduren?</string>
     <string name="yes">Ja</string>
     <string name="no">Nej</string>
