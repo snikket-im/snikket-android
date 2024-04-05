@@ -80,7 +80,9 @@
     <string name="sharing_files_please_wait">Обмен файлами. Пожалуйста, подождите…</string>
     <string name="action_clear_history">Очистить историю</string>
     <string name="clear_conversation_history">Очистить историю</string>
-    <string name="clear_histor_msg">Вы хотите удалить все сообщения в этой беседе?\n\n<b>Внимание:</b> Данная операция не повлияет на сообщения, хранящиеся на других устройствах или серверах.</string>
+    <string name="clear_histor_msg">Вы хотите удалить все сообщения в этой беседе?
+\n
+\n<b>Внимание:</b> Данная операция не повлияет на сообщения, хранящиеся на других устройствах или серверах.</string>
     <string name="delete_file_dialog">Удалить файл</string>
     <string name="delete_file_dialog_msg">Вы уверены, что хотите удалить этот файл?
 \n
@@ -178,7 +180,7 @@
     <string name="unpublish_pgp_message">Вы действительно хотите удалить ваш OpenPGP публичный ключ из опубликованных?\nВаши собеседники не смогут больше отправлять вам зашифрованные OpenPGP сообщения.</string>
     <string name="openpgp_has_been_published">Публичный ключ OpenPGP опубликован.</string>
     <string name="mgmt_account_enable">Включить аккаунт</string>
-    <string name="mgmt_account_delete_confirm_text">Вы точно хотите удалить свою учётную запись\? Это удалит все истории диалогов</string>
+    <string name="mgmt_account_delete_confirm_text">Вы точно хотите удалить свою учётную запись? Это удалит все истории диалогов</string>
     <string name="attach_record_voice">Запись голоса</string>
     <string name="account_settings_jabber_id">XMPP-адрес</string>
     <string name="block_jabber_id">Заблокировать XMPP-адрес</string>
@@ -706,7 +708,8 @@
     <string name="error_trustkey_device_list">Не удалось получить список устройств</string>
     <string name="error_trustkey_bundle">Не удалось получить ключи шифрования</string>
     <string name="error_trustkey_hint_mutual">Подсказка: в некоторых случаях это может исправлено добавлением друг друга в список контактов.</string>
-    <string name="disable_encryption_message">Вы уверены, что хотите выключить OMEMO-шифрование для этой беседы?\nЭто позволит администратору сервера читать ваши сообщения, но также это может быть единственным способом связи с людьми, использующими устаревшие клиенты.</string>
+    <string name="disable_encryption_message">Вы уверены, что хотите выключить OMEMO-шифрование для этой беседы?
+\nЭто позволит администратору сервера читать ваши сообщения, но также это может быть единственным способом связи с людьми, использующими устаревшие клиенты.</string>
     <string name="disable_now">Отключить сейчас</string>
     <string name="draft">Черновик:</string>
     <string name="pref_omemo_setting">OMEMO-шифрование</string>
