@@ -561,7 +561,8 @@
     <string name="edit_status_message">Egoera mezua editatu</string>
     <string name="disable_encryption">Enkriptazioa ezgaitu</string>
     <string name="error_trustkey_hint_mutual">Lagungarria: kasu batzuetan bakoitzak bestea bere kontaktuen zerrendara gehituz konpon daiteke.</string>
-    <string name="disable_encryption_message">Ziur al zaude OMEMO enkriptazioa ezgaitu nahi duzula elkarrizketa honetarako?\nHonek zure zerbitzariaren administratzaileari zure mezuak irakurtzea ahalbidetuko dio, baina aplikazio zaharrak erabiltzen dituzten pertsonekin komunikatzeko modu bakarra izan daiteke.</string>
+    <string name="disable_encryption_message">Ziur al zaude OMEMO enkriptazioa ezgaitu nahi duzula elkarrizketa honetarako?
+\nHonek zure zerbitzariaren administratzaileari zure mezuak irakurtzea ahalbidetuko dio, baina aplikazio zaharrak erabiltzen dituzten pertsonekin komunikatzeko modu bakarra izan daiteke.</string>
     <string name="disable_now">Orain ezgaitu</string>
     <string name="draft">Zirriborroa:</string>
     <string name="pref_omemo_setting">OMEMO enkriptazioa</string>
