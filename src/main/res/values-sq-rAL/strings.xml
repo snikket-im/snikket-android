@@ -823,12 +823,12 @@
     <string name="pref_automatically_delete_messages_description">Fshi vetvetiu nga kjo pajisje mesazhe që janë më të vjetër se intervali kohor i formësuar.</string>
     <string name="not_fetching_history_retention_period">S’po sillen mesazhe, për shkak të një periudhe lokale mbajtjeje.</string>
     <string name="action_delete_contact">Fshije prej liste</string>
-    <string name="remove_contact_text">Do të donit të hiqet %s prej listës tuaj të kontakteve\? Bisedat me këtë kontakt s’do të hiqen.</string>
+    <string name="remove_contact_text">Do të donit të hiqet %s prej listës tuaj të kontakteve? Bisedat me këtë kontakt s’do të hiqen.</string>
     <string name="block_contact_text">Do të donit t’i bllokohet %s dërgimi i mesazheve për ju\?</string>
     <string name="unblock_contact_text">Do të donit të zhbllokohet %s dhe të lejohet t’ju dërgojë mesazhe\?</string>
     <string name="crash_report_message">Përdorimi i llogarisë tuaj XMPP për të dërguar “stack traces” ndihmon zhvillimin e pandërprerë të %1$s.</string>
-    <string name="clear_histor_msg">Doni të fshihen krejt mesazhet te kjo bisedë\?
-\n
+    <string name="clear_histor_msg">Doni të fshihen krejt mesazhet te kjo bisedë? 
+\n 
 \n<b>Kujdes:</b> Kjo s’do të ndikojë mesazhet e depozituar në pajisje apo shërbyes të tjerë.</string>
     <string name="delete_file_dialog_msg">Jeni i sigurt se doni të fshihet kjo kartelë\?
 \n
@@ -938,7 +938,7 @@
     <string name="pref_scroll_to_bottom_summary">Pas dërgimit të një mesazhi, rrëshqit poshtë</string>
     <string name="error_trustkey_general">%1$s s’është në gjendje të fshehtëzojë mesazhe te %2$s. Kjo mund të vijë për shkak se kontakti juaj përdor një shërbyes, ose klient të vjetruar, që s’mund të përdorë OMEMO.</string>
     <string name="error_trustkey_hint_mutual">Ndihmëz: Në disa raste, kjo mund të ndreqet duke shtuar listat e kontakteve të njëri-tjetrit.</string>
-    <string name="disable_encryption_message">Jeni i sigurt se doni të çaktivizohet fshehtëzimi OMEMO për këtë bisedë\?
+    <string name="disable_encryption_message">Jeni i sigurt se doni të çaktivizohet fshehtëzimi OMEMO për këtë bisedë?
 \nKjo do t’i lejojë përgjegjësit të shërbyesit tuaj të lexojë mesazhet tuaj, por mund të jetë e vetmja rrugë për të komunikuar me persona që përdorin klientë të vjetruar.</string>
     <string name="pref_omemo_setting_summary_always">OMEMO do të përdoret përherë për fjalosje tek-për-tek dhe në grup.</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO do të përdoret për biseda të reja, si parazgjedhje.</string>
