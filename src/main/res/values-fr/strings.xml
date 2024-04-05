@@ -79,7 +79,9 @@
     <string name="sharing_files_please_wait">Partage des fichiers. Veuillez patienter…</string>
     <string name="action_clear_history">Vider l\'historique</string>
     <string name="clear_conversation_history">Vider l\'historique de la conversation</string>
-    <string name="clear_histor_msg">Êtes-vous sûr de vouloir supprimer tous les messages de cette conversation ?\n\n <b>Avertissement :</b> Cela ne supprimera pas les copies des messages qui sont stockés sur d\'autres appareils ou serveurs.</string>
+    <string name="clear_histor_msg">Êtes-vous sûr de vouloir supprimer tous les messages de cette conversation ?
+\n
+\n <b>Avertissement :</b> Cela ne supprimera pas les copies des messages qui sont stockés sur d\'autres appareils ou serveurs.</string>
     <string name="delete_file_dialog">Supprimer le fichier</string>
     <string name="delete_file_dialog_msg">Êtes-vous sûr de vouloir supprimer ce fichier \?
 \n
@@ -178,7 +180,7 @@
     <string name="unpublish_pgp_message">Êtes-vous sûr de vouloir supprimer votre clé publique OpenPGP de votre annonce de présence ?\nVos contacts ne pourront plus vous envoyer de message chiffrés avec OpenPGP.</string>
     <string name="openpgp_has_been_published">Clé publique OpenPGP publiée.</string>
     <string name="mgmt_account_enable">Activer le compter</string>
-    <string name="mgmt_account_delete_confirm_text">Êtes-vous sûr de vouloir supprimer votre compte \? Supprimer votre compte effacera l\'historique de vos conversations</string>
+    <string name="mgmt_account_delete_confirm_text">Êtes-vous sûr de vouloir supprimer votre compte ? Supprimer votre compte effacera l\'historique de vos conversations</string>
     <string name="attach_record_voice">Enregistrer un son</string>
     <string name="account_settings_jabber_id">Adresse XMPP</string>
     <string name="block_jabber_id">Bloquer l\'adresse XMPP</string>
@@ -697,7 +699,8 @@
     <string name="error_trustkey_device_list">Impossible de récupérer la liste des appareils</string>
     <string name="error_trustkey_bundle">Impossible de récupérer les clés de chiffrement</string>
     <string name="error_trustkey_hint_mutual">Indication : Dans certains cas, cela peut être résolu en vous ajoutant respectivement dans votre liste de contacts.</string>
-    <string name="disable_encryption_message">Êtes-vous sûr de vouloir désactiver le chiffrement OMEMO pour cette discussion ?\nCeci permettra à l\'administrateur de votre serveur de lire vos messages, mais cela peut être le seul moyen de communiquer avec des personnes utilisant un vieux client.</string>
+    <string name="disable_encryption_message">Êtes-vous sûr de vouloir désactiver le chiffrement OMEMO pour cette discussion ?
+\nCeci permettra à l\'administrateur de votre serveur de lire vos messages, mais cela peut être le seul moyen de communiquer avec des personnes utilisant un vieux client.</string>
     <string name="disable_now">Désactiver maintenant</string>
     <string name="draft">Brouillon :</string>
     <string name="pref_omemo_setting">Chiffrement OMEMO</string>
