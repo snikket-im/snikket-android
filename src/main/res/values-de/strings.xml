@@ -39,7 +39,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Teilnehmer</string>
     <string name="visitor">Besucher</string>
-    <string name="remove_contact_text">Möchtest du  %s von deiner Kontaktliste entfernen? Unterhaltungen mit diesem Kontakt werden dabei nicht entfernt.</string>
+    <string name="remove_contact_text">Möchtest du %s von deiner Kontaktliste entfernen? Unterhaltungen mit diesem Kontakt werden dabei nicht entfernt.</string>
     <string name="block_contact_text">Möchtest du %s sperren und keine Nachrichten mehr erhalten?</string>
     <string name="unblock_contact_text">Möchtest du %s entsperren und wieder Nachrichten empfangen?</string>
     <string name="block_domain_text">Alle Kontakte von %s sperren?</string>
@@ -78,7 +78,9 @@
     <string name="sharing_files_please_wait">Teile Dateien. Bitte warten…</string>
     <string name="action_clear_history">Verlauf löschen</string>
     <string name="clear_conversation_history">Unterhaltungsverlauf löschen</string>
-    <string name="clear_histor_msg">Möchtest du alle Nachrichten in dieser Unterhaltung löschen?\n\n<b>Achtung:</b> Dies beeinflusst nicht Nachrichten, die auf anderen Geräten oder Servern gespeichert sind.</string>
+    <string name="clear_histor_msg">Möchtest du alle Nachrichten in dieser Unterhaltung löschen?
+\n
+\n<b>Achtung:</b> Dies beeinflusst nicht Nachrichten, die auf anderen Geräten oder Servern gespeichert sind.</string>
     <string name="delete_file_dialog">Datei löschen</string>
     <string name="delete_file_dialog_msg">Bist du sicher, dass du diese Datei löschen möchtest\?
 \n
@@ -177,7 +179,7 @@
     <string name="unpublish_pgp_message">Bist du sicher, dass du deinen öffentlichen OpenPGP-Schlüssel aus deiner Anwesenheitsmitteilung entfernen möchtest?\nDeine Kontakte können dir dann keine OpenPGP-verschlüsselten Nachrichten senden.</string>
     <string name="openpgp_has_been_published">Öffentlicher OpenPGP-Schlüssel veröffentlicht.</string>
     <string name="mgmt_account_enable">Konto aktivieren </string>
-    <string name="mgmt_account_delete_confirm_text">Bist du sicher, dass du dein Konto möchtest\? Dies wird deinen gesamten Gesprächsverlauf entfernen</string>
+    <string name="mgmt_account_delete_confirm_text">Bist du sicher, dass du dein Konto möchtest? Dies wird deinen gesamten Gesprächsverlauf entfernen</string>
     <string name="attach_record_voice">Sprache aufzeichnen</string>
     <string name="account_settings_jabber_id">XMPP-Adresse</string>
     <string name="block_jabber_id">XMPP-Adresse sperren</string>
@@ -695,7 +697,8 @@
     <string name="error_trustkey_device_list">Geräteliste konnte nicht abgerufen werden</string>
     <string name="error_trustkey_bundle">Verschlüsselungsschlüssel konnte nicht abgerufen werden</string>
     <string name="error_trustkey_hint_mutual">Tipp: In manchen Fällen kann dies behoben werden, indem man sich gegenseitig zu den Kontaktlisten hinzufügt.</string>
-    <string name="disable_encryption_message">Bist du sicher, dass du die OMEMO-Verschlüsselung für dieses Gespräch deaktivieren möchtest?\nDies wird es deinem Serveradministrator ermöglichen, deine Nachrichten zu lesen, aber es könnte die einzige Möglichkeit sein, mit Personen zu kommunizieren, die veraltete Clients verwenden. </string>
+    <string name="disable_encryption_message">Bist du sicher, dass du die OMEMO-Verschlüsselung für dieses Gespräch deaktivieren möchtest?
+\nDies wird es deinem Serveradministrator ermöglichen, deine Nachrichten zu lesen, aber es könnte die einzige Möglichkeit sein, mit Personen zu kommunizieren, die veraltete Clients verwenden.</string>
     <string name="disable_now">Jetzt deaktivieren</string>
     <string name="draft">Entwurf:</string>
     <string name="pref_omemo_setting">OMEMO-Verschlüsselung</string>
