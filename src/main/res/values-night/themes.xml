@@ -1,5 +1,5 @@
-
 <resources>
+
     <style name="Theme.Conversations3" parent="Theme.Material3.Dark.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
@@ -28,5 +28,10 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
+    </style>
+
+    <style name="Theme.Conversations3.SplashScreen" parent="@style/Theme.Conversations3">
+        <item name="android:windowBackground">@drawable/background_splash_screen</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

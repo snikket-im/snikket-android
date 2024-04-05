@@ -10,8 +10,10 @@
         <item name="android:navigationBarColor">@android:color/black</item>
     </style>
 
+
     <style name="Theme.Conversations3.SplashScreen" parent="@style/Theme.Conversations3">
         <item name="android:windowBackground">@drawable/background_splash_screen</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.Conversations3.Dialog" parent="@style/Theme.Conversations3">
