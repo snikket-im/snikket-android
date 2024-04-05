@@ -390,8 +390,8 @@
     <string name="preparing_image">آماده‌سازی برای فرستادن عکس</string>
     <string name="send_private_message_to">فرستادن پیام خصوصی به %s</string>
     <string name="location">موقعیت مکانی</string>
-    <string name="clear_histor_msg">آیا می‌خواهید همهٔ پیام‌ها در این گفتگو را پاک کنید؟
-\n
+    <string name="clear_histor_msg">آیا می‌خواهید همهٔ پیام‌ها در این گفتگو را پاک کنید؟ 
+\n 
 \n<b>هشدار:</b> این کار تأثیری روی پیام‌هایی که روی دستگاه‌ها یا سرورهای دیگر ذخیره شده‌اند ندارد.</string>
     <string name="block_contact_text">آیا می‌خواهید %s را مسدود کنید تا نتواند پیامی به شما بدهد؟</string>
     <string name="copy_omemo_clipboard_description">کپی اثر انگشت OMEMO</string>
