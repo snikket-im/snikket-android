@@ -79,7 +79,9 @@
     <string name="sharing_files_please_wait">Compartilhando arquivos. Por favor, aguarde...</string>
     <string name="action_clear_history">Limpar o histórico</string>
     <string name="clear_conversation_history">Limpa o histórico de conversas</string>
-    <string name="clear_histor_msg">Deseja excluir todas as mensagens dessa conversa?\n\n<b>Atenção:</b> Isso não afetará mensagens armazenadas em outros dispositivos ou servidores.</string>
+    <string name="clear_histor_msg">Deseja excluir todas as mensagens dessa conversa?
+\n
+\n<b>Atenção:</b> Isso não afetará mensagens armazenadas em outros dispositivos ou servidores.</string>
     <string name="delete_file_dialog">Excluir arquivo</string>
     <string name="delete_file_dialog_msg">Deseja realmente excluir este arquivo?\n\n<b>Atenção:</b> Isso não excluirá cópias deste arquivo armazenadas em outros dispositivos ou servidores.</string>
     <string name="choose_presence">Selecione o dispositivo</string>
@@ -699,7 +701,8 @@
     <string name="error_trustkey_device_list">Não foi possível obter a lista de dispositivos</string>
     <string name="error_trustkey_bundle">Não foi possível obter as chaves de criptografia</string>
     <string name="error_trustkey_hint_mutual">Dica: Em alguns casos isso pode ser resolvido adicionando-se um ao outro na lista de contatos.</string>
-    <string name="disable_encryption_message">Tem certeza que deseja desabilitar a criptografia OMEMO nesta conversa?\nIsso permitirá que o administrador do seu servidor seja capaz de ler suas mensagens. Por outro lado, pode ser a única forma de se comunicar com pessoas usando clientes desatualizados.</string>
+    <string name="disable_encryption_message">Tem certeza que deseja desabilitar a criptografia OMEMO nesta conversa?
+\nIsso permitirá que o administrador do seu servidor seja capaz de ler suas mensagens. Por outro lado, pode ser a única forma de se comunicar com pessoas usando clientes desatualizados.</string>
     <string name="disable_now">Desabilitar agora</string>
     <string name="draft">Rascunho:</string>
     <string name="pref_omemo_setting">Criptografia OMEMO</string>
