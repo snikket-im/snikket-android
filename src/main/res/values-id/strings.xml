@@ -75,7 +75,9 @@
     <string name="sharing_files_please_wait">Membagikan berkas. Mohon tunggu…</string>
     <string name="action_clear_history">Bersihkan riwayat</string>
     <string name="clear_conversation_history">Hapus Riwayat Percakapan</string>
-    <string name="clear_histor_msg">Apakah Anda ingin menghapus semua pesan dalam percakapan ini?\n\n<b>Peringatan:</b> Ini tidak akan mempengaruhi pesan yang tersimpan di perangkat atau server lain.</string>
+    <string name="clear_histor_msg">Apakah Anda ingin menghapus semua pesan dalam percakapan ini?
+\n
+\n<b>Peringatan:</b> Ini tidak akan mempengaruhi pesan yang tersimpan di perangkat atau server lain.</string>
     <string name="delete_file_dialog">Hapus file</string>
     <string name="delete_file_dialog_msg">Anda yakin ingin menghapus file ini?\n\n<b>Peringatan:</b> Ini tidak akan menghapus salinan dari file ini yang disimpan di perangkat atau server lain.</string>
     <string name="choose_presence">Pilih perangkat</string>
