@@ -39,7 +39,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Deltagare</string>
     <string name="visitor">Besökare</string>
-    <string name="remove_contact_text">Vill du ta bort %s från din kontaktlista\? Konversationer med denna kontakt kommer inte att tas bort.</string>
+    <string name="remove_contact_text">Vill du ta bort %s från din kontaktlista? Konversationer med denna kontakt kommer inte att tas bort.</string>
     <string name="block_contact_text">Vill du blockera %s från att skicka dig meddelanden?</string>
     <string name="unblock_contact_text">Vill du avblockera %s och tillåta användaren att skicka dig meddelanden\?</string>
     <string name="block_domain_text">Blockera alla kontakter från %s?</string>
@@ -78,8 +78,8 @@
     <string name="sharing_files_please_wait">Delar filer. Var god vänta…</string>
     <string name="action_clear_history">Rensa historik</string>
     <string name="clear_conversation_history">Rensa konversationshistorik</string>
-    <string name="clear_histor_msg">Vill du ta bort alla meddelanden i den här konversationen\?
-\n
+    <string name="clear_histor_msg">Vill du ta bort alla meddelanden i den här konversationen? 
+\n 
 \n<b>Varning:</b> Det här påverkar inte meddelanden som finns lagrade på andra enheter eller servrar.</string>
     <string name="delete_file_dialog">Ta bort fil</string>
     <string name="delete_file_dialog_msg">Är du säker på att du vill ta bort den här filen\?
@@ -185,7 +185,7 @@
 \nDina kontakter kommer inte längre att kunna skicka OpenPGP-krypterade meddelande till dig.</string>
     <string name="openpgp_has_been_published">OpenPGP-nyckel har publicerats.</string>
     <string name="mgmt_account_enable">Aktivera konto</string>
-    <string name="mgmt_account_delete_confirm_text">Är du säker på att du vill ta bort ditt konto\? Om du tar bort ditt konto, tas hela din konversationshistorik bort</string>
+    <string name="mgmt_account_delete_confirm_text">Är du säker på att du vill ta bort ditt konto? Om du tar bort ditt konto, tas hela din konversationshistorik bort</string>
     <string name="attach_record_voice">Spela in röst</string>
     <string name="account_settings_jabber_id">XMPP-adress</string>
     <string name="block_jabber_id">Blockera XMPP-adress</string>
@@ -710,7 +710,7 @@
     <string name="error_trustkey_device_list">Det gick inte att hämta enhetslistan</string>
     <string name="error_trustkey_bundle">Det gick inte att hämta krypteringsnycklar</string>
     <string name="error_trustkey_hint_mutual">Tips: I vissa fall kan det här åtgärdas genom att lägga till varandra i era respektive kontaktlistor.</string>
-    <string name="disable_encryption_message">Är du säker på att du vill inaktivera OMEMO-kryptering för den här konversationen\?
+    <string name="disable_encryption_message">Är du säker på att du vill inaktivera OMEMO-kryptering för den här konversationen?
 \nDet innebär att din serveradministratör kan läsa dina meddelanden, men det kan också vara det enda sättet att kommunicera med personer som använder föråldrade klienter.</string>
     <string name="disable_now">Inaktivera nu</string>
     <string name="draft">Utkast:</string>
