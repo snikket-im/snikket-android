@@ -436,7 +436,7 @@
     <string name="show_location">Show location</string>
     <string name="no_application_found_to_display_location">No app found to display location</string>
     <string name="location">Location</string>
-    <string name="title_undo_swipe_out_chat">Chat archived!</string>
+    <string name="title_undo_swipe_out_chat">Chat archived</string>
     <string name="title_undo_swipe_out_group_chat">Left private group chat</string>
     <string name="title_undo_swipe_out_channel">Left public channel</string>
     <string name="pref_dont_trust_system_cas_title">Don’t trust system CAs</string>
