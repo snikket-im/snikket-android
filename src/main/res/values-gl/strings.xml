@@ -1035,5 +1035,5 @@
     <string name="channel_discover_opt_in_message">O descubrimento de canles usa un servizo alleo chamado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Ao usar esta ferramenta vas enviar o teu enderezo IP e termos de busca a ese servizo. Le a súa &lt;a href=https://search.jabber.network/privacy&gt;Política de Privacidade&lt;/a&gt; para saber máis.</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_chat">O código de barras non contén impresións dixitais para este chat.</string>
     <string name="corresponding_chats_closed">Arquiváronse os chats correspondentes.</string>
-    <string name="title_undo_swipe_out_chat">Chat arquivado!</string>
+    <string name="title_undo_swipe_out_chat">Chat arquivado</string>
 </resources>
