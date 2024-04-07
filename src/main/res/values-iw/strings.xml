@@ -240,7 +240,6 @@
     <string name="toast_no_trusted_certs">אין חתימות דיגטליות שאושרו ידנית</string>
     <string name="dialog_manage_certs_title">מחק חתימות דיגטליות</string>
     <string name="dialog_manage_certs_positivebutton">מחק פריטים שנבחרו</string>
-    <string name="dialog_manage_certs_negativebutton">ביטול</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d חתימה נמחקה</item>
         <item quantity="two">%d חתימות נמחקו</item>

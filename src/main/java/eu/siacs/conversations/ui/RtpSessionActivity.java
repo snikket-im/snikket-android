@@ -475,7 +475,7 @@ public class RtpSessionActivity extends XmppActivity
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         final var intent = getIntent();
         if (intent == null) {
             return;

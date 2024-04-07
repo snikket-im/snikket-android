@@ -35,7 +35,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
     protected void refreshUiReal() {}
 
     @Override
-    void onBackendConnected() {}
+    protected void onBackendConnected() {}
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

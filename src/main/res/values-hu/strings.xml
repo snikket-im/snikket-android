@@ -422,7 +422,6 @@
     <string name="toast_no_trusted_certs">Nincsenek kézzel jóváhagyott tanúsítványok</string>
     <string name="dialog_manage_certs_title">Tanúsítványok eltávolítása</string>
     <string name="dialog_manage_certs_positivebutton">Kijelölés törlése</string>
-    <string name="dialog_manage_certs_negativebutton">Mégse</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d tanúsítvány törölve</item>
         <item quantity="other">%d tanúsítvány törölve</item>

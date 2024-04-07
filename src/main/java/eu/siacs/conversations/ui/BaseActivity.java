@@ -25,7 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        SettingsUtils.applyScreenshotPreventionSetting(this);
+        SettingsUtils.applyScreenshotSetting(this);
     }
 
     public void setDynamicColors(final boolean isDynamicColors) {

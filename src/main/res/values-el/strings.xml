@@ -431,7 +431,6 @@
     <string name="toast_no_trusted_certs">Δεν υπάρχουν χειροκίνητα επιβεβαιωμένα πιστοποιητικα</string>
     <string name="dialog_manage_certs_title">Αφαίρεση πιστοποιητικών</string>
     <string name="dialog_manage_certs_positivebutton">Διαγραφή επιλογής</string>
-    <string name="dialog_manage_certs_negativebutton">Ακύρωση</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d πιστοποιητικό διαγράφηκε</item>
         <item quantity="other">%d πιστοποιητικά διαγράφηκαν</item>

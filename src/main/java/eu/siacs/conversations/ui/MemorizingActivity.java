@@ -60,7 +60,7 @@ public class MemorizingActivity extends AppCompatActivity implements OnClickList
 	@Override
 	public void onResume() {
 		super.onResume();
-		SettingsUtils.applyScreenshotPreventionSetting(this);
+		SettingsUtils.applyScreenshotSetting(this);
 
 		Intent i = getIntent();
 		decisionId = i.getIntExtra(MemorizingTrustManager.DECISION_INTENT_ID, MTMDecision.DECISION_INVALID);

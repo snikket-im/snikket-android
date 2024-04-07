@@ -442,7 +442,6 @@
     <string name="toast_no_trusted_certs">Bizzat onaylanmış sertifika yok</string>
     <string name="dialog_manage_certs_title">Sertifikaları kaldır</string>
     <string name="dialog_manage_certs_positivebutton">Seçilenleri sil</string>
-    <string name="dialog_manage_certs_negativebutton">İptal</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d sertifikaları silindi</item>
         <item quantity="other">%d sertifikaları silindi</item>

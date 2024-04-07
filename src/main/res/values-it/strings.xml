@@ -441,7 +441,6 @@
     <string name="toast_no_trusted_certs">Non sono presenti certificati accettati manualmente</string>
     <string name="dialog_manage_certs_title">Elimina i certificati</string>
     <string name="dialog_manage_certs_positivebutton">Cancella la selezione</string>
-    <string name="dialog_manage_certs_negativebutton">Annulla</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">Cancellato il %d certificato</item>
         <item quantity="many">Cancellati %d certificati</item>
@@ -999,7 +998,6 @@
     <string name="pref_up_push_account_title">Profilo XMPP</string>
     <string name="pref_up_push_account_summary">Il profilo attraverso cui verranno ricevuti i messaggi push.</string>
     <string name="pref_up_push_server_title">Server push</string>
-    <string name="pref_up_push_server_summary">Un server scelto dall\'utente per inoltrare i messaggi push via XMPP al tuo dispositivo.</string>
     <string name="no_account_deactivated">Nessuno (disattivato)</string>
     <string name="decline">Rifiuta</string>
     <string name="incoming_call_duration_timestamp">Chiamata in arrivo (%s) · %s</string>

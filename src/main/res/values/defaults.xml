@@ -24,6 +24,7 @@
     <bool name="btbv">true</bool>
     <integer name="automatic_message_deletion">0</integer>
     <bool name="dont_trust_system_cas">false</bool>
+    <bool name="trust_system_ca_store">true</bool>
     <bool name="allow_message_correction">true</bool>
     <bool name="use_tor">false</bool>
     <bool name="show_connection_options">false</bool>
@@ -44,7 +45,7 @@
     <bool name="start_searching">false</bool>
     <string name="video_compression">360</string>
     <string name="default_channel_discovery">JABBER_NETWORK</string>
-    <bool name="prevent_screenshots">false</bool>
+    <bool name="allow_screenshots">true</bool>
     <string name="default_push_server">up.conversations.im</string>
     <string name="default_push_account">none</string>
 </resources>

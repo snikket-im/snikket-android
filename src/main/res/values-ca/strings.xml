@@ -429,7 +429,6 @@
     <string name="toast_no_trusted_certs">No hi ha certificats aprovats manualment</string>
     <string name="dialog_manage_certs_title">Esborrar certificats</string>
     <string name="dialog_manage_certs_positivebutton">Esborrar selecció</string>
-    <string name="dialog_manage_certs_negativebutton">Cancel·lar</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificat esborrat</item>
         <item quantity="other">%d certificats esborrats</item>

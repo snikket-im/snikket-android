@@ -15,11 +15,11 @@ import androidx.databinding.DataBindingUtil;
 
 import com.wefika.flowlayout.FlowLayout;
 
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ItemContactBinding;
 import eu.siacs.conversations.entities.ListItem;
-import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
@@ -47,7 +47,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 
 	public void refreshSettings() {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-		this.showDynamicTags = preferences.getBoolean(SettingsActivity.SHOW_DYNAMIC_TAGS, false);
+		this.showDynamicTags = preferences.getBoolean(AppSettings.SHOW_DYNAMIC_TAGS, false);
 	}
 
 	@NonNull

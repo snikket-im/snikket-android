@@ -255,7 +255,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name=".ui.activity.SettingsActivity"
             android:exported="true"
             android:label="@string/title_activity_settings">
             <intent-filter>
@@ -265,10 +265,10 @@
         </activity>
         <activity
             android:name=".ui.ChooseContactActivity"
-            android:label="@string/title_activity_choose_contact"/>
+            android:label="@string/title_activity_choose_contact" />
         <activity
             android:name=".ui.BlocklistActivity"
-            android:label="@string/title_activity_block_list"/>
+            android:label="@string/title_activity_block_list" />
         <activity
             android:name=".ui.ChangePasswordActivity"
             android:label="@string/change_password_on_server" />
@@ -353,7 +353,7 @@
 
         <activity
             android:name=".ui.MediaBrowserActivity"
-            android:label="@string/media_browser"/>
+            android:label="@string/media_browser" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -380,10 +380,10 @@
         </activity>
         <activity
             android:name=".ui.MucUsersActivity"
-            android:label="@string/group_chat_members"/>
+            android:label="@string/group_chat_members" />
         <activity
             android:name=".ui.ChannelDiscoveryActivity"
-            android:label="@string/discover_channels"/>
+            android:label="@string/discover_channels" />
         <activity
             android:name=".ui.RtpSessionActivity"
             android:autoRemoveFromRecents="true"

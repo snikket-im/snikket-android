@@ -99,7 +99,6 @@
     <string name="block_contact">এই ব্যক্তিকে ব্লক্ করা যাক</string>
     <string name="unblock_contact">ব্লকটা সরিয়ে ফেলা যাক</string>
     <string name="vcard">পরিচিত ব্যক্তি</string>
-    <string name="dialog_manage_certs_negativebutton">না, থাক।</string>
     <string name="search_contacts">পরিচিত ব্যক্তিদের মধ্যে খোঁজা যাক</string>
     <string name="search_messages">বার্তাগুলির মধ্যে খোঁজা যাক</string>
     <string name="pref_start_search">সরাসরিভাবেই খোঁজা যাক</string>

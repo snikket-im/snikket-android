@@ -88,7 +88,7 @@ public class WelcomeActivity extends XmppActivity
     protected void refreshUiReal() {}
 
     @Override
-    void onBackendConnected() {}
+    protected void onBackendConnected() {}
 
     @Override
     public void onStart() {

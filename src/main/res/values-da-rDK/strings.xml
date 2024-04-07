@@ -438,7 +438,6 @@
     <string name="toast_no_trusted_certs">Ingen manuelt godkendt certifikater</string>
     <string name="dialog_manage_certs_title">Fjern certifikater</string>
     <string name="dialog_manage_certs_positivebutton">Slet valgt</string>
-    <string name="dialog_manage_certs_negativebutton">Annuller</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certifikat slettet</item>
         <item quantity="other">%d certifikater slettet</item>
@@ -990,5 +989,4 @@
     <string name="outgoing_call_duration_timestamp">Udgående opkald (%s) · %s</string>
     <string name="incoming_call_duration_timestamp">Indkommende opkald (%s) · %s</string>
     <string name="delete_from_server">Fjern konto fra server</string>
-    <string name="pref_up_push_server_summary">En brugervalgt push-server til at videresende push-meddelelser via XMPP til din enhed.</string>
 </resources>

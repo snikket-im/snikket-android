@@ -436,7 +436,6 @@
     <string name="toast_no_trusted_certs">手動で承認した証明書がありません</string>
     <string name="dialog_manage_certs_title">証明書を削除</string>
     <string name="dialog_manage_certs_positivebutton">選択したものを削除</string>
-    <string name="dialog_manage_certs_negativebutton">中止</string>
     <plurals name="toast_delete_certificates">
         <item quantity="other">%d個の証明書を削除しました</item>
     </plurals>
@@ -973,7 +972,6 @@
     <string name="outgoing_call_timestamp">発信通話 · %s</string>
     <string name="audiobook">オーディオブック</string>
     <string name="restore_warning_continued">自分で保存したバックアップしか復元しないでください！</string>
-    <string name="pref_up_push_server_summary">XMPP経由でPushメッセージを端末に転送するユーザー指定のPushサーバー。</string>
     <string name="log_in">ログイン</string>
     <string name="hide_notification">通知を表示しない</string>
     <string name="delete_from_server">アカウントをサーバーから削除</string>

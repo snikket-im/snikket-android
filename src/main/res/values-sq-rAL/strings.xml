@@ -354,7 +354,6 @@
     <string name="toast_no_trusted_certs">S’u dhanë dëshmi dorazi</string>
     <string name="dialog_manage_certs_title">Hiqi dëshmitë</string>
     <string name="dialog_manage_certs_positivebutton">Fshije përzgjedhjen</string>
-    <string name="dialog_manage_certs_negativebutton">Anuloje</string>
     <string name="pref_quick_action">Veprim i Shpejtë</string>
     <string name="none">Asnjë</string>
     <string name="recently_used">Më të përdorur së fundi</string>
@@ -968,7 +967,6 @@
     <string name="audio_video_disabled_tor">Thirrjet janë të çaktivizuara, kur përdoret Tor-i</string>
     <string name="pref_up_push_account_summary">Llogaria përmes së cilës do të merren mesazhet push.</string>
     <string name="pref_up_push_server_title">Shërbyes Push</string>
-    <string name="pref_up_push_server_summary">Një shërbyes push i zgjedhur nga përdoruesi, përmes të cilit të kalohen te pajisja juaj mesazhet push përmes XMPP-je.</string>
     <string name="magic_create_text">Ka të hartuar një udhërrëfyes mbi krijim llogarish te conversations.im.
 \nKu zgjidhet conversations.im si shërbim, do të jeni në gjendje të komunikoni me përdorues prej shërbimesh të tjera duke u dhënë atyre adresën tuaj të plotë XMPP.</string>
     <plurals name="n_missed_calls_from_m_contacts">
@@ -1027,7 +1025,6 @@
     <string name="remove_bookmark_and_close">Doni të hiqet faqerojtësi për %s dhe të mbyllet biseda?</string>
     <string name="delete_and_close">Fshije &amp; Mbylle</string>
     <string name="remove_bookmark">Doni të hiqet faqerojtësi për %s?</string>
-    <string name="channel_discover_opt_in_message">Pikasja e kanaleve përdor një shërbim palë të tretë të quajtur &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Përdorimi i kësaj veçorie do t’i transmetojë atij shërbimi adresën tuaj IP dhe terma kërkimesh. Për më tepër hollësi, shihni &lt;a href=https://search.jabber.network/privacy&gt;Rregullat e tyre mbi Privatësinë&lt;/a&gt;.</string>
     <string name="pref_use_colorful_bubbles_summary">Flluska të ngjyrosura fjalosjeje ndihmojnë të dalloni mesazhe të dërguar dhe të marrë</string>
     <string name="pref_dynamic_colors">Ngjyra dinamike</string>
     <string name="pref_dynamic_colors_summary">Ngjyra Sistemi (Material You)</string>

@@ -126,7 +126,7 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity im
 	protected abstract void filterContacts(final String needle);
 
 	@Override
-	void onBackendConnected() {
+    protected void onBackendConnected() {
 		filterContacts();
 	}
 

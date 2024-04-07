@@ -357,7 +357,6 @@
     <string name="toast_no_trusted_certs">Tidak ada sertifikat yang disahkan secara manual</string>
     <string name="dialog_manage_certs_title">Hapus sertifikat</string>
     <string name="dialog_manage_certs_positivebutton">Hapus seleksi</string>
-    <string name="dialog_manage_certs_negativebutton">Batal</string>
     <plurals name="toast_delete_certificates">
         <item quantity="other">%d sertifikat dihapus</item>
     </plurals>

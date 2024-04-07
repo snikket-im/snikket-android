@@ -451,7 +451,6 @@
     <string name="toast_no_trusted_certs">Brak ryncznie zadufanych certyfikatōw</string>
     <string name="dialog_manage_certs_title">Wymaż certyfikaty</string>
     <string name="dialog_manage_certs_positivebutton">Wymaż zaznaczōne</string>
-    <string name="dialog_manage_certs_negativebutton">Pociep</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">Wymazany %d certyfikat</item>
         <item quantity="few">Wymazane %d certyfikaty</item>

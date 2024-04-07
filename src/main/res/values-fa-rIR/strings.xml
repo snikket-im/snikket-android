@@ -139,7 +139,6 @@
     <string name="no_role">آفلاین</string>
     <string name="vcard">مخاطب</string>
     <string name="show_location">نمایش موقعیت مکانی</string>
-    <string name="dialog_manage_certs_negativebutton">لغو</string>
     <string name="presence_online">آنلاین</string>
     <string name="gp_medium">متوسط</string>
     <string name="mtm_accept_cert">تأییدیهٔ امنیتی ناشناخته پذیرفته شود؟</string>
@@ -157,7 +156,6 @@
     <string name="view_conversation">دیدن گفتگو</string>
     <string name="toast_message_omemo_fingerprint">اثر انگشت OMEMO کپی شد</string>
     <string name="show_block_list">نمایش مسدودسازی‌ها</string>
-    <string name="pref_up_push_server_summary">سرور push دلخواه کاربر برای رساندن اعلان‌های push از راه XMPP به دستگاه شما.</string>
     <string name="connect">وصل شدن</string>
     <string name="log_in">ورود</string>
     <string name="not_connected_try_again">شما وصل نیستید. بعداً دوباره تلاش کنید</string>

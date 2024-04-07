@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_category_engagement_notifications">
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/confirm_messages"
+            android:icon="@drawable/ic_done_all_24dp"
+            android:key="confirm_messages"
+            android:summary="@string/pref_confirm_messages_summary"
+            android:title="@string/pref_confirm_messages" />
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/chat_states"
+            android:icon="@drawable/ic_keyboard_24dp"
+            android:key="chat_states"
+            android:summary="@string/pref_chat_states_summary"
+            android:title="@string/pref_chat_states" />
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/last_activity"
+            android:key="last_activity"
+            android:icon="@drawable/ic_visibility_24dp"
+            android:summary="@string/pref_broadcast_last_activity_summary"
+            android:title="@string/pref_broadcast_last_activity" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_interaction">
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/allow_message_correction"
+            android:icon="@drawable/ic_edit_24dp"
+            android:key="allow_message_correction"
+            android:summary="@string/pref_allow_message_correction_summary"
+            android:title="@string/pref_allow_message_correction" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_presence_settings">
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/manually_change_presence"
+            android:disableDependentsState="true"
+            android:icon="@drawable/ic_announcement_24dp"
+            android:key="manually_change_presence"
+            android:summary="@string/pref_manually_change_presence_summary"
+            android:title="@string/pref_manually_change_presence" />
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/away_when_screen_off"
+            android:dependency="manually_change_presence"
+            android:icon="@drawable/ic_screen_lock_portrait_24dp"
+            android:key="away_when_screen_off"
+            android:summary="@string/pref_away_when_screen_off_summary"
+            android:title="@string/pref_away_when_screen_off" />
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/dnd_on_silent_mode"
+            android:dependency="manually_change_presence"
+            android:icon="@drawable/ic_do_not_disturb_on_24dp"
+            android:key="dnd_on_silent_mode"
+            android:summary="@string/pref_dnd_on_silent_mode_summary"
+            android:title="@string/pref_dnd_on_silent_mode" />
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/treat_vibrate_as_silent"
+            android:dependency="dnd_on_silent_mode"
+            android:icon="@drawable/ic_vibration_24dp"
+            android:key="treat_vibrate_as_silent"
+            android:summary="@string/pref_treat_vibrate_as_dnd_summary"
+            android:title="@string/pref_treat_vibrate_as_silent" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_application">
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/never_send"
+            android:icon="@drawable/ic_report_24dp"
+            android:key="never_send"
+            android:summary="@string/pref_never_send_crash_summary"
+            android:title="@string/pref_never_send_crash" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

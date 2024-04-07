@@ -443,7 +443,6 @@
     <string name="toast_no_trusted_certs">Nici un certificat aprobat manual</string>
     <string name="dialog_manage_certs_title">Înlătură certificatele</string>
     <string name="dialog_manage_certs_positivebutton">Șterge selecția</string>
-    <string name="dialog_manage_certs_negativebutton">Anuleaza</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificat sters</item>
         <item quantity="few">%d certificate sterse</item>
@@ -1001,7 +1000,6 @@
     <string name="reject_switch_to_video">Respinge solicitarea de comutare la video</string>
     <string name="pref_up_push_account_title">Cont XMPP</string>
     <string name="pref_up_push_server_title">Server Push</string>
-    <string name="pref_up_push_server_summary">Un server ales de utilizator pentru a intermedia mesajele push către dispozitivul vostru prin XMPP.</string>
     <string name="no_account_deactivated">Nici unul (dezactivat)</string>
     <string name="unified_push_distributor">Distribuitor UnifiedPush</string>
     <string name="pref_up_push_account_summary">Contul prin care vor fi primite notificările push.</string>

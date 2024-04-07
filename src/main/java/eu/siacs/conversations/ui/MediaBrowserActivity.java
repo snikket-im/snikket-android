@@ -44,7 +44,7 @@ public class MediaBrowserActivity extends XmppActivity implements OnMediaLoaded 
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         Intent intent = getIntent();
         String account = intent == null ? null : intent.getStringExtra("account");
         String jid = intent == null ? null : intent.getStringExtra("jid");

@@ -423,7 +423,6 @@
     <string name="pref_remove_trusted_certificates_summary">Poista käsin hyväksytyt varmenteet</string>
     <string name="toast_no_trusted_certs">Ei käsin hyväksyttyjä varmenteita</string>
     <string name="dialog_manage_certs_title">Poista varmenteet</string>
-    <string name="dialog_manage_certs_negativebutton">Peruuta</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d varmenne poistettiin</item>
         <item quantity="other">%d varmennetta poistettiin</item>

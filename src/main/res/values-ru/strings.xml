@@ -435,7 +435,6 @@
     <string name="toast_no_trusted_certs">Не найдено сертификатов, подтверждённых вручную</string>
     <string name="dialog_manage_certs_title">Удалить сертификаты</string>
     <string name="dialog_manage_certs_positivebutton">Удалить отмеченные</string>
-    <string name="dialog_manage_certs_negativebutton">Отмена</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">Удалён %d сертификат</item>
         <item quantity="few">Удалено %d сертификата</item>
@@ -1009,7 +1008,6 @@
     <string name="account_registrations_are_not_supported">Регистрации учётных записей не поддерживаются</string>
     <string name="audio_video_disabled_tor">Звонки выключены, пока используется Tor</string>
     <string name="pref_up_push_account_summary">Учётная запись для получения пуш-уведомлений.</string>
-    <string name="pref_up_push_server_summary">Выбираемый пользователем сервер для перенаправления уведомлений на Ваше устройство.</string>
     <string name="no_account_deactivated">Нет (неактивно)</string>
     <string name="verifying_omemo_keys_trusted_source_account">Вы собираетесь проверить ключи OMEMO своей учетной записи. Это безопасно только в том случае, если вы перешли по этой ссылке из надежного источника, где только вы могли опубликовать эту ссылку.</string>
     <string name="restore_warning_continued">Не пытайтесь восстановить резервные копии, которые не были созданы вами!</string>

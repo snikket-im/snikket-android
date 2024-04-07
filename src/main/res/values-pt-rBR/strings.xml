@@ -437,7 +437,6 @@
     <string name="toast_no_trusted_certs">Nenhum certificado aprovado manualmente</string>
     <string name="dialog_manage_certs_title">Remover certificados</string>
     <string name="dialog_manage_certs_positivebutton">Excluir a seleção</string>
-    <string name="dialog_manage_certs_negativebutton">Cancelar</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificado cancelado</item>
         <item quantity="many">%d certificados cancelados</item>

@@ -414,7 +414,6 @@
     <string name="toast_no_trusted_certs">沒有手動核准的憑證</string>
     <string name="dialog_manage_certs_title">移除憑證</string>
     <string name="dialog_manage_certs_positivebutton">刪除選取項目</string>
-    <string name="dialog_manage_certs_negativebutton">取消</string>
     <plurals name="toast_delete_certificates">
         <item quantity="other">%d 個憑證已刪除</item>
     </plurals>
@@ -964,7 +963,6 @@
     <string name="unified_push_distributor">UnifiedPush 散發者</string>
     <string name="pref_up_push_account_title">XMPP 帳戶</string>
     <string name="pref_up_push_server_title">推送伺服器</string>
-    <string name="pref_up_push_server_summary">使用者選擇的推送伺服器，透過 XMPP 將訊息推送至您的裝置。</string>
     <string name="no_account_deactivated">無 (已停用)</string>
     <string name="pref_up_push_account_summary">接收推送訊息的帳戶。</string>
     <string name="decline">拒絕</string>

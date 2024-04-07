@@ -447,7 +447,6 @@
     <string name="toast_no_trusted_certs">Inga manuellt godkända certifikat</string>
     <string name="dialog_manage_certs_title">Ta bort certifikaten</string>
     <string name="dialog_manage_certs_positivebutton">Ta bort val</string>
-    <string name="dialog_manage_certs_negativebutton">Avbryt</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certifikat borttaget</item>
         <item quantity="other">%d certifikat borttagna</item>
@@ -974,7 +973,6 @@
     <string name="pref_up_push_account_title">XMPP-konto</string>
     <string name="pref_up_push_account_summary">Kontot genom vilket push-meddelanden tas emot.</string>
     <string name="pref_up_push_server_title">Push-server</string>
-    <string name="pref_up_push_server_summary">En användarvald push-server för att vidarebefordra push-meddelanden via XMPP till din enhet.</string>
     <string name="no_account_deactivated">Ingen (inaktiverad)</string>
     <string name="logged_in_with_another_device">Det här telefonnumret är för närvarande inloggat med en annan enhet.</string>
     <string name="enter_your_name_instructions">Var god ange ditt namn för att låta personer som inte har dig i sina adressböcker, veta vem du är.</string>

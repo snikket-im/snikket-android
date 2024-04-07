@@ -362,7 +362,6 @@
     <string name="toast_no_trusted_certs">Ez dago eskuz onartutako ziurtagiririk</string>
     <string name="dialog_manage_certs_title">Ziurtagiriak kendu</string>
     <string name="dialog_manage_certs_positivebutton">Aukeratutakoak ezabatu</string>
-    <string name="dialog_manage_certs_negativebutton">Utzi</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">Ziurtagiri %d ezabatua</item>
         <item quantity="other">%d ziurtagiri ezabatuak</item>

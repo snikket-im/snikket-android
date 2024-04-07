@@ -147,7 +147,7 @@ public class EasyOnboardingInviteActivity extends XmppActivity
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         if (easyOnboardingInvite != null) {
             return;
         }

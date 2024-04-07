@@ -282,7 +282,7 @@
     <string name="ignore">Ignore</string>
     <string name="without_mutual_presence_updates"><b>Warning:</b> Sending this without mutual presence updates could cause unexpected problems.\n\n<small>Go to “Contact details” to verify your presence subscriptions.</small></string>
     <string name="pref_security_settings">Security</string>
-    <string name="pref_allow_message_correction">Allow message correction</string>
+    <string name="pref_allow_message_correction">Message correction</string>
     <string name="pref_allow_message_correction_summary">Allow your contacts to retroactively edit their messages</string>
     <string name="pref_expert_options">Expert settings</string>
     <string name="pref_expert_options_summary">Please be careful with these</string>
@@ -446,7 +446,6 @@
     <string name="toast_no_trusted_certs">No manually approved certificates</string>
     <string name="dialog_manage_certs_title">Remove certificates</string>
     <string name="dialog_manage_certs_positivebutton">Delete selection</string>
-    <string name="dialog_manage_certs_negativebutton">Cancel</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificate deleted</item>
         <item quantity="other">%d certificates deleted</item>
@@ -479,8 +478,8 @@
     <string name="pref_dnd_on_silent_mode_summary">Show as Busy when device is in silent mode</string>
     <string name="pref_treat_vibrate_as_silent">Treat vibrate as silent mode</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Show as Busy when device is on vibrate</string>
-    <string name="pref_show_connection_options">Extended connection settings</string>
-    <string name="pref_show_connection_options_summary">Show hostname and port settings when setting up an account</string>
+    <string name="pref_show_connection_options">Hostname &amp; Port</string>
+    <string name="pref_show_connection_options_summary">Show extended connection settings when setting up an account</string>
     <string name="hostname_example">xmpp.example.com</string>
     <string name="action_add_account_with_certificate">Login with certificate</string>
     <string name="unable_to_parse_certificate">Could not parse certificate</string>
@@ -571,8 +570,8 @@
     <string name="gp_short">Short</string>
     <string name="gp_medium">Medium</string>
     <string name="gp_long">Long</string>
-    <string name="pref_broadcast_last_activity">Broadcast use</string>
-    <string name="pref_broadcast_last_activity_summary">Lets your contacts know when you use Conversations</string>
+    <string name="pref_broadcast_last_activity">Last seen</string>
+    <string name="pref_broadcast_last_activity_summary">Let your contacts see when you last used the app</string>
     <string name="pref_privacy">Privacy</string>
     <string name="pref_theme_options">Theme</string>
     <string name="pref_theme_options_summary">Select the color palette</string>
@@ -749,7 +748,7 @@
     <string name="copy_jabber_id">Copy XMPP address</string>
     <string name="p1_s3_filetransfer">HTTP File Sharing for S3</string>
     <string name="pref_start_search">Direct Search</string>
-    <string name="pref_start_search_summary">At ‘Start chat’ screen open keyboard and place cursor in search field</string>
+    <string name="pref_start_search_summary">At ‘New chat’ screen open keyboard and place cursor in search field</string>
     <string name="group_chat_avatar">Group chat avatar</string>
     <string name="host_does_not_support_group_chat_avatars">Host does not support group chat avatars</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Only the owner can change group chat avatar</string>
@@ -1009,7 +1008,6 @@
     <string name="pref_up_push_account_title">XMPP Account</string>
     <string name="pref_up_push_account_summary">The account through which push messages will be received.</string>
     <string name="pref_up_push_server_title">Push Server</string>
-    <string name="pref_up_push_server_summary">A user-chosen push server to relay push messages via XMPP to your device.</string>
     <string name="no_account_deactivated">None (deactivated)</string>
     <string name="decline">Decline</string>
     <string name="delete_from_server">Remove account from server</string>
@@ -1027,4 +1025,39 @@
     <string name="delete_and_close">Delete &amp; Archive chat</string>
     <string name="start_chat">Start chat</string>
     <string name="no_certificate_selected">No client certificate selected!</string>
+
+
+
+    <string name="pref_title_interface">Interface</string>
+    <string name="pref_summary_appearance">Theme, Colors, Screenshots, Input</string>
+    <string name="pref_title_security">Security</string>
+    <string name="pref_summary_security">E2E Encryption, Blind Trust Before Verification, MIM Detection</string>
+    <string name="unified_push_summary">Notification relay for UnifiedPush compatible third party apps</string>
+    <string name="notifications">Notifications</string>
+    <string name="pref_attachments_summary">File size, Image compression, Video quality</string>
+    <string name="pref_notifications_summary">Grace period, Ringtone, Vibration, Strangers</string>
+    <string name="pref_category_sending">Sending</string>
+    <string name="pref_category_receiving">Receiving</string>
+    <string name="pref_automatic_download">Automatic download</string>
+    <string name="appearance">Appearance</string>
+    <string name="pref_light_dark_mode">Light/dark mode</string>
+    <string name="pref_allow_screenshots">Allow screenshots</string>
+    <string name="pref_allow_screenshots_summary">Show app content in app switcher and allow screenshots to be taken</string>
+    <string name="pref_category_e2ee">End-to-end encryption</string>
+    <string name="pref_title_trust_system_ca_store">Certificate authorities</string>
+    <string name="pref_title_trust_system_ca_store_summary">Trust the system’s CA certificates</string>
+    <string name="detect_mim">Require channel binding</string>
+    <string name="detect_mim_summary">Channel binding can detect some machine-in-the-middle attacks</string>
+    <string name="pref_category_server_connection">Server connection</string>
+    <string name="pref_category_operating_system">Operating System</string>
+    <string name="pref_privacy_summary">Typing notifications, Last Seen, Availability</string>
+    <string name="pref_connection_summary">Hostname &amp; Port, Tor</string>
+    <string name="pref_connection_summary_w_cd">Hostname &amp; Port, Tor, Channel Discovery</string>
+    <string name="pref_keyboard_options">Keyboard</string>
+    <string name="pref_category_engagement_notifications">Engagement notifications</string>
+    <string name="pref_category_application">Application</string>
+    <string name="pref_category_interaction">Interaction</string>
+    <string name="pref_category_on_this_device">On device</string>
+    <string name="pref_up_long_summary">When acting as a UnifiedPush Distributor the persistent, reliably and battery-friendly XMPP connection will be utilized to wake up other UnifiedPush compatible app such as Tusky, Ltt.rs, FluffyChat and more.</string>
+
 </resources>

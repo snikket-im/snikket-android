@@ -432,7 +432,6 @@
     <string name="toast_no_trusted_certs">Žádné ručně povolené certifikáty</string>
     <string name="dialog_manage_certs_title">Odstranit certifikáty</string>
     <string name="dialog_manage_certs_positivebutton">Smazat výběr</string>
-    <string name="dialog_manage_certs_negativebutton">Zrušit</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certifikát smazán</item>
         <item quantity="few">%d certifikáty smazány</item>

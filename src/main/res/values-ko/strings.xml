@@ -279,7 +279,6 @@
     <string name="toast_no_trusted_certs">수동으로 승인된 인증서 없음 </string>
     <string name="dialog_manage_certs_title">인증서 삭제 </string>
     <string name="dialog_manage_certs_positivebutton">선택 삭제 </string>
-    <string name="dialog_manage_certs_negativebutton">취소 </string>
     <plurals name="toast_delete_certificates">
         <item quantity="other">%d 인증서 삭제됨 </item>
     </plurals>

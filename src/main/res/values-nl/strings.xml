@@ -399,7 +399,6 @@
     <string name="toast_no_trusted_certs">Geen handmatig goedgekeurde certificaten</string>
     <string name="dialog_manage_certs_title">Certificaten verwijderen</string>
     <string name="dialog_manage_certs_positivebutton">Selectie verwijderen</string>
-    <string name="dialog_manage_certs_negativebutton">Annuleren</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificaat verwijderd</item>
         <item quantity="other">%d certificaten verwijderd</item>

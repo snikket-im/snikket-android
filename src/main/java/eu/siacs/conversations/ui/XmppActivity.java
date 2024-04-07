@@ -18,7 +18,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
@@ -56,6 +55,7 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Strings;
 
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -348,7 +348,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         dialog.show();
     }
 
-    abstract void onBackendConnected();
+    protected abstract void onBackendConnected();
 
     protected void registerListeners() {
         if (this instanceof XmppConnectionService.OnConversationUpdate) {
@@ -414,7 +414,7 @@ public abstract class XmppActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(this, eu.siacs.conversations.ui.activity.SettingsActivity.class));
                 break;
             case R.id.action_privacy_policy:
                 openPrivacyPolicy();
@@ -832,7 +832,7 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     protected boolean manuallyChangePresence() {
-        return getBooleanPreference(SettingsActivity.MANUALLY_CHANGE_PRESENCE, R.bool.manually_change_presence);
+        return getBooleanPreference(AppSettings.MANUALLY_CHANGE_PRESENCE, R.bool.manually_change_presence);
     }
 
     protected String getShareableUri() {
@@ -873,7 +873,7 @@ public abstract class XmppActivity extends ActionBarActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        SettingsUtils.applyScreenshotPreventionSetting(this);
+        SettingsUtils.applyScreenshotSetting(this);
     }
 
     @Override

@@ -67,6 +67,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -940,16 +941,15 @@ public class NotificationService {
         final Resources resources = mXmppConnectionService.getResources();
         final String ringtone =
                 preferences.getString(
-                        "notification_ringtone",
+                        AppSettings.NOTIFICATION_RINGTONE,
                         resources.getString(R.string.notification_ringtone));
         final boolean vibrate =
                 preferences.getBoolean(
-                        "vibrate_on_notification",
+                        AppSettings.NOTIFICATION_VIBRATE,
                         resources.getBoolean(R.bool.vibrate_on_notification));
-        final boolean led = preferences.getBoolean("led", resources.getBoolean(R.bool.led));
+        final boolean led = preferences.getBoolean(AppSettings.NOTIFICATION_LED, resources.getBoolean(R.bool.led));
         final boolean headsup =
-                preferences.getBoolean(
-                        "notification_headsup", resources.getBoolean(R.bool.headsup_notifications));
+                preferences.getBoolean(AppSettings.NOTIFICATION_HEADS_UP, resources.getBoolean(R.bool.headsup_notifications));
         if (notify && !quietHours) {
             if (vibrate) {
                 final int dat = 70;

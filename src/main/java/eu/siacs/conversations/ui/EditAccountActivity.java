@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -938,7 +939,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
     private void changePresence() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean manualStatus = sharedPreferences.getBoolean(SettingsActivity.MANUALLY_CHANGE_PRESENCE, getResources().getBoolean(R.bool.manually_change_presence));
+        boolean manualStatus = sharedPreferences.getBoolean(AppSettings.MANUALLY_CHANGE_PRESENCE, getResources().getBoolean(R.bool.manually_change_presence));
         final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         final DialogPresenceBinding binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.dialog_presence, null, false);
         String current = mAccount.getPresenceStatusMessage();

@@ -93,6 +93,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.android.JabberIdContact;
@@ -130,7 +131,6 @@ import eu.siacs.conversations.persistance.UnifiedPushDatabase;
 import eu.siacs.conversations.ui.ChooseAccountForProfilePictureActivity;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.RtpSessionActivity;
-import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
 import eu.siacs.conversations.ui.interfaces.OnMediaLoaded;
@@ -865,9 +865,7 @@ public class XmppConnectionService extends Service {
                 }
                 break;
             case ACTION_IDLE_PING:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    scheduleNextIdlePing();
-                }
+                scheduleNextIdlePing();
                 break;
             case ACTION_FCM_MESSAGE_RECEIVED:
                 Log.d(Config.LOGTAG, "push message arrived in service. account");
@@ -1119,19 +1117,19 @@ public class XmppConnectionService extends Service {
     }
 
     private boolean dndOnSilentMode() {
-        return getBooleanPreference(SettingsActivity.DND_ON_SILENT_MODE, R.bool.dnd_on_silent_mode);
+        return getBooleanPreference(AppSettings.DND_ON_SILENT_MODE, R.bool.dnd_on_silent_mode);
     }
 
     private boolean manuallyChangePresence() {
-        return getBooleanPreference(SettingsActivity.MANUALLY_CHANGE_PRESENCE, R.bool.manually_change_presence);
+        return getBooleanPreference(AppSettings.MANUALLY_CHANGE_PRESENCE, R.bool.manually_change_presence);
     }
 
     private boolean treatVibrateAsSilent() {
-        return getBooleanPreference(SettingsActivity.TREAT_VIBRATE_AS_SILENT, R.bool.treat_vibrate_as_silent);
+        return getBooleanPreference(AppSettings.TREAT_VIBRATE_AS_SILENT, R.bool.treat_vibrate_as_silent);
     }
 
     private boolean awayWhenScreenLocked() {
-        return getBooleanPreference(SettingsActivity.AWAY_WHEN_SCREEN_IS_OFF, R.bool.away_when_screen_off);
+        return getBooleanPreference(AppSettings.AWAY_WHEN_SCREEN_IS_OFF, R.bool.away_when_screen_off);
     }
 
     private String getCompressPicturesPreference() {
@@ -1287,10 +1285,6 @@ public class XmppConnectionService extends Service {
         Log.d(Config.LOGTAG, "restoring accounts...");
         this.accounts = databaseBackend.getAccounts();
         final SharedPreferences.Editor editor = getPreferences().edit();
-        if (this.accounts.size() == 0 && Arrays.asList("Sony", "Sony Ericsson").contains(Build.MANUFACTURER)) {
-            editor.putBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE, true);
-            Log.d(Config.LOGTAG, Build.MANUFACTURER + " is on blacklist. enabling foreground service");
-        }
         final boolean hasEnabledAccounts = hasEnabledAccounts();
         editor.putBoolean(EventReceiver.SETTING_ENABLED_ACCOUNTS, hasEnabledAccounts).apply();
         editor.apply();
@@ -1334,20 +1328,18 @@ public class XmppConnectionService extends Service {
             this.pgpServiceConnection.bindToService();
         }
 
-        final PowerManager pm = ContextCompat.getSystemService(this, PowerManager.class);
-        this.wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Conversations:Service");
+        final PowerManager powerManager = getSystemService(PowerManager.class);
+        this.wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Conversations:Service");
 
         toggleForegroundService();
         updateUnreadCountBadge();
         toggleScreenEventReceiver();
         final IntentFilter systemBroadcastFilter = new IntentFilter();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            scheduleNextIdlePing();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                systemBroadcastFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-            }
-            systemBroadcastFilter.addAction(NotificationManager.ACTION_INTERRUPTION_FILTER_CHANGED);
+        scheduleNextIdlePing();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            systemBroadcastFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         }
+        systemBroadcastFilter.addAction(NotificationManager.ACTION_INTERRUPTION_FILTER_CHANGED);
         ContextCompat.registerReceiver(
                 this,
                 this.mInternalEventReceiver,
@@ -1363,6 +1355,17 @@ public class XmppConnectionService extends Service {
         mForceDuringOnCreate.set(false);
         toggleForegroundService();
         internalPingExecutor.scheduleAtFixedRate(this::manageAccountConnectionStatesInternal,10,10,TimeUnit.SECONDS);
+        final SharedPreferences sharedPreferences =
+                androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String key) {
+                Log.d(Config.LOGTAG,"preference '"+key+"' has changed");
+                if (AppSettings.KEEP_FOREGROUND_SERVICE.equals(key)) {
+                    toggleForegroundService();
+                }
+            }
+        });
     }
 
 
@@ -4421,7 +4424,7 @@ public class XmppConnectionService extends Service {
     }
 
     public long getAutomaticMessageDeletionDate() {
-        final long timeout = getLongPreference(SettingsActivity.AUTOMATIC_MESSAGE_DELETION, R.integer.automatic_message_deletion);
+        final long timeout = getLongPreference(AppSettings.AUTOMATIC_MESSAGE_DELETION, R.integer.automatic_message_deletion);
         return timeout == 0 ? timeout : (System.currentTimeMillis() - (timeout * 1000));
     }
 
@@ -4459,11 +4462,11 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean showExtendedConnectionOptions() {
-        return QuickConversationsService.isConversations() && getBooleanPreference("show_connection_options", R.bool.show_connection_options);
+        return QuickConversationsService.isConversations() && getBooleanPreference(AppSettings.SHOW_CONNECTION_OPTIONS, R.bool.show_connection_options);
     }
 
     public boolean broadcastLastActivity() {
-        return getBooleanPreference(SettingsActivity.BROADCAST_LAST_ACTIVITY, R.bool.last_activity);
+        return getBooleanPreference(AppSettings.BROADCAST_LAST_ACTIVITY, R.bool.last_activity);
     }
 
     public int unreadCount() {
@@ -4477,7 +4480,7 @@ public class XmppConnectionService extends Service {
 
     private <T> List<T> threadSafeList(Set<T> set) {
         synchronized (LISTENER_LOCK) {
-            return set.size() == 0 ? Collections.emptyList() : new ArrayList<>(set);
+            return set.isEmpty() ? Collections.emptyList() : new ArrayList<>(set);
         }
     }
 
@@ -5208,7 +5211,7 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean blindTrustBeforeVerification() {
-        return getBooleanPreference(SettingsActivity.BLIND_TRUST_BEFORE_VERIFICATION, R.bool.btbv);
+        return getBooleanPreference(AppSettings.BLIND_TRUST_BEFORE_VERIFICATION, R.bool.btbv);
     }
 
     public ShortcutService getShortcutService() {

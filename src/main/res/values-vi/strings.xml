@@ -434,7 +434,6 @@
     <string name="toast_no_trusted_certs">Không có chứng nhận được phê duyệt thủ công</string>
     <string name="dialog_manage_certs_title">Xoá các chứng nhận</string>
     <string name="dialog_manage_certs_positivebutton">Xoá lựa chọn</string>
-    <string name="dialog_manage_certs_negativebutton">Huỷ</string>
     <plurals name="toast_delete_certificates">
         <item quantity="other">Đã xoá %d chứng nhận</item>
     </plurals>
@@ -959,7 +958,6 @@
     <string name="pref_up_push_account_summary">Tài khoản sẽ nhận được tin nhắn đã đẩy đi.</string>
     <string name="pref_up_push_account_title">Tài khoản XMPP</string>
     <string name="pref_up_push_server_title">Máy chủ đẩy</string>
-    <string name="pref_up_push_server_summary">Một máy chủ đẩy do người dùng chọn để phát lại tin nhắn đẩy qua XMPP đến thiết bị của bạn.</string>
     <string name="no_account_deactivated">Không tồn tại (đã vô hiệu hóa)</string>
     <string name="decline">Từ chối</string>
     <string name="save_as_group_chat">Lưu thành nhóm trò chuyện</string>

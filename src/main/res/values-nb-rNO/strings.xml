@@ -306,7 +306,6 @@
     <string name="toast_no_trusted_certs">Ingen manuelt godkjente sertifikater</string>
     <string name="dialog_manage_certs_title">Fjern sertifikater</string>
     <string name="dialog_manage_certs_positivebutton">Slett innhold i merket område</string>
-    <string name="dialog_manage_certs_negativebutton">Avbryt</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d sertifikat slettet</item>
         <item quantity="other">%d sertifikater slettet</item>

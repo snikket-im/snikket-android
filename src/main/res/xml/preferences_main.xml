@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        android:icon="@drawable/ic_touch_app_24dp"
+        app:fragment="eu.siacs.conversations.ui.fragment.settings.InterfaceSettingsFragment"
+        app:summary="@string/pref_summary_appearance"
+        app:title="@string/pref_title_interface" />
+    <Preference
+        android:icon="@drawable/ic_security_24dp"
+        app:fragment="eu.siacs.conversations.ui.fragment.settings.SecuritySettingsFragment"
+        app:summary="@string/pref_summary_security"
+        app:title="@string/pref_title_security" />
+    <Preference
+        android:icon="@drawable/ic_privacy_tip_24dp"
+        app:fragment="eu.siacs.conversations.ui.fragment.settings.PrivacySettingsFragment"
+        app:summary="@string/pref_privacy_summary"
+        app:title="@string/pref_privacy" />
+    <Preference
+        android:icon="@drawable/ic_notifications_24dp"
+        android:summary="@string/pref_notifications_summary"
+        android:title="@string/notifications"
+        app:fragment="eu.siacs.conversations.ui.fragment.settings.NotificationsSettingsFragment" />
+    <Preference
+        android:icon="@drawable/ic_attachment_24dp"
+        android:summary="@string/pref_attachments_summary"
+        android:title="@string/pref_attachments"
+        app:fragment="eu.siacs.conversations.ui.fragment.settings.AttachmentsSettingsFragment" />
+    <Preference
+        android:icon="@drawable/ic_settings_ethernet_24dp"
+        android:key="connection"
+        app:fragment="eu.siacs.conversations.ui.fragment.settings.ConnectionSettingsFragment"
+        app:summary="@string/pref_connection_summary_w_cd"
+        app:title="@string/pref_connection_options" />
+    <Preference
+        android:icon="@drawable/ic_archive_24dp"
+        android:key="create_backup"
+        android:summary="@string/pref_create_backup_summary"
+        android:title="@string/pref_create_backup" />
+    <Preference
+        android:icon="@drawable/ic_cloud_sync_24dp"
+        app:fragment="eu.siacs.conversations.ui.fragment.settings.UpSettingsFragment"
+        app:summary="@string/unified_push_summary"
+        app:title="@string/unified_push_distributor" />
+    <Preference
+        android:key="about"
+        android:title="@string/title_activity_about_x">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="eu.siacs.conversations.ui.AboutActivity"
+            android:targetPackage="@string/applicationId" />
+    </Preference>
+</PreferenceScreen>

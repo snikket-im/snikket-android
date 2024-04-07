@@ -435,7 +435,6 @@
     <string name="toast_no_trusted_certs">Немає сертифікатів, підтверджених вручну</string>
     <string name="dialog_manage_certs_title">Вилучити сертифікати</string>
     <string name="dialog_manage_certs_positivebutton">Вилучити вибране</string>
-    <string name="dialog_manage_certs_negativebutton">Скасувати</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d сертифікат вилучено</item>
         <item quantity="few">%d сертифікати вилучено</item>
@@ -969,7 +968,6 @@
         <item quantity="many">Деякі повідомлення не вдалося надіслати</item>
         <item quantity="other">Деякі повідомлення не вдалося надіслати</item>
     </plurals>
-    <string name="pref_up_push_server_summary">Оберіть сервер для доставки push-повідомлень через XMPP на Ваш пристрій.</string>
     <string name="error_security_exception">Застосунок для передачі зображення не надав достатніх дозволів.</string>
     <string name="audio_video_disabled_tor">Виклики вимкнені при використанні Tor</string>
     <string name="sync_with_contacts_long">%1$s обробляє Ваш список контактів локально, на Вашому пристрої, щоб показати імена та зображення профілю для відповідних контактів у XMPP.
