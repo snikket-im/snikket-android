@@ -1025,9 +1025,6 @@
     <string name="delete_and_close">Delete &amp; Archive chat</string>
     <string name="start_chat">Start chat</string>
     <string name="no_certificate_selected">No client certificate selected!</string>
-
-
-
     <string name="pref_title_interface">Interface</string>
     <string name="pref_summary_appearance">Theme, Colors, Screenshots, Input</string>
     <string name="pref_title_security">Security</string>

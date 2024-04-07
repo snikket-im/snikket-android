@@ -1,6 +1,5 @@
 package eu.siacs.conversations.ui.fragment.settings;
 
-import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,9 +8,7 @@ import android.util.Log;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.preference.ListPreference;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
@@ -21,6 +18,18 @@ import eu.siacs.conversations.utils.Compatibility;
 
 public class NotificationsSettingsFragment extends XmppPreferenceFragment {
 
+    private final ActivityResultLauncher<Uri> pickNotificationToneLauncher =
+            registerForActivityResult(
+                    new PickRingtone(RingtoneManager.TYPE_NOTIFICATION),
+                    result -> {
+                        if (result == null) {
+                            // do nothing. user aborted
+                            return;
+                        }
+                        final Uri uri = PickRingtone.noneToNull(result);
+                        appSettings().setNotificationTone(uri);
+                        Log.i(Config.LOGTAG, "User set notification tone to " + uri);
+                    });
     private final ActivityResultLauncher<Uri> pickRingtoneLauncher =
             registerForActivityResult(
                     new PickRingtone(RingtoneManager.TYPE_RINGTONE),
@@ -30,7 +39,7 @@ public class NotificationsSettingsFragment extends XmppPreferenceFragment {
                             return;
                         }
                         final Uri uri = PickRingtone.noneToNull(result);
-                        setRingtone(uri);
+                        appSettings().setRingtone(uri);
                         Log.i(Config.LOGTAG, "User set ringtone to " + uri);
                     });
 
@@ -79,11 +88,22 @@ public class NotificationsSettingsFragment extends XmppPreferenceFragment {
 
     @Override
     public boolean onPreferenceTreeClick(final Preference preference) {
-        if (AppSettings.RINGTONE.equals(preference.getKey())) {
+        final var key = preference.getKey();
+        if (AppSettings.RINGTONE.equals(key)) {
             pickRingtone();
             return true;
         }
+        if (AppSettings.NOTIFICATION_RINGTONE.equals(key)) {
+            pickNotificationTone();
+            return true;
+        }
         return super.onPreferenceTreeClick(preference);
+    }
+
+    private void pickNotificationTone() {
+        final Uri uri = appSettings().getNotificationTone();
+        Log.i(Config.LOGTAG, "current notification tone: " + uri);
+        this.pickNotificationToneLauncher.launch(uri);
     }
 
     private void pickRingtone() {
@@ -92,9 +112,6 @@ public class NotificationsSettingsFragment extends XmppPreferenceFragment {
         this.pickRingtoneLauncher.launch(uri);
     }
 
-    private void setRingtone(final Uri uri) {
-        appSettings().setRingtone(uri);
-    }
 
     private AppSettings appSettings() {
         return new AppSettings(requireContext());

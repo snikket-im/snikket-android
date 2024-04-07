@@ -61,6 +61,21 @@ public class AppSettings {
         sharedPreferences.edit().putString(RINGTONE, uri == null ? null : uri.toString()).apply();
     }
 
+    public Uri getNotificationTone() {
+        final SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context);
+        final String incomingCallRingtone =
+                sharedPreferences.getString(
+                        NOTIFICATION_RINGTONE, context.getString(R.string.notification_ringtone));
+        return Strings.isNullOrEmpty(incomingCallRingtone) ? null : Uri.parse(incomingCallRingtone);
+    }
+
+    public void setNotificationTone(final Uri uri) {
+        final SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences.edit().putString(NOTIFICATION_RINGTONE, uri == null ? null : uri.toString()).apply();
+    }
+
     public boolean isBTBVEnabled() {
         return getBooleanPreference(BTBV, R.bool.btbv);
     }
