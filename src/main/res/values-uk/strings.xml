@@ -35,7 +35,7 @@
     <string name="moderator">Модератор</string>
     <string name="participant">Учасник</string>
     <string name="visitor">Гість</string>
-    <string name="remove_contact_text">Бажаєте вилучити %s зі свого списку контактів? Розмови з цим контактом не буде вилучено.</string>
+    <string name="remove_contact_text">Бажаєте вилучити %s зі свого списку контактів? Розмову з цим контактом не буде вилучено.</string>
     <string name="block_contact_text">Бажаєте заборонити %s надсилати Вам повідомлення\?</string>
     <string name="unblock_contact_text">Бажаєте розблокувати %s та дозволити цій особі надсилати Вам повідомлення\?</string>
     <string name="block_domain_text">Заблокувати всі контакти з %s\?</string>
@@ -72,8 +72,8 @@
     <string name="sharing_files_please_wait">Файли надсилаються. Зачекайте, будь ласка…</string>
     <string name="action_clear_history">Стерти історію</string>
     <string name="clear_conversation_history">Стерти історію розмов</string>
-    <string name="clear_histor_msg">Дійсно вилучити всі повідомлення цієї розмови? 
-\n 
+    <string name="clear_histor_msg">Дійсно вилучити всі повідомлення цієї розмови?
+\n
 \n<b>Увага:</b> Повідомлення, збережені на інших пристроях або серверах, і надалі залишаться там.</string>
     <string name="delete_file_dialog">Вилучити файл</string>
     <string name="delete_file_dialog_msg">Ви впевнені, що хочете вилучити цей файл\?
@@ -690,7 +690,7 @@
     <string name="error_trustkey_device_list">Неможливо отримати перелік пристроїв</string>
     <string name="error_trustkey_bundle">Неможливо отримати пакети пристроїв</string>
     <string name="error_trustkey_hint_mutual">Підказка: В деяких випадках це можна виправити, якщо додати один одного у свої списки контактів.</string>
-    <string name="disable_encryption_message">Дійсно вимкнути шифрування OMEMO?
+    <string name="disable_encryption_message">Дійсно вимкнути шифрування OMEMO для цієї розмови?
 \nПісля цього в адміністратора Вашого сервера буде можливість мати доступ до Ваших повідомлень. Проте, це може бути єдиним способом спілкуватися з людьми, які використовують застарілі застосунки.</string>
     <string name="disable_now">Вимкнути зараз</string>
     <string name="draft">Чернетка:</string>
@@ -777,7 +777,7 @@
     <string name="resend_sms">Надіслати нове SMS</string>
     <string name="resend_sms_in">Надіслати нове SMS (%s)</string>
     <string name="wait_x">Будь ласка, зачекайте (%s)</string>
-    <string name="back">повернутися</string>
+    <string name="back">Повернутися</string>
     <string name="possible_pin">Код автоматично вставлений з буфера обміну.</string>
     <string name="please_enter_pin">Будь ласка, введіть нижче код із 6 цифр.</string>
     <string name="abort_registration_procedure">Ви впевнені, що хочете припинити процедуру реєстрації\?</string>
@@ -786,7 +786,7 @@
     <string name="verifying">Перевірка…</string>
     <string name="requesting_sms">Запит SMS…</string>
     <string name="incorrect_pin">Код, який Ви ввели, неправильний.</string>
-    <string name="pin_expired">Код, який Ви ввели, застарів.</string>
+    <string name="pin_expired">Код, який ми Вам надіслали, застарів.</string>
     <string name="unknown_api_error_network">Невідома помилка мережі.</string>
     <string name="unknown_api_error_response">Сервер дав незрозумілу відповідь.</string>
     <string name="unable_to_connect_to_server">Неможливо приєднатися до сервера.</string>
@@ -1063,7 +1063,23 @@
     <string name="no_permission_to_place_call">Немає дозволу на телефонні дзвінки</string>
     <string name="rtp_state_contact_offline">Контакт недоступний</string>
     <string name="call_integration_not_available">Інтеграція викликів недоступна!</string>
-    <string name="delete_and_close">Видалити і закрити</string>
-    <string name="remove_bookmark_and_close">Бажаєте видалити закладку %s і закрити розмову?</string>
+    <string name="delete_and_close">Видалити й архівувати</string>
+    <string name="remove_bookmark_and_close">Бажаєте видалити закладку %s й архівувати розмову?</string>
     <string name="remove_bookmark">Бажаєте видалити закладку %s?</string>
+    <string name="welcome_header">Приєднуйтеся до розмови</string>
+    <string name="no_certificate_selected">Сертифікат клієнта не вибрано!</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">QR-код не містить цифрового підпису для цієї розмови.</string>
+    <string name="corresponding_chats_closed">Відповідні розмови заархівовано.</string>
+    <string name="channel_discover_opt_in_message">Пошук каналів використовує сторонній сервіс &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Використання цієї функції передає Вашу IP-адресу та пошукові запити цьому сервісу. Перегляньте їхню &lt;a href=https://search.jabber.network/privacy&gt;Політику конфіденційності&lt;/a&gt;, щоб отримати більше інформації.</string>
+    <string name="title_activity_share_with">Поділитися…</string>
+    <string name="pref_dynamic_colors">Динамічні кольори</string>
+    <string name="pref_dynamic_colors_summary">Системні кольори (Material You)</string>
+    <string name="pref_use_colorful_bubbles_summary">Барвисті бульбашки допомагають розрізняти надіслані та отримані повідомлення</string>
+    <string name="pref_use_colorful_bubbles">Кольорові бульбашки в розмовах</string>
+    <string name="title_activity_new_chat">Нова розмова</string>
+    <string name="action_archive_chat">Архівувати розмову</string>
+    <string name="archive_this_chat">Архівувати цю розмову</string>
+    <string name="title_undo_swipe_out_chat">Розмову заархівовано</string>
+    <string name="switch_to_chat">Перемкнути на чат</string>
+    <string name="start_chat">Почати розмову</string>
 </resources>
