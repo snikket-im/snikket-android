@@ -77,8 +77,8 @@
     <string name="sharing_files_please_wait">分享文件中。请稍候…</string>
     <string name="action_clear_history">清空历史记录</string>
     <string name="clear_conversation_history">清空聊天记录</string>
-    <string name="clear_histor_msg">是否要删除此聊天中的所有消息？ 
-\n 
+    <string name="clear_histor_msg">是否要删除此聊天中的所有消息？
+\n
 \n<b>警告：</b>存储在其他设备或服务器上的消息将不受影响。</string>
     <string name="delete_file_dialog">删除文件</string>
     <string name="delete_file_dialog_msg">是否确定要删除此文件？
@@ -1034,7 +1034,7 @@
     <string name="pref_dynamic_colors_summary">系统色彩 (Material You)</string>
     <string name="title_activity_new_chat">新聊天</string>
     <string name="archive_this_chat">存档此聊天</string>
-    <string name="title_undo_swipe_out_chat">聊天已存档！</string>
+    <string name="title_undo_swipe_out_chat">聊天已存档</string>
     <string name="switch_to_chat">切换到聊天</string>
     <string name="action_archive_chat">存档聊天</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_chat">二维码不包含此聊天的指纹。</string>
