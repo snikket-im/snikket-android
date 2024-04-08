@@ -62,7 +62,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/textSendButton"
                 android:background="@drawable/background_message_bubble"
-                android:backgroundTint="?colorSecondaryContainer"
+                android:backgroundTint="?colorTertiaryContainer"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp">
@@ -74,7 +74,7 @@
                     android:layout_marginBottom="8sp"
                     android:maxLines="1"
                     android:textAppearance="?textAppearanceBodySmall"
-                    android:textColor="?colorOnSecondaryContainer"
+                    android:textColor="?colorOnTertiaryContainer"
                     android:visibility="visible"
                     tools:text="@string/private_message_to" />
 

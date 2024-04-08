@@ -657,12 +657,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final BubbleColor bubbleColor;
         if (type == RECEIVED) {
             if (isInValidSession) {
-                bubbleColor = colorfulBackground ? BubbleColor.TERTIARY : BubbleColor.SURFACE;
+                bubbleColor = colorfulBackground ? BubbleColor.SECONDARY : BubbleColor.SURFACE;
             } else {
                 bubbleColor = BubbleColor.WARNING;
             }
         } else {
-            bubbleColor = colorfulBackground ? BubbleColor.SECONDARY : BubbleColor.SURFACE;
+            bubbleColor = colorfulBackground ? BubbleColor.TERTIARY : BubbleColor.SURFACE;
         }
 
         if (type == DATE_SEPARATOR) {
@@ -701,9 +701,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 }
             }
             if (colorfulBackground) {
-                setBackgroundTint(viewHolder.message_box,BubbleColor.TERTIARY);
-                setTextColor(viewHolder.status_message, BubbleColor.TERTIARY);
-                setImageTint(viewHolder.indicatorReceived, BubbleColor.TERTIARY);
+                setBackgroundTint(viewHolder.message_box,BubbleColor.SECONDARY);
+                setTextColor(viewHolder.status_message, BubbleColor.SECONDARY);
+                setImageTint(viewHolder.indicatorReceived, BubbleColor.SECONDARY);
             } else {
                 setBackgroundTint(viewHolder.message_box,BubbleColor.SURFACE);
                 setTextColor(viewHolder.status_message, BubbleColor.SURFACE);
