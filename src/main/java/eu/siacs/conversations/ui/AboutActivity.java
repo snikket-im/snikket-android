@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityAboutBinding;
 
-public class AboutActivity extends BaseActivity {
+public class AboutActivity extends ActionBarActivity {
 
 
     @Override
