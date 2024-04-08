@@ -78,7 +78,7 @@
     <string name="preparing_images">Se pregătește trimiterea imaginilor</string>
     <string name="sharing_files_please_wait">Trimitere fișiere. Vă rugăm să așteptați…</string>
     <string name="action_clear_history">Șterge istoric</string>
-    <string name="clear_conversation_history">Șterge istoricul discuției</string>
+    <string name="clear_conversation_history">Șterge istoric discuție</string>
     <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această discuție?
 \n
 \n<b>Atenție:</b> Această acțiune nu va afecta mesajele aflate pe alte dispozitive sau servere.</string>
@@ -243,7 +243,7 @@
     <string name="destroy_channel_dialog">Sigur doriți distrugerea acestui canal public?\n\n<b>Atenție:</b> Canalul public v-a fi complet șters de pe server.</string>
     <string name="could_not_destroy_room">Nu s-a putut distruge discuția de grup</string>
     <string name="could_not_destroy_channel">Nu s-a putut distruge canalul</string>
-    <string name="action_edit_subject">Editează subiectul discuției de grup</string>
+    <string name="action_edit_subject">Editează subiect discuție de grup</string>
     <string name="topic">Subiect discuție</string>
     <string name="joining_conference">Vă alăturați discuției de grup…</string>
     <string name="leave">Paraseste</string>
@@ -744,15 +744,15 @@
     <string name="copy_jabber_id">Copiază adresa XMPP</string>
     <string name="p1_s3_filetransfer">Partajare fișiere prin HTTP pentru S3</string>
     <string name="pref_start_search">Activează direct căutarea</string>
-    <string name="pref_start_search_summary">În ecranul \"Pornește discuție\" focalizează câmpul de căutare și arată tastatura</string>
+    <string name="pref_start_search_summary">În ecranul \"Începe discuție\" focalizează câmpul de căutare și arată tastatura</string>
     <string name="group_chat_avatar">Avatar discuție de grup</string>
     <string name="host_does_not_support_group_chat_avatars">Serverul gazdă nu suporta avatare pentru grupuri</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Doar proprietarul grupului poate schimba avatarul</string>
     <string name="contact_name">Nume contact</string>
     <string name="nickname">Numele dumneavoastră</string>
-    <string name="group_chat_name">Titlul discuției de grup</string>
+    <string name="group_chat_name">Titlu discuție de grup</string>
     <string name="providing_a_name_is_optional">Setarea numelui este opțională</string>
-    <string name="create_dialog_group_chat_name">Titlul discuției de grup</string>
+    <string name="create_dialog_group_chat_name">Titlu discuție de grup</string>
     <string name="conference_destroyed">Această discuție de grup a fost distrusă</string>
     <string name="unable_to_save_recording">Nu s-a putut salva înregistrarea</string>
     <string name="foreground_service_channel_name">Serviciul activ în prim-plan</string>
@@ -1041,9 +1041,9 @@
     <string name="pref_dynamic_colors_summary">Culori de sistem (Material You)</string>
     <string name="action_archive_chat">Arhivează discuția</string>
     <string name="archive_this_chat">Arhivează această discuție</string>
-    <string name="title_undo_swipe_out_chat">Discuție arhivată!</string>
+    <string name="title_undo_swipe_out_chat">Discuție arhivată</string>
     <string name="channel_discover_opt_in_message">Descoperirea de canale publice folosește un serviciu terț numit &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți &lt;a href=https://search.jabber.network/privacy&gt;Politica de confidențialitate&lt;/a&gt; a serviciului.</string>
-    <string name="switch_to_chat">Treci la discutie</string>
+    <string name="switch_to_chat">Treci la discuție</string>
     <string name="no_certificate_selected">Nu a fost selectat un certificat client!</string>
     <string name="start_chat">Începe discuție</string>
     <string name="corresponding_chats_closed">Discuțiile aferente au fost arhivate.</string>
