@@ -299,6 +299,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 		});
 		this.binding.list.setAdapter(this.conversationsAdapter);
 		this.binding.list.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+		this.binding.list.addOnScrollListener(ExtendedFabSizeChanger.of(binding.fab));
 		this.touchHelper = new ItemTouchHelper(this.callback);
 		this.touchHelper.attachToRecyclerView(this.binding.list);
 		return binding.getRoot();
