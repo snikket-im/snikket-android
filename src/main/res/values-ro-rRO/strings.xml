@@ -280,7 +280,7 @@
     <string name="ignore">Ignora</string>
     <string name="without_mutual_presence_updates"><b>Atenție:</b> Trimițând aceasta fără actualizări de prezență reciproce ar putea produce probleme neprevazute.\n\n<small>Mergeți la \"Detalii contact\" pentru a verifica abonările la actualizările de prezență.</small></string>
     <string name="pref_security_settings">Siguranță</string>
-    <string name="pref_allow_message_correction">Permite corecția mesajelor</string>
+    <string name="pref_allow_message_correction">Corecția mesajelor</string>
     <string name="pref_allow_message_correction_summary">Contactele pot să își editeze mesajele scrise în trecut</string>
     <string name="pref_expert_options">Opțiuni expert</string>
     <string name="pref_expert_options_summary">Vă rugăm să aveți grijă cu acestea</string>
@@ -474,8 +474,8 @@
     <string name="pref_dnd_on_silent_mode_summary">Prezintă clientul drept \"Ocupat\" atunci când dispozitivul este în mod silențios</string>
     <string name="pref_treat_vibrate_as_silent">Tratează modul vibrație ca silențios</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Prezintă clientul drept \"Ocupat\" atunci când dispozitivul este în mod vibrație</string>
-    <string name="pref_show_connection_options">Opțiuni avansate conexiune</string>
-    <string name="pref_show_connection_options_summary">Arată opțiunea de setare a numelui de gazdă și a portului, atunci când se configurează un cont</string>
+    <string name="pref_show_connection_options">Nume gazdă &amp; port</string>
+    <string name="pref_show_connection_options_summary">Arată opțiuni extinse de conectare atunci când se configurează un cont</string>
     <string name="hostname_example">xmpp.exemplu.ro</string>
     <string name="action_add_account_with_certificate">Autentificare cu certificat</string>
     <string name="unable_to_parse_certificate">Nu s-a putut analiza certificatul</string>
@@ -567,8 +567,8 @@
     <string name="gp_short">Scurtă</string>
     <string name="gp_medium">Medie</string>
     <string name="gp_long">Lungă</string>
-    <string name="pref_broadcast_last_activity">Publică utilizarea</string>
-    <string name="pref_broadcast_last_activity_summary">Contactele sunt anunțate atunci când folosiți Conversations</string>
+    <string name="pref_broadcast_last_activity">Văzut ultima dată</string>
+    <string name="pref_broadcast_last_activity_summary">Permiteți contactelor voastre. să vadă când ați folosit ultima dată aplicația</string>
     <string name="pref_privacy">Intimitate</string>
     <string name="pref_theme_options">Temă</string>
     <string name="pref_theme_options_summary">Selecție paletă de culori interfață</string>
@@ -744,7 +744,7 @@
     <string name="copy_jabber_id">Copiază adresa XMPP</string>
     <string name="p1_s3_filetransfer">Partajare fișiere prin HTTP pentru S3</string>
     <string name="pref_start_search">Activează direct căutarea</string>
-    <string name="pref_start_search_summary">În ecranul \"Începe discuție\" focalizează câmpul de căutare și arată tastatura</string>
+    <string name="pref_start_search_summary">În ecranul \"Discuție nouă\" focalizează câmpul de căutare și arată tastatura</string>
     <string name="group_chat_avatar">Avatar discuție de grup</string>
     <string name="host_does_not_support_group_chat_avatars">Serverul gazdă nu suporta avatare pentru grupuri</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Doar proprietarul grupului poate schimba avatarul</string>
@@ -1050,4 +1050,8 @@
     <string name="barcode_does_not_contain_fingerprints_for_this_chat">Codul de bare nu conține o amprentă pentru această discuție.</string>
     <string name="welcome_header">Alăturați-vă conversației</string>
     <string name="title_activity_new_chat">Discuție nouă</string>
+    <string name="pref_title_interface">Interfață</string>
+    <string name="pref_send_crash_reports">Trimite rapoarte de erori</string>
+    <string name="pref_title_security">Securitate</string>
+    <string name="pref_summary_appearance">Temă, Culori, Capturi de ecran, Tastatură</string>
 </resources>
