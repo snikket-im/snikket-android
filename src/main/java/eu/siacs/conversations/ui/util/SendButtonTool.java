@@ -119,20 +119,20 @@ public class SendButtonTool {
             case ONLINE, CHAT -> MaterialColors.harmonizeWithPrimary(
                     view.getContext(),
                     ContextCompat.getColor(
-                            view.getContext(), nightMode ? R.color.green_200 : R.color.green_800));
+                            view.getContext(), nightMode ? R.color.green_300 : R.color.green_800));
             case AWAY -> MaterialColors.harmonizeWithPrimary(
                     view.getContext(),
                     ContextCompat.getColor(
-                            view.getContext(), nightMode ? R.color.amber_200 : R.color.amber_800));
+                            view.getContext(), nightMode ? R.color.amber_300 : R.color.amber_800));
             case XA -> MaterialColors.harmonizeWithPrimary(
                     view.getContext(),
                     ContextCompat.getColor(
                             view.getContext(),
-                            nightMode ? R.color.orange_200 : R.color.orange_800));
+                            nightMode ? R.color.orange_300 : R.color.orange_800));
             case DND -> MaterialColors.harmonizeWithPrimary(
                     view.getContext(),
                     ContextCompat.getColor(
-                            view.getContext(), nightMode ? R.color.red_200 : R.color.red_800));
+                            view.getContext(), nightMode ? R.color.red_300 : R.color.red_800));
         };
     }
 }

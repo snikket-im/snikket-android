@@ -10,6 +10,7 @@
 
     <color name="green_100">#ffC8E6C9</color>
     <color name="green_200">#ffA5D6A7</color>
+    <color name="green_300">#ff81C784</color>
     <color name="green_500">#ff4CAF50</color>
     <color name="green_600">#ff43A047</color>
     <color name="green_700">#ff388E3C</color>
@@ -17,17 +18,20 @@
 
     <color name="amber_100">#ffFFECB3</color>
     <color name="amber_200">#ffFFE082</color>
+    <color name="amber_300">#ffFFD54F</color>
     <color name="amber_700">#ffFFA000</color>
     <color name="amber_800">#ffFF8F00</color>
 
     <color name="orange_100">#ffFFE0B2</color>
     <color name="orange_200">#ffFFCC80</color>
+    <color name="orange_300">#ffFFB74D</color>
     <color name="orange_500">#ffff9800</color>
     <color name="orange_700">#ffF57C00</color>
     <color name="orange_800">#ffEF6C00</color>
 
     <color name="red_100">#ffFFCDD2</color>
     <color name="red_200">#ffEF9A9A</color>
+    <color name="red_300">#ffE57373</color>
     <color name="red_500">#ffF44336</color>
     <color name="red_700">#ffD32F2F</color>
     <color name="red_800">#ffC62828</color>
