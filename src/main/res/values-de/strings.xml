@@ -122,7 +122,6 @@
     <string name="pref_notification_grace_period">Schonfrist</string>
     <string name="pref_notification_grace_period_summary">Die Zeitspanne, in der Benachrichtigungen nach der Erkennung von Aktivitäten auf einem deiner anderen Geräte unterdrückt werden.</string>
     <string name="pref_advanced_options">Erweitert</string>
-    <string name="pref_never_send_crash">Niemals Absturzberichte senden</string>
     <string name="pref_never_send_crash_summary">Durch das Einsenden von Absturzberichten hilfst du bei der Weiterentwicklung</string>
     <string name="pref_confirm_messages">Lese- und Empfangsbestätigung senden</string>
     <string name="pref_confirm_messages_summary">Informiere deine Kontakte, wenn du eine Nachricht empfangen und gelesen hast</string>

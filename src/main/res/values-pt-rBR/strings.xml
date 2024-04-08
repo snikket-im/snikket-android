@@ -121,7 +121,6 @@
     <string name="pref_notification_grace_period">Período de espera</string>
     <string name="pref_notification_grace_period_summary">Espaço de tempo em que as notificações serão silenciadas, após detectar atividade em algum dos seus outros dispositivos.</string>
     <string name="pref_advanced_options">Avançado</string>
-    <string name="pref_never_send_crash">Nunca enviar relatórios de erros</string>
     <string name="pref_never_send_crash_summary">Ao enviar os stack traces você está colaborando com o desenvolvimento</string>
     <string name="pref_confirm_messages">Confirmação de mensagens</string>
     <string name="pref_confirm_messages_summary">Permite que seus contatos saibam quando você recebeu e leu as mensagens deles.</string>

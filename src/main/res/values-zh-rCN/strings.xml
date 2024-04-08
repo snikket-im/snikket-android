@@ -125,7 +125,6 @@
     <string name="pref_notification_grace_period">静默期</string>
     <string name="pref_notification_grace_period_summary">在其他设备上检测到活动之后，通知在此期间静音。</string>
     <string name="pref_advanced_options">高级</string>
-    <string name="pref_never_send_crash">从不发送崩溃报告</string>
     <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您正在帮助此应用的开发</string>
     <string name="pref_confirm_messages">确认消息</string>
     <string name="pref_confirm_messages_summary">让您的联系人知道您已收到并阅读了其消息</string>

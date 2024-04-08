@@ -123,7 +123,6 @@
     <string name="pref_notification_grace_period">Période sans notification</string>
     <string name="pref_notification_grace_period_summary">La durée pendant laquelle les notifications sont désactivées après la détection d\'une activité sur l\'un de vos autres appareils.</string>
     <string name="pref_advanced_options">Avancé</string>
-    <string name="pref_never_send_crash">Ne pas envoyer de rapports d\'erreurs</string>
     <string name="pref_never_send_crash_summary">En envoyant des rapports de crash vous aidez le développement</string>
     <string name="pref_confirm_messages">Confirmation de lecture</string>
     <string name="pref_confirm_messages_summary">Informer vos contacts quand vous avez reçu et lu leurs messages</string>

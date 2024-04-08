@@ -94,7 +94,6 @@
     <string name="pref_notification_sound_summary">Tingull njoftimi për mesazhe të rinj</string>
     <string name="pref_call_ringtone_summary">Zile për thirrje ardhëse</string>
     <string name="pref_advanced_options">Të mëtejshme</string>
-    <string name="pref_never_send_crash">Mos dërgo kurrë njoftime vithisjesh</string>
     <string name="pref_confirm_messages">Ripohoni Mesazhe</string>
     <string name="pref_prevent_screenshots">Pengo Foto Ekrani</string>
     <string name="pref_ui_options">UI</string>

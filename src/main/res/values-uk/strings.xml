@@ -118,7 +118,6 @@
     <string name="pref_notification_grace_period">Час до блокування</string>
     <string name="pref_notification_grace_period_summary">Час, протягом якого сповіщення вимкнені після виявлення активності на іншому пристрої.</string>
     <string name="pref_advanced_options">Розширені</string>
-    <string name="pref_never_send_crash">Не надсилати звіти про збої</string>
     <string name="pref_never_send_crash_summary">Надсилаючи звіти про збої, Ви допомагаєте розвивати застосунок</string>
     <string name="pref_confirm_messages">Підтвердження отримання повідомлень</string>
     <string name="pref_confirm_messages_summary">Повідомляти співрозмовників, що Ви отримали й прочитали їхні повідомлення</string>

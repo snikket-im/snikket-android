@@ -1,23 +1,23 @@
 package eu.siacs.conversations.ui;
 
+import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
+
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import androidx.databinding.DataBindingUtil;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityVerifyBinding;
@@ -28,9 +28,10 @@ import eu.siacs.conversations.ui.util.PinEntryWrapper;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.utils.TimeFrameUtils;
+
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 
-import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class VerifyActivity extends XmppActivity implements ClipboardManager.OnPrimaryClipChangedListener, QuickConversationsService.OnVerification, QuickConversationsService.OnVerificationRequested {
 
@@ -190,7 +191,7 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     }
 
     @Override
-    void onBackendConnected() {
+    public void onBackendConnected() {
         xmppConnectionService.getQuickConversationsService().addOnVerificationListener(this);
         xmppConnectionService.getQuickConversationsService().addOnVerificationRequestedListener(this);
         this.account = AccountUtils.getFirst(xmppConnectionService);

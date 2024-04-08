@@ -80,7 +80,7 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
     }
 
     @Override
-    void onBackendConnected() {
+    public void onBackendConnected() {
         xmppConnectionService.getQuickConversationsService().addOnVerificationRequestedListener(this);
         final Account account = AccountUtils.getFirst(xmppConnectionService);
         if (account != null) {

@@ -120,7 +120,6 @@
     <string name="pref_notification_grace_period">Türelmi idő</string>
     <string name="pref_notification_grace_period_summary">Az időtartam, amíg az értesítések némítva vannak az egyéb eszközei egyikén történt tevékenység észlelése után.</string>
     <string name="pref_advanced_options">Speciális</string>
-    <string name="pref_never_send_crash">Sose küldjön összeomlási jelentéseket</string>
     <string name="pref_never_send_crash_summary">A veremkiíratások elküldésével segíti a fejlesztést</string>
     <string name="pref_confirm_messages">Üzenetek megerősítése</string>
     <string name="pref_confirm_messages_summary">Tudassa a partnereivel, hogy megkapta és elolvasta az üzeneteiket</string>

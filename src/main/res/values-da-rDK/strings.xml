@@ -122,7 +122,6 @@
     <string name="pref_notification_grace_period">Fredningsperiode</string>
     <string name="pref_notification_grace_period_summary">Tidsintervallet hvor notifikationer er lydløs efter at have registreret aktivitet på en af dine andre enheder.</string>
     <string name="pref_advanced_options">Advanceret</string>
-    <string name="pref_never_send_crash">Send aldrig fejlrapporter</string>
     <string name="pref_never_send_crash_summary">Ved at indsende stakspor hjælper du udviklingen</string>
     <string name="pref_confirm_messages">Bekræft beskeder</string>
     <string name="pref_confirm_messages_summary">Lad dine kontakter vide når du har modtaget og læst deres beskeder</string>

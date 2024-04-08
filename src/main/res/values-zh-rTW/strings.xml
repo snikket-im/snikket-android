@@ -110,7 +110,6 @@
     <string name="pref_call_ringtone_summary">來電時響鈴</string>
     <string name="pref_notification_grace_period">寬限期</string>
     <string name="pref_advanced_options">進階</string>
-    <string name="pref_never_send_crash">永不傳送當機報告</string>
     <string name="pref_confirm_messages">確認訊息</string>
     <string name="pref_confirm_messages_summary">讓您的聯絡人知道您已經收到並閱讀了他們的訊息</string>
     <string name="pref_prevent_screenshots">防止截圖</string>

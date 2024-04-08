@@ -110,7 +110,6 @@
     <string name="pref_ringtone">Meldingstoon</string>
     <string name="pref_notification_grace_period">Uitstelperiode</string>
     <string name="pref_advanced_options">Geavanceerd</string>
-    <string name="pref_never_send_crash">Verstuur nooit crashrapportages</string>
     <string name="pref_confirm_messages">Bevestig berichten</string>
     <string name="pref_confirm_messages_summary">Laat je contacten weten wanneer je hun berichten ontvangen en gelezen hebt</string>
     <string name="pref_prevent_screenshots">Voorkom schermafdrukken</string>

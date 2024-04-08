@@ -85,7 +85,6 @@
     <string name="pref_notification_sound">അറിയിപ്പ് ശബ്‌ദം</string>
     <string name="pref_call_ringtone_summary">ഇൻകമിംഗ് കോളുകൾക്കുള്ള റിംഗ്‌ടോൺ</string>
     <string name="pref_advanced_options">വിപുലമായ</string>
-    <string name="pref_never_send_crash">ഒരിക്കലും ക്രാഷ് റിപ്പോർട്ടുകൾ അയയ്‌ക്കരുത്</string>
     <string name="pref_confirm_messages">സന്ദേശങ്ങൾ ഉറപ്പാക്കൂ</string>
     <string name="pref_ui_options">UI</string>
     <string name="accept">സ്വീകരിക്കുക</string>

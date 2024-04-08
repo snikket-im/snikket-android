@@ -121,7 +121,6 @@
     <string name="pref_notification_grace_period">Thời gian gia hạn thông báo</string>
     <string name="pref_notification_grace_period_summary">Khoảng thời gian mà các thông báo được giữ im lặng sau khi phát hiện hoạt động trên một trong những thiết bị khác.</string>
     <string name="pref_advanced_options">Nâng cao</string>
-    <string name="pref_never_send_crash">Không bao giờ gửi báo cáo dừng chạy</string>
     <string name="pref_never_send_crash_summary">Bằng việc gửi báo cáo hoạt động, bạn đang hỗ trợ sự phát triển</string>
     <string name="pref_confirm_messages">Xác nhận tin nhắn</string>
     <string name="pref_confirm_messages_summary">Báo cho liên hệ của bạn biết khi bạn đã nhận và đọc tin nhắn</string>

@@ -68,7 +68,7 @@ public class EnterNameActivity extends XmppActivity
     }
 
     @Override
-    void onBackendConnected() {
+    public void onBackendConnected() {
         this.account = AccountUtils.getFirst(xmppConnectionService);
         checkSuggestPreviousNick();
     }

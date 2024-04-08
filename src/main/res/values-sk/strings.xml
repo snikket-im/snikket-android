@@ -120,7 +120,6 @@
     <string name="pref_notification_grace_period">Ochranná doba</string>
     <string name="pref_notification_grace_period_summary">Doba, počas ktorej budú oznámenia stíšené po detekcii aktivity na jednom z vašich ostatných zariadení.</string>
     <string name="pref_advanced_options">Pokročilé</string>
-    <string name="pref_never_send_crash">Neodosielať detaily o zlyhaní aplikácie</string>
     <string name="pref_never_send_crash_summary">Keď pošlete detaily o dôvode zlyhania, pomáhate vývoju</string>
     <string name="pref_confirm_messages">Potvrdzovať správy</string>
     <string name="pref_confirm_messages_summary">Dajte vedieť svojim kontaktom, keď prijmete a prečítate si správy</string>

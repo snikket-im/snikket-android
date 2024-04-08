@@ -123,7 +123,6 @@
     <string name="pref_notification_grace_period">Periodo de gracia</string>
     <string name="pref_notification_grace_period_summary">El tiempo que se silencian las notificaciones tras detectar actividad en otro de tus dispositivos.</string>
     <string name="pref_advanced_options">Avanzado</string>
-    <string name="pref_never_send_crash">Nunca informar de errores</string>
     <string name="pref_never_send_crash_summary">Al enviar los informes de los fallos, ayudará a un mayor desarrollo</string>
     <string name="pref_confirm_messages">Confirmar mensajes</string>
     <string name="pref_confirm_messages_summary">Permitir a tus contactos saber cuando has recibido y leído sus mensajes</string>

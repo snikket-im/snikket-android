@@ -22,7 +22,7 @@ public class TosActivity extends XmppActivity {
     }
 
     @Override
-    void onBackendConnected() {
+    public void onBackendConnected() {
 
     }
 

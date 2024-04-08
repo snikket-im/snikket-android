@@ -126,7 +126,6 @@
     <string name="pref_notification_grace_period">Tidsfrist</string>
     <string name="pref_notification_grace_period_summary">Tidsfrist för hur länge aviseringar ska vara tysta efter att aktivitet har upptäckts på en av dina andra enheter.</string>
     <string name="pref_advanced_options">Avancerat</string>
-    <string name="pref_never_send_crash">Skicka aldrig kraschrapporter</string>
     <string name="pref_never_send_crash_summary">Genom att skicka in kraschrapporter hjälper du till med utvecklingen av appen</string>
     <string name="pref_confirm_messages">Bekräfta meddelanden</string>
     <string name="pref_confirm_messages_summary">Låt dina kontakter veta när du har mottagit och läst deras meddelanden</string>

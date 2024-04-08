@@ -121,7 +121,6 @@
     <string name="pref_notification_grace_period">Rauhanaika</string>
     <string name="pref_notification_grace_period_summary">Kuinka pitkäksi aikaa ilmoitukset hiljennetään kun jollain toisella laitteillasi tehdään jotain.</string>
     <string name="pref_advanced_options">Edistyneet</string>
-    <string name="pref_never_send_crash">Älä koskaan lähetä vikailmoituksia</string>
     <string name="pref_never_send_crash_summary">Vikailmoituksia lähettämällä autat kehitystyötä</string>
     <string name="pref_confirm_messages">Lukukuittaus</string>
     <string name="pref_confirm_messages_summary">Ilmoita lähettäjälle kun olet vastaanottanut ja lukenut viestin</string>
