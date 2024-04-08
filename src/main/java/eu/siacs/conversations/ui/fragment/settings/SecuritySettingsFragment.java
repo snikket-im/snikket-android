@@ -67,7 +67,7 @@ public class SecuritySettingsFragment extends XmppPreferenceFragment {
                 OmemoSetting.load(requireContext());
             }
             case AppSettings.TRUST_SYSTEM_CA_STORE -> {
-                requireService().updateMemorizingTrustmanager();
+                requireService().updateMemorizingTrustManager();
                 reconnectAccounts();
             }
             case AppSettings.REQUIRE_CHANNEL_BINDING -> {}

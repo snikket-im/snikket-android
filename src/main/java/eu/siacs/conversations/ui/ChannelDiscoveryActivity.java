@@ -275,7 +275,6 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
 
     public void joinChannelSearchResult(final String selectedAccount, final Room result) {
         final Jid jid = Jid.ofEscaped(selectedAccount);
-        final boolean syncAutoJoin = getBooleanPreference("autojoin", R.bool.autojoin);
         final Account account = xmppConnectionService.findAccountByJid(jid);
         final Conversation conversation =
                 xmppConnectionService.findOrCreateConversation(
@@ -283,10 +282,10 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
         final var existingBookmark = conversation.getBookmark();
         if (existingBookmark == null) {
             final var bookmark = new Bookmark(account, conversation.getJid().asBareJid());
-            bookmark.setAutojoin(syncAutoJoin);
+            bookmark.setAutojoin(true);
             xmppConnectionService.createBookmark(account, bookmark);
         } else {
-            if (!existingBookmark.autojoin() && syncAutoJoin) {
+            if (!existingBookmark.autojoin()) {
                 existingBookmark.setAutojoin(true);
                 xmppConnectionService.createBookmark(account, existingBookmark);
             }

@@ -1267,7 +1267,7 @@ public class XmppConnectionService extends Service {
             Log.e(Config.LOGTAG, "unable to initialize security provider", throwable);
         }
         Resolver.init(this);
-        updateMemorizingTrustmanager();
+        updateMemorizingTrustManager();
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 8;
         this.mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
@@ -2010,14 +2010,13 @@ public class XmppConnectionService extends Service {
         return true;
     }
 
-    public void processBookmarksInitial(Account account, Map<Jid, Bookmark> bookmarks, final boolean pep) {
+    public void processBookmarksInitial(final Account account, final Map<Jid, Bookmark> bookmarks, final boolean pep) {
         final Set<Jid> previousBookmarks = account.getBookmarkedJids();
-        final boolean synchronizeWithBookmarks = synchronizeWithBookmarks();
-        for (Bookmark bookmark : bookmarks.values()) {
+        for (final Bookmark bookmark : bookmarks.values()) {
             previousBookmarks.remove(bookmark.getJid().asBareJid());
-            processModifiedBookmark(bookmark, pep, synchronizeWithBookmarks);
+            processModifiedBookmark(bookmark, pep);
         }
-        if (pep && synchronizeWithBookmarks) {
+        if (pep) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + previousBookmarks.size() + " bookmarks have been removed");
             for (Jid jid : previousBookmarks) {
                 processDeletedBookmark(account, jid);
@@ -2034,7 +2033,7 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    private void processModifiedBookmark(Bookmark bookmark, final boolean pep, final boolean synchronizeWithBookmarks) {
+    private void processModifiedBookmark(final Bookmark bookmark, final boolean pep) {
         final Account account = bookmark.getAccount();
         Conversation conversation = find(bookmark);
         if (conversation != null) {
@@ -2042,7 +2041,7 @@ public class XmppConnectionService extends Service {
                 return;
             }
             bookmark.setConversation(conversation);
-            if (pep && synchronizeWithBookmarks && !bookmark.autojoin()) {
+            if (pep && !bookmark.autojoin()) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": archiving conference (" + conversation.getJid() + ") after receiving pep");
                 archiveConversation(conversation, false);
             } else {
@@ -2056,15 +2055,14 @@ public class XmppConnectionService extends Service {
                     }
                 }
             }
-        } else if (synchronizeWithBookmarks && bookmark.autojoin()) {
+        } else if (bookmark.autojoin()) {
             conversation = findOrCreateConversation(account, bookmark.getFullJid(), true, true, false);
             bookmark.setConversation(conversation);
         }
     }
 
-    public void processModifiedBookmark(Bookmark bookmark) {
-        final boolean synchronizeWithBookmarks = synchronizeWithBookmarks();
-        processModifiedBookmark(bookmark, true, synchronizeWithBookmarks);
+    public void processModifiedBookmark(final Bookmark bookmark) {
+        processModifiedBookmark(bookmark, true);
     }
 
     public void createBookmark(final Account account, final Bookmark bookmark) {
@@ -2531,7 +2529,7 @@ public class XmppConnectionService extends Service {
             if (conversation.getMode() == Conversation.MODE_MULTI) {
                 if (conversation.getAccount().getStatus() == Account.State.ONLINE) {
                     final Bookmark bookmark = conversation.getBookmark();
-                    if (maySynchronizeWithBookmarks && bookmark != null && synchronizeWithBookmarks()) {
+                    if (maySynchronizeWithBookmarks && bookmark != null) {
                         if (conversation.getMucOptions().getError() == MucOptions.Error.DESTROYED) {
                             Account account = bookmark.getAccount();
                             bookmark.setConversation(null);
@@ -3290,14 +3288,12 @@ public class XmppConnectionService extends Service {
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": fetching members for " + conversation.getName());
     }
 
-    public void providePasswordForMuc(Conversation conversation, String password) {
+    public void providePasswordForMuc(final Conversation conversation, final String password) {
         if (conversation.getMode() == Conversation.MODE_MULTI) {
             conversation.getMucOptions().setPassword(password);
             if (conversation.getBookmark() != null) {
                 final Bookmark bookmark = conversation.getBookmark();
-                if (synchronizeWithBookmarks()) {
-                    bookmark.setAutojoin(true);
-                }
+                bookmark.setAutojoin(true);
                 createBookmark(conversation.getAccount(), bookmark);
             }
             updateConversation(conversation);
@@ -4453,10 +4449,6 @@ public class XmppConnectionService extends Service {
         return getBooleanPreference("chat_states", R.bool.chat_states);
     }
 
-    private boolean synchronizeWithBookmarks() {
-        return getBooleanPreference("autojoin", R.bool.autojoin);
-    }
-
     public boolean useTorToConnect() {
         return QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
     }
@@ -4732,15 +4724,15 @@ public class XmppConnectionService extends Service {
         this.mMemorizingTrustManager = trustManager;
     }
 
-    public void updateMemorizingTrustmanager() {
-        final MemorizingTrustManager tm;
-        final boolean dontTrustSystemCAs = getBooleanPreference("dont_trust_system_cas", R.bool.dont_trust_system_cas);
-        if (dontTrustSystemCAs) {
-            tm = new MemorizingTrustManager(getApplicationContext(), null);
+    public void updateMemorizingTrustManager() {
+        final MemorizingTrustManager trustManager;
+        final var appSettings = new AppSettings(this);
+        if (appSettings.isTrustSystemCAStore()) {
+            trustManager = new MemorizingTrustManager(getApplicationContext());
         } else {
-            tm = new MemorizingTrustManager(getApplicationContext());
+            trustManager = new MemorizingTrustManager(getApplicationContext(), null);
         }
-        setMemorizingTrustManager(tm);
+        setMemorizingTrustManager(trustManager);
     }
 
     public LruCache<String, Bitmap> getBitmapCache() {
@@ -5153,7 +5145,7 @@ public class XmppConnectionService extends Service {
         return templates;
     }
 
-    public void saveConversationAsBookmark(Conversation conversation, String name) {
+    public void saveConversationAsBookmark(final Conversation conversation, final String name) {
         final Account account = conversation.getAccount();
         final Bookmark bookmark = new Bookmark(account, conversation.getJid().asBareJid());
         final String nick = conversation.getJid().getResource();
@@ -5163,7 +5155,7 @@ public class XmppConnectionService extends Service {
         if (!TextUtils.isEmpty(name)) {
             bookmark.setBookmarkName(name);
         }
-        bookmark.setAutojoin(getPreferences().getBoolean("autojoin", getResources().getBoolean(R.bool.autojoin)));
+        bookmark.setAutojoin(true);
         createBookmark(account, bookmark);
         bookmark.setConversation(conversation);
     }

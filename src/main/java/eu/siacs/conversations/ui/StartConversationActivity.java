@@ -462,7 +462,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         }
         Conversation conversation = xmppConnectionService.findOrCreateConversation(bookmark.getAccount(), jid, true, true, true);
         bookmark.setConversation(conversation);
-        if (!bookmark.autojoin() && getPreferences().getBoolean("autojoin", getResources().getBoolean(R.bool.autojoin))) {
+        if (!bookmark.autojoin()) {
             bookmark.setAutojoin(true);
             xmppConnectionService.createBookmark(bookmark.getAccount(), bookmark);
         }
@@ -1150,7 +1150,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 openConversationsForBookmark(bookmark);
             } else {
                 bookmark = new Bookmark(account, conferenceJid.asBareJid());
-                bookmark.setAutojoin(getBooleanPreference("autojoin", R.bool.autojoin));
+                bookmark.setAutojoin(true);
                 final String nick = conferenceJid.getResource();
                 if (nick != null && !nick.isEmpty() && !nick.equals(MucOptions.defaultNick(account))) {
                     bookmark.setNick(nick);

@@ -12,7 +12,6 @@
     <bool name="last_activity">false</bool>
     <bool name="vibrate_on_notification">true</bool>
     <bool name="led">true</bool>
-    <bool name="enable_quiet_hours">false</bool>
     <string name="notification_ringtone">content://settings/system/notification_sound</string>
     <string name="incoming_call_ringtone">content://settings/system/ringtone</string>
     <integer name="grace_period">144</integer>
@@ -23,7 +22,6 @@
     <bool name="show_dynamic_tags">false</bool>
     <bool name="btbv">true</bool>
     <integer name="automatic_message_deletion">0</integer>
-    <bool name="dont_trust_system_cas">false</bool>
     <bool name="trust_system_ca_store">true</bool>
     <bool name="allow_message_correction">true</bool>
     <bool name="use_tor">false</bool>
@@ -31,7 +29,6 @@
     <bool name="display_enter_key">false</bool>
     <bool name="manually_change_presence">false</bool>
     <bool name="away_when_screen_off">false</bool>
-    <bool name="autojoin">true</bool>
     <bool name="enable_foreground_service">true</bool>
     <bool name="send_crash_reports">true</bool>
     <bool name="validate_hostname">false</bool>
@@ -40,7 +37,6 @@
     <bool name="show_combined_search_options">false</bool>
     <bool name="scroll_to_bottom">true</bool>
     <string name="omemo_setting_default">default_on</string>
-    <string name="default_font_size">small</string>
     <bool name="use_share_location_plugin">false</bool>
     <bool name="start_searching">false</bool>
     <string name="video_compression">360</string>
