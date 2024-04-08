@@ -1,10 +1,12 @@
 package eu.siacs.conversations.ui.fragment.settings;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceFragmentCompat;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.XmppActivity;
@@ -17,10 +19,14 @@ public abstract class XmppPreferenceFragment extends PreferenceFragmentCompat {
                         if (key == null) {
                             return;
                         }
-                        onSharedPreferenceChanged(key);
+                        if (isAdded()) {
+                            onSharedPreferenceChanged(key);
+                        }
                     };
 
-    protected void onSharedPreferenceChanged(@NonNull String key) {}
+    protected void onSharedPreferenceChanged(@NonNull String key) {
+        Log.d(Config.LOGTAG,"onSharedPreferenceChanged("+key+")");
+    }
 
     public void onBackendConnected() {}
 
@@ -43,7 +49,7 @@ public abstract class XmppPreferenceFragment extends PreferenceFragmentCompat {
         super.onPause();
         final var sharedPreferences = getPreferenceManager().getSharedPreferences();
         if (sharedPreferences != null) {
-            sharedPreferences.registerOnSharedPreferenceChangeListener(
+            sharedPreferences.unregisterOnSharedPreferenceChangeListener(
                     this.sharedPreferenceChangeListener);
         }
     }

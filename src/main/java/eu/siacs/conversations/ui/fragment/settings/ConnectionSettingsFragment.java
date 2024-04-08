@@ -26,10 +26,14 @@ public class ConnectionSettingsFragment extends XmppPreferenceFragment {
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         setPreferencesFromResource(R.xml.preferences_connection, rootKey);
+        final var connectionOptions = findPreference(AppSettings.SHOW_CONNECTION_OPTIONS);
         final var channelDiscovery = findPreference(AppSettings.CHANNEL_DISCOVERY_METHOD);
         final var groupsAndConferences = findPreference(GROUPS_AND_CONFERENCES);
-        if (channelDiscovery == null || groupsAndConferences == null) {
+        if (connectionOptions == null || channelDiscovery == null || groupsAndConferences == null) {
             throw new IllegalStateException();
+        }
+        if (QuickConversationsService.isQuicksy()) {
+            connectionOptions.setVisible(false);
         }
         if (hideChannelDiscovery()) {
             groupsAndConferences.setVisible(false);

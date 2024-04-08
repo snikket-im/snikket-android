@@ -2,13 +2,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/pref_category_server_connection">
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:defaultValue="@bool/show_connection_options"
             android:icon="@drawable/ic_settings_24dp"
             android:key="show_connection_options"
             android:summary="@string/pref_show_connection_options_summary"
             android:title="@string/pref_show_connection_options" />
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:defaultValue="@bool/use_tor"
             android:icon="@drawable/ic_network_node_24dp"
             android:key="use_tor"
