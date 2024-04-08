@@ -27,7 +27,7 @@
     <string name="minutes_ago">fa %d mins</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%dconverses no llegides</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">%d converses no llegides</item>
     </plurals>
     <string name="sending">enviant…</string>
