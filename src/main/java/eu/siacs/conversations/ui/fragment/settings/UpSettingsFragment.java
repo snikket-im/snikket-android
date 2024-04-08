@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -88,6 +87,17 @@ public class UpSettingsFragment extends XmppPreferenceFragment {
         listPreference.setEntryValues(entryValues.build().toArray(new CharSequence[0]));
         if (!accounts.contains(listPreference.getValue())) {
             listPreference.setValue("none");
+        }
+    }
+
+    @Override
+    protected void onSharedPreferenceChanged(@NonNull String key) {
+        super.onSharedPreferenceChanged(key);
+        if (UnifiedPushDistributor.PREFERENCES.contains(key)) {
+            final var service = requireService();
+            if (service.reconfigurePushDistributor()) {
+                service.renewUnifiedPushEndpoints();
+            }
         }
     }
 
