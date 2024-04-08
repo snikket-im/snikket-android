@@ -83,6 +83,7 @@
                                 android:id="@+id/account_password_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="4sp"
                                 android:hint="@string/password"
                                 app:endIconMode="password_toggle">
 
@@ -97,50 +98,42 @@
                                 android:id="@+id/name_port"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="8sp"
                                 android:orientation="horizontal"
                                 android:weightSum="1">
 
-                                <LinearLayout
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/hostname_layout"
                                     android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="0.8"
-                                    android:orientation="vertical">
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.7"
+                                    android:layout_marginEnd="4sp"
+                                    android:hint="@string/account_settings_hostname">
 
-                                    <com.google.android.material.textfield.TextInputLayout
-                                        android:id="@+id/hostname_layout"
-                                        android:layout_width="match_parent"
+                                    <EditText
+                                        android:id="@+id/hostname"
+                                        android:layout_width="fill_parent"
                                         android:layout_height="wrap_content"
-                                        android:hint="@string/account_settings_hostname">
+                                        android:inputType="textWebEmailAddress" />
+                                </com.google.android.material.textfield.TextInputLayout>
 
-                                        <EditText
-                                            android:id="@+id/hostname"
-                                            android:layout_width="fill_parent"
-                                            android:layout_height="wrap_content"
-                                            android:inputType="textWebEmailAddress" />
-                                    </com.google.android.material.textfield.TextInputLayout>
-                                </LinearLayout>
 
-                                <LinearLayout
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/port_layout"
                                     android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="0.2"
-                                    android:orientation="vertical">
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.3"
+                                    android:layout_marginStart="4sp"
+                                    android:hint="@string/account_settings_port">
 
-                                    <com.google.android.material.textfield.TextInputLayout
-                                        android:id="@+id/port_layout"
+                                    <EditText
+                                        android:id="@+id/port"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:hint="@string/account_settings_port">
-
-                                        <EditText
-                                            android:id="@+id/port"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:inputType="number"
-                                            android:maxLength="5" />
-                                    </com.google.android.material.textfield.TextInputLayout>
-                                </LinearLayout>
+                                        android:layout_height="match_parent"
+                                        android:inputType="number"
+                                        android:maxLength="5" />
+                                </com.google.android.material.textfield.TextInputLayout>
                             </LinearLayout>
 
                             <CheckBox
@@ -194,9 +187,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
-                            android:gravity="end"
                             android:layout_marginHorizontal="16dp"
-                            android:layout_marginBottom="16dp">
+                            android:layout_marginBottom="16dp"
+                            android:gravity="end">
 
                             <Button
                                 android:id="@+id/os_optimization_disable"
