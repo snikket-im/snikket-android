@@ -119,4 +119,8 @@ public class AppSettings {
                 PreferenceManager.getDefaultSharedPreferences(context);
         sharedPreferences.edit().putBoolean(SEND_CRASH_REPORTS, value).apply();
     }
+
+    public boolean isRequireChannelBinding() {
+        return getBooleanPreference(REQUIRE_CHANNEL_BINDING, R.bool.require_channel_binding);
+    }
 }

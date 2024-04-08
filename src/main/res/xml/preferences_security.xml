@@ -30,6 +30,7 @@
             android:title="@string/pref_remove_trusted_certificates_title" />
 
         <SwitchPreferenceCompat
+            android:defaultValue="@bool/require_channel_binding"
             android:icon="@drawable/ic_private_connectivity_24dp"
             android:key="channel_binding_required"
             android:summary="@string/detect_mim_summary"
@@ -37,8 +38,8 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_category_on_this_device">
         <ListPreference
-            android:icon="@drawable/ic_auto_delete_24dp"
             android:defaultValue="@integer/automatic_message_deletion"
+            android:icon="@drawable/ic_auto_delete_24dp"
             android:key="automatic_message_deletion"
             android:summary="@string/pref_automatically_delete_messages_description"
             android:title="@string/pref_automatically_delete_messages" />

@@ -44,4 +44,5 @@
     <bool name="allow_screenshots">true</bool>
     <string name="default_push_server">up.conversations.im</string>
     <string name="default_push_account">none</string>
+    <bool name="require_channel_binding">false</bool>
 </resources>

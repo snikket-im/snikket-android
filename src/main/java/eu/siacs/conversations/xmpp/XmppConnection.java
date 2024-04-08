@@ -22,6 +22,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
@@ -157,6 +158,7 @@ public class XmppConnection implements Runnable {
             new Hashtable<>();
     private final Set<OnAdvancedStreamFeaturesLoaded> advancedStreamFeaturesLoadedListeners =
             new HashSet<>();
+    private final AppSettings appSettings;
     private final XmppConnectionService mXmppConnectionService;
     private Socket socket;
     private XmlReader tagReader;
@@ -203,9 +205,10 @@ public class XmppConnection implements Runnable {
     public XmppConnection(final Account account, final XmppConnectionService service) {
         this.account = account;
         this.mXmppConnectionService = service;
+        this.appSettings = new AppSettings(mXmppConnectionService.getApplicationContext());
     }
 
-    private static void fixResource(Context context, Account account) {
+    private static void fixResource(final Context context, final Account account) {
         String resource = account.getResource();
         int fixedPartLength =
                 context.getString(R.string.app_name).length() + 1; // include the trailing dot
@@ -1646,6 +1649,7 @@ public class XmppConnection implements Runnable {
                             + mechanisms);
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
+        validateRequireChannelBinding(saslMechanism);
         if (SaslMechanism.hashedToken(saslMechanism)) {
             return;
         }
@@ -1661,6 +1665,17 @@ public class XmppConnection implements Runnable {
                             + pinnedMechanism
                             + "). Possible downgrade attack?");
             throw new StateChangingException(Account.State.DOWNGRADE_ATTACK);
+        }
+    }
+
+    private void validateRequireChannelBinding(@NonNull final SaslMechanism mechanism)
+            throws StateChangingException {
+        if (appSettings.isRequireChannelBinding()) {
+            if (mechanism instanceof ChannelBindingMechanism) {
+                return;
+            }
+            Log.d(Config.LOGTAG, account.getJid() + ": server did not offer channel binding");
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
     }
 
@@ -2365,7 +2380,10 @@ public class XmppConnection implements Runnable {
         final SaslMechanism quickStartMechanism;
         if (secureConnection) {
             quickStartMechanism =
-                    SaslMechanism.ensureAvailable(account.getQuickStartMechanism(), sslVersion);
+                    SaslMechanism.ensureAvailable(
+                            account.getQuickStartMechanism(),
+                            sslVersion,
+                            appSettings.isRequireChannelBinding());
         } else {
             quickStartMechanism = null;
         }
