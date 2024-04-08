@@ -26,8 +26,8 @@
     <string name="minute_ago">vor einer Minute</string>
     <string name="minutes_ago">vor %d Minuten</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d ungelesene Unterhaltung</item>
-        <item quantity="other">%d ungelesene Unterhaltungen</item>
+        <item quantity="one">%d ungelesener Chat</item>
+        <item quantity="other">%d ungelesene Chats</item>
     </plurals>
     <string name="sending">senden…</string>
     <string name="message_decrypting">Nachricht wird entschlüsselt. Bitte warten…</string>
@@ -39,7 +39,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Teilnehmer</string>
     <string name="visitor">Besucher</string>
-    <string name="remove_contact_text">Möchtest du %s von deiner Kontaktliste entfernen? Unterhaltungen mit diesem Kontakt werden dabei nicht entfernt.</string>
+    <string name="remove_contact_text">Möchtest du %s von deiner Kontaktliste entfernen? Der Chat mit diesem Kontakt werden dabei nicht entfernt.</string>
     <string name="block_contact_text">Möchtest du %s sperren und keine Nachrichten mehr erhalten?</string>
     <string name="unblock_contact_text">Möchtest du %s entsperren und wieder Nachrichten empfangen?</string>
     <string name="block_domain_text">Alle Kontakte von %s sperren?</string>
@@ -77,7 +77,7 @@
     <string name="preparing_images">Vorbereitung zum Senden der Bilder</string>
     <string name="sharing_files_please_wait">Teile Dateien. Bitte warten…</string>
     <string name="action_clear_history">Verlauf löschen</string>
-    <string name="clear_conversation_history">Unterhaltungsverlauf löschen</string>
+    <string name="clear_conversation_history">Chatverlauf löschen</string>
     <string name="clear_histor_msg">Möchtest du alle Nachrichten in dieser Unterhaltung löschen?
 \n
 \n<b>Achtung:</b> Dies beeinflusst nicht Nachrichten, die auf anderen Geräten oder Servern gespeichert sind.</string>
@@ -178,7 +178,7 @@
     <string name="unpublish_pgp_message">Bist du sicher, dass du deinen öffentlichen OpenPGP-Schlüssel aus deiner Anwesenheitsmitteilung entfernen möchtest?\nDeine Kontakte können dir dann keine OpenPGP-verschlüsselten Nachrichten senden.</string>
     <string name="openpgp_has_been_published">Öffentlicher OpenPGP-Schlüssel veröffentlicht.</string>
     <string name="mgmt_account_enable">Konto aktivieren </string>
-    <string name="mgmt_account_delete_confirm_text">Bist du sicher, dass du dein Konto möchtest? Dies wird deinen gesamten Gesprächsverlauf entfernen</string>
+    <string name="mgmt_account_delete_confirm_text">Bist du sicher, dass du dein Konto möchtest? Dies wird deinen gesamten Chatverlauf entfernen</string>
     <string name="attach_record_voice">Sprache aufzeichnen</string>
     <string name="account_settings_jabber_id">XMPP-Adresse</string>
     <string name="block_jabber_id">XMPP-Adresse sperren</string>
@@ -695,14 +695,14 @@
     <string name="error_trustkey_device_list">Geräteliste konnte nicht abgerufen werden</string>
     <string name="error_trustkey_bundle">Verschlüsselungsschlüssel konnte nicht abgerufen werden</string>
     <string name="error_trustkey_hint_mutual">Tipp: In manchen Fällen kann dies behoben werden, indem man sich gegenseitig zu den Kontaktlisten hinzufügt.</string>
-    <string name="disable_encryption_message">Bist du sicher, dass du die OMEMO-Verschlüsselung für dieses Gespräch deaktivieren möchtest?
+    <string name="disable_encryption_message">Bist du sicher, dass du die OMEMO-Verschlüsselung für diesen Chat deaktivieren möchtest?
 \nDies wird es deinem Serveradministrator ermöglichen, deine Nachrichten zu lesen, aber es könnte die einzige Möglichkeit sein, mit Personen zu kommunizieren, die veraltete Clients verwenden.</string>
     <string name="disable_now">Jetzt deaktivieren</string>
     <string name="draft">Entwurf:</string>
     <string name="pref_omemo_setting">OMEMO-Verschlüsselung</string>
     <string name="pref_omemo_setting_summary_always">OMEMO wird immer für persönliche Unterhaltungen und private Gruppenchats verwendet.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO wird standardmäßig für neue Unterhaltungen verwendet.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO muss für neue Unterhaltungen explizit eingeschaltet werden.</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO wird standardmäßig für neue Chats verwendet.</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO muss für neue Chats explizit eingeschaltet werden.</string>
     <string name="create_shortcut">Verknüpfung erstellen</string>
     <string name="default_on">Standardmäßig eingeschaltet</string>
     <string name="default_off">Standardmäßig ausgeschaltet</string>
@@ -723,14 +723,14 @@
     <string name="no_microphone_permission">%1$s den Zugriff auf das Mikrofon gewähren</string>
     <string name="search_messages">Nachrichten durchsuchen</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Unterhaltung anzeigen</string>
+    <string name="view_conversation">Chat anzeigen</string>
     <string name="pref_use_share_location_plugin"> Plugin zum Standort teilen</string>
     <string name="pref_use_share_location_plugin_summary">Verwende das Plugin zum Teilen des Standorts anstatt der integrierten Karte</string>
     <string name="copy_link">Internetadresse kopieren</string>
     <string name="copy_jabber_id">XMPP-Adresse kopieren</string>
     <string name="p1_s3_filetransfer">HTTP-Dateifreigabe für S3</string>
     <string name="pref_start_search">Direkte Suche </string>
-    <string name="pref_start_search_summary">Beim Dialog \'Unterhaltung beginnen\' Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
+    <string name="pref_start_search_summary">Beim Dialog \'Chat beginnen\' Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
     <string name="group_chat_avatar">Gruppenchat-Profilbild</string>
     <string name="host_does_not_support_group_chat_avatars">Host unterstützt keine Gruppenchat-Profilbilder</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Nur der Eigentümer kann das Gruppenchat-Profilbild ändern</string>
@@ -941,8 +941,8 @@
     <string name="remove_from_favorites">Von oben ablösen</string>
     <string name="gpx_track">GPX-Strecke</string>
     <string name="could_not_correct_message">Nachricht konnte nicht korrigiert werden</string>
-    <string name="search_all_conversations">Alle Unterhaltungen</string>
-    <string name="search_this_conversation">Diese Unterhaltung</string>
+    <string name="search_all_conversations">Alle Chats</string>
+    <string name="search_this_conversation">Dieser Chat</string>
     <string name="your_avatar">Dein Profilbild</string>
     <string name="avatar_for_x">Profilbild für %s</string>
     <string name="encrypted_with_omemo">Verschlüsselt mit OMEMO</string>
@@ -1012,8 +1012,8 @@
     <string name="call_integration_not_available">Anrufintegration nicht verfügbar!</string>
     <string name="no_permission_to_place_call">Keine Berechtigung für Telefonanrufe</string>
     <string name="rtp_state_contact_offline">Kontakt ist nicht verfügbar</string>
-    <string name="remove_bookmark_and_close">Möchtest du das Lesezeichen für %s entfernen und die Unterhaltung schließen?</string>
-    <string name="delete_and_close">Löschen &amp; Schließen</string>
+    <string name="remove_bookmark_and_close">Möchtest du das Lesezeichen für %s entfernen und den Chat archivieren?</string>
+    <string name="delete_and_close">Chat löschen &amp; archivieren</string>
     <string name="remove_bookmark">Willst du das Lesezeichen für %s entfernen?</string>
     <string name="title_activity_share_with">Teilen mit…</string>
     <string name="pref_use_colorful_bubbles_summary">Farbige Chatblasen helfen, gesendete und empfangene Nachrichten zu unterscheiden</string>
@@ -1022,4 +1022,12 @@
     <string name="pref_dynamic_colors_summary">Systemfarben (Material You)</string>
     <string name="start_chat">Chat starten</string>
     <string name="no_certificate_selected">Kein Client-Zertifikat ausgewählt!</string>
+    <string name="title_activity_new_chat">Neuer Chat</string>
+    <string name="archive_this_chat">Diesen Chat archivieren</string>
+    <string name="corresponding_chats_closed">Entsprechende Chats werden archiviert.</string>
+    <string name="switch_to_chat">Zum Chat wechseln</string>
+    <string name="action_archive_chat">Chat archivieren</string>
+    <string name="welcome_header">Nimm an der Unterhaltung teil</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">Der Barcode enthält keine Fingerabdrücke für diesen Chat.</string>
+    <string name="title_undo_swipe_out_chat">Chat archiviert</string>
 </resources>
