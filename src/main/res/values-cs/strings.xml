@@ -464,7 +464,7 @@
     <string name="pref_treat_vibrate_as_silent">Vibrační mód brát stejně jako tichý</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Při nastavení pouze na vibrace označí váš stav jako \"nedostupný\"</string>
     <string name="pref_show_connection_options">Rozšířená nastavení připojení</string>
-    <string name="pref_show_connection_options_summary">Zobrazovat nastavení hostname a port  při vytváření účtu</string>
+    <string name="pref_show_connection_options_summary">Zobrazovat nastavení hostname a port při vytváření účtu</string>
     <string name="hostname_example">xmpp.server.cz</string>
     <string name="action_add_account_with_certificate">Přihlásit se pomocí certifikátu</string>
     <string name="unable_to_parse_certificate">Nelze analyzovat certifikát</string>
