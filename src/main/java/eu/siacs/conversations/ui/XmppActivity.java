@@ -485,7 +485,6 @@ public abstract class XmppActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         metrics = getResources().getDisplayMetrics();
-        ExceptionHelper.init(getApplicationContext());
         EmojiInitializationService.execute(this);
         this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }

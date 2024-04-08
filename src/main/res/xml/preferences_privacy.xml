@@ -62,11 +62,11 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_category_application">
         <SwitchPreferenceCompat
-            android:defaultValue="@bool/never_send"
+            android:defaultValue="@bool/send_crash_reports"
             android:icon="@drawable/ic_report_24dp"
-            android:key="never_send"
+            android:key="send_crash_reports"
             android:summary="@string/pref_never_send_crash_summary"
-            android:title="@string/pref_never_send_crash" />
+            android:title="@string/pref_send_crash_reports" />
 
     </PreferenceCategory>
 

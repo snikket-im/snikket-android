@@ -10,11 +10,14 @@ import androidx.appcompat.app.AppCompatDelegate;
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.DynamicColorsOptions;
 
+import eu.siacs.conversations.utils.ExceptionHelper;
+
 public class Conversations extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
+        ExceptionHelper.init(getApplicationContext());
         applyThemeSettings();
     }
 

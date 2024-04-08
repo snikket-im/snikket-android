@@ -40,6 +40,8 @@ public class AppSettings {
     public static final String USE_TOR = "use_tor";
     public static final String CHANNEL_DISCOVERY_METHOD = "channel_discovery_method";
 
+    public static final String SEND_CRASH_REPORTS = "send_crash_reports";
+
     private final Context context;
 
     public AppSettings(final Context context) {
@@ -73,7 +75,10 @@ public class AppSettings {
     public void setNotificationTone(final Uri uri) {
         final SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPreferences.edit().putString(NOTIFICATION_RINGTONE, uri == null ? null : uri.toString()).apply();
+        sharedPreferences
+                .edit()
+                .putString(NOTIFICATION_RINGTONE, uri == null ? null : uri.toString())
+                .apply();
     }
 
     public boolean isBTBVEnabled() {
@@ -101,6 +106,17 @@ public class AppSettings {
     public String getOmemo() {
         final SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getString(OMEMO, context.getString(R.string.omemo_setting_default));
+        return sharedPreferences.getString(
+                OMEMO, context.getString(R.string.omemo_setting_default));
+    }
+
+    public boolean isSendCrashReports() {
+        return getBooleanPreference(SEND_CRASH_REPORTS, R.bool.send_crash_reports);
+    }
+
+    public void setSendCrashReports(boolean value) {
+        final SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences.edit().putBoolean(SEND_CRASH_REPORTS, value).apply();
     }
 }
