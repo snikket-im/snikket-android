@@ -215,7 +215,7 @@
     <string name="request_now">Kërkoje tani</string>
     <string name="ignore">Shpërfille</string>
     <string name="pref_security_settings">Siguri</string>
-    <string name="pref_allow_message_correction">Lejo ndreqje mesazhi</string>
+    <string name="pref_allow_message_correction">Ndreqje mesazhesh</string>
     <string name="pref_expert_options">Rregullime ekspertësh</string>
     <string name="pref_expert_options_summary">Ju lutemi, hapni sytë me këto</string>
     <string name="title_activity_about_x">Mbi %s</string>
@@ -375,7 +375,7 @@
     <string name="pref_away_when_screen_off">“I larguar”, kur pajisja është e kyçur</string>
     <string name="pref_away_when_screen_off_summary">Shfaqmë si “I lraguar”, kur pajisja është e kyçur</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Shfaqmë si “I zënë”, kur pajisja është në dridhje</string>
-    <string name="pref_show_connection_options">Rregullime të zgjeruara lidhjeje</string>
+    <string name="pref_show_connection_options">Strehëemër &amp; Portë</string>
     <string name="action_add_account_with_certificate">Hyni me dëshmi</string>
     <string name="unable_to_parse_certificate">S’u analizua dot dëshmi</string>
     <string name="mam_prefs">Parapëlqime arkivimi</string>
@@ -434,7 +434,7 @@
     <string name="gp_short">E shkurtër</string>
     <string name="gp_medium">Mesatare</string>
     <string name="gp_long">E gjatë</string>
-    <string name="pref_broadcast_last_activity">Përdorim transmetimi</string>
+    <string name="pref_broadcast_last_activity">Parë së fundi</string>
     <string name="pref_privacy">Privatësi</string>
     <string name="pref_theme_options">Temë</string>
     <string name="pref_theme_options_summary">Përzgjidhni paletën e ngjyrave</string>
@@ -825,8 +825,8 @@
     <string name="block_contact_text">Do të donit t’i bllokohet %s dërgimi i mesazheve për ju\?</string>
     <string name="unblock_contact_text">Do të donit të zhbllokohet %s dhe të lejohet t’ju dërgojë mesazhe\?</string>
     <string name="crash_report_message">Përdorimi i llogarisë tuaj XMPP për të dërguar “stack traces” ndihmon zhvillimin e pandërprerë të %1$s.</string>
-    <string name="clear_histor_msg">Doni të fshihen krejt mesazhet te kjo fjalosje? 
-\n 
+    <string name="clear_histor_msg">Doni të fshihen krejt mesazhet te kjo fjalosje?
+\n
 \n<b>Kujdes:</b> Kjo s’do të ndikojë mesazhet e depozituar në pajisje apo shërbyes të tjerë.</string>
     <string name="delete_file_dialog_msg">Jeni i sigurt se doni të fshihet kjo kartelë\?
 \n
@@ -898,7 +898,7 @@
     <string name="pref_dnd_on_silent_mode">“I zënë” nën mënyrën e heshtur</string>
     <string name="pref_dnd_on_silent_mode_summary">Shfaqe si “I zënë”, kur pajisja gjendet nën mënyrën e heshtur</string>
     <string name="pref_treat_vibrate_as_silent">Trajtoje dridhjen si mënyrë heshturazi</string>
-    <string name="pref_show_connection_options_summary">Kur ujdiset një llogari, shfaq rregullime strehëemri dhe porte</string>
+    <string name="pref_show_connection_options_summary">Kur ujdiset një llogari, shfaq rregullime të zgjeruara lidhjeje</string>
     <string name="hostname_example">xmpp.example.com</string>
     <string name="fetching_mam_prefs">Po sillen parapëlqime arkivimi. Ju lutemi, pritni…</string>
     <string name="device_does_not_support_certificates">Pajisja juaj nuk mbulon përzgjedhjen e dëshmive të klientëve!</string>
@@ -915,7 +915,7 @@
     <string name="battery_optimizations_enabled_explained">Pajisja juaj përdor optimizime shumë të thella baterie për %1$s, çka mund të shpjerë në vonesa njoftimesh, ose madje edhe humbje mesazhesh.
 \nRekomandohet të çaktivizohen ato.</string>
     <string name="device_does_not_support_battery_op">Pajisja juaj nuk mbulon zgjedhjen e lënies jashtë nga optimizim baterie</string>
-    <string name="pref_broadcast_last_activity_summary">Bëjuni të ditur kontakteve tuaj, kur përdorni Conversations</string>
+    <string name="pref_broadcast_last_activity_summary">Lërini kontaktet tuaj të shohin se kur e përdorët aplikacionin herën e fundit</string>
     <string name="pref_delete_omemo_identities_summary">Riprodhoni kyçet tuaj OMEMO. Krejt kontakteve tuaj do t’ju duhet t’ju verifikojnë sërish. Këtë përdoreni si zgjidhjen e fundit.</string>
     <string name="error_publish_avatar_offline">Që të bëni publik avatarin tuaj, duhet të jeni i lidhur.</string>
     <string name="data_saver_enabled">Kursyesi i të dhënave u aktivizua</string>
@@ -941,7 +941,7 @@
     <string name="pref_omemo_setting_summary_always">OMEMO do të përdoret përherë për fjalosje tek-për-tek dhe në grup.</string>
     <string name="pref_omemo_setting_summary_default_on">Si parazgjedhje, për fjalosje të reja do të përdoret OMEMO.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO do të duhet të aktivizohet shprehimisht për fjalosje të reja.</string>
-    <string name="pref_start_search_summary">Te skena “Nisni fjalosje”, hapni tastierën dhe vendoseni kursorin te fusha e kërkimeve</string>
+    <string name="pref_start_search_summary">Te skena “Fjalosje e re” hapni tastierën dhe vendoseni kursorin te fusha e kërkimeve</string>
     <string name="host_does_not_support_group_chat_avatars">Streha nuk mbulon avatarë fjalosjeje në grup</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Vetëm i zoti mund të ndryshyjë avatarin e një fjalosje në grup</string>
     <string name="pref_use_share_location_plugin_summary">Përdor Shtojcën Për Tregim Vendndodhjeje, në vend se hartën e brendshme</string>
@@ -1037,7 +1037,42 @@
     <string name="archive_this_chat">Arkivoje këtë fjalosje</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_chat">Kodi me vija s’përmban shenja gishtash për këtë fjalosje.</string>
     <string name="switch_to_chat">Kaloni te fjalosja</string>
-    <string name="title_undo_swipe_out_chat">Fjalosja u arkivua!</string>
+    <string name="title_undo_swipe_out_chat">Fjalosje e arkivuar</string>
     <string name="welcome_header">Ejani në Conversation</string>
     <string name="corresponding_chats_closed">Fjalosjet përkatëse u arkivuan.</string>
+    <string name="pref_send_crash_reports">Dërgoni njoftime vithisjesh</string>
+    <string name="presence_xa">Jo i Passhëm</string>
+    <string name="pref_category_sending">Dërgim</string>
+    <string name="channel_discover_opt_in_message">Pikasje kanalesh përdor një shërbim palë të tretë të quajtur &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Përdorimi i kësaj veçorie do t’i transmetojë atij shërbimi adresën tuaj IP dhe terma kërkimesh. Për më tepër hollësi, shihni &lt;a href=https://search.jabber.network/privacy&gt;Rregullat e tyre mbi Privatësinë&lt;/a&gt;.</string>
+    <string name="pref_title_interface">Ndërfaqe</string>
+    <string name="pref_summary_appearance">Temë, Ngjyra, Foto Ekrani, Input</string>
+    <string name="pref_title_security">Siguri</string>
+    <string name="pref_summary_security">Fshehtëzim E2E, Besim Qorrazi Para Verifikimi, Pikasje MITM</string>
+    <string name="unified_push_summary">Rele njoftimesh për aplikacione palësh të treta të përputhshme me UnifiedPush</string>
+    <string name="notifications">Njoftime</string>
+    <string name="pref_attachments_summary">Madhësi kartele, Ngjeshje figurash, Cilësi videosh</string>
+    <string name="pref_notifications_summary">“Grace period”, Zile, Dridhje, Të panjohur</string>
+    <string name="pref_category_receiving">Marrje</string>
+    <string name="pref_automatic_download">Shkarkim i vetvetishëm</string>
+    <string name="appearance">Dukje</string>
+    <string name="pref_light_dark_mode">Mënyrë e çelët/e errët</string>
+    <string name="pref_allow_screenshots">Lejo foto ekrani</string>
+    <string name="pref_allow_screenshots_summary">Shfaq lëndë aplikacioni te këmbyes aplikacioni dhe lejo të bëhen foto ekrani</string>
+    <string name="pref_category_e2ee">Fshehtëzim skaj-më-skaj</string>
+    <string name="pref_title_trust_system_ca_store">Autoritete dëshmish</string>
+    <string name="pref_title_trust_system_ca_store_summary">Beso dëshmi AD të sistemit</string>
+    <string name="detect_mim">Lyp “channel binding”</string>
+    <string name="detect_mim_summary">“Channel binding” mund të pikasë disa sulme “machine-in-the-middle”</string>
+    <string name="pref_category_server_connection">Lidhje shërbyesi</string>
+    <string name="pref_category_operating_system">Sistem Operativ</string>
+    <string name="pref_privacy_summary">Njoftime shtypjeje, Parë Së Fundi, I lirë/I zënë</string>
+    <string name="pref_connection_summary">Strehëemër &amp; Portë, Tor</string>
+    <string name="pref_connection_summary_w_cd">Strehëemër &amp; Portë, Tor, Pikazje Kanalesh</string>
+    <string name="pref_keyboard_options">Tastierë</string>
+    <string name="pref_category_engagement_notifications">Njoftime angazhimi</string>
+    <string name="pref_category_application">Aplikacion</string>
+    <string name="pref_category_interaction">Ndërveprim</string>
+    <string name="pref_category_on_this_device">Në pajisje</string>
+    <string name="pref_up_long_summary">Kur veprohet si një Distributor UnifiedPush, për të zgjuar aplikacion tjetër të përputhshëm me UnifiedPush , fjala vjen, Tusky, Ltt.rs, FluffyChat, etj, do të përdoret lidhja XMPP, e vazhdueshme, e qëndrueshme dhe miqësore ndaj baterisë.</string>
+    <string name="unified_push_distributor">Distributor UnifiedPush</string>
 </resources>
