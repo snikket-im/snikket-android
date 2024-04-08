@@ -100,6 +100,8 @@
                     android:inputType="textShortMessage|textMultiLine|textCapSentences"
                     android:maxLines="8"
                     android:minHeight="32dp"
+                    android:textColor="?colorOnTertiaryContainer"
+                    android:textColorHint="@color/hint_on_tertiary_container"
                     android:minLines="1">
 
                     <requestFocus />
