@@ -297,7 +297,8 @@ public class CallIntegration extends Connection {
     }
 
     private AudioDevice getAudioDeviceFallback() {
-        return requireAppRtcAudioManager().getSelectedAudioDevice();
+        final var audioDevice = requireAppRtcAudioManager().getSelectedAudioDevice();
+        return audioDevice == null ? AudioDevice.NONE : audioDevice;
     }
 
     private void setAudioDeviceFallback(final AudioDevice audioDevice) {

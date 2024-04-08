@@ -128,6 +128,12 @@ public class CallIntegrationConnectionService extends ConnectionService {
                 final var proposal =
                         service.getJingleConnectionManager()
                                 .proposeJingleRtpSession(account, with, media);
+                if (proposal == null) {
+                    // TODO instead of just null checking try to get the sessionID
+                    return Connection.createFailedConnection(
+                            new DisconnectCause(
+                                    DisconnectCause.ERROR, "a call is already in progress"));
+                }
                 intent.putExtra(
                         RtpSessionActivity.EXTRA_LAST_REPORTED_STATE,
                         RtpEndUserState.FINDING_DEVICE.toString());
