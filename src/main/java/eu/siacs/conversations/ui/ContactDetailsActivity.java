@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.color.MaterialColors;
@@ -49,6 +51,7 @@ import eu.siacs.conversations.databinding.ActivityContactDetailsBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.services.AbstractQuickConversationsService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
@@ -66,6 +69,7 @@ import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.utils.XEP0392Helper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
@@ -504,17 +508,38 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         }
         binding.keysWrapper.setVisibility(hasKeys ? View.VISIBLE : View.GONE);
 
-        List<ListItem.Tag> tagList = contact.getTags(this);
-        if (tagList.isEmpty() || !this.showDynamicTags) {
+        final List<ListItem.Tag> tagList = contact.getTags(this);
+        final boolean hasMetaTags = contact.isBlocked() || contact.getShownStatus() != Presence.Status.OFFLINE;
+        if ((tagList.isEmpty() && !hasMetaTags) || !this.showDynamicTags) {
             binding.tags.setVisibility(View.GONE);
         } else {
             binding.tags.setVisibility(View.VISIBLE);
             binding.tags.removeAllViewsInLayout();
             for (final ListItem.Tag tag : tagList) {
+                final String name = tag.getName();
                 final TextView tv = (TextView) inflater.inflate(R.layout.list_item_tag, binding.tags, false);
-                tv.setText(tag.getName());
-                tv.setBackgroundColor(tag.getColor());
+                tv.setText(name);
+                tv.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.harmonizeWithPrimary(this,XEP0392Helper.rgbFromNick(name))));
                 binding.tags.addView(tv);
+            }
+            if (contact.isBlocked()) {
+                final TextView tv =
+                        (TextView)
+                                inflater.inflate(
+                                        R.layout.list_item_tag, binding.tags, false);
+                tv.setText(R.string.blocked);
+                tv.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.harmonizeWithPrimary(tv.getContext(), ContextCompat.getColor(tv.getContext(),R.color.gray_800))));
+                binding.tags.addView(tv);
+            } else {
+                final Presence.Status status = contact.getShownStatus();
+                if (status != Presence.Status.OFFLINE) {
+                    final TextView tv =
+                            (TextView)
+                                    inflater.inflate(
+                                            R.layout.list_item_tag, binding.tags, false);
+                    UIHelper.setStatus(tv, status);
+                    binding.tags.addView(tv);
+                }
             }
         }
     }

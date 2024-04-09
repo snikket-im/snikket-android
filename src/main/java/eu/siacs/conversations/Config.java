@@ -81,7 +81,6 @@ public final class Config {
     public static final int CONNECT_DISCO_TIMEOUT = 20;
     public static final int MINI_GRACE_PERIOD = 750;
 
-    public static final boolean XEP_0392 = true; // enables XEP-0392 v0.6.0
 
     // media file formats. Homogenous Android or Conversations only deployments can switch to opus
     // and webp

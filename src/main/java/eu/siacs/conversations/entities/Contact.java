@@ -180,17 +180,10 @@ public class Contact implements ListItem, Blockable {
     }
 
     @Override
-    public List<Tag> getTags(Context context) {
+    public List<Tag> getTags(final Context context) {
         final ArrayList<Tag> tags = new ArrayList<>();
         for (final String group : getGroups(true)) {
-            tags.add(new Tag(group, UIHelper.getColorForName(group)));
-        }
-        Presence.Status status = getShownStatus();
-        if (status != Presence.Status.OFFLINE) {
-            tags.add(UIHelper.getTagForStatus(context, status));
-        }
-        if (isBlocked()) {
-            tags.add(new Tag(context.getString(R.string.blocked), 0xff2e2f3b));
+            tags.add(new Tag(group));
         }
         return tags;
     }
