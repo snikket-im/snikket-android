@@ -1,0 +1,2 @@
+* Rikthim përdorimi i Pikasjes së Kanaleve për Android 6+7
+* Përmirësim regjistrimi për integrim thirrjesh të dështuara
