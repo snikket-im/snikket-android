@@ -730,7 +730,7 @@
     <string name="copy_jabber_id">XMPP-Adresse kopieren</string>
     <string name="p1_s3_filetransfer">HTTP-Dateifreigabe für S3</string>
     <string name="pref_start_search">Direkte Suche </string>
-    <string name="pref_start_search_summary">Beim Dialog \'Neuen Chat\' Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
+    <string name="pref_start_search_summary">Beim Dialog \'Neuer Chat\' Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
     <string name="group_chat_avatar">Gruppenchat-Profilbild</string>
     <string name="host_does_not_support_group_chat_avatars">Host unterstützt keine Gruppenchat-Profilbilder</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Nur der Eigentümer kann das Gruppenchat-Profilbild ändern</string>
@@ -1043,4 +1043,9 @@
     <string name="pref_category_sending">Senden</string>
     <string name="pref_category_receiving">Empfangen</string>
     <string name="pref_automatic_download">Automatischer Download</string>
+    <string name="appearance">Aussehen</string>
+    <string name="pref_category_e2ee">Ende-zu-Ende-Verschlüsselung</string>
+    <string name="pref_category_operating_system">Betriebssystem</string>
+    <string name="pref_keyboard_options">Tastatur</string>
+    <string name="pref_category_on_this_device">Auf diesem Gerät</string>
 </resources>
