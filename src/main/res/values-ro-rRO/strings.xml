@@ -138,7 +138,7 @@
     <string name="send_presence_updates">Trimite actualizări de prezență</string>
     <string name="receive_presence_updates">Primește actualizări de prezență</string>
     <string name="ask_for_presence_updates">Cere actualizări de prezență</string>
-    <string name="attach_choose_picture">Alege o imagine</string>
+    <string name="attach_choose_picture">Alege imagine</string>
     <string name="attach_take_picture">Fă o poză</string>
     <string name="preemptively_grant">Acordă anticipat cererea de abonare</string>
     <string name="error_not_an_image_file">Fișierul selectat nu este o imagine</string>
@@ -303,10 +303,10 @@
     <string name="conference_technical_problems">Ați părăsit această discuție de grup din motive tehnice</string>
     <string name="using_account">folosind cont %s</string>
     <string name="hosted_on">găzduit pe %s</string>
-    <string name="checking_x">Verifica %s pe gazda HTTP</string>
+    <string name="checking_x">Verifică %s pe gazda HTTP</string>
     <string name="not_connected_try_again">Nu sunteți conectat(ă). Încercați din nou mai târziu</string>
-    <string name="check_x_filesize">Verifica marimea %s</string>
-    <string name="check_x_filesize_on_host">Verifica marimea %1$s pe %2$s</string>
+    <string name="check_x_filesize">Verifică mărimea %s</string>
+    <string name="check_x_filesize_on_host">Verifică mărime %1$s pe %2$s</string>
     <string name="message_options">Opțiuni mesaje</string>
     <string name="quote">Citează</string>
     <string name="paste_as_quote">Lipește citat</string>
@@ -350,7 +350,7 @@
     <string name="no_application_found_to_open_link">Nu s-a găsit nici o aplicație care să deschidă adresa</string>
     <string name="no_application_found_to_view_contact">Nu s-a găsit nici o aplicație care să deschidă contactul</string>
     <string name="pref_show_dynamic_tags">Etichete dinamice</string>
-    <string name="pref_show_dynamic_tags_summary">Arată sub contacte etichete dinamice informative</string>
+    <string name="pref_show_dynamic_tags_summary">Arată sub contacte etichete informative</string>
     <string name="enable_notifications">Activează notificările</string>
     <string name="no_conference_server_found">Nu s-a găsit serverul pentru discuția de grup</string>
     <string name="conference_creation_failed">Nu s-a putut crea discuția de grup</string>
@@ -568,13 +568,13 @@
     <string name="gp_medium">Medie</string>
     <string name="gp_long">Lungă</string>
     <string name="pref_broadcast_last_activity">Văzut ultima dată</string>
-    <string name="pref_broadcast_last_activity_summary">Permiteți contactelor voastre. să vadă când ați folosit ultima dată aplicația</string>
+    <string name="pref_broadcast_last_activity_summary">Permiteți contactelor voastre să vadă când ați folosit ultima dată aplicația</string>
     <string name="pref_privacy">Intimitate</string>
     <string name="pref_theme_options">Temă</string>
     <string name="pref_theme_options_summary">Selecție paletă de culori interfață</string>
-    <string name="pref_theme_automatic">Automată</string>
-    <string name="pref_theme_light">Luminoasă</string>
-    <string name="pref_theme_dark">Întunecată</string>
+    <string name="pref_theme_automatic">Automat</string>
+    <string name="pref_theme_light">Luminos</string>
+    <string name="pref_theme_dark">Întunecat</string>
     <string name="unable_to_connect_to_keychain">Nu s-a putut face conectarea la OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Acest dispozitiv nu mai este în uz</string>
     <string name="type_pc">PC</string>
@@ -701,7 +701,7 @@
     <string name="once">Doar o dată</string>
     <string name="qr_code_scanner_needs_access_to_camera">Scanerul de coduri QR are nevoie de acces la camera foto</string>
     <string name="pref_scroll_to_bottom">Derulează până jos</string>
-    <string name="pref_scroll_to_bottom_summary">După trimiterea unui mesaj derulează până la sfârșit</string>
+    <string name="pref_scroll_to_bottom_summary">După trimiterea unui mesaj derulează până jos</string>
     <string name="edit_status_message_title">Editare mesaj de stare</string>
     <string name="edit_status_message">Editare mesaj de stare</string>
     <string name="disable_encryption">Dezactivează criptarea</string>
@@ -732,7 +732,7 @@
     <string name="title_activity_share_location">Partajare locație</string>
     <string name="title_activity_show_location">Arată locația</string>
     <string name="share">Partajare</string>
-    <string name="unable_to_start_recording">Nu s-a putut pornii înregistrarea</string>
+    <string name="unable_to_start_recording">Nu s-a putut porni înregistrarea</string>
     <string name="please_wait">Vă rugăm să așteptați…</string>
     <string name="no_microphone_permission">Permiteți %1$s acces la microfon</string>
     <string name="search_messages">Caută mesaje</string>
@@ -1034,7 +1034,7 @@
     <string name="remove_bookmark_and_close">Ați dori să ștergeți semnul de carte pentru %s și să arhivați discuția?</string>
     <string name="remove_bookmark">Ați dori să ștergeți semnul de carte pentru %s?</string>
     <string name="delete_and_close">Șterge și închide discuția</string>
-    <string name="pref_use_colorful_bubbles_summary">Bule de chat colorate ajută la distingerea mesajelor trimise și primite</string>
+    <string name="pref_use_colorful_bubbles_summary">Ajută la distingerea mesajelor trimise și primite</string>
     <string name="title_activity_share_with">Partajează cu…</string>
     <string name="pref_use_colorful_bubbles">Bule de chat colorate</string>
     <string name="pref_dynamic_colors">Culori dinamice</string>
@@ -1053,10 +1053,10 @@
     <string name="pref_title_interface">Interfață</string>
     <string name="pref_send_crash_reports">Trimite rapoarte de erori</string>
     <string name="pref_title_security">Securitate</string>
-    <string name="pref_summary_appearance">Temă, Culori, Capturi de ecran, Tastatură</string>
+    <string name="pref_summary_appearance">Temă, Culori, Captură ecran, Tastatură</string>
     <string name="unified_push_summary">Releu de notificări pentru aplicații terțe compatibile cu UnifiedPush</string>
     <string name="notifications">Notificări</string>
-    <string name="pref_attachments_summary">Dimensiunea fișierului, Comprimarea imaginii, Calitatea video</string>
+    <string name="pref_attachments_summary">Dimensiunea fișierului, Comprimare imaginii, Calitatea video</string>
     <string name="pref_notifications_summary">Perioada de grație, Ton de apel, Vibrație, Străini</string>
     <string name="pref_category_sending">Trimitere</string>
     <string name="pref_category_receiving">Primire</string>
@@ -1079,7 +1079,7 @@
     <string name="pref_category_on_this_device">Pe dispozitiv</string>
     <string name="pref_allow_screenshots_summary">Afișați conținutul aplicației în comutatorul de aplicații și permiteți realizarea de capturi de ecran</string>
     <string name="pref_light_dark_mode">Mod luminos/întunecat</string>
-    <string name="pref_summary_security">Criptare E2E, Încredere oarbă înainte de verificare, detectare MIM</string>
+    <string name="pref_summary_security">Criptare E2E, Încredere oarbă înainte de verificare, detectare MITM</string>
     <string name="pref_connection_summary">Nume gazdă &amp; Port, Tor</string>
     <string name="pref_up_long_summary">Atunci când acționezi ca distribuitor UnifiedPush, conexiunea XMPP persistentă, fiabilă și prietenoasă cu bateria va fi utilizată pentru a trezi alte aplicații compatibile cu UnifiedPush, cum ar fi Tusky, Ltt.rs, FluffyChat și altele.</string>
 </resources>
