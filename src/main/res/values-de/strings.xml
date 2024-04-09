@@ -1053,4 +1053,7 @@
     <string name="pref_allow_screenshots_summary">Anzeigen von App-Inhalten beim App-Wechsel und Erstellen von Screenshots ermöglichen</string>
     <string name="pref_title_trust_system_ca_store">Zertifizierungsstellen</string>
     <string name="pref_category_engagement_notifications">Benachrichtigungen über Tätigkeit</string>
+    <string name="pref_title_trust_system_ca_store_summary">CA-Zertifikaten des Systems vertrauen</string>
+    <string name="detect_mim_summary">Kanalbindung kann einige Machine-in-the-Middle-Angriffe erkennen</string>
+    <string name="detect_mim">Kanalbindung erfordern</string>
 </resources>
