@@ -129,7 +129,7 @@
     <string name="pref_confirm_messages">确认消息</string>
     <string name="pref_confirm_messages_summary">让您的联系人知道您已收到并阅读了其消息</string>
     <string name="pref_prevent_screenshots">防止截屏</string>
-    <string name="pref_prevent_screenshots_summary">在切换应用时隐藏应用内容并阻止屏幕截图</string>
+    <string name="pref_prevent_screenshots_summary">在切换应用时隐藏应用内容并阻止截屏</string>
     <string name="pref_ui_options">用户界面</string>
     <string name="openpgp_error">OpenKeychain 出现了错误。</string>
     <string name="bad_key_for_encryption">加密密钥错误。</string>
@@ -289,7 +289,7 @@
 \n
 \n<small>请前往“联系人详情”以验证在线状态订阅。</small></string>
     <string name="pref_security_settings">安全</string>
-    <string name="pref_allow_message_correction">允许消息更正</string>
+    <string name="pref_allow_message_correction">消息更正</string>
     <string name="pref_allow_message_correction_summary">允许您的联系人发送后编辑其消息</string>
     <string name="pref_expert_options">专家设置</string>
     <string name="pref_expert_options_summary">请谨慎设置这些</string>
@@ -483,8 +483,8 @@
     <string name="pref_dnd_on_silent_mode_summary">当设备处于静音模式时显示为“忙碌”</string>
     <string name="pref_treat_vibrate_as_silent">将振动模式视为静音模式</string>
     <string name="pref_treat_vibrate_as_dnd_summary">当设备处于振动模式时显示为“忙碌”</string>
-    <string name="pref_show_connection_options">扩展连接设置</string>
-    <string name="pref_show_connection_options_summary">设置账号时显示主机名和端口设置</string>
+    <string name="pref_show_connection_options">主机名和端口</string>
+    <string name="pref_show_connection_options_summary">设置账号时显示扩展连接设置</string>
     <string name="hostname_example">xmpp.example.com</string>
     <string name="action_add_account_with_certificate">用证书登录</string>
     <string name="unable_to_parse_certificate">无法解析证书</string>
@@ -574,8 +574,8 @@
     <string name="gp_short">短</string>
     <string name="gp_medium">中</string>
     <string name="gp_long">长</string>
-    <string name="pref_broadcast_last_activity">广播使用</string>
-    <string name="pref_broadcast_last_activity_summary">让您的联系人知道您最后使用 Conversations 的时间</string>
+    <string name="pref_broadcast_last_activity">最后上线</string>
+    <string name="pref_broadcast_last_activity_summary">让您的联系人知道您最后一次使用此应用的时间</string>
     <string name="pref_privacy">隐私</string>
     <string name="pref_theme_options">主题</string>
     <string name="pref_theme_options_summary">选择主题色彩</string>
@@ -741,7 +741,7 @@
     <string name="copy_jabber_id">复制 XMPP 地址</string>
     <string name="p1_s3_filetransfer">用于 S3 的 HTTP 文件共享</string>
     <string name="pref_start_search">直接搜索</string>
-    <string name="pref_start_search_summary">在“开始聊天”屏幕上打开键盘并将光标放在搜索栏中</string>
+    <string name="pref_start_search_summary">在“新聊天”屏幕上打开键盘并将光标放在搜索栏中</string>
     <string name="group_chat_avatar">群聊头像</string>
     <string name="host_does_not_support_group_chat_avatars">主机不支持群聊头像</string>
     <string name="only_the_owner_can_change_group_chat_avatar">只有所有者才能更改群聊头像</string>
@@ -842,7 +842,7 @@
     <string name="restore_warning">请勿使用恢复备份功能尝试克隆（同时运行）安装。恢复备份仅适用于迁移或您丢失原始设备的情况。</string>
     <string name="unable_to_restore_backup">无法恢复备份。</string>
     <string name="unable_to_decrypt_backup">无法解密备份。密码是否正确？</string>
-    <string name="backup_channel_name">备份与恢复</string>
+    <string name="backup_channel_name">备份和恢复</string>
     <string name="enter_jabber_id">输入 XMPP 地址</string>
     <string name="create_group_chat">创建群聊</string>
     <string name="join_public_channel">加入公开频道</string>
@@ -1020,7 +1020,7 @@
     <string name="call_integration_not_available">呼叫集成不可用！</string>
     <string name="remove_bookmark_and_close">是否移除 %s 的书签并存档聊天？</string>
     <string name="remove_bookmark">是否移除 %s 的书签？</string>
-    <string name="delete_and_close">删除 &amp; 关闭</string>
+    <string name="delete_and_close">删除并存档聊天</string>
     <string name="channel_discover_opt_in_message">频道发现使用称为 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; 的第三方服务。&lt;br&gt;&lt;br&gt;使用此功能会将您的 IP 地址和搜索词传输到此服务。请参阅其 &lt;a href=https://search.jabber.network/privacy&gt;隐私政策&lt;/a&gt; 以获取更多信息。</string>
     <string name="start_chat">开始聊天</string>
     <string name="title_activity_share_with">分享至…</string>
@@ -1037,4 +1037,36 @@
     <string name="barcode_does_not_contain_fingerprints_for_this_chat">二维码不包含此聊天的指纹。</string>
     <string name="welcome_header">加入对话</string>
     <string name="corresponding_chats_closed">相应的聊天已存档。</string>
+    <string name="pref_send_crash_reports">发送崩溃报告</string>
+    <string name="pref_title_security">安全</string>
+    <string name="notifications">通知</string>
+    <string name="pref_attachments_summary">文件大小、图片压缩、视频质量</string>
+    <string name="pref_notifications_summary">静默期、铃声、振动、陌生人</string>
+    <string name="pref_automatic_download">自动下载</string>
+    <string name="appearance">外观</string>
+    <string name="pref_light_dark_mode">浅色/深色模式</string>
+    <string name="pref_allow_screenshots">允许截屏</string>
+    <string name="pref_category_e2ee">端到端加密</string>
+    <string name="pref_title_trust_system_ca_store">证书颁发机构</string>
+    <string name="pref_title_trust_system_ca_store_summary">信任系统的 CA 证书</string>
+    <string name="detect_mim">需要通道绑定</string>
+    <string name="detect_mim_summary">通道绑定可以检测某些中间人攻击</string>
+    <string name="pref_category_server_connection">服务器连接</string>
+    <string name="pref_summary_appearance">主题、色彩、截屏、输入</string>
+    <string name="pref_category_sending">发送</string>
+    <string name="pref_category_receiving">接收</string>
+    <string name="pref_connection_summary">主机名和端口、Tor</string>
+    <string name="pref_connection_summary_w_cd">主机名和端口、Tor、频道发现</string>
+    <string name="pref_keyboard_options">键盘</string>
+    <string name="pref_category_application">应用程序</string>
+    <string name="pref_category_interaction">交互</string>
+    <string name="pref_category_on_this_device">在设备上</string>
+    <string name="pref_title_interface">界面</string>
+    <string name="pref_category_operating_system">操作系统</string>
+    <string name="pref_summary_security">端到端加密、验证前盲目信任、中间人攻击检测</string>
+    <string name="pref_privacy_summary">输入通知、最后上线、在线状态</string>
+    <string name="pref_category_engagement_notifications">参与通知</string>
+    <string name="pref_up_long_summary">在充当 UnifiedPush 分发程序时，持久、可靠且省电的 XMPP 连接将用来唤醒其他兼容 UnifiedPush 的应用，如 Tusky、Ltt.rs、FluffyChat 等。</string>
+    <string name="pref_allow_screenshots_summary">在切换应用时显示应用内容并允许截屏</string>
+    <string name="unified_push_summary">兼容 UnifiedPush 的第三方应用的通知转发器</string>
 </resources>
