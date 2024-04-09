@@ -1048,4 +1048,8 @@
     <string name="pref_category_operating_system">Betriebssystem</string>
     <string name="pref_keyboard_options">Tastatur</string>
     <string name="pref_category_on_this_device">Auf diesem Gerät</string>
+    <string name="pref_light_dark_mode">Hell/Dunkel-Modus</string>
+    <string name="pref_allow_screenshots">Bildschirmfotos zulassen</string>
+    <string name="pref_allow_screenshots_summary">Anzeigen von App-Inhalten beim App-Wechsel und Erstellen von Screenshots ermöglichen</string>
+    <string name="pref_title_trust_system_ca_store">Zertifizierungsstellen</string>
 </resources>
