@@ -1035,4 +1035,12 @@
     <string name="pref_summary_appearance">Design, Farben, Screenshots, Eingabe</string>
     <string name="pref_title_security">Sicherheit</string>
     <string name="channel_discover_opt_in_message">Die Channelsuche verwendet einen Drittanbieterservice namens &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der &lt;a href=https://search.jabber.network/privacy&gt;Datenschutzerklärung&lt;/a&gt;.</string>
+    <string name="pref_summary_security">E2E-Verschlüsselung, Blindes Vertrauen vor Verifizierung, MITM-Erkennung</string>
+    <string name="unified_push_summary">Benachrichtigungsweiterleitung für UnifiedPush-kompatible Apps von Drittanbietern</string>
+    <string name="notifications">Benachrichtigungen</string>
+    <string name="pref_attachments_summary">Dateigröße, Bildkomprimierung, Videoqualität</string>
+    <string name="pref_notifications_summary">Schonfrist, Klingelton, Vibration, Unbekannte</string>
+    <string name="pref_category_sending">Senden</string>
+    <string name="pref_category_receiving">Empfangen</string>
+    <string name="pref_automatic_download">Automatischer Download</string>
 </resources>
