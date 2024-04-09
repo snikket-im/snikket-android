@@ -275,7 +275,7 @@
 \n
 \n<small>Перегляньте деталі контакту та перевірте отримання стану присутності.</small></string>
     <string name="pref_security_settings">Безпека</string>
-    <string name="pref_allow_message_correction">Дозволити редагування повідомлень</string>
+    <string name="pref_allow_message_correction">Редагування повідомлень</string>
     <string name="pref_allow_message_correction_summary">Дозволити контактам редагувати свої повідомлення після надсилання</string>
     <string name="pref_expert_options">Експертні налаштування</string>
     <string name="pref_expert_options_summary">Будь ласка, будьте обережними з цим</string>
@@ -461,8 +461,8 @@
     <string name="server_info_broken">Поламано</string>
     <string name="pref_presence_settings">Доступність</string>
     <string name="pref_treat_vibrate_as_silent">Вважати вібро за безшумний режим</string>
-    <string name="pref_show_connection_options">Розширені налаштування з\'єднання</string>
-    <string name="pref_show_connection_options_summary">Показати налаштування імені вузла та порту при налаштуванні облікового запису</string>
+    <string name="pref_show_connection_options">Ім\'я вузла і порт</string>
+    <string name="pref_show_connection_options_summary">Показати розширені налаштування з\'єднання при налаштуванні облікового запису</string>
     <string name="hostname_example">xmpp.example.com</string>
     <string name="action_add_account_with_certificate">Вхід із сертифікатом</string>
     <string name="unable_to_parse_certificate">Не вдалося розпізнати сертифікат</string>
@@ -545,7 +545,7 @@
     <string name="gp_short">Короткий</string>
     <string name="gp_medium">Середній</string>
     <string name="gp_long">Довгий</string>
-    <string name="pref_broadcast_last_activity">Показувати останню активність користувача</string>
+    <string name="pref_broadcast_last_activity">Остання активність користувача</string>
     <string name="pref_broadcast_last_activity_summary">Повідомляти співрозмовникам, що Ви користуєтеся Conversations</string>
     <string name="pref_privacy">Приватність</string>
     <string name="pref_theme_options">Тема</string>
@@ -1079,4 +1079,5 @@
     <string name="title_undo_swipe_out_chat">Розмову заархівовано</string>
     <string name="switch_to_chat">Перемкнути на чат</string>
     <string name="start_chat">Почати розмову</string>
+    <string name="pref_send_crash_reports">Надсилати звіти про збої</string>
 </resources>
