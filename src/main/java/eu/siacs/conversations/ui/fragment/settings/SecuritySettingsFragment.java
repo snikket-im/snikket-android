@@ -73,6 +73,9 @@ public class SecuritySettingsFragment extends XmppPreferenceFragment {
             case AppSettings.REQUIRE_CHANNEL_BINDING -> {
                 reconnectAccounts();
             }
+            case AppSettings.AUTOMATIC_MESSAGE_DELETION -> {
+                requireService().expireOldMessages(true);
+            }
         }
     }
 
