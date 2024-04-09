@@ -722,7 +722,7 @@
     <string name="copy_jabber_id">Копіювати адресу XMPP</string>
     <string name="p1_s3_filetransfer">Доступ до файлів через HTTP для S3</string>
     <string name="pref_start_search">Безпосередній пошук</string>
-    <string name="pref_start_search_summary">На екрані початку розмови показувати клавіатуру та розміщувати курсор у полі пошуку</string>
+    <string name="pref_start_search_summary">На екрані «Нова розмова» показувати клавіатуру та розміщувати курсор у полі пошуку</string>
     <string name="group_chat_avatar">Піктограма групи</string>
     <string name="host_does_not_support_group_chat_avatars">Сервер не підтримує піктограми груп</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Лише власник може змінити піктограму групи</string>
@@ -1080,4 +1080,9 @@
     <string name="switch_to_chat">Перемкнути на чат</string>
     <string name="start_chat">Почати розмову</string>
     <string name="pref_send_crash_reports">Надсилати звіти про збої</string>
+    <string name="pref_title_interface">Інтерфейс</string>
+    <string name="pref_title_security">Безпека</string>
+    <string name="notifications">Сповіщення</string>
+    <string name="pref_category_sending">Надсилання</string>
+    <string name="pref_category_receiving">Отримання</string>
 </resources>
