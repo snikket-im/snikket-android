@@ -277,7 +277,7 @@
 \n
 \n<small>Gehe zu \"Kontaktdetails\", um deine Einstellungen zu überprüfen.</small></string>
     <string name="pref_security_settings">Sicherheit</string>
-    <string name="pref_allow_message_correction">Nachrichtenkorrektur erlauben</string>
+    <string name="pref_allow_message_correction">Nachrichtenkorrektur</string>
     <string name="pref_allow_message_correction_summary">Erlaube deinen Kontakten das nachträgliche Korrigieren ihrer Nachrichten</string>
     <string name="pref_expert_options">Experteneinstellungen</string>
     <string name="pref_expert_options_summary">Hier bitte vorsichtig sein</string>
@@ -470,8 +470,8 @@
     <string name="pref_dnd_on_silent_mode_summary">Als Beschäftigt anzeigen, wenn sich das Gerät im lautlosen Modus befindet</string>
     <string name="pref_treat_vibrate_as_silent">Vibration als Lautlos behandeln</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Als Beschäftigt anzeigen, wenn das Gerät auf Vibration eingestellt ist</string>
-    <string name="pref_show_connection_options">Erweiterte Verbindungseinstellungen</string>
-    <string name="pref_show_connection_options_summary">Hostname- und Port-Optionen bei Kontoeinrichtung anzeigen</string>
+    <string name="pref_show_connection_options">Hostname &amp; Port</string>
+    <string name="pref_show_connection_options_summary">Erweiterte Verbindungseinstellungen beim Einrichten eines Kontos anzeigen</string>
     <string name="hostname_example">xmpp.domain.de</string>
     <string name="action_add_account_with_certificate">Mit Zertifikat anmelden</string>
     <string name="unable_to_parse_certificate">Zertifikat konnte nicht verarbeitet werden</string>
@@ -559,8 +559,8 @@
     <string name="gp_short">Kurz</string>
     <string name="gp_medium">Mittel</string>
     <string name="gp_long">Lang</string>
-    <string name="pref_broadcast_last_activity">Benutzeraktivität veröffentlichen</string>
-    <string name="pref_broadcast_last_activity_summary">Informiert deine Kontakte, wenn du Conversations nutzt</string>
+    <string name="pref_broadcast_last_activity">Zuletzt genutzt</string>
+    <string name="pref_broadcast_last_activity_summary">Zeige deinen Kontakten, wann du die App zuletzt genutzt hast</string>
     <string name="pref_privacy">Privatsphäre</string>
     <string name="pref_theme_options">Design</string>
     <string name="pref_theme_options_summary">Wähle die Farbpalette aus</string>
@@ -730,7 +730,7 @@
     <string name="copy_jabber_id">XMPP-Adresse kopieren</string>
     <string name="p1_s3_filetransfer">HTTP-Dateifreigabe für S3</string>
     <string name="pref_start_search">Direkte Suche </string>
-    <string name="pref_start_search_summary">Beim Dialog \'Chat beginnen\' Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
+    <string name="pref_start_search_summary">Beim Dialog \'Neuen Chat\' Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
     <string name="group_chat_avatar">Gruppenchat-Profilbild</string>
     <string name="host_does_not_support_group_chat_avatars">Host unterstützt keine Gruppenchat-Profilbilder</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Nur der Eigentümer kann das Gruppenchat-Profilbild ändern</string>
@@ -1030,4 +1030,9 @@
     <string name="welcome_header">Nimm an der Unterhaltung teil</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_chat">Der Barcode enthält keine Fingerabdrücke für diesen Chat.</string>
     <string name="title_undo_swipe_out_chat">Chat archiviert</string>
+    <string name="pref_send_crash_reports">Absturzberichte senden</string>
+    <string name="pref_title_interface">Benutzeroberfläche</string>
+    <string name="pref_summary_appearance">Design, Farben, Screenshots, Eingabe</string>
+    <string name="pref_title_security">Sicherheit</string>
+    <string name="channel_discover_opt_in_message">Die Channelsuche verwendet einen Drittanbieterservice namens &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der &lt;a href=https://search.jabber.network/privacy&gt;Datenschutzerklärung&lt;/a&gt;.</string>
 </resources>
