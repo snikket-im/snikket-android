@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.15.0
+
+* Use Material 3 theme
+* Reorganize settings
+* Synchronize read state across devices
+
 ### Version 2.14.2
 
 * Restore access to Channel Discovery for Android 6+7
