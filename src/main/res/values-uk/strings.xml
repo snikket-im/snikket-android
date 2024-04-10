@@ -545,7 +545,7 @@
     <string name="gp_short">Короткий</string>
     <string name="gp_medium">Середній</string>
     <string name="gp_long">Довгий</string>
-    <string name="pref_broadcast_last_activity">Остання активність користувача</string>
+    <string name="pref_broadcast_last_activity">Остання активність</string>
     <string name="pref_broadcast_last_activity_summary">Дозволити контактам бачити, коли Ви востаннє користувалися додатком</string>
     <string name="pref_privacy">Приватність</string>
     <string name="pref_theme_options">Тема</string>
@@ -1106,7 +1106,7 @@
     <string name="detect_mim_summary">Прив\'язка каналу може виявити деякі атаки типу «машина посередині»</string>
     <string name="pref_category_server_connection">З\'єднання з сервером</string>
     <string name="pref_category_application">Застосунок</string>
-    <string name="pref_category_engagement_notifications">Сповіщення про залученість</string>
+    <string name="pref_category_engagement_notifications">Сповіщення про активність</string>
     <string name="pref_summary_security">Шифрування E2E, довіра наосліп перед перевіркою, виявлення MITM</string>
     <string name="pref_up_long_summary">При дії в ролі дистриб\'ютора UnifiedPush використовується постійне, надійне та енергоефективне з\'єднання XMPP для активації інших додатків, сумісних з UnifiedPush, таких як Tusky, Ltt.rs, FluffyChat та інші.</string>
     <string name="pref_allow_screenshots_summary">Показувати вміст застосунку при перемиканні програм і дозволити знімки екрана</string>
