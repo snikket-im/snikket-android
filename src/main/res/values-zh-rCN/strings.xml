@@ -439,7 +439,7 @@
     <string name="contacts_are_typing">%s 正在输入…</string>
     <string name="contacts_have_stopped_typing">%s 已停止输入</string>
     <string name="pref_chat_states">输入通知</string>
-    <string name="pref_chat_states_summary">让您的联系人知道您正在输入</string>
+    <string name="pref_chat_states_summary">让您的联系人知道您正在给他们写消息</string>
     <string name="send_location">发送位置</string>
     <string name="show_location">显示位置</string>
     <string name="no_application_found_to_display_location">未找到可以显示位置的应用</string>
@@ -532,11 +532,11 @@
     <string name="always">始终</string>
     <string name="large_images_only">仅限大图片</string>
     <string name="battery_optimizations_enabled">电池优化已启用</string>
-    <string name="battery_optimizations_enabled_explained">设备正对 %1$s 实施强力电池优化，可能会导致通知延迟甚至消息丢失。
-\n建议禁用它们。</string>
-    <string name="battery_optimizations_enabled_dialog">设备正对 %1$s 实施强力电池优化，可能会导致通知延迟甚至消息丢失。
+    <string name="battery_optimizations_enabled_explained">您的设备正在为 %1$s 使用重度电池优化，可能会导致通知延迟甚至消息丢失。
+\n建议禁用此设置。</string>
+    <string name="battery_optimizations_enabled_dialog">您的设备正在为 %1$s 使用重度电池优化，可能会导致通知延迟甚至消息丢失。
 \n
-\n现在将要求您禁用它们。</string>
+\n现在将要求您禁用此设置。</string>
     <string name="disable">禁用</string>
     <string name="selection_too_large">所选区域太大</string>
     <string name="no_accounts">(没有启用的账号)</string>
@@ -1066,7 +1066,7 @@
     <string name="pref_summary_security">端到端加密、验证前盲目信任、中间人攻击检测</string>
     <string name="pref_privacy_summary">输入通知、最后上线、在线状态</string>
     <string name="pref_category_engagement_notifications">参与通知</string>
-    <string name="pref_up_long_summary">在充当 UnifiedPush 分发程序时，持久、可靠且省电的 XMPP 连接将用来唤醒其他兼容 UnifiedPush 的应用，如 Tusky、Ltt.rs、FluffyChat 等。</string>
+    <string name="pref_up_long_summary">在充当 UnifiedPush 分发程序时，将利用持久、可靠且省电的 XMPP 连接来唤醒其他兼容 UnifiedPush 的应用，如 Tusky、Ltt.rs、FluffyChat 等。</string>
     <string name="pref_allow_screenshots_summary">在切换应用时显示应用内容并允许截屏</string>
     <string name="unified_push_summary">兼容 UnifiedPush 的第三方应用的通知转发器</string>
 </resources>
