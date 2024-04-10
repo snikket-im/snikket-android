@@ -26,9 +26,9 @@
     <string name="minute_ago">1 min fa</string>
     <string name="minutes_ago">%d min fa</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d conversazione non letta</item>
-        <item quantity="many">%d conversazioni non lette</item>
-        <item quantity="other">%d conversazioni non lette</item>
+        <item quantity="one">%d chat non letta</item>
+        <item quantity="many">%d chat non lette</item>
+        <item quantity="other">%d chat non lette</item>
     </plurals>
     <string name="sending">invio…</string>
     <string name="message_decrypting">Decifrazione messaggio. Attendere prego…</string>
@@ -40,7 +40,7 @@
     <string name="moderator">Moderatore</string>
     <string name="participant">Partecipante</string>
     <string name="visitor">Visitatore</string>
-    <string name="remove_contact_text">Vuoi rimuovere %s dalla lista dei contatti? Le conversazioni con questo contatto non verranno rimosse.</string>
+    <string name="remove_contact_text">Vuoi rimuovere %s dalla lista dei contatti? Le chat con questo contatto non verranno rimosse.</string>
     <string name="block_contact_text">Vorresti impedire a %s di inviarti messaggi?</string>
     <string name="unblock_contact_text">Vorresti permettere a %s di inviarti messaggi?</string>
     <string name="block_domain_text">Bloccare tutti i contatti da %s?</string>
@@ -78,7 +78,7 @@
     <string name="preparing_images">Preparazione per l\'invio delle immagini</string>
     <string name="sharing_files_please_wait">Condivisione file. Attendere prego…</string>
     <string name="action_clear_history">Svuota la cronologia</string>
-    <string name="clear_conversation_history">Svuota la cronologia della conversazione</string>
+    <string name="clear_conversation_history">Svuota la cronologia della chat</string>
     <string name="clear_histor_msg">Vuoi eliminare tutti i messaggi in questa conversazione?
 \n
 \n<b>Attenzione:</b> ciò non influenzerà i messaggi salvati su altri dispositivi o server.</string>
@@ -179,7 +179,7 @@
     <string name="unpublish_pgp_message">Sei sicuro di volere rimuovere la tua chiave pubblica OpenPGP dalla dichiarazione di presenza?\nI tuoi contatti non potranno più inviarti messaggi cifrati con OpenPGP.</string>
     <string name="openpgp_has_been_published">Chiave pubblica OpenPGP pubblicata.</string>
     <string name="mgmt_account_enable">Attiva profilo</string>
-    <string name="mgmt_account_delete_confirm_text">Vuoi davvero eliminare il tuo profilo? La sua eliminazione cancellerà tutta la cronologia delle conversazioni</string>
+    <string name="mgmt_account_delete_confirm_text">Vuoi davvero eliminare il tuo profilo? La sua eliminazione cancellerà tutta la cronologia delle chat</string>
     <string name="attach_record_voice">Registra la voce</string>
     <string name="account_settings_jabber_id">Indirizzo XMPP</string>
     <string name="block_jabber_id">Blocca indirizzo XMPP</string>
@@ -278,7 +278,7 @@
     <string name="ignore">Ignora</string>
     <string name="without_mutual_presence_updates"><b>Attenzione:</b> inviarlo senza aggiornamenti della presenza reciproci può causare problemi inaspettati.\n\n<small>Vai nei dettagli del contatto per verificare le tue sottoscrizioni alla presenza.</small></string>
     <string name="pref_security_settings">Sicurezza</string>
-    <string name="pref_allow_message_correction">Permetti correzione del messaggio</string>
+    <string name="pref_allow_message_correction">Correzione del messaggio</string>
     <string name="pref_allow_message_correction_summary">Consenti ai tuoi contatti di modificare retroattivamente i loro messaggi</string>
     <string name="pref_expert_options">Impostazioni per esperti</string>
     <string name="pref_expert_options_summary">Fai attenzione con queste impostazioni</string>
@@ -472,8 +472,8 @@
     <string name="pref_dnd_on_silent_mode_summary">Imposta come occupato quando il dispositivo è in modalità silenziosa</string>
     <string name="pref_treat_vibrate_as_silent">Tratta vibrazione come modalità silenziosa</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Imposta come occupato quando il dispositivo è in modalità vibrazione</string>
-    <string name="pref_show_connection_options">Impostazioni estese di connessione</string>
-    <string name="pref_show_connection_options_summary">Mostra nome host e impostazioni della porta quando configuri un profilo</string>
+    <string name="pref_show_connection_options">Host e porta</string>
+    <string name="pref_show_connection_options_summary">Mostra le impostazioni di nome host e della porta quando configuri un profilo</string>
     <string name="hostname_example">xmpp.esempio.it</string>
     <string name="action_add_account_with_certificate">Accedi con certificato</string>
     <string name="unable_to_parse_certificate">Impossibile analizzare il certificato</string>
@@ -510,7 +510,7 @@
     <string name="shared_text_with_x">Testo condiviso con %s</string>
     <string name="no_storage_permission">Dai a %1$s l\'accesso all\'archiviazione esterna</string>
     <string name="no_camera_permission">Dai a %1$s l\'accesso alla fotocamera</string>
-    <string name="sync_with_contacts">Sincronizza con i contatti</string>
+    <string name="sync_with_contacts">Integrazione della lista contatti</string>
     <string name="sync_with_contacts_long">%1$s vuole l\'autorizzazione ad accedere alla tua rubrica per confrontarla con la lista di contatti in XMPP.
 \nCiò mostrerà i nomi ed avatar dei contatti.
 \n
@@ -1022,4 +1022,12 @@
     <string name="report_spam">Segnala spam</string>
     <string name="welcome_header_quicksy">Benvenuti su Quicksy!</string>
     <string name="quicksy_wants_your_consent">Quicksy ti chiede il consenso per usare i tuoi dati</string>
+    <string name="pref_send_crash_reports">Invia rapporti sui blocchi</string>
+    <string name="remove_bookmark">Vuoi rimuovere il segnalibro per %s?</string>
+    <string name="remove_bookmark_and_close">Vuoi rimuovere il segnalibro per %s e archiviare la chat?</string>
+    <string name="title_activity_share_with">Condividi con …</string>
+    <string name="action_archive_chat">Archivia la chat</string>
+    <string name="title_activity_new_chat">Nuova chat</string>
+    <string name="archive_this_chat">Archivia questa chat</string>
+    <string name="title_undo_swipe_out_chat">Chat archiviata</string>
 </resources>
