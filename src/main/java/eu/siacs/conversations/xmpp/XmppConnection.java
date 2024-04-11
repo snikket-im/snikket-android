@@ -935,7 +935,8 @@ public class XmppConnection implements Runnable {
 
     private void resetOutboundStanzaQueue() {
         synchronized (this.mStanzaQueue) {
-            final List<AbstractAcknowledgeableStanza> intermediateStanzas = new ArrayList<>();
+            final ImmutableList.Builder<AbstractAcknowledgeableStanza> intermediateStanzasBuilder =
+                    new ImmutableList.Builder<>();
             if (Config.EXTENDED_SM_LOGGING) {
                 Log.d(
                         Config.LOGTAG,
@@ -946,12 +947,13 @@ public class XmppConnection implements Runnable {
             for (int i = this.stanzasSentBeforeAuthentication + 1; i <= this.stanzasSent; ++i) {
                 final AbstractAcknowledgeableStanza stanza = this.mStanzaQueue.get(i);
                 if (stanza != null) {
-                    intermediateStanzas.add(stanza);
+                    intermediateStanzasBuilder.add(stanza);
                 }
             }
             this.mStanzaQueue.clear();
+            final var intermediateStanzas = intermediateStanzasBuilder.build();
             for (int i = 0; i < intermediateStanzas.size(); ++i) {
-                this.mStanzaQueue.put(i, intermediateStanzas.get(i));
+                this.mStanzaQueue.append(i + 1, intermediateStanzas.get(i));
             }
             this.stanzasSent = intermediateStanzas.size();
             if (Config.EXTENDED_SM_LOGGING) {

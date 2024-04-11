@@ -20,12 +20,18 @@ public interface ChannelBindingMechanism {
 
     ChannelBinding getChannelBinding();
 
-    static byte[] getChannelBindingData(final SSLSocket sslSocket, final ChannelBinding channelBinding)
+    static byte[] getChannelBindingData(
+            final SSLSocket sslSocket, final ChannelBinding channelBinding)
             throws SaslMechanism.AuthenticationException {
         if (sslSocket == null) {
-            throw new SaslMechanism.AuthenticationException("Channel binding attempt on non secure socket");
+            throw new SaslMechanism.AuthenticationException(
+                    "Channel binding attempt on non secure socket");
         }
         if (channelBinding == ChannelBinding.TLS_EXPORTER) {
+            if (!Conscrypt.isConscrypt(sslSocket)) {
+                throw new SaslMechanism.AuthenticationException(
+                        "Channel binding attempt on non supporting socket");
+            }
             final byte[] keyingMaterial;
             try {
                 keyingMaterial =
@@ -39,6 +45,10 @@ public interface ChannelBindingMechanism {
             }
             return keyingMaterial;
         } else if (channelBinding == ChannelBinding.TLS_UNIQUE) {
+            if (!Conscrypt.isConscrypt(sslSocket)) {
+                throw new SaslMechanism.AuthenticationException(
+                        "Channel binding attempt on non supporting socket");
+            }
             final byte[] unique = Conscrypt.getTlsUnique(sslSocket);
             if (unique == null) {
                 throw new SaslMechanism.AuthenticationException(
@@ -99,8 +109,7 @@ public interface ChannelBindingMechanism {
     }
 
     static int getPriority(final SaslMechanism mechanism) {
-        if (mechanism instanceof ChannelBindingMechanism) {
-            final ChannelBindingMechanism channelBindingMechanism = (ChannelBindingMechanism) mechanism;
+        if (mechanism instanceof ChannelBindingMechanism channelBindingMechanism) {
             return ChannelBinding.priority(channelBindingMechanism.getChannelBinding());
         } else {
             return 0;
