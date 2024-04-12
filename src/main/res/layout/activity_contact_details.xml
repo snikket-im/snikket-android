@@ -137,26 +137,22 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding_regular">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/media"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="-2dp"
-                            android:layout_marginEnd="-2dp"
-                            android:orientation="horizontal"
-                            android:paddingStart="@dimen/card_padding_regular"
-                            android:paddingTop="@dimen/card_padding_regular"
-                            android:paddingEnd="@dimen/card_padding_regular"
-                            android:paddingBottom="@dimen/card_padding_list" />
+                            android:layout_margin="-2dp"
+                            android:orientation="horizontal" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="end"
-                            android:orientation="horizontal"
-                            android:layout_margin="16dp">
+                            android:layout_marginTop="16dp"
+                            android:orientation="horizontal">
 
                             <Button
                                 android:id="@+id/show_media"
@@ -208,7 +204,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginTop="8dp"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:padding="@dimen/card_padding_list">
 
 
                             <Button
@@ -216,9 +213,6 @@
                                 style="@style/Widget.Material3.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:minWidth="0dp"
-                                android:paddingLeft="16dp"
-                                android:paddingRight="16dp"
                                 android:text="@string/scan_qr_code" />
 
                             <Button
@@ -226,9 +220,6 @@
                                 style="@style/Widget.Material3.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:minWidth="0dp"
-                                android:paddingLeft="16dp"
-                                android:paddingRight="16dp"
                                 android:text="@string/show_inactive_devices" />
                         </LinearLayout>
                     </LinearLayout>
