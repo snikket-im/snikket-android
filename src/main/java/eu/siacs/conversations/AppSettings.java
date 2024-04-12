@@ -39,8 +39,8 @@ public class AppSettings {
     public static final String SHOW_CONNECTION_OPTIONS = "show_connection_options";
     public static final String USE_TOR = "use_tor";
     public static final String CHANNEL_DISCOVERY_METHOD = "channel_discovery_method";
-
     public static final String SEND_CRASH_REPORTS = "send_crash_reports";
+    public static final String COLORFUL_CHAT_BUBBLES = "use_green_background";
 
     private final Context context;
 
@@ -91,6 +91,10 @@ public class AppSettings {
 
     public boolean isAllowScreenshots() {
         return getBooleanPreference(ALLOW_SCREENSHOTS, R.bool.allow_screenshots);
+    }
+
+    public boolean isColorfulChatBubbles() {
+        return getBooleanPreference(COLORFUL_CHAT_BUBBLES, R.bool.use_green_background);
     }
 
     public boolean isUseTor() {

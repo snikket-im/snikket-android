@@ -16,6 +16,7 @@
             android:title="@string/pref_light_dark_mode"
             app:useSimpleSummaryProvider="true" />
         <SwitchPreferenceCompat
+            android:defaultValue="@bool/use_green_background"
             android:icon="@drawable/ic_forum_24dp"
             android:key="use_green_background"
             android:summary="@string/pref_use_colorful_bubbles_summary"

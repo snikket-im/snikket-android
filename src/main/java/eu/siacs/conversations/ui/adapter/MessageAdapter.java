@@ -3,12 +3,10 @@ package eu.siacs.conversations.ui.adapter;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -45,6 +43,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
@@ -95,7 +94,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private final DisplayMetrics metrics;
     private OnContactPictureClicked mOnContactPictureClickedListener;
     private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
-    private boolean mUseGreenBackground = false;
+    private boolean colorfulChatBubbles = false;
     private final boolean mForceNames;
 
     public MessageAdapter(final XmppActivity activity, final List<Message> messages, final boolean forceNames) {
@@ -653,7 +652,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
         }
 
-        final boolean colorfulBackground = mUseGreenBackground;
+        final boolean colorfulBackground = this.colorfulChatBubbles;
         final BubbleColor bubbleColor;
         if (type == RECEIVED) {
             if (isInValidSession) {
@@ -887,8 +886,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     public void updatePreferences() {
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(activity);
-        this.mUseGreenBackground = p.getBoolean("use_green_background", activity.getResources().getBoolean(R.bool.use_green_background));
+        final AppSettings appSettings = new AppSettings(activity);
+        this.colorfulChatBubbles = appSettings.isColorfulChatBubbles();
     }
 
 
