@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui.adapter;
 
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.core.widget.ImageViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,15 +70,47 @@ public class ConversationAdapter
         }
 
         if (conversation == ConversationFragment.getConversation(activity)) {
-            viewHolder.binding.frame.setBackgroundResource(R.drawable.background_selected_item_conversation);
-            //viewHolder.binding.frame.setBackgroundColor(MaterialColors.getColor(viewHolder.binding.frame, com.google.android.material.R.attr.colorSurfaceDim));
+            viewHolder.binding.frame.setBackgroundResource(
+                    R.drawable.background_selected_item_conversation);
+            // viewHolder.binding.frame.setBackgroundColor(MaterialColors.getColor(viewHolder.binding.frame, com.google.android.material.R.attr.colorSurfaceDim));
         } else {
-            viewHolder.binding.frame.setBackgroundColor(MaterialColors.getColor(viewHolder.binding.frame, com.google.android.material.R.attr.colorSurface));
+            viewHolder.binding.frame.setBackgroundColor(
+                    MaterialColors.getColor(
+                            viewHolder.binding.frame,
+                            com.google.android.material.R.attr.colorSurface));
         }
 
         final Message message = conversation.getLatestMessage();
+        final int status = message.getStatus();
         final int unreadCount = conversation.unreadCount();
         final boolean isRead = conversation.isRead();
+        final @DrawableRes Integer messageStatusDrawable =
+                MessageAdapter.getMessageStatusAsDrawable(message, status);
+        if (messageStatusDrawable == null) {
+            if (status <= Message.STATUS_RECEIVED) {
+                viewHolder.binding.messageStatus.setVisibility(View.GONE);
+            } else {
+                viewHolder.binding.messageStatus.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            viewHolder.binding.messageStatus.setImageResource(messageStatusDrawable);
+            if (status == Message.STATUS_SEND_DISPLAYED) {
+                ImageViewCompat.setImageTintList(
+                        viewHolder.binding.messageStatus,
+                        ColorStateList.valueOf(
+                                MaterialColors.getColor(
+                                        viewHolder.binding.messageStatus,
+                                        com.google.android.material.R.attr.colorPrimary)));
+            } else {
+                ImageViewCompat.setImageTintList(
+                        viewHolder.binding.messageStatus,
+                        ColorStateList.valueOf(
+                                MaterialColors.getColor(
+                                        viewHolder.binding.messageStatus,
+                                        com.google.android.material.R.attr.colorControlNormal)));
+            }
+            viewHolder.binding.messageStatus.setVisibility(View.VISIBLE);
+        }
         final Conversation.Draft draft = isRead ? conversation.getDraft() : null;
         if (unreadCount > 0) {
             viewHolder.binding.unreadCount.setVisibility(View.VISIBLE);
@@ -143,7 +177,7 @@ public class ConversationAdapter
                     viewHolder.binding.senderName.setTypeface(null, Typeface.BOLD);
                 }
             }
-            if (message.getStatus() == Message.STATUS_RECEIVED) {
+            if (status == Message.STATUS_RECEIVED) {
                 if (conversation.getMode() == Conversation.MODE_MULTI) {
                     viewHolder.binding.senderName.setVisibility(View.VISIBLE);
                     viewHolder.binding.senderName.setText(
@@ -171,21 +205,25 @@ public class ConversationAdapter
 
         if (ongoingCall.isPresent()) {
             viewHolder.binding.notificationStatus.setVisibility(View.VISIBLE);
-            viewHolder.binding.notificationStatus.setImageResource(R.drawable.ic_phone_in_talk_24dp);
+            viewHolder.binding.notificationStatus.setImageResource(
+                    R.drawable.ic_phone_in_talk_24dp);
         } else {
             final long muted_till =
                     conversation.getLongAttribute(Conversation.ATTRIBUTE_MUTED_TILL, 0);
             if (muted_till == Long.MAX_VALUE) {
                 viewHolder.binding.notificationStatus.setVisibility(View.VISIBLE);
-                viewHolder.binding.notificationStatus.setImageResource(R.drawable.ic_notifications_off_24dp);
+                viewHolder.binding.notificationStatus.setImageResource(
+                        R.drawable.ic_notifications_off_24dp);
             } else if (muted_till >= System.currentTimeMillis()) {
                 viewHolder.binding.notificationStatus.setVisibility(View.VISIBLE);
-                viewHolder.binding.notificationStatus.setImageResource(R.drawable.ic_notifications_paused_24dp);
+                viewHolder.binding.notificationStatus.setImageResource(
+                        R.drawable.ic_notifications_paused_24dp);
             } else if (conversation.alwaysNotify()) {
                 viewHolder.binding.notificationStatus.setVisibility(View.GONE);
             } else {
                 viewHolder.binding.notificationStatus.setVisibility(View.VISIBLE);
-                viewHolder.binding.notificationStatus.setImageResource(R.drawable.ic_notifications_none_24dp);
+                viewHolder.binding.notificationStatus.setImageResource(
+                        R.drawable.ic_notifications_none_24dp);
             }
         }
 

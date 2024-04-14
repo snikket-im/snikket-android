@@ -74,7 +74,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignWithParentIfMissing="true"
                             android:layout_centerVertical="true"
-                            android:layout_toStartOf="@+id/notification_status"
+                            android:layout_toStartOf="@+id/message_status"
                             android:layout_toEndOf="@id/sender_name"
                             android:orientation="horizontal">
 
@@ -97,6 +97,18 @@
                                 android:scrollHorizontally="false"
                                 tools:text="Hi. What’s up?" />
                         </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/message_status"
+                            android:layout_width="18sp"
+                            android:layout_height="18sp"
+                            android:layout_alignWithParentIfMissing="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="4dp"
+                            android:layout_toStartOf="@+id/notification_status"
+                            android:src="@drawable/ic_done_all_24dp"
+                            app:tint="?colorPrimary"
+                            android:visibility="visible" />
 
                         <ImageView
                             android:id="@+id/notification_status"
