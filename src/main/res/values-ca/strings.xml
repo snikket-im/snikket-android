@@ -88,9 +88,7 @@
     <string name="send_unencrypted_message">Envia un missatge no xifrat</string>
     <string name="send_message">Envia un missatge</string>
     <string name="send_message_to_x">Envia un missatge a %s</string>
-    <string name="send_omemo_message">Envia un missatge xifrat amb OMEMO</string>
     <string name="send_omemo_x509_message">Envia un missatge xifrat amb v\\OMEMO</string>
-    <string name="send_pgp_message">Envia un missatge xifrat amb OpenPGP</string>
     <string name="your_nick_has_been_changed">Nou sobrenom en ús</string>
     <string name="send_unencrypted">Envia sense xifrar</string>
     <string name="decryption_failed">El desxiframent ha fallat. Potser no teniu la clau privada apropiada.</string>

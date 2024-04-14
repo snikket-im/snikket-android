@@ -84,9 +84,7 @@
     <string name="send_unencrypted_message">Kirim pesan tak-terenkripsi</string>
     <string name="send_message">Kirim pesan</string>
     <string name="send_message_to_x">Kirimkan pesan ke %s</string>
-    <string name="send_omemo_message">Kirim pesan terenkripsi OMEMO</string>
     <string name="send_omemo_x509_message">Mengirim pesan terenkripsi v\\OMEMO</string>
-    <string name="send_pgp_message">Kirim pesan terenskripsi OpenPGP</string>
     <string name="your_nick_has_been_changed">Nama panggilan sudah dipakai</string>
     <string name="send_unencrypted">Kirim tidak terenkripsi</string>
     <string name="decryption_failed">Dekripsi gagal. Mungkin Anda tidak memiliki kunci pribadi yang tepat.</string>

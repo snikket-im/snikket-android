@@ -88,9 +88,7 @@
     <string name="send_unencrypted_message">发送未加密消息</string>
     <string name="send_message">发送消息</string>
     <string name="send_message_to_x">发送消息至 %s</string>
-    <string name="send_omemo_message">发送 OMEMO 加密消息</string>
     <string name="send_omemo_x509_message">发送 v\\OMEMO 加密消息</string>
-    <string name="send_pgp_message">发送 OpenPGP 加密消息</string>
     <string name="your_nick_has_been_changed">正在使用新昵称</string>
     <string name="send_unencrypted">发送未加密的</string>
     <string name="decryption_failed">解密失败。也许您没有正确的私钥。</string>

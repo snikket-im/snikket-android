@@ -84,9 +84,7 @@
     <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
     <string name="send_message">Verstuur bericht</string>
     <string name="send_message_to_x">Bericht sturen naar %s</string>
-    <string name="send_omemo_message">Verstuur OMEMO-versleuteld bericht</string>
     <string name="send_omemo_x509_message">Verstuur v\\OMEMO-versleuteld bericht</string>
-    <string name="send_pgp_message">Verstuur OpenPGP-versleuteld bericht</string>
     <string name="your_nick_has_been_changed">Nieuwe bijnaam in gebruik</string>
     <string name="send_unencrypted">Verstuur onversleuteld</string>
     <string name="decryption_failed">Ontsleutelen mislukt. Misschien heb je niet de juiste private sleutel.</string>

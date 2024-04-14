@@ -87,9 +87,7 @@
     <string name="send_unencrypted_message">Изпр. на нешифр. съобщение</string>
     <string name="send_message">Изпращане на съобщение</string>
     <string name="send_message_to_x">Изпращане на съобщение до %s</string>
-    <string name="send_omemo_message">Изпр. на съобщение, шифр. чрез OMEMO</string>
     <string name="send_omemo_x509_message">Изпр. на съобщение, шифр. чрез v\\OMEMO</string>
-    <string name="send_pgp_message">Изпр. на съобщение, шифр. чрез OpenPGP</string>
     <string name="your_nick_has_been_changed">Новият псевдоним е зает</string>
     <string name="send_unencrypted">Изпращане нешифровано</string>
     <string name="decryption_failed">Неуспешно дешифроване. Възможно е да нямате правилния частен ключ.</string>

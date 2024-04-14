@@ -86,9 +86,7 @@
     <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>
     <string name="send_message">メッセージを送信</string>
     <string name="send_message_to_x">メッセージを %s に送信</string>
-    <string name="send_omemo_message">OMEMO 暗号化メッセージを送信</string>
     <string name="send_omemo_x509_message">v\\OMEMO 暗号化メッセージを送信</string>
-    <string name="send_pgp_message">OpenPGP 暗号化メッセージを送信</string>
     <string name="your_nick_has_been_changed">ニックネームが変更されました</string>
     <string name="send_unencrypted">暗号化せずに送信</string>
     <string name="decryption_failed">復号に失敗しました。適切な秘密鍵を持っていないのかもしれません。</string>

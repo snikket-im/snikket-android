@@ -88,9 +88,7 @@
     <string name="send_unencrypted_message">Poslať nezašifrovanú správu</string>
     <string name="send_message">Poslať správu</string>
     <string name="send_message_to_x">Poslať správu na %s</string>
-    <string name="send_omemo_message">Poslať OMEMO šifrovanú správu</string>
     <string name="send_omemo_x509_message">Poslať v\\OMEMO šifrovanú správu</string>
-    <string name="send_pgp_message">Poslať OpenPGP šifrovanú správu</string>
     <string name="your_nick_has_been_changed">Používa sa nová prezývka</string>
     <string name="send_unencrypted">Poslať nešifrované</string>
     <string name="decryption_failed">Zašifrovanie zlyhalo. Možno nemáte správny privátny kľúč.</string>

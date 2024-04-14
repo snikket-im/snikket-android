@@ -71,9 +71,7 @@
     <string name="send_unencrypted_message">Dërgoni mesazh të pafshehtëzuar</string>
     <string name="send_message">Dërgoni mesazh</string>
     <string name="send_message_to_x">Dërgoje mesazhin për %s</string>
-    <string name="send_omemo_message">Dërgoni një mesazh të fshehtëzuar me OMEMO</string>
     <string name="send_omemo_x509_message">Dërgoni një mesazh të fshehtëzuar me v\\OMEMO</string>
-    <string name="send_pgp_message">Dërgoni një mesazh të fshehtëzuar me OpenPGP</string>
     <string name="your_nick_has_been_changed">Nofkë e re në përdorim</string>
     <string name="send_unencrypted">Dërgoje të pafshehtëzuar</string>
     <string name="install">Instaloje</string>

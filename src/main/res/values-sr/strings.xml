@@ -88,9 +88,7 @@
     <string name="send_unencrypted_message">Пошаљи нешифровану поруку</string>
     <string name="send_message">Пошаљи поруку</string>
     <string name="send_message_to_x">Пошаљи поруку за %s</string>
-    <string name="send_omemo_message">Пошаљи ОМЕМО шифровану поруку</string>
     <string name="send_omemo_x509_message">Пошаљи v\\ОМЕМО шифровану поруку</string>
-    <string name="send_pgp_message">Пошаљи ОпенПГП шифровану поруку</string>
     <string name="your_nick_has_been_changed">Нови надимак је у употреби</string>
     <string name="send_unencrypted">Пошаљи нешифровано</string>
     <string name="decryption_failed">Шифровање није успело. Можда немате одговарајући лични кључ.</string>

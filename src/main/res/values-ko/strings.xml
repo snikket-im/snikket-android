@@ -56,9 +56,7 @@
     <string name="choose_presence">기기 선택</string>
     <string name="send_unencrypted_message">암호화하지 않은 메세지 전송</string>
     <string name="send_message_to_x">%s 에게 매세지 보내기 </string>
-    <string name="send_omemo_message">OMEMO로 암호화된 메세지</string>
     <string name="send_omemo_x509_message">v\\OMEMO로 암호화된 메세지 전송</string>
-    <string name="send_pgp_message">OpenPGP 암호화된 메세지 전송 </string>
     <string name="send_unencrypted">암호화하지 않고 전송 </string>
     <string name="decryption_failed">복호화 실패. 올바른 개인 키를 가지고 있지 않은 것 같습니다. </string>
     <string name="openkeychain_required">OpenKeychain </string>

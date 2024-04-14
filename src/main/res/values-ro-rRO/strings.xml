@@ -90,9 +90,7 @@
     <string name="send_unencrypted_message">Trimite mesaje necriptate</string>
     <string name="send_message">Trimite mesaj</string>
     <string name="send_message_to_x">Trimite mesaj către %s</string>
-    <string name="send_omemo_message">Trimite mesaj criptat cu OMEMO</string>
     <string name="send_omemo_x509_message">Trimite mesaj criptat cu v\\OMEMO</string>
-    <string name="send_pgp_message">Trimite mesaj criptat cu OpenPGP</string>
     <string name="your_nick_has_been_changed">Numele de utilizator este deja alocat</string>
     <string name="send_unencrypted">Trimite necriptat</string>
     <string name="decryption_failed">Decriptarea a eșuat. Poate nu aveți cheia privată corectă.</string>

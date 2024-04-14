@@ -88,9 +88,7 @@
     <string name="send_unencrypted_message">Gửi tin nhắn không mã hoá</string>
     <string name="send_message">Gửi tin nhắn</string>
     <string name="send_message_to_x">Gửi tin nhắn đến %s</string>
-    <string name="send_omemo_message">Gửi tin nhắn mã hoá OMEMO</string>
     <string name="send_omemo_x509_message">Gửi tin nhắn mã hoá v\\OMEMO</string>
-    <string name="send_pgp_message">Gửi tin nhắn mã hoá OpenPGP</string>
     <string name="your_nick_has_been_changed">Biệt danh mới đang được sử dụng</string>
     <string name="send_unencrypted">Gửi dạng không mã hoá</string>
     <string name="decryption_failed">Giải mã thất bại. Có lẽ bạn không có đúng khoá cá nhân.</string>

@@ -65,9 +65,7 @@
     <string name="send_unencrypted_message">സുരക്ഷിതമല്ലാത്ത സന്ദേശം അയയ്കൂ</string>
     <string name="send_message">സന്ദേശം അയയ്ക്കൂ</string>
     <string name="send_message_to_x">%s-ന് (ക്ക്) സന്ദേശം അയയ്ക്കൂ</string>
-    <string name="send_omemo_message">OMEMO സുരക്ഷിതമാക്കിയ സന്ദേശം അയയ്ക്കൂ</string>
     <string name="send_omemo_x509_message">v\\OMEMO സുരക്ഷിതമാക്കിയ സന്ദേശം അയയ്ക്കൂ</string>
-    <string name="send_pgp_message">OpenPGP സുരക്ഷിതമാക്കിയ സന്ദേശം അയയ്ക്കൂ</string>
     <string name="your_nick_has_been_changed">പുതിയ വിളിപ്പേര് ഉപയോഗത്തിലുള്ളതാണ്</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="restart">പുനരാരംഭിക്കൂ</string>

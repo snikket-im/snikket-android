@@ -81,9 +81,7 @@
     <string name="send_unencrypted_message">傳送未加密的訊息</string>
     <string name="send_message">傳送訊息</string>
     <string name="send_message_to_x">傳送訊息至 %s</string>
-    <string name="send_omemo_message">傳送 OMEMO 加密訊息</string>
     <string name="send_omemo_x509_message">傳送 v\\OMEMO 加密訊息</string>
-    <string name="send_pgp_message">傳送 OpenPGP 加密訊息</string>
     <string name="your_nick_has_been_changed">新暱稱已被使用</string>
     <string name="send_unencrypted">不加密傳送</string>
     <string name="decryption_failed">解密失敗，可能是私密金鑰不正確。</string>

@@ -88,9 +88,7 @@
     <string name="send_unencrypted_message">Enviar mensagem não criptografada</string>
     <string name="send_message">Enviar mensagem</string>
     <string name="send_message_to_x">Enviar mensagem para %s</string>
-    <string name="send_omemo_message">Enviar mensagem criptografada via OMEMO</string>
     <string name="send_omemo_x509_message">Enviar mensagem criptografada via v\\OMEMO</string>
-    <string name="send_pgp_message">Enviar mensagem criptografada via OpenPGP</string>
     <string name="your_nick_has_been_changed">Novo apelido em uso</string>
     <string name="send_unencrypted">Enviar descriptografada</string>
     <string name="decryption_failed">Não foi possível descriptografar. Talvez você não tenha a chave privada apropriada.</string>

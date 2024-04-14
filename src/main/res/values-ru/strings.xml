@@ -91,9 +91,7 @@
     <string name="send_unencrypted_message">Нешифрованное сообщение</string>
     <string name="send_message">Сообщение</string>
     <string name="send_message_to_x">Сообщение для %s</string>
-    <string name="send_omemo_message">OMEMO-зашифр. сообщение</string>
     <string name="send_omemo_x509_message">v\\OMEMO-зашифр. сообщение</string>
-    <string name="send_pgp_message">OpenPGP зашифр. сообщение</string>
     <string name="your_nick_has_been_changed">Используется новое имя</string>
     <string name="send_unencrypted">Отправить в незашифрованном виде</string>
     <string name="decryption_failed">Расшифровка не удалась. Вероятно, что у вас нет надлежащего ключа.</string>

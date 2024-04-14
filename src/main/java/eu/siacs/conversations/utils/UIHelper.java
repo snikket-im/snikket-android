@@ -457,26 +457,25 @@ public class UIHelper {
         }
     }
 
-    public static String getMessageHint(Context context, Conversation conversation) {
-        switch (conversation.getNextEncryption()) {
-            case Message.ENCRYPTION_NONE:
+    public static String getMessageHint(final Context context,final  Conversation conversation) {
+        return switch (conversation.getNextEncryption()) {
+            case Message.ENCRYPTION_NONE -> {
                 if (Config.multipleEncryptionChoices()) {
-                    return context.getString(R.string.send_unencrypted_message);
+                    yield context.getString(R.string.send_unencrypted_message);
                 } else {
-                    return context.getString(R.string.send_message_to_x, conversation.getName());
+                    yield context.getString(R.string.send_message_to_x, conversation.getName());
                 }
-            case Message.ENCRYPTION_AXOLOTL:
-                AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
+            }
+            case Message.ENCRYPTION_AXOLOTL -> {
+                final AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
                 if (axolotlService != null && axolotlService.trustedSessionVerified(conversation)) {
-                    return context.getString(R.string.send_omemo_x509_message);
+                    yield context.getString(R.string.send_omemo_x509_message);
                 } else {
-                    return context.getString(R.string.send_omemo_message);
+                    yield context.getString(R.string.send_encrypted_message);
                 }
-            case Message.ENCRYPTION_PGP:
-                return context.getString(R.string.send_pgp_message);
-            default:
-                return "";
-        }
+            }
+            default -> context.getString(R.string.send_encrypted_message);
+        };
     }
 
     public static String getDisplayedMucCounterpart(final Jid counterpart) {

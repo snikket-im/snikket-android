@@ -83,9 +83,7 @@
     <string name="send_unencrypted_message">Незашифроване повідомлення</string>
     <string name="send_message">Надіслати повідомлення</string>
     <string name="send_message_to_x">Повідомлення %s</string>
-    <string name="send_omemo_message">Повідомлення, зашифроване OMEMO</string>
     <string name="send_omemo_x509_message">Повідомлення, зашифроване v\\OMEMO</string>
-    <string name="send_pgp_message">Повідомлення зашифроване OpenPGP</string>
     <string name="your_nick_has_been_changed">Ваше прізвисько змінено</string>
     <string name="send_unencrypted">Надіслати без шифрування</string>
     <string name="decryption_failed">Не вдалося розшифрувати. Можливо, у Вас відсутній потрібний приватний ключ.</string>

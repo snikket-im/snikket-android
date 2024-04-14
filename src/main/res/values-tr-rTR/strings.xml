@@ -87,9 +87,7 @@
     <string name="send_unencrypted_message">Şifrelenmemiş ileti gönder</string>
     <string name="send_message">Mesajı gönder</string>
     <string name="send_message_to_x">%s kişisine ileti gönder</string>
-    <string name="send_omemo_message">OMEMO ile şifrelenmiş ileti gönder</string>
     <string name="send_omemo_x509_message">v\\OMEMO ile şifrelenmiş ileti gönder</string>
-    <string name="send_pgp_message">OpenPGP ile şifrelenmiş ileti gönder</string>
     <string name="your_nick_has_been_changed">Yeni rumuz kullanımda</string>
     <string name="send_unencrypted">Şifrelenmemiş gönder</string>
     <string name="decryption_failed">Deşifre edilemedi. Uygun bir özel anahtarınız olmayabilir.</string>

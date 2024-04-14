@@ -91,9 +91,7 @@
     <string name="send_unencrypted_message">Wyślij wiadomość bez szyfrowania</string>
     <string name="send_message">Wyślij wiadomość</string>
     <string name="send_message_to_x">Wyślij wiadomość do %s</string>
-    <string name="send_omemo_message">Wyślij wiadomość zaszyfrowaną OMEMO</string>
     <string name="send_omemo_x509_message">Wyślij wiadomość zaszyfrowaną v\\OMEMO</string>
-    <string name="send_pgp_message">Wyślij zaszyfrowaną wiadomość (OpenPGP)</string>
     <string name="your_nick_has_been_changed">Nowy pseudonim jest już użyciu</string>
     <string name="send_unencrypted">Wyślij bez szyfrowania</string>
     <string name="decryption_failed">Nie można odszyfrować. Sprawdź poprawność klucza prywatnego.</string>

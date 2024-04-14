@@ -87,9 +87,7 @@
     <string name="send_unencrypted_message">Titkosítatlan üzenet küldése</string>
     <string name="send_message">Üzenet küldése</string>
     <string name="send_message_to_x">Üzenet küldése %s számára</string>
-    <string name="send_omemo_message">OMEMO titkosítású üzenet küldése</string>
     <string name="send_omemo_x509_message">v\\OMEMO titkosítású üzenet küldése</string>
-    <string name="send_pgp_message">OpenPGP titkosítású üzenet küldése</string>
     <string name="your_nick_has_been_changed">Új becenév használva</string>
     <string name="send_unencrypted">Küldés titkosítatlanul</string>
     <string name="decryption_failed">A visszafejtés sikertelen. Talán nem rendelkezik a megfelelő személyes kulccsal.</string>
