@@ -86,7 +86,9 @@ public class ConversationAdapter
         final boolean isRead = conversation.isRead();
         final @DrawableRes Integer messageStatusDrawable =
                 MessageAdapter.getMessageStatusAsDrawable(message, status);
-        if (messageStatusDrawable == null) {
+        if (message.getType() == Message.TYPE_RTP_SESSION) {
+            viewHolder.binding.messageStatus.setVisibility(View.GONE);
+        } else if (messageStatusDrawable == null) {
             if (status <= Message.STATUS_RECEIVED) {
                 viewHolder.binding.messageStatus.setVisibility(View.GONE);
             } else {
