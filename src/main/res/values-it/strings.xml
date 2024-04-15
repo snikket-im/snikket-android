@@ -79,18 +79,18 @@
     <string name="sharing_files_please_wait">Condivisione file. Attendere prego…</string>
     <string name="action_clear_history">Svuota la cronologia</string>
     <string name="clear_conversation_history">Svuota la cronologia della chat</string>
-    <string name="clear_histor_msg">Vuoi eliminare tutti i messaggi in questa conversazione?
-\n
+    <string name="clear_histor_msg">Vuoi eliminare tutti i messaggi in questa chat? 
+\n 
 \n<b>Attenzione:</b> ciò non influenzerà i messaggi salvati su altri dispositivi o server.</string>
     <string name="delete_file_dialog">Elimina file</string>
     <string name="delete_file_dialog_msg">Sei sicuro di voler eliminare questo file?\n\n<b>Attenzione:</b> non verranno eliminate copie di questo file memorizzate in altri dispositivi o server. </string>
     <string name="choose_presence">Scegli un dispositivo</string>
-    <string name="send_unencrypted_message">Invia messaggio non cifrato</string>
+    <string name="send_unencrypted_message">Invia messaggio in chiaro</string>
     <string name="send_message">Invia messaggio</string>
     <string name="send_message_to_x">Invia messaggio a %s</string>
     <string name="send_omemo_x509_message">Invia messaggio cifrato v\\OMEMO</string>
     <string name="your_nick_has_been_changed">Nuovo nome utente in uso</string>
-    <string name="send_unencrypted">Invia non cifrato</string>
+    <string name="send_unencrypted">Invia in chiaro</string>
     <string name="decryption_failed">Decifrazione fallita. Forse non disponi della chiave privata corretta.</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="openkeychain_required_long"><![CDATA[%1$s usa <b>OpenKeychain</b> per cifrare e decifrare i messaggi e gestire le tue chiavi pubbliche.<br><br>È pubblicato secondo i termini della GPLv3+ ed è disponibile su F-Droid e Google Play.<br><br><small>(Riavvia %1$s in seguito.)</small>]]></string>
@@ -165,7 +165,7 @@
     <string name="account_status_incompatible_client">Client non compatibile</string>
     <string name="account_status_stream_error">Errore di stream</string>
     <string name="account_status_stream_opening_error">Errore apertura flusso</string>
-    <string name="encryption_choice_unencrypted">Non cifrato</string>
+    <string name="encryption_choice_unencrypted">In chiaro</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -405,7 +405,7 @@
     <string name="pref_input_options">Input</string>
     <string name="pref_enter_is_send">Il tasto Invio spedisce</string>
     <string name="pref_enter_is_send_summary">Usa il tasto Invio per spedire il messaggio. Puoi sempre usare Ctrl+Invio per spedire, anche se questa opzione è disattivata.</string>
-    <string name="pref_display_enter_key">Mostra il tasto invio</string>
+    <string name="pref_display_enter_key">Mostra il tasto Invio</string>
     <string name="pref_display_enter_key_summary">Cambia il tasto delle faccine nel tasto di invio</string>
     <string name="audio">audio</string>
     <string name="video">video</string>
@@ -509,10 +509,9 @@
     <string name="no_storage_permission">Dai a %1$s l\'accesso all\'archiviazione esterna</string>
     <string name="no_camera_permission">Dai a %1$s l\'accesso alla fotocamera</string>
     <string name="sync_with_contacts">Integrazione della lista contatti</string>
-    <string name="sync_with_contacts_long">%1$s vuole l\'autorizzazione ad accedere alla tua rubrica per confrontarla con la lista di contatti in XMPP.
-\nCiò mostrerà i nomi ed avatar dei contatti.
+    <string name="sync_with_contacts_long">%1$s legge l\'elenco dei tuoi contatti in locale, sul tuo dispositivo, per mostrarti i nomi e le immagini dei profili in modo da far combaciare i contatti su XMPP.
 \n
-\n%1$s leggerà solamente la rubrica e la confronterà localmente senza inviare nulla al tuo server.</string>
+\nI dati dell\'elenco dei contatti non lasciano mai il dispositivo!</string>
     <string name="notify_on_all_messages">Notifica per tutti i messaggi</string>
     <string name="notify_only_when_highlighted">Notifica solo quando menzionato</string>
     <string name="notify_never">Notifiche disattivate</string>
@@ -561,12 +560,12 @@
     <string name="gp_short">Breve</string>
     <string name="gp_medium">Medio</string>
     <string name="gp_long">Lungo</string>
-    <string name="pref_broadcast_last_activity">Trasmetti l\'utilizzo</string>
-    <string name="pref_broadcast_last_activity_summary">Fa sapere ai tuoi contatti quando usi Conversations</string>
+    <string name="pref_broadcast_last_activity">Ultimo accesso</string>
+    <string name="pref_broadcast_last_activity_summary">Fai sapere ai tuoi contatti quando hai usato l\'app l\'ultima volta</string>
     <string name="pref_privacy">Privacy</string>
     <string name="pref_theme_options">Tema</string>
     <string name="pref_theme_options_summary">Seleziona il colore</string>
-    <string name="pref_theme_automatic">Automatico</string>
+    <string name="pref_theme_automatic">Automatica</string>
     <string name="pref_theme_light">Chiaro</string>
     <string name="pref_theme_dark">Scuro</string>
     <string name="unable_to_connect_to_keychain">Impossibile connettersi a OpenKeychain</string>
@@ -659,10 +658,10 @@
     <string name="not_fetching_history_retention_period">Nessun recupero di messaggi a causa del periodo di conservazione locale.</string>
     <string name="transcoding_video">Compressione video in corso</string>
     <string name="contact_blocked_past_tense">Contatto bloccato.</string>
-    <string name="pref_notifications_from_strangers">Notifiche da sconosciuti</string>
-    <string name="pref_notifications_from_strangers_summary">Notifica messaggi e chiamate ricevuti da sconosciuti.</string>
-    <string name="received_message_from_stranger">Ricevuto messaggio da uno sconosciuto</string>
-    <string name="block_stranger">Blocca sconosciuto</string>
+    <string name="pref_notifications_from_strangers">Notifiche da estranei</string>
+    <string name="pref_notifications_from_strangers_summary">Notifica messaggi e chiamate ricevuti da estranei.</string>
+    <string name="received_message_from_stranger">Ricevuto messaggio da un estraneo</string>
+    <string name="block_stranger">Blocca estraneo</string>
     <string name="block_entire_domain">Blocca intero dominio</string>
     <string name="online_right_now">in linea adesso</string>
     <string name="retry_decryption">Ritenta decifrazione</string>
@@ -703,14 +702,14 @@
     <string name="error_trustkey_device_list">Impossibile ricevere l\'elenco dispositivi</string>
     <string name="error_trustkey_bundle">Impossibile ricevere le chiavi di cifratura</string>
     <string name="error_trustkey_hint_mutual">Suggerimento: in alcuni casi può essere risolto aggiungendo a vicenda la vostra lista di contatti.</string>
-    <string name="disable_encryption_message">Sei sicuro di disattivare la cifratura OMEMO per questa conversazione?
+    <string name="disable_encryption_message">Sei sicuro di disattivare la cifratura OMEMO per questa chat?
 \nCiò permetterà all\'amministratore del server di leggere i tuoi messaggi, ma potrebbe essere il solo modo di comunicare con persone che usano client obsoleti.</string>
     <string name="disable_now">Disattiva adesso</string>
     <string name="draft">Bozza:</string>
     <string name="pref_omemo_setting">Cifratura OMEMO</string>
     <string name="pref_omemo_setting_summary_always">OMEMO verrà sempre usato per chat singole e gruppi privati.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO verrà usato in modo predefinito nelle nuove conversazioni.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO dovrà essere attivato a mano nelle nuove conversazioni.</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO verrà usato in modo predefinito nelle nuove chat.</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO dovrà essere attivato a mano nelle nuove chat.</string>
     <string name="create_shortcut">Crea scorciatoia</string>
     <string name="default_on">On in modo predefinito</string>
     <string name="default_off">Off in modo predefinito</string>
@@ -731,14 +730,14 @@
     <string name="no_microphone_permission">Dai a %1$s l\'accesso al microfono</string>
     <string name="search_messages">Cerca messaggi</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Vedi conversazione</string>
+    <string name="view_conversation">Vedi chat</string>
     <string name="pref_use_share_location_plugin">Plugin Condivisione Posizione</string>
     <string name="pref_use_share_location_plugin_summary">Usa il plugin Condividi Posizione al posto della mappa integrata</string>
     <string name="copy_link">Copia indirizzo web</string>
     <string name="copy_jabber_id">Copia indirizzo XMPP</string>
     <string name="p1_s3_filetransfer">Condivisione file in HTTP per S3</string>
     <string name="pref_start_search">Ricerca diretta</string>
-    <string name="pref_start_search_summary">Nella schermata \'Inizia conversazione\' apri la tastiera e posiziona il cursore nella casella di ricerca</string>
+    <string name="pref_start_search_summary">Nella schermata \'Nuova chat\' apri la tastiera e posiziona il cursore nella casella di ricerca</string>
     <string name="group_chat_avatar">Avatar chat di gruppo</string>
     <string name="host_does_not_support_group_chat_avatars">L\'host non supporta gli avatar per chat di gruppo</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Solo il proprietario può cambiare l\'avatar della chat di gruppo</string>
@@ -790,20 +789,20 @@
     <string name="verify_x">Verifica %s</string>
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Ti abbiamo inviato un SMS a <b>%s</b>.]]></string>
     <string name="we_have_sent_you_another_sms">Ti abbiamo inviato un altro SMS con un codice di 6 cifre.</string>
-    <string name="please_enter_pin_below">Inserisci il pin di 6 cifre qua sotto.</string>
+    <string name="please_enter_pin_below">Inserisci il PIN di 6 cifre qua sotto.</string>
     <string name="resend_sms">Reinvia SMS</string>
     <string name="resend_sms_in">Reinvia SMS (%s)</string>
     <string name="wait_x">Attendere prego (%s)</string>
-    <string name="back">indietro</string>
-    <string name="possible_pin">Possibile pin incollato automaticamente dagli appunti.</string>
-    <string name="please_enter_pin">Inserisci il pin di 6 cifre.</string>
+    <string name="back">Indietro</string>
+    <string name="possible_pin">Possibile PIN incollato automaticamente dagli appunti.</string>
+    <string name="please_enter_pin">Inserisci il PIN di 6 cifre.</string>
     <string name="abort_registration_procedure">Sei sicuro di voler annullare la procedura di registrazione?</string>
     <string name="yes">Sì</string>
     <string name="no">No</string>
     <string name="verifying">Verifica…</string>
     <string name="requesting_sms">Richiesta SMS…</string>
-    <string name="incorrect_pin">Il pin che hai inserito è sbagliato.</string>
-    <string name="pin_expired">Il pin che ti abbiamo inviato è scaduto.</string>
+    <string name="incorrect_pin">Il PIN che hai inserito è sbagliato.</string>
+    <string name="pin_expired">Il PIN che ti abbiamo inviato è scaduto.</string>
     <string name="unknown_api_error_network">Errore di rete sconosciuto.</string>
     <string name="unknown_api_error_response">Risposta dal server sconosciuta.</string>
     <string name="unable_to_connect_to_server">Impossibile connettersi al server.</string>
@@ -952,8 +951,8 @@
     <string name="remove_from_favorites">Rimuovi dall\'alto</string>
     <string name="gpx_track">Traccia GPX</string>
     <string name="could_not_correct_message">Impossibile correggere il messaggio</string>
-    <string name="search_all_conversations">Tutte le conversazioni</string>
-    <string name="search_this_conversation">Questa conversazione</string>
+    <string name="search_all_conversations">Tutte le chat</string>
+    <string name="search_this_conversation">Questa chat</string>
     <string name="your_avatar">Il tuo avatar</string>
     <string name="avatar_for_x">Avatar di %s</string>
     <string name="encrypted_with_omemo">Crittografato con OMEMO</string>
@@ -1020,7 +1019,7 @@
     <string name="report_spam">Segnala spam</string>
     <string name="welcome_header_quicksy">Benvenuti su Quicksy!</string>
     <string name="quicksy_wants_your_consent">Quicksy ti chiede il consenso per usare i tuoi dati</string>
-    <string name="pref_send_crash_reports">Invia rapporti sui blocchi</string>
+    <string name="pref_send_crash_reports">Invia rapporti sugli errori</string>
     <string name="remove_bookmark">Vuoi rimuovere il segnalibro per %s?</string>
     <string name="remove_bookmark_and_close">Vuoi rimuovere il segnalibro per %s e archiviare la chat?</string>
     <string name="title_activity_share_with">Condividi con …</string>
@@ -1028,4 +1027,53 @@
     <string name="title_activity_new_chat">Nuova chat</string>
     <string name="archive_this_chat">Archivia questa chat</string>
     <string name="title_undo_swipe_out_chat">Chat archiviata</string>
+    <string name="welcome_header">Unisciti a Conversation</string>
+    <string name="pref_use_colorful_bubbles">Messaggi di chat colorati</string>
+    <string name="pref_use_colorful_bubbles_summary">I messaggi di chat colorati aiutano a distinguere quelli inviati e quelli ricevuti</string>
+    <string name="switch_to_chat">Passa alla chat</string>
+    <string name="pref_title_security">Sicurezza</string>
+    <string name="pref_title_interface">Interfaccia</string>
+    <string name="pref_summary_security">Crittografia E2E, fiducia cieca prima della verifica, rilevazione MITM</string>
+    <string name="unified_push_summary">Relay di notifica per app di terze parti compatibili con UnifiedPush</string>
+    <string name="pref_summary_appearance">Temi, colori, schermate, input</string>
+    <string name="pref_category_sending">Invio</string>
+    <string name="pref_category_receiving">Ricezione</string>
+    <string name="notifications">Notifiche</string>
+    <string name="pref_attachments_summary">Dimensione file, compressione immagini, qualità video</string>
+    <string name="pref_notifications_summary">Periodo di grazia, suoneria, vibrazione, estranei</string>
+    <string name="appearance">Aspetto</string>
+    <string name="pref_automatic_download">Scaricamento automatico</string>
+    <string name="pref_light_dark_mode">Modalità chiara/scura</string>
+    <string name="pref_allow_screenshots">Consenti schermate</string>
+    <string name="pref_allow_screenshots_summary">Mostra il contenuto dell\'app nello switcher e consenti la cattura di schermate</string>
+    <string name="pref_category_e2ee">Crittografia end-to-end</string>
+    <string name="pref_category_operating_system">Sistema operativo</string>
+    <string name="pref_connection_summary_w_cd">Nome host e porta, Tor, scoperta dei canali</string>
+    <string name="pref_keyboard_options">Tastiera</string>
+    <string name="pref_category_engagement_notifications">Notifiche di coinvolgimento</string>
+    <string name="pref_category_application">Applicazione</string>
+    <string name="pref_category_interaction">Interazione</string>
+    <string name="pref_category_on_this_device">Sul dispositivo</string>
+    <string name="pref_up_long_summary">Quando si agisce come distributore di UnifiedPush, la connessione XMPP persistente, affidabile e a basso consumo di batteria viene usata per risvegliare altre app compatibili con UnifiedPush, come Tusky, Ltt.rs, FluffyChat ed altre.</string>
+    <string name="contact_list_integration_not_available">L\'integrazione dell\'elenco di contatti non è disponibile</string>
+    <string name="privacy_policy">Informativa sulla privacy</string>
+    <string name="no_permission_to_place_call">Autorizzazione mancante per effettuare una chiamata</string>
+    <string name="call_integration_not_available">L\'integrazione delle chiamate non è disponibile!</string>
+    <string name="delete_and_close">Elimina e archivia chat</string>
+    <string name="start_chat">Inizia chat</string>
+    <string name="no_certificate_selected">Nessun certificato client selezionato!</string>
+    <string name="send_encrypted_message">Invia messaggio cifrato</string>
+    <string name="corresponding_chats_closed">Chat corrispondenti archiviate.</string>
+    <string name="pref_dynamic_colors">Colori dinamici</string>
+    <string name="pref_dynamic_colors_summary">Colori di sistema (Material You)</string>
+    <string name="pref_title_trust_system_ca_store_summary">Fidati dei certificati CA di sistema</string>
+    <string name="detect_mim">Richiedi associazione dei canali</string>
+    <string name="pref_category_server_connection">Connessione ai server</string>
+    <string name="pref_privacy_summary">Notifiche di scrittura, ultima attività, disponibilità</string>
+    <string name="pref_connection_summary">Nome host e porta, Tor</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">Il codice a barre non contiene impronte per questa chat.</string>
+    <string name="rtp_state_contact_offline">Contatto non disponibile</string>
+    <string name="detect_mim_summary">L\'associazione dei canali può rilevare alcuni attacchi machine-in-the-middle</string>
+    <string name="channel_discover_opt_in_message">La scoperta dei canali usa un servizio di terze parti chiamato &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;L\'uso di questa funzione invierà il tuo indirizzo IP e i termini di ricerca a quel servizio. Vedi la sua &lt;a href=https://search.jabber.network/privacy&gt;informativa sulla privacy&lt;/a&gt; per maggiori informazioni.</string>
+    <string name="pref_title_trust_system_ca_store">Autorità di certificazione</string>
 </resources>
