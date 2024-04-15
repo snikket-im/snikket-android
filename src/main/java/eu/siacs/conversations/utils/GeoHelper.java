@@ -46,13 +46,17 @@ public class GeoHelper {
 		}
 	}
 
+	public static GeoPoint parseGeoPoint(final Uri uri) {
+		return parseGeoPoint(uri.toString());
+	}
+
 	private static GeoPoint parseGeoPoint(String body) throws IllegalArgumentException {
-		Matcher matcher = GEO_URI.matcher(body);
+		final Matcher matcher = GEO_URI.matcher(body);
 		if (!matcher.matches()) {
 			throw new IllegalArgumentException("Invalid geo uri");
 		}
-		double latitude;
-		double longitude;
+		final double latitude;
+		final double longitude;
 		try {
 			latitude = Double.parseDouble(matcher.group(1));
 			if (latitude > 90.0 || latitude < -90.0) {
@@ -62,7 +66,7 @@ public class GeoHelper {
 			if (longitude > 180.0 || longitude < -180.0) {
 				throw new IllegalArgumentException("Invalid geo uri");
 			}
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			throw new IllegalArgumentException("Invalid geo uri",e);
 		}
 		return new GeoPoint(latitude, longitude);

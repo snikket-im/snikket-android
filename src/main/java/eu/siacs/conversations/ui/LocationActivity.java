@@ -236,13 +236,11 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 		}
 	}
 
-	@TargetApi(Build.VERSION_CODES.M)
 	protected boolean hasLocationPermissions() {
 		return (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
 				checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
 	}
 
-	@TargetApi(Build.VERSION_CODES.M)
 	protected void requestPermissions(final int request_code) {
 		if (!hasLocationPermissions()) {
 			requestPermissions(
