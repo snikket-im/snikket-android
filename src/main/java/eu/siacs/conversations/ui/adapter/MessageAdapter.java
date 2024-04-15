@@ -55,6 +55,7 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
+import eu.siacs.conversations.ui.Activities;
 import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
@@ -204,7 +205,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             error = message.getStatus() == Message.STATUS_SEND_FAILED;
         }
         if (type == SENT) {
-            final @DrawableRes Integer receivedIndicator = getMessageStatusAsDrawable(message, mergedStatus);
+            final @DrawableRes Integer receivedIndicator =
+                    getMessageStatusAsDrawable(message, mergedStatus);
             if (receivedIndicator == null) {
                 viewHolder.indicatorReceived.setVisibility(View.INVISIBLE);
             } else {
@@ -291,7 +293,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             if (fileSize != null) {
                 timeInfoBuilder.add(fileSize);
             }
-            // for space reasons we display only 'additional status info' (send progress or concrete failure reason) or the time
+            // for space reasons we display only 'additional status info' (send progress or concrete
+            // failure reason) or the time
             if (additionalStatusInfo != null) {
                 timeInfoBuilder.add(additionalStatusInfo);
             } else {
@@ -302,16 +305,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.time.setText(Joiner.on(" \u00B7 ").join(timeInfo));
     }
 
-    public static @DrawableRes Integer getMessageStatusAsDrawable(final Message message, final int status) {
+    public static @DrawableRes Integer getMessageStatusAsDrawable(
+            final Message message, final int status) {
         final var transferable = message.getTransferable();
         return switch (status) {
             case Message.STATUS_WAITING -> R.drawable.ic_more_horiz_24dp;
-            case Message.STATUS_UNSEND -> transferable == null
-                    ? null
-                    : R.drawable.ic_upload_24dp;
+            case Message.STATUS_UNSEND -> transferable == null ? null : R.drawable.ic_upload_24dp;
             case Message.STATUS_SEND -> R.drawable.ic_done_24dp;
-            case Message.STATUS_SEND_RECEIVED, Message.STATUS_SEND_DISPLAYED -> R
-                    .drawable
+            case Message.STATUS_SEND_RECEIVED, Message.STATUS_SEND_DISPLAYED -> R.drawable
                     .ic_done_all_24dp;
             case Message.STATUS_SEND_FAILED -> {
                 final String errorMessage = message.getErrorMessage();
@@ -812,7 +813,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 bubbleColor = BubbleColor.WARNING;
             }
         } else {
-            bubbleColor = colorfulBackground ? BubbleColor.TERTIARY : BubbleColor.SURFACE;
+            bubbleColor = colorfulBackground ? BubbleColor.TERTIARY : BubbleColor.SURFACE_HIGH;
         }
 
         if (type == DATE_SEPARATOR) {
@@ -831,8 +832,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 setBackgroundTint(viewHolder.message_box, BubbleColor.PRIMARY);
                 setTextColor(viewHolder.status_message, BubbleColor.PRIMARY);
             } else {
-                setBackgroundTint(viewHolder.message_box, BubbleColor.SURFACE);
-                setTextColor(viewHolder.status_message, BubbleColor.SURFACE);
+                setBackgroundTint(viewHolder.message_box, BubbleColor.SURFACE_HIGH);
+                setTextColor(viewHolder.status_message, BubbleColor.SURFACE_HIGH);
             }
             return view;
         } else if (type == RTP_SESSION) {
@@ -877,9 +878,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 setTextColor(viewHolder.status_message, BubbleColor.SECONDARY);
                 setImageTint(viewHolder.indicatorReceived, BubbleColor.SECONDARY);
             } else {
-                setBackgroundTint(viewHolder.message_box, BubbleColor.SURFACE);
-                setTextColor(viewHolder.status_message, BubbleColor.SURFACE);
-                setImageTint(viewHolder.indicatorReceived, BubbleColor.SURFACE);
+                setBackgroundTint(viewHolder.message_box, BubbleColor.SURFACE_HIGH);
+                setTextColor(viewHolder.status_message, BubbleColor.SURFACE_HIGH);
+                setImageTint(viewHolder.indicatorReceived, BubbleColor.SURFACE_HIGH);
             }
             viewHolder.indicatorReceived.setImageResource(
                     RtpSessionStatus.getDrawable(received, rtpSessionStatus.successful));
@@ -1141,7 +1142,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             final View view, final BubbleColor bubbleColor) {
         final @AttrRes int colorAttributeResId =
                 switch (bubbleColor) {
-                    case SURFACE -> com.google.android.material.R.attr.colorSurfaceContainerHigh;
+                    case SURFACE -> Activities.isNightMode(view.getContext())
+                            ? com.google.android.material.R.attr.colorSurfaceContainerHigh
+                            : com.google.android.material.R.attr.colorSurfaceContainerLow;
+                    case SURFACE_HIGH -> Activities.isNightMode(view.getContext())
+                            ? com.google.android.material.R.attr.colorSurfaceContainerHighest
+                            : com.google.android.material.R.attr.colorSurfaceContainerHigh;
                     case PRIMARY -> com.google.android.material.R.attr.colorPrimaryContainer;
                     case SECONDARY -> com.google.android.material.R.attr.colorSecondaryContainer;
                     case TERTIARY -> com.google.android.material.R.attr.colorTertiaryContainer;
@@ -1170,7 +1176,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private static @ColorInt int bubbleToOnSurfaceVariant(
             final View view, final BubbleColor bubbleColor) {
         final @AttrRes int colorAttributeResId;
-        if (bubbleColor == BubbleColor.SURFACE) {
+        if (bubbleColor == BubbleColor.SURFACE_HIGH || bubbleColor == BubbleColor.SURFACE) {
             colorAttributeResId = com.google.android.material.R.attr.colorOnSurfaceVariant;
         } else {
             colorAttributeResId = bubbleToOnSurface(bubbleColor);
@@ -1190,7 +1196,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     private static @AttrRes int bubbleToOnSurface(final BubbleColor bubbleColor) {
         return switch (bubbleColor) {
-            case SURFACE -> com.google.android.material.R.attr.colorOnSurface;
+            case SURFACE, SURFACE_HIGH -> com.google.android.material.R.attr.colorOnSurface;
             case PRIMARY -> com.google.android.material.R.attr.colorOnPrimaryContainer;
             case SECONDARY -> com.google.android.material.R.attr.colorOnSecondaryContainer;
             case TERTIARY -> com.google.android.material.R.attr.colorOnTertiaryContainer;
@@ -1200,6 +1206,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     public enum BubbleColor {
         SURFACE,
+        SURFACE_HIGH,
         PRIMARY,
         SECONDARY,
         TERTIARY,
