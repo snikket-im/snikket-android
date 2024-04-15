@@ -1245,7 +1245,10 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
             // IOException and turn it into a connectivity error
 
             if (isInitiator() && reason == Reason.CANCEL) {
-                this.message.setErrorMessage(Message.ERROR_MESSAGE_CANCELLED);
+                // message hooks have already run so we need to mark to persist the 'cancelled'
+                // status
+                xmppConnectionService.markMessage(
+                        message, Message.STATUS_SEND_FAILED, Message.ERROR_MESSAGE_CANCELLED);
             }
             terminateTransport();
             final JinglePacket jinglePacket =
