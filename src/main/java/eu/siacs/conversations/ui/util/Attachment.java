@@ -36,12 +36,12 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.base.MoreObjects;
 
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.utils.MimeUtils;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public class Attachment implements Parcelable {
         return type;
     }
 
-    @NotNull
+    @NonNull
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)

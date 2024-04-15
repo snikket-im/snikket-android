@@ -11,8 +11,6 @@ import androidx.annotation.NonNull;
 import com.otaliastudios.transcoder.Transcoder;
 import com.otaliastudios.transcoder.TranscoderListener;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Objects;
@@ -167,7 +165,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
     }
 
     @Override
-    public void onTranscodeFailed(@NonNull @NotNull Throwable exception) {
+    public void onTranscodeFailed(@NonNull final Throwable exception) {
         mXmppConnectionService.stopOngoingVideoTranscodingForegroundNotification();
         Log.d(Config.LOGTAG, "video transcoding failed", exception);
         processAsFile();

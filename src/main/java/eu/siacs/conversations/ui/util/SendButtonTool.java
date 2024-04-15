@@ -44,6 +44,7 @@ import com.google.android.material.color.MaterialColors;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.ui.Activities;
 import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.utils.UIHelper;
 
@@ -110,9 +111,7 @@ public class SendButtonTool {
     }
 
     public @ColorInt static int getSendButtonColor(final View view, final Presence.Status status) {
-        final boolean nightMode =
-                (view.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
-                        == Configuration.UI_MODE_NIGHT_YES;
+        final boolean nightMode = Activities.isNightMode(view.getContext());
         return switch (status) {
             case OFFLINE -> MaterialColors.getColor(
                     view, com.google.android.material.R.attr.colorOnSurface);

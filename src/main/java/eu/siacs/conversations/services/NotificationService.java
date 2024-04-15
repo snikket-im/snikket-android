@@ -17,6 +17,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -48,10 +49,30 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 
+import eu.siacs.conversations.AppSettings;
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.ui.ConversationsActivity;
+import eu.siacs.conversations.ui.EditAccountActivity;
+import eu.siacs.conversations.ui.RtpSessionActivity;
+import eu.siacs.conversations.utils.AccountUtils;
+import eu.siacs.conversations.utils.Compatibility;
+import eu.siacs.conversations.utils.GeoHelper;
+import eu.siacs.conversations.utils.TorServiceUtils;
+import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
+import eu.siacs.conversations.xmpp.jingle.Media;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -66,28 +87,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import eu.siacs.conversations.AppSettings;
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Conversational;
-import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.persistance.FileBackend;
-import eu.siacs.conversations.ui.ConversationsActivity;
-import eu.siacs.conversations.ui.EditAccountActivity;
-import eu.siacs.conversations.ui.RtpSessionActivity;
-import eu.siacs.conversations.ui.TimePreference;
-import eu.siacs.conversations.utils.AccountUtils;
-import eu.siacs.conversations.utils.Compatibility;
-import eu.siacs.conversations.utils.GeoHelper;
-import eu.siacs.conversations.utils.TorServiceUtils;
-import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
-import eu.siacs.conversations.xmpp.jingle.Media;
 
 public class NotificationService {
 
@@ -518,6 +517,7 @@ public class NotificationService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             this.currentlyPlayingRingtone.setLooping(true);
         }
+        Log.d(Config.LOGTAG,"start playing ringtone: "+uri);
         this.currentlyPlayingRingtone.play();
     }
 
@@ -651,7 +651,7 @@ public class NotificationService {
         int stopped = 0;
         if (this.currentlyPlayingRingtone != null) {
             if (this.currentlyPlayingRingtone.isPlaying()) {
-                Log.d(Config.LOGTAG, "stop playing ring tone");
+                Log.d(Config.LOGTAG, "stop playing ringtone");
                 ++stopped;
             }
             this.currentlyPlayingRingtone.stop();

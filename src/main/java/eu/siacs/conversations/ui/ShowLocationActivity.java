@@ -17,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
-import org.jetbrains.annotations.NotNull;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.HashMap;
@@ -151,7 +150,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
     }
 
     @Override
-    public boolean onCreateOptionsMenu(@NotNull final Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_show_location, menu);
         updateUi();
@@ -230,7 +229,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
     }
 
     @Override
-    public void onLocationChanged(@NotNull final Location location) {
+    public void onLocationChanged(@NonNull final Location location) {
         if (LocationHelper.isBetterLocation(location, this.myLoc)) {
             this.myLoc = location;
             updateLocationMarkers();
@@ -241,8 +240,8 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
     public void onStatusChanged(final String provider, final int status, final Bundle extras) {}
 
     @Override
-    public void onProviderEnabled(@NotNull final String provider) {}
+    public void onProviderEnabled(@NonNull final String provider) {}
 
     @Override
-    public void onProviderDisabled(@NotNull final String provider) {}
+    public void onProviderDisabled(@NonNull final String provider) {}
 }

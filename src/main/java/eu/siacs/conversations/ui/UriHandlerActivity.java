@@ -11,8 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
@@ -34,8 +34,6 @@ import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.List;
@@ -218,13 +216,13 @@ public class UriHandlerActivity extends BaseActivity {
         this.call.enqueue(
                 new Callback() {
                     @Override
-                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
                         Log.d(Config.LOGTAG, "unable to check HTTP url", e);
                         showError(R.string.no_xmpp_adddress_found);
                     }
 
                     @Override
-                    public void onResponse(@NotNull Call call, @NotNull Response response) {
+                    public void onResponse(@NonNull Call call, @NonNull Response response) {
                         if (response.isSuccessful()) {
                             final String linkHeader = response.header("Link");
                             if (linkHeader != null && processLinkHeader(linkHeader)) {

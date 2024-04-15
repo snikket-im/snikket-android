@@ -899,12 +899,9 @@ public abstract class XmppActivity extends ActionBarActivity {
         final Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
         final int width = Math.min(size.x, size.y);
-        final boolean nightMode = (this.getResources().getConfiguration().uiMode
-                & Configuration.UI_MODE_NIGHT_MASK)
-                == Configuration.UI_MODE_NIGHT_YES;
         final int black;
         final int white;
-        if (nightMode) {
+        if (Activities.isNightMode(this)) {
             black = MaterialColors.getColor(this, com.google.android.material.R.attr.colorSurfaceContainerHighest,"No surface color configured");
             white = MaterialColors.getColor(this, com.google.android.material.R.attr.colorSurfaceInverse,"No inverse surface color configured");
         } else {

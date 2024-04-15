@@ -12,11 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.helper.widget.Flow;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.color.MaterialColors;
-import com.wefika.flowlayout.FlowLayout;
+import com.google.common.collect.ImmutableList;
+import com.google.common.primitives.Ints;
 
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
@@ -85,13 +89,17 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 			viewHolder.tags.setVisibility(View.GONE);
 		} else {
 			viewHolder.tags.setVisibility(View.VISIBLE);
-			viewHolder.tags.removeAllViewsInLayout();
+			viewHolder.tags.removeViews(1, viewHolder.tags.getChildCount() - 1);
+			final ImmutableList.Builder<Integer> viewIdBuilder = new ImmutableList.Builder<>();
 			for (final ListItem.Tag tag : tags) {
 				final String name = tag.getName();
 				final TextView tv = (TextView) inflater.inflate(R.layout.list_item_tag, viewHolder.tags, false);
 				tv.setText(name);
 				tv.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.harmonizeWithPrimary(getContext(),XEP0392Helper.rgbFromNick(name))));
 				tv.setOnClickListener(this.onTagTvClick);
+				final int id = ViewCompat.generateViewId();
+				tv.setId(id);
+				viewIdBuilder.add(id);
 				viewHolder.tags.addView(tv);
 			}
 			if (item instanceof Contact contact) {
@@ -102,6 +110,9 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 											R.layout.list_item_tag, viewHolder.tags, false);
 					tv.setText(R.string.blocked);
 					tv.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.harmonizeWithPrimary(tv.getContext(),ContextCompat.getColor(tv.getContext(),R.color.gray_800))));
+					final int id = ViewCompat.generateViewId();
+					tv.setId(id);
+					viewIdBuilder.add(id);
 					viewHolder.tags.addView(tv);
 				} else {
                     final Presence.Status status = contact.getShownStatus();
@@ -111,10 +122,14 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
                                         inflater.inflate(
                                                 R.layout.list_item_tag, viewHolder.tags, false);
 						UIHelper.setStatus(tv, status);
+						final int id = ViewCompat.generateViewId();
+						tv.setId(id);
+						viewIdBuilder.add(id);
 						viewHolder.tags.addView(tv);
                     }
                 }
 			}
+			viewHolder.flowWidget.setReferencedIds(Ints.toArray(viewIdBuilder.build()));
 		}
 		final Jid jid = item.getJid();
 		if (jid != null) {
@@ -141,7 +156,8 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 		private TextView name;
 		private TextView jid;
 		private ImageView avatar;
-		private FlowLayout tags;
+		private ConstraintLayout tags;
+		private Flow flowWidget;
 
 		private ViewHolder() {
 
@@ -153,6 +169,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 			viewHolder.jid = binding.contactJid;
 			viewHolder.avatar = binding.contactPhoto;
 			viewHolder.tags = binding.tags;
+			viewHolder.flowWidget = binding.flowWidget;
 			binding.getRoot().setTag(viewHolder);
 			return viewHolder;
 		}

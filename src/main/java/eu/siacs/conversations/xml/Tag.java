@@ -1,6 +1,6 @@
 package eu.siacs.conversations.xml;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
 
 import java.util.Hashtable;
 import java.util.Map.Entry;
@@ -80,7 +80,7 @@ public class Tag {
         return (this.type == NO);
     }
 
-    @NotNull
+    @NonNull
     public String toString() {
         final StringBuilder tagOutput = new StringBuilder();
         tagOutput.append('<');

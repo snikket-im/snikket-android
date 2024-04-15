@@ -30,10 +30,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.common.collect.ImmutableList;
+import com.google.common.primitives.Ints;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
@@ -514,12 +517,16 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             binding.tags.setVisibility(View.GONE);
         } else {
             binding.tags.setVisibility(View.VISIBLE);
-            binding.tags.removeAllViewsInLayout();
+            binding.tags.removeViews(1, binding.tags.getChildCount() - 1);
+            final ImmutableList.Builder<Integer> viewIdBuilder = new ImmutableList.Builder<>();
             for (final ListItem.Tag tag : tagList) {
                 final String name = tag.getName();
                 final TextView tv = (TextView) inflater.inflate(R.layout.list_item_tag, binding.tags, false);
                 tv.setText(name);
                 tv.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.harmonizeWithPrimary(this,XEP0392Helper.rgbFromNick(name))));
+                final int id = ViewCompat.generateViewId();
+                tv.setId(id);
+                viewIdBuilder.add(id);
                 binding.tags.addView(tv);
             }
             if (contact.isBlocked()) {
@@ -529,6 +536,9 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                                         R.layout.list_item_tag, binding.tags, false);
                 tv.setText(R.string.blocked);
                 tv.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.harmonizeWithPrimary(tv.getContext(), ContextCompat.getColor(tv.getContext(),R.color.gray_800))));
+                final int id = ViewCompat.generateViewId();
+                tv.setId(id);
+                viewIdBuilder.add(id);
                 binding.tags.addView(tv);
             } else {
                 final Presence.Status status = contact.getShownStatus();
@@ -538,9 +548,13 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                                     inflater.inflate(
                                             R.layout.list_item_tag, binding.tags, false);
                     UIHelper.setStatus(tv, status);
+                    final int id = ViewCompat.generateViewId();
+                    tv.setId(id);
+                    viewIdBuilder.add(id);
                     binding.tags.addView(tv);
                 }
             }
+            binding.flowWidget.setReferencedIds(Ints.toArray(viewIdBuilder.build()));
         }
     }
 
