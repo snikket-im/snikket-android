@@ -1,0 +1,3 @@
+* Benutze Material-3-Theme
+* Einstellungen neu organisiert
+* Synchronisation des Gelesen-Status zwischen Geräten
