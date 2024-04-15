@@ -78,20 +78,20 @@
     <string name="sharing_files_please_wait">Compartindo ficheiros. Agarda…</string>
     <string name="action_clear_history">Baleirar historial</string>
     <string name="clear_conversation_history">Limpar historial do chat</string>
-    <string name="clear_histor_msg">¿Queres eliminar tódalas mensaxes deste chat? 
-\n \u0020
+    <string name="clear_histor_msg">¿Queres eliminar tódalas mensaxes deste chat?
+\n
 \n<b>Aviso:</b> Esto non lle afecta ás mensaxes gardadas noutros dispositivos ou servidores.</string>
     <string name="delete_file_dialog">Eliminar ficheiro</string>
     <string name="delete_file_dialog_msg">Tes a certeza de querer eliminar este ficheiro\?
 \n
 \n<b>Aviso:</b> Esto non eliminará as copias de este ficheiro que están gardadas noutros dispositivos ou servidores. </string>
     <string name="choose_presence">Escoller dispositivo</string>
-    <string name="send_unencrypted_message">Enviar mensaxe non cifrada</string>
+    <string name="send_unencrypted_message">Enviar mensaxe sen cifrar</string>
     <string name="send_message">Enviar mensaxe</string>
     <string name="send_message_to_x">Enviar mensaxe a 1%s</string>
     <string name="send_omemo_x509_message">Enviar mensaxe cifrada v\\OMEMO</string>
     <string name="your_nick_has_been_changed">Novo alcume en uso</string>
-    <string name="send_unencrypted">Enviar sen cifrar</string>
+    <string name="send_unencrypted">Enviar texto sen cifrar</string>
     <string name="decryption_failed">Fallou o desencriptado. Quizais non teñas a chave privada apropiada.</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="openkeychain_required_long"><![CDATA[%1$s utiliza <b>OpenKeychain</b> para cifrar e descifrar as mensaxes e xestionar a túas chaves públicas.<br><br>Está baixo licenza  GPLv3+ e dispoñible en F-Droid e Google Play.<br><br><small>(Reinicia %1$s após a instalación.)</small>]]></string>
@@ -148,9 +148,9 @@
     <string name="error_security_exception">A app que usaches para compartir este ficheiro non concedeu os permisos suficientes.</string>
     <string name="account_status_unknown">Descoñecido</string>
     <string name="account_status_disabled">Desactivada temporalmente</string>
-    <string name="account_status_online">Conectado</string>
+    <string name="account_status_online">En liña</string>
     <string name="account_status_connecting">Conectando\u2026</string>
-    <string name="account_status_offline">Desconectado</string>
+    <string name="account_status_offline">Sen conexión</string>
     <string name="account_status_unauthorized">Non autorizado</string>
     <string name="account_status_not_found">Servidor non atopado</string>
     <string name="account_status_no_internet">Sen conectividade</string>
@@ -166,7 +166,7 @@
     <string name="account_status_incompatible_client">Cliente non compatible</string>
     <string name="account_status_stream_error">Erro de fluxo</string>
     <string name="account_status_stream_opening_error">Fallo ao abrir o fluxo</string>
-    <string name="encryption_choice_unencrypted">Sen cifrar</string>
+    <string name="encryption_choice_unencrypted">Texto sen cifrar</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -177,7 +177,7 @@
     <string name="unpublish_pgp">Eliminar a chave pública OpenPGP</string>
     <string name="unpublish_pgp_message">Tes a certeza de que queres eliminar a túa chave pública OpenPGP do  anuncio de presenza? \nOs teus contactos non poderán enviarche mensaxes cifradas con OpenPGP.</string>
     <string name="openpgp_has_been_published">Publicada a chave pública OpenPGP.</string>
-    <string name="mgmt_account_enable">Habilitar</string>
+    <string name="mgmt_account_enable">Activar conta</string>
     <string name="mgmt_account_delete_confirm_text">Tes a certeza de querer eliminar a túa conta? Ao eliminar a conta eliminas todo o historial de chat</string>
     <string name="attach_record_voice">Gravar audio</string>
     <string name="account_settings_jabber_id">Enderezo XMPP</string>
@@ -269,7 +269,7 @@
     <string name="server_info_session_established">Sesión establecida</string>
     <string name="skip">Omitir</string>
     <string name="disable_notifications">Desactivar notificacións</string>
-    <string name="enable">Habilitar</string>
+    <string name="enable">Activar</string>
     <string name="conference_requires_password">O chat en grupo require contrasinal</string>
     <string name="enter_password">Introducir contrasinal</string>
     <string name="request_presence_updates">Primeiro solicita actualizacións de presenza aos contactos.\n\n<small>Esto utilizarase para determinar que aplicación de chat está a utilizar o contacto</small>.</string>
@@ -348,7 +348,7 @@
     <string name="no_application_found_to_view_contact">Non se atopou app para ver o contacto</string>
     <string name="pref_show_dynamic_tags">Etiquetas dinámicas</string>
     <string name="pref_show_dynamic_tags_summary">Mostra o estado debaixo do nome do contacto</string>
-    <string name="enable_notifications">Habilitar notificacións</string>
+    <string name="enable_notifications">Activar notificacións</string>
     <string name="no_conference_server_found">Non se atopou ningún servidor de chat en grupo</string>
     <string name="conference_creation_failed">Non se puido crear o chat en grupo</string>
     <string name="account_image_description">Avatar da conta</string>
@@ -368,7 +368,7 @@
     <string name="current_password">Contrasinal actual</string>
     <string name="new_password">Novo contrasinal</string>
     <string name="password_should_not_be_empty">O contrasinal non pode estar baleiro</string>
-    <string name="enable_all_accounts">Habilitar todas as contas</string>
+    <string name="enable_all_accounts">Activar todas as contas</string>
     <string name="disable_all_accounts">Desactivar todas as contas</string>
     <string name="perform_action_with">Realizar a acción con</string>
     <string name="no_affiliation">Sen afiliación</string>
@@ -403,7 +403,7 @@
     <string name="snooze">Pospor</string>
     <string name="reply">Responder</string>
     <string name="mark_as_read">Marcar como lido</string>
-    <string name="pref_input_options">Entrada</string>
+    <string name="pref_input_options">Ao escribir</string>
     <string name="pref_enter_is_send">Enter envía</string>
     <string name="pref_enter_is_send_summary">Usa a tecla Enter para enviar a mensaxe. Igualmente poderás usar Ctrl+Enter para enviar, incluso se esta opción está desactivada.</string>
     <string name="pref_display_enter_key">Mostrar a tecla Enter</string>
@@ -464,7 +464,7 @@
     <string name="account_status_host_unknown">O servidor non corresponde a este dominio</string>
     <string name="server_info_broken">Roto</string>
     <string name="pref_presence_settings">Dispoñibilidade</string>
-    <string name="pref_away_when_screen_off">Ausente cando o dispositivo está bloqueado</string>
+    <string name="pref_away_when_screen_off">Ausente se bloqueado</string>
     <string name="pref_away_when_screen_off_summary">Mostrar como Ausente cando o dispositivo está bloqueado</string>
     <string name="pref_dnd_on_silent_mode">En modolo silencioso, Ocupado</string>
     <string name="pref_dnd_on_silent_mode_summary">Mostrar como Ocupado se o dispositivo está en silencio</string>
@@ -475,8 +475,8 @@
     <string name="hostname_example">xmpp.exemplo.com</string>
     <string name="action_add_account_with_certificate">Accede con certificado</string>
     <string name="unable_to_parse_certificate">Non se puido procesar o certificado</string>
-    <string name="mam_prefs">Gardando axustes</string>
-    <string name="server_side_mam_prefs">Axustes de gardado no servidor</string>
+    <string name="mam_prefs">Gardar axustes</string>
+    <string name="server_side_mam_prefs">Axustes para gardar no servidor</string>
     <string name="fetching_mam_prefs">Obtendo os axustes de gardado. Agarda…</string>
     <string name="unable_to_fetch_mam_prefs">Non se obtiveron os axustes gardados</string>
     <string name="captcha_required">Requírese o CAPTCHA</string>
@@ -540,7 +540,7 @@
     <string name="create_account">Crear conta</string>
     <string name="use_own_provider">Utilizar o meu propio proveedor</string>
     <string name="pick_your_username">Elixe un nome de usuaria</string>
-    <string name="pref_manually_change_presence">Xestionar a dispoñibilidade manualmente</string>
+    <string name="pref_manually_change_presence">Xestión manual dispoñibilidade</string>
     <string name="pref_manually_change_presence_summary">Configura a túa dispoñibilidade ao editar a mensaxe de estado.</string>
     <string name="status_message">Mensaxe de estado</string>
     <string name="presence_chat">Dispoñible para conversar</string>
@@ -598,9 +598,9 @@
     <string name="copy_fingerprint">Copiar impresión dixital</string>
     <string name="all_omemo_keys_have_been_verified">Verificaches tódalas chaves OMEMO da túa propiedade</string>
     <string name="verified_fingerprints">Impresións dixitais verificadas</string>
-    <string name="use_camera_icon_to_scan_barcode">Utilice a cámara para escanear o código de barras do contacto</string>
+    <string name="use_camera_icon_to_scan_barcode">Usa a cámara para escanear o código de barras do contacto</string>
     <string name="please_wait_for_keys_to_be_fetched">Por favor agarde mentras se obteñen as chaves</string>
-    <string name="share_as_barcode">Compartir como código de barras</string>
+    <string name="share_as_barcode">Compartir como Código QR</string>
     <string name="share_as_uri">Compartir como URI XMPP</string>
     <string name="share_as_http">Compartir como ligazón HTTP</string>
     <string name="pref_blind_trust_before_verification">Confianza cega antes da verificación</string>
@@ -700,7 +700,7 @@
     <string name="disable_now">Desactivar agora</string>
     <string name="draft">Borrador:</string>
     <string name="pref_omemo_setting">Cifraxe OMEMO</string>
-    <string name="pref_omemo_setting_summary_always">OMEMO sempre se utilizará para charlas individuais e privadas en grupo.</string>
+    <string name="pref_omemo_setting_summary_always">Vaise usar sempre OMEMO para chats de grupo privados e conversas personais.</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO utilizarase por defecto para os novos chats.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO deberá ser activado explícitamente para os novos chats.</string>
     <string name="create_shortcut">Crear acceso directo</string>
@@ -759,7 +759,7 @@
     <string name="pref_incoming_call_notification_settings">Axustes da notificación de chamadas</string>
     <string name="pref_more_notification_settings_summary">Importancia, Son, Vibrar</string>
     <string name="video_compression_channel_name">Compresión de vídeo</string>
-    <string name="view_media">Ver medios</string>
+    <string name="view_media">Ver multimedia</string>
     <string name="group_chat_members">Participantes</string>
     <string name="media_browser">Navegador de medios</string>
     <string name="security_violation_not_attaching_file">Ficheiro omitido debido a transgresión da seguridade.</string>
@@ -1015,7 +1015,7 @@
     <string name="remove_bookmark_and_close">Queres eliminar o marcador para %s e arquivar o chat?</string>
     <string name="remove_bookmark">Queres eliminar o marcador para %s?</string>
     <string name="delete_and_close">Eliminar e Arquivar o chat</string>
-    <string name="pref_use_colorful_bubbles_summary">As burburllas de cores axudan a distinguir as mensaxes enviadas e recibidas</string>
+    <string name="pref_use_colorful_bubbles_summary">As burbullas de cores axudan a distinguir as mensaxes enviadas e recibidas</string>
     <string name="pref_use_colorful_bubbles">Burbullas coloridas nos chats</string>
     <string name="pref_dynamic_colors">Cores dinámicas</string>
     <string name="pref_dynamic_colors_summary">Cores do sistema (Material You)</string>
@@ -1034,7 +1034,7 @@
     <string name="pref_summary_appearance">Decorado, Cores, Capturas, Escritura</string>
     <string name="pref_title_security">Seguridade</string>
     <string name="notifications">Notificacións</string>
-    <string name="pref_category_receiving">A recibir</string>
+    <string name="pref_category_receiving">Ao recibir</string>
     <string name="appearance">Aparencia</string>
     <string name="pref_light_dark_mode">Modo claro/escuro</string>
     <string name="pref_allow_screenshots">Permitir capturar pantalla</string>
@@ -1053,7 +1053,7 @@
     <string name="unified_push_summary">Repetidor de notificacións para terceiras apps compatibles con UnifiedPush</string>
     <string name="pref_up_long_summary">Ao actuar como un Distribuidor UnifiedPush vaise usar a conexión eficiente, fiable e persistente de XMPP para notificar a outras apps compatibles como Tusky, Ltt.rs, FluffyChat e outras.</string>
     <string name="pref_attachments_summary">Tamaño do ficheiro, Compresión de imaxes, Calidade do vídeo</string>
-    <string name="pref_category_sending">A enviar</string>
+    <string name="pref_category_sending">Ao enviar</string>
     <string name="pref_automatic_download">Descarga automática</string>
     <string name="pref_allow_screenshots_summary">Mostrar contido da app no intercambiador de apps e permitir capturas de pantalla</string>
     <string name="pref_category_server_connection">Conexión ao servidor</string>
@@ -1063,4 +1063,5 @@
     <string name="pref_privacy_summary">Notificacións de escritura, Último uso, Dispoñibilidade</string>
     <string name="detect_mim_summary">A vinculación de canles pode detectar algúns ataques tipo máquina-interposta</string>
     <string name="detect_mim">Requerir Vinculación de Canles</string>
+    <string name="send_encrypted_message">Enviar mensaxe cifrada</string>
 </resources>
