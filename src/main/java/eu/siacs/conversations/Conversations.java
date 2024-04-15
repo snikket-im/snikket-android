@@ -48,13 +48,13 @@ public class Conversations extends Application {
 
     public static boolean isDynamicColorsDesired(final Context context) {
         final var preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean("dynamic_colors", false);
+        return preferences.getBoolean(AppSettings.DYNAMIC_COLORS, false);
     }
 
     private static int getDesiredNightMode(
             final Context context, final SharedPreferences sharedPreferences) {
         final String theme =
-                sharedPreferences.getString("theme", context.getString(R.string.theme));
+                sharedPreferences.getString(AppSettings.THEME, context.getString(R.string.theme));
         return getDesiredNightMode(theme);
     }
 

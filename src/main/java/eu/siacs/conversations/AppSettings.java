@@ -21,6 +21,7 @@ public class AppSettings {
     public static final String AUTOMATIC_MESSAGE_DELETION = "automatic_message_deletion";
     public static final String BROADCAST_LAST_ACTIVITY = "last_activity";
     public static final String THEME = "theme";
+    public static final String DYNAMIC_COLORS = "dynamic_colors";
     public static final String SHOW_DYNAMIC_TAGS = "show_dynamic_tags";
     public static final String OMEMO = "omemo";
     public static final String ALLOW_SCREENSHOTS = "allow_screenshots";
