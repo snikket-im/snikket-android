@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.15.1
+
+* Show message status as icons
+* Introduce 'Large font' setting for message bubbles
+
 ### Version 2.15.0
 
 * Use Material 3 theme

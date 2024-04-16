@@ -1,0 +1,2 @@
+* Show message status as icons
+* Introduce 'Large font' setting for message bubbles
