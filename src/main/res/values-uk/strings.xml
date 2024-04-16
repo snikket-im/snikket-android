@@ -1069,7 +1069,7 @@
     <string name="title_activity_share_with">Поділитися…</string>
     <string name="pref_dynamic_colors">Динамічні кольори</string>
     <string name="pref_dynamic_colors_summary">Системні кольори (Material You)</string>
-    <string name="pref_use_colorful_bubbles_summary">Барвисті бульбашки допомагають розрізняти надіслані та отримані повідомлення</string>
+    <string name="pref_use_colorful_bubbles_summary">Різні кольори фону для надісланих та отриманих повідомлень</string>
     <string name="pref_use_colorful_bubbles">Кольорові бульбашки в розмовах</string>
     <string name="title_activity_new_chat">Нова розмова</string>
     <string name="action_archive_chat">Архівувати розмову</string>
@@ -1109,5 +1109,7 @@
     <string name="pref_up_long_summary">При дії в ролі дистриб\'ютора UnifiedPush використовується постійне, надійне та енергоефективне з\'єднання XMPP для активації інших додатків, сумісних з UnifiedPush, таких як Tusky, Ltt.rs, FluffyChat та інші.</string>
     <string name="pref_allow_screenshots_summary">Показувати вміст застосунку при перемиканні програм і дозволити знімки екрана</string>
     <string name="pref_privacy_summary">Сповіщення про набір, остання активність, доступність</string>
-    <string name="send_encrypted_message">Надіслати зашифроване повідомлення</string>
+    <string name="send_encrypted_message">Зашифроване повідомлення</string>
+    <string name="pref_large_font">Великий шрифт</string>
+    <string name="pref_large_font_summary">Збільшити розмір шрифту повідомлень</string>
 </resources>
