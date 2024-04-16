@@ -1055,5 +1055,7 @@
     <string name="pref_category_interaction">Interaction</string>
     <string name="pref_category_on_this_device">On device</string>
     <string name="pref_up_long_summary">When acting as a UnifiedPush Distributor the persistent, reliable and battery-friendly XMPP connection will be utilized to wake up other UnifiedPush compatible app such as Tusky, Ltt.rs, FluffyChat and more.</string>
+    <string name="pref_large_font">Large font</string>
+    <string name="pref_large_font_summary">Increase font size in message bubbles</string>
 
 </resources>

@@ -18,6 +18,7 @@
     <integer name="auto_accept_filesize">524288</integer>
     <string name="picture_compression">auto</string>
     <bool name="use_green_background">true</bool>
+    <bool name="large_font">false</bool>
     <string name="quick_action">recent</string>
     <bool name="show_dynamic_tags">false</bool>
     <bool name="btbv">true</bool>

@@ -98,7 +98,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private final DisplayMetrics metrics;
     private OnContactPictureClicked mOnContactPictureClickedListener;
     private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
-    private boolean colorfulChatBubbles = false;
+    private BubbleDesign bubbleDesign = new BubbleDesign(false, false);
     private final boolean mForceNames;
 
     public MessageAdapter(
@@ -459,15 +459,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     private void displayTextMessage(
-            final ViewHolder viewHolder,
-            final Message message,
-            final BubbleColor bubbleColor,
-            int type) {
+            final ViewHolder viewHolder, final Message message, final BubbleColor bubbleColor) {
         viewHolder.download_button.setVisibility(View.GONE);
         viewHolder.image.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         viewHolder.messageBody.setVisibility(View.VISIBLE);
         setTextColor(viewHolder.messageBody, bubbleColor);
+        setTextSize(viewHolder.messageBody, this.bubbleDesign.largeFont);
         viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 
         if (message.getBody() != null) {
@@ -804,7 +802,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
         }
 
-        final boolean colorfulBackground = this.colorfulChatBubbles;
+        final boolean colorfulBackground = this.bubbleDesign.colorfulChatBubbles;
         final BubbleColor bubbleColor;
         if (type == RECEIVED) {
             if (isInValidSession) {
@@ -1039,7 +1037,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                             bubbleColor);
                 }
             } else {
-                displayTextMessage(viewHolder, message, bubbleColor, type);
+                displayTextMessage(viewHolder, message, bubbleColor);
             }
         }
 
@@ -1119,7 +1117,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     public void updatePreferences() {
         final AppSettings appSettings = new AppSettings(activity);
-        this.colorfulChatBubbles = appSettings.isColorfulChatBubbles();
+        this.bubbleDesign =
+                new BubbleDesign(appSettings.isColorfulChatBubbles(), appSettings.isLargeFont());
     }
 
     public void setHighlightedTerm(List<String> terms) {
@@ -1173,6 +1172,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         textView.setTextColor(bubbleToOnSurfaceColor(textView, bubbleColor));
     }
 
+    private static void setTextSize(final TextView textView, final boolean largeFont) {
+        if (largeFont) {
+            textView.setTextAppearance(
+                    com.google.android.material.R.style.TextAppearance_Material3_BodyLarge);
+        } else {
+            textView.setTextAppearance(
+                    com.google.android.material.R.style.TextAppearance_Material3_BodyMedium);
+        }
+    }
+
     private static @ColorInt int bubbleToOnSurfaceVariant(
             final View view, final BubbleColor bubbleColor) {
         final @AttrRes int colorAttributeResId;
@@ -1211,6 +1220,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         SECONDARY,
         TERTIARY,
         WARNING
+    }
+
+    private static class BubbleDesign {
+        public final boolean colorfulChatBubbles;
+        public final boolean largeFont;
+
+        private BubbleDesign(final boolean colorfulChatBubbles, final boolean largeFont) {
+            this.colorfulChatBubbles = colorfulChatBubbles;
+            this.largeFont = largeFont;
+        }
     }
 
     private static class ViewHolder {

@@ -42,6 +42,7 @@ public class AppSettings {
     public static final String CHANNEL_DISCOVERY_METHOD = "channel_discovery_method";
     public static final String SEND_CRASH_REPORTS = "send_crash_reports";
     public static final String COLORFUL_CHAT_BUBBLES = "use_green_background";
+    public static final String LARGE_FONT = "large_font";
 
     private final Context context;
 
@@ -96,6 +97,10 @@ public class AppSettings {
 
     public boolean isColorfulChatBubbles() {
         return getBooleanPreference(COLORFUL_CHAT_BUBBLES, R.bool.use_green_background);
+    }
+
+    public boolean isLargeFont() {
+        return getBooleanPreference(LARGE_FONT, R.bool.large_font);
     }
 
     public boolean isUseTor() {
