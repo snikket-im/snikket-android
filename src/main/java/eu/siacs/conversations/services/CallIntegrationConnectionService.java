@@ -373,7 +373,10 @@ public class CallIntegrationConnectionService extends ConnectionService {
                 Log.d(
                         Config.LOGTAG,
                         "not adding outgoing call to TelecomManager on Android "
-                                + Build.VERSION.RELEASE);
+                                + Build.VERSION.RELEASE
+                                + " ("
+                                + Build.DEVICE
+                                + ")");
             }
         }
     }
@@ -384,7 +387,10 @@ public class CallIntegrationConnectionService extends ConnectionService {
             Log.d(
                     Config.LOGTAG,
                     "not adding incoming call to TelecomManager on Android "
-                            + Build.VERSION.RELEASE);
+                            + Build.VERSION.RELEASE
+                            + " ("
+                            + Build.DEVICE
+                            + ")");
             return true;
         }
         final var phoneAccountHandle =

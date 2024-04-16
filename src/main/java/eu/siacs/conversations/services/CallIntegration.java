@@ -28,6 +28,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.Media;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +36,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CallIntegration extends Connection {
+
+    private static final List<String> BROKEN_DEVICE_MODELS =
+            Arrays.asList(
+                    "OnePlus6" // Device is buggy and always starts the operating system call screen
+                    // even though we want to be self managed
+                    );
 
     public static final int DEFAULT_TONE_VOLUME = 60;
     private static final int DEFAULT_MEDIA_PLAYER_VOLUME = 90;
@@ -462,7 +469,9 @@ public class CallIntegration extends Connection {
     }
 
     public static boolean selfManaged(final Context context) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasSystemFeature(context);
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                && hasSystemFeature(context)
+                && !BROKEN_DEVICE_MODELS.contains(Build.DEVICE);
     }
 
     public static boolean hasSystemFeature(final Context context) {
