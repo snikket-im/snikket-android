@@ -1,0 +1,2 @@
+* zeige Benachrichtigungsstatus als Icon
+* „Große-Schrift“-Einstellung für Benachrichtigungsblasen hinzugefügt
