@@ -15,7 +15,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -70,8 +69,7 @@ public class CallIntegration extends Connection {
             this.appRTCAudioManager = null;
         } else {
             this.appRTCAudioManager = new AppRTCAudioManager(context);
-            ContextCompat.getMainExecutor(context)
-                    .execute(() -> this.appRTCAudioManager.start(this::onAudioDeviceChanged));
+            this.appRTCAudioManager.setAudioManagerEvents(this::onAudioDeviceChanged);
         }
         setRingbackRequested(true);
     }
@@ -490,17 +488,19 @@ public class CallIntegration extends Connection {
     public void setInitialAudioDevice(final AudioDevice audioDevice) {
         Log.d(Config.LOGTAG, "setInitialAudioDevice(" + audioDevice + ")");
         this.initialAudioDevice = audioDevice;
+    }
+
+    public void startLegacyAudioRouting() {
         if (selfManaged()) {
-            // once the 'CallIntegration' gets added to the system we receive calls to update audio
-            // state
             return;
         }
         final var audioManager = requireAppRtcAudioManager();
         audioManager.executeOnMain(
-                () ->
-                        this.onAudioDeviceChanged(
-                                audioManager.getSelectedAudioDevice(),
-                                audioManager.getAudioDevices()));
+                () -> {
+                    audioManager.start();
+                    this.onAudioDeviceChanged(
+                            audioManager.getSelectedAudioDevice(), audioManager.getAudioDevices());
+                });
     }
 
     private void destroyCallIntegration() {

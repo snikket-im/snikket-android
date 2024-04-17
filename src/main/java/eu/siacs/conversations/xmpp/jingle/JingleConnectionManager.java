@@ -736,6 +736,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         final JingleRtpConnection rtpConnection =
                 new JingleRtpConnection(this, id, account.getJid());
         rtpConnection.setProposedMedia(media);
+        rtpConnection.getCallIntegration().startLegacyAudioRouting();
         this.connections.put(id, rtpConnection);
         rtpConnection.sendSessionInitiate();
         return rtpConnection;
@@ -776,6 +777,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                             ? VideoProfile.STATE_AUDIO_ONLY
                             : VideoProfile.STATE_BIDIRECTIONAL);
             callIntegration.setInitialAudioDevice(CallIntegration.initialAudioDevice(media));
+            callIntegration.startLegacyAudioRouting();
             final RtpSessionProposal proposal =
                     RtpSessionProposal.of(account, with.asBareJid(), media, callIntegration);
             callIntegration.setCallback(new ProposalStateCallback(proposal));
