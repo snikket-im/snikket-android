@@ -648,6 +648,18 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         return Optional.absent();
     }
 
+    public JingleRtpConnection getOngoingRtpConnection() {
+        for(final AbstractJingleConnection jingleConnection : this.connections.values()) {
+            if (jingleConnection instanceof JingleRtpConnection jingleRtpConnection) {
+                if (jingleRtpConnection.isTerminated()) {
+                    continue;
+                }
+                return jingleRtpConnection;
+            }
+        }
+        return null;
+    }
+
     void finishConnectionOrThrow(final AbstractJingleConnection connection) {
         final AbstractJingleConnection.Id id = connection.getId();
         if (this.connections.remove(id) == null) {

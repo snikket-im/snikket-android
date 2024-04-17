@@ -2804,7 +2804,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     request,
                     (account, response) -> {
                         final var iceServers = IceServers.parse(response);
-                        if (iceServers.size() == 0) {
+                        if (iceServers.isEmpty()) {
                             Log.w(
                                     Config.LOGTAG,
                                     id.account.getJid().asBareJid()

@@ -18,12 +18,10 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.SpannableString;
@@ -45,9 +43,12 @@ import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Optional;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
+import com.google.common.primitives.Ints;
 
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
@@ -73,6 +74,7 @@ import eu.siacs.conversations.xmpp.jingle.Media;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -80,24 +82,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NotificationService {
 
-    private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE =
-            Executors.newSingleThreadScheduledExecutor();
-
     public static final Object CATCHUP_LOCK = new Object();
 
     private static final int LED_COLOR = 0xff00ff00;
 
-    private static final long[] CALL_PATTERN = {0, 500, 300, 600};
+    private static final long[] CALL_PATTERN = {0, 500, 300, 600, 3000};
 
     private static final String MESSAGES_GROUP = "eu.siacs.conversations.messages";
     private static final String MISSED_CALLS_GROUP = "eu.siacs.conversations.missed_calls";
@@ -121,9 +116,9 @@ public class NotificationService {
     private long mLastNotification;
 
     private static final String INCOMING_CALLS_NOTIFICATION_CHANNEL = "incoming_calls_channel";
+    private static final String INCOMING_CALLS_NOTIFICATION_CHANNEL_PREFIX =
+            "incoming_calls_channel#";
     private static final String MESSAGES_NOTIFICATION_CHANNEL = "messages";
-    private Ringtone currentlyPlayingRingtone = null;
-    private ScheduledFuture<?> vibrationFuture;
 
     NotificationService(final XmppConnectionService service) {
         this.mXmppConnectionService = service;
@@ -164,6 +159,7 @@ public class NotificationService {
 
         notificationManager.deleteNotificationChannel("export");
         notificationManager.deleteNotificationChannel("incoming_calls");
+        notificationManager.deleteNotificationChannel(INCOMING_CALLS_NOTIFICATION_CHANNEL);
 
         notificationManager.createNotificationChannelGroup(
                 new NotificationChannelGroup(
@@ -214,19 +210,7 @@ public class NotificationService {
         exportChannel.setGroup("status");
         notificationManager.createNotificationChannel(exportChannel);
 
-        final NotificationChannel incomingCallsChannel =
-                new NotificationChannel(
-                        INCOMING_CALLS_NOTIFICATION_CHANNEL,
-                        c.getString(R.string.incoming_calls_channel_name),
-                        NotificationManager.IMPORTANCE_HIGH);
-        incomingCallsChannel.setSound(null, null);
-        incomingCallsChannel.setShowBadge(false);
-        incomingCallsChannel.setLightColor(LED_COLOR);
-        incomingCallsChannel.enableLights(true);
-        incomingCallsChannel.setGroup("calls");
-        incomingCallsChannel.setBypassDnd(true);
-        incomingCallsChannel.enableVibration(false);
-        notificationManager.createNotificationChannel(incomingCallsChannel);
+        createInitialIncomingCallChannelIfNecessary(c);
 
         final NotificationChannel ongoingCallsChannel =
                 new NotificationChannel(
@@ -259,7 +243,7 @@ public class NotificationService {
                 RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),
                 new AudioAttributes.Builder()
                         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .setUsage(AudioAttributes.USAGE_NOTIFICATION_COMMUNICATION_INSTANT)
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
                         .build());
         messagesChannel.setLightColor(LED_COLOR);
         final int dat = 70;
@@ -296,6 +280,98 @@ public class NotificationService {
                         .build());
         deliveryFailedChannel.setGroup("chats");
         notificationManager.createNotificationChannel(deliveryFailedChannel);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static void createInitialIncomingCallChannelIfNecessary(final Context context) {
+        final var currentIteration = getCurrentIncomingCallChannelIteration(context);
+        if (currentIteration.isPresent()) {
+            return;
+        }
+        createInitialIncomingCallChannel(context);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Optional<Integer> getCurrentIncomingCallChannelIteration(final Context context) {
+        final var notificationManager = context.getSystemService(NotificationManager.class);
+        for (final NotificationChannel channel : notificationManager.getNotificationChannels()) {
+            final String id = channel.getId();
+            if (Strings.isNullOrEmpty(id)) {
+                continue;
+            }
+            if (id.startsWith(INCOMING_CALLS_NOTIFICATION_CHANNEL_PREFIX)) {
+                final var parts = Splitter.on('#').splitToList(id);
+                if (parts.size() == 2) {
+                    final var iteration = Ints.tryParse(parts.get(1));
+                    if (iteration != null) {
+                        return Optional.of(iteration);
+                    }
+                }
+            }
+        }
+        return Optional.absent();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Optional<NotificationChannel> getCurrentIncomingCallChannel(
+            final Context context) {
+        final var iteration = getCurrentIncomingCallChannelIteration(context);
+        return iteration.transform(
+                i -> {
+                    final var notificationManager =
+                            context.getSystemService(NotificationManager.class);
+                    return notificationManager.getNotificationChannel(
+                            INCOMING_CALLS_NOTIFICATION_CHANNEL_PREFIX + i);
+                });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static void createInitialIncomingCallChannel(final Context context) {
+        final var appSettings = new AppSettings(context);
+        final var ringtoneUri = appSettings.getRingtone();
+        createIncomingCallChannel(context, ringtoneUri, 0);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void recreateIncomingCallChannel(final Context context, final Uri ringtone) {
+        final var currentIteration = getCurrentIncomingCallChannelIteration(context);
+        final int nextIteration;
+        if (currentIteration.isPresent()) {
+            final var notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.deleteNotificationChannel(
+                    INCOMING_CALLS_NOTIFICATION_CHANNEL_PREFIX + currentIteration.get());
+            nextIteration = currentIteration.get() + 1;
+        } else {
+            nextIteration = 0;
+        }
+        createIncomingCallChannel(context, ringtone, nextIteration);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static void createIncomingCallChannel(
+            final Context context, final Uri ringtoneUri, final int iteration) {
+        final var notificationManager = context.getSystemService(NotificationManager.class);
+        final var id = INCOMING_CALLS_NOTIFICATION_CHANNEL_PREFIX + iteration;
+        Log.d(Config.LOGTAG, "creating incoming call channel with id " + id);
+        final NotificationChannel incomingCallsChannel =
+                new NotificationChannel(
+                        id,
+                        context.getString(R.string.incoming_calls_channel_name),
+                        NotificationManager.IMPORTANCE_HIGH);
+        incomingCallsChannel.setSound(
+                ringtoneUri,
+                new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build());
+        incomingCallsChannel.setShowBadge(false);
+        incomingCallsChannel.setLightColor(LED_COLOR);
+        incomingCallsChannel.enableLights(true);
+        incomingCallsChannel.setGroup("calls");
+        incomingCallsChannel.setBypassDnd(true);
+        incomingCallsChannel.enableVibration(true);
+        incomingCallsChannel.setVibrationPattern(CALL_PATTERN);
+        notificationManager.createNotificationChannel(incomingCallsChannel);
     }
 
     private boolean notifyMessage(final Message message) {
@@ -471,58 +547,13 @@ public class NotificationService {
 
     public synchronized void startRinging(
             final AbstractJingleConnection.Id id, final Set<Media> media) {
-        showIncomingCallNotification(id, media);
-        final NotificationManager notificationManager =
-                mXmppConnectionService.getSystemService(NotificationManager.class);
-        final int currentInterruptionFilter;
-        if (notificationManager != null) {
-            currentInterruptionFilter = notificationManager.getCurrentInterruptionFilter();
-        } else {
-            currentInterruptionFilter = 1; // INTERRUPTION_FILTER_ALL
-        }
-        if (currentInterruptionFilter != 1) {
-            Log.d(
-                    Config.LOGTAG,
-                    "do not ring or vibrate because interruption filter has been set to "
-                            + currentInterruptionFilter);
-            return;
-        }
-        final ScheduledFuture<?> currentVibrationFuture = this.vibrationFuture;
-        this.vibrationFuture =
-                SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(
-                        new VibrationRunnable(), 0, 3, TimeUnit.SECONDS);
-        if (currentVibrationFuture != null) {
-            currentVibrationFuture.cancel(true);
-        }
-        final var preexistingRingtone = this.currentlyPlayingRingtone;
-        if (preexistingRingtone != null) {
-            preexistingRingtone.stop();
-        }
-        final SharedPreferences preferences =
-                PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
-        final Resources resources = mXmppConnectionService.getResources();
-        final String ringtonePreference =
-                preferences.getString(
-                        "call_ringtone", resources.getString(R.string.incoming_call_ringtone));
-        if (Strings.isNullOrEmpty(ringtonePreference)) {
-            Log.d(Config.LOGTAG, "ringtone has been set to none");
-            return;
-        }
-        final Uri uri = Uri.parse(ringtonePreference);
-        this.currentlyPlayingRingtone = RingtoneManager.getRingtone(mXmppConnectionService, uri);
-        if (this.currentlyPlayingRingtone == null) {
-            Log.d(Config.LOGTAG, "unable to find ringtone for uri " + uri);
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            this.currentlyPlayingRingtone.setLooping(true);
-        }
-        Log.d(Config.LOGTAG,"start playing ringtone: "+uri);
-        this.currentlyPlayingRingtone.play();
+        showIncomingCallNotification(id, media, false);
     }
 
     private void showIncomingCallNotification(
-            final AbstractJingleConnection.Id id, final Set<Media> media) {
+            final AbstractJingleConnection.Id id,
+            final Set<Media> media,
+            final boolean onlyAlertOnce) {
         final Intent fullScreenIntent =
                 new Intent(mXmppConnectionService, RtpSessionActivity.class);
         fullScreenIntent.putExtra(
@@ -532,9 +563,21 @@ public class NotificationService {
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.sessionId);
         fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        final int channelIteration;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            channelIteration = getCurrentIncomingCallChannelIteration(mXmppConnectionService).or(0);
+        } else {
+            channelIteration = 0;
+        }
+        final var channelId = INCOMING_CALLS_NOTIFICATION_CHANNEL_PREFIX + channelIteration;
+        Log.d(
+                Config.LOGTAG,
+                "showing incoming call notification on channel "
+                        + channelId
+                        + ", onlyAlertOnce="
+                        + onlyAlertOnce);
         final NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(
-                        mXmppConnectionService, INCOMING_CALLS_NOTIFICATION_CHANNEL);
+                new NotificationCompat.Builder(mXmppConnectionService, channelId);
         if (media.contains(Media.VIDEO)) {
             builder.setSmallIcon(R.drawable.ic_videocam_24dp);
             builder.setContentTitle(
@@ -553,11 +596,20 @@ public class NotificationService {
         if (systemAccount != null) {
             builder.addPerson(systemAccount.toString());
         }
+        if (!onlyAlertOnce) {
+            final var appSettings = new AppSettings(mXmppConnectionService);
+            final var ringtone = appSettings.getRingtone();
+            if (ringtone != null) {
+                builder.setSound(ringtone, AudioManager.STREAM_RING);
+            }
+            builder.setVibrate(CALL_PATTERN);
+        }
+        builder.setOnlyAlertOnce(onlyAlertOnce);
         builder.setContentText(id.account.getRoster().getContact(id.with).getDisplayName());
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         builder.setCategory(NotificationCompat.CATEGORY_CALL);
-        PendingIntent pendingIntent = createPendingRtpSession(id, Intent.ACTION_VIEW, 101);
+        final PendingIntent pendingIntent = createPendingRtpSession(id, Intent.ACTION_VIEW, 101);
         builder.setFullScreenIntent(pendingIntent, true);
         builder.setContentIntent(pendingIntent); // old androids need this?
         builder.setOngoing(true);
@@ -579,6 +631,10 @@ public class NotificationService {
                         .build());
         modifyIncomingCall(builder);
         final Notification notification = builder.build();
+        notification.audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                .build();
         notification.flags = notification.flags | Notification.FLAG_INSISTENT;
         notify(INCOMING_CALL_NOTIFICATION_ID, notification);
     }
@@ -643,25 +699,25 @@ public class NotificationService {
     }
 
     public void cancelIncomingCallNotification() {
-        stopSoundAndVibration();
         cancel(INCOMING_CALL_NOTIFICATION_ID);
     }
 
     public boolean stopSoundAndVibration() {
-        int stopped = 0;
-        if (this.currentlyPlayingRingtone != null) {
-            if (this.currentlyPlayingRingtone.isPlaying()) {
-                Log.d(Config.LOGTAG, "stop playing ringtone");
-                ++stopped;
-            }
-            this.currentlyPlayingRingtone.stop();
+        final var jingleRtpConnection =
+                mXmppConnectionService.getJingleConnectionManager().getOngoingRtpConnection();
+        if (jingleRtpConnection == null) {
+            return false;
         }
-        if (this.vibrationFuture != null && !this.vibrationFuture.isCancelled()) {
-            Log.d(Config.LOGTAG, "stop vibration");
-            this.vibrationFuture.cancel(true);
-            ++stopped;
+        final var notificationManager = mXmppConnectionService.getSystemService(NotificationManager.class);
+        if (Iterables.any(
+                Arrays.asList(notificationManager.getActiveNotifications()),
+                n -> n.getId() == INCOMING_CALL_NOTIFICATION_ID)) {
+            Log.d(Config.LOGTAG, "stopping sound and vibration for incoming call notification");
+            showIncomingCallNotification(
+                    jingleRtpConnection.getId(), jingleRtpConnection.getMedia(), true);
+            return true;
         }
-        return stopped > 0;
+        return false;
     }
 
     public static void cancelIncomingCallNotification(final Context context) {
@@ -2004,16 +2060,6 @@ public class NotificationService {
 
         public long getLastTime() {
             return lastTime;
-        }
-    }
-
-    private class VibrationRunnable implements Runnable {
-
-        @Override
-        public void run() {
-            final Vibrator vibrator =
-                    (Vibrator) mXmppConnectionService.getSystemService(Context.VIBRATOR_SERVICE);
-            vibrator.vibrate(CALL_PATTERN, -1);
         }
     }
 }
