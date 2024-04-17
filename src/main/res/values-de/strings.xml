@@ -300,8 +300,8 @@
     <string name="hosted_on">gehostet bei %s</string>
     <string name="checking_x">%s auf HTTP-Host wird überprüft</string>
     <string name="not_connected_try_again">Du bist nicht verbunden. Bitte versuche es später noch einmal</string>
-    <string name="check_x_filesize">%s-Größe prüfen</string>
-    <string name="check_x_filesize_on_host">%1$s-Größe auf %2$s prüfen</string>
+    <string name="check_x_filesize">%sgröße prüfen</string>
+    <string name="check_x_filesize_on_host">%1$sgröße auf %2$s prüfen</string>
     <string name="message_options">Nachrichtenoptionen</string>
     <string name="quote">Zitat</string>
     <string name="paste_as_quote">Als Zitat einfügen</string>
