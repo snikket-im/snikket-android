@@ -1015,7 +1015,7 @@
     <string name="remove_bookmark_and_close">Queres eliminar o marcador para %s e arquivar o chat?</string>
     <string name="remove_bookmark">Queres eliminar o marcador para %s?</string>
     <string name="delete_and_close">Eliminar e Arquivar o chat</string>
-    <string name="pref_use_colorful_bubbles_summary">As burbullas de cores axudan a distinguir as mensaxes enviadas e recibidas</string>
+    <string name="pref_use_colorful_bubbles_summary">Cor de fondo diferente para as mensaxes enviadas e as recibidas</string>
     <string name="pref_use_colorful_bubbles">Burbullas coloridas nos chats</string>
     <string name="pref_dynamic_colors">Cores dinámicas</string>
     <string name="pref_dynamic_colors_summary">Cores do sistema (Material You)</string>
@@ -1064,4 +1064,6 @@
     <string name="detect_mim_summary">A vinculación de canles pode detectar algúns ataques tipo máquina-interposta</string>
     <string name="detect_mim">Requerir Vinculación de Canles</string>
     <string name="send_encrypted_message">Enviar mensaxe cifrada</string>
+    <string name="pref_large_font">Letra grande</string>
+    <string name="pref_large_font_summary">Aumentar o tamaño da letra das mensaxes</string>
 </resources>
