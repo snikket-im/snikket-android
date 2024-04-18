@@ -79,8 +79,8 @@
     <string name="sharing_files_please_wait">Condivisione file. Attendere prego…</string>
     <string name="action_clear_history">Svuota la cronologia</string>
     <string name="clear_conversation_history">Svuota la cronologia della chat</string>
-    <string name="clear_histor_msg">Vuoi eliminare tutti i messaggi in questa chat? 
-\n 
+    <string name="clear_histor_msg">Vuoi eliminare tutti i messaggi in questa chat?
+\n
 \n<b>Attenzione:</b> ciò non influenzerà i messaggi salvati su altri dispositivi o server.</string>
     <string name="delete_file_dialog">Elimina file</string>
     <string name="delete_file_dialog_msg">Sei sicuro di voler eliminare questo file?\n\n<b>Attenzione:</b> non verranno eliminate copie di questo file memorizzate in altri dispositivi o server. </string>
@@ -1029,7 +1029,7 @@
     <string name="title_undo_swipe_out_chat">Chat archiviata</string>
     <string name="welcome_header">Unisciti a Conversation</string>
     <string name="pref_use_colorful_bubbles">Messaggi di chat colorati</string>
-    <string name="pref_use_colorful_bubbles_summary">I messaggi di chat colorati aiutano a distinguere quelli inviati e quelli ricevuti</string>
+    <string name="pref_use_colorful_bubbles_summary">Colori di sfondo distinti per messaggi inviati e ricevuti</string>
     <string name="switch_to_chat">Passa alla chat</string>
     <string name="pref_title_security">Sicurezza</string>
     <string name="pref_title_interface">Interfaccia</string>
@@ -1076,4 +1076,6 @@
     <string name="detect_mim_summary">L\'associazione dei canali può rilevare alcuni attacchi machine-in-the-middle</string>
     <string name="channel_discover_opt_in_message">La scoperta dei canali usa un servizio di terze parti chiamato &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;L\'uso di questa funzione invierà il tuo indirizzo IP e i termini di ricerca a quel servizio. Vedi la sua &lt;a href=https://search.jabber.network/privacy&gt;informativa sulla privacy&lt;/a&gt; per maggiori informazioni.</string>
     <string name="pref_title_trust_system_ca_store">Autorità di certificazione</string>
+    <string name="pref_large_font">Caratteri grandi</string>
+    <string name="pref_large_font_summary">Aumenta la dimensione dei caratteri nei messaggi</string>
 </resources>
