@@ -97,6 +97,7 @@ public class ConversationAdapter
         } else {
             viewHolder.binding.messageStatus.setImageResource(messageStatusDrawable);
             if (status == Message.STATUS_SEND_DISPLAYED) {
+                viewHolder.binding.messageStatus.setImageResource(R.drawable.ic_done_all_bold_24dp);
                 ImageViewCompat.setImageTintList(
                         viewHolder.binding.messageStatus,
                         ColorStateList.valueOf(
