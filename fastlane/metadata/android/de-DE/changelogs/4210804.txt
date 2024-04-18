@@ -1,2 +1,2 @@
-* zeige Benachrichtigungsstatus als Icon
-* „Große-Schrift“-Einstellung für Benachrichtigungsblasen hinzugefügt
+* Nachrichtenstatus als Symbole anzeigen
+* Einstellung für Schriftgröße der Nachrichten hinzugefügt
