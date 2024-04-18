@@ -26,10 +26,10 @@
     <string name="minute_ago">minutę temu</string>
     <string name="minutes_ago">%d minut temu</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d nieprzeczytana konwersacja</item>
-        <item quantity="few">%d nieprzeczytane konwersacje</item>
-        <item quantity="many">%d nieprzeczytanych konwersacji</item>
-        <item quantity="other">%d nieprzeczytanych konwersacji</item>
+        <item quantity="one">%d nieprzeczytana rozmowa</item>
+        <item quantity="few">%d nieprzeczytane rozmowy</item>
+        <item quantity="many">%d nieprzeczytanych rozmów</item>
+        <item quantity="other">%d nieprzeczytanych rozmów</item>
     </plurals>
     <string name="sending">wysyłanie…</string>
     <string name="message_decrypting">Odszyfrowywanie wiadomości. To zajmie tylko chwilę…</string>
@@ -41,7 +41,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Uczestnik</string>
     <string name="visitor">Gość</string>
-    <string name="remove_contact_text">Czy chcesz usunąć %s ze swojej listy kontaktów? Rozmowy z tym kontaktem nie zostaną usunięte.</string>
+    <string name="remove_contact_text">Czy chcesz usunąć %s ze swojej listy kontaktów? Rozmowa z tym kontaktem nie zostanie usunięta.</string>
     <string name="block_contact_text">Czy na pewno chcesz zablokować wiadomości od użytkownika %s?</string>
     <string name="unblock_contact_text">Czy na pewno chcesz odblokować wiadomości przychodzące od użytkownika %s?</string>
     <string name="block_domain_text">Zablokować wszystkie kontakty z %s?</string>
@@ -79,7 +79,7 @@
     <string name="preparing_images">Przygotowanie do wysłania obrazków</string>
     <string name="sharing_files_please_wait">Udostępnianie plików. Proszę czekać…</string>
     <string name="action_clear_history">Wyczyść historię</string>
-    <string name="clear_conversation_history">Wyczyść historię konwersacji</string>
+    <string name="clear_conversation_history">Wyczyść historię rozmowy</string>
     <string name="clear_histor_msg">Czy chcesz usunąć wszystkie wiadomości w tej rozmowie?
 \n
 \n<b>Ostrzeżenie:</b> To nie ma wpływu na wiadomości składowane na innych urządzeniach lub serwerach.</string>
@@ -180,7 +180,7 @@
     <string name="unpublish_pgp_message">Czy na pewno chcesz usunąć klucz publiczny OpenPGP ze swojej propagacji obecności?\nTwoje kontakty nie będą już mogły wysyłać Ci wiadomości zaszyfrowanych OpenPGP.</string>
     <string name="openpgp_has_been_published">Klucz publiczny OpenPGP został opublikowany.</string>
     <string name="mgmt_account_enable">Włącz konto</string>
-    <string name="mgmt_account_delete_confirm_text">Czy na pewno chcesz usunąć swoje konto? Usunięcie konta usuwa całą historię rozmów</string>
+    <string name="mgmt_account_delete_confirm_text">Czy na pewno chcesz usunąć swoje konto? Usunięcie konta czyści całą twoją historię rozmów</string>
     <string name="attach_record_voice">Nagraj głos</string>
     <string name="account_settings_jabber_id">Adres XMPP</string>
     <string name="block_jabber_id">Zablokuj adres XMPP</string>
@@ -715,7 +715,7 @@
     <string name="error_trustkey_device_list">Nie powiodło się pobranie listy urządzeń</string>
     <string name="error_trustkey_bundle">Nie powiodło się pobranie kluczy szyfrowania</string>
     <string name="error_trustkey_hint_mutual">Podpowiedź: W niektórych przypadkach może pomóc wzajemne dodanie się do listy kontaktów.</string>
-    <string name="disable_encryption_message">Czy na pewno chcesz wyłączyć szyfrowanie OMEMO dla tej konwersacji?
+    <string name="disable_encryption_message">Czy na pewno chcesz wyłączyć szyfrowanie OMEMO dla tej rozmowy?
 \nAdministrator twojego serwera będzie mógł czytać twoje wiadomości, ale może to być jedyny sposób aby komunikować się z ludźmi korzystającymi z przestarzałych klientów.</string>
     <string name="disable_now">Wyłącz teraz</string>
     <string name="draft">Szkic:</string>
@@ -743,17 +743,17 @@
     <string name="no_microphone_permission">Pozwól %1$s na dostęp do mikrofonu</string>
     <string name="search_messages">Wyszukaj wiadomości</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Pokaż konwersację</string>
+    <string name="view_conversation">Pokaż rozmowę</string>
     <string name="pref_use_share_location_plugin">Wtyczka Udostępniania Lokalizacji</string>
     <string name="pref_use_share_location_plugin_summary">Użyj Wtyczki Udostępniania Lokalizacji zamiast wbudowanej mapy</string>
     <string name="copy_link">Skopiuj URL</string>
     <string name="copy_jabber_id">Skopiuj adres XMPP</string>
     <string name="p1_s3_filetransfer">Udostępnianie plików przez HTTP S3</string>
     <string name="pref_start_search">Wyszukiwanie bezpośrednie</string>
-    <string name="pref_start_search_summary">Na ekranie \'Rozpocznij konwersację\' otwórz klawiaturę i umieść kursor w polu wyszukiwania</string>
-    <string name="group_chat_avatar">Awatar konwersacji</string>
-    <string name="host_does_not_support_group_chat_avatars">Serwer nie wspiera awatarów konwersacji</string>
-    <string name="only_the_owner_can_change_group_chat_avatar">Tylko właściciel może zmienić awatar konwersacji</string>
+    <string name="pref_start_search_summary">Na ekranie „Nowa rozmowa” otwórz klawiaturę i umieść kursor w polu wyszukiwania</string>
+    <string name="group_chat_avatar">Awatar rozmowy grupowej</string>
+    <string name="host_does_not_support_group_chat_avatars">Serwer nie obsługuje awatarów rozmów grupowych</string>
+    <string name="only_the_owner_can_change_group_chat_avatar">Tylko właściciel może zmienić awatar rozmowy grupowej</string>
     <string name="contact_name">Nazwa kontaktu</string>
     <string name="nickname">Pseudonim</string>
     <string name="group_chat_name">Nazwa</string>
@@ -1019,9 +1019,9 @@
     <string name="outgoing_call_timestamp">Połączenie wychodzące · %s</string>
     <string name="delete_from_server">Usuń konto z serwera</string>
     <string name="could_not_delete_account_from_server">Nie można usunąć konta z serwera</string>
-    <string name="search_group_chats">Wyszukaj czatów grupowych</string>
-    <string name="group_chats">Czaty grupowe</string>
-    <string name="save_as_group_chat">Zapisz jako czat grupowy</string>
+    <string name="search_group_chats">Przeszukaj rozmowy grupowe</string>
+    <string name="group_chats">Rozmowy grupowe</string>
+    <string name="save_as_group_chat">Zapisz jako rozmowę grupową</string>
     <string name="restore_warning_continued">Nie próbuj przywracać kopii zapasowych, których nie utworzono samodzielnie!</string>
     <string name="outdated_backup_file_format">Próbujesz zaimportować plik kopii zapasowej o przestarzałym formacie</string>
     <string name="audiobook">Audiobook</string>
@@ -1043,6 +1043,17 @@
     <string name="no_permission_to_place_call">Brak pozwolenia na wypisanie numeru telefonu</string>
     <string name="call_integration_not_available">Integracja połączeń nie jest dostępna!</string>
     <string name="remove_bookmark">Czy chcesz usunąć zakładkę dla %s?</string>
-    <string name="delete_and_close">Usuń i zamknij</string>
-    <string name="remove_bookmark_and_close">Czy chcesz usunąć zakładkę dla %s i zamknąć rozmowę?</string>
+    <string name="delete_and_close">Usuń i zarchiwizuj rozmowę</string>
+    <string name="remove_bookmark_and_close">Czy chcesz usunąć zakładkę dla %s i zarchiwizować rozmowę?</string>
+    <string name="action_archive_chat">Archiwizuj rozmowę</string>
+    <string name="title_activity_new_chat">Nowa rozmowa</string>
+    <string name="archive_this_chat">Archiwizuj tę rozmowę</string>
+    <string name="pref_use_colorful_bubbles">Kolorowe bańki rozmowy</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">Kod kreskowy nie zawiera odcisków palca dla tej rozmowy.</string>
+    <string name="corresponding_chats_closed">Powiązane rozmowy zarchiwizowane.</string>
+    <string name="start_chat">Rozpocznij rozmowę</string>
+    <string name="unified_push_summary">Przekazywanie powiadomień do innych aplikacji kompatybilnych z UnifiedPush</string>
+    <string name="title_undo_swipe_out_chat">Rozmowa zarchiwizowana</string>
+    <string name="switch_to_chat">Przełącz do rozmowy</string>
+    <string name="pref_up_long_summary">Gdy działa jako dystrybutor UnifiedPush, stałe, niezawodne i energooszczędne połączenie XMPP będzie używane do budzenia innych aplikacji kompatybilnych z UnifiedPush, takich jak Tusky, Ltt.rs, FluffyChat i inne.</string>
 </resources>
