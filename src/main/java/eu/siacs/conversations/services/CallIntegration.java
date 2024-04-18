@@ -38,9 +38,12 @@ public class CallIntegration extends Connection {
 
     private static final List<String> BROKEN_DEVICE_MODELS =
             Arrays.asList(
-                    "OnePlus6", // Device is buggy and always starts the operating system call
-                                // screen even though we want to be self managed
-                    "RMX1921" // Realme XT shows "Call not sent" dialog
+                    "OnePlus6", // OnePlus 6 (Android 8.1-11) Device is buggy and always starts the
+                                // operating system call screen even though we want to be self
+                                // managed
+                    "RMX1921", // Realme XT (Android 9-10) shows "Call not sent" dialog
+                    "RMX1971", // Realme 5 Pro (Android 9-11), show "Call not sent" dialog
+                    "RMX1973" // Realme 5 Pro (see above)
                     );
 
     public static final int DEFAULT_TONE_VOLUME = 60;
