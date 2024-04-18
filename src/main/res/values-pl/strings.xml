@@ -1056,4 +1056,5 @@
     <string name="title_undo_swipe_out_chat">Rozmowa zarchiwizowana</string>
     <string name="switch_to_chat">Przełącz do rozmowy</string>
     <string name="pref_up_long_summary">Gdy działa jako dystrybutor UnifiedPush, stałe, niezawodne i energooszczędne połączenie XMPP będzie używane do budzenia innych aplikacji kompatybilnych z UnifiedPush, takich jak Tusky, Ltt.rs, FluffyChat i inne.</string>
+    <string name="pref_large_font">Duża czcionka</string>
 </resources>
