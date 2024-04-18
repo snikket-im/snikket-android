@@ -999,10 +999,10 @@
     <string name="this_account_is_logged_out">Pechaches a sesión desta conta</string>
     <string name="log_in">Acceder</string>
     <string name="hide_notification">Agochar notificación</string>
-    <string name="contact_uses_unverified_keys">O teu contacto usa dispositivos non verificados. Escanea o seu código QR para verficalo e impedir ataques MITM.</string>
+    <string name="contact_uses_unverified_keys">O contacto usa dispositivos non verificados. Escanea o seu código QR para verficalo e impedir ataques tipo Persoa Interposta.</string>
     <string name="log_out">Saír da sesión</string>
     <string name="account_state_logged_out">Sesión pechada</string>
-    <string name="unverified_devices">Estás a usar dispositivos non verificados. Escanea os códigos QR nos teus outros dispositivos para verificalos e impedir ataques MITM.</string>
+    <string name="unverified_devices">Estás a usar dispositivos non verificados. Escanea os códigos QR nos teus outros dispositivos para verificalos e impedir ataques tipo Persoa Interposta.</string>
     <string name="report_spam_and_block">Informar de spam e bloquear conta</string>
     <string name="report_spam">Informar de spam</string>
     <string name="welcome_header_quicksy">Benvida a Quicksy!</string>
