@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.15.2
+
+* Fix Quicksy registration on Android 6/7
+* Play incoming call ringtone on notification channel
+
 ### Version 2.15.1
 
 * Show message status as icons

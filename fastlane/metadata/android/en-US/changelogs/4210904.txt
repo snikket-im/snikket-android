@@ -1,0 +1,2 @@
+* Fix Quicksy registration on Android 6/7
+* Play incoming call ringtone on notification channel
