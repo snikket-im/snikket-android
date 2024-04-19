@@ -494,6 +494,7 @@ public class CallIntegration extends Connection {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return packageManager.hasSystemFeature(PackageManager.FEATURE_TELECOM);
         } else {
+            //noinspection deprecation
             return packageManager.hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE);
         }
     }
