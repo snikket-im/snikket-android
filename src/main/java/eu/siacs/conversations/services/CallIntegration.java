@@ -53,6 +53,8 @@ public class CallIntegration extends Connection {
 
     private final AppRTCAudioManager appRTCAudioManager;
     private AudioDevice initialAudioDevice = null;
+
+    private boolean isAudioRoutingRequested = false;
     private final AtomicBoolean initialAudioDeviceConfigured = new AtomicBoolean(false);
     private final AtomicBoolean delayedDestructionInitiated = new AtomicBoolean(false);
     private final AtomicBoolean isDestroyed = new AtomicBoolean(false);
@@ -446,12 +448,28 @@ public class CallIntegration extends Connection {
     private void onAudioDeviceChanged(
             final CallIntegration.AudioDevice selectedAudioDevice,
             final Set<CallIntegration.AudioDevice> availableAudioDevices) {
-        if (this.initialAudioDevice != null
-                && this.initialAudioDeviceConfigured.compareAndSet(false, true)) {
-            if (availableAudioDevices.contains(this.initialAudioDevice)
+        if (isAudioRoutingRequested) {
+            configureInitialAudioDevice(availableAudioDevices);
+        }
+        final var callback = this.callback;
+        if (callback == null) {
+            return;
+        }
+        callback.onAudioDeviceChanged(selectedAudioDevice, availableAudioDevices);
+    }
+
+    private void configureInitialAudioDevice(final Set<AudioDevice> availableAudioDevices) {
+        final var initialAudioDevice = this.initialAudioDevice;
+        if (initialAudioDevice == null) {
+            Log.d(Config.LOGTAG, "skipping configureInitialAudioDevice()");
+            return;
+        }
+        final var target = this.initialAudioDevice;
+        if (this.initialAudioDeviceConfigured.compareAndSet(false, true)) {
+            if (availableAudioDevices.contains(target)
                     && !availableAudioDevices.contains(AudioDevice.BLUETOOTH)) {
-                setAudioDevice(this.initialAudioDevice);
-                Log.d(Config.LOGTAG, "configured initial audio device");
+                setAudioDevice(target);
+                Log.d(Config.LOGTAG, "configured initial audio device: " + target);
             } else {
                 Log.d(
                         Config.LOGTAG,
@@ -459,11 +477,6 @@ public class CallIntegration extends Connection {
                                 + availableAudioDevices);
             }
         }
-        final var callback = this.callback;
-        if (callback == null) {
-            return;
-        }
-        callback.onAudioDeviceChanged(selectedAudioDevice, availableAudioDevices);
     }
 
     private boolean selfManaged() {
@@ -494,8 +507,14 @@ public class CallIntegration extends Connection {
         this.initialAudioDevice = audioDevice;
     }
 
-    public void startLegacyAudioRouting() {
+    public void startAudioRouting() {
+        this.isAudioRoutingRequested = true;
         if (selfManaged()) {
+            final var devices = getAudioDevices();
+            if (devices.isEmpty()) {
+                return;
+            }
+            configureInitialAudioDevice(devices);
             return;
         }
         final var audioManager = requireAppRtcAudioManager();
