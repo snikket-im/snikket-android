@@ -1,0 +1,3 @@
+Kullanımı kolay, güvenilir, pil ömrü dostu. Resimler, gruplar ve uçtan uca şifreleme için yerleşik destek.
+
+Tasarım ilkeleri:
