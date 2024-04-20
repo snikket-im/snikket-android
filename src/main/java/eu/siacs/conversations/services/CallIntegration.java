@@ -139,7 +139,7 @@ public class CallIntegration extends Connection {
 
     @Override
     public void onCallAudioStateChanged(final CallAudioState state) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        if (selfManaged() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             Log.d(Config.LOGTAG, "ignoring onCallAudioStateChange() on Upside Down Cake");
             return;
         }
@@ -148,36 +148,45 @@ public class CallIntegration extends Connection {
     }
 
     public Set<AudioDevice> getAudioDevices() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            return getAudioDevicesUpsideDownCake();
-        } else if (selfManaged()) {
-            return getAudioDevicesOreo();
-        } else {
+        if (notSelfManaged(context)) {
             return getAudioDevicesFallback();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            return getAudioDevicesUpsideDownCake();
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                return getAudioDevicesOreo();
+            } else {
+                throw new AssertionError("Trying to get audio devices on unsupported version");
+            }
         }
     }
 
     public AudioDevice getSelectedAudioDevice() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            return getAudioDeviceUpsideDownCake();
-        } else if (selfManaged()) {
-            return getAudioDeviceOreo();
-        } else {
+        if (notSelfManaged(context)) {
             return getAudioDeviceFallback();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            return getAudioDeviceUpsideDownCake();
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                return getAudioDeviceOreo();
+            } else {
+                throw new AssertionError(
+                        "Trying to get selected audio device on unsupported version");
+            }
         }
     }
 
     public void setAudioDevice(final AudioDevice audioDevice) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        if (notSelfManaged(context)) {
+            setAudioDeviceFallback(audioDevice);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             setAudioDeviceUpsideDownCake(audioDevice);
-        } else if (selfManaged()) {
+        } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 setAudioDeviceOreo(audioDevice);
             } else {
                 throw new AssertionError("Trying to set audio devices on unsupported version");
             }
-        } else {
-            setAudioDeviceFallback(audioDevice);
         }
     }
 
