@@ -26,8 +26,8 @@
     <string name="minute_ago">1 dakika önce</string>
     <string name="minutes_ago">%d dakika önc</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d okunmamış konuşma</item>
-        <item quantity="other">%d okunmamış konuşmalar</item>
+        <item quantity="one">%d okunmamış sohbet</item>
+        <item quantity="other">%d okunmamış sohbet</item>
     </plurals>
     <string name="sending">gönderiyor…</string>
     <string name="message_decrypting">İleti deşifre ediliyor. Lütfen bekleyin…</string>
@@ -39,7 +39,7 @@
     <string name="moderator">Moderatör</string>
     <string name="participant">Katılımcı</string>
     <string name="visitor">Ziyaretçi</string>
-    <string name="remove_contact_text">%s adlı kişiyi listenizden çıkarmak ister misiniz? Bu kişi ile olan konuşmalar silinmeyecektir.</string>
+    <string name="remove_contact_text">%s adlı kişiyi listenizden çıkarmak ister misiniz? Bu kişi ile olan sohbet silinmeyecektir.</string>
     <string name="block_contact_text">%s kişisinin size ileti göndermesini engellemek istiyor musunuz?</string>
     <string name="unblock_contact_text">%s kişisinin size ileti  göndermesine koyduğunuz engellemeyi kaldırmak ve size ileti göndermesine izin vermek istiyor musunuz?</string>
     <string name="block_domain_text">%s üzerinden gelen tüm kişileri engellemek istiyor musunuz? </string>
@@ -77,7 +77,7 @@
     <string name="preparing_images">Görüntüler gönderilmeye hazırlanılıyor</string>
     <string name="sharing_files_please_wait">Dosyalar Paylaşılıyor. Lütfen bekleyin…</string>
     <string name="action_clear_history">Geçmişi sil</string>
-    <string name="clear_conversation_history">Konuşma geçmişini sil</string>
+    <string name="clear_conversation_history">Sohbet geçmişini sil</string>
     <string name="clear_histor_msg">Bu konuşmadaki tüm mesajları silmek istiyor musunuz? 
 \n 
 \n<b>Uyarı:</b> Bu eylem, diğer aygıt ve sunucularda kayıtlı mesajları etkilemeyecektir.</string>
@@ -176,7 +176,7 @@
     <string name="unpublish_pgp_message">OpenPGP genel anahtarınız Çevrim içi durum anonsunuzdan kaldırmak istediğinizden emin misiniz?\nArtık kişileriniz size şifrelenmiş OpenPGP mesajları gönderemeyecek.</string>
     <string name="openpgp_has_been_published">OpenPGP genel anahtarı yayınlandı.</string>
     <string name="mgmt_account_enable">Hesabı etkinleştir</string>
-    <string name="mgmt_account_delete_confirm_text">Hesabınızı silmekten emin misiniz? Hesabınızın silinmesi bütün konuşma geçmişinizi siler</string>
+    <string name="mgmt_account_delete_confirm_text">Hesabınızı silmek istediğinizden emin misiniz? Bütün sohbetleriniz silinecektir</string>
     <string name="attach_record_voice">Ses kaydet</string>
     <string name="account_settings_jabber_id">XMPP adresi</string>
     <string name="block_jabber_id">XMPP adresini engelle</string>
@@ -277,7 +277,7 @@
     <string name="ignore">Yok say</string>
     <string name="without_mutual_presence_updates"><b>Uyarı:</b> Bu mesajı karşılıklı çevrim içi durum bildirimleri olmadan göndermek, beklenmeyen problemlere neden olabilir. <small>\n\n Çevrim içi durum aboneliklerini doğrulamak için \"Kişi Bilgileri\" kısmına gidin.</small></string>
     <string name="pref_security_settings">Güvenlik</string>
-    <string name="pref_allow_message_correction">İleti düzeltmeye izin ver</string>
+    <string name="pref_allow_message_correction">Mesaj düzeltme</string>
     <string name="pref_allow_message_correction_summary">Kişilerinizin geçmiş iletilerini düzeltmelerine izin ver</string>
     <string name="pref_expert_options">Uzman seçenekleri</string>
     <string name="pref_expert_options_summary">Lütfen dikkatli olun</string>
@@ -313,8 +313,8 @@
     <string name="jabber_id_copied_to_clipboard">XMPP adresi panoya kopyalandı</string>
     <string name="error_message_copied_to_clipboard">Hata mesajı panoya kopyalandı</string>
     <string name="web_address">web adresi</string>
-    <string name="scan_qr_code">2B Barkod Tara</string>
-    <string name="show_qr_code">2B Barkod Göster</string>
+    <string name="scan_qr_code">QR Kodu tara</string>
+    <string name="show_qr_code">QR Kodu göster</string>
     <string name="show_block_list">Engellenenler listesini göster</string>
     <string name="account_details">Hesap bilgileri</string>
     <string name="confirm">Doğrula</string>
@@ -357,7 +357,7 @@
     <string name="clear_other_devices_desc">OMEMO bildirimindeki diğer aygıtların hepsini silmek istediğinizden emin misiniz? Aygıtlarınız yeniden bağlandıklarında kendilerini yeniden bildirecekler ama bu süre zarfındaki iletileri alamayabilirler.</string>
     <string name="error_no_keys_to_trust_server_error">Bu kişi için kullanılabilecek bir anahtar bulunmuyor.\nSunucudan yeni anahtarlar alınamıyor. Belki bağlantınızın sunucusunda bir sorun vardır?</string>
     <string name="error_no_keys_to_trust_presence">Bu kişi için kullanılabilir bir anahtar yok.
-\nİkinizin de çevrim içi durum aboneliği oldudğundan emin olun.</string>
+\nİkinizin de çevrimiçi durum aboneliği olduğundan emin olun.</string>
     <string name="error_trustkeys_title">Bir şeyler ters gitti</string>
     <string name="fetching_history_from_server">Sunucudan geçmiş alınıyor</string>
     <string name="no_more_history_on_server">Sunucuda başka geçmiş kalmadı</string>
@@ -470,8 +470,8 @@
     <string name="pref_dnd_on_silent_mode_summary">Telefonunuz sessizdeyken, durum bildiriminizi müsait değil olarak gösterir.</string>
     <string name="pref_treat_vibrate_as_silent">Titreşim kipini sessiz kip olarak değerlendir</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Telefonunuz titreşimdeyken, durum bildiriminizi müsait değil olarak gösterir.</string>
-    <string name="pref_show_connection_options">Genişletilmiş bağlantı seçenekleri</string>
-    <string name="pref_show_connection_options_summary">Hesap oluştururken sunucu adıyla bağlantı noktası seçeneğini göster</string>
+    <string name="pref_show_connection_options">Barındırıcı adı ve Port</string>
+    <string name="pref_show_connection_options_summary">Hesap oluştururken gelişmiş bağlantı ayarlarını göster</string>
     <string name="hostname_example">xmpp.ornek.com</string>
     <string name="action_add_account_with_certificate">Sertifika ile giriş yap</string>
     <string name="unable_to_parse_certificate">Sertifika çözümlenemedi</string>
@@ -507,11 +507,10 @@
     <string name="shared_text_with_x">Metin %s ile paylaşıldı</string>
     <string name="no_storage_permission">%1$s\'ın harici depolama erişimine izin ver</string>
     <string name="no_camera_permission">%1$s\'ın kamera erişimine izin ver</string>
-    <string name="sync_with_contacts">Kişilerle senkronize et</string>
-    <string name="sync_with_contacts_long">%1$s XMPP listenizi telefon rehberinizle eşleştirmek için izin istiyor.
-\nBöylelikle, tüm rehberinizindeki kişilerin tam adları ve avatarlarını görebileceksiniz.
+    <string name="sync_with_contacts">Kişiler entegrasyonu</string>
+    <string name="sync_with_contacts_long">%1$s kişilerinizi yerel olarak, cihazınızda, XMPP\'de bulunan kişilerinizin isimlerini ve profil fotoğraflarını göstermek için işler.
 \n
-\n%1$s kişilerinizi sunucunuza yüklemeyecek olup, sadece cihazınız üzerinden eşleştirme yapacaktır.</string>
+\nKişileriniz hakkında hiçbir bilgi cihazınızdan ayrılmaz!</string>
     <string name="notify_on_all_messages">Tüm iletilerde uyar</string>
     <string name="notify_only_when_highlighted">Yalnızca bahsedilğinde haber ver</string>
     <string name="notify_never">Uyarılar devre dışı</string>
@@ -529,13 +528,14 @@
     <string name="this_field_is_required">Bu alan zorunludur</string>
     <string name="correct_message">ileti düzelt</string>
     <string name="send_corrected_message">Düzeltilmiş iletiyi gönder</string>
-    <string name="no_keys_just_confirm">Bu kişinin güvenini doğrulamak için parmak izini zaten güvenle onayladınız. \"Tamam\"ı seçerek sadece%s kişisinin, grup konuşmasının bir parçası olduğunu doğruluyorsunuz.</string>
+    <string name="no_keys_just_confirm">Bu kişinin parmak izine zaten güvenmiştiniz. \"Tamam\"ı seçerek sadece %s\'in bu grupta olduğunu onaylamış olacaksınız.</string>
     <string name="this_account_is_disabled">Bu hesabı devre dışı bıraktınız</string>
     <string name="security_error_invalid_file_access">Güvenlik hatası: Geçersiz dosya erişimi!</string>
     <string name="no_application_to_share_uri">URL paylaşacak uygulama bulunamadı</string>
     <string name="share_uri_with">URI paylaş ile…</string>
     <string name="agree_and_continue">Kabul et ve devam et</string>
-    <string name="magic_create_text">Conversations\'da hesap kurulum için bir rehber hazırlanmıştır.¹\nConversations.im\'i bir sağlayıcı olarak seçtikten sonra başka sağlayıcılar kullanan kullanıcılarla onlara tam XMPP adresinizi vererek iletişim kurabilirsiniz.</string>
+    <string name="magic_create_text">Conversations.im üzerinde hesap oluşturma rehberi bulunmaktadır. 
+\nConversations.im\'i sağlayıcınız olarak seçtiğinizde diğer sağlayıcıların kullanıcılarıyla tam XMPP adresinizi paylaşarak iletişim kurabileceksiniz.</string>
     <string name="your_full_jid_will_be">Tam XMPP adresiniz %s olacak</string>
     <string name="create_account">Hesap Oluştur</string>
     <string name="use_own_provider">Kendi sağlayıcımı kullan</string>
@@ -559,8 +559,8 @@
     <string name="gp_short">Kısa</string>
     <string name="gp_medium">Orta</string>
     <string name="gp_long">Uzun</string>
-    <string name="pref_broadcast_last_activity">Kullanımı yayınla</string>
-    <string name="pref_broadcast_last_activity_summary">Kişiler Conversations\'ı kullandığınız zaman bundan haberdar olur.</string>
+    <string name="pref_broadcast_last_activity">Son görülme</string>
+    <string name="pref_broadcast_last_activity_summary">Kişilerinizin uygulamayı en son ne zaman kullandığınızı görmesine izin verin</string>
     <string name="pref_privacy">Gizlilik</string>
     <string name="pref_theme_options">Gövde</string>
     <string name="pref_theme_options_summary">Renk paletini seçin</string>
@@ -607,7 +607,7 @@
     <string name="pref_blind_trust_before_verification_summary">Doğrulanmamış kişilerin tüm yani aygıtlarına güven, ama doğrulanmış kişilerden aygıtlarını onaylamalarını iste.</string>
     <string name="blindly_trusted_omemo_keys">OMEMO anahtarlarına körlemisne güvenildi, yani bu kişi bir başkası olabilir veya biri konuşmayı dinleyebilir.</string>
     <string name="not_trusted">Güvenilmeyen</string>
-    <string name="invalid_barcode">Geçersiz 2D barkod</string>
+    <string name="invalid_barcode">Geçersiz QR Kodu</string>
     <string name="pref_clean_cache_summary">Önbellek dizinini temizle (Kamera uygulamasının kullandığı)</string>
     <string name="pref_clean_cache">Önbelleği temizle</string>
     <string name="pref_clean_private_storage">Özel depolama alanını temizle</string>
@@ -696,14 +696,14 @@
     <string name="error_trustkey_device_list">Aygıt listesi alınamadı</string>
     <string name="error_trustkey_bundle">Şifreleme anahtarları alınamadı</string>
     <string name="error_trustkey_hint_mutual">İpucu: Kimi durumlarda bu sorun, birbirinizi kişi listenize eklemenizle çözülebilir.</string>
-    <string name="disable_encryption_message">Bu konuşma için OMEMO şifrelemesini devre dışı bırakmak istediğinizden emin misiniz?
-\nBu, sunucu yöneticinizin mesajlarınızı okumasını mümkün kılsa da, tarihi geçmiş istemcileri kullanan insanlarla iletişim kurmanın tek yolu olabilir.</string>
+    <string name="disable_encryption_message">Bu sohbet için OMEMO şifrelemesini devre dışı bırakmak istediğinizden emin misiniz?
+\nBunu yapmanız sunucu yöneticinizin mesajlarınızı okumasına izin verecektir, fakat güncel olmayan istemcileri kullanan kişilerle konuşmanın tek yolu bu olabilir.</string>
     <string name="disable_now">Şimdi devre dışı bırak</string>
     <string name="draft">Taslak:</string>
     <string name="pref_omemo_setting">OMEMO Şifrelemesi</string>
     <string name="pref_omemo_setting_summary_always">Bire bir ve grup konuşmalarında her zaman OMEMO kullanılacak.</string>
-    <string name="pref_omemo_setting_summary_default_on">Yeni konuşmalarda OMEMO varsayılan olarak kullanılacak.</string>
-    <string name="pref_omemo_setting_summary_default_off">Özellikle yeni konuşmalarda OMEMO aktif hale getirilecek.</string>
+    <string name="pref_omemo_setting_summary_default_on">Yeni sohbetlerde OMEMO varsayılan olarak kullanılacak.</string>
+    <string name="pref_omemo_setting_summary_default_off">Yeni sohbetlerde OMEMO\'nun el ile aktifleştirilmesi gerekecektir.</string>
     <string name="create_shortcut">Kısayol oluştur</string>
     <string name="default_on">Varsayılan olarak aktif</string>
     <string name="default_off">Varsayılan olarak devre dışı</string>
@@ -724,14 +724,14 @@
     <string name="no_microphone_permission">%1$s\'ın mikrofon erişimine izin ver</string>
     <string name="search_messages">İleti ara</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Konuşma görüntüle</string>
+    <string name="view_conversation">Sohbeti görüntüle</string>
     <string name="pref_use_share_location_plugin">Konum Eklentisini Paylaş</string>
     <string name="pref_use_share_location_plugin_summary">Varolan harita yerine Konum Eklentisini Paylaş\'ı kullan</string>
     <string name="copy_link">Web adresini kopyala</string>
     <string name="copy_jabber_id">XMPP adresini kopyala</string>
     <string name="p1_s3_filetransfer">S3 için HTTP Dosya Paylaşımı</string>
     <string name="pref_start_search">Doğrudan arama</string>
-    <string name="pref_start_search_summary">\'Konuşma Başlat\" ekranında klavyeyi aç ve arama kısmına imleci getir</string>
+    <string name="pref_start_search_summary">\"Yeni sohbet\" ekranında klavyeyi arama kutusunda aç</string>
     <string name="group_chat_avatar">Grup konuşması avatarı</string>
     <string name="host_does_not_support_group_chat_avatars">Yönetici grup konuşması avatarlarını desteklemiyor</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Yalnızca yönetici grup konuşması avatarını değiştirebilir</string>
@@ -783,13 +783,13 @@
     <string name="verify_x">%s doğrula</string>
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[<b>%s</b> telefonunuza bir SMS gönderdik.]]></string>
     <string name="we_have_sent_you_another_sms">Size 6 haneli kodun olduğu başka bir SMS  gönderdik.</string>
-    <string name="please_enter_pin_below">Lüfen aşağıya 6 haneli kodu girin.</string>
+    <string name="please_enter_pin_below">Lütfen aşağıya 6 haneli kodu girin.</string>
     <string name="resend_sms">Tekrar sms gönder</string>
     <string name="resend_sms_in">Tekrar sms gönder (%s)</string>
     <string name="wait_x">Lütfen bekleyin  (%s)</string>
-    <string name="back">geri</string>
-    <string name="possible_pin">Olası kod, otomatik olarak panodan yapıştırıldı.</string>
-    <string name="please_enter_pin">Lütfen 6 haneli kodu girin.</string>
+    <string name="back">Geri</string>
+    <string name="possible_pin">Olası kod, otomatik olarak yapıştırıldı.</string>
+    <string name="please_enter_pin">Lütfen 6 haneli kodunuzu girin.</string>
     <string name="abort_registration_procedure">Kayıt sürecini iptal etmek istediğinizden emin misiniz?</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
@@ -940,8 +940,8 @@
     <string name="remove_from_favorites">En baştan kaldır</string>
     <string name="gpx_track">GPX izi</string>
     <string name="could_not_correct_message">İleti düzeltilemedi</string>
-    <string name="search_all_conversations">Bütün konuşmalar</string>
-    <string name="search_this_conversation">Bu konuşma</string>
+    <string name="search_all_conversations">Tüm sohbetler</string>
+    <string name="search_this_conversation">Bu sohbet</string>
     <string name="your_avatar">Avatarınız</string>
     <string name="avatar_for_x">%s avatarı</string>
     <string name="encrypted_with_omemo">OMEMO ile şifrelendi</string>
@@ -978,4 +978,92 @@
     <string name="switch_to_video">Videoya geç</string>
     <string name="reject_switch_to_video">Videoya geçme isteğini reddet</string>
     <string name="pref_up_push_account_title">XMPP Hesabı</string>
+    <string name="account_state_logged_out">Oturum kapatıldı</string>
+    <string name="pref_up_push_server_title">Bildirim Sunucusu</string>
+    <string name="pref_send_crash_reports">Çökme raporları gönder</string>
+    <string name="welcome_header">Sohbete Katıl</string>
+    <string name="welcome_header_quicksy">Quicksy\'e hoşgeldiniz!</string>
+    <string name="restore_warning_continued">Kendiniz oluşturmadığınız yedekleri geri yüklemeye çalışmayın!</string>
+    <string name="log_out">Oturumu kapat</string>
+    <string name="hide_notification">Bildirimi gizle</string>
+    <string name="report_spam">Spam bildir</string>
+    <string name="no_certificate_selected">İstemci sertifikası seçilmedi!</string>
+    <string name="log_in">Oturum aç</string>
+    <string name="pref_title_interface">Arayüz</string>
+    <string name="pref_summary_appearance">Tema, Renkler, Ekran Görüntüleri, Girdi</string>
+    <string name="pref_light_dark_mode">Açık/Koyu tema</string>
+    <string name="pref_privacy_summary">Yazıyor bildirimi, Son görülme, Müsaitlik</string>
+    <string name="pref_connection_summary">Barındırıcı adı ve Portu, Tor</string>
+    <string name="pref_connection_summary_w_cd">Barındırıcı adı ve Portu, Tor, Kanal Keşfetme</string>
+    <string name="contact_list_integration_not_available">Kişiler entegrasyonu mevcut değil</string>
+    <string name="privacy_policy">Gizlilik politikası</string>
+    <string name="title_activity_share_with">Şununla paylaş…</string>
+    <string name="incoming_call_duration_timestamp">Gelen arama (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">Giden arama (%s) · %s</string>
+    <string name="outgoing_call_timestamp">Giden arama · %s</string>
+    <string name="unverified_devices">Doğrulanmamış bir cihaz kullanıyorsunuz. Aktif MITM (Ortadaki Adam) saldırılarını önlemek için diğer cihazlarınızda QR kodunu okutarak doğrulama yapın.</string>
+    <string name="report_spam_and_block">Spam bildir ve kişiyi engelle</string>
+    <string name="delete_and_close">Sohbeti sil ve arşivle</string>
+    <string name="start_chat">Sohbet başlat</string>
+    <string name="contact_uses_unverified_keys">Kişiniz doğrulanmamış bir cihaz kullanıyor. Aktif MITM (Ortadaki Adam) saldırılarını önlemek için kişinizin QR kodunu okutarak doğrulama yapın.</string>
+    <string name="call_integration_not_available">Arama entegrasyonu mevcut değil!</string>
+    <string name="action_archive_chat">Sohbeti arşivle</string>
+    <string name="archive_this_chat">Bu sohbeti arşivle</string>
+    <string name="switch_to_chat">Sohbete git</string>
+    <string name="pref_up_push_account_summary">Bildirimlerin alınacağı hesap.</string>
+    <string name="unified_push_distributor">UnifiedPush dağıtıcısı</string>
+    <string name="no_account_deactivated">Hiçbiri (devre dışı)</string>
+    <string name="title_activity_new_chat">Yeni sohbet</string>
+    <string name="rtp_state_content_add_video">Görüntülü aramaya geçilsin mi?</string>
+    <string name="pref_allow_screenshots_summary">Uygulama değiştiricide içeriği göster ve ekran görüntüsü almaya izin ver</string>
+    <string name="remove_bookmark_and_close">%s için yer imini kaldırmak ve sohbeti arşivlemek ister misiniz?</string>
+    <string name="save_as_group_chat">Grup olarak kaydet</string>
+    <string name="audiobook">Sesli kitap</string>
+    <string name="send_encrypted_message">Şifrelenmiş ileti gönder</string>
+    <string name="group_chats">Gruplar</string>
+    <string name="quicksy_wants_your_consent">Quicksy, verilerinizi kullanmak için izninizi istiyor</string>
+    <string name="this_account_is_logged_out">Bu hesabın oturumunu kapatmışsınız</string>
+    <string name="pref_use_colorful_bubbles">Renkli konuşma balonları</string>
+    <string name="pref_use_colorful_bubbles_summary">Gönderilen ve alınan mesajlar için farklı renkler kullan</string>
+    <string name="no_permission_to_place_call">Arama yapma izni yok</string>
+    <string name="corresponding_chats_closed">Uygun gelen sohbetler arşivlendi</string>
+    <string name="pref_dynamic_colors">Dinamik renklendirme</string>
+    <string name="pref_dynamic_colors_summary">Sistem renkleri (Material You)</string>
+    <string name="rtp_state_contact_offline">Kişi müsait değil</string>
+    <string name="decline">Reddet</string>
+    <string name="delete_from_server">Hesabı sunucudan sil</string>
+    <string name="could_not_delete_account_from_server">Hesap sunucudan silinemedi</string>
+    <string name="pref_title_security">Güvenlik</string>
+    <string name="unified_push_summary">UnifiedPush destekleyen üçüncü parti uygulamalar için bildirim aktarıcısı</string>
+    <string name="notifications">Bildirimler</string>
+    <string name="pref_attachments_summary">Dosya büyüklüğü, Resim sıkıştırma, Video kalitesi</string>
+    <string name="pref_notifications_summary">Yok sayma süresi, Zil sesi, Titreşim, Yabancılar</string>
+    <string name="pref_category_sending">Gönderme</string>
+    <string name="pref_category_receiving">Teslim alma</string>
+    <string name="pref_automatic_download">Otomatik indirme</string>
+    <string name="appearance">Görünüm</string>
+    <string name="pref_allow_screenshots">Ekran görüntüsü almaya izin ver</string>
+    <string name="pref_category_e2ee">Uçtan uca şifreleme</string>
+    <string name="pref_title_trust_system_ca_store">Sertifika yetkilileri</string>
+    <string name="pref_title_trust_system_ca_store_summary">Sistemin CA sertifikalarına güven</string>
+    <string name="detect_mim">Kanal bağlamayı zorunlu kıl</string>
+    <string name="detect_mim_summary">Kanal bağlama bazı aradaki makine saldırılarını tespit edebilir</string>
+    <string name="pref_category_server_connection">Sunucu bağlantısı</string>
+    <string name="pref_category_operating_system">İşletim Sistemi</string>
+    <string name="pref_keyboard_options">Klavye</string>
+    <string name="pref_category_application">Uygulama</string>
+    <string name="pref_category_interaction">Etkileşim</string>
+    <string name="pref_category_on_this_device">Bu Cihazda</string>
+    <string name="pref_large_font">Büyük punto</string>
+    <string name="pref_large_font_summary">Konuşma balonlarındaki yazı büyüklüğünü arttır</string>
+    <string name="remove_bookmark">%s için yer imini kaldırmak ister misiniz?</string>
+    <string name="pref_autojoin_summary">Bir gruba katılırken \"autojoin\" (otomatik katıl) işaretini ayarla ve diğer istemciler tarafından yapılan değişikliklere tepki ver.</string>
+    <string name="title_undo_swipe_out_chat">Sohbet arşivlendi</string>
+    <string name="search_group_chats">Grup ara</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">Barkod, bu sohbet için parmak izi bilgisi barındırmıyor.</string>
+    <string name="channel_discover_opt_in_message">Grup keşfetme &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; adlı bir hizmeti kullanır.&lt;br&gt;&lt;br&gt;Bu özelliği kullanmanız IP adresinizi ve aramalarınızı bu hizmete gönderecektir. Daha fazla bilgi için hizmetin &lt;a href=https://search.jabber.network/privacy&gt;Gizlilik Politikasına&lt;/a&gt; göz atın.</string>
+    <string name="outdated_backup_file_format">Artık desteklenmeyen bir yedek dosyası türünü geri yüklemeye çalışıyorsunuz</string>
+    <string name="pref_summary_security">Uçtan Uca Şifreleme, Doğrulamadan Körü Körüne Güven, MITM Algılama</string>
+    <string name="pref_category_engagement_notifications">Etkileşim bildirimleri</string>
+    <string name="pref_up_long_summary">UnifiedPush Dağıtıcısı olarak davranılırken devamlı, güvenli ve pil ömrü dostu olan XMPP bağlantısı diğer UnifiedPush ile uyumlu olan Tusky, Ltt.rs, FluffyChat ve benzeri uygulamaları uyandırmak için kullanılacaktır.</string>
 </resources>
