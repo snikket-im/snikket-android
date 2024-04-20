@@ -152,12 +152,10 @@ public class CallIntegration extends Connection {
             return getAudioDevicesFallback();
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             return getAudioDevicesUpsideDownCake();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return getAudioDevicesOreo();
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                return getAudioDevicesOreo();
-            } else {
-                throw new AssertionError("Trying to get audio devices on unsupported version");
-            }
+            throw new AssertionError("Trying to get audio devices on unsupported version");
         }
     }
 
@@ -166,13 +164,10 @@ public class CallIntegration extends Connection {
             return getAudioDeviceFallback();
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             return getAudioDeviceUpsideDownCake();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return getAudioDeviceOreo();
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                return getAudioDeviceOreo();
-            } else {
-                throw new AssertionError(
-                        "Trying to get selected audio device on unsupported version");
-            }
+            throw new AssertionError("Trying to get selected audio device on unsupported version");
         }
     }
 
@@ -181,12 +176,10 @@ public class CallIntegration extends Connection {
             setAudioDeviceFallback(audioDevice);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             setAudioDeviceUpsideDownCake(audioDevice);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setAudioDeviceOreo(audioDevice);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                setAudioDeviceOreo(audioDevice);
-            } else {
-                throw new AssertionError("Trying to set audio devices on unsupported version");
-            }
+            throw new AssertionError("Trying to set audio devices on unsupported version");
         }
     }
 
