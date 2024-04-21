@@ -404,7 +404,7 @@
     <string name="pref_input_options">Eingabe</string>
     <string name="pref_enter_is_send">Eingabetaste sendet Nachricht</string>
     <string name="pref_enter_is_send_summary">Nutze die Eingabetaste zum Versenden einer Nachricht. Strg+Eingabetaste sendet die Nachricht unabhängig von dieser Einstellung.</string>
-    <string name="pref_display_enter_key">Zeige Eingabetaste</string>
+    <string name="pref_display_enter_key">Eingabetaste anzeigen</string>
     <string name="pref_display_enter_key_summary">Emoji-Taste durch Eingabetaste ersetzen</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
@@ -445,7 +445,7 @@
     <string name="pref_quick_action">Schnell-Tasten</string>
     <string name="none">Keine</string>
     <string name="recently_used">Zuletzt verwendet</string>
-    <string name="choose_quick_action">Wähle Schnell-Taste</string>
+    <string name="choose_quick_action">Schnell-Taste auswählen</string>
     <string name="search_contacts">Kontakte durchsuchen</string>
     <string name="send_private_message">Private Nachricht senden</string>
     <string name="user_has_left_conference">%1$s hat den Gruppenchat verlassen</string>
@@ -465,9 +465,9 @@
     <string name="pref_away_when_screen_off">Abwesend bei gesperrtem Gerät</string>
     <string name="pref_away_when_screen_off_summary">Als abwesend anzeigen, wenn das Gerät gesperrt ist</string>
     <string name="pref_dnd_on_silent_mode">Beschäftigt im lautlosen Modus</string>
-    <string name="pref_dnd_on_silent_mode_summary">Als Beschäftigt anzeigen, wenn sich das Gerät im lautlosen Modus befindet</string>
+    <string name="pref_dnd_on_silent_mode_summary">Als beschäftigt anzeigen, wenn sich das Gerät im lautlosen Modus befindet</string>
     <string name="pref_treat_vibrate_as_silent">Vibration als Lautlos behandeln</string>
-    <string name="pref_treat_vibrate_as_dnd_summary">Als Beschäftigt anzeigen, wenn das Gerät auf Vibration eingestellt ist</string>
+    <string name="pref_treat_vibrate_as_dnd_summary">Als beschäftigt anzeigen, wenn das Gerät auf Vibration eingestellt ist</string>
     <string name="pref_show_connection_options">Hostname &amp; Port</string>
     <string name="pref_show_connection_options_summary">Erweiterte Verbindungseinstellungen beim Einrichten eines Kontos anzeigen</string>
     <string name="hostname_example">xmpp.domain.de</string>
@@ -600,7 +600,7 @@
     <string name="please_wait_for_keys_to_be_fetched">Bitte warten, bis die Schlüssel abgerufen werden</string>
     <string name="share_as_barcode">Als Barcode teilen</string>
     <string name="share_as_uri">Als XMPP-URI teilen</string>
-    <string name="share_as_http">Als HTTP Link teilen</string>
+    <string name="share_as_http">Als HTTP-Link teilen</string>
     <string name="pref_blind_trust_before_verification">Blind vertrauen vor der Überprüfung</string>
     <string name="pref_blind_trust_before_verification_summary">Neuen Geräten von nicht verifizierten Kontakten vertrauen, aber bei verifizierten Kontakten eine manuelle Bestätigung der neuen Geräte verlangen.</string>
     <string name="blindly_trusted_omemo_keys">Blind vertraute OMEMO-Schlüssel bedeutet, dass es sich um eine andere Person handeln könnte oder dass jemand sie abgehört haben könnte.</string>
@@ -728,7 +728,7 @@
     <string name="copy_jabber_id">XMPP-Adresse kopieren</string>
     <string name="p1_s3_filetransfer">HTTP-Dateifreigabe für S3</string>
     <string name="pref_start_search">Direkte Suche </string>
-    <string name="pref_start_search_summary">Beim Dialog \'Neuer Chat\' Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
+    <string name="pref_start_search_summary">Beim Dialog \"Neuer Chat\" Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
     <string name="group_chat_avatar">Gruppenchat-Profilbild</string>
     <string name="host_does_not_support_group_chat_avatars">Host unterstützt keine Gruppenchat-Profilbilder</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Nur der Eigentümer kann das Gruppenchat-Profilbild ändern</string>
