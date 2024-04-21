@@ -1066,7 +1066,7 @@
     <string name="pref_category_server_connection">Conexión al servidor</string>
     <string name="pref_category_operating_system">Sistema operativo</string>
     <string name="pref_category_on_this_device">En el dispositivo</string>
-    <string name="pref_large_font">Fuente grande</string>
+    <string name="pref_large_font">Texto grande</string>
     <string name="pref_large_font_summary">Aumentar el tamaño del texto en las burbujas de mensajes</string>
     <string name="corresponding_chats_closed">Chats correspondientes archivados.</string>
     <string name="pref_dynamic_colors">Colores dinámicos</string>
