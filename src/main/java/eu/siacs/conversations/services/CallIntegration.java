@@ -43,7 +43,10 @@ public class CallIntegration extends Connection {
                                 // managed
                     "RMX1921", // Realme XT (Android 9-10) shows "Call not sent" dialog
                     "RMX1971", // Realme 5 Pro (Android 9-11), show "Call not sent" dialog
-                    "RMX1973" // Realme 5 Pro (see above)
+                    "RMX1973", // Realme 5 Pro (see above),
+                    "RMX2071", // Realme X50 Pro 5G (Call not sent)
+                    "RMX2075L1", // Realme X50 Pro 5G
+                    "RMX2076" // Realme X50 Pro 5G
                     );
 
     public static final int DEFAULT_TONE_VOLUME = 60;
