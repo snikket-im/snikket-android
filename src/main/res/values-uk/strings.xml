@@ -646,7 +646,7 @@
     <string name="pref_notifications_from_strangers">Сповіщення від незнайомців</string>
     <string name="pref_notifications_from_strangers_summary">Сповіщати про повідомлення і виклики від незнайомців.</string>
     <string name="received_message_from_stranger">Отримано повідомлення від незнайомця</string>
-    <string name="block_stranger">Заблокувати невідомий контакт</string>
+    <string name="block_stranger">Заблокувати незнайомців</string>
     <string name="block_entire_domain">Заблокувати весь домен</string>
     <string name="online_right_now">зараз у мережі</string>
     <string name="retry_decryption">Спробувати знову розшифрувати</string>
@@ -1112,4 +1112,6 @@
     <string name="send_encrypted_message">Зашифроване повідомлення</string>
     <string name="pref_large_font">Великий шрифт</string>
     <string name="pref_large_font_summary">Збільшити розмір шрифту повідомлень</string>
+    <string name="pref_accept_invites_from_strangers">Запрошення від незнайомців</string>
+    <string name="pref_accept_invites_from_strangers_summary">Приймати запрошення до групових чатів від незнайомців</string>
 </resources>
