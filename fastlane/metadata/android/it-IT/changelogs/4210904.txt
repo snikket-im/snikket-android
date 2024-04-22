@@ -1,0 +1,2 @@
+* Corretta registrazione a Quicksy su Android 6/7
+* Riproduci suoneria per chiamate in arrivo nel canale di notifica
