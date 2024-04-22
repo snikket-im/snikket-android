@@ -276,7 +276,7 @@
     <string name="ignore">Ignora</string>
     <string name="without_mutual_presence_updates"><b>Attenzione:</b> inviarlo senza aggiornamenti della presenza reciproci può causare problemi inaspettati.\n\n<small>Vai nei dettagli del contatto per verificare le tue sottoscrizioni alla presenza.</small></string>
     <string name="pref_security_settings">Sicurezza</string>
-    <string name="pref_allow_message_correction">Correzione del messaggio</string>
+    <string name="pref_allow_message_correction">Correzione dei messaggi</string>
     <string name="pref_allow_message_correction_summary">Consenti ai tuoi contatti di modificare retroattivamente i loro messaggi</string>
     <string name="pref_expert_options">Impostazioni per esperti</string>
     <string name="pref_expert_options_summary">Fai attenzione con queste impostazioni</string>
@@ -566,8 +566,8 @@
     <string name="pref_theme_options">Tema</string>
     <string name="pref_theme_options_summary">Seleziona il colore</string>
     <string name="pref_theme_automatic">Automatica</string>
-    <string name="pref_theme_light">Chiaro</string>
-    <string name="pref_theme_dark">Scuro</string>
+    <string name="pref_theme_light">Chiara</string>
+    <string name="pref_theme_dark">Scura</string>
     <string name="unable_to_connect_to_keychain">Impossibile connettersi a OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Questo dispositivo non è più in uso</string>
     <string name="type_pc">Computer</string>
@@ -1050,11 +1050,11 @@
     <string name="pref_category_operating_system">Sistema operativo</string>
     <string name="pref_connection_summary_w_cd">Nome host e porta, Tor, scoperta dei canali</string>
     <string name="pref_keyboard_options">Tastiera</string>
-    <string name="pref_category_engagement_notifications">Notifiche di coinvolgimento</string>
+    <string name="pref_category_engagement_notifications">Notifiche di partecipazione</string>
     <string name="pref_category_application">Applicazione</string>
     <string name="pref_category_interaction">Interazione</string>
     <string name="pref_category_on_this_device">Sul dispositivo</string>
-    <string name="pref_up_long_summary">Quando si agisce come distributore di UnifiedPush, la connessione XMPP persistente, affidabile e a basso consumo di batteria viene usata per risvegliare altre app compatibili con UnifiedPush, come Tusky, Ltt.rs, FluffyChat ed altre.</string>
+    <string name="pref_up_long_summary">Quando si agisce come distributore di UnifiedPush, viene usata la connessione XMPP persistente, affidabile e a basso consumo di batteria per risvegliare altre app compatibili con UnifiedPush, come Tusky, Ltt.rs, FluffyChat ed altre.</string>
     <string name="contact_list_integration_not_available">L\'integrazione dell\'elenco di contatti non è disponibile</string>
     <string name="privacy_policy">Informativa sulla privacy</string>
     <string name="no_permission_to_place_call">Autorizzazione mancante per effettuare una chiamata</string>
