@@ -1083,4 +1083,6 @@
     <string name="send_encrypted_message">Trimite mesaj criptat</string>
     <string name="pref_large_font">Font mare</string>
     <string name="pref_large_font_summary">Mărește fontul pentru textul din mesaje</string>
+    <string name="pref_accept_invites_from_strangers">Invitații de la persoane necunoscute</string>
+    <string name="pref_accept_invites_from_strangers_summary">Acceptă invitații la discuții de grup de la persoane care nu sunt în lista de contacte</string>
 </resources>
