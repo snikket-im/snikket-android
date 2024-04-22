@@ -25,6 +25,7 @@
     <integer name="automatic_message_deletion">0</integer>
     <bool name="trust_system_ca_store">true</bool>
     <bool name="allow_message_correction">true</bool>
+    <bool name="accept_invites_from_strangers">true</bool>
     <bool name="use_tor">false</bool>
     <bool name="show_connection_options">false</bool>
     <bool name="display_enter_key">false</bool>

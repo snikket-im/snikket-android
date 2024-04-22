@@ -44,6 +44,8 @@ public class AppSettings {
     public static final String COLORFUL_CHAT_BUBBLES = "use_green_background";
     public static final String LARGE_FONT = "large_font";
 
+    private static final String ACCEPT_INVITES_FROM_STRANGERS = "accept_invites_from_strangers";
+
     private final Context context;
 
     public AppSettings(final Context context) {
@@ -105,6 +107,11 @@ public class AppSettings {
 
     public boolean isUseTor() {
         return getBooleanPreference(USE_TOR, R.bool.use_tor);
+    }
+
+    public boolean isAcceptInvitesFromStrangers() {
+        return getBooleanPreference(
+                ACCEPT_INVITES_FROM_STRANGERS, R.bool.accept_invites_from_strangers);
     }
 
     private boolean getBooleanPreference(@NonNull final String name, @BoolRes int res) {
