@@ -1,0 +1,2 @@
+* Solución para crear conta con Quicksy en Android 6/7
+* Reproducir ton de chamada recibida na canle de notificación
