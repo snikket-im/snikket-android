@@ -1,0 +1,2 @@
+* Naprawienie rejestracji w Quicksy w Androidzie 6/7
+* Odtwarzanie dzwonka połączenia przychodzącego w kanale powiadomień
