@@ -1022,7 +1022,7 @@
     <string name="channel_discover_opt_in_message">频道发现使用称为 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; 的第三方服务。&lt;br&gt;&lt;br&gt;使用此功能会将您的 IP 地址和搜索词传输到此服务。请参阅其 &lt;a href=https://search.jabber.network/privacy&gt;隐私政策&lt;/a&gt; 以获取更多信息。</string>
     <string name="start_chat">开始聊天</string>
     <string name="title_activity_share_with">分享至…</string>
-    <string name="pref_use_colorful_bubbles_summary">已发送和已接收消息的背景颜色各不相同</string>
+    <string name="pref_use_colorful_bubbles_summary">为已发送和已接收消息使用不同的背景颜色</string>
     <string name="no_certificate_selected">未选择客户端证书！</string>
     <string name="pref_use_colorful_bubbles">彩色聊天气泡</string>
     <string name="pref_dynamic_colors">动态色彩</string>
@@ -1070,4 +1070,6 @@
     <string name="send_encrypted_message">发送加密消息</string>
     <string name="pref_large_font">大字体</string>
     <string name="pref_large_font_summary">增加消息气泡中的字体大小</string>
+    <string name="pref_accept_invites_from_strangers">来自陌生人的邀请</string>
+    <string name="pref_accept_invites_from_strangers_summary">接受来自陌生人的群聊邀请</string>
 </resources>
