@@ -1,0 +1,2 @@
+* 在 Play 商店版本（Quicksy 和 Conversations）上提供對“隱私政策”的更輕鬆訪問
+* 移除 Play 商店版本的 Conversations 上的通訊錄整合功能

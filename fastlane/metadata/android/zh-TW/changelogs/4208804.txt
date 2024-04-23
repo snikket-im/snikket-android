@@ -1,0 +1,3 @@
+* 支持通過 WebRTC 數據通道進行 P2P 文件傳輸
+* 修復 ejabberd 上 Bind 2.0 的互操作性問題
+* 捆綁適用於 Android <= 7 的 Let’s Encrypt 根證書
