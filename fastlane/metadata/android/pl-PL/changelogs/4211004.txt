@@ -1,0 +1,2 @@
+* Naprawienie integracji rozmów na niektórych urządzeniach z Androidem 14
+* Wprowadzenie ustawienia „Zaproszenia od nieznajomych”
