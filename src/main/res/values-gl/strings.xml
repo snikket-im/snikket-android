@@ -1066,4 +1066,6 @@
     <string name="send_encrypted_message">Enviar mensaxe cifrada</string>
     <string name="pref_large_font">Letra grande</string>
     <string name="pref_large_font_summary">Aumentar o tamaño da letra das mensaxes</string>
+    <string name="pref_accept_invites_from_strangers">Convites de descoñecidas</string>
+    <string name="pref_accept_invites_from_strangers_summary">Aceptar convites de persoas descoñecidas para grupos</string>
 </resources>
