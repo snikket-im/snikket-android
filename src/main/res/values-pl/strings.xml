@@ -65,7 +65,7 @@
     <string name="save">Zapisz</string>
     <string name="ok">Ok</string>
     <string name="crash_report_title">%1$s uległo awarii</string>
-    <string name="crash_report_message">Używając swojego konta XMPP do wysyłania śladów stosu pomagasz w rozwoju %1$s.</string>
+    <string name="crash_report_message">Używanie Twojego konta XMPP do wysyłania śladów stosu pomaga w ciągłym rozwoju %1$s.</string>
     <string name="send_now">Wyślij teraz</string>
     <string name="send_never">Nie pytaj ponownie</string>
     <string name="problem_connecting_to_account">Nie można połączyć z kontem</string>
@@ -122,7 +122,7 @@
     <string name="pref_notification_grace_period">Czas bez powiadomień</string>
     <string name="pref_notification_grace_period_summary">Długość czasu kiedy powiadomienia są uśpione po wykryciu aktywności na jednym z twoich innych urządzeń.</string>
     <string name="pref_advanced_options">Zaawansowane</string>
-    <string name="pref_never_send_crash_summary">Wysyłając nam ślady stosu pomagasz w rozwoju</string>
+    <string name="pref_never_send_crash_summary">Wysyłając ślady stosu pomagasz w rozwoju</string>
     <string name="pref_confirm_messages">Potwierdzenia wiadomości</string>
     <string name="pref_confirm_messages_summary">Zezwól na wysyłanie do osób z twojej listy kontaktów informacji o tym, kiedy otrzymałeś i przeczytałeś wiadomość od nich</string>
     <string name="pref_prevent_screenshots">Zapobiegaj zrzutom ekranu</string>
@@ -527,9 +527,9 @@
     <string name="large_images_only">Tylko duże obrazki</string>
     <string name="battery_optimizations_enabled">Optymalizacje zużycia baterii włączone</string>
     <string name="battery_optimizations_enabled_explained">Twoje urządzenie ma włączone agresywne oszczędzanie baterii przez co %1$s może odbierać wiadomości z opóźnieniem.\nZalecamy wyłączenie tych optymalizacji.</string>
-    <string name="battery_optimizations_enabled_dialog">Twoje urządzenie stosuje agresywne oszczędzanie baterii, przez co %1$s może odbierać wiadomości z opóźnieniem lub je tracić.
+    <string name="battery_optimizations_enabled_dialog">Twoje urządzenie stosuje agresywne oszczędzanie baterii, przez co %1$s może odbierać wiadomości z opóźnieniem lub nawet je tracić.
 \n
-\nZostaniesz poproszony o jego wyłączenie.</string>
+\nZostaniesz poproszony o wyłączenie tej funkcjonalności.</string>
     <string name="disable">Wyłącz</string>
     <string name="selection_too_large">Zaznaczony obszar jest zbyt duży</string>
     <string name="no_accounts">(Brak aktywynych kont)</string>
@@ -1048,7 +1048,7 @@
     <string name="action_archive_chat">Archiwizuj rozmowę</string>
     <string name="title_activity_new_chat">Nowa rozmowa</string>
     <string name="archive_this_chat">Archiwizuj tę rozmowę</string>
-    <string name="pref_use_colorful_bubbles">Kolorowe bańki rozmowy</string>
+    <string name="pref_use_colorful_bubbles">Kolorowe dymki rozmowy</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_chat">Kod kreskowy nie zawiera odcisków palca dla tej rozmowy.</string>
     <string name="corresponding_chats_closed">Powiązane rozmowy zarchiwizowane.</string>
     <string name="start_chat">Rozpocznij rozmowę</string>
@@ -1091,7 +1091,7 @@
     <string name="pref_category_application">Aplikacja</string>
     <string name="pref_category_interaction">Interakcja</string>
     <string name="pref_category_on_this_device">Na urządzeniu</string>
-    <string name="pref_large_font_summary">Zwiększ rozmiar czcionki w bańkach wiadomości</string>
+    <string name="pref_large_font_summary">Zwiększ rozmiar czcionki w dymkach wiadomości</string>
     <string name="pref_use_colorful_bubbles_summary">Różne kolory tła dla wysłanych i odebranych wiadomości</string>
     <string name="send_encrypted_message">Wyślij zaszyfrowaną wiadomość</string>
     <string name="welcome_header">Dołącz do rozmowy</string>
