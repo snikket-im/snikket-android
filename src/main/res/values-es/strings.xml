@@ -1078,4 +1078,6 @@
     <string name="no_certificate_selected">¡No se ha seleccionado ningún certificado de cliente!</string>
     <string name="pref_attachments_summary">Tamaño de archivo, Compresión de imagen, Calidad de vídeo</string>
     <string name="pref_allow_screenshots_summary">Mostrar el contenido de la aplicación en el conmutador de aplicaciones y permitir la realización de capturas de pantalla</string>
+    <string name="pref_accept_invites_from_strangers">Invitaciones de extraños</string>
+    <string name="pref_accept_invites_from_strangers_summary">Aceptar invitaciones a chats grupales de extraños</string>
 </resources>
