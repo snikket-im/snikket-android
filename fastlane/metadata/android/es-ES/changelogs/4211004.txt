@@ -1,0 +1,2 @@
+* arreglar la integración de llamadas en algunos dispositivos con Android 14
+* Introducir la configuración 'Invitaciones de extraños'
