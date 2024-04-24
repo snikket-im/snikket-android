@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_notification_grace_period_summary">Czas, przez który Quicksy jest cicho po zobaczeniu aktywności na innym urządzeniu</string>
-    <string name="pref_never_send_crash_summary">Wysyłając nam ślady stosu pomagasz w rozwoju Quicksy</string>
+    <string name="pref_never_send_crash_summary">Wysyłając ślady stosu pomagasz w ciągłym rozwoju Quicksy</string>
     <string name="pref_broadcast_last_activity_summary">Powiadom kontakty o tym że używasz Quicksy</string>
     <string name="huawei_protected_apps_summary">Aby otrzymywać powiadomienia nawet kiedy ekran jest wyłączony musisz dodać Quicksy do listy chronionych aplikacji.</string>
     <string name="set_profile_picture">Obrazek profilowy Quicksy</string>
