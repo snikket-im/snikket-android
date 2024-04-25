@@ -1016,7 +1016,7 @@
     <string name="this_account_is_logged_out">V-ați deconectat de la acest cont</string>
     <string name="log_in">Conectați-vă</string>
     <string name="hide_notification">Ascunde notificare</string>
-    <string name="contact_uses_unverified_keys">Persoana de contact utilizează dispozitive neverificate. Scanați codul QR al acestora pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
+    <string name="contact_uses_unverified_keys">Persoana de contact utilizează dispozitive neverificate. Scanați codul QR al acesteia pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
     <string name="log_out">Deconectare</string>
     <string name="account_state_logged_out">Deconectat</string>
     <string name="unverified_devices">Folosiți dispozitive neverificate. Scanați codul QR pe celelalte dispozitive pentru a efectua verificarea și a împiedica atacurile MITM active.</string>
