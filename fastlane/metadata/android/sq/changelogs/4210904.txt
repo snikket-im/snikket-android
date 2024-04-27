@@ -1,0 +1,2 @@
+* Ndreqje regjistrimi Quicksy në Android 6/7
+* Luajtje e ziles së thirrjes ardhëse në kanal njoftimi
