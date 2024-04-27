@@ -1022,7 +1022,7 @@
     <string name="remove_bookmark_and_close">Doni të hiqet faqerojtësi për %s dhe arkivohet fjalosja?</string>
     <string name="delete_and_close">Fshije &amp; Arkivoje fjalosjen</string>
     <string name="remove_bookmark">Doni të hiqet faqerojtësi për %s?</string>
-    <string name="pref_use_colorful_bubbles_summary">Flluska të ngjyrosura fjalosjeje ndihmojnë të dalloni mesazhe të dërguar dhe të marrë</string>
+    <string name="pref_use_colorful_bubbles_summary">Ngjyra të dallueshme sfondi për mesazhe të dërguar dhe të marrë</string>
     <string name="pref_dynamic_colors">Ngjyra dinamike</string>
     <string name="pref_dynamic_colors_summary">Ngjyra Sistemi (Material You)</string>
     <string name="possible_pin">U ngjit automatikisht nga e papastra PIN i mundshëm.</string>
@@ -1074,4 +1074,8 @@
     <string name="pref_up_long_summary">Kur veprohet si një Distributor UnifiedPush, për të zgjuar aplikacion tjetër të përputhshëm me UnifiedPush , fjala vjen, Tusky, Ltt.rs, FluffyChat, etj, do të përdoret lidhja XMPP, e vazhdueshme, e qëndrueshme dhe miqësore ndaj baterisë.</string>
     <string name="unified_push_distributor">Distributor UnifiedPush</string>
     <string name="send_encrypted_message">Dërgo mesazh të fshehtëzuar</string>
+    <string name="pref_accept_invites_from_strangers">Ftesa nga të panjohur</string>
+    <string name="pref_accept_invites_from_strangers_summary">Prano ftesa për fjalosje në grup nga të panjohur</string>
+    <string name="pref_large_font">Shkronja të mëdha</string>
+    <string name="pref_large_font_summary">Rrit madhësi shkronja në flluska mesazhesh</string>
 </resources>
