@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="snikket_intro"><b>Snikket</b> – это безопасное приложение для чата, обеспечивающее конфиденциальность.
+\n
+\nДля начала вам понадобится приглашение от другого друга, использующего Snikket.
+\n
+\nЕсли у вас уже есть приглашение, сейчас самое время открыть его и нажать кнопку «Открыть приложение»!</string>
+    <string name="learn_more">Узнать больше</string>
+</resources>
