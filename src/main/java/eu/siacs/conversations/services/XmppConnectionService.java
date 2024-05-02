@@ -2751,7 +2751,9 @@ public class XmppConnectionService extends Service {
             };
             mDatabaseWriterExecutor.execute(runnable);
             this.accounts.remove(account);
-            CallIntegrationConnectionService.unregisterPhoneAccount(this, account);
+            if (CallIntegration.hasSystemFeature(this)) {
+                CallIntegrationConnectionService.unregisterPhoneAccount(this, account);
+            }
             this.mRosterSyncTaskManager.clear(account);
             updateAccountUi();
             mNotificationService.updateErrorNotification();
