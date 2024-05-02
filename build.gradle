@@ -50,6 +50,7 @@ dependencies {
     implementation "androidx.preference:preference:1.2.1"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.work:work-runtime:2.9.0'
 
     implementation "androidx.emoji2:emoji2:1.4.0"
     freeImplementation "androidx.emoji2:emoji2-bundled:1.4.0"

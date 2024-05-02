@@ -1,6 +1,5 @@
 package eu.siacs.conversations.ui.fragment.settings;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -13,13 +12,11 @@ import androidx.preference.Preference;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Strings;
-import com.google.common.primitives.Ints;
 
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.services.MemorizingTrustManager;
-import eu.siacs.conversations.utils.TimeFrameUtils;
 
 import java.security.KeyStoreException;
 import java.util.ArrayList;
@@ -44,20 +41,13 @@ public class SecuritySettingsFragment extends XmppPreferenceFragment {
         final CharSequence[] entryValues = new CharSequence[choices.length];
         for (int i = 0; i < choices.length; ++i) {
             entryValues[i] = String.valueOf(choices[i]);
-            entries[i] = messageDeletionValueToName(requireContext(), choices[i]);
+            entries[i] = timeframeValueToName(requireContext(), choices[i]);
         }
         automaticMessageDeletion.setEntries(entries);
         automaticMessageDeletion.setEntryValues(entryValues);
-        automaticMessageDeletion.setSummaryProvider(new MessageDeletionSummaryProvider());
+        automaticMessageDeletion.setSummaryProvider(new TimeframeSummaryProvider());
     }
 
-    private static String messageDeletionValueToName(final Context context, final int value) {
-        if (value == 0) {
-            return context.getString(R.string.never);
-        } else {
-            return TimeFrameUtils.resolve(context, 1000L * value);
-        }
-    }
 
     @Override
     protected void onSharedPreferenceChanged(@NonNull String key) {
@@ -161,16 +151,6 @@ public class SecuritySettingsFragment extends XmppPreferenceFragment {
                 .show();
     }
 
-    private static class MessageDeletionSummaryProvider
-            implements Preference.SummaryProvider<ListPreference> {
-
-        @Nullable
-        @Override
-        public CharSequence provideSummary(@NonNull ListPreference preference) {
-            final Integer value = Ints.tryParse(Strings.nullToEmpty(preference.getValue()));
-            return messageDeletionValueToName(preference.getContext(), value == null ? 0 : value);
-        }
-    }
 
     private static class OmemoSummaryProvider
             implements Preference.SummaryProvider<ListPreference> {

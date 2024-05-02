@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="@integer/automatic_message_deletion"
+        android:icon="@drawable/ic_calendar_month_24dp"
+        android:key="recurring_backup"
+        android:title="@string/pref_backup_recurring" />
+
+    <Preference
+        android:icon="@drawable/ic_archive_24dp"
+        android:key="create_one_off_backup"
+        android:summary="@string/pref_create_backup_one_off_summary"
+        android:title="@string/pref_create_backup" />
+
+    <Preference
+        android:key="backup_directory"
+        android:summary="@string/pref_create_backup_summary" />
+
+</PreferenceScreen>

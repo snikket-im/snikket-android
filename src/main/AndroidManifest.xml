@@ -116,9 +116,9 @@
         </service>
 
         <service
-            android:name=".services.ExportBackupService"
-            android:exported="false"
-            android:foregroundServiceType="dataSync" />
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync"
+            tools:node="merge" />
 
         <service
             android:name=".services.ImportBackupService"

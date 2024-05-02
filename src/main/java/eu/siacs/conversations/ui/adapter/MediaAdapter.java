@@ -23,10 +23,10 @@ import com.google.common.base.Strings;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ItemMediaBinding;
-import eu.siacs.conversations.services.ExportBackupService;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.ViewUtil;
+import eu.siacs.conversations.worker.ExportBackupWorker;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -99,7 +99,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         } else if (mime.equals("application/epub+zip")
                 || mime.equals("application/vnd.amazon.mobi8-ebook")) {
             return R.drawable.ic_book_48dp;
-        } else if (mime.equals(ExportBackupService.MIME_TYPE)) {
+        } else if (mime.equals(ExportBackupWorker.MIME_TYPE)) {
             return R.drawable.ic_backup_48dp;
         } else if (DOCUMENT_MIMES.contains(mime)) {
             return R.drawable.ic_description_48dp;
