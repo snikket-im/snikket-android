@@ -12,8 +12,6 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -25,10 +23,6 @@ import androidx.core.content.ContextCompat;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class Compatibility {
 
@@ -100,7 +94,7 @@ public class Compatibility {
     }
 
 
-    public static void startService(Context context, Intent intent) {
+    public static void startService(final Context context, final Intent intent) {
         try {
             if (Compatibility.runsAndTargetsTwentySix(context)) {
                 intent.putExtra(EXTRA_NEEDS_FOREGROUND_SERVICE, true);
@@ -108,7 +102,7 @@ public class Compatibility {
             } else {
                 context.startService(intent);
             }
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             Log.d(
                     Config.LOGTAG,
                     context.getClass().getSimpleName() + " was unable to start service");
