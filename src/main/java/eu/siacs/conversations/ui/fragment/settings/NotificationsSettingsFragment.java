@@ -119,7 +119,7 @@ public class NotificationsSettingsFragment extends XmppPreferenceFragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             channelRingtone =
                     NotificationService.getCurrentIncomingCallChannel(requireContext())
-                            .transform(NotificationChannel::getSound);
+                            .transform(channel -> PickRingtone.nullToNone(channel.getSound()));
         } else {
             channelRingtone = Optional.absent();
         }
