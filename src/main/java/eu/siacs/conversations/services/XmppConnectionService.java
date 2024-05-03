@@ -128,6 +128,7 @@ import eu.siacs.conversations.parser.PresenceParser;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.persistance.UnifiedPushDatabase;
+import eu.siacs.conversations.receiver.SystemEventReceiver;
 import eu.siacs.conversations.ui.ChooseAccountForProfilePictureActivity;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.RtpSessionActivity;
@@ -678,7 +679,7 @@ public class XmppConnectionService extends Service {
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
         final String action = Strings.nullToEmpty(intent == null ? null : intent.getAction());
-        final boolean needsForegroundService = intent != null && intent.getBooleanExtra(EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE, false);
+        final boolean needsForegroundService = intent != null && intent.getBooleanExtra(SystemEventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE, false);
         if (needsForegroundService) {
             Log.d(Config.LOGTAG, "toggle forced foreground service after receiving event (action=" + action + ")");
             toggleForegroundService(true);
@@ -1286,7 +1287,7 @@ public class XmppConnectionService extends Service {
         this.accounts = databaseBackend.getAccounts();
         final SharedPreferences.Editor editor = getPreferences().edit();
         final boolean hasEnabledAccounts = hasEnabledAccounts();
-        editor.putBoolean(EventReceiver.SETTING_ENABLED_ACCOUNTS, hasEnabledAccounts).apply();
+        editor.putBoolean(SystemEventReceiver.SETTING_ENABLED_ACCOUNTS, hasEnabledAccounts).apply();
         editor.apply();
         toggleSetProfilePictureActivity(hasEnabledAccounts);
         reconfigurePushDistributor();
@@ -1582,7 +1583,7 @@ public class XmppConnectionService extends Service {
             return;
         }
         final long triggerAtMillis = SystemClock.elapsedRealtime() + (Config.POST_CONNECTIVITY_CHANGE_PING_INTERVAL * 1000);
-        final Intent intent = new Intent(this, EventReceiver.class);
+        final Intent intent = new Intent(this, SystemEventReceiver.class);
         intent.setAction(ACTION_POST_CONNECTIVITY_CHANGE);
         try {
             final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, s()
@@ -1604,7 +1605,7 @@ public class XmppConnectionService extends Service {
         if (alarmManager == null) {
             return;
         }
-        final Intent intent = new Intent(this, EventReceiver.class);
+        final Intent intent = new Intent(this, SystemEventReceiver.class);
         intent.setAction(ACTION_PING);
         try {
             final PendingIntent pendingIntent =
@@ -1623,7 +1624,7 @@ public class XmppConnectionService extends Service {
         if (alarmManager == null) {
             return;
         }
-        final Intent intent = new Intent(this, EventReceiver.class);
+        final Intent intent = new Intent(this, SystemEventReceiver.class);
         intent.setAction(ACTION_IDLE_PING);
         try {
             final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, s()
@@ -2573,7 +2574,7 @@ public class XmppConnectionService extends Service {
 
     private void syncEnabledAccountSetting() {
         final boolean hasEnabledAccounts = hasEnabledAccounts();
-        getPreferences().edit().putBoolean(EventReceiver.SETTING_ENABLED_ACCOUNTS, hasEnabledAccounts).apply();
+        getPreferences().edit().putBoolean(SystemEventReceiver.SETTING_ENABLED_ACCOUNTS, hasEnabledAccounts).apply();
         toggleSetProfilePictureActivity(hasEnabledAccounts);
     }
 

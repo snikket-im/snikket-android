@@ -11,6 +11,7 @@ import android.content.pm.ServiceInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import androidx.work.WorkerParameters;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.gson.stream.JsonWriter;
 
 import eu.siacs.conversations.Config;
@@ -31,6 +33,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.receiver.WorkManagerEventReceiver;
 import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.Compatibility;
 
@@ -65,7 +68,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class ExportBackupWorker extends Worker {
 
     private static final SimpleDateFormat DATE_FORMAT =
-            new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            new SimpleDateFormat("yyyy-MM-dd-HH-mm", Locale.US);
 
     public static final String KEYTYPE = "AES";
     public static final String CIPHERMODE = "AES/GCM/NoPadding";
@@ -75,6 +78,11 @@ public class ExportBackupWorker extends Worker {
 
     private static final int NOTIFICATION_ID = 19;
     private static final int BACKUP_CREATED_NOTIFICATION_ID = 23;
+
+    private static final int PENDING_INTENT_FLAGS =
+            s()
+                    ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                    : PendingIntent.FLAG_UPDATE_CURRENT;
 
     private final boolean recurringBackup;
 
@@ -99,9 +107,12 @@ public class ExportBackupWorker extends Worker {
                 | NoSuchProviderException e) {
             Log.d(Config.LOGTAG, "could not create backup", e);
             return Result.failure();
+        } finally {
+            getApplicationContext()
+                    .getSystemService(NotificationManager.class)
+                    .cancel(NOTIFICATION_ID);
         }
         Log.d(Config.LOGTAG, "done creating " + files.size() + " backup files");
-        getApplicationContext().getSystemService(NotificationManager.class).cancel(NOTIFICATION_ID);
         if (files.isEmpty() || recurringBackup) {
             return Result.success();
         }
@@ -113,13 +124,7 @@ public class ExportBackupWorker extends Worker {
     @Override
     public ForegroundInfo getForegroundInfo() {
         Log.d(Config.LOGTAG, "getForegroundInfo()");
-        final var context = getApplicationContext();
-        final NotificationCompat.Builder notification =
-                new NotificationCompat.Builder(context, "backup");
-        notification
-                .setContentTitle(context.getString(R.string.notification_create_backup_title))
-                .setSmallIcon(R.drawable.ic_archive_24dp)
-                .setProgress(1, 0, false);
+        final NotificationCompat.Builder notification = getNotification();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             return new ForegroundInfo(
                     NOTIFICATION_ID,
@@ -144,10 +149,13 @@ public class ExportBackupWorker extends Worker {
 
         int count = 0;
         final int max = accounts.size();
-        final SecureRandom secureRandom = new SecureRandom();
-        final List<File> files = new ArrayList<>();
+        final ImmutableList.Builder<File> files = new ImmutableList.Builder<>();
         Log.d(Config.LOGTAG, "starting backup for " + max + " accounts");
         for (final Account account : accounts) {
+            if (isStopped()) {
+                Log.d(Config.LOGTAG, "ExportBackupWorker has stopped. Returning what we have");
+                return files.build();
+            }
             final String password = account.getPassword();
             if (Strings.nullToEmpty(password).trim().isEmpty()) {
                 Log.d(
@@ -155,84 +163,140 @@ public class ExportBackupWorker extends Worker {
                         String.format(
                                 "skipping backup for %s because password is empty. unable to encrypt",
                                 account.getJid().asBareJid()));
+                count++;
                 continue;
             }
-            Log.d(
-                    Config.LOGTAG,
-                    String.format(
-                            "exporting data for account %s (%s)",
-                            account.getJid().asBareJid(), account.getUuid()));
-            final byte[] IV = new byte[12];
-            final byte[] salt = new byte[16];
-            secureRandom.nextBytes(IV);
-            secureRandom.nextBytes(salt);
-            final BackupFileHeader backupFileHeader =
-                    new BackupFileHeader(
-                            context.getString(R.string.app_name),
-                            account.getJid(),
-                            System.currentTimeMillis(),
-                            IV,
-                            salt);
-            final NotificationCompat.Builder notification =
-                    new NotificationCompat.Builder(context, "backup");
-            notification
-                    .setContentTitle(context.getString(R.string.notification_create_backup_title))
-                    .setSmallIcon(R.drawable.ic_archive_24dp)
-                    .setProgress(1, 0, false);
-            final Progress progress = new Progress(notification, max, count);
             final String filename =
                     String.format(
                             "%s.%s.ceb",
                             account.getJid().asBareJid().toEscapedString(),
                             DATE_FORMAT.format(new Date()));
             final File file = new File(FileBackend.getBackupDirectory(context), filename);
+            try {
+                export(database, account, password, file, max, count);
+            } catch (final WorkStoppedException e) {
+                if (file.delete()) {
+                    Log.d(
+                            Config.LOGTAG,
+                            "deleted in progress backup file " + file.getAbsolutePath());
+                }
+                Log.d(Config.LOGTAG, "ExportBackupWorker has stopped. Returning what we have");
+                return files.build();
+            }
             files.add(file);
-            final File directory = file.getParentFile();
-            if (directory != null && directory.mkdirs()) {
-                Log.d(Config.LOGTAG, "created backup directory " + directory.getAbsolutePath());
-            }
-            final FileOutputStream fileOutputStream = new FileOutputStream(file);
-            final DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
-            backupFileHeader.write(dataOutputStream);
-            dataOutputStream.flush();
-
-            final Cipher cipher =
-                    Compatibility.twentyEight()
-                            ? Cipher.getInstance(CIPHERMODE)
-                            : Cipher.getInstance(CIPHERMODE, PROVIDER);
-            final byte[] key = getKey(password, salt);
-            SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
-            IvParameterSpec ivSpec = new IvParameterSpec(IV);
-            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-            CipherOutputStream cipherOutputStream =
-                    new CipherOutputStream(fileOutputStream, cipher);
-
-            final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(cipherOutputStream);
-            final JsonWriter jsonWriter =
-                    new JsonWriter(
-                            new OutputStreamWriter(gzipOutputStream, StandardCharsets.UTF_8));
-            jsonWriter.beginArray();
-            final SQLiteDatabase db = database.getReadableDatabase();
-            final String uuid = account.getUuid();
-            accountExport(db, uuid, jsonWriter);
-            simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, jsonWriter);
-            messageExport(db, uuid, jsonWriter, progress);
-            for (final String table :
-                    Arrays.asList(
-                            SQLiteAxolotlStore.PREKEY_TABLENAME,
-                            SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME,
-                            SQLiteAxolotlStore.SESSION_TABLENAME,
-                            SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
-                simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, jsonWriter);
-            }
-            jsonWriter.endArray();
-            jsonWriter.flush();
-            jsonWriter.close();
-            mediaScannerScanFile(file);
-            Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
             count++;
         }
-        return files;
+        return files.build();
+    }
+
+    private void export(
+            final DatabaseBackend database,
+            final Account account,
+            final String password,
+            final File file,
+            final int max,
+            final int count)
+            throws IOException,
+                    InvalidKeySpecException,
+                    InvalidAlgorithmParameterException,
+                    InvalidKeyException,
+                    NoSuchPaddingException,
+                    NoSuchAlgorithmException,
+                    NoSuchProviderException,
+                    WorkStoppedException {
+        final var context = getApplicationContext();
+        final SecureRandom secureRandom = new SecureRandom();
+        Log.d(
+                Config.LOGTAG,
+                String.format(
+                        "exporting data for account %s (%s)",
+                        account.getJid().asBareJid(), account.getUuid()));
+        final byte[] IV = new byte[12];
+        final byte[] salt = new byte[16];
+        secureRandom.nextBytes(IV);
+        secureRandom.nextBytes(salt);
+        final BackupFileHeader backupFileHeader =
+                new BackupFileHeader(
+                        context.getString(R.string.app_name),
+                        account.getJid(),
+                        System.currentTimeMillis(),
+                        IV,
+                        salt);
+        final var notification = getNotification();
+        if (!recurringBackup) {
+            final var cancel = new Intent(context, WorkManagerEventReceiver.class);
+            cancel.setAction(WorkManagerEventReceiver.ACTION_STOP_BACKUP);
+            final var cancelPendingIntent =
+                    PendingIntent.getBroadcast(context, 197, cancel, PENDING_INTENT_FLAGS);
+            notification.addAction(
+                    new NotificationCompat.Action.Builder(
+                                    R.drawable.ic_cancel_24dp,
+                                    context.getString(R.string.cancel),
+                                    cancelPendingIntent)
+                            .build());
+        }
+        final Progress progress = new Progress(notification, max, count);
+        final File directory = file.getParentFile();
+        if (directory != null && directory.mkdirs()) {
+            Log.d(Config.LOGTAG, "created backup directory " + directory.getAbsolutePath());
+        }
+        final FileOutputStream fileOutputStream = new FileOutputStream(file);
+        final DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
+        backupFileHeader.write(dataOutputStream);
+        dataOutputStream.flush();
+
+        final Cipher cipher =
+                Compatibility.twentyEight()
+                        ? Cipher.getInstance(CIPHERMODE)
+                        : Cipher.getInstance(CIPHERMODE, PROVIDER);
+        final byte[] key = getKey(password, salt);
+        SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
+        IvParameterSpec ivSpec = new IvParameterSpec(IV);
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+        CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
+
+        final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(cipherOutputStream);
+        final JsonWriter jsonWriter =
+                new JsonWriter(new OutputStreamWriter(gzipOutputStream, StandardCharsets.UTF_8));
+        jsonWriter.beginArray();
+        final SQLiteDatabase db = database.getReadableDatabase();
+        final String uuid = account.getUuid();
+        accountExport(db, uuid, jsonWriter);
+        simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, jsonWriter);
+        messageExport(db, uuid, jsonWriter, progress);
+        for (final String table :
+                Arrays.asList(
+                        SQLiteAxolotlStore.PREKEY_TABLENAME,
+                        SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME,
+                        SQLiteAxolotlStore.SESSION_TABLENAME,
+                        SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
+            throwIfWorkStopped();
+            simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, jsonWriter);
+        }
+        jsonWriter.endArray();
+        jsonWriter.flush();
+        jsonWriter.close();
+        mediaScannerScanFile(file);
+        Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
+    }
+
+    private NotificationCompat.Builder getNotification() {
+        final var context = getApplicationContext();
+        final NotificationCompat.Builder notification =
+                new NotificationCompat.Builder(context, "backup");
+        notification
+                .setContentTitle(context.getString(R.string.notification_create_backup_title))
+                .setSmallIcon(R.drawable.ic_archive_24dp)
+                .setProgress(1, 0, false);
+        notification.setOngoing(true);
+        notification.setLocalOnly(true);
+        return notification;
+    }
+
+    private void throwIfWorkStopped() throws WorkStoppedException {
+        if (isStopped()) {
+            throw new WorkStoppedException();
+        }
     }
 
     private void mediaScannerScanFile(final File file) {
@@ -313,7 +377,7 @@ public class ExportBackupWorker extends Worker {
             final String uuid,
             final JsonWriter writer,
             final Progress progress)
-            throws IOException {
+            throws IOException, WorkStoppedException {
         final var notificationManager =
                 getApplicationContext().getSystemService(NotificationManager.class);
         try (final Cursor cursor =
@@ -322,9 +386,11 @@ public class ExportBackupWorker extends Worker {
                         new String[] {uuid})) {
             final int size = cursor != null ? cursor.getCount() : 0;
             Log.d(Config.LOGTAG, "exporting " + size + " messages for account " + uuid);
+            long lastUpdate = 0;
             int i = 0;
-            int p = 0;
+            int p = Integer.MIN_VALUE;
             while (cursor != null && cursor.moveToNext()) {
+                throwIfWorkStopped();
                 writer.beginObject();
                 writer.name("table");
                 writer.value(Message.TABLENAME);
@@ -339,8 +405,9 @@ public class ExportBackupWorker extends Worker {
                 writer.endObject();
                 writer.endObject();
                 final int percentage = i * 100 / size;
-                if (p < percentage) {
+                if (p < percentage && (SystemClock.elapsedRealtime() - lastUpdate) > 2_000) {
                     p = percentage;
+                    lastUpdate = SystemClock.elapsedRealtime();
                     notificationManager.notify(NOTIFICATION_ID, progress.build(p));
                 }
                 i++;
@@ -377,13 +444,7 @@ public class ExportBackupWorker extends Worker {
         final Intent chooser =
                 Intent.createChooser(intent, context.getString(R.string.share_backup_files));
         final var shareFilesIntent =
-                PendingIntent.getActivity(
-                        context,
-                        190,
-                        chooser,
-                        s()
-                                ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
-                                : PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(context, 190, chooser, PENDING_INTENT_FLAGS);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "backup");
         mBuilder.setContentTitle(context.getString(R.string.notification_backup_created_title))
@@ -418,14 +479,7 @@ public class ExportBackupWorker extends Worker {
         for (final Intent intent : getPossibleFileOpenIntents(context, path)) {
             if (intent.resolveActivityInfo(context.getPackageManager(), 0) != null) {
                 return Optional.of(
-                        PendingIntent.getActivity(
-                                context,
-                                189,
-                                intent,
-                                s()
-                                        ? PendingIntent.FLAG_IMMUTABLE
-                                                | PendingIntent.FLAG_UPDATE_CURRENT
-                                        : PendingIntent.FLAG_UPDATE_CURRENT));
+                        PendingIntent.getActivity(context, 189, intent, PENDING_INTENT_FLAGS));
             }
         }
         return Optional.absent();
@@ -474,4 +528,6 @@ public class ExportBackupWorker extends Worker {
             return notification.build();
         }
     }
+
+    private static class WorkStoppedException extends Exception {}
 }

@@ -1,6 +1,6 @@
 package eu.siacs.conversations.utils;
 
-import static eu.siacs.conversations.services.EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE;
+import static eu.siacs.conversations.receiver.SystemEventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;

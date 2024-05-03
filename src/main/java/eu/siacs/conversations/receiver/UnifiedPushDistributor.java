@@ -1,4 +1,4 @@
-package eu.siacs.conversations.services;
+package eu.siacs.conversations.receiver;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -25,6 +25,7 @@ import java.util.List;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.persistance.UnifiedPushDatabase;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Compatibility;
 
 public class UnifiedPushDistributor extends BroadcastReceiver {

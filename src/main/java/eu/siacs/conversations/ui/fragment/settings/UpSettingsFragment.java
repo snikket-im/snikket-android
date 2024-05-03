@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.services.UnifiedPushDistributor;
+import eu.siacs.conversations.receiver.UnifiedPushDistributor;
 import eu.siacs.conversations.xmpp.Jid;
 
 import java.net.URI;

@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BackupSettingsFragment extends XmppPreferenceFragment {
 
-    private static final String CREATE_ONE_OFF_BACKUP = "create_one_off_backup";
+    public static final String CREATE_ONE_OFF_BACKUP = "create_one_off_backup";
     private static final String RECURRING_BACKUP = "recurring_backup";
 
     private final ActivityResultLauncher<String> requestStorageForBackupLauncher =
