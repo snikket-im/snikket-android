@@ -1,11 +1,15 @@
 package eu.siacs.conversations.ui.fragment.settings;
 
-import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
@@ -56,12 +60,14 @@ public class NotificationsSettingsFragment extends XmppPreferenceFragment {
             @Nullable final Bundle savedInstanceState, final @Nullable String rootKey) {
         setPreferencesFromResource(R.xml.preferences_notifications, rootKey);
         final var messageNotificationSettings = findPreference("message_notification_settings");
+        final var fullscreenNotification = findPreference("fullscreen_notification");
         final var notificationRingtone = findPreference(AppSettings.NOTIFICATION_RINGTONE);
         final var notificationHeadsUp = findPreference(AppSettings.NOTIFICATION_HEADS_UP);
         final var notificationVibrate = findPreference(AppSettings.NOTIFICATION_VIBRATE);
         final var notificationLed = findPreference(AppSettings.NOTIFICATION_LED);
         final var foregroundService = findPreference(AppSettings.KEEP_FOREGROUND_SERVICE);
         if (messageNotificationSettings == null
+                || fullscreenNotification == null
                 || notificationRingtone == null
                 || notificationHeadsUp == null
                 || notificationVibrate == null
@@ -78,6 +84,44 @@ public class NotificationsSettingsFragment extends XmppPreferenceFragment {
         } else {
             messageNotificationSettings.setVisible(false);
         }
+        fullscreenNotification.setOnPreferenceClickListener(this::manageAppUseFullScreen);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+                || requireContext()
+                        .getSystemService(NotificationManager.class)
+                        .canUseFullScreenIntent()) {
+            fullscreenNotification.setVisible(false);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        final var fullscreenNotification = findPreference("fullscreen_notification");
+        if (fullscreenNotification == null) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+                || requireContext()
+                        .getSystemService(NotificationManager.class)
+                        .canUseFullScreenIntent()) {
+            fullscreenNotification.setVisible(false);
+        }
+    }
+
+    private boolean manageAppUseFullScreen(final Preference preference) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            return false;
+        }
+        final var intent = new Intent(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT);
+        intent.setData(Uri.parse(String.format("package:%s", requireContext().getPackageName())));
+        try {
+            startActivity(intent);
+        } catch (final ActivityNotFoundException e) {
+            Toast.makeText(requireContext(), R.string.no_application_found, Toast.LENGTH_SHORT)
+                    .show();
+            return false;
+        }
+        return true;
     }
 
     @Override

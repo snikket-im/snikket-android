@@ -1062,5 +1062,7 @@
     <string name="pref_backup_summary">Create one-off, Schedule recurring</string>
     <string name="pref_create_backup_one_off_summary">Create one-off backup</string>
     <string name="pref_backup_recurring">Recurring backup</string>
+    <string name="pref_fullscreen_notification">Full screen notifications</string>
+    <string name="pref_fullscreen_notification_summary">Allow this app to show incoming call notifications that take up the full screen when the device is locked.</string>
 
 </resources>
