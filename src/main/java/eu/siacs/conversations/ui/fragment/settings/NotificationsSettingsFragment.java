@@ -117,7 +117,7 @@ public class NotificationsSettingsFragment extends XmppPreferenceFragment {
         try {
             startActivity(intent);
         } catch (final ActivityNotFoundException e) {
-            Toast.makeText(requireContext(), R.string.no_application_found, Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), R.string.unsupported_operation, Toast.LENGTH_SHORT)
                     .show();
             return false;
         }

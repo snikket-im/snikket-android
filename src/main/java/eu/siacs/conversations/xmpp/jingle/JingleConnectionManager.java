@@ -649,7 +649,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public JingleRtpConnection getOngoingRtpConnection() {
-        for(final AbstractJingleConnection jingleConnection : this.connections.values()) {
+        for (final AbstractJingleConnection jingleConnection : this.connections.values()) {
             if (jingleConnection instanceof JingleRtpConnection jingleRtpConnection) {
                 if (jingleRtpConnection.isTerminated()) {
                     continue;
@@ -986,10 +986,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 this.rtpSessionProposals.remove(sessionProposal);
                 sessionProposal.getCallIntegration().error();
                 mXmppConnectionService.notifyJingleRtpConnectionUpdate(
-                        account,
-                        sessionProposal.with,
-                        sessionProposal.sessionId,
-                        endUserState);
+                        account, sessionProposal.with, sessionProposal.sessionId, endUserState);
                 return;
             }
 
@@ -1226,5 +1223,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
         @Override
         public void onCallIntegrationSilence() {}
+
+        @Override
+        public void onCallIntegrationMicrophoneEnabled(boolean enabled) {}
     }
 }

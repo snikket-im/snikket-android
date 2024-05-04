@@ -506,20 +506,33 @@ public class WebRTCWrapper {
         }
     }
 
-    boolean setMicrophoneEnabled(final boolean enabled) {
+    boolean setMicrophoneEnabledOrThrow(final boolean enabled) {
         final Optional<AudioTrack> audioTrack =
                 TrackWrapper.get(peerConnection, this.localAudioTrack);
         if (audioTrack.isPresent()) {
-            try {
-                audioTrack.get().setEnabled(enabled);
-                return true;
-            } catch (final IllegalStateException e) {
-                Log.d(Config.LOGTAG, "unable to toggle microphone", e);
-                // ignoring race condition in case MediaStreamTrack has been disposed
-                return false;
-            }
+            return setEnabled(audioTrack.get(), enabled);
+
         } else {
             throw new IllegalStateException("Local audio track does not exist (yet)");
+        }
+    }
+
+    private static boolean setEnabled(final AudioTrack audioTrack, final boolean enabled) {
+        try {
+            audioTrack.setEnabled(enabled);
+            return true;
+        } catch (final IllegalStateException e) {
+            Log.d(Config.LOGTAG, "unable to toggle audio track", e);
+            // ignoring race condition in case MediaStreamTrack has been disposed
+            return false;
+        }
+    }
+
+    void setMicrophoneEnabled(final boolean enabled) {
+        final Optional<AudioTrack> audioTrack =
+                TrackWrapper.get(peerConnection, this.localAudioTrack);
+        if (audioTrack.isPresent()) {
+            setEnabled(audioTrack.get(), enabled);
         }
     }
 

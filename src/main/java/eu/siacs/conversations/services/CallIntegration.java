@@ -39,7 +39,7 @@ public class CallIntegration extends Connection {
     private static final List<String> BROKEN_DEVICE_MODELS =
             Arrays.asList(
                     "OnePlus6" // OnePlus 6 (Android 8.1-11) Device is buggy and always starts the
-                               // OS call screen even though we want to be self managed
+                    // OS call screen even though we want to be self managed
                     );
 
     public static final int DEFAULT_TONE_VOLUME = 60;
@@ -56,6 +56,7 @@ public class CallIntegration extends Connection {
     private final AtomicBoolean isDestroyed = new AtomicBoolean(false);
 
     private List<CallEndpoint> availableEndpoints = Collections.emptyList();
+    private boolean isMicrophoneEnabled = true;
 
     private Callback callback = null;
 
@@ -74,6 +75,7 @@ public class CallIntegration extends Connection {
             this.appRTCAudioManager.setAudioManagerEvents(this::onAudioDeviceChanged);
         }
         setRingbackRequested(true);
+        setConnectionCapabilities(CAPABILITY_MUTE | CAPABILITY_RESPOND_VIA_TEXT);
     }
 
     public void setCallback(final Callback callback) {
@@ -139,8 +141,24 @@ public class CallIntegration extends Connection {
             Log.d(Config.LOGTAG, "ignoring onCallAudioStateChange() on Upside Down Cake");
             return;
         }
+        setMicrophoneEnabled(!state.isMuted());
         Log.d(Config.LOGTAG, "onCallAudioStateChange(" + state + ")");
         this.onAudioDeviceChanged(getAudioDeviceOreo(state), getAudioDevicesOreo(state));
+    }
+
+    @Override
+    public void onMuteStateChanged(final boolean isMuted) {
+        Log.d(Config.LOGTAG, "onMuteStateChanged(" + isMuted + ")");
+        setMicrophoneEnabled(!isMuted);
+    }
+
+    private void setMicrophoneEnabled(final boolean enabled) {
+        this.isMicrophoneEnabled = enabled;
+        this.callback.onCallIntegrationMicrophoneEnabled(enabled);
+    }
+
+    public boolean isMicrophoneEnabled() {
+        return this.isMicrophoneEnabled;
     }
 
     public Set<AudioDevice> getAudioDevices() {
@@ -578,5 +596,7 @@ public class CallIntegration extends Connection {
         void onCallIntegrationAnswer();
 
         void onCallIntegrationSilence();
+
+        void onCallIntegrationMicrophoneEnabled(boolean enabled);
     }
 }
