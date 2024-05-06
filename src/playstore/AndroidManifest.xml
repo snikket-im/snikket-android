@@ -24,7 +24,7 @@
         </receiver>
 
         <service
-            android:name=".services.PushMessageReceiver"
+            android:name=".receiver.PushMessageReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
