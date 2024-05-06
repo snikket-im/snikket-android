@@ -1114,4 +1114,8 @@
     <string name="pref_large_font_summary">Збільшити розмір шрифту повідомлень</string>
     <string name="pref_accept_invites_from_strangers">Запрошення від незнайомців</string>
     <string name="pref_accept_invites_from_strangers_summary">Приймати запрошення до групових чатів від незнайомців</string>
+    <string name="pref_fullscreen_notification">Повноекранні сповіщення</string>
+    <string name="pref_backup_recurring">Регулярне резервне копіювання</string>
+    <string name="unsupported_operation">Операція не підтримується</string>
+    <string name="pref_fullscreen_notification_summary">Показувати сповіщення про вхідні виклики на весь екран, коли пристрій заблоковано.</string>
 </resources>
