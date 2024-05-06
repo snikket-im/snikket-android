@@ -1085,4 +1085,10 @@
     <string name="pref_large_font_summary">Mărește fontul pentru textul din mesaje</string>
     <string name="pref_accept_invites_from_strangers">Invitații de la persoane necunoscute</string>
     <string name="pref_accept_invites_from_strangers_summary">Acceptă invitații la discuții de grup de la persoane care nu sunt în lista de contacte</string>
+    <string name="pref_backup_summary">Creează o dată, Programează recurent</string>
+    <string name="pref_create_backup_one_off_summary">Creați o copie de rezervă unică</string>
+    <string name="pref_backup_recurring">Copie de rezervă recurentă</string>
+    <string name="pref_fullscreen_notification">Notificări pe tot ecranul</string>
+    <string name="unsupported_operation">Operațiune neacceptată</string>
+    <string name="pref_fullscreen_notification_summary">Atunci când dispozitivul este blocat permite aplicației să arate notificările apelurilor pe tot ecranul.</string>
 </resources>
