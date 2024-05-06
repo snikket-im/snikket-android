@@ -2482,7 +2482,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         this.webRTCWrapper.execute(this::renegotiate);
     }
 
-    private void renegotiate() {
+    private synchronized void renegotiate() {
         final SessionDescription sessionDescription;
         try {
             sessionDescription = setLocalSessionDescription();
@@ -2531,10 +2531,11 @@ public class JingleRtpConnection extends AbstractJingleConnection
                             + this.webRTCWrapper.getSignalingState());
         }
 
-        if (diff.added.size() > 0) {
-            modifyLocalContentMap(rtpContentMap);
-            sendContentAdd(rtpContentMap, diff.added);
+        if (diff.added.isEmpty()) {
+            return;
         }
+        modifyLocalContentMap(rtpContentMap);
+        sendContentAdd(rtpContentMap, diff.added);
     }
 
     private void initiateIceRestart(final RtpContentMap rtpContentMap) {
