@@ -1078,4 +1078,8 @@
     <string name="pref_accept_invites_from_strangers_summary">Prano ftesa për fjalosje në grup nga të panjohur</string>
     <string name="pref_large_font">Shkronja të mëdha</string>
     <string name="pref_large_font_summary">Rrit madhësi shkronja në flluska mesazhesh</string>
+    <string name="pref_fullscreen_notification">Njoftime sa krejt ekrani</string>
+    <string name="pref_fullscreen_notification_summary">Lejojeni këtë aplikacion të shfaqë njoftime për thirrje ardhëse që zënë krejt ekranin, kur pajisja është e kyçur.</string>
+    <string name="unsupported_operation">Veprim i pambuluar</string>
+    <string name="pref_backup_recurring">Kopjeruajtje ripërsëritëse</string>
 </resources>
