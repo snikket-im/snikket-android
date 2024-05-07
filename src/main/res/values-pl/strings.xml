@@ -1097,4 +1097,10 @@
     <string name="channel_discover_opt_in_message">Odkrywanie kanałów używa usługi podmiotu trzeciego nazywanej &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Używanie tej funkcjonalności spowoduje wysłanie twojego adresu IP oraz kryteriów wyszukiwania. Sprawdź ich &lt;a href=https://search.jabber.network/privacy&gt;politykę prywatności&lt;/a&gt; aby uzyskać więcej informacji.</string>
     <string name="pref_accept_invites_from_strangers">Zaproszenia od nieznajomych</string>
     <string name="pref_accept_invites_from_strangers_summary">Akceptuj zaproszenia do rozmów grupowych od nieznajomych</string>
+    <string name="pref_backup_recurring">Regularna kopia zapasowa</string>
+    <string name="pref_backup_summary">Utwórz teraz, zaplanuj regularną</string>
+    <string name="pref_create_backup_one_off_summary">Utwórz teraz kopię zapasową</string>
+    <string name="pref_fullscreen_notification">Pełnoekranowe powiadomienia</string>
+    <string name="unsupported_operation">Nieobsługiwana operacja</string>
+    <string name="pref_fullscreen_notification_summary">Pozwól tej aplikacji na pokazywanie powiadomień o przychodzącym połączeniu, które zajmują cały ekran gdy urządzenie jest zablokowane.</string>
 </resources>
