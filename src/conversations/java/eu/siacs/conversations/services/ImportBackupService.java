@@ -23,6 +23,8 @@ import androidx.core.app.NotificationManagerCompat;
 import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
 import com.google.common.io.CountingInputStream;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
@@ -64,6 +66,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
@@ -72,6 +76,9 @@ import java.util.zip.ZipException;
 import javax.crypto.BadPaddingException;
 
 public class ImportBackupService extends Service {
+
+    private static final ExecutorService BACKUP_FILE_READER_EXECUTOR =
+            Executors.newSingleThreadExecutor();
 
     private static final int NOTIFICATION_ID = 21;
     private static final AtomicBoolean running = new AtomicBoolean(false);
@@ -433,6 +440,10 @@ public class ImportBackupService extends Service {
         }
     }
 
+    public static ListenableFuture<BackupFile> read(final Context context, final Uri uri) {
+        return Futures.submit(() -> BackupFile.read(context, uri), BACKUP_FILE_READER_EXECUTOR);
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return this.binder;
@@ -475,7 +486,7 @@ public class ImportBackupService extends Service {
                 throw new FileNotFoundException();
             }
             final DataInputStream dataInputStream = new DataInputStream(inputStream);
-            BackupFileHeader backupFileHeader = BackupFileHeader.read(dataInputStream);
+            final BackupFileHeader backupFileHeader = BackupFileHeader.read(dataInputStream);
             inputStream.close();
             return new BackupFile(uri, backupFileHeader);
         }
