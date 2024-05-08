@@ -1079,4 +1079,10 @@
     <string name="pref_allow_screenshots_summary">Mostrar el contenido de la aplicación en el conmutador de aplicaciones y permitir la realización de capturas de pantalla</string>
     <string name="pref_accept_invites_from_strangers">Invitaciones de extraños</string>
     <string name="pref_accept_invites_from_strangers_summary">Aceptar invitaciones a chats grupales de extraños</string>
+    <string name="pref_backup_summary">Crear una sola vez, Programar recurrentes</string>
+    <string name="pref_create_backup_one_off_summary">Crear una copia de seguridad única</string>
+    <string name="pref_backup_recurring">Copia de seguridad periódica</string>
+    <string name="unsupported_operation">Operación no soportada</string>
+    <string name="pref_fullscreen_notification">Notificaciones a pantalla completa</string>
+    <string name="pref_fullscreen_notification_summary">Permite que esta aplicación muestre notificaciones de llamadas entrantes que ocupan toda la pantalla cuando el dispositivo está bloqueado.</string>
 </resources>
