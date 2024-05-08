@@ -1065,4 +1065,10 @@
     <string name="pref_large_font">Große Schrift</string>
     <string name="pref_accept_invites_from_strangers">Einladungen von Unbekannten</string>
     <string name="pref_accept_invites_from_strangers_summary">Einladungen zu Gruppenchats von Unbekannten annehmen</string>
+    <string name="pref_backup_summary">Einmalig erstellen, wiederkehrend planen</string>
+    <string name="pref_backup_recurring">Wiederkehrende Sicherung</string>
+    <string name="pref_fullscreen_notification">Benachrichtigungen im Vollbildmodus</string>
+    <string name="unsupported_operation">Nicht unterstützte Operation</string>
+    <string name="pref_fullscreen_notification_summary">Erlaube dieser App, Benachrichtigungen über eingehende Anrufe anzuzeigen, die den gesamten Bildschirm einnehmen, wenn das Gerät gesperrt ist.</string>
+    <string name="pref_create_backup_one_off_summary">Einmalige Sicherung erstellen</string>
 </resources>
