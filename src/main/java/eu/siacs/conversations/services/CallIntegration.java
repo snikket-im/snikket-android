@@ -36,11 +36,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CallIntegration extends Connection {
 
-    private static final List<String> BROKEN_DEVICE_MODELS =
-            Arrays.asList(
-                    "OnePlus6" // OnePlus 6 (Android 8.1-11) Device is buggy and always starts the
-                    // OS call screen even though we want to be self managed
-                    );
+    /**
+     * OnePlus 6 (Android 8.1-11) Device is buggy and always starts the OS call screen even though
+     * we want to be self managed
+     *
+     * <p>Samsung Galaxy Tab A claims to have FEATURE_CONNECTION_SERVICE but then throws
+     * SecurityException when invoking placeCall(). Both Stock and LineageOS have this problem.
+     */
+    private static final List<String> BROKEN_DEVICE_MODELS = Arrays.asList("OnePlus6", "gtaxlwifi");
 
     public static final int DEFAULT_TONE_VOLUME = 60;
     private static final int DEFAULT_MEDIA_PLAYER_VOLUME = 90;
@@ -564,7 +567,6 @@ public class CallIntegration extends Connection {
         return this.isDestroyed.get();
     }
 
-    /** AudioDevice is the names of possible audio devices that we currently support. */
     public enum AudioDevice {
         NONE,
         SPEAKER_PHONE,
