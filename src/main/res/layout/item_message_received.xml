@@ -18,7 +18,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginEnd="6dp"
             android:scaleType="fitXY"
-            app:riv_corner_radius="6dp" />
+            app:riv_corner_radius="8dp" />
 
         <LinearLayout
             android:id="@+id/message_box"
