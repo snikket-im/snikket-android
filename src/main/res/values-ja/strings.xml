@@ -961,7 +961,7 @@
     <string name="reject_switch_to_video">ビデオ通話を拒否</string>
     <string name="incoming_call_duration_timestamp">着信中の通話 (%s) · %s</string>
     <string name="pref_up_push_account_title">XMPPアカウント</string>
-    <string name="group_chats">グループ</string>
+    <string name="group_chats">グループチャット</string>
     <string name="outdated_backup_file_format">選択したファイルは、旧式のファイル形式ので復元できません</string>
     <string name="search_group_chats">グループを検索</string>
     <string name="outgoing_call_duration_timestamp">発信中の通話 (%s) · %s</string>
@@ -1042,4 +1042,8 @@
     <string name="pref_dynamic_colors">ダイナミックカラー</string>
     <string name="detect_mim">談話室束縛が必要です</string>
     <string name="detect_mim_summary">談話室束縛はいくつかの中間機攻撃を検知できます</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">バーコードにはこの会話の指紋が含まれていません。</string>
+    <string name="pref_fullscreen_notification">全画面通知</string>
+    <string name="pref_fullscreen_notification_summary">端末がロックされているとき、このアプリが全画面を占める着信通知を表示することを許可する。</string>
+    <string name="unified_push_summary">UnifiedPush互換サードパーティアプリの通知中継</string>
 </resources>
