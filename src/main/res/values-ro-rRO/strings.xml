@@ -1037,7 +1037,7 @@
     <string name="pref_dynamic_colors">Culori dinamice</string>
     <string name="pref_dynamic_colors_summary">Culori de sistem (Material You)</string>
     <string name="action_archive_chat">Arhivează discuția</string>
-    <string name="archive_this_chat">Arhivează această discuție</string>
+    <string name="archive_this_chat">Apoi șterge și discuția</string>
     <string name="title_undo_swipe_out_chat">Discuție arhivată</string>
     <string name="channel_discover_opt_in_message">Descoperirea de canale publice folosește un serviciu terț numit &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți &lt;a href=https://search.jabber.network/privacy&gt;Politica de confidențialitate&lt;/a&gt; a serviciului.</string>
     <string name="switch_to_chat">Treci la discuție</string>
