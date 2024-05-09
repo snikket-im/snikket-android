@@ -3,6 +3,8 @@ package eu.siacs.conversations.parser;
 import android.util.Log;
 import android.util.Pair;
 
+import com.google.common.collect.ImmutableSet;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1033,6 +1035,16 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     } else if (!counterpart.isBareJid() && trueJid != null) {
                         final ReadByMarker readByMarker = ReadByMarker.from(counterpart, trueJid);
                         if (message.addReadByMarker(readByMarker)) {
+                            final var mucOptions = conversation.getMucOptions();
+                            final var everyone = ImmutableSet.copyOf(mucOptions.getMembers(false));
+                            final var readyBy = message.getReadyByTrue();
+                            final var mStatus = message.getStatus();
+                            if (mucOptions.isPrivateAndNonAnonymous()
+                                    && (mStatus == Message.STATUS_SEND_RECEIVED
+                                            || mStatus == Message.STATUS_SEND)
+                                    && readyBy.containsAll(everyone)) {
+                                message.setStatus(Message.STATUS_SEND_DISPLAYED);
+                            }
                             mXmppConnectionService.updateMessage(message, false);
                         }
                     }

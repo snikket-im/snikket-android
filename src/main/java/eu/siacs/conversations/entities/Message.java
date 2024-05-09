@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder;
 import android.util.Log;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Longs;
 
@@ -509,7 +510,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.transferable = transferable;
     }
 
-    public boolean addReadByMarker(ReadByMarker readByMarker) {
+    public boolean addReadByMarker(final ReadByMarker readByMarker) {
         if (readByMarker.getRealJid() != null) {
             if (readByMarker.getRealJid().asBareJid().equals(trueCounterpart)) {
                 return false;
@@ -537,6 +538,13 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public Set<ReadByMarker> getReadByMarkers() {
         return ImmutableSet.copyOf(this.readByMarkers);
+    }
+
+    public Set<Jid> getReadyByTrue() {
+        return ImmutableSet.copyOf(
+                Collections2.transform(
+                        Collections2.filter(this.readByMarkers, m -> m.getRealJid() != null),
+                        ReadByMarker::getRealJid));
     }
 
     boolean similar(Message message) {
