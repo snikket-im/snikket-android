@@ -662,7 +662,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
         final LinearLayout.LayoutParams layoutParams =
                 new LinearLayout.LayoutParams(scaledW, scaledH);
-        layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
         viewHolder.image.setLayoutParams(layoutParams);
         activity.loadBitmap(message, viewHolder.image);
         viewHolder.image.setOnClickListener(v -> openDownloadable(message));
@@ -920,6 +919,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
             return view;
         } else {
+            viewHolder.message_box.setClipToOutline(true);
             AvatarWorkerTask.loadAvatar(message, viewHolder.contact_picture, R.dimen.avatar);
         }
 
