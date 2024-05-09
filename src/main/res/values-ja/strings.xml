@@ -1038,4 +1038,8 @@
     <string name="pref_use_colorful_bubbles_summary">送受信メッセージの個別の背景色</string>
     <string name="pref_large_font_summary">メッセージの吹き出しのフォントサイズを大きくする</string>
     <string name="pref_large_font">大きなフォント</string>
+    <string name="title_activity_share_with">…で共有</string>
+    <string name="pref_dynamic_colors">ダイナミックカラー</string>
+    <string name="detect_mim">談話室束縛が必要です</string>
+    <string name="detect_mim_summary">談話室束縛はいくつかの中間機攻撃を検知できます</string>
 </resources>
