@@ -1027,7 +1027,7 @@
     <string name="pref_dynamic_colors">动态色彩</string>
     <string name="pref_dynamic_colors_summary">系统色彩 (Material You)</string>
     <string name="title_activity_new_chat">新聊天</string>
-    <string name="archive_this_chat">存档此聊天</string>
+    <string name="archive_this_chat">之后删除聊天</string>
     <string name="title_undo_swipe_out_chat">聊天已存档</string>
     <string name="switch_to_chat">切换到聊天</string>
     <string name="action_archive_chat">存档聊天</string>
