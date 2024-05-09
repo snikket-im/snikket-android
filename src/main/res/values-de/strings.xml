@@ -1020,7 +1020,7 @@
     <string name="start_chat">Chat starten</string>
     <string name="no_certificate_selected">Kein Client-Zertifikat ausgewählt!</string>
     <string name="title_activity_new_chat">Neuer Chat</string>
-    <string name="archive_this_chat">Diesen Chat archivieren</string>
+    <string name="archive_this_chat">Chat anschließend löschen</string>
     <string name="corresponding_chats_closed">Entsprechende Chats werden archiviert.</string>
     <string name="switch_to_chat">Zum Chat wechseln</string>
     <string name="action_archive_chat">Chat archivieren</string>
