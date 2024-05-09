@@ -1072,7 +1072,7 @@
     <string name="pref_use_colorful_bubbles">Кольорові бульбашки в розмовах</string>
     <string name="title_activity_new_chat">Нова розмова</string>
     <string name="action_archive_chat">Архівувати розмову</string>
-    <string name="archive_this_chat">Архівувати цю розмову</string>
+    <string name="archive_this_chat">Після цього видалити розмову</string>
     <string name="title_undo_swipe_out_chat">Розмову заархівовано</string>
     <string name="switch_to_chat">Перемкнути на чат</string>
     <string name="start_chat">Почати розмову</string>
