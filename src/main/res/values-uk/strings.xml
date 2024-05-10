@@ -981,7 +981,6 @@
     <string name="omemo_fingerprint_x509_selected_message">Цифровий підпис v\\OMEMO (джерело повідомлення)</string>
     <string name="continue_btn">Продовжити</string>
     <string name="group_chats">Групові чати</string>
-    <string name="save_as_group_chat">Зберегти як групу</string>
     <string name="pref_autojoin">Синхронізувати закладки</string>
     <string name="conference_technical_problems">Ви залишили цю групу з технічних причин</string>
     <string name="vector_graphic">векторна графіка</string>

@@ -649,7 +649,6 @@
     <string name="pref_prevent_screenshots">منع أخذ لقطات للشاشة</string>
     <string name="last_seen_day">آخِر ظهور البارحة</string>
     <string name="last_seen_hour">آخر ظهور منذ ساعة</string>
-    <string name="save_as_group_chat">احفظه كمحادثة جماعية</string>
     <string name="account_status_regis_invalid_token">رمز التسجيل غير صالح</string>
     <string name="bad_key_for_encryption">مفتاح تعمية خاطئ.</string>
     <string name="invalid_jid">هذا ليس عنوان XMPP صالح</string>

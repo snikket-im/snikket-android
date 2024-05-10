@@ -1017,7 +1017,6 @@
     <string name="rtp_state_content_add_video">Görüntülü aramaya geçilsin mi?</string>
     <string name="pref_allow_screenshots_summary">Uygulama değiştiricide içeriği göster ve ekran görüntüsü almaya izin ver</string>
     <string name="remove_bookmark_and_close">%s için yer imini kaldırmak ve sohbeti arşivlemek ister misiniz?</string>
-    <string name="save_as_group_chat">Grup olarak kaydet</string>
     <string name="audiobook">Sesli kitap</string>
     <string name="send_encrypted_message">Şifrelenmiş ileti gönder</string>
     <string name="group_chats">Gruplar</string>

@@ -978,7 +978,6 @@
     <string name="jabber_network">jabber.network</string>
     <string name="search_group_chats">kërkoni në fjalosje grupesh</string>
     <string name="group_chats">Fjalosje në grup</string>
-    <string name="save_as_group_chat">Ruaje si fjalosjeje grupi</string>
     <string name="unverified_devices">Po përdorni pajisje të paverifikuara. Që të kryhet verifikimi dhe të pengohen sulme MITM, skanoni Kodin QR në pajisjet tuaja të tjera.</string>
     <string name="title_activity_block_list">Listë bllokimesh</string>
     <string name="account_state_logged_out">I dalë</string>

@@ -994,7 +994,6 @@
     <string name="could_not_delete_account_from_server">無法從伺服器刪除帳戶</string>
     <string name="search_group_chats">搜尋群組聊天</string>
     <string name="group_chats">群組聊天</string>
-    <string name="save_as_group_chat">儲存為群組聊天</string>
     <string name="this_account_is_logged_out">您已登出此帳戶</string>
     <string name="log_in">登入</string>
     <string name="hide_notification">隱藏通知</string>

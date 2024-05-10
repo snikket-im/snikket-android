@@ -1016,7 +1016,6 @@
     <string name="account_state_logged_out">Utloggad</string>
     <string name="unverified_devices">Du använder overifierade enheter. Skanna QR-kod på dina andra enheter, för att utföra en verifiering och för att förhindra aktiva MITM-attacker.</string>
     <string name="outgoing_call_timestamp">Utgående samtal · %s</string>
-    <string name="save_as_group_chat">Spara som gruppchatt</string>
     <string name="audiobook">Ljudbok</string>
     <string name="report_spam">Rapportera spam</string>
     <string name="restore_warning_continued">Försök inte att återställa säkerhetskopior som du inte har skapat själv!</string>

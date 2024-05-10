@@ -976,7 +976,6 @@
     <string name="no_account_deactivated">なし（無効）</string>
     <string name="decline">拒否</string>
     <string name="pref_up_push_server_title">Pushサーバー</string>
-    <string name="save_as_group_chat">グループチャットとして保存</string>
     <string name="unified_push_distributor">UnifiedPushディストリビューター</string>
     <string name="report_spam">スパムを報告</string>
     <string name="pref_up_push_account_summary">Pushメッセージを受信する際に経由するアカウント。</string>

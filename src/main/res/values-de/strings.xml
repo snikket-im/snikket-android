@@ -988,7 +988,6 @@
     <string name="delete_from_server">Konto vom Server löschen</string>
     <string name="could_not_delete_account_from_server">Konto konnte nicht vom Server gelöscht werden</string>
     <string name="group_chats">Gruppenchats</string>
-    <string name="save_as_group_chat">Als Gruppenchat speichern</string>
     <string name="search_group_chats">Gruppenchats durchsuchen</string>
     <string name="restore_warning_continued">Versuche nicht, Backups wiederherzustellen, die du nicht selbst erstellt hast!</string>
     <string name="outdated_backup_file_format">Du versuchst, ein veraltetes Sicherungsdateiformat zu importieren</string>

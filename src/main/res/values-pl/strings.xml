@@ -1021,7 +1021,6 @@
     <string name="could_not_delete_account_from_server">Nie można usunąć konta z serwera</string>
     <string name="search_group_chats">Przeszukaj rozmowy grupowe</string>
     <string name="group_chats">Rozmowy grupowe</string>
-    <string name="save_as_group_chat">Zapisz jako rozmowę grupową</string>
     <string name="restore_warning_continued">Nie próbuj przywracać kopii zapasowych, których nie utworzono samodzielnie!</string>
     <string name="outdated_backup_file_format">Próbujesz zaimportować plik kopii zapasowej o przestarzałym formacie</string>
     <string name="audiobook">Audiobook</string>

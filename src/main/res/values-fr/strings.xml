@@ -993,7 +993,6 @@
         <item quantity="other">%1$d appels manqués de %2$d contacts</item>
     </plurals>
     <string name="group_chats">Discussions de groupe</string>
-    <string name="save_as_group_chat">Enregistrer comme groupe</string>
     <string name="pref_autojoin">Synchroniser les favoris</string>
     <string name="pref_autojoin_summary">Activer \"Rejoindre automatiquement\" en entrant ou sortant d\'un groupe et réagir aux modifications apportées par d\'autres clients.</string>
     <string name="vector_graphic">graphique vectoriel</string>

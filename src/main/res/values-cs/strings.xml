@@ -971,7 +971,6 @@
     <string name="action_fix_to_location">Fixovat polohu</string>
     <string name="group_chats">Skupinové chaty</string>
     <string name="missed_calls_channel_name">Zmeškané hovory</string>
-    <string name="save_as_group_chat">Uložit jako skupinový chat</string>
     <string name="conference_technical_problems">Tento skupinový chat jste opustili z technických důvodů</string>
     <string name="reconnecting_call">Znovu spojuji hovor</string>
     <string name="blindly_trusted_omemo_keys">Slepě důvěřované klíče OMEMO, které mohou být někdo jiný nebo někým zasaženy.</string>

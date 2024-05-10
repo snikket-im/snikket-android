@@ -993,7 +993,6 @@
     <string name="outgoing_call_timestamp">去电 · %s</string>
     <string name="could_not_delete_account_from_server">无法从服务器删除账号</string>
     <string name="group_chats">群聊</string>
-    <string name="save_as_group_chat">保存为群聊</string>
     <string name="search_group_chats">搜索群聊</string>
     <string name="delete_from_server">从服务器移除账号</string>
     <string name="restore_warning_continued">请勿尝试恢复您尚未自行创建的备份！</string>
