@@ -1046,7 +1046,7 @@
     <string name="remove_bookmark_and_close">Czy chcesz usunąć zakładkę dla %s i zarchiwizować rozmowę?</string>
     <string name="action_archive_chat">Archiwizuj rozmowę</string>
     <string name="title_activity_new_chat">Nowa rozmowa</string>
-    <string name="archive_this_chat">Archiwizuj tę rozmowę</string>
+    <string name="archive_this_chat">Usuń rozmowę później</string>
     <string name="pref_use_colorful_bubbles">Kolorowe dymki rozmowy</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_chat">Kod kreskowy nie zawiera odcisków palca dla tej rozmowy.</string>
     <string name="corresponding_chats_closed">Powiązane rozmowy zarchiwizowane.</string>
