@@ -1022,7 +1022,7 @@
     <string name="action_archive_chat">Arquivar conversa</string>
     <string name="title_activity_new_chat">Novo chat</string>
     <string name="start_chat">Inciar chat</string>
-    <string name="archive_this_chat">Arquivar este chat</string>
+    <string name="archive_this_chat">Eliminar o chat</string>
     <string name="welcome_header">Únete á Conversa</string>
     <string name="switch_to_chat">Cambiar ao chat</string>
     <string name="no_certificate_selected">Sen certificado cliente seleccionado!</string>
