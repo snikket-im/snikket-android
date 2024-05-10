@@ -2018,20 +2018,32 @@ public class XmppConnectionService extends Service {
             processModifiedBookmark(bookmark, pep);
         }
         if (pep) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + previousBookmarks.size() + " bookmarks have been removed");
-            for (Jid jid : previousBookmarks) {
-                processDeletedBookmark(account, jid);
-            }
+            processDeletedBookmarks(account, previousBookmarks);
         }
         account.setBookmarks(bookmarks);
     }
 
-    public void processDeletedBookmark(Account account, Jid jid) {
-        final Conversation conversation = find(account, jid);
-        if (conversation != null && conversation.getMucOptions().getError() == MucOptions.Error.DESTROYED) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": archiving destroyed conference (" + conversation.getJid() + ") after receiving pep");
-            archiveConversation(conversation, false);
+    public void processDeletedBookmarks(final Account account, final Collection<Jid> bookmarks) {
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid()
+                        + ": "
+                        + bookmarks.size()
+                        + " bookmarks have been removed");
+        for (final Jid bookmark : bookmarks) {
+            processDeletedBookmark(account, bookmark);
         }
+    }
+
+    public void processDeletedBookmark(final Account account, final Jid jid) {
+        final Conversation conversation = find(account, jid);
+        if (conversation == null) {
+            return;
+        }
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid() + ": archiving MUC " + jid + " after PEP update");
+        archiveConversation(conversation, false);
     }
 
     private void processModifiedBookmark(final Bookmark bookmark, final boolean pep) {
