@@ -26,8 +26,8 @@
     <string name="minute_ago">এক মিনিট আগে</string>
     <string name="minutes_ago">%d মিনিট আগে</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%dটাই কথোপকথন পড়া বাকি</item>
-        <item quantity="other">%dকথোেকথন পড়া হয়নি</item>
+        <item quantity="one">%dটি চ্যাট পড়া হয়নি</item>
+        <item quantity="other">%dটি চ্যাট পড়া হয়নি</item>
     </plurals>
     <string name="sending">পাঠানো হচ্ছে...</string>
     <string name="message_decrypting">অপেক্ষা করুন, সাঙ্কেতিক সন্দেশ পঠিত হচ্ছে...</string>
@@ -39,7 +39,7 @@
     <string name="moderator">নির্ধারক</string>
     <string name="participant">অংশগ্রহণকারী</string>
     <string name="visitor">অতিথি</string>
-    <string name="remove_contact_text">আপনি কি আপনার পরিচিতি তালিকা থেকে %s-কে অপসারণ করতে চান? এই যোগাযোগের সাথে কথোপকথনগুলি সরানো হবে না।</string>
+    <string name="remove_contact_text">আপনি কি আপনার পরিচিতিদের তালিকা থেকে %s কে মুছে ফেলতে চান? এই পরিচিতির চ্যাট মোছা হবে না।</string>
     <string name="block_contact_text">%s-কে বার্তা পাঠানো থেকে ব্লক করতে চান?</string>
     <string name="unblock_contact_text">আপনি কি %s-কে আনব্লক করতে চান এবং তাদের আপনাকে বার্তা পাঠানোর অনুমতি দিতে চান?</string>
     <string name="contact_blocked">ব্যক্তিটিকে ব্লক্ করা হয়েছে</string>
@@ -74,7 +74,7 @@
     <string name="preparing_images">ছবিগুলি পাঠানোর জন্য তৈরী করা হচ্ছে</string>
     <string name="sharing_files_please_wait">ফাইলগুলো শেয়ার করা হচ্ছে, অপেক্ষা করুন</string>
     <string name="action_clear_history">প্রতিলিপি মুছে ফেলা যাক</string>
-    <string name="clear_conversation_history">Conversation-এর সব প্রতিলিপি মুছে ফেলা যাক</string>
+    <string name="clear_conversation_history">চ্যাটের ইতিহাস মুছুন</string>
     <string name="clear_histor_msg">এই কথোপকথনের সবকটি বার্তাই কি মুছে ফেলতে চান?
 \n‌
 \n<b>সতর্ক থাকবেন:</b> সার্ভার বা অন্য যন্ত্রে থাকা বার্তা কিন্তু অপরিআর্তিতই থাকবে।</string>
@@ -104,4 +104,12 @@
     <string name="create_private_group_chat">ব্যক্তিগত গ্রুপ চ্যাট তৈরি করুন</string>
     <string name="create_public_channel">পাবলিক চ্যানেল তৈরি করা যাক</string>
     <string name="discover_channels">বর্তমান চ্যানেলগুলির মধ্যে থেকে খোঁজা যাক</string>
+    <string name="remove_bookmark">আপনি কি %s-এর জন্য বুকমার্কটি মুছে দিতে চান?</string>
+    <string name="block_domain_text">%s থেকে সবাইকে ব্লক করতে চান?</string>
+    <string name="crash_report_message">আপনার XMPP একাউন্ট থেকে স্ট্যাক ট্রেস গুলি পাঠালে %1$s-এর উন্নয়নে সাহায্য হয়।</string>
+    <string name="remove_bookmark_and_close">আপনি কি %s-এর জন্য বুকমার্কটি মুছে দিতে এবং ওটার চ্যাট আর্কাইভ করে দিতে চান?</string>
+    <string name="title_activity_share_with">শেয়ার করুন এদের সঙ্গে…</string>
+    <string name="action_archive_chat">চ্যাট আর্কাইভ করুন</string>
+    <string name="title_activity_new_chat">নতুন চ্যাট</string>
+    <string name="unblock_domain_text">%s থেকে সবাইকে আনব্লক করতে চান?</string>
 </resources>
