@@ -314,7 +314,7 @@ public class Resolver {
                     final AndroidDNSClient androidDNSClient =
                             new AndroidDNSClient(Conversations.getContext());
                     final DnsQueryResult dnsQueryResult = androidDNSClient.query(question);
-                    return new ResolverResult<D>(question, dnsQueryResult, null);
+                    return new ResolverResult<>(question, dnsQueryResult, null);
                 },
                 DNS_QUERY_EXECUTOR);
     }
@@ -334,16 +334,16 @@ public class Resolver {
         private boolean authenticated = false;
         private int priority;
 
-        static Result fromRecord(SRV srv, boolean directTls) {
-            Result result = new Result();
+        static Result fromRecord(final SRV srv, final boolean directTls) {
+            final Result result = new Result();
             result.port = srv.port;
-            result.hostname = srv.name;
+            result.hostname = srv.target;
             result.directTls = directTls;
             result.priority = srv.priority;
             return result;
         }
 
-        static Result createDefault(DnsName hostname, InetAddress ip) {
+        static Result createDefault(final DnsName hostname, final InetAddress ip) {
             Result result = new Result();
             result.port = DEFAULT_PORT_XMPP;
             result.hostname = hostname;
@@ -351,16 +351,16 @@ public class Resolver {
             return result;
         }
 
-        static Result createDefault(DnsName hostname) {
+        static Result createDefault(final DnsName hostname) {
             return createDefault(hostname, null);
         }
 
-        public static Result fromCursor(Cursor cursor) {
+        public static Result fromCursor(final Cursor cursor) {
             final Result result = new Result();
             try {
                 result.ip =
                         InetAddress.getByAddress(cursor.getBlob(cursor.getColumnIndexOrThrow(IP)));
-            } catch (UnknownHostException e) {
+            } catch (final UnknownHostException e) {
                 result.ip = null;
             }
             final String hostname = cursor.getString(cursor.getColumnIndexOrThrow(HOSTNAME));
