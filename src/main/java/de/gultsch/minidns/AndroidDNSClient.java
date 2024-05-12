@@ -14,10 +14,15 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 
-import de.measite.minidns.AbstractDNSClient;
-import de.measite.minidns.DNSMessage;
-import de.measite.minidns.Record;
-import de.measite.minidns.record.Data;
+import org.minidns.AbstractDnsClient;
+import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.dnsqueryresult.DirectCachedDnsQueryResult;
+import org.minidns.dnsqueryresult.DnsQueryResult;
+import org.minidns.dnsqueryresult.StandardDnsQueryResult;
+import org.minidns.dnsqueryresult.SynthesizedCachedDnsQueryResult;
+import org.minidns.record.Data;
+
+import org.minidns.record.Record;
 
 import eu.siacs.conversations.Config;
 
@@ -27,11 +32,11 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
-public class AndroidDNSClient extends AbstractDNSClient {
+public class AndroidDNSClient extends AbstractDnsClient {
 
     private static final long DNS_MAX_TTL = 86_400L;
 
-    private static final LruCache<QuestionServerTuple, DNSMessage> QUERY_CACHE =
+    private static final LruCache<QuestionServerTuple, DnsMessage> QUERY_CACHE =
             new LruCache<>(1024);
     private final Context context;
     private final NetworkDataSource networkDataSource = new NetworkDataSource();
@@ -60,7 +65,7 @@ public class AndroidDNSClient extends AbstractDNSClient {
     }
 
     @Override
-    protected DNSMessage.Builder newQuestion(final DNSMessage.Builder message) {
+    protected DnsMessage.Builder newQuestion(final DnsMessage.Builder message) {
         message.setRecursionDesired(true);
         message.getEdnsBuilder()
                 .setUdpPayloadSize(networkDataSource.getUdpPayloadSize())
@@ -69,15 +74,16 @@ public class AndroidDNSClient extends AbstractDNSClient {
     }
 
     @Override
-    protected DNSMessage query(final DNSMessage.Builder queryBuilder) throws IOException {
-        final DNSMessage question = newQuestion(queryBuilder).build();
+    protected DnsQueryResult query(final DnsMessage.Builder queryBuilder) throws IOException {
+        final DnsMessage question = newQuestion(queryBuilder).build();
         for (final DNSServer dnsServer : getDNSServers()) {
             final QuestionServerTuple cacheKey = new QuestionServerTuple(dnsServer, question);
-            final DNSMessage cachedResponse = queryCache(cacheKey);
+            final DnsMessage cachedResponse = queryCache(cacheKey);
             if (cachedResponse != null) {
-                return cachedResponse;
+                return new CachedDnsQueryResult(question, cachedResponse);
             }
-            final DNSMessage response = this.networkDataSource.query(question, dnsServer);
+            final DnsQueryResult result = this.networkDataSource.query(question, dnsServer);
+            final var response = result.response;
             if (response == null) {
                 continue;
             }
@@ -89,7 +95,7 @@ public class AndroidDNSClient extends AbstractDNSClient {
                     continue;
             }
             cacheQuery(cacheKey, response);
-            return response;
+            return new StandardDnsQueryResult(dnsServer.inetAddress, dnsServer.port,result.queryMethod,question,response);
         }
         return null;
     }
@@ -104,8 +110,7 @@ public class AndroidDNSClient extends AbstractDNSClient {
 
     private List<DNSServer> getDNSServers() {
         final ImmutableList.Builder<DNSServer> dnsServerBuilder = new ImmutableList.Builder<>();
-        final ConnectivityManager connectivityManager =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final ConnectivityManager connectivityManager = context.getSystemService(ConnectivityManager.class);
         final Network[] networks = getActiveNetworks(connectivityManager);
         for (final Network network : networks) {
             final LinkProperties linkProperties = connectivityManager.getLinkProperties(network);
@@ -133,17 +138,15 @@ public class AndroidDNSClient extends AbstractDNSClient {
         if (connectivityManager == null) {
             return new Network[0];
         }
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            final Network activeNetwork = connectivityManager.getActiveNetwork();
-            if (activeNetwork != null) {
+        final Network activeNetwork = connectivityManager.getActiveNetwork();
+        if (activeNetwork != null) {
                 return new Network[] {activeNetwork};
-            }
         }
         return connectivityManager.getAllNetworks();
     }
 
-    private DNSMessage queryCache(final QuestionServerTuple key) {
-        final DNSMessage cachedResponse;
+    private DnsMessage queryCache(final QuestionServerTuple key) {
+        final DnsMessage cachedResponse;
         synchronized (QUERY_CACHE) {
             cachedResponse = QUERY_CACHE.get(key);
             if (cachedResponse == null) {
@@ -163,7 +166,7 @@ public class AndroidDNSClient extends AbstractDNSClient {
         return cachedResponse;
     }
 
-    private void cacheQuery(final QuestionServerTuple key, final DNSMessage response) {
+    private void cacheQuery(final QuestionServerTuple key, final DnsMessage response) {
         if (response.receiveTimestamp <= 0) {
             return;
         }
@@ -172,7 +175,7 @@ public class AndroidDNSClient extends AbstractDNSClient {
         }
     }
 
-    private static long ttl(final DNSMessage dnsMessage) {
+    private static long ttl(final DnsMessage dnsMessage) {
         final List<Record<? extends Data>> answerSection = dnsMessage.answerSection;
         if (answerSection == null || answerSection.isEmpty()) {
             final List<Record<? extends Data>> authoritySection = dnsMessage.authoritySection;
@@ -187,19 +190,19 @@ public class AndroidDNSClient extends AbstractDNSClient {
         }
     }
 
-    private static long expiresAt(final DNSMessage dnsMessage) {
+    private static long expiresAt(final DnsMessage dnsMessage) {
         return dnsMessage.receiveTimestamp + (Math.min(DNS_MAX_TTL, ttl(dnsMessage)) * 1000L);
     }
 
-    private static long expiresIn(final DNSMessage dnsMessage) {
+    private static long expiresIn(final DnsMessage dnsMessage) {
         return expiresAt(dnsMessage) - System.currentTimeMillis();
     }
 
     private static class QuestionServerTuple {
         private final DNSServer dnsServer;
-        private final DNSMessage question;
+        private final DnsMessage question;
 
-        private QuestionServerTuple(final DNSServer dnsServer, final DNSMessage question) {
+        private QuestionServerTuple(final DNSServer dnsServer, final DnsMessage question) {
             this.dnsServer = dnsServer;
             this.question = question.asNormalizedVersion();
         }
@@ -216,6 +219,13 @@ public class AndroidDNSClient extends AbstractDNSClient {
         @Override
         public int hashCode() {
             return Objects.hashCode(dnsServer, question);
+        }
+    }
+
+    public static class CachedDnsQueryResult extends DnsQueryResult {
+
+        private CachedDnsQueryResult(final DnsMessage query, final DnsMessage response) {
+            super(QueryMethod.cachedDirect, query, response);
         }
     }
 }

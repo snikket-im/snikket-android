@@ -7,11 +7,11 @@ import com.google.common.base.Strings;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 
-import de.measite.minidns.DNSMessage;
 
 import eu.siacs.conversations.Config;
 
 import org.conscrypt.OkHostnameVerifier;
+import org.minidns.dnsmessage.DnsMessage;
 
 import java.io.Closeable;
 import java.io.DataInputStream;
@@ -41,7 +41,7 @@ final class DNSSocket implements Closeable {
     public static final int QUERY_TIMEOUT = 5_000;
 
     private final Semaphore semaphore = new Semaphore(1);
-    private final Map<Integer, SettableFuture<DNSMessage>> inFlightQueries = new HashMap<>();
+    private final Map<Integer, SettableFuture<DnsMessage>> inFlightQueries = new HashMap<>();
     private final Socket socket;
     private final DataInputStream dataInputStream;
     private final DataOutputStream dataOutputStream;
@@ -59,8 +59,8 @@ final class DNSSocket implements Closeable {
     private void readDNSMessages() {
         try {
             while (socket.isConnected()) {
-                final DNSMessage response = readDNSMessage();
-                final SettableFuture<DNSMessage> future;
+                final DnsMessage response = readDNSMessage();
+                final SettableFuture<DnsMessage> future;
                 synchronized (inFlightQueries) {
                     future = inFlightQueries.remove(response.id);
                 }
@@ -78,10 +78,10 @@ final class DNSSocket implements Closeable {
 
     private void evictInFlightQueries(final Exception e) {
         synchronized (inFlightQueries) {
-            final Iterator<Map.Entry<Integer, SettableFuture<DNSMessage>>> iterator =
+            final Iterator<Map.Entry<Integer, SettableFuture<DnsMessage>>> iterator =
                     inFlightQueries.entrySet().iterator();
             while (iterator.hasNext()) {
-                final Map.Entry<Integer, SettableFuture<DNSMessage>> entry = iterator.next();
+                final Map.Entry<Integer, SettableFuture<DnsMessage>> entry = iterator.next();
                 entry.getValue().setException(e);
                 iterator.remove();
             }
@@ -95,14 +95,11 @@ final class DNSSocket implements Closeable {
     }
 
     public static DNSSocket connect(final DNSServer dnsServer) throws IOException {
-        switch (dnsServer.uniqueTransport()) {
-            case TCP:
-                return connectTcpSocket(dnsServer);
-            case TLS:
-                return connectTlsSocket(dnsServer);
-            default:
-                throw new IllegalStateException("This is not a socket based transport");
-        }
+        return switch (dnsServer.uniqueTransport()) {
+            case TCP -> connectTcpSocket(dnsServer);
+            case TLS -> connectTlsSocket(dnsServer);
+            default -> throw new IllegalStateException("This is not a socket based transport");
+        };
     }
 
     private static DNSSocket connectTcpSocket(final DNSServer dnsServer) throws IOException {
@@ -133,10 +130,9 @@ final class DNSSocket implements Closeable {
             sslSocket.startHandshake();
             final SSLSession session = sslSocket.getSession();
             final Certificate[] peerCertificates = session.getPeerCertificates();
-            if (peerCertificates.length == 0 || !(peerCertificates[0] instanceof X509Certificate)) {
+            if (peerCertificates.length == 0 || !(peerCertificates[0] instanceof X509Certificate certificate)) {
                 throw new IOException("Peer did not provide X509 certificates");
             }
-            final X509Certificate certificate = (X509Certificate) peerCertificates[0];
             if (!OkHostnameVerifier.strictInstance().verify(dnsServer.hostname, certificate)) {
                 throw new SSLPeerUnverifiedException("Peer did not provide valid certificates");
             }
@@ -144,7 +140,7 @@ final class DNSSocket implements Closeable {
         return DNSSocket.of(sslSocket);
     }
 
-    public DNSMessage query(final DNSMessage query) throws IOException, InterruptedException {
+    public DnsMessage query(final DnsMessage query) throws IOException, InterruptedException {
         try {
             return queryAsync(query).get(QUERY_TIMEOUT, TimeUnit.MILLISECONDS);
         } catch (final ExecutionException e) {
@@ -159,9 +155,9 @@ final class DNSSocket implements Closeable {
         }
     }
 
-    public ListenableFuture<DNSMessage> queryAsync(final DNSMessage query)
+    public ListenableFuture<DnsMessage> queryAsync(final DnsMessage query)
             throws InterruptedException, IOException {
-        final SettableFuture<DNSMessage> responseFuture = SettableFuture.create();
+        final SettableFuture<DnsMessage> responseFuture = SettableFuture.create();
         synchronized (this.inFlightQueries) {
             this.inFlightQueries.put(query.id, responseFuture);
         }
@@ -175,7 +171,7 @@ final class DNSSocket implements Closeable {
         return responseFuture;
     }
 
-    private DNSMessage readDNSMessage() throws IOException {
+    private DnsMessage readDNSMessage() throws IOException {
         final int length = this.dataInputStream.readUnsignedShort();
         byte[] data = new byte[length];
         int read = 0;

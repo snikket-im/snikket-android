@@ -354,7 +354,7 @@ public class XmppConnection implements Runnable {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": Thread was interrupted");
                     return;
                 }
-                if (results.size() == 0) {
+                if (results.isEmpty()) {
                     Log.e(
                             Config.LOGTAG,
                             account.getJid().asBareJid() + ": Resolver results were empty");
