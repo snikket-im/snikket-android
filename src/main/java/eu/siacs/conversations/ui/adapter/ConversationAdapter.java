@@ -272,8 +272,8 @@ public class ConversationAdapter
         void onConversationClick(View view, Conversation conversation);
     }
 
-    static class ConversationViewHolder extends RecyclerView.ViewHolder {
-        private final ItemConversationBinding binding;
+    public static class ConversationViewHolder extends RecyclerView.ViewHolder {
+        public final ItemConversationBinding binding;
 
         private ConversationViewHolder(final ItemConversationBinding binding) {
             super(binding.getRoot());

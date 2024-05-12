@@ -3,11 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
+        android:background="?colorSecondaryFixedDim"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:descendantFocusability="blocksDescendants">
 
         <FrameLayout
+            android:background="?colorSurface"
             android:id="@+id/frame"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">

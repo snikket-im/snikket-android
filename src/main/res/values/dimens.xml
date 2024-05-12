@@ -35,8 +35,6 @@
     <dimen name="scan_laser_width">4dp</dimen>
     <dimen name="scan_dot_size">8dp</dimen>
 
-    <dimen name="swipe_escape_velocity">1200dp</dimen> <!-- android default is 120dp -->
-
     <dimen name="background_image_opacity">0.12</dimen>
 
     <dimen name="sd_label_max_width">256dp</dimen>
