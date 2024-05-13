@@ -26,9 +26,9 @@
     <string name="minute_ago">před minutou</string>
     <string name="minutes_ago">před %d minutami</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d nepřečtená konverzace</item>
-        <item quantity="few">%d nepřečtené konverzace</item>
-        <item quantity="other">%d nepřečtených konverzací</item>
+        <item quantity="one">%d nepřečtený chat</item>
+        <item quantity="few">%d nepřečtené chaty</item>
+        <item quantity="other">%d nepřečtených chatů</item>
     </plurals>
     <string name="sending">odesílám…</string>
     <string name="message_decrypting">Dešifrování zprávy. Chvíli strpení…</string>
@@ -40,7 +40,7 @@
     <string name="moderator">Moderátor</string>
     <string name="participant">Účastník</string>
     <string name="visitor">Návštěvník</string>
-    <string name="remove_contact_text">Přejete si odstranit %s ze seznamu kontaktů? Předešlé rozhovory nebudou odstraněny.</string>
+    <string name="remove_contact_text">Přejete si odstranit %s ze seznamu kontaktů? Předešlé chaty s tímto kontaktem nebudou odstraněny.</string>
     <string name="block_contact_text">Chcete zablokovat příjem zpráv od %s?</string>
     <string name="unblock_contact_text">Chcete odblokovat příjem zpráv od %s?</string>
     <string name="block_domain_text">Zablokovat všechny kontakty z %s?</string>
@@ -78,7 +78,7 @@
     <string name="preparing_images">Připravuji odeslání obrázků</string>
     <string name="sharing_files_please_wait">Sdílení souborů. Chvíli strpení…</string>
     <string name="action_clear_history">Smazat historii</string>
-    <string name="clear_conversation_history">Smaže historii konverzací</string>
+    <string name="clear_conversation_history">Smazat historii chatů</string>
     <string name="clear_histor_msg">Opravdu chcete smazat všechny zprávy v této konverzace?
 \n
 \n<b>Varování</b>Toto neovlivní zprávy uložené na jiných zařízeních či serverech.</string>
@@ -174,7 +174,7 @@
     <string name="unpublish_pgp_message">Skutečně chcete odstranit Váš současný veřejný OpenPGP klíč?\nVaše kontakty Vám nebudou moci nadále posílat zprávy šifrované pomocí OpenPGP. </string>
     <string name="openpgp_has_been_published">OpenPGP veřejný klíč zveřejněn.</string>
     <string name="mgmt_account_enable">Povolit účet</string>
-    <string name="mgmt_account_delete_confirm_text">Opravdu chcete svůj účet smazat? Smazáním Vašeho účtu dojde k vymazání celé Vaší historie konverzací</string>
+    <string name="mgmt_account_delete_confirm_text">Opravdu chcete svůj účet smazat? Smazáním Vašeho účtu dojde k vymazání celé Vaší chatové historie</string>
     <string name="attach_record_voice">Nahrát hlas</string>
     <string name="account_settings_jabber_id">Adresa XMPP</string>
     <string name="block_jabber_id">Blokovat XMPP adresu</string>
@@ -272,7 +272,7 @@
     <string name="ignore">Ignorovat</string>
     <string name="without_mutual_presence_updates"><b>Varování:</b> Odeslání bez povolení vzájemného informování o změně stavu může způsobit nečekané potíže.\n\n<small>Jděte do \"Detaily kontaktu\" a ověřte nastavení aktualizace stavu.</small></string>
     <string name="pref_security_settings">Zabezpečení</string>
-    <string name="pref_allow_message_correction">Povolit opravu zpráv</string>
+    <string name="pref_allow_message_correction">Oprava zpráv</string>
     <string name="pref_allow_message_correction_summary">Povolí kontaktům zpětné upravování jejich zpráv</string>
     <string name="pref_expert_options">Expertní nastavení</string>
     <string name="pref_expert_options_summary">S tímto zacházejte velmi opatrně</string>
@@ -461,8 +461,8 @@
     <string name="pref_dnd_on_silent_mode_summary">Při ztišeném vyzvánění označí váš stav jako \"nedostupný\"</string>
     <string name="pref_treat_vibrate_as_silent">Vibrační mód brát stejně jako tichý</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Při nastavení pouze na vibrace označí váš stav jako \"nedostupný\"</string>
-    <string name="pref_show_connection_options">Rozšířená nastavení připojení</string>
-    <string name="pref_show_connection_options_summary">Zobrazovat nastavení hostname a port při vytváření účtu</string>
+    <string name="pref_show_connection_options">Jméno hostitele a port</string>
+    <string name="pref_show_connection_options_summary">Zobrazit rozšířené možnosti připojení při nastavování účtu</string>
     <string name="hostname_example">xmpp.server.cz</string>
     <string name="action_add_account_with_certificate">Přihlásit se pomocí certifikátu</string>
     <string name="unable_to_parse_certificate">Nelze analyzovat certifikát</string>
@@ -500,10 +500,10 @@
     <string name="no_storage_permission">Povolit %1$s přístup k externímu úložišti</string>
     <string name="no_camera_permission">Povolit %1$s přístup ke kameře</string>
     <string name="sync_with_contacts">Synchronizovat s kontakty</string>
-    <string name="sync_with_contacts_long">%1$s požaduje přístup k Vašim kontaktům za účelem spárování s Vašimi XMPP kontakty.
-\nU kontaktů se pak zobrazí celé jméno a avatar.
+    <string name="sync_with_contacts_long">%1$s zpracovává Váš seznam kontaktů místně na Vašem zařízení za účelem zobrazení jmen a profilových obrázků odpovídajících kontaktů na XMPP.
 \n
-\n%1$s bude kontakty pouze číst a párovat místně v zařízení, aniž by došlo k nahrání těchto dat na server.</string>
+\n
+\nŽádná data kontaktů nikdy neopouštějí Vaše zařízení!</string>
     <string name="notify_on_all_messages">Upozorňovat na všechny zprávy</string>
     <string name="notify_only_when_highlighted">Upozornit pouze, když mě někdo zmíní</string>
     <string name="notify_never">Upozornění vypnuta</string>
@@ -523,7 +523,7 @@
     <string name="this_field_is_required">Toto pole je vyžadováno</string>
     <string name="correct_message">Opravit zprávu</string>
     <string name="send_corrected_message">Odeslat opravenou zprávu</string>
-    <string name="no_keys_just_confirm">Tento osobní otisk byl již bezpečně ověřen. Ťuknutím na \"Hotovo\" pouze potvrzujete, že %s je členem tohoto skupinového chatu.</string>
+    <string name="no_keys_just_confirm">Tento osobní otisk byl již označen jako důvěryhodný. Ťuknutím na \"Hotovo\" pouze potvrzujete, že %s je členem tohoto skupinového chatu.</string>
     <string name="this_account_is_disabled">Tento účet byl vypnut</string>
     <string name="security_error_invalid_file_access">Bezpečnostní chyba: Neplatný přístup k souboru!</string>
     <string name="no_application_to_share_uri">Nebyla nalezena aplikace umožňující sdílení URI</string>
@@ -554,8 +554,8 @@
     <string name="gp_short">Krátký</string>
     <string name="gp_medium">Střední</string>
     <string name="gp_long">Dlouhý</string>
-    <string name="pref_broadcast_last_activity">Informovat o používání</string>
-    <string name="pref_broadcast_last_activity_summary">Tato možnost dává vědět Vašim kontaktům, kdy používáte Conversations</string>
+    <string name="pref_broadcast_last_activity">Naposledy spatřen</string>
+    <string name="pref_broadcast_last_activity_summary">Umožnit svým kontaktům vidět, kdy jste naposledy použili aplikaci</string>
     <string name="pref_privacy">Soukromí</string>
     <string name="pref_theme_options">Vzhled</string>
     <string name="pref_theme_options_summary">Vybrat paletu barev</string>
@@ -601,7 +601,7 @@
     <string name="pref_blind_trust_before_verification">Slepě důvěřovat před ověřením</string>
     <string name="pref_blind_trust_before_verification_summary">Důvěřovat novým zařízením neověřených kontaktů, ale požadovat ruční potvrzení nových zařízení u ověřených kontaktů.</string>
     <string name="not_trusted">Nedůvěryhodný</string>
-    <string name="invalid_barcode">Neplatný 2D kód</string>
+    <string name="invalid_barcode">Neplatný QR kód</string>
     <string name="pref_clean_cache_summary">Vyčistit složku dočasných souborů (užitých aplikací fotoaparátu)</string>
     <string name="pref_clean_cache">Vyčistit dočasné soubory</string>
     <string name="pref_clean_private_storage">Vyčistit soukromé úložiště</string>
@@ -698,14 +698,14 @@
     <string name="error_trustkey_device_list">Nelze získat seznam zařízení</string>
     <string name="error_trustkey_bundle">Nelze získat šifrovací klíče</string>
     <string name="error_trustkey_hint_mutual">Tip: V některých případech může být řešení vzájemné přidání kontaktů do seznamu kontaktů.</string>
-    <string name="disable_encryption_message">Opravdu chcete vypnout OMEMO šifrování pro tuto konverzaci?
+    <string name="disable_encryption_message">Opravdu chcete vypnout OMEMO šifrování pro tento chat?
 \nTím umožníte správci Vašeho serveru číst Vaše zprávy. Zároveň to však může být jediný způsob, jak komunikovat s kontakty, které používají zastaralé verze klientů.</string>
     <string name="disable_now">Vypnout hned</string>
     <string name="draft">Koncept:</string>
     <string name="pref_omemo_setting">OMEMO šifrování</string>
     <string name="pref_omemo_setting_summary_always">OMEMO bude vždy použito k šifrování zpráv v jednotlivých konverzacích i v soukromých skupinách.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO bude použito jako výchozí pro nové konverzace.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO bude nutné zapnout ručně pro každou novou konverzaci.</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO bude použito jako výchozí pro nové chaty.</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO bude nutné zapnout ručně pro každý nový chat.</string>
     <string name="create_shortcut">Vytvořit zástupce</string>
     <string name="default_on">Zapnuto jako výchozí</string>
     <string name="default_off">Vypnuto jako výchozí</string>
@@ -724,14 +724,14 @@
     <string name="no_microphone_permission">Povolit %1$s přístup k mikrofonu</string>
     <string name="search_messages">Prohledat zprávy</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Zobrazit konverzaci</string>
+    <string name="view_conversation">Zobrazit chat</string>
     <string name="pref_use_share_location_plugin">Plugin pro sdílení pozice</string>
     <string name="pref_use_share_location_plugin_summary">Použít Plugin pro sdílení pozice namísto interní mapy</string>
     <string name="copy_link">Kopírovat webovou adresu</string>
     <string name="copy_jabber_id">Kopírovat XMPP adresu</string>
     <string name="p1_s3_filetransfer">HTTP sdílení souborů pro S3</string>
     <string name="pref_start_search">Přímé vyhledávání</string>
-    <string name="pref_start_search_summary">Na úvodní obrazovce otevřít klávesnici a umístit kurzor do vyhledávacího pole</string>
+    <string name="pref_start_search_summary">Na obrazovce \'Nový chat\' otevřít klávesnici a umístit kurzor do vyhledávacího pole</string>
     <string name="group_chat_avatar">Avatar skupinového chatu</string>
     <string name="host_does_not_support_group_chat_avatars">Hostitel nepodporuje avatary pro skupinový chat</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Pouze vlastník může změnit avatar skupinového chatu</string>
@@ -782,19 +782,19 @@
     <string name="verify_x">Ověřit %s</string>
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Poslali jsme Vám SMS na <b>%s</b>.]]></string>
     <string name="we_have_sent_you_another_sms">Poslali jsme Vám další SMS se 6místným kódem.</string>
-    <string name="please_enter_pin_below">Prosím, vložte 6místný pin.</string>
+    <string name="please_enter_pin_below">Prosím, vložte 6místný PIN.</string>
     <string name="resend_sms">Poslat SMS znovu</string>
     <string name="resend_sms_in">Poslat SMS znovu (%s)</string>
     <string name="wait_x">Chvíli strpení (%s)</string>
-    <string name="back">zpět</string>
-    <string name="possible_pin">Automaticky vložen pravděpodobný pin ze schránky.</string>
-    <string name="please_enter_pin">Prosím, vložte svůj 6místný pin.</string>
+    <string name="back">Zpět</string>
+    <string name="possible_pin">Automaticky vložen pravděpodobný PIN ze schránky.</string>
+    <string name="please_enter_pin">Prosím, vložte svůj 6místný PIN.</string>
     <string name="abort_registration_procedure">Opravdu si přejete přerušit registraci?</string>
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
     <string name="verifying">Ověřuji…</string>
-    <string name="incorrect_pin">Pin, který jste zadali, je nesprávný.</string>
-    <string name="pin_expired">Pin, který jsme Vám poslali, vypršel.</string>
+    <string name="incorrect_pin">Zadaný PIN je nesprávný.</string>
+    <string name="pin_expired">Platnost PINu, který jsme Vám poslali, vypršela.</string>
     <string name="unknown_api_error_network">Neznámá chyba sítě.</string>
     <string name="unknown_api_error_response">Neznámá odpověď serveru.</string>
     <string name="unable_to_connect_to_server">Nebylo možné se připojit k serveru.</string>
@@ -917,8 +917,8 @@
     <string name="remove_from_favorites">Odepnout shora</string>
     <string name="gpx_track">GPX trasa</string>
     <string name="could_not_correct_message">Nebylo možné opravit zprávu</string>
-    <string name="search_all_conversations">Všechny konverzace</string>
-    <string name="search_this_conversation">Tato konverzace</string>
+    <string name="search_all_conversations">Všechny chaty</string>
+    <string name="search_this_conversation">Tento chat</string>
     <string name="your_avatar">Váš avatar</string>
     <string name="avatar_for_x">Avatar uživatele %s</string>
     <string name="encrypted_with_omemo">Šifrováno pomocí OMEMO</string>
@@ -1001,4 +1001,75 @@
     <string name="no_xmpp_adddress_found">Nebyla nalezena žádná XMPP adresa</string>
     <string name="delete_avatar">Smazat avatar</string>
     <string name="account_status_temporary_auth_failure">Dočasné selhání autentizace</string>
+    <string name="audiobook">Audiokniha</string>
+    <string name="account_state_logged_out">Odhlášen</string>
+    <string name="unverified_devices">Používáte neověřená zařízení. Naskenujte QR kód vašich dalších zařízení, abyste provedli ověření a zabránili tak aktivním MITM útokům.</string>
+    <string name="pref_send_crash_reports">Odesílat zprávy o pádu</string>
+    <string name="welcome_header_quicksy">Vítejte v Quicksy!</string>
+    <string name="no_permission_to_place_call">Chybí povolení k telefonnímu hovoru</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">Kód neobsahuje otisky k tomuto chatu.</string>
+    <string name="channel_discover_opt_in_message">Funkce Objevování kanálů využívá službu třetí strany nazvanou &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Použitím této funkce odešlete Vaši IP adresu a hledané fráze do této služby. Pro více informací si přečtěte &lt;a href=https://search.jabber.network/privacy&gt;Zásady ochrany osobních údajů&lt;/a&gt;.</string>
+    <string name="outdated_backup_file_format">Pokoušíte se naimportovat zálohu v zastaralém formátu</string>
+    <string name="pref_up_push_server_title">Push server</string>
+    <string name="log_out">Odhlásit se</string>
+    <string name="no_account_deactivated">Žádný (deaktivováno)</string>
+    <string name="decline">Odmítnout</string>
+    <string name="delete_from_server">Odstranit účet ze serveru</string>
+    <string name="report_spam_and_block">Nahlásit spam a blokovat jeho odesílatele</string>
+    <string name="pref_title_interface">Rozhraní</string>
+    <string name="delete_and_close">Smazat a archivovat chat</string>
+    <string name="start_chat">Zahájit chat</string>
+    <string name="no_certificate_selected">Nebyl vybrán žádný klientský certifikát!</string>
+    <string name="unified_push_summary">Služba oznámení pro další aplikace kompatibilní s UnifiedPush</string>
+    <string name="notifications">Oznámení</string>
+    <string name="pref_attachments_summary">Velikost souborů, komprese obrázků, kvalita videa</string>
+    <string name="pref_notifications_summary">Časová lhůta, zvuk, vibrace, neznámí uživatelé</string>
+    <string name="pref_automatic_download">Automatické stahování</string>
+    <string name="appearance">Vzhled</string>
+    <string name="pref_light_dark_mode">Světlý/tmavý vzhled</string>
+    <string name="pref_allow_screenshots">Povolit snímky obrazovky</string>
+    <string name="pref_allow_screenshots_summary">Zobrazit obsah aplikace v přepínači aplikací a povolit snímky obrazovky</string>
+    <string name="pref_category_e2ee">Koncové šifrování</string>
+    <string name="pref_title_trust_system_ca_store">Certifikační autority</string>
+    <string name="detect_mim">Požadovat channel binding</string>
+    <string name="pref_title_trust_system_ca_store_summary">Důvěřovat systémovým CA certifikátům</string>
+    <string name="pref_privacy_summary">Oznámení o psaní, naposledy spatřen, dostupnost</string>
+    <string name="privacy_policy">Zásady ochrany osobních údajů</string>
+    <string name="contact_list_integration_not_available">Propojení se seznamem kontaktů není k dispozici</string>
+    <string name="quicksy_wants_your_consent">Quicksy žádá o souhlas s použitím Vašich dat</string>
+    <string name="remove_bookmark_and_close">Přejete si odstranit záložku pro %s a archivovat chat?</string>
+    <string name="pref_autojoin_summary">Nastavit příznak \"autojoin\" při vstupu či opuštění skupiny a reagovat na změny provedené jinými klienty.</string>
+    <string name="this_account_is_logged_out">Odhlásili jste se z tohoto účtu</string>
+    <string name="reconnect_on_other_host">Znovu se připojit k jinému hostu</string>
+    <string name="requesting_sms">Žádost o SMS…</string>
+    <string name="restore_warning_continued">Neobnovujte zálohy, které jste sami nevytvořili!</string>
+    <string name="switch_to_chat">Přepnout na chat</string>
+    <string name="audio_video_disabled_tor">Hovory nejsou dostupné při použití Toru</string>
+    <string name="unified_push_distributor">UnifiedPush Distributor</string>
+    <string name="pref_up_push_account_title">XMPP účet</string>
+    <string name="pref_up_push_account_summary">Účet, který bude použit pro přijímání zpráv push.</string>
+    <string name="hide_notification">Skrýt oznámení</string>
+    <string name="report_spam">Nahlásit spam</string>
+    <string name="pref_title_security">Zabezpečení</string>
+    <string name="pref_summary_security">E2E šifrování, slepá důvěra před ověřením, detekce MITM</string>
+    <string name="detect_mim_summary">Channel binding může detekovat některé útoky typu machine-in-the-middle</string>
+    <string name="pref_summary_appearance">Téma, barvy, snímky obrazovky, vstup</string>
+    <string name="title_activity_share_with">Sdílet s…</string>
+    <string name="pref_use_colorful_bubbles">Barevné bubliny chatu</string>
+    <string name="pref_use_colorful_bubbles_summary">Odlišit barvy odeslaných a přijatých zpráv</string>
+    <string name="pref_dynamic_colors">Dynamické barvy</string>
+    <string name="pref_dynamic_colors_summary">Systémové barvy (Material You)</string>
+    <string name="rtp_state_content_add">Přidat další stopy?</string>
+    <string name="remove_bookmark">Přejete si odstranit záložku pro %s?</string>
+    <string name="could_not_delete_account_from_server">Nebylo možné odstranit účet ze serveru</string>
+    <string name="log_in">Přihlásit se</string>
+    <string name="contact_uses_unverified_keys">Váš kontakt používá neověřená zařízení. Naskenujte QR kód kontaktu, abyste provedli ověření a zabránili tak aktivním MITM útokům.</string>
+    <string name="pref_keyboard_options">Klávesnice</string>
+    <string name="action_archive_chat">Archivovat chat</string>
+    <string name="title_activity_new_chat">Nový chat</string>
+    <string name="archive_this_chat">Poté smazat chat</string>
+    <string name="send_encrypted_message">Odeslat šifrovanou zprávu</string>
+    <string name="corresponding_chats_closed">Příslušné chaty archivovány.</string>
+    <string name="rtp_state_contact_offline">Kontakt není dostupný</string>
+    <string name="title_undo_swipe_out_chat">Chat archivován</string>
 </resources>
