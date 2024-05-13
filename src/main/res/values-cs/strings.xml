@@ -1040,12 +1040,12 @@
     <string name="remove_bookmark_and_close">Přejete si odstranit záložku pro %s a archivovat chat?</string>
     <string name="pref_autojoin_summary">Nastavit příznak \"autojoin\" při vstupu či opuštění skupiny a reagovat na změny provedené jinými klienty.</string>
     <string name="this_account_is_logged_out">Odhlásili jste se z tohoto účtu</string>
-    <string name="reconnect_on_other_host">Znovu se připojit k jinému hostu</string>
+    <string name="reconnect_on_other_host">Znovu připojit k jinému hostiteli</string>
     <string name="requesting_sms">Žádost o SMS…</string>
     <string name="restore_warning_continued">Neobnovujte zálohy, které jste sami nevytvořili!</string>
     <string name="switch_to_chat">Přepnout na chat</string>
     <string name="audio_video_disabled_tor">Hovory nejsou dostupné při použití Toru</string>
-    <string name="unified_push_distributor">UnifiedPush Distributor</string>
+    <string name="unified_push_distributor">Distributor UnifiedPush</string>
     <string name="pref_up_push_account_title">XMPP účet</string>
     <string name="pref_up_push_account_summary">Účet, který bude použit pro přijímání zpráv push.</string>
     <string name="hide_notification">Skrýt oznámení</string>
@@ -1072,4 +1072,22 @@
     <string name="corresponding_chats_closed">Příslušné chaty archivovány.</string>
     <string name="rtp_state_contact_offline">Kontakt není dostupný</string>
     <string name="title_undo_swipe_out_chat">Chat archivován</string>
+    <string name="invalid_user_input">Neplatný uživatelský vstup</string>
+    <string name="call_integration_not_available">Integrace hovorů není k dispozici!</string>
+    <string name="pref_connection_summary_w_cd">Název hostitele a port, Tor, objevování kanálů</string>
+    <string name="pref_connection_summary">Název hostitele a port, Tor</string>
+    <string name="pref_backup_summary">Vytvořit jednou, naplánovat další</string>
+    <string name="pref_up_long_summary">Pokud je funkce distribuce UnifiedPush povolena, spolehlivé a na baterii nenáročné XMPP spojení bude využíváno k probouzení jiných aplikací kompatibilních s UnifiedPush, jako jsou např. Tusky, Ltt.rs, FluffyChat a další.</string>
+    <string name="pref_category_application">Aplikace</string>
+    <string name="pref_category_interaction">Interakce</string>
+    <string name="pref_category_on_this_device">Na tomto zařízení</string>
+    <string name="pref_create_backup_one_off_summary">Vytvořit jednorázovou zálohu</string>
+    <string name="pref_backup_recurring">Opakovaná záloha</string>
+    <string name="pref_fullscreen_notification">Oznámení na celou obrazovku</string>
+    <string name="unsupported_operation">Nepodporovaná operace</string>
+    <string name="pref_fullscreen_notification_summary">Povolit této aplikaci zobrazit oznámení o příchozích hovorech přes celou obrazovku, když je zařízení uzamčeno.</string>
+    <string name="pref_accept_invites_from_strangers">Pozvánky od neznámých</string>
+    <string name="pref_accept_invites_from_strangers_summary">Přijímat pozvánky do skupinových chatů od neznámých kontaktů</string>
+    <string name="pref_large_font">Velké písmo</string>
+    <string name="pref_large_font_summary">Zvětšit písmo v chatových bublinách</string>
 </resources>
