@@ -1261,7 +1261,6 @@ public class XmppConnectionService extends Service {
         toggleForegroundService();
         this.destroyed = false;
         OmemoSetting.load(this);
-        ExceptionHelper.init(getApplicationContext());
         try {
             Security.insertProviderAt(Conscrypt.newProvider(), 1);
         } catch (Throwable throwable) {
