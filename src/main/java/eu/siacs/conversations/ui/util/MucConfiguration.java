@@ -10,13 +10,13 @@ import eu.siacs.conversations.entities.MucOptions;
 
 public class MucConfiguration {
 
-    public final @StringRes
-    int title;
+    public final @StringRes int title;
     public final String[] names;
     public final boolean[] values;
     public final Option[] options;
 
-    private MucConfiguration(@StringRes int title, String[] names, boolean[] values, Option[] options) {
+    private MucConfiguration(
+            @StringRes int title, String[] names, boolean[] values, Option[] options) {
         this.title = title;
         this.names = names;
         this.values = values;
@@ -25,52 +25,62 @@ public class MucConfiguration {
 
     public static MucConfiguration get(Context context, boolean advanced, MucOptions mucOptions) {
         if (mucOptions.isPrivateAndNonAnonymous()) {
-            String[] names = new String[]{
-                    context.getString(R.string.allow_participants_to_edit_subject),
-                    context.getString(R.string.allow_participants_to_invite_others)
-            };
-            boolean[] values = new boolean[]{
-                    mucOptions.participantsCanChangeSubject(),
-                    mucOptions.allowInvites()
-            };
-            final Option[] options = new Option[]{
-                    new Option("muc#roomconfig_changesubject"),
-                    new Option("muc#roomconfig_allowinvites")
-            };
+            String[] names =
+                    new String[] {
+                        context.getString(R.string.allow_participants_to_edit_subject),
+                        context.getString(R.string.allow_participants_to_invite_others)
+                    };
+            boolean[] values =
+                    new boolean[] {
+                        mucOptions.participantsCanChangeSubject(), mucOptions.allowInvites()
+                    };
+            final Option[] options =
+                    new Option[] {
+                        new Option("muc#roomconfig_changesubject"),
+                        new Option("muc#roomconfig_allowinvites")
+                    };
             return new MucConfiguration(R.string.conference_options, names, values, options);
         } else {
             final String[] names;
             final boolean[] values;
             final Option[] options;
             if (advanced) {
-                names = new String[]{
-                        context.getString(R.string.non_anonymous),
-                        context.getString(R.string.allow_participants_to_edit_subject),
-                        context.getString(R.string.moderated)
-                };
-                values = new boolean[]{
-                        mucOptions.nonanonymous(),
-                        mucOptions.participantsCanChangeSubject(),
-                        mucOptions.moderated()
-                };
-                options = new Option[]{
-                        new Option("muc#roomconfig_whois", "anyone", "moderators"),
-                        new Option("muc#roomconfig_changesubject"),
-                        new Option("muc#roomconfig_moderatedroom")
-                };
+                names =
+                        new String[] {
+                            context.getString(R.string.non_anonymous),
+                            context.getString(R.string.allow_participants_to_edit_subject),
+                            context.getString(R.string.moderated),
+                            context.getString(R.string.allow_private_messages)
+                        };
+                values =
+                        new boolean[] {
+                            mucOptions.nonanonymous(),
+                            mucOptions.participantsCanChangeSubject(),
+                            mucOptions.moderated(),
+                            mucOptions.allowPm()
+                        };
+                options =
+                        new Option[] {
+                            new Option("muc#roomconfig_whois", "anyone", "moderators"),
+                            new Option("muc#roomconfig_changesubject"),
+                            new Option("muc#roomconfig_moderatedroom"),
+                            new Option("muc#roomconfig_allowpm", "anyone", "moderators"),
+                        };
             } else {
-                names = new String[]{
-                        context.getString(R.string.non_anonymous),
-                        context.getString(R.string.allow_participants_to_edit_subject),
-                };
-                values = new boolean[]{
-                        mucOptions.nonanonymous(),
-                        mucOptions.participantsCanChangeSubject()
-                };
-                options = new Option[]{
-                        new Option("muc#roomconfig_whois", "anyone", "moderators"),
-                        new Option("muc#roomconfig_changesubject")
-                };
+                names =
+                        new String[] {
+                            context.getString(R.string.non_anonymous),
+                            context.getString(R.string.allow_participants_to_edit_subject),
+                        };
+                values =
+                        new boolean[] {
+                            mucOptions.nonanonymous(), mucOptions.participantsCanChangeSubject()
+                        };
+                options =
+                        new Option[] {
+                            new Option("muc#roomconfig_whois", "anyone", "moderators"),
+                            new Option("muc#roomconfig_changesubject")
+                        };
             }
             return new MucConfiguration(R.string.channel_options, names, values, options);
         }
@@ -108,9 +118,9 @@ public class MucConfiguration {
 
     public Bundle toBundle(boolean[] values) {
         Bundle bundle = new Bundle();
-        for(int i = 0; i < values.length; ++i) {
+        for (int i = 0; i < values.length; ++i) {
             final Option option = options[i];
-            bundle.putString(option.name,option.values[values[i] ? 0 : 1]);
+            bundle.putString(option.name, option.values[values[i] ? 0 : 1]);
         }
         return bundle;
     }
@@ -121,13 +131,12 @@ public class MucConfiguration {
 
         private Option(String name) {
             this.name = name;
-            this.values = new String[]{"1","0"};
+            this.values = new String[] {"1", "0"};
         }
 
         private Option(String name, String on, String off) {
             this.name = name;
-            this.values = new String[]{on,off};
+            this.values = new String[] {on, off};
         }
     }
-
 }

@@ -3663,7 +3663,7 @@ public class XmppConnectionService extends Service {
                     Element configuration = pubsub == null ? null : pubsub.findChild("configure");
                     Element x = configuration == null ? null : configuration.findChild("x", Namespace.DATA);
                     if (x != null) {
-                        Data data = Data.parse(x);
+                        final Data data = Data.parse(x);
                         data.submit(options);
                         sendIqPacket(account, mIqGenerator.publishPubsubConfiguration(jid, node, data), new OnIqPacketReceived() {
                             @Override
@@ -3695,6 +3695,12 @@ public class XmppConnectionService extends Service {
             final boolean moderated = "1".equals(options.getString("muc#roomconfig_moderatedroom"));
             options.putString("members_by_default", moderated ? "0" : "1");
         }
+        if (options.containsKey("muc#roomconfig_allowpm")) {
+            // ejabberd :-/
+            final boolean allow = "anyone".equals(options.getString("muc#roomconfig_allowpm"));
+            options.putString("allow_private_messages", allow ? "1" : "0");
+            options.putString("allow_private_messages_from_visitors", allow ? "anyone" : "nobody");
+        }
         final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
         request.setTo(conversation.getJid().asBareJid());
         request.query("http://jabber.org/protocol/muc#owner");
@@ -3714,6 +3720,7 @@ public class XmppConnectionService extends Service {
                                 if (packet.getType() == IqPacket.TYPE.RESULT) {
                                     callback.onPushSucceeded();
                                 } else {
+                                    Log.d(Config.LOGTAG,"failed: "+packet.toString());
                                     callback.onPushFailed();
                                 }
                             }
