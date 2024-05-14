@@ -1073,4 +1073,5 @@
     <string name="pref_fullscreen_notification_summary">Permitir que a app mostre a notificación de chamada entrante a pantalla completa cando o dispositivo está bloqueado.</string>
     <string name="pref_backup_summary">Crear única, Programar recurrentes</string>
     <string name="pref_create_backup_one_off_summary">Crear unha copia de apoio</string>
+    <string name="allow_private_messages">Permitir mensaxes privadas</string>
 </resources>
