@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import android.telecom.TelecomManager;
 import android.telecom.VideoProfile;
 import android.util.Base64;
 import android.util.Log;
@@ -776,6 +777,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     Media.audioOnly(media)
                             ? VideoProfile.STATE_AUDIO_ONLY
                             : VideoProfile.STATE_BIDIRECTIONAL);
+            callIntegration.setAddress(
+                    CallIntegration.address(with.asBareJid()), TelecomManager.PRESENTATION_ALLOWED);
+            final var contact = account.getRoster().getContact(with);
+            callIntegration.setCallerDisplayName(
+                    contact.getDisplayName(), TelecomManager.PRESENTATION_ALLOWED);
             callIntegration.setInitialAudioDevice(CallIntegration.initialAudioDevice(media));
             callIntegration.startAudioRouting();
             final RtpSessionProposal proposal =

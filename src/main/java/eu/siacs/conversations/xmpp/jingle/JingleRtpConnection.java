@@ -112,6 +112,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
                                 .getApplicationContext()));
         this.callIntegration.setAddress(
                 CallIntegration.address(id.with.asBareJid()), TelecomManager.PRESENTATION_ALLOWED);
+        final var contact = id.getContact();
+        this.callIntegration.setCallerDisplayName(
+                contact.getDisplayName(), TelecomManager.PRESENTATION_ALLOWED);
         this.callIntegration.setInitialized();
     }
 
