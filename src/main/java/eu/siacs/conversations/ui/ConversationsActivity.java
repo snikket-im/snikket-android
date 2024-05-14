@@ -259,15 +259,15 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     private void notifyFragmentOfBackendConnected(@IdRes int id) {
         final Fragment fragment = getFragmentManager().findFragmentById(id);
-        if (fragment instanceof OnBackendConnected) {
-            ((OnBackendConnected) fragment).onBackendConnected();
+        if (fragment instanceof OnBackendConnected callback) {
+            callback.onBackendConnected();
         }
     }
 
     private void refreshFragment(@IdRes int id) {
         final Fragment fragment = getFragmentManager().findFragmentById(id);
-        if (fragment instanceof XmppFragment) {
-            ((XmppFragment) fragment).refresh();
+        if (fragment instanceof XmppFragment xmppFragment) {
+            xmppFragment.refresh();
         }
     }
 
