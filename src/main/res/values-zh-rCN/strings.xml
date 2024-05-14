@@ -784,7 +784,7 @@
     <string name="phone_number">电话号码</string>
     <string name="verify_your_phone_number">验证您的电话号码</string>
     <string name="enter_country_code_and_phone_number">Quicksy 将发送短信（运营商可能收费）来验证电话号码。请输入您的国家/地区代码和电话号码：</string>
-    <string name="we_will_be_verifying">我们将验证这个电话号码<br/><br/><b>%s</b><br/><br/>可以吗？是否编辑号码？</string>
+    <string name="we_will_be_verifying">我们将验证这个电话号码 <br/><br/><b>%s</b><br/><br/> 可以吗？是否编辑号码？</string>
     <string name="not_a_valid_phone_number">%s 不是有效的电话号码。</string>
     <string name="please_enter_your_phone_number">请输入您的电话号码。</string>
     <string name="search_countries">搜索国家/地区</string>
@@ -1069,7 +1069,7 @@
     <string name="send_encrypted_message">发送加密消息</string>
     <string name="pref_large_font">大字体</string>
     <string name="pref_large_font_summary">增加消息气泡中的字体大小</string>
-    <string name="pref_accept_invites_from_strangers">解受陌生人的邀请</string>
+    <string name="pref_accept_invites_from_strangers">来自陌生人的邀请</string>
     <string name="pref_accept_invites_from_strangers_summary">接受来自陌生人的群聊邀请</string>
     <string name="pref_create_backup_one_off_summary">创建一次性备份</string>
     <string name="pref_backup_recurring">定期备份</string>
@@ -1077,4 +1077,5 @@
     <string name="pref_fullscreen_notification_summary">当设备锁定时，允许此应用显示占据全屏的来电通知。</string>
     <string name="unsupported_operation">不支持的操作</string>
     <string name="pref_backup_summary">创建一次性、计划定期备份</string>
+    <string name="allow_private_messages">允许私信</string>
 </resources>
