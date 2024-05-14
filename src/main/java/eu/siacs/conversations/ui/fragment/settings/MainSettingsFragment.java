@@ -16,7 +16,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         setPreferencesFromResource(R.xml.preferences_main, rootKey);
-        final var about = findPreference("about2");
+        final var about = findPreference("about");
         final var connection = findPreference("connection");
         if (about == null || connection == null) {
             throw new IllegalStateException(
