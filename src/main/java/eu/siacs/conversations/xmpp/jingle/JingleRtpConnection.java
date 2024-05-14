@@ -71,6 +71,7 @@ import java.util.concurrent.TimeUnit;
 public class JingleRtpConnection extends AbstractJingleConnection
         implements WebRTCWrapper.EventCallback, CallIntegration.Callback, OngoingRtpSession {
 
+    // TODO consider adding State.SESSION_INITIALIZED to ongoing call states for direct init mode
     public static final List<State> STATES_SHOWING_ONGOING_CALL =
             Arrays.asList(
                     State.PROPOSED,
@@ -2790,6 +2791,12 @@ public class JingleRtpConnection extends AbstractJingleConnection
     private void updateOngoingCallNotification() {
         final State state = this.state;
         if (STATES_SHOWING_ONGOING_CALL.contains(state)) {
+            if (Arrays.asList(State.PROPOSED, State.SESSION_INITIALIZED).contains(state)
+                    && isResponder()) {
+                Log.d(Config.LOGTAG, "do not set ongoing call during incoming call notification");
+                xmppConnectionService.removeOngoingCall();
+                return;
+            }
             final boolean reconnecting;
             if (state == State.SESSION_ACCEPTED) {
                 reconnecting =
