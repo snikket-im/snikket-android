@@ -1031,7 +1031,7 @@
     <string name="start_chat">Nisni fjalosje</string>
     <string name="action_archive_chat">Arkivoje fjalosjen</string>
     <string name="title_activity_new_chat">Fjalosje e re</string>
-    <string name="archive_this_chat">Arkivoje këtë fjalosje</string>
+    <string name="archive_this_chat">Fshije fjalosjen më pas</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_chat">Kodi me vija s’përmban shenja gishtash për këtë fjalosje.</string>
     <string name="switch_to_chat">Kaloni te fjalosja</string>
     <string name="title_undo_swipe_out_chat">Fjalosje e arkivuar</string>
@@ -1081,4 +1081,6 @@
     <string name="pref_fullscreen_notification_summary">Lejojeni këtë aplikacion të shfaqë njoftime për thirrje ardhëse që zënë krejt ekranin, kur pajisja është e kyçur.</string>
     <string name="unsupported_operation">Veprim i pambuluar</string>
     <string name="pref_backup_recurring">Kopjeruajtje ripërsëritëse</string>
+    <string name="pref_create_backup_one_off_summary">Krijoni një kopjeruajtje një here të vetme</string>
+    <string name="allow_private_messages">Lejoni mesazhe private</string>
 </resources>
