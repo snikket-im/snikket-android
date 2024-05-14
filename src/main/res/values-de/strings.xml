@@ -1071,4 +1071,5 @@
     <string name="unsupported_operation">Nicht unterstützte Operation</string>
     <string name="pref_fullscreen_notification_summary">Erlaube dieser App, Benachrichtigungen über eingehende Anrufe anzuzeigen, die den gesamten Bildschirm einnehmen, wenn das Gerät gesperrt ist.</string>
     <string name="pref_create_backup_one_off_summary">Einmalige Sicherung erstellen</string>
+    <string name="allow_private_messages">Private Nachrichten erlauben</string>
 </resources>
