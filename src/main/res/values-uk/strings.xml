@@ -1119,4 +1119,5 @@
     <string name="pref_fullscreen_notification_summary">Показувати сповіщення про вхідні виклики на весь екран, коли пристрій заблоковано.</string>
     <string name="pref_backup_summary">Створити резервну копію, запланувати повторюване резервування</string>
     <string name="pref_create_backup_one_off_summary">Створити резервну копію</string>
+    <string name="allow_private_messages">Дозволити приватні повідомлення</string>
 </resources>
