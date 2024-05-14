@@ -1030,7 +1030,7 @@
     <string name="title_activity_share_with">Compartir con…</string>
     <string name="action_archive_chat">Archivar chat</string>
     <string name="title_activity_new_chat">Chat nuevo</string>
-    <string name="archive_this_chat">Guardar este chat</string>
+    <string name="archive_this_chat">Eliminar este chat después</string>
     <string name="title_undo_swipe_out_chat">Chat guardado</string>
     <string name="welcome_header">Unirse a Conversation</string>
     <string name="pref_use_colorful_bubbles">Burbujas de chat de colores</string>
@@ -1085,4 +1085,5 @@
     <string name="unsupported_operation">Operación no soportada</string>
     <string name="pref_fullscreen_notification">Notificaciones a pantalla completa</string>
     <string name="pref_fullscreen_notification_summary">Permite que esta aplicación muestre notificaciones de llamadas entrantes que ocupan toda la pantalla cuando el dispositivo está bloqueado.</string>
+    <string name="allow_private_messages">Permitir mensajes privados</string>
 </resources>
