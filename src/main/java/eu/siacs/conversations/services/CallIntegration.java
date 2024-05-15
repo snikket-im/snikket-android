@@ -527,6 +527,13 @@ public class CallIntegration extends Connection {
                 && Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
             return false;
         }
+        // we only know of one Umidigi device (BISON_GT2_5G) that doesn't work (audio is not being
+        // routed properly) However with those devices being extremely rare it's impossible to gauge
+        // how many might be effected and no Naomi Wu around to clarify with the company directly
+        if ("umidigi".equalsIgnoreCase(Build.MANUFACTURER)
+                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+            return false;
+        }
         return true;
     }
 
