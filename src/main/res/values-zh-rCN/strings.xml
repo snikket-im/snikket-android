@@ -405,7 +405,7 @@
     <string name="conference_options">私人群聊配置</string>
     <string name="channel_options">公开频道配置</string>
     <string name="members_only">私人，仅成员进入</string>
-    <string name="non_anonymous">使 XMPP 地址对任何人可见</string>
+    <string name="non_anonymous">公开成员的真实JID</string>
     <string name="moderated">对频道进行审核</string>
     <string name="you_are_not_participating">您未参与</string>
     <string name="modified_conference_options">群聊选项修改成功！</string>
