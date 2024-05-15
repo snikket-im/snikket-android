@@ -541,8 +541,6 @@
     <string name="message_copied_to_clipboard">Mezua arbelera kopiatu da</string>
     <string name="message">Mezua</string>
     <string name="private_messages_are_disabled">Mezu pribatuak ezgaituta daude</string>
-    <string name="huawei_protected_apps">Babestutako aplikazioak</string>
-    <string name="huawei_protected_apps_summary">Jakinarazpenak jasotzen jarraitu nahi naduzu, baita pantaila itzalita dagoenean ere, Conversations babestutako aplikazioen zerrendan gehitu behar duzu.</string>
     <string name="mtm_accept_cert">Ziurtagiri ezezaguna onartu?</string>
     <string name="mtm_trust_anchor">Zerbitzariaren ziurtagiria ez dago ezaguna den Ziurtagiri jaulkitzaile batez sinatuta.</string>
     <string name="mtm_accept_servername">Bat ez datorren zerbitzari izena onartu?</string>

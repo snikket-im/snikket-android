@@ -663,8 +663,6 @@
     <string name="message_copied_to_clipboard">メッセージをクリップボードにコピーしました</string>
     <string name="message">メッセージ</string>
     <string name="private_messages_are_disabled">非公開メッセージを無効化しました</string>
-    <string name="huawei_protected_apps">保護されたアプリ</string>
-    <string name="huawei_protected_apps_summary">画面がオフになっているときでも通知を受信し続けるには、保護されたアプリの一覧に Conversations を追加する必要があります。</string>
     <string name="mtm_accept_cert">未知の証明書を受け入れますか?</string>
     <string name="mtm_trust_anchor">サーバー証明書が既知の認証局によって署名されていません。</string>
     <string name="mtm_accept_servername">不一致のサーバー名を受け入れますか?</string>

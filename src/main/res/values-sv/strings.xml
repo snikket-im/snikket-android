@@ -687,8 +687,6 @@
     <string name="message_copied_to_clipboard">Meddelandet har kopierats till urklipp</string>
     <string name="message">Meddelande</string>
     <string name="private_messages_are_disabled">Privata meddelanden är inaktiverade</string>
-    <string name="huawei_protected_apps">Skyddade appar</string>
-    <string name="huawei_protected_apps_summary">För att fortsätta ta emot aviseringar, även när skärmen är avstängd, måste du lägga till Conversations i listan över skyddade appar.</string>
     <string name="mtm_accept_cert">Acceptera okänt certifikat\?</string>
     <string name="mtm_trust_anchor">Servercertifikatet är inte signerat av en känd certifikatutfärdare.</string>
     <string name="mtm_accept_servername">Acceptera servernamn som inte matchar?</string>

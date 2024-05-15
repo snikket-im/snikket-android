@@ -668,8 +668,6 @@
     <string name="message_copied_to_clipboard">Повідомлення скопійовано</string>
     <string name="message">Повідомлення</string>
     <string name="private_messages_are_disabled">Приватні повідомлення вимкнено</string>
-    <string name="huawei_protected_apps">Захищені програми</string>
-    <string name="huawei_protected_apps_summary">Щоб отримувати сповіщення навіть коли екран погас, необхідно додати Conversations до списку захищених програм.</string>
     <string name="mtm_accept_cert">Прийняти незнайомий сертифікат?</string>
     <string name="mtm_trust_anchor">Сертифікат сервера не підтверджено відомим центром сертифікації.</string>
     <string name="mtm_accept_servername">Прийняти сервер з невідповідним ім\'ям?</string>

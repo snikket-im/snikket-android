@@ -696,8 +696,6 @@
     <string name="message_copied_to_clipboard">Wiadomość skopiowana do schowka</string>
     <string name="message">Wiadomość</string>
     <string name="private_messages_are_disabled">Prywatne wiadomości są wyłączone</string>
-    <string name="huawei_protected_apps">Aplikacje chronione</string>
-    <string name="huawei_protected_apps_summary">Aby otrzymywać powiadomienia nawet kiedy ekran jest wyłączony musisz dodać Conversations do listy chronionych aplikacji.</string>
     <string name="mtm_accept_cert">Zaakceptować nieznany certyfikat?</string>
     <string name="mtm_trust_anchor">Certyfikat serwera nie jest podpisany przez znany Urząd Certyfikacji.</string>
     <string name="mtm_accept_servername">Czy zaakceptować niepasującą nazwę serwera?</string>

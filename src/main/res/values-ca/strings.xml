@@ -647,9 +647,6 @@
     <string name="message_copied_to_clipboard">Missatge copiat al portapapers</string>
     <string name="message">Missatge</string>
     <string name="private_messages_are_disabled">Els missatges privats estan desactivats</string>
-    <string name="huawei_protected_apps">Aplicacions protegides</string>
-    <string name="huawei_protected_apps_summary">Per continuar rebent notificacions, fins i tot quan la pantalla està apagada, heu 
-d\'afegir Converses a la llista d\'aplicacions protegides.</string>
     <string name="mtm_accept_cert">Voleu acceptar un certificat desconegut?</string>
     <string name="mtm_trust_anchor">El certificat del servidor no està signat per una autoritat de certificació coneguda.</string>
     <string name="mtm_accept_servername">Voleu acceptar el nom del servidor associat?</string>

@@ -673,8 +673,6 @@
     <string name="message_copied_to_clipboard">Besked kopieret til udklipsholder</string>
     <string name="message">Besked</string>
     <string name="private_messages_are_disabled">Private beskeder er deaktiveret</string>
-    <string name="huawei_protected_apps">Beskyttet apps</string>
-    <string name="huawei_protected_apps_summary">For at modtage underretninger, selv når skærmen er slukket, skal du tilføje Conversations til listen over beskyttede apps.</string>
     <string name="mtm_accept_cert">Accepter ukendt certifikat?</string>
     <string name="mtm_trust_anchor">Serverens certifikat er ikke underskrevet af en kendt Certifikat Autoritet.</string>
     <string name="mtm_accept_servername">Accepter fejlbehæftet servernavn?</string>

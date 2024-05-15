@@ -513,7 +513,6 @@
     <string name="message_copied_to_clipboard">Mesazhi u kopjua në të papastër</string>
     <string name="message">Mesazh</string>
     <string name="private_messages_are_disabled">Mesazhet private janë të çaktivizuara</string>
-    <string name="huawei_protected_apps">Aplikacione të Mbrojtur</string>
     <string name="mtm_accept_cert">Të pranohet Dëshmi e Panjohur\?</string>
     <string name="mtm_trust_anchor">Dëshmia e shërbyesit s’është nënshkruar prej një Autoriteti të njohur Dëshmish.</string>
     <string name="mtm_accept_servername">Të Pranohet Emër Shërbyesi i Ngatërruar\?</string>
@@ -785,7 +784,6 @@
     <string name="error_message">Mesazh Gabimi</string>
     <string name="error_unable_to_create_temporary_file">S’u krijua dot kartelë e përkohshme</string>
     <string name="this_device_has_been_verified">Kjo pajisje u verifikua</string>
-    <string name="huawei_protected_apps_summary">Që të vazhdoni të merrni njoftime, edhe kur ekrani juaj është i fikur, duhet të shtoni Conversations te lista e aplikacioneve të mbrojtur.</string>
     <string name="this_looks_like_channel">Kjo duket si adresë kanali</string>
     <string name="audio_call">Thirrje audio</string>
     <string name="video_call">Thirrje video</string>

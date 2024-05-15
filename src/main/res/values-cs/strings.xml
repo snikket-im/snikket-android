@@ -679,8 +679,6 @@
     <string name="message_copied_to_clipboard">Zpráva zkopírována do schránky</string>
     <string name="message">Zpráva</string>
     <string name="private_messages_are_disabled">Soukromé zprávy jsou zakázány</string>
-    <string name="huawei_protected_apps">Chráněné aplikace</string>
-    <string name="huawei_protected_apps_summary">Abyste mohli dostávat upozornění i při vypnuté obrazovce, musíte přidat Conversations mezi chráněné aplikace.</string>
     <string name="mtm_accept_cert">Přijmout neznámý certifikát?</string>
     <string name="mtm_trust_anchor">Certifikát není podepsaný žádnou známou certifikační autoritou.</string>
     <string name="mtm_accept_servername">Přijmout nesouhlasící jméno serveru?</string>

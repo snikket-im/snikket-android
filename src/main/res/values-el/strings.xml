@@ -664,8 +664,6 @@
     <string name="message_copied_to_clipboard">Το μήνυμα αντιγράφηκε στο πρόχειρο</string>
     <string name="message">Μήνυμα</string>
     <string name="private_messages_are_disabled">Τα ιδιωτικά μηνύματα είναι απενεργοποιημένα</string>
-    <string name="huawei_protected_apps">Προστατευμένες εφαρμογές</string>
-    <string name="huawei_protected_apps_summary">Για να συνεχίσετε να λαμβάνετε ειδοποιήσεις, ακόμα κι όταν η οθόνη είναι σβηστή, χρειάζεται να προσθέσετε το Conversations στον κατάλογο με τις προστατευμένες εφαρμογές.</string>
     <string name="mtm_accept_cert">Αποδοχή άγνωστου πιστοποιητικού;</string>
     <string name="mtm_trust_anchor">Το πιστοποιητικό του διακομιστή δεν είναι υπογεγραμμένο από κάποια γνωστή Αρχή Πιστοποίησης.</string>
     <string name="mtm_accept_servername">Αποδοχή αναντίστοιχου ονόματος διακομιστή;</string>

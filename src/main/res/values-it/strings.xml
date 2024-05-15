@@ -683,8 +683,6 @@
     <string name="message_copied_to_clipboard">Messaggio copiato negli appunti</string>
     <string name="message">Messaggio</string>
     <string name="private_messages_are_disabled">I messaggi privati sono disattivati</string>
-    <string name="huawei_protected_apps">App protette</string>
-    <string name="huawei_protected_apps_summary">Per ricevere notifiche anche quando lo schermo è spento, devi aggiungere Conversations all\'elenco delle app protette.</string>
     <string name="mtm_accept_cert">Accetti il certificato sconosciuto?</string>
     <string name="mtm_trust_anchor">Il certificato del server non è firmato da una Certificate Authority nota.</string>
     <string name="mtm_accept_servername">Accetti il nome del server non corrispondente?</string>

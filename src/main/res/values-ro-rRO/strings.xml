@@ -688,8 +688,6 @@
     <string name="message_copied_to_clipboard">Mesaj copiat în clipboard</string>
     <string name="message">Mesaj</string>
     <string name="private_messages_are_disabled">Mesajele private sunt dezactivate</string>
-    <string name="huawei_protected_apps">Aplicații protejate</string>
-    <string name="huawei_protected_apps_summary">Pentru a continua să primiți notificări, chiar și când ecranul este oprit, trebuie să adăugați Conversations în lista de aplicații protejate.</string>
     <string name="mtm_accept_cert">Acceptați certificatul necunoscut?</string>
     <string name="mtm_trust_anchor">Certificatul serverului nu este semnat de o autoritate de certificare (CA) cunoscută.</string>
     <string name="mtm_accept_servername">Acceptați numele serverului ce nu corespunde?</string>

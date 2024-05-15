@@ -685,8 +685,6 @@
     <string name="message_copied_to_clipboard">Сообщение скопировано в буфер обмена</string>
     <string name="message">Сообщение</string>
     <string name="private_messages_are_disabled">Личные сообщения выключены</string>
-    <string name="huawei_protected_apps">Защищенные приложения</string>
-    <string name="huawei_protected_apps_summary">Чтобы продолжать получать уведомления, даже если экран выключен, вам необходимо добавить Conversations в список защищенных приложений.</string>
     <string name="mtm_accept_cert">Принять Неизвестный Сертификат?</string>
     <string name="mtm_trust_anchor">Этот сертификат сервера не подписан ни одним из известных центров сертификации.</string>
     <string name="mtm_accept_servername">Принять несовпадающее имя сервера?</string>

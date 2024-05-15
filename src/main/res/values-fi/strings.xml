@@ -638,8 +638,6 @@
     <string name="message_copied_to_clipboard">Viesti kopioitu leikepöydälle</string>
     <string name="message">Viesti</string>
     <string name="private_messages_are_disabled">Yksityisviestit on poistettu käytöstä</string>
-    <string name="huawei_protected_apps">Suojatut sovellukset</string>
-    <string name="huawei_protected_apps_summary">Saadaksesi ilmoituksia silloinkin kun näyttö on sammutettu, Conversations pitää lisätä suojattujen sovellusten luetteloon.</string>
     <string name="mtm_accept_cert">Hyväksytäänkö tuntematon varmenne?</string>
     <string name="mtm_trust_anchor">Palvelimen varmenne ei ole luotetun myöntäjän allekirjoittama.</string>
     <string name="mtm_accept_servername">Hyväksytäänkö eriävä palvelimen nimi?</string>

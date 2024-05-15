@@ -578,8 +578,6 @@
     <string name="message_copied_to_clipboard">Bericht gekopieerd naar klembord</string>
     <string name="message">Bericht</string>
     <string name="private_messages_are_disabled">Privéberichten zijn uitgeschakeld</string>
-    <string name="huawei_protected_apps">Beschermde apps</string>
-    <string name="huawei_protected_apps_summary">Om meldingen te blijven ontvangen, zelfs wanneer het scherm uit staat, moet je Conversations toevoegen aan de lijst met beschermde apps.</string>
     <string name="mtm_accept_cert">Onbekend certificaat aanvaarden?</string>
     <string name="mtm_trust_anchor">Het servercertificaat is niet ondertekend door een gekende certificaatautoriteit.</string>
     <string name="mtm_accept_servername">Verkeerde servernaam aanvaarden?</string>

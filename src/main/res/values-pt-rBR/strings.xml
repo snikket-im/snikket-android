@@ -678,8 +678,6 @@
     <string name="message_copied_to_clipboard">A mensagem foi copiada para a área de transferência</string>
     <string name="message">Mensagem</string>
     <string name="private_messages_are_disabled">As mensagens privadas estão desabilitadas</string>
-    <string name="huawei_protected_apps">Apps protegidos</string>
-    <string name="huawei_protected_apps_summary">Para continuar recebendo notificações, mesmo com a tela apagada, você precisa adicionar o Conversations à lista de apps protegidos.</string>
     <string name="mtm_accept_cert">Aceitar certificado desconhecido?</string>
     <string name="mtm_trust_anchor">O servidor do certificado não está assinado por uma autoridade certificadora reconhecida.</string>
     <string name="mtm_accept_servername">Aceitar nome de servidor não correspondente?</string>

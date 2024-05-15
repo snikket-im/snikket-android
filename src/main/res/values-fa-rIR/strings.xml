@@ -672,14 +672,12 @@
     <string name="invalid_barcode">بارکد دوبعدی نامعتبر</string>
     <string name="allow_participants_to_invite_others">بگذارید همه دیگران را دعوت کنند</string>
     <string name="install_orbot">نصب Orbot</string>
-    <string name="huawei_protected_apps">برنامه‌های محافظت‌شده</string>
     <string name="pref_clean_cache">کش را خالی کن</string>
     <string name="copy_fingerprint">کپی اثر انگشت دیجیتال</string>
     <string name="pref_headsup_notifications">اعلان‌های شناور</string>
     <string name="choose_account">انتخاب حساب</string>
     <string name="no_users_hint_group_chat">این گفتگوی گروهی خصوصی هیچ عضوی ندارد.</string>
     <string name="restore_backup">بازیابی پشتیبان</string>
-    <string name="huawei_protected_apps_summary">برای دریافت اعلان‌ها حتی وقتی که صفحه خاموش است باید این برنامه را به فهرست برنامه‌های محافظت‌شده بیفزایید.</string>
     <string name="use_camera_icon_to_scan_barcode">بارکد را به کمک دوربین اسکن کنید</string>
     <string name="no_name_set_instructions">برای تنظیم نام دکمهٔ ویرایش را به‌کار ببرید.</string>
     <string name="pref_omemo_setting_summary_always">همیشه برای گفتگوهای تکی و گروهای خصوصی OMEMO به کار برود.</string>
