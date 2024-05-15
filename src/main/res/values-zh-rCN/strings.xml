@@ -357,7 +357,7 @@
     <string name="no_application_found_to_open_link">未找到可以打开链接的应用</string>
     <string name="no_application_found_to_view_contact">未找到可以查看联系人的应用</string>
     <string name="pref_show_dynamic_tags">动态标签</string>
-    <string name="pref_show_dynamic_tags_summary">在联系人下方显示只读标签</string>
+    <string name="pref_show_dynamic_tags_summary">在联系人下方显示动态标签汇总</string>
     <string name="enable_notifications">启用通知</string>
     <string name="no_conference_server_found">群聊服务器未找到</string>
     <string name="conference_creation_failed">无法创建群聊</string>
@@ -405,7 +405,7 @@
     <string name="conference_options">私人群聊配置</string>
     <string name="channel_options">公开频道配置</string>
     <string name="members_only">私人，仅成员进入</string>
-    <string name="non_anonymous">公开成员的真实JID</string>
+    <string name="non_anonymous">使 XMPP 地址对任何人可见</string>
     <string name="moderated">对频道进行审核</string>
     <string name="you_are_not_participating">您未参与</string>
     <string name="modified_conference_options">群聊选项修改成功！</string>
