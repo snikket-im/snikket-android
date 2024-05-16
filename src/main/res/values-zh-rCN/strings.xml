@@ -388,11 +388,11 @@
     <string name="outcast">被驱逐者</string>
     <string name="member">成员</string>
     <string name="advanced_mode">高级模式</string>
-    <string name="grant_membership">授予成员权限</string>
+    <string name="grant_membership">设为成员</string>
     <string name="remove_membership">撤销成员权限</string>
-    <string name="grant_admin_privileges">授予管理员权限</string>
+    <string name="grant_admin_privileges">设为管理员</string>
     <string name="remove_admin_privileges">撤销管理员权限</string>
-    <string name="grant_owner_privileges">授予所有者权限</string>
+    <string name="grant_owner_privileges">设为所有者</string>
     <string name="remove_owner_privileges">撤销所有者权限</string>
     <string name="remove_from_room">从群聊中移除</string>
     <string name="remove_from_channel">从频道中移除</string>
@@ -408,8 +408,8 @@
     <string name="non_anonymous">公开用户的 XMPP 地址</string>
     <string name="moderated">对频道进行审核</string>
     <string name="you_are_not_participating">您未参与</string>
-    <string name="modified_conference_options">群聊选项修改成功！</string>
-    <string name="could_not_modify_conference_options">无法修改群聊选项</string>
+    <string name="modified_conference_options">群聊配置修改成功！</string>
+    <string name="could_not_modify_conference_options">无法修改群聊配置</string>
     <string name="never">从不</string>
     <string name="until_further_notice">直至另行通知</string>
     <string name="snooze">稍后提醒</string>
