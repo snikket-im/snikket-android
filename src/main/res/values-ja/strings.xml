@@ -1047,4 +1047,7 @@
     <string name="unsupported_operation">対応されていない動作</string>
     <string name="pref_privacy_summary">通知の種類、最終確認日時、在席状況</string>
     <string name="allow_private_messages">非公開メッセージを許可</string>
+    <string name="pref_backup_recurring">繰り返し作成</string>
+    <string name="pref_backup_summary">一回限りもしくは繰り返し計画を作成</string>
+    <string name="pref_create_backup_one_off_summary">一回限りのバックアップを作成</string>
 </resources>
