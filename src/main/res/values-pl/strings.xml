@@ -1101,4 +1101,5 @@
     <string name="pref_fullscreen_notification">Pełnoekranowe powiadomienia</string>
     <string name="unsupported_operation">Nieobsługiwana operacja</string>
     <string name="pref_fullscreen_notification_summary">Pozwól tej aplikacji na pokazywanie powiadomień o przychodzącym połączeniu, które zajmują cały ekran gdy urządzenie jest zablokowane.</string>
+    <string name="allow_private_messages">Pozwól na prywatne wiadomości</string>
 </resources>
