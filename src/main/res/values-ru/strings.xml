@@ -1055,7 +1055,7 @@
     <string name="channel_discover_opt_in_message">Обзор каналов использует сторонний сервис &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Эта функция передаст Ваш IP-адрес и ваш поисковый запрос этому сервису. Ознакомьтесь с его &lt;a href=https://search.jabber.network/privacy&gt;Политикой конфиденциальности&lt;/a&gt; для получения подробностей.</string>
     <string name="action_archive_chat">Архивировать беседу</string>
     <string name="title_activity_new_chat">Новая беседа</string>
-    <string name="archive_this_chat">Архивировать эту беседу</string>
+    <string name="archive_this_chat">Затем удалить беседу</string>
     <string name="title_undo_swipe_out_chat">Беседа архивирована</string>
     <string name="welcome_header">Присоединиться к общению</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_chat">Штрих-код не содержит отпечатков для этой беседы.</string>
@@ -1084,4 +1084,8 @@
     <string name="corresponding_chats_closed">Соответствующие беседы архивированы.</string>
     <string name="pref_title_trust_system_ca_store_summary">Доверять сертификатам системных УЦ</string>
     <string name="pref_connection_summary_w_cd">Имя хоста и порт, Тор, обзор каналов</string>
+    <string name="allow_private_messages">Разрешить личные сообщения</string>
+    <string name="pref_accept_invites_from_strangers_summary">Принимать приглашения в групповые беседы от незнакомцев</string>
+    <string name="unsupported_operation">Операция не поддерживается</string>
+    <string name="pref_fullscreen_notification">Полноэкранные уведомления</string>
 </resources>
