@@ -2328,7 +2328,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
         this.jingleConnectionManager.ensureConnectionIsRegistered(this);
         this.webRTCWrapper.setup(this.xmppConnectionService);
         this.webRTCWrapper.initializePeerConnection(media, iceServers, trickle);
-        this.webRTCWrapper.setMicrophoneEnabledOrThrow(callIntegration.isMicrophoneEnabled());
+        // this.webRTCWrapper.setMicrophoneEnabledOrThrow(callIntegration.isMicrophoneEnabled());
+        this.webRTCWrapper.setMicrophoneEnabledOrThrow(true);
     }
 
     private void acceptCallFromProposed() {
@@ -2770,7 +2771,12 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     @Override
     public void onCallIntegrationMicrophoneEnabled(final boolean enabled) {
-        this.webRTCWrapper.setMicrophoneEnabled(enabled);
+        // this is called every time we switch audio devices. Thus it would re-enable a microphone
+        // that was previous disabled by the user. A proper implementation would probably be to
+        // track user choice and enable the microphone with a userEnabled() &&
+        // callIntegration.isMicrophoneEnabled() condition
+        Log.d(Config.LOGTAG, "ignoring onCallIntegrationMicrophoneEnabled(" + enabled + ")");
+        // this.webRTCWrapper.setMicrophoneEnabled(enabled);
     }
 
     @Override
