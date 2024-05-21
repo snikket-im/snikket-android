@@ -27,6 +27,7 @@ import eu.siacs.conversations.xmpp.Jid;
 
 import org.minidns.dnsmessage.Question;
 import org.minidns.dnsname.DnsName;
+import org.minidns.dnsname.InvalidDnsNameException;
 import org.minidns.dnsqueryresult.DnsQueryResult;
 import org.minidns.record.A;
 import org.minidns.record.AAAA;
@@ -97,7 +98,7 @@ public class Resolver {
         try {
             DnsName.from(hostname);
             return false;
-        } catch (IllegalArgumentException e) {
+        } catch (final InvalidDnsNameException | IllegalArgumentException e) {
             return true;
         }
     }
