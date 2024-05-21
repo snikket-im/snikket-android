@@ -17,6 +17,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.work.ForegroundInfo;
+import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -33,7 +34,6 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
-import eu.siacs.conversations.receiver.WorkManagerEventReceiver;
 import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.Compatibility;
 
@@ -95,6 +95,7 @@ public class ExportBackupWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        setForegroundAsync(getForegroundInfo());
         final List<File> files;
         try {
             files = export();
@@ -223,18 +224,14 @@ public class ExportBackupWorker extends Worker {
                         IV,
                         salt);
         final var notification = getNotification();
-        if (!recurringBackup) {
-            final var cancel = new Intent(context, WorkManagerEventReceiver.class);
-            cancel.setAction(WorkManagerEventReceiver.ACTION_STOP_BACKUP);
-            final var cancelPendingIntent =
-                    PendingIntent.getBroadcast(context, 197, cancel, PENDING_INTENT_FLAGS);
-            notification.addAction(
-                    new NotificationCompat.Action.Builder(
-                                    R.drawable.ic_cancel_24dp,
-                                    context.getString(R.string.cancel),
-                                    cancelPendingIntent)
-                            .build());
-        }
+        final var cancelPendingIntent =
+                WorkManager.getInstance(context).createCancelPendingIntent(getId());
+        notification.addAction(
+                new NotificationCompat.Action.Builder(
+                                R.drawable.ic_cancel_24dp,
+                                context.getString(R.string.cancel),
+                                cancelPendingIntent)
+                        .build());
         final Progress progress = new Progress(notification, max, count);
         final File directory = file.getParentFile();
         if (directory != null && directory.mkdirs()) {
