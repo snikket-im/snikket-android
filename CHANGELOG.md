@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.16.1
+
+* Fix call getting un-muted when switching output devices
+* Exclude all Umidigi devices from call integration
+
 ### Version 2.16.0
 
 * Schedule regular backups
