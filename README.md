@@ -242,13 +242,17 @@ everybody in your contact list to know that you have been using your computer at
 In the past status has been used to judge the likelihood of whether or not your
 messages are being read. This is no longer necessary. With Chat Markers
 (XEP-0333, supported by Conversations since 0.4) we have the ability to **know**
-whether or not your messages are being read.  Similar things can be said for
-priorities. In the past priorities have been used (by servers, not by clients!)
-to route your messages to one specific client. With carbon messages (XEP-0280,
-supported by Conversations since 0.1) this is no longer necessary. Using
-priorities to route OTR messages isn't practical either because they are not
-changeable on the fly. Metrics like last active client (the client which sent
-the last message) are much better.
+whether or not your messages are being read.
+* one check mark ✓: message has been send (arrived at server)
+* two check marks ✓✓: message has arrived at receiver
+* text _"has read up to this point"_: receiver has read the message (receiver might has read notifications turned off)
+
+Similar things can be said for priorities. In the past priorities have been used
+(by servers, not by clients!) to route your messages to one specific client.
+With carbon messages (XEP-0280, supported by Conversations since 0.1) this is no
+longer necessary. Using priorities to route OTR messages isn't practical either
+because they are not changeable on the fly. Metrics like last active client (the
+client which sent the last message) are much better.
 
 Unfortunately these modern replacements for legacy XMPP features are not widely
 adopted. However Conversations should be an instant messenger for the future and
