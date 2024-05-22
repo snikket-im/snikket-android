@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.16.2
+
+* Run Backup as foreground service to prevent process being stopped after 10 minutes
+
 ### Version 2.16.1
 
 * Fix call getting un-muted when switching output devices
