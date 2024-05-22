@@ -34,6 +34,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -487,7 +488,12 @@ public class RtpSessionActivity extends XmppActivity
         final String action = intent.getAction();
         Log.d(Config.LOGTAG, "initializeWithIntent(" + event + "," + action + ")");
         final Account account = extractAccount(intent);
-        final Jid with = Jid.ofEscaped(intent.getStringExtra(EXTRA_WITH));
+        final var extraWith = intent.getStringExtra(EXTRA_WITH);
+        final Jid with = Strings.isNullOrEmpty(extraWith) ? null : Jid.ofEscaped(extraWith);
+        if (with == null || account == null) {
+            Log.e(Config.LOGTAG, "intent is missing extras (account or with)");
+            return;
+        }
         final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
         if (sessionId != null) {
             if (initializeActivityWithRunningRtpSession(account, with, sessionId)) {
@@ -1038,8 +1044,7 @@ public class RtpSessionActivity extends XmppActivity
             final CallIntegration.AudioDevice selectedAudioDevice, final int numberOfChoices) {
         switch (selectedAudioDevice) {
             case EARPIECE -> {
-                this.binding.inCallActionRight.setImageResource(
-                        R.drawable.ic_volume_off_24dp);
+                this.binding.inCallActionRight.setImageResource(R.drawable.ic_volume_off_24dp);
                 if (numberOfChoices >= 2) {
                     this.binding.inCallActionRight.setOnClickListener(this::switchToSpeaker);
                 } else {
@@ -1062,8 +1067,7 @@ public class RtpSessionActivity extends XmppActivity
                 }
             }
             case BLUETOOTH -> {
-                this.binding.inCallActionRight.setImageResource(
-                        R.drawable.ic_bluetooth_audio_24dp);
+                this.binding.inCallActionRight.setImageResource(R.drawable.ic_bluetooth_audio_24dp);
                 this.binding.inCallActionRight.setOnClickListener(null);
                 this.binding.inCallActionRight.setClickable(false);
             }
