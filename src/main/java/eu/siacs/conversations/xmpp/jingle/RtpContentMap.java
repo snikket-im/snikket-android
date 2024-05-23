@@ -18,9 +18,9 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
-import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.OmemoVerifiedIceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
+import im.conversations.android.xmpp.model.jingle.Jingle;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -38,7 +38,7 @@ public class RtpContentMap extends AbstractContentMap<RtpDescription, IceUdpTran
         super(group, contents);
     }
 
-    public static RtpContentMap of(final JinglePacket jinglePacket) {
+    public static RtpContentMap of(final Jingle jinglePacket) {
         final Map<String, DescriptionTransport<RtpDescription, IceUdpTransportInfo>> contents =
                 of(jinglePacket.getJingleContents());
         if (isOmemoVerified(contents)) {
@@ -52,7 +52,7 @@ public class RtpContentMap extends AbstractContentMap<RtpDescription, IceUdpTran
             Map<String, DescriptionTransport<RtpDescription, IceUdpTransportInfo>> contents) {
         final Collection<DescriptionTransport<RtpDescription, IceUdpTransportInfo>> values =
                 contents.values();
-        if (values.size() == 0) {
+        if (values.isEmpty()) {
             return false;
         }
         for (final DescriptionTransport<RtpDescription, IceUdpTransportInfo> descriptionTransport :

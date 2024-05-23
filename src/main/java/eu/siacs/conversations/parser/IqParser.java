@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -37,18 +38,17 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.forms.Data;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
-public class IqParser extends AbstractParser implements OnIqPacketReceived {
+public class IqParser extends AbstractParser implements Consumer<Iq> {
 
-    public IqParser(final XmppConnectionService service) {
-        super(service);
+    public IqParser(final XmppConnectionService service, final Account account) {
+        super(service, account);
     }
 
-    public static List<Jid> items(IqPacket packet) {
+    public static List<Jid> items(final Iq packet) {
         ArrayList<Jid> items = new ArrayList<>();
         final Element query = packet.findChild("query", Namespace.DISCO_ITEMS);
         if (query == null) {
@@ -65,7 +65,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         return items;
     }
 
-    public static Room parseRoom(IqPacket packet) {
+    public static Room parseRoom(Iq packet) {
         final Element query = packet.findChild("query", Namespace.DISCO_INFO);
         if (query == null) {
             return null;
@@ -143,7 +143,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         mXmppConnectionService.syncRoster(account);
     }
 
-    public String avatarData(final IqPacket packet) {
+    public static String avatarData(final Iq packet) {
         final Element pubsub = packet.findChild("pubsub", Namespace.PUBSUB);
         if (pubsub == null) {
             return null;
@@ -152,10 +152,10 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         if (items == null) {
             return null;
         }
-        return super.avatarData(items);
+        return AbstractParser.avatarData(items);
     }
 
-    public Element getItem(final IqPacket packet) {
+    public static Element getItem(final Iq packet) {
         final Element pubsub = packet.findChild("pubsub", Namespace.PUBSUB);
         if (pubsub == null) {
             return null;
@@ -168,7 +168,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
     }
 
     @NonNull
-    public Set<Integer> deviceIds(final Element item) {
+    public static Set<Integer> deviceIds(final Element item) {
         Set<Integer> deviceIds = new HashSet<>();
         if (item != null) {
             final Element list = item.findChild("list");
@@ -189,7 +189,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         return deviceIds;
     }
 
-    private Integer signedPreKeyId(final Element bundle) {
+    private static Integer signedPreKeyId(final Element bundle) {
         final Element signedPreKeyPublic = bundle.findChild("signedPreKeyPublic");
         if (signedPreKeyPublic == null) {
             return null;
@@ -201,7 +201,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         }
     }
 
-    private ECPublicKey signedPreKeyPublic(final Element bundle) {
+    private static ECPublicKey signedPreKeyPublic(final Element bundle) {
         ECPublicKey publicKey = null;
         final String signedPreKeyPublic = bundle.findChildContent("signedPreKeyPublic");
         if (signedPreKeyPublic == null) {
@@ -215,7 +215,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         return publicKey;
     }
 
-    private byte[] signedPreKeySignature(final Element bundle) {
+    private static byte[] signedPreKeySignature(final Element bundle) {
         final String signedPreKeySignature = bundle.findChildContent("signedPreKeySignature");
         if (signedPreKeySignature == null) {
             return null;
@@ -228,7 +228,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         }
     }
 
-    private IdentityKey identityKey(final Element bundle) {
+    private static IdentityKey identityKey(final Element bundle) {
         final String identityKey = bundle.findChildContent("identityKey");
         if (identityKey == null) {
             return null;
@@ -241,7 +241,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         }
     }
 
-    public Map<Integer, ECPublicKey> preKeyPublics(final IqPacket packet) {
+    public static Map<Integer, ECPublicKey> preKeyPublics(final Iq packet) {
         Map<Integer, ECPublicKey> preKeyRecords = new HashMap<>();
         Element item = getItem(packet);
         if (item == null) {
@@ -284,7 +284,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         return BaseEncoding.base64().decode(CharMatcher.whitespace().removeFrom(input));
     }
 
-    public Pair<X509Certificate[], byte[]> verification(final IqPacket packet) {
+    public static Pair<X509Certificate[], byte[]> verification(final Iq packet) {
         Element item = getItem(packet);
         Element verification = item != null ? item.findChild("verification", AxolotlService.PEP_PREFIX) : null;
         Element chain = verification != null ? verification.findChild("chain") : null;
@@ -312,7 +312,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         }
     }
 
-    public PreKeyBundle bundle(final IqPacket bundle) {
+    public static PreKeyBundle bundle(final Iq bundle) {
         final Element bundleItem = getItem(bundle);
         if (bundleItem == null) {
             return null;
@@ -336,7 +336,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
                 signedPreKeyId, signedPreKeyPublic, signedPreKeySignature, identityKey);
     }
 
-    public List<PreKeyBundle> preKeys(final IqPacket preKeys) {
+    public static List<PreKeyBundle> preKeys(final Iq preKeys) {
         List<PreKeyBundle> bundles = new ArrayList<>();
         Map<Integer, ECPublicKey> preKeyPublics = preKeyPublics(preKeys);
         if (preKeyPublics != null) {
@@ -351,15 +351,15 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
     }
 
     @Override
-    public void onIqPacketReceived(final Account account, final IqPacket packet) {
-        final boolean isGet = packet.getType() == IqPacket.TYPE.GET;
-        if (packet.getType() == IqPacket.TYPE.ERROR || packet.getType() == IqPacket.TYPE.TIMEOUT) {
+    public void accept(final Iq packet) {
+        final boolean isGet = packet.getType() == Iq.Type.GET;
+        if (packet.getType() == Iq.Type.ERROR || packet.getType() == Iq.Type.TIMEOUT) {
             return;
         }
         if (packet.hasChild("query", Namespace.ROSTER) && packet.fromServer(account)) {
             final Element query = packet.findChild("query");
             // If this is in response to a query for the whole roster:
-            if (packet.getType() == IqPacket.TYPE.RESULT) {
+            if (packet.getType() == Iq.Type.RESULT) {
                 account.getRoster().markAllAsNotInRoster();
             }
             this.rosterItems(account, query);
@@ -373,7 +373,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
                     (block != null ? block.getChildren() : null);
             // If this is a response to a blocklist query, clear the block list and replace with the new one.
             // Otherwise, just update the existing blocklist.
-            if (packet.getType() == IqPacket.TYPE.RESULT) {
+            if (packet.getType() == Iq.Type.RESULT) {
                 account.clearBlocklist();
                 account.getXmppConnection().getFeatures().setBlockListRequested(true);
             }
@@ -389,7 +389,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
                     }
                 }
                 account.getBlocklist().addAll(jids);
-                if (packet.getType() == IqPacket.TYPE.SET) {
+                if (packet.getType() == Iq.Type.SET) {
                     boolean removed = false;
                     for (Jid jid : jids) {
                         removed |= mXmppConnectionService.removeBlockedConversations(account, jid);
@@ -401,15 +401,15 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
             }
             // Update the UI
             mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
-            if (packet.getType() == IqPacket.TYPE.SET) {
-                final IqPacket response = packet.generateResponse(IqPacket.TYPE.RESULT);
+            if (packet.getType() == Iq.Type.SET) {
+                final Iq response = packet.generateResponse(Iq.Type.RESULT);
                 mXmppConnectionService.sendIqPacket(account, response, null);
             }
         } else if (packet.hasChild("unblock", Namespace.BLOCKING) &&
-                packet.fromServer(account) && packet.getType() == IqPacket.TYPE.SET) {
+                packet.fromServer(account) && packet.getType() == Iq.Type.SET) {
             Log.d(Config.LOGTAG, "Received unblock update from server");
             final Collection<Element> items = packet.findChild("unblock", Namespace.BLOCKING).getChildren();
-            if (items.size() == 0) {
+            if (items.isEmpty()) {
                 // No children to unblock == unblock all
                 account.getBlocklist().clear();
             } else {
@@ -425,7 +425,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
                 account.getBlocklist().removeAll(jids);
             }
             mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.UNBLOCKED);
-            final IqPacket response = packet.generateResponse(IqPacket.TYPE.RESULT);
+            final Iq response = packet.generateResponse(Iq.Type.RESULT);
             mXmppConnectionService.sendIqPacket(account, response, null);
         } else if (packet.hasChild("open", "http://jabber.org/protocol/ibb")
                 || packet.hasChild("data", "http://jabber.org/protocol/ibb")
@@ -433,18 +433,18 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
             mXmppConnectionService.getJingleConnectionManager()
                     .deliverIbbPacket(account, packet);
         } else if (packet.hasChild("query", "http://jabber.org/protocol/disco#info")) {
-            final IqPacket response = mXmppConnectionService.getIqGenerator().discoResponse(account, packet);
+            final Iq response = mXmppConnectionService.getIqGenerator().discoResponse(account, packet);
             mXmppConnectionService.sendIqPacket(account, response, null);
         } else if (packet.hasChild("query", "jabber:iq:version") && isGet) {
-            final IqPacket response = mXmppConnectionService.getIqGenerator().versionResponse(packet);
+            final Iq response = mXmppConnectionService.getIqGenerator().versionResponse(packet);
             mXmppConnectionService.sendIqPacket(account, response, null);
         } else if (packet.hasChild("ping", "urn:xmpp:ping") && isGet) {
-            final IqPacket response = packet.generateResponse(IqPacket.TYPE.RESULT);
+            final Iq response = packet.generateResponse(Iq.Type.RESULT);
             mXmppConnectionService.sendIqPacket(account, response, null);
         } else if (packet.hasChild("time", "urn:xmpp:time") && isGet) {
-            final IqPacket response;
+            final Iq response;
             if (mXmppConnectionService.useTorToConnect() || account.isOnion()) {
-                response = packet.generateResponse(IqPacket.TYPE.ERROR);
+                response = packet.generateResponse(Iq.Type.ERROR);
                 final Element error = response.addChild("error");
                 error.setAttribute("type", "cancel");
                 error.addChild("not-allowed", "urn:ietf:params:xml:ns:xmpp-stanzas");
@@ -452,18 +452,18 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
                 response = mXmppConnectionService.getIqGenerator().entityTimeResponse(packet);
             }
             mXmppConnectionService.sendIqPacket(account, response, null);
-        } else if (packet.hasChild("push", Namespace.UNIFIED_PUSH) && packet.getType() == IqPacket.TYPE.SET) {
+        } else if (packet.hasChild("push", Namespace.UNIFIED_PUSH) && packet.getType() == Iq.Type.SET) {
             final Jid transport = packet.getFrom();
             final Element push = packet.findChild("push", Namespace.UNIFIED_PUSH);
             final boolean success =
                     push != null
                             && mXmppConnectionService.processUnifiedPushMessage(
                                     account, transport, push);
-            final IqPacket response;
+            final Iq response;
             if (success) {
-                response = packet.generateResponse(IqPacket.TYPE.RESULT);
+                response = packet.generateResponse(Iq.Type.RESULT);
             } else {
-                response = packet.generateResponse(IqPacket.TYPE.ERROR);
+                response = packet.generateResponse(Iq.Type.ERROR);
                 final Element error = response.addChild("error");
                 error.setAttribute("type", "cancel");
                 error.setAttribute("code", "404");
@@ -471,8 +471,8 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
             }
             mXmppConnectionService.sendIqPacket(account, response, null);
         } else {
-            if (packet.getType() == IqPacket.TYPE.GET || packet.getType() == IqPacket.TYPE.SET) {
-                final IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);
+            if (packet.getType() == Iq.Type.GET || packet.getType() == Iq.Type.SET) {
+                final Iq response = packet.generateResponse(Iq.Type.ERROR);
                 final Element error = response.addChild("error");
                 error.setAttribute("type", "cancel");
                 error.addChild("feature-not-implemented", "urn:ietf:params:xml:ns:xmpp-stanzas");

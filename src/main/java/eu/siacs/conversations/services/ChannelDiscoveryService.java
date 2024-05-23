@@ -20,10 +20,9 @@ import eu.siacs.conversations.http.services.MuclumbusService;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.utils.TLSSocketFactory;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
+import im.conversations.android.xmpp.model.stanza.Iq;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 
@@ -202,7 +201,7 @@ public class ChannelDiscoveryService {
             final String query, final OnChannelSearchResultsFound listener) {
         final Map<Jid, Account> localMucService = getLocalMucServices();
         Log.d(Config.LOGTAG, "checking with " + localMucService.size() + " muc services");
-        if (localMucService.size() == 0) {
+        if (localMucService.isEmpty()) {
             listener.onChannelSearchResultsFound(Collections.emptyList());
             return;
         }
@@ -216,39 +215,36 @@ public class ChannelDiscoveryService {
         }
         final AtomicInteger queriesInFlight = new AtomicInteger();
         final List<Room> rooms = new ArrayList<>();
-        for (Map.Entry<Jid, Account> entry : localMucService.entrySet()) {
-            IqPacket itemsRequest = service.getIqGenerator().queryDiscoItems(entry.getKey());
+        for (final Map.Entry<Jid, Account> entry : localMucService.entrySet()) {
+            Iq itemsRequest = service.getIqGenerator().queryDiscoItems(entry.getKey());
             queriesInFlight.incrementAndGet();
+            final var account = entry.getValue();
             service.sendIqPacket(
-                    entry.getValue(),
+                    account,
                     itemsRequest,
-                    (account, itemsResponse) -> {
-                        if (itemsResponse.getType() == IqPacket.TYPE.RESULT) {
+                    (itemsResponse) -> {
+                        if (itemsResponse.getType() == Iq.Type.RESULT) {
                             final List<Jid> items = IqParser.items(itemsResponse);
-                            for (Jid item : items) {
-                                IqPacket infoRequest =
+                            for (final Jid item : items) {
+                                final Iq infoRequest =
                                         service.getIqGenerator().queryDiscoInfo(item);
                                 queriesInFlight.incrementAndGet();
                                 service.sendIqPacket(
                                         account,
                                         infoRequest,
-                                        new OnIqPacketReceived() {
-                                            @Override
-                                            public void onIqPacketReceived(
-                                                    Account account, IqPacket infoResponse) {
-                                                if (infoResponse.getType()
-                                                        == IqPacket.TYPE.RESULT) {
-                                                    final Room room =
-                                                            IqParser.parseRoom(infoResponse);
-                                                    if (room != null) {
-                                                        rooms.add(room);
-                                                    }
-                                                    if (queriesInFlight.decrementAndGet() <= 0) {
-                                                        finishDiscoSearch(rooms, query, listener);
-                                                    }
-                                                } else {
-                                                    queriesInFlight.decrementAndGet();
+                                        infoResponse -> {
+                                            if (infoResponse.getType()
+                                                    == Iq.Type.RESULT) {
+                                                final Room room =
+                                                        IqParser.parseRoom(infoResponse);
+                                                if (room != null) {
+                                                    rooms.add(room);
                                                 }
+                                                if (queriesInFlight.decrementAndGet() <= 0) {
+                                                    finishDiscoSearch(rooms, query, listener);
+                                                }
+                                            } else {
+                                                queriesInFlight.decrementAndGet();
                                             }
                                         });
                             }

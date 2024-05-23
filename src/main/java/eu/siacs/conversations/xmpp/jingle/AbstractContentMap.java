@@ -8,7 +8,8 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
-import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
+import im.conversations.android.xmpp.model.jingle.Jingle;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
 import java.util.List;
 import java.util.Map;
@@ -47,8 +48,9 @@ public abstract class AbstractContentMap<
         return ImmutableList.copyOf(contents.keySet());
     }
 
-    JinglePacket toJinglePacket(final JinglePacket.Action action, final String sessionId) {
-        final JinglePacket jinglePacket = new JinglePacket(action, sessionId);
+    Iq toJinglePacket(final Jingle.Action action, final String sessionId) {
+        final Iq iq = new Iq(Iq.Type.SET);
+        final var jinglePacket = iq.addExtension(new Jingle(action, sessionId));
         for (final Map.Entry<String, DescriptionTransport<D, T>> entry : this.contents.entrySet()) {
             final DescriptionTransport<D, T> descriptionTransport = entry.getValue();
             final Content content =
@@ -65,7 +67,7 @@ public abstract class AbstractContentMap<
         if (this.group != null) {
             jinglePacket.addGroup(this.group);
         }
-        return jinglePacket;
+        return iq;
     }
 
     void requireContentDescriptions() {

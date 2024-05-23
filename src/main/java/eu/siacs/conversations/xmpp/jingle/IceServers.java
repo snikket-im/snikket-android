@@ -10,7 +10,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.IP;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
 import org.webrtc.PeerConnection;
 
@@ -20,9 +20,9 @@ import java.util.List;
 
 public final class IceServers {
 
-    public static List<PeerConnection.IceServer> parse(final IqPacket response) {
+    public static List<PeerConnection.IceServer> parse(final Iq response) {
         ImmutableList.Builder<PeerConnection.IceServer> listBuilder = new ImmutableList.Builder<>();
-        if (response.getType() == IqPacket.TYPE.RESULT) {
+        if (response.getType() == Iq.Type.RESULT) {
             final Element services =
                     response.findChild("services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
             final List<Element> children =

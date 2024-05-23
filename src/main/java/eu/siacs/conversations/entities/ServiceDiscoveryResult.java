@@ -24,7 +24,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.forms.Field;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
 public class ServiceDiscoveryResult {
 	public static final String TABLENAME = "discovery_results";
@@ -36,7 +36,7 @@ public class ServiceDiscoveryResult {
 	protected final List<String> features;
 	protected final List<Data> forms;
 	private final List<Identity> identities;
-	public ServiceDiscoveryResult(final IqPacket packet) {
+	public ServiceDiscoveryResult(final Iq packet) {
 		this.identities = new ArrayList<>();
 		this.features = new ArrayList<>();
 		this.forms = new ArrayList<>();
@@ -275,7 +275,7 @@ public class ServiceDiscoveryResult {
 		return values;
 	}
 
-	public static class Identity implements Comparable {
+	public static class Identity implements Comparable<Identity> {
 		protected final String type;
 		protected final String lang;
 		protected final String name;
@@ -323,8 +323,21 @@ public class ServiceDiscoveryResult {
 			return this.name;
 		}
 
-		public int compareTo(@NonNull Object other) {
-			Identity o = (Identity) other;
+		JSONObject toJSON() {
+			try {
+				JSONObject o = new JSONObject();
+				o.put("category", this.getCategory());
+				o.put("type", this.getType());
+				o.put("lang", this.getLang());
+				o.put("name", this.getName());
+				return o;
+			} catch (JSONException e) {
+				return null;
+			}
+		}
+
+		@Override
+		public int compareTo(final Identity o) {
 			int r = blankNull(this.getCategory()).compareTo(blankNull(o.getCategory()));
 			if (r == 0) {
 				r = blankNull(this.getType()).compareTo(blankNull(o.getType()));
@@ -337,19 +350,6 @@ public class ServiceDiscoveryResult {
 			}
 
 			return r;
-		}
-
-		JSONObject toJSON() {
-			try {
-				JSONObject o = new JSONObject();
-				o.put("category", this.getCategory());
-				o.put("type", this.getType());
-				o.put("lang", this.getLang());
-				o.put("name", this.getName());
-				return o;
-			} catch (JSONException e) {
-				return null;
-			}
 		}
 	}
 }

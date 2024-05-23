@@ -32,7 +32,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.DirectConnectionUtils;
 import eu.siacs.conversations.xmpp.jingle.stanzas.SocksByteStreamsTransportInfo;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -250,7 +250,7 @@ public class SocksByteStreamsTransport implements Transport {
     private ListenableFuture<String> activateProxy(final Candidate candidate) {
         Log.d(Config.LOGTAG, "trying to activate our proxy " + candidate);
         final SettableFuture<String> iqFuture = SettableFuture.create();
-        final IqPacket proxyActivation = new IqPacket(IqPacket.TYPE.SET);
+        final Iq proxyActivation = new Iq(Iq.Type.SET);
         proxyActivation.setTo(candidate.jid);
         final Element query = proxyActivation.addChild("query", Namespace.BYTE_STREAMS);
         query.setAttribute("sid", this.streamId);
@@ -258,17 +258,18 @@ public class SocksByteStreamsTransport implements Transport {
         activate.setContent(id.with.toEscapedString());
         xmppConnection.sendIqPacket(
                 proxyActivation,
-                (a, response) -> {
-                    if (response.getType() == IqPacket.TYPE.RESULT) {
+                (response) -> {
+                    if (response.getType() == Iq.Type.RESULT) {
                         Log.d(Config.LOGTAG, "our proxy has been activated");
                         transportCallback.onProxyActivated(this.streamId, candidate);
                         iqFuture.set(candidate.cid);
-                    } else if (response.getType() == IqPacket.TYPE.TIMEOUT) {
+                    } else if (response.getType() == Iq.Type.TIMEOUT) {
                         iqFuture.setException(new TimeoutException());
                     } else {
+                        final var account = id.account;
                         Log.d(
                                 Config.LOGTAG,
-                                a.getJid().asBareJid()
+                                account.getJid().asBareJid()
                                         + ": failed to activate proxy on "
                                         + candidate.jid);
                         iqFuture.setException(new IllegalStateException("Proxy activation failed"));
@@ -314,14 +315,14 @@ public class SocksByteStreamsTransport implements Transport {
             return Futures.immediateFailedFuture(
                     new IllegalStateException("No proxy/streamer found"));
         }
-        final IqPacket iqRequest = new IqPacket(IqPacket.TYPE.GET);
+        final Iq iqRequest = new Iq(Iq.Type.GET);
         iqRequest.setTo(streamer);
         iqRequest.query(Namespace.BYTE_STREAMS);
         final SettableFuture<Candidate> candidateFuture = SettableFuture.create();
         xmppConnection.sendIqPacket(
                 iqRequest,
-                (a, response) -> {
-                    if (response.getType() == IqPacket.TYPE.RESULT) {
+                (response) -> {
+                    if (response.getType() == Iq.Type.RESULT) {
                         final Element query = response.findChild("query", Namespace.BYTE_STREAMS);
                         final Element streamHost =
                                 query == null
@@ -349,7 +350,7 @@ public class SocksByteStreamsTransport implements Transport {
                                         655360 + (initiator ? 0 : 15),
                                         CandidateType.PROXY));
 
-                    } else if (response.getType() == IqPacket.TYPE.TIMEOUT) {
+                    } else if (response.getType() == Iq.Type.TIMEOUT) {
                         candidateFuture.setException(new TimeoutException());
                     } else {
                         candidateFuture.setException(

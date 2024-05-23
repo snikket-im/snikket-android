@@ -19,22 +19,21 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.pep.Avatar;
-import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
-public class PresenceParser extends AbstractParser implements OnPresencePacketReceived {
+public class PresenceParser extends AbstractParser implements Consumer<im.conversations.android.xmpp.model.stanza.Presence> {
 
-    public PresenceParser(XmppConnectionService service) {
-        super(service);
+    public PresenceParser(final XmppConnectionService service, final Account account) {
+        super(service, account);
     }
 
-    public void parseConferencePresence(PresencePacket packet, Account account) {
+    public void parseConferencePresence(final im.conversations.android.xmpp.model.stanza.Presence packet, Account account) {
         final Conversation conversation =
                 packet.getFrom() == null
                         ? null
@@ -58,7 +57,7 @@ public class PresenceParser extends AbstractParser implements OnPresencePacketRe
         }
     }
 
-    private void processConferencePresence(PresencePacket packet, Conversation conversation) {
+    private void processConferencePresence(final im.conversations.android.xmpp.model.stanza.Presence packet, Conversation conversation) {
         final Account account = conversation.getAccount();
         final MucOptions mucOptions = conversation.getMucOptions();
         final Jid jid = conversation.getAccount().getJid();
@@ -297,7 +296,7 @@ public class PresenceParser extends AbstractParser implements OnPresencePacketRe
         return codes;
     }
 
-    private void parseContactPresence(final PresencePacket packet, final Account account) {
+    private void parseContactPresence(final im.conversations.android.xmpp.model.stanza.Presence packet, final Account account) {
         final PresenceGenerator mPresenceGenerator = mXmppConnectionService.getPresenceGenerator();
         final Jid from = packet.getFrom();
         if (from == null || from.equals(account.getJid())) {
@@ -431,7 +430,7 @@ public class PresenceParser extends AbstractParser implements OnPresencePacketRe
     }
 
     @Override
-    public void onPresencePacketReceived(Account account, PresencePacket packet) {
+    public void accept(final im.conversations.android.xmpp.model.stanza.Presence packet) {
         if (packet.hasChild("x", Namespace.MUC_USER)) {
             this.parseConferencePresence(packet, account);
         } else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {

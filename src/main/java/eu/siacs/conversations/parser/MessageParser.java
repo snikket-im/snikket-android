@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
@@ -49,17 +50,20 @@ import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.pep.Avatar;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
+import im.conversations.android.xmpp.model.Extension;
+import im.conversations.android.xmpp.model.carbons.Received;
+import im.conversations.android.xmpp.model.carbons.Sent;
+import im.conversations.android.xmpp.model.forward.Forwarded;
 
-public class MessageParser extends AbstractParser implements OnMessagePacketReceived {
+public class MessageParser extends AbstractParser implements Consumer<im.conversations.android.xmpp.model.stanza.Message> {
 
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
 
     private static final List<String> JINGLE_MESSAGE_ELEMENT_NAMES =
             Arrays.asList("accept", "propose", "proceed", "reject", "retract", "ringing", "finish");
 
-    public MessageParser(XmppConnectionService service) {
-        super(service);
+    public MessageParser(final XmppConnectionService service, final Account account) {
+        super(service, account);
     }
 
     private static String extractStanzaId(Element packet, boolean isTypeGroupChat, Conversation conversation) {
@@ -98,7 +102,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         return result != null ? result : fallback;
     }
 
-    private boolean extractChatState(Conversation c, final boolean isTypeGroupChat, final MessagePacket packet) {
+    private boolean extractChatState(Conversation c, final boolean isTypeGroupChat, final im.conversations.android.xmpp.model.stanza.Message packet) {
         ChatState state = ChatState.parse(packet);
         if (state != null && c != null) {
             final Account account = c.getAccount();
@@ -240,7 +244,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             }
         } else if (AxolotlService.PEP_DEVICE_LIST.equals(node)) {
             Element item = items.findChild("item");
-            Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
+            final Set<Integer> deviceIds = IqParser.deviceIds(item);
             Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received PEP device list " + deviceIds + " update from " + from + ", processing... ");
             final AxolotlService axolotlService = account.getAxolotlService();
             axolotlService.registerDevices(from, deviceIds);
@@ -347,10 +351,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         mXmppConnectionService.updateAccountUi();
     }
 
-    private boolean handleErrorMessage(final Account account, final MessagePacket packet) {
-        if (packet.getType() == MessagePacket.TYPE_ERROR) {
+    private boolean handleErrorMessage(final Account account, final im.conversations.android.xmpp.model.stanza.Message packet) {
+        if (packet.getType() == im.conversations.android.xmpp.model.stanza.Message.Type.ERROR) {
             if (packet.fromServer(account)) {
-                final Pair<MessagePacket, Long> forwarded = packet.getForwardedMessagePacket("received", Namespace.CARBONS);
+                final var forwarded = getForwardedMessagePacket(packet,"received", Namespace.CARBONS);
                 if (forwarded != null) {
                     return handleErrorMessage(account, forwarded.first);
                 }
@@ -393,11 +397,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
     }
 
     @Override
-    public void onMessagePacketReceived(Account account, MessagePacket original) {
+    public void accept(final im.conversations.android.xmpp.model.stanza.Message original) {
         if (handleErrorMessage(account, original)) {
             return;
         }
-        final MessagePacket packet;
+        final im.conversations.android.xmpp.model.stanza.Message packet;
         Long timestamp = null;
         boolean isCarbon = false;
         String serverMsgId = null;
@@ -411,7 +415,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         final MessageArchiveService.Query query = queryId == null ? null : mXmppConnectionService.getMessageArchiveService().findQuery(queryId);
         final boolean offlineMessagesRetrieved = account.getXmppConnection().isOfflineMessagesRetrieved();
         if (query != null && query.validFrom(original.getFrom())) {
-            final Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", query.version.namespace);
+            final var f = getForwardedMessagePacket(original,"result", query.version.namespace);
             if (f == null) {
                 return;
             }
@@ -426,9 +430,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received mam result with invalid from (" + original.getFrom() + ") or queryId (" + queryId + ")");
             return;
         } else if (original.fromServer(account)) {
-            Pair<MessagePacket, Long> f;
-            f = original.getForwardedMessagePacket("received", Namespace.CARBONS);
-            f = f == null ? original.getForwardedMessagePacket("sent", Namespace.CARBONS) : f;
+            Pair<im.conversations.android.xmpp.model.stanza.Message, Long> f;
+            f = getForwardedMessagePacket(original, Received.class);
+            f = f == null ? getForwardedMessagePacket(original, Sent.class) : f;
             packet = f != null ? f.first : original;
             if (handleErrorMessage(account, packet)) {
                 return;
@@ -468,7 +472,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             return;
         }
 
-        boolean isTypeGroupChat = packet.getType() == MessagePacket.TYPE_GROUPCHAT;
+        boolean isTypeGroupChat = packet.getType() == im.conversations.android.xmpp.model.stanza.Message.Type.GROUPCHAT;
         if (query != null && !query.muc() && isTypeGroupChat) {
             Log.e(Config.LOGTAG, account.getJid().asBareJid() + ": received groupchat (" + from + ") message on regular MAM request. skipping");
             return;
@@ -1106,6 +1110,34 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         }
     }
 
+    private static Pair<im.conversations.android.xmpp.model.stanza.Message,Long> getForwardedMessagePacket(final im.conversations.android.xmpp.model.stanza.Message original, Class<? extends Extension> clazz) {
+        final var extension = original.getExtension(clazz);
+        final var forwarded = extension == null ? null : extension.getExtension(Forwarded.class);
+        if (forwarded == null) {
+            return null;
+        }
+        final Long timestamp = AbstractParser.parseTimestamp(forwarded, null);
+        final var forwardedMessage = forwarded.getMessage();
+        if (forwardedMessage == null) {
+            return null;
+        }
+        return new Pair<>(forwardedMessage,timestamp);
+    }
+
+    private static Pair<im.conversations.android.xmpp.model.stanza.Message,Long> getForwardedMessagePacket(final im.conversations.android.xmpp.model.stanza.Message original, final String name, final String namespace) {
+        final Element wrapper = original.findChild(name, namespace);
+        final var forwardedElement = wrapper == null ? null : wrapper.findChild("forwarded",Namespace.FORWARD);
+        if (forwardedElement instanceof Forwarded forwarded) {
+            final Long timestamp = AbstractParser.parseTimestamp(forwarded, null);
+            final var forwardedMessage = forwarded.getMessage();
+            if (forwardedMessage == null) {
+                return null;
+            }
+            return new Pair<>(forwardedMessage,timestamp);
+        }
+        return null;
+    }
+
     private void dismissNotification(Account account, Jid counterpart, MessageArchiveService.Query query, final String id) {
         final Conversation conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
         if (conversation != null && (query == null || query.isCatchup())) {
@@ -1118,7 +1150,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         }
     }
 
-    private void processMessageReceipts(final Account account, final MessagePacket packet, final String remoteMsgId, MessageArchiveService.Query query) {
+    private void processMessageReceipts(final Account account, final im.conversations.android.xmpp.model.stanza.Message packet, final String remoteMsgId, MessageArchiveService.Query query) {
         final boolean markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
         final boolean request = packet.hasChild("request", "urn:xmpp:receipts");
         if (query == null) {
@@ -1130,7 +1162,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 receiptsNamespaces.add("urn:xmpp:receipts");
             }
             if (receiptsNamespaces.size() > 0) {
-                final MessagePacket receipt = mXmppConnectionService.getMessageGenerator().received(account,
+                final var receipt = mXmppConnectionService.getMessageGenerator().received(account,
                         packet.getFrom(),
                         remoteMsgId,
                         receiptsNamespaces,

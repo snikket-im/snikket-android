@@ -16,7 +16,7 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IbbTransportInfo;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -96,7 +96,7 @@ public class InbandBytestreamsTransport implements Transport {
     }
 
     private void openInBandTransport() {
-        final var iqPacket = new IqPacket(IqPacket.TYPE.SET);
+        final var iqPacket = new Iq(Iq.Type.SET);
         iqPacket.setTo(with);
         final var open = iqPacket.addChild("open", Namespace.IBB);
         open.setAttribute("block-size", this.blockSize);
@@ -106,8 +106,8 @@ public class InbandBytestreamsTransport implements Transport {
         xmppConnection.sendIqPacket(iqPacket, this::receiveResponseToOpen);
     }
 
-    private void receiveResponseToOpen(final Account account, final IqPacket response) {
-        if (response.getType() == IqPacket.TYPE.RESULT) {
+    private void receiveResponseToOpen(final Iq response) {
+        if (response.getType() == Iq.Type.RESULT) {
             Log.d(Config.LOGTAG, "ibb open was accepted");
             this.transportCallback.onTransportEstablished();
             this.blockSenderThread.start();
@@ -284,7 +284,7 @@ public class InbandBytestreamsTransport implements Transport {
 
         private void sendIbbBlock(final int sequence, final byte[] block) {
             Log.d(Config.LOGTAG, "sending ibb block #" + sequence + " " + block.length + " bytes");
-            final var iqPacket = new IqPacket(IqPacket.TYPE.SET);
+            final var iqPacket = new Iq(Iq.Type.SET);
             iqPacket.setTo(with);
             final var data = iqPacket.addChild("data", Namespace.IBB);
             data.setAttribute("sid", this.streamId);
@@ -292,8 +292,8 @@ public class InbandBytestreamsTransport implements Transport {
             data.setContent(BaseEncoding.base64().encode(block));
             this.xmppConnection.sendIqPacket(
                     iqPacket,
-                    (a, response) -> {
-                        if (response.getType() != IqPacket.TYPE.RESULT) {
+                    (response) -> {
+                        if (response.getType() != Iq.Type.RESULT) {
                             Log.d(
                                     Config.LOGTAG,
                                     "received iq error in response to data block #" + sequence);

@@ -3,7 +3,9 @@ package eu.siacs.conversations.xml;
 import androidx.annotation.NonNull;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -12,7 +14,7 @@ import java.util.List;
 import eu.siacs.conversations.utils.XmlHelper;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
+import im.conversations.android.xmpp.model.stanza.Message;
 
 public class Element {
     private final String name;
@@ -136,6 +138,10 @@ public class Element {
         return this;
     }
 
+    public void setAttribute(final String name, final boolean value) {
+        this.setAttribute(name, value ? "1" : "0");
+    }
+
     public void removeAttribute(final String name) {
         this.attributes.remove(name);
     }
@@ -153,6 +159,11 @@ public class Element {
         }
     }
 
+    public long getLongAttribute(final String name) {
+        final var value = Longs.tryParse(Strings.nullToEmpty(this.attributes.get(name)));
+        return value == null ? 0 : value;
+    }
+
     public Optional<Integer> getOptionalIntAttribute(final String name) {
         final String value = getAttribute(name);
         if (value == null) {
@@ -167,7 +178,7 @@ public class Element {
             try {
                 return Jid.ofEscaped(jid);
             } catch (final IllegalArgumentException e) {
-                return InvalidJid.of(jid, this instanceof MessagePacket);
+                return InvalidJid.of(jid, this instanceof Message);
             }
         }
         return null;
@@ -180,7 +191,7 @@ public class Element {
     @NonNull
     public String toString() {
         final StringBuilder elementOutput = new StringBuilder();
-        if ((content == null) && (children.size() == 0)) {
+        if (content == null && children.isEmpty()) {
             final Tag emptyTag = Tag.empty(name);
             emptyTag.setAttributes(this.attributes);
             elementOutput.append(emptyTag);

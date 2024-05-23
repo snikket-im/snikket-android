@@ -43,7 +43,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.IqResponseException;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 
@@ -67,9 +67,9 @@ public class SlotRequester {
 
     private ListenableFuture<Slot> requestHttpUploadLegacy(Account account, Jid host, DownloadableFile file, String mime) {
         final SettableFuture<Slot> future = SettableFuture.create();
-        final IqPacket request = service.getIqGenerator().requestHttpUploadLegacySlot(host, file, mime);
-        service.sendIqPacket(account, request, (a, packet) -> {
-            if (packet.getType() == IqPacket.TYPE.RESULT) {
+        final Iq request = service.getIqGenerator().requestHttpUploadLegacySlot(host, file, mime);
+        service.sendIqPacket(account, request, (packet) -> {
+            if (packet.getType() == Iq.Type.RESULT) {
                 final Element slotElement = packet.findChild("slot", Namespace.HTTP_UPLOAD_LEGACY);
                 if (slotElement != null) {
                     try {
@@ -97,9 +97,9 @@ public class SlotRequester {
 
     private ListenableFuture<Slot> requestHttpUpload(Account account, Jid host, DownloadableFile file, String mime) {
         final SettableFuture<Slot> future = SettableFuture.create();
-        final IqPacket request = service.getIqGenerator().requestHttpUploadSlot(host, file, mime);
-        service.sendIqPacket(account, request, (a, packet) -> {
-            if (packet.getType() == IqPacket.TYPE.RESULT) {
+        final Iq request = service.getIqGenerator().requestHttpUploadSlot(host, file, mime);
+        service.sendIqPacket(account, request, (packet) -> {
+            if (packet.getType() == Iq.Type.RESULT) {
                 final Element slotElement = packet.findChild("slot", Namespace.HTTP_UPLOAD);
                 if (slotElement != null) {
                     try {

@@ -34,14 +34,13 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
-import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Propose;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 import eu.siacs.conversations.xmpp.jingle.transports.InbandBytestreamsTransport;
 import eu.siacs.conversations.xmpp.jingle.transports.Transport;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
+import im.conversations.android.xmpp.model.jingle.Jingle;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
 import java.lang.ref.WeakReference;
 import java.security.SecureRandom;
@@ -77,9 +76,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         return Base64.encodeToString(id, Base64.NO_WRAP | Base64.NO_PADDING | Base64.URL_SAFE);
     }
 
-    public void deliverPacket(final Account account, final JinglePacket packet) {
-        final String sessionId = packet.getSessionId();
-        final JinglePacket.Action action = packet.getAction();
+    public void deliverPacket(final Account account, final Iq packet) {
+        final var jingle = packet.getExtension(Jingle.class);
+        Preconditions.checkNotNull(jingle,"Passed iq packet w/o jingle extension to Connection Manager");
+        final String sessionId = jingle.getSessionId();
+        final Jingle.Action action = jingle.getAction();
         if (sessionId == null) {
             respondWithJingleError(account, packet, "unknown-session", "item-not-found", "cancel");
             return;
@@ -88,13 +89,13 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             respondWithJingleError(account, packet, null, "bad-request", "cancel");
             return;
         }
-        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, packet);
+        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, packet, jingle);
         final AbstractJingleConnection existingJingleConnection = connections.get(id);
         if (existingJingleConnection != null) {
             existingJingleConnection.deliverPacket(packet);
-        } else if (action == JinglePacket.Action.SESSION_INITIATE) {
+        } else if (action == Jingle.Action.SESSION_INITIATE) {
             final Jid from = packet.getFrom();
-            final Content content = packet.getJingleContent();
+            final Content content = jingle.getJingleContent();
             final String descriptionNamespace =
                     content == null ? null : content.getDescriptionNamespace();
             final AbstractJingleConnection connection;
@@ -162,14 +163,14 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     private void sendSessionTerminate(
-            final Account account, final IqPacket request, final AbstractJingleConnection.Id id) {
+            final Account account, final Iq request, final AbstractJingleConnection.Id id) {
         mXmppConnectionService.sendIqPacket(
-                account, request.generateResponse(IqPacket.TYPE.RESULT), null);
-        final JinglePacket sessionTermination =
-                new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
-        sessionTermination.setTo(id.with);
+                account, request.generateResponse(Iq.Type.RESULT), null);
+        final var iq = new Iq(Iq.Type.SET);
+        iq.setTo(id.with);
+        final var sessionTermination = iq.addExtension(new Jingle(Jingle.Action.SESSION_TERMINATE, id.sessionId));
         sessionTermination.setReason(Reason.BUSY, null);
-        mXmppConnectionService.sendIqPacket(account, sessionTermination, null);
+        mXmppConnectionService.sendIqPacket(account, iq, null);
     }
 
     private boolean isUsingClearNet(final Account account) {
@@ -263,11 +264,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
     void respondWithJingleError(
             final Account account,
-            final IqPacket original,
+            final Iq original,
             final String jingleCondition,
             final String condition,
             final String conditionType) {
-        final IqPacket response = original.generateResponse(IqPacket.TYPE.ERROR);
+        final Iq response = original.generateResponse(Iq.Type.ERROR);
         final Element error = response.addChild("error");
         error.setAttribute("type", conditionType);
         error.addChild(condition, "urn:ietf:params:xml:ns:xmpp-stanzas");
@@ -438,7 +439,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     final int activeDevices = account.activeDevicesWithRtpCapability();
                     Log.d(Config.LOGTAG, "active devices with rtp capability: " + activeDevices);
                     if (activeDevices == 0) {
-                        final MessagePacket reject =
+                        final var reject =
                                 mXmppConnectionService
                                         .getMessageGenerator()
                                         .sessionReject(from, sessionId);
@@ -492,10 +493,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     if (remoteMsgId == null) {
                         return;
                     }
-                    final MessagePacket errorMessage = new MessagePacket();
+                    final var errorMessage =
+                            new im.conversations.android.xmpp.model.stanza.Message();
                     errorMessage.setTo(from);
                     errorMessage.setId(remoteMsgId);
-                    errorMessage.setType(MessagePacket.TYPE_ERROR);
+                    errorMessage.setType(im.conversations.android.xmpp.model.stanza.Message.Type.ERROR);
                     final Element error = errorMessage.addChild("error");
                     error.setAttribute("code", "404");
                     error.setAttribute("type", "cancel");
@@ -720,7 +722,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     rtpSessionProposal.sessionId,
                     RtpEndUserState.RETRACTED);
         }
-        final MessagePacket messagePacket =
+        final var messagePacket =
                 mXmppConnectionService.getMessageGenerator().sessionRetract(rtpSessionProposal);
         writeLogMissedOutgoing(
                 account,
@@ -790,7 +792,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             this.rtpSessionProposals.put(proposal, DeviceDiscoveryState.SEARCHING);
             mXmppConnectionService.notifyJingleRtpConnectionUpdate(
                     account, proposal.with, proposal.sessionId, RtpEndUserState.FINDING_DEVICE);
-            final MessagePacket messagePacket =
+            final var messagePacket =
                     mXmppConnectionService.getMessageGenerator().sessionProposal(proposal);
             mXmppConnectionService.sendMessagePacket(account, messagePacket);
             return proposal;
@@ -800,7 +802,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     public void sendJingleMessageFinish(
             final Contact contact, final String sessionId, final Reason reason) {
         final var account = contact.getAccount();
-        final MessagePacket messagePacket =
+        final var messagePacket =
                 mXmppConnectionService
                         .getMessageGenerator()
                         .sessionFinish(contact.getJid(), sessionId, reason);
@@ -842,7 +844,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         return false;
     }
 
-    public void deliverIbbPacket(final Account account, final IqPacket packet) {
+    public void deliverIbbPacket(final Account account, final Iq packet) {
         final String sid;
         final Element payload;
         final InbandBytestreamsTransport.PacketType packetType;
@@ -868,7 +870,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     Config.LOGTAG,
                     account.getJid().asBareJid() + ": unable to deliver ibb packet. missing sid");
             account.getXmppConnection()
-                    .sendIqPacket(packet.generateResponse(IqPacket.TYPE.ERROR), null);
+                    .sendIqPacket(packet.generateResponse(Iq.Type.ERROR), null);
             return;
         }
         for (final AbstractJingleConnection connection : this.connections.values()) {
@@ -879,11 +881,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                         if (inBandTransport.deliverPacket(packetType, packet.getFrom(), payload)) {
                             account.getXmppConnection()
                                     .sendIqPacket(
-                                            packet.generateResponse(IqPacket.TYPE.RESULT), null);
+                                            packet.generateResponse(Iq.Type.RESULT), null);
                         } else {
                             account.getXmppConnection()
                                     .sendIqPacket(
-                                            packet.generateResponse(IqPacket.TYPE.ERROR), null);
+                                            packet.generateResponse(Iq.Type.ERROR), null);
                         }
                         return;
                     }
@@ -894,7 +896,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 Config.LOGTAG,
                 account.getJid().asBareJid() + ": unable to deliver ibb packet with sid=" + sid);
         account.getXmppConnection()
-                .sendIqPacket(packet.generateResponse(IqPacket.TYPE.ERROR), null);
+                .sendIqPacket(packet.generateResponse(Iq.Type.ERROR), null);
     }
 
     public void notifyRebound(final Account account) {
@@ -945,7 +947,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                             account.getJid().asBareJid()
                                     + ": resending session proposal to "
                                     + proposal.with);
-                    final MessagePacket messagePacket =
+                    final var messagePacket =
                             mXmppConnectionService.getMessageGenerator().sessionProposal(proposal);
                     mXmppConnectionService.sendMessagePacket(account, messagePacket);
                 }

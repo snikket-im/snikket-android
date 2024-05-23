@@ -43,13 +43,13 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
-import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Proceed;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Propose;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
+
+import im.conversations.android.xmpp.model.jingle.Jingle;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
 import org.webrtc.EglBase;
 import org.webrtc.IceCandidate;
@@ -139,24 +139,25 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     @Override
-    synchronized void deliverPacket(final JinglePacket jinglePacket) {
-        switch (jinglePacket.getAction()) {
-            case SESSION_INITIATE -> receiveSessionInitiate(jinglePacket);
-            case TRANSPORT_INFO -> receiveTransportInfo(jinglePacket);
-            case SESSION_ACCEPT -> receiveSessionAccept(jinglePacket);
-            case SESSION_TERMINATE -> receiveSessionTerminate(jinglePacket);
-            case CONTENT_ADD -> receiveContentAdd(jinglePacket);
-            case CONTENT_ACCEPT -> receiveContentAccept(jinglePacket);
-            case CONTENT_REJECT -> receiveContentReject(jinglePacket);
-            case CONTENT_REMOVE -> receiveContentRemove(jinglePacket);
-            case CONTENT_MODIFY -> receiveContentModify(jinglePacket);
+    synchronized void deliverPacket(final Iq iq) {
+        final var jingle = iq.getExtension(Jingle.class);
+        switch (jingle.getAction()) {
+            case SESSION_INITIATE -> receiveSessionInitiate(iq, jingle);
+            case TRANSPORT_INFO -> receiveTransportInfo(iq, jingle);
+            case SESSION_ACCEPT -> receiveSessionAccept(iq, jingle);
+            case SESSION_TERMINATE -> receiveSessionTerminate(iq);
+            case CONTENT_ADD -> receiveContentAdd(iq, jingle);
+            case CONTENT_ACCEPT -> receiveContentAccept(iq);
+            case CONTENT_REJECT -> receiveContentReject(iq, jingle);
+            case CONTENT_REMOVE -> receiveContentRemove(iq, jingle);
+            case CONTENT_MODIFY -> receiveContentModify(iq, jingle);
             default -> {
-                respondOk(jinglePacket);
+                respondOk(iq);
                 Log.d(
                         Config.LOGTAG,
                         String.format(
                                 "%s: received unhandled jingle action %s",
-                                id.account.getJid().asBareJid(), jinglePacket.getAction()));
+                                id.account.getJid().asBareJid(), jingle.getAction()));
             }
         }
     }
@@ -183,9 +184,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
     }
 
-    private void receiveSessionTerminate(final JinglePacket jinglePacket) {
+    private void receiveSessionTerminate(final Iq jinglePacket) {
         respondOk(jinglePacket);
-        final JinglePacket.ReasonWrapper wrapper = jinglePacket.getReason();
+        final var jingle = jinglePacket.getExtension(Jingle.class);
+        final Jingle.ReasonWrapper wrapper = jingle.getReason();
         final State previous = this.state;
         Log.d(
                 Config.LOGTAG,
@@ -214,7 +216,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         finish();
     }
 
-    private void receiveTransportInfo(final JinglePacket jinglePacket) {
+    private void receiveTransportInfo(final Iq jinglePacket, final Jingle jingle) {
         // Due to the asynchronicity of processing session-init we might move from NULL|PROCEED to
         // INITIALIZED only after transport-info has been received
         if (isInState(
@@ -225,7 +227,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 State.SESSION_ACCEPTED)) {
             final RtpContentMap contentMap;
             try {
-                contentMap = RtpContentMap.of(jinglePacket);
+                contentMap = RtpContentMap.of(jingle);
             } catch (final IllegalArgumentException | NullPointerException e) {
                 Log.d(
                         Config.LOGTAG,
@@ -255,7 +257,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void receiveTransportInfo(
-            final JinglePacket jinglePacket, final RtpContentMap contentMap) {
+            final Iq jinglePacket, final RtpContentMap contentMap) {
         final Set<Map.Entry<String, DescriptionTransport<RtpDescription, IceUdpTransportInfo>>>
                 candidates = contentMap.contents.entrySet();
         final RtpContentMap remote = getRemoteContentMap();
@@ -294,17 +296,17 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
     }
 
-    private void receiveContentAdd(final JinglePacket jinglePacket) {
+    private void receiveContentAdd(final Iq iq, final Jingle jingle) {
         final RtpContentMap modification;
         try {
-            modification = RtpContentMap.of(jinglePacket);
+            modification = RtpContentMap.of(jingle);
             modification.requireContentDescriptions();
         } catch (final RuntimeException e) {
             Log.d(
                     Config.LOGTAG,
                     id.getAccount().getJid().asBareJid() + ": improperly formatted contents",
                     Throwables.getRootCause(e));
-            respondOk(jinglePacket);
+            respondOk(iq);
             webRTCWrapper.close();
             sendSessionTerminate(Reason.of(e), e.getMessage());
             return;
@@ -320,12 +322,12 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     new FutureCallback<>() {
                         @Override
                         public void onSuccess(final RtpContentMap rtpContentMap) {
-                            receiveContentAdd(jinglePacket, rtpContentMap);
+                            receiveContentAdd(iq, rtpContentMap);
                         }
 
                         @Override
                         public void onFailure(@NonNull Throwable throwable) {
-                            respondOk(jinglePacket);
+                            respondOk(iq);
                             final Throwable rootCause = Throwables.getRootCause(throwable);
                             Log.d(
                                     Config.LOGTAG,
@@ -339,12 +341,12 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     },
                     MoreExecutors.directExecutor());
         } else {
-            terminateWithOutOfOrder(jinglePacket);
+            terminateWithOutOfOrder(iq);
         }
     }
 
     private void receiveContentAdd(
-            final JinglePacket jinglePacket, final RtpContentMap modification) {
+            final Iq jinglePacket, final RtpContentMap modification) {
         final RtpContentMap remote = getRemoteContentMap();
         if (!Collections.disjoint(modification.getNames(), remote.getNames())) {
             respondOk(jinglePacket);
@@ -396,10 +398,11 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
     }
 
-    private void receiveContentAccept(final JinglePacket jinglePacket) {
+    private void receiveContentAccept(final Iq jinglePacket) {
+        final var jingle = jinglePacket.getExtension(Jingle.class);
         final RtpContentMap receivedContentAccept;
         try {
-            receivedContentAccept = RtpContentMap.of(jinglePacket);
+            receivedContentAccept = RtpContentMap.of(jingle);
             receivedContentAccept.requireContentDescriptions();
         } catch (final RuntimeException e) {
             Log.d(
@@ -484,14 +487,14 @@ public class JingleRtpConnection extends AbstractJingleConnection
         updateEndUserState();
     }
 
-    private void receiveContentModify(final JinglePacket jinglePacket) {
+    private void receiveContentModify(final Iq jinglePacket, final Jingle jingle) {
         if (this.state != State.SESSION_ACCEPTED) {
             terminateWithOutOfOrder(jinglePacket);
             return;
         }
         final Map<String, Content.Senders> modification =
                 Maps.transformEntries(
-                        jinglePacket.getJingleContents(), (key, value) -> value.getSenders());
+                        jingle.getJingleContents(), (key, value) -> value.getSenders());
         final boolean isInitiator = isInitiator();
         final RtpContentMap currentOutgoing = this.outgoingContentAdd;
         final RtpContentMap remoteContentMap = this.getRemoteContentMap();
@@ -594,10 +597,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
         return candidateBuilder.build();
     }
 
-    private void receiveContentReject(final JinglePacket jinglePacket) {
+    private void receiveContentReject(final Iq jinglePacket, final Jingle jingle) {
         final RtpContentMap receivedContentReject;
         try {
-            receivedContentReject = RtpContentMap.of(jinglePacket);
+            receivedContentReject = RtpContentMap.of(jingle);
         } catch (final RuntimeException e) {
             Log.d(
                     Config.LOGTAG,
@@ -650,10 +653,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
                         + summary);
     }
 
-    private void receiveContentRemove(final JinglePacket jinglePacket) {
+    private void receiveContentRemove(final Iq jinglePacket, final Jingle jingle) {
         final RtpContentMap receivedContentRemove;
         try {
-            receivedContentRemove = RtpContentMap.of(jinglePacket);
+            receivedContentRemove = RtpContentMap.of(jingle);
             receivedContentRemove.requireContentDescriptions();
         } catch (final RuntimeException e) {
             Log.d(
@@ -687,8 +690,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     String.format(
                             "%s only supports %s as a means to retract a not yet accepted %s",
                             BuildConfig.APP_NAME,
-                            JinglePacket.Action.CONTENT_REMOVE,
-                            JinglePacket.Action.CONTENT_ADD));
+                            Jingle.Action.CONTENT_REMOVE,
+                            Jingle.Action.CONTENT_ADD));
         }
     }
 
@@ -713,10 +716,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
             return;
         }
         this.outgoingContentAdd = null;
-        final JinglePacket retract =
+        final Iq retract =
                 outgoingContentAdd
                         .toStub()
-                        .toJinglePacket(JinglePacket.Action.CONTENT_REMOVE, id.sessionId);
+                        .toJinglePacket(Jingle.Action.CONTENT_REMOVE, id.sessionId);
         this.send(retract);
         Log.d(
                 Config.LOGTAG,
@@ -772,16 +775,16 @@ public class JingleRtpConnection extends AbstractJingleConnection
                         "content addition is receive only. we want to upgrade to 'both'");
                 final RtpContentMap modifiedSenders =
                         incomingContentAdd.modifiedSenders(Content.Senders.BOTH);
-                final JinglePacket proposedContentModification =
+                final Iq proposedContentModification =
                         modifiedSenders
                                 .toStub()
-                                .toJinglePacket(JinglePacket.Action.CONTENT_MODIFY, id.sessionId);
+                                .toJinglePacket(Jingle.Action.CONTENT_MODIFY, id.sessionId);
                 proposedContentModification.setTo(id.with);
                 xmppConnectionService.sendIqPacket(
                         id.account,
                         proposedContentModification,
-                        (account, response) -> {
-                            if (response.getType() == IqPacket.TYPE.RESULT) {
+                        (response) -> {
+                            if (response.getType() == Iq.Type.RESULT) {
                                 Log.d(
                                         Config.LOGTAG,
                                         id.account.getJid().asBareJid()
@@ -875,7 +878,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
                         @Override
                         public void onFailure(@NonNull final Throwable throwable) {
-                            failureToPerformAction(JinglePacket.Action.CONTENT_ACCEPT, throwable);
+                            failureToPerformAction(Jingle.Action.CONTENT_ACCEPT, throwable);
                         }
                     },
                     MoreExecutors.directExecutor());
@@ -887,9 +890,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void sendContentAccept(final RtpContentMap contentAcceptMap) {
-        final JinglePacket jinglePacket =
-                contentAcceptMap.toJinglePacket(JinglePacket.Action.CONTENT_ACCEPT, id.sessionId);
-        send(jinglePacket);
+        final Iq iq =
+                contentAcceptMap.toJinglePacket(Jingle.Action.CONTENT_ACCEPT, id.sessionId);
+        send(iq);
     }
 
     public synchronized void rejectContentAdd() {
@@ -903,20 +906,20 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void rejectContentAdd(final RtpContentMap contentMap) {
-        final JinglePacket jinglePacket =
+        final Iq iq =
                 contentMap
                         .toStub()
-                        .toJinglePacket(JinglePacket.Action.CONTENT_REJECT, id.sessionId);
+                        .toJinglePacket(Jingle.Action.CONTENT_REJECT, id.sessionId);
         Log.d(
                 Config.LOGTAG,
                 id.getAccount().getJid().asBareJid()
                         + ": rejecting content "
                         + ContentAddition.summary(contentMap));
-        send(jinglePacket);
+        send(iq);
     }
 
     private boolean checkForIceRestart(
-            final JinglePacket jinglePacket, final RtpContentMap rtpContentMap) {
+            final Iq jinglePacket, final RtpContentMap rtpContentMap) {
         final RtpContentMap existing = getRemoteContentMap();
         final Set<IceUdpTransportInfo.Credentials> existingCredentials;
         final IceUdpTransportInfo.Credentials newCredentials;
@@ -995,7 +998,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private boolean applyIceRestart(
-            final JinglePacket jinglePacket,
+            final Iq jinglePacket,
             final RtpContentMap restartContentMap,
             final boolean isOffer)
             throws ExecutionException, InterruptedException {
@@ -1096,7 +1099,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private ListenableFuture<RtpContentMap> receiveRtpContentMap(
-            final JinglePacket jinglePacket, final boolean expectVerification) {
+            final Jingle jinglePacket, final boolean expectVerification) {
         try {
             return receiveRtpContentMap(RtpContentMap.of(jinglePacket), expectVerification);
         } catch (final Exception e) {
@@ -1139,12 +1142,12 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
     }
 
-    private void receiveSessionInitiate(final JinglePacket jinglePacket) {
+    private void receiveSessionInitiate(final Iq jinglePacket, final Jingle jingle) {
         if (isInitiator()) {
-            receiveOutOfOrderAction(jinglePacket, JinglePacket.Action.SESSION_INITIATE);
+            receiveOutOfOrderAction(jinglePacket, Jingle.Action.SESSION_INITIATE);
             return;
         }
-        final ListenableFuture<RtpContentMap> future = receiveRtpContentMap(jinglePacket, false);
+        final ListenableFuture<RtpContentMap> future = receiveRtpContentMap(jingle, false);
         Futures.addCallback(
                 future,
                 new FutureCallback<>() {
@@ -1163,7 +1166,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void receiveSessionInitiate(
-            final JinglePacket jinglePacket, final RtpContentMap contentMap) {
+            final Iq jinglePacket, final RtpContentMap contentMap) {
         try {
             contentMap.requireContentDescriptions();
             contentMap.requireDTLSFingerprint(true);
@@ -1223,13 +1226,13 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
     }
 
-    private void receiveSessionAccept(final JinglePacket jinglePacket) {
+    private void receiveSessionAccept(final Iq jinglePacket, final Jingle jingle) {
         if (isResponder()) {
-            receiveOutOfOrderAction(jinglePacket, JinglePacket.Action.SESSION_ACCEPT);
+            receiveOutOfOrderAction(jinglePacket, Jingle.Action.SESSION_ACCEPT);
             return;
         }
         final ListenableFuture<RtpContentMap> future =
-                receiveRtpContentMap(jinglePacket, this.omemoVerification.hasFingerprint());
+                receiveRtpContentMap(jingle, this.omemoVerification.hasFingerprint());
         Futures.addCallback(
                 future,
                 new FutureCallback<>() {
@@ -1254,7 +1257,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void receiveSessionAccept(
-            final JinglePacket jinglePacket, final RtpContentMap contentMap) {
+            final Iq jinglePacket, final RtpContentMap contentMap) {
         try {
             contentMap.requireContentDescriptions();
             contentMap.requireDTLSFingerprint();
@@ -1399,7 +1402,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void failureToPerformAction(
-            final JinglePacket.Action action, final Throwable throwable) {
+            final Jingle.Action action, final Throwable throwable) {
         if (isTerminated()) {
             return;
         }
@@ -1470,8 +1473,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             return;
         }
         transitionOrThrow(State.SESSION_ACCEPTED);
-        final JinglePacket sessionAccept =
-                rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_ACCEPT, id.sessionId);
+        final Iq sessionAccept =
+                rtpContentMap.toJinglePacket(Jingle.Action.SESSION_ACCEPT, id.sessionId);
         send(sessionAccept);
     }
 
@@ -1939,8 +1942,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             return;
         }
         this.transitionOrThrow(targetState);
-        final JinglePacket sessionInitiate =
-                rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
+        final Iq sessionInitiate =
+                rtpContentMap.toJinglePacket(Jingle.Action.SESSION_INITIATE, id.sessionId);
         send(sessionInitiate);
     }
 
@@ -2008,9 +2011,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
                             + contentName);
             return;
         }
-        final JinglePacket jinglePacket =
-                transportInfo.toJinglePacket(JinglePacket.Action.TRANSPORT_INFO, id.sessionId);
-        send(jinglePacket);
+        final Iq iq =
+                transportInfo.toJinglePacket(Jingle.Action.TRANSPORT_INFO, id.sessionId);
+        send(iq);
     }
 
     public RtpEndUserState getEndUserState() {
@@ -2364,8 +2367,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void sendJingleMessage(final String action, final Jid to) {
-        final MessagePacket messagePacket = new MessagePacket();
-        messagePacket.setType(MessagePacket.TYPE_CHAT); // we want to carbon copy those
+        final var messagePacket = new im.conversations.android.xmpp.model.stanza.Message();
+        messagePacket.setType(im.conversations.android.xmpp.model.stanza.Message.Type.CHAT); // we want to carbon copy those
         messagePacket.setTo(to);
         final Element intent =
                 messagePacket
@@ -2386,7 +2389,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private void sendJingleMessageFinish(final Reason reason) {
         final var account = id.getAccount();
-        final MessagePacket messagePacket =
+        final var messagePacket =
                 xmppConnectionService
                         .getMessageGenerator()
                         .sessionFinish(id.with, id.sessionId, reason);
@@ -2545,34 +2548,34 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private void initiateIceRestart(final RtpContentMap rtpContentMap) {
         final RtpContentMap transportInfo = rtpContentMap.transportInfo();
-        final JinglePacket jinglePacket =
-                transportInfo.toJinglePacket(JinglePacket.Action.TRANSPORT_INFO, id.sessionId);
-        Log.d(Config.LOGTAG, "initiating ice restart: " + jinglePacket);
-        jinglePacket.setTo(id.with);
+        final Iq iq =
+                transportInfo.toJinglePacket(Jingle.Action.TRANSPORT_INFO, id.sessionId);
+        Log.d(Config.LOGTAG, "initiating ice restart: " + iq);
+        iq.setTo(id.with);
         xmppConnectionService.sendIqPacket(
                 id.account,
-                jinglePacket,
-                (account, response) -> {
-                    if (response.getType() == IqPacket.TYPE.RESULT) {
+                iq,
+                (response) -> {
+                    if (response.getType() == Iq.Type.RESULT) {
                         Log.d(Config.LOGTAG, "received success to our ice restart");
                         setLocalContentMap(rtpContentMap);
                         webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
                         return;
                     }
-                    if (response.getType() == IqPacket.TYPE.ERROR) {
+                    if (response.getType() == Iq.Type.ERROR) {
                         if (isTieBreak(response)) {
                             Log.d(Config.LOGTAG, "received tie-break as result of ice restart");
                             return;
                         }
                         handleIqErrorResponse(response);
                     }
-                    if (response.getType() == IqPacket.TYPE.TIMEOUT) {
+                    if (response.getType() == Iq.Type.TIMEOUT) {
                         handleIqTimeoutResponse(response);
                     }
                 });
     }
 
-    private boolean isTieBreak(final IqPacket response) {
+    private boolean isTieBreak(final Iq response) {
         final Element error = response.findChild("error");
         return error != null && error.hasChild("tie-break", Namespace.JINGLE_ERRORS);
     }
@@ -2593,7 +2596,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
                     @Override
                     public void onFailure(@NonNull Throwable throwable) {
-                        failureToPerformAction(JinglePacket.Action.CONTENT_ADD, throwable);
+                        failureToPerformAction(Jingle.Action.CONTENT_ADD, throwable);
                     }
                 },
                 MoreExecutors.directExecutor());
@@ -2601,21 +2604,21 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private void sendContentAdd(final RtpContentMap contentAdd) {
 
-        final JinglePacket jinglePacket =
-                contentAdd.toJinglePacket(JinglePacket.Action.CONTENT_ADD, id.sessionId);
-        jinglePacket.setTo(id.with);
+        final Iq iq =
+                contentAdd.toJinglePacket(Jingle.Action.CONTENT_ADD, id.sessionId);
+        iq.setTo(id.with);
         xmppConnectionService.sendIqPacket(
                 id.account,
-                jinglePacket,
-                (connection, response) -> {
-                    if (response.getType() == IqPacket.TYPE.RESULT) {
+                iq,
+                (response) -> {
+                    if (response.getType() == Iq.Type.RESULT) {
                         Log.d(
                                 Config.LOGTAG,
                                 id.getAccount().getJid().asBareJid()
                                         + ": received ACK to our content-add");
                         return;
                     }
-                    if (response.getType() == IqPacket.TYPE.ERROR) {
+                    if (response.getType() == Iq.Type.ERROR) {
                         if (isTieBreak(response)) {
                             this.outgoingContentAdd = null;
                             Log.d(Config.LOGTAG, "received tie-break as result of our content-add");
@@ -2623,7 +2626,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                         }
                         handleIqErrorResponse(response);
                     }
-                    if (response.getType() == IqPacket.TYPE.TIMEOUT) {
+                    if (response.getType() == Iq.Type.TIMEOUT) {
                         handleIqTimeoutResponse(response);
                     }
                 });
@@ -2821,13 +2824,13 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private void discoverIceServers(final OnIceServersDiscovered onIceServersDiscovered) {
         if (id.account.getXmppConnection().getFeatures().externalServiceDiscovery()) {
-            final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+            final Iq request = new Iq(Iq.Type.GET);
             request.setTo(id.account.getDomain());
             request.addChild("services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
             xmppConnectionService.sendIqPacket(
                     id.account,
                     request,
-                    (account, response) -> {
+                    (response) -> {
                         final var iceServers = IceServers.parse(response);
                         if (iceServers.isEmpty()) {
                             Log.w(

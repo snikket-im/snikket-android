@@ -13,11 +13,10 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.GenericTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IbbTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
-import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
-import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.SocksByteStreamsTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.WebRTCDataChannelTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.transports.Transport;
+import im.conversations.android.xmpp.model.jingle.Jingle;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,7 +38,7 @@ public class FileTransferContentMap
         super(group, contents);
     }
 
-    public static FileTransferContentMap of(final JinglePacket jinglePacket) {
+    public static FileTransferContentMap of(final Jingle jinglePacket) {
         final Map<String, DescriptionTransport<FileTransferDescription, GenericTransportInfo>>
                 contents = of(jinglePacket.getJingleContents());
         return new FileTransferContentMap(jinglePacket.getGroup(), contents);

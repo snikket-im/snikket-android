@@ -23,8 +23,8 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.mam.MamReference;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
+import im.conversations.android.xmpp.model.stanza.Message;
 
 public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
@@ -81,7 +81,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
             return false;
         }
 
-        public static Element findResult(MessagePacket packet) {
+        public static Element findResult(Message packet) {
             for (Version version : values()) {
                 Element result = packet.findChild("result", version.namespace);
                 if (result != null) {
@@ -234,17 +234,17 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
                 throw new IllegalStateException("Attempted to run MAM query for archived conversation");
             }
             Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": running mam query " + query.toString());
-            final IqPacket packet = this.mXmppConnectionService.getIqGenerator().queryMessageArchiveManagement(query);
-            this.mXmppConnectionService.sendIqPacket(account, packet, (a, p) -> {
+            final Iq packet = this.mXmppConnectionService.getIqGenerator().queryMessageArchiveManagement(query);
+            this.mXmppConnectionService.sendIqPacket(account, packet, (p) -> {
                 final Element fin = p.findChild("fin", query.version.namespace);
-                if (p.getType() == IqPacket.TYPE.TIMEOUT) {
+                if (p.getType() == Iq.Type.TIMEOUT) {
                     synchronized (this.queries) {
                         this.queries.remove(query);
                         if (query.hasCallback()) {
                             query.callback(false);
                         }
                     }
-                } else if (p.getType() == IqPacket.TYPE.RESULT && fin != null) {
+                } else if (p.getType() == Iq.Type.RESULT && fin != null) {
                     final boolean running;
                     synchronized (this.queries) {
                         running = this.queries.contains(query);
@@ -254,10 +254,10 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
                     } else {
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignoring MAM iq result because query had been killed");
                     }
-                } else if (p.getType() == IqPacket.TYPE.RESULT && query.isLegacy()) {
+                } else if (p.getType() == Iq.Type.RESULT && query.isLegacy()) {
                     //do nothing
                 } else {
-                    Log.d(Config.LOGTAG, a.getJid().asBareJid().toString() + ": error executing mam: " + p.toString());
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": error executing mam: " + p.toString());
                     try {
                         finalizeQuery(query, true);
                     } catch (final IllegalStateException e) {
@@ -304,7 +304,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
         }
     }
 
-    boolean inCatchup(Account account) {
+    public boolean inCatchup(Account account) {
         synchronized (this.queries) {
             for (Query query : queries) {
                 if (query.account == account && query.isCatchup() && query.getWith() == null) {

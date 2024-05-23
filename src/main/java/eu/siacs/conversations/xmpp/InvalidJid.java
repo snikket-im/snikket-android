@@ -31,7 +31,7 @@ package eu.siacs.conversations.xmpp;
 
 import androidx.annotation.NonNull;
 
-import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
+import im.conversations.android.xmpp.model.stanza.Stanza;
 
 public class InvalidJid implements Jid {
 
@@ -137,10 +137,10 @@ public class InvalidJid implements Jid {
 	}
 
 	public static boolean isValid(Jid jid) {
-		return !(jid != null && jid instanceof InvalidJid);
+		return !(jid instanceof InvalidJid);
 	}
 
-	public static boolean hasValidFrom(AbstractStanza stanza) {
+	public static boolean hasValidFrom(Stanza stanza) {
 		final String from = stanza.getAttribute("from");
 		if (from == null) {
 			return false;

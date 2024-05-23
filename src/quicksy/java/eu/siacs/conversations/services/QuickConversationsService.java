@@ -69,7 +69,7 @@ import eu.siacs.conversations.utils.TLSSocketFactory;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 
 public class QuickConversationsService extends AbstractQuickConversationsService {
@@ -463,15 +463,15 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         for (final PhoneNumberContact c : contacts.values()) {
             entries.add(new Element("entry").setAttribute("number", c.getPhoneNumber()));
         }
-        final IqPacket query = new IqPacket(IqPacket.TYPE.GET);
+        final Iq query = new Iq(Iq.Type.GET);
         query.setTo(syncServer);
         final Element book = new Element("phone-book", Namespace.SYNCHRONIZATION).setChildren(entries);
         final String statusQuo = Entry.statusQuo(contacts.values(), account.getRoster().getWithSystemAccounts(PhoneNumberContact.class));
         book.setAttribute("ver", statusQuo);
         query.addChild(book);
         mLastSyncAttempt = Attempt.create(hash);
-        service.sendIqPacket(account, query, (a, response) -> {
-            if (response.getType() == IqPacket.TYPE.RESULT) {
+        service.sendIqPacket(account, query, (response) -> {
+            if (response.getType() == Iq.Type.RESULT) {
                 final Element phoneBook = response.findChild("phone-book", Namespace.SYNCHRONIZATION);
                 if (phoneBook != null) {
                     final List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(PhoneNumberContact.class);
@@ -498,7 +498,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                 } else {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": phone number contact list remains unchanged");
                 }
-            } else if (response.getType() == IqPacket.TYPE.TIMEOUT) {
+            } else if (response.getType() == Iq.Type.TIMEOUT) {
                 mLastSyncAttempt = Attempt.NULL;
             } else {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": failed to sync contact list with api server");

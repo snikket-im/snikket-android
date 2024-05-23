@@ -494,14 +494,9 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     protected boolean isOptimizingBattery() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            final PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-            return pm != null
-                    && !pm.isIgnoringBatteryOptimizations(getPackageName());
-        } else {
-            return false;
-        }
-    }
+        final PowerManager pm = getSystemService(PowerManager.class);
+        return !pm.isIgnoringBatteryOptimizations(getPackageName());
+}
 
     protected boolean isAffectedByDataSaver() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
