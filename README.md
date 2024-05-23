@@ -250,19 +250,7 @@ whether or not your messages are being read.
 Similar things can be said for priorities. In the past priorities have been used
 (by servers, not by clients!) to route your messages to one specific client.
 With carbon messages (XEP-0280, supported by Conversations since 0.1) this is no
-longer necessary. Using priorities to route OTR messages isn't practical either
-because they are not changeable on the fly. Metrics like last active client (the
-client which sent the last message) are much better.
-
-Unfortunately these modern replacements for legacy XMPP features are not widely
-adopted. However Conversations should be an instant messenger for the future and
-instead of making Conversations compatible with the past we should work on
-implementing new, improved technologies and getting them into other XMPP clients
-as well.
-
-Making these status and priority optional isn't a solution either because
-Conversations is trying to get rid of old behaviours and set an example for
-other clients.
+longer necessary.
 
 #### Translations
 Translations are managed on [Weblate](https://translate.codeberg.org/projects/conversations/).
