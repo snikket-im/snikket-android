@@ -313,7 +313,7 @@
     <string name="account_details">Деталі облікового запису</string>
     <string name="confirm">Підтвердити</string>
     <string name="try_again">Спробуйте ще</string>
-    <string name="pref_keep_foreground_service">Фонова служба</string>
+    <string name="pref_keep_foreground_service">Процес на передньому плані</string>
     <string name="pref_keep_foreground_service_summary">Не дає операційній системі припиняти Ваш зв\'язок</string>
     <string name="pref_create_backup">Створити резервну копію</string>
     <string name="pref_create_backup_summary">Резервні копії зберігатимуться до %s</string>
