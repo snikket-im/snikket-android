@@ -1,0 +1,2 @@
+* Arranxo da chamada que deixa de estar silenciada ao cambiar o dispositivo de saída
+* Exclusión da integración de chamadas para todos os dispositivos Umidigi
