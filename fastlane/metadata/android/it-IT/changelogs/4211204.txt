@@ -1,0 +1,2 @@
+* Corrette le chiamate che venivano smutate cambiando dispositivi di output
+* Esclusi tutti i dispositivi Umidigi dall'integrazione di chiamate
