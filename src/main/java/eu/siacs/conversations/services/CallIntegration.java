@@ -42,8 +42,12 @@ public class CallIntegration extends Connection {
      *
      * <p>Samsung Galaxy Tab A claims to have FEATURE_CONNECTION_SERVICE but then throws
      * SecurityException when invoking placeCall(). Both Stock and LineageOS have this problem.
+     *
+     * <p>Lenovo Yoga Smart Tab YT-X705F claims to have FEATURE_CONNECTION_SERVICE but throws
+     * SecurityException
      */
-    private static final List<String> BROKEN_DEVICE_MODELS = Arrays.asList("OnePlus6", "gtaxlwifi");
+    private static final List<String> BROKEN_DEVICE_MODELS =
+            Arrays.asList("OnePlus6", "gtaxlwifi", "YT-X705F");
 
     public static final int DEFAULT_TONE_VOLUME = 60;
     private static final int DEFAULT_MEDIA_PLAYER_VOLUME = 90;
