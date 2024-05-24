@@ -1,0 +1,1 @@
+* Uruchamianie kopii zapasowej jako usługi na pierwszym planie, żeby proces nie był zatrzymywany po 10 minutach
