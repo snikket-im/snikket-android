@@ -40,7 +40,7 @@
     <string name="moderator">Moderador</string>
     <string name="participant">Participante</string>
     <string name="visitor">Visitante</string>
-    <string name="remove_contact_text">Deseja remover %s da sua lista de contatos? As conversas associadas a esse contato não serão removidas.</string>
+    <string name="remove_contact_text">Gostaria de remover %s da sua lista de contatos? O chat com este contato não será removido.</string>
     <string name="block_contact_text">Deseja bloquear o recebimento de mensagens de %s?</string>
     <string name="unblock_contact_text">Deseja desbloquear o recebimento de mensagens de %s?</string>
     <string name="block_domain_text">Bloquear todos os contatos de %s?</string>
@@ -78,19 +78,19 @@
     <string name="preparing_images">Preparando para enviar as imagens</string>
     <string name="sharing_files_please_wait">Compartilhando arquivos. Por favor, aguarde...</string>
     <string name="action_clear_history">Limpar o histórico</string>
-    <string name="clear_conversation_history">Limpa o histórico de conversas</string>
+    <string name="clear_conversation_history">Limpar histórico do chat</string>
     <string name="clear_histor_msg">Deseja excluir todas as mensagens dessa conversa?
 \n
 \n<b>Atenção:</b> Isso não afetará mensagens armazenadas em outros dispositivos ou servidores.</string>
     <string name="delete_file_dialog">Excluir arquivo</string>
     <string name="delete_file_dialog_msg">Deseja realmente excluir este arquivo?\n\n<b>Atenção:</b> Isso não excluirá cópias deste arquivo armazenadas em outros dispositivos ou servidores.</string>
     <string name="choose_presence">Selecione o dispositivo</string>
-    <string name="send_unencrypted_message">Enviar mensagem não criptografada</string>
+    <string name="send_unencrypted_message">Enviar mensagem de texto não criptografada</string>
     <string name="send_message">Enviar mensagem</string>
     <string name="send_message_to_x">Enviar mensagem para %s</string>
     <string name="send_omemo_x509_message">Enviar mensagem criptografada via v\\OMEMO</string>
     <string name="your_nick_has_been_changed">Novo apelido em uso</string>
-    <string name="send_unencrypted">Enviar descriptografada</string>
+    <string name="send_unencrypted">Enviar texto não criptografada</string>
     <string name="decryption_failed">Não foi possível descriptografar. Talvez você não tenha a chave privada apropriada.</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="openkeychain_required_long"><![CDATA[%1$s utiliza o <b>OpenKeychain</b> para criptografar e descriptografar as mensagens e gerenciar suas chaves públicas. <br><br> Ele está licenciado sob a GPLv3+ e está disponível no F-Droid e na Google Play.<br><br><small>(Por favor reinicie o %1$s em seguida).</small>]]></string>
@@ -163,7 +163,7 @@
     <string name="account_status_incompatible_client">Cliente incompatível</string>
     <string name="account_status_stream_error">Erro de fluxo</string>
     <string name="account_status_stream_opening_error">Erro na abertura do fluxo</string>
-    <string name="encryption_choice_unencrypted">Descriptografada</string>
+    <string name="encryption_choice_unencrypted">Texto não criptografado</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -175,7 +175,7 @@
     <string name="unpublish_pgp_message">Tem certeza que deseja remover sua chave pública OpenPGP do seu anúncio de presença?\nSeus contatos não poderão mais enviar mensagens criptografadas com o OpenPGP para você.</string>
     <string name="openpgp_has_been_published">A chave pública do OpenPGP foi publicada.</string>
     <string name="mgmt_account_enable">Habilitar a conta</string>
-    <string name="mgmt_account_delete_confirm_text">Se você excluir a sua conta todo o seu histórico de conversas será apagado</string>
+    <string name="mgmt_account_delete_confirm_text">Tem certeza de que deseja excluir sua conta? Excluir sua conta apaga todo o seu histórico do chat</string>
     <string name="attach_record_voice">Gravar voz</string>
     <string name="account_settings_jabber_id">Endereço XMPP</string>
     <string name="block_jabber_id">Bloquear endereço XMPP</string>
@@ -983,4 +983,13 @@
     <string name="audio_video_disabled_tor">As chamadas estão desabilitadas ao usar Tor</string>
     <string name="switch_to_video">Mudar para vídeo</string>
     <string name="reject_switch_to_video">Recusar requisição de mudança para vídeo</string>
+    <string name="pref_send_crash_reports">Enviar relatórios de erro</string>
+    <string name="remove_bookmark_and_close">Gostaria de remover o favorito de %s e arquivar chat?</string>
+    <string name="archive_this_chat">Exclua o chat depois</string>
+    <string name="title_activity_share_with">Compartilhar com…</string>
+    <string name="action_archive_chat">Arquivar chat</string>
+    <string name="title_activity_new_chat">Novo chat</string>
+    <string name="send_encrypted_message">Enviar mensagem criptografada</string>
+    <string name="account_state_logged_out">Desconectado</string>
+    <string name="remove_bookmark">Gostaria de remover o favorito de %s?</string>
 </resources>
