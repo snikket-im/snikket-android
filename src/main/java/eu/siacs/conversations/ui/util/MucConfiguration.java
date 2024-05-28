@@ -57,7 +57,7 @@ public class MucConfiguration {
                             mucOptions.nonanonymous(),
                             mucOptions.participantsCanChangeSubject(),
                             mucOptions.moderated(),
-                            mucOptions.allowPm()
+                            mucOptions.allowPmRaw()
                         };
                 options =
                         new Option[] {
