@@ -531,6 +531,12 @@ public class CallIntegration extends Connection {
                 && Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
             return false;
         }
+        // we are relatively sure that old Oppo devices are broken too. We get reports of 'number
+        // not sent' from Oppo R15x (Android 10)
+        if ("OPPO".equalsIgnoreCase(Build.MANUFACTURER)
+                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+            return false;
+        }
         // we only know of one Umidigi device (BISON_GT2_5G) that doesn't work (audio is not being
         // routed properly) However with those devices being extremely rare it's impossible to gauge
         // how many might be effected and no Naomi Wu around to clarify with the company directly
