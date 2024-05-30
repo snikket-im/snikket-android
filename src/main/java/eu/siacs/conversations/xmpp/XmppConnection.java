@@ -23,6 +23,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import eu.siacs.conversations.AppSettings;
+import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
@@ -78,6 +79,7 @@ import im.conversations.android.xmpp.model.sasl.Response;
 import im.conversations.android.xmpp.model.sasl.Success;
 import im.conversations.android.xmpp.model.sasl2.Authenticate;
 import im.conversations.android.xmpp.model.sasl2.Authentication;
+import im.conversations.android.xmpp.model.sasl2.UserAgent;
 import im.conversations.android.xmpp.model.sm.Ack;
 import im.conversations.android.xmpp.model.sm.Enable;
 import im.conversations.android.xmpp.model.sm.Enabled;
@@ -195,7 +197,7 @@ public class XmppConnection implements Runnable {
     public XmppConnection(final Account account, final XmppConnectionService service) {
         this.account = account;
         this.mXmppConnectionService = service;
-        this.appSettings = new AppSettings(mXmppConnectionService.getApplicationContext());
+        this.appSettings = mXmppConnectionService.getAppSettings();
         this.presenceListener = new PresenceParser(service, account);
         this.unregisteredIqListener = new IqParser(service, account);
         this.messageListener = new MessageParser(service, account);
@@ -1664,15 +1666,15 @@ public class XmppConnection implements Runnable {
         if (!Strings.isNullOrEmpty(firstMessage)) {
             authenticate.addChild("initial-response").setContent(firstMessage);
         }
-        final Element userAgent = authenticate.addChild("user-agent");
-        userAgent.setAttribute("id", AccountUtils.publicDeviceId(account));
-        userAgent
-                .addChild("software")
-                .setContent(mXmppConnectionService.getString(R.string.app_name));
+        final var userAgent =
+                authenticate.addExtension(
+                        new UserAgent(
+                                AccountUtils.publicDeviceId(
+                                        account, appSettings.getInstallationId())));
+        userAgent.setSoftware(
+                String.format("%s %s", BuildConfig.APP_NAME, BuildConfig.VERSION_NAME));
         if (!PhoneHelper.isEmulator()) {
-            userAgent
-                    .addChild("device")
-                    .setContent(String.format("%s %s", Build.MANUFACTURER, Build.MODEL));
+            userAgent.setDevice(String.format("%s %s", Build.MANUFACTURER, Build.MODEL));
         }
         // do not include bind if 'inlineStreamManagement' is missing and we have a streamId
         // (because we would rather just do a normal SM/resume)
@@ -1698,7 +1700,7 @@ public class XmppConnection implements Runnable {
     private Bind generateBindRequest(final Collection<String> bindFeatures) {
         Log.d(Config.LOGTAG, "inline bind features: " + bindFeatures);
         final var bind = new Bind();
-        bind.addChild("tag").setContent(mXmppConnectionService.getString(R.string.app_name));
+        bind.setTag(BuildConfig.APP_NAME);
         if (bindFeatures.contains(Namespace.CARBONS)) {
             bind.addExtension(new im.conversations.android.xmpp.model.carbons.Enable());
         }
@@ -2292,6 +2294,10 @@ public class XmppConnection implements Runnable {
             return;
         }
         if (streamError.hasChild("conflict")) {
+            final var loginInfo = this.loginInfo;
+            if (loginInfo != null && loginInfo.saslVersion == SaslMechanism.Version.SASL_2) {
+                this.appSettings.resetInstallationId();
+            }
             account.setResource(createNewResource());
             Log.d(
                     Config.LOGTAG,
@@ -2299,7 +2305,7 @@ public class XmppConnection implements Runnable {
                             + ": switching resource due to conflict ("
                             + account.getResource()
                             + ")");
-            throw new IOException();
+            throw new IOException("Closed stream due to resource conflict");
         } else if (streamError.hasChild("host-unknown")) {
             throw new StateChangingException(Account.State.HOST_UNKNOWN);
         } else if (streamError.hasChild("policy-violation")) {

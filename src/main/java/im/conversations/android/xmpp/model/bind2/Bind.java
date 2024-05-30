@@ -21,4 +21,8 @@ public class Bind extends Extension {
         final var inline = getInline();
         return inline == null ? Collections.emptyList() : inline.getExtensions(Feature.class);
     }
+
+    public void setTag(final String tag) {
+        this.addExtension(new Tag(tag));
+    }
 }

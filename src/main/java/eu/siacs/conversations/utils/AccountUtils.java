@@ -38,23 +38,27 @@ public class AccountUtils {
         return false;
     }
 
-    public static String publicDeviceId(final Account account) {
+    public static String publicDeviceId(final Account account, final long installationId) {
         final UUID uuid;
         try {
             uuid = UUID.fromString(account.getUuid());
         } catch (final IllegalArgumentException e) {
             return account.getUuid();
         }
+        return createUuid4(uuid.getMostSignificantBits(), installationId).toString();
+    }
+
+    public static UUID createUuid4(long mostSigBits, long leastSigBits) {
         final byte[] bytes =
                 Bytes.concat(
-                        Longs.toByteArray(uuid.getLeastSignificantBits()),
-                        Longs.toByteArray(uuid.getLeastSignificantBits()));
+                        Longs.toByteArray(mostSigBits),
+                        Longs.toByteArray(leastSigBits));
         bytes[6] &= 0x0f; /* clear version        */
         bytes[6] |= 0x40; /* set to version 4     */
         bytes[8] &= 0x3f; /* clear variant        */
         bytes[8] |= 0x80; /* set to IETF variant  */
         final ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
-        return new UUID(byteBuffer.getLong(), byteBuffer.getLong()).toString();
+        return new UUID(byteBuffer.getLong(), byteBuffer.getLong());
     }
 
     public static List<String> getEnabledAccounts(final XmppConnectionService service) {

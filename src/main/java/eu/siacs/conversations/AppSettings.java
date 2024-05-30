@@ -10,6 +10,8 @@ import androidx.preference.PreferenceManager;
 
 import com.google.common.base.Strings;
 
+import java.security.SecureRandom;
+
 public class AppSettings {
 
     public static final String KEEP_FOREGROUND_SERVICE = "enable_foreground_service";
@@ -45,6 +47,7 @@ public class AppSettings {
     public static final String LARGE_FONT = "large_font";
 
     private static final String ACCEPT_INVITES_FROM_STRANGERS = "accept_invites_from_strangers";
+    private static final String INSTALLATION_ID = "im.conversations.android.install_id";
 
     private final Context context;
 
@@ -139,5 +142,26 @@ public class AppSettings {
 
     public boolean isRequireChannelBinding() {
         return getBooleanPreference(REQUIRE_CHANNEL_BINDING, R.bool.require_channel_binding);
+    }
+
+    public synchronized long getInstallationId() {
+        final var sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        final long existing = sharedPreferences.getLong(INSTALLATION_ID, 0);
+        if (existing != 0) {
+            return existing;
+        }
+        final var secureRandom = new SecureRandom();
+        final var installationId = secureRandom.nextLong();
+        sharedPreferences.edit().putLong(INSTALLATION_ID, installationId).apply();
+        return installationId;
+    }
+
+    public synchronized void resetInstallationId() {
+        final var secureRandom = new SecureRandom();
+        final var installationId = secureRandom.nextLong();
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putLong(INSTALLATION_ID, installationId)
+                .apply();
     }
 }

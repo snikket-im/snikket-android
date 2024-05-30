@@ -229,6 +229,8 @@ public class XmppConnectionService extends Service {
     public DatabaseBackend databaseBackend;
     private final ReplacingSerialSingleThreadExecutor mContactMergerExecutor = new ReplacingSerialSingleThreadExecutor("ContactMerger");
     private long mLastActivity = 0;
+
+    private final AppSettings appSettings = new AppSettings(this);
     private final FileBackend fileBackend = new FileBackend(this);
     private MemorizingTrustManager mMemorizingTrustManager;
     private final NotificationService mNotificationService = new NotificationService(this);
@@ -481,6 +483,10 @@ public class XmppConnectionService extends Service {
         } else {
             return null;
         }
+    }
+
+    public AppSettings getAppSettings() {
+        return this.appSettings;
     }
 
     public FileBackend getFileBackend() {
@@ -4633,7 +4639,6 @@ public class XmppConnectionService extends Service {
 
     public void updateMemorizingTrustManager() {
         final MemorizingTrustManager trustManager;
-        final var appSettings = new AppSettings(this);
         if (appSettings.isTrustSystemCAStore()) {
             trustManager = new MemorizingTrustManager(getApplicationContext());
         } else {
