@@ -1,0 +1,4 @@
+* Introduction d'un paramètre expert pour faire la découverte de salons sur le serveur local au lieu de search.jabber.network
+* Active les coches de délivrance par défaut et supprimer le paramètre
+* Active ‘Le bouton Envoyer indique l'état’ par défaut et supprimer le paramètre
+* Déplacer les paramètres du service de sauvegarde et de premier plan vers l'écran principal
