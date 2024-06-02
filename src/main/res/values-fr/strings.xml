@@ -5,7 +5,7 @@
     <string name="action_account">Gérer le compte</string>
     <string name="action_contact_details">Détails du contact</string>
     <string name="action_muc_details">Détails du groupe</string>
-    <string name="channel_details">Détails du canal</string>
+    <string name="channel_details">Détails du salon</string>
     <string name="action_add_account">Ajouter un compte</string>
     <string name="action_edit_contact">Modifier le nom</string>
     <string name="action_add_phone_book">Ajouter au carnet d\'adresses</string>
@@ -14,8 +14,8 @@
     <string name="action_unblock_contact">Débloquer le contact</string>
     <string name="action_block_domain">Bloquer le domaine</string>
     <string name="action_unblock_domain">Débloquer le domaine</string>
-    <string name="action_block_participant">Bloquer le participant</string>
-    <string name="action_unblock_participant">Débloquer le participant</string>
+    <string name="action_block_participant">Bloquer le·a participant·e</string>
+    <string name="action_unblock_participant">Débloquer le·a participant·e</string>
     <string name="title_activity_manage_accounts">Gestion des comptes</string>
     <string name="title_activity_settings">Paramètres</string>
     <string name="title_activity_choose_contact">Choisir un contact</string>
@@ -35,11 +35,11 @@
     <string name="pgp_message">Message chiffré avec OpenPGP</string>
     <string name="nick_in_use">Cet identifiant est déjà utilisé</string>
     <string name="invalid_muc_nick">Identifiant non valide</string>
-    <string name="admin">Administrateur</string>
+    <string name="admin">Administrateur·ice</string>
     <string name="owner">Propriétaire</string>
-    <string name="moderator">Modérateur</string>
-    <string name="participant">Participant</string>
-    <string name="visitor">Visiteur</string>
+    <string name="moderator">Modérateur·ice</string>
+    <string name="participant">Participant·e</string>
+    <string name="visitor">Visiteur·ice</string>
     <string name="remove_contact_text">Voulez-vous supprimer %s de votre liste de contacts ? Les conversations associées à ce contact ne seront pas supprimées.</string>
     <string name="block_contact_text">Voulez-vous bloquer %s pour l\'empêcher de vous envoyer des messages ?</string>
     <string name="unblock_contact_text">Voulez-vous débloquer %s et lui permettre de vous envoyer des messages ?</string>
@@ -95,15 +95,15 @@
     <string name="send_unencrypted">Envoyer en clair</string>
     <string name="decryption_failed">Échec du déchiffrement. Avez-vous la bonne clé privée ?</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long"><![CDATA[%1$s utilise <b>OpenKeychain</b> pour chiffrer et déchiffrer les messages et pour gérer vos clés publiques.\n\nOpenKeychain est sous licence GPLv3 et est disponible sur F-Droid et Google Play.\n\n<small>(Veuillez redémarrer %1$s après l\'installation de l\'application.)</small>]]></string>
+    <string name="openkeychain_required_long">%1$s utilise &lt;b&gt;OpenKeychain&lt;/b&gt; pour chiffrer et déchiffrer les messages et pour gérer vos clés publiques.&lt;br&gt;&lt;br&gt;OpenKeychain est sous licence GPLv3 et est disponible sur F-Droid et Google Play.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Veuillez redémarrer %1$s après l\'installation de l\'application.)&lt;/small&gt;</string>
     <string name="restart">Redémarrer</string>
     <string name="install">Installer</string>
     <string name="openkeychain_not_installed">Veuillez installer OpenKeychain</string>
     <string name="offering">Proposition…</string>
     <string name="waiting">Patientez…</string>
-    <string name="no_pgp_key">Aucune clé OpenPGP trouvée.</string>
+    <string name="no_pgp_key">Aucune clé OpenPGP trouvée</string>
     <string name="contact_has_no_pgp_key">Impossible de chiffrer vos messages car votre contact n\'a pas communiqué sa clé publique.\n\n<small>Demandez-lui de configurer OpenPGP.</small></string>
-    <string name="no_pgp_keys">Aucune clé OpenPGP n\'a été trouvée.</string>
+    <string name="no_pgp_keys">Aucune clé OpenPGP n\'a été trouvée</string>
     <string name="contacts_have_no_pgp_keys">Impossible de chiffrer votre message car vos contacts ne communiquent pas leur clé publique.\n\n<small>Demandez-leur de configurer OpenPGP.</small></string>
     <string name="pref_general">Général</string>
     <string name="pref_accept_files">Accepter les fichiers</string>
@@ -137,7 +137,7 @@
     <string name="ask_for_presence_updates">Demander les màj de disponibilité</string>
     <string name="attach_choose_picture">Choisir une image</string>
     <string name="attach_take_picture">Prendre une photo</string>
-    <string name="preemptively_grant">Accepter par avance les demandes de publication.</string>
+    <string name="preemptively_grant">Accepter par avance les demandes de publication</string>
     <string name="error_not_an_image_file">Le fichier choisi n\'est pas une image</string>
     <string name="error_compressing_image">Impossible de convertir l\'image</string>
     <string name="error_file_not_found">Impossible de trouver le fichier</string>
@@ -171,7 +171,7 @@
     <string name="encryption_choice_omemo">OMEMO</string>
     <string name="mgmt_account_delete">Supprimer</string>
     <string name="mgmt_account_disable">Désactiver temporairement</string>
-    <string name="mgmt_account_publish_avatar">Publier un avatar</string>
+    <string name="mgmt_account_publish_avatar">Publier une image de profil</string>
     <string name="mgmt_account_publish_pgp">Publier la clé publique OpenPGP</string>
     <string name="unpublish_pgp">Supprimer la clé publique OpenPGP</string>
     <string name="unpublish_pgp_message">Êtes-vous sûr de vouloir supprimer votre clé publique OpenPGP de votre annonce de présence ?\nVos contacts ne pourront plus vous envoyer de message chiffrés avec OpenPGP.</string>
@@ -181,10 +181,10 @@
     <string name="attach_record_voice">Enregistrer un son</string>
     <string name="account_settings_jabber_id">Adresse XMPP</string>
     <string name="block_jabber_id">Bloquer l\'adresse XMPP</string>
-    <string name="account_settings_example_jabber_id">nom@exemple.com</string>
+    <string name="account_settings_example_jabber_id">nom@example.com</string>
     <string name="password">Mot de passe</string>
     <string name="invalid_jid">Ce n\'est pas une adresse XMPP valide</string>
-    <string name="error_out_of_memory">Plus de mémoire disponible. L\'image est trop volumineuse.</string>
+    <string name="error_out_of_memory">Plus de mémoire disponible. L\'image est trop volumineuse</string>
     <string name="add_phone_book_text">Voulez-vous ajouter %s à votre carnet d\'adresses ?</string>
     <string name="server_info_show_more">Infos sur le serveur</string>
     <string name="server_info_mam">XEP-0313 : MAM</string>
@@ -208,7 +208,7 @@
     <string name="last_seen_day">en ligne hier</string>
     <string name="last_seen_days">en ligne il y a %d jours</string>
     <string name="install_openkeychain">Message chiffré. Veuillez installer OpenKeychain pour le déchiffrer.</string>
-    <string name="openpgp_messages_found">Nouveaux messages chiffrés avec OpenPGP détectés.</string>
+    <string name="openpgp_messages_found">Nouveaux messages chiffrés avec OpenPGP détectés</string>
     <string name="openpgp_key_id">ID de clé OpenPGP</string>
     <string name="omemo_fingerprint">Empreinte OMEMO</string>
     <string name="omemo_fingerprint_x509">v\\Empreinte OMEMO</string>
@@ -228,12 +228,12 @@
     <string name="select">Sélectionner</string>
     <string name="contact_already_exists">Le contact existe déjà</string>
     <string name="join">Rejoindre</string>
-    <string name="channel_full_jid_example">canal@conference.example.com/surnom</string>
-    <string name="channel_bare_jid_example">canal@conference.example.com</string>
+    <string name="channel_full_jid_example">salon@conference.example.com/surnom</string>
+    <string name="channel_bare_jid_example">salon@conference.example.com</string>
     <string name="save_as_bookmark">Enregistrer comme favori</string>
     <string name="delete_bookmark">Supprimer le favori</string>
     <string name="destroy_room">Détruire le groupe</string>
-    <string name="destroy_channel">Détruire le canal</string>
+    <string name="destroy_channel">Détruire le salon</string>
     <string name="destroy_room_dialog">Voulez-vous vraiment détruire ce groupe ?\n\n<b>Avertissement :</b> le groupe sera complètement supprimé du serveur.</string>
     <string name="destroy_channel_dialog">Êtes-vous sûr de vouloir détruire ce canal public \?
 \n
@@ -1062,7 +1062,7 @@
     <string name="pref_dynamic_colors_summary">Couleurs systèmes (Material You)</string>
     <string name="channel_discover_opt_in_message">La découverte de canaux utilise un service de tierce partie appelé &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt; Utiliser cette fonctionnalité va transmettre votre adresse IP et votre recherche à ce service. Voir leur &lt;a href=https://search.jabber.network/privacy&gt;Politique de confidentialité&lt;/a&gt; pour plus d\'informations.</string>
     <string name="action_archive_chat">Archiver la conversation</string>
-    <string name="archive_this_chat">Archiver cette conversation</string>
+    <string name="archive_this_chat">Supprimer cette conversation ensuite</string>
     <string name="send_encrypted_message">Envoyer un message chiffré</string>
     <string name="title_undo_swipe_out_chat">Conversation archivée</string>
     <string name="switch_to_chat">Se rendre à la conversation</string>
