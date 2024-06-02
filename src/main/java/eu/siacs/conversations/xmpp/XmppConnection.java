@@ -63,6 +63,7 @@ import eu.siacs.conversations.xmpp.bind.Bind2;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 
+import im.conversations.android.xmpp.model.AuthenticationRequest;
 import im.conversations.android.xmpp.model.AuthenticationStreamFeature;
 import im.conversations.android.xmpp.model.StreamElement;
 import im.conversations.android.xmpp.model.bind2.Bind;
@@ -1514,14 +1515,15 @@ public class XmppConnection implements Runnable {
         final String firstMessage =
                 saslMechanism.getClientFirstMessage(sslSocketOrNull(this.socket));
         final boolean usingFast = SaslMechanism.hashedToken(saslMechanism);
-        final StreamElement authenticate;
+        final AuthenticationRequest authenticate;
+        final LoginInfo loginInfo;
         if (version == SaslMechanism.Version.SASL) {
             authenticate = new Auth();
             if (!Strings.isNullOrEmpty(firstMessage)) {
                 authenticate.setContent(firstMessage);
             }
             quickStartAvailable = false;
-            this.loginInfo = new LoginInfo(saslMechanism, version, Collections.emptyList());
+            loginInfo = new LoginInfo(saslMechanism, version, Collections.emptyList());
         } else if (version == SaslMechanism.Version.SASL_2) {
             final Authentication authentication = (Authentication) authElement;
             final var inline = authentication.getInline();
@@ -1552,7 +1554,7 @@ public class XmppConnection implements Runnable {
                     return;
                 }
             }
-            this.loginInfo = new LoginInfo(saslMechanism, version, bindFeatures);
+            loginInfo = new LoginInfo(saslMechanism, version, bindFeatures);
             this.hashTokenRequest = hashTokenRequest;
             authenticate =
                     generateAuthenticationRequest(
@@ -1560,7 +1562,7 @@ public class XmppConnection implements Runnable {
         } else {
             throw new AssertionError("Missing implementation for " + version);
         }
-
+        this.loginInfo = loginInfo;
         if (account.setOption(Account.OPTION_QUICKSTART_AVAILABLE, quickStartAvailable)) {
             mXmppConnectionService.databaseBackend.updateAccount(account);
         }
@@ -1571,8 +1573,8 @@ public class XmppConnection implements Runnable {
                         + ": Authenticating with "
                         + version
                         + "/"
-                        + LoginInfo.mechanism(this.loginInfo).getMechanism());
-        authenticate.setAttribute("mechanism", LoginInfo.mechanism(this.loginInfo).getMechanism());
+                        + LoginInfo.mechanism(loginInfo).getMechanism());
+        authenticate.setMechanism(LoginInfo.mechanism(loginInfo));
         synchronized (this.mStanzaQueue) {
             this.stanzasSentBeforeAuthentication = this.stanzasSent;
             tagWriter.writeElement(authenticate);
@@ -1650,13 +1652,13 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private Authenticate generateAuthenticationRequest(
+    private AuthenticationRequest generateAuthenticationRequest(
             final String firstMessage, final boolean usingFast) {
         return generateAuthenticationRequest(
                 firstMessage, usingFast, null, Bind2.QUICKSTART_FEATURES, true);
     }
 
-    private Authenticate generateAuthenticationRequest(
+    private AuthenticationRequest generateAuthenticationRequest(
             final String firstMessage,
             final boolean usingFast,
             final HashedToken.Mechanism hashedTokenRequest,
@@ -1909,13 +1911,15 @@ public class XmppConnection implements Runnable {
         }
         clearIqCallbacks();
         if (account.getJid().isBareJid()) {
-            account.setResource(this.createNewResource());
+            account.setResource(createNewResource());
         } else {
             fixResource(mXmppConnectionService, account);
         }
         final Iq iq = new Iq(Iq.Type.SET);
         final String resource =
-                Config.USE_RANDOM_RESOURCE_ON_EVERY_BIND ? nextRandomId() : account.getResource();
+                Config.USE_RANDOM_RESOURCE_ON_EVERY_BIND
+                        ? CryptoHelper.random(9)
+                        : account.getResource();
         iq.addExtension(new im.conversations.android.xmpp.model.bind.Bind()).setResource(resource);
         this.sendUnmodifiedIqPacket(
                 iq,
@@ -2381,11 +2385,11 @@ public class XmppConnection implements Runnable {
                             SaslMechanism.Version.SASL_2,
                             Bind2.QUICKSTART_FEATURES);
             final boolean usingFast = quickStartMechanism instanceof HashedToken;
-            final StreamElement authenticate =
+            final AuthenticationRequest authenticate =
                     generateAuthenticationRequest(
                             quickStartMechanism.getClientFirstMessage(sslSocketOrNull(this.socket)),
                             usingFast);
-            authenticate.setAttribute("mechanism", quickStartMechanism.getMechanism());
+            authenticate.setMechanism(quickStartMechanism);
             sendStartStream(true, false);
             synchronized (this.mStanzaQueue) {
                 this.stanzasSentBeforeAuthentication = this.stanzasSent;
@@ -2416,16 +2420,8 @@ public class XmppConnection implements Runnable {
         tagWriter.writeTag(stream, flush);
     }
 
-    private String createNewResource() {
-        return mXmppConnectionService.getString(R.string.app_name) + '.' + nextRandomId(true);
-    }
-
-    private String nextRandomId() {
-        return nextRandomId(false);
-    }
-
-    private String nextRandomId(final boolean s) {
-        return CryptoHelper.random(s ? 3 : 9);
+    private static String createNewResource() {
+        return String.format("%s.%s", BuildConfig.APP_NAME, CryptoHelper.random(3));
     }
 
     public String sendIqPacket(final Iq packet, final Consumer<Iq> callback) {
@@ -2437,7 +2433,7 @@ public class XmppConnection implements Runnable {
             final Iq packet, final Consumer<Iq> callback, boolean force) {
         // TODO if callback != null verify that type is get or set
         if (packet.getId() == null) {
-            packet.setAttribute("id", nextRandomId());
+            packet.setId(CryptoHelper.random(9));
         }
         if (callback != null) {
             synchronized (this.packetCallbacks) {
