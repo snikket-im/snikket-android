@@ -21,7 +21,7 @@
     <string name="title_activity_choose_contact">Choisir un contact</string>
     <string name="title_activity_choose_contacts">Choisir les contacts</string>
     <string name="title_activity_share_via_account">Partager via le compte</string>
-    <string name="title_activity_block_list">Bloquer la liste</string>
+    <string name="title_activity_block_list">Comptes bloqués</string>
     <string name="just_now">À l\'instant</string>
     <string name="minute_ago">Il y a 1 minute</string>
     <string name="minutes_ago">Il y a %d minutes</string>
@@ -313,7 +313,7 @@
     <string name="web_address">adresse web</string>
     <string name="scan_qr_code">Scanner le QR code</string>
     <string name="show_qr_code">Montrer le QR code</string>
-    <string name="show_block_list">Afficher la liste des contacts bloqués</string>
+    <string name="show_block_list">Afficher la liste des comptes bloqués</string>
     <string name="account_details">Détails du compte</string>
     <string name="confirm">Confirmer</string>
     <string name="try_again">Réessayer</string>
