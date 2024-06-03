@@ -1,0 +1,2 @@
+* Ältere Oppo-Geräte von der Anrufintegration ausgenommen
+* Verschiedene Fehlerbehebungen
