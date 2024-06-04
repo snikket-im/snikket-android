@@ -392,11 +392,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         }
         Iq packet = mXmppConnectionService.getIqGenerator().retrieveDeviceIds(account.getJid().asBareJid());
         mXmppConnectionService.sendIqPacket(account, packet, response -> {
-            if (packet.getType() == Iq.Type.TIMEOUT) {
+            if (response.getType() == Iq.Type.TIMEOUT) {
                 Log.d(Config.LOGTAG, getLogprefix(account) + "Timeout received while retrieving own Device Ids.");
             } else {
                 //TODO consider calling registerDevices only after item-not-found to account for broken PEPs
-                final Element item = IqParser.getItem(packet);
+                final Element item = IqParser.getItem(response);
                 final Set<Integer> deviceIds = IqParser.deviceIds(item);
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved own device list: " + deviceIds);
                 registerDevices(account.getJid().asBareJid(), deviceIds);
@@ -744,7 +744,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         }
         final SettableFuture<XmppAxolotlSession> future = SettableFuture.create();
         final Iq packet = mXmppConnectionService.getIqGenerator().retrieveVerificationForDevice(jid, address.getDeviceId());
-        mXmppConnectionService.sendIqPacket(account, packet, (response) -> {
+        mXmppConnectionService.sendIqPacket(account, packet, response -> {
             Pair<X509Certificate[], byte[]> verification = IqParser.verification(response);
             if (verification != null) {
                 try {
@@ -850,7 +850,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             }
         }
         if (packet != null) {
-            mXmppConnectionService.sendIqPacket(account, packet, (response) -> {
+            mXmppConnectionService.sendIqPacket(account, packet, response -> {
                 if (response.getType() == Iq.Type.RESULT) {
                     fetchDeviceListStatus.put(jid, true);
                     final Element item = IqParser.getItem(response);
@@ -914,7 +914,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         final Jid jid = Jid.of(address.getName());
         final boolean oneOfOurs = jid.asBareJid().equals(account.getJid().asBareJid());
         final Iq bundlesPacket = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(jid, address.getDeviceId());
-        mXmppConnectionService.sendIqPacket(account, bundlesPacket, (packet) -> {
+        mXmppConnectionService.sendIqPacket(account, bundlesPacket, packet -> {
             if (packet.getType() == Iq.Type.TIMEOUT) {
                 fetchStatusMap.put(address, FetchStatus.TIMEOUT);
                 sessionSettableFuture.setException(new CryptoFailedException("Unable to build session. Timeout"));
