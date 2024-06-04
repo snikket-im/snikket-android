@@ -1,0 +1,2 @@
+* excluír da integración de chamadas aos dispositivos Oppo antigos
+* arranxos varios
