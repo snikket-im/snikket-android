@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.16.4
+
+* Fix minor regression introduced in 2.16.4
+
 ### Version 2.16.3
 
 * exclude older Oppo devices from call integration
