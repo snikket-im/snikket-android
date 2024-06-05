@@ -843,7 +843,8 @@ public class XmppConnection implements Runnable {
                             account.getJid().asBareJid()
                                     + ": successfully enabled carbons (via Bind 2.0)");
                     features.carbonsEnabled = true;
-                } else if (loginInfo.inlineBindFeatures.contains(Namespace.CARBONS)) {
+                } else if (currentLoginInfo.inlineBindFeatures != null
+                        && currentLoginInfo.inlineBindFeatures.contains(Namespace.CARBONS)) {
                     negotiatedCarbons = true;
                     Log.d(
                             Config.LOGTAG,
