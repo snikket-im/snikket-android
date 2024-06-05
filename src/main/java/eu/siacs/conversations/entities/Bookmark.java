@@ -159,8 +159,15 @@ public class Bookmark extends Element implements ListItem {
 	}
 
 	public Jid getFullJid() {
-		final String nick = getNick();
-		return jid == null || nick == null || nick.trim().isEmpty() ? jid : jid.withResource(nick);
+		final String nick = Strings.nullToEmpty(getNick()).trim();
+		if (jid == null || nick.isEmpty()) {
+			return jid;
+		}
+		try {
+			return jid.withResource(nick);
+		} catch (final IllegalArgumentException e) {
+			return jid;
+		}
 	}
 
 	@Override
