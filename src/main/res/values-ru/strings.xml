@@ -1088,4 +1088,12 @@
     <string name="pref_accept_invites_from_strangers_summary">Принимать приглашения в групповые беседы от незнакомцев</string>
     <string name="unsupported_operation">Операция не поддерживается</string>
     <string name="pref_fullscreen_notification">Полноэкранные уведомления</string>
+    <string name="pref_backup_recurring">Повторяющиеся рез. копии</string>
+    <string name="pref_fullscreen_notification_summary">Разрешить приложению показывать экраны входящих звонков при заблокированном экране.</string>
+    <string name="pref_up_long_summary">Conversations, будучи распределителем UnifiedPush, будет использовать стойкое, надёжное и малопотребляющее подключение XMPP для пробуждения других совместимых с UnifiedPush приложений, таких как Tusky, Ltt.rs, FluffyChat и др.</string>
+    <string name="pref_category_engagement_notifications"></string>
+    <string name="detect_mim">Требовать привязку канала</string>
+    <string name="detect_mim_summary">Привязка канала может обнаружить некоторые атаки посредником</string>
+    <string name="pref_category_server_connection">Соединение с сервером</string>
+    <string name="pref_accept_invites_from_strangers">Приглашения от незнакомцев</string>
 </resources>
