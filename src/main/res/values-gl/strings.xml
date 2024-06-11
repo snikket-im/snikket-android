@@ -936,7 +936,7 @@
     <string name="return_to_ongoing_call">Volver á chamada activa</string>
     <string name="could_not_switch_camera">Non se puido activar a cámara</string>
     <string name="add_to_favorites">Fixar enriba</string>
-    <string name="remove_from_favorites">Desafixar de enriba</string>
+    <string name="remove_from_favorites">Non fixar enriba</string>
     <string name="gpx_track">Ruta GPX</string>
     <string name="could_not_correct_message">No se pode correxir a mensaxe</string>
     <string name="search_all_conversations">Todos os chats</string>
