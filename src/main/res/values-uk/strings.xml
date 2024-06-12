@@ -366,7 +366,7 @@
     <string name="enable_all_accounts">Увімкнути всі облікові записи</string>
     <string name="disable_all_accounts">Вимкнути всі облікові записи</string>
     <string name="perform_action_with">Здійснити дію з</string>
-    <string name="no_affiliation">Учасник</string>
+    <string name="no_affiliation">Без ролі</string>
     <string name="no_role">Поза мережею</string>
     <string name="outcast">Вигнанець</string>
     <string name="member">Учасник</string>
@@ -379,7 +379,7 @@
     <string name="remove_owner_privileges">Відкликати права власника</string>
     <string name="remove_from_room">Вилучити з групи</string>
     <string name="remove_from_channel">Прибрати з каналу</string>
-    <string name="could_not_change_affiliation">Неможливо змінити статус участі %s</string>
+    <string name="could_not_change_affiliation">Неможливо змінити роль %s</string>
     <string name="ban_from_conference">Заборонити доступ до групи</string>
     <string name="ban_from_channel">Вилучити з каналу</string>
     <string name="removing_from_public_conference">Ви намагаєтеся вилучити %s з публічного каналу. Єдиним способом для цього є заблокувати користувача назавжди.</string>
@@ -464,10 +464,10 @@
     <string name="hostname_example">xmpp.example.com</string>
     <string name="action_add_account_with_certificate">Вхід із сертифікатом</string>
     <string name="unable_to_parse_certificate">Не вдалося розпізнати сертифікат</string>
-    <string name="mam_prefs">Налаштування збереження</string>
-    <string name="server_side_mam_prefs">Налаштування збереження на стороні сервера</string>
-    <string name="fetching_mam_prefs">Отримання налаштувань збереження. Будь ласка, зачекайте…</string>
-    <string name="unable_to_fetch_mam_prefs">Не вдалося отримати налаштування збереження</string>
+    <string name="mam_prefs">Налаштування архівації</string>
+    <string name="server_side_mam_prefs">Налаштування архівації на стороні сервера</string>
+    <string name="fetching_mam_prefs">Отримання налаштувань архівації. Будь ласка, зачекайте…</string>
+    <string name="unable_to_fetch_mam_prefs">Не вдалося отримати налаштування архівації</string>
     <string name="captcha_required">Потрібно розв\'язати головоломку</string>
     <string name="captcha_hint">Уведіть текст із зображення вище</string>
     <string name="certificate_chain_is_not_trusted">Ланцюжок сертифікатів не довірений</string>
@@ -725,7 +725,7 @@
     <string name="contact_name">Ім\'я контакту</string>
     <string name="nickname">Прізвисько</string>
     <string name="group_chat_name">Ім\'я</string>
-    <string name="providing_a_name_is_optional">Назва не є обов\'язковою</string>
+    <string name="providing_a_name_is_optional">Ім\'я вказувати необов\'язково</string>
     <string name="create_dialog_group_chat_name">Назва групи</string>
     <string name="conference_destroyed">Цю групу закрито</string>
     <string name="unable_to_save_recording">Неможливо зберегти запис</string>
@@ -878,8 +878,8 @@
     <string name="rtp_state_incoming_video_call">Вхідний відеовиклик</string>
     <string name="rtp_state_connecting">З\'єднання</string>
     <string name="rtp_state_connected">З\'єднано</string>
-    <string name="rtp_state_accepting_call">Приймаю виклик</string>
-    <string name="rtp_state_ending_call">Завершую виклик</string>
+    <string name="rtp_state_accepting_call">Приймання виклику</string>
+    <string name="rtp_state_ending_call">Завершення виклику</string>
     <string name="answer_call">Відповісти</string>
     <string name="dismiss_call">Відхилити</string>
     <string name="rtp_state_finding_device">Пошук пристроїв</string>
