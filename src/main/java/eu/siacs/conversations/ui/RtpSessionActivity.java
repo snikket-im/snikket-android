@@ -314,10 +314,15 @@ public class RtpSessionActivity extends XmppActivity
 
     private void acceptContentAdd() {
         try {
-            requireRtpConnection()
-                    .acceptContentAdd(requireRtpConnection().getPendingContentAddition().summary);
+            final ContentAddition pendingContentAddition =
+                    requireRtpConnection().getPendingContentAddition();
+            if (pendingContentAddition == null) {
+                Log.d(Config.LOGTAG, "content offer was gone after granting permission");
+                return;
+            }
+            requireRtpConnection().acceptContentAdd(pendingContentAddition.summary);
         } catch (final IllegalStateException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, Strings.nullToEmpty(e.getMessage()), Toast.LENGTH_SHORT).show();
         }
     }
 
