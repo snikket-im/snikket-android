@@ -1389,7 +1389,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 prefs.setAttribute("default", defaults.get(choice.get()));
                 xmppConnectionService.pushMamPreferences(mAccount, prefs);
             });
-            builder.create().show();
+            if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                builder.create().show();
+            }
         });
     }
 
