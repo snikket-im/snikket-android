@@ -175,7 +175,12 @@ public class NotificationsSettingsFragment extends XmppPreferenceFragment {
             uri = appSettings().getRingtone();
         }
         Log.i(Config.LOGTAG, "current ringtone: " + uri);
-        this.pickRingtoneLauncher.launch(uri);
+        try {
+            this.pickRingtoneLauncher.launch(uri);
+        } catch (final ActivityNotFoundException e) {
+            Toast.makeText(requireActivity(), R.string.no_application_found, Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     private AppSettings appSettings() {
