@@ -1,8 +1,12 @@
 # Changelog
 
+### Version 2.16.5
+
+* Minor bug fixes
+
 ### Version 2.16.4
 
-* Fix minor regression introduced in 2.16.4
+* Fix minor regression introduced in 2.16.3
 
 ### Version 2.16.3
 
