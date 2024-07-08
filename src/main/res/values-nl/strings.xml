@@ -39,7 +39,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Deelnemer</string>
     <string name="visitor">Bezoeker</string>
-    <string name="remove_contact_text">Wil je %s uit je contactenlijst verwijderen? De gesprekken met deze contactpersoon zullen niet worden verwijderd.</string>
+    <string name="remove_contact_text">Wil je %s uit je contactenlijst verwijderen? De gesprekken met deze contactpersoon worden niet verwijderd.</string>
     <string name="block_contact_text">Wil je alle berichten van %s blokkeren?</string>
     <string name="unblock_contact_text">Wil je %s deblokkeren en er weer berichten van kunnen ontvangen?</string>
     <string name="block_domain_text">Alle contacten van %s blokkeren?</string>
@@ -66,8 +66,8 @@
     <string name="crash_report_message">Door crashrapportages via uw XMPP account te sturen help je de ontwikkeling van %1$s.</string>
     <string name="send_now">Nu versturen</string>
     <string name="send_never">Niet opnieuw vragen</string>
-    <string name="problem_connecting_to_account">Verbinding maken met account mislukt</string>
-    <string name="problem_connecting_to_accounts">Verbinden met meerdere accounts mislukt</string>
+    <string name="problem_connecting_to_account">Verbinding met account mislukt</string>
+    <string name="problem_connecting_to_accounts">Verbinding met meerdere accounts mislukt</string>
     <string name="touch_to_fix">Tik hier op om accounts te beheren</string>
     <string name="attach_file">Bestand bijvoegen</string>
     <string name="not_in_roster">Wil je dit ontbrekende contact toevoegen aan je contactenlijst?</string>
@@ -125,7 +125,7 @@
     <string name="attach_take_picture">Foto nemen</string>
     <string name="preemptively_grant">Op voorhand toestemming verlenen voor abonneren</string>
     <string name="error_not_an_image_file">Het bestand dat je gekozen hebt is geen afbeelding</string>
-    <string name="error_compressing_image">Kon de afbeelding niet converteren</string>
+    <string name="error_compressing_image">Kan afbeeldingsbestand niet converteren</string>
     <string name="error_file_not_found">Bestand niet gevonden</string>
     <string name="error_io_exception">Algemene I/O-fout. Misschien is er geen opslagruimte meer beschikbaar?</string>
     <string name="account_status_unknown">Onbekend</string>
@@ -232,8 +232,8 @@
     <string name="touch_to_choose_picture">Tik op avatar om een foto uit de galerij te kiezen</string>
     <string name="publishing">Publiceren…</string>
     <string name="error_publish_avatar_server_reject">De server weigerde de publicatie van je afbeelding</string>
-    <string name="error_publish_avatar_converting">Kon de afbeelding niet converteren</string>
-    <string name="error_saving_avatar">Fout bij opslaan van avatar</string>
+    <string name="error_publish_avatar_converting">Kan de afbeelding niet converteren</string>
+    <string name="error_saving_avatar">Kan avatar niet op schijf opslaan</string>
     <string name="or_long_press_for_default">(Of hou lang ingedrukt om de oorspronkelijke terug te zetten)</string>
     <string name="error_publish_avatar_no_server_support">Je server ondersteunt de publicatie van avatars niet</string>
     <string name="private_message">gefluisterd</string>
@@ -251,7 +251,7 @@
     <string name="request_now">Nu aanvragen</string>
     <string name="ignore">Negeren</string>
     <string name="pref_security_settings">Beveiliging</string>
-    <string name="pref_allow_message_correction">Berichtcorrectie toestaan</string>
+    <string name="pref_allow_message_correction">Berichtcorrectie</string>
     <string name="pref_allow_message_correction_summary">Sta je contacten toe hun berichten na het versturen te verbeteren</string>
     <string name="pref_expert_options">Instellingen voor experts</string>
     <string name="pref_expert_options_summary">Wees voorzichtig met deze instellingen</string>
@@ -284,8 +284,8 @@
     <string name="jabber_id_copied_to_clipboard">XMPP-adres gekopieerd naar klembord</string>
     <string name="error_message_copied_to_clipboard">Foutmelding gekopieerd naar klembord</string>
     <string name="web_address">webadres</string>
-    <string name="scan_qr_code">2D-streepjescode scannen</string>
-    <string name="show_qr_code">2D-streepjescode tonen</string>
+    <string name="scan_qr_code">QR-code scannen</string>
+    <string name="show_qr_code">QR-code weergeven</string>
     <string name="show_block_list">Geblokkeerde contacten weergeven</string>
     <string name="account_details">Accountgegevens</string>
     <string name="confirm">Bevestigen</string>
@@ -324,7 +324,7 @@
     <string name="no_more_history_on_server">Geen verdere geschiedenis op server</string>
     <string name="updating">Bijwerken…</string>
     <string name="password_changed">Wachtwoord gewijzigd!</string>
-    <string name="could_not_change_password">Kon wachtwoord niet wijzigen</string>
+    <string name="could_not_change_password">Kan wachtwoord niet wijzigen</string>
     <string name="change_password">Wachtwoord wijzigen</string>
     <string name="current_password">Huidig wachtwoord</string>
     <string name="new_password">Nieuw wachtwoord</string>
@@ -345,11 +345,11 @@
     <string name="remove_owner_privileges">Eigenaarsprivileges intrekken</string>
     <string name="remove_from_room">Verwijderen uit groepsgesprek</string>
     <string name="remove_from_channel">Verwijderen uit kanaal</string>
-    <string name="could_not_change_affiliation">Kon aansluiting niet wijzigen</string>
+    <string name="could_not_change_affiliation">Kan de aansluiting van %s niet wijzigen</string>
     <string name="ban_from_conference">Verbannen uit groepsgesprek</string>
     <string name="ban_from_channel">Verbannen uit kanaal</string>
     <string name="ban_now">Nu verbannen</string>
-    <string name="could_not_change_role">Kon rol van %s niet wijzigen</string>
+    <string name="could_not_change_role">Kan rol van %s niet wijzigen</string>
     <string name="conference_options">Instellingen voor privégroep</string>
     <string name="channel_options">Instellingen voor openbaar kanaal</string>
     <string name="members_only">Privé, enkel leden</string>
@@ -357,7 +357,7 @@
     <string name="moderated">Kanaal modereren</string>
     <string name="you_are_not_participating">Je neemt geen deel</string>
     <string name="modified_conference_options">Gespreksopties aangepast!</string>
-    <string name="could_not_modify_conference_options">Kon gespreksopties niet aanpassen</string>
+    <string name="could_not_modify_conference_options">Kan groepschatopties niet wijzigen</string>
     <string name="never">Nooit</string>
     <string name="until_further_notice">Voor onbepaalde duur</string>
     <string name="snooze">Sluimeren</string>
@@ -411,8 +411,8 @@
     <string name="invalid_username">Dit is geen geldige gebruikersnaam</string>
     <string name="download_failed_server_not_found">Downloaden mislukt: server niet gevonden</string>
     <string name="download_failed_file_not_found">Downloaden mislukt: bestand niet gevonden</string>
-    <string name="download_failed_could_not_connect">Downloaden mislukt: kon geen verbinding maken met host</string>
-    <string name="download_failed_could_not_write_file">Download mislukt: kon bestand niet schrijven</string>
+    <string name="download_failed_could_not_connect">Downloaden mislukt: kan geen verbinding maken met host</string>
+    <string name="download_failed_could_not_write_file">Download mislukt: kan bestand niet schrijven</string>
     <string name="account_status_tor_unavailable">Tor-netwerk niet beschikbaar</string>
     <string name="account_status_bind_failure">Bindingsfout</string>
     <string name="server_info_broken">Gebroken</string>
@@ -581,7 +581,7 @@
     <string name="mtm_accept_cert">Onbekend certificaat aanvaarden?</string>
     <string name="mtm_trust_anchor">Het servercertificaat is niet ondertekend door een gekende certificaatautoriteit.</string>
     <string name="mtm_accept_servername">Verkeerde servernaam aanvaarden?</string>
-    <string name="mtm_hostname_mismatch">De server kon niet authenticeren als ‘%s’. Het certificaat is enkel geldig voor:</string>
+    <string name="mtm_hostname_mismatch">Kan de server niet verifiëren als ‘%s’. Het certificaat is alleen geldig voor:</string>
     <string name="mtm_connect_anyway">Wil je toch verbinding maken?</string>
     <string name="mtm_cert_details">Certificaatgegevens:</string>
     <string name="once">Eenmalig</string>
@@ -765,7 +765,7 @@
     <string name="microphone_unavailable">Je microfoon is niet beschikbaar</string>
     <string name="only_one_call_at_a_time">Je kunt slechts één gesprek tegelijk voeren.</string>
     <string name="return_to_ongoing_call">Terug naar lopend gesprek</string>
-    <string name="could_not_switch_camera">Kon camera niet wisselen</string>
+    <string name="could_not_switch_camera">Kan camera niet wisselen</string>
     <string name="add_to_favorites">Bovenaan vastzetten</string>
     <string name="remove_from_favorites">Bovenaan losmaken</string>
     <string name="could_not_correct_message">Kon bericht niet corrigeren</string>
@@ -782,8 +782,8 @@
         <item quantity="other">Bekijk %1$d deelnemers</item>
     </plurals>
     <plurals name="some_messages_could_not_be_delivered">
-        <item quantity="one">Een bericht kon niet worden afgeleverd</item>
-        <item quantity="other">Sommige berichten konden niet worden afgeleverd</item>
+        <item quantity="one">Een bericht kan niet worden afgeleverd</item>
+        <item quantity="other">Sommige berichten kunnen niet worden afgeleverd</item>
     </plurals>
     <string name="failed_deliveries">Mislukte afleveringen</string>
     <string name="more_options">Meer opties</string>
@@ -800,4 +800,70 @@
     <string name="action_archive_chat">Chat archiveren</string>
     <string name="unable_to_connect_to_keychain">Kan niet verbinden met OpenKeychain</string>
     <string name="start_chat">Chat starten</string>
+    <string name="unable_to_restore_backup">Kan back-up niet herstellen.</string>
+    <string name="unable_to_decrypt_backup">Kan back-up niet decoderen. Is het wachtwoord correct?</string>
+    <string name="account_status_incompatible_client">Incompatibele client</string>
+    <string name="account_state_logged_out">Uitgelogd</string>
+    <string name="pref_send_crash_reports">Stuur crashrapporten</string>
+    <string name="unable_to_parse_certificate">Kan certificaat niet verwerken</string>
+    <string name="unable_to_fetch_mam_prefs">Kan archiveringsvoorkeuren niet ophalen</string>
+    <string name="rtp_state_connectivity_error">Kan oproep niet verbinden</string>
+    <string name="remove_bookmark_and_close">Wil je de bladwijzer voor %s verwijderen en de gesprekken archiveren?</string>
+    <string name="without_mutual_presence_updates"><b>Waarschuwing:</b> Dit verzenden zonder updates van wederzijdse aanwezigheid kan onverwachte problemen veroorzaken.
+\n
+\n<small>Ga naar “Contactgegevens ” om je aanwezigheidsabonnementen te verifiëren.</small></string>
+    <string name="pref_autojoin">Bladwijzers synchroniseren</string>
+    <string name="pref_autojoin_summary">Stel de vlag “autojoin ” in bij het invoeren of verlaten van een MUC en reageer op wijzigingen die door andere clients zijn aangebracht.</string>
+    <string name="preparing_file">Klaar om bestand te delen</string>
+    <string name="file_deleted">Bestand verwijderd</string>
+    <string name="error_unable_to_create_temporary_file">Kan geen tijdelijk bestand aanmaken</string>
+    <string name="title_activity_share_with">Delen met…</string>
+    <string name="archive_this_chat">Chat daarna verwijderen</string>
+    <string name="remove_bookmark">Wil je de bladwijzer voor %s verwijderen?</string>
+    <string name="openkeychain_required_long">%1$s gebruikt &lt;b&gt;OpenKeychain&lt;/b&gt; om berichten te versleutelen en te decoderen en het beheer van je openbare sleutels. &lt;br&gt;&lt; br&gt;Het is gelicentieerd onder GPLv3+ en beschikbaar op F-Droid en Google Play&lt;br&gt;&lt;br&gt;&lt;small&gt;(Start %1$s hierna opnieuw.)&lt;/small&gt;</string>
+    <string name="contact_has_no_pgp_key">Kan het bericht niet versleutelen omdat de contactpersoon hun openbare sleutel niet aankondigt.
+\n
+\n<small>Vraag de contactpersoon om OpenPGP in te stellen. </small></string>
+    <string name="title_activity_new_chat">Nieuwe chat</string>
+    <string name="conference_creation_failed">Kan geen groepschat aanmaken</string>
+    <string name="error_trustkey_bundle">Kan coderingssleutels niet ophalen</string>
+    <string name="mgmt_account_delete_confirm_text">Weet je zeker dat je je account wilt verwijderen? Als je je account verwijdert, wordt je hele chatgeschiedenis gewist</string>
+    <string name="unable_to_perform_this_action">Kan deze actie niet uitvoeren</string>
+    <string name="clear_histor_msg">Wil je alle berichten in deze chat verwijderen?
+\n
+\n<b>Waarschuwing:</b> Dit heeft geen invloed op berichten die zijn opgeslagen op andere apparaten of servers.</string>
+    <string name="unable_to_start_recording">Kan opname niet starten</string>
+    <string name="unable_to_save_recording">Kan opname niet opslaan</string>
+    <string name="unable_to_set_channel_configuration">Kan kanaalconfiguratie niet opslaan</string>
+    <string name="contacts_have_no_pgp_keys">Kan het bericht niet versleutelen omdat de contactpersonen hun openbare sleutel niet aankondigen.
+\n
+\n<small>Vraag de hen om OpenPGP in te stellen. </small></string>
+    <string name="unable_to_update_account">Kan account niet bijwerken</string>
+    <string name="error_trustkey_device_list">Kan apparaatlijst niet ophalen</string>
+    <string name="unable_to_connect_to_server">Kan geen verbinding maken met de server.</string>
+    <string name="could_not_delete_account_from_server">Kan account niet van server verwijderen</string>
+    <string name="file_transmission_failed">kan het bestand niet delen</string>
+    <string name="error_no_keys_to_trust_server_error">Er zijn geen bruikbare sleutels beschikbaar voor deze contactpersoon.
+\nKan geen nieuwe sleutels van de server halen. Misschien is er iets mis met de server van de contactpersoon?</string>
+    <string name="error_security_exception_during_image_copy">De app die je gebruikte om deze afbeelding te selecteren, bood niet genoeg rechten om het bestand te lezen.
+\n
+\n<small>Gebruik een andere bestandsbeheerder om een afbeelding te kiezen</small>.</string>
+    <string name="request_presence_updates">Vraag eerst aanwezigheidsupdates aan bij je contactpersoon.
+\n
+\n<small>Dit wordt gebruikt om te bepalen welke chat-app jouw contactpersoon gebruikt</small>.</string>
+    <string name="send_encrypted_message">Verstuur versleuteld bericht</string>
+    <string name="pref_notification_sound">Kennisgevingsgeluid</string>
+    <string name="pref_notification_sound_summary">Kennisgevingsgeluid voor nieuwe berichten</string>
+    <string name="pref_call_ringtone_summary">Ringtone voor inkomende oproepen</string>
+    <string name="pref_notification_grace_period_summary">De tijdsduurmeldingen worden gedempt na het detecteren van activiteit op een van je andere apparaten.</string>
+    <string name="pref_prevent_screenshots_summary">App-inhoud verbergen in de app-schakelaar en schermopnames blokkeren</string>
+    <string name="error_security_exception">De app die je gebruikte om dit bestand te delen, bood onvoldoende rechten.</string>
+    <string name="account_status_regis_not_sup">Aanmelding wordt niet ondersteund door server</string>
+    <string name="server_info_external_service_discovery">XEP-0215: External Service Discovery</string>
+    <string name="install_openkeychain">Versleuteld bericht. Installeer OpenKeychain om het te decoderen.</string>
+    <string name="group_chats">Groepsberichten</string>
+    <string name="conference_technical_problems">Je hebt deze groepschat verlaten om technische redenen</string>
+    <string name="hosted_on">gehost op %s</string>
+    <string name="unable_to_find_server">Kan server niet vinden.</string>
+    <string name="unable_to_establish_secure_connection">Kan geen veilige verbinding tot stand brengen.</string>
 </resources>
