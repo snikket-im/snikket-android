@@ -418,8 +418,8 @@
     <string name="server_info_broken">Gebroken</string>
     <string name="pref_presence_settings">Aanwezigheid</string>
     <string name="pref_treat_vibrate_as_silent">Trillen behandelen als stille modus</string>
-    <string name="pref_show_connection_options">Uitgebreide verbindingsinstellingen</string>
-    <string name="pref_show_connection_options_summary">Toon hostnaam- en poortinstellingen bij instellen van een account</string>
+    <string name="pref_show_connection_options">Hostname &amp; poort</string>
+    <string name="pref_show_connection_options_summary">Uitgebreide verbindingsinstellingen weergeven bij het instellen van een account</string>
     <string name="hostname_example">xmpp.voorbeeld.be</string>
     <string name="mam_prefs">Archiefvoorkeuren</string>
     <string name="server_side_mam_prefs">Voorkeuren voor archief aan serverzijde</string>
@@ -866,4 +866,31 @@
     <string name="hosted_on">gehost op %s</string>
     <string name="unable_to_find_server">Kan server niet vinden.</string>
     <string name="unable_to_establish_secure_connection">Kan geen veilige verbinding tot stand brengen.</string>
+    <string name="pref_quick_action_summary">Knop “Verzenden” vervangen door snelle actie</string>
+    <string name="user_has_left_conference">%1$s heeft de groepschat verlaten</string>
+    <string name="search_group_chats">Groepschats doorzoeken</string>
+    <string name="captcha_required">CAPTCHA vereist</string>
+    <string name="certificate_chain_is_not_trusted">Onvertrouwde certificaatketen</string>
+    <string name="no_application_found_to_open_link">Geen app om koppeling te openen</string>
+    <string name="no_application_found_to_view_contact">Geen app om contact te bekijken</string>
+    <string name="vector_graphic">vector-afbeelding</string>
+    <string name="multimedia_file">multimediabestand</string>
+    <string name="audiobook">Audioboek</string>
+    <string name="download_failed_invalid_file">Download mislukt: Ongeldig bestand</string>
+    <string name="pref_away_when_screen_off">Afwezig wanneer het apparaat is vergrendeld</string>
+    <string name="pref_away_when_screen_off_summary">Afwezig melden als het apparaat vergrendeld is</string>
+    <string name="pref_dnd_on_silent_mode_summary">Bezet melden als het apparaat in stille modus is</string>
+    <string name="shared_text_with_x">Tekst gedeeld met %s</string>
+    <string name="error_no_keys_to_trust_presence">Er zijn geen bruikbare sleutels beschikbaar voor dit contact.
+\nZorg ervoor dat jullie allebei een aanwezigheidsabonnement hebben.</string>
+    <string name="removing_from_public_conference">Je probeert %s te verwijderen van een publiek kanaal. De enige manier om dat te doen, is door die gebruiker voor altijd te verbannen.</string>
+    <string name="shared_file_with_x">Bestand gedeeld met %s</string>
+    <string name="shared_image_with_x">Afbeelding gedeeld met %s</string>
+    <string name="shared_images_with_x">Afbeeldingen gedeeld met %s</string>
+    <string name="hostname_or_onion">Server- of .onion-adres</string>
+    <string name="pref_enter_is_send_summary">Gebruik de Enter-toets om een bericht te verzenden. Je kunt altijd Ctrl + Enter gebruiken om een bericht te verzenden, zelfs als deze optie is uitgeschakeld.</string>
+    <string name="pref_treat_vibrate_as_dnd_summary">Bezet melden als het apparaat op trillen staat</string>
+    <string name="clear_other_devices_desc">Weet je zeker dat je alle andere apparaten uit de OMEMO-aankondiging wilt verwijderen? De volgende keer dat je apparaten verbinding maken, zullen ze zichzelf opnieuw aankondigen, maar ontvangen ze mogelijk geen berichten die ondertussen zijn verzonden.</string>
+    <string name="account_status_host_unknown">De server is niet verantwoordelijk voor dit domein</string>
+    <string name="title_undo_swipe_out_chat">Chat gearchiveerd</string>
 </resources>
