@@ -443,7 +443,7 @@
         <item quantity="other">%d berichten</item>
     </plurals>
     <string name="load_more_messages">Laad meer berichten</string>
-    <string name="sync_with_contacts">Synchroniseer met contacten</string>
+    <string name="sync_with_contacts">Integratie met contactenlijst</string>
     <string name="notify_on_all_messages">Melding bij alle berichten</string>
     <string name="notify_only_when_highlighted">Melding enkel wanneer aangesproken</string>
     <string name="notify_never">Meldingen uitgeschakeld</string>
@@ -516,7 +516,7 @@
     <string name="share_as_http">Delen als HTTP-link</string>
     <string name="pref_blind_trust_before_verification">Blindelings vertrouwen vóór verificatie</string>
     <string name="not_trusted">Onvertrouwd</string>
-    <string name="invalid_barcode">Ongeldige 2D-streepjescode</string>
+    <string name="invalid_barcode">Ongeldige QR-code</string>
     <string name="pref_clean_cache">Cache wissen</string>
     <string name="pref_clean_private_storage">Privéopslag wissen</string>
     <string name="pref_clean_private_storage_summary">Privéopslag waar bestanden worden bijgehouden wissen (de bestanden kunnen opnieuw gedownload worden van de server)</string>
@@ -598,7 +598,7 @@
     <string name="draft">Ontwerp:</string>
     <string name="pref_omemo_setting">OMEMO-versleuteling</string>
     <string name="pref_omemo_setting_summary_always">OMEMO zal altijd gebruikt worden voor één-op-één- privégroepsgesprekken.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO zal standaard gebruikt worden voor nieuwe gesprekken.</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO wordt standaard gebruikt voor nieuwe gesprekken.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO zal uitdrukkelijk ingeschakeld moeten worden voor nieuwe gesprekken.</string>
     <string name="create_shortcut">Snelkoppeling aanmaken</string>
     <string name="default_on">Standaard aan</string>
@@ -625,7 +625,7 @@
     <string name="copy_jabber_id">XMPP-adres kopiëren</string>
     <string name="p1_s3_filetransfer">Bestanden delen via HTTP voor S3</string>
     <string name="pref_start_search">Rechtstreeks zoeken</string>
-    <string name="pref_start_search_summary">Open het toetsenbord op het scherm ‘Gesprek starten’ en plaats de cursor in het zoekveld</string>
+    <string name="pref_start_search_summary">Open op het scherm \'Nieuwe chat\' het toetsenbord en plaats de cursor in het zoekveld</string>
     <string name="group_chat_avatar">Gespreksafbeelding</string>
     <string name="host_does_not_support_group_chat_avatars">Host ondersteunt geen gespreksafbeeldingen</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Enkel de eigenaar kan de gespreksafbeelding wijzigen</string>
@@ -668,11 +668,11 @@
     <string name="verify_x">%s verifiëren</string>
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[We hebben een sms gestuurd naar <b>%s</b>.]]></string>
     <string name="we_have_sent_you_another_sms">We hebben je nóg een sms gestuurd met 6-cijferige code.</string>
-    <string name="please_enter_pin_below">Voer de 6-cijferige code hieronder in.</string>
+    <string name="please_enter_pin_below">Voer hieronder de 6-cijferige code in.</string>
     <string name="resend_sms">Sms opnieuw versturen</string>
     <string name="resend_sms_in">Sms opnieuw versturen (%s)</string>
     <string name="wait_x">Even geduld (%s)</string>
-    <string name="back">terug</string>
+    <string name="back">Terug</string>
     <string name="possible_pin">Mogelijke pincode is automatisch van het klembord geplakt.</string>
     <string name="please_enter_pin">Voer je 6-cijferige code in.</string>
     <string name="abort_registration_procedure">Weet je zeker dat je de registratieprocedure wilt stopzetten?</string>
@@ -893,4 +893,66 @@
     <string name="clear_other_devices_desc">Weet je zeker dat je alle andere apparaten uit de OMEMO-aankondiging wilt verwijderen? De volgende keer dat je apparaten verbinding maken, zullen ze zichzelf opnieuw aankondigen, maar ontvangen ze mogelijk geen berichten die ondertussen zijn verzonden.</string>
     <string name="account_status_host_unknown">De server is niet verantwoordelijk voor dit domein</string>
     <string name="title_undo_swipe_out_chat">Chat gearchiveerd</string>
+    <string name="no_permission_to_place_call">Geen toestemming om te bellen</string>
+    <string name="no_keys_just_confirm">Je hebt de vingerafdruk van deze persoon al vertrouwd. Door \"Gereed\" te selecteren, bevestig je alleen dat %s deel uitmaakt van deze groepschat.</string>
+    <string name="welcome_header">Doe mee aan het gesprek</string>
+    <string name="welcome_header_quicksy">Welkom bij Quicksy!</string>
+    <string name="agree_and_continue">Akkoord en doorgaan</string>
+    <string name="quicksy_wants_your_consent">Quicksy vraagt toestemming om je gegevens te gebruiken</string>
+    <string name="pref_dnd_on_silent_mode">Bezet in stille modus</string>
+    <string name="no_storage_permission">Verleen %1$s toegang tot externe opslag</string>
+    <string name="no_camera_permission">Verleen %1$s toegang tot de camera</string>
+    <string name="pref_picture_compression_summary">Tip: Gebruik \'Bestand kiezen\' in plaats van \'Afbeelding kiezen\' om afzonderlijke afbeeldingen ongecomprimeerd te verzenden, ongeacht deze instelling.</string>
+    <string name="battery_optimizations_enabled_explained">Jouw apparaat maakt gebruik van zware batterij-optimalisaties voor %1$s, wat kan leiden tot vertraagde meldingen of zelfs berichtverlies.
+\nHet wordt aanbevolen om deze uit te schakelen.</string>
+    <string name="battery_optimizations_enabled_dialog">Jouw apparaat maakt gebruik van zware batterij-optimalisaties voor %1$s, wat kan leiden tot vertraagde meldingen of zelfs berichtverlies.
+\n
+\nJe wordt nu gevraagd om deze uit te schakelen.</string>
+    <string name="this_account_is_logged_out">Je bent afgemeld bij dit account</string>
+    <string name="security_error_invalid_file_access">Beveiligingsfout: Ongeldige bestandstoegang!</string>
+    <string name="no_application_to_share_uri">Er is geen app om URI te delen</string>
+    <string name="pref_broadcast_last_activity_summary">Laat je contacten zien wanneer je de app voor het laatst hebt gebruikt</string>
+    <string name="pref_theme_light">Licht</string>
+    <string name="pref_theme_dark">Donker</string>
+    <string name="missing_internet_permission">Toestemming verlenen om internet te gebruiken</string>
+    <string name="report_jid_as_spammer">Meld dit XMPP-adres voor spammen.</string>
+    <string name="pref_delete_omemo_identities_summary">Je OMEMO-sleutels opnieuw genereren. Al je contacten zullen je opnieuw moeten verifiëren. Gebruik dit alleen als laatste redmiddel.</string>
+    <string name="data_saver_enabled_explained">Jouw besturingssysteem verhindert %1$s om toegang te krijgen tot internet op de achtergrond. Om meldingen van nieuwe berichten te ontvangen, moet je %1$s onbeperkte toegang toestaan wanneer \"Databesparing\" is ingeschakeld.
+\n%1$s zal zich nog steeds inspannen om gegevens op te slaan waar mogelijk.</string>
+    <string name="device_does_not_support_data_saver">Jouw apparaat biedt geen ondersteuning voor het uitschakelen van gegevensbesparing voor %1$s.</string>
+    <string name="all_omemo_keys_have_been_verified">Je hebt alle OMEMO-sleutels die je bezit geverifieerd</string>
+    <string name="pref_blind_trust_before_verification_summary">Vertrouw nieuwe apparaten van niet-geverifieerde contacten, maar bevestig nieuwe apparaten onmiddellijk handmatig voor geverifieerde contacten.</string>
+    <string name="pref_clean_cache_summary">Cachemap opschonen (gebruikt door camera-app)</string>
+    <string name="corresponding_chats_closed">Bijbehorende chats gearchiveerd.</string>
+    <string name="pref_notifications_from_strangers_summary">Meldingen van berichten en oproepen van vreemden.</string>
+    <string name="pref_use_colorful_bubbles">Kleurrijke chatbubbels</string>
+    <string name="pref_use_colorful_bubbles_summary">Duidelijke achtergrondkleuren voor verzonden en ontvangen berichten</string>
+    <string name="pref_dynamic_colors">Dynamische kleuren</string>
+    <string name="pref_dynamic_colors_summary">Systeemkleuren (Material You)</string>
+    <string name="ongoing_calls_channel_name">Lopende oproepen</string>
+    <string name="missed_calls_channel_name">Gemiste oproepen</string>
+    <string name="continue_btn">Doorgaan</string>
+    <string name="application_found_to_open_website">Geen app om website te openen</string>
+    <string name="pref_headsup_notifications_summary">Let op-meldingen weergeven</string>
+    <string name="magic_create_text">Er is een handleiding opgezet voor het aanmaken van een account op conversations.im.
+\nWanneer je conversations.im als provider kiest, kun je communiceren met gebruikers van andere providers door hen jouw volledige XMPP-adres te geven.</string>
+    <string name="sync_with_contacts_long">%1$s verwerkt jouw contactenlijst lokaal, op jouw apparaat, om u de namen en profielfoto\'s te tonen voor overeenkomende contacten op XMPP.
+\n
+\nGegevens uit de contacten lijst blijven te allen tijde op jouw apparaat!</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">De barcode bevat geen vingerafdrukken voor deze chat.</string>
+    <string name="distrust_omemo_key_text">Weet je zeker dat je de verificatie van dit apparaat wilt verwijderen?
+\nDit apparaat en berichten ervan worden gemarkeerd als \'Niet vertrouwd\'.</string>
+    <string name="error_trustkey_general">%1$s kan geen versleutelde berichten verzenden naar %2$s. Dit kan te wijten zijn aan het feit dat jouw contact een verouderde server of client gebruikt die OMEMO niet aankan.</string>
+    <string name="pref_broadcast_last_activity">Laatst gezien</string>
+    <string name="reconnect_on_other_host">Opnieuw verbinding maken op een andere host</string>
+    <string name="blindly_trusted_omemo_keys">Blindelings vertrouwde OMEMO-sleutels, wat betekent dat ze iemand anders kunnen zijn of dat iemand kan hebben ingetikt.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Je staat op het punt om de OMEMO-sleutels van je eigen account te verifiëren. Dit is alleen veilig als je deze link hebt gevolgd van een betrouwbare bron waar alleen jij deze link had kunnen publiceren.</string>
+    <string name="incoming_calls_channel_name">Inkomende oproepen</string>
+    <string name="restore_warning_continued">Probeer geen back-ups terug te zetten die je niet zelf hebt aangemaakt!</string>
+    <string name="no_microphone_permission">Verleen %1$s toegang tot de microfoon</string>
+    <string name="foreground_service_channel_description">Deze meldingscategorie wordt gebruikt om een permanente melding weer te geven die aangeeft dat %1$s actief is.</string>
+    <string name="notification_group_calls">Oproepen</string>
+    <string name="delivery_failed_channel_name">Mislukte leveringen</string>
+    <string name="pref_message_notification_settings">Instellingen voor berichtmeldingen</string>
+    <string name="pref_incoming_call_notification_settings">Meldingsinstellingen voor inkomende oproepen</string>
 </resources>
