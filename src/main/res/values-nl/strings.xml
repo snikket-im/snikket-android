@@ -1034,7 +1034,7 @@
     <string name="encrypted_with_openpgp">Versleuteld met OpenPGP</string>
     <string name="record_voice_mail">Antwoordbericht opnemen</string>
     <string name="add_contact_or_create_or_join_group_chat">Contactpersoon toevoegen, groepschat aanmaken of erbij aansluiten, of kanalen ontdekken</string>
-    <string name="pref_notifications_summary">Respijtperiode, Beltoon, Trilling, Vreemden</string>
+    <string name="pref_notifications_summary">Uitstelperiode, Beltoon, Trilling, Vreemden</string>
     <string name="pref_category_sending">Verzenden</string>
     <string name="pref_category_receiving">Ontvangen</string>
     <string name="pref_automatic_download">Automatisch downloaden</string>
