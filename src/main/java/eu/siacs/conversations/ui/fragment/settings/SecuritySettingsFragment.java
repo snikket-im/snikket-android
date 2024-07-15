@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -11,7 +12,9 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
+import com.google.common.primitives.Ints;
 
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.R;
@@ -21,6 +24,7 @@ import eu.siacs.conversations.services.MemorizingTrustManager;
 import java.security.KeyStoreException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.Callable;
 
 public class SecuritySettingsFragment extends XmppPreferenceFragment {
 
@@ -36,18 +40,11 @@ public class SecuritySettingsFragment extends XmppPreferenceFragment {
             throw new IllegalStateException("The preference resource file is missing preferences");
         }
         omemo.setSummaryProvider(new OmemoSummaryProvider());
-        final int[] choices = getResources().getIntArray(R.array.automatic_message_deletion_values);
-        final CharSequence[] entries = new CharSequence[choices.length];
-        final CharSequence[] entryValues = new CharSequence[choices.length];
-        for (int i = 0; i < choices.length; ++i) {
-            entryValues[i] = String.valueOf(choices[i]);
-            entries[i] = timeframeValueToName(requireContext(), choices[i]);
-        }
-        automaticMessageDeletion.setEntries(entries);
-        automaticMessageDeletion.setEntryValues(entryValues);
-        automaticMessageDeletion.setSummaryProvider(new TimeframeSummaryProvider());
+        setValues(
+                automaticMessageDeletion,
+                R.array.automatic_message_deletion_values,
+                value -> timeframeValueToName(requireContext(), value));
     }
-
 
     @Override
     protected void onSharedPreferenceChanged(@NonNull String key) {
@@ -150,7 +147,6 @@ public class SecuritySettingsFragment extends XmppPreferenceFragment {
                         Toast.LENGTH_LONG)
                 .show();
     }
-
 
     private static class OmemoSummaryProvider
             implements Preference.SummaryProvider<ListPreference> {

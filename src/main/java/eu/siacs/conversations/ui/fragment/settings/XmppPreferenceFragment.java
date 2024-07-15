@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
 
@@ -101,14 +103,29 @@ public abstract class XmppPreferenceFragment extends PreferenceFragmentCompat {
         }
     }
 
-    protected static class TimeframeSummaryProvider
-            implements Preference.SummaryProvider<ListPreference> {
-
-        @Nullable
-        @Override
-        public CharSequence provideSummary(@NonNull ListPreference preference) {
-            final Integer value = Ints.tryParse(Strings.nullToEmpty(preference.getValue()));
-            return timeframeValueToName(preference.getContext(), value == null ? 0 : value);
+    protected void setValues(
+            final ListPreference listPreference,
+            @ArrayRes int resId,
+            final Function<Integer, String> valueToName) {
+        final int[] choices = getResources().getIntArray(resId);
+        final CharSequence[] entries = new CharSequence[choices.length];
+        final CharSequence[] entryValues = new CharSequence[choices.length];
+        for (int i = 0; i < choices.length; ++i) {
+            final int value = choices[i];
+            entryValues[i] = String.valueOf(choices[i]);
+            entries[i] = valueToName.apply(value);
         }
+        listPreference.setEntries(entries);
+        listPreference.setEntryValues(entryValues);
+        listPreference.setSummaryProvider(
+                new Preference.SummaryProvider<ListPreference>() {
+                    @Nullable
+                    @Override
+                    public CharSequence provideSummary(@NonNull ListPreference preference) {
+                        final Integer value =
+                                Ints.tryParse(Strings.nullToEmpty(preference.getValue()));
+                        return valueToName.apply(value == null ? 0 : value);
+                    }
+                });
     }
 }

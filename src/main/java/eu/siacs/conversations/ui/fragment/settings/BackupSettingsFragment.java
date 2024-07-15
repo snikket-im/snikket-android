@@ -71,16 +71,10 @@ public class BackupSettingsFragment extends XmppPreferenceFragment {
                         R.string.pref_create_backup_summary,
                         FileBackend.getBackupDirectory(requireContext()).getAbsolutePath()));
         createOneOffBackup.setOnPreferenceClickListener(this::onBackupPreferenceClicked);
-        final int[] choices = getResources().getIntArray(R.array.recurring_backup_values);
-        final CharSequence[] entries = new CharSequence[choices.length];
-        final CharSequence[] entryValues = new CharSequence[choices.length];
-        for (int i = 0; i < choices.length; ++i) {
-            entryValues[i] = String.valueOf(choices[i]);
-            entries[i] = timeframeValueToName(requireContext(), choices[i]);
-        }
-        recurringBackup.setEntries(entries);
-        recurringBackup.setEntryValues(entryValues);
-        recurringBackup.setSummaryProvider(new TimeframeSummaryProvider());
+        setValues(
+                recurringBackup,
+                R.array.recurring_backup_values,
+                value -> timeframeValueToName(requireContext(), value));
     }
 
     @Override
