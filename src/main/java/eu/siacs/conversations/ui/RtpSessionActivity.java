@@ -1284,13 +1284,21 @@ public class RtpSessionActivity extends XmppActivity
     }
 
     private void switchToEarpiece(final View view) {
-        requireCallIntegration().setAudioDevice(CallIntegration.AudioDevice.EARPIECE);
-        acquireProximityWakeLock();
+        try {
+            requireCallIntegration().setAudioDevice(CallIntegration.AudioDevice.EARPIECE);
+            acquireProximityWakeLock();
+        } catch (final IllegalStateException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void switchToSpeaker(final View view) {
-        requireCallIntegration().setAudioDevice(CallIntegration.AudioDevice.SPEAKER_PHONE);
-        releaseProximityWakeLock();
+        try {
+            requireCallIntegration().setAudioDevice(CallIntegration.AudioDevice.SPEAKER_PHONE);
+            releaseProximityWakeLock();
+        } catch (final IllegalStateException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void retry(final View view) {
