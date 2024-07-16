@@ -41,7 +41,7 @@
     <string name="moderator">Модератор</string>
     <string name="participant">Участник</string>
     <string name="visitor">Посетитель</string>
-    <string name="remove_contact_text">Вы хотите удалить %s из своего списка контактов? Беседы, связанные с этим контактом, будут сохранены.</string>
+    <string name="remove_contact_text">Вы хотите удалить %s из своего списка контактов? Чат с этим контактом удалён не будет.</string>
     <string name="block_contact_text">Вы хотите заблокировать дальнейшие сообщения от %s?</string>
     <string name="unblock_contact_text">Вы хотите разблокировать пользователя %s?</string>
     <string name="block_domain_text">Заблокировать всех пользователей домена %s?</string>
@@ -79,7 +79,7 @@
     <string name="preparing_images">Подготовка к передаче изображений</string>
     <string name="sharing_files_please_wait">Обмен файлами. Пожалуйста, подождите…</string>
     <string name="action_clear_history">Очистить историю</string>
-    <string name="clear_conversation_history">Очистить историю</string>
+    <string name="clear_conversation_history">Очистить историю чата</string>
     <string name="clear_histor_msg">Вы хотите удалить все сообщения в этой беседе?
 \n
 \n<b>Внимание:</b> Данная операция не повлияет на сообщения, хранящиеся на других устройствах или серверах.</string>
@@ -88,12 +88,12 @@
 \n
 \n<b>Предупреждение:</b> Данная операция не удалит копии этого файла, хранящиеся на других устройствах или серверах. </string>
     <string name="choose_presence">Выберите устройство</string>
-    <string name="send_unencrypted_message">Нешифрованное сообщение</string>
+    <string name="send_unencrypted_message">Отправить сообщение чистым текстом</string>
     <string name="send_message">Сообщение</string>
     <string name="send_message_to_x">Сообщение для %s</string>
     <string name="send_omemo_x509_message">v\\OMEMO-зашифр. сообщение</string>
     <string name="your_nick_has_been_changed">Используется новое имя</string>
-    <string name="send_unencrypted">Отправить в незашифрованном виде</string>
+    <string name="send_unencrypted">Отправить чистый текст</string>
     <string name="decryption_failed">Расшифровка не удалась. Вероятно, что у вас нет надлежащего ключа.</string>
     <string name="openkeychain_required">Установите OpenKeychain</string>
     <string name="openkeychain_required_long"><![CDATA[%1$s использует <b>OpenKeychain</b> для шифрования и дешифрования сообщений и управления открытыми ключами.<br><br>OpenKeychain распространяется под лицензией GPLv3+ и доступна для загрузки через F-Droid или Google Play.<br><br><small>(Потребуется перезапуск %1$s после установки.)</small>]]></string>
@@ -165,7 +165,7 @@
     <string name="account_status_incompatible_server">Несовместимый сервер</string>
     <string name="account_status_stream_error">Ошибка потока</string>
     <string name="account_status_stream_opening_error">Ошибка открытия потока</string>
-    <string name="encryption_choice_unencrypted">Без шифра</string>
+    <string name="encryption_choice_unencrypted">Чистый текст</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -177,7 +177,7 @@
     <string name="unpublish_pgp_message">Вы действительно хотите удалить ваш OpenPGP публичный ключ из опубликованных?\nВаши собеседники не смогут больше отправлять вам зашифрованные OpenPGP сообщения.</string>
     <string name="openpgp_has_been_published">Публичный ключ OpenPGP опубликован.</string>
     <string name="mgmt_account_enable">Включить аккаунт</string>
-    <string name="mgmt_account_delete_confirm_text">Вы точно хотите удалить свою учётную запись? Это удалит все истории диалогов</string>
+    <string name="mgmt_account_delete_confirm_text">Вы точно хотите удалить свою учётную запись? Удаление учётной записи сотрёт все истории диалогов</string>
     <string name="attach_record_voice">Запись голоса</string>
     <string name="account_settings_jabber_id">XMPP-адрес</string>
     <string name="block_jabber_id">Заблокировать XMPP-адрес</string>
@@ -558,7 +558,7 @@
     <string name="gp_medium">Средний</string>
     <string name="gp_long">Длинный</string>
     <string name="pref_broadcast_last_activity">Оповещать других об использовании</string>
-    <string name="pref_broadcast_last_activity_summary">Позволяет вашим контактам видеть, когда вы используете Conversations</string>
+    <string name="pref_broadcast_last_activity_summary">Позволяет вашим контактам видеть, когда вы в последний раз использовали приложение</string>
     <string name="pref_privacy">Приватность</string>
     <string name="pref_theme_options">Тема</string>
     <string name="pref_theme_options_summary">Выбрать цветовую палитру</string>
@@ -702,14 +702,14 @@
     <string name="error_trustkey_device_list">Не удалось получить список устройств</string>
     <string name="error_trustkey_bundle">Не удалось получить ключи шифрования</string>
     <string name="error_trustkey_hint_mutual">Подсказка: в некоторых случаях это может исправлено добавлением друг друга в список контактов.</string>
-    <string name="disable_encryption_message">Вы уверены, что хотите выключить OMEMO-шифрование для этой беседы?
+    <string name="disable_encryption_message">Вы уверены, что хотите выключить OMEMO-шифрование для этого чата?
 \nЭто позволит администратору сервера читать ваши сообщения, но также это может быть единственным способом связи с людьми, использующими устаревшие клиенты.</string>
     <string name="disable_now">Отключить сейчас</string>
     <string name="draft">Черновик:</string>
     <string name="pref_omemo_setting">OMEMO-шифрование</string>
     <string name="pref_omemo_setting_summary_always">OMEMO будет всегда использоваться для одиночных бесед и закрытых конференций.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO будет использоваться по умолчанию для новых бесед.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO нужно будет явно включать для новых бесед.</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO будет использоваться по умолчанию для новых чатов.</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO нужно будет явно включать для новых чатов.</string>
     <string name="create_shortcut">Создать ярлык</string>
     <string name="default_on">Включено по умолчанию</string>
     <string name="default_off">Выключено по умолчанию</string>
@@ -730,14 +730,14 @@
     <string name="no_microphone_permission">Предоставить %1$s разрешение на использование микрофона</string>
     <string name="search_messages">Поиск сообщений</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Посмотреть беседу</string>
+    <string name="view_conversation">Посмотреть чат</string>
     <string name="pref_use_share_location_plugin">Расширение для обмена информацией о местонахождении</string>
     <string name="pref_use_share_location_plugin_summary">Используйте расширение для обмена информацией о местонахождении вместо встроенной карты</string>
     <string name="copy_link">Копировать веб-адрес</string>
     <string name="copy_jabber_id">Копировать XMPP-адрес</string>
     <string name="p1_s3_filetransfer">Файлообмен по HTTP для S3</string>
     <string name="pref_start_search">Быстрый поиск</string>
-    <string name="pref_start_search_summary">На экране \"Начать беседу\" открывать клавиатуру и ставить курсор в поле поиска</string>
+    <string name="pref_start_search_summary">На экране \"Новая беседа\" открывать клавиатуру и ставить курсор в поле поиска</string>
     <string name="group_chat_avatar">Аватар конференции</string>
     <string name="host_does_not_support_group_chat_avatars">Сервер не поддерживает наличие аватар у конференций</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Только владелец может менять аватар конференции</string>
@@ -788,20 +788,20 @@
     <string name="verify_x">Подтвердите %s</string>
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Мы отправили вам SMS на <b>%s</b>.]]></string>
     <string name="we_have_sent_you_another_sms">Мы отправили вам еще одну SMS с кодом из 6 цифр.</string>
-    <string name="please_enter_pin_below">Пожалуйста, введите код из 6 цифр ниже.</string>
+    <string name="please_enter_pin_below">Пожалуйста, введите ПИН-код из 6 цифр ниже.</string>
     <string name="resend_sms">Отправьте заново SMS</string>
     <string name="resend_sms_in">Отправьте заново SMS (%s)</string>
     <string name="wait_x">Пожалуйста, подождите (%s)</string>
-    <string name="back">назад</string>
-    <string name="possible_pin">Автоматически вставлен возможный код из буфера обмена.</string>
-    <string name="please_enter_pin">Пожалуйста, введите ваш код из 6 цифр.</string>
+    <string name="back">Назад</string>
+    <string name="possible_pin">Автоматически вставлен возможный ПИН-код из буфера обмена.</string>
+    <string name="please_enter_pin">Пожалуйста, введите ваш ПИН-код из 6 цифр.</string>
     <string name="abort_registration_procedure">Вы уверены, что хотите прервать процедуру регистрации?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="verifying">Подтверждение…</string>
     <string name="requesting_sms">Запрос SMS…</string>
-    <string name="incorrect_pin">Введенный вами код некорректен.</string>
-    <string name="pin_expired">Отправленный вам код просрочен.</string>
+    <string name="incorrect_pin">Введенный вами ПИН-код некорректен.</string>
+    <string name="pin_expired">Отправленный вам ПИН-код просрочен.</string>
     <string name="unknown_api_error_network">Неизвестная ошибка сети.</string>
     <string name="unknown_api_error_response">Неизвестный ответ от сервера.</string>
     <string name="unable_to_connect_to_server">Не удалось подключиться к серверу.</string>
@@ -929,8 +929,8 @@
     <string name="remove_from_favorites">Открепить</string>
     <string name="gpx_track">GPX-трек</string>
     <string name="could_not_correct_message">Не удалось исправить сообщение</string>
-    <string name="search_all_conversations">Все беседы</string>
-    <string name="search_this_conversation">Эта беседа</string>
+    <string name="search_all_conversations">Все чаты</string>
+    <string name="search_this_conversation">Этот чат</string>
     <string name="your_avatar">Ваш аватар</string>
     <string name="avatar_for_x">Аватар для %s</string>
     <string name="encrypted_with_omemo">Зашифровано с помощью OMEMO</string>
@@ -1037,8 +1037,8 @@
     <string name="call_integration_not_available">Интеграция вызовов недоступна!</string>
     <string name="no_permission_to_place_call">Нет разрешения на телефонный звонок</string>
     <string name="remove_bookmark">Вы хотите удалить закладку для «%s»?</string>
-    <string name="delete_and_close">Закрыть и удалить</string>
-    <string name="remove_bookmark_and_close">Вы хотите удалить закладку для %s и закрыть беседу?</string>
+    <string name="delete_and_close">Удалить и Архивировать чат</string>
+    <string name="remove_bookmark_and_close">Вы хотите удалить закладку для %s и архивировать чат?</string>
     <string name="pref_send_crash_reports">Отправить отчёты о вылетах</string>
     <string name="switch_to_chat">Перейти к беседе</string>
     <string name="pref_summary_appearance">Тема, цвета, снимки, ввод</string>
@@ -1095,4 +1095,5 @@
     <string name="detect_mim_summary">Привязка канала может обнаружить некоторые атаки посредником</string>
     <string name="pref_category_server_connection">Соединение с сервером</string>
     <string name="pref_accept_invites_from_strangers">Приглашения от незнакомцев</string>
+    <string name="pref_category_engagement_notifications">Уведомления о взаимодействии</string>
 </resources>
