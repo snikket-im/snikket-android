@@ -1037,7 +1037,7 @@
     <string name="call_integration_not_available">Интеграция вызовов недоступна!</string>
     <string name="no_permission_to_place_call">Нет разрешения на телефонный звонок</string>
     <string name="remove_bookmark">Вы хотите удалить закладку для «%s»?</string>
-    <string name="delete_and_close">Удалить и Архивировать чат</string>
+    <string name="delete_and_close">Архивировать и удалить чат</string>
     <string name="remove_bookmark_and_close">Вы хотите удалить закладку для %s и архивировать чат?</string>
     <string name="pref_send_crash_reports">Отправить отчёты о вылетах</string>
     <string name="switch_to_chat">Перейти к беседе</string>
