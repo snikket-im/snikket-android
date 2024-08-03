@@ -274,7 +274,7 @@
     <string name="ignore">Игнорировать</string>
     <string name="without_mutual_presence_updates"><b>Внимание:</b> Если обновления присутствия не включены на обеих сторонах, это может привести к возникновению неожиданных проблем.\n\n<small>Просмотрите сведения о контакте для проверки настроек обновлений присутствия.</small></string>
     <string name="pref_security_settings">Безопасность</string>
-    <string name="pref_allow_message_correction">Разрешить исправление сообщений</string>
+    <string name="pref_allow_message_correction">Исправление сообщений</string>
     <string name="pref_allow_message_correction_summary">Позволить контактам редактировать сообщения</string>
     <string name="pref_expert_options">Расширенные настройки</string>
     <string name="pref_expert_options_summary">Пожалуйста, будьте осторожны с данными настройками</string>
@@ -464,8 +464,8 @@
     <string name="pref_dnd_on_silent_mode_summary">Устанавливает статус \"Не беспокоить\", когда устройство в беззвучном режиме</string>
     <string name="pref_treat_vibrate_as_silent">Не доступен в режиме вибрации</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Устанавливает статус \"Не беспокоить\", когда устройство в режиме вибрации</string>
-    <string name="pref_show_connection_options">Расширенные настройки подключения</string>
-    <string name="pref_show_connection_options_summary">Показывать имя сервера и порт в настройках аккаунтов</string>
+    <string name="pref_show_connection_options">Имя хоста и Порт</string>
+    <string name="pref_show_connection_options_summary">Показывать расширенные настройки соединения при настройке аккаунта</string>
     <string name="hostname_example">xmpp.example.com</string>
     <string name="action_add_account_with_certificate">Авторизироваться с помощью сертификата</string>
     <string name="unable_to_parse_certificate">Не удалось прочитать сертификат</string>
