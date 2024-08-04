@@ -1,0 +1,39 @@
+簡単に使えて信頼でき、バッテリー使用量も抑えます。画像、グループ、エンドツーエンド暗号化に標準で対応。
+
+設計原則:
+
+* セキュリティやプライバシーを犠牲にせず美しく簡単に使用できる
+* 既存の確立されたプロトコルに準拠する
+* Google アカウント、特に Google Cloud Messaging (GCM) を必須としない
+* できるだけ最小の権限のみ要求する
+
+機能:
+
+* <a href="http://conversations.im/omemo/">OMEMO</a> または <a href="http://openpgp.org/about/">OpenPGP</a> によるエンドツーエンド暗号化
+* 画像の送受信
+* 暗号化された音声・ビデオ通話 (DTLS-SRTP)
+* デザインガイトライン準拠の直感的な UI
+* 連絡先の画像/アバター
+* デスクトップクライアントとの同期
+* Conferences (with support for bookmarks)
+* Address book integration
+* Multiple accounts / unified inbox
+* Very low impact on battery life
+
+Conversations makes it very easy to create an account on the free conversations.im server. However Conversations will work with any other XMPP server as well. A lot of XMPP servers are run by volunteers and are free of charge.
+
+XMPP Features:
+
+Conversations works with every XMPP server out there. However XMPP is an extensible protocol. These extensions are standardized as well in so called XEP’s. Conversations supports a couple of those to make the overall user experience better. There is a chance that your current XMPP server does not support these extensions. Therefore to get the most out of Conversations you should consider either switching to an XMPP server that does or - even better - run your own XMPP server for you and your friends.
+
+These XEPs are - as of now:
+
+* XEP-0065: SOCKS5 Bytestreams (or mod_proxy65). Will be used to transfer files if both parties are behind a firewall (NAT).
+* XEP-0163: Personal Eventing Protocol for avatars
+* XEP-0191: Blocking command lets you blacklist spammers or block contacts without removing them from your roster.
+* XEP-0198: Stream Management allows XMPP to survive small network outages and changes of the underlying TCP connection.
+* XEP-0280: Message Carbons which automatically syncs the messages you send to your desktop client and thus allows you to switch seamlessly from your mobile client to your desktop client and back within one conversation.
+* XEP-0237: Roster Versioning mainly to save bandwidth on poor mobile connections
+* XEP-0313: Message Archive Management synchronize message history with the server. Catch up with messages that were sent while Conversations was offline.
+* XEP-0352: Client State Indication lets the server know whether or not Conversations is in the background. Allows the server to save bandwidth by withholding unimportant packages.
+* XEP-0363: HTTP File Upload allows you to share files in conferences and with offline contacts. Requires an additional component on your server.
