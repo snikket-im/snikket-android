@@ -59,7 +59,7 @@ dependencies {
     implementation "androidx.emoji2:emoji2:1.4.0"
     freeImplementation "androidx.emoji2:emoji2-bundled:1.4.0"
 
-    implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
+    implementation 'org.bouncycastle:bcmail-jdk18on:1.78.1'
     //zxing stopped supporting Java 7 so we have to stick with 3.3.3
     //https://github.com/zxing/zxing/issues/1170
     implementation 'com.google.zxing:core:3.3.3'
@@ -243,7 +243,7 @@ android {
     }
     packagingOptions {
         resources {
-            excludes += ['META-INF/BCKEY.DSA', 'META-INF/BCKEY.SF']
+            excludes += ['META-INF/BCKEY.DSA', 'META-INF/BCKEY.SF', 'META-INF/versions/9/OSGI-INF/MANIFEST.MF']
         }
     }
     lint {
