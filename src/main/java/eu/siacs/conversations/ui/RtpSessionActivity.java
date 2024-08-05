@@ -1126,7 +1126,7 @@ public class RtpSessionActivity extends XmppActivity
                 MainThreadExecutor.getInstance());
     }
 
-    private void enableVideo(View view) {
+    private void enableVideo(final View view) {
         try {
             requireRtpConnection().setVideoEnabled(true);
         } catch (final IllegalStateException e) {
@@ -1136,14 +1136,19 @@ public class RtpSessionActivity extends XmppActivity
         updateInCallButtonConfigurationVideo(true, requireRtpConnection().isCameraSwitchable());
     }
 
-    private void disableVideo(View view) {
+    private void disableVideo(final View view) {
         final JingleRtpConnection rtpConnection = requireRtpConnection();
         final ContentAddition pending = rtpConnection.getPendingContentAddition();
         if (pending != null && pending.direction == ContentAddition.Direction.OUTGOING) {
             rtpConnection.retractContentAdd();
             return;
         }
-        requireRtpConnection().setVideoEnabled(false);
+        try {
+            requireRtpConnection().setVideoEnabled(false);
+        } catch (final IllegalStateException e) {
+            Toast.makeText(this, R.string.could_not_disable_video, Toast.LENGTH_SHORT).show();
+            return;
+        }
         updateInCallButtonConfigurationVideo(false, requireRtpConnection().isCameraSwitchable());
     }
 
