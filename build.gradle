@@ -60,9 +60,7 @@ dependencies {
     freeImplementation "androidx.emoji2:emoji2-bundled:1.4.0"
 
     implementation 'org.bouncycastle:bcmail-jdk18on:1.78.1'
-    //zxing stopped supporting Java 7 so we have to stick with 3.3.3
-    //https://github.com/zxing/zxing/issues/1170
-    implementation 'com.google.zxing:core:3.3.3'
+    implementation 'com.google.zxing:core:3.5.3'
     implementation 'org.minidns:minidns-client:1.0.4'
     implementation 'org.minidns:minidns-dnssec:1.0.4'
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
