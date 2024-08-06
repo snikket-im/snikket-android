@@ -1070,4 +1070,13 @@
     <string name="edit_name_and_topic">Edit name and topic</string>
     <string name="edit_configuration">Change configuration</string>
     <string name="change_notification_settings">Change notification settings</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Call is using earpiece. Tap to switch to speaker.</string>
+    <string name="call_is_using_earpiece">Call is using earpiece.</string>
+    <string name="call_is_using_wired_headset">Call is using wired headset</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Call is using speaker. Tap to switch to earpiece.</string>
+    <string name="call_is_using_speaker">Call is using speaker.</string>
+    <string name="call_is_using_bluetooth">Call is using bluetooth.</string>
+    <string name="flip_camera">Flip camera</string>
+    <string name="video_is_enabled_tap_to_disable">Video is enabled. Tap to disable.</string>
+    <string name="video_is_disabled_tap_to_enable">Video is disabled. Tap to enabled.</string>
 </resources>

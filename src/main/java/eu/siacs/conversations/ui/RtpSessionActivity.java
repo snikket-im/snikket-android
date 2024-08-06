@@ -1051,13 +1051,19 @@ public class RtpSessionActivity extends XmppActivity
             case EARPIECE -> {
                 this.binding.inCallActionRight.setImageResource(R.drawable.ic_volume_off_24dp);
                 if (numberOfChoices >= 2) {
+                    this.binding.inCallActionRight.setContentDescription(
+                            getString(R.string.call_is_using_earpiece_tap_to_switch_to_speaker));
                     this.binding.inCallActionRight.setOnClickListener(this::switchToSpeaker);
                 } else {
+                    this.binding.inCallActionRight.setContentDescription(
+                            getString(R.string.call_is_using_earpiece));
                     this.binding.inCallActionRight.setOnClickListener(null);
                     this.binding.inCallActionRight.setClickable(false);
                 }
             }
             case WIRED_HEADSET -> {
+                this.binding.inCallActionRight.setContentDescription(
+                        getString(R.string.call_is_using_wired_headset));
                 this.binding.inCallActionRight.setImageResource(R.drawable.ic_headset_mic_24dp);
                 this.binding.inCallActionRight.setOnClickListener(null);
                 this.binding.inCallActionRight.setClickable(false);
@@ -1065,13 +1071,19 @@ public class RtpSessionActivity extends XmppActivity
             case SPEAKER_PHONE -> {
                 this.binding.inCallActionRight.setImageResource(R.drawable.ic_volume_up_24dp);
                 if (numberOfChoices >= 2) {
+                    this.binding.inCallActionRight.setContentDescription(
+                            getString(R.string.call_is_using_speaker_tap_to_switch_to_earpiece));
                     this.binding.inCallActionRight.setOnClickListener(this::switchToEarpiece);
                 } else {
+                    this.binding.inCallActionRight.setContentDescription(
+                            getString(R.string.call_is_using_speaker));
                     this.binding.inCallActionRight.setOnClickListener(null);
                     this.binding.inCallActionRight.setClickable(false);
                 }
             }
             case BLUETOOTH -> {
+                this.binding.inCallActionRight.setContentDescription(
+                        getString(R.string.call_is_using_bluetooth));
                 this.binding.inCallActionRight.setImageResource(R.drawable.ic_bluetooth_audio_24dp);
                 this.binding.inCallActionRight.setOnClickListener(null);
                 this.binding.inCallActionRight.setClickable(false);
@@ -1089,15 +1101,21 @@ public class RtpSessionActivity extends XmppActivity
                     R.drawable.ic_flip_camera_android_24dp);
             this.binding.inCallActionFarRight.setVisibility(View.VISIBLE);
             this.binding.inCallActionFarRight.setOnClickListener(this::switchCamera);
+            this.binding.inCallActionFarRight.setContentDescription(
+                    getString(R.string.flip_camera));
         } else {
             this.binding.inCallActionFarRight.setVisibility(View.GONE);
         }
         if (videoEnabled) {
             this.binding.inCallActionRight.setImageResource(R.drawable.ic_videocam_24dp);
             this.binding.inCallActionRight.setOnClickListener(this::disableVideo);
+            this.binding.inCallActionRight.setContentDescription(
+                    getString(R.string.video_is_enabled_tap_to_disable));
         } else {
             this.binding.inCallActionRight.setImageResource(R.drawable.ic_videocam_off_24dp);
             this.binding.inCallActionRight.setOnClickListener(this::enableVideo);
+            this.binding.inCallActionRight.setContentDescription(
+                    getString(R.string.video_is_disabled_tap_to_enable));
         }
     }
 
