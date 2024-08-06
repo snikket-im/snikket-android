@@ -1089,4 +1089,20 @@
     <string name="unsupported_operation">Operațiune neacceptată</string>
     <string name="pref_fullscreen_notification_summary">Atunci când dispozitivul este blocat permite aplicației să arate notificările apelurilor pe tot ecranul.</string>
     <string name="allow_private_messages">Permite mesaje private</string>
+    <string name="could_not_disable_video">Nu s-a putut dezactiva videoul.</string>
+    <string name="your_avatar_tap_to_select_new_avatar">Avatarul dumneavoastră. Atingeți pentru a selecta un nou avatar din galerie.</string>
+    <string name="change_notification_settings">Schimbă setările notificărilor</string>
+    <string name="edit_configuration">Schimbă configurația</string>
+    <string name="edit_name_and_topic">Editare nume și subiect</string>
+    <string name="delete_pgp_key">Ștergere cheie OpenPGP</string>
+    <string name="edit_nick">Editare nume</string>
+    <string name="video_is_disabled_tap_to_enable">Video dezactivat. Atingeți pentru activare.</string>
+    <string name="video_is_enabled_tap_to_disable">Video activat. Atingeți pentru dezactivare.</string>
+    <string name="flip_camera">Întoarce camera</string>
+    <string name="call_is_using_bluetooth">Apelul folosește Bluetooth.</string>
+    <string name="call_is_using_speaker">Apelul folosește difuzorul.</string>
+    <string name="call_is_using_wired_headset">Apelul folosește un set de căști cu fir</string>
+    <string name="call_is_using_earpiece">Apelul folosește receptorul.</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Apelul folosește difuzorul. Atingeți pentru a trece la receptor.</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Apelul folosește receptorul. Atingeți pentru a trece la difuzor.</string>
 </resources>
