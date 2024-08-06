@@ -45,7 +45,8 @@
                     <ImageView
                         android:id="@+id/account_image"
                         android:layout_width="@dimen/publish_avatar_size"
-                        android:layout_height="@dimen/publish_avatar_size" />
+                        android:layout_height="@dimen/publish_avatar_size"
+                        android:contentDescription="@string/your_avatar_tap_to_select_new_avatar" />
                 </FrameLayout>
 
                 <TextView

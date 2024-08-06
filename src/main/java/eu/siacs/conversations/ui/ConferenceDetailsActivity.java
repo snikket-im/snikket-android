@@ -211,6 +211,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             intent.putExtra("uuid", mConversation.getUuid());
             startActivity(intent);
         });
+        this.binding.editMucNameButton.setContentDescription(getString(R.string.edit_name_and_topic));
         this.binding.editMucNameButton.setOnClickListener(this::onMucEditButtonClicked);
         this.binding.mucEditTitle.addTextChangedListener(this);
         this.binding.mucEditSubject.addTextChangedListener(this);
@@ -288,6 +289,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             this.binding.mucEditor.setVisibility(View.VISIBLE);
             this.binding.mucDisplay.setVisibility(View.GONE);
             this.binding.editMucNameButton.setImageResource(R.drawable.ic_cancel_24dp);
+            this.binding.editMucNameButton.setContentDescription(getString(R.string.cancel));
             final String name = mucOptions.getName();
             this.binding.mucEditTitle.setText("");
             final boolean owner = mucOptions.getSelf().getAffiliation().ranks(MucOptions.Affiliation.OWNER);
@@ -322,6 +324,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         this.binding.mucEditor.setVisibility(View.GONE);
         this.binding.mucDisplay.setVisibility(View.VISIBLE);
         this.binding.editMucNameButton.setImageResource(R.drawable.ic_edit_24dp);
+        this.binding.editMucNameButton.setContentDescription(getString(R.string.edit_name_and_topic));
     }
 
     private void onMucInfoUpdated(String subject, String name) {
@@ -630,8 +633,10 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             boolean nameChanged = changed(binding.mucEditTitle.getEditableText().toString(), mucOptions.getName());
             if (subjectChanged || nameChanged) {
                 this.binding.editMucNameButton.setImageResource(R.drawable.ic_save_24dp);
+                this.binding.editMucNameButton.setContentDescription(getString(R.string.save));
             } else {
                 this.binding.editMucNameButton.setImageResource(R.drawable.ic_cancel_24dp);
+                this.binding.editMucNameButton.setContentDescription(getString(R.string.cancel));
             }
         }
     }

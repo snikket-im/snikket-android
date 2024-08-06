@@ -966,6 +966,7 @@
     <string name="search_all_conversations">All chats</string>
     <string name="search_this_conversation">This chat</string>
     <string name="your_avatar">Your avatar</string>
+    <string name="your_avatar_tap_to_select_new_avatar">Your avatar. Tap to select new avatar from gallery.</string>
     <string name="avatar_for_x">Avatar for %s</string>
     <string name="encrypted_with_omemo">Encrypted with OMEMO</string>
     <string name="encrypted_with_openpgp">Encrypted with OpenPGP</string>
@@ -1064,4 +1065,9 @@
     <string name="pref_fullscreen_notification_summary">Allow this app to show incoming call notifications that take up the full screen when the device is locked.</string>
     <string name="unsupported_operation">Unsupported operation</string>
     <string name="allow_private_messages">Allow private messages</string>
+    <string name="edit_nick">Edit nick</string>
+    <string name="delete_pgp_key">Delete OpenPGP key</string>
+    <string name="edit_name_and_topic">Edit name and topic</string>
+    <string name="edit_configuration">Change configuration</string>
+    <string name="change_notification_settings">Change notification settings</string>
 </resources>
