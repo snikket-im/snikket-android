@@ -13,7 +13,7 @@
 \n向其他 XMPP 用户提供您的完整地址，就能和对方交流。</string>
     <string name="your_server_invitation">您的服务器邀请</string>
     <string name="improperly_formatted_provisioning">配置代码格式不正确</string>
-    <string name="tap_share_button_send_invite">轻击分享按钮，向您的联系人发送加入 %1$s 的邀请。</string>
+    <string name="tap_share_button_send_invite">点击分享按钮，向您的联系人发送加入 %1$s 的邀请。</string>
     <string name="if_contact_is_nearby_use_qr">如果您的联系人在附近，对方也可以扫描下方二维码接受邀请。</string>
     <string name="easy_invite_share_text">加入 %1$s 和我聊天：%2$s</string>
     <string name="share_invite_with">分享邀请至…</string>
