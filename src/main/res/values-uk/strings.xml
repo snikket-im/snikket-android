@@ -1128,7 +1128,7 @@
     <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Виклик здійснюється через навушник. Торкніться, щоб переключитися на динамік.</string>
     <string name="call_is_using_earpiece">Виклик здійснюється через навушник.</string>
     <string name="call_is_using_wired_headset">Виклик здійснюється за допомогою дротової гарнітури</string>
-    <string name="video_is_enabled_tap_to_disable">Відео ввімкнено. Натисніть, щоб вимкнути.</string>
+    <string name="video_is_enabled_tap_to_disable">Відео ввімкнено. Торкніться, щоб вимкнути.</string>
     <string name="video_is_disabled_tap_to_enable">Відео вимкнено. Натисніть, щоб увімкнути.</string>
     <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Виклик здійснюється через динамік. Торкніться, щоб переключитися на навушник.</string>
     <string name="call_is_using_speaker">Виклик здійснюється через динамік.</string>
