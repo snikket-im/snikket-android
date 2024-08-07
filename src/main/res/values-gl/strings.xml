@@ -1072,4 +1072,20 @@
     <string name="pref_backup_summary">Crear única, Programar recurrentes</string>
     <string name="pref_create_backup_one_off_summary">Crear unha copia de apoio</string>
     <string name="allow_private_messages">Permitir mensaxes privadas</string>
+    <string name="your_avatar_tap_to_select_new_avatar">O teu avatar. Toca para escoller un novo avatar desde a galería.</string>
+    <string name="could_not_disable_video">Non se puido desactivar o vídeo.</string>
+    <string name="edit_nick">Editar nome</string>
+    <string name="delete_pgp_key">Eliminar chave OpenPGP</string>
+    <string name="edit_name_and_topic">Editar nome e tema</string>
+    <string name="edit_configuration">Cambiar a configuración</string>
+    <string name="change_notification_settings">Cambiar axustes das notificacións</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">A chamada está usando o auricular, toca para usar o altofalante.</string>
+    <string name="call_is_using_earpiece">A chamada está usando auriculares.</string>
+    <string name="call_is_using_wired_headset">A chamada usa auriculares con cable</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">A chamada usa os altofalandes. Toca para cambiar a auriculares.</string>
+    <string name="call_is_using_speaker">A chamada está usando o altofalante.</string>
+    <string name="call_is_using_bluetooth">A chamada está usando bluetooth.</string>
+    <string name="flip_camera">Cambiar de cámara</string>
+    <string name="video_is_enabled_tap_to_disable">Video activado. Toca para desactivar.</string>
+    <string name="video_is_disabled_tap_to_enable">Video desactivado. Toca para activar.</string>
 </resources>
