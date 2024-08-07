@@ -63,6 +63,7 @@ import eu.siacs.conversations.xmpp.bind.Bind2;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 
+import im.conversations.android.xmpp.model.AuthenticationFailure;
 import im.conversations.android.xmpp.model.AuthenticationRequest;
 import im.conversations.android.xmpp.model.AuthenticationStreamFeature;
 import im.conversations.android.xmpp.model.StreamElement;
@@ -75,8 +76,10 @@ import im.conversations.android.xmpp.model.fast.Fast;
 import im.conversations.android.xmpp.model.fast.RequestToken;
 import im.conversations.android.xmpp.model.jingle.Jingle;
 import im.conversations.android.xmpp.model.sasl.Auth;
+import im.conversations.android.xmpp.model.sasl.Failure;
 import im.conversations.android.xmpp.model.sasl.Mechanisms;
 import im.conversations.android.xmpp.model.sasl.Response;
+import im.conversations.android.xmpp.model.sasl.SaslError;
 import im.conversations.android.xmpp.model.sasl.Success;
 import im.conversations.android.xmpp.model.sasl2.Authenticate;
 import im.conversations.android.xmpp.model.sasl2.Authentication;
@@ -616,8 +619,13 @@ public class XmppConnection implements Runnable {
                 if (processSuccess(success)) {
                     break;
                 }
-            } else if (nextTag.isStart("failure")) {
-                final Element failure = tagReader.readElement(nextTag);
+            } else if (nextTag.isStart("failure", Namespace.SASL)) {
+                final var failure = tagReader.readElement(nextTag, Failure.class);
+                processFailure(failure);
+            } else if (nextTag.isStart("failure", Namespace.SASL_2)) {
+                final var failure =
+                        tagReader.readElement(
+                                nextTag, im.conversations.android.xmpp.model.sasl2.Failure.class);
                 processFailure(failure);
             } else if (nextTag.isStart("continue", Namespace.SASL_2)) {
                 // two step sasl2 - we don’t support this yet
@@ -962,7 +970,7 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private void processFailure(final Element failure) throws IOException {
+    private void processFailure(final AuthenticationFailure failure) throws IOException {
         final SaslMechanism.Version version;
         try {
             version = SaslMechanism.Version.of(failure);
@@ -976,10 +984,21 @@ public class XmppConnection implements Runnable {
             account.resetFastToken();
             mXmppConnectionService.databaseBackend.updateAccount(account);
         }
-        if (failure.hasChild("temporary-auth-failure")) {
+        final var errorCondition = failure.getErrorCondition();
+        if (errorCondition instanceof SaslError.InvalidMechanism
+                || errorCondition instanceof SaslError.MechanismTooWeak) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": invalid or too weak mechanism. resetting quick start");
+            if (account.setOption(Account.OPTION_QUICKSTART_AVAILABLE, false)) {
+                mXmppConnectionService.databaseBackend.updateAccount(account);
+            }
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        } else if (errorCondition instanceof SaslError.TemporaryAuthFailure) {
             throw new StateChangingException(Account.State.TEMPORARY_AUTH_FAILURE);
-        } else if (failure.hasChild("account-disabled")) {
-            final String text = failure.findChildContent("text");
+        } else if (errorCondition instanceof SaslError.AccountDisabled) {
+            final String text = failure.getText();
             if (Strings.isNullOrEmpty(text)) {
                 throw new StateChangingException(Account.State.UNAUTHORIZED);
             }
