@@ -1086,4 +1086,7 @@
     <string name="edit_configuration">Konfiguration ändern</string>
     <string name="edit_name_and_topic">Name und Thema bearbeiten</string>
     <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Anruf erfolgt über den unteren Lautsprecher. Antippen, um zum oberen Lautsprecher zu wechseln.</string>
+    <string name="server_info_bind2">XEP-0386: Bind 2</string>
+    <string name="server_info_sasl2">XEP-0388: Extensible SASL Profile</string>
+    <string name="server_info_login_mechanism">Anmeldeverfahren</string>
 </resources>
