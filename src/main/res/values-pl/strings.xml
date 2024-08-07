@@ -1102,4 +1102,20 @@
     <string name="unsupported_operation">Nieobsługiwana operacja</string>
     <string name="pref_fullscreen_notification_summary">Pozwól tej aplikacji na pokazywanie powiadomień o przychodzącym połączeniu, które zajmują cały ekran gdy urządzenie jest zablokowane.</string>
     <string name="allow_private_messages">Pozwól na prywatne wiadomości</string>
+    <string name="edit_nick">Edytuj nazwę</string>
+    <string name="delete_pgp_key">Usuń klucz OpenPGP</string>
+    <string name="edit_name_and_topic">Edytuj nazwę i temat</string>
+    <string name="edit_configuration">Zmień konfigurację</string>
+    <string name="change_notification_settings">Zmień ustawienia powiadomień</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Rozmowa używa słuchawek. Dotknij aby przełączyć na głośnik.</string>
+    <string name="call_is_using_earpiece">Rozmowa używa słuchawek.</string>
+    <string name="call_is_using_wired_headset">Rozmowa używa przewodowego zestawu słuchawkowego</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Rozmowa używa głośnika. Dotknij aby przełączyć na słuchawki.</string>
+    <string name="call_is_using_speaker">Rozmowa używa głośnika.</string>
+    <string name="call_is_using_bluetooth">Rozmowa używa Bluetooth.</string>
+    <string name="flip_camera">Odwróć kamerę</string>
+    <string name="video_is_enabled_tap_to_disable">Wideo jest włączone. Dotknij aby wyłączyć.</string>
+    <string name="video_is_disabled_tap_to_enable">Wideo jest wyłączone. Dotknij aby włączyć.</string>
+    <string name="could_not_disable_video">Nie udało się wyłączyć wideo.</string>
+    <string name="your_avatar_tap_to_select_new_avatar">Twój awatar. Dotknij aby wybrać nowy awatar z galerii.</string>
 </resources>
