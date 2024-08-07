@@ -2981,6 +2981,21 @@ public class XmppConnection implements Runnable {
             }
         }
 
+        public boolean bind2() {
+            final var loginInfo = XmppConnection.this.loginInfo;
+            return loginInfo != null && !loginInfo.inlineBindFeatures.isEmpty();
+        }
+
+        public boolean sasl2() {
+            final var loginInfo = XmppConnection.this.loginInfo;
+            return loginInfo != null && loginInfo.saslVersion == SaslMechanism.Version.SASL_2;
+        }
+
+        public String loginMechanism() {
+            final var loginInfo = XmppConnection.this.loginInfo;
+            return loginInfo == null ? null : loginInfo.saslMechanism.getMechanism();
+        }
+
         public boolean pepPublishOptions() {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUBSUB_PUBLISH_OPTIONS);
         }
