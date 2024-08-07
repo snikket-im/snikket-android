@@ -1081,4 +1081,17 @@
     <string name="pref_backup_recurring">Kopjeruajtje ripërsëritëse</string>
     <string name="pref_create_backup_one_off_summary">Krijoni një kopjeruajtje një here të vetme</string>
     <string name="allow_private_messages">Lejoni mesazhe private</string>
+    <string name="edit_nick">Përpunoni nofkë</string>
+    <string name="edit_name_and_topic">Përpunoni emër dhe temë</string>
+    <string name="edit_configuration">Ndryshoni formësim</string>
+    <string name="change_notification_settings">Ndryshoni rregullime njoftimesh</string>
+    <string name="call_is_using_earpiece">Thirrja po përdor kufje.</string>
+    <string name="call_is_using_wired_headset">Thirrja po përdor kufje me fill</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Thirrja po përdor altoparlant. Prekeni, që të kalohet në kufje.</string>
+    <string name="call_is_using_speaker">Thirrja po përdor altoparlant.</string>
+    <string name="call_is_using_bluetooth">Thirrja po përdor Bluetooth.</string>
+    <string name="delete_pgp_key">Fshini kyç OpenPGP</string>
+    <string name="could_not_disable_video">S’u çaktivizua dot videoja.</string>
+    <string name="your_avatar_tap_to_select_new_avatar">Avatari juaj. Prekeni, që të përzgjidhni prej galerisë avatar të ri.</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Thirrja po përdor kufje. Prekeni, që të kalohet në altoparlant.</string>
 </resources>
