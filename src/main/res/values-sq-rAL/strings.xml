@@ -1094,4 +1094,7 @@
     <string name="could_not_disable_video">S’u çaktivizua dot videoja.</string>
     <string name="your_avatar_tap_to_select_new_avatar">Avatari juaj. Prekeni, që të përzgjidhni prej galerisë avatar të ri.</string>
     <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Thirrja po përdor kufje. Prekeni, që të kalohet në altoparlant.</string>
+    <string name="video_is_enabled_tap_to_disable">Videoja është e aktivizuar. Prekeni, që të çaktivizohet.</string>
+    <string name="flip_camera">Ktheni kamerën më anë tjetër</string>
+    <string name="video_is_disabled_tap_to_enable">Videoja është e çaktivizuar. Prekeni, që të aktivizohet.</string>
 </resources>
