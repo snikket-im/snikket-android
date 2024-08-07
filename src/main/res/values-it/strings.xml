@@ -1084,4 +1084,20 @@
     <string name="allow_private_messages">Consenti messaggi privati</string>
     <string name="pref_fullscreen_notification_summary">Consenti a questa app di mostrare notifiche di chiamate in arrivo che occupano l\'intero schermo quando il dispositivo è bloccato.</string>
     <string name="pref_create_backup_one_off_summary">Crea backup una volta</string>
+    <string name="your_avatar_tap_to_select_new_avatar">Il tuo avatar. Tocca per selezionare un nuovo avatar dalla galleria.</string>
+    <string name="could_not_disable_video">Impossibile disattivare il video.</string>
+    <string name="edit_nick">Modifica nick</string>
+    <string name="delete_pgp_key">Elimina chiave OpenPGP</string>
+    <string name="edit_name_and_topic">Modifica nome e argomento</string>
+    <string name="edit_configuration">Cambia configurazione</string>
+    <string name="change_notification_settings">Cambia impostazioni di notifica</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">La chiamata sta usando gli auricolari. Tocca per passare agli altoparlanti.</string>
+    <string name="call_is_using_earpiece">La chiamata sta usando gli auricolari.</string>
+    <string name="call_is_using_wired_headset">La chiamata sta usando cuffie cablate</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">La chiamata sta usando gli altoparlanti. Tocca per passare agli auricolari.</string>
+    <string name="call_is_using_speaker">La chiamata sta usando gli altoparlanti.</string>
+    <string name="call_is_using_bluetooth">La chiamata sta usando il bluetooth.</string>
+    <string name="video_is_enabled_tap_to_disable">Il video è attivo. Tocca per disattivarlo.</string>
+    <string name="video_is_disabled_tap_to_enable">Il video è disattivato. Tocca per attivarlo.</string>
+    <string name="flip_camera">Cambia fotocamera</string>
 </resources>
