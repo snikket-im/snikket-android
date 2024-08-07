@@ -1134,4 +1134,7 @@
     <string name="call_is_using_speaker">Виклик здійснюється через динамік.</string>
     <string name="call_is_using_bluetooth">Виклик здійснюється через Bluetooth.</string>
     <string name="flip_camera">Розвернути камеру</string>
+    <string name="server_info_login_mechanism">Механізм авторизації</string>
+    <string name="server_info_bind2">XEP-0386: Bind 2</string>
+    <string name="server_info_sasl2">XEP-0388: Розширюваний профіль SASL</string>
 </resources>
