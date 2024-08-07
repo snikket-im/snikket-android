@@ -1086,4 +1086,20 @@
     <string name="pref_category_interaction">Interactie</string>
     <string name="pref_category_on_this_device">Op apparaat</string>
     <string name="unsupported_operation">Niet-ondersteunde actie</string>
+    <string name="your_avatar_tap_to_select_new_avatar">Jouw avatar. Tik om een nieuwe avatar uit de galerij te selecteren.</string>
+    <string name="could_not_disable_video">Video kan niet worden uitgeschakeld.</string>
+    <string name="edit_nick">Bijnaam bewerken</string>
+    <string name="delete_pgp_key">OpenPGP-sleutel verwijderen</string>
+    <string name="edit_name_and_topic">Naam en onderwerp bewerken</string>
+    <string name="edit_configuration">Configuratie wijzigen</string>
+    <string name="change_notification_settings">Meldingsinstellingen wijzigen</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Oproep maakt gebruik van luidspreker. Tik om over te schakelen naar de oortelefoon.</string>
+    <string name="call_is_using_earpiece">Oproep maakt gebruik van een oortelefoon.</string>
+    <string name="call_is_using_wired_headset">Oproep maakt gebruik van bedrade headset</string>
+    <string name="call_is_using_speaker">Oproep maakt gebruik van luidspreker.</string>
+    <string name="call_is_using_bluetooth">Oproep maakt gebruik van bluetooth.</string>
+    <string name="flip_camera">Camera omdraaien</string>
+    <string name="video_is_enabled_tap_to_disable">Video is ingeschakeld. Tik om uit te schakelen.</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Oproep maakt gebruik van een oortelefoon. Tik om over te schakelen naar de luidspreker.</string>
+    <string name="video_is_disabled_tap_to_enable">Video is uitgeschakeld. Tik om in te schakelen.</string>
 </resources>
