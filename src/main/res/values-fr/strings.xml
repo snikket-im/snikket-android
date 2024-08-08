@@ -1102,4 +1102,12 @@
     <string name="server_info_bind2">XEP-0386 : Bind 2</string>
     <string name="edit_nick">Éditer le pseudo</string>
     <string name="delete_pgp_key">Supprimer la clé OpenPGP</string>
+    <string name="call_is_using_bluetooth">L\'appel passe par le bluetooth.</string>
+    <string name="flip_camera">Changer de caméra</string>
+    <string name="video_is_enabled_tap_to_disable">La vidéo est activée. Tapotez pour la désactiver.</string>
+    <string name="video_is_disabled_tap_to_enable">La vidéo est désactivée. Tapotez pour l\'activer.</string>
+    <string name="call_is_using_wired_headset">L\'appel passe par le casque filaire</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">L\'appel passe par le haut-parleur. Tapotez pour passer sur les écouteurs.</string>
+    <string name="call_is_using_speaker">L\'appel passe par le haut-parleur.</string>
+    <string name="server_info_login_mechanism">Mécanisme de connexion</string>
 </resources>
