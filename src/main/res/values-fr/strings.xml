@@ -1091,4 +1091,15 @@
     <string name="pref_large_font">Grande police</string>
     <string name="pref_large_font_summary">Augmenter la taille de la police dans les bulles de message</string>
     <string name="allow_private_messages">Autoriser les messages privés</string>
+    <string name="your_avatar_tap_to_select_new_avatar">Votre image de profil. Tapotez pour sélectionner une nouvelle image de profil depuis la galerie.</string>
+    <string name="could_not_disable_video">Impossible de désactiver la vidéo.</string>
+    <string name="server_info_sasl2">XEP-0388 : Extensible SASL Profile</string>
+    <string name="edit_name_and_topic">Éditer nom et sujet</string>
+    <string name="edit_configuration">Modifier la configuration</string>
+    <string name="change_notification_settings">Modifier les paramètres de notification</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">L\'appel passe par les écouteurs. Tapotez pour passer sur haut-parleur.</string>
+    <string name="call_is_using_earpiece">L\'appel passe par les écouteurs.</string>
+    <string name="server_info_bind2">XEP-0386 : Bind 2</string>
+    <string name="edit_nick">Éditer le pseudo</string>
+    <string name="delete_pgp_key">Supprimer la clé OpenPGP</string>
 </resources>
