@@ -1088,4 +1088,7 @@
     <string name="flip_camera">Cambiar de cámara</string>
     <string name="video_is_enabled_tap_to_disable">Video activado. Toca para desactivar.</string>
     <string name="video_is_disabled_tap_to_enable">Video desactivado. Toca para activar.</string>
+    <string name="server_info_sasl2">XEP-0388: Extensible SASL Profile</string>
+    <string name="server_info_login_mechanism">Método de acceso</string>
+    <string name="server_info_bind2">XEP-0386: Bind 2</string>
 </resources>
