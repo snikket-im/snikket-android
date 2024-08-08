@@ -9,7 +9,7 @@
     <string name="action_add_account">Dodaj konto</string>
     <string name="action_edit_contact">Edytuj nazwę</string>
     <string name="action_add_phone_book">Dodaj do kontaktów</string>
-    <string name="action_delete_contact">Usuń z rostera</string>
+    <string name="action_delete_contact">Usuń z rostera</string>
     <string name="action_block_contact">Zablokuj kontakt</string>
     <string name="action_unblock_contact">Odblokuj kontakt</string>
     <string name="action_block_domain">Zablokuj domenę</string>
@@ -190,16 +190,16 @@
     <string name="error_out_of_memory">Brak pamięci. Obraz jest za duży</string>
     <string name="add_phone_book_text">Czy chcesz dodać %s do listy kontaktów?</string>
     <string name="server_info_show_more">Informacje o serwerze</string>
-    <string name="server_info_mam">XEP-0313: MAM</string>
-    <string name="server_info_carbon_messages">XEP-0280: Kopie wiadomości</string>
-    <string name="server_info_csi">XEP-0352: Wskaźnik stanu klienta</string>
-    <string name="server_info_blocking">XEP-0191: Polecenia Blokujące</string>
-    <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
-    <string name="server_info_stream_management">XEP-0198: Zarządzanie Strumieniem</string>
-    <string name="server_info_external_service_discovery">XEP-0215: Wykrywanie Zewnętrznych Usług</string>
-    <string name="server_info_pep">XEP-0163: PEP (Awatary / OMEMO)</string>
-    <string name="server_info_http_upload">XEP-0363: Przesyłanie plików przez HTTP</string>
-    <string name="server_info_push">XEP-0357: Push</string>
+    <string name="server_info_mam">XEP-0313: zarządzanie archiwami wiadomości</string>
+    <string name="server_info_carbon_messages">XEP-0280: kopie wiadomości</string>
+    <string name="server_info_csi">XEP-0352: wskazywanie stanu klienta</string>
+    <string name="server_info_blocking">XEP-0191: polecenia blokujące</string>
+    <string name="server_info_roster_version">XEP-0237: wersjonowanie rostera</string>
+    <string name="server_info_stream_management">XEP-0198: zarządzanie strumieniem</string>
+    <string name="server_info_external_service_discovery">XEP-0215: wykrywanie zewnętrznych usług</string>
+    <string name="server_info_pep">XEP-0163: protokół osobistych zdarzeń (awatary/OMEMO)</string>
+    <string name="server_info_http_upload">XEP-0363: wysyłanie plików przez HTTP</string>
+    <string name="server_info_push">XEP-0357: powiadomienia Push</string>
     <string name="server_info_available">dostępny</string>
     <string name="server_info_unavailable">niedostępny</string>
     <string name="missing_public_keys">Brak informacji o kluczu publicznym</string>
@@ -1118,4 +1118,6 @@
     <string name="video_is_disabled_tap_to_enable">Wideo jest wyłączone. Dotknij aby włączyć.</string>
     <string name="could_not_disable_video">Nie udało się wyłączyć wideo.</string>
     <string name="your_avatar_tap_to_select_new_avatar">Twój awatar. Dotknij aby wybrać nowy awatar z galerii.</string>
+    <string name="server_info_sasl2">XEP-0388: rozszerzalny profil SASL</string>
+    <string name="server_info_bind2">XEP-0386: uproszczone nawiązywanie połączenia</string>
 </resources>
