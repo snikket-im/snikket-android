@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.16.6
+
+* Offer higher automatic file accept values
+* Provide more information in 'Server info'
+* Various bug fixes
+
 ### Version 2.16.5
 
 * Minor bug fixes
