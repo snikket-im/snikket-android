@@ -1105,4 +1105,7 @@
     <string name="call_is_using_earpiece">Apelul folosește receptorul.</string>
     <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Apelul folosește difuzorul. Atingeți pentru a trece la receptor.</string>
     <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Apelul folosește receptorul. Atingeți pentru a trece la difuzor.</string>
+    <string name="server_info_bind2">XEP-0386: Bind 2</string>
+    <string name="server_info_sasl2">XEP-0388: Profil SASL extensibil</string>
+    <string name="server_info_login_mechanism">Mecanism autentificare</string>
 </resources>
