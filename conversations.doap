@@ -25,16 +25,16 @@
     <!-- See https://github.com/ewilderj/doap/issues/49 -->
     <language>en</language>
 
-    <schema:logo rdf:resource="https://raw.githubusercontent.com/iNPUTmice/Conversations/master/art/ic_launcher.svg"/>
-    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/01.png'/>
-    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/02.png'/>
-    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/03.png'/>
-    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/04.png'/>
-    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/05.png'/>
-    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/06.png'/>
-    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/07.png'/>
-    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/08.png'/>
-    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/09.png'/>
+    <schema:logo rdf:resource="https://codeberg.org/iNPUTmice/Conversations/raw/branch/master/art/ic_launcher.svg"/>
+    <schema:screenshot rdf:resource='https://codeberg.org/iNPUTmice/Conversations/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/01.png'/>
+    <schema:screenshot rdf:resource='https://codeberg.org/iNPUTmice/Conversations/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/02.png'/>
+    <schema:screenshot rdf:resource='https://codeberg.org/iNPUTmice/Conversations/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/03.png'/>
+    <schema:screenshot rdf:resource='https://codeberg.org/iNPUTmice/Conversations/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/04.png'/>
+    <schema:screenshot rdf:resource='https://codeberg.org/iNPUTmice/Conversations/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/05.png'/>
+    <schema:screenshot rdf:resource='https://codeberg.org/iNPUTmice/Conversations/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/06.png'/>
+    <schema:screenshot rdf:resource='https://codeberg.org/iNPUTmice/Conversations/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/07.png'/>
+    <schema:screenshot rdf:resource='https://codeberg.org/iNPUTmice/Conversations/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/08.png'/>
+    <schema:screenshot rdf:resource='https://codeberg.org/iNPUTmice/Conversations/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/09.png'/>
 
     <programming-language>Java</programming-language>
 
