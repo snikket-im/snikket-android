@@ -1,0 +1,3 @@
+* Zwiększenie rozmiarów automatycznie pobieranych plików
+* Pokazywanie więcej informacji o serwerze
+* Różne poprawki błędów
