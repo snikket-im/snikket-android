@@ -4,7 +4,7 @@
     <string name="action_accounts">Xestionar contas</string>
     <string name="action_account">Xestionar conta</string>
     <string name="action_contact_details">Detalles do contacto</string>
-    <string name="action_muc_details">Detalles do chat en grupo</string>
+    <string name="action_muc_details">Detalles da parola en grupo</string>
     <string name="channel_details">Detalles da canle</string>
     <string name="action_add_account">Engadir conta</string>
     <string name="action_edit_contact">Editar contacto</string>
@@ -26,8 +26,8 @@
     <string name="minute_ago">Hai 1 min</string>
     <string name="minutes_ago">hai %d minutos</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d chat sen ler</item>
-        <item quantity="other">%d chats sen ler</item>
+        <item quantity="one">%d conversa sen ler</item>
+        <item quantity="other">%d conversas sen ler</item>
     </plurals>
     <string name="sending">enviando…</string>
     <string name="message_decrypting">Descifrando a mensaxe. Agarda por favor…</string>
@@ -39,7 +39,7 @@
     <string name="moderator">Moderador</string>
     <string name="participant">Participante</string>
     <string name="visitor">Visitante</string>
-    <string name="remove_contact_text">Desexas eliminar a %s da túa lista de contactos? O chat con este contacto non se eliminará.</string>
+    <string name="remove_contact_text">Desexas eliminar a %s da túa lista de contactos? A conversa con este contacto non se eliminará.</string>
     <string name="block_contact_text">Queres evitar que %s che envíe mensaxes?</string>
     <string name="unblock_contact_text">Queres desbloquear a %s e permitirlle que che envíe mensaxes?</string>
     <string name="block_domain_text">Bloquear todos os contactos desde 1%s?</string>
@@ -77,9 +77,9 @@
     <string name="preparing_images">Preparándose para enviar imaxes</string>
     <string name="sharing_files_please_wait">Compartindo ficheiros. Agarda…</string>
     <string name="action_clear_history">Baleirar historial</string>
-    <string name="clear_conversation_history">Limpar historial do chat</string>
-    <string name="clear_histor_msg">¿Queres eliminar tódalas mensaxes deste chat?
-\n
+    <string name="clear_conversation_history">Limpar historial da charla</string>
+    <string name="clear_histor_msg">¿Queres eliminar tódalas mensaxes desta conversa? 
+\n 
 \n<b>Aviso:</b> Esto non lle afecta ás mensaxes gardadas noutros dispositivos ou servidores.</string>
     <string name="delete_file_dialog">Eliminar ficheiro</string>
     <string name="delete_file_dialog_msg">Tes a certeza de querer eliminar este ficheiro\?
@@ -178,7 +178,7 @@
     <string name="unpublish_pgp_message">Tes a certeza de que queres eliminar a túa chave pública OpenPGP do  anuncio de presenza? \nOs teus contactos non poderán enviarche mensaxes cifradas con OpenPGP.</string>
     <string name="openpgp_has_been_published">Publicada a chave pública OpenPGP.</string>
     <string name="mgmt_account_enable">Activar conta</string>
-    <string name="mgmt_account_delete_confirm_text">Tes a certeza de querer eliminar a túa conta? Ao eliminar a conta eliminas todo o historial de chat</string>
+    <string name="mgmt_account_delete_confirm_text">Tes a certeza de querer eliminar a túa conta? Ao eliminar a conta eliminas todo o historial de conversas</string>
     <string name="attach_record_voice">Gravar audio</string>
     <string name="account_settings_jabber_id">Enderezo XMPP</string>
     <string name="block_jabber_id">Bloquear enderezo XMPP</string>
@@ -234,17 +234,17 @@
     <string name="channel_bare_jid_example">canle@sala.exemplo.com</string>
     <string name="save_as_bookmark">Gardar como marcador</string>
     <string name="delete_bookmark">Eliminar marcador</string>
-    <string name="destroy_room">Destruír o chat en grupo</string>
+    <string name="destroy_room">Destruír a parola do grupo</string>
     <string name="destroy_channel">Eliminar canle</string>
-    <string name="destroy_room_dialog">Tes a certeza de querer destruír esta conversa en grupo?
-\n
-\n<b>Aviso:</b> O chat en grupo será totalmente eliminado do servidor.</string>
+    <string name="destroy_room_dialog">Tes a certeza de querer destruír esta conversa en grupo? 
+\n 
+\n<b>Aviso:</b> O parola en grupo será totalmente eliminado do servidor.</string>
     <string name="destroy_channel_dialog">Tes a certeza de querer eliminar a canle?\n\n<b>Aviso:</b> A canle será eliminada completamente do servidor.</string>
-    <string name="could_not_destroy_room">Non se puido eliminar o chat en grupo</string>
+    <string name="could_not_destroy_room">Non se puido eliminar a parola</string>
     <string name="could_not_destroy_channel">Non se puido eliminar a canle</string>
-    <string name="action_edit_subject">Editar o tema do chat en grupo</string>
+    <string name="action_edit_subject">Editar o tema do conversa</string>
     <string name="topic">Tema</string>
-    <string name="joining_conference">Entrando no chat en grupo…</string>
+    <string name="joining_conference">Entrando na conversa do grupo…</string>
     <string name="leave">Saír</string>
     <string name="contact_added_you">Contacto engadido a túa lista de contactos</string>
     <string name="add_back">Volver a engadir</string>
@@ -270,9 +270,11 @@
     <string name="skip">Omitir</string>
     <string name="disable_notifications">Desactivar notificacións</string>
     <string name="enable">Activar</string>
-    <string name="conference_requires_password">O chat en grupo require contrasinal</string>
+    <string name="conference_requires_password">Precisas un contrasinal para entrar</string>
     <string name="enter_password">Introducir contrasinal</string>
-    <string name="request_presence_updates">Primeiro solicita actualizacións de presenza aos contactos.\n\n<small>Esto utilizarase para determinar que aplicación de chat está a utilizar o contacto</small>.</string>
+    <string name="request_presence_updates">Primeiro solicita actualizacións de presenza aos contactos.
+\n
+\n<small>Esto utilizarase para determinar que aplicación de charla está a utilizar o contacto</small>.</string>
     <string name="request_now">Solicitar agora</string>
     <string name="ignore">Ignorar</string>
     <string name="without_mutual_presence_updates"><b>Aviso:</b> Ao enviar esto sen mutuas actualizacións de presenza podería dar problemas.\n\n<small>Vaite a \"Detalles do contacto\" para verificar as subscricións de presenza.</small></string>
@@ -292,12 +294,12 @@
     <string name="pref_autojoin_summary">Poñer marca de \"autojoin\" ao entrar ou deixar unha MUC e reaccionar ás modificacións feitas desde outros clientes.</string>
     <string name="toast_message_omemo_fingerprint">Copiouse a impresión dixital OMEMO ao portapapeis</string>
     <string name="conference_banned">Non podes acceder a esta conversa en grupo</string>
-    <string name="conference_members_only">Este chat en grupo é so para membros</string>
+    <string name="conference_members_only">Este parola en grupo é so para membros</string>
     <string name="conference_resource_constraint">Restrición do recurso</string>
     <string name="conference_kicked">Expulsáronte de esta conversa en grupo</string>
-    <string name="conference_shutdown">Pechouse o chat en grupo</string>
-    <string name="conference_unknown_error">Xa non estás neste chat en grupo</string>
-    <string name="conference_technical_problems">Saíches de este chat en grupo por razóns técnicas</string>
+    <string name="conference_shutdown">Pechouse a parola do grupo</string>
+    <string name="conference_unknown_error">Xa non estás nesta parola en grupo</string>
+    <string name="conference_technical_problems">Saíches desta parola en grupo por razóns técnicas</string>
     <string name="using_account">utilizando a conta %s</string>
     <string name="hosted_on">hospedado en %s</string>
     <string name="checking_x">Comprobando %s no servidor HTTP</string>
@@ -349,8 +351,8 @@
     <string name="pref_show_dynamic_tags">Etiquetas dinámicas</string>
     <string name="pref_show_dynamic_tags_summary">Mostra o estado debaixo do nome do contacto</string>
     <string name="enable_notifications">Activar notificacións</string>
-    <string name="no_conference_server_found">Non se atopou ningún servidor de chat en grupo</string>
-    <string name="conference_creation_failed">Non se puido crear o chat en grupo</string>
+    <string name="no_conference_server_found">Non se atopou servidor para a parola en grupo</string>
+    <string name="conference_creation_failed">Non se puido crear a parola en grupo</string>
     <string name="account_image_description">Avatar da conta</string>
     <string name="copy_omemo_clipboard_description">Copiar impresión OMEMO ao portapapeis</string>
     <string name="regenerate_omemo_key">Rexenerar a chave OMEMO</string>
@@ -382,22 +384,22 @@
     <string name="remove_admin_privileges">Revocar privilexios de administración</string>
     <string name="grant_owner_privileges">Conceder privilexios de propiedade</string>
     <string name="remove_owner_privileges">Retirar privilexios de propiedade</string>
-    <string name="remove_from_room">Eliminar o chat en grupo</string>
+    <string name="remove_from_room">Eliminar a parola en grupo</string>
     <string name="remove_from_channel">Retirar da canle</string>
     <string name="could_not_change_affiliation">Non se puido mudar a afiliación de %s</string>
-    <string name="ban_from_conference">Vetar no chat en grupo</string>
+    <string name="ban_from_conference">Vetar na parola en grupo</string>
     <string name="ban_from_channel">Vetar na canle</string>
     <string name="removing_from_public_conference">Estás a intentar eliminar a %s dunha canle pública. O único xeito de facelo é prohibíndolle o acceso para sempre.</string>
     <string name="ban_now">Rexeitar agora</string>
     <string name="could_not_change_role">Non se puido mudar o rol de %s</string>
-    <string name="conference_options">Configuración do chat privado en grupo</string>
+    <string name="conference_options">Configuración do grupo privado de conversa</string>
     <string name="channel_options">Configuración da canle pública</string>
     <string name="members_only">Privada, só para membros</string>
     <string name="non_anonymous">Facer os enderezos XMPP visibles para calquera</string>
     <string name="moderated">Establecer canle como moderada</string>
     <string name="you_are_not_participating">Non estás a participar</string>
-    <string name="modified_conference_options">Opcións do chat en grupo modificadas!</string>
-    <string name="could_not_modify_conference_options">Non se puideron modificar as opcións do chat en grupo</string>
+    <string name="modified_conference_options">Cambiáronse as opcións da parola en grupo!</string>
+    <string name="could_not_modify_conference_options">Non se puideron modificar as opcións da parola en grupo</string>
     <string name="never">Nunca</string>
     <string name="until_further_notice">Ate novo aviso</string>
     <string name="snooze">Pospor</string>
@@ -430,7 +432,7 @@
     <string name="show_location">Mostrar localización</string>
     <string name="no_application_found_to_display_location">Non se atopou unha app para mostrar a localización</string>
     <string name="location">Localización</string>
-    <string name="title_undo_swipe_out_group_chat">Saír do chat en grupo privado</string>
+    <string name="title_undo_swipe_out_group_chat">Saír da parola en grupo privada</string>
     <string name="title_undo_swipe_out_channel">Deixar a canle pública</string>
     <string name="pref_dont_trust_system_cas_title">Non confiar nas CAs do sistema</string>
     <string name="pref_dont_trust_system_cas_summary">Todos os certificados deberán ser aprobados manualmente</string>
@@ -450,7 +452,7 @@
     <string name="choose_quick_action">Elixe a acción rápida</string>
     <string name="search_contacts">Buscar contactos</string>
     <string name="send_private_message">Enviar mensaxe privada</string>
-    <string name="user_has_left_conference">%1$s saíu do chat en grupo</string>
+    <string name="user_has_left_conference">%1$s saíu da conversa</string>
     <string name="username">Identificador</string>
     <string name="username_hint">Identificador</string>
     <string name="invalid_username">Este non é un identificador válido</string>
@@ -528,7 +530,7 @@
     <string name="this_field_is_required">Este campo é requerido</string>
     <string name="correct_message">Correxir mensaxe</string>
     <string name="send_corrected_message">Enviar mensaxe correxida</string>
-    <string name="no_keys_just_confirm">Xa confiaches na impresión dixital destas persoas. Ao escoller \"Feito\" estás simplemente confirmando que %s é parte deste chat en grupo.</string>
+    <string name="no_keys_just_confirm">Xa confiaches na impresión dixital destas persoas. Ao escoller \"Feito\" estás simplemente confirmando que %s é parte da parola en grupo.</string>
     <string name="this_account_is_disabled">Desactivou esta conta</string>
     <string name="security_error_invalid_file_access">Fallo de seguridade: Acceso non válido ao ficheiro!</string>
     <string name="no_application_to_share_uri">Non se atopou unha app para compartir URI</string>
@@ -553,7 +555,7 @@
     <string name="registration_please_wait">Fallo no rexistro: inténteo de novo</string>
     <string name="registration_password_too_weak">Fallo no rexistro: contrasinal moi feble</string>
     <string name="choose_participants">Escoller participantes</string>
-    <string name="creating_conference">Creando chat en grupo…</string>
+    <string name="creating_conference">Creando parola en grupo…</string>
     <string name="invite_again">Convidar de novo</string>
     <string name="gp_disable">Desactivar</string>
     <string name="gp_short">Breve</string>
@@ -693,14 +695,14 @@
     <string name="error_trustkey_device_list">Non se obtivo a lista de dispositivos</string>
     <string name="error_trustkey_bundle">Non se obtiveron as chaves da cifraxe</string>
     <string name="error_trustkey_hint_mutual">Suxestión: Nalgúns casos, isto pode solucionarse engadíndovos mutuamente as vosas listas de contactos.</string>
-    <string name="disable_encryption_message">Tes a certeza de querer desactivar a cifraxe OMEMO para este chat?
+    <string name="disable_encryption_message">Tes a certeza de querer desactivar a cifraxe OMEMO para esta conversa?
 \nIsto permitirá á administración do teu servidor ler as túas mensaxes, pero pode ser a única forma de comunicarse con persoas que usan clientes obsoletos.</string>
     <string name="disable_now">Desactivar agora</string>
     <string name="draft">Borrador:</string>
     <string name="pref_omemo_setting">Cifraxe OMEMO</string>
-    <string name="pref_omemo_setting_summary_always">Vaise usar sempre OMEMO para chats de grupo privados e conversas personais.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO utilizarase por defecto para os novos chats.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO deberá ser activado explícitamente para os novos chats.</string>
+    <string name="pref_omemo_setting_summary_always">Vaise usar sempre OMEMO para parolas de grupo privadas e conversas personais.</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO actívase de xeito predeterminado para as novas conversas.</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO deberá activarse explícitamente para as novas conversas.</string>
     <string name="create_shortcut">Crear acceso directo</string>
     <string name="default_on">Activado por defecto</string>
     <string name="default_off">Desactivado por defecto</string>
@@ -721,23 +723,23 @@
     <string name="no_microphone_permission">Permitir que %1$s acceda ao micrófono</string>
     <string name="search_messages">Buscar mensaxes</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Ver chat</string>
+    <string name="view_conversation">Ver conversa</string>
     <string name="pref_use_share_location_plugin">Complemento para Compartir Localización</string>
     <string name="pref_use_share_location_plugin_summary">Utiliza o Complemento para Compartir Localización no lugar do mapa incluído</string>
     <string name="copy_link">Copiar a dirección web</string>
     <string name="copy_jabber_id">Copiar enderezo XMPP</string>
     <string name="p1_s3_filetransfer">Compartición de ficheiro HTTP para S3</string>
     <string name="pref_start_search">Busca directa</string>
-    <string name="pref_start_search_summary">Na pantalla \'Novo chat\' abrir teclado e pór o cursor no campo de busca</string>
-    <string name="group_chat_avatar">Avatar do chat en grupo</string>
-    <string name="host_does_not_support_group_chat_avatars">O servidor non ten soporte para avatar do chat en grupo</string>
-    <string name="only_the_owner_can_change_group_chat_avatar">Só a propietaria pode cambiar o avatar do chat</string>
+    <string name="pref_start_search_summary">Na pantalla \'Nova conversa\' abrir teclado e pór o cursor no campo de busca</string>
+    <string name="group_chat_avatar">Avatar da parola en grupo</string>
+    <string name="host_does_not_support_group_chat_avatars">O servidor non ten soporte para avatar da parola en grupo</string>
+    <string name="only_the_owner_can_change_group_chat_avatar">Só a propietaria pode cambiar o avatar da parola</string>
     <string name="contact_name">Nome do contacto</string>
     <string name="nickname">Alcume</string>
     <string name="group_chat_name">Nome</string>
     <string name="providing_a_name_is_optional">Proporcionar un nome é optativo</string>
-    <string name="create_dialog_group_chat_name">Nome do chat en grupo</string>
-    <string name="conference_destroyed">Este chat en grupo foi destruído</string>
+    <string name="create_dialog_group_chat_name">Nome da parola en grupo</string>
+    <string name="conference_destroyed">A parola en grupo foi eliminada</string>
     <string name="unable_to_save_recording">Non se gardou a gravación</string>
     <string name="foreground_service_channel_name">Servizo en segundo plano</string>
     <string name="foreground_service_channel_description">Esta categoría de notificacións utilízase para mostrar unha notificación permanente indicando que %1$s está a funcionar.</string>
@@ -831,9 +833,9 @@
     <string name="unable_to_decrypt_backup">Non se puido descifrar a copia. É correcto o contrasinal?</string>
     <string name="backup_channel_name">Respaldar &amp; Restaurar</string>
     <string name="enter_jabber_id">Introducir enderezo XMPP</string>
-    <string name="create_group_chat">Crear chat en grupo</string>
+    <string name="create_group_chat">Crear parola en grupo</string>
     <string name="join_public_channel">Unirse a canle pública</string>
-    <string name="create_private_group_chat">Crear chat privado en grupo</string>
+    <string name="create_private_group_chat">Crear parola en grupo privada</string>
     <string name="create_public_channel">Crear canle pública</string>
     <string name="create_dialog_channel_name">Nome da canle</string>
     <string name="xmpp_address">Enderezo XMPP</string>
@@ -878,7 +880,7 @@
     <string name="unable_to_perform_this_action">Non se puido completar a acción</string>
     <string name="open_join_dialog">Unirse a canle pública…</string>
     <string name="sharing_application_not_grant_permission">A aplicación que comparte non proporciona permiso para acceder ao ficheiro.</string>
-    <string name="group_chats_and_channels">Chats en grupo e Canles</string>
+    <string name="group_chats_and_channels">Parolas en grupo e Canles</string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">Servidor local</string>
     <string name="pref_channel_discovery_summary">A maioría das usuarias debería escoller \'jabber.network\' para obter mellores suxestións desde o ecosistema público XMPP.</string>
@@ -939,8 +941,8 @@
     <string name="remove_from_favorites">Non fixar enriba</string>
     <string name="gpx_track">Ruta GPX</string>
     <string name="could_not_correct_message">No se pode correxir a mensaxe</string>
-    <string name="search_all_conversations">Todos os chats</string>
-    <string name="search_this_conversation">Este chat</string>
+    <string name="search_all_conversations">Todos as conversas</string>
+    <string name="search_this_conversation">Esta conversa</string>
     <string name="your_avatar">O teu avatar</string>
     <string name="avatar_for_x">Avatar para %s</string>
     <string name="encrypted_with_omemo">Cifrada con OMEMO</string>
@@ -950,7 +952,7 @@
     <string name="record_voice_mail">Gravar correo de voz</string>
     <string name="play_audio">Reproducir audio</string>
     <string name="pause_audio">Pausar audio</string>
-    <string name="add_contact_or_create_or_join_group_chat">Engade un contacto, crea o únete a un chat en grupo ou descubre canles</string>
+    <string name="add_contact_or_create_or_join_group_chat">Engade un contacto, crea o únete a unha parola en grupo ou descubre canles</string>
     <plurals name="view_users">
         <item quantity="one">Ver %1$d Participante</item>
         <item quantity="other">Ver %1$d Participantes</item>
@@ -987,8 +989,8 @@
     <string name="outgoing_call_timestamp">Chamada saínte · %s</string>
     <string name="delete_from_server">Eliminar a conta no servidor</string>
     <string name="could_not_delete_account_from_server">Non se puido eliminar a conta no servidor</string>
-    <string name="search_group_chats">Buscar chats en grupo</string>
-    <string name="group_chats">Chats en grupo</string>
+    <string name="search_group_chats">Buscar parolas en grupo</string>
+    <string name="group_chats">Parolas en grupo</string>
     <string name="restore_warning_continued">Non intentes restablecer unha copia de apoio que non tiveses creado ti!</string>
     <string name="outdated_backup_file_format">Estás intentando importar un ficheiro de apoio co formato antigo</string>
     <string name="audiobook">Audiolibro</string>
@@ -1009,25 +1011,25 @@
     <string name="no_permission_to_place_call">Sen permiso para chamar por teléfono</string>
     <string name="call_integration_not_available">Non está dispoñible o servizo de chamadas!</string>
     <string name="rtp_state_contact_offline">O contacto non está dispoñible</string>
-    <string name="remove_bookmark_and_close">Queres eliminar o marcador para %s e arquivar o chat?</string>
+    <string name="remove_bookmark_and_close">Queres eliminar o marcador para %s e arquivar a conversa?</string>
     <string name="remove_bookmark">Queres eliminar o marcador para %s?</string>
-    <string name="delete_and_close">Eliminar e Arquivar o chat</string>
+    <string name="delete_and_close">Eliminar e Arquivar a conversa</string>
     <string name="pref_use_colorful_bubbles_summary">Cor de fondo diferente para as mensaxes enviadas e as recibidas</string>
-    <string name="pref_use_colorful_bubbles">Burbullas coloridas nos chats</string>
+    <string name="pref_use_colorful_bubbles">Burbullas coloridas nas conversas</string>
     <string name="pref_dynamic_colors">Cores dinámicas</string>
     <string name="pref_dynamic_colors_summary">Cores do sistema (Material You)</string>
     <string name="title_activity_share_with">Compartir con…</string>
     <string name="action_archive_chat">Arquivar conversa</string>
-    <string name="title_activity_new_chat">Novo chat</string>
-    <string name="start_chat">Inciar chat</string>
-    <string name="archive_this_chat">Eliminar o chat</string>
+    <string name="title_activity_new_chat">Nova conversa</string>
+    <string name="start_chat">Iniciar conversa</string>
+    <string name="archive_this_chat">E despois eliminar a charla</string>
     <string name="welcome_header">Únete á Conversa</string>
-    <string name="switch_to_chat">Cambiar ao chat</string>
+    <string name="switch_to_chat">Cambiar á conversa</string>
     <string name="no_certificate_selected">Sen certificado cliente seleccionado!</string>
     <string name="channel_discover_opt_in_message">O descubrimento de canles usa un servizo alleo chamado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Ao usar esta ferramenta vas enviar o teu enderezo IP e termos de busca a ese servizo. Le a súa &lt;a href=https://search.jabber.network/privacy&gt;Política de Privacidade&lt;/a&gt; para saber máis.</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_chat">O código de barras non contén impresións dixitais para este chat.</string>
-    <string name="corresponding_chats_closed">Arquiváronse os chats correspondentes.</string>
-    <string name="title_undo_swipe_out_chat">Chat arquivado</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">O código de barras non contén impresións dixitais para esta conversa.</string>
+    <string name="corresponding_chats_closed">Arquiváronse as conversas correspondentes.</string>
+    <string name="title_undo_swipe_out_chat">Arquivouse a conversa</string>
     <string name="pref_summary_appearance">Decorado, Cores, Capturas, Escritura</string>
     <string name="pref_title_security">Seguridade</string>
     <string name="notifications">Notificacións</string>
