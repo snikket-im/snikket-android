@@ -1,0 +1,3 @@
+* Bereitstellen höherer Werte für den Dateiempfang
+* Bereitstellen von mehr Informationen in „Server-Info“
+* Diverse Fehlerbehebungen
