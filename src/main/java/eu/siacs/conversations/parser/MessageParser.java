@@ -902,10 +902,14 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
                                             serverMsgId,
                                             timestamp);
                             final Contact contact = account.getRoster().getContact(from);
-                            if (mXmppConnectionService.confirmMessages()
-                                    && !contact.isSelf()
-                                    && remoteMsgId != null
-                                    && contact.showInContactList()) {
+                            // this is the same condition that is found in JingleRtpConnection for
+                            // the 'ringing' response. Responding with delivery receipts predates
+                            // the 'ringing' spec'd
+                            final boolean sendReceipts =
+                                    (mXmppConnectionService.confirmMessages()
+                                                    && contact.showInContactList())
+                                            || Config.JINGLE_MESSAGE_INIT_STRICT_OFFLINE_CHECK;
+                            if (remoteMsgId != null && !contact.isSelf() && sendReceipts) {
                                 processMessageReceipts(account, packet, remoteMsgId, null);
                             }
                         } else if ((query != null && query.isCatchup()) || !offlineMessagesRetrieved) {
