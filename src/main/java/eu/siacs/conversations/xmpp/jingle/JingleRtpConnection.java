@@ -256,8 +256,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
     }
 
-    private void receiveTransportInfo(
-            final Iq jinglePacket, final RtpContentMap contentMap) {
+    private void receiveTransportInfo(final Iq jinglePacket, final RtpContentMap contentMap) {
         final Set<Map.Entry<String, DescriptionTransport<RtpDescription, IceUdpTransportInfo>>>
                 candidates = contentMap.contents.entrySet();
         final RtpContentMap remote = getRemoteContentMap();
@@ -345,8 +344,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
     }
 
-    private void receiveContentAdd(
-            final Iq jinglePacket, final RtpContentMap modification) {
+    private void receiveContentAdd(final Iq jinglePacket, final RtpContentMap modification) {
         final RtpContentMap remote = getRemoteContentMap();
         if (!Collections.disjoint(modification.getNames(), remote.getNames())) {
             respondOk(jinglePacket);
@@ -890,8 +888,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void sendContentAccept(final RtpContentMap contentAcceptMap) {
-        final Iq iq =
-                contentAcceptMap.toJinglePacket(Jingle.Action.CONTENT_ACCEPT, id.sessionId);
+        final Iq iq = contentAcceptMap.toJinglePacket(Jingle.Action.CONTENT_ACCEPT, id.sessionId);
         send(iq);
     }
 
@@ -907,9 +904,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private void rejectContentAdd(final RtpContentMap contentMap) {
         final Iq iq =
-                contentMap
-                        .toStub()
-                        .toJinglePacket(Jingle.Action.CONTENT_REJECT, id.sessionId);
+                contentMap.toStub().toJinglePacket(Jingle.Action.CONTENT_REJECT, id.sessionId);
         Log.d(
                 Config.LOGTAG,
                 id.getAccount().getJid().asBareJid()
@@ -918,8 +913,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         send(iq);
     }
 
-    private boolean checkForIceRestart(
-            final Iq jinglePacket, final RtpContentMap rtpContentMap) {
+    private boolean checkForIceRestart(final Iq jinglePacket, final RtpContentMap rtpContentMap) {
         final RtpContentMap existing = getRemoteContentMap();
         final Set<IceUdpTransportInfo.Credentials> existingCredentials;
         final IceUdpTransportInfo.Credentials newCredentials;
@@ -998,9 +992,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private boolean applyIceRestart(
-            final Iq jinglePacket,
-            final RtpContentMap restartContentMap,
-            final boolean isOffer)
+            final Iq jinglePacket, final RtpContentMap restartContentMap, final boolean isOffer)
             throws ExecutionException, InterruptedException {
         final SessionDescription sessionDescription =
                 SessionDescription.of(restartContentMap, isResponder());
@@ -1165,8 +1157,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 MoreExecutors.directExecutor());
     }
 
-    private void receiveSessionInitiate(
-            final Iq jinglePacket, final RtpContentMap contentMap) {
+    private void receiveSessionInitiate(final Iq jinglePacket, final RtpContentMap contentMap) {
         try {
             contentMap.requireContentDescriptions();
             contentMap.requireDTLSFingerprint(true);
@@ -1256,8 +1247,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 MoreExecutors.directExecutor());
     }
 
-    private void receiveSessionAccept(
-            final Iq jinglePacket, final RtpContentMap contentMap) {
+    private void receiveSessionAccept(final Iq jinglePacket, final RtpContentMap contentMap) {
         try {
             contentMap.requireContentDescriptions();
             contentMap.requireDTLSFingerprint();
@@ -1401,8 +1391,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         sendSessionTerminate(Reason.ofThrowable(rootCause), rootCause.getMessage());
     }
 
-    private void failureToPerformAction(
-            final Jingle.Action action, final Throwable throwable) {
+    private void failureToPerformAction(final Jingle.Action action, final Throwable throwable) {
         if (isTerminated()) {
             return;
         }
@@ -1676,7 +1665,11 @@ public class JingleRtpConnection extends AbstractJingleConnection
             }
             this.message.setTime(timestamp);
             startRinging();
-            if (xmppConnectionService.confirmMessages() && id.getContact().showInContactList()) {
+            // in environments where we always use discovery timeouts we always want to respond with
+            // 'ringing'
+            if (Config.JINGLE_MESSAGE_INIT_STRICT_DEVICE_TIMEOUT
+                    || (xmppConnectionService.confirmMessages()
+                            && id.getContact().showInContactList())) {
                 sendJingleMessage("ringing");
             }
         } else {
@@ -2011,8 +2004,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                             + contentName);
             return;
         }
-        final Iq iq =
-                transportInfo.toJinglePacket(Jingle.Action.TRANSPORT_INFO, id.sessionId);
+        final Iq iq = transportInfo.toJinglePacket(Jingle.Action.TRANSPORT_INFO, id.sessionId);
         send(iq);
     }
 
@@ -2368,7 +2360,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private void sendJingleMessage(final String action, final Jid to) {
         final var messagePacket = new im.conversations.android.xmpp.model.stanza.Message();
-        messagePacket.setType(im.conversations.android.xmpp.model.stanza.Message.Type.CHAT); // we want to carbon copy those
+        messagePacket.setType(
+                im.conversations.android.xmpp.model.stanza.Message.Type
+                        .CHAT); // we want to carbon copy those
         messagePacket.setTo(to);
         final Element intent =
                 messagePacket
@@ -2548,8 +2542,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private void initiateIceRestart(final RtpContentMap rtpContentMap) {
         final RtpContentMap transportInfo = rtpContentMap.transportInfo();
-        final Iq iq =
-                transportInfo.toJinglePacket(Jingle.Action.TRANSPORT_INFO, id.sessionId);
+        final Iq iq = transportInfo.toJinglePacket(Jingle.Action.TRANSPORT_INFO, id.sessionId);
         Log.d(Config.LOGTAG, "initiating ice restart: " + iq);
         iq.setTo(id.with);
         xmppConnectionService.sendIqPacket(
@@ -2604,8 +2597,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private void sendContentAdd(final RtpContentMap contentAdd) {
 
-        final Iq iq =
-                contentAdd.toJinglePacket(Jingle.Action.CONTENT_ADD, id.sessionId);
+        final Iq iq = contentAdd.toJinglePacket(Jingle.Action.CONTENT_ADD, id.sessionId);
         iq.setTo(id.with);
         xmppConnectionService.sendIqPacket(
                 id.account,
