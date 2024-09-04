@@ -88,7 +88,7 @@
 \n
 \n<b>Предупреждение:</b> Данная операция не удалит копии этого файла, хранящиеся на других устройствах или серверах. </string>
     <string name="choose_presence">Выберите устройство</string>
-    <string name="send_unencrypted_message">Отправить сообщение чистым текстом</string>
+    <string name="send_unencrypted_message">Отправить сообщение без шифрования</string>
     <string name="send_message">Сообщение</string>
     <string name="send_message_to_x">Сообщение для %s</string>
     <string name="send_omemo_x509_message">v\\OMEMO-зашифр. сообщение</string>
@@ -464,7 +464,7 @@
     <string name="pref_dnd_on_silent_mode_summary">Устанавливает статус \"Не беспокоить\", когда устройство в беззвучном режиме</string>
     <string name="pref_treat_vibrate_as_silent">Не доступен в режиме вибрации</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Устанавливает статус \"Не беспокоить\", когда устройство в режиме вибрации</string>
-    <string name="pref_show_connection_options">Имя хоста и Порт</string>
+    <string name="pref_show_connection_options">Имя хоста и порт</string>
     <string name="pref_show_connection_options_summary">Показывать расширенные настройки соединения при настройке аккаунта</string>
     <string name="hostname_example">xmpp.example.com</string>
     <string name="action_add_account_with_certificate">Авторизироваться с помощью сертификата</string>
@@ -557,7 +557,7 @@
     <string name="gp_short">Короткий</string>
     <string name="gp_medium">Средний</string>
     <string name="gp_long">Длинный</string>
-    <string name="pref_broadcast_last_activity">Оповещать других об использовании</string>
+    <string name="pref_broadcast_last_activity">Последняя активность</string>
     <string name="pref_broadcast_last_activity_summary">Позволяет вашим контактам видеть, когда вы в последний раз использовали приложение</string>
     <string name="pref_privacy">Приватность</string>
     <string name="pref_theme_options">Тема</string>
@@ -1096,4 +1096,14 @@
     <string name="pref_category_server_connection">Соединение с сервером</string>
     <string name="pref_accept_invites_from_strangers">Приглашения от незнакомцев</string>
     <string name="pref_category_engagement_notifications">Уведомления о взаимодействии</string>
+    <string name="server_info_login_mechanism">Способ входа</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Звонок через наушники. Нажмите для переключения на динамик.</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Звонок через динамик. Нажмите для переключения на наушники.</string>
+    <string name="video_is_disabled_tap_to_enable">Видео не активно. Нажмите для включения.</string>
+    <string name="call_is_using_earpiece">Звонок через наушники.</string>
+    <string name="call_is_using_wired_headset">Звонок через проводные наушники</string>
+    <string name="call_is_using_speaker">Звонок через динамик.</string>
+    <string name="call_is_using_bluetooth">Звонок через Bluetooth.</string>
+    <string name="flip_camera">Сменить камеру</string>
+    <string name="video_is_enabled_tap_to_disable">Видео активно. Нажмите для выключения.</string>
 </resources>
