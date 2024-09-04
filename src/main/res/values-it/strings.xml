@@ -1100,4 +1100,7 @@
     <string name="video_is_enabled_tap_to_disable">Il video è attivo. Tocca per disattivarlo.</string>
     <string name="video_is_disabled_tap_to_enable">Il video è disattivato. Tocca per attivarlo.</string>
     <string name="flip_camera">Cambia fotocamera</string>
+    <string name="server_info_login_mechanism">Meccanismo di accesso</string>
+    <string name="server_info_bind2">XEP-0386: Bind 2</string>
+    <string name="server_info_sasl2">XEP-0388: Profilo SASL estensibile</string>
 </resources>
