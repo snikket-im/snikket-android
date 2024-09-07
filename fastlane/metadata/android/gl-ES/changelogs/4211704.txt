@@ -1,0 +1,3 @@
+* ofrecer valores máis altos para descargas automáticas
+* proporcionar mais «Información sobre o servidor»
+* arranxo de outros problemas
