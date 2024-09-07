@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="action_account">Agordi konton</string>
+    <string name="action_contact_details">Detaloj de konato</string>
+    <string name="action_muc_details">Detaloj de anaro</string>
+    <string name="channel_details">Detaloj de komunikilo</string>
+    <string name="action_add_account">Aldoni konton</string>
+    <string name="action_edit_contact">Alinomi</string>
+    <string name="action_block_contact">Bari konaton</string>
+    <string name="action_unblock_contact">Malbari konaton</string>
+    <string name="action_settings">Agordoj</string>
+    <string name="action_accounts">Agordi kontojn</string>
+    <string name="action_archive_chat">kestigi parolujon</string>
+    <string name="action_block_participant">Bari kunsidanton</string>
+    <string name="action_unblock_participant">Malbari kunsidanton</string>
+</resources>
