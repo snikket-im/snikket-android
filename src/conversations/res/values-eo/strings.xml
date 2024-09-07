@@ -9,8 +9,8 @@
     <string name="if_contact_is_nearby_use_qr">Se via kontakto estas proksime, ili ankaŭ povas skani la suban kodon por akcepti vian inviton.</string>
     <string name="pick_a_server">Elekti vian XMPP-provizanton</string>
     <string name="share_invite_with">Kunhavigi inviton kun…</string>
-    <string name="server_select_text">XMPP estas provizanta sendependa tujmesaĝa reto. Vi povas uzi ĉi tiun klienton per kia ajn XMPP-servilo, kiun vi elektas.
-\nTamen por via komforto ni faciligis krei konton ĉe conversations.im; provizanto speciale taŭga por la uzo kun Conversations.</string>
+    <string name="server_select_text">XMPP tujmesaĝa reto malcentra de serviloj. Oni povas uzi ĉi tiun programon per ajna XMPP-servilo, kiun oni elektas.
+\nTamen por via placô ni faciligis krei konton ĉe conversations.im; servilo krome taŭga por la uzo kun Conversations.</string>
     <string name="magic_create_text_fixed">Vi estis invitita al %1$s. Uzantnomo jam estas elektita por vi. Ni gvidos vin tra la procezo de kreado de konto.
 \nVi povos komuniki kun uzantoj de aliaj provizantoj donante al ili vian plenan XMPP-adreson.</string>
     <string name="improperly_formatted_provisioning">Nedece formatita provizokodo</string>
