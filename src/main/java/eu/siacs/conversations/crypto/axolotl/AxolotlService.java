@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -314,7 +315,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         if (me) {
             deviceIds.remove(getOwnDeviceId());
         }
-        Set<Integer> expiredDevices = new HashSet<>(axolotlStore.getSubDeviceSessions(jid.asBareJid().toString()));
+        final Set<Integer> expiredDevices = new HashSet<>(axolotlStore.getSubDeviceSessions(jid.asBareJid().toString()));
         expiredDevices.removeAll(deviceIds);
         for (Integer deviceId : expiredDevices) {
             SignalProtocolAddress address = new SignalProtocolAddress(jid.asBareJid().toString(), deviceId);
@@ -325,8 +326,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                 }
             }
         }
-        Set<Integer> newDevices = new HashSet<>(deviceIds);
-        for (Integer deviceId : newDevices) {
+        final Set<Integer> newDevices = ImmutableSet.copyOf(deviceIds);
+        for (final Integer deviceId : newDevices) {
             SignalProtocolAddress address = new SignalProtocolAddress(jid.asBareJid().toString(), deviceId);
             XmppAxolotlSession session = sessions.get(address);
             if (session != null && session.getFingerprint() != null) {
@@ -341,7 +342,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                 needsPublishing |= deviceIds.removeAll(getExpiredDevices());
             }
             needsPublishing |= this.changeAccessMode.get();
-            for (Integer deviceId : deviceIds) {
+            for (final Integer deviceId : deviceIds) {
                 SignalProtocolAddress ownDeviceAddress = new SignalProtocolAddress(jid.asBareJid().toString(), deviceId);
                 if (sessions.get(ownDeviceAddress) == null) {
                     FetchStatus status = fetchStatusMap.get(ownDeviceAddress);
@@ -352,6 +353,9 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                 }
             }
             if (needsPublishing) {
+                // do not run next device list update notification through de-duplication (might get
+                // skipped by CSI)
+                this.lastDeviceListNotificationHash = 0;
                 publishOwnDeviceId(deviceIds);
             }
         }
@@ -426,8 +430,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         return devices;
     }
 
-    private void publishOwnDeviceId(Set<Integer> deviceIds) {
-        Set<Integer> deviceIdsCopy = new HashSet<>(deviceIds);
+    private void publishOwnDeviceId(final Set<Integer> deviceIds) {
+        final Set<Integer> deviceIdsCopy = new HashSet<>(deviceIds);
         Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "publishing own device ids");
         if (deviceIdsCopy.isEmpty()) {
             if (numPublishTriesOnEmptyPep >= publishTriesThreshold) {
