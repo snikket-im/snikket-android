@@ -16,6 +16,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -30,6 +31,7 @@ import eu.siacs.conversations.xmpp.jingle.Media;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -37,17 +39,28 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class CallIntegration extends Connection {
 
     /**
-     * OnePlus 6 (Android 8.1-11) Device is buggy and always starts the OS call screen even though
-     * we want to be self managed
-     *
-     * <p>Samsung Galaxy Tab A claims to have FEATURE_CONNECTION_SERVICE but then throws
+     * Samsung Galaxy Tab A claims to have FEATURE_CONNECTION_SERVICE but then throws
      * SecurityException when invoking placeCall(). Both Stock and LineageOS have this problem.
      *
      * <p>Lenovo Yoga Smart Tab YT-X705F claims to have FEATURE_CONNECTION_SERVICE but throws
      * SecurityException
      */
     private static final List<String> BROKEN_DEVICE_MODELS =
-            Arrays.asList("OnePlus6", "gtaxlwifi", "YT-X705F");
+            Arrays.asList("gtaxlwifi", "a5y17lte", "YT-X705F");
+
+    /**
+     * all Realme devices at least up to and including Android 11 are broken
+     *
+     * <p>we are relatively sure that old Oppo devices are broken too. We get reports of 'number not
+     * sent' from Oppo R15x (Android 10)
+     *
+     * <p>OnePlus 6 (Android 8.1-11) Device is buggy and always starts the OS call screen even
+     * though we want to be self managed
+     *
+     * <p>a bunch of OnePlus devices are broken in other ways
+     */
+    private static final List<String> BROKEN_MANUFACTURES_UP_TO_11 =
+            Arrays.asList("realme", "oppo", "oneplus");
 
     public static final int DEFAULT_TONE_VOLUME = 60;
     private static final int DEFAULT_MEDIA_PLAYER_VOLUME = 90;
@@ -529,25 +542,18 @@ public class CallIntegration extends Connection {
     }
 
     private static boolean isDeviceModelSupported() {
+        final var manufacturer = Strings.nullToEmpty(Build.MANUFACTURER).toLowerCase(Locale.ROOT);
         if (BROKEN_DEVICE_MODELS.contains(Build.DEVICE)) {
             return false;
         }
-        // all Realme devices at least up to and including Android 11 are broken
-        if ("realme".equalsIgnoreCase(Build.MANUFACTURER)
-                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
-            return false;
-        }
-        // we are relatively sure that old Oppo devices are broken too. We get reports of 'number
-        // not sent' from Oppo R15x (Android 10)
-        if ("OPPO".equalsIgnoreCase(Build.MANUFACTURER)
+        if (BROKEN_MANUFACTURES_UP_TO_11.contains(manufacturer)
                 && Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
             return false;
         }
         // we only know of one Umidigi device (BISON_GT2_5G) that doesn't work (audio is not being
         // routed properly) However with those devices being extremely rare it's impossible to gauge
         // how many might be effected and no Naomi Wu around to clarify with the company directly
-        if ("umidigi".equalsIgnoreCase(Build.MANUFACTURER)
-                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+        if ("umidigi".equals(manufacturer) && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
             return false;
         }
         return true;
