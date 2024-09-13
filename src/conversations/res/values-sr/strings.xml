@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pick_a_server">Одаберите вашег ИксМПП провајдера</string>
-    <string name="use_conversations.im">Користи conversations.im</string>
+    <string name="pick_a_server">Одабери свог XMPP провајдера</string>
+    <string name="use_conversations.im">Одабери conversations.im</string>
     <string name="create_new_account">Направи нови налог</string>
-    <string name="do_you_have_an_account">Да ли већ имате ИксМПП налог? Извесно је да га имате ако користите неки ИксМПП клијент или сте раније користили Конверзацију. Ако немате, сада можете направити нови ИксМПП налог.\nСавет: неки поштански провајдери такође омогућавају и ИксМПП налоге.</string>
-    <string name="server_select_text">ИксМПП је мрежа брзих порука, независна од провајдера. Овај клијент можете користити уз било који сервер по вашем избору.
-\nДа бисмо вам олакшали, омогућили смо креирање налога на conversations.im; провајдеру специјално прилаг.ођеном за коришћење уз Конверзацију</string>
-    <string name="your_server_invitation">Ваша серверска позивница</string>
+    <string name="do_you_have_an_account">Да ли већ имаш XMPP налог? Могуће је да имаш ако већ користиш неки други XMPP клијент или ако си раније користио/ла Conversations. Ако немаш, можеш сада да направиш нови XMPP налог.
+\nУспут: поједини имејл провајдери пружају и XMPP налоге.</string>
+    <string name="server_select_text">XMPP је мрежа за инстант поруке, независна од провајдера. Ову апликацију можеш да користиш уз било који XMPP сервер по свом избору.
+\nРади погодности, омогућили смо лако креирање налога на conversations.im - провајдер посебно прилагођен за коришћење уз Conversations.</string>
+    <string name="your_server_invitation">Твоја позивница на сервер</string>
+    <string name="magic_create_text_on_x">Позван/а си на %1$s. Спровешћемо те кроз поступак прављења налога.
+\nАко одабереш %1$s као провајдера можеш да комуницираш са корисницима других провајдера тако што им проследиш своју пуну XMPP адресу.</string>
+    <string name="improperly_formatted_provisioning">Неисправно форматиран провизиони кôд</string>
+    <string name="tap_share_button_send_invite">Притисни дугме за дељење како би свом контакту послао/ла позивницу на %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Ако је твој контакт у близини, може да скенира кôд у наставку како би прихватио твоју позивницу.</string>
+    <string name="easy_invite_share_text">Пријави се на %1$s и разговарај са мном: %2$s</string>
+    <string name="share_invite_with">Подели позивницу са…</string>
+    <string name="magic_create_text_fixed">Позван/а си на %1$s. Корисничко име је већ одабрано за тебе. Спровешћемо те кроз поступак прављења налога.
+\nМожеш да комуницираш са корисницима других провајдера тако што им проследиш своју пуну XMPP адресу.</string>
 </resources>
