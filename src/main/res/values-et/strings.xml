@@ -1,4 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Seadistused</string>
+    <string name="action_edit_contact">Muuda nime</string>
+    <string name="action_add_phone_book">Lisa aadressiraamatusse</string>
+    <string name="title_activity_choose_contacts">Vali kontaktid</string>
+    <string name="minute_ago">1 minut tagasi</string>
+    <string name="action_contact_details">Kontaktandmed</string>
+    <string name="action_muc_details">Rühmavestluse üksikasjad</string>
+    <string name="channel_details">Kanali teave</string>
+    <string name="action_delete_contact">Kustuta serveri kontaktiloendist</string>
+    <string name="action_block_contact">Blokeeri kontakt</string>
+    <string name="action_accounts">Halda kasutajakontosid</string>
+    <string name="action_block_domain">Blokeeri domeen</string>
+    <string name="visitor">Külaline</string>
+    <string name="action_add_account">Lisa konto</string>
+    <string name="action_unblock_domain">Eemalda domeeni blokeering</string>
+    <string name="action_block_participant">Blokeeri osaleja</string>
+    <string name="title_activity_share_via_account">Jaga kasutajakontoga</string>
+    <string name="minutes_ago">%d minutit tagasi</string>
+    <string name="sending">saadame…</string>
+    <string name="owner">Omanik</string>
+    <string name="moderator">Moderaator</string>
+    <string name="participant">Osaleja</string>
+    <string name="action_account">Halda kasutajakontot</string>
+    <string name="action_archive_chat">Arhiveeri vestlus</string>
+    <string name="action_unblock_contact">Eemalda kontakti blokeering</string>
+    <string name="action_unblock_participant">Eemalda osaleja blokeering</string>
+    <string name="title_activity_manage_accounts">Halda kasutajakontosid</string>
+    <string name="title_activity_settings">Seadistused</string>
+    <string name="title_activity_share_with">Jaga…</string>
+    <string name="title_activity_choose_contact">Vali kontakt</string>
+    <string name="title_activity_block_list">Blokeeringute loend</string>
+    <string name="title_activity_new_chat">Uus vestlus</string>
+    <string name="just_now">just nüüd</string>
+    <string name="message_decrypting">Dekrüptime sõnumit. Palun oota…</string>
+    <string name="pgp_message">OpenPGP abil krüptitud sõnum</string>
+    <string name="nick_in_use">Hüüdnimi on juba kasutusel</string>
+    <string name="invalid_muc_nick">Vigane hüüdnimi</string>
+    <string name="admin">Peakasutaja</string>
+    <plurals name="x_unread_conversations">
+        <item quantity="one">%d lugemata vestlus</item>
+        <item quantity="other">%d lugemata vestlust</item>
+    </plurals>
 </resources>
