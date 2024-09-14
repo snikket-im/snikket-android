@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pref_notification_grace_period_summary">Временски период током којег је Quicksy утишан након што примети активност на другом уређају</string>
+    <string name="pref_broadcast_last_activity_summary">Обавести све своје контакте када користиш Quicksy</string>
+    <string name="set_profile_picture">Quicksy профилна слика</string>
+    <string name="not_available_in_your_country">Quicksy није доступан у твојој земљи.</string>
+    <string name="unable_to_verify_server_identity">Није могуће оверити идентитет сервера.</string>
+    <string name="unknown_security_error">Непозната безбедносна грешка.</string>
+    <string name="timeout_while_connecting_to_server">Нема одзива приликом повезивања на сервер.</string>
+    <string name="pref_never_send_crash_summary">Слањем извештаја о грешкама помажеш даљем развоју Quicksy-ја</string>
+    <string name="huawei_protected_apps_summary">Да би наставио/ла да примаш обавештења, чак и када је екран угашен, требало би да додаш Quicksy у листу заштићених апликација.</string>
+</resources>
