@@ -54,7 +54,7 @@ should consider either switching to an XMPP server that does or — even better 
 run your own XMPP server for you and your friends. These XEP's are:
 
 * [XEP-0065: SOCKS5 Bytestreams](http://xmpp.org/extensions/xep-0065.html) will be used to transfer
-  files if both parties are behind a firewall (NAT).
+  files if both parties are behind a firewall or NAT.
 * [XEP-0163: Personal Eventing Protocol](http://xmpp.org/extensions/xep-0163.html) for avatars and OMEMO.
 * [XEP-0191: Blocking command](http://xmpp.org/extensions/xep-0191.html) lets you blacklist spammers or block contacts
   without removing them from your roster.
