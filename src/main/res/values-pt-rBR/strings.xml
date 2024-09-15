@@ -40,7 +40,7 @@
     <string name="moderator">Moderador</string>
     <string name="participant">Participante</string>
     <string name="visitor">Visitante</string>
-    <string name="remove_contact_text">Gostaria de remover %s da sua lista de contatos? O chat com este contato não será removido.</string>
+    <string name="remove_contact_text">Gostaria de remover %s da sua lista de contatos? A conversa com este contato não será removida.</string>
     <string name="block_contact_text">Deseja bloquear o recebimento de mensagens de %s?</string>
     <string name="unblock_contact_text">Deseja desbloquear o recebimento de mensagens de %s?</string>
     <string name="block_domain_text">Bloquear todos os contatos de %s?</string>
@@ -78,9 +78,9 @@
     <string name="preparing_images">Preparando para enviar as imagens</string>
     <string name="sharing_files_please_wait">Compartilhando arquivos. Por favor, aguarde…</string>
     <string name="action_clear_history">Limpar o histórico</string>
-    <string name="clear_conversation_history">Limpar histórico do chat</string>
-    <string name="clear_histor_msg">Deseja excluir todas as mensagens dessa conversa?
-\n
+    <string name="clear_conversation_history">Limpar histórico da conversa</string>
+    <string name="clear_histor_msg">Deseja excluir todas as mensagens desta conversa? 
+\n 
 \n<b>Atenção:</b> Isso não afetará mensagens armazenadas em outros dispositivos ou servidores.</string>
     <string name="delete_file_dialog">Excluir arquivo</string>
     <string name="delete_file_dialog_msg">Deseja realmente excluir este arquivo?
@@ -179,7 +179,7 @@
     <string name="unpublish_pgp_message">Tem certeza que deseja remover sua chave pública OpenPGP do seu anúncio de presença?\nSeus contatos não poderão mais enviar mensagens criptografadas com o OpenPGP para você.</string>
     <string name="openpgp_has_been_published">A chave pública do OpenPGP foi publicada.</string>
     <string name="mgmt_account_enable">Habilitar a conta</string>
-    <string name="mgmt_account_delete_confirm_text">Tem certeza de que deseja excluir sua conta? Excluir sua conta apaga todo o seu histórico do chat</string>
+    <string name="mgmt_account_delete_confirm_text">Tem certeza de que deseja excluir sua conta? Excluir sua conta apaga todo o seu histórico de conversa</string>
     <string name="attach_record_voice">Gravar voz</string>
     <string name="account_settings_jabber_id">Endereço XMPP</string>
     <string name="block_jabber_id">Bloquear endereço XMPP</string>
@@ -235,9 +235,11 @@
     <string name="channel_bare_jid_example">canal@conferencia.exemplo.com</string>
     <string name="save_as_bookmark">Salvar como favorito</string>
     <string name="delete_bookmark">Excluir o favorito</string>
-    <string name="destroy_room">Destruir a conversa em grupo</string>
+    <string name="destroy_room">Destruir conversa em grupo</string>
     <string name="destroy_channel">Destruir o canal</string>
-    <string name="destroy_room_dialog">Deseja realmente destruir essa conversa em grupo?\n\n<b>Atenção:</b> A conversa em grupo será completamente removida do servidor.</string>
+    <string name="destroy_room_dialog">Deseja realmente destruir esta conversa em grupo?
+\n
+\n<b>Atenção:</b> A conversa em grupo será completamente removida do servidor.</string>
     <string name="destroy_channel_dialog">Tem certeza que deseja destruir esse canal público?\n\n<b>Atenção:</b> O canal será removido completamente do servidor.</string>
     <string name="could_not_destroy_room">Não foi possível destruir a conversa em grupo</string>
     <string name="could_not_destroy_channel">Não foi possível destruir o canal</string>
@@ -269,11 +271,11 @@
     <string name="skip">Pular</string>
     <string name="disable_notifications">Desabilitar notificações</string>
     <string name="enable">Habilitar</string>
-    <string name="conference_requires_password">Essa conversa em grupo exige uma senha</string>
+    <string name="conference_requires_password">Esta conversa em grupo exige uma senha</string>
     <string name="enter_password">Digite a senha</string>
     <string name="request_presence_updates">Por favor, primeiro solicite atualizações de presença do seu contato.
 \n
-\n<small>Isso determinará qual cliente de chat o seu contato está usando</small>.</string>
+\n<small>Isso determinará qual app de conversa o seu contato está usando</small>.</string>
     <string name="request_now">Solicitar agora</string>
     <string name="ignore">Ignorar</string>
     <string name="without_mutual_presence_updates"><b>Aviso:</b> Enviar isso sem atualizações mútuas de presença pode provocar problemas inesperados.\n\n<small>Verifique nos detalhes do contato suas inscrições de presença.</small></string>
@@ -293,12 +295,12 @@
     <string name="pref_autojoin_summary">Define a flag \"autojoin\" ao entrar ou sair de uma sala e reage a modificações feitas por outros clientes.</string>
     <string name="toast_message_omemo_fingerprint">Impressão digital OMEMO copiada para a área de transferência</string>
     <string name="conference_banned">Você foi banido desta conversa em grupo</string>
-    <string name="conference_members_only">Somente membros podem entrar nessa conversa em grupo</string>
+    <string name="conference_members_only">Esta conversa em grupo é somente para membros</string>
     <string name="conference_resource_constraint">Restrição de recursos</string>
     <string name="conference_kicked">Você foi retirado desta conversa em grupo</string>
     <string name="conference_shutdown">A conversa em grupo foi encerrada</string>
     <string name="conference_unknown_error">Você não está mais nesta conversa em grupo</string>
-    <string name="conference_technical_problems">Você saiu desta conversa em grupo devido a razões técnicas</string>
+    <string name="conference_technical_problems">Você saiu desta conversa em grupo devido à razões técnicas</string>
     <string name="using_account">usando a conta %s</string>
     <string name="hosted_on">hospedado em %s</string>
     <string name="checking_x">Verificando %s no host HTTP</string>
@@ -350,7 +352,7 @@
     <string name="pref_show_dynamic_tags">Rótulos dinâmicos</string>
     <string name="pref_show_dynamic_tags_summary">Exibe rótulos de somente-leitura abaixo dos contatos</string>
     <string name="enable_notifications">Habilitar notificações</string>
-    <string name="no_conference_server_found">Não foi encontrado nenhum servidor de conversas em grupo</string>
+    <string name="no_conference_server_found">Nenhum servidor de conversas em grupo encontrado</string>
     <string name="conference_creation_failed">Não foi possível criar a conversa em grupo</string>
     <string name="account_image_description">Avatar da conta</string>
     <string name="copy_omemo_clipboard_description">Copiar a impressão digital OMEMO para a área de transferência</string>
@@ -431,7 +433,7 @@
     <string name="show_location">Exibir localização</string>
     <string name="no_application_found_to_display_location">Não foi encontrado nenhum aplicativo para exibir a localização</string>
     <string name="location">Localização</string>
-    <string name="title_undo_swipe_out_group_chat">Deixar a conversa em grupo privada</string>
+    <string name="title_undo_swipe_out_group_chat">Sair da conversa em grupo privada</string>
     <string name="title_undo_swipe_out_channel">Deixar o canal público</string>
     <string name="pref_dont_trust_system_cas_title">Não confiar nas CAs do sistema</string>
     <string name="pref_dont_trust_system_cas_summary">Todos os certificados devem ser aprovados manualmente</string>
@@ -465,7 +467,7 @@
     <string name="account_status_bind_failure">Falha na associação</string>
     <string name="account_status_host_unknown">O servidor não responde por esse domínio</string>
     <string name="server_info_broken">Quebrado</string>
-    <string name="pref_presence_settings">Dispôr</string>
+    <string name="pref_presence_settings">Disponibilidade</string>
     <string name="pref_away_when_screen_off">\"Afastado\" quando o dispositivo estiver travado</string>
     <string name="pref_away_when_screen_off_summary">Exibe como Afastado quando o dispositivo estiver travado</string>
     <string name="pref_dnd_on_silent_mode">\"Ocupado\" no modo silencioso</string>
@@ -533,7 +535,7 @@
     <string name="this_field_is_required">Este campo é necessário</string>
     <string name="correct_message">Corrigir</string>
     <string name="send_corrected_message">Enviar a mensagem corrigida</string>
-    <string name="no_keys_just_confirm">Você já confiou na impressão digital desse contato. Ao selecionar \"Concluído\" você está apenas confirmando que %s é parte deste chat em grupo.</string>
+    <string name="no_keys_just_confirm">Você já confiou na impressão digital desse contato. Ao selecionar \"Concluído\" você está apenas confirmando que %s é parte desta conversa em grupo.</string>
     <string name="this_account_is_disabled">Você desabilitou essa conta</string>
     <string name="security_error_invalid_file_access">Erro de segurança: Acesso inválido ao arquivo!</string>
     <string name="no_application_to_share_uri">Não foi encontrado nenhum aplicativo para compartilhar a URI</string>
@@ -545,8 +547,8 @@
     <string name="create_account">Criar conta</string>
     <string name="use_own_provider">Usar meu próprio provedor</string>
     <string name="pick_your_username">Selecione seu nome de usuário</string>
-    <string name="pref_manually_change_presence">Gerenciar o dispôr a dedo</string>
-    <string name="pref_manually_change_presence_summary">Defina seu dispôr ao editar a sua mensagem de estado.</string>
+    <string name="pref_manually_change_presence">Gerenciar a disponibilidade manualmente</string>
+    <string name="pref_manually_change_presence_summary">Defina sua disponibilidade ao editar a sua mensagem de status.</string>
     <string name="status_message">Mensagem de status</string>
     <string name="presence_chat">Livre para conversar</string>
     <string name="presence_online">Conectado</string>
@@ -704,14 +706,14 @@
     <string name="error_trustkey_device_list">Não foi possível obter a lista de dispositivos</string>
     <string name="error_trustkey_bundle">Não foi possível obter as chaves de criptografia</string>
     <string name="error_trustkey_hint_mutual">Dica: Em alguns casos isso pode ser resolvido adicionando-se um ao outro na lista de contatos.</string>
-    <string name="disable_encryption_message">Tem certeza que deseja desabilitar a criptografia OMEMO neste chat?
+    <string name="disable_encryption_message">Tem certeza que deseja desativar a criptografia OMEMO para esta conversa?
 \nIsso permitirá que o administrador do seu servidor seja capaz de ler suas mensagens. Por outro lado, pode ser a única forma de se comunicar com pessoas usando clientes desatualizados.</string>
     <string name="disable_now">Desabilitar agora</string>
     <string name="draft">Rascunho:</string>
     <string name="pref_omemo_setting">Criptografia OMEMO</string>
     <string name="pref_omemo_setting_summary_always">OMEMO será sempre utilizado em conversas um-para-um e de grupos privados.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO será utilizado por padrão em novos chats.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO deverá ser explicitamente ativado para novos chats.</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO será utilizado por padrão em novas conversas.</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO deverá ser explicitamente ativado para novas conversas.</string>
     <string name="create_shortcut">Criar atalho</string>
     <string name="default_on">Ligado por padrão</string>
     <string name="default_off">Desligado por padrão</string>
@@ -732,14 +734,14 @@
     <string name="no_microphone_permission">Permita o acesso do %1$s ao microfone</string>
     <string name="search_messages">Pesquisar mensagens</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Visualizar chat</string>
+    <string name="view_conversation">Visualizar conversa</string>
     <string name="pref_use_share_location_plugin">Plugin de Compartilhamento de Localização</string>
     <string name="pref_use_share_location_plugin_summary">Usar o Plugin de Compartilhamento de Localização ao invés do mapa integrado</string>
     <string name="copy_link">Copiar endereço web</string>
     <string name="copy_jabber_id">Copiar endereço XMPP</string>
     <string name="p1_s3_filetransfer">Compartilhamento de arquivos via HTTP para S3</string>
     <string name="pref_start_search">Pesquisa direta</string>
-    <string name="pref_start_search_summary">Na tela \"Novo chat\", abra o teclado e coloque o cursor no campo de pesquisa</string>
+    <string name="pref_start_search_summary">Na tela \"Nova conversa\", abra o teclado e coloque o cursor no campo de pesquisa</string>
     <string name="group_chat_avatar">Avatar de conversa em grupo</string>
     <string name="host_does_not_support_group_chat_avatars">O host não suporta avatares de conversa em grupo</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Somente o proprietário pode alterar o avatar da conversa em grupo</string>
@@ -953,8 +955,8 @@
     <string name="remove_from_favorites">Desafixar do topo</string>
     <string name="gpx_track">Trilha GPX</string>
     <string name="could_not_correct_message">Não foi possível corrigir a mensagem</string>
-    <string name="search_all_conversations">Todos os chats</string>
-    <string name="search_this_conversation">Este chat</string>
+    <string name="search_all_conversations">Todos as conversas</string>
+    <string name="search_this_conversation">Esta conversa</string>
     <string name="your_avatar">Seu avatar</string>
     <string name="avatar_for_x">Avatar para %s</string>
     <string name="encrypted_with_omemo">Criptografada com OMEMO</string>
@@ -994,10 +996,10 @@
     <string name="reject_switch_to_video">Recusar requisição de mudança para vídeo</string>
     <string name="pref_send_crash_reports">Enviar relatórios de erro</string>
     <string name="remove_bookmark_and_close">Gostaria de remover o favorito de %s e arquivar a conversa?</string>
-    <string name="archive_this_chat">Exclua o chat depois</string>
+    <string name="archive_this_chat">Exclua esta conversa depois</string>
     <string name="title_activity_share_with">Compartilhar com…</string>
     <string name="action_archive_chat">Arquivar conversa</string>
-    <string name="title_activity_new_chat">Novo chat</string>
+    <string name="title_activity_new_chat">Nova conversa</string>
     <string name="send_encrypted_message">Enviar mensagem criptografada</string>
     <string name="account_state_logged_out">Desconectado</string>
     <string name="remove_bookmark">Gostaria de remover o favorito de %s?</string>
@@ -1006,11 +1008,11 @@
     <string name="contact_uses_unverified_keys">Seu contato tem dispositivos não verificados. Escaneie o Código QR dele para fazer uma verificação e impedir ataques MITM.</string>
     <string name="log_out">Sair</string>
     <string name="unverified_devices">Você está usando dispositivos não verificados. Escaneie o Código QR em outro dispositivo para fazer a verificação, e impedir ataques MITM.</string>
-    <string name="switch_to_chat">Trocar para o chat</string>
+    <string name="switch_to_chat">Trocar para conversa</string>
     <string name="pref_title_interface">Interface</string>
     <string name="pref_summary_appearance">Tema, Cores, Capturas de tela, Entrada</string>
     <string name="pref_title_security">Segurança</string>
-    <string name="pref_summary_security">Encriptação E2E, Confiar cegamente antes da verificação, Detecção de MITM</string>
+    <string name="pref_summary_security">Criptografia de ponta-a-ponta, confiança cega antes da verificação, detecção de MITM</string>
     <string name="notifications">Notificações</string>
     <string name="pref_attachments_summary">Tamanho do arquivo, Compressão de imagem, Qualidade de vídeo</string>
     <string name="pref_title_trust_system_ca_store_summary">Confiar nos certificados CA do sistema</string>
@@ -1023,7 +1025,7 @@
     <string name="report_spam">Reportar spam</string>
     <string name="report_spam_and_block">Reportar e bloquear o spammer</string>
     <string name="call_integration_not_available">A integração de chamada não está disponível!</string>
-    <string name="start_chat">Iniciar chat</string>
+    <string name="start_chat">Iniciar conversa</string>
     <string name="no_certificate_selected">Nenhum certificado de cliente selecionado!</string>
     <string name="pref_category_sending">Enviando</string>
     <string name="pref_category_receiving">Recebendo</string>
@@ -1041,7 +1043,7 @@
     <string name="pref_title_trust_system_ca_store">Autoridades de certificação</string>
     <string name="hide_notification">Esconder notificação</string>
     <string name="pref_up_long_summary">Ao atuar como um distribuidor UnifiedPush, a conexão persistente, estável, e amigável à bateria do XMPP será usada para alertar outros apps compatíveis com o UnifiedPush, como o Tusky, Ltt.RS, FluffyChat, e mais.</string>
-    <string name="corresponding_chats_closed">Chats correspondentes arquivados.</string>
+    <string name="corresponding_chats_closed">Conversas correspondentes arquivadas.</string>
     <string name="restore_warning_continued">Não tente restaurar backups que você não criou!</string>
     <string name="rtp_state_contact_offline">O contato não está disponível</string>
     <string name="video_is_enabled_tap_to_disable">O vídeo está ativado. Toque para desativar.</string>
@@ -1052,11 +1054,11 @@
     <string name="pref_create_backup_one_off_summary">Criar um único backup</string>
     <string name="audiobook">Audiobook</string>
     <string name="this_account_is_logged_out">Você desconectou desta conta</string>
-    <string name="pref_use_colorful_bubbles">Bolhas de chat coloridas</string>
+    <string name="pref_use_colorful_bubbles">Bolhas de conversa coloridas</string>
     <string name="pref_use_colorful_bubbles_summary">Cores de fundo distintas para mensagens enviadas e recebidas</string>
     <string name="pref_accept_invites_from_strangers">Convites de estranhos</string>
-    <string name="pref_accept_invites_from_strangers_summary">Aceitar convites de estranhos para chat em grupo</string>
-    <string name="title_undo_swipe_out_chat">Chat arquivado</string>
+    <string name="pref_accept_invites_from_strangers_summary">Aceitar convites de estranhos para conversas em grupo</string>
+    <string name="title_undo_swipe_out_chat">Conversa arquivada</string>
     <string name="pref_large_font">Texto grande</string>
     <string name="pref_large_font_summary">Aumentar o tamanho do texto em bolhas de mensagem</string>
     <string name="your_avatar_tap_to_select_new_avatar">Seu avatar. Toque para selecionar um novo avatar da galeria.</string>
@@ -1066,12 +1068,12 @@
     <string name="video_is_disabled_tap_to_enable">O vídeo está desativado. Toque para ativar.</string>
     <string name="server_info_bind2">XEP-0386: Vinculação 2</string>
     <string name="server_info_sasl2">XEP-0388: Perfil SASL extensível</string>
-    <string name="group_chats">Chats em grupo</string>
-    <string name="search_group_chats">Pesquisar chats em grupo</string>
+    <string name="group_chats">Conversas em grupo</string>
+    <string name="search_group_chats">Pesquisar conversas em grupo</string>
     <string name="quicksy_wants_your_consent">O Quicksy pede seu consentimento ao usar seus dados</string>
     <string name="reconnect_on_other_host">Reconectar em outro host</string>
     <string name="no_permission_to_place_call">Sem permissão para fazer uma ligação</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_chat">Este código de barras não contém impressões digitais para este chat.</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">Este código de barras não contém impressões digitais para esta conversa.</string>
     <string name="pref_dynamic_colors">Cores dinâmicas</string>
     <string name="pref_dynamic_colors_summary">Cores do sistema (Material You)</string>
     <string name="outdated_backup_file_format">Você está tentando importar um backup com um formato desatualizado</string>
@@ -1101,7 +1103,7 @@
     <string name="pref_allow_screenshots_summary">Mostrar o conteúdo do app no alternador de apps e permitir que a tela seja capturada</string>
     <string name="detect_mim">Exigir vínculo do canal</string>
     <string name="detect_mim_summary">A vinculação de canal pode detectar alguns ataques de máquina-no-meio</string>
-    <string name="pref_privacy_summary">Notificações de digitação, Visto por último, Dispôr</string>
+    <string name="pref_privacy_summary">Notificações de digitação, Visto por Último, Disponibilidade</string>
     <string name="pref_connection_summary">Nome do host e porta, Tor</string>
     <string name="pref_connection_summary_w_cd">Nome do host e porta, Tor, Descoberta de Canais</string>
     <string name="pref_keyboard_options">Teclado</string>
