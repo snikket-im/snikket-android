@@ -8,6 +8,6 @@ Tirando a sincronização com os contatos, a interface do usuário é o mais per
 
 Contatos sugeridos consistem de outros usuários do Quicksy e usuários regulares do Jabber/XMPP que inscreveram seu ID Jabber no Diretório do Quicksy (https://quicksy.im/#get-listed).
 
-AVISO: Para entrar (https://quicksy.im/enter/) seu ID Jabber no Diretório do Quicksy, uma taxa única será cobrada.
+AVISO: Para entrar seu ID Jabber no Diretório do Quicksy (https://quicksy.im/enter/), uma taxa única será cobrada.
 
 Leia a Política de Privacidade (https://quicksy.im/#privacy) para mais informações.
