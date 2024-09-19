@@ -42,4 +42,76 @@
         <item quantity="one">%d lugemata vestlus</item>
         <item quantity="other">%d lugemata vestlust</item>
     </plurals>
+    <string name="unblock_contact_text">Kas sa soovid, et kasutaja %s blokeering oleks eemaldatud ja ta saaks sulle sõnumeid saata?</string>
+    <string name="block_domain_text">Kas soovid blokeerida kõik kasutajad domeenist %s?</string>
+    <string name="unblock_domain_text">Kas soovid eemaldada blokeeringu kõikidelt kasutajatelt domeenist %s?</string>
+    <string name="blocked">Blokeeritud</string>
+    <string name="remove_bookmark">Kas sa soovid eemaldada %s järjehoidja?</string>
+    <string name="register_account">Registreeri serveris uues kasutajakonto</string>
+    <string name="change_password_on_server">Muuda salasõna serveris</string>
+    <string name="share_with">Jaga…</string>
+    <string name="invite_contact">Saada kutse kasutajale</string>
+    <string name="invite">Kutsu</string>
+    <string name="contacts">Kontaktid</string>
+    <string name="contact">Kontakt</string>
+    <string name="cancel">Katkesta</string>
+    <string name="set">Seadista</string>
+    <string name="add">Lisa</string>
+    <string name="edit">Muuda</string>
+    <string name="delete">Kustuta</string>
+    <string name="block">Blokeeri</string>
+    <string name="unblock">Eemalda blokeering</string>
+    <string name="save">Salvesta</string>
+    <string name="ok">Sobib</string>
+    <string name="crash_report_title">%1$s on kokku jooksnud</string>
+    <string name="crash_report_message">Kui kasutad oma XMPP kontot ja saadad meile oma nutiseadme pinujälje, siis aitad meid %1$s rakenduse arendamisel.</string>
+    <string name="send_now">Saada nüüd</string>
+    <string name="send_never">Ära küsi enam kunagi</string>
+    <string name="problem_connecting_to_account">Kasutajakontoga ei saanud ühendust</string>
+    <string name="problem_connecting_to_accounts">Mitme kasutajakontoga ei saanud ühendust</string>
+    <string name="touch_to_fix">Kasutajakontode kaldamiseks klõpsi</string>
+    <string name="not_in_roster">Kas soovid selle puuduva kontakti oma kontaktide loendisse lisada?</string>
+    <string name="add_contact">Lisa kontakt</string>
+    <string name="preparing_image">Valmistume pildi saatmiseks</string>
+    <string name="preparing_images">Valmistume piltide saatmiseks</string>
+    <string name="sharing_files_please_wait">Jagame faile. Palun oota…</string>
+    <string name="action_clear_history">Tühjenda ajalugu</string>
+    <string name="clear_conversation_history">Tühjenda vestluse ajalugu</string>
+    <string name="clear_histor_msg">Kas sa soovid eemaldada kõik selle vestluse sõnumid?
+\n
+\n<b>Hoiatus:</b> See ei mõjuta muudes seadmetes ja serverites salvestatud samade sõnumite koopiaid.</string>
+    <string name="delete_file_dialog">Kustuta fail</string>
+    <string name="delete_file_dialog_msg">Kas sa soovid selle faili?
+\n
+\n<b>Hoiatus:</b> See ei mõjuta muudes seadmetes ja serverites salvestatud sama faili koopiaid. </string>
+    <string name="archive_this_chat">Kustuta vestus hiljem</string>
+    <string name="choose_presence">Vali seade</string>
+    <string name="send_unencrypted_message">Saada sõnum krüptimata tekstina</string>
+    <string name="send_message">Saada sõnum</string>
+    <string name="send_message_to_x">Saada sõnum kasutajale %s</string>
+    <string name="send_encrypted_message">Saada krüptitud sõnum</string>
+    <string name="send_omemo_x509_message">Saada v\\OMEMO-krüptitud sõnum</string>
+    <string name="your_nick_has_been_changed">Uus hüüdnimi on juba kasutusel</string>
+    <string name="send_unencrypted">Saada sõnum krüptimata tekstina</string>
+    <string name="decryption_failed">Dekrüptimine ei õnnestunud. Võib-olla pole sul õiget privaatvõtit.</string>
+    <string name="openkeychain_required">OpenKeychain</string>
+    <string name="pref_general">Üldist</string>
+    <string name="pref_accept_files">Failide vastuvõtmine</string>
+    <string name="pref_accept_files_summary">Võta automaatselt vastu failid, mis on väiksemad kui…</string>
+    <string name="pref_attachments">Manused</string>
+    <string name="pref_notification_settings">Teavitus</string>
+    <string name="pref_led">LRD-märgutuli</string>
+    <string name="pref_led_summary">Sõnumi saabumisel vilguta LED-märgutuld</string>
+    <string name="pref_ringtone">Helin</string>
+    <string name="pref_notification_sound">Teavituse heli</string>
+    <string name="pref_notification_sound_summary">Uute sõnumite märguhelin</string>
+    <string name="pref_call_ringtone_summary">Saabuvate kõnede helin</string>
+    <string name="pref_vibrate">Värinaalarm</string>
+    <string name="pref_vibrate_summary">Anna uuest sõnumit märku värinaalarmiga</string>
+    <string name="remove_contact_text">Kas sa soovid %s eemaldada oma kontaktide loendist? Selle toiminguga ei eemaldata temaga peetud vestlust.</string>
+    <string name="contact_blocked">Kontakt on blokeeritud</string>
+    <string name="remove_bookmark_and_close">Kas sa soovid eemaldada %s järjehoidja ja selle vestluse arhiveerida?</string>
+    <string name="attach_file">Lisa fail</string>
+    <string name="block_contact_text">Kas sa soovid, et kasutaja %s oleks blokeeritud ega saaks sulle sõnumeid saata?</string>
+    <string name="send_failed">kohaletoimetamine ei õnnestunud</string>
 </resources>
