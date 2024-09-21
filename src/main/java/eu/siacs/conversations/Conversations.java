@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.DynamicColorsOptions;
 
+import eu.siacs.conversations.services.EmojiInitializationService;
 import eu.siacs.conversations.utils.ExceptionHelper;
 
 public class Conversations extends Application {
@@ -26,6 +27,7 @@ public class Conversations extends Application {
     public void onCreate() {
         super.onCreate();
         CONTEXT = this.getApplicationContext();
+        EmojiInitializationService.execute(getApplicationContext());
         ExceptionHelper.init(getApplicationContext());
         applyThemeSettings();
     }
