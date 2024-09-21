@@ -11,6 +11,7 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
@@ -224,6 +225,11 @@ public class MucOptions {
 
     public boolean stableId() {
         return getFeatures().contains("http://jabber.org/protocol/muc#stable_id");
+    }
+
+    public boolean occupantId() {
+        final var features = getFeatures();
+        return features.contains(Namespace.OCCUPANT_ID);
     }
 
     public User deleteUser(Jid jid) {

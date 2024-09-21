@@ -9,7 +9,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -61,11 +60,11 @@ public class Bookmark extends Element implements ListItem {
 		return bookmarks;
 	}
 
-	public static Map<Jid, Bookmark> parseFromPubsub(Element pubsub, Account account) {
-		if (pubsub == null) {
+	public static Map<Jid, Bookmark> parseFromPubSub(final Element pubSub, final Account account) {
+		if (pubSub == null) {
 			return Collections.emptyMap();
 		}
-		final Element items = pubsub.findChild("items");
+		final Element items = pubSub.findChild("items");
 		if (items != null && Namespace.BOOKMARKS2.equals(items.getAttribute("node"))) {
 			final Map<Jid, Bookmark> bookmarks = new HashMap<>();
 			for(Element item : items.getChildren()) {
@@ -99,6 +98,7 @@ public class Bookmark extends Element implements ListItem {
 		}
 		final Bookmark bookmark = new Bookmark(account);
 		bookmark.jid = InvalidJid.getNullForInvalid(item.getAttributeAsJid("id"));
+		// TODO verify that we only use bare jids and ignore full jids
 		if (bookmark.jid == null) {
 			return null;
 		}

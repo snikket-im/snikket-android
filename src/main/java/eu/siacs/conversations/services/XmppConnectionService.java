@@ -155,7 +155,6 @@ import eu.siacs.conversations.xml.LocalizedContent;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.OnBindListener;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnMessageAcknowledged;
@@ -1836,7 +1835,7 @@ public class XmppConnectionService extends Service {
         sendIqPacket(account, retrieve, (response) -> {
             if (response.getType() == Iq.Type.RESULT) {
                 final Element pubsub = response.findChild("pubsub", Namespace.PUBSUB);
-                final Map<Jid, Bookmark> bookmarks = Bookmark.parseFromPubsub(pubsub, account);
+                final Map<Jid, Bookmark> bookmarks = Bookmark.parseFromPubSub(pubsub, account);
                 processBookmarksInitial(account, bookmarks, true);
             }
         });

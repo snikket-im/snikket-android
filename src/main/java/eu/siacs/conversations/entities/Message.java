@@ -16,6 +16,8 @@ import org.json.JSONException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -86,6 +88,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     public static final String READ_BY_MARKERS = "readByMarkers";
     public static final String MARKABLE = "markable";
     public static final String DELETED = "deleted";
+    public static final String OCCUPANT_ID = "occupantId";
+    public static final String REACTIONS = "reactions";
     public static final String ME_COMMAND = "/me ";
 
     public static final String ERROR_MESSAGE_CANCELLED = "eu.siacs.conversations.cancelled";
@@ -117,6 +121,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     private String axolotlFingerprint = null;
     private String errorMessage = null;
     private Set<ReadByMarker> readByMarkers = new CopyOnWriteArraySet<>();
+    private String occupantId;
+    private Collection<Reaction> reactions = Collections.emptyList();
 
     private Boolean isGeoUri = null;
     private Boolean isEmojisOnly = null;
@@ -155,7 +161,9 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 null,
                 false,
                 false,
-                null);
+                null,
+                null,
+                Collections.emptyList());
     }
 
     public Message(Conversation conversation, int status, int type, final String remoteMsgId) {
@@ -180,7 +188,9 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 null,
                 false,
                 false,
-                null);
+                null,
+                null,
+                Collections.emptyList());
     }
 
     protected Message(final Conversational conversation, final String uuid, final String conversationUUid, final Jid counterpart,
@@ -189,7 +199,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                       final String remoteMsgId, final String relativeFilePath,
                       final String serverMsgId, final String fingerprint, final boolean read,
                       final String edited, final boolean oob, final String errorMessage, final Set<ReadByMarker> readByMarkers,
-                      final boolean markable, final boolean deleted, final String bodyLanguage) {
+                      final boolean markable, final boolean deleted, final String bodyLanguage, final String occupantId, final Collection<Reaction> reactions) {
         this.conversation = conversation;
         this.uuid = uuid;
         this.conversationUuid = conversationUUid;
@@ -213,32 +223,37 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.markable = markable;
         this.deleted = deleted;
         this.bodyLanguage = bodyLanguage;
+        this.occupantId = occupantId;
+        this.reactions = reactions;
     }
 
     public static Message fromCursor(Cursor cursor, Conversation conversation) {
         return new Message(conversation,
-                cursor.getString(cursor.getColumnIndex(UUID)),
-                cursor.getString(cursor.getColumnIndex(CONVERSATION)),
-                fromString(cursor.getString(cursor.getColumnIndex(COUNTERPART))),
-                fromString(cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART))),
-                cursor.getString(cursor.getColumnIndex(BODY)),
-                cursor.getLong(cursor.getColumnIndex(TIME_SENT)),
-                cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
-                cursor.getInt(cursor.getColumnIndex(STATUS)),
-                cursor.getInt(cursor.getColumnIndex(TYPE)),
-                cursor.getInt(cursor.getColumnIndex(CARBON)) > 0,
-                cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)),
-                cursor.getString(cursor.getColumnIndex(RELATIVE_FILE_PATH)),
-                cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)),
-                cursor.getString(cursor.getColumnIndex(FINGERPRINT)),
-                cursor.getInt(cursor.getColumnIndex(READ)) > 0,
-                cursor.getString(cursor.getColumnIndex(EDITED)),
-                cursor.getInt(cursor.getColumnIndex(OOB)) > 0,
-                cursor.getString(cursor.getColumnIndex(ERROR_MESSAGE)),
-                ReadByMarker.fromJsonString(cursor.getString(cursor.getColumnIndex(READ_BY_MARKERS))),
-                cursor.getInt(cursor.getColumnIndex(MARKABLE)) > 0,
-                cursor.getInt(cursor.getColumnIndex(DELETED)) > 0,
-                cursor.getString(cursor.getColumnIndex(BODY_LANGUAGE))
+                cursor.getString(cursor.getColumnIndexOrThrow(UUID)),
+                cursor.getString(cursor.getColumnIndexOrThrow(CONVERSATION)),
+                fromString(cursor.getString(cursor.getColumnIndexOrThrow(COUNTERPART))),
+                fromString(cursor.getString(cursor.getColumnIndexOrThrow(TRUE_COUNTERPART))),
+                cursor.getString(cursor.getColumnIndexOrThrow(BODY)),
+                cursor.getLong(cursor.getColumnIndexOrThrow(TIME_SENT)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(ENCRYPTION)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(STATUS)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(TYPE)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(CARBON)) > 0,
+                cursor.getString(cursor.getColumnIndexOrThrow(REMOTE_MSG_ID)),
+                cursor.getString(cursor.getColumnIndexOrThrow(RELATIVE_FILE_PATH)),
+                cursor.getString(cursor.getColumnIndexOrThrow(SERVER_MSG_ID)),
+                cursor.getString(cursor.getColumnIndexOrThrow(FINGERPRINT)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(READ)) > 0,
+                cursor.getString(cursor.getColumnIndexOrThrow(EDITED)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(OOB)) > 0,
+                cursor.getString(cursor.getColumnIndexOrThrow(ERROR_MESSAGE)),
+                ReadByMarker.fromJsonString(cursor.getString(cursor.getColumnIndexOrThrow(READ_BY_MARKERS))),
+                cursor.getInt(cursor.getColumnIndexOrThrow(MARKABLE)) > 0,
+                cursor.getInt(cursor.getColumnIndexOrThrow(DELETED)) > 0,
+                cursor.getString(cursor.getColumnIndexOrThrow(BODY_LANGUAGE)),
+                cursor.getString(cursor.getColumnIndexOrThrow(OCCUPANT_ID)),
+                Reaction.fromString(cursor.getString(cursor.getColumnIndexOrThrow(REACTIONS)))
+
         );
     }
 
@@ -270,7 +285,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     @Override
     public ContentValues getContentValues() {
-        ContentValues values = new ContentValues();
+        final var values = new ContentValues();
         values.put(UUID, uuid);
         values.put(CONVERSATION, conversationUuid);
         if (counterpart == null) {
@@ -305,6 +320,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         values.put(MARKABLE, markable ? 1 : 0);
         values.put(DELETED, deleted ? 1 : 0);
         values.put(BODY_LANGUAGE, bodyLanguage);
+        values.put(OCCUPANT_ID, occupantId);
+        values.put(REACTIONS, Reaction.toString(this.reactions));
         return values;
     }
 
@@ -706,6 +723,10 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public boolean isOOb() {
         return oob;
+    }
+
+    public void setOccupantId(final String id) {
+        this.occupantId = id;
     }
 
     public static class MergeSeparator {

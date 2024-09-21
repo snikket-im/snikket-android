@@ -54,6 +54,7 @@ import im.conversations.android.xmpp.model.Extension;
 import im.conversations.android.xmpp.model.carbons.Received;
 import im.conversations.android.xmpp.model.carbons.Sent;
 import im.conversations.android.xmpp.model.forward.Forwarded;
+import im.conversations.android.xmpp.model.occupant.OccupantId;
 
 public class MessageParser extends AbstractParser implements Consumer<im.conversations.android.xmpp.model.stanza.Message> {
 
@@ -631,8 +632,14 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
             }
             message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
             if (conversationMultiMode) {
-                message.setMucUser(conversation.getMucOptions().findUserByFullJid(counterpart));
-                final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
+                final var mucOptions = conversation.getMucOptions();
+                final var occupantId =
+                        mucOptions.occupantId() ? packet.getExtension(OccupantId.class) : null;
+                if (occupantId != null) {
+                    message.setOccupantId(occupantId.getId());
+                }
+                message.setMucUser(mucOptions.findUserByFullJid(counterpart));
+                final Jid fallback = mucOptions.getTrueCounterpart(counterpart);
                 Jid trueCounterpart;
                 if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
                     trueCounterpart = message.getTrueCounterpart();
