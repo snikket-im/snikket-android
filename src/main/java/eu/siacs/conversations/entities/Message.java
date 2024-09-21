@@ -729,6 +729,10 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.occupantId = id;
     }
 
+    public String getOccupantId() {
+        return this.occupantId;
+    }
+
     public static class MergeSeparator {
     }
 
