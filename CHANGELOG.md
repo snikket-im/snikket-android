@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.16.7
+
+* Add timeout to call initiation
+
 ### Version 2.16.6
 
 * Offer higher automatic file accept values
