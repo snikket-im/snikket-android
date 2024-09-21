@@ -1004,34 +1004,38 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     }
 
     public boolean updateAccount(Account account) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String[] args = {account.getUuid()};
-        final int rows = db.update(Account.TABLENAME, account.getContentValues(), Account.UUID + "=?", args);
+        final var db = this.getWritableDatabase();
+        final String[] args = {account.getUuid()};
+        final int rows =
+                db.update(Account.TABLENAME, account.getContentValues(), Account.UUID + "=?", args);
         return rows == 1;
     }
 
-    public boolean deleteAccount(Account account) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String[] args = {account.getUuid()};
+    public boolean deleteAccount(final Account account) {
+        final var db = this.getWritableDatabase();
+        final String[] args = {account.getUuid()};
         final int rows = db.delete(Account.TABLENAME, Account.UUID + "=?", args);
         return rows == 1;
     }
 
-    public boolean updateMessage(Message message, boolean includeBody) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String[] args = {message.getUuid()};
-        ContentValues contentValues = message.getContentValues();
+    public boolean updateMessage(final Message message, final boolean includeBody) {
+        final var db = this.getWritableDatabase();
+        final String[] args = {message.getUuid()};
+        final var contentValues = message.getContentValues();
         contentValues.remove(Message.UUID);
         if (!includeBody) {
             contentValues.remove(Message.BODY);
         }
-        return db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args) == 1;
+        final int rows = db.update(Message.TABLENAME, contentValues, Message.UUID + "=?", args);
+        return rows == 1;
     }
 
-    public boolean updateMessage(Message message, String uuid) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String[] args = {uuid};
-        return db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args) == 1;
+    public boolean updateMessage(final Message message, final String uuid) {
+        final var db = this.getWritableDatabase();
+        final String[] args = {uuid};
+        final int rows =
+                db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args);
+        return rows == 1;
     }
 
     public void readRoster(Roster roster) {
