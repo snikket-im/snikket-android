@@ -29,7 +29,7 @@ Conversations da soporte a un par delas que axudan a mellorar a experiencia de u
 
 Estes XEPs son - neste intre:
 
-* XEP-0065: SOCKS5 Bytestreams (ou mod_proxy65). Usado para a transferencia de ficheiros se as dúas partes están detrás dun cortalumes (NAT).
+* XEP-0065: SOCKS5 Bytestreams (ou mod_proxy65). Usado para a transferencia de ficheiros se as dúas partes están detrás dun cortalumes ou NAT.
 * XEP-0163: Personal Eventing Protocol para os avatares
 * XEP-0191: O bloqueo de ordes permiteche bloquear spammer ou contactos sen eliminalos das túas listaxes.
 * XEP-0198: Stream Management permite que XMPP sobreviva a caídas da rede e cambios na conexión TCP.
