@@ -114,4 +114,18 @@
     <string name="attach_file">Lisa fail</string>
     <string name="block_contact_text">Kas sa soovid, et kasutaja %s oleks blokeeritud ega saaks sulle sõnumeid saata?</string>
     <string name="send_failed">kohaletoimetamine ei õnnestunud</string>
+    <string name="openkeychain_required_long">%1$s kasutab sõnumite krüptimiseks ja dekrüptimiseks ning sinu avalike võtmete haldamiseks rakendust &lt;b&gt;OpenKeychain&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Ta on litsentseeritud GPLv3+ alusel ning leidub nii F-Droidi kui Google Play rakendustepoodides.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Palun käivita %1$s hiljem uuesti.)&lt;/small&gt;</string>
+    <string name="restart">Käivita uuesti</string>
+    <string name="install">Paigalda</string>
+    <string name="openkeychain_not_installed">Palun paigalda rakendus OpenKeychain</string>
+    <string name="offering">pakume…</string>
+    <string name="waiting">ootame…</string>
+    <string name="no_pgp_key">OpenPGP võtit ei leidu</string>
+    <string name="contact_has_no_pgp_key">Kuna sõnumi saaja pole avaldanud oma avalikku võtit, siis sinu sõnumi krüptimine ei õnnestu.
+\n
+\n<small>Palu, et ta seadistaks OpenPGP.</small></string>
+    <string name="no_pgp_keys">OpenPGP võtmeid ei leidu</string>
+    <string name="contacts_have_no_pgp_keys">Kuna sõnumi saajad pole avaldanud oma avalikke võtmeid, siis sinu sõnumi krüptimine ei õnnestu.
+\n
+\n<small>Palu, et nad seadistaks OpenPGP.</small></string>
 </resources>
