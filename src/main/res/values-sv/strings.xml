@@ -26,8 +26,8 @@
     <string name="minute_ago">1 min sedan</string>
     <string name="minutes_ago">%d min sedan</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d oläst konversation</item>
-        <item quantity="other">%d olästa konversationer</item>
+        <item quantity="one">%d oläst chatt</item>
+        <item quantity="other">%d o-lästa chattar</item>
     </plurals>
     <string name="sending">skickar…</string>
     <string name="message_decrypting">Avkrypterar meddelande. Vänta…</string>
@@ -39,7 +39,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Deltagare</string>
     <string name="visitor">Besökare</string>
-    <string name="remove_contact_text">Vill du ta bort %s från din kontaktlista? Konversationer med denna kontakt kommer inte att tas bort.</string>
+    <string name="remove_contact_text">Skulle du vilja ta bort %s från din kontaktlista? Chatten med den här kontakten kommer inte att tas bort.</string>
     <string name="block_contact_text">Vill du blockera %s från att skicka dig meddelanden?</string>
     <string name="unblock_contact_text">Vill du avblockera %s och tillåta användaren att skicka dig meddelanden\?</string>
     <string name="block_domain_text">Blockera alla kontakter från %s?</string>
@@ -77,7 +77,7 @@
     <string name="preparing_images">Förbereder att skicka bilder</string>
     <string name="sharing_files_please_wait">Delar filer. Var god vänta…</string>
     <string name="action_clear_history">Rensa historik</string>
-    <string name="clear_conversation_history">Rensa konversationshistorik</string>
+    <string name="clear_conversation_history">Rensa chatt-historiken</string>
     <string name="clear_histor_msg">Vill du ta bort alla meddelanden i den här konversationen? 
 \n 
 \n<b>Varning:</b> Det här påverkar inte meddelanden som finns lagrade på andra enheter eller servrar.</string>
@@ -86,12 +86,12 @@
 \n
 \n<b>Varning:</b> Den här åtgärden kommer inte att ta bort kopior av den här filen som finns lagrad på andra enheter eller servrar. </string>
     <string name="choose_presence">Välj enhet</string>
-    <string name="send_unencrypted_message">Skicka okrypterat meddelande</string>
+    <string name="send_unencrypted_message">Skicka ett meddelande i klartext</string>
     <string name="send_message">Skicka meddelande</string>
     <string name="send_message_to_x">Skicka meddelande till %s</string>
     <string name="send_omemo_x509_message">Skicka v\\OMEMO-krypterat meddelande</string>
     <string name="your_nick_has_been_changed">Nytt smeknamn är nu i bruk</string>
-    <string name="send_unencrypted">Skicka okrypterat</string>
+    <string name="send_unencrypted">Skicka klartext</string>
     <string name="decryption_failed">Dekrypteringen misslyckades. Du har kanske inte rätt privat nyckel.</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="openkeychain_required_long">%1$s använder &lt;b&gt;OpenKeychain&lt;/b&gt; för att kryptera och avkryptera dina publika nycklar.&lt;br&gt;&lt;br&gt;Programmet är licensierat under GPLv3+, och finns tillgängligt via F-Droid och Google Play.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Var god starta om %1$s efter installationen.)&lt;/small&gt;</string>
@@ -169,7 +169,7 @@
     <string name="account_status_incompatible_server">Inkompatibel server</string>
     <string name="account_status_stream_error">Strömningsfel</string>
     <string name="account_status_stream_opening_error">Fel vid öppning av ström</string>
-    <string name="encryption_choice_unencrypted">Okrypterat</string>
+    <string name="encryption_choice_unencrypted">Klartext</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -182,7 +182,7 @@
 \nDina kontakter kommer inte längre att kunna skicka OpenPGP-krypterade meddelande till dig.</string>
     <string name="openpgp_has_been_published">OpenPGP-nyckel har publicerats.</string>
     <string name="mgmt_account_enable">Aktivera konto</string>
-    <string name="mgmt_account_delete_confirm_text">Är du säker på att du vill ta bort ditt konto? Om du tar bort ditt konto, tas hela din konversationshistorik bort</string>
+    <string name="mgmt_account_delete_confirm_text">Är du säker på att du vill ta bort ditt konto? Hela din chatt-historik kommer att tas bort om ditt konto tas bort</string>
     <string name="attach_record_voice">Spela in röst</string>
     <string name="account_settings_jabber_id">XMPP-adress</string>
     <string name="block_jabber_id">Blockera XMPP-adress</string>
@@ -475,7 +475,7 @@
     <string name="pref_dnd_on_silent_mode_summary">Visa som upptagen när enheten är i tyst läge</string>
     <string name="pref_treat_vibrate_as_silent">Behandla vibrera-läget som tyst läge</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Visa som upptagen när enheten är satt till att endast vibrera</string>
-    <string name="pref_show_connection_options">Utökade anslutningsinställningar</string>
+    <string name="pref_show_connection_options">Värdnamn &amp; Port</string>
     <string name="pref_show_connection_options_summary">Visa värdnamn och portinställningar när du skapar ett konto</string>
     <string name="hostname_example">xmpp.exempel.se</string>
     <string name="action_add_account_with_certificate">Logga in med certifikat</string>
@@ -1023,4 +1023,27 @@
     <string name="contact_list_integration_not_available">Integrering av kontaktlista är inte tillgängligt</string>
     <string name="call_integration_not_available">Samtalsintegration inte tillgänglig!</string>
     <string name="rtp_state_contact_offline">Kontakten är inte tillgänglig</string>
+    <string name="pref_send_crash_reports">Skicka kraschrapporter</string>
+    <string name="notifications">Aviseringar</string>
+    <string name="remove_bookmark">Skulle du vilja ta bort bokmärket för %s?</string>
+    <string name="action_archive_chat">Arkivera chatten</string>
+    <string name="title_activity_new_chat">Ny chatt</string>
+    <string name="send_encrypted_message">Skicka ett avkrypterat meddelande</string>
+    <string name="pref_title_interface">Gränssnitt</string>
+    <string name="pref_keyboard_options">Tangentbord</string>
+    <string name="pref_category_interaction">Interaktion</string>
+    <string name="server_info_bind2">XEP-0386: Bind 2</string>
+    <string name="server_info_sasl2">XEP-0388: Utökad SASL-profil</string>
+    <string name="title_undo_swipe_out_chat">Chatten arkiverades</string>
+    <string name="pref_dynamic_colors">Dynamiska färger</string>
+    <string name="pref_category_sending">Skickar</string>
+    <string name="pref_category_receiving">Tar emot</string>
+    <string name="appearance">Utseende</string>
+    <string name="pref_automatic_download">Hämta automatiskt</string>
+    <string name="pref_light_dark_mode">Ljust/Mörkt läge</string>
+    <string name="pref_allow_screenshots">Tillåt skärmdumpar</string>
+    <string name="title_activity_share_with">Dela med…</string>
+    <string name="remove_bookmark_and_close">Skulle du vilja ta bort bokmärket för %s och arkivera chatten?</string>
+    <string name="pref_title_security">Säkerhet</string>
+    <string name="archive_this_chat">Ta bort chatten i efterhand</string>
 </resources>
