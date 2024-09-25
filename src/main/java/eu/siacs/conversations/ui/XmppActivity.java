@@ -177,9 +177,11 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     protected void hideToast() {
-        if (mToast != null) {
-            mToast.cancel();
+        final var toast = this.mToast;
+        if (toast == null) {
+            return;
         }
+        toast.cancel();
     }
 
     protected void replaceToast(String msg) {
@@ -261,23 +263,28 @@ public abstract class XmppActivity extends ActionBarActivity {
                             XmppConnectionService.class));
                     finish();
                 });
-        builder.setPositiveButton(getString(R.string.install),
+        builder.setPositiveButton(
+                getString(R.string.install),
                 (dialog, which) -> {
-                    Uri uri = Uri
-                            .parse("market://details?id=org.sufficientlysecure.keychain");
-                    Intent marketIntent = new Intent(Intent.ACTION_VIEW,
-                            uri);
-                    PackageManager manager = getApplicationContext()
-                            .getPackageManager();
-                    List<ResolveInfo> infos = manager
-                            .queryIntentActivities(marketIntent, 0);
-                    if (infos.size() > 0) {
-                        startActivity(marketIntent);
+                    final Uri uri =
+                            Uri.parse("market://details?id=org.sufficientlysecure.keychain");
+                    Intent marketIntent = new Intent(Intent.ACTION_VIEW, uri);
+                    PackageManager manager = getApplicationContext().getPackageManager();
+                    final var infos = manager.queryIntentActivities(marketIntent, 0);
+                    if (infos.isEmpty()) {
+                        final var website = Uri.parse("http://www.openkeychain.org/");
+                        final Intent browserIntent = new Intent(Intent.ACTION_VIEW, website);
+                        try {
+                            startActivity(browserIntent);
+                        } catch (final ActivityNotFoundException e) {
+                            Toast.makeText(
+                                            this,
+                                            R.string.application_found_to_open_website,
+                                            Toast.LENGTH_LONG)
+                                    .show();
+                        }
                     } else {
-                        uri = Uri.parse("http://www.openkeychain.org/");
-                        Intent browserIntent = new Intent(
-                                Intent.ACTION_VIEW, uri);
-                        startActivity(browserIntent);
+                        startActivity(marketIntent);
                     }
                     finish();
                 });
