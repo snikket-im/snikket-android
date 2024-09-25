@@ -53,18 +53,21 @@ import androidx.databinding.DataBindingUtil;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
 
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.databinding.DialogAddReactionBinding;
 import eu.siacs.conversations.databinding.DialogQuickeditBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Presences;
+import eu.siacs.conversations.entities.Reaction;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.services.QuickConversationsService;
@@ -85,8 +88,11 @@ import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.function.Consumer;
 
 public abstract class XmppActivity extends ActionBarActivity {
 
@@ -289,6 +295,38 @@ public abstract class XmppActivity extends ActionBarActivity {
                     finish();
                 });
         builder.create().show();
+    }
+
+    public void addReaction(final Message message, Consumer<Collection<String>> callback) {
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        final var layoutInflater = this.getLayoutInflater();
+        final DialogAddReactionBinding viewBinding =
+                DataBindingUtil.inflate(layoutInflater, R.layout.dialog_add_reaction, null, false);
+        builder.setView(viewBinding.getRoot());
+        final var dialog = builder.create();
+        for (final String emoji : Reaction.SUGGESTIONS) {
+            final Button button =
+                    (Button)
+                            layoutInflater.inflate(
+                                    R.layout.item_emoji_button, viewBinding.emojis, false);
+            viewBinding.emojis.addView(button);
+            button.setText(emoji);
+            button.setOnClickListener(
+                    v -> {
+                        final var aggregated = message.getAggregatedReactions();
+                        if (aggregated.ourReactions.contains(emoji)) {
+                            callback.accept(aggregated.ourReactions);
+                        } else {
+                            final ImmutableSet.Builder<String> reactionBuilder =
+                                    new ImmutableSet.Builder<>();
+                            reactionBuilder.addAll(aggregated.ourReactions);
+                            reactionBuilder.add(emoji);
+                            callback.accept(reactionBuilder.build());
+                        }
+                        dialog.dismiss();
+                    });
+        }
+        dialog.show();
     }
 
     protected void deleteAccount(final Account account) {

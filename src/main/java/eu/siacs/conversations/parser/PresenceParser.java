@@ -20,6 +20,7 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+import im.conversations.android.xmpp.model.occupant.OccupantId;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
@@ -72,7 +73,10 @@ public class PresenceParser extends AbstractParser implements Consumer<im.conver
                     Element item = x.findChild("item");
                     if (item != null && !from.isBareJid()) {
                         mucOptions.setError(MucOptions.Error.NONE);
-                        MucOptions.User user = parseItem(conversation, item, from);
+                        final MucOptions.User user = parseItem(conversation, item, from);
+                        final var occupant = packet.getExtension(OccupantId.class);
+                        final String occupantId = mucOptions.occupantId() && occupant != null ? occupant.getId() : null;
+                        user.setOccupantId(occupantId);
                         if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE)
                                 || (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED)
                                         && jid.equals(

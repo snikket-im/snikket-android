@@ -764,6 +764,7 @@ public class MucOptions {
         private Avatar avatar;
         private final MucOptions options;
         private ChatState chatState = Config.DEFAULT_CHAT_STATE;
+        private String occupantId;
 
         public User(MucOptions options, Jid fullJid) {
             this.options = options;
@@ -926,6 +927,14 @@ public class MucOptions {
         @Override
         public String getAvatarName() {
             return getConversation().getName().toString();
+        }
+
+        public void setOccupantId(final String occupantId) {
+            this.occupantId = occupantId;
+        }
+
+        public String getOccupantId() {
+            return this.occupantId;
         }
     }
 }

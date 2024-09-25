@@ -114,6 +114,7 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.PresenceTemplate;
+import eu.siacs.conversations.entities.Reaction;
 import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.generator.AbstractGenerator;
@@ -4630,6 +4631,53 @@ public class XmppConnectionService extends Service {
                 item,
                 itemId.toEscapedString(),
                 PublishOptions.persistentWhitelistAccessMaxItems());
+    }
+
+    public boolean sendReactions(final Message message, final Collection<String> reactions) {
+        if (message.getConversation() instanceof Conversation conversation) {
+            final String reactToId;
+            final Collection<Reaction> combinedReactions;
+            if (conversation.getMode() == Conversational.MODE_MULTI) {
+                final var self = conversation.getMucOptions().getSelf();
+                final String occupantId = self.getOccupantId();
+                if (Strings.isNullOrEmpty(occupantId)) {
+                    Log.d(Config.LOGTAG, "occupant id not found for reaction in MUC");
+                    return false;
+                }
+                reactToId = message.getServerMsgId();
+                combinedReactions =
+                        Reaction.withOccupantId(
+                                message.getReactions(),
+                                reactions,
+                                false,
+                                self.getFullJid(),
+                                conversation.getAccount().getJid(),
+                                occupantId);
+            } else {
+                if (message.isCarbon() || message.getStatus() == Message.STATUS_RECEIVED) {
+                    reactToId = message.getRemoteMsgId();
+                } else {
+                    reactToId = message.getUuid();
+                }
+                combinedReactions =
+                        Reaction.withFrom(
+                                message.getReactions(),
+                                reactions,
+                                false,
+                                conversation.getAccount().getJid());
+            }
+            if (Strings.isNullOrEmpty(reactToId)) {
+                return false;
+            }
+            final var reactionMessage =
+                    mMessageGenerator.reaction(conversation, reactToId, reactions);
+            sendMessagePacket(conversation.getAccount(), reactionMessage);
+            message.setReactions(combinedReactions);
+            updateMessage(message, false);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public MemorizingTrustManager getMemorizingTrustManager() {

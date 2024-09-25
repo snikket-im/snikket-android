@@ -1082,4 +1082,6 @@
     <string name="video_is_enabled_tap_to_disable">Video is enabled. Tap to disable.</string>
     <string name="video_is_disabled_tap_to_enable">Video is disabled. Tap to enable.</string>
     <string name="server_info_login_mechanism">Login mechanism</string>
+    <string name="could_not_add_reaction">Could not add reaction</string>
+    <string name="add_reaction">Add reaction…</string>
 </resources>

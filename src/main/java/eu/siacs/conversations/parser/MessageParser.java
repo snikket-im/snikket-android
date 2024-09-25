@@ -32,6 +32,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.entities.Reaction;
 import eu.siacs.conversations.entities.ReadByMarker;
 import eu.siacs.conversations.entities.ReceiptRequest;
 import eu.siacs.conversations.entities.RtpSessionStatus;
@@ -55,6 +56,7 @@ import im.conversations.android.xmpp.model.carbons.Received;
 import im.conversations.android.xmpp.model.carbons.Sent;
 import im.conversations.android.xmpp.model.forward.Forwarded;
 import im.conversations.android.xmpp.model.occupant.OccupantId;
+import im.conversations.android.xmpp.model.reactions.Reactions;
 
 public class MessageParser extends AbstractParser implements Consumer<im.conversations.android.xmpp.model.stanza.Message> {
 
@@ -430,7 +432,8 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
         } else if (query != null) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received mam result with invalid from (" + original.getFrom() + ") or queryId (" + queryId + ")");
             return;
-        } else if (original.fromServer(account)) {
+        } else if (original.fromServer(account)
+                && original.getType() != im.conversations.android.xmpp.model.stanza.Message.Type.GROUPCHAT) {
             Pair<im.conversations.android.xmpp.model.stanza.Message, Long> f;
             f = getForwardedMessagePacket(original, Received.class);
             f = f == null ? getForwardedMessagePacket(original, Sent.class) : f;
@@ -447,6 +450,7 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
         if (timestamp == null) {
             timestamp = AbstractParser.parseTimestamp(original, AbstractParser.parseTimestamp(packet));
         }
+        final Reactions reactions = packet.getExtension(Reactions.class);
         final LocalizedContent body = packet.getBody();
         final Element mucUserElement = packet.findChild("x", Namespace.MUC_USER);
         final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
@@ -1038,6 +1042,7 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
         final Element displayed = packet.findChild("displayed", "urn:xmpp:chat-markers:0");
         if (displayed != null) {
             final String id = displayed.getAttribute("id");
+            // TODO we don’t even use 'sender' any more. Remove this!
             final Jid sender = InvalidJid.getNullForInvalid(displayed.getAttributeAsJid("sender"));
             if (packet.fromAccount(account) && !selfAddressed) {
                 final Conversation c =
@@ -1063,7 +1068,9 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
                     message = null;
                 }
                 if (message != null) {
+                    // TODO use occupantId to extract true counterpart from presence
                     final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
+                    // TODO try to externalize mucTrueCounterpart
                     final Jid trueJid = getTrueCounterpart((query != null && query.safeToExtractTrueCounterpart()) ? mucUserElement : null, fallback);
                     final boolean trueJidMatchesAccount = account.getJid().asBareJid().equals(trueJid == null ? null : trueJid.asBareJid());
                     if (trueJidMatchesAccount || conversation.getMucOptions().isSelf(counterpart)) {
@@ -1098,6 +1105,60 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
                 }
                 if (displayedMessage != null && selfAddressed) {
                     dismissNotification(account, counterpart, query, id);
+                }
+            }
+        }
+
+        if (reactions != null) {
+            final String reactingTo = reactions.getId();
+            final Conversation conversation =
+                    mXmppConnectionService.find(account, counterpart.asBareJid());
+
+            if (conversation != null) {
+                if (isTypeGroupChat && conversation.getMode() == Conversational.MODE_MULTI) {
+                    final var mucOptions = conversation.getMucOptions();
+                    final var occupant =
+                            mucOptions.occupantId() ? packet.getExtension(OccupantId.class) : null;
+                    final var occupantId = occupant == null ? null : occupant.getId();
+                    final var message = conversation.findMessageWithServerMsgId(reactingTo);
+                    // TODO use occupant id for isSelf assessment
+                    final boolean isReceived = !mucOptions.isSelf(counterpart);
+                    if (occupantId != null && message != null) {
+                        final var combinedReactions =
+                                Reaction.withOccupantId(
+                                        message.getReactions(),
+                                        reactions.getReactions(),
+                                        isReceived,
+                                        counterpart,
+                                        null,
+                                        occupantId);
+                        message.setReactions(combinedReactions);
+                        mXmppConnectionService.updateMessage(message, false);
+                    } else {
+                        Log.d(Config.LOGTAG,"not found occupant or message");
+                    }
+                } else if (conversation.getMode() == Conversational.MODE_SINGLE) {
+                    final var message = conversation.findMessageWithUuidOrRemoteId(reactingTo);
+                    final boolean isReceived;
+                    final Jid reactionFrom;
+                    if (packet.fromAccount(account)) {
+                        isReceived = false;
+                        reactionFrom = account.getJid().asBareJid();
+                    } else {
+                        isReceived = true;
+                        reactionFrom = counterpart;
+                    }
+                    packet.fromAccount(account);
+                    if (message != null) {
+                        final var combinedReactions =
+                                Reaction.withFrom(
+                                        message.getReactions(),
+                                        reactions.getReactions(),
+                                        isReceived,
+                                        reactionFrom);
+                        message.setReactions(combinedReactions);
+                        mXmppConnectionService.updateMessage(message, false);
+                    }
                 }
             }
         }

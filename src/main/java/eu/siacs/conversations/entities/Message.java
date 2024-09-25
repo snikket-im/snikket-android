@@ -733,6 +733,18 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         return this.occupantId;
     }
 
+    public Collection<Reaction> getReactions() {
+        return this.reactions;
+    }
+
+    public Reaction.Aggregated getAggregatedReactions() {
+        return Reaction.aggregated(this.reactions);
+    }
+
+    public void setReactions(final Collection<Reaction> reactions) {
+        this.reactions = reactions;
+    }
+
     public static class MergeSeparator {
     }
 

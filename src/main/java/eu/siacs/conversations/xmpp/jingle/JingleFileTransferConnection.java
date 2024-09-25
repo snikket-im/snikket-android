@@ -589,6 +589,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
         }
         terminateTransport();
         final State target = reasonToState(wrapper.reason);
+        // TODO check if we were already terminated
         transitionOrThrow(target);
         finish();
     }

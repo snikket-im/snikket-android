@@ -2,6 +2,7 @@ package eu.siacs.conversations.generator;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -22,6 +23,8 @@ import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
+import im.conversations.android.xmpp.model.reactions.Reaction;
+import im.conversations.android.xmpp.model.reactions.Reactions;
 
 public class MessageGenerator extends AbstractGenerator {
     private static final String OMEMO_FALLBACK_MESSAGE = "I sent you an OMEMO encrypted message but your client doesn’t seem to support that. Find more information on https://conversations.im/omemo";
@@ -162,6 +165,21 @@ public class MessageGenerator extends AbstractGenerator {
             }
         } else {
             displayed.setAttribute("id", message.getRemoteMsgId());
+        }
+        packet.addChild("store", "urn:xmpp:hints");
+        return packet;
+    }
+
+    public im.conversations.android.xmpp.model.stanza.Message reaction(final Conversational conversation, final String reactingTo, final Collection<String> ourReactions) {
+        final boolean groupChat = conversation.getMode() == Conversational.MODE_MULTI;
+        final Jid to = conversation.getJid().asBareJid();
+        final im.conversations.android.xmpp.model.stanza.Message packet = new im.conversations.android.xmpp.model.stanza.Message();
+        packet.setType(groupChat ? im.conversations.android.xmpp.model.stanza.Message.Type.GROUPCHAT : im.conversations.android.xmpp.model.stanza.Message.Type.CHAT);
+        packet.setTo(to);
+        final var reactions = packet.addExtension(new Reactions());
+        reactions.setId(reactingTo);
+        for(final String ourReaction : ourReactions) {
+            reactions.addExtension(new Reaction(ourReaction));
         }
         packet.addChild("store", "urn:xmpp:hints");
         return packet;
