@@ -1249,7 +1249,11 @@ public class XmppConnectionService extends Service {
         }
 
         final PowerManager powerManager = getSystemService(PowerManager.class);
-        this.wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Conversations:Service");
+        if (powerManager != null) {
+            this.wakeLock =
+                    powerManager.newWakeLock(
+                            PowerManager.PARTIAL_WAKE_LOCK, "Conversations:Service");
+        }
 
         toggleForegroundService();
         updateUnreadCountBadge();
