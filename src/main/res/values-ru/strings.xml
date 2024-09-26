@@ -505,7 +505,7 @@
     <string name="hostname_or_onion">Сервер или .onion-адрес</string>
     <string name="not_a_valid_port">Недопустимый номер порта</string>
     <string name="not_valid_hostname">Недопустимое имя сервера</string>
-    <string name="connected_accounts">%1$d из %2$d аккаунтов соединены</string>
+    <string name="connected_accounts">%1$d из %2$d аккаунтов подключены</string>
     <plurals name="x_messages">
         <item quantity="one">%d сообщение</item>
         <item quantity="few">%d сообщения</item>
