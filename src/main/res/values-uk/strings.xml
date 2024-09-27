@@ -1137,4 +1137,6 @@
     <string name="server_info_login_mechanism">Механізм авторизації</string>
     <string name="server_info_bind2">XEP-0386: Bind 2</string>
     <string name="server_info_sasl2">XEP-0388: Розширюваний профіль SASL</string>
+    <string name="could_not_add_reaction">Не вдалося додати реакцію</string>
+    <string name="add_reaction">Додати реакцію…</string>
 </resources>
