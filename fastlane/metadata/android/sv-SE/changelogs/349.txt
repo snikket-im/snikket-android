@@ -1,0 +1,4 @@
+* Introducera expert-inställning för att utföra kanal-upptäckt i den lokala servern istället för search.jabber.network
+* Aktivera leverans-kontrollmarkeringar som standard och ta bort inställning
+* Aktivera 'Skicka-knappen inidikerar status' som standard och ta bort inställning
+* Flytta inställningar för Säkerhetskopiering och Bakgrundstjänst till huvud-skärmen
