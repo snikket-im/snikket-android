@@ -1108,4 +1108,6 @@
     <string name="server_info_bind2">XEP-0386: Bind 2</string>
     <string name="server_info_sasl2">XEP-0388: Profil SASL extensibil</string>
     <string name="server_info_login_mechanism">Mecanism autentificare</string>
+    <string name="add_reaction">Adaugă reacție…</string>
+    <string name="could_not_add_reaction">Nu s-a putut adăuga o reacție</string>
 </resources>
