@@ -1121,4 +1121,6 @@
     <string name="server_info_sasl2">XEP-0388: rozszerzalny profil SASL</string>
     <string name="server_info_bind2">XEP-0386: uproszczone nawiązywanie połączenia</string>
     <string name="server_info_login_mechanism">Mechanizm logowania</string>
+    <string name="could_not_add_reaction">Nie można dodać reakcji</string>
+    <string name="add_reaction">Dodaj reakcję…</string>
 </resources>
