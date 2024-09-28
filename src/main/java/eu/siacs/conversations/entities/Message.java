@@ -659,6 +659,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                         message.getEncryption() != Message.ENCRYPTION_PGP &&
                         message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED &&
                         this.getType() == message.getType() &&
+                        this.isReactionsEmpty() &&
+                        message.isReactionsEmpty() &&
                         isStatusMergeable(this.getStatus(), message.getStatus()) &&
                         isEncryptionMergeable(this.getEncryption(),message.getEncryption()) &&
                         this.getCounterpart() != null &&
@@ -735,6 +737,10 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public Collection<Reaction> getReactions() {
         return this.reactions;
+    }
+
+    public boolean isReactionsEmpty() {
+        return this.reactions.isEmpty();
     }
 
     public Reaction.Aggregated getAggregatedReactions() {
