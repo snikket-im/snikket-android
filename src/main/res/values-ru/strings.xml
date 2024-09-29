@@ -390,8 +390,8 @@
     <string name="remove_membership">Снять права участника</string>
     <string name="grant_admin_privileges">Назначить администратором</string>
     <string name="remove_admin_privileges">Снять административные права</string>
-    <string name="grant_owner_privileges">Назначить администратором</string>
-    <string name="remove_owner_privileges">Снять права администратора</string>
+    <string name="grant_owner_privileges">Назначить владельцем</string>
+    <string name="remove_owner_privileges">Снять права владельца</string>
     <string name="remove_from_room">Убрать из конференции</string>
     <string name="remove_from_channel">Исключить</string>
     <string name="could_not_change_affiliation">Невозможно изменить принадлежность %s</string>
@@ -1136,4 +1136,6 @@
     <string name="pref_backup_summary">Создание разовых и повторяющихся резервных копий</string>
     <string name="server_info_sasl2">XEP-0388: расширяемый профиль SASL</string>
     <string name="server_info_bind2">XEP-0386: привязка 2</string>
+    <string name="could_not_add_reaction">Невозможно добавить реакцию</string>
+    <string name="add_reaction">Добавить реакцию…</string>
 </resources>
