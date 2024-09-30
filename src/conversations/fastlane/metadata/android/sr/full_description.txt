@@ -28,7 +28,7 @@ Conversations ради уз сваки XMPP сервер. Међутим XMPP ј
 
 Ови XEP-ови су - за сада:
 
-* XEP-0065: SOCKS5 Bytestreams (или mod_proxy65). Користи се за пребацивање фајлова ако су обе стране иза firewall-а (NAT).
+* XEP-0065: SOCKS5 Bytestreams (или mod_proxy65). Користи се за пребацивање фајлова ако су обе стране иза firewall-а или NAT-а).
 * XEP-0163: Personal Eventing Protocol за аватаре
 * XEP-0191: Blocking command омогућава blacklist-овање спамера или блокирање контаката без њиховог уклањања из твог списка.
 * XEP-0198: Stream Management омогућава да XMPP преживи мање прекиде на мрежи и промене у TCP веза.
