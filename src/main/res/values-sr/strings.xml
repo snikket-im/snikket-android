@@ -1123,4 +1123,6 @@
     <string name="rtp_state_security_error">Проблем са овером</string>
     <string name="mtm_accept_cert">Прихвати непознат сертификат?</string>
     <string name="pref_dynamic_colors_summary">Системске боје (Material You)</string>
+    <string name="could_not_add_reaction">Није могуће ставити реакцију</string>
+    <string name="add_reaction">Стави реакцију…</string>
 </resources>
