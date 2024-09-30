@@ -69,10 +69,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
     //noinspection GradleDependency
-    implementation('com.github.natario1:Transcoder:v0.9.1') {
-        exclude group: 'com.otaliastudios.opengl', module: 'egloo'
-    }
-    implementation 'com.github.natario1:Egloo:v0.4.0'
+    implementation 'io.deepmedia.community:transcoder-android:0.11.1'
 
     implementation 'org.jxmpp:jxmpp-jid:1.0.3'
     implementation 'org.jxmpp:jxmpp-stringprep-libidn:1.0.3'
