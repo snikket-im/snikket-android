@@ -1109,4 +1109,6 @@
     <string name="pref_keyboard_options">Teclado</string>
     <string name="pref_category_engagement_notifications">Notificações de engajamento</string>
     <string name="pref_category_application">Aplicação</string>
+    <string name="could_not_add_reaction">Não pôde adicionar reação</string>
+    <string name="add_reaction">Adicionar reação…</string>
 </resources>
