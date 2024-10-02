@@ -1,5 +1,7 @@
 package eu.siacs.conversations.entities;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.common.base.MoreObjects;
@@ -19,6 +21,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.Jid;
 
 import java.io.IOException;
@@ -76,8 +79,9 @@ public class Reaction {
             return Collections.emptyList();
         }
         try {
-            return GSON.fromJson(asString, new TypeToken<ArrayList<Reaction>>() {}.getType());
+            return GSON.fromJson(asString, new TypeToken<List<Reaction>>() {}.getType());
         } catch (final JsonSyntaxException e) {
+            Log.e(Config.LOGTAG,"could not restore reactions", e);
             return Collections.emptyList();
         }
     }

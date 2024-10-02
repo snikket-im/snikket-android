@@ -820,8 +820,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         while (cursor.moveToNext()) {
             try {
                 list.add(0, Message.fromCursor(cursor, conversation));
-            } catch (Exception e) {
-                Log.e(Config.LOGTAG, "unable to restore message");
+            } catch (final Exception e) {
+                Log.e(Config.LOGTAG, "unable to restore message", e);
             }
         }
         cursor.close();

@@ -227,7 +227,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.reactions = reactions;
     }
 
-    public static Message fromCursor(Cursor cursor, Conversation conversation) {
+    public static Message fromCursor(final Cursor cursor, final Conversation conversation) {
         return new Message(conversation,
                 cursor.getString(cursor.getColumnIndexOrThrow(UUID)),
                 cursor.getString(cursor.getColumnIndexOrThrow(CONVERSATION)),
