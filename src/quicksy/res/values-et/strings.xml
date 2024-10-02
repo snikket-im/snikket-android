@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pref_notification_grace_period_summary">Ajavahemik tegevuse tuvastamise järel mõnes sinu teises seadmes, peale mida Quicksy jääb vaikseks</string>
+    <string name="pref_never_send_crash_summary">Saates rakenduse kokkujooksmise korral arendajatele teavet, aitad sa vigu parandada ja Quicksy rakendust edasi arendada</string>
+    <string name="pref_broadcast_last_activity_summary">Luba kõikidel oma kontaktidel teada, kui kasutad Quicksyt</string>
+    <string name="huawei_protected_apps_summary">Kui soovid saada teavitusi ka siis, kui ekraan on välja lülitatud, pead Quicksy lisama kaitstud rakenduste loendisse.</string>
+    <string name="set_profile_picture">Quicksy profiilipilt</string>
+    <string name="not_available_in_your_country">Quicksy pole sinu riigis saadaval.</string>
+    <string name="unable_to_verify_server_identity">Serveri identiteedi verifitseerimine ei õnnestu.</string>
+    <string name="unknown_security_error">Tundmatu turvaviga.</string>
+    <string name="timeout_while_connecting_to_server">Ühenduse loomisel serveriga päring aegus.</string>
+</resources>
