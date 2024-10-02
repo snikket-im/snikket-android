@@ -128,4 +128,25 @@
     <string name="contacts_have_no_pgp_keys">Kuna sõnumi saajad pole avaldanud oma avalikke võtmeid, siis sinu sõnumi krüptimine ei õnnestu.
 \n
 \n<small>Palu, et nad seadistaks OpenPGP.</small></string>
+    <string name="pref_advanced_options">Täiendavad seadistused</string>
+    <string name="pref_send_crash_reports">Saada krahhiaruandeid</string>
+    <string name="pref_never_send_crash_summary">Saates rakenduse kokkujooksmise korral arendajatele teavet, aitad sa vigu parandada ja rakendust edasi arendada</string>
+    <string name="pref_confirm_messages">Lugemisteatised</string>
+    <string name="pref_confirm_messages_summary">Luba oma kontaktidel teada saada, kui oled saanud ja lugenud nende sõnumeid</string>
+    <string name="pref_prevent_screenshots">Keela ekraanitõmmised</string>
+    <string name="pref_prevent_screenshots_summary">Peida rakenduste vahetajast selle rakenduse sisu ja blokeeri ekraanitõmmiste tegemine</string>
+    <string name="pref_ui_options">Kasutajaliides</string>
+    <string name="openpgp_error">OpenKeychaini viga.</string>
+    <string name="bad_key_for_encryption">Võti ei sobi krüptimiseks.</string>
+    <string name="accept">Nõustu</string>
+    <string name="error">Tekkis viga</string>
+    <string name="recording_error">Viga</string>
+    <string name="your_account">Sinu kasutajakonto</string>
+    <string name="send_presence_updates">Saada olekuteateid</string>
+    <string name="receive_presence_updates">Luba vastu võtta teiste kasutajate olekuteateid</string>
+    <string name="ask_for_presence_updates">Küsi olekuteateid</string>
+    <string name="attach_choose_picture">Vali pilt</string>
+    <string name="attach_take_picture">Tee foto</string>
+    <string name="pref_notification_grace_period">Teavituste keelamise viiteaeg</string>
+    <string name="pref_notification_grace_period_summary">Kui mõnes muus sinu seadmes tuvastatakse mõni tegevus, siis selle aja möödumisel enam siin seadmes ei kuvata teavitusi.</string>
 </resources>
