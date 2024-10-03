@@ -36,4 +36,4 @@ Këto XEP-e janë - deri sot:
 * XEP-0237: Roster Versioning kryesisht për të kursyer sasi trafiku në lidhje celulare të dobëta
 * XEP-0313: Message Archive Management njëkohëson historik mesazhesh me shërbyesin. Ndiqni mesazhet që qenë dërguar ndërkohë që Conversations s’qe në linjë.
 * XEP-0352: Client State Indication i lejon shërbyesit të dijë nëse është apo jo në prapaskenë Conversations. I lejon shërbyesit të kursejë sasi trafiku, duke mbajtur paketa pa rëndësi.
-* XEP-0363: HTTP File Upload ju lejon të ndani me të tjerë kartela në konferenca dhe me kontakte jo në linjë. Lyp një përbërë shtesë në shërbyesin tuaj.
+* XEP-0363: HTTP File Upload ju lejon të ndani me të tjerë kartela në konferenca dhe me kontakte jo në linjë. Lyp një përbërës shtesë në shërbyesin tuaj.
