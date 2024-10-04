@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class BindingAdapters {
 
@@ -23,15 +24,18 @@ public class BindingAdapters {
             final ChipGroup chipGroup,
             final Reaction.Aggregated reactions,
             final Consumer<Collection<String>> onModifiedReactions,
+            final Function<String, Boolean> onDetailsClicked,
             final Runnable addReaction) {
-        setReactions(chipGroup, reactions, true, onModifiedReactions, addReaction);
+        setReactions(
+                chipGroup, reactions, true, onModifiedReactions, onDetailsClicked, addReaction);
     }
 
     public static void setReactionsOnSent(
             final ChipGroup chipGroup,
             final Reaction.Aggregated reactions,
-            final Consumer<Collection<String>> onModifiedReactions) {
-        setReactions(chipGroup, reactions, false, onModifiedReactions, null);
+            final Consumer<Collection<String>> onModifiedReactions,
+            final Function<String, Boolean> onDetailsClicked) {
+        setReactions(chipGroup, reactions, false, onModifiedReactions, onDetailsClicked, null);
     }
 
     private static void setReactions(
@@ -39,6 +43,7 @@ public class BindingAdapters {
             final Reaction.Aggregated aggregated,
             final boolean onReceived,
             final Consumer<Collection<String>> onModifiedReactions,
+            final Function<String, Boolean> onDetailsClicked,
             final Runnable addReaction) {
         final var context = chipGroup.getContext();
         final List<Map.Entry<String, Integer>> reactions = aggregated.reactions;
@@ -89,6 +94,7 @@ public class BindingAdapters {
                                                 .build());
                             }
                         });
+                chip.setOnLongClickListener(v -> onDetailsClicked.apply(emoji));
                 chipGroup.addView(chip);
             }
             if (onReceived) {

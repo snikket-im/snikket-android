@@ -5,6 +5,10 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.services.AvatarService;
@@ -20,6 +24,7 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -331,12 +336,19 @@ public class MucOptions {
         return null;
     }
 
-    public User findOrCreateUserByRealJid(Jid jid, Jid fullJid) {
-        User user = findUserByRealJid(jid);
-        if (user == null) {
-            user = new User(this, fullJid);
-            user.setRealJid(jid);
+    public User findUserByOccupantId(final String occupantId) {
+        synchronized (this.users) {
+            return Strings.isNullOrEmpty(occupantId) ? null : Iterables.find(this.users, u -> occupantId.equals(u.occupantId),null);
         }
+    }
+
+    public User findOrCreateUserByRealJid(Jid jid, Jid fullJid) {
+        final User existing = findUserByRealJid(jid);
+        if (existing != null) {
+            return existing;
+        }
+        final var user = new User(this, fullJid);
+        user.setRealJid(jid);
         return user;
     }
 
@@ -348,6 +360,31 @@ public class MucOptions {
         } else {
             return null;
         }
+    }
+
+    private User findUser(final Reaction reaction) {
+        if (reaction.trueJid != null) {
+            return findOrCreateUserByRealJid(reaction.trueJid.asBareJid(), reaction.from);
+        }
+        final var existing = findUserByOccupantId(reaction.occupantId);
+        if (existing != null) {
+            return existing;
+        } else if (reaction.from != null) {
+            return new User(this,reaction.from);
+        } else {
+            return null;
+        }
+    }
+
+    public List<User> findUsers(final Collection<Reaction> reactions) {
+        final ImmutableList.Builder<User> builder = new ImmutableList.Builder<>();
+        for(final Reaction reaction : reactions) {
+            final var user = findUser(reaction);
+            if (user != null) {
+                builder.add(user);
+            }
+        }
+        return builder.build();
     }
 
     public boolean isContactInRoom(Contact contact) {

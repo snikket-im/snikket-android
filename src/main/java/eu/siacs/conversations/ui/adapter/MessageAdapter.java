@@ -45,8 +45,10 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
@@ -1077,16 +1079,39 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.reactions,
                     message.getAggregatedReactions(),
                     reactions -> sendReactions(message, reactions),
+                    emoji -> showDetailedReaction(message, emoji),
                     () -> addReaction(message));
         } else if (type == SENT) {
             BindingAdapters.setReactionsOnSent(
                     viewHolder.reactions,
                     message.getAggregatedReactions(),
-                    reactions -> sendReactions(message, reactions));
+                    reactions -> sendReactions(message, reactions),
+                    emoji -> showDetailedReaction(message, emoji));
         }
 
         displayStatus(viewHolder, message, type, bubbleColor);
         return view;
+    }
+
+    private boolean showDetailedReaction(final Message message, final String emoji) {
+        final var c = message.getConversation();
+        if (c instanceof Conversation conversation && c.getMode() == Conversational.MODE_MULTI) {
+            final var reactions =
+                    Collections2.filter(message.getReactions(), r -> r.reaction.equals(emoji));
+            final var mucOptions = conversation.getMucOptions();
+            final var users = mucOptions.findUsers(reactions);
+            if (users.isEmpty()) {
+                return true;
+            }
+            final MaterialAlertDialogBuilder dialogBuilder =
+                    new MaterialAlertDialogBuilder(activity);
+            dialogBuilder.setTitle(emoji);
+            dialogBuilder.setMessage(UIHelper.concatNames(users));
+            dialogBuilder.create().show();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void sendReactions(final Message message, final Collection<String> reactions) {
