@@ -1110,4 +1110,6 @@
     <string name="server_info_login_mechanism">Mecanism autentificare</string>
     <string name="add_reaction">Adaugă reacție…</string>
     <string name="could_not_add_reaction">Nu s-a putut adăuga o reacție</string>
+    <string name="add_reaction_title">Adaugă reacție</string>
+    <string name="more_reactions">Mai multe reacții</string>
 </resources>
