@@ -1091,4 +1091,6 @@
     <string name="server_info_login_mechanism">Anmeldeverfahren</string>
     <string name="could_not_add_reaction">Reaktion konnte nicht hinzugefügt werden</string>
     <string name="add_reaction">Reaktion hinzufügen…</string>
+    <string name="add_reaction_title">Reaktion hinzufügen</string>
+    <string name="more_reactions">Weitere Reaktionen</string>
 </resources>
