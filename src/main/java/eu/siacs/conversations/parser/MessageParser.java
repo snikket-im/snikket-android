@@ -453,6 +453,7 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
         final Reactions reactions = packet.getExtension(Reactions.class);
         final LocalizedContent body = packet.getBody();
         final Element mucUserElement = packet.findChild("x", Namespace.MUC_USER);
+        final boolean isTypeGroupChat = packet.getType() == im.conversations.android.xmpp.model.stanza.Message.Type.GROUPCHAT;
         final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
         final Element replaceElement = packet.findChild("replace", "urn:xmpp:message-correct:0");
         final Element oob = packet.findChild("x", Namespace.OOB);
@@ -476,11 +477,35 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
             Log.e(Config.LOGTAG, "encountered invalid message from='" + from + "' to='" + to + "'");
             return;
         }
-
-        boolean isTypeGroupChat = packet.getType() == im.conversations.android.xmpp.model.stanza.Message.Type.GROUPCHAT;
         if (query != null && !query.muc() && isTypeGroupChat) {
             Log.e(Config.LOGTAG, account.getJid().asBareJid() + ": received groupchat (" + from + ") message on regular MAM request. skipping");
             return;
+        }
+        final Jid mucTrueCounterPart;
+        final OccupantId occupant;
+        if (isTypeGroupChat) {
+            final Conversation conversation =
+                    mXmppConnectionService.find(account, from.asBareJid());
+            final Jid mucTrueCounterPartByPresence;
+            if (conversation != null) {
+                final var mucOptions = conversation.getMucOptions();
+                occupant = mucOptions.occupantId() ? packet.getExtension(OccupantId.class) : null;
+                final var user =
+                        occupant == null ? null : mucOptions.findUserByOccupantId(occupant.getId());
+                mucTrueCounterPartByPresence = user == null ? null : user.getRealJid();
+            } else {
+                occupant = null;
+                mucTrueCounterPartByPresence = null;
+            }
+            mucTrueCounterPart =
+                    getTrueCounterpart(
+                            (query != null && query.safeToExtractTrueCounterpart())
+                                    ? mucUserElement
+                                    : null,
+                            mucTrueCounterPartByPresence);
+        } else {
+            mucTrueCounterPart = null;
+            occupant = null;
         }
         boolean isMucStatusMessage = InvalidJid.hasValidFrom(packet) && from.isBareJid() && mucUserElement != null && mucUserElement.hasChild("status");
         boolean selfAddressed;
@@ -637,10 +662,8 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
             message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
             if (conversationMultiMode) {
                 final var mucOptions = conversation.getMucOptions();
-                final var occupantId =
-                        mucOptions.occupantId() ? packet.getExtension(OccupantId.class) : null;
-                if (occupantId != null) {
-                    message.setOccupantId(occupantId.getId());
+                if (occupant != null) {
+                    message.setOccupantId(occupant.getId());
                 }
                 message.setMucUser(mucOptions.findUserByFullJid(counterpart));
                 final Jid fallback = mucOptions.getTrueCounterpart(counterpart);
@@ -1117,12 +1140,9 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
             if (conversation != null) {
                 if (isTypeGroupChat && conversation.getMode() == Conversational.MODE_MULTI) {
                     final var mucOptions = conversation.getMucOptions();
-                    final var occupant =
-                            mucOptions.occupantId() ? packet.getExtension(OccupantId.class) : null;
                     final var occupantId = occupant == null ? null : occupant.getId();
                     if (occupantId != null) {
-                        // TODO use occupant id for isSelf assessment
-                        final boolean isReceived = !mucOptions.isSelf(counterpart);
+                        final boolean isReceived = !mucOptions.isSelf(occupantId);
                         final Message message;
                         final var inMemoryMessage =
                                 conversation.findMessageWithServerMsgId(reactingTo);
@@ -1140,7 +1160,7 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
                                             reactions.getReactions(),
                                             isReceived,
                                             counterpart,
-                                            null,
+                                            mucTrueCounterPart,
                                             occupantId);
                             message.setReactions(combinedReactions);
                             mXmppConnectionService.updateMessage(message, false);

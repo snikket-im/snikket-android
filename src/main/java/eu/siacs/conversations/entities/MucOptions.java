@@ -95,8 +95,12 @@ public class MucOptions {
         return mAutoPushConfiguration;
     }
 
-    public boolean isSelf(Jid counterpart) {
+    public boolean isSelf(final Jid counterpart) {
         return counterpart.equals(self.getFullJid());
+    }
+
+    public boolean isSelf(final String occupantId) {
+        return occupantId.equals(self.getOccupantId());
     }
 
     public void resetChatState() {
