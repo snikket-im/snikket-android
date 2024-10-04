@@ -1341,7 +1341,15 @@ public class ConversationFragment extends XmppFragment
                     reportAndBlock.setVisible(true);
                 }
             }
-            addReaction.setVisible(!showError && !m.isDeleted());
+            if (conversational instanceof Conversation c) {
+                addReaction.setVisible(
+                        !showError
+                                && !m.isDeleted()
+                                && (c.getMode() == Conversational.MODE_SINGLE
+                                        || c.getMucOptions().occupantId()));
+            } else {
+                addReaction.setVisible(false);
+            }
             if (!m.isFileOrImage()
                     && !encrypted
                     && !m.isGeoUri()
