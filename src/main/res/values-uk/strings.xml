@@ -1139,4 +1139,6 @@
     <string name="server_info_sasl2">XEP-0388: Розширюваний профіль SASL</string>
     <string name="could_not_add_reaction">Не вдалося додати реакцію</string>
     <string name="add_reaction">Додати реакцію…</string>
+    <string name="more_reactions">Більше реакцій</string>
+    <string name="add_reaction_title">Додати реакцію</string>
 </resources>
