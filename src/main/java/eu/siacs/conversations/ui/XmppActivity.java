@@ -326,6 +326,14 @@ public abstract class XmppActivity extends ActionBarActivity {
                         dialog.dismiss();
                     });
         }
+        viewBinding.more.setOnClickListener(
+                v -> {
+                    dialog.dismiss();
+                    final var intent = new Intent(this, AddReactionActivity.class);
+                    intent.putExtra("conversation", message.getConversation().getUuid());
+                    intent.putExtra("message", message.getUuid());
+                    startActivity(intent);
+                });
         dialog.show();
     }
 

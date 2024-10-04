@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-
-    <com.google.android.material.button.MaterialButtonGroup
-        android:layout_centerInParent="true"
-
-        android:id="@+id/emojis"
-        style="@style/Widget.Material3.MaterialButtonGroup.Connected"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="?dialogPreferredPadding" />
+        android:padding="?dialogPreferredPadding">
+
+        <com.google.android.material.button.MaterialButtonGroup
+            android:id="@+id/emojis"
+
+            style="@style/Widget.Material3.MaterialButtonGroup.Connected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/more"
+            style="?attr/materialIconButtonFilledStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/emojis"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/more_reactions"
+            app:icon="@drawable/ic_more_horiz_24dp" />
+
     </RelativeLayout>
 
 </layout>

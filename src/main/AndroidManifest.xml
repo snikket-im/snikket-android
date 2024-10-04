@@ -354,6 +354,7 @@
         <activity
             android:name=".ui.MediaBrowserActivity"
             android:label="@string/media_browser" />
+        <activity android:name=".ui.AddReactionActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
