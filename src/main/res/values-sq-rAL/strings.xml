@@ -1102,4 +1102,6 @@
     <string name="server_info_login_mechanism">Mekanizëm hyrjesh</string>
     <string name="could_not_add_reaction">S’u shtua dot reagim</string>
     <string name="add_reaction">Shtoni reagim…</string>
+    <string name="add_reaction_title">Shtoni reagim</string>
+    <string name="more_reactions">Më tepër reagime</string>
 </resources>
