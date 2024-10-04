@@ -925,6 +925,46 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return filesPaths;
     }
 
+    public Message getMessageWithServerMsgId(
+            final Conversation conversation, final String messageId) {
+        final var db = this.getReadableDatabase();
+        final String sql =
+                "select * from messages where conversationUuid=? and serverMsgId=? LIMIT 1";
+        final String[] args = {conversation.getUuid(), messageId};
+        final Cursor cursor = db.rawQuery(sql, args);
+        if (cursor == null) {
+            return null;
+        }
+        final Message message;
+        if (cursor.moveToFirst()) {
+            message = Message.fromCursor(cursor, conversation);
+        } else {
+            message = null;
+        }
+        cursor.close();
+        return message;
+    }
+
+    public Message getMessageWithUuidOrRemoteId(
+            final Conversation conversation, final String messageId) {
+        final var db = this.getReadableDatabase();
+        final String sql =
+                "select * from messages where conversationUuid=? and (uuid=? OR remoteMsgId=?) LIMIT 1";
+        final String[] args = {conversation.getUuid(), messageId, messageId};
+        final Cursor cursor = db.rawQuery(sql, args);
+        if (cursor == null) {
+            return null;
+        }
+        final Message message;
+        if (cursor.moveToFirst()) {
+            message = Message.fromCursor(cursor, conversation);
+        } else {
+            message = null;
+        }
+        cursor.close();
+        return message;
+    }
+
     public static class FilePath {
         public final UUID uuid;
         public final String path;
