@@ -1067,7 +1067,7 @@
     <string name="pref_keyboard_options">Клавиатура</string>
     <string name="title_activity_share_with">Поделиться с…</string>
     <string name="pref_use_colorful_bubbles">Цветные пузырьки сообщений</string>
-    <string name="pref_use_colorful_bubbles_summary">Различайте отправленные сообщения и фон беседы</string>
+    <string name="pref_use_colorful_bubbles_summary">Различные цвета фона для отправленных и полученных сообщений</string>
     <string name="pref_dynamic_colors">Динамичные цвета</string>
     <string name="pref_dynamic_colors_summary">Цвет системы (Material You)</string>
     <string name="channel_discover_opt_in_message">Обзор каналов использует сторонний сервис &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Эта функция передаст ваш IP-адрес и поисковый запрос этому сервису. Ознакомьтесь с его &lt;a href=https://search.jabber.network/privacy&gt;политикой конфиденциальности&lt;/a&gt; для получения подробностей.</string>
@@ -1106,7 +1106,7 @@
     <string name="pref_accept_invites_from_strangers_summary">Принимать приглашения в групповые беседы от неизвестных</string>
     <string name="unsupported_operation">Операция не поддерживается</string>
     <string name="pref_fullscreen_notification">Полноэкранные уведомления</string>
-    <string name="pref_backup_recurring">Повторяющиеся резервные копии</string>
+    <string name="pref_backup_recurring">Регулярные резервные копии</string>
     <string name="pref_fullscreen_notification_summary">Разрешить приложению показывать экраны входящих звонков при заблокированном экране.</string>
     <string name="pref_up_long_summary">Conversations, будучи распределителем UnifiedPush, будет использовать стойкое, надёжное и малопотребляющее подключение XMPP для пробуждения других совместимых с UnifiedPush приложений, таких как Tusky, Ltt.rs, FluffyChat и др.</string>
     <string name="detect_mim">Требовать привязку канала</string>
@@ -1133,9 +1133,11 @@
     <string name="edit_configuration">Изменить настройки</string>
     <string name="edit_nick">Изменить имя</string>
     <string name="edit_name_and_topic">Изменить имя и тему</string>
-    <string name="pref_backup_summary">Создание разовых и повторяющихся резервных копий</string>
+    <string name="pref_backup_summary">Создание разовых и регулярных резервных копий</string>
     <string name="server_info_sasl2">XEP-0388: расширяемый профиль SASL</string>
     <string name="server_info_bind2">XEP-0386: привязка 2</string>
     <string name="could_not_add_reaction">Невозможно добавить реакцию</string>
     <string name="add_reaction">Добавить реакцию…</string>
+    <string name="add_reaction_title">Добавить реакцию</string>
+    <string name="more_reactions">Другие реакции</string>
 </resources>
