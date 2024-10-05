@@ -603,7 +603,7 @@
     <plurals name="seconds">
         <item quantity="one">%d секунда</item>
         <item quantity="few">%d секунде</item>
-        <item quantity="other">%d скунди</item>
+        <item quantity="other">%d секунди</item>
     </plurals>
     <plurals name="minutes">
         <item quantity="one">%d минута</item>
@@ -822,7 +822,7 @@
 \nСада ћеш добити упит да је искључиш.</string>
     <string name="magic_create_text">Припремљено је упутство за отварање налога на conversations.im.
 \nАко одабереш conversations.im као провајдера можеш да комуницираш са корисницима других провајдера тако што им проследиш своју пуну XMPP адресу.</string>
-    <string name="pref_use_colorful_bubbles">Разнобојни балончићи преписке</string>
+    <string name="pref_use_colorful_bubbles">Разнобојни балончићи порука</string>
     <string name="no_permission_to_place_call">Недостатак пермисија за обављање позива</string>
     <string name="pref_validate_hostname">Валидирај назив сервера користећи DNSSEC</string>
     <string name="foreground_service_channel_description">Ова категорија обавештења се користи за трајни приказ обавештења да %1$s ради.</string>
@@ -1125,4 +1125,6 @@
     <string name="pref_dynamic_colors_summary">Системске боје (Material You)</string>
     <string name="could_not_add_reaction">Није могуће ставити реакцију</string>
     <string name="add_reaction">Стави реакцију…</string>
+    <string name="add_reaction_title">Стави реакцију</string>
+    <string name="more_reactions">Још реакција</string>
 </resources>
