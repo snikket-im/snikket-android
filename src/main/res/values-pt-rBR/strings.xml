@@ -1111,4 +1111,6 @@
     <string name="pref_category_application">Aplicação</string>
     <string name="could_not_add_reaction">Não pôde adicionar reação</string>
     <string name="add_reaction">Adicionar reação…</string>
+    <string name="add_reaction_title">Adicionar reação</string>
+    <string name="more_reactions">Mais reações</string>
 </resources>
