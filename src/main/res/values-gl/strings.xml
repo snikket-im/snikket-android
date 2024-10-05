@@ -1095,4 +1095,6 @@
     <string name="server_info_bind2">XEP-0386: Bind 2</string>
     <string name="could_not_add_reaction">Non se puido engadir a reacción</string>
     <string name="add_reaction">Engadir reacción…</string>
+    <string name="more_reactions">Outras reaccións</string>
+    <string name="add_reaction_title">Engadir reacción</string>
 </resources>
