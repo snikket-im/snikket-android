@@ -1107,4 +1107,6 @@
     <string name="server_info_bind2">XEP-0386: Bind 2</string>
     <string name="add_reaction">Reactie toevoegen…</string>
     <string name="could_not_add_reaction">Kan reactie niet toevoegen</string>
+    <string name="add_reaction_title">Reactie toevoegen</string>
+    <string name="more_reactions">Meer reacties</string>
 </resources>
