@@ -13,7 +13,6 @@ import im.conversations.android.xmpp.model.stanza.Iq;
 
 public class BindProcessor implements Runnable {
 
-
     private final XmppConnectionService service;
     private final Account account;
 
@@ -26,15 +25,22 @@ public class BindProcessor implements Runnable {
     public void run() {
         final XmppConnection connection = account.getXmppConnection();
         service.cancelAvatarFetches(account);
-        final boolean loggedInSuccessfully = account.setOption(Account.OPTION_LOGGED_IN_SUCCESSFULLY, true);
-        final boolean gainedFeature = account.setOption(Account.OPTION_HTTP_UPLOAD_AVAILABLE, connection.getFeatures().httpUpload(0));
+        final boolean loggedInSuccessfully =
+                account.setOption(Account.OPTION_LOGGED_IN_SUCCESSFULLY, true);
+        final boolean gainedFeature =
+                account.setOption(
+                        Account.OPTION_HTTP_UPLOAD_AVAILABLE,
+                        connection.getFeatures().httpUpload(0));
         if (loggedInSuccessfully || gainedFeature) {
             service.databaseBackend.updateAccount(account);
         }
 
         if (loggedInSuccessfully) {
             if (!TextUtils.isEmpty(account.getDisplayName())) {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": display name wasn't empty on first log in. publishing");
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": display name wasn't empty on first log in. publishing");
                 service.publishDisplayName(account);
             }
         }
@@ -49,7 +55,6 @@ public class BindProcessor implements Runnable {
         service.getJingleConnectionManager().notifyRebound(account);
         service.getQuickConversationsService().considerSyncBackground(false);
 
-
         connection.fetchRoster();
 
         if (connection.getFeatures().bookmarks2()) {
@@ -61,18 +66,25 @@ public class BindProcessor implements Runnable {
         if (connection.getFeatures().mds()) {
             service.fetchMessageDisplayedSynchronization(account);
         } else {
-            Log.d(Config.LOGTAG,account.getJid()+": server has no support for mds");
+            Log.d(Config.LOGTAG, account.getJid() + ": server has no support for mds");
         }
-        final boolean flexible = connection.getFeatures().flexibleOfflineMessageRetrieval();
+        final var features = connection.getFeatures();
+        final boolean bind2 = features.bind2();
+        final boolean flexible = features.flexibleOfflineMessageRetrieval();
         final boolean catchup = service.getMessageArchiveService().inCatchup(account);
         final boolean trackOfflineMessageRetrieval;
-        if (flexible && catchup && connection.isMamPreferenceAlways()) {
+        if (!bind2 && flexible && catchup && connection.isMamPreferenceAlways()) {
             trackOfflineMessageRetrieval = false;
-            connection.sendIqPacket(IqGenerator.purgeOfflineMessages(), (packet) -> {
-                if (packet.getType() == Iq.Type.RESULT) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": successfully purged offline messages");
-                }
-            });
+            connection.sendIqPacket(
+                    IqGenerator.purgeOfflineMessages(),
+                    (packet) -> {
+                        if (packet.getType() == Iq.Type.RESULT) {
+                            Log.d(
+                                    Config.LOGTAG,
+                                    account.getJid().asBareJid()
+                                            + ": successfully purged offline messages");
+                        }
+                    });
         } else {
             trackOfflineMessageRetrieval = true;
         }
@@ -85,6 +97,5 @@ public class BindProcessor implements Runnable {
         service.syncDirtyContacts(account);
 
         service.getUnifiedPushBroker().renewUnifiedPushEndpointsOnBind(account);
-
     }
 }
