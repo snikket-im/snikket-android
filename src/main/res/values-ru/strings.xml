@@ -41,7 +41,7 @@
     <string name="moderator">Модератор</string>
     <string name="participant">Участник</string>
     <string name="visitor">Посетитель</string>
-    <string name="remove_contact_text">Удалить %s из своего списка контактов? Чат с этим контактом удалён не будет.</string>
+    <string name="remove_contact_text">Удалить %s из своего списка контактов? Беседа с этим контактом удалена не будет.</string>
     <string name="block_contact_text">Заблокировать дальнейшие сообщения от %s?</string>
     <string name="unblock_contact_text">Разблокировать пользователя %s?</string>
     <string name="block_domain_text">Заблокировать всех пользователей домена %s?</string>
@@ -79,7 +79,7 @@
     <string name="preparing_images">Подготовка к передаче изображений</string>
     <string name="sharing_files_please_wait">Обмен файлами. Подождите…</string>
     <string name="action_clear_history">Очистить историю</string>
-    <string name="clear_conversation_history">Очистить историю чата</string>
+    <string name="clear_conversation_history">Очистить историю</string>
     <string name="clear_histor_msg">Удалить все сообщения в этой беседе? 
 \n 
 \n<b>Внимание:</b> данная операция не повлияет на сообщения, хранящиеся на других устройствах или серверах.</string>
@@ -93,7 +93,7 @@
     <string name="send_message_to_x">Сообщение для %s</string>
     <string name="send_omemo_x509_message">v\\Зашифрованное OMEMO сообщение</string>
     <string name="your_nick_has_been_changed">Используется новое имя</string>
-    <string name="send_unencrypted">Отправить чистый текст</string>
+    <string name="send_unencrypted">Отправить в незашифрованном виде</string>
     <string name="decryption_failed">Расшифровка невозможна. Вероятно, у вас нет надлежащего ключа.</string>
     <string name="openkeychain_required">Установите OpenKeychain</string>
     <string name="openkeychain_required_long"><![CDATA[%1$s использует <b>OpenKeychain</b> для шифрования и дешифрования сообщений и управления открытыми ключами.<br><br>OpenKeychain распространяется под лицензией GPLv3+ и доступна для загрузки через F-Droid или Google Play.<br><br><small>(Потребуется перезапуск %1$s после установки.)</small>]]></string>
@@ -171,7 +171,7 @@
     <string name="account_status_incompatible_server">Несовместимый сервер</string>
     <string name="account_status_stream_error">Ошибка потока</string>
     <string name="account_status_stream_opening_error">Ошибка открытия потока</string>
-    <string name="encryption_choice_unencrypted">Чистый текст</string>
+    <string name="encryption_choice_unencrypted">Без шифра</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -179,12 +179,12 @@
     <string name="mgmt_account_disable">Временно отключить</string>
     <string name="mgmt_account_publish_avatar">Разместить аватар</string>
     <string name="mgmt_account_publish_pgp">Анонсировать ключ OpenPGP</string>
-    <string name="unpublish_pgp">Удалить открытый ключ OpenPGP</string>
+    <string name="unpublish_pgp">Удалить публичный ключ OpenPGP</string>
     <string name="unpublish_pgp_message">Удалить ваш публичный ключ OpenPGP из опубликованных?
 \nВаши собеседники не смогут больше отправлять вам зашифрованные OpenPGP сообщения.</string>
     <string name="openpgp_has_been_published">Публичный ключ OpenPGP опубликован.</string>
     <string name="mgmt_account_enable">Включить аккаунт</string>
-    <string name="mgmt_account_delete_confirm_text">Удалить свой аккаунт? Удаление аккаунта также сотрёт все истории диалогов.</string>
+    <string name="mgmt_account_delete_confirm_text">Удалить свой аккаунт? Удаление аккаунта также сотрёт все беседы.</string>
     <string name="attach_record_voice">Запись голоса</string>
     <string name="account_settings_jabber_id">XMPP-адрес</string>
     <string name="block_jabber_id">Заблокировать XMPP-адрес</string>
@@ -206,7 +206,7 @@
     <string name="server_info_push">XEP-0357: push-уведомления</string>
     <string name="server_info_available">доступно</string>
     <string name="server_info_unavailable">недоступно</string>
-    <string name="missing_public_keys">Отсутствие анонсирования открытых ключей</string>
+    <string name="missing_public_keys">Отсутствие анонсирования публичных ключей</string>
     <string name="last_seen_now">Присутствие: только что</string>
     <string name="last_seen_min">Присутствие: минуту назад</string>
     <string name="last_seen_mins">Присутствие: %d мин. назад</string>
@@ -256,7 +256,7 @@
     <string name="leave">Покинуть</string>
     <string name="contact_added_you">Собеседник добавил вас в список контактов</string>
     <string name="add_back">Добавить в ответ</string>
-    <string name="contact_has_read_up_to_this_point">%s прочитал до этого момента</string>
+    <string name="contact_has_read_up_to_this_point">%s прочитал(а) до этого момента</string>
     <string name="contacts_have_read_up_to_this_point">%s прочитали до этого момента</string>
     <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s + ещё %2$d прочитали до этого момента</string>
     <string name="everyone_has_read_up_to_this_point">Все прочитали сообщения до этого момента</string>
@@ -266,7 +266,7 @@
     <string name="error_publish_avatar_server_reject">Сервер отклонил размещение аватара</string>
     <string name="error_publish_avatar_converting">Невозможно преобразовать вашу фотографию</string>
     <string name="error_saving_avatar">Невозможно сохранить аватар</string>
-    <string name="or_long_press_for_default">(Или долгое прикосновение, чтобы вернуть значения по умолчанию)</string>
+    <string name="or_long_press_for_default">(Или долгое нажатие, чтобы вернуть значения по умолчанию)</string>
     <string name="error_publish_avatar_no_server_support">Ваш сервер не поддерживает публикацию аватаров</string>
     <string name="private_message">шёпотом</string>
     <string name="private_message_to">отправить %s</string>
@@ -351,7 +351,7 @@
     <string name="cancel_transmission">Отменить передачу</string>
     <string name="file_transmission_failed">передача файла не выполнена</string>
     <string name="file_transmission_cancelled">передача файла отменена</string>
-    <string name="file_deleted">Файл был удалён</string>
+    <string name="file_deleted">Файл удалён</string>
     <string name="no_application_found_to_open_file">Не найдено приложения для открытия файла</string>
     <string name="no_application_found_to_open_link">Не найдено приложения, способного открыть эту ссылку</string>
     <string name="no_application_found_to_view_contact">Не найдено приложения для просмотра контакта</string>
@@ -392,11 +392,11 @@
     <string name="remove_admin_privileges">Снять административные права</string>
     <string name="grant_owner_privileges">Назначить владельцем</string>
     <string name="remove_owner_privileges">Снять права владельца</string>
-    <string name="remove_from_room">Убрать из конференции</string>
-    <string name="remove_from_channel">Исключить</string>
+    <string name="remove_from_room">Исключить из конференции</string>
+    <string name="remove_from_channel">Исключить из канала</string>
     <string name="could_not_change_affiliation">Невозможно изменить принадлежность %s</string>
     <string name="ban_from_conference">Заблокировать в конференции</string>
-    <string name="ban_from_channel">Заблокировать</string>
+    <string name="ban_from_channel">Заблокировать в канале</string>
     <string name="removing_from_public_conference">Вы пытаетесь исключить %s из публичного канала. Единственный способ это сделать — навсегда заблокировать этого пользователя. </string>
     <string name="ban_now">Заблокировать</string>
     <string name="could_not_change_role">Невозможно сменить роль %s</string>
@@ -430,7 +430,7 @@
     <string name="offering_x_file">Предложен %s</string>
     <string name="hide_offline">Скрыть не в сети</string>
     <string name="contact_is_typing">%s печатает…</string>
-    <string name="contact_has_stopped_typing">%s перестал печатать</string>
+    <string name="contact_has_stopped_typing">%s перестал(а) печатать</string>
     <string name="contacts_are_typing">%s печатают…</string>
     <string name="contacts_have_stopped_typing">%s перестали печатать</string>
     <string name="pref_chat_states">Оповещения о наборе</string>
@@ -439,8 +439,8 @@
     <string name="show_location">Показать местоположение</string>
     <string name="no_application_found_to_display_location">Не найдено приложения для отображения местоположения</string>
     <string name="location">Местоположение</string>
-    <string name="title_undo_swipe_out_group_chat">Покинул приватную конференцию</string>
-    <string name="title_undo_swipe_out_channel">Покинул публичный канал</string>
+    <string name="title_undo_swipe_out_group_chat">Покинул(а) приватную конференцию</string>
+    <string name="title_undo_swipe_out_channel">Покинул(а) публичный канал</string>
     <string name="pref_dont_trust_system_cas_title">Не доверять системным УЦ</string>
     <string name="pref_dont_trust_system_cas_summary">Все сертификаты должны быть подтверждены вручную</string>
     <string name="pref_remove_trusted_certificates_title">Удалить сертификаты</string>
@@ -461,7 +461,7 @@
     <string name="choose_quick_action">Выбрать быстрое действие</string>
     <string name="search_contacts">Поиск контактов</string>
     <string name="send_private_message">Отправить личное сообщение</string>
-    <string name="user_has_left_conference">%1$s покинул конференцию</string>
+    <string name="user_has_left_conference">%1$s покинул(а) конференцию</string>
     <string name="username">Имя пользователя</string>
     <string name="username_hint">Имя пользователя</string>
     <string name="invalid_username">Недопустимое имя пользователя</string>
@@ -494,7 +494,7 @@
     <string name="certificate_chain_is_not_trusted">Ненадёжная цепь сертификатов</string>
     <string name="jid_does_not_match_certificate">XMPP-адрес не соответствует сертификату</string>
     <string name="action_renew_certificate">Обновить сертификат</string>
-    <string name="error_fetching_omemo_key">Ошибка при получении OMEMO-ключа!</string>
+    <string name="error_fetching_omemo_key">Ошибка при получении ключа OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Ключ OMEMO проверен с сертификатом!</string>
     <string name="device_does_not_support_certificates">Ваше устройство не поддерживает выбор клиентских сертификатов!</string>
     <string name="pref_connection_options">Подключение</string>
@@ -531,7 +531,7 @@
     <string name="pref_picture_compression_summary">Подсказка: используйте \"Выбрать файл\" вместо \"Выбрать изображение\", чтобы отправлять изображения в несжатом виде, независимо от этой настройки.</string>
     <string name="always">Всегда</string>
     <string name="large_images_only">Только большие изображения</string>
-    <string name="battery_optimizations_enabled">Оптимизации энергопотребления разрешены</string>
+    <string name="battery_optimizations_enabled">Включена оптимизация энергопотребления</string>
     <string name="battery_optimizations_enabled_explained">Ваше устройство использует агрессивную оптимизацию энергопотребления %1$s, что может привести к задержке уведомлений и даже потере сообщений.
 \nРекомендуется её отключить.</string>
     <string name="battery_optimizations_enabled_dialog">Ваше устройство использует агрессивную оптимизацию энергопотребления %1$s, что может привести к задержке уведомлений и даже потере сообщений.
@@ -706,7 +706,7 @@
     <string name="mtm_accept_cert">Принять неизвестный сертификат?</string>
     <string name="mtm_trust_anchor">Этот сертификат сервера не подписан ни одним из известных центров сертификации.</string>
     <string name="mtm_accept_servername">Принять несовпадающее имя сервера?</string>
-    <string name="mtm_hostname_mismatch">Сервер может аутентифицироваться в качестве \"%s\". Сертификат подходит только для:</string>
+    <string name="mtm_hostname_mismatch">Сервер не может аутентифицироваться в качестве \"%s\". Сертификат подходит только для:</string>
     <string name="mtm_connect_anyway">Всё равно подключиться?</string>
     <string name="mtm_cert_details">Детали сертификата:</string>
     <string name="once">Один раз</string>
@@ -716,18 +716,18 @@
     <string name="edit_status_message_title">Изменить статусное сообщение</string>
     <string name="edit_status_message">Изменить статусное сообщение</string>
     <string name="disable_encryption">Отключить шифрование</string>
-    <string name="error_trustkey_general">%1$s может отправить зашифрованные сообщения для %2$s. Причиной этому может быть использование получателем устаревшего сервера или клиента, которые не поддерживают OMEMO.</string>
+    <string name="error_trustkey_general">%1$s не может отправить зашифрованные сообщения для %2$s. Причиной этому может быть использование получателем устаревшего сервера или клиента, которые не поддерживают OMEMO.</string>
     <string name="error_trustkey_device_list">Невозможно получить список устройств</string>
     <string name="error_trustkey_bundle">Невозможно получить ключи шифрования</string>
     <string name="error_trustkey_hint_mutual">Подсказка: в некоторых случаях это может исправлено добавлением друг друга в список контактов.</string>
-    <string name="disable_encryption_message">Выключить OMEMO-шифрование для этого чата?
+    <string name="disable_encryption_message">Выключить OMEMO-шифрование для этой беседы?
 \nЭто позволит администратору сервера читать ваши сообщения, но также это может быть единственным способом связи с людьми, использующими устаревшие клиенты.</string>
     <string name="disable_now">Отключить сейчас</string>
     <string name="draft">Черновик:</string>
     <string name="pref_omemo_setting">OMEMO-шифрование</string>
-    <string name="pref_omemo_setting_summary_always">OMEMO будет всегда использоваться для одиночных бесед и закрытых конференций.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO будет использоваться по умолчанию для новых чатов.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO нужно будет явно включать для новых чатов.</string>
+    <string name="pref_omemo_setting_summary_always">OMEMO будет всегда использоваться для одиночных бесед и приватных конференций.</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO будет использоваться по умолчанию для новых бесед.</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO нужно будет явно включать для новых бесед.</string>
     <string name="create_shortcut">Создать ярлык</string>
     <string name="default_on">Включено по умолчанию</string>
     <string name="default_off">Выключено по умолчанию</string>
@@ -748,7 +748,7 @@
     <string name="no_microphone_permission">Предоставить %1$s разрешение на использование микрофона</string>
     <string name="search_messages">Поиск сообщений</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Посмотреть чат</string>
+    <string name="view_conversation">Посмотреть беседу</string>
     <string name="pref_use_share_location_plugin">Расширение для обмена информацией о местонахождении</string>
     <string name="pref_use_share_location_plugin_summary">Использовать расширение для обмена информацией о местонахождении вместо встроенной карты</string>
     <string name="copy_link">Копировать ссылку</string>
@@ -757,7 +757,7 @@
     <string name="pref_start_search">Быстрый поиск</string>
     <string name="pref_start_search_summary">На экране новой беседы открывать клавиатуру и ставить курсор в поле поиска</string>
     <string name="group_chat_avatar">Аватар конференции</string>
-    <string name="host_does_not_support_group_chat_avatars">Сервер не поддерживает наличие аватар у конференций</string>
+    <string name="host_does_not_support_group_chat_avatars">Сервер не поддерживает наличие аватаров у конференций</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Только владелец может менять аватар конференции</string>
     <string name="contact_name">Имя контакта</string>
     <string name="nickname">Имя</string>
@@ -788,7 +788,7 @@
     <string name="media_browser">Просмотр медиафайлов</string>
     <string name="security_violation_not_attaching_file">Файл не прикреплён из соображений безопасности.</string>
     <string name="pref_video_compression">Качество видео</string>
-    <string name="pref_video_compression_summary">Чем ниже качество, тем меньше объем файлов</string>
+    <string name="pref_video_compression_summary">Чем ниже качество, тем меньше размер файлов</string>
     <string name="video_360p">Среднее (360p)</string>
     <string name="video_720p">Высокое (720р)</string>
     <string name="cancelled">отменено</string>
@@ -859,7 +859,7 @@
     <string name="enter_jabber_id">Введите XMPP-адрес</string>
     <string name="create_group_chat">Создать конференцию</string>
     <string name="join_public_channel">Присоединиться к каналу</string>
-    <string name="create_private_group_chat">Создать закрытую конференцию</string>
+    <string name="create_private_group_chat">Создать приватную конференцию</string>
     <string name="create_public_channel">Создать публичный канал</string>
     <string name="create_dialog_channel_name">Название канала</string>
     <string name="xmpp_address">XMPP-адрес</string>
@@ -883,7 +883,7 @@
     <string name="no_users_hint_group_chat">У этой приватной конференции нет участников.</string>
     <string name="manage_permission">Управление правами</string>
     <string name="search_participants">Поиск участников</string>
-    <string name="file_too_large">Объём файла слишком велик</string>
+    <string name="file_too_large">Размер файла слишком велик</string>
     <string name="attach">Прикрепить</string>
     <string name="discover_channels">Найти каналы</string>
     <string name="search_channels">Поиск каналов</string>
@@ -904,7 +904,7 @@
     <string name="unable_to_perform_this_action">Невозможно совершить это действие</string>
     <string name="open_join_dialog">Присоединиться к публичному каналу…</string>
     <string name="sharing_application_not_grant_permission">Приложение для обмена не предоставило право доступа к этому файлу.</string>
-    <string name="group_chats_and_channels"><![CDATA[Группы и каналы]]></string>
+    <string name="group_chats_and_channels">Конференции и каналы</string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">Локальный сервер</string>
     <string name="pref_channel_discovery_summary">Большинству пользователей следует выбрать \"jabber.network\" для получения наиболее подходящих предложений от всей публичной экосистемы XMPP.</string>
@@ -947,8 +947,8 @@
     <string name="remove_from_favorites">Открепить</string>
     <string name="gpx_track">GPX-трек</string>
     <string name="could_not_correct_message">Невозможно исправить сообщение</string>
-    <string name="search_all_conversations">Все чаты</string>
-    <string name="search_this_conversation">Этот чат</string>
+    <string name="search_all_conversations">Все беседы</string>
+    <string name="search_this_conversation">Эта беседа</string>
     <string name="your_avatar">Ваш аватар</string>
     <string name="avatar_for_x">Аватар для %s</string>
     <string name="encrypted_with_omemo">Зашифровано с помощью OMEMO</string>
@@ -988,7 +988,7 @@
         <item quantity="other">%d пропущенных вызовов</item>
     </plurals>
     <string name="account_status_incompatible_client">Несовместимый клиент</string>
-    <string name="group_chats">Групповые беседы</string>
+    <string name="group_chats">Конференции</string>
     <string name="multimedia_file">файл мультимедиа</string>
     <string name="continue_btn">Продолжить</string>
     <string name="pref_up_push_server_title">Сервер уведомлений</string>
@@ -997,7 +997,7 @@
     <string name="rtp_state_reconnecting">Переподключение</string>
     <string name="no_xmpp_adddress_found">Адрес XMPP не найден</string>
     <string name="pref_up_push_account_title">Аккаунт XMPP</string>
-    <string name="conference_technical_problems">Вы покинули данный групповой чат по техническим причинам</string>
+    <string name="conference_technical_problems">Вы покинули эту конференцию по техническим причинам</string>
     <string name="rtp_state_content_add">Добавить дополнительные треки\?</string>
     <string name="reconnecting_call">Переподключение к звонку</string>
     <string name="reconnecting_video_call">Переподключение к видеовызову</string>
@@ -1012,8 +1012,8 @@
     <string name="delete_from_server">Удалить аккаунт на сервере</string>
     <string name="pref_autojoin">Синхронизировать закладки</string>
     <string name="pref_autojoin_summary">Устанавливать флаг \"автоприсоединение\" при входе и выходе из MUC, и реагировать на изменения от других клиентов.</string>
-    <string name="search_group_chats">Поиск по групповым беседам</string>
-    <string name="download_failed_invalid_file">Загрузка неудачна: Неизвестный файл</string>
+    <string name="search_group_chats">Поиск по конференциям</string>
+    <string name="download_failed_invalid_file">Загрузка не выполнена: файл испорчен</string>
     <string name="rtp_state_content_add_video">Перейти на видеовызов\?</string>
     <string name="outgoing_call_duration_timestamp">Исходящий вызов (%s) · %s</string>
     <string name="incoming_call_duration_timestamp">Входящий вызов (%s) · %s</string>
@@ -1055,8 +1055,8 @@
     <string name="call_integration_not_available">Интеграция вызовов недоступна!</string>
     <string name="no_permission_to_place_call">Нет разрешения на телефонный звонок</string>
     <string name="remove_bookmark">Удалить закладку для \"%s\"?</string>
-    <string name="delete_and_close">Архивировать и удалить чат</string>
-    <string name="remove_bookmark_and_close">Удалить закладку для %s и архивировать чат?</string>
+    <string name="delete_and_close">Архивировать и удалить беседу</string>
+    <string name="remove_bookmark_and_close">Удалить закладку для %s и архивировать беседу?</string>
     <string name="pref_send_crash_reports">Отправлять отчёты о сбоях</string>
     <string name="switch_to_chat">Перейти к беседе</string>
     <string name="pref_summary_appearance">Тема, цвета, снимки, ввод</string>
@@ -1103,7 +1103,7 @@
     <string name="pref_title_trust_system_ca_store_summary">Доверять сертификатам системных УЦ</string>
     <string name="pref_connection_summary_w_cd">Имя хоста и порт, Tor, обзор каналов</string>
     <string name="allow_private_messages">Разрешить личные сообщения</string>
-    <string name="pref_accept_invites_from_strangers_summary">Принимать приглашения в групповые беседы от неизвестных</string>
+    <string name="pref_accept_invites_from_strangers_summary">Принимать приглашения в конференции от неизвестных</string>
     <string name="unsupported_operation">Операция не поддерживается</string>
     <string name="pref_fullscreen_notification">Полноэкранные уведомления</string>
     <string name="pref_backup_recurring">Регулярные резервные копии</string>
