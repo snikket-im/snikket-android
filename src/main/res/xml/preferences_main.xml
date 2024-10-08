@@ -35,11 +35,12 @@
     <Preference
         android:icon="@drawable/ic_archive_24dp"
         android:key="backup"
-        app:fragment="eu.siacs.conversations.ui.fragment.settings.BackupSettingsFragment"
         android:summary="@string/pref_backup_summary"
-        android:title="@string/backup" />
+        android:title="@string/backup"
+        app:fragment="eu.siacs.conversations.ui.fragment.settings.BackupSettingsFragment" />
     <Preference
         android:icon="@drawable/ic_cloud_sync_24dp"
+        android:key="up"
         app:fragment="eu.siacs.conversations.ui.fragment.settings.UpSettingsFragment"
         app:summary="@string/unified_push_summary"
         app:title="@string/unified_push_distributor" />
