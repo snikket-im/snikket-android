@@ -700,4 +700,31 @@
     <string name="search_this_conversation">See vestlus</string>
     <string name="pref_up_push_account_title">XMPP konto</string>
     <string name="hide_notification">Peida teavitus</string>
+    <string name="no_storage_permission">Anna rakendusele %1$s õigus kasutada välist andmeruumi</string>
+    <string name="pref_picture_compression">Piltide pakkimine ja tihendamine</string>
+    <string name="pref_picture_compression_summary">Vihje: sõltumata selle eelistuse olekust, kui soovid saata pilte algsel kujul, siis kasuta valikut „Vali fail“, mitte „Vali pilt“.</string>
+    <string name="always">Alati</string>
+    <string name="notify_never">Teavitused pole kasutusel</string>
+    <string name="notify_paused">Teavitused on peatatud</string>
+    <string name="large_images_only">Vaid suurte piltide puhul</string>
+    <string name="battery_optimizations_enabled">Akukasutuse optimeerimine on sisselülitatud</string>
+    <string name="battery_optimizations_enabled_explained">Sinu nutiseade kasutab hetkel %1$s rakenduse jaoks tõhusat akukasutuse optimeerimist ning see võib põhjustada nii sõnumite hiljem saabumist, kui kadumist.
+\nMe soovitame, et lülitad akukasutuse optimeerimise välja.</string>
+    <string name="battery_optimizations_enabled_dialog">Sinu nutiseade kasutab hetkel %1$s rakenduse jaoks tõhusat akukasutuse optimeerimist ning see võib põhjustada nii sõnumite hiljem saabumist, kui kadumist.
+\n
+\nJärgnevas palume, et lülitad akukasutuse optimeerimise välja.</string>
+    <string name="welcome_header">Liitu Conversationi kasutajatega</string>
+    <string name="welcome_header_quicksy">Tere tulemast kasutama sõnumirakendust Quicksy!</string>
+    <string name="no_application_to_share_uri">Ei leidu ühtegi rakendust võrguaadressi ehk URI jagamiseks</string>
+    <string name="share_uri_with">Jaga võrguaadress rakendusega…</string>
+    <string name="no_camera_permission">Anna rakendusele %1$s õigus kasutada kaamerat</string>
+    <string name="notify_on_all_messages">Teavita kõikidest sõnumitest</string>
+    <string name="notify_only_when_highlighted">Teavita vaid mainimiste puhul</string>
+    <string name="disable">Lülita välja</string>
+    <string name="selection_too_large">Valitud ala on liiga suur</string>
+    <string name="no_accounts">(Aktiveeritud kasutajakontosid pole)</string>
+    <string name="this_field_is_required">Selle välja täitmine on kohustuslik</string>
+    <string name="correct_message">Muuda sõnumit</string>
+    <string name="send_corrected_message">Saada muudetud sõnum</string>
+    <string name="device_does_not_support_battery_op">Sinu nutiseade et toeta akukasutuse optimeerimise rakendusekohast väljalülitamist</string>
 </resources>
