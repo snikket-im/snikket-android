@@ -974,7 +974,7 @@ public class StartConversationActivity extends XmppActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0)
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);
+                UriHandlerActivity.onRequestPermissionResult(this, requestCode, grantResults);
                 if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
                     if (QuickConversationsService.isQuicksy()) {
                         setRefreshing(true);

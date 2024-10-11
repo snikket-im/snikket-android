@@ -562,6 +562,7 @@ public class EditAccountActivity extends OmemoActivity
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO check for Camera / Scan permission
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_BATTERY_OP || requestCode == REQUEST_DATA_SAVER) {
             updateAccountInformation(mAccount == null);
