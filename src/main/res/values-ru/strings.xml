@@ -88,7 +88,7 @@
 \n 
 \n<b>Предупреждение:</b> данная операция не удалит копии файла, хранящиеся на других устройствах или серверах. </string>
     <string name="choose_presence">Выберите устройство</string>
-    <string name="send_unencrypted_message">Отправить сообщение без шифрования</string>
+    <string name="send_unencrypted_message">Отправить без шифрования</string>
     <string name="send_message">Сообщение</string>
     <string name="send_message_to_x">Сообщение для %s</string>
     <string name="send_omemo_x509_message">v\\Зашифрованное OMEMO сообщение</string>
@@ -1085,7 +1085,7 @@
     <string name="pref_automatic_download">Автоматическое скачивание</string>
     <string name="appearance">Внешний вид</string>
     <string name="pref_title_interface">Интерфейс</string>
-    <string name="pref_light_dark_mode">Светлый/тёмный режим</string>
+    <string name="pref_light_dark_mode">Светлая/тёмная тема</string>
     <string name="pref_allow_screenshots_summary">Отображать содержимое экрана приложения в переключателе и разрешить делать снимки экрана</string>
     <string name="pref_category_e2ee">Сквозное шифрование</string>
     <string name="pref_title_trust_system_ca_store">Удостоверяющие центры</string>
