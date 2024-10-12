@@ -830,7 +830,7 @@
     <string name="backup_channel_name">Sicherung &amp; Wiederherstellung</string>
     <string name="enter_jabber_id">XMPP-Adresse eingeben</string>
     <string name="create_group_chat">Gruppenchat erstellen</string>
-    <string name="join_public_channel">Öffentlichen Channel beitreten</string>
+    <string name="join_public_channel">Öffentlichem Channel beitreten</string>
     <string name="create_private_group_chat">Privaten Gruppenchat erstellen</string>
     <string name="create_public_channel">Öffentlichen Channel erstellen</string>
     <string name="create_dialog_channel_name">Channelname</string>
