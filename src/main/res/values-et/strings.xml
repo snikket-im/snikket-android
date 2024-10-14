@@ -727,4 +727,22 @@
     <string name="correct_message">Muuda sõnumit</string>
     <string name="send_corrected_message">Saada muudetud sõnum</string>
     <string name="device_does_not_support_battery_op">Sinu nutiseade et toeta akukasutuse optimeerimise rakendusekohast väljalülitamist</string>
+    <string name="agree_and_continue">Nõustu ja jätka</string>
+    <string name="quicksy_wants_your_consent">Quicksy küsib nõusolekut sinu andmete kasutamiseks</string>
+    <string name="pref_theme_light">Hele kujundus</string>
+    <string name="pref_theme_dark">Tume kujundus</string>
+    <string name="pref_privacy">Privaatsus</string>
+    <string name="pref_theme_options">Kujundus</string>
+    <string name="pref_theme_options_summary">Vali värvipalett</string>
+    <string name="pref_theme_automatic">Automaatne</string>
+    <string name="pref_use_colorful_bubbles">Värvilised vestlusmullid</string>
+    <string name="pref_use_colorful_bubbles_summary">Saadetud ja saabunud sõnumite erksad taustavärvid</string>
+    <string name="unable_to_connect_to_keychain">Ühenduse loomine OpenKeychainiga ei õnnestunud</string>
+    <string name="this_device_is_no_longer_in_use">See seade pole enam kasutusel</string>
+    <string name="type_pc">Arvuti</string>
+    <string name="type_phone">Mobiiltelefon</string>
+    <string name="type_tablet">Tahvelarvuti</string>
+    <string name="type_web">Veebibrauser</string>
+    <string name="type_console">Konsool</string>
+    <string name="payment_required">Makse on vajalik</string>
 </resources>
