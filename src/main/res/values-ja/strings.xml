@@ -1050,4 +1050,26 @@
     <string name="pref_backup_recurring">繰り返し作成</string>
     <string name="pref_backup_summary">一回限りもしくは繰り返し計画を作成</string>
     <string name="pref_create_backup_one_off_summary">一回限りのバックアップを作成</string>
+    <string name="your_avatar_tap_to_select_new_avatar">アバター。新しいアバターをギャラリーから選択するにはタップしてください。</string>
+    <string name="could_not_disable_video">ビデオを無効にできませんでした。</string>
+    <string name="edit_nick">ニックネームを編集</string>
+    <string name="delete_pgp_key">OpenPGP 鍵を削除</string>
+    <string name="edit_configuration">設定を変更</string>
+    <string name="change_notification_settings">通知設定を変更</string>
+    <string name="call_is_using_earpiece">通話はイヤホンを使用します。</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">通話はイヤホンを使用します。スピーカーに切り替えるにはタップしてください。</string>
+    <string name="call_is_using_speaker">通話はスピーカーを使用します。</string>
+    <string name="call_is_using_bluetooth">通話は bluetooth を使用します。</string>
+    <string name="video_is_enabled_tap_to_disable">ビデオが有効になっています。無効にするにはタップしてください。</string>
+    <string name="server_info_login_mechanism">ログインメカニズム</string>
+    <string name="call_is_using_wired_headset">通話は有線ヘッドセットを使用します</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">通話はスピーカーを使用します。イヤホンに切り替えるにはタップしてください。</string>
+    <string name="video_is_disabled_tap_to_enable">ビデオが無効になっています。有効にするにはタップしてください。</string>
+    <string name="server_info_bind2">XEP-0386: Bind 2</string>
+    <string name="channel_discover_opt_in_message">談話室の探索には &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; というサードパーティのサービスを利用します。&lt;br&gt;&lt;br&gt;この機能を使用すると、IP アドレスと検索語がこのサービスに送信されます。詳細は、&lt;a href=https://search.jabber.network/privacy&gt;プライバシーポリシー&lt;/a&gt;をご覧ください。</string>
+    <string name="server_info_sasl2">XEP-0388: 拡張可能な SASL プロファイル</string>
+    <string name="could_not_add_reaction">リアクションを追加できませんでした</string>
+    <string name="add_reaction">リアクションを追加…</string>
+    <string name="add_reaction_title">リアクションを追加</string>
+    <string name="more_reactions">さらに多くのリアクション</string>
 </resources>
