@@ -796,4 +796,5 @@
     <string name="server_info_login_mechanism">Sisselogimise meetod</string>
     <string name="add_reaction_title">Lisa reaktsioon</string>
     <string name="more_reactions">Veel reaktsioone</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO on vaikimisi kasutusel kõikide uute vestluste puhul.</string>
 </resources>
