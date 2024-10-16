@@ -113,8 +113,11 @@
             android:orientation="horizontal"
             android:visibility="visible"
             app:chipSpacingHorizontal="4dp"
+            app:chipSpacingVertical="4dp"
+            app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="@+id/message_box"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reactions_anchor" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
