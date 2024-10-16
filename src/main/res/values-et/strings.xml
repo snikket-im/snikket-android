@@ -797,4 +797,22 @@
     <string name="add_reaction_title">Lisa reaktsioon</string>
     <string name="more_reactions">Veel reaktsioone</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO on vaikimisi kasutusel kõikide uute vestluste puhul.</string>
+    <string name="action_unfix_from_location">Eemalda fikseeritud asukoht</string>
+    <string name="action_copy_location">Kopeeri asukoht</string>
+    <string name="action_share_location">Jaga asukohta</string>
+    <string name="action_fix_to_location">Fikseeri asukoht</string>
+    <string name="action_directions">Tee juhtamine</string>
+    <string name="share">Jaga</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO vajab eraldi siselülitamist kõikide uute vestluste puhul.</string>
+    <string name="create_shortcut">Loo kiirlink</string>
+    <string name="default_on">Vaikimisi kasutusel</string>
+    <string name="default_off">Vaikimisi pole kasutusel</string>
+    <string name="pref_dynamic_colors">Dünaamilised värvid</string>
+    <string name="pref_dynamic_colors_summary">Süsteemi värvid (Material You)</string>
+    <string name="not_encrypted_for_this_device">Sõnum polnud selle seadme jaoks krüptitud.</string>
+    <string name="undo">võta tagasi</string>
+    <string name="location_disabled">Asukoha jagamine pole kasutusel</string>
+    <string name="title_activity_share_location">Jaga asukohta</string>
+    <string name="title_activity_show_location">Näita oma asukohta</string>
+    <string name="omemo_decryption_failed">OMEMO-põhise sõnumi dekrüptimine ei õnnestunud.</string>
 </resources>
