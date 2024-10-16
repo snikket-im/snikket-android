@@ -815,4 +815,25 @@
     <string name="title_activity_share_location">Jaga asukohta</string>
     <string name="title_activity_show_location">Näita oma asukohta</string>
     <string name="omemo_decryption_failed">OMEMO-põhise sõnumi dekrüptimine ei õnnestunud.</string>
+    <string name="no_permission_to_access_x">Puudub õigus %s kasutamiseks</string>
+    <string name="remote_server_not_found">Serverit ei leidu</string>
+    <string name="remote_server_timeout">Ühendus serveriga aegus</string>
+    <string name="unable_to_update_account">Kasutajakonto uuendamine ei õnnestunud</string>
+    <string name="pref_delete_omemo_identities_summary">Loo uuesti kõik oma OMEMO-võtmed. Kõik sinu kontaktid peavad sel juhul sind uuesti verifitseerima. Kasuta seda võimalust ainult viimase abinõuna.</string>
+    <string name="no_permission_to_place_call">Pole õigusi helistamiseks</string>
+    <string name="delete_selected_keys">Kustuta valitud võtmed</string>
+    <string name="gif">GIF</string>
+    <string name="magic_create_text">Me aitama sul luua kasutajakontot veebiteenuses conversations.im.
+\nKui conversations.im on sinu teenusepakkuja, siis saad suhelda kõikide teiste teenusepakkujate serverites asuvate kasutajatega - lihtsalt edasta neile oma XMPP aadress.</string>
+    <string name="missing_internet_permission">Anna õigused internetiühenduse kasutamiseks</string>
+    <string name="me">Mina</string>
+    <string name="contact_asks_for_presence_subscription">Sinu kontakt soovib kasutada olekuteadete tellimist</string>
+    <string name="allow">Luba</string>
+    <string name="reconnect_on_other_host">Loo ühendus teises hostis</string>
+    <string name="no_microphone_permission">Anna rakendusele %1$s õigus kasutada mikrofoni</string>
+    <string name="please_wait">Palun oota korraks…</string>
+    <string name="search_messages">Otsi sõnumeid</string>
+    <string name="view_conversation">Vaata vestlust</string>
+    <string name="pref_use_share_location_plugin">Asukoha jagamise lisamoodul</string>
+    <string name="pref_use_share_location_plugin_summary">Rakenduses leiduva kaardi asemel kasuta asukoha jagamise lisamoodulit</string>
 </resources>
