@@ -836,4 +836,24 @@
     <string name="view_conversation">Vaata vestlust</string>
     <string name="pref_use_share_location_plugin">Asukoha jagamise lisamoodul</string>
     <string name="pref_use_share_location_plugin_summary">Rakenduses leiduva kaardi asemel kasuta asukoha jagamise lisamoodulit</string>
+    <string name="share_as_uri">Jaga XMPP võrguaadressina</string>
+    <string name="error_unable_to_create_temporary_file">Ajutise faili loomine ei õnnestunud</string>
+    <string name="this_device_has_been_verified">See seade on verifitseeritud</string>
+    <string name="copy_fingerprint">Kopeeri sõrmejälg</string>
+    <string name="all_omemo_keys_have_been_verified">Sa oled verifitseerinud kõik sinu valduses olevad OMEMO-võtmed</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">See triipkood ei sisalda selle vestluse sõrmejägi.</string>
+    <string name="verified_fingerprints">Verifitseeritud sõrmejäljed</string>
+    <string name="use_camera_icon_to_scan_barcode">Kasuta kaamerat kontakti triipkoodi skaneerimiseks</string>
+    <string name="please_wait_for_keys_to_be_fetched">Palun oota, kuni võtmed saavad laaditud</string>
+    <string name="share_as_barcode">Jaga triipkoodina</string>
+    <string name="share_as_http">Jaga HTTP lingina</string>
+    <string name="pref_blind_trust_before_verification">Enne verifitseerimist usalda pimesi</string>
+    <string name="pref_blind_trust_before_verification_summary">Usalda verifitseerimata kontaktide uusi seadmeid, aga küsi kinnitust verifitseeritud kontaktide uute seadmete puhul.</string>
+    <string name="blindly_trusted_omemo_keys">Pimesi usaldatud OMEMO-võtmed. See võib tähendada, et tegemist on kellegi teisega või keegi kolmas suudab sõnumiliiklust jälgida.</string>
+    <string name="not_trusted">Pole usaldatud</string>
+    <string name="invalid_barcode">Vigane QR-kood</string>
+    <string name="pref_clean_cache_summary">Tühjenda puhverdatud failide kaust (mida kasutab kaamerarakendus)</string>
+    <string name="pref_clean_cache">Tühjenda puhver</string>
+    <string name="pref_clean_private_storage">Tühjenda privaatne vahemälu</string>
+    <string name="pref_clean_private_storage_summary">Tühjenda failide hoidmiseks mõeldud privaatne vahemälu (faile saad serverist uuesti alla laadida)</string>
 </resources>
