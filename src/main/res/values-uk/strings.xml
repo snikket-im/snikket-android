@@ -27,7 +27,7 @@
     <string name="minutes_ago">%d хвилин тому</string>
     <string name="sending">надсилання…</string>
     <string name="message_decrypting">Повідомлення розшифровується. Зачекайте, будь ласка…</string>
-    <string name="pgp_message">Повідомлення зашифроване OpenPGP</string>
+    <string name="pgp_message">Повідомлення, зашифроване OpenPGP</string>
     <string name="nick_in_use">Таке прізвисько вже використовується</string>
     <string name="invalid_muc_nick">Неприйнятне прізвисько</string>
     <string name="admin">Адміністратор</string>
@@ -84,7 +84,7 @@
     <string name="send_message">Надіслати повідомлення</string>
     <string name="send_message_to_x">Повідомлення %s</string>
     <string name="send_omemo_x509_message">Повідомлення, зашифроване v\\OMEMO</string>
-    <string name="your_nick_has_been_changed">Ваше прізвисько змінено</string>
+    <string name="your_nick_has_been_changed">Використовується нове прізвисько</string>
     <string name="send_unencrypted">Надіслати без шифрування</string>
     <string name="decryption_failed">Не вдалося розшифрувати. Можливо, у Вас відсутній потрібний приватний ключ.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -129,10 +129,10 @@
     <string name="send_presence_updates">Повідомляти про присутність</string>
     <string name="receive_presence_updates">Отримувати оновлення присутності</string>
     <string name="ask_for_presence_updates">Надіслати запит на оновлення присутності</string>
-    <string name="attach_choose_picture">Обрати зображення</string>
+    <string name="attach_choose_picture">Вибрати зображення</string>
     <string name="attach_take_picture">Зняти світлину</string>
     <string name="preemptively_grant">Попередньо давати запит на підписку</string>
-    <string name="error_not_an_image_file">Обраний файл не є зображенням</string>
+    <string name="error_not_an_image_file">Вибраний файл не є зображенням</string>
     <string name="error_compressing_image">Не вдалося конвертувати зображення</string>
     <string name="error_file_not_found">Файл не знайдено</string>
     <string name="error_io_exception">Загальна помилка вводу-виводу. Можливо, на пристрої закінчилася вільна пам\'ять\?</string>
@@ -200,8 +200,8 @@
     <string name="last_seen_hours">у мережі %d годин тому</string>
     <string name="last_seen_day">у мережі 1 день тому</string>
     <string name="last_seen_days">у мережі %d днів тому</string>
-    <string name="install_openkeychain">Зашифроване повідомлення. Будь ласка, встановіть OpenKeychain, щоб розшифрувати.</string>
-    <string name="openpgp_messages_found">Знайдено повідомлення, зашифроване OpenPGP</string>
+    <string name="install_openkeychain">Повідомлення зашифровано. Щоб його розшифрувати, будь ласка, встановіть OpenKeychain.</string>
+    <string name="openpgp_messages_found">Знайдено нові повідомлення, зашифровані OpenPGP</string>
     <string name="openpgp_key_id">Ідентифікатор ключа OpenPGP</string>
     <string name="omemo_fingerprint">Цифровий підпис OMEMO</string>
     <string name="omemo_fingerprint_x509">Цифровий підпис v\\OMEMO</string>
@@ -242,7 +242,7 @@
     <string name="add_back">Також додати</string>
     <string name="contact_has_read_up_to_this_point">%s дочитав(ла) до цього місця</string>
     <string name="contacts_have_read_up_to_this_point">%s дочитали до цього місця</string>
-    <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d дочитали до цього місця</string>
+    <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s і %2$d дочитали до цього місця</string>
     <string name="everyone_has_read_up_to_this_point">Усі прочитали до цього місця</string>
     <string name="publish">Опублікувати</string>
     <string name="touch_to_choose_picture">Торкніться аватара, щоб вибрати зображення з галереї</string>
@@ -258,23 +258,23 @@
     <string name="connect">Підключення</string>
     <string name="account_already_exists">Цей обліковий запис уже існує</string>
     <string name="next">Далі</string>
-    <string name="server_info_session_established">Поточну сесію встановлено</string>
+    <string name="server_info_session_established">Сесію встановлено</string>
     <string name="skip">Пропустити</string>
     <string name="disable_notifications">Вимкнути сповіщення</string>
     <string name="enable">Увімкнути</string>
-    <string name="conference_requires_password">Група вимагає пароль</string>
-    <string name="enter_password">Зазначте пароль</string>
-    <string name="request_presence_updates">Будь ласка, спершу надішліть запит на оновлення присутності від Вашого контакту.
-\n
-\n<small>Оновлення буде використано, щоб визначити, яку програму-клієнт (які програми-клієнти) він використовує</small>.</string>
+    <string name="conference_requires_password">Групу захищено паролем</string>
+    <string name="enter_password">Уведіть пароль</string>
+    <string name="request_presence_updates">Будь ласка, спершу надішліть запит на оновлення присутності від Вашого контакту. 
+\n 
+\n<small>Це потрібно, щоб визначити, яку програму-клієнт він використовує</small>.</string>
     <string name="request_now">Надіслати запит зараз</string>
     <string name="ignore">Ігнорувати</string>
     <string name="without_mutual_presence_updates"><b>Попередження:</b> Надсилання без взаємної згоди на оновлення присутності може спричинити неочікувані проблеми.
 \n
 \n<small>Перегляньте деталі контакту та перевірте отримання стану присутності.</small></string>
     <string name="pref_security_settings">Безпека</string>
-    <string name="pref_allow_message_correction">Редагування повідомлень</string>
-    <string name="pref_allow_message_correction_summary">Дозволити контактам редагувати свої повідомлення після надсилання</string>
+    <string name="pref_allow_message_correction">Виправлення повідомлень</string>
+    <string name="pref_allow_message_correction_summary">Дозволити контактам виправляти свої повідомлення після надсилання</string>
     <string name="pref_expert_options">Експертні налаштування</string>
     <string name="pref_expert_options_summary">Будь ласка, будьте обережними з цим</string>
     <string name="title_activity_about_x">Про %s</string>
@@ -288,12 +288,12 @@
     <string name="conference_banned">Вам заборонили доступ до цієї групи</string>
     <string name="conference_members_only">Ця група лише для учасників</string>
     <string name="conference_resource_constraint">Обмеження ресурсів</string>
-    <string name="conference_kicked">Вас виключили з цієї групи</string>
+    <string name="conference_kicked">Вас вигнали з цієї групи</string>
     <string name="conference_shutdown">Цю групу закрили</string>
-    <string name="conference_unknown_error">Ви більше не берете участі у цій групі</string>
+    <string name="conference_unknown_error">Ви більше не є учасником цієї групи</string>
     <string name="using_account">обліковий запис %s</string>
     <string name="hosted_on">розміщений на %s</string>
-    <string name="checking_x">Перевіряю %s на вузлі з HTTP</string>
+    <string name="checking_x">Перевірка %s на вузлі з HTTP</string>
     <string name="not_connected_try_again">Ви поза мережею. Спробуйте ще раз пізніше</string>
     <string name="check_x_filesize">Перевірити %s розмір</string>
     <string name="check_x_filesize_on_host">Перевірити %1$s розмір на %2$s</string>
@@ -319,9 +319,9 @@
     <string name="pref_create_backup_summary">Резервні копії зберігатимуться до %s</string>
     <string name="notification_create_backup_title">Створення резервних копій</string>
     <string name="notification_backup_created_title">Резервну копію створено</string>
-    <string name="notification_backup_created_subtitle">Резервні копії збережено до %s</string>
-    <string name="restoring_backup">Відтворення з резервної копії</string>
-    <string name="notification_restored_backup_title">Відтворено з резервної копії</string>
+    <string name="notification_backup_created_subtitle">Резервну копію збережено до %s</string>
+    <string name="restoring_backup">Відновлення з резервної копії</string>
+    <string name="notification_restored_backup_title">Відновлено з резервної копії</string>
     <string name="notification_restored_backup_subtitle">Не забудьте увімкнути обліковий запис.</string>
     <string name="choose_file">Файл</string>
     <string name="receiving_x_file">Отримання %1$s (%2$d%% завершено)</string>
@@ -334,8 +334,8 @@
     <string name="x_file_offered_for_download">%s запропоновано для завантаження</string>
     <string name="cancel_transmission">Припинити передачу</string>
     <string name="file_transmission_failed">передача файлу не вдалася</string>
-    <string name="file_transmission_cancelled">скасовано передачу файлу</string>
-    <string name="file_deleted">Файл вилучено</string>
+    <string name="file_transmission_cancelled">передачу файлу скасовано</string>
+    <string name="file_deleted">Файл видалено</string>
     <string name="no_application_found_to_open_file">Не знайдено застосунку, щоб відкрити файл</string>
     <string name="no_application_found_to_open_link">Не знайдено застосунку, щоб відкрити посилання</string>
     <string name="no_application_found_to_view_contact">Не знайдено застосунку, щоб переглянути контакт</string>
@@ -378,12 +378,12 @@
     <string name="grant_owner_privileges">Надати права власника</string>
     <string name="remove_owner_privileges">Відкликати права власника</string>
     <string name="remove_from_room">Вилучити з групи</string>
-    <string name="remove_from_channel">Прибрати з каналу</string>
-    <string name="could_not_change_affiliation">Неможливо змінити роль %s</string>
+    <string name="remove_from_channel">Вилучити з каналу</string>
+    <string name="could_not_change_affiliation">Неможливо змінити статус участі %s</string>
     <string name="ban_from_conference">Заборонити доступ до групи</string>
-    <string name="ban_from_channel">Вилучити з каналу</string>
+    <string name="ban_from_channel">Заборонити в каналі</string>
     <string name="removing_from_public_conference">Ви намагаєтеся вилучити %s з публічного каналу. Єдиним способом для цього є заблокувати користувача назавжди.</string>
-    <string name="ban_now">Вилучити зараз</string>
+    <string name="ban_now">Заборонити зараз</string>
     <string name="could_not_change_role">Неможливо змінити роль %s</string>
     <string name="conference_options">Налаштування приватного чату</string>
     <string name="channel_options">Налаштування публічного каналу</string>
@@ -400,19 +400,19 @@
     <string name="mark_as_read">Позначити як прочитане</string>
     <string name="pref_input_options">Введення</string>
     <string name="pref_enter_is_send">Enter для надсилання</string>
-    <string name="pref_enter_is_send_summary">Використовувати кнопку Enter для надсилання повідомлень. Якщо цей параметр вимкнено, повідомлення можна надсилати за допомогою комбінації Ctrl+Enter.</string>
+    <string name="pref_enter_is_send_summary">Використовувати кнопку Enter для надсилання повідомлень. Також для надсилання можна використовувати Ctrl+Enter, навіть якщо цей параметр вимкнено.</string>
     <string name="pref_display_enter_key">Показувати кнопку Enter</string>
     <string name="pref_display_enter_key_summary">Змінити клавішу емоційок на кнопку Enter</string>
     <string name="audio">аудіо</string>
     <string name="video">відео</string>
     <string name="image">зображення</string>
     <string name="pdf_document">документ PDF</string>
-    <string name="apk">Програма Android</string>
-    <string name="vcard">Контакт</string>
+    <string name="apk">програма Android</string>
+    <string name="vcard">контакт</string>
     <string name="avatar_has_been_published">Аватар опубліковано!</string>
     <string name="sending_x_file">Надсилання %s</string>
     <string name="offering_x_file">Пропозиція %s</string>
-    <string name="hide_offline">Сховати поза мережею</string>
+    <string name="hide_offline">Сховати «Поза мережею»</string>
     <string name="contact_is_typing">%s пише…</string>
     <string name="contact_has_stopped_typing">%s припинив писати</string>
     <string name="contacts_are_typing">%s пишуть…</string>
@@ -427,7 +427,7 @@
     <string name="title_undo_swipe_out_channel">Залишити публічний канал</string>
     <string name="pref_dont_trust_system_cas_title">Не довіряти системним центрам сертифікації</string>
     <string name="pref_dont_trust_system_cas_summary">Усі сертифікати мають бути підтверджені вручну</string>
-    <string name="pref_remove_trusted_certificates_title">Вилучати сертифікати</string>
+    <string name="pref_remove_trusted_certificates_title">Вилучити сертифікати</string>
     <string name="pref_remove_trusted_certificates_summary">Вилучити сертифікати, які було підтверджено вручну</string>
     <string name="toast_no_trusted_certs">Немає сертифікатів, підтверджених вручну</string>
     <string name="dialog_manage_certs_title">Вилучити сертифікати</string>
@@ -448,10 +448,10 @@
     <string name="user_has_left_conference">%1$s залишив групу</string>
     <string name="username">Ім\'я користувача</string>
     <string name="username_hint">Ім\'я користувача</string>
-    <string name="invalid_username">Таке ім\'я користувача не допустиме</string>
-    <string name="download_failed_server_not_found">Звантаження не вдалося: сервер не знайдено</string>
-    <string name="download_failed_file_not_found">Звантаження не вдалося: файл не знайдено</string>
-    <string name="download_failed_could_not_connect">Звантаження не вдалося: неможливо з\'єднатися з вузлом</string>
+    <string name="invalid_username">Таке ім\'я користувача недопустиме</string>
+    <string name="download_failed_server_not_found">Завантаження не вдалося: сервер не знайдено</string>
+    <string name="download_failed_file_not_found">Завантаження не вдалося: файл не знайдено</string>
+    <string name="download_failed_could_not_connect">Завантаження не вдалося: неможливо з\'єднатися з вузлом</string>
     <string name="download_failed_could_not_write_file">Завантаження не вдалося: неможливо записати файл</string>
     <string name="account_status_tor_unavailable">Мережа Tor недоступна</string>
     <string name="account_status_bind_failure">Прив\'язка не спрацювала</string>
@@ -509,9 +509,9 @@
     <string name="disable">Вимкнути</string>
     <string name="selection_too_large">Вибрана ділянка завелика</string>
     <string name="no_accounts">(Немає активних облікових записів)</string>
-    <string name="this_field_is_required">Це обов\'язкове поле</string>
-    <string name="correct_message">Відредагувати</string>
-    <string name="send_corrected_message">Відредаговане повідомлення</string>
+    <string name="this_field_is_required">Це поле обов\'язкове</string>
+    <string name="correct_message">Виправити</string>
+    <string name="send_corrected_message">Надіслати виправлене</string>
     <string name="no_keys_just_confirm">Ви вже довіряєте цифровому підпису цієї особи. Вибираючи «Зроблено», Ви лише підтверджуєте, що %s є учасником групи.</string>
     <string name="this_account_is_disabled">Ви вимкнули цей обліковий запис</string>
     <string name="security_error_invalid_file_access">Помилка безпеки: неправильний доступ до файлу!</string>
@@ -522,7 +522,7 @@
 \nОбравши conversations.im в якості свого постачальника, Ви зможете спілкуватися з користувачами інших постачальників, для цього повідомте їм свою повну адресу XMPP.</string>
     <string name="your_full_jid_will_be">Ваша повна адреса XMPP: %s</string>
     <string name="create_account">Створити обліковий запис</string>
-    <string name="use_own_provider">Застосувати дані мого власного постачальника</string>
+    <string name="use_own_provider">Застосувати дані мого постачальника</string>
     <string name="pick_your_username">Придумайте ім\'я користувача</string>
     <string name="pref_manually_change_presence">Керувати станом вручну</string>
     <string name="pref_manually_change_presence_summary">Показувати доступність під час редагування повідомлення стану.</string>
@@ -567,7 +567,7 @@
     <string name="remote_server_not_found">Віддалений сервер не знайдено</string>
     <string name="remote_server_timeout">Затримка відповіді сервера</string>
     <string name="unable_to_update_account">Не вдалося оновити обліковий запис</string>
-    <string name="report_jid_as_spammer">Надіслати скаргу про те, що контакт з цим ID розсилає спам.</string>
+    <string name="report_jid_as_spammer">Надіслати скаргу про те, що контакт із цим ID розсилає спам.</string>
     <string name="pref_delete_omemo_identities">Вилучити ідентифікаційні дані OMEMO</string>
     <string name="pref_delete_omemo_identities_summary">Створити наново Ваші ключі OMEMO. Всі Ваші контакти будуть змушені підтвердити Вас знову. Використовуйте це, лише якщо немає іншого вибору.</string>
     <string name="delete_selected_keys">Вилучити вибрані ключі</string>
@@ -592,11 +592,11 @@
     <string name="pref_clean_cache_summary">Очистити теку з кешем (використовується застосунком Камера)</string>
     <string name="pref_clean_cache">Очистити кеш</string>
     <string name="pref_clean_private_storage">Очистити приватне сховище</string>
-    <string name="pref_clean_private_storage_summary">Очистити приватне сховище, де зберігаються файли (Їх можна повторно звантажити з сервера)</string>
+    <string name="pref_clean_private_storage_summary">Очистити приватне сховище, де зберігаються файли (Їх можна повторно завантажити з сервера)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Я перейшов за цим посиланням від довіреного джерела</string>
     <string name="verifying_omemo_keys_trusted_source">Ви збираєтеся підтвердити ключі OMEMO для %1$s після переходу за посиланням. Це безпечно, лише якщо Ви отримали посилання з довіреного джерела, де лише %2$s міг опублікувати це посилання.</string>
     <string name="verify_omemo_keys">Підтвердити ключі OMEMO</string>
-    <string name="show_inactive_devices">Показувати неактивні</string>
+    <string name="show_inactive_devices">Показати неактивні</string>
     <string name="hide_inactive_devices">Приховати неактивні</string>
     <string name="distrust_omemo_key">Не довіряти пристрою</string>
     <string name="distrust_omemo_key_text">Ви впевнені, що більше не довіряєте цьому пристрою\?
@@ -639,7 +639,7 @@
     </plurals>
     <string name="pref_automatically_delete_messages">Автоматичне вилучення повідомлень</string>
     <string name="pref_automatically_delete_messages_description">Автоматично вилучати повідомлення з цього пристрою, старіші за зазначений проміжок часу.</string>
-    <string name="encrypting_message">Зашифровую повідомлення</string>
+    <string name="encrypting_message">Шифрування повідомлення</string>
     <string name="not_fetching_history_retention_period">Повідомлення не завантажуються з огляду на локально встановлений строк зберігання.</string>
     <string name="transcoding_video">Стиснення відео</string>
     <string name="contact_blocked_past_tense">Контакт заблоковано.</string>
@@ -669,7 +669,7 @@
     <string name="message">Повідомлення</string>
     <string name="private_messages_are_disabled">Приватні повідомлення вимкнено</string>
     <string name="mtm_accept_cert">Прийняти незнайомий сертифікат?</string>
-    <string name="mtm_trust_anchor">Сертифікат сервера не підтверджено відомим центром сертифікації.</string>
+    <string name="mtm_trust_anchor">Сертифікат сервера не підписано відомим центром сертифікації.</string>
     <string name="mtm_accept_servername">Прийняти сервер з невідповідним ім\'ям?</string>
     <string name="mtm_hostname_mismatch">Серверу не вдалося авторизуватися як «%s». Сертифікат чинний лише для:</string>
     <string name="mtm_connect_anyway">Усе одно бажаєте підключитися?</string>
@@ -681,11 +681,11 @@
     <string name="edit_status_message_title">Редагувати повідомлення стану</string>
     <string name="edit_status_message">Редагувати повідомлення стану</string>
     <string name="disable_encryption">Вимкнути шифрування</string>
-    <string name="error_trustkey_device_list">Неможливо отримати перелік пристроїв</string>
-    <string name="error_trustkey_bundle">Неможливо отримати пакети пристроїв</string>
+    <string name="error_trustkey_device_list">Не вдалося отримати перелік пристроїв</string>
+    <string name="error_trustkey_bundle">Не вдалося отримати ключі шифрування</string>
     <string name="error_trustkey_hint_mutual">Підказка: В деяких випадках це можна виправити, якщо додати один одного у свої списки контактів.</string>
     <string name="disable_encryption_message">Дійсно вимкнути шифрування OMEMO для цієї розмови?
-\nПісля цього в адміністратора Вашого сервера буде можливість мати доступ до Ваших повідомлень. Проте, це може бути єдиним способом спілкуватися з людьми, які використовують застарілі застосунки.</string>
+\nПісля цього в адміністратора сервера буде можливість читати Ваші повідомлення. Проте, це може бути єдиним способом спілкуватися з людьми, які використовують застарілі застосунки.</string>
     <string name="disable_now">Вимкнути зараз</string>
     <string name="draft">Чернетка:</string>
     <string name="pref_omemo_setting">Шифрування OMEMO</string>
@@ -727,7 +727,7 @@
     <string name="group_chat_name">Ім\'я</string>
     <string name="providing_a_name_is_optional">Ім\'я вказувати необов\'язково</string>
     <string name="create_dialog_group_chat_name">Назва групи</string>
-    <string name="conference_destroyed">Цю групу закрито</string>
+    <string name="conference_destroyed">Цю групу видалено</string>
     <string name="unable_to_save_recording">Неможливо зберегти запис</string>
     <string name="foreground_service_channel_name">Процес на передньому плані</string>
     <string name="notification_group_status_information">Інформація про стан</string>
@@ -765,8 +765,8 @@
     <string name="please_enter_your_phone_number">Будь ласка, введіть свій номер телефону.</string>
     <string name="search_countries">Шукати країну</string>
     <string name="verify_x">Перевірити %s</string>
-    <string name="we_have_sent_you_an_sms_to_x">Ми направили Вам SMS на <b>%s</b>.</string>
-    <string name="we_have_sent_you_another_sms">Ми направили Вам SMS із кодом з 6 цифр.</string>
+    <string name="we_have_sent_you_an_sms_to_x">SMS надіслано на <b>%s</b>.</string>
+    <string name="we_have_sent_you_another_sms">Ми надіслали Вам SMS із 6-цифровим кодом.</string>
     <string name="please_enter_pin_below">Будь ласка, введіть нижче 6 цифр коду.</string>
     <string name="resend_sms">Надіслати нове SMS</string>
     <string name="resend_sms_in">Надіслати нове SMS (%s)</string>
@@ -812,10 +812,10 @@
     <string name="choose_account">Виберіть обліковий запис</string>
     <string name="restore_backup">Відновити з резервної копії</string>
     <string name="restore">Відновити</string>
-    <string name="enter_password_to_restore">Зазначте пароль до облікового запису %s, щоб відновити з резервної копії.</string>
+    <string name="enter_password_to_restore">Введіть пароль до облікового запису %s, щоб відновити з резервної копії.</string>
     <string name="restore_warning">Не використовуйте відновлення з резервної копії з метою клонування застосунку (запускати одночасно ще один примірник). Відновлення з резервної копії призначене виключно для перенесення даних або на випадок втрати оригінального пристрою.</string>
     <string name="unable_to_restore_backup">Неможливо відновити з резервної копії.</string>
-    <string name="unable_to_decrypt_backup">Неможливо розшифрувати резервну копію. Чи правильний пароль\?</string>
+    <string name="unable_to_decrypt_backup">Не вдалося розшифрувати резервну копію. Чи правильний пароль?</string>
     <string name="backup_channel_name">Створити або відновити резервну копію</string>
     <string name="enter_jabber_id">Введіть адресу XMPP</string>
     <string name="create_group_chat">Створити групу</string>
@@ -841,14 +841,14 @@
     <string name="jabber_ids_are_visible_to_admins">Адміністратори бачать адреси XMPP.</string>
     <string name="jabber_ids_are_visible_to_anyone">Будь-хто бачить адреси XMPP.</string>
     <string name="no_users_hint_channel">Цей публічний канал не має учасників. Запросіть Ваші контакти або скористайтеся кнопкою поширення, щоб поділитися адресою XMPP.</string>
-    <string name="no_users_hint_group_chat">У цій приватній групі відсутні учасники.</string>
+    <string name="no_users_hint_group_chat">У цій приватній групі немає учасників.</string>
     <string name="manage_permission">Керувати правами</string>
     <string name="search_participants">Шукати учасників</string>
     <string name="file_too_large">Файл надто великий</string>
     <string name="attach">Прикріпити</string>
-    <string name="discover_channels">Пошук каналу</string>
+    <string name="discover_channels">Пошук каналів</string>
     <string name="search_channels">Шукати канали</string>
-    <string name="channel_discovery_opt_in_title">Можливе порушення приватності!</string>
+    <string name="channel_discovery_opt_in_title">Можливе порушення конфіденційності!</string>
     <string name="i_already_have_an_account">Я вже маю обліковий запис</string>
     <string name="add_existing_account">Додати наявний обліковий запис</string>
     <string name="register_new_account">Зареєструвати новий обліковий запис</string>
@@ -873,7 +873,7 @@
     <string name="backup">Резервне копіювання</string>
     <string name="category_about">Про застосунок</string>
     <string name="please_enable_an_account">Будь ласка, активуйте обліковий запис</string>
-    <string name="make_call">Здійснити виклик</string>
+    <string name="make_call">Виклик</string>
     <string name="rtp_state_incoming_call">Вхідний виклик</string>
     <string name="rtp_state_incoming_video_call">Вхідний відеовиклик</string>
     <string name="rtp_state_connecting">З\'єднання</string>
@@ -930,7 +930,7 @@
         <item quantity="many">%1$d пропущених викликів від %2$s</item>
         <item quantity="other">%1$d пропущених викликів від %2$s</item>
     </plurals>
-    <string name="download_failed_invalid_file">Звантаження не вдалося: неправильний файл</string>
+    <string name="download_failed_invalid_file">Завантаження не вдалося: неправильний файл</string>
     <string name="pref_dnd_on_silent_mode_summary">Встановити статус «Зайнятий», коли пристрій у безшумному режимі</string>
     <string name="rtp_state_content_add_video">Перемкнути на відеовиклик\?</string>
     <string name="no_storage_permission">Надати %1$s доступ до зовнішньої пам\'яті</string>
@@ -969,12 +969,12 @@
 \n
 \nУсі дані списку контактів залишаються на Вашому пристрої!</string>
     <string name="missed_calls_channel_name">Пропущені виклики</string>
-    <string name="data_saver_enabled_explained">Ваша операційна система обмежує для %1$s доступ до Інтернету у фоновому режимі. Щоб отримувати сповіщення про нові повідомлення, Вам потрібно дозволити %1$s необмежений доступ, коли заощадження трафіку увімкнено.
+    <string name="data_saver_enabled_explained">Ваша операційна система обмежує для %1$s доступ до Інтернету у фоновому режимі. Щоб отримувати сповіщення про нові повідомлення, Вам потрібно дозволити необмежений доступ для %1$s, коли заощадження трафіку ввімкнено.
 \n%1$s намагатиметься по можливості економити трафік.</string>
     <string name="pref_autojoin_summary">Встановлювати прапорець «autojoin» під час приєднання або виходу з групового чату/каналу та реагувати на зміни, зроблені іншими клієнтами.</string>
     <string name="battery_optimizations_enabled_explained">Ваш пристрій застосовує до %1$s інтенсивний режим енергозбереження, що може спричинити затримку сповіщень чи навіть втрату повідомлень.
 \nРекомендуємо вимкнути режим енергозбереження.</string>
-    <string name="could_not_correct_message">Не вдалося відредагувати повідомлення</string>
+    <string name="could_not_correct_message">Не вдалося виправити повідомлення</string>
     <string name="omemo_fingerprint_selected_message">Цифровий підпис OMEMO (джерело повідомлення)</string>
     <string name="omemo_fingerprint_x509_selected_message">Цифровий підпис v\\OMEMO (джерело повідомлення)</string>
     <string name="continue_btn">Продовжити</string>
@@ -984,7 +984,7 @@
     <string name="vector_graphic">векторна графіка</string>
     <string name="multimedia_file">мультимедіа</string>
     <string name="search_group_chats">Шукати групу</string>
-    <string name="pref_away_when_screen_off">«Відійшов» якщо екран заблоковано</string>
+    <string name="pref_away_when_screen_off">«Відійшов», якщо екран заблоковано</string>
     <string name="pref_away_when_screen_off_summary">Встановити статус «Відійшов», коли пристрій заблоковано</string>
     <string name="pref_dnd_on_silent_mode">«Зайнятий» у безшумному режимі</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Встановити статус «Зайнятий», коли пристрій у віброрежимі</string>
@@ -1037,7 +1037,7 @@
     <string name="rtp_state_content_add">Додати ще пісні\?</string>
     <string name="restore_warning_continued">Не намагайтеся відновити резервні копії, які створили не Ви!</string>
     <string name="outdated_backup_file_format">Ви намагаєтеся імпортувати файл резервної копії у застарілому форматі</string>
-    <string name="audiobook">Аудіокнига</string>
+    <string name="audiobook">аудіокнига</string>
     <string name="reconnect_on_other_host">Відновити з\'єднання на іншому вузлі</string>
     <string name="this_account_is_logged_out">Ви вийшли з цього облікового запису</string>
     <string name="log_in">Увійти</string>
