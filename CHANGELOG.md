@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.17.1
+
+* Fix UI glitch when showing multiple reactions
+
 ### Version 2.17.0
 
 * Support Message Reactions
