@@ -734,7 +734,7 @@ public class EditAccountActivity extends OmemoActivity
         this.binding.hostname.addTextChangedListener(mTextWatcher);
         this.binding.hostname.setOnFocusChangeListener(mEditTextFocusListener);
         this.binding.clearDevices.setOnClickListener(v -> showWipePepDialog());
-        this.binding.port.setText(String.valueOf(Resolver.DEFAULT_PORT_XMPP));
+        this.binding.port.setText(String.valueOf(Resolver.XMPP_PORT_STARTTLS));
         this.binding.port.addTextChangedListener(mTextWatcher);
         this.binding.saveButton.setOnClickListener(this.mSaveButtonClickListener);
         this.binding.cancelButton.setOnClickListener(this.mCancelButtonClickListener);

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
@@ -40,6 +41,7 @@ import org.minidns.record.SRV;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -76,7 +78,8 @@ public class Resolver {
 
     private static final ExecutorService DNS_QUERY_EXECUTOR = Executors.newFixedThreadPool(12);
 
-    public static final int DEFAULT_PORT_XMPP = 5222;
+    public static final int XMPP_PORT_STARTTLS = 5222;
+    private static final int XMPP_PORT_DIRECT_TLS = 5223;
 
     private static final String DIRECT_TLS_SERVICE = "_xmpps-client";
     private static final String STARTTLS_SERVICE = "_xmpp-client";
@@ -106,7 +109,7 @@ public class Resolver {
     public static void clearCache() {}
 
     public static boolean useDirectTls(final int port) {
-        return port == 443 || port == 5223;
+        return port == 443 || port == XMPP_PORT_DIRECT_TLS;
     }
 
     public static List<Result> resolve(final String domain) {
@@ -157,10 +160,7 @@ public class Resolver {
             } catch (final UnknownHostException e) {
                 return Collections.emptyList();
             }
-            final Result result = new Result();
-            result.ip = inetAddress;
-            result.port = DEFAULT_PORT_XMPP;
-            return Collections.singletonList(result);
+            return Result.createWithDefaultPorts(null, inetAddress);
         } else {
             return Collections.emptyList();
         }
@@ -263,20 +263,22 @@ public class Resolver {
                 Futures.transform(
                         resolveAsFuture(dnsName, A.class),
                         result ->
-                                Lists.transform(
-                                        ImmutableList.copyOf(result.getAnswersOrEmptySet()),
-                                        a -> Result.createDefault(dnsName, a.getInetAddress())),
+                                Result.createDefaults(
+                                        dnsName,
+                                        Collections2.transform(
+                                                result.getAnswersOrEmptySet(),
+                                                InternetAddressRR::getInetAddress)),
                         MoreExecutors.directExecutor());
         futuresBuilder.add(aRecordResults);
         ListenableFuture<List<Result>> aaaaRecordResults =
                 Futures.transform(
                         resolveAsFuture(dnsName, AAAA.class),
                         result ->
-                                Lists.transform(
-                                        ImmutableList.copyOf(result.getAnswersOrEmptySet()),
-                                        aaaa ->
-                                                Result.createDefault(
-                                                        dnsName, aaaa.getInetAddress())),
+                                Result.createDefaults(
+                                        dnsName,
+                                        Collections2.transform(
+                                                result.getAnswersOrEmptySet(),
+                                                InternetAddressRR::getInetAddress)),
                         MoreExecutors.directExecutor());
         futuresBuilder.add(aaaaRecordResults);
         if (cName) {
@@ -299,7 +301,7 @@ public class Resolver {
                 noSrvFallbacks,
                 results -> {
                     if (results.isEmpty()) {
-                        return Collections.singletonList(Result.createDefault(dnsName));
+                        return Result.createDefaults(dnsName);
                     } else {
                         return results;
                     }
@@ -330,7 +332,7 @@ public class Resolver {
         public static final String AUTHENTICATED = "authenticated";
         private InetAddress ip;
         private DnsName hostname;
-        private int port = DEFAULT_PORT_XMPP;
+        private int port = XMPP_PORT_STARTTLS;
         private boolean directTls = false;
         private boolean authenticated = false;
         private int priority;
@@ -344,16 +346,32 @@ public class Resolver {
             return result;
         }
 
-        static Result createDefault(final DnsName hostname, final InetAddress ip) {
+        static List<Result> createWithDefaultPorts(final DnsName hostname, final InetAddress ip) {
+            return Lists.transform(
+                    Arrays.asList(XMPP_PORT_STARTTLS, XMPP_PORT_DIRECT_TLS),
+                    p -> createDefault(hostname, ip, p));
+        }
+
+        static Result createDefault(final DnsName hostname, final InetAddress ip, final int port) {
             Result result = new Result();
-            result.port = DEFAULT_PORT_XMPP;
+            result.port = port;
             result.hostname = hostname;
             result.ip = ip;
+            result.directTls = useDirectTls(port);
             return result;
         }
 
-        static Result createDefault(final DnsName hostname) {
-            return createDefault(hostname, null);
+        static List<Result> createDefaults(
+                final DnsName hostname, final Collection<InetAddress> inetAddresses) {
+            final ImmutableList.Builder<Result> builder = new ImmutableList.Builder<>();
+            for (final InetAddress inetAddress : inetAddresses) {
+                builder.addAll(createWithDefaultPorts(hostname, inetAddress));
+            }
+            return builder.build();
+        }
+
+        static List<Result> createDefaults(final DnsName hostname) {
+            return createWithDefaultPorts(hostname, null);
         }
 
         public static Result fromCursor(final Cursor cursor) {
