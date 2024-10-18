@@ -86,10 +86,6 @@ build your apk file.
 
 Conversations is available on [Google Play](https://play.google.com/store/apps/details?id=eu.siacs.conversations) and on [F-Droid](https://f-droid.org/en/packages/eu.siacs.conversations/).
 
-#### I don't have a Google Account but I would still like to make a donation
-
-I’m listing several options to support me financially on [my website](https://gultsch.de/donate.html). Among other things [Liberapay](https://liberapay.com/iNPUTmice/donate), [GitHub Sponsors](https://github.com/sponsors/inputmice) and bank transfer.
-
 #### How do I create an account?
 XMPP, like email, is a federated protocol, which means that there is not one company you can create an *official XMPP account* with. Instead there are hundreds, or even thousands, of providers out there. One of those providers is our very own [conversations.im](https://account.conversations.im). If you don’t like to use *conversations.im* use a web search engine of your choice to find another provider. Or maybe your university has one. Or you can run your own. Or ask a friend to run one. Once you've found one, you can use Conversations to create an account. Just select *register new account* on server within the create account dialog.
 
@@ -174,19 +170,9 @@ You can find a detailed description of how your server, the app server and FCM a
 #### But why do I need a permanent notification if I use Google Push?
 FCM (Google Push) allows an app to wake up from *Doze* which is (as the name suggests) a hibernation feature of the Android operating system that cuts the network connection and also reduces the number of times the app is allowed to wake up (to ping the server for example). The app can ask to be excluded from doze. Non push variants of the app (from F-Droid or if the server doesn’t support it) will do this on first start up. So if you get exemption from *Doze*, or if you get regular push events sent to you, Doze should not pose a threat to Conversatons working properly. But even with *Doze* the app is still open in the background (kept in memory); it is just limited in the actions it can do. Conversations needs to stay in memory to hold certain session state (online status of contacts, join status of group chats, …). However with Android 8 Google changed all of this again and now an App that wants to stay in memory needs to have a foreground service which is visible to the user via the annoying notification. But why does Conversations need to hold that state? XMPP is a statefull protocol that has a lot of per-session information; packets need to be counted, presence information needs to be held, some features like Message Carbons get activated once per session, MAM catch-up happens once, service discovery happens only once; the list goes on. When Conversations was created in early 2014 none of this was a problem because apps were just allowed to stay in memory. Basically every XMPP client out there holds that information in memory because it would be a lot more complicated trying to persist it to disk. An entire rewrite of Conversations in the year 2019 would attempt to do that and would probably succeed however it would require exactly that; a complete rewrite which is not feasible right now. That’s by the way also the reason why it is difficult to write an XMPP client on iOS. Or more broadly put this is also the reason why other protocols are designed as or migrated to stateless protocols (often based on HTTP); take for example the migration of IMAP to [JMAP](https://jmap.io/).
 
-#### Conversations doesn’t work for me. Where can I get help?
-
-You can join our conference room on [`conversations@conference.siacs.eu`](https://conversations.im/j/conversations@conference.siacs.eu).
-A lot of people in there are able to answer basic questions about the usage of
-Conversations or can provide you with tips on running your own XMPP server. If
-you found a bug or your app crashes please read the Developer / Report Bugs
-section of this document.
-
-#### I need professional support with Conversations or setting up my server
-
-I'm available for hire. Contact information can be found on [my website](https://gultsch.de).
-
 #### How does the address book integration work?
+
+Address book integration is only available in the F-Droid version.
 
 The address book integration was designed to protect your privacy. Conversations
 neither uploads contacts from your address book to your server nor fills your
