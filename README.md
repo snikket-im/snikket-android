@@ -81,8 +81,8 @@ run your own XMPP server for you and your friends. These XEP's are:
 #### How do I install Conversations?
 
 Conversations is entirely open source and licensed under GPLv3. So if you are a
-software developer you can check out the sources from GitHub and use Gradle to
-build your apk file.
+software developer you can check out the sources from Codeberg and use Gradle to
+build your APK file.
 
 Conversations is available on [Google Play](https://play.google.com/store/apps/details?id=eu.siacs.conversations) and on [F-Droid](https://f-droid.org/en/packages/eu.siacs.conversations/).
 
