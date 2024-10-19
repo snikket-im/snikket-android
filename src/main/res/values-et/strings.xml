@@ -927,4 +927,12 @@
     <string name="unable_to_find_server">Serveri leidmine ei õnnestunud.</string>
     <string name="something_went_wrong_processing_your_request">Midagi läks valesti sinu päringu töötlemisel.</string>
     <string name="ongoing_video_call">Videokõne on pooleli</string>
+    <string name="device_does_not_support_data_saver">Sinu nutiseadme operatsioonisüsteem ei toeta andmesäästja väljalülitamist %1$s jaoks.</string>
+    <string name="data_saver_enabled_explained">Sinu nutiseadme operatsioonisüsteem piirab taustal töötamise ajal %1$s ligipääsu internetiühendusele. Et sa saaksid teavitusi uute sõnumite kohta ka siis, kui „Andmesäästja“ on kasutusel, siis palun luba, et %1$s saaks piiramatult kasutada võrguühendust.
+\nKui vähegi võimalik, siis ka %1$s üritab säästa andmeliikluse mahtu.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Oled verifitseerimas oma kasutajakonto OMEMO-võtmeid. See tegevus on turvaline vaid siis, kui leidsid lingi usaldusväärsest allikast, sellisest, kuhu vaid sina said selle lisada.</string>
+    <string name="continue_btn">Jätka</string>
+    <string name="verify_omemo_keys">Verifitseeri OMEMO-võtmed</string>
+    <string name="i_followed_this_link_from_a_trusted_source">Ma klõpsisin seda linki allikas, mida usaldan</string>
+    <string name="verifying_omemo_keys_trusted_source">Oled verifitseerimas %1$s OMEMO-võtmeid niipea, kui linki klõpsid. See tegevus on turvaline vaid siis, kui leidsid lingi usaldusväärsest allikast, sellisest, kuhu vaid %2$s oleks võinud selle lisada.</string>
 </resources>
