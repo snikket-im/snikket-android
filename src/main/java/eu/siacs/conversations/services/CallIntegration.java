@@ -527,6 +527,7 @@ public class CallIntegration extends Connection {
 
     public static boolean selfManaged(final Context context) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                && Build.VERSION.SDK_INT < 35
                 && hasSystemFeature(context)
                 && isDeviceModelSupported();
     }
