@@ -790,6 +790,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             final var contact = account.getRoster().getContact(with);
             callIntegration.setCallerDisplayName(
                     contact.getDisplayName(), TelecomManager.PRESENTATION_ALLOWED);
+            callIntegration.setInitialized();
             callIntegration.setInitialAudioDevice(CallIntegration.initialAudioDevice(media));
             callIntegration.startAudioRouting();
             final RtpSessionProposal proposal =
