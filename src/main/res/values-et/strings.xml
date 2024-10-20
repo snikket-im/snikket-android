@@ -935,4 +935,54 @@
     <string name="verify_omemo_keys">Verifitseeri OMEMO-võtmed</string>
     <string name="i_followed_this_link_from_a_trusted_source">Ma klõpsisin seda linki allikas, mida usaldan</string>
     <string name="verifying_omemo_keys_trusted_source">Oled verifitseerimas %1$s OMEMO-võtmeid niipea, kui linki klõpsid. See tegevus on turvaline vaid siis, kui leidsid lingi usaldusväärsest allikast, sellisest, kuhu vaid %2$s oleks võinud selle lisada.</string>
+    <plurals name="days">
+        <item quantity="one">%d päev</item>
+        <item quantity="other">%d päeva</item>
+    </plurals>
+    <string name="distrust_omemo_key">Lõpeta seadme usaldamine</string>
+    <string name="encrypting_message">Krüptime sõnumit</string>
+    <string name="not_fetching_history_retention_period">Ei laadi sõnumeid, kuna kohalik keeluperiood veel kehtib.</string>
+    <string name="pref_automatically_delete_messages">Kustuta sõnumid automaatselt</string>
+    <string name="pref_automatically_delete_messages_description">Kustuta sellest seadmest automaatselt sõnumid, mille vanus ületab seadistatud aja.</string>
+    <plurals name="seconds">
+        <item quantity="one">%d sekund</item>
+        <item quantity="other">%d sekundit</item>
+    </plurals>
+    <plurals name="months">
+        <item quantity="one">%d kuu</item>
+        <item quantity="other">%d kuud</item>
+    </plurals>
+    <string name="hide_inactive_devices">Peida mitteaktiivsed</string>
+    <plurals name="minutes">
+        <item quantity="one">%d minut</item>
+        <item quantity="other">%d minutit</item>
+    </plurals>
+    <plurals name="hours">
+        <item quantity="one">%d tund</item>
+        <item quantity="other">%d tundi</item>
+    </plurals>
+    <plurals name="weeks">
+        <item quantity="one">%d nädal</item>
+        <item quantity="other">%d nädalat</item>
+    </plurals>
+    <string name="show_inactive_devices">Näita mitteaktiivseid</string>
+    <string name="transcoding_video">Tihendame videot</string>
+    <string name="corresponding_chats_closed">Vastavad vestlused on arhiveeritud.</string>
+    <string name="contact_blocked_past_tense">Kontakt on blokeeritud.</string>
+    <string name="pref_notifications_from_strangers">Teavitused tundmatute isikute suhtlusest</string>
+    <string name="pref_notifications_from_strangers_summary">Teavita, kui tundmatud on saatnud sõnumeid või helistanud.</string>
+    <string name="received_message_from_stranger">Said sõnumi tundmatult isikult</string>
+    <string name="block_stranger">Blokeeri tundmatu saatja</string>
+    <string name="block_entire_domain">Blokeeri kogu domeen</string>
+    <string name="online_right_now">hetkel võrgus</string>
+    <string name="retry_decryption">Proovi dekrüptimist uuesti</string>
+    <string name="session_failure">Sessiooniviga</string>
+    <string name="sasl_downgrade">Nõrgendatud SASLi meetod</string>
+    <string name="account_status_regis_web">Server eeldab registreerimist veebisaidis</string>
+    <string name="open_website">Ava veebisait</string>
+    <string name="application_found_to_open_website">Veebisaidi avamiseks ei leidu rakendust</string>
+    <string name="pref_headsup_notifications">Teavitused väljaspool olekuriba</string>
+    <string name="pref_headsup_notifications_summary">Näita teavitusi väljaspool olekuriba (Heads-Up notifications)</string>
+    <string name="distrust_omemo_key_text">Kas sa oled kindel, et tahad sellelt seadmelt eemaldada verifitseerimise?
+\nSee seade ja temalt saabunud sõnumid on nüüd märgitud kui „Pole usaldatud“.</string>
 </resources>
