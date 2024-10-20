@@ -1,0 +1,1 @@
+* Naprawienie usterki interfejsu użytkownika podczas pokazywania wielu reakcji
