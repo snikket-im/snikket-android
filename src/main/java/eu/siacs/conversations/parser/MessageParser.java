@@ -1137,7 +1137,7 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
             final Conversation conversation =
                     mXmppConnectionService.find(account, counterpart.asBareJid());
 
-            if (conversation != null) {
+            if (conversation != null && reactingTo != null) {
                 if (isTypeGroupChat && conversation.getMode() == Conversational.MODE_MULTI) {
                     final var mucOptions = conversation.getMucOptions();
                     final var occupantId = occupant == null ? null : occupant.getId();
