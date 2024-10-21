@@ -218,9 +218,9 @@
     <string name="openpgp_messages_found">Найдены новые зашифрованные OpenPGP сообщения</string>
     <string name="openpgp_key_id">ID ключа OpenPGP</string>
     <string name="omemo_fingerprint">Отпечаток OMEMO</string>
-    <string name="omemo_fingerprint_x509">v\\OMEMO-отпечаток</string>
-    <string name="omemo_fingerprint_selected_message">OMEMO-отпечаток (выбранного сообщения)</string>
-    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-отпечаток (выбранного сообщения)</string>
+    <string name="omemo_fingerprint_x509">v\\Отпечаток OMEMO</string>
+    <string name="omemo_fingerprint_selected_message">Отпечаток OMEMO (выбранного сообщения)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\Отпечаток OMEMO (выбранного сообщения)</string>
     <string name="other_devices">Другие устройства</string>
     <string name="trust_omemo_fingerprints">Доверенные отпечатки OMEMO</string>
     <string name="fetching_keys">Получение ключей…</string>
@@ -300,7 +300,7 @@
     <string name="title_pref_enable_quiet_hours">Включить режим \"тихих часов\"</string>
     <string name="pref_quiet_hours_summary">Уведомления будут отключены во время \"тихих часов\"</string>
     <string name="pref_expert_options_other">Другие</string>
-    <string name="toast_message_omemo_fingerprint">OMEMO-отпечаток скопирован в буфер обмена</string>
+    <string name="toast_message_omemo_fingerprint">Отпечаток OMEMO скопирован в буфер обмена</string>
     <string name="conference_banned">Вы заблокированы в этой конференции</string>
     <string name="conference_members_only">Эта конференция — только для участников</string>
     <string name="conference_resource_constraint">Ресурсное ограничение</string>
@@ -361,7 +361,7 @@
     <string name="no_conference_server_found">Сервер конференции не найден</string>
     <string name="conference_creation_failed">Невозможно создать конференцию</string>
     <string name="account_image_description">Аватар аккаунта</string>
-    <string name="copy_omemo_clipboard_description">Скопировать OMEMO-отпечаток в буфер обмена</string>
+    <string name="copy_omemo_clipboard_description">Копировать отпечаток OMEMO в буфер обмена</string>
     <string name="regenerate_omemo_key">Создать ключ OMEMO заново</string>
     <string name="clear_other_devices">Очистить устройства</string>
     <string name="clear_other_devices_desc">Очистить все остальные устройства из анонса ключей OMEMO? При соединении устройств в следующий раз новые ключи анонсируются автоматически, но устройства могут не получить сообщения, посланные до этого.</string>
@@ -699,7 +699,7 @@
     <string name="certificate_does_not_contain_jid">Сертификат не содержит XMPP-адрес</string>
     <string name="server_info_partial">частичный</string>
     <string name="attach_record_video">Записать видео</string>
-    <string name="copy_to_clipboard">Скопировать в буфер обмена</string>
+    <string name="copy_to_clipboard">Копировать в буфер обмена</string>
     <string name="message_copied_to_clipboard">Сообщение скопировано в буфер обмена</string>
     <string name="message">Сообщение</string>
     <string name="private_messages_are_disabled">Личные сообщения выключены</string>
