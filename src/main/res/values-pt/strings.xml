@@ -409,4 +409,12 @@
     <string name="title_activity_new_chat">Nova conversa</string>
     <string name="action_archive_chat">Arquivar conversa</string>
     <string name="action_block_participant">Ignorar membro</string>
+    <plurals name="x_unread_conversations">
+        <item quantity="one">%d conversa não lida</item>
+        <item quantity="many">%d muitas conversas não lidas</item>
+        <item quantity="other">%d conversas não lidas</item>
+    </plurals>
+    <string name="remove_bookmark">Gostaria de remover %s como favorito?</string>
+    <string name="remove_bookmark_and_close">Gostaria de remover o favorito de %s e arquivar a conversa?</string>
+    <string name="remove_contact_text">Gostaria de remover %s da sua lista de contatos? A conversa não será removida.</string>
 </resources>
