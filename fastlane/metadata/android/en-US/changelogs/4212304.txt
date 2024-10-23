@@ -1,0 +1,2 @@
+* Fix calls on Android 15
+* Fix rare crash / regression introduced with 2.17.0
