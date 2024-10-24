@@ -78,9 +78,7 @@
     <string name="sharing_files_please_wait">Compartindo ficheiros. Agarda…</string>
     <string name="action_clear_history">Baleirar historial</string>
     <string name="clear_conversation_history">Limpar historial da charla</string>
-    <string name="clear_histor_msg">¿Queres eliminar tódalas mensaxes desta conversa? 
-\n 
-\n<b>Aviso:</b> Esto non lle afecta ás mensaxes gardadas noutros dispositivos ou servidores.</string>
+    <string name="clear_histor_msg">Queres eliminar todas as mensaxes desta conversa?\n\n<b>Aviso:</b> Isto non lle afecta ás mensaxes gardadas noutros dispositivos ou servidores.</string>
     <string name="delete_file_dialog">Eliminar ficheiro</string>
     <string name="delete_file_dialog_msg">Tes a certeza de querer eliminar este ficheiro\?
 \n
@@ -236,9 +234,7 @@
     <string name="delete_bookmark">Eliminar marcador</string>
     <string name="destroy_room">Destruír a parola do grupo</string>
     <string name="destroy_channel">Eliminar canle</string>
-    <string name="destroy_room_dialog">Tes a certeza de querer destruír esta conversa en grupo? 
-\n 
-\n<b>Aviso:</b> O parola en grupo será totalmente eliminado do servidor.</string>
+    <string name="destroy_room_dialog">Tes a certeza de querer destruír esta conversa en grupo?\n\n<b>Aviso:</b> A parola en grupo será totalmente eliminada do servidor.</string>
     <string name="destroy_channel_dialog">Tes a certeza de querer eliminar a canle?\n\n<b>Aviso:</b> A canle será eliminada completamente do servidor.</string>
     <string name="could_not_destroy_room">Non se puido eliminar a parola</string>
     <string name="could_not_destroy_channel">Non se puido eliminar a canle</string>
