@@ -183,8 +183,11 @@ public class ConversationAdapter
             if (status == Message.STATUS_RECEIVED) {
                 if (conversation.getMode() == Conversation.MODE_MULTI) {
                     viewHolder.binding.senderName.setVisibility(View.VISIBLE);
-                    viewHolder.binding.senderName.setText(
-                            UIHelper.getMessageDisplayName(message).split("\\s+")[0] + ':');
+                    String display = UIHelper.getMessageDisplayName(message);
+                    // Skip when nickname only consists of blank chars
+                    if (display.split("\\s+").length != 0)
+                        display = display.split("\\s+")[0];
+                    viewHolder.binding.senderName.setText(display + ':');
                 } else {
                     viewHolder.binding.senderName.setVisibility(View.GONE);
                 }
