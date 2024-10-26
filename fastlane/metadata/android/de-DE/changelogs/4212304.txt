@@ -1,2 +1,2 @@
-* Behoben: Anrufe auf Android 15
-* Behoben: Seltener Absturz / Regression die mit 2.17.0 aufgetreten ist
+* Anrufe auf Android 15 behoben
+* Seltener Absturz behoben / Regression die mit 2.17.0 aufgetreten ist
