@@ -256,10 +256,10 @@
     <string name="leave">Покинуть</string>
     <string name="contact_added_you">Собеседник добавил вас в список контактов</string>
     <string name="add_back">Добавить в ответ</string>
-    <string name="contact_has_read_up_to_this_point">%s прочитал(а) до этого момента</string>
-    <string name="contacts_have_read_up_to_this_point">%s прочитали до этого момента</string>
-    <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s + ещё %2$d прочитали до этого момента</string>
-    <string name="everyone_has_read_up_to_this_point">Все прочитали сообщения до этого момента</string>
+    <string name="contact_has_read_up_to_this_point">%s прочитал(а) досюда</string>
+    <string name="contacts_have_read_up_to_this_point">%s прочитали досюда</string>
+    <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s + ещё %2$d прочитали досюда</string>
+    <string name="everyone_has_read_up_to_this_point">Все прочитали сообщения досюда</string>
     <string name="publish">Опубликовать</string>
     <string name="touch_to_choose_picture">Нажмите на аватар, чтобы выбрать новую фотографию из галереи</string>
     <string name="publishing">Установка…</string>
@@ -631,7 +631,7 @@
     <string name="i_followed_this_link_from_a_trusted_source">Открывать ссылки из надёжного источника</string>
     <string name="verifying_omemo_keys_trusted_source">Вы подтверждаете OMEMO-ключи %1$s после нажатия на ссылку. Это безопасно только если вы перешли по ссылке из доверенного источника, где только %2$s мог разместить эту ссылку.</string>
     <string name="verify_omemo_keys">Проверить OMEMO-ключи</string>
-    <string name="show_inactive_devices">Показывать неактивные</string>
+    <string name="show_inactive_devices">Показать неактивные</string>
     <string name="hide_inactive_devices">Скрыть неактивные</string>
     <string name="distrust_omemo_key">Прекратить доверять устройству</string>
     <string name="distrust_omemo_key_text">Удалить устройство из доверенных?
