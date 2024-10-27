@@ -1,0 +1,2 @@
+* Arreglar llamadas en Android 15
+* Corrección de un error raro/ regresión introducida con 2.17.0
