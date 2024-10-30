@@ -183,17 +183,22 @@ public class ConversationAdapter
             if (status == Message.STATUS_RECEIVED) {
                 if (conversation.getMode() == Conversation.MODE_MULTI) {
                     viewHolder.binding.senderName.setVisibility(View.VISIBLE);
-                    String display = UIHelper.getMessageDisplayName(message);
+                    final var displayName = UIHelper.getMessageDisplayName(message);
+                    final var displayNameParts = displayName.split("\\s+");
                     // Skip when nickname only consists of blank chars
-                    if (display.split("\\s+").length != 0)
-                        display = display.split("\\s+")[0];
-                    viewHolder.binding.senderName.setText(display + ':');
+                    if (displayNameParts.length == 0) {
+                        viewHolder.binding.senderName.setText(String.format("%s:", displayName));
+                    } else {
+                        viewHolder.binding.senderName.setText(
+                                String.format("%s:", displayNameParts[0]));
+                    }
                 } else {
                     viewHolder.binding.senderName.setVisibility(View.GONE);
                 }
             } else if (message.getType() != Message.TYPE_STATUS) {
                 viewHolder.binding.senderName.setVisibility(View.VISIBLE);
-                viewHolder.binding.senderName.setText(activity.getString(R.string.me) + ':');
+                viewHolder.binding.senderName.setText(
+                        String.format("%s:", activity.getString(R.string.me)));
             } else {
                 viewHolder.binding.senderName.setVisibility(View.GONE);
             }
