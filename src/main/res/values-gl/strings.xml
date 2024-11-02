@@ -279,7 +279,7 @@
     <string name="pref_allow_message_correction_summary">Permitir aos teus contactos editar as súas mensaxes de xeito retroactivo</string>
     <string name="pref_expert_options">Axustes de experta</string>
     <string name="pref_expert_options_summary">Por favor ten tino con estos axustes</string>
-    <string name="title_activity_about_x">Acerca de %s</string>
+    <string name="title_activity_about_x">Sobre %s</string>
     <string name="title_pref_quiet_hours">Non molestar</string>
     <string name="title_pref_quiet_hours_start_time">Hora de inicio</string>
     <string name="title_pref_quiet_hours_end_time">Hora de finalización</string>
@@ -882,7 +882,7 @@
     <string name="pref_channel_discovery_summary">A maioría das usuarias debería escoller \'jabber.network\' para obter mellores suxestións desde o ecosistema público XMPP.</string>
     <string name="pref_channel_discovery">Método de descubrimento de canles</string>
     <string name="backup">Copia de apoio</string>
-    <string name="category_about">Acerca de</string>
+    <string name="category_about">Sobre</string>
     <string name="please_enable_an_account">Activa unha conta por favor</string>
     <string name="make_call">Facer unha chamada</string>
     <string name="rtp_state_incoming_call">Chamada entrante</string>
