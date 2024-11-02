@@ -557,6 +557,10 @@ public class CallIntegration extends Connection {
         if ("umidigi".equals(manufacturer) && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
             return false;
         }
+        // SailfishOS's AppSupport do not support Call Integration
+        if (Build.MODEL.endsWith("(AppSupport)")) {
+			return false;
+        }
         return true;
     }
 
