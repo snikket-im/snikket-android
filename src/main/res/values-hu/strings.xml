@@ -524,7 +524,7 @@
     <string name="gp_short">Rövid</string>
     <string name="gp_medium">Közepes</string>
     <string name="gp_long">Hosszú</string>
-    <string name="pref_broadcast_last_activity">Üzenetszórás használata</string>
+    <string name="pref_broadcast_last_activity">Utoljára elérhető</string>
     <string name="pref_broadcast_last_activity_summary">Tudassa partnereivel, hogy mikor használja a Conversations-t</string>
     <string name="pref_privacy">Adatvédelem</string>
     <string name="pref_theme_options">Téma</string>
@@ -565,7 +565,7 @@
     <string name="share_as_http">Megosztás HTTP hivatkozásként</string>
     <string name="pref_blind_trust_before_verification">Vak bizalom ellenőrzés előtt</string>
     <string name="not_trusted">Nem megbízható</string>
-    <string name="invalid_barcode">Érvénytelen 2D vonalkód</string>
+    <string name="invalid_barcode">Érvénytelen QR kód</string>
     <string name="pref_clean_cache_summary">Gyorsítótármappa törlése (Kamera alkalmazás által használt)</string>
     <string name="pref_clean_cache">Gyorsítótár törlése</string>
     <string name="pref_clean_private_storage">Személyes tárhely törlése</string>
@@ -647,14 +647,13 @@
     <string name="error_trustkey_device_list">Nem sikerült lekérni az eszközlistát</string>
     <string name="error_trustkey_bundle">Nem sikerült lekérni a titkosítási kulcsokat</string>
     <string name="error_trustkey_hint_mutual">Tipp: bizonyos esetekben ez megoldható azzal, hogy hozzáadják egymást a partnerlistákhoz.</string>
-    <string name="disable_encryption_message">Biztosan le szeretné tiltani az OMEMO titkosítást ennél a beszélgetésnél?
-\nEz lehetővé fogja tenni a kiszolgáló rendszergazdájának, hogy elolvassa az üzeneteket, de ez lehet az egyetlen módja annak, hogy kommunikáljon az elavult programokat használó emberekkel.</string>
+    <string name="disable_encryption_message">Biztosan le szeretné tiltani az OMEMO titkosítást ennél a csevegésnél?\nEz lehetővé fogja tenni a kiszolgáló rendszergazdájának, hogy elolvassa az üzeneteket, de ez lehet az egyetlen módja annak, hogy kommunikáljon az elavult programokat használó emberekkel.</string>
     <string name="disable_now">Letiltás most</string>
     <string name="draft">Vázlat:</string>
     <string name="pref_omemo_setting">OMEMO titkosítás</string>
     <string name="pref_omemo_setting_summary_always">Mindig az OMEMO lesz használva az egymással történő üzenetváltásokhoz és a személyes csoportos csevegésekhez.</string>
-    <string name="pref_omemo_setting_summary_default_on">Az OMEMO lesz alapértelmezetten használva az új beszélgetésekhez.</string>
-    <string name="pref_omemo_setting_summary_default_off">Az OMEMO-t kifejezetten be kell majd kapcsolni az új beszélgetésekhez.</string>
+    <string name="pref_omemo_setting_summary_default_on">Az OMEMO lesz alapértelmezetten használva az új csevegésekhez.</string>
+    <string name="pref_omemo_setting_summary_default_off">Az OMEMO-t kifejezetten be kell majd kapcsolni az új csevegésekhez.</string>
     <string name="create_shortcut">Gyorsbillentyű létrehozása</string>
     <string name="default_on">Alapértelmezetten be</string>
     <string name="default_off">Alapértelmezetten ki</string>
@@ -674,14 +673,14 @@
     <string name="please_wait">Kérem várjon…</string>
     <string name="search_messages">Üzenetek keresése</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Beszélgetés megtekintése</string>
+    <string name="view_conversation">Csevegés megtekintése</string>
     <string name="pref_use_share_location_plugin">Helymegosztás bővítmény</string>
     <string name="pref_use_share_location_plugin_summary">A helymegosztás bővítmény használata a beépített térkép helyett</string>
     <string name="copy_link">Webcím másolása</string>
     <string name="copy_jabber_id">XMPP-cím másolása</string>
     <string name="p1_s3_filetransfer">HTTP fájlmegosztás S3-hoz</string>
     <string name="pref_start_search">Közvetlen keresés</string>
-    <string name="pref_start_search_summary">A „Beszélgetés indítása” képernyőn nyissa meg a billentyűzetet, és helyezze a kurzort a keresőmezőbe</string>
+    <string name="pref_start_search_summary">A „Csevegés indítása” képernyőn nyissa meg a billentyűzetet, és helyezze a kurzort a keresőmezőbe</string>
     <string name="group_chat_avatar">Csoportos csevegés profilképe</string>
     <string name="host_does_not_support_group_chat_avatars">A gép nem támogatja a csoportos csevegés profilképeket</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Csak a tulajdonos tudja megváltoztatni a csoportos csevegés profilképét</string>
@@ -734,7 +733,7 @@
     <string name="resend_sms">SMS újraküldése</string>
     <string name="resend_sms_in">SMS újraküldése (%s)</string>
     <string name="wait_x">Kérem várjon (%s)</string>
-    <string name="back">vissza</string>
+    <string name="back">Vissza</string>
     <string name="possible_pin">Automatikusan beillesztett lehetséges PIN-kód a vágólapról.</string>
     <string name="please_enter_pin">Adja meg a 6 számjegyű PIN-kódot.</string>
     <string name="abort_registration_procedure">Biztosan meg szeretné szakítani a regisztrációs folyamatot?</string>
