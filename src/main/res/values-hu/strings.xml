@@ -26,8 +26,8 @@
     <string name="minute_ago">1 perce</string>
     <string name="minutes_ago">%d perce</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d olvasatlan beszélgetés</item>
-        <item quantity="other">%d olvasatlan beszélgetés</item>
+        <item quantity="one">%d olvasatlan csevegés</item>
+        <item quantity="other">%d olvasatlan csevegés</item>
     </plurals>
     <string name="sending">küldés…</string>
     <string name="message_decrypting">Üzenet visszafejtése. Kérem várjon…</string>
@@ -39,7 +39,7 @@
     <string name="moderator">Moderátor</string>
     <string name="participant">Résztvevő</string>
     <string name="visitor">Látogató</string>
-    <string name="remove_contact_text">Szeretné eltávolítani %s partnerét a partnerlistájából? Beszélgetései ezzel a partnerrel nem lesznek eltávolítva.</string>
+    <string name="remove_contact_text">Szeretné eltávolítani %s partnerét a partnerlistájából? A csevegése ezzel a partnerrel nem lesz eltávolítva.</string>
     <string name="block_contact_text">Szeretné tiltani %s partnert, hogy ne tudjon üzeneteket küldeni?</string>
     <string name="unblock_contact_text">Szeretné feloldani %s partner tiltását és lehetővé tenni számára az üzenetek küldését?</string>
     <string name="block_domain_text">%s összes partnerét tiltja?</string>
@@ -77,7 +77,7 @@
     <string name="preparing_images">Képek előkészítése az átvitelhez</string>
     <string name="sharing_files_please_wait">Fájlok megosztása. Kérem várjon…</string>
     <string name="action_clear_history">Előzmények törlése</string>
-    <string name="clear_conversation_history">Beszélgetés előzményeinek törlése</string>
+    <string name="clear_conversation_history">Csevegés előzményeinek törlése</string>
     <string name="clear_histor_msg">Biztosan törölni szeretné az összes üzenetet a beszélgetésen belül?
 \n
 \n<b>Figyelmeztetés:</b> Ez nem fogja érinteni a más eszközökön vagy kiszolgálókon tárolt üzeneteket.</string>
@@ -173,7 +173,7 @@
     <string name="unpublish_pgp_message">Biztosan el szeretné távolítani az OpenPGP nyilvános kulcsát a jelenléti közleményéből?\nA partnerei többé nem lesznek képesek OpenPGP titkosítású üzeneteket küldeni Önnek.</string>
     <string name="openpgp_has_been_published">Az OpenPGP nyilvános kulcs közzé lett téve.</string>
     <string name="mgmt_account_enable">Fiók engedélyezése</string>
-    <string name="mgmt_account_delete_confirm_text">A fiók törlésével az összes beszélgetési előzményei is eltávolításra kerülnek</string>
+    <string name="mgmt_account_delete_confirm_text">A fiók törlésével az összes csevegési előzménye is eltávolításra kerül</string>
     <string name="attach_record_voice">Hang rögzítése</string>
     <string name="account_settings_jabber_id">XMPP-cím</string>
     <string name="block_jabber_id">XMPP-cím tiltása</string>
@@ -240,7 +240,7 @@
     <string name="contact_added_you">A partner hozzáadta Önt a partnerlistához</string>
     <string name="add_back">Én is hozzáadom</string>
     <string name="contact_has_read_up_to_this_point">%s elolvasta eddig a pontig</string>
-    <string name="contacts_have_read_up_to_this_point">%selolvasta eddig a pontig</string>
+    <string name="contacts_have_read_up_to_this_point">%s elolvasta eddig a pontig</string>
     <string name="everyone_has_read_up_to_this_point">Mindenki elolvasta eddig a pontig</string>
     <string name="publish">Közzététel</string>
     <string name="touch_to_choose_picture">Érintse meg a profilképet egy fénykép kiválasztásához a galériából</string>
@@ -265,7 +265,7 @@
     <string name="request_now">Kérés most</string>
     <string name="ignore">Mellőzés</string>
     <string name="pref_security_settings">Biztonság</string>
-    <string name="pref_allow_message_correction">Üzenetjavítás engedélyezése</string>
+    <string name="pref_allow_message_correction">Üzenetek javítása</string>
     <string name="pref_allow_message_correction_summary">Engedélyezés a partnereknek, hogy visszamenőlegesen szerkesszék az üzeneteiket</string>
     <string name="pref_expert_options">Szakértő beállítások</string>
     <string name="pref_expert_options_summary">Legyen óvatos ezekkel</string>
@@ -299,8 +299,8 @@
     <string name="jabber_id_copied_to_clipboard">Az XMPP-cím a vágólapra másolva</string>
     <string name="error_message_copied_to_clipboard">A hibaüzenet a vágólapra másolva</string>
     <string name="web_address">webcím</string>
-    <string name="scan_qr_code">2D vonalkód beolvasása</string>
-    <string name="show_qr_code">2D vonalkód megjelenítése</string>
+    <string name="scan_qr_code">QR kód beolvasása</string>
+    <string name="show_qr_code">QR kód megjelenítése</string>
     <string name="show_block_list">Tiltólista megjelenítése</string>
     <string name="account_details">Fiók részletei</string>
     <string name="confirm">Megerősítés</string>
@@ -446,7 +446,7 @@
     <string name="pref_away_when_screen_off">Távol, ha az eszköz le van zárva</string>
     <string name="pref_away_when_screen_off_summary">Mutasson „Távoli”-ként, ha az eszköz le van zárva</string>
     <string name="pref_treat_vibrate_as_silent">Rezgés kezelése csendes módként</string>
-    <string name="pref_show_connection_options">Kiterjesztett kapcsolati beállítások</string>
+    <string name="pref_show_connection_options">Gépnév és port</string>
     <string name="pref_show_connection_options_summary">Gépnév és port beállításainak megjelenítése egy fiók beállításakor</string>
     <string name="hostname_example">xmpp.example.com</string>
     <string name="action_add_account_with_certificate">Bejelentkezés tanúsítvánnyal</string>
@@ -868,4 +868,49 @@
         <item quantity="one">%1$d résztvevő megtekintése</item>
         <item quantity="other">%1$d résztvevő megtekintése</item>
     </plurals>
+    <string name="welcome_header">Csatlakozzon a Beszélgetéshez</string>
+    <string name="pref_enter_is_send_summary">Az Enter gomb használata az üzenetküldéshez. A Ctrl+Entert mindig használhatja üzenetküldésre, akkor is, ha ez ki van kapcsolva.</string>
+    <string name="conference_technical_problems">Technikai okokból elhagyta ezt a csoportos csevegést</string>
+    <string name="pref_dnd_on_silent_mode">Elfoglalt csendes módban</string>
+    <string name="remove_bookmark_and_close">Szeretné eltávolítani a könyvjelzőt erről: %s és archiválni a csevegést?</string>
+    <string name="audiobook">Hangoskönyv</string>
+    <string name="pref_send_crash_reports">Hibajelentések küldése</string>
+    <string name="pref_treat_vibrate_as_dnd_summary">Mutasson Elfoglaltként, ha az eszköz rezgő módban van</string>
+    <string name="pref_dnd_on_silent_mode_summary">Mutasson Elfoglaltként, ha az eszköz csendes módban van</string>
+    <string name="hostname_or_onion">Szerver- vagy .onion-cím</string>
+    <string name="no_storage_permission">%1$s hozzáférést igényel a külső tárhelyhez</string>
+    <string name="no_camera_permission">%1$s hozzáférést igényel a kamerához</string>
+    <string name="quicksy_wants_your_consent">Quicksy a hozzájárulását kéri az adatai felhasználásához</string>
+    <string name="battery_optimizations_enabled_explained">Az eszköze jelentős akkumulátor-optimalizálást alkalmaz a %1$s esetében, ami késleltetett értesítésekhez vagy akár üzenetvesztéshez vezethet.\nJavasolt kikapcsolni az optimalizálást.</string>
+    <string name="battery_optimizations_enabled_dialog">Az eszköze jelentős akkumulátor-optimalizálást alkalmaz a %1$s esetében, ami késleltetett értesítésekhez vagy akár üzenetvesztéshez vezethet.\n\nMost az eszköz meg fogja kérni, hogy kapcsolja ki.</string>
+    <string name="welcome_header_quicksy">Üdvözöljük a Quicksyben!</string>
+    <string name="unable_to_connect_to_keychain">Nem sikerült csatlakozni az OpenKeychainhez</string>
+    <string name="reconnect_on_other_host">Újracsatlakozás másik kiszolgálón</string>
+    <string name="no_permission_to_place_call">Nincs jogosultság hívást indítani</string>
+    <string name="pref_delete_omemo_identities_summary">Az OMEMO kulcsok újragenerálása. Az összes partnerének újra ellenőriznie kell majd. Csak végső esetben használja.</string>
+    <string name="data_saver_enabled_explained">%1$s nem tud hozzáférni az internethez a háttérben az operációs rendszer korlátozásai miatt. Engedélyezze a teljes hozzáférést %1$s számára, amikor az</string>
+    <string name="no_keys_just_confirm">Már megbízott ezen személy ujjlenyomatában. A \"kész\" kiválasztásával csak megerősíti, hogy %s része a csoportos csevegésnek.</string>
+    <string name="sync_with_contacts_long">%1$s feldolgozza a névjegyzékét helyben, az eszközén, hogy megmutassa az egyező partnerek neveit és profilképeit az XMPP-n.\n\nSoha nem hagyja el névjegyzék-adat az eszközét!</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">A vonalkód nem tartalmaz ujjlenyomatot ehhez a csevegéshez.</string>
+    <string name="title_activity_share_with">Megosztás ezzel…</string>
+    <string name="pref_use_colorful_bubbles">Színes csevegőbuborékok</string>
+    <string name="pref_use_colorful_bubbles_summary">Különböző háttérszínek a küldött és a fogadott üzeneteknél</string>
+    <string name="action_archive_chat">Csevegés archiválása</string>
+    <string name="title_activity_new_chat">Új csevegés</string>
+    <string name="remove_bookmark">Szeretné eltávolítani a könyvjezőlt erről: %s?</string>
+    <string name="archive_this_chat">Csevegés törlése ezután</string>
+    <string name="download_failed_invalid_file">Letöltés sikertelen: Érvénytelen fájl</string>
+    <string name="send_encrypted_message">Titkosított üzenet küldése</string>
+    <string name="account_state_logged_out">Kijelentkezve</string>
+    <string name="account_status_incompatible_client">Nem kompatibilis kliens</string>
+    <string name="title_undo_swipe_out_chat">Csevegés archiválva</string>
+    <string name="group_chats">Csoportos csevegések</string>
+    <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s+%2$d másik elolvasta eddig a pontig</string>
+    <string name="pref_autojoin">Könyvjelzők szinkronizálása</string>
+    <string name="error_no_keys_to_trust_server_error">Nincs használható kulcs ehhez partnerhez.\nNem sikerült lekérdezni újabb kulcsokat a kiszolgálóról. Lehetséges, hogy probléma adódott a partnere kiszolgálójával?</string>
+    <string name="error_no_keys_to_trust_presence">Nincs használható kulcs ehhez a partnerhez.\nGyőződjön meg, hogy mindkettejüknek van</string>
+    <string name="multimedia_file">multimédia fájl</string>
+    <string name="search_group_chats">Csoportos csevegés keresése</string>
+    <string name="this_account_is_logged_out">Kijelentkezett ebből a fiókból</string>
+    <string name="continue_btn">Folytatás</string>
 </resources>
