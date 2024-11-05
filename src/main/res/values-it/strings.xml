@@ -1103,4 +1103,8 @@
     <string name="server_info_login_mechanism">Meccanismo di accesso</string>
     <string name="server_info_bind2">XEP-0386: Bind 2</string>
     <string name="server_info_sasl2">XEP-0388: Profilo SASL estensibile</string>
+    <string name="could_not_add_reaction">Impossibile aggiungere una reazione</string>
+    <string name="add_reaction">Aggiungi reazione…</string>
+    <string name="add_reaction_title">Aggiungi reazione</string>
+    <string name="more_reactions">Altre reazioni</string>
 </resources>
