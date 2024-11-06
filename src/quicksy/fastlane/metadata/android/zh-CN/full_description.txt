@@ -6,8 +6,8 @@ Quicksy 是流行的 Jabber/XMPP 客户端 Conversations 的衍生品，具有�
 
 除了联系人同步之外，用户界面尽可能地接近 Conversations。让用户最终可以从 Quicksy 迁移到 Conversations，而无需重新了解应用程序的工作方式。
 
-建议的联系人包括其他 Quicksy 用户和在 Quicksy 目录（https://quicksy.im/#get-listed）中输入 Jabber ID 的普通 Jabber/XMPP 用户。
+建议的联系人包括其他 Quicksy 用户和在 Quicksy 目录 (https://quicksy.im/#get-listed) 中输入 Jabber ID 的普通 Jabber/XMPP 用户。
 
-注意：要在 Quicksy 目录中输入（https://quicksy.im/enter/）您的 Jabber ID 需要缴纳一次性注册费。
+注意：要加入 (https://quicksy.im/enter/) Quicksy 目录，您的 Jabber ID 需要缴纳一次性注册费。
 
-请阅读隐私政策（https://quicksy.im/#privacy）了解更多信息。
+请阅读隐私政策 (https://quicksy.im/#privacy) 了解更多信息。
