@@ -15,4 +15,8 @@ public class Resumed extends StreamElement {
     public Optional<Integer> getHandled() {
         return this.getOptionalIntAttribute("h");
     }
+
+    public String getPrevId() {
+        return this.getAttribute("previd");
+    }
 }

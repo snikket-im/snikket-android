@@ -45,6 +45,7 @@ import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Patterns;
@@ -189,6 +190,7 @@ public class XmppConnection implements Runnable {
     private OnStatusChanged statusListener = null;
     private final Runnable bindListener;
     private OnMessageAcknowledged acknowledgedListener = null;
+    private final PendingItem<String> pendingResumeId = new PendingItem<>();
     private LoginInfo loginInfo;
     private HashedToken.Mechanism hashTokenRequest;
     private HttpUrl redirectionUrl = null;
@@ -288,6 +290,7 @@ public class XmppConnection implements Runnable {
             mXmppConnectionService.resetSendingToWaiting(account);
         }
         Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": connecting");
+        this.pendingResumeId.clear();
         this.loginInfo = null;
         this.features.encryptionEnabled = false;
         this.inSmacksSession = false;
@@ -1068,6 +1071,17 @@ public class XmppConnection implements Runnable {
     }
 
     private void processResumed(final Resumed resumed) throws StateChangingException {
+        final var pendingResumeId = this.pendingResumeId.pop();
+        final var prevId = resumed.getPrevId();
+        if (prevId == null || !prevId.equals(pendingResumeId)) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": server tried resume with unknown id "
+                            + prevId);
+            resetStreamId();
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
         this.inSmacksSession = true;
         this.isBound = true;
         this.tagWriter.writeStanzaAsync(new Request());
@@ -1475,9 +1489,9 @@ public class XmppConnection implements Runnable {
                                 + ": resuming after stanza #"
                                 + stanzasReceived);
             }
-            final var resume = new Resume(this.streamId.id, stanzasReceived);
-            this.mSmCatchupMessageCounter.set(0);
-            this.mWaitingForSmCatchup.set(true);
+            final var streamId = this.streamId.id;
+            final var resume = new Resume(streamId, stanzasReceived);
+            prepareForResume(streamId);
             this.tagWriter.writeStanzaAsync(resume);
         } else if (needsBinding) {
             if (this.streamFeatures.hasChild("bind", Namespace.BIND)
@@ -1705,9 +1719,9 @@ public class XmppConnection implements Runnable {
             authenticate.addChild(generateBindRequest(bind));
         }
         if (inlineStreamManagement && streamId != null) {
-            final var resume = new Resume(this.streamId.id, stanzasReceived);
-            this.mSmCatchupMessageCounter.set(0);
-            this.mWaitingForSmCatchup.set(true);
+            final var streamId = this.streamId.id;
+            final var resume = new Resume(streamId, stanzasReceived);
+            prepareForResume(streamId);
             authenticate.addExtension(resume);
         }
         if (hashedTokenRequest != null) {
@@ -1717,6 +1731,12 @@ public class XmppConnection implements Runnable {
             authenticate.addExtension(new Fast());
         }
         return authenticate;
+    }
+
+    private void prepareForResume(final String streamId) {
+        this.mSmCatchupMessageCounter.set(0);
+        this.mWaitingForSmCatchup.set(true);
+        this.pendingResumeId.push(streamId);
     }
 
     private Bind generateBindRequest(final Collection<String> bindFeatures) {
@@ -2617,6 +2637,7 @@ public class XmppConnection implements Runnable {
     }
 
     private void resetStreamId() {
+        this.pendingResumeId.clear();
         this.streamId = null;
         this.boundStreamFeatures = null;
     }
