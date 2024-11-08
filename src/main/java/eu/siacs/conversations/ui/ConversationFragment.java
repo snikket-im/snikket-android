@@ -1346,7 +1346,8 @@ public class ConversationFragment extends XmppFragment
                         !showError
                                 && !m.isDeleted()
                                 && (c.getMode() == Conversational.MODE_SINGLE
-                                        || c.getMucOptions().occupantId()));
+                                        || (c.getMucOptions().occupantId()
+                                                && c.getMucOptions().participating())));
             } else {
                 addReaction.setVisible(false);
             }
