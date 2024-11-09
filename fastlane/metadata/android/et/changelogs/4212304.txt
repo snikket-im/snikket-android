@@ -1,0 +1,2 @@
+* Parandasime kõnete vead Android 15's
+* Parandasime harvaesineva kokkujooksmise/regressiooni, mis tekkis alates versioonist 2.17.0
