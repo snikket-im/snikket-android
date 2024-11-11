@@ -945,8 +945,7 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
                             // the 'ringing' response. Responding with delivery receipts predates
                             // the 'ringing' spec'd
                             final boolean sendReceipts =
-                                    (mXmppConnectionService.confirmMessages()
-                                                    && contact.showInContactList())
+                                    contact.showInContactList()
                                             || Config.JINGLE_MESSAGE_INIT_STRICT_OFFLINE_CHECK;
                             if (remoteMsgId != null && !contact.isSelf() && sendReceipts) {
                                 processMessageReceipts(account, packet, remoteMsgId, null);

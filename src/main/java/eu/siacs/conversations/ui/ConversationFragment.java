@@ -1358,7 +1358,7 @@ public class ConversationFragment extends XmppFragment
                     && !unInitiatedButKnownSize
                     && t == null) {
                 copyMessage.setVisible(true);
-                quoteMessage.setVisible(!showError && MessageUtils.prepareQuote(m).length() > 0);
+                quoteMessage.setVisible(!showError && !MessageUtils.prepareQuote(m).isEmpty());
                 final String scheme = ShareUtil.getLinkScheme(m.getMergedBody());
                 if ("xmpp".equals(scheme)) {
                     copyLink.setTitle(R.string.copy_jabber_id);

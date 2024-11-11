@@ -1668,8 +1668,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
             // in environments where we always use discovery timeouts we always want to respond with
             // 'ringing'
             if (Config.JINGLE_MESSAGE_INIT_STRICT_DEVICE_TIMEOUT
-                    || (xmppConnectionService.confirmMessages()
-                            && id.getContact().showInContactList())) {
+                    || id.getContact().showInContactList()) {
                 sendJingleMessage("ringing");
             }
         } else {
