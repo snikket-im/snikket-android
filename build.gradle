@@ -69,7 +69,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
     //noinspection GradleDependency
-    implementation 'io.deepmedia.community:transcoder-android:0.11.1'
+    implementation 'io.deepmedia.community:transcoder-android:0.11.2'
 
     implementation 'org.jxmpp:jxmpp-jid:1.0.3'
     implementation 'org.jxmpp:jxmpp-stringprep-libidn:1.0.3'
