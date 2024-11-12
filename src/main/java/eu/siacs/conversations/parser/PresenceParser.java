@@ -85,13 +85,14 @@ public class PresenceParser extends AbstractParser implements Consumer<im.conver
                             if (mucOptions.setOnline()) {
                                 mXmppConnectionService.getAvatarService().clear(mucOptions);
                             }
+                            final var current = mucOptions.getSelf().getFullJid();
                             if (mucOptions.setSelf(user)) {
                                 Log.d(Config.LOGTAG, "role or affiliation changed");
                                 mXmppConnectionService.databaseBackend.updateConversation(
                                         conversation);
                             }
-
-                            mXmppConnectionService.persistSelfNick(user);
+                            final var modified = current == null || !current.equals(user.getFullJid());
+                            mXmppConnectionService.persistSelfNick(user, modified);
                             invokeRenameListener(mucOptions, true);
                         }
                         boolean isNew = mucOptions.updateUser(user);

@@ -186,7 +186,7 @@ public class Bookmark extends Element implements ListItem {
 	}
 
 	public String getNick() {
-		return this.findChildContent("nick");
+		return Strings.emptyToNull(this.findChildContent("nick"));
 	}
 
 	public void setNick(String nick) {
@@ -250,7 +250,6 @@ public class Bookmark extends Element implements ListItem {
 			this.conversation = null;
 		} else {
 			this.conversation = new WeakReference<>(conversation);
-			conversation.getMucOptions().notifyOfBookmarkNick(getNick());
 		}
 	}
 

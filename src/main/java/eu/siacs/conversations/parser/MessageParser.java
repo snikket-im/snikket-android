@@ -337,12 +337,13 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
         mXmppConnectionService.processDeletedBookmarks(account, previous);
     }
 
-    private void setNick(Account account, Jid user, String nick) {
+    private void setNick(final Account account, final Jid user, final String nick) {
         if (user.asBareJid().equals(account.getJid().asBareJid())) {
             account.setDisplayName(nick);
             if (QuickConversationsService.isQuicksy()) {
                 mXmppConnectionService.getAvatarService().clear(account);
             }
+            mXmppConnectionService.checkMucRequiresRename();
         } else {
             Contact contact = account.getRoster().getContact(user);
             if (contact.setPresenceName(nick)) {

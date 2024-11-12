@@ -1969,11 +1969,13 @@ public class XmppConnectionService extends Service {
                 final MucOptions mucOptions = conversation.getMucOptions();
                 if (mucOptions.getError() == MucOptions.Error.NICK_IN_USE) {
                     final String current = mucOptions.getActualNick();
-                    final String proposed = mucOptions.getProposedNick();
+                    final String proposed = mucOptions.getProposedNickPure();
                     if (current != null && !current.equals(proposed)) {
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": proposed nick changed after bookmark push " + current + "->" + proposed);
                         joinMuc(conversation);
                     }
+                } else {
+                    checkMucRequiresRename(conversation);
                 }
             }
         } else if (bookmark.autojoin()) {
@@ -3319,67 +3321,124 @@ public class XmppConnectionService extends Service {
         new Thread(() -> onMediaLoaded.onMediaLoaded(fileBackend.convertToAttachments(databaseBackend.getRelativeFilePaths(account, jid, limit)))).start();
     }
 
-    public void persistSelfNick(final MucOptions.User self) {
+    public void persistSelfNick(final MucOptions.User self, final boolean modified) {
         final Conversation conversation = self.getConversation();
-        final boolean tookProposedNickFromBookmark = conversation.getMucOptions().isTookProposedNickFromBookmark();
-        Jid full = self.getFullJid();
+        final Account account = conversation.getAccount();
+        final Jid full = self.getFullJid();
         if (!full.equals(conversation.getJid())) {
-            Log.d(Config.LOGTAG, "nick changed. updating");
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": persisting full jid " + full);
             conversation.setContactJid(full);
             databaseBackend.updateConversation(conversation);
         }
 
         final Bookmark bookmark = conversation.getBookmark();
-        final String bookmarkedNick = bookmark == null ? null : bookmark.getNick();
-        if (bookmark != null && (tookProposedNickFromBookmark || Strings.isNullOrEmpty(bookmarkedNick)) && !full.getResource().equals(bookmarkedNick)) {
-            final Account account = conversation.getAccount();
-            final String defaultNick = MucOptions.defaultNick(account);
-            if (Strings.isNullOrEmpty(bookmarkedNick) && full.getResource().equals(defaultNick)) {
-                return;
-            }
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": persist nick '" + full.getResource() + "' into bookmark for " + conversation.getJid().asBareJid());
-            bookmark.setNick(full.getResource());
-            createBookmark(bookmark.getAccount(), bookmark);
+        if (bookmark == null || !modified) {
+            return;
         }
+        final var nick = full.getResource();
+        final String defaultNick = MucOptions.defaultNick(account);
+        if (nick.equals(defaultNick) || nick.equals(bookmark.getNick())) {
+            return;
+        }
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid()
+                        + ": persist nick '"
+                        + full.getResource()
+                        + "' into bookmark for "
+                        + conversation.getJid().asBareJid());
+        bookmark.setNick(nick);
+        createBookmark(bookmark.getAccount(), bookmark);
     }
 
-    public boolean renameInMuc(final Conversation conversation, final String nick, final UiCallback<Conversation> callback) {
+    public boolean renameInMuc(
+            final Conversation conversation,
+            final String nick,
+            final UiCallback<Conversation> callback) {
+        final Account account = conversation.getAccount();
+        final Bookmark bookmark = conversation.getBookmark();
         final MucOptions options = conversation.getMucOptions();
         final Jid joinJid = options.createJoinJid(nick);
         if (joinJid == null) {
             return false;
         }
         if (options.online()) {
-            Account account = conversation.getAccount();
-            options.setOnRenameListener(new OnRenameListener() {
+            options.setOnRenameListener(
+                    new OnRenameListener() {
 
-                @Override
-                public void onSuccess() {
-                    callback.success(conversation);
-                }
+                        @Override
+                        public void onSuccess() {
+                            callback.success(conversation);
+                        }
 
-                @Override
-                public void onFailure() {
-                    callback.error(R.string.nick_in_use, conversation);
-                }
-            });
+                        @Override
+                        public void onFailure() {
+                            callback.error(R.string.nick_in_use, conversation);
+                        }
+                    });
 
-            final var packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE, options.nonanonymous());
+            final var packet =
+                    mPresenceGenerator.selfPresence(
+                            account, Presence.Status.ONLINE, options.nonanonymous());
             packet.setTo(joinJid);
             sendPresencePacket(account, packet);
+            if (nick.equals(MucOptions.defaultNick(account))
+                    && bookmark != null
+                    && bookmark.getNick() != null) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": removing nick from bookmark for "
+                                + bookmark.getJid());
+                bookmark.setNick(null);
+                createBookmark(account, bookmark);
+            }
         } else {
             conversation.setContactJid(joinJid);
             databaseBackend.updateConversation(conversation);
-            if (conversation.getAccount().getStatus() == Account.State.ONLINE) {
-                Bookmark bookmark = conversation.getBookmark();
+            if (account.getStatus() == Account.State.ONLINE) {
                 if (bookmark != null) {
                     bookmark.setNick(nick);
-                    createBookmark(bookmark.getAccount(), bookmark);
+                    createBookmark(account, bookmark);
                 }
                 joinMuc(conversation);
             }
         }
         return true;
+    }
+
+    public void checkMucRequiresRename() {
+        synchronized (this.conversations) {
+            for (final Conversation conversation : this.conversations) {
+                if (conversation.getMode() == Conversational.MODE_MULTI) {
+                    checkMucRequiresRename(conversation);
+                }
+            }
+        }
+    }
+
+    private void checkMucRequiresRename(final Conversation conversation) {
+        final var options = conversation.getMucOptions();
+        if (!options.online()) {
+            return;
+        }
+        final var account = conversation.getAccount();
+        final String current = options.getActualNick();
+        final String proposed = options.getProposedNickPure();
+        if (current == null || current.equals(proposed)) {
+            return;
+        }
+        final Jid joinJid = options.createJoinJid(proposed);
+        Log.d(
+                Config.LOGTAG,
+                String.format(
+                        "%s: muc rename required %s (was: %s)",
+                        account.getJid().asBareJid(), joinJid, current));
+        final var packet =
+                mPresenceGenerator.selfPresence(
+                        account, Presence.Status.ONLINE, options.nonanonymous());
+        packet.setTo(joinJid);
+        sendPresencePacket(account, packet);
     }
 
     public void leaveMuc(Conversation conversation) {
