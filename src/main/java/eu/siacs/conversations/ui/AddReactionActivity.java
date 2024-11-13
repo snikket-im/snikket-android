@@ -45,12 +45,17 @@ public class AddReactionActivity extends XmppActivity {
         }
         final var aggregated = m.getAggregatedReactions();
         if (aggregated.ourReactions.contains(emoji)) {
-            xmppConnectionService.sendReactions(m, aggregated.ourReactions);
+            if (!xmppConnectionService.sendReactions(m, aggregated.ourReactions)) {
+                Toast.makeText(this, R.string.could_not_add_reaction, Toast.LENGTH_LONG).show();
+                return;
+            }
         } else {
             final ImmutableSet.Builder<String> reactionBuilder = new ImmutableSet.Builder<>();
             reactionBuilder.addAll(aggregated.ourReactions);
             reactionBuilder.add(emoji);
-            xmppConnectionService.sendReactions(m, reactionBuilder.build());
+            if (!xmppConnectionService.sendReactions(m, reactionBuilder.build())) {
+                Toast.makeText(this, R.string.could_not_add_reaction, Toast.LENGTH_LONG).show();
+            }
         }
         finish();
     }
