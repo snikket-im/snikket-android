@@ -853,7 +853,7 @@ public class ConversationFragment extends XmppFragment
         final Editable text = this.binding.textinput.getText();
         final String body = text == null ? "" : text.toString();
         final Conversation conversation = this.conversation;
-        if (body.length() == 0 || conversation == null) {
+        if (body.isEmpty() || conversation == null) {
             return;
         }
         if (trustKeysIfNeeded(conversation, REQUEST_TRUST_KEYS_TEXT)) {
@@ -867,7 +867,6 @@ public class ConversationFragment extends XmppFragment
             message = conversation.getCorrectingMessage();
             message.setBody(body);
             message.putEdited(message.getUuid(), message.getServerMsgId());
-            message.setServerMsgId(null);
             message.setUuid(UUID.randomUUID().toString());
         }
         switch (conversation.getNextEncryption()) {

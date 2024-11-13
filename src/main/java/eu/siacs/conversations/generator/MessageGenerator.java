@@ -23,6 +23,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
+import im.conversations.android.xmpp.model.correction.Replace;
 import im.conversations.android.xmpp.model.reactions.Reaction;
 import im.conversations.android.xmpp.model.reactions.Reactions;
 
@@ -63,7 +64,7 @@ public class MessageGenerator extends AbstractGenerator {
             packet.addChild("origin-id", Namespace.STANZA_IDS).setAttribute("id", message.getUuid());
         }
         if (message.edited()) {
-            packet.addChild("replace", "urn:xmpp:message-correct:0").setAttribute("id", message.getEditedIdWireFormat());
+            packet.addExtension(new Replace(message.getEditedIdWireFormat()));
         }
         return packet;
     }

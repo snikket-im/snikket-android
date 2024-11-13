@@ -3,6 +3,7 @@ package eu.siacs.conversations.parser;
 import android.util.Log;
 import android.util.Pair;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 
 import java.text.SimpleDateFormat;
@@ -54,6 +55,7 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.model.Extension;
 import im.conversations.android.xmpp.model.carbons.Received;
 import im.conversations.android.xmpp.model.carbons.Sent;
+import im.conversations.android.xmpp.model.correction.Replace;
 import im.conversations.android.xmpp.model.forward.Forwarded;
 import im.conversations.android.xmpp.model.occupant.OccupantId;
 import im.conversations.android.xmpp.model.reactions.Reactions;
@@ -456,10 +458,11 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
         final Element mucUserElement = packet.findChild("x", Namespace.MUC_USER);
         final boolean isTypeGroupChat = packet.getType() == im.conversations.android.xmpp.model.stanza.Message.Type.GROUPCHAT;
         final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
-        final Element replaceElement = packet.findChild("replace", "urn:xmpp:message-correct:0");
+
         final Element oob = packet.findChild("x", Namespace.OOB);
         final String oobUrl = oob != null ? oob.findChildContent("url") : null;
-        final String replacementId = replaceElement == null ? null : replaceElement.getAttribute("id");
+        final var replace = packet.getExtension(Replace.class);
+        final var replacementId = replace == null ? null : replace.getId();
         final Element axolotlEncrypted = packet.findChildEnsureSingle(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
         int status;
         final Jid counterpart;
@@ -549,7 +552,14 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
 
 
             if (selfAddressed) {
-                if (mXmppConnectionService.markMessage(conversation, remoteMsgId, Message.STATUS_SEND_RECEIVED, serverMsgId)) {
+                // don’t store serverMsgId on reflections for edits
+                final var reflectedServerMsgId =
+                        Strings.isNullOrEmpty(replacementId) ? serverMsgId : null;
+                if (mXmppConnectionService.markMessage(
+                        conversation,
+                        remoteMsgId,
+                        Message.STATUS_SEND_RECEIVED,
+                        reflectedServerMsgId)) {
                     return;
                 }
                 status = Message.STATUS_RECEIVED;
@@ -562,7 +572,10 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
                 if (conversation.getMucOptions().isSelf(counterpart)) {
                     status = Message.STATUS_SEND_RECEIVED;
                     isCarbon = true; //not really carbon but received from another resource
-                    if (mXmppConnectionService.markMessage(conversation, remoteMsgId, status, serverMsgId, body)) {
+                    // don’t store serverMsgId on reflections for edits
+                    final var reflectedServerMsgId =
+                            Strings.isNullOrEmpty(replacementId) ? serverMsgId : null;
+                    if (mXmppConnectionService.markMessage(conversation, remoteMsgId, status, reflectedServerMsgId, body)) {
                         return;
                     } else if (remoteMsgId == null || Config.IGNORE_ID_REWRITE_IN_MUC) {
                         if (body != null) {
@@ -716,16 +729,26 @@ public class MessageParser extends AbstractParser implements Consumer<im.convers
                             final String uuid = replacedMessage.getUuid();
                             replacedMessage.setUuid(UUID.randomUUID().toString());
                             replacedMessage.setBody(message.getBody());
-                            replacedMessage.putEdited(replacedMessage.getRemoteMsgId(), replacedMessage.getServerMsgId());
-                            replacedMessage.setRemoteMsgId(remoteMsgId);
-                            if (replacedMessage.getServerMsgId() == null || message.getServerMsgId() != null) {
-                                replacedMessage.setServerMsgId(message.getServerMsgId());
-                            }
+                            // we store the IDs of the replacing message. This is essentially unused
+                            // today (only the fact that there are _some_ edits causes the edit icon
+                            // to appear)
+                            replacedMessage.putEdited(
+                                    message.getRemoteMsgId(), message.getServerMsgId());
+
+                            // we used to call
+                            // `replacedMessage.setServerMsgId(message.getServerMsgId());` so during
+                            // catchup we could start from the edit; not the original message
+                            // however this caused problems for things like reactions that refer to
+                            // the serverMsgId
+
                             replacedMessage.setEncryption(message.getEncryption());
                             if (replacedMessage.getStatus() == Message.STATUS_RECEIVED) {
                                 replacedMessage.markUnread();
                             }
-                            extractChatState(mXmppConnectionService.find(account, counterpart.asBareJid()), isTypeGroupChat, packet);
+                            extractChatState(
+                                    mXmppConnectionService.find(account, counterpart.asBareJid()),
+                                    isTypeGroupChat,
+                                    packet);
                             mXmppConnectionService.updateMessage(replacedMessage, uuid);
                             if (mXmppConnectionService.confirmMessages()
                                     && replacedMessage.getStatus() == Message.STATUS_RECEIVED

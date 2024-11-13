@@ -14,6 +14,11 @@ public class Replace extends Extension {
         super(Replace.class);
     }
 
+    public Replace(final String id) {
+        this();
+        this.setId(id);
+    }
+
     public String getId() {
         return Strings.emptyToNull(this.getAttribute("id"));
     }

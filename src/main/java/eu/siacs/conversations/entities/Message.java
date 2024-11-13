@@ -489,15 +489,6 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         }
     }
 
-    boolean remoteMsgIdMatchInEdit(String id) {
-        for (Edit edit : this.edits) {
-            if (id.equals(edit.getEditedId())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public String getBodyLanguage() {
         return this.bodyLanguage;
     }
@@ -507,7 +498,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean edited() {
-        return this.edits.size() > 0;
+        return !this.edits.isEmpty();
     }
 
     public void setTrueCounterpart(Jid trueCounterpart) {
@@ -828,19 +819,17 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public String getEditedId() {
-        if (edits.size() > 0) {
-            return edits.get(edits.size() - 1).getEditedId();
-        } else {
-            throw new IllegalStateException("Attempting to store unedited message");
+        if (this.edits.isEmpty()) {
+            throw new IllegalStateException("Attempting to access unedited message");
         }
+        return edits.get(edits.size() - 1).getEditedId();
     }
 
     public String getEditedIdWireFormat() {
-        if (edits.size() > 0) {
-            return edits.get(Config.USE_LMC_VERSION_1_1 ? 0 : edits.size() - 1).getEditedId();
-        } else {
-            throw new IllegalStateException("Attempting to store unedited message");
+        if (this.edits.isEmpty()) {
+            throw new IllegalStateException("Attempting to access unedited message");
         }
+        return edits.get(0).getEditedId();
     }
 
     public void setOob(boolean isOob) {
