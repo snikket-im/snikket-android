@@ -1086,4 +1086,5 @@
     <string name="add_reaction">Add reaction…</string>
     <string name="add_reaction_title">Add reaction</string>
     <string name="more_reactions">More reactions</string>
+    <string name="could_not_modify_call">Could not modify call</string>
 </resources>
