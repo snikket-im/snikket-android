@@ -674,7 +674,7 @@
     <string name="account_already_setup">Kjo llogari është ujdisur tashmë</string>
     <string name="please_enter_password">Ju lutemi, jepni fjalëkalimin për këtë llogari</string>
     <string name="unable_to_perform_this_action">S’u krye dot ky veprim</string>
-    <string name="group_chats_and_channels">Fjalosje në Grup &amp; Kanale</string>
+    <string name="group_chats_and_channels"><![CDATA[Fjalosje në Grup & Kanale]]></string>
     <string name="local_server">Shërbyes vendor</string>
     <string name="pref_channel_discovery">Metodë zbulimi kanalesh</string>
     <string name="backup">Kopjeruajtje</string>
@@ -829,7 +829,7 @@
 \n<b>Kujdes:</b> Kjo s’do të fshijë kopje të kësaj kartele që janë depozituar në pajisje apo shërbyes të tjerë. </string>
     <string name="decryption_failed">Shfshehtëzimi dështoi. Ndoshta s’keni kyçin e duhur privat.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">%1$s përdor &lt;b&gt;OpenKeychain&lt;/b&gt; që të fshehtëzojë dhe shfshehtëzojë mesazhe dhe të administrojë kyçet tuaj publikë.&lt;br&gt;&lt;br&gt;Licensohet sipas kushteve të GPLv3+ dhe mund të merret në F-Droid dhe Google Play.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Ju lutemi, riniseni %1$s më pas.)&lt;/small&gt;</string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s përdor <b>OpenKeychain</b> që të fshehtëzojë dhe shfshehtëzojë mesazhe dhe të administrojë kyçet tuaj publikë.<br><br>Licensohet sipas kushteve të GPLv3+ dhe mund të merret në F-Droid dhe Google Play.<br><br><small>(Ju lutemi, riniseni %1$s më pas.)</small>]]></string>
     <string name="contact_has_no_pgp_key">Mesazhi juaj s’u fshehtëzua dot, ngaqë kontakti juaj s’po deklaron kyçin e vet publik.
 \n
 \n<small>Ju lutemi, kërkojini kontaktit tuaj të ujdisë OpenPGP-në.</small></string>
@@ -950,8 +950,8 @@
     <string name="please_enter_pin_below">Ju lutemi, jepni më poshtë PIN-in tuaj prej 6 shifrash.</string>
     <string name="please_enter_pin">Ju lutemi, jepni PIN-in tuaj prej 6 shifrash.</string>
     <string name="security_violation_not_attaching_file">Kartelë e shpërfillur, për shkak cenimi sigurie.</string>
-    <string name="we_will_be_verifying">Do të verifikojmë numrin e telefonit<br/><br/><b>%s</b><br/><br/>Dakord, apo do të donit të përpunonit numrin?</string>
-    <string name="we_have_sent_you_an_sms_to_x">Ju kemi dërguar një SMS te <b>%s</b>.</string>
+    <string name="we_will_be_verifying"><![CDATA[Do të verifikojmë numrin e telefonit<br/><br/><b>%s</b><br/><br/>Dakord, apo do të donit të përpunonit numrin??]]></string>
+    <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Ju kemi dërguar një SMS te <b>%s</b>.]]></string>
     <string name="enter_password_to_restore">Që të rikthehet kopjeruajtja, jepni fjalëkalimin tuaj për llogarinë %s.</string>
     <string name="restore_warning">Mos përdorni veçorinë e rikthimit të një kopjeruajtje në një përpjekje për të klonuar (xhiruar në të njëjtën kohë) një instalim. Rikthimi i një kopjeruajtje është menduar vetëm për migrime, ose në rast se humbët pajisjen origjinale.</string>
     <string name="no_users_hint_channel">Ky kanal publik s’ka pjesëmarrës. Ftoni kontaktet tuaj, ose përdorni butonin e ndarjes me të tjerët për të dhënë adresën XMPP të tij.</string>
@@ -1104,4 +1104,5 @@
     <string name="add_reaction">Shtoni reagim…</string>
     <string name="add_reaction_title">Shtoni reagim</string>
     <string name="more_reactions">Më tepër reagime</string>
+    <string name="could_not_modify_call">S’u ndryshua dot thirrja</string>
 </resources>
