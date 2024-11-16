@@ -760,12 +760,12 @@
     <string name="phone_number">номер телефону</string>
     <string name="verify_your_phone_number">Перевірте номер телефону</string>
     <string name="enter_country_code_and_phone_number">Quicksy надішле SMS, щоб перевірити Ваш номер телефону. Тарифами Вашого оператора може бути передбачено плату за отримання SMS. Зазначте код Вашої країни та номер телефону:</string>
-    <string name="we_will_be_verifying">Ми перевіримо номер телефону<br/><br/><b>%s</b><br/><br/>Гаразд чи бажаєте вказати інший номер?</string>
+    <string name="we_will_be_verifying"><![CDATA[Ми перевіримо номер телефону<br/><br/><b>%s</b><br/><br/>Гаразд чи бажаєте вказати інший номер?]]></string>
     <string name="not_a_valid_phone_number">%s не є дійсним номером телефону.</string>
     <string name="please_enter_your_phone_number">Будь ласка, введіть свій номер телефону.</string>
     <string name="search_countries">Шукати країну</string>
     <string name="verify_x">Перевірити %s</string>
-    <string name="we_have_sent_you_an_sms_to_x">SMS надіслано на <b>%s</b>.</string>
+    <string name="we_have_sent_you_an_sms_to_x"><![CDATA[SMS надіслано на <b>%s</b>.]]></string>
     <string name="we_have_sent_you_another_sms">Ми надіслали Вам SMS із 6-цифровим кодом.</string>
     <string name="please_enter_pin_below">Будь ласка, введіть нижче 6 цифр коду.</string>
     <string name="resend_sms">Надіслати нове SMS</string>
@@ -952,7 +952,7 @@
     <string name="add_contact_or_create_or_join_group_chat">Додати контакт, створити чи приєднатися до групи або знайти канали</string>
     <string name="pref_up_push_account_title">Обліковий запис XMPP</string>
     <string name="outgoing_call_timestamp">Вихідний виклик · %s</string>
-    <string name="openkeychain_required_long">%1$s використовує &lt;b&gt;OpenKeychain&lt;/b&gt; для шифрування/дешифрування повідомлень і керування публічними ключами.&lt;br&gt;&lt;br&gt;OpenKeychain поширюється на умовах ліцензії GPLv3+ і доступний для завантаження на F-Droid та Google Play.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Після встановлення необхідно перезапустити %1$s.)&lt;/small&gt;</string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s використовує <b>OpenKeychain</b> для шифрування/дешифрування повідомлень і керування публічними ключами.<br><br>OpenKeychain поширюється на умовах ліцензії GPLv3+ і доступний для завантаження на F-Droid та Google Play.<br><br><small>(Після встановлення необхідно перезапустити %1$s.)</small>]]></string>
     <string name="more_options">Додатково</string>
     <string name="unable_to_enable_video">Не вдалося увімкнути відео.</string>
     <string name="no_active_accounts_support_this">Жоден з активних облікових записів не підтримує цієї функції</string>
@@ -1141,4 +1141,5 @@
     <string name="add_reaction">Додати реакцію…</string>
     <string name="more_reactions">Більше реакцій</string>
     <string name="add_reaction_title">Додати реакцію</string>
+    <string name="could_not_modify_call">Не вдалося змінити виклик</string>
 </resources>
