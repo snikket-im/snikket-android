@@ -22,7 +22,6 @@ import java.util.Locale;
 import java.util.Objects;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
 import eu.siacs.conversations.android.AbstractPhoneContact;
 import eu.siacs.conversations.android.JabberIdContact;
 import eu.siacs.conversations.services.QuickConversationsService;
@@ -544,7 +543,7 @@ public class Contact implements ListItem, Blockable {
     public synchronized boolean unsetPhoneContact(Class<? extends AbstractPhoneContact> clazz) {
         resetOption(getOption(clazz));
         boolean changed = false;
-        if (!getOption(Options.SYNCED_VIA_ADDRESSBOOK) && !getOption(Options.SYNCED_VIA_OTHER)) {
+        if (!getOption(Options.SYNCED_VIA_ADDRESS_BOOK) && !getOption(Options.SYNCED_VIA_OTHER)) {
             setSystemAccount(null);
             changed |= setPhotoUri(null);
             changed |= setSystemName(null);
@@ -554,7 +553,7 @@ public class Contact implements ListItem, Blockable {
 
     public static int getOption(Class<? extends AbstractPhoneContact> clazz) {
         if (clazz == JabberIdContact.class) {
-            return Options.SYNCED_VIA_ADDRESSBOOK;
+            return Options.SYNCED_VIA_ADDRESS_BOOK;
         } else {
             return Options.SYNCED_VIA_OTHER;
         }
@@ -593,7 +592,7 @@ public class Contact implements ListItem, Blockable {
         public static final int PENDING_SUBSCRIPTION_REQUEST = 5;
         public static final int DIRTY_PUSH = 6;
         public static final int DIRTY_DELETE = 7;
-        private static final int SYNCED_VIA_ADDRESSBOOK = 8;
+        private static final int SYNCED_VIA_ADDRESS_BOOK = 8;
         public static final int SYNCED_VIA_OTHER = 9;
     }
 }
