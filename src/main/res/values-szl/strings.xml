@@ -795,7 +795,7 @@
     <string name="phone_number">numer telefōnu</string>
     <string name="verify_your_phone_number">Zweryfikuj swōj numer telefōnu</string>
     <string name="enter_country_code_and_phone_number">Quicksy wyśle SMS (mogōm być naliczane płaty) coby zweryfikować numer telefōnu. Wpisz kod ôd kraju i numer telefōnu:</string>
-    <string name="we_will_be_verifying">Zweryfikujymy numer telefōnu <br/><br/><b>%s</b><br/><br/>Zgodzo sie wszysko, abo chcesz zmiynić numer\?</string>
+    <string name="we_will_be_verifying">Zweryfikujymy numer telefōnu <br/><br/><b>%s</b><br/><br/>Zgodzo sie wszysko, abo chcesz zmiynić numer?</string>
     <string name="not_a_valid_phone_number">%s to niy ma noleżny numer telefōnu.</string>
     <string name="please_enter_your_phone_number">Wkludź swōj numer telefōnu.</string>
     <string name="search_countries">Przeszukej kraje</string>
