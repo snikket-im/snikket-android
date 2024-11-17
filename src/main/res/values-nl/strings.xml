@@ -822,7 +822,7 @@
     <string name="title_activity_share_with">Delen met…</string>
     <string name="archive_this_chat">Chat daarna verwijderen</string>
     <string name="remove_bookmark">Wil je de bladwijzer voor %s verwijderen?</string>
-    <string name="openkeychain_required_long">%1$s gebruikt &lt;b&gt;OpenKeychain&lt;/b&gt; om berichten te versleutelen en te decoderen en het beheer van je openbare sleutels. &lt;br&gt;&lt; br&gt;Het is gelicentieerd onder GPLv3+ en beschikbaar op F-Droid en Google Play&lt;br&gt;&lt;br&gt;&lt;small&gt;(Start %1$s hierna opnieuw.)&lt;/small&gt;</string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s gebruikt <b>OpenKeychain</b> om berichten te versleutelen en te decoderen en het beheer van je openbare sleutels. <br>< br>Het is gelicentieerd onder GPLv3+ en beschikbaar op F-Droid en Google Play<br><br><small>(Start %1$s hierna opnieuw.)</small>]]></string>
     <string name="contact_has_no_pgp_key">Kan het bericht niet versleutelen omdat de contactpersoon hun openbare sleutel niet aankondigt.
 \n
 \n<small>Vraag de contactpersoon om OpenPGP in te stellen. </small></string>
@@ -1022,7 +1022,7 @@
     <string name="server_does_not_support_easy_onboarding_invites">Server biedt geen ondersteuning voor het aanmaken van uitnodigingen</string>
     <string name="outdated_backup_file_format">Je probeert een verouderd back-upbestandsformaat te importeren</string>
     <string name="sharing_application_not_grant_permission">De app voor delen heeft geen toestemming gegeven voor toegang tot dit bestand.</string>
-    <string name="group_chats_and_channels">Groepschats en kanalen</string>
+    <string name="group_chats_and_channels"><![CDATA[Groepschats en kanalen]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="pref_channel_discovery">Channel discovery-methode</string>
     <string name="rtp_state_incoming_call">Inkomende oproep</string>
@@ -1109,4 +1109,5 @@
     <string name="could_not_add_reaction">Kan reactie niet toevoegen</string>
     <string name="add_reaction_title">Reactie toevoegen</string>
     <string name="more_reactions">Meer reacties</string>
+    <string name="could_not_modify_call">Kan de aanroep niet wijzigen</string>
 </resources>
