@@ -93,7 +93,7 @@
     <string name="send_unencrypted">发送未加密</string>
     <string name="decryption_failed">解密失败。也许您没有正确的私钥。</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">%1$s 使用 &lt;b&gt;OpenKeychain&lt;/b&gt; 来加密和解密消息并管理公钥。&lt;br&gt;&lt;br&gt;它在 GPLv3+ 许可证下授权并可在 F-Droid 和 Google Play 上获得。&lt;br&gt;&lt;br&gt;&lt;small&gt;（请之后重启 %1$s。）&lt;/small&gt;</string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s 使用 <b>OpenKeychain</b> 来加密和解密消息并管理公钥。<br><br>它在 GPLv3+ 许可证下授权并可在 F-Droid 和 Google Play 上获得。<br><br><small>（请之后重启 %1$s。）</small>]]></string>
     <string name="restart">重启</string>
     <string name="install">安装</string>
     <string name="openkeychain_not_installed">请安装 OpenKeychain</string>
@@ -782,12 +782,12 @@
     <string name="phone_number">电话号码</string>
     <string name="verify_your_phone_number">验证您的电话号码</string>
     <string name="enter_country_code_and_phone_number">Quicksy 将发送短信（运营商可能收费）来验证电话号码。请输入您的国家/地区代码和电话号码：</string>
-    <string name="we_will_be_verifying">我们将验证这个电话号码 <br/><br/><b>%s</b><br/><br/> 可以吗？是否编辑号码？</string>
+    <string name="we_will_be_verifying"><![CDATA[我们将验证这个电话号码 <br/><br/><b>%s</b><br/><br/> 可以吗？是否编辑号码？]]></string>
     <string name="not_a_valid_phone_number">%s 不是有效的电话号码。</string>
     <string name="please_enter_your_phone_number">请输入您的电话号码。</string>
     <string name="search_countries">搜索国家/地区</string>
     <string name="verify_x">验证 %s</string>
-    <string name="we_have_sent_you_an_sms_to_x">我们已向您发送短信至 <b>%s</b>。</string>
+    <string name="we_have_sent_you_an_sms_to_x"><![CDATA[我们已向您发送短信至 <b>%s</b>。]]></string>
     <string name="we_have_sent_you_another_sms">我们已经向您发送了另一条带有 6 位数验证码的短信。</string>
     <string name="please_enter_pin_below">请在下方输入 6 位 PIN 码。</string>
     <string name="resend_sms">重新发送短信</string>
@@ -887,7 +887,7 @@
     <string name="unable_to_perform_this_action">无法执行此操作</string>
     <string name="open_join_dialog">加入公开频道…</string>
     <string name="sharing_application_not_grant_permission">共享应用未授予访问此文件的权限。</string>
-    <string name="group_chats_and_channels">群聊和频道</string>
+    <string name="group_chats_and_channels"><![CDATA[群聊和频道]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">本地服务器</string>
     <string name="pref_channel_discovery_summary">大多数用户应该选择“jabber.network”以便从整个公共 XMPP 生态系统中获得更好的建议。</string>
@@ -1099,4 +1099,5 @@
     <string name="add_reaction">添加回应…</string>
     <string name="more_reactions">更多回应</string>
     <string name="add_reaction_title">添加回应</string>
+    <string name="could_not_modify_call">无法修改通话</string>
 </resources>
