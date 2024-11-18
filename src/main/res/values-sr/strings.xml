@@ -726,7 +726,7 @@
     <string name="create_public_channel">Направи јавни канал</string>
     <string name="allow_participants_to_edit_subject">Дозволи било коме да измени тему</string>
     <string name="share_backup_files">Подели резервне копије</string>
-    <string name="group_chats_and_channels">Групне Преписке и Канали</string>
+    <string name="group_chats_and_channels"><![CDATA[Групне Преписке и Канали]]></string>
     <string name="rtp_state_retracted">Опозван позив</string>
     <string name="reconnecting_call">Поновно успостављање позива</string>
     <string name="reconnecting_video_call">Поновно успостављање видео позива</string>
@@ -879,7 +879,7 @@
     <string name="sharing_application_not_grant_permission">Апликација за дељење није дозволила пермисију за приступ овом фајлу.</string>
     <string name="incoming_call_duration_timestamp">Долазни позив (%s) · %s</string>
     <string name="send_encrypted_message">Пошаљи шифровану поруку</string>
-    <string name="openkeychain_required_long">%1$s користи &lt;b&gt;OpenKeychain&lt;/b&gt; за шифровање и дешифровање порука и управљање твојим јавним кључевима.&lt;br&gt;&lt;br&gt;Лиценциран је под GPLv3+ и доступан је на F-Droid и Google Play продавницама.&lt;br&gt;&lt;br&gt;&lt;small&gt;(После поново покрени %1$s.)&lt;/small&gt;</string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s користи <b>OpenKeychain</b> за шифровање и дешифровање порука и управљање твојим јавним кључевима.<br><br>Лиценциран је под GPLv3+ и доступан је на F-Droid и Google Play продавницама.<br><br><small>(После поново покрени %1$s.)</small>]]></string>
     <string name="pref_notification_grace_period_summary">Временски период током којег су обавештења утишана након примећене активности на једном од твојих других уређаја.</string>
     <string name="pref_prevent_screenshots">Забрани скриншотове</string>
     <string name="pref_prevent_screenshots_summary">Сакриј садржај апликације у прегледу недавних апликација и блокирај скриншотове</string>
@@ -988,10 +988,10 @@
     <string name="feature_not_implemented">Функција није имплементирана</string>
     <string name="choose_a_country">Одабери земљу</string>
     <string name="verify_your_phone_number">Овери свој број телефона</string>
-    <string name="we_will_be_verifying">Оверићемо број телефона<br/><br/><b>%s</b><br/><br/>Да ли је ово у реду, или би хтео/ла да измениш број?</string>
+    <string name="we_will_be_verifying"><![CDATA[Оверићемо број телефона<br/><br/><b>%s</b><br/><br/>Да ли је ово у реду, или би хтео/ла да измениш број?]]></string>
     <string name="not_a_valid_phone_number">%s није важећи број телефона.</string>
     <string name="please_enter_your_phone_number">Унеси свој број телефона.</string>
-    <string name="we_have_sent_you_an_sms_to_x">Послали смо ти SMS на <b>%s</b>.</string>
+    <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Послали смо ти SMS на <b>%s</b>.]]></string>
     <string name="please_enter_pin_below">Унеси 6-оцифрени PIN испод.</string>
     <string name="resend_sms">Поново пошаљи SMS</string>
     <string name="resend_sms_in">Поново пошаљи SMS (%s)</string>
@@ -1127,4 +1127,5 @@
     <string name="add_reaction">Стави реакцију…</string>
     <string name="add_reaction_title">Стави реакцију</string>
     <string name="more_reactions">Још реакција</string>
+    <string name="could_not_modify_call">Није могуће изменити позив</string>
 </resources>
