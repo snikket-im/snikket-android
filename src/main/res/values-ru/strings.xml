@@ -904,7 +904,7 @@
     <string name="unable_to_perform_this_action">Невозможно совершить это действие</string>
     <string name="open_join_dialog">Присоединиться к публичному каналу…</string>
     <string name="sharing_application_not_grant_permission">Приложение для обмена не предоставило право доступа к этому файлу.</string>
-    <string name="group_chats_and_channels">Конференции и каналы</string>
+    <string name="group_chats_and_channels"><![CDATA[Конференции и каналы]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">Локальный сервер</string>
     <string name="pref_channel_discovery_summary">Большинству пользователей следует выбрать \"jabber.network\" для получения наиболее подходящих предложений от всей публичной экосистемы XMPP.</string>
@@ -1140,4 +1140,5 @@
     <string name="add_reaction">Добавить реакцию…</string>
     <string name="add_reaction_title">Добавить реакцию</string>
     <string name="more_reactions">Другие реакции</string>
+    <string name="could_not_modify_call">Невозможно изменить звонок</string>
 </resources>
