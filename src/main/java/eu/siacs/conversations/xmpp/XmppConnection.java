@@ -223,10 +223,10 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private static boolean validBase64(String input) {
+    private static boolean validBase64(final String input) {
         try {
             return Base64.decode(input, Base64.URL_SAFE).length == 3;
-        } catch (Throwable throwable) {
+        } catch (final Throwable throwable) {
             return false;
         }
     }
@@ -1127,7 +1127,15 @@ public class XmppConnection implements Runnable {
             }
             sendPacket(packet);
         }
-        changeStatusToOnline();
+        if (mWaitForDisco.get()) {
+            this.lastDiscoStarted = SystemClock.elapsedRealtime();
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid() + ": awaiting disco results after resume");
+            changeStatus(Account.State.CONNECTING);
+        } else {
+            changeStatusToOnline();
+        }
     }
 
     private void changeStatusToOnline() {
@@ -2101,7 +2109,7 @@ public class XmppConnection implements Runnable {
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": starting service discovery");
         mPendingServiceDiscoveries.set(0);
         mWaitForDisco.set(waitForDisco);
-        lastDiscoStarted = SystemClock.elapsedRealtime();
+        this.lastDiscoStarted = SystemClock.elapsedRealtime();
         mXmppConnectionService.scheduleWakeUpCall(
                 Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
         final Element caps = streamFeatures.findChild("c");
