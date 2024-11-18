@@ -381,7 +381,7 @@
     <string name="pref_display_enter_key">顯示 Enter 鍵</string>
     <string name="pref_display_enter_key_summary">將表情符號鍵變更為 Enter 鍵</string>
     <string name="audio">音訊</string>
-    <string name="video">影片</string>
+    <string name="video">視頻</string>
     <string name="image">圖片</string>
     <string name="vector_graphic">向量圖形</string>
     <string name="multimedia_file">多媒體檔案</string>
@@ -716,7 +716,7 @@
     <string name="please_enter_your_phone_number">請輸入您的電話號碼。</string>
     <string name="search_countries">搜尋國家</string>
     <string name="verify_x">驗證 %s</string>
-    <string name="we_have_sent_you_an_sms_to_x">我們傳送簡訊至 <b>%s</b>。</string>
+    <string name="we_have_sent_you_an_sms_to_x"><![CDATA[我們已向您發送一條簡訊至 <b>%s</b>。]]></string>
     <string name="we_have_sent_you_another_sms">我們已傳送另外一則帶有 6 位數代碼的簡訊給您。</string>
     <string name="please_enter_pin_below">請在下面輸入 6 位數字的 PIN 碼。</string>
     <string name="resend_sms">重新傳送簡訊</string>
@@ -912,9 +912,9 @@
     <string name="error_security_exception_during_image_copy">您用來選取此圖像的應用程式沒有足夠的權限以讀取此檔案。
 \n
 \n<small>請使用不同的檔案管理員以選擇圖像</small>。</string>
-    <string name="openkeychain_required_long">%1$s 使用 &lt;b&gt;OpenKeychain&lt;/b&gt; 以加密和解密訊息並管理您的公開金鑰。&lt;br&gt;&lt;br&gt;已獲 GPLv3+ 授權並可在 F-Droid 和 Google Play 中取得。&lt;br&gt;&lt;br&gt;&lt;small&gt;(之後請重新啟動 %1$s。)&lt;/small&gt;</string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s 使用<b>OpenKeychain</b> 來加密和解密消息並管理您的公鑰。<br><br>它根據 GPLv3+ 獲得許可，可在 F-Droid 和 Google Play 上使用。<br><br><small>（請稍後重新啟動 %1$s。）</small>]]></string>
     <string name="pref_clean_cache_summary">清除快取資料夾 (由相機應用程式使用)</string>
-    <string name="we_will_be_verifying">我們將驗證 <br/><br/><b>%s</b><br/><br/> 電話號碼是否正確，或者您想編輯這個號碼嗎？</string>
+    <string name="we_will_be_verifying"><![CDATA[我們將驗證電話號碼<br/><br/><b>%s</b><br/><br/>這是否正確，或者您想編輯該號碼嗎？]]></string>
     <string name="distrust_omemo_key_text">您確定要移除此裝置的驗證嗎？
 \n此裝置和來自此裝置的訊息將被標示為「未受信任」。</string>
     <string name="mtm_hostname_mismatch">由於「%s」，伺服器無法驗證，憑證僅對此有效：</string>
@@ -1033,7 +1033,7 @@
     <string name="title_activity_share_with">分享至…</string>
     <string name="title_activity_new_chat">新會話</string>
     <string name="action_archive_chat">存檔會話</string>
-    <string name="archive_this_chat">存檔此會話</string>
+    <string name="archive_this_chat">之後刪除聊天</string>
     <string name="switch_to_chat">切換到會話</string>
     <string name="send_encrypted_message">傳送加密消息</string>
     <string name="quicksy_wants_your_consent">Quicksy 請求您同意使用您的數據</string>
@@ -1068,4 +1068,35 @@
     <string name="channel_discover_opt_in_message">頻道探索使用一個名為 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; 的第三方服務，&lt;br&gt;&lt;br&gt;使用此功能會將您的 IP 位址和搜尋詞彙傳送至此服務。更多資訊請參見他們的 &lt;a href=https://search.jabber.network/privacy&gt;隱私權政策&lt;/a&gt;。</string>
     <string name="pref_accept_invites_from_strangers">來自陌生人的邀請</string>
     <string name="pref_accept_invites_from_strangers_summary">接受來自陌生人的群聊邀請</string>
+    <string name="add_reaction_title">添加回應</string>
+    <string name="more_reactions">更多回應</string>
+    <string name="pref_create_backup_one_off_summary">創建一次性備份</string>
+    <string name="pref_backup_summary">創建一次性、計劃重複</string>
+    <string name="pref_backup_recurring">定期備份</string>
+    <string name="pref_fullscreen_notification">全屏通知</string>
+    <string name="unsupported_operation">不支援的操作</string>
+    <string name="pref_fullscreen_notification_summary">允許此應用程式在裝置鎖定時顯示全屏的來電通知。</string>
+    <string name="could_not_modify_call">無法修改通話</string>
+    <string name="allow_private_messages">允許私人消息</string>
+    <string name="your_avatar_tap_to_select_new_avatar">您的大頭貼。點擊可從圖庫中選擇新大頭貼。</string>
+    <string name="could_not_disable_video">無法禁用影片。</string>
+    <string name="edit_nick">編輯暱稱</string>
+    <string name="delete_pgp_key">刪除 OpenPGP 金鑰</string>
+    <string name="edit_name_and_topic">編輯名稱和主題</string>
+    <string name="edit_configuration">更改配置</string>
+    <string name="change_notification_settings">更改通知設置</string>
+    <string name="flip_camera">翻轉相機</string>
+    <string name="video_is_disabled_tap_to_enable">視頻已禁用。點擊以啟用。</string>
+    <string name="server_info_bind2">XEP-0386：綁定 2</string>
+    <string name="server_info_sasl2">XEP-0388：可擴展 SASL 配置檔</string>
+    <string name="call_is_using_bluetooth">呼叫正在使用藍牙。</string>
+    <string name="video_is_enabled_tap_to_disable">已啟用視頻。點擊以禁用。</string>
+    <string name="server_info_login_mechanism">登錄機制</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">呼叫正在使用聽筒。點擊可切換到揚聲器。</string>
+    <string name="call_is_using_earpiece">呼叫正在使用聽筒。</string>
+    <string name="call_is_using_wired_headset">呼叫正在使用有線耳機</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">呼叫正在使用揚聲器。點擊可切換到聽筒。</string>
+    <string name="call_is_using_speaker">呼叫正在使用揚聲器。</string>
+    <string name="could_not_add_reaction">無法添加回應</string>
+    <string name="add_reaction">添加回應…</string>
 </resources>
