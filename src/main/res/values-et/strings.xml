@@ -114,7 +114,7 @@
     <string name="attach_file">Lisa fail</string>
     <string name="block_contact_text">Kas sa soovid, et kasutaja %s oleks blokeeritud ega saaks sulle sõnumeid saata?</string>
     <string name="send_failed">kohaletoimetamine ei õnnestunud</string>
-    <string name="openkeychain_required_long">%1$s kasutab sõnumite krüptimiseks ja dekrüptimiseks ning sinu avalike võtmete haldamiseks rakendust &lt;b&gt;OpenKeychain&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Ta on litsentseeritud GPLv3+ alusel ning leidub nii F-Droidi kui Google Play rakendustepoodides.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Palun käivita %1$s hiljem uuesti.)&lt;/small&gt;</string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s kasutab sõnumite krüptimiseks ja dekrüptimiseks ning sinu avalike võtmete haldamiseks rakendust <b>OpenKeychain</b>.<br><br>Ta on litsentseeritud GPLv3+ alusel ning leidub nii F-Droidi kui Google Play rakendustepoodides.<br><br><small>(Palun käivita %1$s hiljem uuesti.)</small>]]></string>
     <string name="restart">Käivita uuesti</string>
     <string name="install">Paigalda</string>
     <string name="openkeychain_not_installed">Palun paigalda rakendus OpenKeychain</string>
@@ -376,7 +376,7 @@
     <string name="add_anway">Lisa ikkagi</string>
     <string name="this_looks_like_channel">See tundub olema kanali aadressi moodi</string>
     <string name="rtp_state_content_add_video">Kas lülitad ümber videokõnele?</string>
-    <string name="group_chats_and_channels">Vestlusrühmad ja kanalid</string>
+    <string name="group_chats_and_channels"><![CDATA[Vestlusrühmad ja kanalid]]></string>
     <string name="search_channels">Otsi kanaleid</string>
     <string name="register_new_account">Registreeri uus kasutajakonto</string>
     <string name="conversations_backup">Conversationsi varukoopia</string>
@@ -865,12 +865,12 @@
     <string name="no">Ei</string>
     <string name="verify_your_phone_number">Verifitseeri oma telefoninumber</string>
     <string name="enter_country_code_and_phone_number">Quicksy saadab sulle telefoninumbri verifitseerimiseks SMS-sõnumi (võivad lisanduda sidevõrkude tasud). Sisesta maakood ja oma telefoninumber:</string>
-    <string name="we_will_be_verifying">Järgnevaga me verifitseerime telefoninumbri <br/><br/><b>%s</b><br/><br/>Kas kõik on õige või sooviksid numbrit muuta?</string>
+    <string name="we_will_be_verifying"><![CDATA[Järgnevaga me verifitseerime telefoninumbri <br/><br/><b>%s</b><br/><br/>Kas kõik on õige või sooviksid numbrit muuta?]]></string>
     <string name="not_a_valid_phone_number">%s pole korrektne telefoninumber.</string>
     <string name="please_enter_your_phone_number">Palun sisesta oma telefoninumber.</string>
     <string name="search_countries">Otsi riike</string>
     <string name="verify_x">Verifitseeri %s</string>
-    <string name="we_have_sent_you_an_sms_to_x">Me oleme sulle saatnud SMS-sõnumi siia: <b>%s</b>.</string>
+    <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Me oleme sulle siia saatnud SMS-sõnumi: <b>%s</b>.]]></string>
     <string name="please_enter_pin_below">Palun sisesta 6-numbriline PIN-kood alljärgnevalt.</string>
     <string name="resend_sms">Saada SMS uuesti</string>
     <string name="resend_sms_in">Saada SMS uuesti (%s)</string>
@@ -1113,4 +1113,5 @@
         <item quantity="one">%1$d vastamata kõne %2$dlt helistajalt</item>
         <item quantity="other">%1$d vastamata kõnet %2$dlt helistajalt</item>
     </plurals>
+    <string name="could_not_modify_call">Kõne muutmine ei õnnestunud</string>
 </resources>
