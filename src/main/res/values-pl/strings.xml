@@ -1125,4 +1125,5 @@
     <string name="add_reaction">Dodaj reakcję…</string>
     <string name="add_reaction_title">Dodaj reakcję</string>
     <string name="more_reactions">Więcej reakcji</string>
+    <string name="could_not_modify_call">Nie można zmodyfikować rozmowy</string>
 </resources>
