@@ -95,7 +95,7 @@
     <string name="send_unencrypted">Trimite necriptat</string>
     <string name="decryption_failed">Decriptarea a eșuat. Poate nu aveți cheia privată corectă.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">%1$s utilizează &lt;b&gt;OpenKeychain&lt;/b&gt; pentru a cripta și decripta mesaje și a administra cheile publice.&lt;br&gt;&lt;br&gt;OpenKeychain este licențiat sub GPLv3+ și este disponibil în F-Droid și Google Play.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Vă rugăm să reporniți %1$s după instalare.)&lt;/small&gt;</string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s utilizează <b>OpenKeychain</b> pentru a cripta și decripta mesaje și a administra cheile publice.<br><br>OpenKeychain este licențiat sub GPLv3+ și este disponibil în F-Droid și Google Play.<br><br><small>(Vă rugăm să reporniți %1$s după instalare.)</small>]]></string>
     <string name="restart">Repornește</string>
     <string name="install">Instalare</string>
     <string name="openkeychain_not_installed">Va rugăm să instalați OpenKeychain</string>
@@ -1112,4 +1112,6 @@
     <string name="could_not_add_reaction">Nu s-a putut adăuga o reacție</string>
     <string name="add_reaction_title">Adaugă reacție</string>
     <string name="more_reactions">Mai multe reacții</string>
+    <string name="could_not_modify_call">Nu s-a putut modifica apelul</string>
+    <string name="clients_may_not_support_av">Clientul XMPP al contactului dvs. este posibil să nu accepte apeluri audio/video.</string>
 </resources>
