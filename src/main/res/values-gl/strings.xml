@@ -70,7 +70,7 @@
     <string name="problem_connecting_to_accounts">Non puido conectarse a múltiples contas</string>
     <string name="touch_to_fix">Toca para xestionar as túas contas</string>
     <string name="attach_file">Adxuntar</string>
-    <string name="not_in_roster">¿Engadir este contacto faltante a lista de contactos?</string>
+    <string name="not_in_roster">Engadir este novo contacto á lista de contactos?</string>
     <string name="add_contact">Engadir contacto</string>
     <string name="send_failed">Erro ao enviar</string>
     <string name="preparing_image">Preparándose para enviar a imaxe</string>
@@ -771,7 +771,7 @@
     <string name="phone_number">número de teléfono</string>
     <string name="verify_your_phone_number">Valida o teu número de teléfono</string>
     <string name="enter_country_code_and_phone_number">Quicksy vaiche enviar unha mensaxe SMS (podería ter custos) para validar o teu número de teléfono. Escribe o código de país e número de teléfono:</string>
-    <string name="we_will_be_verifying">Validaremos o número de teléfono<br/><br/><b>%s</b><br/><br/>É correcto, ou queres modificar o número?</string>
+    <string name="we_will_be_verifying"><![CDATA[Comprobaremos o número de teléfono<br/><br/><b>%s</b><br/><br/>É correcto, ou queres modificar o número?]]></string>
     <string name="not_a_valid_phone_number">%s non é un número de teléfono válido.</string>
     <string name="please_enter_your_phone_number">Por favor escribe o teu número de teléfono.</string>
     <string name="search_countries">Buscar países</string>
@@ -876,7 +876,7 @@
     <string name="unable_to_perform_this_action">Non se puido completar a acción</string>
     <string name="open_join_dialog">Unirse a canle pública…</string>
     <string name="sharing_application_not_grant_permission">A aplicación que comparte non proporciona permiso para acceder ao ficheiro.</string>
-    <string name="group_chats_and_channels">Parolas en grupo e Canles</string>
+    <string name="group_chats_and_channels"><![CDATA[Parolas en Grupo e Canles]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">Servidor local</string>
     <string name="pref_channel_discovery_summary">A maioría das usuarias debería escoller \'jabber.network\' para obter mellores suxestións desde o ecosistema público XMPP.</string>
@@ -1093,4 +1093,6 @@
     <string name="add_reaction">Engadir reacción…</string>
     <string name="more_reactions">Outras reaccións</string>
     <string name="add_reaction_title">Engadir reacción</string>
+    <string name="could_not_modify_call">Non se puido modificar a chamada</string>
+    <string name="clients_may_not_support_av">O cliente do teu contacto XMPP pode que non sexa compatible con chamadas de audio/video.</string>
 </resources>
