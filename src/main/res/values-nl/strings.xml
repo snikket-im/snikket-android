@@ -63,7 +63,7 @@
     <string name="save">Opslaan</string>
     <string name="ok">Oké</string>
     <string name="crash_report_title">%1$s is gecrasht</string>
-    <string name="crash_report_message">Door crashrapportages via uw XMPP account te sturen help je de ontwikkeling van %1$s.</string>
+    <string name="crash_report_message">Door crashrapportages via jouw XMPP-account te sturen help je de ontwikkeling van %1$s.</string>
     <string name="send_now">Nu versturen</string>
     <string name="send_never">Niet opnieuw vragen</string>
     <string name="problem_connecting_to_account">Verbinding met account mislukt</string>
@@ -1110,4 +1110,5 @@
     <string name="add_reaction_title">Reactie toevoegen</string>
     <string name="more_reactions">Meer reacties</string>
     <string name="could_not_modify_call">Kan de aanroep niet wijzigen</string>
+    <string name="clients_may_not_support_av">De XMPP-client van je contactpersoon ondersteunt mogelijk geen audio-/videogesprekken.</string>
 </resources>
