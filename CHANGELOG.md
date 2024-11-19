@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.17.3
+
+* Always show call button
+* Various bug fixes
+
 ### Version 2.17.2
 
 * Fix calls on Android 15
