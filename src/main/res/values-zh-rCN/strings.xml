@@ -1100,4 +1100,5 @@
     <string name="more_reactions">更多回应</string>
     <string name="add_reaction_title">添加回应</string>
     <string name="could_not_modify_call">无法修改通话</string>
+    <string name="clients_may_not_support_av">您的联系人的 XMPP 客户端可能不支持音频/视频通话。</string>
 </resources>
