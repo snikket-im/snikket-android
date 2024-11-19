@@ -1114,4 +1114,5 @@
         <item quantity="other">%1$d vastamata kõnet %2$dlt helistajalt</item>
     </plurals>
     <string name="could_not_modify_call">Kõne muutmine ei õnnestunud</string>
+    <string name="clients_may_not_support_av">Vestluse teise osapoole XMPP-klient ilmselt ei toeta hääl- ja videokõnesid.</string>
 </resources>
