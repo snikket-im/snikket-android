@@ -1618,6 +1618,7 @@ public class RtpSessionActivity extends XmppActivity
                         updateStateDisplay(state);
                         updateButtonConfiguration(state, media, null);
                         updateIncomingCallScreen(state);
+                        updateSupportWarning(state, account.getRoster().getContact(with));
                         invalidateOptionsMenu();
                     });
             resetIntent(account, with, state, media);

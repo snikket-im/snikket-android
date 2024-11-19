@@ -2,6 +2,7 @@ package eu.siacs.conversations.xmpp.jingle;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Presence;
@@ -24,14 +26,14 @@ public class RtpCapability {
             Namespace.JINGLE_APPS_RTP,
             Namespace.JINGLE_APPS_DTLS
     );
-    private static final List<String> VIDEO_REQUIREMENTS = Arrays.asList(
+    private static final Collection<String> VIDEO_REQUIREMENTS = Arrays.asList(
             Namespace.JINGLE_FEATURE_AUDIO,
             Namespace.JINGLE_FEATURE_VIDEO
     );
 
     public static Capability check(final Presence presence) {
         final ServiceDiscoveryResult disco = presence.getServiceDiscoveryResult();
-        final List<String> features = disco == null ? Collections.emptyList() : disco.getFeatures();
+        final Set<String> features = disco == null ? Collections.emptySet() : ImmutableSet.copyOf(disco.getFeatures());
         if (features.containsAll(BASIC_RTP_REQUIREMENTS)) {
             if (features.containsAll(VIDEO_REQUIREMENTS)) {
                 return Capability.VIDEO;
