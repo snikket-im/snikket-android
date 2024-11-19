@@ -78,6 +78,41 @@
             android:layout_above="@+id/button_row"
             android:layout_below="@id/app_bar_layout">
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/support_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="@dimen/rtp_session_duration_top_margin"
+                android:visibility="gone"
+                app:cardBackgroundColor="?colorErrorContainer">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:id="@+id/no_support_av_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_warning_48dp"
+                        app:tint="?colorOnErrorContainer" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_toEndOf="@+id/no_support_av_icon"
+                        android:text="@string/clients_may_not_support_av"
+                        android:textAppearance="?textAppearanceBodyLarge"
+                        android:textColor="?colorOnErrorContainer" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <TextView
                 android:id="@+id/duration"
                 android:layout_width="wrap_content"
