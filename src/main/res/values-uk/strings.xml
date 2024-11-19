@@ -1142,4 +1142,5 @@
     <string name="more_reactions">Більше реакцій</string>
     <string name="add_reaction_title">Додати реакцію</string>
     <string name="could_not_modify_call">Не вдалося змінити виклик</string>
+    <string name="clients_may_not_support_av">Можливо, клієнт XMPP Вашого контакту не підтримує аудіо- та відеовиклики.</string>
 </resources>
