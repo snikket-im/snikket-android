@@ -883,7 +883,7 @@
     <string name="answer_call">Відповісти</string>
     <string name="dismiss_call">Відхилити</string>
     <string name="rtp_state_finding_device">Пошук пристроїв</string>
-    <string name="rtp_state_ringing">Викликаю</string>
+    <string name="rtp_state_ringing">Виклик</string>
     <string name="rtp_state_declined_or_busy">Зайнято</string>
     <string name="rtp_state_connectivity_error">Неможливо здійснити виклик</string>
     <string name="rtp_state_connectivity_lost_error">З\'єднання втрачено</string>
