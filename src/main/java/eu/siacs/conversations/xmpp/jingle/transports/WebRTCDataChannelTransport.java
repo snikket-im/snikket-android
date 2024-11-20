@@ -22,6 +22,7 @@ import eu.siacs.conversations.xmpp.jingle.IceServers;
 import eu.siacs.conversations.xmpp.jingle.WebRTCWrapper;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.WebRTCDataChannelTransportInfo;
+
 import im.conversations.android.xmpp.model.stanza.Iq;
 
 import org.webrtc.CandidatePairChangeEvent;
@@ -45,6 +46,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -455,7 +457,7 @@ public class WebRTCDataChannelTransport implements Transport {
         if (future != null && future.isDone()) {
             try {
                 return future.get();
-            } catch (final InterruptedException | ExecutionException e) {
+            } catch (final InterruptedException | ExecutionException | CancellationException e) {
                 throw new WebRTCWrapper.PeerConnectionNotInitialized();
             }
         } else {

@@ -205,8 +205,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
         if (transition(
                 State.SESSION_INITIALIZED,
                 () -> this.initiatorFileTransferContentMap = contentMap)) {
-            final var iq =
-                    contentMap.toJinglePacket(Jingle.Action.SESSION_INITIATE, id.sessionId);
+            final var iq = contentMap.toJinglePacket(Jingle.Action.SESSION_INITIATE, id.sessionId);
             final var jingle = iq.getExtension(Jingle.class);
             if (xmppAxolotlMessage != null) {
                 this.transportSecurity =
@@ -456,8 +455,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
 
     private void sendSessionAccept(final FileTransferContentMap contentMap) {
         setLocalContentMap(contentMap);
-        final var iq =
-                contentMap.toJinglePacket(Jingle.Action.SESSION_ACCEPT, id.sessionId);
+        final var iq = contentMap.toJinglePacket(Jingle.Action.SESSION_ACCEPT, id.sessionId);
         send(iq);
         // this needs to come after session-accept or else our candidate-error might arrive first
         this.transport.connect();
@@ -562,7 +560,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
         Log.d(Config.LOGTAG, "peer confirmed received " + received);
     }
 
-    private void receiveSessionTerminate(final Iq jinglePacket, final Jingle jingle) {
+    private synchronized void receiveSessionTerminate(final Iq jinglePacket, final Jingle jingle) {
         respondOk(jinglePacket);
         final Jingle.ReasonWrapper wrapper = jingle.getReason();
         final State previous = this.state;
@@ -589,7 +587,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
         }
         terminateTransport();
         final State target = reasonToState(wrapper.reason);
-        // TODO check if we were already terminated
         transitionOrThrow(target);
         finish();
     }
@@ -865,13 +862,20 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
 
     @Override
     public void onTransportEstablished() {
-        Log.d(Config.LOGTAG, "on transport established");
+        Log.d(Config.LOGTAG, "transport established");
         final AbstractFileTransceiver fileTransceiver;
         try {
             fileTransceiver = setupTransceiver(isResponder());
         } catch (final Exception e) {
-            Log.d(Config.LOGTAG, "failed to set up file transceiver", e);
-            sendSessionTerminate(Reason.ofThrowable(e), e.getMessage());
+            terminateTransport();
+            if (isTerminated()) {
+                Log.d(
+                        Config.LOGTAG,
+                        "failed to set up file transceiver but session has already been terminated");
+            } else {
+                Log.d(Config.LOGTAG, "failed to set up file transceiver", e);
+                sendSessionTerminate(Reason.ofThrowable(e), e.getMessage());
+            }
             return;
         }
         this.fileTransceiver = fileTransceiver;
@@ -951,6 +955,10 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
     }
 
     private AbstractFileTransceiver setupTransceiver(final boolean receiving) throws IOException {
+        final var transport = this.transport;
+        if (transport == null) {
+            throw new IOException("No transport configured");
+        }
         final var fileDescription = getLocalContentMap().requireOnlyFile();
         final File file = xmppConnectionService.getFileBackend().getFile(message);
         final Runnable updateRunnable = () -> jingleConnectionManager.updateConversationUi(false);
@@ -987,7 +995,8 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
 
     private void sendSessionInfo(final FileTransferDescription.SessionInfo sessionInfo) {
         final var iq = new Iq(Iq.Type.SET);
-        final var jinglePacket = iq.addExtension(new Jingle(Jingle.Action.SESSION_INFO, this.id.sessionId));
+        final var jinglePacket =
+                iq.addExtension(new Jingle(Jingle.Action.SESSION_INFO, this.id.sessionId));
         jinglePacket.addChild(sessionInfo.asElement());
         send(iq);
     }
@@ -1071,8 +1080,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
                             + contentName);
             return;
         }
-        final Iq iq =
-                transportInfo.toJinglePacket(Jingle.Action.TRANSPORT_INFO, id.sessionId);
+        final Iq iq = transportInfo.toJinglePacket(Jingle.Action.TRANSPORT_INFO, id.sessionId);
         send(iq);
     }
 
@@ -1255,7 +1263,8 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
             }
             terminateTransport();
             final Iq iq = new Iq(Iq.Type.SET);
-            final var jingle = iq.addExtension(new Jingle(Jingle.Action.SESSION_TERMINATE, id.sessionId));
+            final var jingle =
+                    iq.addExtension(new Jingle(Jingle.Action.SESSION_TERMINATE, id.sessionId));
             jingle.setReason(reason, "User requested to stop file transfer");
             send(iq);
             finish();
