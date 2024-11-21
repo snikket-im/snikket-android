@@ -1,0 +1,2 @@
+* Mostra sempre o botón de chamada
+* Arranxo de varios problemas
