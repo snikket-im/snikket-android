@@ -57,6 +57,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 
 import org.conscrypt.Conscrypt;
@@ -140,6 +141,7 @@ import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.ConversationsFileObserver;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.EasyOnboardingInvite;
+import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.QuickLoader;
@@ -4699,7 +4701,7 @@ public class XmppConnectionService extends Service {
             if (conversation.getMode() == Conversational.MODE_MULTI) {
                 final var mucOptions = conversation.getMucOptions();
                 if (!mucOptions.participating()) {
-                    Log.d(Config.LOGTAG,"not participating in MUC");
+                    Log.d(Config.LOGTAG, "not participating in MUC");
                     return false;
                 }
                 final var self = mucOptions.getSelf();
@@ -4708,11 +4710,21 @@ public class XmppConnectionService extends Service {
                     Log.d(Config.LOGTAG, "occupant id not found for reaction in MUC");
                     return false;
                 }
+                final var existingRaw =
+                        ImmutableSet.copyOf(
+                                Collections2.transform(message.getReactions(), r -> r.reaction));
+                final var reactionsAsExistingVariants =
+                        ImmutableSet.copyOf(
+                                Collections2.transform(
+                                        reactions, r -> Emoticons.existingVariant(r, existingRaw)));
+                if (!reactions.equals(reactionsAsExistingVariants)) {
+                    Log.d(Config.LOGTAG, "modified reactions to existing variants");
+                }
                 reactToId = message.getServerMsgId();
                 combinedReactions =
                         Reaction.withOccupantId(
                                 message.getReactions(),
-                                reactions,
+                                reactionsAsExistingVariants,
                                 false,
                                 self.getFullJid(),
                                 conversation.getAccount().getJid(),

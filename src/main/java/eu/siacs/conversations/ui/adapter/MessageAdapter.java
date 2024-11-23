@@ -1097,7 +1097,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final var c = message.getConversation();
         if (c instanceof Conversation conversation && c.getMode() == Conversational.MODE_MULTI) {
             final var reactions =
-                    Collections2.filter(message.getReactions(), r -> r.reaction.equals(emoji));
+                    Collections2.filter(
+                            message.getReactions(), r -> r.normalizedReaction().equals(emoji));
             final var mucOptions = conversation.getMucOptions();
             final var users = mucOptions.findUsers(reactions);
             if (users.isEmpty()) {

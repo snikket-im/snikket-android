@@ -22,6 +22,7 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.xmpp.Jid;
 
 import java.io.IOException;
@@ -69,6 +70,10 @@ public class Reaction {
         this.occupantId = occupantId;
     }
 
+    public String normalizedReaction() {
+        return Emoticons.normalizeToVS16(this.reaction);
+    }
+
     public static String toString(final Collection<Reaction> reactions) {
         return (reactions == null || reactions.isEmpty()) ? null : GSON.toJson(reactions);
     }
@@ -80,7 +85,7 @@ public class Reaction {
         try {
             return GSON.fromJson(asString, new TypeToken<List<Reaction>>() {}.getType());
         } catch (final IllegalArgumentException | JsonSyntaxException e) {
-            Log.e(Config.LOGTAG,"could not restore reactions", e);
+            Log.e(Config.LOGTAG, "could not restore reactions", e);
             return Collections.emptyList();
         }
     }
@@ -152,7 +157,8 @@ public class Reaction {
     public static Aggregated aggregated(final Collection<Reaction> reactions) {
         final Map<String, Integer> aggregatedReactions =
                 Maps.transformValues(
-                        Multimaps.index(reactions, r -> r.reaction).asMap(), Collection::size);
+                        Multimaps.index(reactions, Reaction::normalizedReaction).asMap(),
+                        Collection::size);
         final List<Map.Entry<String, Integer>> sortedList =
                 Ordering.from(
                                 Comparator.comparingInt(
@@ -164,7 +170,7 @@ public class Reaction {
                 ImmutableSet.copyOf(
                         Collections2.transform(
                                 Collections2.filter(reactions, r -> !r.received),
-                                r -> r.reaction)));
+                                Reaction::normalizedReaction)));
     }
 
     public static final class Aggregated {
