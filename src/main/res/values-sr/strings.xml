@@ -1128,4 +1128,5 @@
     <string name="add_reaction_title">Стави реакцију</string>
     <string name="more_reactions">Још реакција</string>
     <string name="could_not_modify_call">Није могуће изменити позив</string>
+    <string name="clients_may_not_support_av">XMPP клијент вашег контакта можда не подржава аудио/видео позиве.</string>
 </resources>
