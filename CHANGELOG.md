@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.17.4
+
+* improve handling of some emoji reactions
+
 ### Version 2.17.3
 
 * Always show call button
