@@ -268,7 +268,8 @@ public class FileBackend {
         return inSampleSize;
     }
 
-    private static Dimensions getVideoDimensions(Context context, Uri uri) throws NotAVideoFile, IOException {
+    private static Dimensions getVideoDimensions(Context context, Uri uri)
+            throws NotAVideoFile, IOException {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
             mediaMetadataRetriever.setDataSource(context, uri);
@@ -663,16 +664,14 @@ public class FileBackend {
         }
     }
 
-    private void copyFileToPrivateStorage(File file, Uri uri) throws FileCopyException {
+    private void copyFileToPrivateStorage(final File file, final Uri uri) throws FileCopyException {
         final var parentDirectory = file.getParentFile();
         if (parentDirectory != null && parentDirectory.mkdirs()) {
-            Log.d(Config.LOGTAG,"created directory "+parentDirectory.getAbsolutePath());
+            Log.d(Config.LOGTAG, "created directory " + parentDirectory.getAbsolutePath());
         }
         try {
             if (file.createNewFile()) {
-                Log.d(
-                        Config.LOGTAG,
-                        "copy file (" + uri.toString() + ") to private storage " + file.getAbsolutePath());
+                Log.d(Config.LOGTAG, "created empty file " + file.getAbsolutePath());
             }
         } catch (final IOException e) {
             throw new FileCopyException(R.string.error_unable_to_create_temporary_file);
@@ -708,9 +707,10 @@ public class FileBackend {
         }
     }
 
-    public void copyFileToPrivateStorage(Message message, Uri uri, String type)
+    public void copyFileToPrivateStorage(final Message message, final Uri uri, final String type)
             throws FileCopyException {
-        final String mime = MimeUtils.guessMimeTypeFromUriAndMime(mXmppConnectionService, uri, type);
+        final String mime =
+                MimeUtils.guessMimeTypeFromUriAndMime(mXmppConnectionService, uri, type);
         Log.d(Config.LOGTAG, "copy " + uri.toString() + " to private storage (mime=" + mime + ")");
         String extension = MimeUtils.guessExtensionFromMimeType(mime);
         if (extension == null) {
@@ -1500,7 +1500,7 @@ public class FileBackend {
         return calcSampleSize(options, size);
     }
 
-    public void updateFileParams(Message message) {
+    public void updateFileParams(final Message message) {
         updateFileParams(message, null);
     }
 

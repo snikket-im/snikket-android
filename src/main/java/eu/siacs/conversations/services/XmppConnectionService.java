@@ -205,7 +205,7 @@ public class XmppConnectionService extends Service {
 
     public final CountDownLatch restoredFromDatabaseLatch = new CountDownLatch(1);
     private final static Executor FILE_OBSERVER_EXECUTOR = Executors.newSingleThreadExecutor();
-    private final static Executor FILE_ATTACHMENT_EXECUTOR = Executors.newSingleThreadExecutor();
+    public final static Executor FILE_ATTACHMENT_EXECUTOR = Executors.newSingleThreadExecutor();
 
     private final ScheduledExecutorService internalPingExecutor = Executors.newSingleThreadScheduledExecutor();
     private final static SerialSingleThreadExecutor VIDEO_COMPRESSION_EXECUTOR = new SerialSingleThreadExecutor("VideoCompression");
