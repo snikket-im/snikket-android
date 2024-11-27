@@ -793,7 +793,7 @@
     <string name="try_again_in_x">Будь ласка, спробуйте ще раз через %s</string>
     <string name="rate_limited">Ви обмежені за рейтингом</string>
     <string name="too_many_attempts">Забагато спроб</string>
-    <string name="the_app_is_out_of_date">Версія Вашого застосунку застаріла.</string>
+    <string name="the_app_is_out_of_date">Ви користуєтеся застарілою версією застосунку.</string>
     <string name="update">Оновити</string>
     <string name="logged_in_with_another_device">Зараз цей номер телефону авторизований на іншому пристрої.</string>
     <string name="enter_your_name_instructions">Будь ласка, вкажіть своє ім\'я, щоб надати можливість людям, які не мають Вашого контакту, дізнатися, хто Ви є.</string>
