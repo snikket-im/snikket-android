@@ -15,18 +15,15 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
@@ -35,10 +32,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.emoji2.emojipicker.EmojiViewItem;
-import androidx.emoji2.emojipicker.RecentEmojiProvider;
-
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.color.MaterialColors;
@@ -47,14 +40,10 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
-import eu.siacs.conversations.databinding.DialogAddReactionBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
@@ -89,14 +78,11 @@ import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
-import kotlin.coroutines.Continuation;
-
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -192,7 +178,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             final Message message,
             final int type,
             final BubbleColor bubbleColor) {
-        final int mergedStatus = message.getMergedStatus();
+        final int mergedStatus = message.getStatus();
         final boolean error;
         if (viewHolder.indicatorReceived != null) {
             viewHolder.indicatorReceived.setVisibility(View.GONE);
@@ -285,7 +271,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
 
         final String formattedTime =
-                UIHelper.readableTimeDifferenceFull(getContext(), message.getMergedTimeSent());
+                UIHelper.readableTimeDifferenceFull(getContext(), message.getTimeSent());
         final String bodyLanguage = message.getBodyLanguage();
         final ImmutableList.Builder<String> timeInfoBuilder = new ImmutableList.Builder<>();
         if (message.getStatus() <= Message.STATUS_RECEIVED) {
@@ -328,8 +314,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             case Message.STATUS_WAITING -> R.drawable.ic_more_horiz_24dp;
             case Message.STATUS_UNSEND -> transferable == null ? null : R.drawable.ic_upload_24dp;
             case Message.STATUS_SEND -> R.drawable.ic_done_24dp;
-            case Message.STATUS_SEND_RECEIVED, Message.STATUS_SEND_DISPLAYED -> R.drawable
-                    .ic_done_all_24dp;
+            case Message.STATUS_SEND_RECEIVED, Message.STATUS_SEND_DISPLAYED ->
+                    R.drawable.ic_done_all_24dp;
             case Message.STATUS_SEND_FAILED -> {
                 final String errorMessage = message.getErrorMessage();
                 if (Message.ERROR_MESSAGE_CANCELLED.equals(errorMessage)) {
@@ -486,21 +472,17 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         if (message.getBody() != null) {
             final String nick = UIHelper.getMessageDisplayName(message);
-            SpannableStringBuilder body = message.getMergedBody();
-            boolean hasMeCommand = message.hasMeCommand();
+            final boolean hasMeCommand = message.hasMeCommand();
+            final var rawBody = message.getBody();
+            final SpannableStringBuilder body;
+            if (rawBody.length() > Config.MAX_DISPLAY_MESSAGE_CHARS) {
+                body = new SpannableStringBuilder(rawBody, 0, Config.MAX_DISPLAY_MESSAGE_CHARS);
+                body.append("…");
+            } else {
+                body = new SpannableStringBuilder(rawBody);
+            }
             if (hasMeCommand) {
-                body = body.replace(0, Message.ME_COMMAND.length(), nick + " ");
-            }
-            if (body.length() > Config.MAX_DISPLAY_MESSAGE_CHARS) {
-                body = new SpannableStringBuilder(body, 0, Config.MAX_DISPLAY_MESSAGE_CHARS);
-                body.append("\u2026");
-            }
-            Message.MergeSeparator[] mergeSeparators =
-                    body.getSpans(0, body.length(), Message.MergeSeparator.class);
-            for (Message.MergeSeparator mergeSeparator : mergeSeparators) {
-                int start = body.getSpanStart(mergeSeparator);
-                int end = body.getSpanEnd(mergeSeparator);
-                body.setSpan(new DividerSpan(true), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                body.replace(0, Message.ME_COMMAND.length(), String.format("%s ", nick));
             }
             boolean startsWithQuote = handleTextQuotes(viewHolder.messageBody, body, bubbleColor);
             if (!message.isPrivateMessage()) {
@@ -1211,12 +1193,15 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             final View view, final BubbleColor bubbleColor) {
         final @AttrRes int colorAttributeResId =
                 switch (bubbleColor) {
-                    case SURFACE -> Activities.isNightMode(view.getContext())
-                            ? com.google.android.material.R.attr.colorSurfaceContainerHigh
-                            : com.google.android.material.R.attr.colorSurfaceContainerLow;
-                    case SURFACE_HIGH -> Activities.isNightMode(view.getContext())
-                            ? com.google.android.material.R.attr.colorSurfaceContainerHighest
-                            : com.google.android.material.R.attr.colorSurfaceContainerHigh;
+                    case SURFACE ->
+                            Activities.isNightMode(view.getContext())
+                                    ? com.google.android.material.R.attr.colorSurfaceContainerHigh
+                                    : com.google.android.material.R.attr.colorSurfaceContainerLow;
+                    case SURFACE_HIGH ->
+                            Activities.isNightMode(view.getContext())
+                                    ? com.google.android.material.R.attr
+                                            .colorSurfaceContainerHighest
+                                    : com.google.android.material.R.attr.colorSurfaceContainerHigh;
                     case PRIMARY -> com.google.android.material.R.attr.colorPrimaryContainer;
                     case SECONDARY -> com.google.android.material.R.attr.colorSecondaryContainer;
                     case TERTIARY -> com.google.android.material.R.attr.colorTertiaryContainer;

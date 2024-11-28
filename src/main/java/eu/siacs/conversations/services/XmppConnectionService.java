@@ -5918,23 +5918,11 @@ public class XmppConnectionService extends Service {
     }
 
     public void resendFailedMessages(final Message message) {
-        final Collection<Message> messages = new ArrayList<>();
-        Message current = message;
-        while (current.getStatus() == Message.STATUS_SEND_FAILED) {
-            messages.add(current);
-            if (current.mergeable(current.next())) {
-                current = current.next();
-            } else {
-                break;
-            }
-        }
-        for (final Message msg : messages) {
-            msg.setTime(System.currentTimeMillis());
-            markMessage(msg, Message.STATUS_WAITING);
-            this.resendMessage(msg, false);
-        }
-        if (message.getConversation() instanceof Conversation) {
-            ((Conversation) message.getConversation()).sort();
+        message.setTime(System.currentTimeMillis());
+        markMessage(message, Message.STATUS_WAITING);
+        this.resendMessage(message, false);
+        if (message.getConversation() instanceof Conversation c) {
+            c.sort();
         }
         updateConversationUi();
     }
