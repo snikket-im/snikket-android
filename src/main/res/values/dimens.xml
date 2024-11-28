@@ -42,4 +42,9 @@
     <dimen name="local_video_preview_height">128dp</dimen>
     <dimen name="local_video_preview_width">96dp</dimen>
     <dimen name="rtp_session_duration_top_margin">24dp</dimen>
+
+    <dimen name="bubble_horizontal_padding">8dp</dimen>
+    <dimen name="bubble_vertical_padding">4dp</dimen>
+    <dimen name="bubble_vertical_padding_minimum">1dp</dimen>
+    <dimen name="bubble_avatar_size">48dp</dimen>
 </resources>

@@ -29,6 +29,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
@@ -152,7 +153,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         return 5;
     }
 
-    private int getItemViewType(Message message) {
+    private static int getItemViewType(final Message message) {
         if (message.getType() == Message.TYPE_STATUS) {
             if (DATE_SEPARATOR_BODY.equals(message.getBody())) {
                 return DATE_SEPARATOR;
@@ -169,8 +170,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return this.getItemViewType(getItem(position));
+    public int getItemViewType(final int position) {
+        return getItemViewType(getItem(position));
     }
 
     private void displayStatus(
@@ -729,7 +730,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 message.isValidInSession() && (!omemoEncryption || message.isTrusted());
         final Conversational conversation = message.getConversation();
         final Account account = conversation.getAccount();
-        final int type = getItemViewType(position);
+        final int type = getItemViewType(message);
         ViewHolder viewHolder;
         if (view == null) {
             viewHolder = new ViewHolder();
@@ -753,6 +754,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     view =
                             activity.getLayoutInflater()
                                     .inflate(R.layout.item_message_sent, parent, false);
+                    viewHolder.root = (ConstraintLayout) view;
                     viewHolder.message_box = view.findViewById(R.id.message_box);
                     viewHolder.contact_picture = view.findViewById(R.id.message_photo);
                     viewHolder.download_button = view.findViewById(R.id.download_button);
@@ -769,6 +771,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     view =
                             activity.getLayoutInflater()
                                     .inflate(R.layout.item_message_received, parent, false);
+                    viewHolder.root = (ConstraintLayout) view;
                     viewHolder.message_box = view.findViewById(R.id.message_box);
                     viewHolder.contact_picture = view.findViewById(R.id.message_photo);
                     viewHolder.download_button = view.findViewById(R.id.download_button);
@@ -901,7 +904,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 } else if (message.getCounterpart() != null
                         || message.getTrueCounterpart() != null
                         || (message.getCounterparts() != null
-                                && message.getCounterparts().size() > 0)) {
+                                && !message.getCounterparts().isEmpty())) {
                     showAvatar = true;
                     AvatarWorkerTask.loadAvatar(
                             message, viewHolder.contact_picture, R.dimen.avatar_on_status_message);
@@ -917,6 +920,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
             return view;
         } else {
+            // sent and received bubbles
+            final var mergeIntoTop = mergeIntoTop(position, message);
+            final var mergeIntoBottom = mergeIntoBottom(position, message);
+            final var requiresAvatar = type == SENT ? !mergeIntoBottom : !mergeIntoTop;
+            setBubblePadding(viewHolder.root, mergeIntoTop, mergeIntoBottom);
+            setRequiresAvatar(viewHolder, requiresAvatar);
             viewHolder.message_box.setClipToOutline(true);
             AvatarWorkerTask.loadAvatar(message, viewHolder.contact_picture, R.dimen.avatar);
         }
@@ -1073,6 +1082,81 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         displayStatus(viewHolder, message, type, bubbleColor);
         return view;
+    }
+
+    private void setBubblePadding(
+            final ConstraintLayout root,
+            final boolean mergeIntoTop,
+            final boolean mergeIntoBottom) {
+        final var resources = root.getResources();
+        final var horizontal = resources.getDimensionPixelSize(R.dimen.bubble_horizontal_padding);
+        final int top =
+                resources.getDimensionPixelSize(
+                        mergeIntoTop
+                                ? R.dimen.bubble_vertical_padding_minimum
+                                : R.dimen.bubble_vertical_padding);
+        final int bottom =
+                resources.getDimensionPixelSize(
+                        mergeIntoBottom
+                                ? R.dimen.bubble_vertical_padding_minimum
+                                : R.dimen.bubble_vertical_padding);
+        root.setPadding(horizontal, top, horizontal, bottom);
+    }
+
+    private void setRequiresAvatar(final ViewHolder viewHolder, final boolean requiresAvatar) {
+        final var layoutParams = viewHolder.contact_picture.getLayoutParams();
+        if (requiresAvatar) {
+            final var resources = viewHolder.contact_picture.getResources();
+            final var avatarSize = resources.getDimensionPixelSize(R.dimen.bubble_avatar_size);
+            layoutParams.height = avatarSize;
+            viewHolder.contact_picture.setVisibility(View.VISIBLE);
+            viewHolder.message_box.setMinimumHeight(avatarSize);
+        } else {
+            layoutParams.height = 0;
+            viewHolder.contact_picture.setVisibility(View.INVISIBLE);
+            viewHolder.message_box.setMinimumHeight(0);
+        }
+        viewHolder.contact_picture.setLayoutParams(layoutParams);
+    }
+
+    private boolean mergeIntoTop(final int position, final Message message) {
+        if (position < 0) {
+            return false;
+        }
+        final var top = getItem(position - 1);
+        return merge(top, message);
+    }
+
+    private boolean mergeIntoBottom(final int position, final Message message) {
+        final Message bottom;
+        try {
+            bottom = getItem(position + 1);
+        } catch (final IndexOutOfBoundsException e) {
+            return false;
+        }
+        return merge(message, bottom);
+    }
+
+    private static boolean merge(final Message a, final Message b) {
+        if (getItemViewType(a) != getItemViewType(b)) {
+            return false;
+        }
+        if (a.getConversation().getMode() == Conversation.MODE_MULTI
+                && a.getStatus() == Message.STATUS_RECEIVED) {
+            final var occupantIdA = a.getOccupantId();
+            final var occupantIdB = b.getOccupantId();
+            if (occupantIdA != null && occupantIdB != null) {
+                if (!occupantIdA.equals(occupantIdB)) {
+                    return false;
+                }
+            }
+            final var counterPartA = a.getCounterpart();
+            final var counterPartB = b.getCounterpart();
+            if (counterPartA == null || !counterPartA.equals(counterPartB)) {
+                return false;
+            }
+        }
+        return b.getTimeSent() - a.getTimeSent() <= Config.MESSAGE_MERGE_WINDOW;
     }
 
     private boolean showDetailedReaction(final Message message, final String emoji) {
@@ -1300,6 +1384,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     private static class ViewHolder {
 
+        private ConstraintLayout root;
         public MaterialButton load_more_messages;
         public ImageView edit_indicator;
         public RelativeLayout audioPlayer;

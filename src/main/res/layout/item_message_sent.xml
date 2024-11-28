@@ -5,13 +5,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="4dp">
+        android:paddingHorizontal="@dimen/bubble_horizontal_padding"
+        android:paddingVertical="@dimen/bubble_vertical_padding">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/message_photo"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/bubble_avatar_size"
+            android:layout_height="@dimen/bubble_avatar_size"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="@id/message_box"
             app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +26,7 @@
             android:background="@drawable/background_message_bubble"
             android:backgroundTint="?colorSecondaryContainer"
             android:longClickable="true"
-            android:minHeight="48dp"
+            android:minHeight="@dimen/bubble_avatar_size"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@id/message_photo"
             app:layout_constraintHorizontal_bias="1.0"

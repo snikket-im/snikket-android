@@ -2,11 +2,9 @@ package eu.siacs.conversations;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -81,7 +79,6 @@ public final class Config {
     public static final int CONNECT_DISCO_TIMEOUT = 20;
     public static final int MINI_GRACE_PERIOD = 750;
 
-
     // media file formats. Homogenous Android or Conversations only deployments can switch to opus
     // and webp
     public static final int AVATAR_SIZE = 192;
@@ -94,7 +91,7 @@ public final class Config {
 
     public static final boolean USE_OPUS_VOICE_MESSAGES = false;
 
-    public static final int MESSAGE_MERGE_WINDOW = 20;
+    public static final int MESSAGE_MERGE_WINDOW = 90_000;
 
     public static final int PAGE_SIZE = 50;
     public static final int MAX_NUM_PAGES = 3;

@@ -615,8 +615,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 return this.remoteMsgId == null
                         && matchingCounterpart
                         && body.equals(otherBody)
-                        && Math.abs(this.getTimeSent() - message.getTimeSent())
-                                < Config.MESSAGE_MERGE_WINDOW * 1000;
+                        && Math.abs(this.getTimeSent() - message.getTimeSent()) < 20_000;
             }
         }
     }
