@@ -26,16 +26,13 @@ import android.util.Base64OutputStream;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
-
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteStreams;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
@@ -49,7 +46,6 @@ import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.FileWriterException;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.xmpp.pep.Avatar;
-
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
@@ -140,7 +136,8 @@ public class FileBackend {
                     if (dimensions.getMin() > 720) {
                         Log.d(
                                 Config.LOGTAG,
-                                "do not consider video file with min width larger than 720 for size check");
+                                "do not consider video file with min width larger than 720 for size"
+                                        + " check");
                         continue;
                     }
                 } catch (final IOException | NotAVideoFile e) {

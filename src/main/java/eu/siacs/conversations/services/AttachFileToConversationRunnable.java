@@ -5,12 +5,9 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.otaliastudios.transcoder.Transcoder;
 import com.otaliastudios.transcoder.TranscoderListener;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
@@ -20,7 +17,6 @@ import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.TranscoderStrategies;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Objects;
