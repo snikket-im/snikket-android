@@ -434,7 +434,7 @@
     <string name="no_application_found_to_display_location">Não foi encontrado nenhum aplicativo para exibir a localização</string>
     <string name="location">Localização</string>
     <string name="title_undo_swipe_out_group_chat">Sair da conversa em grupo privada</string>
-    <string name="title_undo_swipe_out_channel">Deixar o canal público</string>
+    <string name="title_undo_swipe_out_channel">Saiu do canal público</string>
     <string name="pref_dont_trust_system_cas_title">Não confiar nas CAs do sistema</string>
     <string name="pref_dont_trust_system_cas_summary">Todos os certificados devem ser aprovados manualmente</string>
     <string name="pref_remove_trusted_certificates_title">Remover certificados</string>
@@ -606,8 +606,8 @@
     <string name="use_camera_icon_to_scan_barcode">Use a câmera para capturar o código de barras de um contato</string>
     <string name="please_wait_for_keys_to_be_fetched">Por favor, aguarde a obtenção das chaves</string>
     <string name="share_as_barcode">Compartilhar como código de barras</string>
-    <string name="share_as_uri">Compartilhar como uma URI XMPP</string>
-    <string name="share_as_http">Compartilhar como um link HTTP</string>
+    <string name="share_as_uri">Compartilhar como URI XMPP</string>
+    <string name="share_as_http">Compartilhar como link HTTP</string>
     <string name="pref_blind_trust_before_verification">Confiar cegamente antes de verificar</string>
     <string name="pref_blind_trust_before_verification_summary">Confiar em novos dispositivos de contatos não verificados, mas solicitar confirmação manual de novos dispositivos para contatos verificados.</string>
     <string name="blindly_trusted_omemo_keys">Chaves OMEMO confiadas cegamente, o que significa que poderiam ser outras pessoas ou alguém poderia tê-las aproveitado.</string>
