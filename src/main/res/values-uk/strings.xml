@@ -1067,7 +1067,7 @@
     <string name="pref_dynamic_colors">Динамічні кольори</string>
     <string name="pref_dynamic_colors_summary">Системні кольори (Material You)</string>
     <string name="pref_use_colorful_bubbles_summary">Різні кольори фону для надісланих та отриманих повідомлень</string>
-    <string name="pref_use_colorful_bubbles">Кольорові бульбашки в розмовах</string>
+    <string name="pref_use_colorful_bubbles">Кольорові бульбашки повідомлень</string>
     <string name="title_activity_new_chat">Нова розмова</string>
     <string name="action_archive_chat">Архівувати розмову</string>
     <string name="archive_this_chat">Після цього видалити розмову</string>
@@ -1143,4 +1143,9 @@
     <string name="add_reaction_title">Додати реакцію</string>
     <string name="could_not_modify_call">Не вдалося змінити виклик</string>
     <string name="clients_may_not_support_av">Можливо, клієнт XMPP Вашого контакту не підтримує аудіо- та відеовиклики.</string>
+    <string name="pref_show_avatars">Показувати аватари</string>
+    <string name="pref_chat_bubbles">Бульбашки повідомлень</string>
+    <string name="pref_chat_bubbles_summary">Колір фону, розмір шрифту, аватари</string>
+    <string name="pref_title_bubbles">Вигляд повідомлень</string>
+    <string name="pref_show_avatars_summary">Крім групових чатів, показувати аватари також у Ваших повідомленнях і приватних чатах.</string>
 </resources>
