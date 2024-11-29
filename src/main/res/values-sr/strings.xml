@@ -1129,4 +1129,9 @@
     <string name="more_reactions">Још реакција</string>
     <string name="could_not_modify_call">Није могуће изменити позив</string>
     <string name="clients_may_not_support_av">XMPP клијент вашег контакта можда не подржава аудио/видео позиве.</string>
+    <string name="pref_show_avatars">Прикажи аватаре</string>
+    <string name="pref_show_avatars_summary">Приказуј аватаре за поруке и у препискама 1-на-1, као и у групним препискама.</string>
+    <string name="pref_chat_bubbles">Балончићи у препискама</string>
+    <string name="pref_chat_bubbles_summary">Боја позадине, Величина слова, Аватари</string>
+    <string name="pref_title_bubbles">Балончићи у препискама</string>
 </resources>
