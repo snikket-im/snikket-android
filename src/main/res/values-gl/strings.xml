@@ -1095,4 +1095,9 @@
     <string name="add_reaction_title">Engadir reacción</string>
     <string name="could_not_modify_call">Non se puido modificar a chamada</string>
     <string name="clients_may_not_support_av">O cliente do teu contacto XMPP pode que non sexa compatible con chamadas de audio/video.</string>
+    <string name="pref_show_avatars">Mostrar avatares</string>
+    <string name="pref_chat_bubbles">Burbullas da conversa</string>
+    <string name="pref_title_bubbles">Burbullas na conversa</string>
+    <string name="pref_show_avatars_summary">Mostrar avatares para as túas mensaxes en conversas 1:1, ademáis de nas parolas en grupo.</string>
+    <string name="pref_chat_bubbles_summary">Cor de fondo, Tamaño da letra, Avatares</string>
 </resources>
