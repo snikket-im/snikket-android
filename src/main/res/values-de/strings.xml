@@ -1012,7 +1012,7 @@
     <string name="remove_bookmark">Willst du das Lesezeichen für %s entfernen?</string>
     <string name="title_activity_share_with">Teilen mit…</string>
     <string name="pref_use_colorful_bubbles_summary">Unterschiedliche Hintergrundfarben für gesendete und empfangene Nachrichten</string>
-    <string name="pref_use_colorful_bubbles">Farbige Chatblasen</string>
+    <string name="pref_use_colorful_bubbles">Farbige Sprechblase</string>
     <string name="pref_dynamic_colors">Dynamische Farben</string>
     <string name="pref_dynamic_colors_summary">Systemfarben (Material You)</string>
     <string name="start_chat">Chat starten</string>
@@ -1095,4 +1095,9 @@
     <string name="more_reactions">Weitere Reaktionen</string>
     <string name="could_not_modify_call">Anruf konnte nicht geändert werden</string>
     <string name="clients_may_not_support_av">Der XMPP-Client deines Kontakts unterstützt möglicherweise keine Audio-/Videoanrufe.</string>
+    <string name="pref_chat_bubbles">Sprechblasen</string>
+    <string name="pref_show_avatars">Profilbilder anzeigen</string>
+    <string name="pref_show_avatars_summary">Profilbilder an Deinen Nachrichten und in 1:1 Chats anzeigen statt nur in Gruppenchats.</string>
+    <string name="pref_chat_bubbles_summary">Hintergrundfarbe, Schriftgröße, Profilbilder</string>
+    <string name="pref_title_bubbles">Sprachblasen</string>
 </resources>
