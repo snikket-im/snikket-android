@@ -1114,4 +1114,9 @@
     <string name="more_reactions">Mai multe reacții</string>
     <string name="could_not_modify_call">Nu s-a putut modifica apelul</string>
     <string name="clients_may_not_support_av">Clientul XMPP al contactului dvs. este posibil să nu accepte apeluri audio/video.</string>
+    <string name="pref_chat_bubbles_summary">Culoare de fundal, mărime font, avatare</string>
+    <string name="pref_show_avatars_summary">Afișați avatare pentru mesajele dvs. și în discuțiile 1:1, în plus față de cele de grup.</string>
+    <string name="pref_title_bubbles">Bule de mesaj</string>
+    <string name="pref_chat_bubbles">Bule de mesaj</string>
+    <string name="pref_show_avatars">Arată avatare</string>
 </resources>
