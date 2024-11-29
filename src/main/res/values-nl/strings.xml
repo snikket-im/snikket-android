@@ -1111,4 +1111,9 @@
     <string name="more_reactions">Meer reacties</string>
     <string name="could_not_modify_call">Kan de aanroep niet wijzigen</string>
     <string name="clients_may_not_support_av">De XMPP-client van je contactpersoon ondersteunt mogelijk geen audio-/videogesprekken.</string>
+    <string name="pref_chat_bubbles">Chat-bubbels</string>
+    <string name="pref_chat_bubbles_summary">Achtergrondkleur, Lettergrootte, Avatars</string>
+    <string name="pref_title_bubbles">Chat-bubbels</string>
+    <string name="pref_show_avatars_summary">Avatars weergeven in jouw berichten en in 1:1-chats, naast groepschats.</string>
+    <string name="pref_show_avatars">Avatars weergeven</string>
 </resources>
