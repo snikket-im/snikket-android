@@ -9,7 +9,7 @@
     <string name="action_add_account">添加账号</string>
     <string name="action_edit_contact">编辑名称</string>
     <string name="action_add_phone_book">添加到通讯录</string>
-    <string name="action_delete_contact">从联系人列表删除</string>
+    <string name="action_delete_contact">删除联系人</string>
     <string name="action_block_contact">屏蔽联系人</string>
     <string name="action_unblock_contact">解除屏蔽联系人</string>
     <string name="action_block_domain">屏蔽域名</string>
@@ -707,7 +707,7 @@
     <string name="disable_now">立即禁用</string>
     <string name="draft">草稿：</string>
     <string name="pref_omemo_setting">OMEMO 加密</string>
-    <string name="pref_omemo_setting_summary_always">OMEMO 将始终用于一对一和私人群聊。</string>
+    <string name="pref_omemo_setting_summary_always">OMEMO 将始终用于一对一聊天和私人群聊。</string>
     <string name="pref_omemo_setting_summary_default_on">新对话将默认使用 OMEMO。</string>
     <string name="pref_omemo_setting_summary_default_off">新对话必须明确开启 OMEMO。</string>
     <string name="create_shortcut">创建快捷方式</string>
@@ -1021,7 +1021,7 @@
     <string name="title_activity_share_with">分享至…</string>
     <string name="pref_use_colorful_bubbles_summary">为已发送和已接收消息使用不同的背景颜色</string>
     <string name="no_certificate_selected">未选择客户端证书！</string>
-    <string name="pref_use_colorful_bubbles">彩色聊天气泡</string>
+    <string name="pref_use_colorful_bubbles">彩色消息气泡</string>
     <string name="pref_dynamic_colors">动态色彩</string>
     <string name="pref_dynamic_colors_summary">系统色彩 (Material You)</string>
     <string name="title_activity_new_chat">新对话</string>
@@ -1075,7 +1075,7 @@
     <string name="pref_fullscreen_notification_summary">当设备锁定时，允许此应用显示占据全屏的来电通知。</string>
     <string name="unsupported_operation">不支持的操作</string>
     <string name="pref_backup_summary">创建一次性备份、计划定期备份</string>
-    <string name="allow_private_messages">允许私信</string>
+    <string name="allow_private_messages">允许频道内私信</string>
     <string name="edit_nick">编辑昵称</string>
     <string name="your_avatar_tap_to_select_new_avatar">您的头像。点击从图库中选择新头像。</string>
     <string name="could_not_disable_video">无法禁用视频。</string>
@@ -1101,4 +1101,9 @@
     <string name="add_reaction_title">添加回应</string>
     <string name="could_not_modify_call">无法修改通话</string>
     <string name="clients_may_not_support_av">您的联系人的 XMPP 客户端可能不支持音频/视频通话。</string>
+    <string name="pref_show_avatars">显示头像</string>
+    <string name="pref_chat_bubbles_summary">背景颜色、字体大小、头像</string>
+    <string name="pref_chat_bubbles">消息气泡</string>
+    <string name="pref_title_bubbles">消息气泡</string>
+    <string name="pref_show_avatars_summary">除了群聊，您的消息还有一对一聊天也会显示头像。</string>
 </resources>
