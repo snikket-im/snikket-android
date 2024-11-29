@@ -1012,7 +1012,7 @@
     <string name="remove_bookmark">Willst du das Lesezeichen für %s entfernen?</string>
     <string name="title_activity_share_with">Teilen mit…</string>
     <string name="pref_use_colorful_bubbles_summary">Unterschiedliche Hintergrundfarben für gesendete und empfangene Nachrichten</string>
-    <string name="pref_use_colorful_bubbles">Farbige Sprechblase</string>
+    <string name="pref_use_colorful_bubbles">Farbige Sprechblasen</string>
     <string name="pref_dynamic_colors">Dynamische Farben</string>
     <string name="pref_dynamic_colors_summary">Systemfarben (Material You)</string>
     <string name="start_chat">Chat starten</string>
