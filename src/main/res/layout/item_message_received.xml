@@ -23,7 +23,7 @@
             android:id="@+id/message_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="@dimen/bubble_avatar_distance"
             android:background="@drawable/background_message_bubble"
             android:backgroundTint="?colorTertiaryContainer"
             android:longClickable="true"

@@ -1088,4 +1088,9 @@
     <string name="more_reactions">More reactions</string>
     <string name="could_not_modify_call">Could not modify call</string>
     <string name="clients_may_not_support_av">Your contact’s XMPP client might not support audio/video calls.</string>
+    <string name="pref_show_avatars">Show avatars</string>
+    <string name="pref_show_avatars_summary">Display avatars for your messages and in 1:1 chats, in addition to group chats.</string>
+    <string name="pref_chat_bubbles">Chat bubbles</string>
+    <string name="pref_chat_bubbles_summary">Background color, Font size, Avatars</string>
+    <string name="pref_title_bubbles">Chat Bubbles</string>
 </resources>

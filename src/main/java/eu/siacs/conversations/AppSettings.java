@@ -3,13 +3,10 @@ package eu.siacs.conversations;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
-
 import androidx.annotation.BoolRes;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
-
 import com.google.common.base.Strings;
-
 import java.security.SecureRandom;
 
 public class AppSettings {
@@ -45,6 +42,7 @@ public class AppSettings {
     public static final String SEND_CRASH_REPORTS = "send_crash_reports";
     public static final String COLORFUL_CHAT_BUBBLES = "use_green_background";
     public static final String LARGE_FONT = "large_font";
+    public static final String SHOW_AVATARS = "show_avatars";
 
     private static final String ACCEPT_INVITES_FROM_STRANGERS = "accept_invites_from_strangers";
     private static final String INSTALLATION_ID = "im.conversations.android.install_id";
@@ -106,6 +104,10 @@ public class AppSettings {
 
     public boolean isLargeFont() {
         return getBooleanPreference(LARGE_FONT, R.bool.large_font);
+    }
+
+    public boolean isShowAvatars() {
+        return getBooleanPreference(SHOW_AVATARS, R.bool.show_avatars);
     }
 
     public boolean isUseTor() {
