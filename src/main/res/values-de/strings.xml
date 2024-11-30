@@ -403,7 +403,7 @@
     <string name="mark_as_read">Als gelesen markieren</string>
     <string name="pref_input_options">Eingabe</string>
     <string name="pref_enter_is_send">Eingabetaste sendet Nachricht</string>
-    <string name="pref_enter_is_send_summary">Nutze die Eingabetaste zum Versenden einer Nachricht. Strg+Eingabetaste sendet die Nachricht unabhängig von dieser Einstellung.</string>
+    <string name="pref_enter_is_send_summary">Eingabetaste zum Versenden einer Nachricht nutzen. Strg+Eingabetaste sendet die Nachricht unabhängig von dieser Einstellung.</string>
     <string name="pref_display_enter_key">Eingabetaste anzeigen</string>
     <string name="pref_display_enter_key_summary">Emoji-Taste durch Eingabetaste ersetzen</string>
     <string name="audio">Audio</string>
@@ -441,7 +441,7 @@
         <item quantity="one">%d Zertifikat gelöscht</item>
         <item quantity="other">%d Zertifikate gelöscht</item>
     </plurals>
-    <string name="pref_quick_action_summary">Ersetze \"Senden\"-Schaltfläche durch Schnell-Tasten</string>
+    <string name="pref_quick_action_summary">\"Senden\"-Schaltfläche durch Schnell-Tasten ersetzen</string>
     <string name="pref_quick_action">Schnell-Tasten</string>
     <string name="none">Keine</string>
     <string name="recently_used">Zuletzt verwendet</string>
@@ -1097,7 +1097,7 @@
     <string name="clients_may_not_support_av">Der XMPP-Client deines Kontakts unterstützt möglicherweise keine Audio-/Videoanrufe.</string>
     <string name="pref_chat_bubbles">Sprechblasen</string>
     <string name="pref_show_avatars">Profilbilder anzeigen</string>
-    <string name="pref_show_avatars_summary">Profilbilder an Deinen Nachrichten und in 1:1 Chats anzeigen statt nur in Gruppenchats.</string>
+    <string name="pref_show_avatars_summary">Profilbilder an deinen Nachrichten und in 1:1 Chats statt nur in Gruppenchats anzeigen.</string>
     <string name="pref_chat_bubbles_summary">Hintergrundfarbe, Schriftgröße, Profilbilder</string>
     <string name="pref_title_bubbles">Sprachblasen</string>
 </resources>
