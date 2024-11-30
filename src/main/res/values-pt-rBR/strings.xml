@@ -1113,4 +1113,9 @@
     <string name="more_reactions">Mais reações</string>
     <string name="could_not_modify_call">Não foi possível modificar a chamada</string>
     <string name="clients_may_not_support_av">O cliente XMPP do seu contato não suporta chamadas de áudio ou vídeo.</string>
+    <string name="pref_show_avatars">Mostrar avatares</string>
+    <string name="pref_show_avatars_summary">Mostrar avatares para suas mensagens e em chats 1:1, em adição à chats em grupo.</string>
+    <string name="pref_chat_bubbles">Bolhas de conversa</string>
+    <string name="pref_chat_bubbles_summary">Cor do fundo, Tamanho da fonte, Avatares</string>
+    <string name="pref_title_bubbles">Bolhas de Conversa</string>
 </resources>
