@@ -124,7 +124,7 @@
     <string name="pref_notification_sound_summary">Звук уведомления о новых сообщениях</string>
     <string name="pref_call_ringtone_summary">Мелодия входящего звонка</string>
     <string name="pref_notification_grace_period">Период отсрочки</string>
-    <string name="pref_notification_grace_period_summary">Время, на которое уведомления будут отключены, когда вы пользуетесь аккаунтом на другом устройстве.</string>
+    <string name="pref_notification_grace_period_summary">Время, на которое уведомления будут отключены, когда вы пользуетесь аккаунтом на другом устройстве</string>
     <string name="pref_advanced_options">Дополнительно</string>
     <string name="pref_never_send_crash_summary">Отправляя отчёты об ошибках, вы помогаете разработке</string>
     <string name="pref_confirm_messages">Отчёты о получении</string>
@@ -556,7 +556,7 @@
     <string name="use_own_provider">Использовать своего провайдера</string>
     <string name="pick_your_username">Выберите имя пользователя</string>
     <string name="pref_manually_change_presence">Управлять доступностью вручную</string>
-    <string name="pref_manually_change_presence_summary">Устанавливать свою доступность при редактировании статусного сообщения.</string>
+    <string name="pref_manually_change_presence_summary">Устанавливать свою доступность при редактировании статусного сообщения</string>
     <string name="status_message">Статусное сообщение</string>
     <string name="presence_chat">Свободен для общения</string>
     <string name="presence_online">В сети</string>
@@ -620,7 +620,7 @@
     <string name="share_as_uri">Отправить XMPP URI</string>
     <string name="share_as_http">Отправить HTTP-ссылку</string>
     <string name="pref_blind_trust_before_verification">Слепое доверие до подтверждения</string>
-    <string name="pref_blind_trust_before_verification_summary">Автоматически доверять всем новым устройствам контактов, которые не были подтверждены ранее, но запрашивать ручное подтверждение каждый раз, когда подтверждённый контакт добавляет новое устройство.</string>
+    <string name="pref_blind_trust_before_verification_summary">Автоматически доверять всем новым устройствам контактов, которые не были подтверждены ранее, но запрашивать ручное подтверждение каждый раз, когда подтверждённый контакт добавляет новое устройство</string>
     <string name="blindly_trusted_omemo_keys">Принятие OMEMO-ключей вслепую. Это означает, что собеседник может оказаться недоверенным лицом.</string>
     <string name="not_trusted">Недоверенный</string>
     <string name="invalid_barcode">Некорректный QR-код</string>
@@ -679,7 +679,7 @@
     <string name="transcoding_video">Сжимание видео</string>
     <string name="contact_blocked_past_tense">Контакт заблокирован.</string>
     <string name="pref_notifications_from_strangers">Уведомления от неизвестных контактов</string>
-    <string name="pref_notifications_from_strangers_summary">Уведомлять о сообщениях и звонках от неизвестных контактов.</string>
+    <string name="pref_notifications_from_strangers_summary">Уведомлять о сообщениях и звонках от неизвестных контактов</string>
     <string name="received_message_from_stranger">Получено сообщение от неизвестного контакта</string>
     <string name="block_stranger">Заблокировать неизвестный контакт</string>
     <string name="block_entire_domain">Заблокировать весь домен</string>
@@ -725,9 +725,9 @@
     <string name="disable_now">Отключить сейчас</string>
     <string name="draft">Черновик:</string>
     <string name="pref_omemo_setting">OMEMO-шифрование</string>
-    <string name="pref_omemo_setting_summary_always">OMEMO будет всегда использоваться для одиночных бесед и приватных конференций.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO будет использоваться по умолчанию для новых бесед.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO нужно будет явно включать для новых бесед.</string>
+    <string name="pref_omemo_setting_summary_always">OMEMO будет всегда использоваться для одиночных бесед и приватных конференций</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO будет использоваться по умолчанию для новых бесед</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO нужно будет явно включать для новых бесед</string>
     <string name="create_shortcut">Создать ярлык</string>
     <string name="default_on">Включено по умолчанию</string>
     <string name="default_off">Выключено по умолчанию</string>
@@ -1011,7 +1011,7 @@
     <string name="could_not_delete_account_from_server">Невозможно удалить аккаунт на сервере</string>
     <string name="delete_from_server">Удалить аккаунт на сервере</string>
     <string name="pref_autojoin">Синхронизировать закладки</string>
-    <string name="pref_autojoin_summary">Устанавливать флаг \"автоприсоединение\" при входе и выходе из MUC, и реагировать на изменения от других клиентов.</string>
+    <string name="pref_autojoin_summary">Устанавливать флаг \"автоприсоединение\" при входе и выходе из MUC, и реагировать на изменения от других клиентов</string>
     <string name="search_group_chats">Поиск по конференциям</string>
     <string name="download_failed_invalid_file">Загрузка не выполнена: файл испорчен</string>
     <string name="rtp_state_content_add_video">Перейти на видеовызов\?</string>
@@ -1019,7 +1019,7 @@
     <string name="incoming_call_duration_timestamp">Входящий вызов (%s) · %s</string>
     <string name="account_registrations_are_not_supported">Регистрации аккаунтов не поддерживаются</string>
     <string name="audio_video_disabled_tor">Звонки отключены при использовании Tor</string>
-    <string name="pref_up_push_account_summary">Аккаунт для получения push-уведомлений.</string>
+    <string name="pref_up_push_account_summary">Аккаунт для получения push-уведомлений</string>
     <string name="no_account_deactivated">Нет (неактивно)</string>
     <string name="verifying_omemo_keys_trusted_source_account">Вы собираетесь проверить ключи OMEMO своего аккаунта. Это безопасно только в том случае, если вы перешли по этой ссылке из надёжного источника, где только вы могли опубликовать эту ссылку.</string>
     <string name="restore_warning_continued">Не пытайтесь восстановить резервные копии, которые не были созданы вами!</string>
@@ -1107,7 +1107,7 @@
     <string name="unsupported_operation">Операция не поддерживается</string>
     <string name="pref_fullscreen_notification">Полноэкранные уведомления</string>
     <string name="pref_backup_recurring">Регулярные резервные копии</string>
-    <string name="pref_fullscreen_notification_summary">Разрешить приложению показывать экраны входящих звонков при заблокированном экране.</string>
+    <string name="pref_fullscreen_notification_summary">Разрешить приложению показывать экраны входящих звонков при заблокированном экране</string>
     <string name="pref_up_long_summary">Conversations, будучи распределителем UnifiedPush, будет использовать стойкое, надёжное и малопотребляющее подключение XMPP для пробуждения других совместимых с UnifiedPush приложений, таких как Tusky, Ltt.rs, FluffyChat и др.</string>
     <string name="detect_mim">Требовать привязку канала</string>
     <string name="detect_mim_summary">Привязка канала может обнаружить некоторые атаки посредником</string>
@@ -1145,4 +1145,6 @@
     <string name="pref_chat_bubbles_summary">Цвет фона, размер текста, аватары</string>
     <string name="pref_show_avatars">Показывать аватары</string>
     <string name="pref_title_bubbles">Сообщения в пузырях</string>
+    <string name="pref_chat_bubbles">Пузырьки сообщений</string>
+    <string name="pref_show_avatars_summary">Показывать аватары в своих сообщениях и приватных чатах в дополнение к конференциям</string>
 </resources>
