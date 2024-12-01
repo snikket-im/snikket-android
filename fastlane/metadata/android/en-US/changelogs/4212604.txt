@@ -1,0 +1,2 @@
+* Move message bubbles closer together instead of merging them
+* Add ability to hide avatars in chat views when not stricly necessary (Settings -> Interface -> Chat Bubbles -> Show avatars)

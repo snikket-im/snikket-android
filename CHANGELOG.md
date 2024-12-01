@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.17.5
+
+* Move message bubbles closer together instead of merging them
+* Add ability to hide avatars in chat views when not stricly necessary (Settings -> Interface -> Chat Bubbles -> Show avatars)
+
 ### Version 2.17.4
 
 * improve handling of some emoji reactions
