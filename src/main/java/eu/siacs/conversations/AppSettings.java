@@ -43,6 +43,7 @@ public class AppSettings {
     public static final String COLORFUL_CHAT_BUBBLES = "use_green_background";
     public static final String LARGE_FONT = "large_font";
     public static final String SHOW_AVATARS = "show_avatars";
+    public static final String CALL_INTEGRATION = "call_integration";
 
     private static final String ACCEPT_INVITES_FROM_STRANGERS = "accept_invites_from_strangers";
     private static final String INSTALLATION_ID = "im.conversations.android.install_id";
@@ -108,6 +109,10 @@ public class AppSettings {
 
     public boolean isShowAvatars() {
         return getBooleanPreference(SHOW_AVATARS, R.bool.show_avatars);
+    }
+
+    public boolean isCallIntegration() {
+        return getBooleanPreference(CALL_INTEGRATION, R.bool.call_integration);
     }
 
     public boolean isUseTor() {

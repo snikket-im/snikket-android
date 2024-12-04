@@ -12,22 +12,19 @@ import android.telecom.CallEndpoint;
 import android.telecom.Connection;
 import android.telecom.DisconnectCause;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.Media;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +43,7 @@ public class CallIntegration extends Connection {
      * SecurityException
      */
     private static final List<String> BROKEN_DEVICE_MODELS =
-            Arrays.asList("gtaxlwifi", "a5y17lte", "YT-X705F");
+            Arrays.asList("gtaxlwifi", "a5y17lte", "YT-X705F", "HWAGS2");
 
     /**
      * all Realme devices at least up to and including Android 11 are broken
@@ -525,11 +522,15 @@ public class CallIntegration extends Connection {
         return selfManaged(context);
     }
 
-    public static boolean selfManaged(final Context context) {
+    public static boolean selfManagedAvailable(final Context context) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
                 && Build.VERSION.SDK_INT < 35
                 && hasSystemFeature(context)
                 && isDeviceModelSupported();
+    }
+
+    public static boolean selfManaged(final Context context) {
+        return selfManagedAvailable(context) && new AppSettings(context).isCallIntegration();
     }
 
     public static boolean hasSystemFeature(final Context context) {
@@ -559,7 +560,7 @@ public class CallIntegration extends Connection {
         }
         // SailfishOS's AppSupport do not support Call Integration
         if (Build.MODEL.endsWith("(AppSupport)")) {
-			return false;
+            return false;
         }
         return true;
     }

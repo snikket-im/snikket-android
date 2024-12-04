@@ -1093,4 +1093,6 @@
     <string name="pref_chat_bubbles">Chat bubbles</string>
     <string name="pref_chat_bubbles_summary">Background color, Font size, Avatars</string>
     <string name="pref_title_bubbles">Chat Bubbles</string>
+    <string name="pref_call_integration">Call integration</string>
+    <string name="pref_call_integration_summary">Calls from this app interact with regular phone calls, such as ending one call when another starts.</string>
 </resources>

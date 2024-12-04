@@ -10,17 +10,15 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
-
 import com.google.common.base.Optional;
-
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.services.CallIntegration;
 import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.ui.activity.result.PickRingtone;
 import eu.siacs.conversations.utils.Compatibility;
@@ -66,13 +64,15 @@ public class NotificationsSettingsFragment extends XmppPreferenceFragment {
         final var notificationVibrate = findPreference(AppSettings.NOTIFICATION_VIBRATE);
         final var notificationLed = findPreference(AppSettings.NOTIFICATION_LED);
         final var foregroundService = findPreference(AppSettings.KEEP_FOREGROUND_SERVICE);
+        final var callIntegration = findPreference(AppSettings.CALL_INTEGRATION);
         if (messageNotificationSettings == null
                 || fullscreenNotification == null
                 || notificationRingtone == null
                 || notificationHeadsUp == null
                 || notificationVibrate == null
                 || notificationLed == null
-                || foregroundService == null) {
+                || foregroundService == null
+                || callIntegration == null) {
             throw new IllegalStateException("The preference resource file is missing preferences");
         }
         if (Compatibility.runsTwentySix()) {
@@ -91,6 +91,7 @@ public class NotificationsSettingsFragment extends XmppPreferenceFragment {
                         .canUseFullScreenIntent()) {
             fullscreenNotification.setVisible(false);
         }
+        callIntegration.setVisible(CallIntegration.selfManagedAvailable(requireContext()));
     }
 
     @Override
