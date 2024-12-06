@@ -48,9 +48,9 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.databinding.ItemMessageDateBubbleBinding;
-import eu.siacs.conversations.databinding.ItemMessageReceivedBinding;
+import eu.siacs.conversations.databinding.ItemMessageEndBinding;
 import eu.siacs.conversations.databinding.ItemMessageRtpSessionBinding;
-import eu.siacs.conversations.databinding.ItemMessageSentBinding;
+import eu.siacs.conversations.databinding.ItemMessageStartBinding;
 import eu.siacs.conversations.databinding.ItemMessageStatusBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
@@ -97,8 +97,8 @@ import java.util.regex.Pattern;
 public class MessageAdapter extends ArrayAdapter<Message> {
 
     public static final String DATE_SEPARATOR_BODY = "DATE_SEPARATOR";
-    private static final int SENT = 0;
-    private static final int RECEIVED = 1;
+    private static final int END = 0;
+    private static final int START = 1;
     private static final int STATUS = 2;
     private static final int DATE_SEPARATOR = 3;
     private static final int RTP_SESSION = 4;
@@ -108,7 +108,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private final DisplayMetrics metrics;
     private OnContactPictureClicked mOnContactPictureClickedListener;
     private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
-    private BubbleDesign bubbleDesign = new BubbleDesign(false, false, true);
+    private BubbleDesign bubbleDesign = new BubbleDesign(false, false, false, true);
     private final boolean mForceNames;
 
     public MessageAdapter(
@@ -160,7 +160,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         return 5;
     }
 
-    private static int getItemViewType(final Message message) {
+    private static int getItemViewType(final Message message, final boolean alignStart) {
         if (message.getType() == Message.TYPE_STATUS) {
             if (DATE_SEPARATOR_BODY.equals(message.getBody())) {
                 return DATE_SEPARATOR;
@@ -169,29 +169,29 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
         } else if (message.getType() == Message.TYPE_RTP_SESSION) {
             return RTP_SESSION;
-        } else if (message.getStatus() <= Message.STATUS_RECEIVED) {
-            return RECEIVED;
+        } else if (message.getStatus() <= Message.STATUS_RECEIVED || alignStart) {
+            return START;
         } else {
-            return SENT;
+            return END;
         }
     }
 
     @Override
     public int getItemViewType(final int position) {
-        return getItemViewType(getItem(position));
+        return getItemViewType(getItem(position), bubbleDesign.alignStart);
     }
 
     private void displayStatus(
             final BubbleMessageItemViewHolder viewHolder,
             final Message message,
-            final int type,
             final BubbleColor bubbleColor) {
-        final int mergedStatus = message.getStatus();
+        final int status = message.getStatus();
         final boolean error;
         final Transferable transferable = message.getTransferable();
-        final boolean multiReceived =
+        final boolean sent = status != Message.STATUS_RECEIVED;
+        final boolean showUserNickname =
                 message.getConversation().getMode() == Conversation.MODE_MULTI
-                        && mergedStatus <= Message.STATUS_RECEIVED;
+                        && viewHolder instanceof StartBubbleMessageItemViewHolder;
         final String fileSize;
         if (message.isFileOrImage()
                 || transferable != null
@@ -211,24 +211,27 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             fileSize = null;
             error = message.getStatus() == Message.STATUS_SEND_FAILED;
         }
-        if (type == SENT && viewHolder instanceof EndBubbleMessageItemViewHolder endViewHolder) {
-            final @DrawableRes Integer receivedIndicator =
-                    getMessageStatusAsDrawable(message, mergedStatus);
-            if (receivedIndicator == null) {
-                endViewHolder.indicatorReceived().setVisibility(View.INVISIBLE);
-            } else {
-                endViewHolder.indicatorReceived().setImageResource(receivedIndicator);
-                if (mergedStatus == Message.STATUS_SEND_FAILED) {
-                    setImageTintError(endViewHolder.indicatorReceived());
-                } else {
-                    setImageTint(endViewHolder.indicatorReceived(), bubbleColor);
-                }
-                endViewHolder.indicatorReceived().setVisibility(View.VISIBLE);
-            }
-        }
-        final var additionalStatusInfo = getAdditionalStatusInfo(message, mergedStatus);
 
-        if (error && type == SENT) {
+        if (sent) {
+            final @DrawableRes Integer receivedIndicator =
+                    getMessageStatusAsDrawable(message, status);
+            if (receivedIndicator == null) {
+                viewHolder.indicatorReceived().setVisibility(View.INVISIBLE);
+            } else {
+                viewHolder.indicatorReceived().setImageResource(receivedIndicator);
+                if (status == Message.STATUS_SEND_FAILED) {
+                    setImageTintError(viewHolder.indicatorReceived());
+                } else {
+                    setImageTint(viewHolder.indicatorReceived(), bubbleColor);
+                }
+                viewHolder.indicatorReceived().setVisibility(View.VISIBLE);
+            }
+        } else {
+            viewHolder.indicatorReceived().setVisibility(View.GONE);
+        }
+        final var additionalStatusInfo = getAdditionalStatusInfo(message, status);
+
+        if (error && sent) {
             viewHolder
                     .time()
                     .setTextColor(
@@ -239,78 +242,69 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             setTextColor(viewHolder.time(), bubbleColor);
         }
         if (message.getEncryption() == Message.ENCRYPTION_NONE) {
-            viewHolder.indicator().setVisibility(View.GONE);
+            viewHolder.indicatorSecurity().setVisibility(View.GONE);
         } else {
             boolean verified = false;
             if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
-                final FingerprintStatus status =
+                final FingerprintStatus fingerprintStatus =
                         message.getConversation()
                                 .getAccount()
                                 .getAxolotlService()
                                 .getFingerprintTrust(message.getFingerprint());
-                if (status != null && status.isVerified()) {
+                if (fingerprintStatus != null && fingerprintStatus.isVerified()) {
                     verified = true;
                 }
             }
             if (verified) {
-                viewHolder.indicator().setImageResource(R.drawable.ic_verified_user_24dp);
+                viewHolder.indicatorSecurity().setImageResource(R.drawable.ic_verified_user_24dp);
             } else {
-                viewHolder.indicator().setImageResource(R.drawable.ic_lock_24dp);
+                viewHolder.indicatorSecurity().setImageResource(R.drawable.ic_lock_24dp);
             }
-            if (error && type == SENT) {
-                setImageTintError(viewHolder.indicator());
+            if (error && sent) {
+                setImageTintError(viewHolder.indicatorSecurity());
             } else {
-                setImageTint(viewHolder.indicator(), bubbleColor);
+                setImageTint(viewHolder.indicatorSecurity(), bubbleColor);
             }
-            viewHolder.indicator().setVisibility(View.VISIBLE);
+            viewHolder.indicatorSecurity().setVisibility(View.VISIBLE);
         }
 
         if (message.edited()) {
-            viewHolder.editIndicator().setVisibility(View.VISIBLE);
-            if (error && type == SENT) {
-                setImageTintError(viewHolder.editIndicator());
+            viewHolder.indicatorEdit().setVisibility(View.VISIBLE);
+            if (error && sent) {
+                setImageTintError(viewHolder.indicatorEdit());
             } else {
-                setImageTint(viewHolder.editIndicator(), bubbleColor);
+                setImageTint(viewHolder.indicatorEdit(), bubbleColor);
             }
         } else {
-            viewHolder.editIndicator().setVisibility(View.GONE);
+            viewHolder.indicatorEdit().setVisibility(View.GONE);
         }
 
         final String formattedTime =
                 UIHelper.readableTimeDifferenceFull(getContext(), message.getTimeSent());
         final String bodyLanguage = message.getBodyLanguage();
         final ImmutableList.Builder<String> timeInfoBuilder = new ImmutableList.Builder<>();
-        if (message.getStatus() <= Message.STATUS_RECEIVED) {
-            timeInfoBuilder.add(formattedTime);
-            if (fileSize != null) {
-                timeInfoBuilder.add(fileSize);
-            }
-            if (mForceNames || multiReceived) {
-                final String displayName = UIHelper.getMessageDisplayName(message);
-                if (displayName != null) {
-                    timeInfoBuilder.add(displayName);
-                }
-            }
-            if (bodyLanguage != null) {
-                timeInfoBuilder.add(bodyLanguage.toUpperCase(Locale.US));
-            }
-        } else {
-            if (bodyLanguage != null) {
-                timeInfoBuilder.add(bodyLanguage.toUpperCase(Locale.US));
-            }
-            if (fileSize != null) {
-                timeInfoBuilder.add(fileSize);
-            }
-            // for space reasons we display only 'additional status info' (send progress or concrete
-            // failure reason) or the time
-            if (additionalStatusInfo != null) {
-                timeInfoBuilder.add(additionalStatusInfo);
-            } else {
-                timeInfoBuilder.add(formattedTime);
+
+        if (mForceNames || showUserNickname) {
+            final String displayName = UIHelper.getMessageDisplayName(message);
+            if (displayName != null) {
+                timeInfoBuilder.add(displayName);
             }
         }
+        if (fileSize != null) {
+            timeInfoBuilder.add(fileSize);
+        }
+        if (bodyLanguage != null) {
+            timeInfoBuilder.add(bodyLanguage.toUpperCase(Locale.US));
+        }
+        // for space reasons we display only 'additional status info' (send progress or concrete
+        // failure reason) or the time
+        if (additionalStatusInfo != null) {
+            timeInfoBuilder.add(additionalStatusInfo);
+        } else {
+            timeInfoBuilder.add(formattedTime);
+        }
         final var timeInfo = timeInfoBuilder.build();
-        viewHolder.time().setText(Joiner.on(" \u00B7 ").join(timeInfo));
+        viewHolder.time().setText(Joiner.on(" · ").join(timeInfo));
     }
 
     public static @DrawableRes Integer getMessageStatusAsDrawable(
@@ -779,18 +773,18 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                                                 R.layout.item_message_status,
                                                 parent,
                                                 false));
-                        case SENT ->
+                        case END ->
                                 new EndBubbleMessageItemViewHolder(
                                         DataBindingUtil.inflate(
                                                 LayoutInflater.from(parent.getContext()),
-                                                R.layout.item_message_sent,
+                                                R.layout.item_message_end,
                                                 parent,
                                                 false));
-                        case RECEIVED ->
+                        case START ->
                                 new StartBubbleMessageItemViewHolder(
                                         DataBindingUtil.inflate(
                                                 LayoutInflater.from(parent.getContext()),
-                                                R.layout.item_message_received,
+                                                R.layout.item_message_start,
                                                 parent,
                                                 false));
                         default -> throw new AssertionError("Unable to create ViewHolder for type");
@@ -802,9 +796,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     @NonNull
     @Override
-    public View getView(final int position, View view, final @NonNull ViewGroup parent) {
+    public View getView(final int position, final View view, final @NonNull ViewGroup parent) {
         final Message message = getItem(position);
-        final int type = getItemViewType(message);
+        final int type = getItemViewType(message, bubbleDesign.alignStart);
         final MessageItemViewHolder viewHolder = getViewHolder(view, parent, type);
 
         if (type == DATE_SEPARATOR
@@ -822,10 +816,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             return render(message, messageItemViewHolder);
         }
 
-        if ((type == SENT || type == RECEIVED)
+        if ((type == END || type == START)
                 && viewHolder instanceof BubbleMessageItemViewHolder messageItemViewHolder) {
-            // TODO: type is represented by the class of viewHolder. we can get rid of that
-            return render(position, message, type, messageItemViewHolder);
+            return render(position, message, messageItemViewHolder);
         }
 
         throw new AssertionError();
@@ -834,7 +827,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private View render(
             final int position,
             final Message message,
-            final int type,
             final BubbleMessageItemViewHolder viewHolder) {
         final boolean omemoEncryption = message.getEncryption() == Message.ENCRYPTION_AXOLOTL;
         final boolean isInValidSession =
@@ -843,8 +835,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final Account account = conversation.getAccount();
 
         final boolean colorfulBackground = this.bubbleDesign.colorfulChatBubbles;
+        final boolean received = message.getStatus() == Message.STATUS_RECEIVED;
         final BubbleColor bubbleColor;
-        if (type == RECEIVED) {
+        if (received) {
             if (isInValidSession) {
                 bubbleColor = colorfulBackground ? BubbleColor.SECONDARY : BubbleColor.SURFACE;
             } else {
@@ -858,17 +851,20 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final var mergeIntoBottom = mergeIntoBottom(position, message);
         final var showAvatar =
                 bubbleDesign.showAvatars
-                        || (type == RECEIVED
+                        || (viewHolder instanceof StartBubbleMessageItemViewHolder
                                 && message.getConversation().getMode() == Conversation.MODE_MULTI);
         setBubblePadding(viewHolder.root(), mergeIntoTop, mergeIntoBottom);
         if (showAvatar) {
-            final var requiresAvatar = type == SENT ? !mergeIntoBottom : !mergeIntoTop;
+            final var requiresAvatar =
+                    viewHolder instanceof StartBubbleMessageItemViewHolder
+                            ? !mergeIntoTop
+                            : !mergeIntoBottom;
             setRequiresAvatar(viewHolder, requiresAvatar);
             AvatarWorkerTask.loadAvatar(message, viewHolder.contactPicture(), R.dimen.avatar);
         } else {
             viewHolder.contactPicture().setVisibility(View.GONE);
         }
-        setAvatarDistance(viewHolder.messageBox(), type, showAvatar);
+        setAvatarDistance(viewHolder.messageBox(), viewHolder.getClass(), showAvatar);
         viewHolder.messageBox().setClipToOutline(true);
 
         resetClickListener(viewHolder.messageBox(), viewHolder.messageBody());
@@ -998,8 +994,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         setBackgroundTint(viewHolder.messageBox(), bubbleColor);
         setTextColor(viewHolder.messageBody(), bubbleColor);
 
-        if (type == RECEIVED
-                && viewHolder instanceof StartBubbleMessageItemViewHolder startViewHolder) {
+        if (received && viewHolder instanceof StartBubbleMessageItemViewHolder startViewHolder) {
             setTextColor(startViewHolder.encryption(), bubbleColor);
             if (isInValidSession) {
                 startViewHolder.encryption().setVisibility(View.GONE);
@@ -1019,7 +1014,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     reactions -> sendReactions(message, reactions),
                     emoji -> showDetailedReaction(message, emoji),
                     () -> addReaction(message));
-        } else if (type == SENT) {
+        } else {
+            if (viewHolder instanceof StartBubbleMessageItemViewHolder startViewHolder) {
+                startViewHolder.encryption().setVisibility(View.GONE);
+            }
             BindingAdapters.setReactionsOnSent(
                     viewHolder.reactions(),
                     message.getAggregatedReactions(),
@@ -1027,7 +1025,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     emoji -> showDetailedReaction(message, emoji));
         }
 
-        displayStatus(viewHolder, message, type, bubbleColor);
+        displayStatus(viewHolder, message, bubbleColor);
         return viewHolder.root();
     }
 
@@ -1145,16 +1143,18 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     private void setAvatarDistance(
-            final LinearLayout messageBox, final int type, final boolean showAvatar) {
+            final LinearLayout messageBox,
+            final Class<? extends BubbleMessageItemViewHolder> clazz,
+            final boolean showAvatar) {
         final ViewGroup.MarginLayoutParams layoutParams =
                 (ViewGroup.MarginLayoutParams) messageBox.getLayoutParams();
         if (showAvatar) {
             final var resources = messageBox.getResources();
-            if (type == RECEIVED) {
+            if (clazz == StartBubbleMessageItemViewHolder.class) {
                 layoutParams.setMarginStart(
                         resources.getDimensionPixelSize(R.dimen.bubble_avatar_distance));
                 layoutParams.setMarginEnd(0);
-            } else if (type == SENT) {
+            } else if (clazz == EndBubbleMessageItemViewHolder.class) {
                 layoutParams.setMarginStart(0);
                 layoutParams.setMarginEnd(
                         resources.getDimensionPixelSize(R.dimen.bubble_avatar_distance));
@@ -1223,7 +1223,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     private static boolean merge(final Message a, final Message b) {
-        if (getItemViewType(a) != getItemViewType(b)) {
+        if (getItemViewType(a, false) != getItemViewType(b, false)) {
+            return false;
+        }
+        final var receivedA = a.getStatus() == Message.STATUS_RECEIVED;
+        final var receivedB = b.getStatus() == Message.STATUS_RECEIVED;
+        if (receivedA != receivedB) {
             return false;
         }
         if (a.getConversation().getMode() == Conversation.MODE_MULTI
@@ -1341,6 +1346,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         this.bubbleDesign =
                 new BubbleDesign(
                         appSettings.isColorfulChatBubbles(),
+                        appSettings.isAlignStart(),
                         appSettings.isLargeFont(),
                         appSettings.isShowAvatars());
     }
@@ -1462,14 +1468,17 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     private static class BubbleDesign {
         public final boolean colorfulChatBubbles;
+        public final boolean alignStart;
         public final boolean largeFont;
         public final boolean showAvatars;
 
         private BubbleDesign(
                 final boolean colorfulChatBubbles,
+                final boolean alignStart,
                 final boolean largeFont,
                 final boolean showAvatars) {
             this.colorfulChatBubbles = colorfulChatBubbles;
+            this.alignStart = alignStart;
             this.largeFont = largeFont;
             this.showAvatars = showAvatars;
         }
@@ -1492,7 +1501,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         public abstract ConstraintLayout root();
 
-        protected abstract ImageView editIndicator();
+        protected abstract ImageView indicatorEdit();
 
         protected abstract RelativeLayout audioPlayer();
 
@@ -1502,8 +1511,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         protected abstract ImageView image();
 
-        // TODO rename into indicatorSecurity()
-        protected abstract ImageView indicator();
+        protected abstract ImageView indicatorSecurity();
+
+        protected abstract ImageView indicatorReceived();
 
         protected abstract TextView time();
 
@@ -1516,9 +1526,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     private static class StartBubbleMessageItemViewHolder extends BubbleMessageItemViewHolder {
 
-        private final ItemMessageReceivedBinding binding;
+        private final ItemMessageStartBinding binding;
 
-        public StartBubbleMessageItemViewHolder(@NonNull ItemMessageReceivedBinding binding) {
+        public StartBubbleMessageItemViewHolder(@NonNull ItemMessageStartBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -1529,7 +1539,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
 
         @Override
-        protected ImageView editIndicator() {
+        protected ImageView indicatorEdit() {
             return this.binding.editIndicator;
         }
 
@@ -1553,8 +1563,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             return this.binding.messageContent.messageImage;
         }
 
-        protected ImageView indicator() {
+        protected ImageView indicatorSecurity() {
             return this.binding.securityIndicator;
+        }
+
+        @Override
+        protected ImageView indicatorReceived() {
+            return this.binding.indicatorReceived;
         }
 
         @Override
@@ -1584,9 +1599,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     private static class EndBubbleMessageItemViewHolder extends BubbleMessageItemViewHolder {
 
-        private final ItemMessageSentBinding binding;
+        private final ItemMessageEndBinding binding;
 
-        private EndBubbleMessageItemViewHolder(@NonNull ItemMessageSentBinding binding) {
+        private EndBubbleMessageItemViewHolder(@NonNull ItemMessageEndBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -1597,7 +1612,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
 
         @Override
-        protected ImageView editIndicator() {
+        protected ImageView indicatorEdit() {
             return this.binding.editIndicator;
         }
 
@@ -1622,10 +1637,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
 
         @Override
-        protected ImageView indicator() {
+        protected ImageView indicatorSecurity() {
             return this.binding.securityIndicator;
         }
 
+        @Override
         protected ImageView indicatorReceived() {
             return this.binding.indicatorReceived;
         }

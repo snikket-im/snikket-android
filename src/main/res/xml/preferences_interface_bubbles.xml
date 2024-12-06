@@ -7,6 +7,11 @@
         android:summary="@string/pref_use_colorful_bubbles_summary"
         android:title="@string/pref_use_colorful_bubbles" />
     <SwitchPreferenceCompat
+        android:icon="@drawable/ic_format_align_left_24dp"
+        android:key="align_start"
+        android:summary="@string/pref_align_start_summary"
+        android:title="@string/pref_align_start" />
+    <SwitchPreferenceCompat
         android:defaultValue="@bool/show_avatars"
         android:icon="@drawable/ic_account_circle_24dp"
         android:key="show_avatars"
