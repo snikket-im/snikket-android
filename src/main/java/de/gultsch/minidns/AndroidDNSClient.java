@@ -6,31 +6,24 @@ import android.net.LinkProperties;
 import android.net.Network;
 import android.os.Build;
 import android.util.Log;
-
+import androidx.annotation.NonNull;
 import androidx.collection.LruCache;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-
-import org.minidns.AbstractDnsClient;
-import org.minidns.dnsmessage.DnsMessage;
-import org.minidns.dnsqueryresult.DirectCachedDnsQueryResult;
-import org.minidns.dnsqueryresult.DnsQueryResult;
-import org.minidns.dnsqueryresult.StandardDnsQueryResult;
-import org.minidns.dnsqueryresult.SynthesizedCachedDnsQueryResult;
-import org.minidns.record.Data;
-
-import org.minidns.record.Record;
-
 import eu.siacs.conversations.Config;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import org.minidns.AbstractDnsClient;
+import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.dnsqueryresult.DnsQueryResult;
+import org.minidns.dnsqueryresult.StandardDnsQueryResult;
+import org.minidns.record.Data;
+import org.minidns.record.Record;
 
 public class AndroidDNSClient extends AbstractDnsClient {
 
@@ -95,7 +88,8 @@ public class AndroidDNSClient extends AbstractDnsClient {
                     continue;
             }
             cacheQuery(cacheKey, response);
-            return new StandardDnsQueryResult(dnsServer.inetAddress, dnsServer.port,result.queryMethod,question,response);
+            return new StandardDnsQueryResult(
+                    dnsServer.inetAddress, dnsServer.port, result.queryMethod, question, response);
         }
         return null;
     }
@@ -109,9 +103,29 @@ public class AndroidDNSClient extends AbstractDnsClient {
     }
 
     private List<DNSServer> getDNSServers() {
+        final ConnectivityManager connectivityManager =
+                context.getSystemService(ConnectivityManager.class);
+        if (connectivityManager == null) {
+            Log.w(Config.LOGTAG, "no DNS servers found. ConnectivityManager was null");
+            return Collections.emptyList();
+        }
+        final Network activeNetwork = connectivityManager.getActiveNetwork();
+        final List<DNSServer> activeDnsServers =
+                activeNetwork == null
+                        ? Collections.emptyList()
+                        : getDNSServers(connectivityManager, new Network[] {activeNetwork});
+        if (activeDnsServers.isEmpty()) {
+            Log.d(Config.LOGTAG, "no DNS servers on active networks. looking at all networks");
+            return getDNSServers(connectivityManager, connectivityManager.getAllNetworks());
+        } else {
+            return activeDnsServers;
+        }
+    }
+
+    private List<DNSServer> getDNSServers(
+            @NonNull final ConnectivityManager connectivityManager,
+            @NonNull final Network[] networks) {
         final ImmutableList.Builder<DNSServer> dnsServerBuilder = new ImmutableList.Builder<>();
-        final ConnectivityManager connectivityManager = context.getSystemService(ConnectivityManager.class);
-        final Network[] networks = getActiveNetworks(connectivityManager);
         for (final Network network : networks) {
             final LinkProperties linkProperties = connectivityManager.getLinkProperties(network);
             if (linkProperties == null) {
@@ -132,17 +146,6 @@ public class AndroidDNSClient extends AbstractDnsClient {
             }
         }
         return dnsServerBuilder.build();
-    }
-
-    private Network[] getActiveNetworks(final ConnectivityManager connectivityManager) {
-        if (connectivityManager == null) {
-            return new Network[0];
-        }
-        final Network activeNetwork = connectivityManager.getActiveNetwork();
-        if (activeNetwork != null) {
-                return new Network[] {activeNetwork};
-        }
-        return connectivityManager.getAllNetworks();
     }
 
     private DnsMessage queryCache(final QuestionServerTuple key) {
