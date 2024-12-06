@@ -365,6 +365,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.downloadButton().setVisibility(View.GONE);
         viewHolder.audioPlayer().setVisibility(View.GONE);
         viewHolder.image().setVisibility(View.GONE);
+        viewHolder.messageBody().setTypeface(null, Typeface.ITALIC);
         viewHolder.messageBody().setVisibility(View.VISIBLE);
         viewHolder.messageBody().setText(text);
         viewHolder
@@ -380,6 +381,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.downloadButton().setVisibility(View.GONE);
         viewHolder.audioPlayer().setVisibility(View.GONE);
         viewHolder.image().setVisibility(View.GONE);
+        viewHolder.messageBody().setTypeface(null, Typeface.NORMAL);
         viewHolder.messageBody().setVisibility(View.VISIBLE);
         setTextColor(viewHolder.messageBody(), bubbleColor);
         final Spannable span = new SpannableString(body);
@@ -478,6 +480,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.downloadButton().setVisibility(View.GONE);
         viewHolder.image().setVisibility(View.GONE);
         viewHolder.audioPlayer().setVisibility(View.GONE);
+        viewHolder.messageBody().setTypeface(null, Typeface.NORMAL);
         viewHolder.messageBody().setVisibility(View.VISIBLE);
         setTextColor(viewHolder.messageBody(), bubbleColor);
         setTextSize(viewHolder.messageBody(), this.bubbleDesign.largeFont);
@@ -715,6 +718,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     privateMarker.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             viewHolder.messageBody().setText(body);
+            viewHolder.messageBody().setTypeface(null, Typeface.NORMAL);
             viewHolder.messageBody().setVisibility(View.VISIBLE);
         } else {
             viewHolder.messageBody().setVisibility(View.GONE);
