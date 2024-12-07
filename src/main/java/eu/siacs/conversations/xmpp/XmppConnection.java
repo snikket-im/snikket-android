@@ -12,16 +12,13 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 import android.util.SparseArray;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
@@ -63,7 +60,6 @@ import eu.siacs.conversations.xml.XmlReader;
 import eu.siacs.conversations.xmpp.bind.Bind2;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
-
 import im.conversations.android.xmpp.model.AuthenticationFailure;
 import im.conversations.android.xmpp.model.AuthenticationRequest;
 import im.conversations.android.xmpp.model.AuthenticationStreamFeature;
@@ -96,14 +92,10 @@ import im.conversations.android.xmpp.model.sm.StreamManagement;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import im.conversations.android.xmpp.model.stanza.Stanza;
+import im.conversations.android.xmpp.model.streams.StreamError;
 import im.conversations.android.xmpp.model.tls.Proceed;
 import im.conversations.android.xmpp.model.tls.StartTls;
 import im.conversations.android.xmpp.processor.BindProcessor;
-
-import okhttp3.HttpUrl;
-
-import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -135,7 +127,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
-
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -143,6 +134,8 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
+import okhttp3.HttpUrl;
+import org.xmlpull.v1.XmlPullParserException;
 
 public class XmppConnection implements Runnable {
 
@@ -604,24 +597,28 @@ public class XmppConnection implements Runnable {
         this.mStreamCountDownLatch = streamCountDownLatch;
         Tag nextTag = tagReader.readTag();
         while (nextTag != null && !nextTag.isEnd("stream")) {
-            if (nextTag.isStart("error")) {
-                processStreamError(nextTag);
+            if (nextTag.isStart("error", Namespace.STREAMS)) {
+                processStreamError(tagReader.readElement(nextTag, StreamError.class));
             } else if (nextTag.isStart("features", Namespace.STREAMS)) {
                 processStreamFeatures(nextTag);
             } else if (nextTag.isStart("proceed", Namespace.TLS)) {
                 switchOverToTls(nextTag);
             } else if (nextTag.isStart("failure", Namespace.TLS)) {
                 throw new StateChangingException(Account.State.TLS_ERROR);
+            } else if (!isSecure()) {
+                throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
             } else if (account.isOptionSet(Account.OPTION_REGISTER)
                     && nextTag.isStart("iq", Namespace.JABBER_CLIENT)) {
                 processIq(nextTag);
-            } else if (!isSecure() || this.loginInfo == null) {
+            } else if (this.loginInfo == null) {
                 throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
-            } else if (nextTag.isStart("success")) {
-                final Element success = tagReader.readElement(nextTag);
-                if (processSuccess(success)) {
-                    break;
-                }
+            } else if (nextTag.isStart("success", Namespace.SASL)) {
+                processSuccess(tagReader.readElement(nextTag, Success.class));
+                break;
+            } else if (nextTag.isStart("success", Namespace.SASL_2)) {
+                processSuccess(
+                        tagReader.readElement(
+                                nextTag, im.conversations.android.xmpp.model.sasl2.Success.class));
             } else if (nextTag.isStart("failure", Namespace.SASL)) {
                 final var failure = tagReader.readElement(nextTag, Failure.class);
                 processFailure(failure);
@@ -761,7 +758,7 @@ public class XmppConnection implements Runnable {
         tagWriter.writeElement(response);
     }
 
-    private boolean processSuccess(final Element element)
+    private void processSuccess(final StreamElement element)
             throws IOException, XmlPullParserException {
         final LoginInfo currentLoginInfo = this.loginInfo;
         final SaslMechanism currentSaslMechanism = LoginInfo.mechanism(currentLoginInfo);
@@ -910,12 +907,10 @@ public class XmppConnection implements Runnable {
             final Tag tag = tagReader.readTag();
             if (tag != null && tag.isStart("stream", Namespace.STREAMS)) {
                 processStream();
-                return true;
+                return;
             } else {
                 throw new StateChangingException(Account.State.STREAM_OPENING_ERROR);
             }
-        } else {
-            return false;
         }
     }
 
@@ -1023,7 +1018,8 @@ public class XmppConnection implements Runnable {
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid()
-                            + ": fast authentication failed. falling back to regular authentication");
+                            + ": fast authentication failed. falling back to regular"
+                            + " authentication");
             authenticate();
         } else {
             throw new StateChangingException(Account.State.UNAUTHORIZED);
@@ -1592,7 +1588,8 @@ public class XmppConnection implements Runnable {
                     Log.d(
                             Config.LOGTAG,
                             account.getJid().asBareJid()
-                                    + ": interrupted while waiting for DB restore during SASL2 bind");
+                                    + ": interrupted while waiting for DB restore during SASL2"
+                                    + " bind");
                     return;
                 }
             }
@@ -2343,14 +2340,11 @@ public class XmppConnection implements Runnable {
                 });
     }
 
-    private void processStreamError(final Tag currentTag) throws IOException {
-        final Element streamError = tagReader.readElement(currentTag);
-        if (streamError == null) {
-            return;
-        }
-        if (streamError.hasChild("conflict")) {
-            final var loginInfo = this.loginInfo;
-            if (loginInfo != null && loginInfo.saslVersion == SaslMechanism.Version.SASL_2) {
+    private void processStreamError(final StreamError streamError) throws IOException {
+        final var loginInfo = this.loginInfo;
+        final var isSecureLoggedIn = isSecure() && LoginInfo.isSuccess(loginInfo);
+        if (isSecureLoggedIn && streamError.hasChild("conflict")) {
+            if (loginInfo.saslVersion == SaslMechanism.Version.SASL_2) {
                 this.appSettings.resetInstallationId();
             }
             account.setResource(createNewResource());
@@ -2367,7 +2361,9 @@ public class XmppConnection implements Runnable {
             this.lastConnect = SystemClock.elapsedRealtime();
             final String text = streamError.findChildContent("text");
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": policy violation. " + text);
-            failPendingMessages(text);
+            if (isSecureLoggedIn) {
+                failPendingMessages(text);
+            }
             throw new StateChangingException(Account.State.POLICY_VIOLATION);
         } else if (streamError.hasChild("see-other-host")) {
             final String seeOtherHost = streamError.findChildContent("see-other-host");
@@ -3085,7 +3081,8 @@ public class XmppConnection implements Runnable {
                                 Log.d(
                                         Config.LOGTAG,
                                         account.getJid().asBareJid()
-                                                + ": http upload is not available for files with size "
+                                                + ": http upload is not available for files with"
+                                                + " size "
                                                 + filesize
                                                 + " (max is "
                                                 + maxsize
