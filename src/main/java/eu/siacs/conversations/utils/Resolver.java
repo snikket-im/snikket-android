@@ -3,9 +3,7 @@ package eu.siacs.conversations.utils;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
@@ -18,26 +16,11 @@ import com.google.common.primitives.Ints;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
-
 import de.gultsch.minidns.AndroidDNSClient;
 import de.gultsch.minidns.ResolverResult;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.Conversations;
 import eu.siacs.conversations.xmpp.Jid;
-
-import org.minidns.dnsmessage.Question;
-import org.minidns.dnsname.DnsName;
-import org.minidns.dnsname.InvalidDnsNameException;
-import org.minidns.dnsqueryresult.DnsQueryResult;
-import org.minidns.record.A;
-import org.minidns.record.AAAA;
-import org.minidns.record.CNAME;
-import org.minidns.record.Data;
-import org.minidns.record.InternetAddressRR;
-import org.minidns.record.Record;
-import org.minidns.record.SRV;
-
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -49,6 +32,17 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.minidns.dnsmessage.Question;
+import org.minidns.dnsname.DnsName;
+import org.minidns.dnsname.InvalidDnsNameException;
+import org.minidns.dnsqueryresult.DnsQueryResult;
+import org.minidns.record.A;
+import org.minidns.record.AAAA;
+import org.minidns.record.CNAME;
+import org.minidns.record.Data;
+import org.minidns.record.InternetAddressRR;
+import org.minidns.record.Record;
+import org.minidns.record.SRV;
 
 public class Resolver {
 
@@ -156,8 +150,8 @@ public class Resolver {
         if (IP.matches(domain)) {
             final InetAddress inetAddress;
             try {
-                inetAddress = InetAddress.getByName(domain);
-            } catch (final UnknownHostException e) {
+                inetAddress = InetAddresses.forString(domain);
+            } catch (final IllegalArgumentException e) {
                 return Collections.emptyList();
             }
             return Result.createWithDefaultPorts(null, inetAddress);
@@ -440,6 +434,10 @@ public class Resolver {
                     .add("authenticated", authenticated)
                     .add("priority", priority)
                     .toString();
+        }
+
+        public String asDestination() {
+            return ip != null ? InetAddresses.toAddrString(ip) : hostname.toString();
         }
 
         public ContentValues toContentValues() {

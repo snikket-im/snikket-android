@@ -19,6 +19,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
@@ -290,9 +291,9 @@ public class XmppConnection implements Runnable {
         this.quickStartInProgress = false;
         this.isBound = false;
         this.attempt++;
-        this.verifiedHostname =
-                null; // will be set if user entered hostname is being used or hostname was verified
-        // with dnssec
+        this.currentResolverResult = null;
+        // will be set if user entered hostname is being used or hostname was verified with dnssec
+        this.verifiedHostname = null;
         try {
             Socket localSocket;
             shouldAuthenticate = !account.isOptionSet(Account.OPTION_REGISTER);
@@ -300,33 +301,53 @@ public class XmppConnection implements Runnable {
             final boolean useTor = mXmppConnectionService.useTorToConnect() || account.isOnion();
             final boolean extended = mXmppConnectionService.showExtendedConnectionOptions();
             if (useTor) {
-                String destination;
-                if (account.getHostname().isEmpty() || account.isOnion()) {
-                    destination = account.getServer();
+                final var seeOtherHost = this.seeOtherHostResolverResult;
+                final Resolver.Result resume = streamId == null ? null : streamId.location;
+                final Resolver.Result viaTor;
+                if (account.isOnion()) {
+                    // for .onion JIDs we always connect to the onion address no matter what
+                    viaTor =
+                            Iterables.getOnlyElement(
+                                    Resolver.fromHardCoded(
+                                            account.getServer(), Resolver.XMPP_PORT_STARTTLS));
+                } else if (resume != null) {
+                    viaTor = resume;
+                } else if (seeOtherHost != null) {
+                    viaTor = seeOtherHost;
+                } else if (account.getHostname().isEmpty()) {
+                    viaTor =
+                            Iterables.getOnlyElement(
+                                    Resolver.fromHardCoded(
+                                            account.getServer(), Resolver.XMPP_PORT_STARTTLS));
                 } else {
-                    destination = account.getHostname();
-                    this.verifiedHostname = destination;
+                    viaTor =
+                            Iterables.getOnlyElement(
+                                    Resolver.fromHardCoded(
+                                            account.getHostname(), account.getPort()));
+                    this.verifiedHostname = account.getHostname();
                 }
-
-                final int port = account.getPort();
-                final boolean directTls = Resolver.useDirectTls(port);
 
                 Log.d(
                         Config.LOGTAG,
                         account.getJid().asBareJid()
                                 + ": connect to "
-                                + destination
+                                + viaTor.asDestination()
                                 + " via Tor. directTls="
-                                + directTls);
-                localSocket = SocksSocketFactory.createSocketOverTor(destination, port);
+                                + viaTor.isDirectTls());
+                localSocket =
+                        SocksSocketFactory.createSocketOverTor(
+                                viaTor.asDestination(), viaTor.getPort());
 
-                if (directTls) {
+                if (viaTor.isDirectTls()) {
                     localSocket = upgradeSocketToTls(localSocket);
                     features.encryptionEnabled = true;
                 }
 
                 try {
-                    startXmpp(localSocket);
+                    if (startXmpp(localSocket)) {
+                        this.currentResolverResult = viaTor;
+                        this.seeOtherHostResolverResult = null;
+                    }
                 } catch (final InterruptedException e) {
                     Log.d(
                             Config.LOGTAG,
@@ -442,9 +463,8 @@ public class XmppConnection implements Runnable {
 
                         localSocket.setSoTimeout(Config.SOCKET_TIMEOUT * 1000);
                         if (startXmpp(localSocket)) {
-                            localSocket.setSoTimeout(
-                                    0); // reset to 0; once the connection is established we don’t
-                            // want this
+                            // reset to 0; once the connection is established we don't want this
+                            localSocket.setSoTimeout(0);
                             if (!hardcoded && !result.equals(storedBackupResult)) {
                                 mXmppConnectionService.databaseBackend.saveResolverResult(
                                         domain, result);
