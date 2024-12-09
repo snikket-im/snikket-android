@@ -300,6 +300,7 @@ public class XmppConnection implements Runnable {
             this.changeStatus(Account.State.CONNECTING);
             final boolean useTor = mXmppConnectionService.useTorToConnect() || account.isOnion();
             final boolean extended = mXmppConnectionService.showExtendedConnectionOptions();
+            // TODO collapse Tor usage into normal connection code path
             if (useTor) {
                 final var seeOtherHost = this.seeOtherHostResolverResult;
                 final Resolver.Result resume = streamId == null ? null : streamId.location;
@@ -457,6 +458,7 @@ public class XmppConnection implements Runnable {
                         localSocket = new Socket();
                         localSocket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
 
+                        // TODO use result.isDirect() as condition and set encryptionEnabled after
                         if (features.encryptionEnabled) {
                             localSocket = upgradeSocketToTls(localSocket);
                         }
