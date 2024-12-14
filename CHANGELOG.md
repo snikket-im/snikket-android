@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.17.6
+
+* Add ability to show message bubbles left-aligned
+
 ### Version 2.17.5
 
 * Move message bubbles closer together instead of merging them
