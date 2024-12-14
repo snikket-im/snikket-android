@@ -3149,6 +3149,7 @@ public class XmppConnection implements Runnable {
 
         public boolean bookmarks2() {
             return pepPublishOptions()
+                    && pepConfigNodeMax()
                     && hasDiscoFeature(account.getJid().asBareJid(), Namespace.BOOKMARKS2_COMPAT);
         }
 
