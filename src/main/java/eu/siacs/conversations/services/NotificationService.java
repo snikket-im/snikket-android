@@ -28,7 +28,6 @@ import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -41,7 +40,6 @@ import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.graphics.drawable.IconCompat;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
@@ -49,7 +47,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
-
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -70,7 +67,6 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -505,7 +501,8 @@ public class NotificationService {
             Log.d(
                     Config.LOGTAG,
                     message.getConversation().getAccount().getJid().asBareJid()
-                            + ": suppressing failed delivery notification because conversation is open");
+                            + ": suppressing failed delivery notification because conversation is"
+                            + " open");
             return;
         }
         final PendingIntent pendingIntent = createContentIntent(conversation);
@@ -631,10 +628,11 @@ public class NotificationService {
                         .build());
         modifyIncomingCall(builder);
         final Notification notification = builder.build();
-        notification.audioAttributes = new AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
-                .build();
+        notification.audioAttributes =
+                new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                        .build();
         notification.flags = notification.flags | Notification.FLAG_INSISTENT;
         notify(INCOMING_CALL_NOTIFICATION_ID, notification);
     }
@@ -708,7 +706,8 @@ public class NotificationService {
         if (jingleRtpConnection == null) {
             return false;
         }
-        final var notificationManager = mXmppConnectionService.getSystemService(NotificationManager.class);
+        final var notificationManager =
+                mXmppConnectionService.getSystemService(NotificationManager.class);
         if (Iterables.any(
                 Arrays.asList(notificationManager.getActiveNotifications()),
                 n -> n.getId() == INCOMING_CALL_NOTIFICATION_ID)) {
@@ -820,7 +819,8 @@ public class NotificationService {
                         Log.d(
                                 Config.LOGTAG,
                                 conversational.getAccount().getJid().asBareJid()
-                                        + ": dismissed missed call because call was picked up on other device");
+                                        + ": dismissed missed call because call was picked up on"
+                                        + " other device");
                         iterator.remove();
                     }
                 }
@@ -1345,12 +1345,15 @@ public class NotificationService {
             if (systemAccount != null) {
                 notificationBuilder.addPerson(systemAccount.toString());
             }
-            info = mXmppConnectionService.getShortcutService().getShortcutInfoCompat(contact);
+            info =
+                    mXmppConnectionService
+                            .getShortcutService()
+                            .getShortcutInfo(contact, conversation.getUuid());
         } else {
             info =
                     mXmppConnectionService
                             .getShortcutService()
-                            .getShortcutInfoCompat(conversation.getMucOptions());
+                            .getShortcutInfo(conversation.getMucOptions());
         }
         notificationBuilder.setWhen(conversation.getLatestMessage().getTimeSent());
         notificationBuilder.setSmallIcon(R.drawable.ic_app_icon_notification);
@@ -1384,16 +1387,16 @@ public class NotificationService {
             }
             final BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
             bigPictureStyle.bigPicture(bitmap);
-            if (tmp.size() > 0) {
-                CharSequence text = getMergedBodies(tmp);
-                bigPictureStyle.setSummaryText(text);
-                builder.setContentText(text);
-                builder.setTicker(text);
-            } else {
+            if (tmp.isEmpty()) {
                 final String description =
                         UIHelper.getFileDescriptionString(mXmppConnectionService, message);
                 builder.setContentText(description);
                 builder.setTicker(description);
+            } else {
+                final CharSequence text = getMergedBodies(tmp);
+                bigPictureStyle.setSummaryText(text);
+                builder.setContentText(text);
+                builder.setTicker(text);
             }
             builder.setStyle(bigPictureStyle);
         } catch (final IOException e) {

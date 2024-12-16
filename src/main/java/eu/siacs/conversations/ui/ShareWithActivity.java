@@ -8,11 +8,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
+import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
+import com.google.common.collect.Iterables;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityShareWithBinding;
@@ -21,7 +21,6 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.xmpp.Jid;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,7 +111,34 @@ public class ShareWithActivity extends XmppActivity
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.chooseConversationList.setAdapter(mAdapter);
         mAdapter.setConversationClickListener((view, conversation) -> share(conversation));
+        final var intent = getIntent();
+        final var shortcutId = intent.getStringExtra(ShortcutManagerCompat.EXTRA_SHORTCUT_ID);
         this.share = new Share();
+        if (shortcutId != null) {
+            final var conversation = shortcutIdToConversation(shortcutId);
+            if (conversation != null) {
+                // we have everything we need. Jump into chat
+                populateShare(intent);
+                share(conversation);
+            }
+        }
+    }
+
+    private String shortcutIdToConversation(final String shortcutId) {
+        final var shortcut =
+                Iterables.tryFind(
+                        ShortcutManagerCompat.getDynamicShortcuts(this),
+                        si -> si.getId().equals(shortcutId));
+        if (shortcut.isPresent()) {
+            final var extras = shortcut.get().getExtras();
+            if (extras == null) {
+                return null;
+            } else {
+                return extras.getString(ConversationsActivity.EXTRA_CONVERSATION);
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -137,10 +163,18 @@ public class ShareWithActivity extends XmppActivity
     @Override
     public void onStart() {
         super.onStart();
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if (intent == null) {
             return;
         }
+        populateShare(intent);
+        if (xmppConnectionServiceBound) {
+            xmppConnectionService.populateWithOrderedConversations(
+                    mConversations, this.share.uris.isEmpty(), false);
+        }
+    }
+
+    private void populateShare(final Intent intent) {
         final String type = intent.getType();
         final String action = intent.getAction();
         final Uri data = intent.getData();
@@ -164,10 +198,6 @@ public class ShareWithActivity extends XmppActivity
         } else if (Intent.ACTION_SEND_MULTIPLE.equals(action)) {
             final ArrayList<Uri> uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
             this.share.uris = uris == null ? new ArrayList<>() : uris;
-        }
-        if (xmppConnectionServiceBound) {
-            xmppConnectionService.populateWithOrderedConversations(
-                    mConversations, this.share.uris.isEmpty(), false);
         }
     }
 
@@ -209,8 +239,12 @@ public class ShareWithActivity extends XmppActivity
             mPendingConversation = conversation;
             return;
         }
+        share(conversation.getUuid());
+    }
+
+    private void share(final String conversation) {
         final Intent intent = new Intent(this, ConversationsActivity.class);
-        intent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, conversation.getUuid());
+        intent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, conversation);
         if (!share.uris.isEmpty()) {
             intent.setAction(Intent.ACTION_SEND_MULTIPLE);
             intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, share.uris);
@@ -225,7 +259,7 @@ public class ShareWithActivity extends XmppActivity
         }
         try {
             startActivity(intent);
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             Toast.makeText(
                             this,
                             R.string.sharing_application_not_grant_permission,

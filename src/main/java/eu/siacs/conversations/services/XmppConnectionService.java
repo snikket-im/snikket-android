@@ -55,8 +55,10 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -147,7 +149,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -253,12 +254,13 @@ public class XmppConnectionService extends Service {
     private final MessageGenerator mMessageGenerator = new MessageGenerator(this);
     public OnContactStatusChanged onContactStatusChanged =
             (contact, online) -> {
-                Conversation conversation = find(getConversations(), contact);
-                if (conversation != null) {
-                    if (online) {
-                        if (contact.getPresences().size() == 1) {
-                            sendUnsentMessages(conversation);
-                        }
+                final var conversation = find(contact);
+                if (conversation == null) {
+                    return;
+                }
+                if (online) {
+                    if (contact.getPresences().size() == 1) {
+                        sendUnsentMessages(conversation);
                     }
                 }
             };
@@ -998,16 +1000,17 @@ public class XmppConnectionService extends Service {
         }
         if (pingNow) {
             for (final Account account : pingCandidates) {
+                final var connection = account.getXmppConnection();
                 final boolean lowTimeout = isInLowPingTimeoutMode(account);
-                account.getXmppConnection().sendPing();
+                final var delta =
+                        (SystemClock.elapsedRealtime() - connection.getLastPacketReceived())
+                                / 1000L;
+                connection.sendPing();
                 Log.d(
                         Config.LOGTAG,
-                        account.getJid().asBareJid()
-                                + " send ping (action="
-                                + action
-                                + ",lowTimeout="
-                                + lowTimeout
-                                + ")");
+                        String.format(
+                                "%s: send ping (action=%s,lowTimeout=%s,interval=%s)",
+                                account.getJid().asBareJid(), action, lowTimeout, delta));
                 scheduleWakeUpCall(
                         lowTimeout ? Config.LOW_PING_TIMEOUT : Config.PING_TIMEOUT,
                         account.getUuid().hashCode());
@@ -1485,7 +1488,7 @@ public class XmppConnectionService extends Service {
                 ContextCompat.RECEIVER_EXPORTED);
         mForceDuringOnCreate.set(false);
         toggleForegroundService();
-        internalPingExecutor.scheduleAtFixedRate(
+        internalPingExecutor.scheduleWithFixedDelay(
                 this::manageAccountConnectionStatesInternal, 10, 10, TimeUnit.SECONDS);
         final SharedPreferences sharedPreferences =
                 androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
@@ -2428,10 +2431,8 @@ public class XmppConnectionService extends Service {
 
     private void restoreFromDatabase() {
         synchronized (this.conversations) {
-            final Map<String, Account> accountLookupTable = new Hashtable<>();
-            for (Account account : this.accounts) {
-                accountLookupTable.put(account.getUuid(), account);
-            }
+            final Map<String, Account> accountLookupTable =
+                    ImmutableMap.copyOf(Maps.uniqueIndex(this.accounts, Account::getUuid));
             Log.d(Config.LOGTAG, "restoring conversations...");
             final long startTimeConversationsRestore = SystemClock.elapsedRealtime();
             this.conversations.addAll(
@@ -2735,8 +2736,8 @@ public class XmppConnectionService extends Service {
         return results;
     }
 
-    public Conversation find(final Iterable<Conversation> haystack, final Contact contact) {
-        for (final Conversation conversation : haystack) {
+    public Conversation find(final Contact contact) {
+        for (final Conversation conversation : this.conversations) {
             if (conversation.getContact() == contact) {
                 return conversation;
             }
@@ -2798,27 +2799,19 @@ public class XmppConnectionService extends Service {
             final MessageArchiveService.Query query,
             final boolean async) {
         synchronized (this.conversations) {
-            Conversation conversation = find(account, jid);
-            if (conversation != null) {
-                return conversation;
+            final var cached = find(account, jid);
+            if (cached != null) {
+                return cached;
             }
-            conversation = databaseBackend.findConversation(account, jid);
+            final var existing = databaseBackend.findConversation(account, jid);
+            final Conversation conversation;
             final boolean loadMessagesFromDb;
-            if (conversation != null) {
-                conversation.setStatus(Conversation.STATUS_AVAILABLE);
-                conversation.setAccount(account);
-                if (muc) {
-                    conversation.setMode(Conversation.MODE_MULTI);
-                    conversation.setContactJid(jid);
-                } else {
-                    conversation.setMode(Conversation.MODE_SINGLE);
-                    conversation.setContactJid(jid.asBareJid());
-                }
-                databaseBackend.updateConversation(conversation);
-                loadMessagesFromDb = conversation.messagesLoaded.compareAndSet(true, false);
+            if (existing != null) {
+                conversation = existing;
+                loadMessagesFromDb = restoreFromArchive(conversation, jid, muc);
             } else {
                 String conversationName;
-                Contact contact = account.getRoster().getContact(jid);
+                final Contact contact = account.getRoster().getContact(jid);
                 if (contact != null) {
                     conversationName = contact.getDisplayName();
                 } else {
@@ -2839,39 +2832,95 @@ public class XmppConnectionService extends Service {
                 this.databaseBackend.createConversation(conversation);
                 loadMessagesFromDb = false;
             }
-            final Conversation c = conversation;
-            final Runnable runnable =
-                    () -> {
-                        if (loadMessagesFromDb) {
-                            c.addAll(0, databaseBackend.getMessages(c, Config.PAGE_SIZE));
-                            updateConversationUi();
-                            c.messagesLoaded.set(true);
-                        }
-                        if (account.getXmppConnection() != null
-                                && !c.getContact().isBlocked()
-                                && account.getXmppConnection().getFeatures().mam()
-                                && !muc) {
-                            if (query == null) {
-                                mMessageArchiveService.query(c);
-                            } else {
-                                if (query.getConversation() == null) {
-                                    mMessageArchiveService.query(
-                                            c, query.getStart(), query.isCatchup());
-                                }
-                            }
-                        }
-                        if (joinAfterCreate) {
-                            joinMuc(c);
-                        }
-                    };
             if (async) {
-                mDatabaseReaderExecutor.execute(runnable);
+                mDatabaseReaderExecutor.execute(
+                        () ->
+                                postProcessConversation(
+                                        conversation, loadMessagesFromDb, joinAfterCreate, query));
             } else {
-                runnable.run();
+                postProcessConversation(conversation, loadMessagesFromDb, joinAfterCreate, query);
             }
             this.conversations.add(conversation);
             updateConversationUi();
             return conversation;
+        }
+    }
+
+    public Conversation findConversationByUuidReliable(final String uuid) {
+        final var cached = findConversationByUuid(uuid);
+        if (cached != null) {
+            return cached;
+        }
+        final var existing = databaseBackend.findConversation(uuid);
+        if (existing == null) {
+            return null;
+        }
+        Log.d(
+                Config.LOGTAG,
+                existing.getJid().asBareJid()
+                        + ": restoring conversation with "
+                        + existing.getJid()
+                        + " from DB");
+        final Map<String, Account> accounts =
+                ImmutableMap.copyOf(Maps.uniqueIndex(this.accounts, Account::getUuid));
+        existing.setAccount(accounts.get(existing.getAccountUuid()));
+        final var loadMessagesFromDb = restoreFromArchive(existing);
+        mDatabaseReaderExecutor.execute(
+                () ->
+                        postProcessConversation(
+                                existing,
+                                loadMessagesFromDb,
+                                existing.getMode() == Conversational.MODE_MULTI,
+                                null));
+        this.conversations.add(existing);
+        updateConversationUi();
+        return existing;
+    }
+
+    private boolean restoreFromArchive(
+            final Conversation conversation, final Jid jid, final boolean muc) {
+        if (muc) {
+            conversation.setMode(Conversation.MODE_MULTI);
+            conversation.setContactJid(jid);
+        } else {
+            conversation.setMode(Conversation.MODE_SINGLE);
+            conversation.setContactJid(jid.asBareJid());
+        }
+        return restoreFromArchive(conversation);
+    }
+
+    private boolean restoreFromArchive(final Conversation conversation) {
+        conversation.setStatus(Conversation.STATUS_AVAILABLE);
+        databaseBackend.updateConversation(conversation);
+        return conversation.messagesLoaded.compareAndSet(true, false);
+    }
+
+    private void postProcessConversation(
+            final Conversation c,
+            final boolean loadMessagesFromDb,
+            final boolean joinAfterCreate,
+            final MessageArchiveService.Query query) {
+        final var singleMode = c.getMode() == Conversational.MODE_SINGLE;
+        final var account = c.getAccount();
+        if (loadMessagesFromDb) {
+            c.addAll(0, databaseBackend.getMessages(c, Config.PAGE_SIZE));
+            updateConversationUi();
+            c.messagesLoaded.set(true);
+        }
+        if (account.getXmppConnection() != null
+                && !c.getContact().isBlocked()
+                && account.getXmppConnection().getFeatures().mam()
+                && singleMode) {
+            if (query == null) {
+                mMessageArchiveService.query(c);
+            } else {
+                if (query.getConversation() == null) {
+                    mMessageArchiveService.query(c, query.getStart(), query.isCatchup());
+                }
+            }
+        }
+        if (joinAfterCreate) {
+            joinMuc(c);
         }
     }
 
