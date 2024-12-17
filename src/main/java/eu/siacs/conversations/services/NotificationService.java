@@ -78,6 +78,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -114,7 +115,7 @@ public class NotificationService {
     private static final String INCOMING_CALLS_NOTIFICATION_CHANNEL = "incoming_calls_channel";
     private static final String INCOMING_CALLS_NOTIFICATION_CHANNEL_PREFIX =
             "incoming_calls_channel#";
-    private static final String MESSAGES_NOTIFICATION_CHANNEL = "messages";
+    public static final String MESSAGES_NOTIFICATION_CHANNEL = "messages";
 
     NotificationService(final XmppConnectionService service) {
         this.mXmppConnectionService = service;
@@ -229,25 +230,8 @@ public class NotificationService {
         missedCallsChannel.setGroup("calls");
         notificationManager.createNotificationChannel(missedCallsChannel);
 
-        final NotificationChannel messagesChannel =
-                new NotificationChannel(
-                        MESSAGES_NOTIFICATION_CHANNEL,
-                        c.getString(R.string.messages_channel_name),
-                        NotificationManager.IMPORTANCE_HIGH);
-        messagesChannel.setShowBadge(true);
-        messagesChannel.setSound(
-                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),
-                new AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                        .build());
-        messagesChannel.setLightColor(LED_COLOR);
-        final int dat = 70;
-        final long[] pattern = {0, 3 * dat, dat, dat};
-        messagesChannel.setVibrationPattern(pattern);
-        messagesChannel.enableVibration(true);
-        messagesChannel.enableLights(true);
-        messagesChannel.setGroup("chats");
+        final var messagesChannel =
+                prepareMessagesChannel(mXmppConnectionService, MESSAGES_NOTIFICATION_CHANNEL);
         notificationManager.createNotificationChannel(messagesChannel);
         final NotificationChannel silentMessagesChannel =
                 new NotificationChannel(
@@ -276,6 +260,41 @@ public class NotificationService {
                         .build());
         deliveryFailedChannel.setGroup("chats");
         notificationManager.createNotificationChannel(deliveryFailedChannel);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public static void createConversationChannel(
+            final Context context, final ShortcutInfoCompat shortcut) {
+        final var messagesChannel = prepareMessagesChannel(context, UUID.randomUUID().toString());
+        messagesChannel.setName(shortcut.getShortLabel());
+        messagesChannel.setConversationId(MESSAGES_NOTIFICATION_CHANNEL, shortcut.getId());
+        final var notificationManager = context.getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(messagesChannel);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static NotificationChannel prepareMessagesChannel(
+            final Context context, final String id) {
+        final NotificationChannel messagesChannel =
+                new NotificationChannel(
+                        id,
+                        context.getString(R.string.messages_channel_name),
+                        NotificationManager.IMPORTANCE_HIGH);
+        messagesChannel.setShowBadge(true);
+        messagesChannel.setSound(
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),
+                new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                        .build());
+        messagesChannel.setLightColor(LED_COLOR);
+        final int dat = 70;
+        final long[] pattern = {0, 3 * dat, dat, dat};
+        messagesChannel.setVibrationPattern(pattern);
+        messagesChannel.enableVibration(true);
+        messagesChannel.enableLights(true);
+        messagesChannel.setGroup("chats");
+        return messagesChannel;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -93,6 +93,12 @@ public class ShortcutService {
         }
     }
 
+    public ShortcutInfoCompat getShortcutInfo(final Contact contact) {
+        final var conversation = xmppConnectionService.find(contact);
+        final var uuid = conversation == null ? null : conversation.getUuid();
+        return getShortcutInfo(contact, uuid);
+    }
+
     public ShortcutInfoCompat getShortcutInfo(final Contact contact, final String conversation) {
         final ShortcutInfoCompat.Builder builder =
                 new ShortcutInfoCompat.Builder(xmppConnectionService, getShortcutId(contact))
@@ -199,9 +205,7 @@ public class ShortcutService {
     public Intent createShortcut(final Contact contact, final boolean legacy) {
         Intent intent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !legacy) {
-            final var conversation = xmppConnectionService.find(contact);
-            final var uuid = conversation == null ? null : conversation.getUuid();
-            final var shortcut = getShortcutInfo(contact, uuid);
+            final var shortcut = getShortcutInfo(contact);
             intent =
                     ShortcutManagerCompat.createShortcutResultIntent(
                             xmppConnectionService, shortcut);

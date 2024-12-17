@@ -2302,6 +2302,7 @@ public class XmppConnectionService extends Service {
                     Config.LOGTAG,
                     account.getJid().asBareJid() + ": pushing bookmark via Bookmarks 2");
             final Element item = mIqGenerator.publishBookmarkItem(bookmark);
+            Log.d(Config.LOGTAG, "publishing: " + item.toString());
             pushNodeAndEnforcePublishOptions(
                     account,
                     Namespace.BOOKMARKS2,
@@ -2873,6 +2874,7 @@ public class XmppConnectionService extends Service {
                                 existing.getMode() == Conversational.MODE_MULTI,
                                 null));
         this.conversations.add(existing);
+        // TODO push bookmark
         updateConversationUi();
         return existing;
     }

@@ -1097,4 +1097,6 @@
     <string name="pref_call_integration_summary">Calls from this app interact with regular phone calls, such as ending one call when another starts.</string>
     <string name="pref_align_start">Left-aligned messages</string>
     <string name="pref_align_start_summary">Display all messages, including sent ones, on the left side for a uniform chat layout.</string>
+    <string name="custom_notifications">Custom notifications</string>
+    <string name="custom_notifications_enable">Enable customized notification settings (importance, sound, vibration) settings for this conversation?</string>
 </resources>
