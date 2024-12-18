@@ -4,7 +4,7 @@
     <string name="pref_never_send_crash_summary">通过发送崩溃报告，您可以帮助 Quicksy 的持续开发</string>
     <string name="pref_broadcast_last_activity_summary">让您的所有联系人知道您最后使用 Quicksy 的时间</string>
     <string name="huawei_protected_apps_summary">为了在屏幕关闭后继续接收通知，您需要将 Quicksy 加入受保护的应用列表。</string>
-    <string name="set_profile_picture">Quicksy 个人资料图片</string>
+    <string name="set_profile_picture">Quicksy 个人资料照片</string>
     <string name="not_available_in_your_country">Quicksy 在您所在的国家/地区无法使用。</string>
     <string name="unable_to_verify_server_identity">无法验证服务器身份。</string>
     <string name="unknown_security_error">安全错误未知。</string>
