@@ -1100,4 +1100,10 @@
     <string name="pref_show_avatars_summary">Profilbilder an deinen Nachrichten und in 1:1 Chats statt nur in Gruppenchats anzeigen.</string>
     <string name="pref_chat_bubbles_summary">Hintergrundfarbe, Schriftgröße, Profilbilder</string>
     <string name="pref_title_bubbles">Sprechblasen</string>
+    <string name="pref_call_integration">Anrufintegration</string>
+    <string name="pref_align_start">Linksbündige Nachrichten</string>
+    <string name="pref_align_start_summary">Zeige alle Nachrichten, inklusive gesendeter, linksbündig für ein einheitliches Chatlayout an.</string>
+    <string name="custom_notifications">Angepasste Benachrichtigungen</string>
+    <string name="pref_call_integration_summary">Anrufe aus dieser App interagieren mit normalen Telefonanrufen, wie beispielsweise das Beenden eines Anrufs, wenn ein anderer beginnt.</string>
+    <string name="custom_notifications_enable">Individuelle Benachrichtigungseinstellungen (Wichtigkeit, Nachrichtenton, vibration) für diese Unterhaltung aktivieren?</string>
 </resources>
