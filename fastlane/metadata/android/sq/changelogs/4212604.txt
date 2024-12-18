@@ -1,0 +1,2 @@
+* Kalim i flluskave të mesazheve më afër njëra-tjetrës, në vend se përzierje e tyre
+* Shtim aftësie për fshehje avatarësh në pamje fjalosjesh, kur s’është domosdo e nevojshme (Rregullime -> Ndërfaqe -> Flluska Fjalosjesh -> Shfaq avatarë)
