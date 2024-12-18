@@ -1111,4 +1111,10 @@
     <string name="pref_chat_bubbles">Flluska fjalosjesh</string>
     <string name="pref_chat_bubbles_summary">Ngjyrë sfondi, Madhësi shkronjash, avatarë</string>
     <string name="pref_title_bubbles">Flluska Fjalosjesh</string>
+    <string name="pref_align_start">Mesazhe të drejtuar majtas</string>
+    <string name="pref_align_start_summary">Shfaqi krejt mesazhet, përfshi ata të dërguarit, në anën e majtë, për një skemë të njëtrajtshme të fjalosjes.</string>
+    <string name="custom_notifications">Njoftime vetjake</string>
+    <string name="pref_call_integration">Integrim thirrjesh</string>
+    <string name="custom_notifications_enable">Të aktivizohen rregullime njoftimesh vetjake (rëndësi, tingull, dridhje) për këtë bisedë?</string>
+    <string name="pref_call_integration_summary">Thirrjet prej këtij aplikacioni ndërveprojnë me thirrjet e zakonshme telefonike, fjala vjen, përfundim i një thirrjeje, kur niset një tjetër.</string>
 </resources>
