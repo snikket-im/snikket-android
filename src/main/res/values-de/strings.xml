@@ -753,7 +753,7 @@
     <string name="delivery_failed_channel_name">Fehlgeschlagene Zustellungen</string>
     <string name="pref_message_notification_settings">Benachrichtigungseinstellungen</string>
     <string name="pref_incoming_call_notification_settings">Einstellungen für die Benachrichtigung bei eingehenden Anrufen</string>
-    <string name="pref_more_notification_settings_summary">Wichtigkeit, Klang, Vibrationen</string>
+    <string name="pref_more_notification_settings_summary">Wichtigkeit, Ton, Vibration</string>
     <string name="video_compression_channel_name">Video komprimieren</string>
     <string name="view_media">Medien anzeigen</string>
     <string name="group_chat_members">Teilnehmer</string>
@@ -1102,8 +1102,8 @@
     <string name="pref_title_bubbles">Sprechblasen</string>
     <string name="pref_call_integration">Anrufintegration</string>
     <string name="pref_align_start">Linksbündige Nachrichten</string>
-    <string name="pref_align_start_summary">Zeige alle Nachrichten, inklusive gesendeter, linksbündig für ein einheitliches Chatlayout an.</string>
-    <string name="custom_notifications">Angepasste Benachrichtigungen</string>
+    <string name="pref_align_start_summary">Alle Nachrichten, einschließlich der gesendeten, auf der linken Seite anzeigen, um ein einheitliches Chatlayout zu erhalten.</string>
+    <string name="custom_notifications">Individuelle Benachrichtigungen</string>
     <string name="pref_call_integration_summary">Anrufe aus dieser App interagieren mit normalen Telefonanrufen, wie beispielsweise das Beenden eines Anrufs, wenn ein anderer beginnt.</string>
-    <string name="custom_notifications_enable">Individuelle Benachrichtigungseinstellungen (Wichtigkeit, Nachrichtenton, vibration) für diese Unterhaltung aktivieren?</string>
+    <string name="custom_notifications_enable">Individuelle Benachrichtigungseinstellungen (Wichtigkeit, Ton, Vibration) für diese Unterhaltung aktivieren?</string>
 </resources>
