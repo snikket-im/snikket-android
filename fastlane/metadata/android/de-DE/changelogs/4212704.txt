@@ -1,0 +1,1 @@
+* Möglichkeit hinzugefügt, Nachrichten linksbündig anzuzeigen
