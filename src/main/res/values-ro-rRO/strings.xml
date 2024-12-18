@@ -1119,4 +1119,10 @@
     <string name="pref_title_bubbles">Bule de mesaj</string>
     <string name="pref_chat_bubbles">Bule de mesaj</string>
     <string name="pref_show_avatars">Arată avatare</string>
+    <string name="custom_notifications_enable">Activați setările de notificare personalizate (importanță, sunet, vibrații) pentru această conversație?</string>
+    <string name="custom_notifications">Notificări personalizate</string>
+    <string name="pref_align_start_summary">Afișați toate mesajele, inclusiv cele trimise, în partea stângă pentru un aspect uniform al discuției.</string>
+    <string name="pref_align_start">Mesaje aliniate la stânga</string>
+    <string name="pref_call_integration_summary">Apelurile din această aplicație interacționează cu apelurile telefonice obișnuite, cum ar fi terminarea unui apel atunci când începe altul.</string>
+    <string name="pref_call_integration">Integrarea apelurilor</string>
 </resources>
