@@ -50,7 +50,7 @@
     <string name="blocked">Заблокирован</string>
     <string name="register_account">Создать новый аккаунт на сервере</string>
     <string name="change_password_on_server">Изменить пароль на сервере</string>
-    <string name="share_with">Поделиться с…</string>
+    <string name="share_with">Поделиться…</string>
     <string name="invite_contact">Пригласить контакт</string>
     <string name="invite">Пригласить</string>
     <string name="contacts">Контакты</string>
@@ -847,7 +847,7 @@
     <string name="ebook">Электронная книга</string>
     <string name="video_original">Оригинал (без сжатия)</string>
     <string name="open_with">Открыть с помощью…</string>
-    <string name="set_profile_picture">Фотография профиля Conversations</string>
+    <string name="set_profile_picture">Изображение профиля Conversations</string>
     <string name="choose_account">Выбрать аккаунт</string>
     <string name="restore_backup">Восстановить из резервной копии</string>
     <string name="restore">Восстановить</string>
@@ -1065,8 +1065,8 @@
     <string name="pref_title_security">Безопасность</string>
     <string name="pref_allow_screenshots">Разрешить снимки экрана</string>
     <string name="pref_keyboard_options">Клавиатура</string>
-    <string name="title_activity_share_with">Поделиться с…</string>
-    <string name="pref_use_colorful_bubbles">Цветные пузырьки сообщений</string>
+    <string name="title_activity_share_with">Поделиться…</string>
+    <string name="pref_use_colorful_bubbles">Цветные пузыри сообщений</string>
     <string name="pref_use_colorful_bubbles_summary">Различные цвета фона для отправленных и полученных сообщений</string>
     <string name="pref_dynamic_colors">Динамичные цвета</string>
     <string name="pref_dynamic_colors_summary">Цвет системы (Material You)</string>
@@ -1145,6 +1145,12 @@
     <string name="pref_chat_bubbles_summary">Цвет фона, размер текста, аватары</string>
     <string name="pref_show_avatars">Показывать аватары</string>
     <string name="pref_title_bubbles">Сообщения в пузырях</string>
-    <string name="pref_chat_bubbles">Пузырьки сообщений</string>
-    <string name="pref_show_avatars_summary">Показывать аватары в своих сообщениях и приватных чатах в дополнение к конференциям</string>
+    <string name="pref_chat_bubbles">Пузыри сообщений</string>
+    <string name="pref_show_avatars_summary">Показывать аватары в своих сообщениях и приватных беседах в дополнение к конференциям</string>
+    <string name="pref_call_integration">Интеграция звонков</string>
+    <string name="pref_align_start">Выравнивать сообщения слева</string>
+    <string name="pref_align_start_summary">Показывать все сообщения, включая отправленные, выровненными по левому краю для единообразия вида беседы</string>
+    <string name="custom_notifications">Настраиваемые уведомления</string>
+    <string name="pref_call_integration_summary">Звонки из этого приложения взаимодействуют с обычными телефонными звонками, например, завершение одного звонка при начале другого</string>
+    <string name="custom_notifications_enable">Использовать индивидуальные настройки уведомлений (важность, звук, вибрация) для этой беседы?</string>
 </resources>
