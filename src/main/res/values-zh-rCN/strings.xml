@@ -1103,4 +1103,6 @@
     <string name="custom_notifications">自定义通知</string>
     <string name="custom_notifications_enable">是否为此对话启用自定义通知（重要程度、声音、振动）设置？</string>
     <string name="pref_call_integration_summary">此应用的通话与常规通话交互，例如另一个通话开始时结束一个通话。</string>
+    <string name="pref_align_start_summary">在左侧显示所有消息，包括发送的消息，以实现统一的聊天布局。</string>
+    <string name="pref_align_start">左对齐消息</string>
 </resources>
