@@ -2290,6 +2290,22 @@ public class XmppConnectionService extends Service {
         processModifiedBookmark(bookmark, true);
     }
 
+    public void ensureBookmarkIsAutoJoin(final Conversation conversation) {
+        final var account = conversation.getAccount();
+        final var existingBookmark = conversation.getBookmark();
+        if (existingBookmark == null) {
+            final var bookmark = new Bookmark(account, conversation.getJid().asBareJid());
+            bookmark.setAutojoin(true);
+            createBookmark(account, bookmark);
+        } else {
+            if (existingBookmark.autojoin()) {
+                return;
+            }
+            existingBookmark.setAutojoin(true);
+            createBookmark(account, existingBookmark);
+        }
+    }
+
     public void createBookmark(final Account account, final Bookmark bookmark) {
         account.putBookmark(bookmark);
         final XmppConnection connection = account.getXmppConnection();
@@ -2302,7 +2318,6 @@ public class XmppConnectionService extends Service {
                     Config.LOGTAG,
                     account.getJid().asBareJid() + ": pushing bookmark via Bookmarks 2");
             final Element item = mIqGenerator.publishBookmarkItem(bookmark);
-            Log.d(Config.LOGTAG, "publishing: " + item.toString());
             pushNodeAndEnforcePublishOptions(
                     account,
                     Namespace.BOOKMARKS2,
@@ -2874,7 +2889,9 @@ public class XmppConnectionService extends Service {
                                 existing.getMode() == Conversational.MODE_MULTI,
                                 null));
         this.conversations.add(existing);
-        // TODO push bookmark
+        if (existing.getMode() == Conversational.MODE_MULTI) {
+            ensureBookmarkIsAutoJoin(existing);
+        }
         updateConversationUi();
         return existing;
     }
