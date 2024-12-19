@@ -1148,4 +1148,10 @@
     <string name="pref_chat_bubbles_summary">Колір фону, розмір шрифту, аватари</string>
     <string name="pref_title_bubbles">Вигляд повідомлень</string>
     <string name="pref_show_avatars_summary">Крім групових чатів, показувати аватари також у Ваших повідомленнях і приватних чатах.</string>
+    <string name="pref_call_integration">Інтеграція викликів</string>
+    <string name="pref_call_integration_summary">Виклики з цього застосунку взаємодіють зі звичайними телефонними дзвінками — наприклад, завершення одного дзвінка, коли починається інший.</string>
+    <string name="pref_align_start">Вирівнювання повідомлень ліворуч</string>
+    <string name="pref_align_start_summary">Вирівнювати всі повідомлення, включно з надісланими, по лівому краю для одноманітного вигляду розмов.</string>
+    <string name="custom_notifications_enable">Увімкнути індивідуальні налаштування сповіщень (важливість, звук, вібрація) для цієї розмови?</string>
+    <string name="custom_notifications">Пристосування сповіщень</string>
 </resources>
