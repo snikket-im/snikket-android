@@ -1,0 +1,3 @@
+* Nüüd saab teha regulaarseid varukoopiaid
+* Välistame kõnede lõimimise kõikides Realme nutiseadmetes kuni Androidi versioonini 11
+* Väikesed kasutajaliidese parandused (kõnemullid)

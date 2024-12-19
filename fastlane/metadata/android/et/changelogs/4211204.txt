@@ -1,0 +1,2 @@
+* Parandasime vea, kus kõne summutamine lõppeb väljundseadmete vahetamisel
+* Välistame kõnede lõimimise kõikides Umidigi nutiseadmetes

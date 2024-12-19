@@ -1,0 +1,2 @@
+* Näitame sõnumite olekuid ikoonidena
+* Lisasime sõnumimullide välimusele suurema kirjatüübi valimise võimaluse
