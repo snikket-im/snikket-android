@@ -1118,4 +1118,10 @@
     <string name="pref_chat_bubbles">Bolhas de conversa</string>
     <string name="pref_chat_bubbles_summary">Cor do fundo, Tamanho da fonte, Avatares</string>
     <string name="pref_title_bubbles">Bolhas de Conversa</string>
+    <string name="pref_align_start">Mensagens alinhadas à esquerda</string>
+    <string name="custom_notifications">Notificações customizadas</string>
+    <string name="pref_align_start_summary">Mostrar todas as mensagens, incluindo as enviadas por você, no lado esquerdo, para um layout de conversa uniforme.</string>
+    <string name="custom_notifications_enable">Ativar as configurações de notificações customizadas (importância, som, vibração) para esta conversa?</string>
+    <string name="pref_call_integration">Integração de chamadas</string>
+    <string name="pref_call_integration_summary">Chamadas deste app interagem com as chamadas comuns do sistema, como quando uma chamada é terminada quando outra começa.</string>
 </resources>
