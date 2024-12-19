@@ -1100,4 +1100,10 @@
     <string name="pref_title_bubbles">Burbullas na conversa</string>
     <string name="pref_show_avatars_summary">Mostrar avatares para as túas mensaxes en conversas 1:1, ademáis de nas parolas en grupo.</string>
     <string name="pref_chat_bubbles_summary">Cor de fondo, Tamaño da letra, Avatares</string>
+    <string name="pref_call_integration">Integración das chamadas</string>
+    <string name="pref_call_integration_summary">As chamadas desde esta app interactúan coas chamadas de teléfono normais, por exemplo finalizando unha chamada cando outra comeza.</string>
+    <string name="pref_align_start">Mensaxes enfeitadas á esquerda</string>
+    <string name="pref_align_start_summary">Mostrar todas as mensaxes, incluíndo as propias, no lado esquerdo para unha aparencia uniforme.</string>
+    <string name="custom_notifications">Notificacións personalizadas</string>
+    <string name="custom_notifications_enable">Activar axustes personalizados para as notificacións (importancia, son, vibración) nesta conversa?</string>
 </resources>
