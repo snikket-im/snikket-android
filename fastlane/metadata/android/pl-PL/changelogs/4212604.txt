@@ -1,0 +1,2 @@
+* Przeniesienie dymków wiadomości bliżej siebie zamiast ich łączenia
+* Dodanie możliwości ukrywania awatarów w widokach rozmów gdy nie są konieczne (Ustawienia → Interfejs → Dymki rozmów → Pokaż awatary)
