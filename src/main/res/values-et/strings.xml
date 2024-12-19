@@ -1120,4 +1120,10 @@
     <string name="pref_chat_bubbles">Jutumullid</string>
     <string name="pref_chat_bubbles_summary">Taustavärv, kirjatüübi suurus, tunnuspildid</string>
     <string name="pref_title_bubbles">Jutumullid</string>
+    <string name="pref_align_start">Kõned joonduvad vasakule</string>
+    <string name="pref_align_start_summary">Kõik saadetud ja saadunud sõnumid joonduvad vasakule ning moodustavad ühtselt kujundatud sõnumivoo.</string>
+    <string name="custom_notifications">Sinu seadistatud teavitused</string>
+    <string name="pref_call_integration_summary">Kõned suudavad suhestuda nutiseadme muude kõnede loogikaga, näiteks uue kõne algamisel eelmine kõne lõppeb.</string>
+    <string name="custom_notifications_enable">Kas kasutad selle vestluse jaoks enda määratud teavituste seadistusi (olulisus, helimärguanded, värina kasutamine)?</string>
+    <string name="pref_call_integration">Kõnede lõimimine</string>
 </resources>
