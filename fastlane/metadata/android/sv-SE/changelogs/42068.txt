@@ -1,0 +1,2 @@
+* stöd för inställningar för meddelanden per konversation
+* använd opus för ljudmeddelanden i Android 10

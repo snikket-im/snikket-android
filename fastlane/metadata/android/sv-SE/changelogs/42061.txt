@@ -1,0 +1,1 @@
+* Ta bort funktionen för att upptäcka kanaler från Google Play-versionen

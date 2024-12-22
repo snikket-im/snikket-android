@@ -1,0 +1,1 @@
+* Fixade mindre återgångar som introducerades med 2.13.1

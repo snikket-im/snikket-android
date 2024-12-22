@@ -1,0 +1,2 @@
+* Visa meddelandestatus som ikoner
+* Introducera inställningen 'Stort typsnitt' för meddelandebubblor
