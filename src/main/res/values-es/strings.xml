@@ -1107,4 +1107,12 @@
     <string name="could_not_add_reaction">No se pudo agregar la reacción</string>
     <string name="add_reaction">Agregar reacción…</string>
     <string name="add_reaction_title">Agregar reacción</string>
+    <string name="clients_may_not_support_av">El cliente XMPP de tu contacto puede que no soporte llamadas de audio/video.</string>
+    <string name="could_not_modify_call">No se pudo modificar la llamada</string>
+    <string name="pref_chat_bubbles">Burbujas de chat</string>
+    <string name="pref_chat_bubbles_summary">Color, Tamaño de fuente, Imágenes de perfil</string>
+    <string name="pref_title_bubbles">Burbujas de Chat</string>
+    <string name="pref_call_integration">Integración de llamadas</string>
+    <string name="pref_show_avatars">Ver imágenes de perfil</string>
+    <string name="pref_show_avatars_summary">Mostrar imágenes de perfil para tus mensajes y conversaciones 1:1, aparte de las conversaciones en grupo.</string>
 </resources>
