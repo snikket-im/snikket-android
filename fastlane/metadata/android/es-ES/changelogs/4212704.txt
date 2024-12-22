@@ -1,0 +1,1 @@
+* Posibilidad de alinear burbujas de mensaje sobre el margen izquierdo
