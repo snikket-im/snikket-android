@@ -1115,4 +1115,5 @@
     <string name="pref_call_integration">Integración de llamadas</string>
     <string name="pref_show_avatars">Ver imágenes de perfil</string>
     <string name="pref_show_avatars_summary">Mostrar imágenes de perfil para tus mensajes y conversaciones 1:1, aparte de las conversaciones en grupo.</string>
+    <string name="pref_call_integration_summary">Las llamadas desde esta app interactúan con las llamadas telefónicas regulares, como ser finalizar una llamada cuando recibimos otra.</string>
 </resources>
