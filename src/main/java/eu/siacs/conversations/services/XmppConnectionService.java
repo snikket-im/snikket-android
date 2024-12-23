@@ -4678,28 +4678,32 @@ public class XmppConnectionService extends Service {
                 .start();
     }
 
-    public void publishAvatar(
-            final Account account, final Uri image, final OnAvatarPublication callback) {
-        new Thread(
-                        () -> {
-                            final Bitmap.CompressFormat format = Config.AVATAR_FORMAT;
-                            final int size = Config.AVATAR_SIZE;
-                            final Avatar avatar =
-                                    getFileBackend().getPepAvatar(image, size, format);
-                            if (avatar != null) {
-                                if (!getFileBackend().save(avatar)) {
-                                    Log.d(Config.LOGTAG, "unable to save vcard");
-                                    callback.onAvatarPublicationFailed(
-                                            R.string.error_saving_avatar);
-                                    return;
-                                }
-                                publishAvatar(account, avatar, callback);
-                            } else {
-                                callback.onAvatarPublicationFailed(
-                                        R.string.error_publish_avatar_converting);
-                            }
-                        })
-                .start();
+    public void publishAvatarAsync(
+            final Account account,
+            final Uri image,
+            final boolean open,
+            final OnAvatarPublication callback) {
+        new Thread(() -> publishAvatar(account, image, open, callback)).start();
+    }
+
+    private void publishAvatar(
+            final Account account,
+            final Uri image,
+            final boolean open,
+            final OnAvatarPublication callback) {
+        final Bitmap.CompressFormat format = Config.AVATAR_FORMAT;
+        final int size = Config.AVATAR_SIZE;
+        final Avatar avatar = getFileBackend().getPepAvatar(image, size, format);
+        if (avatar != null) {
+            if (!getFileBackend().save(avatar)) {
+                Log.d(Config.LOGTAG, "unable to save vcard");
+                callback.onAvatarPublicationFailed(R.string.error_saving_avatar);
+                return;
+            }
+            publishAvatar(account, avatar, open, callback);
+        } else {
+            callback.onAvatarPublicationFailed(R.string.error_publish_avatar_converting);
+        }
     }
 
     private void publishMucAvatar(
@@ -4753,10 +4757,13 @@ public class XmppConnectionService extends Service {
     }
 
     public void publishAvatar(
-            Account account, final Avatar avatar, final OnAvatarPublication callback) {
+            final Account account,
+            final Avatar avatar,
+            final boolean open,
+            final OnAvatarPublication callback) {
         final Bundle options;
         if (account.getXmppConnection().getFeatures().pepPublishOptions()) {
-            options = PublishOptions.openAccess();
+            options = open ? PublishOptions.openAccess() : PublishOptions.presenceAccess();
         } else {
             options = null;
         }
@@ -4886,7 +4893,7 @@ public class XmppConnectionService extends Service {
                 });
     }
 
-    public void republishAvatarIfNeeded(Account account) {
+    public void republishAvatarIfNeeded(final Account account) {
         if (account.getAxolotlService().isPepBroken()) {
             Log.d(
                     Config.LOGTAG,
@@ -4922,17 +4929,21 @@ public class XmppConnectionService extends Service {
                     @Override
                     public void accept(final Iq packet) {
                         if (packet.getType() == Iq.Type.RESULT || errorIsItemNotFound(packet)) {
-                            Avatar serverAvatar = parseAvatar(packet);
+                            final Avatar serverAvatar = parseAvatar(packet);
                             if (serverAvatar == null && account.getAvatar() != null) {
-                                Avatar avatar = fileBackend.getStoredPepAvatar(account.getAvatar());
+                                final Avatar avatar =
+                                        fileBackend.getStoredPepAvatar(account.getAvatar());
                                 if (avatar != null) {
                                     Log.d(
                                             Config.LOGTAG,
                                             account.getJid().asBareJid()
                                                     + ": avatar on server was null. republishing");
+                                    // publishing as 'open' - old server (that requires
+                                    // republication) likely doesn't support access models anyway
                                     publishAvatar(
                                             account,
                                             fileBackend.getStoredPepAvatar(account.getAvatar()),
+                                            true,
                                             null);
                                 } else {
                                     Log.e(

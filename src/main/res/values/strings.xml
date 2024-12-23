@@ -1099,4 +1099,6 @@
     <string name="pref_align_start_summary">Display all messages, including sent ones, on the left side for a uniform chat layout.</string>
     <string name="custom_notifications">Custom notifications</string>
     <string name="custom_notifications_enable">Enable customized notification settings (importance, sound, vibration) settings for this conversation?</string>
+    <string name="delete_avatar_message">Would you like to delete your avatar? Some clients might continue to display a cached copy of your avatar.</string>
+    <string name="show_to_contacts_only">Show to contacts only</string>
 </resources>
