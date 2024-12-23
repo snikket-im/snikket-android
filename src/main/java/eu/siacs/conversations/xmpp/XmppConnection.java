@@ -1595,6 +1595,11 @@ public class XmppConnection implements Runnable {
                 hashTokenRequest =
                         HashedToken.Mechanism.best(
                                 inline.getFastMechanisms(), SSLSockets.version(this.socket));
+                // TODO warn or fail early if channel binding priority isn’t high enough compared to
+                // login mechanism
+                // ChannelBinding.priority(hashTokenRequest.channelBinding)
+                //                        <
+                // ChannelBindingMechanism.getPriority(saslMechanism)
             } else {
                 hashTokenRequest = null;
             }
