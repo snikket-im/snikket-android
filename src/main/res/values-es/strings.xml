@@ -853,7 +853,7 @@
     <string name="unable_to_set_channel_configuration">No se ha podido guardar la configuración del canal</string>
     <string name="allow_participants_to_edit_subject">Permitir a cualquiera editar el asunto</string>
     <string name="allow_participants_to_invite_others">Permitir a cualquiera invitar a otros contactos</string>
-    <string name="anyone_can_edit_subject">Cualquiera puede editar el tema.</string>
+    <string name="anyone_can_edit_subject">Cualquiera puede editar el asunto.</string>
     <string name="owners_can_edit_subject">Los propietarios pueden editar el asunto.</string>
     <string name="admins_can_edit_subject">Los administradores pueden editar el asunto.</string>
     <string name="owners_can_invite_others">Los propietarios pueden invitar a otros contactos.</string>
@@ -1116,4 +1116,8 @@
     <string name="pref_show_avatars">Ver imágenes de perfil</string>
     <string name="pref_show_avatars_summary">Mostrar imágenes de perfil para tus mensajes y conversaciones 1:1, aparte de las conversaciones en grupo.</string>
     <string name="pref_call_integration_summary">Las llamadas desde esta app interactúan con las llamadas telefónicas regulares, como ser finalizar una llamada cuando recibimos otra.</string>
+    <string name="pref_align_start">Mensajes alineados a la izquierda</string>
+    <string name="pref_align_start_summary">Mostrar todos los mensajes, incluso los propios, sobre el margen izquierdo para una distribución uniforme del chat.</string>
+    <string name="custom_notifications">Notificaciones personalizadas</string>
+    <string name="custom_notifications_enable">¿Habilitar los ajustes de notificaciones personalizadas (importancia, sonido, vibración) para esta conversación?</string>
 </resources>
