@@ -1153,4 +1153,6 @@
     <string name="custom_notifications">Настраиваемые уведомления</string>
     <string name="pref_call_integration_summary">Звонки из этого приложения взаимодействуют с обычными телефонными звонками, например, завершение одного звонка при начале другого</string>
     <string name="custom_notifications_enable">Использовать индивидуальные настройки уведомлений (важность, звук, вибрация) для этой беседы?</string>
+    <string name="delete_avatar_message">Хотите удалить свой аватар? Некоторые клиенты могут продолжать отображать кэшированную копию вашего аватара.</string>
+    <string name="show_to_contacts_only">Показывать только контактам</string>
 </resources>
