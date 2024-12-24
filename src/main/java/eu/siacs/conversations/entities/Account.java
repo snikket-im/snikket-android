@@ -4,22 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.SystemClock;
 import android.util.Log;
-
+import androidx.annotation.NonNull;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
@@ -38,6 +25,16 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Account extends AbstractEntity implements AvatarService.Avatarable {
 
@@ -306,11 +303,12 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         this.password = password;
     }
 
+    @NonNull
     public String getHostname() {
         return Strings.nullToEmpty(this.hostname);
     }
 
-    public void setHostname(String hostname) {
+    public void setHostname(final String hostname) {
         this.hostname = hostname;
     }
 
@@ -398,7 +396,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public HashedToken getFastMechanism() {
-        final HashedToken.Mechanism fastMechanism = HashedToken.Mechanism.ofOrNull(this.fastMechanism);
+        final HashedToken.Mechanism fastMechanism =
+                HashedToken.Mechanism.ofOrNull(this.fastMechanism);
         final String token = this.fastToken;
         if (fastMechanism == null || Strings.isNullOrEmpty(token)) {
             return null;
@@ -775,7 +774,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public enum State {
         DISABLED(false, false),
-        LOGGED_OUT(false,false),
+        LOGGED_OUT(false, false),
         OFFLINE(false),
         CONNECTING(false),
         ONLINE(false),

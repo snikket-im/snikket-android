@@ -303,6 +303,7 @@ public class XmppConnection implements Runnable {
             // TODO collapse Tor usage into normal connection code path
             if (useTor) {
                 final var seeOtherHost = this.seeOtherHostResolverResult;
+                final var hostname = account.getHostname();
                 final Resolver.Result resume = streamId == null ? null : streamId.location;
                 final Resolver.Result viaTor;
                 if (account.isOnion()) {
@@ -315,7 +316,7 @@ public class XmppConnection implements Runnable {
                     viaTor = resume;
                 } else if (seeOtherHost != null) {
                     viaTor = seeOtherHost;
-                } else if (account.getHostname().isEmpty()) {
+                } else if (hostname.isEmpty()) {
                     viaTor =
                             Iterables.getOnlyElement(
                                     Resolver.fromHardCoded(
@@ -323,18 +324,12 @@ public class XmppConnection implements Runnable {
                 } else {
                     viaTor =
                             Iterables.getOnlyElement(
-                                    Resolver.fromHardCoded(
-                                            account.getHostname(), account.getPort()));
-                    this.verifiedHostname = account.getHostname();
+                                    Resolver.fromHardCoded(hostname, account.getPort()));
+                    this.verifiedHostname = hostname;
                 }
 
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid()
-                                + ": connect to "
-                                + viaTor.asDestination()
-                                + " via Tor. directTls="
-                                + viaTor.isDirectTls());
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + " via Tor: " + viaTor);
+
                 localSocket =
                         SocksSocketFactory.createSocketOverTor(
                                 viaTor.asDestination(), viaTor.getPort());
@@ -359,12 +354,12 @@ public class XmppConnection implements Runnable {
                     throw new IOException("Could not start stream", e);
                 }
             } else {
+                final var hostname = account.getHostname().trim();
                 final String domain = account.getServer();
                 final List<Resolver.Result> results = new ArrayList<>();
-                final boolean hardcoded = extended && !account.getHostname().isEmpty();
+                final boolean hardcoded = extended && !hostname.isEmpty();
                 if (hardcoded) {
-                    results.addAll(
-                            Resolver.fromHardCoded(account.getHostname(), account.getPort()));
+                    results.addAll(Resolver.fromHardCoded(hostname, account.getPort()));
                 } else {
                     results.addAll(Resolver.resolve(domain));
                 }
