@@ -1138,4 +1138,6 @@
     <string name="pref_align_start_summary">Wyświetlaj wszystkie wiadomości, również wysłane, po lewej stronie, dla jednolitego układu rozmowy.</string>
     <string name="custom_notifications">Własne powiadomienia</string>
     <string name="custom_notifications_enable">Włączyć dedykowane ustawienia powiadomień (ważność, dźwięk, wibracje) dla tej rozmowy?</string>
+    <string name="delete_avatar_message">Czy chcesz usunąć swój awatar? Niektórzy klienci mogą nadal pokazywać zachowaną kopię.</string>
+    <string name="show_to_contacts_only">Pokazuj wyłącznie kontaktom</string>
 </resources>
