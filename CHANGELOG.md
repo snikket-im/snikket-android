@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.17.7
+
+* Easier access to custom notification sounds via Contact details -> Overflow menu -> Custom notifications)
+* Fix direct share targets on new Android versions
+* Ability to restrict avatar visibility to contacts
+
 ### Version 2.17.6
 
 * Add ability to show message bubbles left-aligned

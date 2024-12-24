@@ -1,0 +1,3 @@
+* Easier access to custom notification sounds via Contact details -> Overflow menu -> Custom notifications)
+* Fix direct share targets on new Android versions
+* Ability to restrict avatar visibility to contacts
