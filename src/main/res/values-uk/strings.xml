@@ -1154,4 +1154,6 @@
     <string name="pref_align_start_summary">Вирівнювати всі повідомлення, включно з надісланими, по лівому краю для одноманітного вигляду розмов.</string>
     <string name="custom_notifications_enable">Увімкнути індивідуальні налаштування сповіщень (важливість, звук, вібрація) для цієї розмови?</string>
     <string name="custom_notifications">Пристосування сповіщень</string>
+    <string name="show_to_contacts_only">Показувати лише контактам</string>
+    <string name="delete_avatar_message">Бажаєте видалити свій аватар? Деякі клієнти можуть продовжувати відображати копію Вашого аватара з кешу.</string>
 </resources>
