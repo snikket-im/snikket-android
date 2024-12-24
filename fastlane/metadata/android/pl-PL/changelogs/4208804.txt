@@ -1,0 +1,3 @@
+* Obsługa przesyłanie plików P2P przez kanały danych WebRTC
+* Naprawiono problemy interoperacyjności z Bind 2.0 na ejabberd
+* Wbudowanie certyfikatów głównych Let’s Encrypt dla Androida 7 i starszych
