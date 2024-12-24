@@ -1124,4 +1124,6 @@
     <string name="custom_notifications_enable">Ativar as configurações de notificações customizadas (importância, som, vibração) para esta conversa?</string>
     <string name="pref_call_integration">Integração de chamadas</string>
     <string name="pref_call_integration_summary">Chamadas deste app interagem com as chamadas comuns do sistema, como quando uma chamada é terminada quando outra começa.</string>
+    <string name="show_to_contacts_only">Mostrar somente para contatos</string>
+    <string name="delete_avatar_message">Você gostaria de excluir seu avatar? Alguns clientes podem continuar mostrando uma cópia em cache do seu avatar.</string>
 </resources>
