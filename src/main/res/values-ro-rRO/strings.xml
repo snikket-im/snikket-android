@@ -1125,4 +1125,6 @@
     <string name="pref_align_start">Mesaje aliniate la stânga</string>
     <string name="pref_call_integration_summary">Apelurile din această aplicație interacționează cu apelurile telefonice obișnuite, cum ar fi terminarea unui apel atunci când începe altul.</string>
     <string name="pref_call_integration">Integrarea apelurilor</string>
+    <string name="delete_avatar_message">Ați dori să vă ștergeți avatarul? Unii clienți ar putea să continue să arate o copie a avatarului.</string>
+    <string name="show_to_contacts_only">Arată doar contactelor</string>
 </resources>
