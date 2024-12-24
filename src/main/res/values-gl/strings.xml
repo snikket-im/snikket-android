@@ -92,7 +92,7 @@
     <string name="send_unencrypted">Enviar texto sen cifrar</string>
     <string name="decryption_failed">Fallou o desencriptado. Quizais non teñas a chave privada apropiada.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long"><![CDATA[%1$s utiliza <b>OpenKeychain</b> para cifrar e descifrar as mensaxes e xestionar a túas chaves públicas.<br><br>Está baixo licenza  GPLv3+ e dispoñible en F-Droid e Google Play.<br><br><small>(Reinicia %1$s após a instalación.)</small>]]></string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s utiliza <b>OpenKeychain</b> para cifrar e descifrar as mensaxes e xestionar a túas chaves públicas.<br><br>Está baixo licenza GPLv3+ e dispoñible en F-Droid e Google Play.<br><br><small>(Reinicia %1$s após a instalación.)</small>]]></string>
     <string name="restart">Reiniciar</string>
     <string name="install">Instalar</string>
     <string name="openkeychain_not_installed">Instala OpenKeychain por favor</string>
@@ -618,7 +618,7 @@
     <string name="show_inactive_devices">Mostrar inactivos</string>
     <string name="hide_inactive_devices">Agochar inactivos</string>
     <string name="distrust_omemo_key">Retirar confianza a dispositivo</string>
-    <string name="distrust_omemo_key_text">Tes a certeza de que queres eliminar a verificación deste dispositivo?\nEste dispositivo e as súas mensaxes serán marcados como \"Non confiable\".</string>
+    <string name="distrust_omemo_key_text">Tes a certeza de querer retirar a verificación a este dispositivo?\nEste dispositivo e as súas mensaxes serán marcados como «Non confiable».</string>
     <plurals name="seconds">
         <item quantity="one">%d segundo</item>
         <item quantity="other">%d segundos</item>
@@ -1106,4 +1106,6 @@
     <string name="pref_align_start_summary">Mostrar todas as mensaxes, incluíndo as propias, no lado esquerdo para unha aparencia uniforme.</string>
     <string name="custom_notifications">Notificacións personalizadas</string>
     <string name="custom_notifications_enable">Activar axustes personalizados para as notificacións (importancia, son, vibración) nesta conversa?</string>
+    <string name="delete_avatar_message">Queres eliminar o teu avatar? Algúns clientes poderían continuar mostrando unha copia almacenada do teu avatar.</string>
+    <string name="show_to_contacts_only">Mostrar só aos contactos</string>
 </resources>
