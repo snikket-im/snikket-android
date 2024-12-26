@@ -856,7 +856,7 @@
     <string name="this_looks_like_channel">これは談話室アドレスのようです</string>
     <string name="share_backup_files">バックアップファイルを共有</string>
     <string name="conversations_backup">Conversations のバックアップ</string>
-    <string name="event">出来事</string>
+    <string name="event">予定</string>
     <string name="open_backup">バックアップを開く</string>
     <string name="not_a_backup_file">選択したファイルは、 Conversations のバックアップファイルではありません</string>
     <string name="account_already_setup">このアカウントは既に設定されています</string>
@@ -1075,4 +1075,6 @@
     <string name="welcome_header">会話に参加しよう</string>
     <string name="flip_camera">表裏反転カメラ</string>
     <string name="edit_name_and_topic">名前と題を編集</string>
+    <string name="pref_category_engagement_notifications">活動の知らせ</string>
+    <string name="pref_category_interaction">インターアクション</string>
 </resources>
