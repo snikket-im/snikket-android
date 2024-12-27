@@ -163,13 +163,13 @@
     <string name="account_status_incompatible_client">互換性のない端末</string>
     <string name="account_status_stream_error">ストリーム エラー</string>
     <string name="account_status_stream_opening_error">ストリームを開く際にエラー</string>
-    <string name="encryption_choice_unencrypted">平文</string>
+    <string name="encryption_choice_unencrypted">非暗号化</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
     <string name="mgmt_account_delete">アカウントを削除</string>
     <string name="mgmt_account_disable">一時的に無効化</string>
-    <string name="mgmt_account_publish_avatar">アバターを公開</string>
+    <string name="mgmt_account_publish_avatar">プロフィール画像を公開</string>
     <string name="mgmt_account_publish_pgp">OpenPGP 公開鍵を公開</string>
     <string name="unpublish_pgp">OpenPGP 公開鍵を削除</string>
     <string name="unpublish_pgp_message">出席情報告知から OpenPGP 公開鍵を削除してもよろしいですか?\n連絡先はあなたに OpenPGP 暗号化メッセージを送信できなくなります。</string>
@@ -759,7 +759,7 @@
     <string name="phone_number">電話番号</string>
     <string name="verify_your_phone_number">電話番号を検証</string>
     <string name="enter_country_code_and_phone_number">Quicksy から電話番号を検証するための SMS メッセージ（キャリア料金がかかる場合があります）が送信されます。国番号と電話番号を入力してください:</string>
-    <string name="we_will_be_verifying">電話番号の検証を行います<br/><br/><b>%s</b><br/><br/>これでよろしいでしょうか、それとも番号を編集しますか?</string>
+    <string name="we_will_be_verifying"><![CDATA[この電話番号の検証を行います<br/><br/><b>%s</b><br/><br/>これでよろしいでしょうか、それとも番号を編集しますか?]]></string>
     <string name="not_a_valid_phone_number">%s は有効な電話番号ではありません。</string>
     <string name="please_enter_your_phone_number">電話番号を入力してください。</string>
     <string name="search_countries">国を検索</string>
@@ -1077,4 +1077,18 @@
     <string name="edit_name_and_topic">名前と題を編集</string>
     <string name="pref_category_engagement_notifications">活動の知らせ</string>
     <string name="pref_category_interaction">インターアクション</string>
+    <string name="pref_up_long_summary">UnifiedPushディストリビューターとして動作する場合、永続的で信頼性が高い、バッテリーに優しいXMPP接続は、Tusky、Ltt.rs、FluffyChatなどの他のUnifiedPush互換アプリを起動するために利用されます。</string>
+    <string name="clients_may_not_support_av">連絡先のXMPPクライアントは音声/ビデオ通話を対応していない可能性があります。</string>
+    <string name="pref_align_start">メッセージを左揃えにする</string>
+    <string name="pref_align_start_summary">自分のメッセージを含むすべてのメッセージを左側に表示し、統一されたチャットレイアウトになります。</string>
+    <string name="custom_notifications">独自通知</string>
+    <string name="delete_avatar_message">プロフィール画像を削除しますか？連絡先のクライアントによっては、更新しないままプロフィール画像を表示し続ける場合があります。</string>
+    <string name="show_to_contacts_only">画像の受信を連絡先だけに許可する</string>
+    <string name="could_not_modify_call">変更できませんでした</string>
+    <string name="custom_notifications_enable">このチャットには独自の通知設定（優先度、通知音、バイブレーションなど）を使用しますか？</string>
+    <string name="pref_show_avatars">プロフィール画像を表示</string>
+    <string name="pref_show_avatars_summary">グループチャットと個人チャットでプロフィール画像を表示する。</string>
+    <string name="pref_chat_bubbles">ふきだし</string>
+    <string name="pref_chat_bubbles_summary">背景色、文字サイズ、プロフィール画像など</string>
+    <string name="pref_title_bubbles">ふきだし</string>
 </resources>
