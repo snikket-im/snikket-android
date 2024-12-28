@@ -1,0 +1,4 @@
+* Posibilitatea de a selecta tonuri de apel
+* Corectat descoperirea ID-ului cheii OpenPGP pentru OpenKeychain 5.6+
+* Verificarea corectă a certificatelor TLS punycode
+* Îmbunătățit stabilitatea creerii sesiunii RTP (apelare)

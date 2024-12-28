@@ -1,0 +1,2 @@
+* Corectat felurite erori relative la suportul pentru Tor
+* Îmbunătățit compatibilitatea apelurilor cu Dino

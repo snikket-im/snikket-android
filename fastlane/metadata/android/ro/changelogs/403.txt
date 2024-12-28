@@ -1,0 +1,3 @@
+* Corectat probleme de conectivitate când conturi diferite foloseau mecanisme SCRAM diferite
+* Adăugat suport pentru SCRAM-SHA-512
+* Permis transfer de fișiere P2P (Jingle) cu contactul sine

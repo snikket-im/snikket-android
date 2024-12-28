@@ -1,0 +1,2 @@
+* Reparat notificările care nu apăreau în anumite condiții
+* Reparat probleme de compatibilitate și crăpări legate de apeluri A/V

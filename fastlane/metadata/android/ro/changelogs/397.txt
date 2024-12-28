@@ -1,0 +1,3 @@
+* Gestionare fișiere GPX
+* Îmbunătățit performanța pentru restaurarea copiilor de siguranță
+* Corecturi de erori
