@@ -1106,4 +1106,6 @@
     <string name="custom_notifications">Individuelle Benachrichtigungen</string>
     <string name="pref_call_integration_summary">Anrufe aus dieser App interagieren mit normalen Telefonanrufen, wie beispielsweise das Beenden eines Anrufs, wenn ein anderer beginnt.</string>
     <string name="custom_notifications_enable">Individuelle Benachrichtigungseinstellungen (Wichtigkeit, Ton, Vibration) für diese Unterhaltung aktivieren?</string>
+    <string name="delete_avatar_message">Möchtest du deinen Profilbild löschen? Einige Clients zeigen möglicherweise weiterhin eine zwischengespeicherte Kopie deines Profilbildes an.</string>
+    <string name="show_to_contacts_only">Nur für Kontakte anzeigen</string>
 </resources>
