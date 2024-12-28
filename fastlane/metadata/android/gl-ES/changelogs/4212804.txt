@@ -1,0 +1,3 @@
+* Acceso máis doado á personalización do son da notificación en Detalles do contacto -> Menú emerxente -> Notificacións personalizadas)
+* Arranxo das opcións directas para compartir nas novas versións de Android
+* Posibilidade de limitar a visibilidade do avatar só para contactos
