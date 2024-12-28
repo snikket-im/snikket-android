@@ -1120,4 +1120,6 @@
     <string name="pref_align_start_summary">Mostrar todos los mensajes, incluso los propios, sobre el margen izquierdo para una distribución uniforme del chat.</string>
     <string name="custom_notifications">Notificaciones personalizadas</string>
     <string name="custom_notifications_enable">¿Habilitar los ajustes de notificaciones personalizadas (importancia, sonido, vibración) para esta conversación?</string>
+    <string name="delete_avatar_message">¿Quieres eliminar tu imagen de perfil? Algunos clientes podrían seguir mostrando una copia en caché de tu avatar.</string>
+    <string name="show_to_contacts_only">Mostrar sólo a contactos</string>
 </resources>
