@@ -1140,4 +1140,6 @@
     <string name="pref_align_start_summary">Приказуј све поруке, укључујући послате, са леве стране за обједињени изглед преписке.</string>
     <string name="custom_notifications">Посебна обавештења</string>
     <string name="custom_notifications_enable">Укључи посебна подешавања обавештења (важност, звук, вибрација) за ову преписку?</string>
+    <string name="delete_avatar_message">Желиш да обришеш свој аватар? Неки клијенти ће можда наставити да приказују кеширану копију твог аватара.</string>
+    <string name="show_to_contacts_only">Приказуј само контактима</string>
 </resources>
