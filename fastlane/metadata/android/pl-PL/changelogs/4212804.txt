@@ -1,0 +1,3 @@
+* Łatwiejszy dostęp do własnych dźwięków powiadomień poprzez Szczegóły kontaktu → Więcej opcji → Własne powiadomienia
+* Naprawienie bezpośrednich celów udostępniania w nowszych wersjach Androida
+* Możliwość ograniczenia widoczności awatara do kontaktów

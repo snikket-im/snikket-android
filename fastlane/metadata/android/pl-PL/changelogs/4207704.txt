@@ -1,0 +1,3 @@
+* Obsługa prywatnego DNS (DNS over TLS)
+* Obsługa motywów ikony uruchamiania aplikacji
+* Naprawa rzadkiego problemu z uprawnieniami podczas udostępniania plików na Androidzie 11 i nowszych

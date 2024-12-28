@@ -1,0 +1,3 @@
+* Podwyższenie wymaganej wersji libwebrtc do M117 i podwyższenie wymaganej wersji libvpx
+* Powrót do AAC dla wiadomości głosowych
+* Obsługa ustawień języka dla aplikacji
