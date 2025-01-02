@@ -60,7 +60,6 @@ public class CallIntegration extends Connection {
             Arrays.asList("realme", "oppo", "oneplus");
 
     public static final int DEFAULT_TONE_VOLUME = 60;
-    private static final int DEFAULT_MEDIA_PLAYER_VOLUME = 90;
 
     private final Context context;
 
@@ -375,7 +374,7 @@ public class CallIntegration extends Connection {
             }
         }
         if (state == STATE_ACTIVE) {
-            playConnectedSound();
+            startTone(DEFAULT_TONE_VOLUME, ToneGenerator.TONE_CDMA_ANSWER, 100 );
         } else if (state == STATE_DISCONNECTED) {
             final var audioManager = this.appRTCAudioManager;
             if (audioManager != null) {
@@ -384,26 +383,10 @@ public class CallIntegration extends Connection {
         }
     }
 
-    private void playConnectedSound() {
-        final var audioAttributes =
-                new AudioAttributes.Builder()
-                        .setLegacyStreamType(AudioManager.STREAM_VOICE_CALL)
-                        .build();
-        final var mediaPlayer =
-                MediaPlayer.create(
-                        context,
-                        R.raw.connected,
-                        audioAttributes,
-                        AudioManager.AUDIO_SESSION_ID_GENERATE);
-        mediaPlayer.setVolume(
-                DEFAULT_MEDIA_PLAYER_VOLUME / 100f, DEFAULT_MEDIA_PLAYER_VOLUME / 100f);
-        mediaPlayer.start();
-    }
-
     public void success() {
         Log.d(Config.LOGTAG, "CallIntegration.success()");
-        startTone(DEFAULT_TONE_VOLUME, ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
-        this.destroyWithDelay(new DisconnectCause(DisconnectCause.LOCAL, null), 375);
+        startTone(DEFAULT_TONE_VOLUME, ToneGenerator.TONE_CDMA_CONFIRM, 600);
+        this.destroyWithDelay(new DisconnectCause(DisconnectCause.LOCAL, null), 600);
     }
 
     public void accepted() {
@@ -417,8 +400,8 @@ public class CallIntegration extends Connection {
 
     public void error() {
         Log.d(Config.LOGTAG, "CallIntegration.error()");
-        startTone(DEFAULT_TONE_VOLUME, ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
-        this.destroyWithDelay(new DisconnectCause(DisconnectCause.ERROR, null), 375);
+        startTone(DEFAULT_TONE_VOLUME, ToneGenerator.TONE_CDMA_CONFIRM, 600);
+        this.destroyWithDelay(new DisconnectCause(DisconnectCause.ERROR, null), 600);
     }
 
     public void retracted() {
