@@ -681,7 +681,7 @@
     <string name="mtm_accept_cert">接受未知证书？</string>
     <string name="mtm_trust_anchor">此服务器证书不是由已知的证书颁发机构签发的。</string>
     <string name="mtm_accept_servername">接受不匹配的服务器名称？</string>
-    <string name="mtm_hostname_mismatch">无法验证服务器，因证书只对下列域名有效：</string>
+    <string name="mtm_hostname_mismatch">由于“%s”，服务器无法验证。证书仅对此有效：</string>
     <string name="mtm_connect_anyway">是否仍要连接？</string>
     <string name="mtm_cert_details">证书详情：</string>
     <string name="once">仅一次</string>
@@ -1011,7 +1011,7 @@
     <string name="delete_and_close">删除并存档对话</string>
     <string name="channel_discover_opt_in_message">频道发现使用称为 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; 的第三方服务。&lt;br&gt;&lt;br&gt;使用此功能会将您的 IP 地址和搜索词传输到此服务。请参阅其 &lt;a href=https://search.jabber.network/privacy&gt;隐私政策&lt;/a&gt; 以获取更多信息。</string>
     <string name="start_chat">开始对话</string>
-    <string name="title_activity_share_with">分享…</string>
+    <string name="title_activity_share_with">分享至…</string>
     <string name="pref_use_colorful_bubbles_summary">为发送和接收的消息使用不同的背景颜色</string>
     <string name="no_certificate_selected">未选择客户端证书！</string>
     <string name="pref_use_colorful_bubbles">多彩消息气泡</string>
@@ -1105,6 +1105,6 @@
     <string name="pref_call_integration_summary">此应用的通话与常规通话交互，例如另一个通话开始时结束一个通话。</string>
     <string name="pref_align_start_summary">在左侧显示所有消息，包括发送的消息，以实现统一的聊天布局。</string>
     <string name="pref_align_start">左对齐消息</string>
-    <string name="delete_avatar_message">你想删除你的头像吗？一些客户端可能继续显示你头像的缓存副本。</string>
-    <string name="show_to_contacts_only">只对联系人显示</string>
+    <string name="delete_avatar_message">是否删除头像？某些客户端可能会继续显示您头像的缓存副本。</string>
+    <string name="show_to_contacts_only">仅显示给联系人</string>
 </resources>
