@@ -479,111 +479,111 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         setTextColor(viewHolder.messageBody(), bubbleColor);
         setTextSize(viewHolder.messageBody(), this.bubbleDesign.largeFont);
         viewHolder.messageBody().setTypeface(null, Typeface.NORMAL);
-
-        if (message.getBody() != null) {
-            final String nick = UIHelper.getMessageDisplayName(message);
-            final boolean hasMeCommand = message.hasMeCommand();
-            final var rawBody = message.getBody();
-            final SpannableStringBuilder body;
-            if (rawBody.length() > Config.MAX_DISPLAY_MESSAGE_CHARS) {
-                body = new SpannableStringBuilder(rawBody, 0, Config.MAX_DISPLAY_MESSAGE_CHARS);
-                body.append("…");
-            } else {
-                body = new SpannableStringBuilder(rawBody);
-            }
+        final var rawBody = message.getBody();
+        if (Strings.isNullOrEmpty(rawBody)) {
+            viewHolder.messageBody().setText("");
+            viewHolder.messageBody().setTextIsSelectable(false);
+            return;
+        }
+        final String nick = UIHelper.getMessageDisplayName(message);
+        final boolean hasMeCommand = message.hasMeCommand();
+        final var trimmedBody = rawBody.trim();
+        final SpannableStringBuilder body;
+        if (trimmedBody.length() > Config.MAX_DISPLAY_MESSAGE_CHARS) {
+            body = new SpannableStringBuilder(trimmedBody, 0, Config.MAX_DISPLAY_MESSAGE_CHARS);
+            body.append("…");
+        } else {
+            body = new SpannableStringBuilder(trimmedBody);
+        }
+        if (hasMeCommand) {
+            body.replace(0, Message.ME_COMMAND.length(), String.format("%s ", nick));
+        }
+        boolean startsWithQuote = handleTextQuotes(viewHolder.messageBody(), body, bubbleColor);
+        if (!message.isPrivateMessage()) {
             if (hasMeCommand) {
-                body.replace(0, Message.ME_COMMAND.length(), String.format("%s ", nick));
+                body.setSpan(
+                        new StyleSpan(Typeface.BOLD_ITALIC),
+                        0,
+                        nick.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
-            boolean startsWithQuote = handleTextQuotes(viewHolder.messageBody(), body, bubbleColor);
-            if (!message.isPrivateMessage()) {
-                if (hasMeCommand) {
-                    body.setSpan(
-                            new StyleSpan(Typeface.BOLD_ITALIC),
-                            0,
-                            nick.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
+        } else {
+            String privateMarker;
+            if (message.getStatus() <= Message.STATUS_RECEIVED) {
+                privateMarker = activity.getString(R.string.private_message);
             } else {
-                String privateMarker;
-                if (message.getStatus() <= Message.STATUS_RECEIVED) {
-                    privateMarker = activity.getString(R.string.private_message);
-                } else {
-                    Jid cp = message.getCounterpart();
-                    privateMarker =
-                            activity.getString(
-                                    R.string.private_message_to,
-                                    Strings.nullToEmpty(cp == null ? null : cp.getResource()));
-                }
-                body.insert(0, privateMarker);
-                int privateMarkerIndex = privateMarker.length();
-                if (startsWithQuote) {
-                    body.insert(privateMarkerIndex, "\n\n");
-                    body.setSpan(
-                            new DividerSpan(false),
-                            privateMarkerIndex,
-                            privateMarkerIndex + 2,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                } else {
-                    body.insert(privateMarkerIndex, " ");
-                }
-                body.setSpan(
-                        new ForegroundColorSpan(
-                                bubbleToOnSurfaceVariant(viewHolder.messageBody(), bubbleColor)),
-                        0,
-                        privateMarkerIndex,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                body.setSpan(
-                        new StyleSpan(Typeface.BOLD),
-                        0,
-                        privateMarkerIndex,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                if (hasMeCommand) {
-                    body.setSpan(
-                            new StyleSpan(Typeface.BOLD_ITALIC),
-                            privateMarkerIndex + 1,
-                            privateMarkerIndex + 1 + nick.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
+                Jid cp = message.getCounterpart();
+                privateMarker =
+                        activity.getString(
+                                R.string.private_message_to,
+                                Strings.nullToEmpty(cp == null ? null : cp.getResource()));
             }
-            if (message.getConversation().getMode() == Conversation.MODE_MULTI
-                    && message.getStatus() == Message.STATUS_RECEIVED) {
-                if (message.getConversation() instanceof Conversation conversation) {
-                    Pattern pattern =
-                            NotificationService.generateNickHighlightPattern(
-                                    conversation.getMucOptions().getActualNick());
-                    Matcher matcher = pattern.matcher(body);
-                    while (matcher.find()) {
-                        body.setSpan(
-                                new StyleSpan(Typeface.BOLD),
-                                matcher.start(),
-                                matcher.end(),
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    }
-                }
+            body.insert(0, privateMarker);
+            int privateMarkerIndex = privateMarker.length();
+            if (startsWithQuote) {
+                body.insert(privateMarkerIndex, "\n\n");
+                body.setSpan(
+                        new DividerSpan(false),
+                        privateMarkerIndex,
+                        privateMarkerIndex + 2,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } else {
+                body.insert(privateMarkerIndex, " ");
             }
-            Matcher matcher = Emoticons.getEmojiPattern(body).matcher(body);
-            while (matcher.find()) {
-                if (matcher.start() < matcher.end()) {
+            body.setSpan(
+                    new ForegroundColorSpan(
+                            bubbleToOnSurfaceVariant(viewHolder.messageBody(), bubbleColor)),
+                    0,
+                    privateMarkerIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            body.setSpan(
+                    new StyleSpan(Typeface.BOLD),
+                    0,
+                    privateMarkerIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (hasMeCommand) {
+                body.setSpan(
+                        new StyleSpan(Typeface.BOLD_ITALIC),
+                        privateMarkerIndex + 1,
+                        privateMarkerIndex + 1 + nick.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+        if (message.getConversation().getMode() == Conversation.MODE_MULTI
+                && message.getStatus() == Message.STATUS_RECEIVED) {
+            if (message.getConversation() instanceof Conversation conversation) {
+                Pattern pattern =
+                        NotificationService.generateNickHighlightPattern(
+                                conversation.getMucOptions().getActualNick());
+                Matcher matcher = pattern.matcher(body);
+                while (matcher.find()) {
                     body.setSpan(
-                            new RelativeSizeSpan(1.2f),
+                            new StyleSpan(Typeface.BOLD),
                             matcher.start(),
                             matcher.end(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
             }
-
-            StylingHelper.format(body, viewHolder.messageBody().getCurrentTextColor());
-            MyLinkify.addLinks(body, true);
-            if (highlightedTerm != null) {
-                StylingHelper.highlight(viewHolder.messageBody(), body, highlightedTerm);
-            }
-            viewHolder.messageBody().setAutoLinkMask(0);
-            viewHolder.messageBody().setText(body);
-            viewHolder.messageBody().setMovementMethod(ClickableMovementMethod.getInstance());
-        } else {
-            viewHolder.messageBody().setText("");
-            viewHolder.messageBody().setTextIsSelectable(false);
         }
+        Matcher matcher = Emoticons.getEmojiPattern(body).matcher(body);
+        while (matcher.find()) {
+            if (matcher.start() < matcher.end()) {
+                body.setSpan(
+                        new RelativeSizeSpan(1.2f),
+                        matcher.start(),
+                        matcher.end(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+
+        StylingHelper.format(body, viewHolder.messageBody().getCurrentTextColor());
+        MyLinkify.addLinks(body, true);
+        if (highlightedTerm != null) {
+            StylingHelper.highlight(viewHolder.messageBody(), body, highlightedTerm);
+        }
+        viewHolder.messageBody().setAutoLinkMask(0);
+        viewHolder.messageBody().setText(body);
+        viewHolder.messageBody().setMovementMethod(ClickableMovementMethod.getInstance());
     }
 
     private void displayDownloadableMessage(

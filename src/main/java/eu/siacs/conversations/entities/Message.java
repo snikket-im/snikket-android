@@ -724,7 +724,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean trusted() {
-        Contact contact = this.getContact();
+        final var contact = this.getContact();
         return status > STATUS_RECEIVED
                 || (contact != null && (contact.showInContactList() || contact.isSelf()));
     }
