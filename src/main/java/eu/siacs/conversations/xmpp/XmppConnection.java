@@ -304,27 +304,20 @@ public class XmppConnection implements Runnable {
             if (useTor) {
                 final var seeOtherHost = this.seeOtherHostResolverResult;
                 final var hostname = account.getHostname();
+                final var port = account.getPort();
                 final Resolver.Result resume = streamId == null ? null : streamId.location;
                 final Resolver.Result viaTor;
-                if (account.isOnion()) {
-                    // for .onion JIDs we always connect to the onion address no matter what
-                    viaTor =
-                            Iterables.getOnlyElement(
-                                    Resolver.fromHardCoded(
-                                            account.getServer(), Resolver.XMPP_PORT_STARTTLS));
-                } else if (resume != null) {
+                if (resume != null) {
                     viaTor = resume;
                 } else if (seeOtherHost != null) {
                     viaTor = seeOtherHost;
-                } else if (hostname.isEmpty()) {
+                } else if (hostname.isEmpty() || port < 0) {
                     viaTor =
                             Iterables.getOnlyElement(
                                     Resolver.fromHardCoded(
                                             account.getServer(), Resolver.XMPP_PORT_STARTTLS));
                 } else {
-                    viaTor =
-                            Iterables.getOnlyElement(
-                                    Resolver.fromHardCoded(hostname, account.getPort()));
+                    viaTor = Iterables.getOnlyElement(Resolver.fromHardCoded(hostname, port));
                     this.verifiedHostname = hostname;
                 }
 
