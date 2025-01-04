@@ -92,10 +92,10 @@
     <string name="send_message_to_x">Odeslat zprávu pro %s</string>
     <string name="send_omemo_x509_message">Odeslat v\\OMEMO šifrovanou zprávu</string>
     <string name="your_nick_has_been_changed">Přezdívka změněna</string>
-    <string name="send_unencrypted">Poslat nešifrované</string>
+    <string name="send_unencrypted">Odeslat nešifrovaný text</string>
     <string name="decryption_failed">Zašifrování se nezdařilo. Možná nemáte správný privátní klíč.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">%1$s používá &lt;b&gt;OpenKeychain&lt;/b&gt; k šifrování a dešifrování zpráv a ke správě Vašich veřejných klíčů.&lt;br&gt;&lt;br&gt;OpenKeychain je vydána pod licencí GPLv3+ a dostupná na F-Droid nebo Google Play.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Po instalaci, prosím, restartujte %1$s.)&lt;/small&gt;</string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s používá <b>OpenKeychain</b> k šifrování a dešifrování zpráv a ke správě Vašich veřejných klíčů.<br><br>OpenKeychain je vydána pod licencí GPLv3+ a dostupná na F-Droid nebo Google Play.<br><br><small>(Po instalaci, prosím, restartujte %1$s.)</small>]]></string>
     <string name="restart">Restartovat</string>
     <string name="install">Instalovat</string>
     <string name="openkeychain_not_installed">Nainstalujte prosím OpenKeychain</string>
@@ -499,7 +499,7 @@
     <string name="shared_text_with_x">Text sdílen s %s</string>
     <string name="no_storage_permission">Povolit %1$s přístup k externímu úložišti</string>
     <string name="no_camera_permission">Povolit %1$s přístup ke kameře</string>
-    <string name="sync_with_contacts">Synchronizovat s kontakty</string>
+    <string name="sync_with_contacts">Integrace seznamu kontaktů</string>
     <string name="sync_with_contacts_long">%1$s zpracovává Váš seznam kontaktů místně na Vašem zařízení za účelem zobrazení jmen a profilových obrázků odpovídajících kontaktů na XMPP.
 \n
 \n
@@ -555,7 +555,7 @@
     <string name="gp_medium">Střední</string>
     <string name="gp_long">Dlouhý</string>
     <string name="pref_broadcast_last_activity">Naposledy spatřen</string>
-    <string name="pref_broadcast_last_activity_summary">Umožnit svým kontaktům vidět, kdy jste naposledy použili aplikaci</string>
+    <string name="pref_broadcast_last_activity_summary">Umožnit kontaktům vidět, kdy jste byli v aplikaci naposledy aktivní</string>
     <string name="pref_privacy">Soukromí</string>
     <string name="pref_theme_options">Vzhled</string>
     <string name="pref_theme_options_summary">Vybrat paletu barev</string>
@@ -1088,4 +1088,6 @@
     <string name="pref_accept_invites_from_strangers_summary">Přijímat pozvánky do skupinových chatů od neznámých kontaktů</string>
     <string name="pref_large_font">Velké písmo</string>
     <string name="pref_large_font_summary">Zvětšit písmo v chatových bublinách</string>
+    <string name="server_info_bind2">XEP-0386: Bind 2</string>
+    <string name="server_info_sasl2">XEP-0388: Extensible SASL Profile</string>
 </resources>
