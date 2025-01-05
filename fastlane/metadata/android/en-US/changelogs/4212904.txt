@@ -1,0 +1,2 @@
+* Fix some minor UI bugs
+* Fix connection issues with .onion domains on non-default ports

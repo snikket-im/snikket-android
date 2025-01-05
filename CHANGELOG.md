@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.17.8
+
+* Fix some minor UI bugs
+* Fix connection issues with .onion domains on non-default ports
+
 ### Version 2.17.7
 
 * Easier access to custom notification sounds via Contact details -> Overflow menu -> Custom notifications)
