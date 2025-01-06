@@ -1,0 +1,2 @@
+* Poprawienie drobnych błędów interfejsu użytkownika
+* Poprawienie problemów z połączeniem z domenami .onion na niedomyślnych portach
