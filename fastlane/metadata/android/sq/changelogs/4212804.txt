@@ -1,0 +1,3 @@
+* Përdorim më i kollajtë i tingujsh vetjakë njoftimesh, përmes hollësish Kontakti -> Menu shtresë përsipër -> Njoftime vetjake)
+* Ndreqje objektivash ndarjeje të drejtpërdrejtë në versione të rinj Android
+* Aftësi për t’u kufizuar kontakteve dukshmëri avatarësh
