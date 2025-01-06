@@ -1,0 +1,2 @@
+* Parandasime mõned väiksemad kasutajaliidese vead
+* Parandasime .onion domeenide ühenduse vead mittestandardsete portide kasutamisel
