@@ -249,6 +249,10 @@ See the dedicated guides for
 - [backups](docs/user/backup.md)
 - [migrations](docs/user/migrating_to_new_device.md)
 
+#### Can I export my chats as plain text files?
+
+There is a tool called [ceb2txt](https://codeberg.org/iNPUTmice/ceb2txt) that can convert backup file (.ceb) into txt files.
+
 #### Conversations is missing a certain feature
 
 I'm open for new feature suggestions. You can use the [issue tracker][https://codeberg.org/iNPUTmice/Conversations/issues]
