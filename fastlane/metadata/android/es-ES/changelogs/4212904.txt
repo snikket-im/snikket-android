@@ -1,0 +1,2 @@
+* Se corrigieron algunos errores menores de la interfaz de usuario.
+* Solucionar problemas de conexión con dominios .onion (.cebolla) en puertos no predeterminados
