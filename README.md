@@ -138,8 +138,16 @@ Maybe you attempted to use the Jabber ID `test@b.tld` because `a.tld` doesn’t 
 
 In most cases this error is caused by ejabberd advertising support for TLSv1.3 but not properly supporting it. This can happen if the OpenSSL version on the server already supports TLSv1.3 but the fast\_tls wrapper library used by ejabberd not (properly) support it. Upgrading fast\_tls and ejabberd or - theoretically - downgrading OpenSSL should fix the issue. A work around is to explicitly disable TLSv1.3 support in the ejabberd configuration. More information can be found on [this issue on the ejabberd issue tracker](https://github.com/processone/ejabberd/issues/2614).
 
+#### Conversations is consuming a lot of battery, what can I do?
+
+Battery attribution on Android can be misleading. Conversations may appear to consume a lot of battery because it’s active, but this doesn’t necessarily mean it drains your battery significantly faster. For example, if your phone lasts 24 hours with Conversations and 25 hours without it, the impact is only about an hour, which is often negligible for most users who charge their phones nightly.
+
+To check for potential issues, use the account server info screen in Conversations to verify whether server features are consistently available. Additionally, ensure your session age is appropriately long (e.g., several days or since the last time you restarted your phone). A session age of just minutes might indicate a problem unless you recently turned on your phone.
+
+Battery usage percentages can also be deceptive. On low-usage days, Conversations might rank high simply because it’s running, even if its actual impact is minimal compared to something like taking a photo with the camera. Evaluating battery life with and without the app under similar conditions is the best way to assess its true effect.
 
 #### I’m getting this annoying permanent notification
+
 Starting with Conversations 2.3.6 Conversations releases distributed over the Google Play Store will display a permanent notification if you are running it on Android 8 and above. This is a rule that it is essentially enforced by the Google Play Store. (You won’t have the problem  of a *forced* foreground notification if you are getting your app from F-Droid.)
 
 However you can disable the notification via settings of the operating system. (Not settings in Conversations.)
