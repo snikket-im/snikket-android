@@ -928,7 +928,7 @@
     <string name="pref_notifications_from_strangers_summary">Njofto për mesazhe dhe thirrje të mara prej të huajish.</string>
     <string name="pref_validate_hostname_summary">Dëshmi shërbyesi që përmbajnë strehëemrin e vlerësuar, konsiderohen të verifikuara</string>
     <string name="certificate_does_not_contain_jid">Dëshmia s’përmban adresë XMPP</string>
-    <string name="mtm_hostname_mismatch">Shërbyesi s’bëri dot mirëfilltësimin si s. Dëshmia është e vlefshme vetëm për:</string>
+    <string name="mtm_hostname_mismatch">Shërbyesi s’bëri dot mirëfilltësimin si “%s”. Dëshmia është e vlefshme vetëm për:</string>
     <string name="pref_scroll_to_bottom_summary">Pas dërgimit të një mesazhi, rrëshqit poshtë</string>
     <string name="error_trustkey_general">%1$s s’është në gjendje të fshehtëzojë mesazhe te %2$s. Kjo mund të vijë për shkak se kontakti juaj përdor një shërbyes, ose klient të vjetruar, që s’mund të përdorë OMEMO.</string>
     <string name="error_trustkey_hint_mutual">Ndihmëz: Në disa raste, kjo mund të ndreqet duke shtuar listat e kontakteve të njëri-tjetrit.</string>
@@ -1119,4 +1119,5 @@
     <string name="pref_call_integration_summary">Thirrjet prej këtij aplikacioni ndërveprojnë me thirrjet e zakonshme telefonike, fjala vjen, përfundim i një thirrjeje, kur niset një tjetër.</string>
     <string name="show_to_contacts_only">Shfaqja vetëm kontakteve</string>
     <string name="delete_avatar_message">Doni të fshihet avatari jua? Disa klientë mund të vazhdojnë të shfaqin një kopje të ruajtur në fshehtinat e tyre të avatarit tuaj.</string>
+    <string name="account_status_connection_timeout">Mbarim kohe për lidhjen</string>
 </resources>
