@@ -779,6 +779,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         CONNECTING(false),
         ONLINE(false),
         NO_INTERNET(false),
+        CONNECTION_TIMEOUT,
         UNAUTHORIZED,
         TEMPORARY_AUTH_FAILURE,
         SERVER_NOT_FOUND,
@@ -848,6 +849,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                     return R.string.account_status_not_found;
                 case NO_INTERNET:
                     return R.string.account_status_no_internet;
+                case CONNECTION_TIMEOUT:
+                    return R.string.account_status_connection_timeout;
                 case REGISTRATION_FAILED:
                     return R.string.account_status_regis_fail;
                 case REGISTRATION_WEB:

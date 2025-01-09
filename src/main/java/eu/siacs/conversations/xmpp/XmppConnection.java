@@ -20,6 +20,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.primitives.Ints;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
@@ -166,7 +167,7 @@ public class XmppConnection implements Runnable {
     private int stanzasSentBeforeAuthentication;
     private long lastPacketReceived = 0;
     private long lastPingSent = 0;
-    private long lastConnect = 0;
+    private long lastConnectionStarted = 0;
     private long lastSessionStarted = 0;
     private long lastDiscoStarted = 0;
     private boolean isMamPreferenceAlways = false;
@@ -264,7 +265,7 @@ public class XmppConnection implements Runnable {
     }
 
     public void prepareNewConnection() {
-        this.lastConnect = SystemClock.elapsedRealtime();
+        this.lastConnectionStarted = SystemClock.elapsedRealtime();
         this.lastPingSent = SystemClock.elapsedRealtime();
         this.lastDiscoStarted = Long.MAX_VALUE;
         this.mWaitingForSmCatchup.set(false);
@@ -526,15 +527,17 @@ public class XmppConnection implements Runnable {
         if (Thread.currentThread().isInterrupted()) {
             throw new InterruptedException();
         }
+        // this means we have at least found a socket to connect to. give the connection another 90s
+        this.lastConnectionStarted = SystemClock.elapsedRealtime();
         this.socket = socket;
-        tagReader = new XmlReader();
+        this.tagReader = new XmlReader();
         if (tagWriter != null) {
             tagWriter.forceClose();
         }
-        tagWriter = new TagWriter();
-        tagWriter.setOutputStream(socket.getOutputStream());
-        tagReader.setInputStream(socket.getInputStream());
-        tagWriter.beginDocument();
+        this.tagWriter = new TagWriter();
+        this.tagWriter.setOutputStream(socket.getOutputStream());
+        this.tagReader.setInputStream(socket.getInputStream());
+        this.tagWriter.beginDocument();
         final boolean quickStart;
         if (socket instanceof SSLSocket sslSocket) {
             SSLSockets.log(account, sslSocket);
@@ -2372,7 +2375,7 @@ public class XmppConnection implements Runnable {
         } else if (streamError.hasChild("host-unknown")) {
             throw new StateChangingException(Account.State.HOST_UNKNOWN);
         } else if (streamError.hasChild("policy-violation")) {
-            this.lastConnect = SystemClock.elapsedRealtime();
+            this.lastConnectionStarted = SystemClock.elapsedRealtime();
             final String text = streamError.findChildContent("text");
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": policy violation. " + text);
             if (isSecureLoggedIn) {
@@ -2712,8 +2715,7 @@ public class XmppConnection implements Runnable {
     }
 
     public String getMucServer() {
-        List<String> servers = getMucServers();
-        return servers.size() > 0 ? servers.get(0) : null;
+        return Iterables.getFirst(getMucServers(), null);
     }
 
     public int getTimeToNextAttempt(final boolean aggressive) {
@@ -2725,9 +2727,8 @@ public class XmppConnection implements Runnable {
                     account.getLastErrorStatus() == Account.State.POLICY_VIOLATION ? 3 : 0;
             interval = Math.min((int) (25 * Math.pow(1.3, (additionalTime + attempt))), 300);
         }
-        final int secondsSinceLast =
-                (int) ((SystemClock.elapsedRealtime() - this.lastConnect) / 1000);
-        return interval - secondsSinceLast;
+        final var connectionDuration = Ints.saturatedCast(getConnectionDuration() / 1000);
+        return interval - connectionDuration;
     }
 
     public int getAttempt() {
@@ -2743,16 +2744,16 @@ public class XmppConnection implements Runnable {
         return System.currentTimeMillis() - diff;
     }
 
-    public long getLastConnect() {
-        return this.lastConnect;
+    public long getConnectionDuration() {
+        return SystemClock.elapsedRealtime() - this.lastConnectionStarted;
+    }
+
+    public long getDiscoDuration() {
+        return SystemClock.elapsedRealtime() - this.lastDiscoStarted;
     }
 
     public long getLastPingSent() {
         return this.lastPingSent;
-    }
-
-    public long getLastDiscoStarted() {
-        return this.lastDiscoStarted;
     }
 
     public long getLastPacketReceived() {
@@ -2770,7 +2771,7 @@ public class XmppConnection implements Runnable {
     public void resetAttemptCount(boolean resetConnectTime) {
         this.attempt = 0;
         if (resetConnectTime) {
-            this.lastConnect = 0;
+            this.lastConnectionStarted = 0;
         }
     }
 
@@ -2816,6 +2817,16 @@ public class XmppConnection implements Runnable {
         }
         iqPacket.query(Namespace.ROSTER).setAttribute("ver", version);
         sendIqPacket(iqPacket, unregisteredIqListener);
+    }
+
+    public void triggerConnectionTimeout() {
+        final var duration = getConnectionDuration();
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid() + ": connection timeout after " + duration + "ms");
+        this.changeStatus(Account.State.CONNECTION_TIMEOUT);
+        this.interrupt();
+        this.forceCloseSocket();
     }
 
     private class MyKeyManager implements X509KeyManager {

@@ -158,6 +158,7 @@
     <string name="account_status_unauthorized">Unauthorized</string>
     <string name="account_status_not_found">Server not found</string>
     <string name="account_status_no_internet">No connectivity</string>
+    <string name="account_status_connection_timeout">Connection timeout</string>
     <string name="account_status_regis_fail">Registration failed</string>
     <string name="account_status_regis_conflict">Username already in use</string>
     <string name="account_status_regis_success">Registration completed</string>

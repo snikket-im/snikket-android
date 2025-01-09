@@ -2,7 +2,6 @@ package eu.siacs.conversations.services;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.net.Uri;
@@ -20,7 +19,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
@@ -374,7 +372,7 @@ public class CallIntegration extends Connection {
             }
         }
         if (state == STATE_ACTIVE) {
-            startTone(DEFAULT_TONE_VOLUME, ToneGenerator.TONE_CDMA_ANSWER, 100 );
+            startTone(DEFAULT_TONE_VOLUME, ToneGenerator.TONE_CDMA_ANSWER, 100);
         } else if (state == STATE_DISCONNECTED) {
             final var audioManager = this.appRTCAudioManager;
             if (audioManager != null) {

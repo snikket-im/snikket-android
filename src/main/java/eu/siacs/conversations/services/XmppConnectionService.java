@@ -5,7 +5,6 @@ import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.KeyguardManager;
 import android.app.Notification;
@@ -1036,6 +1035,7 @@ public class XmppConnectionService extends Service {
         if (!account.getStatus().isAttemptReconnect()) {
             return false;
         }
+        final var requestCode = account.getUuid().hashCode();
         if (!hasInternetConnection()) {
             account.setStatus(Account.State.NO_INTERNET);
             statusListener.onStatusChanged(account);
@@ -1065,8 +1065,7 @@ public class XmppConnectionService extends Service {
                             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ping timeout");
                             this.reconnectAccount(account, true, interactive);
                         } else {
-                            int secs = (int) (pingTimeoutIn / 1000);
-                            this.scheduleWakeUpCall(secs, account.getUuid().hashCode());
+                            this.scheduleWakeUpCall(pingTimeoutIn, requestCode);
                         }
                     } else {
                         pingCandidates.add(account);
@@ -1081,8 +1080,7 @@ public class XmppConnectionService extends Service {
                         } else if (msToNextPing <= 0) {
                             return true;
                         } else {
-                            this.scheduleWakeUpCall(
-                                    (int) (msToNextPing / 1000), account.getUuid().hashCode());
+                            this.scheduleWakeUpCall(msToNextPing, requestCode);
                             if (mLowPingTimeoutMode.remove(account.getJid().asBareJid())) {
                                 Log.d(
                                         Config.LOGTAG,
@@ -1095,32 +1093,18 @@ public class XmppConnectionService extends Service {
             } else if (account.getStatus() == Account.State.OFFLINE) {
                 reconnectAccount(account, true, interactive);
             } else if (account.getStatus() == Account.State.CONNECTING) {
-                long secondsSinceLastConnect =
-                        (SystemClock.elapsedRealtime()
-                                        - account.getXmppConnection().getLastConnect())
-                                / 1000;
-                long secondsSinceLastDisco =
-                        (SystemClock.elapsedRealtime()
-                                        - account.getXmppConnection().getLastDiscoStarted())
-                                / 1000;
-                long discoTimeout = Config.CONNECT_DISCO_TIMEOUT - secondsSinceLastDisco;
-                long timeout = Config.CONNECT_TIMEOUT - secondsSinceLastConnect;
-                if (timeout < 0) {
-                    Log.d(
-                            Config.LOGTAG,
-                            account.getJid()
-                                    + ": time out during connect reconnecting (secondsSinceLast="
-                                    + secondsSinceLastConnect
-                                    + ")");
-                    account.getXmppConnection().resetAttemptCount(false);
-                    reconnectAccount(account, true, interactive);
+                final var connection = account.getXmppConnection();
+                final var connectionDuration = connection.getConnectionDuration();
+                final var discoDuration = connection.getDiscoDuration();
+                final var connectionTimeout = Config.CONNECT_TIMEOUT * 1000L - connectionDuration;
+                final var discoTimeout = Config.CONNECT_DISCO_TIMEOUT * 1000L - discoDuration;
+                if (connectionTimeout < 0) {
+                    connection.triggerConnectionTimeout();
                 } else if (discoTimeout < 0) {
-                    account.getXmppConnection().sendDiscoTimeout();
-                    scheduleWakeUpCall(
-                            (int) Math.min(timeout, discoTimeout), account.getUuid().hashCode());
+                    connection.sendDiscoTimeout();
+                    scheduleWakeUpCall(discoTimeout, requestCode);
                 } else {
-                    scheduleWakeUpCall(
-                            (int) Math.min(timeout, discoTimeout), account.getUuid().hashCode());
+                    scheduleWakeUpCall(Math.min(connectionTimeout, discoTimeout), requestCode);
                 }
             } else {
                 final boolean aggressive =
@@ -1768,12 +1752,12 @@ public class XmppConnectionService extends Service {
     }
 
     public void scheduleWakeUpCall(final int seconds, final int requestCode) {
-        final long timeToWake =
-                SystemClock.elapsedRealtime() + (seconds < 0 ? 1 : seconds + 1) * 1000L;
-        final AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        if (alarmManager == null) {
-            return;
-        }
+        scheduleWakeUpCall((long) (seconds < 0 ? 1 : seconds + 1), requestCode);
+    }
+
+    private void scheduleWakeUpCall(final long milliSeconds, final int requestCode) {
+        final var timeToWake = SystemClock.elapsedRealtime() + milliSeconds;
+        final var alarmManager = getSystemService(AlarmManager.class);
         final Intent intent = new Intent(this, SystemEventReceiver.class);
         intent.setAction(ACTION_PING);
         try {
@@ -1781,12 +1765,11 @@ public class XmppConnectionService extends Service {
                     PendingIntent.getBroadcast(
                             this, requestCode, intent, PendingIntent.FLAG_IMMUTABLE);
             alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timeToWake, pendingIntent);
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             Log.e(Config.LOGTAG, "unable to schedule alarm for ping", e);
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     private void scheduleNextIdlePing() {
         final long timeToWake = SystemClock.elapsedRealtime() + (Config.IDLE_PING_INTERVAL * 1000);
         final AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
