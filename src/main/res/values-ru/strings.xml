@@ -91,7 +91,7 @@
     <string name="send_unencrypted_message">Отправить сообщение без шифрования</string>
     <string name="send_message">Сообщение</string>
     <string name="send_message_to_x">Сообщение для %s</string>
-    <string name="send_omemo_x509_message">v\\Зашифрованное OMEMO сообщение</string>
+    <string name="send_omemo_x509_message">Зашифрованное vOMEMO сообщение</string>
     <string name="your_nick_has_been_changed">Используется новое имя</string>
     <string name="send_unencrypted">Отправить в незашифрованном виде</string>
     <string name="decryption_failed">Расшифровка невозможна. Вероятно, у вас нет надлежащего ключа.</string>
@@ -1155,4 +1155,5 @@
     <string name="custom_notifications_enable">Использовать индивидуальные настройки уведомлений (важность, звук, вибрация) для этой беседы?</string>
     <string name="delete_avatar_message">Хотите удалить свой аватар? Некоторые клиенты могут продолжать отображать кэшированную копию вашего аватара.</string>
     <string name="show_to_contacts_only">Показывать только контактам</string>
+    <string name="account_status_connection_timeout">Истекло время ожидания подключения</string>
 </resources>
