@@ -671,7 +671,7 @@
     <string name="mtm_accept_cert">Прийняти незнайомий сертифікат?</string>
     <string name="mtm_trust_anchor">Сертифікат сервера не підписано відомим центром сертифікації.</string>
     <string name="mtm_accept_servername">Прийняти сервер з невідповідним ім\'ям?</string>
-    <string name="mtm_hostname_mismatch">Серверу не вдалося авторизуватися як %s. Сертифікат чинний лише для:</string>
+    <string name="mtm_hostname_mismatch">Серверу не вдалося авторизуватися як «%s». Сертифікат чинний лише для:</string>
     <string name="mtm_connect_anyway">Усе одно бажаєте підключитися?</string>
     <string name="mtm_cert_details">Деталі сертифіката:</string>
     <string name="once">Один раз</string>
@@ -1156,4 +1156,5 @@
     <string name="custom_notifications">Індивідуальні сповіщення</string>
     <string name="show_to_contacts_only">Показувати лише контактам</string>
     <string name="delete_avatar_message">Бажаєте видалити свій аватар? Деякі клієнти можуть продовжувати відображати копію Вашого аватара з кешу.</string>
+    <string name="account_status_connection_timeout">Час очікування з\'єднання вичерпано</string>
 </resources>
