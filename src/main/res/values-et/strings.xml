@@ -1128,4 +1128,5 @@
     <string name="pref_call_integration">Kõnede lõimimine</string>
     <string name="delete_avatar_message">Kas sa sooviksid oma tunnuspildi kustutada? Palun arvesta, et mitmed klientrakendused võivad jätkata vana puhverdatud pildi kasutamist.</string>
     <string name="show_to_contacts_only">Näita vaid kontaktidele</string>
+    <string name="account_status_connection_timeout">Ühenduse on aegunud</string>
 </resources>
