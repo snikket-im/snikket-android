@@ -1124,4 +1124,5 @@
     <string name="pref_call_integration_summary">Oproepen van deze app werken samen met gewone telefoongesprekken, zoals het beëindigen van een gesprek wanneer een ander begint.</string>
     <string name="show_to_contacts_only">Alleen weergeven aan contacten</string>
     <string name="delete_avatar_message">Wil je je avatar verwijderen? Sommige clients kunnen nog steeds een kopie van jouw avatar in de cache weergeven.</string>
+    <string name="account_status_connection_timeout">Time-out voor verbinding</string>
 </resources>
