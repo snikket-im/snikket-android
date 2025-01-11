@@ -1126,4 +1126,5 @@
     <string name="pref_call_integration_summary">Chamadas deste app interagem com as chamadas comuns do sistema, como quando uma chamada é terminada quando outra começa.</string>
     <string name="show_to_contacts_only">Mostrar somente para contatos</string>
     <string name="delete_avatar_message">Você gostaria de excluir seu avatar? Alguns clientes podem continuar mostrando uma cópia em cache do seu avatar.</string>
+    <string name="account_status_connection_timeout">Conexão demorou muito</string>
 </resources>
