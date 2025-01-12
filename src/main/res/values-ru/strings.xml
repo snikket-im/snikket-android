@@ -261,7 +261,7 @@
     <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s + ещё %2$d прочитали досюда</string>
     <string name="everyone_has_read_up_to_this_point">Все прочитали сообщения досюда</string>
     <string name="publish">Опубликовать</string>
-    <string name="touch_to_choose_picture">Нажмите на аватар, чтобы выбрать новую фотографию из галереи</string>
+    <string name="touch_to_choose_picture">Нажмите на аватар, чтобы выбрать изображение из галереи</string>
     <string name="publishing">Установка…</string>
     <string name="error_publish_avatar_server_reject">Сервер отклонил размещение аватара</string>
     <string name="error_publish_avatar_converting">Невозможно преобразовать вашу фотографию</string>
