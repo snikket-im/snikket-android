@@ -1012,7 +1012,7 @@
     <string name="delete_from_server">Удалить аккаунт на сервере</string>
     <string name="pref_autojoin">Синхронизировать закладки</string>
     <string name="pref_autojoin_summary">Устанавливать флаг \"автоприсоединение\" при входе и выходе из MUC, и реагировать на изменения от других клиентов</string>
-    <string name="search_group_chats">Поиск по конференциям</string>
+    <string name="search_group_chats">Поиск конференций</string>
     <string name="download_failed_invalid_file">Загрузка не выполнена: файл испорчен</string>
     <string name="rtp_state_content_add_video">Перейти на видеовызов\?</string>
     <string name="outgoing_call_duration_timestamp">Исходящий вызов (%s) · %s</string>
