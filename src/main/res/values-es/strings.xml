@@ -1122,4 +1122,5 @@
     <string name="custom_notifications_enable">¿Habilitar los ajustes de notificaciones personalizadas (importancia, sonido, vibración) para esta conversación?</string>
     <string name="delete_avatar_message">¿Quieres eliminar tu imagen de perfil? Algunos clientes podrían seguir mostrando una copia en caché de tu avatar.</string>
     <string name="show_to_contacts_only">Mostrar sólo a contactos</string>
+    <string name="account_status_connection_timeout">Se agotó el tiempo de espera de la conexión</string>
 </resources>
