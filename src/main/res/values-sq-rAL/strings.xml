@@ -368,7 +368,7 @@
     <string name="download_failed_invalid_file">Shkarkimi dështoi: Kartelë e pavlefshme</string>
     <string name="account_status_tor_unavailable">Rrjet Tor jo në punë</string>
     <string name="account_status_bind_failure">Dështim lidhjeje</string>
-    <string name="account_status_host_unknown">Shërbyesi s’është përgjegjës për këtë përkatësi</string>
+    <string name="account_status_host_unknown">S’është përgjegjës për përkatësinë</string>
     <string name="server_info_broken">I dëmtuar</string>
     <string name="pref_away_when_screen_off">“I larguar”, kur pajisja është e kyçur</string>
     <string name="pref_away_when_screen_off_summary">Shfaqmë si “I lraguar”, kur pajisja është e kyçur</string>
