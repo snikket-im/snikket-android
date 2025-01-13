@@ -637,7 +637,7 @@
     <string name="pref_presence_settings">Kättesaadavus</string>
     <string name="account_status_tor_unavailable">Tori võrk pole saadaval</string>
     <string name="account_status_bind_failure">Serveriga sidumine ei õnnestunud</string>
-    <string name="account_status_host_unknown">See server ei vastuta antud domeeni eest</string>
+    <string name="account_status_host_unknown">Pole vastutav antud domeeni eest</string>
     <string name="server_info_broken">Katki</string>
     <string name="pref_away_when_screen_off">Seadme lukustumisel, määra olekuks „Eemal“</string>
     <string name="pref_away_when_screen_off_summary">Kui seade on lukus, siis määra oma olekuks „Eemal“</string>
