@@ -1,0 +1,39 @@
+Lihtsaltkasutatav, töökindel ja akusõbralik. Piltide, jututubade ja läbiva krüptimise tugi.
+
+Eesmärgid:
+
+* Ilus ja lihtne rakendus ilma kahjustamata turvalisust ja privaatsust
+* Olemasolevate ja toimivate protokollide kasutamine
+* Peab toimima ilma Google kasutajakontota ning mitte vajama Google Cloud Messaging (GCM) teenuseid
+* Peab eeldama nutiseadmes võimalikult vähe õigusi
+
+Funktsionaalsus:
+
+* Läbiv krüptimine kas <a href="http://conversations.im/omemo/">OMEMO</a> või <a href="http://openpgp.org/about/">OpenPGP</a> abil
+* Võimalus saata ja vastu võtta pilte
+* Krüptitud hääl- ja videokõned (DTLS-SRTP)
+* Intuitiivne kasutajaliides, mis lähtub Androidi kujunduspõhimõtetest
+* Kontaktide pildid ja tunnuspildid
+* Sünkroniseerimine töölauakliendiga
+* Konverentsid/jututoad (järjehoidjate toega)
+* Lõimimine aadressiraamatuga
+* Mitme kasutajakonto kasutamise võimalus ühise sisendvooga
+* Üliminimaalne mõju akukasutusele
+
+Conversationsi abil on lihtne lisada kasutajakontot tasuta conversations.im serveris. Aga Conversations toimib hästi kõikide XMPP serveritega. Paljusid XMPP-servereid haldavad vabatahtlikud ning nende kasutamine on tasuta.
+
+XMPP funktsionaalsus:
+
+Conversations toimib igasuguste XMPP-serveritega. Aga XMPP on laiendatav protokoll ning need laiendused on standardiseeritud XEP'idena. Et üldine kasutajakogemus oleks sujuv, toetab Conversations neist paljusid. On võimalus, et sinu XMPP serveris pole mõni konkreetne laiendus kasutusel. Seega parima tulemuse saad siis, kui leiad serveri, mis toetab neist kõiki või paned enda ja oma sõprade jaoks püsti oma XMPP serveri.
+
+Hetkel on toetatud XEP'id:
+
+* XEP-0065: SOCKS5 Bytestreams (või mod_proxy65). On kasutusel failide teisaldamisel, kui kõik vestluse osapooled on tulemüüri taga või asuvad NATitud võrgus.
+* XEP-0163: Personal Eventing Protocol tunnuspiltide kasutamise jaoks.
+* XEP-0191: Blocking Command võimaldab blokeerida spämmereid ja muid mittesoovitud osapooli ilma kontaktiloendi muutmiseta.
+* XEP-0198: Stream Management võimaldab XMPP-ühendusel toimida väikeste võrgukatkestuste ja TCP-ühenduste muutuste puhul.
+* XEP-0280: Message Carbons automaatselt sünkroniseerib sõnumid nutiseadme ja töölauakliendi vahel ning võimaldab sul tõhusalt kasutada neist seda, mida parasjagu vaja.
+* XEP-0237: Roster Versioning võimaldab säästa ribalaiust kehvade sideühenduste puhul.
+* XEP-0313: Message Archive Management sünkroniseerib sõnumite ajalugu serveri ja klientide vahel. See tahab, et saad sõnumid ka sõnumid ajast, mil Conversations polnud võrgus.
+* XEP-0352: Client State Indication võimaldab serveril teada, kas Conversations töötab taustal. Võimaldab serveril jätta saatmata mittevajalikud paketid ja sellega säästa ribalaiust.
+* XEP-0363: HTTP File Upload võimaldab jagada faile jututubades ja vallasrežiimis klientidega. Eeldab täiendava mooduli kasutamist serveris.
