@@ -455,7 +455,7 @@
     <string name="download_failed_could_not_write_file">Завантаження не вдалося: неможливо записати файл</string>
     <string name="account_status_tor_unavailable">Мережа Tor недоступна</string>
     <string name="account_status_bind_failure">Прив\'язка не спрацювала</string>
-    <string name="account_status_host_unknown">Сервер не відповідає за цей домен</string>
+    <string name="account_status_host_unknown">Не несе відповідальності за домен</string>
     <string name="server_info_broken">Поламано</string>
     <string name="pref_presence_settings">Доступність</string>
     <string name="pref_treat_vibrate_as_silent">Вважати вібро за безшумний режим</string>
