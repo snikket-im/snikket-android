@@ -470,7 +470,7 @@
     <string name="download_failed_invalid_file">Download failed: Invalid file</string>
     <string name="account_status_tor_unavailable">Tor network unavailable</string>
     <string name="account_status_bind_failure">Bind failure</string>
-    <string name="account_status_host_unknown">The server is not responsible for this domain</string>
+    <string name="account_status_host_unknown">Not responsible for domain</string>
     <string name="server_info_broken">Broken</string>
     <string name="pref_presence_settings">Availability</string>
     <string name="pref_away_when_screen_off">Away when device is locked</string>

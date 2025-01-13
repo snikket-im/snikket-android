@@ -446,12 +446,10 @@ public class XmppConnection implements Runnable {
 
                         localSocket = new Socket();
                         localSocket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
-
+                        localSocket.setSoTimeout(Config.SOCKET_TIMEOUT * 1000);
                         if (features.encryptionEnabled) {
                             localSocket = upgradeSocketToTls(localSocket);
                         }
-
-                        localSocket.setSoTimeout(Config.SOCKET_TIMEOUT * 1000);
                         if (startXmpp(localSocket)) {
                             // reset to 0; once the connection is established we don't want this
                             localSocket.setSoTimeout(0);
@@ -2125,7 +2123,7 @@ public class XmppConnection implements Runnable {
         mWaitForDisco.set(waitForDisco);
         this.lastDiscoStarted = SystemClock.elapsedRealtime();
         mXmppConnectionService.scheduleWakeUpCall(
-                Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
+                Config.CONNECT_DISCO_TIMEOUT * 1000L, account.getUuid().hashCode());
         final Element caps = streamFeatures.findChild("c");
         final String hash = caps == null ? null : caps.getAttribute("hash");
         final String ver = caps == null ? null : caps.getAttribute("ver");
@@ -2824,9 +2822,15 @@ public class XmppConnection implements Runnable {
         Log.d(
                 Config.LOGTAG,
                 account.getJid().asBareJid() + ": connection timeout after " + duration + "ms");
-        this.changeStatus(Account.State.CONNECTION_TIMEOUT);
+
+        // last connection time gets reset so time to next attempt is calculated correctly
+        this.lastConnectionStarted = SystemClock.elapsedRealtime();
+
+        // interrupt needs to be called before status change; otherwise we interrupt the newly
+        // created thread
         this.interrupt();
         this.forceCloseSocket();
+        this.changeStatus(Account.State.CONNECTION_TIMEOUT);
     }
 
     private class MyKeyManager implements X509KeyManager {

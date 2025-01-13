@@ -421,7 +421,8 @@ public class XmppConnectionService extends Service {
                         for (Conversation conversation : pendingJoins) {
                             joinMuc(conversation);
                         }
-                        scheduleWakeUpCall(Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
+                        scheduleWakeUpCall(
+                                Config.PING_MAX_INTERVAL * 1000L, account.getUuid().hashCode());
                     } else if (account.getStatus() == Account.State.OFFLINE
                             || account.getStatus() == Account.State.DISABLED
                             || account.getStatus() == Account.State.LOGGED_OUT) {
@@ -1752,10 +1753,10 @@ public class XmppConnectionService extends Service {
     }
 
     public void scheduleWakeUpCall(final int seconds, final int requestCode) {
-        scheduleWakeUpCall((long) (seconds < 0 ? 1 : seconds + 1), requestCode);
+        scheduleWakeUpCall((seconds < 0 ? 1 : seconds + 1) * 1000L, requestCode);
     }
 
-    private void scheduleWakeUpCall(final long milliSeconds, final int requestCode) {
+    public void scheduleWakeUpCall(final long milliSeconds, final int requestCode) {
         final var timeToWake = SystemClock.elapsedRealtime() + milliSeconds;
         final var alarmManager = getSystemService(AlarmManager.class);
         final Intent intent = new Intent(this, SystemEventReceiver.class);
