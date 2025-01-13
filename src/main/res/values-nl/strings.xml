@@ -893,7 +893,7 @@
     <string name="pref_enter_is_send_summary">Gebruik de Enter-toets om een bericht te verzenden. Je kunt altijd Ctrl + Enter gebruiken om een bericht te verzenden, zelfs als deze optie is uitgeschakeld.</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Bezet melden als het apparaat op trillen staat</string>
     <string name="clear_other_devices_desc">Weet je zeker dat je alle andere apparaten uit de OMEMO-aankondiging wilt verwijderen? De volgende keer dat je apparaten verbinding maken, zullen ze zichzelf opnieuw aankondigen, maar ontvangen ze mogelijk geen berichten die ondertussen zijn verzonden.</string>
-    <string name="account_status_host_unknown">De server is niet verantwoordelijk voor dit domein</string>
+    <string name="account_status_host_unknown">Niet verantwoordelijk voor domein</string>
     <string name="title_undo_swipe_out_chat">Chat gearchiveerd</string>
     <string name="no_permission_to_place_call">Geen toestemming om te bellen</string>
     <string name="no_keys_just_confirm">Je hebt de vingerafdruk van deze persoon al vertrouwd. Door \"Gereed\" te selecteren, bevestig je alleen dat %s deel uitmaakt van deze groepschat.</string>
