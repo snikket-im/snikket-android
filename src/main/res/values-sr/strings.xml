@@ -461,7 +461,7 @@
     <string name="download_failed_could_not_write_file">Преузимање није успело: није могуће уписивање фајла</string>
     <string name="account_status_tor_unavailable">Тор мрежа недоступна</string>
     <string name="account_status_bind_failure">Неуспех везивања</string>
-    <string name="account_status_host_unknown">Сервер није одговоран за овај домен</string>
+    <string name="account_status_host_unknown">Није одговоран за домен</string>
     <string name="server_info_broken">Оштећен</string>
     <string name="pref_presence_settings">Присутност</string>
     <string name="pref_away_when_screen_off">Одсутан/на кад је уређај закључан</string>
@@ -1142,4 +1142,5 @@
     <string name="custom_notifications_enable">Укључи посебна подешавања обавештења (важност, звук, вибрација) за ову преписку?</string>
     <string name="delete_avatar_message">Желиш да обришеш свој аватар? Неки клијенти ће можда наставити да приказују кеширану копију твог аватара.</string>
     <string name="show_to_contacts_only">Приказуј само контактима</string>
+    <string name="account_status_connection_timeout">Истекла веза</string>
 </resources>
