@@ -1,0 +1,3 @@
+* Lihtsam lihipääs sinu seadistatud teavitushelinatele Kontakti üksikasjad -> Jätkumenüü -> Kohandatud teavitused)
+* Parandasime otsejagamise linkide kasutamise uutes Androidi versioonides
+* Võimalus piirata tunnuspildi näitamist kontaktidele

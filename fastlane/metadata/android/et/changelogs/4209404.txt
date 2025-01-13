@@ -1,0 +1,1 @@
+* Parandsime väikese regressiooni, mis tekkis versioonis 2.13.1
