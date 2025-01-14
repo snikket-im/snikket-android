@@ -465,7 +465,7 @@
     <string name="download_failed_invalid_file">Falha no download: arquivo inválido</string>
     <string name="account_status_tor_unavailable">Rede Tor não disponível</string>
     <string name="account_status_bind_failure">Falha na associação</string>
-    <string name="account_status_host_unknown">O servidor não responde por esse domínio</string>
+    <string name="account_status_host_unknown">Não é responsável por este domínio</string>
     <string name="server_info_broken">Quebrado</string>
     <string name="pref_presence_settings">Disponibilidade</string>
     <string name="pref_away_when_screen_off">\"Afastado\" quando o dispositivo estiver travado</string>
