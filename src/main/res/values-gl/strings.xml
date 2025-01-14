@@ -459,7 +459,7 @@
     <string name="download_failed_invalid_file">Fallou a descarga: ficheiro non válido</string>
     <string name="account_status_tor_unavailable">Sen acceso a rede Tor</string>
     <string name="account_status_bind_failure">Fallou a ligazón</string>
-    <string name="account_status_host_unknown">O servidor non corresponde a este dominio</string>
+    <string name="account_status_host_unknown">Non é responsable do dominio</string>
     <string name="server_info_broken">Roto</string>
     <string name="pref_presence_settings">Dispoñibilidade</string>
     <string name="pref_away_when_screen_off">Ausente se bloqueado</string>
