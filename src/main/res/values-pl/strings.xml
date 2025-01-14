@@ -465,7 +465,7 @@
     <string name="download_failed_invalid_file">Pobieranie nieudane: Nieprawidłowy plik</string>
     <string name="account_status_tor_unavailable">Sieć TOR jest niedostepna</string>
     <string name="account_status_bind_failure">Błąd połączenia (zasób)</string>
-    <string name="account_status_host_unknown">Serwer nie odpowiada domenie</string>
+    <string name="account_status_host_unknown">Nie odpowiada za domenę</string>
     <string name="server_info_broken">Zepsute</string>
     <string name="pref_presence_settings">Dostępność</string>
     <string name="pref_away_when_screen_off">Niedostępny kiedy urządzenie jest zablokowane</string>
