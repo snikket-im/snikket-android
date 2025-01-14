@@ -3,6 +3,7 @@ package eu.siacs.conversations.crypto.sasl;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
@@ -20,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 import javax.crypto.SecretKey;
 import javax.net.ssl.SSLSocket;
 
-abstract class ScramMechanism extends SaslMechanism {
+public abstract class ScramMechanism extends SaslMechanism {
 
     public static final SecretKey EMPTY_KEY =
             new SecretKey() {
@@ -50,6 +51,7 @@ abstract class ScramMechanism extends SaslMechanism {
     protected State state = State.INITIAL;
     private final String clientFirstMessageBare;
     private byte[] serverSignature = null;
+    private DowngradeProtection downgradeProtection = null;
 
     ScramMechanism(final Account account, final ChannelBinding channelBinding) {
         super(account);
@@ -74,6 +76,12 @@ abstract class ScramMechanism extends SaslMechanism {
                         "n=%s,r=%s",
                         CryptoHelper.saslEscape(CryptoHelper.saslPrep(account.getUsername())),
                         this.clientNonce);
+    }
+
+    public void setDowngradeProtection(final DowngradeProtection downgradeProtection) {
+        Preconditions.checkState(
+                this.state == State.INITIAL, "setting downgrade protection in invalid state");
+        this.downgradeProtection = downgradeProtection;
     }
 
     protected abstract HashFunction getHMac(final byte[] key);
@@ -128,9 +136,8 @@ abstract class ScramMechanism extends SaslMechanism {
 
     @Override
     public String getClientFirstMessage(final SSLSocket sslSocket) {
-        if (this.state != State.INITIAL) {
-            throw new IllegalArgumentException("Calling getClientFirstMessage from invalid state");
-        }
+        Preconditions.checkState(
+                this.state == State.INITIAL, "Calling getClientFirstMessage from invalid state");
         this.state = State.AUTH_TEXT_SENT;
         final byte[] message = (gs2Header + clientFirstMessageBare).getBytes();
         return BaseEncoding.base64().encode(message);
@@ -196,6 +203,19 @@ abstract class ScramMechanism extends SaslMechanism {
             salt = BaseEncoding.base64().decode(s);
         } catch (final IllegalArgumentException e) {
             throw new AuthenticationException("Invalid salt in server first message");
+        }
+
+        if (d != null && this.downgradeProtection != null) {
+            final String asSeenInFeatures;
+            try {
+                asSeenInFeatures = downgradeProtection.asDString();
+            } catch (final SecurityException e) {
+                throw new AuthenticationException(e);
+            }
+            final var hashed = BaseEncoding.base64().encode(digest(asSeenInFeatures.getBytes()));
+            if (!hashed.equals(d)) {
+                throw new AuthenticationException("Mismatch in SSDP");
+            }
         }
 
         final byte[] channelBindingData = getChannelBindingData(socket);

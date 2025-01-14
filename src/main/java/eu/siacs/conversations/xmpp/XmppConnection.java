@@ -29,8 +29,10 @@ import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.sasl.ChannelBinding;
 import eu.siacs.conversations.crypto.sasl.ChannelBindingMechanism;
+import eu.siacs.conversations.crypto.sasl.DowngradeProtection;
 import eu.siacs.conversations.crypto.sasl.HashedToken;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
+import eu.siacs.conversations.crypto.sasl.ScramMechanism;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
@@ -1558,6 +1560,16 @@ public class XmppConnection implements Runnable {
         final SaslMechanism saslMechanism =
                 factory.of(mechanisms, channelBindings, version, SSLSockets.version(this.socket));
         this.validate(saslMechanism, mechanisms);
+        final DowngradeProtection downgradeProtection;
+        if (cbExtension != null) {
+            downgradeProtection =
+                    new DowngradeProtection(mechanisms, cbExtension.getChannelBindingTypes());
+        } else {
+            downgradeProtection = new DowngradeProtection(mechanisms);
+        }
+        if (saslMechanism instanceof ScramMechanism scramMechanism) {
+            scramMechanism.setDowngradeProtection(downgradeProtection);
+        }
         final boolean quickStartAvailable;
         final String firstMessage =
                 saslMechanism.getClientFirstMessage(sslSocketOrNull(this.socket));
