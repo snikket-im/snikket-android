@@ -471,7 +471,7 @@
     <string name="download_failed_could_not_write_file">Загрузка не выполнена: ошибка записи файла</string>
     <string name="account_status_tor_unavailable">Сеть Tor недоступна</string>
     <string name="account_status_bind_failure">Ошибка связывания</string>
-    <string name="account_status_host_unknown">Сервер не ответственен за этот домен</string>
+    <string name="account_status_host_unknown">Не ответственен за домен</string>
     <string name="server_info_broken">Повреждено</string>
     <string name="pref_presence_settings">Доступность</string>
     <string name="pref_away_when_screen_off">\"Отошёл\" при блокировке экрана</string>
