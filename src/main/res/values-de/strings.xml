@@ -459,7 +459,7 @@
     <string name="download_failed_invalid_file">Download fehlgeschlagen: Ungültige Datei</string>
     <string name="account_status_tor_unavailable">Tor-Netzwerk nicht verfügbar</string>
     <string name="account_status_bind_failure">Verbindungsfehler</string>
-    <string name="account_status_host_unknown">Der Server ist nicht für diese Domain verantwortlich</string>
+    <string name="account_status_host_unknown">Nicht für Domain verantwortlich</string>
     <string name="server_info_broken">Fehlerhaft</string>
     <string name="pref_presence_settings">Status</string>
     <string name="pref_away_when_screen_off">Abwesend bei gesperrtem Gerät</string>
