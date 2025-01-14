@@ -1,20 +1,15 @@
 package eu.siacs.conversations.crypto.sasl;
 
 import android.util.Log;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.google.common.collect.Collections2;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.SSLSockets;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-
 import java.util.Collection;
 import java.util.Collections;
-
 import javax.net.ssl.SSLSocket;
 
 public abstract class SaslMechanism {
@@ -53,18 +48,7 @@ public abstract class SaslMechanism {
         return "";
     }
 
-    public static Collection<String> mechanisms(final Element authElement) {
-        if (authElement == null) {
-            return Collections.emptyList();
-        }
-        return Collections2.transform(
-                Collections2.filter(
-                        authElement.getChildren(),
-                        c -> c != null && "mechanism".equals(c.getName())),
-                c -> c == null ? null : c.getContent());
-    }
-
-    protected enum State {
+    public enum State {
         INITIAL,
         AUTH_TEXT_SENT,
         RESPONSE_SENT,
@@ -76,14 +60,11 @@ public abstract class SaslMechanism {
         SASL_2;
 
         public static Version of(final Element element) {
-            switch (Strings.nullToEmpty(element.getNamespace())) {
-                case Namespace.SASL:
-                    return SASL;
-                case Namespace.SASL_2:
-                    return SASL_2;
-                default:
-                    throw new IllegalArgumentException("Unrecognized SASL namespace");
-            }
+            return switch (Strings.nullToEmpty(element.getNamespace())) {
+                case Namespace.SASL -> SASL;
+                case Namespace.SASL_2 -> SASL_2;
+                default -> throw new IllegalArgumentException("Unrecognized SASL namespace");
+            };
         }
     }
 

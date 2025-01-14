@@ -1,20 +1,15 @@
 package eu.siacs.conversations.crypto.sasl;
 
 import android.util.Log;
-
 import com.google.common.base.CaseFormat;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableBiMap;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.SSLSockets;
-import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xml.Namespace;
-
+import im.conversations.android.xmpp.model.cb.SaslChannelBinding;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,20 +30,13 @@ public enum ChannelBinding {
         SHORT_NAMES = builder.build();
     }
 
-    public static Collection<ChannelBinding> of(final Element channelBinding) {
-        Preconditions.checkArgument(
-                channelBinding == null
-                        || ("sasl-channel-binding".equals(channelBinding.getName())
-                                && Namespace.CHANNEL_BINDING.equals(channelBinding.getNamespace())),
-                "pass null or a valid channel binding stream feature");
+    public static Collection<ChannelBinding> of(final SaslChannelBinding channelBinding) {
+        if (channelBinding == null) {
+            return Collections.emptyList();
+        }
         return Collections2.filter(
                 Collections2.transform(
-                        Collections2.filter(
-                                channelBinding == null
-                                        ? Collections.emptyList()
-                                        : channelBinding.getChildren(),
-                                c -> c != null && "channel-binding".equals(c.getName())),
-                        c -> c == null ? null : ChannelBinding.of(c.getAttribute("type"))),
+                        channelBinding.getChannelBindings(), cb -> ChannelBinding.of(cb.getType())),
                 Predicates.notNull());
     }
 

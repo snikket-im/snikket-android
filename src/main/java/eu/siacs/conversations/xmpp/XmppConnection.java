@@ -68,6 +68,7 @@ import im.conversations.android.xmpp.model.AuthenticationStreamFeature;
 import im.conversations.android.xmpp.model.StreamElement;
 import im.conversations.android.xmpp.model.bind2.Bind;
 import im.conversations.android.xmpp.model.bind2.Bound;
+import im.conversations.android.xmpp.model.cb.SaslChannelBinding;
 import im.conversations.android.xmpp.model.csi.Active;
 import im.conversations.android.xmpp.model.csi.Inactive;
 import im.conversations.android.xmpp.model.error.Condition;
@@ -917,7 +918,6 @@ public class XmppConnection implements Runnable {
             final Tag tag = tagReader.readTag();
             if (tag != null && tag.isStart("stream", Namespace.STREAMS)) {
                 processStream();
-                return;
             } else {
                 throw new StateChangingException(Account.State.STREAM_OPENING_ERROR);
             }
@@ -1552,9 +1552,8 @@ public class XmppConnection implements Runnable {
             authElement = this.streamFeatures.getExtension(Authentication.class);
         }
         final Collection<String> mechanisms = authElement.getMechanismNames();
-        final Element cbElement =
-                this.streamFeatures.findChild("sasl-channel-binding", Namespace.CHANNEL_BINDING);
-        final Collection<ChannelBinding> channelBindings = ChannelBinding.of(cbElement);
+        final var cbExtension = this.streamFeatures.getExtension(SaslChannelBinding.class);
+        final Collection<ChannelBinding> channelBindings = ChannelBinding.of(cbExtension);
         final SaslMechanism.Factory factory = new SaslMechanism.Factory(account);
         final SaslMechanism saslMechanism =
                 factory.of(mechanisms, channelBindings, version, SSLSockets.version(this.socket));
@@ -2674,11 +2673,11 @@ public class XmppConnection implements Runnable {
     }
 
     public Jid findDiscoItemByFeature(final String feature) {
-        final List<Entry<Jid, ServiceDiscoveryResult>> items = findDiscoItemsByFeature(feature);
-        if (items.size() >= 1) {
-            return items.get(0).getKey();
+        final var items = findDiscoItemsByFeature(feature);
+        if (items.isEmpty()) {
+            return null;
         }
-        return null;
+        return Iterables.getFirst(items, null).getKey();
     }
 
     public boolean r() {
@@ -3096,7 +3095,7 @@ public class XmppConnection implements Runnable {
                         new String[] {Namespace.HTTP_UPLOAD, Namespace.HTTP_UPLOAD_LEGACY}) {
                     List<Entry<Jid, ServiceDiscoveryResult>> items =
                             findDiscoItemsByFeature(namespace);
-                    if (items.size() > 0) {
+                    if (!items.isEmpty()) {
                         try {
                             long maxsize =
                                     Long.parseLong(
@@ -3136,7 +3135,7 @@ public class XmppConnection implements Runnable {
             for (String namespace :
                     new String[] {Namespace.HTTP_UPLOAD, Namespace.HTTP_UPLOAD_LEGACY}) {
                 List<Entry<Jid, ServiceDiscoveryResult>> items = findDiscoItemsByFeature(namespace);
-                if (items.size() > 0) {
+                if (!items.isEmpty()) {
                     try {
                         return Long.parseLong(
                                 items.get(0)
