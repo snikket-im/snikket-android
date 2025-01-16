@@ -1,0 +1,1 @@
+* Võtsime varukoopiate jaoks kasutusele uue failivormingu

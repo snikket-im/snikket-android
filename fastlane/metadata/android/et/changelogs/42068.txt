@@ -1,0 +1,2 @@
+* vestlusekohaste teavituste tugi
+* Android 10s kasutame opus-koodekit häälsõnumite jaoks
