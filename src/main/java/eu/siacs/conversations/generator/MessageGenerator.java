@@ -192,11 +192,10 @@ public class MessageGenerator extends AbstractGenerator {
     }
 
     public im.conversations.android.xmpp.model.stanza.Message reaction(
-            final Conversational conversation,
+            final Jid to,
+            final boolean groupChat,
             final String reactingTo,
             final Collection<String> ourReactions) {
-        final boolean groupChat = conversation.getMode() == Conversational.MODE_MULTI;
-        final Jid to = conversation.getJid().asBareJid();
         final im.conversations.android.xmpp.model.stanza.Message packet =
                 new im.conversations.android.xmpp.model.stanza.Message();
         packet.setType(

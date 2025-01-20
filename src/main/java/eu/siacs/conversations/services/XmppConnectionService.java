@@ -5710,9 +5710,12 @@ public class XmppConnectionService extends Service {
 
     public boolean sendReactions(final Message message, final Collection<String> reactions) {
         if (message.getConversation() instanceof Conversation conversation) {
+            final var isPrivateMessage = message.isPrivateMessage();
+            final Jid reactTo;
+            final boolean typeGroupChat;
             final String reactToId;
             final Collection<Reaction> combinedReactions;
-            if (conversation.getMode() == Conversational.MODE_MULTI) {
+            if (conversation.getMode() == Conversational.MODE_MULTI && !isPrivateMessage) {
                 final var mucOptions = conversation.getMucOptions();
                 if (!mucOptions.participating()) {
                     Log.d(Config.LOGTAG, "not participating in MUC");
@@ -5735,6 +5738,8 @@ public class XmppConnectionService extends Service {
                     Log.d(Config.LOGTAG, "modified reactions to existing variants");
                 }
                 reactToId = message.getServerMsgId();
+                reactTo = conversation.getJid().asBareJid();
+                typeGroupChat = true;
                 combinedReactions =
                         Reaction.withOccupantId(
                                 message.getReactions(),
@@ -5749,6 +5754,12 @@ public class XmppConnectionService extends Service {
                 } else {
                     reactToId = message.getUuid();
                 }
+                typeGroupChat = false;
+                if (isPrivateMessage) {
+                    reactTo = message.getCounterpart();
+                } else {
+                    reactTo = conversation.getJid().asBareJid();
+                }
                 combinedReactions =
                         Reaction.withFrom(
                                 message.getReactions(),
@@ -5756,11 +5767,11 @@ public class XmppConnectionService extends Service {
                                 false,
                                 conversation.getAccount().getJid());
             }
-            if (Strings.isNullOrEmpty(reactToId)) {
+            if (reactTo == null || Strings.isNullOrEmpty(reactToId)) {
                 return false;
             }
             final var reactionMessage =
-                    mMessageGenerator.reaction(conversation, reactToId, reactions);
+                    mMessageGenerator.reaction(reactTo, typeGroupChat, reactToId, reactions);
             sendMessagePacket(conversation.getAccount(), reactionMessage);
             message.setReactions(combinedReactions);
             updateMessage(message, false);
