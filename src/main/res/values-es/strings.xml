@@ -529,7 +529,7 @@
     <string name="this_field_is_required">Este campo es requerido</string>
     <string name="correct_message">Corregir mensaje</string>
     <string name="send_corrected_message">Enviar mensaje corregido</string>
-    <string name="no_keys_just_confirm">Ya has confiado la huella digital de esta persona. Al seleccionar “Listo” solo estás confirmando que %s es parte de este chat grupal.</string>
+    <string name="no_keys_just_confirm">Ya has verificado la huella digital de esta persona. Al seleccionar “Hecho” solo estás confirmando que %s es parte de este chat grupal.</string>
     <string name="this_account_is_disabled">Has deshabilitado esta cuenta</string>
     <string name="security_error_invalid_file_access">Error de seguridad: ¡Acceso a archivo inválido!</string>
     <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
@@ -1011,7 +1011,7 @@
     <string name="contact_uses_unverified_keys">Tu contacto utiliza dispositivos no verificados. Escanea su código QR para realizar la verificación e impedir ataques MITM activos.</string>
     <string name="log_out">Desconectarse</string>
     <string name="account_state_logged_out">Desconectado</string>
-    <string name="unverified_devices">Está utilizando dispositivos no verificados. Escanea el código QR en tus otros dispositivos para realizar la verificación e impedir ataques MITM activos.</string>
+    <string name="unverified_devices">Estás utilizando dispositivos no verificados. Escanea el código QR de tus otros dispositivos para realizar la verificación e impedir ataques MITM activos.</string>
     <string name="report_spam_and_block">Informar de spam y bloquear al spammer</string>
     <string name="report_spam">Informar sobre spam</string>
     <string name="welcome_header_quicksy">¡Bienvenido a Quicksy!</string>
@@ -1059,7 +1059,7 @@
     <string name="pref_title_trust_system_ca_store">Organismos de certificación</string>
     <string name="pref_title_trust_system_ca_store_summary">Confiar en los certificados CA del sistema</string>
     <string name="detect_mim">Requerir enlace al canal</string>
-    <string name="detect_mim_summary">La vinculación de canales puede detectar algunos ataques al intermediario</string>
+    <string name="detect_mim_summary">La vinculación de canales puede detectar algunos ataques de intermediario</string>
     <string name="pref_category_server_connection">Conexión al servidor</string>
     <string name="pref_category_operating_system">Sistema operativo</string>
     <string name="pref_category_on_this_device">En el dispositivo</string>
@@ -1103,7 +1103,7 @@
     <string name="call_is_using_speaker">La llamada está usando el altavoz.</string>
     <string name="call_is_using_bluetooth">La llamada está usando bluetooth.</string>
     <string name="video_is_disabled_tap_to_enable">Video desactivado. Toca para activar.</string>
-    <string name="server_info_login_mechanism">Apartado de inicio de sesión</string>
+    <string name="server_info_login_mechanism">Método de acceso</string>
     <string name="could_not_add_reaction">No se pudo agregar la reacción</string>
     <string name="add_reaction">Agregar reacción…</string>
     <string name="add_reaction_title">Agregar reacción</string>
