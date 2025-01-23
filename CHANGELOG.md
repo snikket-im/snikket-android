@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.17.9
+
+* Make use of SASL SCRAM Downgrade Protection (XEP-0474)
+* Send reactions to MUC PMs to correct JID
+
 ### Version 2.17.8
 
 * Fix some minor UI bugs
