@@ -2,12 +2,8 @@ package eu.siacs.conversations;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 public final class Config {
@@ -178,22 +174,6 @@ public final class Config {
     public static final String[] WEAK_CIPHER_PATTERNS = {
         "_NULL_", "_EXPORT_", "_anon_", "_RC4_", "_DES_", "_MD5",
     };
-
-    public static class OMEMO_EXCEPTIONS {
-        // if the own account matches one of the following domains OMEMO won’t be turned on
-        // automatically
-        public static final List<String> ACCOUNT_DOMAINS = Collections.singletonList("s.ms");
-
-        // if the contacts domain matches one of the following domains OMEMO won’t be turned on
-        // automatically
-        // can be used for well known, widely used gateways
-        private static final List<String> CONTACT_DOMAINS =
-                Arrays.asList("cheogram.com", "*.covid.monal.im");
-
-        public static boolean matchesContactDomain(final String domain) {
-            return XmppDomainVerifier.matchDomain(domain, CONTACT_DOMAINS);
-        }
-    }
 
     private Config() {}
 
