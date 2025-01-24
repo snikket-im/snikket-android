@@ -1,21 +1,17 @@
 package eu.siacs.conversations.utils;
 
 import android.content.Context;
-import android.telephony.TelephonyManager;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import eu.siacs.conversations.xmpp.Jid;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class PhoneNumberUtilWrapper {
 
     private static volatile PhoneNumberUtil instance;
-
 
     public static String getCountryForCode(String code) {
         Locale locale = new Locale("", code);
@@ -24,20 +20,28 @@ public class PhoneNumberUtilWrapper {
 
     public static String toFormattedPhoneNumber(Context context, Jid jid) {
         try {
-            return getInstance(context).format(toPhoneNumber(context, jid), PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL).replace(' ','\u202F');
+            return getInstance(context)
+                    .format(
+                            toPhoneNumber(context, jid),
+                            PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL)
+                    .replace(' ', '\u202F');
         } catch (Exception e) {
-            return jid.getEscapedLocal();
+            return jid.getLocal();
         }
     }
 
-    public static Phonenumber.PhoneNumber toPhoneNumber(Context context, Jid jid) throws NumberParseException {
-        return getInstance(context).parse(jid.getEscapedLocal(), "de");
+    public static Phonenumber.PhoneNumber toPhoneNumber(Context context, Jid jid)
+            throws NumberParseException {
+        return getInstance(context).parse(jid.getLocal(), "de");
     }
 
-    public static String normalize(Context context, String input) throws IllegalArgumentException, NumberParseException {
-        final Phonenumber.PhoneNumber number = getInstance(context).parse(input, LocationProvider.getUserCountry(context));
+    public static String normalize(Context context, String input)
+            throws IllegalArgumentException, NumberParseException {
+        final Phonenumber.PhoneNumber number =
+                getInstance(context).parse(input, LocationProvider.getUserCountry(context));
         if (!getInstance(context).isValidNumber(number)) {
-            throw new IllegalArgumentException(String.format("%s is not a valid phone number", input));
+            throw new IllegalArgumentException(
+                    String.format("%s is not a valid phone number", input));
         }
         return normalize(context, number);
     }
@@ -54,7 +58,6 @@ public class PhoneNumberUtilWrapper {
                 if (localInstance == null) {
                     instance = localInstance = PhoneNumberUtil.createInstance(context);
                 }
-
             }
         }
         return localInstance;
@@ -63,10 +66,10 @@ public class PhoneNumberUtilWrapper {
     public static List<Country> getCountries(final Context context) {
         List<Country> countries = new ArrayList<>();
         for (String region : getInstance(context).getSupportedRegions()) {
-            countries.add(new Country(region, getInstance(context).getCountryCodeForRegion(region)));
+            countries.add(
+                    new Country(region, getInstance(context).getCountryCodeForRegion(region)));
         }
         return countries;
-
     }
 
     public static class Country implements Comparable<Country> {
@@ -97,5 +100,4 @@ public class PhoneNumberUtilWrapper {
             return name.compareTo(o.name);
         }
     }
-
 }

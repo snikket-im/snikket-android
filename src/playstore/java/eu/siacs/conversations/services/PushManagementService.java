@@ -1,11 +1,9 @@
 package eu.siacs.conversations.services;
 
 import android.util.Log;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailabilityLight;
 import com.google.firebase.messaging.FirebaseMessaging;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -15,7 +13,6 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.forms.Data;
-
 import im.conversations.android.xmpp.model.stanza.Iq;
 
 public class PushManagementService {
@@ -53,7 +50,7 @@ public class PushManagementService {
                                 if (response.getType() == Iq.Type.RESULT && data != null) {
                                     final Jid jid;
                                     try {
-                                        jid = Jid.ofEscaped(data.getValue("jid"));
+                                        jid = Jid.of(data.getValue("jid"));
                                     } catch (final IllegalArgumentException e) {
                                         Log.d(
                                                 Config.LOGTAG,
@@ -70,7 +67,8 @@ public class PushManagementService {
                                     Log.d(
                                             Config.LOGTAG,
                                             account.getJid().asBareJid()
-                                                    + ": failed to enable push. invalid response from app server "
+                                                    + ": failed to enable push. invalid response"
+                                                    + " from app server "
                                                     + response);
                                 }
                             });
@@ -123,7 +121,8 @@ public class PushManagementService {
                             } catch (Exception e) {
                                 Log.d(
                                         Config.LOGTAG,
-                                        "unable to get Firebase instance token due to bug in library ",
+                                        "unable to get Firebase instance token due to bug in"
+                                                + " library ",
                                         e);
                                 return;
                             }

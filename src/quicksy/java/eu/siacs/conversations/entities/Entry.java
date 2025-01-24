@@ -1,20 +1,15 @@
 package eu.siacs.conversations.entities;
 
 import android.util.Base64;
-
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import eu.siacs.conversations.android.PhoneNumberContact;
+import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.Jid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import eu.siacs.conversations.android.PhoneNumberContact;
-import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class Entry implements Comparable<Entry> {
     private final List<Jid> jids;
@@ -47,23 +42,25 @@ public class Entry implements Comparable<Entry> {
         return entries;
     }
 
-    public static String statusQuo(final Collection<PhoneNumberContact> phoneNumberContacts, Collection<Contact> systemContacts) {
+    public static String statusQuo(
+            final Collection<PhoneNumberContact> phoneNumberContacts,
+            Collection<Contact> systemContacts) {
         return statusQuo(ofPhoneNumberContactsAndContacts(phoneNumberContacts, systemContacts));
     }
 
     private static String statusQuo(final List<Entry> entries) {
         Collections.sort(entries);
         StringBuilder builder = new StringBuilder();
-        for(Entry entry : entries) {
+        for (Entry entry : entries) {
             if (builder.length() != 0) {
                 builder.append('\u001d');
             }
             builder.append(entry.getNumber());
             List<Jid> jids = entry.getJids();
             Collections.sort(jids);
-            for(Jid jid : jids) {
+            for (Jid jid : jids) {
                 builder.append('\u001e');
-                builder.append(jid.asBareJid().toEscapedString());
+                builder.append(jid.asBareJid().toString());
             }
         }
         @SuppressWarnings("deprecation")
@@ -71,12 +68,16 @@ public class Entry implements Comparable<Entry> {
         return new String(Base64.encode(sha1, Base64.DEFAULT)).trim();
     }
 
-    private static List<Entry> ofPhoneNumberContactsAndContacts(final Collection<PhoneNumberContact> phoneNumberContacts, Collection<Contact> systemContacts) {
+    private static List<Entry> ofPhoneNumberContactsAndContacts(
+            final Collection<PhoneNumberContact> phoneNumberContacts,
+            Collection<Contact> systemContacts) {
         final ArrayList<Entry> entries = new ArrayList<>();
-        for(Contact contact : systemContacts) {
-            final PhoneNumberContact phoneNumberContact = PhoneNumberContact.findByUri(phoneNumberContacts, contact.getSystemAccount());
+        for (Contact contact : systemContacts) {
+            final PhoneNumberContact phoneNumberContact =
+                    PhoneNumberContact.findByUri(phoneNumberContacts, contact.getSystemAccount());
             if (phoneNumberContact != null && phoneNumberContact.getPhoneNumber() != null) {
-                Entry entry = findOrCreateByPhoneNumber(entries, phoneNumberContact.getPhoneNumber());
+                Entry entry =
+                        findOrCreateByPhoneNumber(entries, phoneNumberContact.getPhoneNumber());
                 entry.jids.add(contact.getJid().asBareJid());
             }
         }
@@ -84,7 +85,7 @@ public class Entry implements Comparable<Entry> {
     }
 
     private static Entry findOrCreateByPhoneNumber(final List<Entry> entries, String number) {
-        for(Entry entry : entries) {
+        for (Entry entry : entries) {
             if (entry.number.equals(number)) {
                 return entry;
             }

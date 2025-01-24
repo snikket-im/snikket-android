@@ -3,16 +3,13 @@ package eu.siacs.conversations.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
 import androidx.databinding.DataBindingUtil;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityEnterNameBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.AbstractQuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.AccountUtils;
-
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EnterNameActivity extends XmppActivity
@@ -46,12 +43,12 @@ public class EnterNameActivity extends XmppActivity
         if (AbstractQuickConversationsService.isQuicksyPlayStore()) {
             intent = new Intent(getApplicationContext(), StartConversationActivity.class);
             intent.putExtra("init", true);
-            intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
+            intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
         } else {
             intent = new Intent(this, PublishProfilePictureActivity.class);
             intent.putExtra("setup", true);
         }
-        intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
+        intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
         startActivity(intent);
         finish();
     }

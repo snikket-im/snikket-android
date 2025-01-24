@@ -88,9 +88,9 @@ public abstract class Jid implements Comparable<Jid>, Serializable, CharSequence
     }
 
     /**
-     *
      * @param jid a string representation of the jid to parse
-     * @param fallback indicates whether an attempt should be made to parse a bare version of the jid
+     * @param fallback indicates whether an attempt should be made to parse a bare version of the
+     *     jid
      * @return an instance of Jid; may be Jid.Invalid
      */
     public static Jid ofOrInvalid(final String jid, final boolean fallback) {
