@@ -120,7 +120,6 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.LocalizedContent;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
@@ -2069,7 +2068,7 @@ public class XmppConnectionService extends Service {
                             if (uri != null) {
                                 final EasyOnboardingInvite invite =
                                         new EasyOnboardingInvite(
-                                                jid.getDomain().toEscapedString(), uri, landingUrl);
+                                                jid.getDomain().toString(), uri, landingUrl);
                                 callback.inviteRequested(invite);
                                 return;
                             }
@@ -2145,7 +2144,7 @@ public class XmppConnectionService extends Service {
 
     public void processMdsItem(final Account account, final Element item) {
         final Jid jid =
-                item == null ? null : InvalidJid.getNullForInvalid(item.getAttributeAsJid("id"));
+                item == null ? null : Jid.Invalid.getNullForInvalid(item.getAttributeAsJid("id"));
         if (jid == null) {
             return;
         }
@@ -2306,7 +2305,7 @@ public class XmppConnectionService extends Service {
                     account,
                     Namespace.BOOKMARKS2,
                     item,
-                    bookmark.getJid().asBareJid().toEscapedString(),
+                    bookmark.getJid().asBareJid().toString(),
                     PublishOptions.persistentWhitelistAccessMaxItems());
         } else if (connection.getFeatures().bookmarksConversion()) {
             pushBookmarksPep(account);
@@ -2321,7 +2320,7 @@ public class XmppConnectionService extends Service {
         if (connection.getFeatures().bookmarks2()) {
             final Iq request =
                     mIqGenerator.deleteItem(
-                            Namespace.BOOKMARKS2, bookmark.getJid().asBareJid().toEscapedString());
+                            Namespace.BOOKMARKS2, bookmark.getJid().asBareJid().toString());
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid() + ": removing bookmark via Bookmarks 2");
@@ -3027,10 +3026,10 @@ public class XmppConnectionService extends Service {
     }
 
     private void provisionAccount(final String address, final String password) {
-        final Jid jid = Jid.ofEscaped(address);
+        final Jid jid = Jid.of(address);
         final Account account = new Account(jid, password);
         account.setOption(Account.OPTION_DISABLED, true);
-        Log.d(Config.LOGTAG, jid.asBareJid().toEscapedString() + ": provisioning account");
+        Log.d(Config.LOGTAG, jid.asBareJid().toString() + ": provisioning account");
         createAccount(account);
     }
 
@@ -5704,7 +5703,7 @@ public class XmppConnectionService extends Service {
                 account,
                 Namespace.MDS_DISPLAYED,
                 item,
-                itemId.toEscapedString(),
+                itemId.toString(),
                 PublishOptions.persistentWhitelistAccessMaxItems());
     }
 
@@ -5819,7 +5818,7 @@ public class XmppConnectionService extends Service {
         if (Config.QUICKSY_DOMAIN != null) {
             hosts.remove(
                     Config.QUICKSY_DOMAIN
-                            .toEscapedString()); // we only want to show this when we type a e164
+                            .toString()); // we only want to show this when we type a e164
             // number
         }
         if (Config.MAGIC_CREATE_DOMAIN != null) {
@@ -5835,7 +5834,7 @@ public class XmppConnectionService extends Service {
                 mucServers.addAll(account.getXmppConnection().getMucServers());
                 for (final Bookmark bookmark : account.getBookmarks()) {
                     final Jid jid = bookmark.getJid();
-                    final String s = jid == null ? null : jid.getDomain().toEscapedString();
+                    final String s = jid == null ? null : jid.getDomain().toString();
                     if (s != null) {
                         mucServers.add(s);
                     }

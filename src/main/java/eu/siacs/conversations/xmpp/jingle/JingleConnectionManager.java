@@ -4,9 +4,7 @@ import android.telecom.TelecomManager;
 import android.telecom.VideoProfile;
 import android.util.Base64;
 import android.util.Log;
-
 import androidx.annotation.Nullable;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -15,7 +13,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -39,10 +36,8 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 import eu.siacs.conversations.xmpp.jingle.transports.InbandBytestreamsTransport;
 import eu.siacs.conversations.xmpp.jingle.transports.Transport;
-
 import im.conversations.android.xmpp.model.jingle.Jingle;
 import im.conversations.android.xmpp.model.stanza.Iq;
-
 import java.lang.ref.WeakReference;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -353,7 +348,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     Log.d(
                             Config.LOGTAG,
                             id.account.getJid().asBareJid()
-                                    + ": updated previous busy because call got picked up by another device");
+                                    + ": updated previous busy because call got picked up by"
+                                    + " another device");
                     mXmppConnectionService.getNotificationService().clearMissedCall(previousBusy);
                     return;
                 }
@@ -393,15 +389,14 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     final String theirSessionId = id.sessionId;
                     if (ComparisonChain.start()
                                     .compare(ourSessionId, theirSessionId)
-                                    .compare(
-                                            account.getJid().toEscapedString(),
-                                            id.with.toEscapedString())
+                                    .compare(account.getJid().toString(), id.with.toString())
                                     .result()
                             > 0) {
                         Log.d(
                                 Config.LOGTAG,
                                 account.getJid().asBareJid()
-                                        + ": our session lost tie break. automatically accepting their session. winning Session="
+                                        + ": our session lost tie break. automatically accepting"
+                                        + " their session. winning Session="
                                         + theirSessionId);
                         // TODO a retract for this reason should probably include some indication of
                         // tie break
@@ -417,7 +412,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                         Log.d(
                                 Config.LOGTAG,
                                 account.getJid().asBareJid()
-                                        + ": our session won tie break. waiting for other party to accept. winningSession="
+                                        + ": our session won tie break. waiting for other party to"
+                                        + " accept. winningSession="
                                         + ourSessionId);
                         // TODO reject their session with <tie-break/>?
                     }
@@ -453,7 +449,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                         Log.d(
                                 Config.LOGTAG,
                                 id.account.getJid().asBareJid()
-                                        + ": ignoring proposal because busy on this device but there are other devices");
+                                        + ": ignoring proposal because busy on this device but"
+                                        + " there are other devices");
                     }
                 } else {
                     final JingleRtpConnection rtpConnection =
@@ -772,12 +769,14 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 if (hasMatchingRtpSession(account, with, media)) {
                     Log.d(
                             Config.LOGTAG,
-                            "ignoring request to propose jingle session because the other party already created one for us");
+                            "ignoring request to propose jingle session because the other party"
+                                    + " already created one for us");
                     // TODO return something that we can parse the connection of of
                     return null;
                 }
                 throw new IllegalStateException(
-                        "There is already a running RTP session. This should have been caught by the UI");
+                        "There is already a running RTP session. This should have been caught by"
+                                + " the UI");
             }
             final CallIntegration callIntegration =
                     new CallIntegration(mXmppConnectionService.getApplicationContext());

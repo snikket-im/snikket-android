@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.telecom.TelecomManager;
 import android.telecom.VideoProfile;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -24,7 +22,6 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
-
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -47,15 +44,8 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.Proceed;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Propose;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
-
 import im.conversations.android.xmpp.model.jingle.Jingle;
 import im.conversations.android.xmpp.model.stanza.Iq;
-
-import org.webrtc.EglBase;
-import org.webrtc.IceCandidate;
-import org.webrtc.PeerConnection;
-import org.webrtc.VideoTrack;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -67,6 +57,10 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import org.webrtc.EglBase;
+import org.webrtc.IceCandidate;
+import org.webrtc.PeerConnection;
+import org.webrtc.VideoTrack;
 
 public class JingleRtpConnection extends AbstractJingleConnection
         implements WebRTCWrapper.EventCallback, CallIntegration.Callback, OngoingRtpSession {
@@ -278,7 +272,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             Log.w(
                     Config.LOGTAG,
                     id.account.getJid().asBareJid()
-                            + ": PeerConnection was not initialized when processing transport info. this usually indicates a race condition that can be ignored");
+                            + ": PeerConnection was not initialized when processing transport info."
+                            + " this usually indicates a race condition that can be ignored");
         }
     }
 
@@ -625,7 +620,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             Log.d(
                     Config.LOGTAG,
                     id.getAccount().getJid().asBareJid()
-                            + ": unable to rollback local description after receiving content-reject",
+                            + ": unable to rollback local description after receiving"
+                            + " content-reject",
                     cause);
             webRTCWrapper.close();
             sendSessionTerminate(Reason.FAILED_APPLICATION, cause.getMessage());
@@ -694,7 +690,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             Log.d(
                     Config.LOGTAG,
                     id.getAccount().getJid().asBareJid()
-                            + ": unable to rollback local description after trying to retract content-add",
+                            + ": unable to rollback local description after trying to retract"
+                            + " content-add",
                     cause);
             webRTCWrapper.close();
             sendSessionTerminate(Reason.FAILED_APPLICATION, cause.getMessage());
@@ -773,14 +770,16 @@ public class JingleRtpConnection extends AbstractJingleConnection
                                 Log.d(
                                         Config.LOGTAG,
                                         id.account.getJid().asBareJid()
-                                                + ": remote has accepted our upgrade to senders=both");
+                                                + ": remote has accepted our upgrade to"
+                                                + " senders=both");
                                 acceptContentAdd(
                                         ContentAddition.summary(modifiedSenders), modifiedSenders);
                             } else {
                                 Log.d(
                                         Config.LOGTAG,
                                         id.account.getJid().asBareJid()
-                                                + ": remote has rejected our upgrade to senders=both");
+                                                + ": remote has rejected our upgrade to"
+                                                + " senders=both");
                                 acceptContentAdd(contentAddition, incomingContentAdd);
                             }
                         });
@@ -1072,7 +1071,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             Log.w(
                     Config.LOGTAG,
                     id.account.getJid().asBareJid()
-                            + ": no identification tags found in initial offer. we won't be able to calculate mLineIndices");
+                            + ": no identification tags found in initial offer. we won't be able to"
+                            + " calculate mLineIndices");
         }
         return identificationTags;
     }
@@ -1169,7 +1169,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 sendSessionTerminate(
                         Reason.SECURITY_ERROR,
                         String.format(
-                                "Your session proposal (Jingle Message Initiation) included media %s but your session-initiate was %s",
+                                "Your session proposal (Jingle Message Initiation) included media"
+                                        + " %s but your session-initiate was %s",
                                 this.proposedMedia, contentMap.getMedia()));
                 return;
             }
@@ -1254,7 +1255,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             sendSessionTerminate(
                     Reason.SECURITY_ERROR,
                     String.format(
-                            "Your session-included included media %s but our session-initiate was %s",
+                            "Your session-included included media %s but our session-initiate was"
+                                    + " %s",
                             this.proposedMedia, contentMap.getMedia()));
             return;
         }
@@ -1342,7 +1344,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             Log.w(
                     Config.LOGTAG,
                     id.account.getJid().asBareJid()
-                            + ": ICE servers got discovered when session was already terminated. nothing to do.");
+                            + ": ICE servers got discovered when session was already terminated."
+                            + " nothing to do.");
             return;
         }
         final boolean includeCandidates = remoteHasSdpOfferAnswer();
@@ -1445,7 +1448,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             Log.w(
                     Config.LOGTAG,
                     id.account.getJid().asBareJid()
-                            + ": preparing session accept was too slow. already terminated. nothing to do.");
+                            + ": preparing session accept was too slow. already terminated. nothing"
+                            + " to do.");
             return;
         }
         transitionOrThrow(State.SESSION_ACCEPTED);
@@ -1488,10 +1492,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
                         + ": delivered message to JingleRtpConnection "
                         + message);
         switch (message.getName()) {
-            case "propose" -> receivePropose(
-                    from, Propose.upgrade(message), serverMessageId, timestamp);
-            case "proceed" -> receiveProceed(
-                    from, Proceed.upgrade(message), serverMessageId, timestamp);
+            case "propose" ->
+                    receivePropose(from, Propose.upgrade(message), serverMessageId, timestamp);
+            case "proceed" ->
+                    receiveProceed(from, Proceed.upgrade(message), serverMessageId, timestamp);
             case "retract" -> receiveRetract(from, serverMessageId, timestamp);
             case "reject" -> receiveReject(from, serverMessageId, timestamp);
             case "accept" -> receiveAccept(from, serverMessageId, timestamp);
@@ -1605,7 +1609,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             Log.d(
                     Config.LOGTAG,
                     id.account.getJid()
-                            + ": received reject while in SESSION_INITIATED_PRE_APPROVED. callee reconsidered before receiving session-init");
+                            + ": received reject while in SESSION_INITIATED_PRE_APPROVED. callee"
+                            + " reconsidered before receiving session-init");
             closeTransitionLogFinish(State.TERMINATED_DECLINED_OR_BUSY);
             return;
         }
@@ -1727,7 +1732,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
                             Log.d(
                                     Config.LOGTAG,
                                     id.account.getJid().asBareJid()
-                                            + ": remote party signaled support for OMEMO verification but we have OMEMO disabled");
+                                            + ": remote party signaled support for OMEMO"
+                                            + " verification but we have OMEMO disabled");
                         }
                         this.omemoVerification.setDeviceId(null);
                     }
@@ -1822,7 +1828,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             Log.w(
                     Config.LOGTAG,
                     id.account.getJid().asBareJid()
-                            + ": ICE servers got discovered when session was already terminated. nothing to do.");
+                            + ": ICE servers got discovered when session was already terminated."
+                            + " nothing to do.");
             return;
         }
         final boolean includeCandidates = remoteHasSdpOfferAnswer();
@@ -1917,7 +1924,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             Log.w(
                     Config.LOGTAG,
                     id.account.getJid().asBareJid()
-                            + ": preparing session was too slow. already terminated. nothing to do.");
+                            + ": preparing session was too slow. already terminated. nothing to"
+                            + " do.");
             return;
         }
         this.transitionOrThrow(targetState);
@@ -1956,7 +1964,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
                         Log.w(
                                 Config.LOGTAG,
                                 id.account.getJid().asBareJid()
-                                        + ": unable to use OMEMO DTLS verification on outgoing session initiate. falling back",
+                                        + ": unable to use OMEMO DTLS verification on outgoing"
+                                        + " session initiate. falling back",
                                 e);
                         return rtpContentMap;
                     },
@@ -2070,9 +2079,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
             case CONNECTED -> RtpEndUserState.CONNECTED;
             case NEW, CONNECTING -> RtpEndUserState.CONNECTING;
             case CLOSED -> RtpEndUserState.ENDING_CALL;
-            default -> zeroDuration()
-                    ? RtpEndUserState.CONNECTIVITY_ERROR
-                    : RtpEndUserState.RECONNECTING;
+            default ->
+                    zeroDuration()
+                            ? RtpEndUserState.CONNECTIVITY_ERROR
+                            : RtpEndUserState.RECONNECTING;
         };
     }
 
@@ -2116,13 +2126,14 @@ public class JingleRtpConnection extends AbstractJingleConnection
             }
             case TERMINATED_SUCCESS -> this.callIntegration.success();
             case ACCEPTED -> this.callIntegration.accepted();
-            case RETRACTED, RETRACTED_RACED, TERMINATED_CANCEL_OR_TIMEOUT -> this.callIntegration
-                    .retracted();
+            case RETRACTED, RETRACTED_RACED, TERMINATED_CANCEL_OR_TIMEOUT ->
+                    this.callIntegration.retracted();
             case TERMINATED_CONNECTIVITY_ERROR,
-                    TERMINATED_APPLICATION_FAILURE,
-                    TERMINATED_SECURITY_ERROR -> this.callIntegration.error();
-            default -> throw new IllegalStateException(
-                    String.format("%s is not handled", this.state));
+                            TERMINATED_APPLICATION_FAILURE,
+                            TERMINATED_SECURITY_ERROR ->
+                    this.callIntegration.error();
+            default ->
+                    throw new IllegalStateException(String.format("%s is not handled", this.state));
         }
     }
 
@@ -2195,14 +2206,18 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 cancelRingingTimeout();
                 acceptCallFromSessionInitialized();
             }
-            case ACCEPTED -> Log.w(
-                    Config.LOGTAG,
-                    id.account.getJid().asBareJid()
-                            + ": the call has already been accepted  with another client. UI was just lagging behind");
-            case PROCEED, SESSION_ACCEPTED -> Log.w(
-                    Config.LOGTAG,
-                    id.account.getJid().asBareJid()
-                            + ": the call has already been accepted. user probably double tapped the UI");
+            case ACCEPTED ->
+                    Log.w(
+                            Config.LOGTAG,
+                            id.account.getJid().asBareJid()
+                                    + ": the call has already been accepted  with another client."
+                                    + " UI was just lagging behind");
+            case PROCEED, SESSION_ACCEPTED ->
+                    Log.w(
+                            Config.LOGTAG,
+                            id.account.getJid().asBareJid()
+                                    + ": the call has already been accepted. user probably double"
+                                    + " tapped the UI");
             default -> throw new IllegalStateException("Can not accept call from " + this.state);
         }
     }
@@ -2212,7 +2227,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             Log.w(
                     Config.LOGTAG,
                     id.account.getJid().asBareJid()
-                            + ": received rejectCall() when session has already been terminated. nothing to do");
+                            + ": received rejectCall() when session has already been terminated."
+                            + " nothing to do");
             return;
         }
         switch (this.state) {
@@ -2245,7 +2261,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             Log.w(
                     Config.LOGTAG,
                     id.account.getJid().asBareJid()
-                            + ": received endCall() when session has already been terminated. nothing to do");
+                            + ": received endCall() when session has already been terminated."
+                            + " nothing to do");
             return;
         }
         if (isInState(State.PROPOSED) && isResponder()) {
@@ -2447,7 +2464,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     Log.d(
                             Config.LOGTAG,
                             id.account.getJid().asBareJid()
-                                    + ": not sending session-terminate after connectivity error because session is already in state "
+                                    + ": not sending session-terminate after connectivity error"
+                                    + " because session is already in state "
                                     + this.state);
                     return;
                 }
@@ -2649,7 +2667,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 Log.d(
                         Config.LOGTAG,
                         id.account.getJid().asBareJid()
-                                + ": no need to send session-terminate after failed connection. Other party already did");
+                                + ": no need to send session-terminate after failed connection."
+                                + " Other party already did");
                 return;
             }
             sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
@@ -2704,7 +2723,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             // callback when the rtp session has already ended.
             Log.w(
                     Config.LOGTAG,
-                    "CallIntegration requested incoming call UI but session was already terminated");
+                    "CallIntegration requested incoming call UI but session was already"
+                            + " terminated");
             return;
         }
         // TODO apparently this can be called too early as well?
@@ -2736,8 +2756,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
         // we need to start the UI to a) show it and b) be able to ask for permissions
         final Intent intent = new Intent(xmppConnectionService, RtpSessionActivity.class);
         intent.setAction(RtpSessionActivity.ACTION_ACCEPT_CALL);
-        intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().toEscapedString());
-        intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toEscapedString());
+        intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().toString());
+        intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toString());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.sessionId);

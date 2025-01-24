@@ -16,10 +16,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.provider.OpenableColumns;
 import android.util.Log;
-
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
 import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
 import com.google.common.io.CountingInputStream;
@@ -27,7 +25,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.SQLiteAxolotlStore;
@@ -41,14 +38,6 @@ import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.worker.ExportBackupWorker;
 import eu.siacs.conversations.xmpp.Jid;
-
-import org.bouncycastle.crypto.engines.AESEngine;
-import org.bouncycastle.crypto.io.CipherInputStream;
-import org.bouncycastle.crypto.modes.AEADBlockCipher;
-import org.bouncycastle.crypto.modes.GCMBlockCipher;
-import org.bouncycastle.crypto.params.AEADParameters;
-import org.bouncycastle.crypto.params.KeyParameter;
-
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
@@ -72,8 +61,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipException;
-
 import javax.crypto.BadPaddingException;
+import org.bouncycastle.crypto.engines.AESEngine;
+import org.bouncycastle.crypto.io.CipherInputStream;
+import org.bouncycastle.crypto.modes.AEADBlockCipher;
+import org.bouncycastle.crypto.modes.GCMBlockCipher;
+import org.bouncycastle.crypto.params.AEADParameters;
+import org.bouncycastle.crypto.params.KeyParameter;
 
 public class ImportBackupService extends Service {
 
@@ -314,10 +308,11 @@ public class ImportBackupService extends Service {
             final Jid jid = backupFileHeader.getJid();
             final Cursor countCursor =
                     db.rawQuery(
-                            "select count(messages.uuid) from messages join conversations on conversations.uuid=messages.conversationUuid join accounts on conversations.accountUuid=accounts.uuid where accounts.username=? and accounts.server=?",
-                            new String[] {
-                                jid.getEscapedLocal(), jid.getDomain().toEscapedString()
-                            });
+                            "select count(messages.uuid) from messages join conversations on"
+                                + " conversations.uuid=messages.conversationUuid join accounts on"
+                                + " conversations.accountUuid=accounts.uuid where"
+                                + " accounts.username=? and accounts.server=?",
+                            new String[] {jid.getLocal(), jid.getDomain().toString()});
             countCursor.moveToFirst();
             final int count = countCursor.getInt(0);
             Log.d(

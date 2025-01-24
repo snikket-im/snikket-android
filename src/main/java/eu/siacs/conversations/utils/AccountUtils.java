@@ -5,20 +5,16 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Longs;
-
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.XmppActivity;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class AccountUtils {
 
@@ -50,9 +46,7 @@ public class AccountUtils {
 
     public static UUID createUuid4(long mostSigBits, long leastSigBits) {
         final byte[] bytes =
-                Bytes.concat(
-                        Longs.toByteArray(mostSigBits),
-                        Longs.toByteArray(leastSigBits));
+                Bytes.concat(Longs.toByteArray(mostSigBits), Longs.toByteArray(leastSigBits));
         bytes[6] &= 0x0f; /* clear version        */
         bytes[6] |= 0x40; /* set to version 4     */
         bytes[8] &= 0x3f; /* clear variant        */
@@ -65,7 +59,7 @@ public class AccountUtils {
         final ArrayList<String> accounts = new ArrayList<>();
         for (final Account account : service.getAccounts()) {
             if (account.isEnabled()) {
-                accounts.add(account.getJid().asBareJid().toEscapedString());
+                accounts.add(account.getJid().asBareJid().toString());
             }
         }
         return accounts;

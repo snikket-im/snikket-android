@@ -1,12 +1,10 @@
 package eu.siacs.conversations.utils;
 
 import androidx.annotation.NonNull;
-
+import eu.siacs.conversations.xmpp.Jid;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-import eu.siacs.conversations.xmpp.Jid;
 
 public class BackupFileHeader {
 
@@ -18,17 +16,22 @@ public class BackupFileHeader {
     private final byte[] iv;
     private final byte[] salt;
 
-
     @NonNull
     @Override
     public String toString() {
-        return "BackupFileHeader{" +
-                "app='" + app + '\'' +
-                ", jid=" + jid +
-                ", timestamp=" + timestamp +
-                ", iv=" + CryptoHelper.bytesToHex(iv) +
-                ", salt=" + CryptoHelper.bytesToHex(salt) +
-                '}';
+        return "BackupFileHeader{"
+                + "app='"
+                + app
+                + '\''
+                + ", jid="
+                + jid
+                + ", timestamp="
+                + timestamp
+                + ", iv="
+                + CryptoHelper.bytesToHex(iv)
+                + ", salt="
+                + CryptoHelper.bytesToHex(salt)
+                + '}';
     }
 
     public BackupFileHeader(String app, Jid jid, long timestamp, byte[] iv, byte[] salt) {
@@ -42,7 +45,7 @@ public class BackupFileHeader {
     public void write(DataOutputStream dataOutputStream) throws IOException {
         dataOutputStream.writeInt(VERSION);
         dataOutputStream.writeUTF(app);
-        dataOutputStream.writeUTF(jid.asBareJid().toEscapedString());
+        dataOutputStream.writeUTF(jid.asBareJid().toString());
         dataOutputStream.writeLong(timestamp);
         dataOutputStream.write(iv);
         dataOutputStream.write(salt);
@@ -61,10 +64,13 @@ public class BackupFileHeader {
             throw new OutdatedBackupFileVersion();
         }
         if (version != VERSION) {
-            throw new IllegalArgumentException("Backup File version was " + version + " but app only supports version " + VERSION);
+            throw new IllegalArgumentException(
+                    "Backup File version was "
+                            + version
+                            + " but app only supports version "
+                            + VERSION);
         }
         return new BackupFileHeader(app, Jid.of(jid), timestamp, iv, salt);
-
     }
 
     public byte[] getSalt() {
@@ -87,7 +93,5 @@ public class BackupFileHeader {
         return timestamp;
     }
 
-    public static class OutdatedBackupFileVersion extends RuntimeException {
-
-    }
+    public static class OutdatedBackupFileVersion extends RuntimeException {}
 }

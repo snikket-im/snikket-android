@@ -1,5 +1,8 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
+import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
+
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -12,14 +15,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.common.base.Strings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityWelcomeBinding;
@@ -30,11 +29,8 @@ import eu.siacs.conversations.utils.InstallReferrerUtils;
 import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
-
-import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
-import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
-
-import com.google.common.base.Strings;
+import java.util.Arrays;
+import java.util.List;
 
 public class WelcomeActivity extends XmppActivity
         implements XmppConnectionService.OnAccountCreated, KeyChainAliasCallback {
@@ -196,7 +192,7 @@ public class WelcomeActivity extends XmppActivity
     @Override
     public void onAccountCreated(final Account account) {
         final Intent intent = new Intent(this, EditAccountActivity.class);
-        intent.putExtra("jid", account.getJid().asBareJid().toEscapedString());
+        intent.putExtra("jid", account.getJid().asBareJid().toString());
         intent.putExtra("init", true);
         addInviteUri(intent);
         startActivity(intent);

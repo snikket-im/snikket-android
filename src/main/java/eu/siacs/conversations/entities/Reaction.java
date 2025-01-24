@@ -1,9 +1,7 @@
 package eu.siacs.conversations.entities;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
@@ -20,11 +18,9 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.xmpp.Jid;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -137,7 +133,7 @@ public class Reaction {
             if (value == null) {
                 out.nullValue();
             } else {
-                out.value(value.toEscapedString());
+                out.value(value.toString());
             }
         }
 
@@ -148,7 +144,7 @@ public class Reaction {
                 return null;
             } else if (in.peek() == JsonToken.STRING) {
                 final String value = in.nextString();
-                return Jid.ofEscaped(value);
+                return Jid.of(value);
             }
             throw new IOException("Unexpected token");
         }

@@ -294,7 +294,7 @@ public class ChannelDiscoveryActivity extends XmppActivity
     }
 
     public void joinChannelSearchResult(final String selectedAccount, final Room result) {
-        final Jid jid = Jid.ofEscaped(selectedAccount);
+        final Jid jid = Jid.of(selectedAccount);
         final Account account = xmppConnectionService.findAccountByJid(jid);
         final Conversation conversation =
                 xmppConnectionService.findOrCreateConversation(

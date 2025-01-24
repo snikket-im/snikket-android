@@ -2,7 +2,6 @@ package eu.siacs.conversations.utils;
 
 import android.app.Activity;
 import android.content.Intent;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -21,13 +20,14 @@ public class SignupUtils {
         return true;
     }
 
-    public static Intent getTokenRegistrationIntent(final Activity activity, Jid jid, String preAuth) {
+    public static Intent getTokenRegistrationIntent(
+            final Activity activity, Jid jid, String preAuth) {
         final Intent intent = new Intent(activity, MagicCreateActivity.class);
         if (jid.isDomainJid()) {
-            intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, jid.getDomain().toEscapedString());
+            intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, jid.getDomain().toString());
         } else {
-            intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, jid.getDomain().toEscapedString());
-            intent.putExtra(MagicCreateActivity.EXTRA_USERNAME, jid.getEscapedLocal());
+            intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, jid.getDomain().toString());
+            intent.putExtra(MagicCreateActivity.EXTRA_USERNAME, jid.getLocal());
         }
         intent.putExtra(MagicCreateActivity.EXTRA_PRE_AUTH, preAuth);
         return intent;
@@ -55,7 +55,9 @@ public class SignupUtils {
             intent = new Intent(activity, EditAccountActivity.class);
             intent.putExtra("jid", pendingAccount.getJid().asBareJid().toString());
             if (!pendingAccount.isOptionSet(Account.OPTION_MAGIC_CREATE)) {
-                intent.putExtra(EditAccountActivity.EXTRA_FORCE_REGISTER, pendingAccount.isOptionSet(Account.OPTION_REGISTER));
+                intent.putExtra(
+                        EditAccountActivity.EXTRA_FORCE_REGISTER,
+                        pendingAccount.isOptionSet(Account.OPTION_REGISTER));
             }
         } else {
             if (service.getAccounts().size() == 0) {

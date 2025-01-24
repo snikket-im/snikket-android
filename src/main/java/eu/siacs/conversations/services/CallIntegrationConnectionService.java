@@ -20,14 +20,11 @@ import android.telecom.TelecomManager;
 import android.telecom.VideoProfile;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -40,7 +37,6 @@ import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -91,7 +87,8 @@ public class CallIntegrationConnectionService extends ConnectionService {
         if (service == null) {
             Log.d(
                     Config.LOGTAG,
-                    "CallIntegrationConnection service was unable to bind to XmppConnectionService");
+                    "CallIntegrationConnection service was unable to bind to"
+                            + " XmppConnectionService");
             return Connection.createFailedConnection(
                     new DisconnectCause(DisconnectCause.ERROR, "service connection not found"));
         }
@@ -107,8 +104,8 @@ public class CallIntegrationConnectionService extends ConnectionService {
         Log.d(Config.LOGTAG, "create outgoing rtp connection!");
         final Intent intent = new Intent(service, RtpSessionActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
-        intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, account.getJid().toEscapedString());
-        intent.putExtra(RtpSessionActivity.EXTRA_WITH, with.toEscapedString());
+        intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, account.getJid().toString());
+        intent.putExtra(RtpSessionActivity.EXTRA_WITH, with.toString());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         final Connection callIntegration;
@@ -135,7 +132,8 @@ public class CallIntegrationConnectionService extends ConnectionService {
                     return Connection.createFailedConnection(
                             new DisconnectCause(
                                     DisconnectCause.ERROR,
-                                    "Phone is busy. Probably race condition. Try again in a moment"));
+                                    "Phone is busy. Probably race condition. Try again in a"
+                                            + " moment"));
                 }
                 if (proposal == null) {
                     // TODO instead of just null checking try to get the sessionID
@@ -187,9 +185,9 @@ public class CallIntegrationConnectionService extends ConnectionService {
         }
         final Jid jid;
         if ("tel".equals(uri.getScheme())) {
-            jid = Jid.ofEscaped(extras.getString(EXTRA_ADDRESS));
+            jid = Jid.of(extras.getString(EXTRA_ADDRESS));
         } else {
-            jid = Jid.ofEscaped(uri.getSchemeSpecificPart());
+            jid = Jid.of(uri.getSchemeSpecificPart());
         }
         final int videoState = extras.getInt(TelecomManager.EXTRA_START_CALL_WITH_VIDEO_STATE);
         final Set<Media> media =
@@ -226,7 +224,7 @@ public class CallIntegrationConnectionService extends ConnectionService {
             return Connection.createFailedConnection(
                     new DisconnectCause(DisconnectCause.ERROR, "service connection not found"));
         }
-        final var jid = Jid.ofEscaped(uri.getSchemeSpecificPart());
+        final var jid = Jid.of(uri.getSchemeSpecificPart());
         final Account account = service.findAccountByUuid(phoneAccountHandle.getId());
         final var weakReference =
                 service.getJingleConnectionManager().findJingleRtpConnection(account, jid, sid);
@@ -365,7 +363,7 @@ public class CallIntegrationConnectionService extends ConnectionService {
             } else {
                 // for Android 8 we need to put in a fake tel uri
                 final var outgoingCallExtras = new Bundle();
-                outgoingCallExtras.putString(EXTRA_ADDRESS, with.toEscapedString());
+                outgoingCallExtras.putString(EXTRA_ADDRESS, with.toString());
                 extras.putBundle(TelecomManager.EXTRA_OUTGOING_CALL_EXTRAS, outgoingCallExtras);
                 address = Uri.parse("tel:0");
             }

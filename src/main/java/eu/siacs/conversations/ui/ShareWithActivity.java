@@ -216,7 +216,7 @@ public class ShareWithActivity extends XmppActivity
         final Conversation conversation;
         Account account;
         try {
-            account = xmppConnectionService.findAccountByJid(Jid.ofEscaped(share.account));
+            account = xmppConnectionService.findAccountByJid(Jid.of(share.account));
         } catch (final IllegalArgumentException e) {
             account = null;
         }

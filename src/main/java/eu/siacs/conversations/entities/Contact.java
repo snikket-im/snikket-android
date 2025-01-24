@@ -5,22 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.base.Strings;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.android.AbstractPhoneContact;
 import eu.siacs.conversations.android.JabberIdContact;
@@ -31,6 +17,15 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Contact implements ListItem, Blockable {
     public static final String TABLENAME = "contacts";
@@ -69,10 +64,21 @@ public class Contact implements ListItem, Blockable {
     private String mLastPresence = null;
     private RtpCapability.Capability rtpCapability;
 
-    public Contact(final String account, final String systemName, final String serverName, final String presenceName,
-                   final Jid jid, final int subscription, final String photoUri,
-                   final Uri systemAccount, final String keys, final String avatar, final long lastseen,
-                   final String presence, final String groups, final RtpCapability.Capability rtpCapability) {
+    public Contact(
+            final String account,
+            final String systemName,
+            final String serverName,
+            final String presenceName,
+            final Jid jid,
+            final int subscription,
+            final String photoUri,
+            final Uri systemAccount,
+            final String keys,
+            final String avatar,
+            final long lastseen,
+            final String presence,
+            final String groups,
+            final RtpCapability.Capability rtpCapability) {
         this.accountUuid = account;
         this.systemName = systemName;
         this.serverName = serverName;
@@ -91,7 +97,7 @@ public class Contact implements ListItem, Blockable {
         if (avatar != null) {
             this.avatar = new Avatar();
             this.avatar.sha1sum = avatar;
-            this.avatar.origin = Avatar.Origin.VCARD; //always assume worst
+            this.avatar.origin = Avatar.Origin.VCARD; // always assume worst
         }
         try {
             this.groups = (groups == null ? new JSONArray() : new JSONArray(groups));
@@ -122,7 +128,8 @@ public class Contact implements ListItem, Blockable {
         } catch (Exception e) {
             systemAccount = null;
         }
-        return new Contact(cursor.getString(cursor.getColumnIndex(ACCOUNT)),
+        return new Contact(
+                cursor.getString(cursor.getColumnIndex(ACCOUNT)),
                 cursor.getString(cursor.getColumnIndex(SYSTEMNAME)),
                 cursor.getString(cursor.getColumnIndex(SERVERNAME)),
                 cursor.getString(cursor.getColumnIndex(PRESENCE_NAME)),
@@ -135,7 +142,8 @@ public class Contact implements ListItem, Blockable {
                 cursor.getLong(cursor.getColumnIndex(LAST_TIME)),
                 cursor.getString(cursor.getColumnIndex(LAST_PRESENCE)),
                 cursor.getString(cursor.getColumnIndex(GROUPS)),
-                RtpCapability.Capability.of(cursor.getString(cursor.getColumnIndex(RTP_CAPABILITY))));
+                RtpCapability.Capability.of(
+                        cursor.getString(cursor.getColumnIndex(RTP_CAPABILITY))));
     }
 
     public String getDisplayName() {
@@ -151,12 +159,15 @@ public class Contact implements ListItem, Blockable {
             return this.systemName;
         } else if (!TextUtils.isEmpty(this.serverName)) {
             return this.serverName;
-        } else if (!TextUtils.isEmpty(this.presenceName) && ((QuickConversationsService.isQuicksy() && JidHelper.isQuicksyDomain(jid.getDomain())) || mutualPresenceSubscription())) {
+        } else if (!TextUtils.isEmpty(this.presenceName)
+                && ((QuickConversationsService.isQuicksy()
+                                && JidHelper.isQuicksyDomain(jid.getDomain()))
+                        || mutualPresenceSubscription())) {
             return this.presenceName;
         } else if (jid.getLocal() != null) {
             return JidHelper.localPartOrFallback(jid);
         } else {
-            return jid.getDomain().toEscapedString();
+            return jid.getDomain().toString();
         }
     }
 
@@ -166,7 +177,7 @@ public class Contact implements ListItem, Blockable {
         } else if (jid.getLocal() != null) {
             return JidHelper.localPartOrFallback(jid);
         } else {
-            return jid.getDomain().toEscapedString();
+            return jid.getDomain().toString();
         }
     }
 
@@ -201,9 +212,9 @@ public class Contact implements ListItem, Blockable {
             }
             return true;
         } else {
-            return jid.toString().contains(needle) ||
-                    getDisplayName().toLowerCase(Locale.US).contains(needle) ||
-                    matchInTag(context, needle);
+            return jid.toString().contains(needle)
+                    || getDisplayName().toLowerCase(Locale.US).contains(needle)
+                    || matchInTag(context, needle);
         }
     }
 
@@ -354,8 +365,8 @@ public class Contact implements ListItem, Blockable {
     }
 
     public boolean showInRoster() {
-        return (this.getOption(Contact.Options.IN_ROSTER) && (!this
-                .getOption(Contact.Options.DIRTY_DELETE)))
+        return (this.getOption(Contact.Options.IN_ROSTER)
+                        && (!this.getOption(Contact.Options.DIRTY_DELETE)))
                 || (this.getOption(Contact.Options.DIRTY_PUSH));
     }
 
@@ -430,12 +441,11 @@ public class Contact implements ListItem, Blockable {
 
     @Override
     public int compareTo(@NonNull final ListItem another) {
-        return this.getDisplayName().compareToIgnoreCase(
-                another.getDisplayName());
+        return this.getDisplayName().compareToIgnoreCase(another.getDisplayName());
     }
 
     public String getServer() {
-        return getJid().getDomain().toEscapedString();
+        return getJid().getDomain().toString();
     }
 
     public void setAvatar(Avatar avatar) {
@@ -446,7 +456,10 @@ public class Contact implements ListItem, Blockable {
         if (this.avatar != null && this.avatar.equals(avatar)) {
             return;
         }
-        if (!previouslyOmittedPepFetch && this.avatar != null && this.avatar.origin == Avatar.Origin.PEP && avatar.origin == Avatar.Origin.VCARD) {
+        if (!previouslyOmittedPepFetch
+                && this.avatar != null
+                && this.avatar.origin == Avatar.Origin.PEP
+                && avatar.origin == Avatar.Origin.VCARD) {
             return;
         }
         this.avatar = avatar;
@@ -561,7 +574,8 @@ public class Contact implements ListItem, Blockable {
 
     @Override
     public int getAvatarBackgroundColor() {
-        return UIHelper.getColorForName(jid != null ? jid.asBareJid().toString() : getDisplayName());
+        return UIHelper.getColorForName(
+                jid != null ? jid.asBareJid().toString() : getDisplayName());
     }
 
     @Override

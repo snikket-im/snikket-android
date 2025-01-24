@@ -3,7 +3,6 @@ package eu.siacs.conversations.entities;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
-
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.utils.LanguageUtils;
 import eu.siacs.conversations.utils.UIHelper;
@@ -25,9 +24,7 @@ public class Room implements AvatarService.Avatarable, Comparable<Room> {
         this.nusers = nusers;
     }
 
-    public Room() {
-
-    }
+    public Room() {}
 
     public String getName() {
         return name;
@@ -52,7 +49,7 @@ public class Room implements AvatarService.Avatarable, Comparable<Room> {
     @Override
     public int getAvatarBackgroundColor() {
         Jid room = getRoom();
-        return UIHelper.getColorForName(room != null ? room.asBareJid().toEscapedString() : name);
+        return UIHelper.getColorForName(room != null ? room.asBareJid().toString() : name);
     }
 
     @Override
@@ -65,16 +62,15 @@ public class Room implements AvatarService.Avatarable, Comparable<Room> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Room room = (Room) o;
-        return Objects.equal(address, room.address) &&
-                Objects.equal(name, room.name) &&
-                Objects.equal(description, room.description);
+        return Objects.equal(address, room.address)
+                && Objects.equal(name, room.name)
+                && Objects.equal(description, room.description);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(address, name, description);
     }
-
 
     public boolean contains(String needle) {
         return Strings.nullToEmpty(name).contains(needle)

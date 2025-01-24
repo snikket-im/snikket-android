@@ -1,14 +1,10 @@
 package eu.siacs.conversations.services;
 
-
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Room;
@@ -17,18 +13,7 @@ import eu.siacs.conversations.http.services.MuclumbusService;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
-
 import im.conversations.android.xmpp.model.stanza.Iq;
-
-import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +23,13 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChannelDiscoveryService {
 
@@ -57,7 +49,8 @@ public class ChannelDiscoveryService {
             this.muclumbusService = null;
             return;
         }
-        final OkHttpClient.Builder builder = HttpConnectionManager.okHttpClient(service).newBuilder();
+        final OkHttpClient.Builder builder =
+                HttpConnectionManager.okHttpClient(service).newBuilder();
         if (service.useTorToConnect()) {
             builder.proxy(HttpConnectionManager.getProxy());
         }
@@ -205,10 +198,8 @@ public class ChannelDiscoveryService {
                                         account,
                                         infoRequest,
                                         infoResponse -> {
-                                            if (infoResponse.getType()
-                                                    == Iq.Type.RESULT) {
-                                                final Room room =
-                                                        IqParser.parseRoom(infoResponse);
+                                            if (infoResponse.getType() == Iq.Type.RESULT) {
+                                                final Room room = IqParser.parseRoom(infoResponse);
                                                 if (room != null) {
                                                     rooms.add(room);
                                                 }
@@ -260,7 +251,7 @@ public class ChannelDiscoveryService {
                     continue;
                 }
                 for (final String mucService : xmppConnection.getMucServers()) {
-                    Jid jid = Jid.ofEscaped(mucService);
+                    final Jid jid = Jid.of(mucService);
                     if (!localMucServices.containsKey(jid)) {
                         localMucServices.put(jid, account);
                     }

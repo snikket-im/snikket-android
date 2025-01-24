@@ -1,20 +1,19 @@
 package eu.siacs.conversations.xmpp;
 
+import androidx.annotation.NonNull;
+import com.google.common.base.CharMatcher;
+import im.conversations.android.xmpp.model.stanza.Stanza;
+import java.io.Serializable;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.jid.parts.Domainpart;
 import org.jxmpp.jid.parts.Localpart;
 import org.jxmpp.jid.parts.Resourcepart;
 import org.jxmpp.stringprep.XmppStringprepException;
 
-import java.io.Serializable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+public abstract class Jid implements Comparable<Jid>, Serializable, CharSequence {
 
-public interface Jid extends Comparable<Jid>, Serializable, CharSequence {
-
-    Pattern JID = Pattern.compile("^((.*?)@)?([^/@]+)(/(.*))?$");
-
-    static Jid of(CharSequence local, CharSequence domain, CharSequence resource) {
+    public static Jid of(
+            final CharSequence local, final CharSequence domain, final CharSequence resource) {
         if (local == null) {
             if (resource == null) {
                 return ofDomain(domain);
@@ -26,120 +25,312 @@ public interface Jid extends Comparable<Jid>, Serializable, CharSequence {
             return ofLocalAndDomain(local, domain);
         }
         try {
-            return new WrappedJid(JidCreate.entityFullFrom(
-                    Localpart.fromUnescaped(local.toString()),
-                    Domainpart.from(domain.toString()),
-                    Resourcepart.from(resource.toString())
-            ));
-        } catch (XmppStringprepException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    static Jid ofEscaped(CharSequence local, CharSequence domain, CharSequence resource) {
-        try {
-            if (resource == null) {
-                return new WrappedJid(
-                        JidCreate.bareFrom(
-                                Localpart.from(local.toString()),
-                                Domainpart.from(domain.toString())
-                        )
-                );
-            }
-            return new WrappedJid(JidCreate.entityFullFrom(
-                    Localpart.from(local.toString()),
-                    Domainpart.from(domain.toString()),
-                    Resourcepart.from(resource.toString())
-            ));
-        } catch (XmppStringprepException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-
-    static Jid ofDomain(CharSequence domain) {
-        try {
-            return new WrappedJid(JidCreate.domainBareFrom(domain));
-        } catch (XmppStringprepException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    static Jid ofLocalAndDomain(CharSequence local, CharSequence domain) {
-        try {
-            return new WrappedJid(
-                    JidCreate.bareFrom(
-                            Localpart.fromUnescaped(local.toString()),
-                            Domainpart.from(domain.toString())
-                    )
-            );
-        } catch (XmppStringprepException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    static Jid ofDomainAndResource(CharSequence domain, CharSequence resource) {
-        try {
-            return new WrappedJid(
-                    JidCreate.domainFullFrom(
-                            Domainpart.from(domain.toString()),
-                            Resourcepart.from(resource.toString())
-                    ));
-        } catch (XmppStringprepException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    static Jid ofLocalAndDomainEscaped(CharSequence local, CharSequence domain) {
-        try {
-            return new WrappedJid(
-                    JidCreate.bareFrom(
+            return new InternalRepresentation(
+                    JidCreate.entityFullFrom(
                             Localpart.from(local.toString()),
-                            Domainpart.from(domain.toString())
-                    )
-            );
-        } catch (XmppStringprepException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    static Jid of(CharSequence jid) {
-        if (jid instanceof Jid) {
-            return (Jid) jid;
-        }
-        Matcher matcher = JID.matcher(jid);
-        if (matcher.matches()) {
-            return of(matcher.group(2), matcher.group(3), matcher.group(5));
-        } else {
-            throw new IllegalArgumentException("Could not parse JID: " + jid);
-        }
-    }
-
-    static Jid ofEscaped(CharSequence jid) {
-        try {
-            return new WrappedJid(JidCreate.from(jid));
+                            Domainpart.from(domain.toString()),
+                            Resourcepart.from(resource.toString())));
         } catch (final XmppStringprepException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    boolean isFullJid();
+    public static Jid ofDomain(final CharSequence domain) {
+        try {
+            return new InternalRepresentation(JidCreate.domainBareFrom(domain));
+        } catch (final XmppStringprepException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
 
-    boolean isBareJid();
+    public static Jid ofLocalAndDomain(final CharSequence local, final CharSequence domain) {
+        try {
+            return new InternalRepresentation(
+                    JidCreate.bareFrom(
+                            Localpart.from(local.toString()), Domainpart.from(domain.toString())));
+        } catch (final XmppStringprepException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
 
-    boolean isDomainJid();
+    public static Jid ofDomainAndResource(CharSequence domain, CharSequence resource) {
+        try {
+            return new InternalRepresentation(
+                    JidCreate.domainFullFrom(
+                            Domainpart.from(domain.toString()),
+                            Resourcepart.from(resource.toString())));
+        } catch (final XmppStringprepException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
 
-    Jid asBareJid();
+    public static Jid of(final CharSequence input) {
+        if (input instanceof Jid jid) {
+            return jid;
+        }
+        try {
+            return new InternalRepresentation(JidCreate.from(input));
+        } catch (final XmppStringprepException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
 
-    Jid withResource(CharSequence resource);
+    public static Jid ofUserInput(final CharSequence input) {
+        final var jid = of(input);
+        if (CharMatcher.is('@').matchesAnyOf(jid.getDomain())) {
+            throw new IllegalArgumentException("Domain should not contain @");
+        }
+        return jid;
+    }
 
-    String getLocal();
+    public static Jid ofOrInvalid(final String input) {
+        return ofOrInvalid(input, false);
+    }
 
-    String getEscapedLocal();
+    /**
+     *
+     * @param jid a string representation of the jid to parse
+     * @param fallback indicates whether an attempt should be made to parse a bare version of the jid
+     * @return an instance of Jid; may be Jid.Invalid
+     */
+    public static Jid ofOrInvalid(final String jid, final boolean fallback) {
+        try {
+            return Jid.of(jid);
+        } catch (final IllegalArgumentException e) {
+            return Jid.invalidOf(jid, fallback);
+        }
+    }
 
-    Jid getDomain();
+    private static Jid invalidOf(final String jid, boolean fallback) {
+        final int pos = jid.indexOf('/');
+        if (fallback && pos >= 0 && jid.length() >= pos + 1) {
+            if (jid.substring(pos + 1).trim().isEmpty()) {
+                return Jid.of(jid.substring(0, pos));
+            }
+        }
+        return new Invalid(jid);
+    }
 
-    String getResource();
+    public abstract boolean isFullJid();
 
-    String toEscapedString();
+    public abstract boolean isBareJid();
+
+    public abstract boolean isDomainJid();
+
+    public abstract Jid asBareJid();
+
+    public abstract Jid withResource(CharSequence resource);
+
+    public abstract String getLocal();
+
+    public abstract Jid getDomain();
+
+    public abstract String getResource();
+
+    private static class InternalRepresentation extends Jid {
+        private final org.jxmpp.jid.Jid inner;
+
+        private InternalRepresentation(final org.jxmpp.jid.Jid inner) {
+            this.inner = inner;
+        }
+
+        @Override
+        public boolean isFullJid() {
+            return inner.isEntityFullJid() || inner.isDomainFullJid();
+        }
+
+        @Override
+        public boolean isBareJid() {
+            return inner.isDomainBareJid() || inner.isEntityBareJid();
+        }
+
+        @Override
+        public boolean isDomainJid() {
+            return inner.isDomainBareJid() || inner.isDomainFullJid();
+        }
+
+        @Override
+        public Jid asBareJid() {
+            return new InternalRepresentation(inner.asBareJid());
+        }
+
+        @Override
+        public Jid withResource(CharSequence resource) {
+            final Localpart localpart = inner.getLocalpartOrNull();
+            try {
+                final Resourcepart resourcepart = Resourcepart.from(resource.toString());
+                if (localpart == null) {
+                    return new InternalRepresentation(
+                            JidCreate.domainFullFrom(inner.getDomain(), resourcepart));
+                } else {
+                    return new InternalRepresentation(
+                            JidCreate.fullFrom(localpart, inner.getDomain(), resourcepart));
+                }
+            } catch (XmppStringprepException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+
+        @Override
+        public String getLocal() {
+            final Localpart localpart = inner.getLocalpartOrNull();
+            return localpart == null ? null : localpart.toString();
+        }
+
+        @Override
+        public Jid getDomain() {
+            return new InternalRepresentation(inner.asDomainBareJid());
+        }
+
+        @Override
+        public String getResource() {
+            final Resourcepart resourcepart = inner.getResourceOrNull();
+            return resourcepart == null ? null : resourcepart.toString();
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return inner.toString();
+        }
+
+        @Override
+        public int length() {
+            return inner.length();
+        }
+
+        @Override
+        public char charAt(int i) {
+            return inner.charAt(i);
+        }
+
+        @NonNull
+        @Override
+        public CharSequence subSequence(int i, int i1) {
+            return inner.subSequence(i, i1);
+        }
+
+        @Override
+        public int compareTo(Jid jid) {
+            if (jid instanceof InternalRepresentation) {
+                return inner.compareTo(((InternalRepresentation) jid).inner);
+            } else {
+                return 0;
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            InternalRepresentation that = (InternalRepresentation) o;
+            return inner.equals(that.inner);
+        }
+
+        @Override
+        public int hashCode() {
+            return inner.hashCode();
+        }
+    }
+
+    public static class Invalid extends Jid {
+
+        private final String value;
+
+        private Invalid(final String jid) {
+            this.value = jid;
+        }
+
+        @Override
+        @NonNull
+        public String toString() {
+            return value;
+        }
+
+        @Override
+        public boolean isFullJid() {
+            throw new AssertionError("Not implemented");
+        }
+
+        @Override
+        public boolean isBareJid() {
+            throw new AssertionError("Not implemented");
+        }
+
+        @Override
+        public boolean isDomainJid() {
+            throw new AssertionError("Not implemented");
+        }
+
+        @Override
+        public Jid asBareJid() {
+            throw new AssertionError("Not implemented");
+        }
+
+        @Override
+        public Jid withResource(CharSequence charSequence) {
+            throw new AssertionError("Not implemented");
+        }
+
+        @Override
+        public String getLocal() {
+            throw new AssertionError("Not implemented");
+        }
+
+        @Override
+        public Jid getDomain() {
+            throw new AssertionError("Not implemented");
+        }
+
+        @Override
+        public String getResource() {
+            throw new AssertionError("Not implemented");
+        }
+
+        @Override
+        public int length() {
+            return value.length();
+        }
+
+        @Override
+        public char charAt(int index) {
+            return value.charAt(index);
+        }
+
+        @NonNull
+        @Override
+        public CharSequence subSequence(int start, int end) {
+            return value.subSequence(start, end);
+        }
+
+        @Override
+        public int compareTo(@NonNull Jid o) {
+            throw new AssertionError("Not implemented");
+        }
+
+        public static Jid getNullForInvalid(final Jid jid) {
+            if (jid instanceof Invalid) {
+                return null;
+            } else {
+                return jid;
+            }
+        }
+
+        public static boolean isValid(Jid jid) {
+            return !(jid instanceof Invalid);
+        }
+
+        public static boolean hasValidFrom(final Stanza stanza) {
+            final String from = stanza.getAttribute("from");
+            if (from == null) {
+                return false;
+            }
+            try {
+                Jid.of(from);
+                return true;
+            } catch (final IllegalArgumentException e) {
+                return false;
+            }
+        }
+    }
 }

@@ -137,8 +137,7 @@ public class Conversation extends AbstractEntity
                 cursor.getString(cursor.getColumnIndexOrThrow(NAME)),
                 cursor.getString(cursor.getColumnIndexOrThrow(CONTACT)),
                 cursor.getString(cursor.getColumnIndexOrThrow(ACCOUNT)),
-                JidHelper.parseOrFallbackToInvalid(
-                        cursor.getString(cursor.getColumnIndexOrThrow(CONTACTJID))),
+                Jid.ofOrInvalid(cursor.getString(cursor.getColumnIndexOrThrow(CONTACTJID))),
                 cursor.getLong(cursor.getColumnIndexOrThrow(CREATED)),
                 cursor.getInt(cursor.getColumnIndexOrThrow(STATUS)),
                 cursor.getInt(cursor.getColumnIndexOrThrow(MODE)),

@@ -902,8 +902,7 @@ public class ConversationFragment extends XmppFragment
             }
             intent.putExtra("contacts", contacts);
             intent.putExtra(
-                    EXTRA_ACCOUNT,
-                    conversation.getAccount().getJid().asBareJid().toEscapedString());
+                    EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toString());
             intent.putExtra("conversation", conversation.getUuid());
             startActivityForResult(intent, requestCode);
             return true;
@@ -1562,8 +1561,8 @@ public class ConversationFragment extends XmppFragment
             intent.setAction(Intent.ACTION_VIEW);
             intent.putExtra(
                     RtpSessionActivity.EXTRA_ACCOUNT,
-                    id.getAccount().getJid().asBareJid().toEscapedString());
-            intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.getWith().toEscapedString());
+                    id.getAccount().getJid().asBareJid().toString());
+            intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.getWith().toString());
             if (id instanceof AbstractJingleConnection) {
                 intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.getSessionId());
                 startActivity(intent);
@@ -3570,7 +3569,7 @@ public class ConversationFragment extends XmppFragment
                                                     + message.getContact()
                                                             .getJid()
                                                             .asBareJid()
-                                                            .toEscapedString());
+                                                            .toString());
                                     break;
                             }
                             return true;

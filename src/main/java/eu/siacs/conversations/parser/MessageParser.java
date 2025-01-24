@@ -31,7 +31,6 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.LocalizedContent;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
@@ -95,7 +94,7 @@ public class MessageParser extends AbstractParser
         for (Element child : packet.getChildren()) {
             if (child.getName().equals("stanza-id")
                     && Namespace.STANZA_IDS.equals(child.getNamespace())
-                    && by.equals(InvalidJid.getNullForInvalid(child.getAttributeAsJid("by")))) {
+                    && by.equals(Jid.Invalid.getNullForInvalid(child.getAttributeAsJid("by")))) {
                 return child.getAttribute("id");
             }
         }
@@ -105,7 +104,7 @@ public class MessageParser extends AbstractParser
     private static Jid getTrueCounterpart(Element mucUserElement, Jid fallback) {
         final Element item = mucUserElement == null ? null : mucUserElement.findChild("item");
         Jid result =
-                item == null ? null : InvalidJid.getNullForInvalid(item.getAttributeAsJid("jid"));
+                item == null ? null : Jid.Invalid.getNullForInvalid(item.getAttributeAsJid("jid"));
         return result != null ? result : fallback;
     }
 
@@ -154,7 +153,7 @@ public class MessageParser extends AbstractParser
         final XmppAxolotlMessage xmppAxolotlMessage;
         try {
             xmppAxolotlMessage = XmppAxolotlMessage.fromElement(axolotlMessage, from.asBareJid());
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Log.d(
                     Config.LOGTAG,
                     conversation.getAccount().getJid().asBareJid()
@@ -224,13 +223,13 @@ public class MessageParser extends AbstractParser
             final Element invite = mucUser.findChild("invite");
             if (invite != null) {
                 final String password = mucUser.findChildContent("password");
-                final Jid from = InvalidJid.getNullForInvalid(invite.getAttributeAsJid("from"));
-                final Jid to = InvalidJid.getNullForInvalid(invite.getAttributeAsJid("to"));
+                final Jid from = Jid.Invalid.getNullForInvalid(invite.getAttributeAsJid("from"));
+                final Jid to = Jid.Invalid.getNullForInvalid(invite.getAttributeAsJid("to"));
                 if (to != null && from == null) {
                     Log.d(Config.LOGTAG, "do not parse outgoing mediated invite " + message);
                     return null;
                 }
-                final Jid room = InvalidJid.getNullForInvalid(message.getAttributeAsJid("from"));
+                final Jid room = Jid.Invalid.getNullForInvalid(message.getAttributeAsJid("from"));
                 if (room == null) {
                     return null;
                 }
@@ -239,8 +238,8 @@ public class MessageParser extends AbstractParser
         }
         final Element conference = message.findChild("x", "jabber:x:conference");
         if (conference != null) {
-            Jid from = InvalidJid.getNullForInvalid(message.getAttributeAsJid("from"));
-            Jid room = InvalidJid.getNullForInvalid(conference.getAttributeAsJid("jid"));
+            Jid from = Jid.Invalid.getNullForInvalid(message.getAttributeAsJid("from"));
+            Jid room = Jid.Invalid.getNullForInvalid(conference.getAttributeAsJid("jid"));
             if (room == null) {
                 return null;
             }
@@ -333,7 +332,7 @@ public class MessageParser extends AbstractParser
                 }
             }
             if (retract != null) {
-                final Jid id = InvalidJid.getNullForInvalid(retract.getAttributeAsJid("id"));
+                final Jid id = Jid.Invalid.getNullForInvalid(retract.getAttributeAsJid("id"));
                 if (id != null) {
                     account.removeBookmark(id);
                     Log.d(
@@ -567,7 +566,7 @@ public class MessageParser extends AbstractParser
         }
         boolean notify = false;
 
-        if (from == null || !InvalidJid.isValid(from) || !InvalidJid.isValid(to)) {
+        if (from == null || !Jid.Invalid.isValid(from) || !Jid.Invalid.isValid(to)) {
             Log.e(Config.LOGTAG, "encountered invalid message from='" + from + "' to='" + to + "'");
             return;
         }
@@ -607,7 +606,7 @@ public class MessageParser extends AbstractParser
             occupant = null;
         }
         boolean isMucStatusMessage =
-                InvalidJid.hasValidFrom(packet)
+                Jid.Invalid.hasValidFrom(packet)
                         && from.isBareJid()
                         && mucUserElement != null
                         && mucUserElement.hasChild("status");
@@ -668,7 +667,7 @@ public class MessageParser extends AbstractParser
                             || mucUserElement != null
                             || account.getXmppConnection()
                                     .getMucServersWithholdAccount()
-                                    .contains(counterpart.getDomain().toEscapedString());
+                                    .contains(counterpart.getDomain().toString());
             final Conversation conversation =
                     mXmppConnectionService.findOrCreateConversation(
                             account,
@@ -1161,7 +1160,7 @@ public class MessageParser extends AbstractParser
             }
             if (conversation != null
                     && mucUserElement != null
-                    && InvalidJid.hasValidFrom(packet)
+                    && Jid.Invalid.hasValidFrom(packet)
                     && from.isBareJid()) {
                 for (Element child : mucUserElement.getChildren()) {
                     if ("status".equals(child.getName())) {
@@ -1381,7 +1380,7 @@ public class MessageParser extends AbstractParser
 
         final Element event =
                 original.findChild("event", "http://jabber.org/protocol/pubsub#event");
-        if (event != null && InvalidJid.hasValidFrom(original) && original.getFrom().isBareJid()) {
+        if (event != null && Jid.Invalid.hasValidFrom(original) && original.getFrom().isBareJid()) {
             if (event.hasChild("items")) {
                 parseEvent(event, original.getFrom(), account);
             } else if (event.hasChild("delete")) {
@@ -1392,7 +1391,7 @@ public class MessageParser extends AbstractParser
         }
 
         final String nick = packet.findChildContent("nick", Namespace.NICK);
-        if (nick != null && InvalidJid.hasValidFrom(original)) {
+        if (nick != null && Jid.Invalid.hasValidFrom(original)) {
             if (mXmppConnectionService.isMuc(account, from)) {
                 return;
             }
@@ -1444,7 +1443,7 @@ public class MessageParser extends AbstractParser
             Jid from) {
         final var id = displayed.getId();
         // TODO we don’t even use 'sender' any more. Remove this!
-        final Jid sender = InvalidJid.getNullForInvalid(displayed.getAttributeAsJid("sender"));
+        final Jid sender = Jid.Invalid.getNullForInvalid(displayed.getAttributeAsJid("sender"));
         if (packet.fromAccount(account) && !selfAddressed) {
             final Conversation c = mXmppConnectionService.find(account, counterpart.asBareJid());
             final Message message =

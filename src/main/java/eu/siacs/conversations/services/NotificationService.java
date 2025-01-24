@@ -573,9 +573,8 @@ public class NotificationService {
         final Intent fullScreenIntent =
                 new Intent(mXmppConnectionService, RtpSessionActivity.class);
         fullScreenIntent.putExtra(
-                RtpSessionActivity.EXTRA_ACCOUNT,
-                id.account.getJid().asBareJid().toEscapedString());
-        fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toEscapedString());
+                RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().asBareJid().toString());
+        fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toString());
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.sessionId);
         fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -702,9 +701,8 @@ public class NotificationService {
                 new Intent(mXmppConnectionService, RtpSessionActivity.class);
         fullScreenIntent.setAction(action);
         fullScreenIntent.putExtra(
-                RtpSessionActivity.EXTRA_ACCOUNT,
-                id.account.getJid().asBareJid().toEscapedString());
-        fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toEscapedString());
+                RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().asBareJid().toString());
+        fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toString());
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.sessionId);
         return PendingIntent.getActivity(
                 mXmppConnectionService,
@@ -1902,7 +1900,7 @@ public class NotificationService {
         } else if (errors.size() == 1) {
             mBuilder.setContentTitle(
                     mXmppConnectionService.getString(R.string.problem_connecting_to_account));
-            mBuilder.setContentText(errors.get(0).getJid().asBareJid().toEscapedString());
+            mBuilder.setContentText(errors.get(0).getJid().asBareJid().toString());
         } else {
             mBuilder.setContentTitle(
                     mXmppConnectionService.getString(R.string.problem_connecting_to_accounts));
@@ -1961,7 +1959,7 @@ public class NotificationService {
             intent = new Intent(mXmppConnectionService, AccountUtils.MANAGE_ACCOUNT_ACTIVITY);
         } else {
             intent = new Intent(mXmppConnectionService, EditAccountActivity.class);
-            intent.putExtra("jid", errors.get(0).getJid().asBareJid().toEscapedString());
+            intent.putExtra("jid", errors.get(0).getJid().asBareJid().toString());
             intent.putExtra(EditAccountActivity.EXTRA_OPENED_FROM_NOTIFICATION, true);
         }
         mBuilder.setContentIntent(

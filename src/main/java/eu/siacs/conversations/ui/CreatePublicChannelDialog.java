@@ -11,18 +11,11 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.DialogCreatePublicChannelBinding;
 import eu.siacs.conversations.entities.Account;
@@ -33,10 +26,14 @@ import eu.siacs.conversations.ui.util.DelayedHintHelper;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class CreatePublicChannelDialog extends DialogFragment implements OnBackendConnected {
 
-    private static final char[] FORBIDDEN = new char[]{'\u0022','&','\'','/',':','<','>','@'};
+    private static final char[] FORBIDDEN =
+            new char[] {'\u0022', '&', '\'', '/', ':', '<', '>', '@'};
 
     private static final String ACCOUNTS_LIST_KEY = "activated_accounts_list";
     private CreatePublicChannelDialogListener mListener;
@@ -62,48 +59,56 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        jidWasModified = savedInstanceState != null && savedInstanceState.getBoolean("jid_was_modified_false", false);
-        nameEntered = savedInstanceState != null && savedInstanceState.getBoolean("name_entered", false);
-        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
+        jidWasModified =
+                savedInstanceState != null
+                        && savedInstanceState.getBoolean("jid_was_modified_false", false);
+        nameEntered =
+                savedInstanceState != null && savedInstanceState.getBoolean("name_entered", false);
+        final MaterialAlertDialogBuilder builder =
+                new MaterialAlertDialogBuilder(requireActivity());
         builder.setTitle(R.string.create_public_channel);
-        final DialogCreatePublicChannelBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.dialog_create_public_channel, null, false);
-        binding.account.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                updateJidSuggestion(binding);
-            }
+        final DialogCreatePublicChannelBinding binding =
+                DataBindingUtil.inflate(
+                        getActivity().getLayoutInflater(),
+                        R.layout.dialog_create_public_channel,
+                        null,
+                        false);
+        binding.account.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(
+                            AdapterView<?> parent, View view, int position, long id) {
+                        updateJidSuggestion(binding);
+                    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                });
+        binding.jid.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence s, int start, int count, int after) {}
 
-            }
-        });
-        binding.jid.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (skipTetxWatcher) {
-                    return;
-                }
-                if (jidWasModified) {
-                    jidWasModified = !TextUtils.isEmpty(s);
-                } else {
-                    jidWasModified = !s.toString().equals(getJidSuggestion(binding));
-                }
-            }
-        });
-        updateInputs(binding,false);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (skipTetxWatcher) {
+                            return;
+                        }
+                        if (jidWasModified) {
+                            jidWasModified = !TextUtils.isEmpty(s);
+                        } else {
+                            jidWasModified = !s.toString().equals(getJidSuggestion(binding));
+                        }
+                    }
+                });
+        updateInputs(binding, false);
         ArrayList<String> mActivatedAccounts = getArguments().getStringArrayList(ACCOUNTS_LIST_KEY);
-        StartConversationActivity.populateAccountSpinner(getActivity(), mActivatedAccounts, binding.account);
+        StartConversationActivity.populateAccountSpinner(
+                getActivity(), mActivatedAccounts, binding.account);
         builder.setView(binding.getRoot());
         builder.setPositiveButton(nameEntered ? R.string.create : R.string.next, null);
         builder.setNegativeButton(nameEntered ? R.string.back : R.string.cancel, null);
@@ -111,14 +116,18 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
         this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.item_autocomplete);
         binding.jid.setAdapter(knownHostsAdapter);
         final AlertDialog dialog = builder.create();
-        binding.groupChatName.setOnEditorActionListener((v, actionId, event) -> {
-            submit(dialog, binding);
-            return true;
-        });
-        dialog.setOnShowListener(dialogInterface -> {
-            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> goBack(dialog, binding));
-            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> submit(dialog, binding));
-        });
+        binding.groupChatName.setOnEditorActionListener(
+                (v, actionId, event) -> {
+                    submit(dialog, binding);
+                    return true;
+                });
+        dialog.setOnShowListener(
+                dialogInterface -> {
+                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                            .setOnClickListener(v -> goBack(dialog, binding));
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                            .setOnClickListener(v -> submit(dialog, binding));
+                });
         return dialog;
     }
 
@@ -134,13 +143,15 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean("jid_was_modified",jidWasModified);
+        outState.putBoolean("jid_was_modified", jidWasModified);
         outState.putBoolean("name_entered", nameEntered);
         super.onSaveInstanceState(outState);
     }
 
     private static String getJidSuggestion(final DialogCreatePublicChannelBinding binding) {
-        final Account account = StartConversationActivity.getSelectedAccount(binding.getRoot().getContext(), binding.account);
+        final Account account =
+                StartConversationActivity.getSelectedAccount(
+                        binding.getRoot().getContext(), binding.account);
         final XmppConnection connection = account == null ? null : account.getXmppConnection();
         if (connection == null) {
             return "";
@@ -156,18 +167,18 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
             return "";
         } else {
             try {
-                return Jid.of(localpart, domain, null).toEscapedString();
+                return Jid.of(localpart, domain, null).toString();
             } catch (IllegalArgumentException e) {
-                return Jid.of(CryptoHelper.pronounceable(), domain, null).toEscapedString();
+                return Jid.of(CryptoHelper.pronounceable(), domain, null).toString();
             }
         }
     }
 
     private static String clean(String name) {
-        for(char c : FORBIDDEN) {
-            name = name.replace(String.valueOf(c),"");
+        for (char c : FORBIDDEN) {
+            name = name.replace(String.valueOf(c), "");
         }
-        return name.replaceAll("\\s+","-");
+        return name.replaceAll("\\s+", "-");
     }
 
     private void goBack(AlertDialog dialog, DialogCreatePublicChannelBinding binding) {
@@ -189,22 +200,26 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
         if (nameEntered) {
             binding.nameLayout.setError(null);
             if (address.isEmpty()) {
-                binding.xmppAddressLayout.setError(context.getText(R.string.please_enter_xmpp_address));
+                binding.xmppAddressLayout.setError(
+                        context.getText(R.string.please_enter_xmpp_address));
             } else {
                 final Jid jid;
                 try {
-                    jid = Jid.ofEscaped(address);
-                } catch (IllegalArgumentException e) {
+                    jid = Jid.ofUserInput(address);
+                } catch (final IllegalArgumentException e) {
                     binding.xmppAddressLayout.setError(context.getText(R.string.invalid_jid));
                     return;
                 }
-                final Account account = StartConversationActivity.getSelectedAccount(context, binding.account);
+                final Account account =
+                        StartConversationActivity.getSelectedAccount(context, binding.account);
                 if (account == null) {
                     return;
                 }
-                final XmppConnectionService service = ((XmppActivity )context).xmppConnectionService;
+                final XmppConnectionService service =
+                        ((XmppActivity) context).xmppConnectionService;
                 if (service != null && service.findFirstMuc(jid) != null) {
-                    binding.xmppAddressLayout.setError(context.getString(R.string.channel_already_exists));
+                    binding.xmppAddressLayout.setError(
+                            context.getString(R.string.channel_already_exists));
                     return;
                 }
                 mListener.onCreatePublicChannel(account, name, jid);
@@ -214,7 +229,7 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
             binding.xmppAddressLayout.setError(null);
             if (name.isEmpty()) {
                 binding.nameLayout.setError(context.getText(R.string.please_enter_name));
-            } else if (StartConversationActivity.isValidJid(name)){
+            } else if (StartConversationActivity.isValidJid(name)) {
                 binding.nameLayout.setError(context.getText(R.string.this_is_an_xmpp_address));
             } else {
                 binding.nameLayout.setError(null);
@@ -227,8 +242,8 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
         }
     }
 
-
-    private void updateInputs(final DialogCreatePublicChannelBinding binding, final boolean requestFocus) {
+    private void updateInputs(
+            final DialogCreatePublicChannelBinding binding, final boolean requestFocus) {
         binding.xmppAddressLayout.setVisibility(nameEntered ? View.VISIBLE : View.GONE);
         binding.nameLayout.setVisibility(nameEntered ? View.GONE : View.VISIBLE);
         if (!requestFocus) {
@@ -256,7 +271,8 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
     private void refreshKnownHosts() {
         Activity activity = getActivity();
         if (activity instanceof XmppActivity) {
-            Collection<String> hosts = ((XmppActivity) activity).xmppConnectionService.getKnownConferenceHosts();
+            Collection<String> hosts =
+                    ((XmppActivity) activity).xmppConnectionService.getKnownConferenceHosts();
             this.knownHostsAdapter.refresh(hosts);
         }
     }
@@ -271,8 +287,8 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
         try {
             mListener = (CreatePublicChannelDialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement CreateConferenceDialogListener");
+            throw new ClassCastException(
+                    context.toString() + " must implement CreateConferenceDialogListener");
         }
     }
 
@@ -280,7 +296,8 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
     public void onStart() {
         super.onStart();
         final Activity activity = getActivity();
-        if (activity instanceof XmppActivity && ((XmppActivity) activity).xmppConnectionService != null) {
+        if (activity instanceof XmppActivity
+                && ((XmppActivity) activity).xmppConnectionService != null) {
             refreshKnownHosts();
         }
     }

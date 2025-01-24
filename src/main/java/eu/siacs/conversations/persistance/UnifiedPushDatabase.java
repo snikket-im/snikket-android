@@ -6,19 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-
-import java.util.List;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.services.UnifiedPushBroker;
+import java.util.List;
 
 public class UnifiedPushDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "unified-push-distributor";
@@ -42,7 +38,9 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(final SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(
-                "CREATE TABLE push (account TEXT, transport TEXT, application TEXT NOT NULL, instance TEXT NOT NULL UNIQUE, endpoint TEXT, expiration NUMBER DEFAULT 0)");
+                "CREATE TABLE push (account TEXT, transport TEXT, application TEXT NOT NULL,"
+                        + " instance TEXT NOT NULL UNIQUE, endpoint TEXT, expiration NUMBER DEFAULT"
+                        + " 0)");
     }
 
     public boolean register(final String application, final String instance) {
@@ -113,7 +111,8 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
                 sqLiteDatabase.query(
                         "push",
                         new String[] {"application", "endpoint"},
-                        "account = ? AND transport = ? AND instance = ? AND endpoint IS NOT NULL AND expiration >= "
+                        "account = ? AND transport = ? AND instance = ? AND endpoint IS NOT NULL"
+                                + " AND expiration >= "
                                 + expiration,
                         new String[] {account, transport, instance},
                         null,
@@ -131,17 +130,26 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
     public List<PushTarget> deletePushTargets() {
         final SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         final ImmutableList.Builder<PushTarget> builder = new ImmutableList.Builder<>();
-        try (final Cursor cursor = sqLiteDatabase.query("push",new String[]{"application","instance"},null,null,null,null,null)) {
+        try (final Cursor cursor =
+                sqLiteDatabase.query(
+                        "push",
+                        new String[] {"application", "instance"},
+                        null,
+                        null,
+                        null,
+                        null,
+                        null)) {
             if (cursor != null && cursor.moveToFirst()) {
-                builder.add(new PushTarget(
-                        cursor.getString(cursor.getColumnIndexOrThrow("application")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("instance"))));
+                builder.add(
+                        new PushTarget(
+                                cursor.getString(cursor.getColumnIndexOrThrow("application")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("instance"))));
             }
         } catch (final Exception e) {
-            Log.d(Config.LOGTAG,"unable to retrieve push targets",e);
+            Log.d(Config.LOGTAG, "unable to retrieve push targets", e);
             return builder.build();
         }
-        sqLiteDatabase.delete("push",null,null);
+        sqLiteDatabase.delete("push", null, null);
         return builder.build();
     }
 
@@ -149,9 +157,10 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
         final SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         try (final Cursor cursor =
                 sqLiteDatabase.rawQuery(
-                        "SELECT EXISTS(SELECT endpoint FROM push WHERE account = ? AND transport = ?)",
+                        "SELECT EXISTS(SELECT endpoint FROM push WHERE account = ? AND transport ="
+                                + " ?)",
                         new String[] {
-                            transport.account.getUuid(), transport.transport.toEscapedString()
+                            transport.account.getUuid(), transport.transport.toString()
                         })) {
             if (cursor != null && cursor.moveToFirst()) {
                 return cursor.getInt(0) > 0;

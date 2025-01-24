@@ -2319,7 +2319,7 @@ public class XmppConnection implements Runnable {
                         for (final Element element : elements) {
                             if (element.getName().equals("item")) {
                                 final Jid jid =
-                                        InvalidJid.getNullForInvalid(
+                                        Jid.Invalid.getNullForInvalid(
                                                 element.getAttributeAsJid("jid"));
                                 if (jid != null && !jid.equals(account.getDomain())) {
                                     items.add(jid);
@@ -2484,7 +2484,7 @@ public class XmppConnection implements Runnable {
         final Tag stream = Tag.start("stream:stream");
         stream.setAttribute("to", account.getServer());
         if (from) {
-            stream.setAttribute("from", account.getJid().asBareJid().toEscapedString());
+            stream.setAttribute("from", account.getJid().asBareJid().toString());
         }
         stream.setAttribute("version", "1.0");
         stream.setAttribute("xml:lang", LocalizedContent.STREAM_LANGUAGE);
@@ -2703,7 +2703,7 @@ public class XmppConnection implements Runnable {
 
     public List<String> getMucServersWithholdAccount() {
         final List<String> servers = getMucServers();
-        servers.remove(account.getDomain().toEscapedString());
+        servers.remove(account.getDomain().toString());
         return servers;
     }
 
