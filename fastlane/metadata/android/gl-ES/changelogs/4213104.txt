@@ -1,0 +1,2 @@
+* Uso de SASL SCRAM Downgrade Protection (XEP-0474)
+* Envío de reaccións en MUC PMs ao JID correcto
