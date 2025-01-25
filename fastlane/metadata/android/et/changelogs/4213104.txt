@@ -1,0 +1,2 @@
+* Võtsime kasutusele SASL SCRAM madaldusründe kaitse (SASL SCRAM Downgrade Protection XEP-0474)
+* saadame jututoa sõnumite reakstioonid õigetele kasutajatele
