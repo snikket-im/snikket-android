@@ -60,7 +60,7 @@ public class MucOptions {
         return this.conversation.getAccount();
     }
 
-    public boolean setSelf(User user) {
+    public boolean setSelf(final User user) {
         this.self = user;
         final boolean roleChanged = this.conversation.setAttribute("role", user.role.toString());
         final boolean affiliationChanged =
@@ -68,8 +68,8 @@ public class MucOptions {
         return roleChanged || affiliationChanged;
     }
 
-    public void changeAffiliation(Jid jid, Affiliation affiliation) {
-        User user = findUserByRealJid(jid);
+    public void changeAffiliation(final Jid jid, final Affiliation affiliation) {
+        final User user = findUserByRealJid(jid);
         synchronized (users) {
             if (user != null && user.getRole() == Role.NONE) {
                 users.remove(user);
@@ -440,14 +440,15 @@ public class MucOptions {
         }
     }
 
-    public List<User> getUsers(int max) {
-        ArrayList<User> subset = new ArrayList<>();
-        HashSet<Jid> jids = new HashSet<>();
-        jids.add(account.getJid().asBareJid());
+    public List<User> getUsers(final int max) {
+        final ArrayList<User> subset = new ArrayList<>();
+        final HashSet<Jid> addresses = new HashSet<>();
+        addresses.add(account.getJid().asBareJid());
         synchronized (users) {
             for (User user : users) {
                 if (user.getRealJid() == null
-                        || (user.getRealJid().getLocal() != null && jids.add(user.getRealJid()))) {
+                        || (user.getRealJid().getLocal() != null
+                                && addresses.add(user.getRealJid()))) {
                     subset.add(user);
                 }
                 if (subset.size() >= max) {
@@ -877,7 +878,7 @@ public class MucOptions {
             }
         }
 
-        public boolean setAvatar(Avatar avatar) {
+        public boolean setAvatar(final Avatar avatar) {
             if (this.avatar != null && this.avatar.equals(avatar)) {
                 return false;
             } else {

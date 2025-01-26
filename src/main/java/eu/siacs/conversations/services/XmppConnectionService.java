@@ -3455,15 +3455,15 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean checkListeners() {
-        return (this.mOnAccountUpdates.size() == 0
-                && this.mOnConversationUpdates.size() == 0
-                && this.mOnRosterUpdates.size() == 0
-                && this.mOnCaptchaRequested.size() == 0
-                && this.mOnMucRosterUpdate.size() == 0
-                && this.mOnUpdateBlocklist.size() == 0
-                && this.mOnShowErrorToasts.size() == 0
-                && this.onJingleRtpConnectionUpdate.size() == 0
-                && this.mOnKeyStatusUpdated.size() == 0);
+        return (this.mOnAccountUpdates.isEmpty()
+                && this.mOnConversationUpdates.isEmpty()
+                && this.mOnRosterUpdates.isEmpty()
+                && this.mOnCaptchaRequested.isEmpty()
+                && this.mOnMucRosterUpdate.isEmpty()
+                && this.mOnUpdateBlocklist.isEmpty()
+                && this.mOnShowErrorToasts.isEmpty()
+                && this.onJingleRtpConnectionUpdate.isEmpty()
+                && this.mOnKeyStatusUpdated.isEmpty());
     }
 
     private void switchToForeground() {
@@ -3815,7 +3815,8 @@ public class XmppConnectionService extends Service {
                         }
                         ++i;
                         if (i >= affiliations.length) {
-                            List<Jid> members = conversation.getMucOptions().getMembers(true);
+                            final var mucOptions = conversation.getMucOptions();
+                            final var members = mucOptions.getMembers(true);
                             if (success) {
                                 List<Jid> cryptoTargets = conversation.getAcceptedCryptoTargets();
                                 boolean changed = false;
@@ -3840,7 +3841,7 @@ public class XmppConnectionService extends Service {
                                     updateConversation(conversation);
                                 }
                             }
-                            getAvatarService().clear(conversation);
+                            getAvatarService().clear(mucOptions);
                             updateMucRosterUi();
                             updateConversationUi();
                         }
@@ -4487,8 +4488,9 @@ public class XmppConnectionService extends Service {
                 request,
                 (response) -> {
                     if (response.getType() == Iq.Type.RESULT) {
-                        conference.getMucOptions().changeAffiliation(jid, affiliation);
-                        getAvatarService().clear(conference);
+                        final var mucOptions = conference.getMucOptions();
+                        mucOptions.changeAffiliation(jid, affiliation);
+                        getAvatarService().clear(mucOptions);
                         if (callback != null) {
                             callback.onAffiliationChangedSuccessful(jid);
                         } else {

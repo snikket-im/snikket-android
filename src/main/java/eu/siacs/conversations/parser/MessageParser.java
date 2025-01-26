@@ -266,11 +266,12 @@ public class MessageParser extends AbstractParser
                         mXmppConnectionService.updateAccountUi();
                     } else {
                         final Contact contact = account.getRoster().getContact(from);
-                        contact.setAvatar(avatar);
-                        mXmppConnectionService.syncRoster(account);
-                        mXmppConnectionService.getAvatarService().clear(contact);
-                        mXmppConnectionService.updateConversationUi();
-                        mXmppConnectionService.updateRosterUi();
+                        if (contact.setAvatar(avatar)) {
+                            mXmppConnectionService.syncRoster(account);
+                            mXmppConnectionService.getAvatarService().clear(contact);
+                            mXmppConnectionService.updateConversationUi();
+                            mXmppConnectionService.updateRosterUi();
+                        }
                     }
                 } else if (mXmppConnectionService.isDataSaverDisabled()) {
                     mXmppConnectionService.fetchAvatar(account, avatar);
@@ -1174,7 +1175,7 @@ public class MessageParser extends AbstractParser
                             // ignored
                         }
                     } else if ("item".equals(child.getName())) {
-                        MucOptions.User user = AbstractParser.parseItem(conversation, child);
+                        final var user = AbstractParser.parseItem(conversation, child);
                         Log.d(
                                 Config.LOGTAG,
                                 account.getJid()
@@ -1185,8 +1186,13 @@ public class MessageParser extends AbstractParser
                                         + " in "
                                         + conversation.getJid().asBareJid());
                         if (!user.realJidMatchesAccount()) {
-                            boolean isNew = conversation.getMucOptions().updateUser(user);
-                            mXmppConnectionService.getAvatarService().clear(conversation);
+                            final var mucOptions = conversation.getMucOptions();
+                            final boolean isNew = mucOptions.updateUser(user);
+                            final var avatarService = mXmppConnectionService.getAvatarService();
+                            if (Strings.isNullOrEmpty(mucOptions.getAvatar())) {
+                                avatarService.clear(mucOptions);
+                            }
+                            avatarService.clear(user);
                             mXmppConnectionService.updateMucRosterUi();
                             mXmppConnectionService.updateConversationUi();
                             Contact contact = user.getContact();

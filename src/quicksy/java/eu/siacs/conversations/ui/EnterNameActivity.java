@@ -54,7 +54,7 @@ public class EnterNameActivity extends XmppActivity
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(final Bundle savedInstanceState) {
         savedInstanceState.putBoolean("set_nick", this.setNick.get());
         super.onSaveInstanceState(savedInstanceState);
     }
