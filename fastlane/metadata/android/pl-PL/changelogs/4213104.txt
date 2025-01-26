@@ -1,0 +1,2 @@
+* Implementacja ochrony przed obniżeniem poziomu bezpieczeństwa SASL SCRAM (XEP-0474)
+* Wysyłanie reakcji w prywatnych wiadomościach w rozmowie grupowej do właściwego JID
