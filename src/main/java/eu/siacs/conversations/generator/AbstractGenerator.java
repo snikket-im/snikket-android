@@ -1,7 +1,6 @@
 package eu.siacs.conversations.generator;
 
 import android.util.Base64;
-
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -10,7 +9,6 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.XmppConnection;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -40,7 +38,8 @@ public abstract class AbstractGenerator {
         Namespace.NICK + "+notify",
         "urn:xmpp:ping",
         "jabber:iq:version",
-        "http://jabber.org/protocol/chatstates"
+        "http://jabber.org/protocol/chatstates",
+        Namespace.REACTIONS
     };
     private final String[] MESSAGE_CONFIRMATION_FEATURES = {
         "urn:xmpp:chat-markers:0", "urn:xmpp:receipts"
