@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -28,6 +29,8 @@ import java.util.Collection;
 import java.util.List;
 
 public class ShortcutService {
+
+    public static final char ID_SEPARATOR = '#';
 
     private final XmppConnectionService xmppConnectionService;
     private final ReplacingSerialSingleThreadExecutor replacingSerialSingleThreadExecutor =
@@ -159,15 +162,17 @@ public class ShortcutService {
     }
 
     private static String getShortcutId(final Contact contact) {
-        return contact.getAccount().getJid().asBareJid().toString()
-                + "#"
-                + contact.getJid().asBareJid().toString();
+        return Joiner.on(ID_SEPARATOR)
+                .join(
+                        contact.getAccount().getJid().asBareJid().toString(),
+                        contact.getJid().asBareJid().toString());
     }
 
     private static String getShortcutId(final MucOptions mucOptions) {
         final Account account = mucOptions.getAccount();
         final Jid jid = mucOptions.getConversation().getJid();
-        return account.getJid().asBareJid().toString() + "#" + jid.asBareJid().toString();
+        return Joiner.on(ID_SEPARATOR)
+                .join(account.getJid().asBareJid().toString(), jid.asBareJid().toString());
     }
 
     private Intent getShortcutIntent(final MucOptions mucOptions) {

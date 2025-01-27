@@ -342,19 +342,11 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
         return get(conversation, size, false);
     }
 
-    public Bitmap get(Conversation conversation, int size, boolean cachedOnly) {
+    public Bitmap get(final Conversation conversation, final int size, final boolean cachedOnly) {
         if (conversation.getMode() == Conversation.MODE_SINGLE) {
             return get(conversation.getContact(), size, cachedOnly);
         } else {
             return get(conversation.getMucOptions(), size, cachedOnly);
-        }
-    }
-
-    public void clear(final Conversation conversation) {
-        if (conversation.getMode() == Conversation.MODE_SINGLE) {
-            clear(conversation.getContact());
-        } else {
-            clear(conversation.getMucOptions());
         }
     }
 

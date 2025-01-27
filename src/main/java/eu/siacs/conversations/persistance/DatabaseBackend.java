@@ -1656,6 +1656,28 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         }
     }
 
+    public String findConversationUuid(final Jid account, final Jid jid) {
+        final SQLiteDatabase db = this.getReadableDatabase();
+        final String[] selectionArgs = {
+            account.getLocal(),
+            account.getDomain().toString(),
+            jid.asBareJid().toString() + "/%",
+            jid.asBareJid().toString()
+        };
+        try (final Cursor cursor =
+                db.rawQuery(
+                        "SELECT conversations.uuid FROM conversations JOIN accounts ON"
+                            + " conversations.accountUuid=accounts.uuid WHERE accounts.username=?"
+                            + " AND accounts.server=? AND (contactJid=? OR contactJid LIKE ?)",
+                        selectionArgs)) {
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+            cursor.moveToFirst();
+            return cursor.getString(0);
+        }
+    }
+
     public void updateConversation(final Conversation conversation) {
         final SQLiteDatabase db = this.getWritableDatabase();
         final String[] args = {conversation.getUuid()};

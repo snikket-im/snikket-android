@@ -12,12 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityShareWithBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.persistance.DatabaseBackend;
+import eu.siacs.conversations.services.ShortcutService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.xmpp.Jid;
@@ -132,10 +136,28 @@ public class ShareWithActivity extends XmppActivity
         if (shortcut.isPresent()) {
             final var extras = shortcut.get().getExtras();
             if (extras == null) {
-                return null;
+                return shortcutIdToConversationFallback(shortcutId);
             } else {
-                return extras.getString(ConversationsActivity.EXTRA_CONVERSATION);
+                final var conversation = extras.getString(ConversationsActivity.EXTRA_CONVERSATION);
+                if (Strings.isNullOrEmpty(conversation)) {
+                    return shortcutIdToConversationFallback(shortcutId);
+                } else {
+                    return conversation;
+                }
             }
+        } else {
+            return shortcutIdToConversationFallback(shortcutId);
+        }
+    }
+
+    private String shortcutIdToConversationFallback(final String shortcutId) {
+        final var parts =
+                Splitter.on(ShortcutService.ID_SEPARATOR).limit(2).splitToList(shortcutId);
+        if (parts.size() == 2) {
+            final var account = Jid.of(parts.get(0));
+            final var jid = Jid.of(parts.get(1));
+            final var database = DatabaseBackend.getInstance(getApplicationContext());
+            return database.findConversationUuid(account, jid);
         } else {
             return null;
         }
