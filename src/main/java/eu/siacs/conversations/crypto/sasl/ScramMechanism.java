@@ -183,7 +183,7 @@ public abstract class ScramMechanism extends SaslMechanism {
         final String i = attributes.get("i");
         final String s = attributes.get("s");
         final String nonce = attributes.get("r");
-        final String d = attributes.get("d");
+        final String h = attributes.get("h");
         if (Strings.isNullOrEmpty(s) || Strings.isNullOrEmpty(nonce) || Strings.isNullOrEmpty(i)) {
             throw new AuthenticationException("Missing attributes from server first message");
         }
@@ -205,15 +205,15 @@ public abstract class ScramMechanism extends SaslMechanism {
             throw new AuthenticationException("Invalid salt in server first message");
         }
 
-        if (d != null && this.downgradeProtection != null) {
+        if (h != null && this.downgradeProtection != null) {
             final String asSeenInFeatures;
             try {
-                asSeenInFeatures = downgradeProtection.asDString();
+                asSeenInFeatures = downgradeProtection.asHString();
             } catch (final SecurityException e) {
                 throw new AuthenticationException(e);
             }
             final var hashed = BaseEncoding.base64().encode(digest(asSeenInFeatures.getBytes()));
-            if (!hashed.equals(d)) {
+            if (!hashed.equals(h)) {
                 throw new AuthenticationException("Mismatch in SSDP");
             }
         }

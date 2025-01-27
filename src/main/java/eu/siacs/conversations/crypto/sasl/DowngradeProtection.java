@@ -9,8 +9,8 @@ import java.util.Collection;
 
 public class DowngradeProtection {
 
-    private static final char SEPARATOR = ',';
-    private static final char SEPARATOR_MECHANISM_AND_BINDING = '|';
+    private static final char SEPARATOR = 0x1E;
+    private static final char SEPARATOR_MECHANISM_AND_BINDING = 0x1F;
 
     public final ImmutableList<String> mechanisms;
     public final ImmutableList<String> channelBindings;
@@ -26,7 +26,7 @@ public class DowngradeProtection {
         this.channelBindings = null;
     }
 
-    public String asDString() {
+    public String asHString() {
         ensureSaslMechanismFormat(this.mechanisms);
         ensureNoSeparators(this.mechanisms);
         if (this.channelBindings != null) {
