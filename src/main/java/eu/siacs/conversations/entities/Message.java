@@ -950,8 +950,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         return encryption;
     }
 
-    public static boolean configurePrivateMessage(final Message message) {
-        return configurePrivateMessage(message, false);
+    public static void configurePrivateMessage(final Message message) {
+        configurePrivateMessage(message, false);
     }
 
     public static boolean configurePrivateFileMessage(final Message message) {
@@ -959,27 +959,19 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     private static boolean configurePrivateMessage(final Message message, final boolean isFile) {
-        final Conversation conversation;
-        if (message.conversation instanceof Conversation) {
-            conversation = (Conversation) message.conversation;
-        } else {
-            return false;
-        }
-        if (conversation.getMode() == Conversation.MODE_MULTI) {
-            final Jid nextCounterpart = conversation.getNextCounterpart();
-            return configurePrivateMessage(conversation, message, nextCounterpart, isFile);
+        if (message.conversation instanceof Conversation conversation) {
+            if (conversation.getMode() == Conversation.MODE_MULTI) {
+                final Jid nextCounterpart = conversation.getNextCounterpart();
+                return configurePrivateMessage(conversation, message, nextCounterpart, isFile);
+            }
         }
         return false;
     }
 
-    public static boolean configurePrivateMessage(final Message message, final Jid counterpart) {
-        final Conversation conversation;
-        if (message.conversation instanceof Conversation) {
-            conversation = (Conversation) message.conversation;
-        } else {
-            return false;
+    public static void configurePrivateMessage(final Message message, final Jid counterpart) {
+        if (message.conversation instanceof Conversation conversation) {
+            configurePrivateMessage(conversation, message, counterpart, false);
         }
-        return configurePrivateMessage(conversation, message, counterpart, false);
     }
 
     private static boolean configurePrivateMessage(
@@ -991,7 +983,16 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
             return false;
         }
         message.setCounterpart(counterpart);
-        message.setTrueCounterpart(conversation.getMucOptions().getTrueCounterpart(counterpart));
+        final var mucOptions = conversation.getMucOptions();
+        if (counterpart.equals(mucOptions.getSelf().getFullJid())) {
+            message.setTrueCounterpart(conversation.getAccount().getJid().asBareJid());
+        } else {
+            final var user = mucOptions.findUserByFullJid(counterpart);
+            if (user != null) {
+                message.setTrueCounterpart(user.getRealJid());
+                message.setOccupantId(user.getOccupantId());
+            }
+        }
         message.setType(isFile ? Message.TYPE_PRIVATE_FILE : Message.TYPE_PRIVATE);
         return true;
     }
