@@ -319,12 +319,12 @@
     <string name="notification_restored_backup_title">Varmuuskopiosi on palautettu</string>
     <string name="notification_restored_backup_subtitle">Älä unohda ottaa tiliä käyttöön.</string>
     <string name="choose_file">Valitse tiedosto</string>
-    <string name="receiving_x_file">Vastaanotetaan %1$s (%2$d%% valmis)</string>
+    <string name="receiving_x_file">Vastaanotetaan %1$s (%2$d% % valmiina)</string>
     <string name="download_x_file">Lataa %s</string>
     <string name="delete_x_file">Poista %s</string>
     <string name="file">tiedosto</string>
     <string name="open_x_file">Avaa %s</string>
-    <string name="sending_file">Lähetetään (%1$d%% valmis)</string>
+    <string name="sending_file">lähetetään (%1$d% % valmiina)</string>
     <string name="preparing_file">Valmistellaan tiedoston lähettämistä</string>
     <string name="x_file_offered_for_download">%s tarjottu ladattavaksi</string>
     <string name="cancel_transmission">Peru siirto</string>
