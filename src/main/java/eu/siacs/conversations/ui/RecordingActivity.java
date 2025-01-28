@@ -9,39 +9,33 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileObserver;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableSet;
-
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ActivityRecordingBinding;
+import eu.siacs.conversations.utils.TimeFrameUtils;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.Set;
-
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.databinding.ActivityRecordingBinding;
-import eu.siacs.conversations.ui.util.SettingsUtils;
-import eu.siacs.conversations.utils.TimeFrameUtils;
 
 public class RecordingActivity extends BaseActivity implements View.OnClickListener {
 
     private ActivityRecordingBinding binding;
 
     private MediaRecorder mRecorder;
-    private long mStartTime = 0;
+    private Stopwatch stopwatch;
 
     private final CountDownLatch outputFileWrittenLatch = new CountDownLatch(1);
 
@@ -63,17 +57,48 @@ public class RecordingActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_recording);
+        this.binding.timer.setOnClickListener(
+                v -> {
+                    onPauseContinue();
+                });
         this.binding.cancelButton.setOnClickListener(this);
         this.binding.shareButton.setOnClickListener(this);
         this.setFinishOnTouchOutside(false);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
+
+    private void onPauseContinue() {
+        final var recorder = this.mRecorder;
+        final var stopwatch = this.stopwatch;
+        if (recorder == null
+                || stopwatch == null
+                || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return;
+        }
+        if (stopwatch.isRunning()) {
+            try {
+                recorder.pause();
+                stopwatch.stop();
+            } catch (final IllegalStateException e) {
+                Log.d(Config.LOGTAG, "could not pause recording", e);
+            }
+        } else {
+            try {
+                recorder.resume();
+                stopwatch.start();
+            } catch (final IllegalStateException e) {
+                Log.d(Config.LOGTAG, "could not resume recording", e);
+            }
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         if (!startRecording()) {
             this.binding.shareButton.setEnabled(false);
-            this.binding.timer.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyMedium);
+            this.binding.timer.setTextAppearance(
+                    com.google.android.material.R.style.TextAppearance_Material3_BodyMedium);
             // TODO reset font family. make red?
             this.binding.timer.setText(R.string.unable_to_start_recording);
         }
@@ -93,22 +118,31 @@ public class RecordingActivity extends BaseActivity implements View.OnClickListe
 
     private static final Set<String> AAC_SENSITIVE_DEVICES =
             new ImmutableSet.Builder<String>()
-                    .add("FP4")             // Fairphone 4 https://codeberg.org/monocles/monocles_chat/issues/133
-                    .add("ONEPLUS A6000")   // OnePlus 6 https://github.com/iNPUTmice/Conversations/issues/4329
-                    .add("ONEPLUS A6003")   // OnePlus 6 https://github.com/iNPUTmice/Conversations/issues/4329
-                    .add("ONEPLUS A6010")   // OnePlus 6T https://codeberg.org/monocles/monocles_chat/issues/133
-                    .add("ONEPLUS A6013")   // OnePlus 6T https://codeberg.org/monocles/monocles_chat/issues/133
-                    .add("Pixel 4a")        // Pixel 4a https://github.com/iNPUTmice/Conversations/issues/4223
-                    .add("WP12 Pro")        // Oukitel WP 12 Pro https://github.com/iNPUTmice/Conversations/issues/4223
-                    .add("Volla Phone X")   // Volla Phone X https://github.com/iNPUTmice/Conversations/issues/4223
+                    .add("FP4") // Fairphone 4
+                    // https://codeberg.org/monocles/monocles_chat/issues/133
+                    .add("ONEPLUS A6000") // OnePlus 6
+                    // https://github.com/iNPUTmice/Conversations/issues/4329
+                    .add("ONEPLUS A6003") // OnePlus 6
+                    // https://github.com/iNPUTmice/Conversations/issues/4329
+                    .add("ONEPLUS A6010") // OnePlus 6T
+                    // https://codeberg.org/monocles/monocles_chat/issues/133
+                    .add("ONEPLUS A6013") // OnePlus 6T
+                    // https://codeberg.org/monocles/monocles_chat/issues/133
+                    .add("Pixel 4a") // Pixel 4a
+                    // https://github.com/iNPUTmice/Conversations/issues/4223
+                    .add("WP12 Pro") // Oukitel WP 12 Pro
+                    // https://github.com/iNPUTmice/Conversations/issues/4223
+                    .add("Volla Phone X") // Volla Phone X
+                    // https://github.com/iNPUTmice/Conversations/issues/4223
                     .build();
 
     private boolean startRecording() {
         mRecorder = new MediaRecorder();
+        stopwatch = Stopwatch.createUnstarted();
         try {
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         } catch (final RuntimeException e) {
-            Log.e(Config.LOGTAG,"could not set audio source", e);
+            Log.e(Config.LOGTAG, "could not set audio source", e);
             return false;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -123,8 +157,10 @@ public class RecordingActivity extends BaseActivity implements View.OnClickListe
         } else {
             outputFormat = MediaRecorder.OutputFormat.MPEG_4;
             mRecorder.setOutputFormat(outputFormat);
-            if (AAC_SENSITIVE_DEVICES.contains(Build.MODEL) && Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU) {
-                // Changing these three settings for AAC sensitive devices for Android<=13 might lead to sporadically truncated (cut-off) voice messages.
+            if (AAC_SENSITIVE_DEVICES.contains(Build.MODEL)
+                    && Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU) {
+                // Changing these three settings for AAC sensitive devices for Android<=13 might
+                // lead to sporadically truncated (cut-off) voice messages.
                 mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
                 mRecorder.setAudioSamplingRate(24_000);
                 mRecorder.setAudioEncodingBitRate(28_000);
@@ -140,7 +176,7 @@ public class RecordingActivity extends BaseActivity implements View.OnClickListe
         try {
             mRecorder.prepare();
             mRecorder.start();
-            mStartTime = SystemClock.elapsedRealtime();
+            stopwatch.start();
             mHandler.postDelayed(mTickExecutor, 100);
             Log.d(Config.LOGTAG, "started recording to " + mOutputFile.getAbsolutePath());
             return true;
@@ -154,14 +190,17 @@ public class RecordingActivity extends BaseActivity implements View.OnClickListe
         try {
             mRecorder.stop();
             mRecorder.release();
-        } catch (Exception e) {
+            if (stopwatch.isRunning()) {
+                stopwatch.stop();
+            }
+        } catch (final Exception e) {
+            Log.d(Config.LOGTAG, "could not save recording", e);
             if (saveFile) {
                 Toast.makeText(this, R.string.unable_to_save_recording, Toast.LENGTH_SHORT).show();
                 return;
             }
         } finally {
             mRecorder = null;
-            mStartTime = 0;
         }
         if (!saveFile && mOutputFile != null) {
             if (mOutputFile.delete()) {
@@ -256,24 +295,23 @@ public class RecordingActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void tick() {
-        this.binding.timer.setText(TimeFrameUtils.formatTimePassed(mStartTime, true));
+        this.binding.timer.setText(
+                TimeFrameUtils.formatElapsedTime(stopwatch.elapsed(TimeUnit.MILLISECONDS), true));
     }
 
     @Override
     public void onClick(final View view) {
-        switch (view.getId()) {
-            case R.id.cancel_button:
-                mHandler.removeCallbacks(mTickExecutor);
-                stopRecording(false);
-                setResult(RESULT_CANCELED);
-                finish();
-                break;
-            case R.id.share_button:
-                this.binding.shareButton.setEnabled(false);
-                this.binding.shareButton.setText(R.string.please_wait);
-                mHandler.removeCallbacks(mTickExecutor);
-                mHandler.postDelayed(() -> stopRecording(true), 500);
-                break;
+        if (view.getId() == R.id.cancel_button) {
+            mHandler.removeCallbacks(mTickExecutor);
+            stopRecording(false);
+            setResult(RESULT_CANCELED);
+            finish();
+        } else if (view.getId() == R.id.share_button) {
+            this.binding.timer.setOnClickListener(null);
+            this.binding.shareButton.setEnabled(false);
+            this.binding.shareButton.setText(R.string.please_wait);
+            mHandler.removeCallbacks(mTickExecutor);
+            mHandler.postDelayed(() -> stopRecording(true), 500);
         }
     }
 }
