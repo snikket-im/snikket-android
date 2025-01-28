@@ -20,10 +20,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.util.Log;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.worker.ExportBackupWorker;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -35,21 +36,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.entities.Transferable;
-import eu.siacs.conversations.worker.ExportBackupWorker;
-
 /**
- * Utilities for dealing with MIME types.
- * Used to implement java.net.URLConnection and android.webkit.MimeTypeMap.
+ * Utilities for dealing with MIME types. Used to implement java.net.URLConnection and
+ * android.webkit.MimeTypeMap.
  */
 public final class MimeUtils {
 
-    public static final List<String> AMBIGUOUS_CONTAINER_FORMATS = ImmutableList.of(
-            "application/ogg",
-            "video/3gpp", // .3gp files can contain audio, video or both
-            "video/3gpp2"
-    );
+    public static final List<String> AMBIGUOUS_CONTAINER_FORMATS =
+            ImmutableList.of(
+                    "application/ogg",
+                    "video/3gpp", // .3gp files can contain audio, video or both
+                    "video/3gpp2");
 
     private static final Map<String, String> mimeTypeToExtensionMap = new HashMap<>();
     private static final Map<String, String> extensionToMimeTypeMap = new HashMap<>();
@@ -104,6 +101,7 @@ public final class MimeUtils {
         add("application/vnd.oasis.opendocument.text-master", "odm");
         add("application/vnd.oasis.opendocument.text-template", "ott");
         add("application/vnd.oasis.opendocument.text-web", "oth");
+        add("application/vnd.oasis.opendocument.presentation", "odp");
         add("application/vnd.google-earth.kml+xml", "kml");
         add("application/vnd.google-earth.kmz", "kmz");
         add("application/msword", "doc");
@@ -141,7 +139,7 @@ public final class MimeUtils {
         add("application/vnd.sun.xml.writer.global", "sxg");
         add("application/vnd.sun.xml.writer.template", "stw");
         add("application/vnd.visio", "vsd");
-        add("application/x-7z-compressed","7z");
+        add("application/x-7z-compressed", "7z");
         add("application/x-abiword", "abw");
         add("application/x-apple-diskimage", "dmg");
         add("application/x-bcpio", "bcpio");
@@ -329,8 +327,8 @@ public final class MimeUtils {
         add("image/x-xbitmap", "xbm");
         add("image/x-xpixmap", "xpm");
         add("image/x-xwindowdump", "xwd");
-        add("message/rfc822","eml");
-        add("message/rfc822","mime");
+        add("message/rfc822", "eml");
+        add("message/rfc822", "mime");
         add("model/iges", "igs");
         add("model/iges", "iges");
         add("model/mesh", "msh");
@@ -350,7 +348,7 @@ public final class MimeUtils {
         add("text/plain", "asc");
         add("text/plain", "text");
         add("text/plain", "diff");
-        add("text/plain", "po");     // reserve "pot" for vnd.ms-powerpoint
+        add("text/plain", "po"); // reserve "pot" for vnd.ms-powerpoint
         add("text/richtext", "rtx");
         add("text/rtf", "rtf");
         add("text/text", "phps");
@@ -421,7 +419,8 @@ public final class MimeUtils {
     }
 
     // mime types that are more reliant by path
-    private static final Collection<String> PATH_PRECEDENCE_MIME_TYPE = Arrays.asList("audio/x-m4b");
+    private static final Collection<String> PATH_PRECEDENCE_MIME_TYPE =
+            Arrays.asList("audio/x-m4b");
 
     private static void add(String mimeType, String extension) {
         // If we have an existing x -> y mapping, we do not want to
@@ -450,7 +449,10 @@ public final class MimeUtils {
             }
         }
         // Standard location?
-        File f = new File(System.getProperty("java.home"), "lib" + File.separator + "content-types.properties");
+        File f =
+                new File(
+                        System.getProperty("java.home"),
+                        "lib" + File.separator + "content-types.properties");
         if (f.exists()) {
             try {
                 return new FileInputStream(f);
@@ -461,9 +463,9 @@ public final class MimeUtils {
     }
 
     /**
-     * This isn't what the RI does. The RI doesn't have hard-coded defaults, so supplying your
-     * own "content.types.user.table" means you don't get any of the built-ins, and the built-ins
-     * come from "$JAVA_HOME/lib/content-types.properties".
+     * This isn't what the RI does. The RI doesn't have hard-coded defaults, so supplying your own
+     * "content.types.user.table" means you don't get any of the built-ins, and the built-ins come
+     * from "$JAVA_HOME/lib/content-types.properties".
      */
     private static void applyOverrides() {
         // Get the appropriate InputStream to read overrides from, if any.
@@ -489,8 +491,7 @@ public final class MimeUtils {
         }
     }
 
-    private MimeUtils() {
-    }
+    private MimeUtils() {}
 
     /**
      * Returns true if the given MIME type has an entry in the map.
@@ -532,9 +533,8 @@ public final class MimeUtils {
     }
 
     /**
-     * Returns the registered extension for the given MIME type. Note that some
-     * MIME types map to multiple extensions. This call will return the most
-     * common extension for the given MIME type.
+     * Returns the registered extension for the given MIME type. Note that some MIME types map to
+     * multiple extensions. This call will return the most common extension for the given MIME type.
      *
      * @param mimeType A MIME type (i.e. text/plain)
      * @return The extension for the given MIME type or null iff there is none.
@@ -546,10 +546,11 @@ public final class MimeUtils {
         return mimeTypeToExtensionMap.get(mimeType.split(";")[0]);
     }
 
-    public static String guessMimeTypeFromUriAndMime(final Context context, final Uri uri, final String mime) {
-        Log.d(Config.LOGTAG, "guessMimeTypeFromUriAndMime(" + uri + "," + mime+")");
+    public static String guessMimeTypeFromUriAndMime(
+            final Context context, final Uri uri, final String mime) {
+        Log.d(Config.LOGTAG, "guessMimeTypeFromUriAndMime(" + uri + "," + mime + ")");
         final String mimeFromUri = guessMimeTypeFromUri(context, uri);
-        Log.d(Config.LOGTAG,"mimeFromUri:"+mimeFromUri);
+        Log.d(Config.LOGTAG, "mimeFromUri:" + mimeFromUri);
         if (PATH_PRECEDENCE_MIME_TYPE.contains(mimeFromUri)) {
             return mimeFromUri;
         } else if (mime == null || mime.equals("application/octet-stream")) {
@@ -572,7 +573,8 @@ public final class MimeUtils {
         if (PATH_PRECEDENCE_MIME_TYPE.contains(mimeTypeFromPath)) {
             return mimeTypeFromPath;
         }
-        if (mimeTypeContentResolver != null && !"application/octet-stream".equals(mimeTypeContentResolver)) {
+        if (mimeTypeContentResolver != null
+                && !"application/octet-stream".equals(mimeTypeContentResolver)) {
             return mimeTypeContentResolver;
         }
         if (mimeTypeFromName != null) {
@@ -593,7 +595,8 @@ public final class MimeUtils {
     }
 
     private static String getDisplayName(final Context context, final Uri uri) {
-        try (final Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
+        try (final Cursor cursor =
+                context.getContentResolver().query(uri, null, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 final int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
                 if (index == -1) {
@@ -619,7 +622,8 @@ public final class MimeUtils {
         return extractRelevantExtension(path, false);
     }
 
-    public static String extractRelevantExtension(final String path, final boolean ignoreCryptoExtension) {
+    public static String extractRelevantExtension(
+            final String path, final boolean ignoreCryptoExtension) {
         if (Strings.isNullOrEmpty(path)) {
             return null;
         }

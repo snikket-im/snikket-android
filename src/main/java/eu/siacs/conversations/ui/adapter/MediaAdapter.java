@@ -44,8 +44,17 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
             Arrays.asList(
                     "text/comma-separated-values",
                     "application/vnd.ms-excel",
+                    "application/vnd.stardivision.calc",
                     "application/vnd.oasis.opendocument.spreadsheet",
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+    public static final List<String> SLIDE_SHOW_MIMES =
+            Arrays.asList(
+                    "application/vnd.ms-powerpoint",
+                    "application/vnd.stardivision.impress",
+                    "application/vnd.oasis.opendocument.presentation",
+                    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                    "application/vnd.openxmlformats-officedocument.presentationml.slideshow");
 
     private static final List<String> ARCHIVE_MIMES =
             Arrays.asList(
@@ -115,6 +124,8 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
             return R.drawable.ic_description_48dp;
         } else if (SPREAD_SHEET_MIMES.contains(mime)) {
             return R.drawable.ic_table_48dp;
+        } else if (SLIDE_SHOW_MIMES.contains(mime)) {
+            return R.drawable.ic_slideshow_48dp;
         } else if (mime.equals("application/gpx+xml")) {
             return R.drawable.ic_tour_48dp;
         } else if (mime.startsWith("image/")) {
