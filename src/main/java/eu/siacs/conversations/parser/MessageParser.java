@@ -602,6 +602,16 @@ public class MessageParser extends AbstractParser
                                     ? mucUserElement
                                     : null,
                             mucTrueCounterPartByPresence);
+        } else if (mucUserElement != null) {
+            final Conversation conversation =
+                    mXmppConnectionService.find(account, from.asBareJid());
+            if (conversation != null) {
+                final var mucOptions = conversation.getMucOptions();
+                occupant = mucOptions.occupantId() ? packet.getExtension(OccupantId.class) : null;
+            } else {
+                occupant = null;
+            }
+            mucTrueCounterPart = null;
         } else {
             mucTrueCounterPart = null;
             occupant = null;
@@ -1567,7 +1577,7 @@ public class MessageParser extends AbstractParser
                 } else {
                     Log.d(Config.LOGTAG, "received reaction in channel w/o occupant ids. ignoring");
                 }
-            } else if (conversation.getMode() == Conversational.MODE_SINGLE) {
+            } else {
                 final Message message;
                 final var inMemoryMessage = conversation.findMessageWithUuidOrRemoteId(reactingTo);
                 if (inMemoryMessage != null) {
@@ -1577,28 +1587,51 @@ public class MessageParser extends AbstractParser
                             mXmppConnectionService.databaseBackend.getMessageWithUuidOrRemoteId(
                                     conversation, reactingTo);
                 }
+                if (message == null) {
+                    Log.d(Config.LOGTAG, "message with id " + reactingTo + " not found");
+                    return;
+                }
                 final boolean isReceived;
                 final Jid reactionFrom;
-                if (packet.fromAccount(account)) {
-                    isReceived = false;
-                    reactionFrom = account.getJid().asBareJid();
+                if (conversation.getMode() == Conversational.MODE_MULTI) {
+                    Log.d(Config.LOGTAG, "received reaction as MUC PM. triggering validation");
+                    final var mucOptions = conversation.getMucOptions();
+                    final var occupantId = occupant == null ? null : occupant.getId();
+                    if (occupantId == null) {
+                        Log.d(
+                                Config.LOGTAG,
+                                "received reaction via PM channel w/o occupant ids. ignoring");
+                        return;
+                    }
+                    isReceived = !mucOptions.isSelf(occupantId);
+                    if (isReceived) {
+                        reactionFrom = counterpart;
+                    } else {
+                        if (!occupantId.equals(message.getOccupantId())) {
+                            Log.d(
+                                    Config.LOGTAG,
+                                    "reaction received via MUC PM did not pass validation");
+                            return;
+                        }
+                        reactionFrom = account.getJid().asBareJid();
+                    }
                 } else {
-                    isReceived = true;
-                    reactionFrom = counterpart;
+                    if (packet.fromAccount(account)) {
+                        isReceived = false;
+                        reactionFrom = account.getJid().asBareJid();
+                    } else {
+                        isReceived = true;
+                        reactionFrom = counterpart;
+                    }
                 }
-                packet.fromAccount(account);
-                if (message != null) {
-                    final var combinedReactions =
-                            Reaction.withFrom(
-                                    message.getReactions(),
-                                    reactions.getReactions(),
-                                    isReceived,
-                                    reactionFrom);
-                    message.setReactions(combinedReactions);
-                    mXmppConnectionService.updateMessage(message, false);
-                } else {
-                    Log.d(Config.LOGTAG, "message with id " + reactingTo + " not found");
-                }
+                final var combinedReactions =
+                        Reaction.withFrom(
+                                message.getReactions(),
+                                reactions.getReactions(),
+                                isReceived,
+                                reactionFrom);
+                message.setReactions(combinedReactions);
+                mXmppConnectionService.updateMessage(message, false);
             }
         }
     }
