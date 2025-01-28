@@ -1,5 +1,12 @@
 # Changelog
 
+### Version 2.17.10
+
+* Allow audio recording to be pause by tapping the timer
+* Fix reactions in MUC PMs 
+* Stop accepting 'fallback messages' for reactions, receipts and display markers
+* Add some more media preview icons
+
 ### Version 2.17.9
 
 * Make use of SASL SCRAM Downgrade Protection (XEP-0474)
