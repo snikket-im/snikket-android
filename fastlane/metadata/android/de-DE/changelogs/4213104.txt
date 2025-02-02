@@ -1,0 +1,2 @@
+* Verwendung von SASL SCRAM Downgrade Protection (XEP-0474)
+* Reaktionen an MUC PMs senden, damit die XMPP-Adresse korrekt ist
