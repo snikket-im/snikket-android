@@ -27,7 +27,7 @@
     <string name="minutes_ago">%d minutos atrás</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d conversa não lida</item>
-        <item quantity="many">%d conversas não lidas</item>
+        <item quantity="many">%d de conversas não lidas</item>
         <item quantity="other">%d conversas não lidas</item>
     </plurals>
     <string name="sending">enviando…</string>
@@ -444,7 +444,7 @@
     <string name="dialog_manage_certs_positivebutton">Excluir a seleção</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificado cancelado</item>
-        <item quantity="many">%d certificados cancelados</item>
+        <item quantity="many">%d de certificados cancelados</item>
         <item quantity="other">%d certificados cancelados</item>
     </plurals>
     <string name="pref_quick_action_summary">Troca o botão \"Enviar\" pelo de ação rápida</string>
@@ -502,7 +502,7 @@
     <string name="connected_accounts">%1$d de %2$d contas conectadas</string>
     <plurals name="x_messages">
         <item quantity="one">%d mensagem</item>
-        <item quantity="many">%d mensagens</item>
+        <item quantity="many">%d de mensagens</item>
         <item quantity="other">%d mensagens</item>
     </plurals>
     <string name="load_more_messages">Carregar mais mensagens</string>
