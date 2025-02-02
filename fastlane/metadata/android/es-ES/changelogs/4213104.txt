@@ -1,0 +1,2 @@
+* Hicimos uso de la protección contra degradación de SCRAM SASL (XEP-0474)
+* Envíe reacciones a los mensajes privados de MUC para corregir el JID
