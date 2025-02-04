@@ -454,7 +454,7 @@
     <string name="download_failed_invalid_file">ダウンロード失敗: 無効なファイル</string>
     <string name="account_status_tor_unavailable">Tor ネットワークが利用できません</string>
     <string name="account_status_bind_failure">バインド失敗</string>
-    <string name="account_status_host_unknown">そのサーバーはこのドメインに責任を持ちません</string>
+    <string name="account_status_host_unknown">このドメインに責任を持ちません</string>
     <string name="server_info_broken">壊れています</string>
     <string name="pref_presence_settings">在席状況</string>
     <string name="pref_away_when_screen_off">デバイスがロックされているときは離席</string>
@@ -1091,4 +1091,5 @@
     <string name="pref_chat_bubbles">ふきだし</string>
     <string name="pref_chat_bubbles_summary">背景色、文字サイズ、プロフィール画像など</string>
     <string name="pref_title_bubbles">ふきだし</string>
+    <string name="account_status_connection_timeout">接続タイムアウト</string>
 </resources>
