@@ -16,6 +16,8 @@ public abstract class SaslMechanism {
 
     protected final Account account;
 
+    protected State state = State.INITIAL;
+
     protected SaslMechanism(final Account account) {
         this.account = account;
     }
@@ -39,20 +41,27 @@ public abstract class SaslMechanism {
 
     public abstract String getMechanism();
 
-    public String getClientFirstMessage(final SSLSocket sslSocket) {
-        return "";
-    }
+    public abstract String getClientFirstMessage(final SSLSocket sslSocket);
 
-    public String getResponse(final String challenge, final SSLSocket sslSocket)
-            throws AuthenticationException {
-        return "";
-    }
+    public abstract String getResponse(final String challenge, final SSLSocket sslSocket)
+            throws AuthenticationException;
 
     public enum State {
         INITIAL,
         AUTH_TEXT_SENT,
         RESPONSE_SENT,
         VALID_SERVER_RESPONSE,
+    }
+
+    protected void checkState(final State expected) throws InvalidStateException {
+        final var current = this.state;
+        if (current == null) {
+            throw new InvalidStateException("Current state is null. Implementation problem");
+        }
+        if (current != expected) {
+            throw new InvalidStateException(
+                    String.format("State was %s. Expected %s", current, expected));
+        }
     }
 
     public enum Version {

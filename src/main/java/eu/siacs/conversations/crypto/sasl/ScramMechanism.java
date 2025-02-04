@@ -48,7 +48,6 @@ public abstract class ScramMechanism extends SaslMechanism {
     protected final ChannelBinding channelBinding;
     private final String gs2Header;
     private final String clientNonce;
-    protected State state = State.INITIAL;
     private final String clientFirstMessageBare;
     private byte[] serverSignature = null;
     private DowngradeProtection downgradeProtection = null;

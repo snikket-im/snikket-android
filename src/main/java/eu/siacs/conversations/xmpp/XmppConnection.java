@@ -775,7 +775,9 @@ public class XmppConnection implements Runnable {
             throws IOException, XmlPullParserException {
         final LoginInfo currentLoginInfo = this.loginInfo;
         final SaslMechanism currentSaslMechanism = LoginInfo.mechanism(currentLoginInfo);
-        if (currentLoginInfo == null || currentSaslMechanism == null) {
+        if (currentLoginInfo == null
+                || LoginInfo.isSuccess(currentLoginInfo)
+                || currentSaslMechanism == null) {
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
         final SaslMechanism.Version version;
@@ -987,9 +989,15 @@ public class XmppConnection implements Runnable {
         } catch (final IllegalArgumentException e) {
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
+
+        final LoginInfo currentLoginInfo = this.loginInfo;
+        if (currentLoginInfo == null || LoginInfo.isSuccess(currentLoginInfo)) {
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
+
         Log.d(Config.LOGTAG, failure.toString());
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": login failure " + version);
-        if (SaslMechanism.hashedToken(LoginInfo.mechanism(this.loginInfo))) {
+        if (SaslMechanism.hashedToken(LoginInfo.mechanism(currentLoginInfo))) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resetting token");
             account.resetFastToken();
             mXmppConnectionService.databaseBackend.updateAccount(account);
@@ -1026,7 +1034,7 @@ public class XmppConnection implements Runnable {
                 }
             }
         }
-        if (SaslMechanism.hashedToken(LoginInfo.mechanism(this.loginInfo))) {
+        if (SaslMechanism.hashedToken(LoginInfo.mechanism(currentLoginInfo))) {
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid()
@@ -2913,6 +2921,9 @@ public class XmppConnection implements Runnable {
 
         public void success(final String challenge, final SSLSocket sslSocket)
                 throws SaslMechanism.AuthenticationException {
+            if (Thread.currentThread().isInterrupted()) {
+                throw new SaslMechanism.AuthenticationException("Race condition during auth");
+            }
             final var response = this.saslMechanism.getResponse(challenge, sslSocket);
             if (!Strings.isNullOrEmpty(response)) {
                 throw new SaslMechanism.AuthenticationException(
