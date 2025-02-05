@@ -119,13 +119,13 @@
     <string name="pref_notification_grace_period">Rauhanaika</string>
     <string name="pref_notification_grace_period_summary">Kuinka pitkäksi aikaa ilmoitukset hiljennetään kun jollain toisella laitteillasi tehdään jotain.</string>
     <string name="pref_advanced_options">Edistyneet</string>
-    <string name="pref_never_send_crash_summary">Vikailmoituksia lähettämällä autat kehitystyötä</string>
-    <string name="pref_confirm_messages">Lukukuittaus</string>
+    <string name="pref_never_send_crash_summary">Lähettämällä pinojälkiä autat Quicksyn jatkuvaa kehitystä</string>
+    <string name="pref_confirm_messages">Vahvista viestit</string>
     <string name="pref_confirm_messages_summary">Ilmoita lähettäjälle kun olet vastaanottanut ja lukenut viestin</string>
     <string name="pref_prevent_screenshots">Estä kuvankaappaukset</string>
     <string name="pref_prevent_screenshots_summary">Piilota sovelluksen sisältö sovellusvaihtajassa ja estä ruutukaappaukset</string>
     <string name="pref_ui_options">Käyttöliittymä</string>
-    <string name="openpgp_error">OpenKeychain-virhe</string>
+    <string name="openpgp_error">OpenKeychain tuotti virheen.</string>
     <string name="bad_key_for_encryption">Avain ei kelpaa salaamiseen.</string>
     <string name="accept">Hyväksy</string>
     <string name="error">Virhe tapahtui</string>
@@ -178,7 +178,7 @@
     <string name="account_settings_example_jabber_id">käyttäjä@esimerkki.fi</string>
     <string name="password">Salasana</string>
     <string name="invalid_jid">Tämä ei ole kunnollinen XMPP-osoite</string>
-    <string name="error_out_of_memory">Muisti loppui. Kuva on liian suuri.</string>
+    <string name="error_out_of_memory">Muisti loppu. Kuva liian iso</string>
     <string name="add_phone_book_text">Lisätäänkö %s osoitekirjaan?</string>
     <string name="server_info_show_more">Tietoa palvelimesta</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
@@ -265,7 +265,7 @@
     <string name="enter_password">Kirjoita salasana</string>
     <string name="request_presence_updates">Pyydä yhteystietoa ensin lähettämään tilapäivityksiä.\n\n<small>Tätä käytetään sen tunnistamiseen mitä sovellusta tämä käyttää</small>.</string>
     <string name="request_now">Pyydä nyt</string>
-    <string name="ignore">Ohita</string>
+    <string name="ignore">Jätä huomioimatta</string>
     <string name="without_mutual_presence_updates"><b>Varoitus:</b> Tämän lähettäminen ilman molemminpuolisia tilapäivityksiä voi aiheuttaa odottamattomia ongelmia.\n\n<small>Mene \"Yhteystiedon tietoihin\" tarkistaaksesi tilapäivitysten tilauksesi.</small></string>
     <string name="pref_security_settings">Turvallisuus</string>
     <string name="pref_allow_message_correction">Salli viestien korjaaminen</string>
@@ -484,10 +484,7 @@
     <string name="no_storage_permission">Salli %1$s:n käyttää ulkoista tallennustilaa</string>
     <string name="no_camera_permission">Salli %1$s:n käyttää kameraa </string>
     <string name="sync_with_contacts">Synkronoi yhteystietojen kanssa</string>
-    <string name="sync_with_contacts_long">%1$s haluaa pääsyn osoitekirjaasi yhdistääkseen sen XMPP-yhteystietojesi kanssa.
-\nTämä näyttää yhteystietojesi koko nimen ja kuvan.
-\n
-\n%1$s pelkästään lukee osoitekirjaasi ja vertailee niitä paikallisesti, lähettämättä mitään palvelimelle.</string>
+    <string name="sync_with_contacts_long">%1$s käsittelee yhteystietoluettelosi paikallisesti laitteellasi näyttääkseen sinulle nimet ja profiilikuvat vastaavista XMPP-yhteystiedoista.\n\nMikään yhteystietoluettelo ei koskaan poistu laitteestasi!</string>
     <string name="notify_on_all_messages">Ilmoita kaikista uusista viesteistä</string>
     <string name="notify_only_when_highlighted">Ilmoita vain kun minut mainitaan</string>
     <string name="notify_never">Ilmoitukset pois käytöstä</string>
@@ -762,7 +759,7 @@
     <string name="ebook">e-kirja</string>
     <string name="video_original">Alkuperäinen (pakkaamaton)</string>
     <string name="open_with">Avaa sovelluksella…</string>
-    <string name="set_profile_picture">Conversations-profiilikuva</string>
+    <string name="set_profile_picture">Keskustelun profiilikuva</string>
     <string name="choose_account">Valitse tili</string>
     <string name="restore_backup">Palauta varmuuskopiosta</string>
     <string name="restore">Palauta</string>
@@ -929,4 +926,5 @@
     <string name="audiobook">Äänikirja</string>
     <string name="silent_messages_channel_name">Hiljaiset viestit</string>
     <string name="rtp_state_content_add_video">Vaihdetaanko videopuheluun\?</string>
+    <string name="channel_discover_opt_in_message">Kanavahaku käyttää kolmannen osapuolen palvelua nimeltä &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Tämän ominaisuuden käyttäminen lähettää IP-osoitteesi ja hakutermit kyseiseen palveluun. Katso lisätietoja niiden &lt;a href=https://search.jabber.network/privacy&gt;tietosuojakäytännöstään&lt;/a&gt;.</string>
 </resources>
