@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_notification_grace_period_summary">Kuinka kauan Quicksy pysyy hiljaa nähtyään toisella laitteellasi toimintaa</string>
-    <string name="pref_never_send_crash_summary">Lähettämällä virheenkorjaustietoja autat Quicksyn kehittäjiä</string>
+    <string name="pref_never_send_crash_summary">Lähettämällä pinojälkiä autat Quicksyn jatkuvaa kehitystä</string>
     <string name="pref_broadcast_last_activity_summary">Kerro kaikille yhteystiedoillesi kun käytät Quicksya</string>
     <string name="huawei_protected_apps_summary">Saadaksesi ilmoituksia silloinkin kun näyttö on sammutettu, Quicksy pitää lisätä suojattujen sovellusten luetteloon.</string>
     <string name="set_profile_picture">Quicksy-profiilikuva</string>
