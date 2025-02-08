@@ -1,0 +1,1 @@
+* Fixade problemen med 'Ingen anslutbarhet' i Android 7.1
