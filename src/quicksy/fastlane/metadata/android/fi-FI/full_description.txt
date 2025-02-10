@@ -1,0 +1,14 @@
+Quicksy on suositun Jabber/XMPP-asiakaskeskustelujen spin off, jossa on automaattinen yhteystietojen etsintä.
+
+Rekisteröidyt puhelinnumerollasi ja Quicksy ehdottaa sinulle automaattisesti mahdollisia yhteystietoja osoitekirjassasi olevien puhelinnumeroiden perusteella.
+
+Kotelon alla Quicksy on täysimittainen Jabber-asiakasohjelma, jonka avulla voit kommunikoida minkä tahansa käyttäjän kanssa millä tahansa julkisesti liitetyllä palvelimella. Samoin Quicksyn käyttäjiin voidaan ottaa yhteyttä ulkopuolelta yksinkertaisesti lisäämällä +puhelinnumero@quicksy.im yhteystietoluetteloosi.
+
+Yhteystietojen synkronoinnin lisäksi käyttöliittymä on tarkoituksella mahdollisimman lähellä keskusteluja. Tämän ansiosta käyttäjät voivat lopulta siirtyä Quicksystä Conversationsiin ilman, että heidän tarvitsee opetella uudelleen sovelluksen toimintaa.
+
+Ehdotetut yhteystiedot koostuvat muista Quicksy-käyttäjistä ja tavallisista Jabber/XMPP-käyttäjistä, jotka ovat syöttäneet Jabber-tunnuksensa Quicksy-hakemistoon (https://quicksy.im/#get-listed).
+
+Huomautus: Voit kirjoittaa (https://quicksy.im/enter/) Jabber-tunnuksesi Quicksyyn
+Hakemistoon vaaditaan kertaluonteinen rekisteröintimaksu.
+
+Lue lisää tietosuojakäytännöstä (https://quicksy.im/#privacy).
