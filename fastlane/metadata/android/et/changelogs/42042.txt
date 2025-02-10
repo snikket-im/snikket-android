@@ -1,0 +1,2 @@
+* Parandasime kordussaatmise tsükli serverites, millel on vaid sm:2 tugi
+* Näitame „Lülita ümber videole“ nuppu vaid siis, kui teine osapool toetab videovestlust
