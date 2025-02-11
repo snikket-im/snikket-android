@@ -676,7 +676,7 @@
     <string name="pref_automatically_delete_messages_description">Автоматически удалять сообщения с этого устройства по прошествии заданного времени.</string>
     <string name="encrypting_message">Зашифровать сообщение</string>
     <string name="not_fetching_history_retention_period">Сообщения не загружаются в соответствии с локальным сроком хранения.</string>
-    <string name="transcoding_video">Сжимание видео</string>
+    <string name="transcoding_video">Сжатие видео</string>
     <string name="contact_blocked_past_tense">Контакт заблокирован.</string>
     <string name="pref_notifications_from_strangers">Уведомления от неизвестных контактов</string>
     <string name="pref_notifications_from_strangers_summary">Уведомлять о сообщениях и звонках от неизвестных контактов</string>
