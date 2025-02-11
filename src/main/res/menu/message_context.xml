@@ -55,6 +55,9 @@
         android:id="@+id/send_again"
         android:title="@string/send_again"
         android:visible="false" />
+    <item android:id="@+id/send_again_as_p2p"
+        android:title="@string/retry_with_p2p"
+        android:visible="false"/>
     <item
         android:id="@+id/download_file"
         android:title="@string/download_x_file"

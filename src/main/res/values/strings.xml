@@ -315,6 +315,7 @@
     <string name="paste_as_quote">Paste as quote</string>
     <string name="copy_original_url">Copy original URL</string>
     <string name="send_again">Send again</string>
+    <string name="retry_with_p2p">Retry with P2P</string>
     <string name="file_url">File URL</string>
     <string name="url_copied_to_clipboard">Copied URL to clipboard</string>
     <string name="jabber_id_copied_to_clipboard">Copied XMPP address to clipboard</string>

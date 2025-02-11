@@ -1816,11 +1816,15 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    private void sendFileMessage(final Message message, final boolean delay) {
-        Log.d(Config.LOGTAG, "send file message");
-        final Account account = message.getConversation().getAccount();
-        if (account.httpUploadAvailable(fileBackend.getFile(message, false).getSize())
-                || message.getConversation().getMode() == Conversation.MODE_MULTI) {
+    private void sendFileMessage(
+            final Message message, final boolean delay, final boolean forceP2P) {
+        final var account = message.getConversation().getAccount();
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid() + ": send file message. forceP2P=" + forceP2P);
+        if ((account.httpUploadAvailable(fileBackend.getFile(message, false).getSize())
+                        || message.getConversation().getMode() == Conversation.MODE_MULTI)
+                && !forceP2P) {
             mHttpConnectionManager.createNewUploadConnection(message, delay);
         } else {
             mJingleConnectionManager.startJingleFileTransfer(message);
@@ -1828,10 +1832,14 @@ public class XmppConnectionService extends Service {
     }
 
     public void sendMessage(final Message message) {
-        sendMessage(message, false, false);
+        sendMessage(message, false, false, false);
     }
 
-    private void sendMessage(final Message message, final boolean resend, final boolean delay) {
+    private void sendMessage(
+            final Message message,
+            final boolean resend,
+            final boolean delay,
+            final boolean forceP2P) {
         final Account account = message.getConversation().getAccount();
         if (account.setShowErrorNotification(true)) {
             databaseBackend.updateAccount(account);
@@ -1878,7 +1886,7 @@ public class XmppConnectionService extends Service {
                                         fileBackend.getFile(message, false).getSize())
                                 || conversation.getMode() == Conversation.MODE_MULTI
                                 || message.fixCounterpart()) {
-                            this.sendFileMessage(message, delay);
+                            this.sendFileMessage(message, delay, forceP2P);
                         } else {
                             break;
                         }
@@ -1893,7 +1901,7 @@ public class XmppConnectionService extends Service {
                                         fileBackend.getFile(message, false).getSize())
                                 || conversation.getMode() == Conversation.MODE_MULTI
                                 || message.fixCounterpart()) {
-                            this.sendFileMessage(message, delay);
+                            this.sendFileMessage(message, delay, forceP2P);
                         } else {
                             break;
                         }
@@ -1908,7 +1916,7 @@ public class XmppConnectionService extends Service {
                                         fileBackend.getFile(message, false).getSize())
                                 || conversation.getMode() == Conversation.MODE_MULTI
                                 || message.fixCounterpart()) {
-                            this.sendFileMessage(message, delay);
+                            this.sendFileMessage(message, delay, forceP2P);
                         } else {
                             break;
                         }
@@ -2030,7 +2038,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void resendMessage(final Message message, final boolean delay) {
-        sendMessage(message, true, delay);
+        sendMessage(message, true, delay, false);
     }
 
     public void requestEasyOnboardingInvite(
@@ -5992,10 +6000,10 @@ public class XmppConnectionService extends Service {
         return this.mHttpConnectionManager;
     }
 
-    public void resendFailedMessages(final Message message) {
+    public void resendFailedMessages(final Message message, final boolean forceP2P) {
         message.setTime(System.currentTimeMillis());
         markMessage(message, Message.STATUS_WAITING);
-        this.resendMessage(message, false);
+        this.sendMessage(message, true, false, forceP2P);
         if (message.getConversation() instanceof Conversation c) {
             c.sort();
         }
