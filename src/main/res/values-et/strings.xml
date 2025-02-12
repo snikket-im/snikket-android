@@ -1129,4 +1129,5 @@
     <string name="delete_avatar_message">Kas sa sooviksid oma tunnuspildi kustutada? Palun arvesta, et mitmed klientrakendused võivad jätkata vana puhverdatud pildi kasutamist.</string>
     <string name="show_to_contacts_only">Näita vaid kontaktidele</string>
     <string name="account_status_connection_timeout">Ühenduse on aegunud</string>
+    <string name="retry_with_p2p">Proovi uuesti võrdõigusvõrguga</string>
 </resources>
