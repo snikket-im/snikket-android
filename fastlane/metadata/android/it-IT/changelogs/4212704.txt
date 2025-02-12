@@ -1,0 +1,1 @@
+* Aggiunta possibilità di mostrare i messaggi allineati a sinistra

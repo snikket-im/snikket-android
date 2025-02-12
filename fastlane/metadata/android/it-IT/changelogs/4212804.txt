@@ -1,0 +1,3 @@
+* Accesso più facile a suoni di notifica personalizzati via Dettagli del contatto -> Menu -> Notifiche personalizzate
+* Corretto destinatari delle condivisioni dirette sulle nuove versioni di Android
+* Possibilità di limitare la visibilità degli avatar ai soli contatti

@@ -1,0 +1,2 @@
+* Utilizzo di SASL SCRAM Downgrade Protection (XEP-0474)
+* Invio di reazioni a messaggi privati in gruppi al JID corretto
