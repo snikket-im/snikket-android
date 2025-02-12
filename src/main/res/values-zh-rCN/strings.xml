@@ -414,7 +414,7 @@
     <string name="reply">回复</string>
     <string name="mark_as_read">标记为已读</string>
     <string name="pref_input_options">输入</string>
-    <string name="pref_enter_is_send">Enter 即发送</string>
+    <string name="pref_enter_is_send">Enter 键发送</string>
     <string name="pref_enter_is_send_summary">使用 Enter 键发送消息。即使禁用此选项，始终可以使用 Ctrl+Enter 发送消息。</string>
     <string name="pref_display_enter_key">显示 Enter 键</string>
     <string name="pref_display_enter_key_summary">将表情符号键替换为 Enter 键</string>
@@ -455,7 +455,7 @@
     <string name="pref_quick_action_summary">以快捷操作替代“发送”按钮</string>
     <string name="pref_quick_action">快捷操作</string>
     <string name="none">无</string>
-    <string name="recently_used">最近使用</string>
+    <string name="recently_used">最近用过</string>
     <string name="choose_quick_action">选择快捷操作</string>
     <string name="search_contacts">搜索联系人</string>
     <string name="send_private_message">发送私信</string>
@@ -617,9 +617,9 @@
     <string name="pref_clean_cache">清理缓存</string>
     <string name="pref_clean_private_storage">清理私人存储空间</string>
     <string name="pref_clean_private_storage_summary">清理保存文件的私人存储（可从服务器重新下载）</string>
-    <string name="i_followed_this_link_from_a_trusted_source">我从可信来源收到此链接</string>
-    <string name="verifying_omemo_keys_trusted_source">点击链接后，您将验证 %1$s 的 OMEMO 密钥。只有从可信来源（只有 %2$s 可以发布此链接）收到此链接才是安全的。</string>
-    <string name="verifying_omemo_keys_trusted_source_account">您将验证自己账号的 OMEMO 密钥。只有从可信来源（只有您可以发布此链接）收到此链接才是安全的。</string>
+    <string name="i_followed_this_link_from_a_trusted_source">我从可信来源获得此链接</string>
+    <string name="verifying_omemo_keys_trusted_source">点击链接后，您将验证 %1$s 的 OMEMO 密钥。只有从可信来源（只有 %2$s 可以发布此链接）获得此链接才是安全的。</string>
+    <string name="verifying_omemo_keys_trusted_source_account">您将验证自己账号的 OMEMO 密钥。只有从可信来源（只有您可以发布此链接）获得此链接才是安全的。</string>
     <string name="continue_btn">继续</string>
     <string name="verify_omemo_keys">验证 OMEMO 密钥</string>
     <string name="show_inactive_devices">显示非活动设备</string>
@@ -662,8 +662,8 @@
     <string name="account_status_regis_web">服务器要求在网站上注册</string>
     <string name="open_website">打开网站</string>
     <string name="application_found_to_open_website">未找到可以打开网站的应用</string>
-    <string name="pref_headsup_notifications">顶部通知</string>
-    <string name="pref_headsup_notifications_summary">显示顶部通知</string>
+    <string name="pref_headsup_notifications">提醒式通知</string>
+    <string name="pref_headsup_notifications_summary">显示提醒式通知</string>
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
     <string name="pref_validate_hostname">用 DNSSEC 验证主机名</string>
@@ -772,7 +772,7 @@
     <string name="phone_number">电话号码</string>
     <string name="verify_your_phone_number">验证您的电话号码</string>
     <string name="enter_country_code_and_phone_number">Quicksy 将发送短信（运营商可能收费）来验证电话号码。请输入您的国家/地区代码和电话号码：</string>
-    <string name="we_will_be_verifying"><![CDATA[我们将验证这个电话号码 <br/><br/><b>%s</b><br/><br/> 可以吗？是否编辑号码？]]></string>
+    <string name="we_will_be_verifying"><![CDATA[我们将验证电话号码 <br/><br/><b>%s</b><br/><br/> 是否正确，或者编辑号码？]]></string>
     <string name="not_a_valid_phone_number">%s 不是有效的电话号码。</string>
     <string name="please_enter_your_phone_number">请输入您的电话号码。</string>
     <string name="search_countries">搜索国家/地区</string>
@@ -785,7 +785,7 @@
     <string name="wait_x">请稍候 (%s)</string>
     <string name="back">返回</string>
     <string name="possible_pin">已自动从剪贴板粘贴可能的 PIN 码。</string>
-    <string name="please_enter_pin">请输入您的 6 位 PIN 码。</string>
+    <string name="please_enter_pin">请输入六位数的 PIN 码。</string>
     <string name="abort_registration_procedure">是否确定要中止注册过程？</string>
     <string name="yes">是</string>
     <string name="no">否</string>
@@ -1006,7 +1006,7 @@
     <string name="remove_bookmark_and_close">是否移除 %s 的书签并归档对话？</string>
     <string name="remove_bookmark">是否移除 %s 的书签？</string>
     <string name="delete_and_close">删除并归档对话</string>
-    <string name="channel_discover_opt_in_message">频道发现使用称为 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; 的第三方服务。&lt;br&gt;&lt;br&gt;使用此功能会将您的 IP 地址和搜索词传输到此服务。请参阅其 &lt;a href=https://search.jabber.network/privacy&gt;隐私政策&lt;/a&gt; 以获取更多信息。</string>
+    <string name="channel_discover_opt_in_message">频道发现使用称为 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; 的第三方服务。&lt;br&gt;&lt;br&gt;使用此功能会将您的 IP 地址和搜索词传输到此服务。如需更多信息，请参阅其&lt;a href=https://search.jabber.network/privacy&gt;隐私政策&lt;/a&gt;。</string>
     <string name="start_chat">开始对话</string>
     <string name="title_activity_share_with">分享至…</string>
     <string name="pref_use_colorful_bubbles_summary">为发送和接收的消息使用不同的背景颜色</string>
@@ -1056,7 +1056,7 @@
     <string name="unified_push_summary">兼容 UnifiedPush 的第三方应用的通知转发器</string>
     <string name="send_encrypted_message">发送加密消息</string>
     <string name="pref_large_font">大字体</string>
-    <string name="pref_large_font_summary">增加消息气泡中的字体大小</string>
+    <string name="pref_large_font_summary">增大消息气泡中的字体大小</string>
     <string name="pref_accept_invites_from_strangers">陌生人的邀请</string>
     <string name="pref_accept_invites_from_strangers_summary">接受来自陌生人的群聊邀请</string>
     <string name="pref_create_backup_one_off_summary">创建一次性备份</string>
@@ -1095,7 +1095,7 @@
     <string name="pref_chat_bubbles_summary">背景颜色、字体大小、头像</string>
     <string name="pref_chat_bubbles">消息气泡</string>
     <string name="pref_title_bubbles">消息气泡</string>
-    <string name="pref_show_avatars_summary">在群聊和一对一聊天中为您的消息显示头像。</string>
+    <string name="pref_show_avatars_summary">在群聊和一对一聊天中为消息显示头像。</string>
     <string name="pref_call_integration">通话集成</string>
     <string name="custom_notifications">自定义通知</string>
     <string name="custom_notifications_enable">是否为此对话启用自定义通知（重要程度、声音、振动）设置？</string>
@@ -1105,4 +1105,5 @@
     <string name="delete_avatar_message">是否删除头像？某些客户端可能会继续显示您头像的缓存副本。</string>
     <string name="show_to_contacts_only">仅显示给联系人</string>
     <string name="account_status_connection_timeout">连接超时</string>
+    <string name="retry_with_p2p">使用 P2P 重试</string>
 </resources>
