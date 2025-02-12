@@ -1128,4 +1128,5 @@
     <string name="delete_avatar_message">Ați dori să vă ștergeți avatarul? Unii clienți ar putea să continue să arate o copie a avatarului.</string>
     <string name="show_to_contacts_only">Arată doar contactelor</string>
     <string name="account_status_connection_timeout">Timp limită de conectare expirat</string>
+    <string name="retry_with_p2p">Reîncearcă cu P2P</string>
 </resources>
