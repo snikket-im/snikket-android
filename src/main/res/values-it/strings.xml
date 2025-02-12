@@ -461,7 +461,7 @@
     <string name="download_failed_invalid_file">Scaricamento fallito: file non valido</string>
     <string name="account_status_tor_unavailable">Rete Tor non disponibile</string>
     <string name="account_status_bind_failure">Bind fallito</string>
-    <string name="account_status_host_unknown">Il server non è responsabile per questo dominio</string>
+    <string name="account_status_host_unknown">Non responsabile per il dominio</string>
     <string name="server_info_broken">Rotto</string>
     <string name="pref_presence_settings">Disponibilità</string>
     <string name="pref_away_when_screen_off">\"Non disponibile\" a dispositivo bloccato</string>
@@ -1107,4 +1107,21 @@
     <string name="add_reaction">Aggiungi reazione…</string>
     <string name="add_reaction_title">Aggiungi reazione</string>
     <string name="more_reactions">Altre reazioni</string>
+    <string name="account_status_connection_timeout">Connessione scaduta</string>
+    <string name="show_to_contacts_only">Mostra solo ai contatti</string>
+    <string name="retry_with_p2p">Riprova con P2P</string>
+    <string name="could_not_modify_call">Impossibile modificare la chiamata</string>
+    <string name="clients_may_not_support_av">Il client XMPP del tuo contatto potrebbe non supportare le chiamate audio/video.</string>
+    <string name="pref_call_integration">Integrazione di chiamate</string>
+    <string name="pref_call_integration_summary">Le chiamate da questa app interagiscono con le normali chiamate telefoniche, come terminare una chiamata quando un\'altra inizia.</string>
+    <string name="pref_align_start">Messaggi allineati a sinistra</string>
+    <string name="pref_show_avatars">Mostra gli avatar</string>
+    <string name="pref_show_avatars_summary">Mostra gli avatar per i tuoi messaggi e nelle chat 1:1, in aggiunta alle chat di gruppo.</string>
+    <string name="custom_notifications_enable">Attivare le impostazioni di notifica personalizzate (importanza, suono, vibrazione) per questa conversazione?</string>
+    <string name="pref_align_start_summary">Mostra tutti i messaggi, inclusi quelli inviati, sul lato sinistro per una disposizione uniforme della chat.</string>
+    <string name="custom_notifications">Notifiche personalizzate</string>
+    <string name="delete_avatar_message">Vuoi eliminare il tuo avatar? Alcuni client potrebbero continuare a mostrare una copia in cache del tuo avatar.</string>
+    <string name="pref_chat_bubbles">Messaggi di chat</string>
+    <string name="pref_chat_bubbles_summary">Colore di sfondo, dimensione caratteri, avatar</string>
+    <string name="pref_title_bubbles">Messaggi di chat</string>
 </resources>
