@@ -1156,4 +1156,5 @@
     <string name="delete_avatar_message">Хотите удалить свой аватар? Некоторые клиенты могут продолжать отображать кэшированную копию вашего аватара.</string>
     <string name="show_to_contacts_only">Показывать только контактам</string>
     <string name="account_status_connection_timeout">Истекло время ожидания подключения</string>
+    <string name="retry_with_p2p">Повторить через P2P</string>
 </resources>
