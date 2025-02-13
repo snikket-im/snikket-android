@@ -1125,4 +1125,5 @@
     <string name="show_to_contacts_only">Alleen weergeven aan contacten</string>
     <string name="delete_avatar_message">Wil je je avatar verwijderen? Sommige clients kunnen nog steeds een kopie van jouw avatar in de cache weergeven.</string>
     <string name="account_status_connection_timeout">Time-out voor verbinding</string>
+    <string name="retry_with_p2p">Opnieuw proberen met P2P</string>
 </resources>
