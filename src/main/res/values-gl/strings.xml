@@ -1109,4 +1109,5 @@
     <string name="delete_avatar_message">Queres eliminar o teu avatar? Algúns clientes poderían continuar mostrando unha copia almacenada do teu avatar.</string>
     <string name="show_to_contacts_only">Mostrar só aos contactos</string>
     <string name="account_status_connection_timeout">Caducidade da conexión</string>
+    <string name="retry_with_p2p">Reintentar con P2P</string>
 </resources>
