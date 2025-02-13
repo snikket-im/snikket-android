@@ -1141,4 +1141,5 @@
     <string name="delete_avatar_message">Czy chcesz usunąć swój awatar? Niektórzy klienci mogą nadal pokazywać zachowaną kopię.</string>
     <string name="show_to_contacts_only">Pokazuj wyłącznie kontaktom</string>
     <string name="account_status_connection_timeout">Limit czasu połączenia</string>
+    <string name="retry_with_p2p">Spróbuj ponownie używając P2P</string>
 </resources>
