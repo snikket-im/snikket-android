@@ -1120,4 +1120,5 @@
     <string name="show_to_contacts_only">Shfaqja vetëm kontakteve</string>
     <string name="delete_avatar_message">Doni të fshihet avatari jua? Disa klientë mund të vazhdojnë të shfaqin një kopje të ruajtur në fshehtinat e tyre të avatarit tuaj.</string>
     <string name="account_status_connection_timeout">Mbarim kohe për lidhjen</string>
+    <string name="retry_with_p2p">Riprovo me P2P</string>
 </resources>
