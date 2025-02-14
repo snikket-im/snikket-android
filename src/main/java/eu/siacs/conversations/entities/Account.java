@@ -793,6 +793,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         REGISTRATION_PASSWORD_TOO_WEAK(true, false),
         TLS_ERROR,
         TLS_ERROR_DOMAIN,
+        CHANNEL_BINDING,
         INCOMPATIBLE_SERVER,
         INCOMPATIBLE_CLIENT,
         TOR_NOT_AVAILABLE,
@@ -871,6 +872,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                     return R.string.account_status_incompatible_server;
                 case INCOMPATIBLE_CLIENT:
                     return R.string.account_status_incompatible_client;
+                case CHANNEL_BINDING:
+                    return R.string.account_status_channel_binding;
                 case TOR_NOT_AVAILABLE:
                     return R.string.account_status_tor_unavailable;
                 case BIND_FAILURE:

@@ -1696,7 +1696,7 @@ public class XmppConnection implements Runnable {
                 return;
             }
             Log.d(Config.LOGTAG, account.getJid() + ": server did not offer channel binding");
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            throw new StateChangingException(Account.State.CHANNEL_BINDING);
         }
     }
 
