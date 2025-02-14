@@ -1,9 +1,10 @@
 package eu.siacs.conversations.xmpp;
 
 import androidx.annotation.NonNull;
-import com.google.common.base.CharMatcher;
+import eu.siacs.conversations.utils.IP;
 import im.conversations.android.xmpp.model.stanza.Stanza;
 import java.io.Serializable;
+import java.util.regex.Pattern;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.jid.parts.Domainpart;
 import org.jxmpp.jid.parts.Localpart;
@@ -11,6 +12,10 @@ import org.jxmpp.jid.parts.Resourcepart;
 import org.jxmpp.stringprep.XmppStringprepException;
 
 public abstract class Jid implements Comparable<Jid>, Serializable, CharSequence {
+
+    private static final Pattern HOSTNAME_PATTERN =
+            Pattern.compile(
+                    "^(?=.{1,253}$)(?=.{1,253}$)(?!-)(?!.*--)(?!.*-$)[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)*$");
 
     public static Jid of(
             final CharSequence local, final CharSequence domain, final CharSequence resource) {
@@ -77,10 +82,14 @@ public abstract class Jid implements Comparable<Jid>, Serializable, CharSequence
 
     public static Jid ofUserInput(final CharSequence input) {
         final var jid = of(input);
-        if (CharMatcher.is('@').matchesAnyOf(jid.getDomain())) {
-            throw new IllegalArgumentException("Domain should not contain @");
+        final var domain = jid.getDomain().toString();
+        if (domain.isEmpty()) {
+            throw new IllegalArgumentException("Domain can not be empty");
         }
-        return jid;
+        if (HOSTNAME_PATTERN.matcher(domain).matches() || IP.matches(domain)) {
+            return jid;
+        }
+        throw new IllegalArgumentException("Invalid hostname");
     }
 
     public static Jid ofOrInvalid(final String input) {
