@@ -129,8 +129,7 @@ public abstract class SaslMechanism {
                 return new ScramSha256(account);
             } else if (mechanisms.contains(ScramSha1.MECHANISM)) {
                 return new ScramSha1(account);
-            } else if (mechanisms.contains(Plain.MECHANISM)
-                    && !account.getServer().equals("nimbuzz.com")) {
+            } else if (mechanisms.contains(Plain.MECHANISM)) {
                 return new Plain(account);
             } else if (mechanisms.contains(DigestMd5.MECHANISM)) {
                 return new DigestMd5(account);
