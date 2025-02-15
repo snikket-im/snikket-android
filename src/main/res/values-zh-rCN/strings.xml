@@ -150,7 +150,7 @@
 \n<small>请使用其他文件管理器选择图片</small>。</string>
     <string name="error_security_exception">用来分享此文件的应用未提供足够的权限。</string>
     <string name="account_status_unknown">未知</string>
-    <string name="account_status_disabled">暂时禁用</string>
+    <string name="account_status_disabled">已暂时禁用</string>
     <string name="account_status_online">在线</string>
     <string name="account_status_connecting">正在连接…</string>
     <string name="account_status_offline">离线</string>
@@ -1106,4 +1106,5 @@
     <string name="show_to_contacts_only">仅显示给联系人</string>
     <string name="account_status_connection_timeout">连接超时</string>
     <string name="retry_with_p2p">使用 P2P 重试</string>
+    <string name="account_status_channel_binding">不支持通道绑定</string>
 </resources>
