@@ -1158,4 +1158,5 @@
     <string name="delete_avatar_message">Бажаєте видалити свій аватар? Деякі клієнти можуть продовжувати відображати копію Вашого аватара з кешу.</string>
     <string name="account_status_connection_timeout">Час очікування з\'єднання вичерпано</string>
     <string name="retry_with_p2p">Повторити спробу з P2P</string>
+    <string name="account_status_channel_binding">Прив\'язка каналу недоступна</string>
 </resources>
