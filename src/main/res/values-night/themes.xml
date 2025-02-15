@@ -28,6 +28,7 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
+        <item name="preferenceTheme">@style/MaterialPreferenceThemeOverlay</item>
     </style>
 
     <style name="Theme.Conversations3.SplashScreen" parent="@style/Theme.Conversations3">

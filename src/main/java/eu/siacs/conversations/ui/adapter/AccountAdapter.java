@@ -85,8 +85,8 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         }
         viewHolder.binding.tglAccountStatus.setOnCheckedChangeListener(
                 (compoundButton, b) -> {
-                    if (b == isDisabled && activity instanceof OnTglAccountState) {
-                        ((OnTglAccountState) activity).onClickTglAccountState(account, b);
+                    if (b == isDisabled && activity instanceof OnTglAccountState tglAccountState) {
+                        tglAccountState.onClickTglAccountState(account, b);
                     }
                 });
         return view;
