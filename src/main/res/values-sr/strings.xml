@@ -1143,4 +1143,6 @@
     <string name="delete_avatar_message">Желиш да обришеш свој аватар? Неки клијенти ће можда наставити да приказују кеширану копију твог аватара.</string>
     <string name="show_to_contacts_only">Приказуј само контактима</string>
     <string name="account_status_connection_timeout">Истекла веза</string>
+    <string name="retry_with_p2p">Покушај поново са P2P</string>
+    <string name="account_status_channel_binding">Везивање канала недоступно</string>
 </resources>
