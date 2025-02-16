@@ -1123,4 +1123,5 @@
     <string name="delete_avatar_message">¿Quieres eliminar tu imagen de perfil? Algunos clientes podrían seguir mostrando una copia en caché de tu avatar.</string>
     <string name="show_to_contacts_only">Mostrar sólo a contactos</string>
     <string name="account_status_connection_timeout">Se agotó el tiempo de espera de la conexión</string>
+    <string name="retry_with_p2p">Reintentar con P2P</string>
 </resources>
