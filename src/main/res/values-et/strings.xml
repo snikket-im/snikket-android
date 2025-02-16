@@ -1083,7 +1083,7 @@
     <string name="pref_automatic_download">Automaatne allalaadimine</string>
     <string name="appearance">Välimus</string>
     <string name="pref_light_dark_mode">Hele või tume kujundus</string>
-    <string name="detect_mim">Nõua kanaliga sidumist</string>
+    <string name="detect_mim">Nõua edastuskanaliga sidumist</string>
     <string name="detect_mim_summary">Edastuskanaliga sidumine võib aidata vahendusrünnete tuvastamisel</string>
     <string name="pref_category_server_connection">Ühendus serveriga</string>
     <string name="pref_category_operating_system">Operatsioonisüsteem</string>
@@ -1130,4 +1130,5 @@
     <string name="show_to_contacts_only">Näita vaid kontaktidele</string>
     <string name="account_status_connection_timeout">Ühenduse on aegunud</string>
     <string name="retry_with_p2p">Proovi uuesti võrdõigusvõrguga</string>
+    <string name="account_status_channel_binding">Edastuskanaliga sidumine pole võimalik</string>
 </resources>
