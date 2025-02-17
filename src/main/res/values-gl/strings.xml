@@ -334,7 +334,7 @@
     <string name="delete_x_file">Eliminar %s</string>
     <string name="file">ficheiro</string>
     <string name="open_x_file">Abrir %s</string>
-    <string name="sending_file">enviando (%1$d %% completado)</string>
+    <string name="sending_file">enviando (%1$d%% completado)</string>
     <string name="preparing_file">Preparándose para compartir o ficheiro</string>
     <string name="x_file_offered_for_download">Ofreceuse %s para descargar</string>
     <string name="cancel_transmission">Cancelar a transmisión</string>

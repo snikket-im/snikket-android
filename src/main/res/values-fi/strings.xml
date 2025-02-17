@@ -324,7 +324,7 @@
     <string name="delete_x_file">Poista %s</string>
     <string name="file">tiedosto</string>
     <string name="open_x_file">Avaa %s</string>
-    <string name="sending_file">lähetetään (%1$d% % valmiina)</string>
+    <string name="sending_file">lähetetään (%1$d%% valmiina)</string>
     <string name="preparing_file">Valmistellaan tiedoston lähettämistä</string>
     <string name="x_file_offered_for_download">%s tarjottu ladattavaksi</string>
     <string name="cancel_transmission">Peru siirto</string>
