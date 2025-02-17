@@ -1128,4 +1128,5 @@
     <string name="delete_avatar_message">Você gostaria de excluir seu avatar? Alguns clientes podem continuar mostrando uma cópia em cache do seu avatar.</string>
     <string name="account_status_connection_timeout">Conexão demorou muito</string>
     <string name="retry_with_p2p">Tentar novamente com P2P</string>
+    <string name="account_status_channel_binding">Vínculo de canal indisponível</string>
 </resources>
