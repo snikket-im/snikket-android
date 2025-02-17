@@ -1110,4 +1110,5 @@
     <string name="show_to_contacts_only">Mostrar só aos contactos</string>
     <string name="account_status_connection_timeout">Caducidade da conexión</string>
     <string name="retry_with_p2p">Reintentar con P2P</string>
+    <string name="account_status_channel_binding">Non está dispoñible a vinculación de canles</string>
 </resources>
