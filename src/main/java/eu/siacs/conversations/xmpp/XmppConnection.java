@@ -97,6 +97,7 @@ import im.conversations.android.xmpp.model.sm.StreamManagement;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import im.conversations.android.xmpp.model.stanza.Stanza;
+import im.conversations.android.xmpp.model.streams.Features;
 import im.conversations.android.xmpp.model.streams.StreamError;
 import im.conversations.android.xmpp.model.tls.Proceed;
 import im.conversations.android.xmpp.model.tls.StartTls;
@@ -288,6 +289,7 @@ public class XmppConnection implements Runnable {
             mXmppConnectionService.resetSendingToWaiting(account);
         }
         Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": connecting");
+        this.streamFeatures = null;
         this.pendingResumeId.clear();
         this.loginInfo = null;
         this.features.encryptionEnabled = false;
@@ -615,6 +617,9 @@ public class XmppConnection implements Runnable {
             } else if (nextTag.isStart("features", Namespace.STREAMS)) {
                 processStreamFeatures(nextTag);
             } else if (nextTag.isStart("proceed", Namespace.TLS)) {
+                if (this.socket instanceof SSLSocket) {
+                    throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+                }
                 switchOverToTls(nextTag);
             } else if (nextTag.isStart("failure", Namespace.TLS)) {
                 throw new StateChangingException(Account.State.TLS_ERROR);
@@ -1040,6 +1045,7 @@ public class XmppConnection implements Runnable {
                     account.getJid().asBareJid()
                             + ": fast authentication failed. falling back to regular"
                             + " authentication");
+            this.loginInfo = null;
             authenticate();
         } else {
             throw new StateChangingException(Account.State.UNAUTHORIZED);
@@ -1268,7 +1274,10 @@ public class XmppConnection implements Runnable {
                     account.getJid().asBareJid() + "Not processing iq. Thread was interrupted");
             return;
         }
-        if (packet.hasExtension(Jingle.class) && packet.getType() == Iq.Type.SET && isBound) {
+        if (packet.hasExtension(Jingle.class)
+                && packet.getType() == Iq.Type.SET
+                && isBound
+                && LoginInfo.isSuccess(this.loginInfo)) {
             if (this.jingleListener != null) {
                 this.jingleListener.onJinglePacketReceived(account, packet);
             }
@@ -1295,7 +1304,7 @@ public class XmppConnection implements Runnable {
         final boolean isRequest =
                 stanza.getType() == Iq.Type.GET || stanza.getType() == Iq.Type.SET;
         if (isRequest) {
-            if (isBound) {
+            if (isBound && LoginInfo.isSuccess(this.loginInfo)) {
                 return this.unregisteredIqListener;
             } else {
                 throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
@@ -1443,13 +1452,33 @@ public class XmppConnection implements Runnable {
     }
 
     private void processStreamFeatures(final Tag currentTag) throws IOException {
-        this.streamFeatures =
+        final var streamFeatures =
                 tagReader.readElement(
                         currentTag, im.conversations.android.xmpp.model.streams.Features.class);
         final boolean isSecure = isSecure();
+        if (streamFeatures.hasExtension(StartTls.class) && !features.encryptionEnabled) {
+            sendStartTLS();
+            return;
+        }
+        if (isSecure) {
+            processSecureStreamFeatures(streamFeatures);
+        } else {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": STARTTLS not available "
+                            + XmlHelper.printElementNames(streamFeatures));
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
+    }
+
+    private void processSecureStreamFeatures(
+            final im.conversations.android.xmpp.model.streams.Features streamFeatures)
+            throws IOException {
+        this.streamFeatures = streamFeatures;
         final boolean needsBinding = !isBound && !account.isOptionSet(Account.OPTION_REGISTER);
         if (this.quickStartInProgress) {
-            if (this.streamFeatures.hasStreamFeature(Authentication.class)) {
+            if (streamFeatures.hasStreamFeature(Authentication.class)) {
                 Log.d(
                         Config.LOGTAG,
                         account.getJid().asBareJid()
@@ -1476,33 +1505,21 @@ public class XmppConnection implements Runnable {
             mXmppConnectionService.databaseBackend.updateAccount(account);
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
-        if (this.streamFeatures.hasExtension(StartTls.class) && !features.encryptionEnabled) {
-            sendStartTLS();
-        } else if (this.streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
+        if (streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
                 && account.isOptionSet(Account.OPTION_REGISTER)) {
-            if (isSecure) {
-                register();
-            } else {
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid()
-                                + ": unable to find STARTTLS for registration process "
-                                + XmlHelper.printElementNames(this.streamFeatures));
-                throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
-            }
-        } else if (!this.streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
+            register();
+        } else if (!streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
                 && account.isOptionSet(Account.OPTION_REGISTER)) {
             throw new StateChangingException(Account.State.REGISTRATION_NOT_SUPPORTED);
-        } else if (this.streamFeatures.hasStreamFeature(Authentication.class)
+        } else if (streamFeatures.hasStreamFeature(Authentication.class)
                 && shouldAuthenticate
-                && isSecure) {
+                && this.loginInfo == null) {
             authenticate(SaslMechanism.Version.SASL_2);
-        } else if (this.streamFeatures.hasStreamFeature(Mechanisms.class)
+        } else if (streamFeatures.hasStreamFeature(Mechanisms.class)
                 && shouldAuthenticate
-                && isSecure) {
+                && this.loginInfo == null) {
             authenticate(SaslMechanism.Version.SASL);
-        } else if (this.streamFeatures.streamManagement()
-                && isSecure
+        } else if (streamFeatures.streamManagement()
                 && LoginInfo.isSuccess(loginInfo)
                 && streamId != null
                 && !inSmacksSession) {
@@ -1519,7 +1536,6 @@ public class XmppConnection implements Runnable {
             this.tagWriter.writeStanzaAsync(resume);
         } else if (needsBinding) {
             if (this.streamFeatures.hasChild("bind", Namespace.BIND)
-                    && isSecure
                     && LoginInfo.isSuccess(loginInfo)) {
                 sendBindRequest();
             } else {
@@ -1555,6 +1571,9 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate(final SaslMechanism.Version version) throws IOException {
+        if (this.loginInfo != null) {
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
         final AuthenticationStreamFeature authElement;
         if (version == SaslMechanism.Version.SASL) {
             authElement = this.streamFeatures.getExtension(Mechanisms.class);
