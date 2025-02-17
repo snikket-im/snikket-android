@@ -2862,15 +2862,15 @@ public class XmppConnectionService extends Service {
         if (existing == null) {
             return null;
         }
-        Log.d(
-                Config.LOGTAG,
-                existing.getJid().asBareJid()
-                        + ": restoring conversation with "
-                        + existing.getJid()
-                        + " from DB");
+        Log.d(Config.LOGTAG, "restoring conversation with " + existing.getJid() + " from DB");
         final Map<String, Account> accounts =
                 ImmutableMap.copyOf(Maps.uniqueIndex(this.accounts, Account::getUuid));
-        existing.setAccount(accounts.get(existing.getAccountUuid()));
+        final var account = accounts.get(existing.getAccountUuid());
+        if (account == null) {
+            Log.d(Config.LOGTAG, "could not find account " + existing.getAccountUuid());
+            return null;
+        }
+        existing.setAccount(account);
         final var loadMessagesFromDb = restoreFromArchive(existing);
         mDatabaseReaderExecutor.execute(
                 () ->
