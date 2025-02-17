@@ -460,7 +460,7 @@
     <string name="download_failed_could_not_write_file">Scaricamento fallito: scrittura del file impossibile</string>
     <string name="download_failed_invalid_file">Scaricamento fallito: file non valido</string>
     <string name="account_status_tor_unavailable">Rete Tor non disponibile</string>
-    <string name="account_status_bind_failure">Bind fallito</string>
+    <string name="account_status_bind_failure">Associazione fallita</string>
     <string name="account_status_host_unknown">Non responsabile per il dominio</string>
     <string name="server_info_broken">Rotto</string>
     <string name="pref_presence_settings">Disponibilità</string>
@@ -1124,4 +1124,5 @@
     <string name="pref_chat_bubbles">Messaggi di chat</string>
     <string name="pref_chat_bubbles_summary">Colore di sfondo, dimensione caratteri, avatar</string>
     <string name="pref_title_bubbles">Messaggi di chat</string>
+    <string name="account_status_channel_binding">Associazione dei canali non disponibile</string>
 </resources>
