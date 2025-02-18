@@ -514,9 +514,9 @@
 
     <release>
         <Version>
-            <revision>2.14.0</revision>
-            <created>2024-03-22</created>
-            <file-release rdf:resource="https://codeberg.org/iNPUTmice/Conversations/archive/2.14.0.tar.gz"/>
+            <revision>2.17.10</revision>
+            <created>2025-02-04</created>
+            <file-release rdf:resource="https://codeberg.org/iNPUTmice/Conversations/archive/2.17.10.tar.gz"/>
         </Version>
     </release>
 </Project>
