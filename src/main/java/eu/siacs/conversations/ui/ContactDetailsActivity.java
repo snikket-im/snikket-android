@@ -570,7 +570,9 @@ public class ContactDetailsActivity extends OmemoActivity
         }
         if (Config.supportOpenPgp() && contact.getPgpKeyId() != 0) {
             hasKeys = true;
-            View view = inflater.inflate(R.layout.contact_key, binding.detailsContactKeys, false);
+            View view =
+                    inflater.inflate(
+                            R.layout.item_device_fingerprint, binding.detailsContactKeys, false);
             TextView key = view.findViewById(R.id.key);
             TextView keyType = view.findViewById(R.id.key_type);
             keyType.setText(R.string.openpgp_key_id);
