@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.17.12
+
+* Fix crash on file transfer in fi translation
+
 ### Version 2.17.11
 
 * minor bug fixes
