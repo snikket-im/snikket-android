@@ -1,0 +1,4 @@
+* Lisasime seadistuse asjatundjatele, kes soovivad teha kanalite tuvastamist search.jabber.network asemel kohalikus serveris
+* Kohaletoimetamise märkeruudud on nüüd vaikimisi kasutusel ja eemaldasime vastava seadistuse
+* Lülitasime „Saatmisnupp näitab olekut“ vakimisi sisse ja eemaldasime vastava seadistuse
+* Tõstsime Varunduse ja Esiplaani teenuse seadistused põhivaatesse

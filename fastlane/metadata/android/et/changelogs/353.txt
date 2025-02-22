@@ -1,0 +1,4 @@
+* kasutajad saavad nüüs ise oma hüüdnime lisada
+* jälle on võimalik alla laadida faile, kasutades OMEMO krüptimist
+* kanalite tunnuspildid kasutavad nüüd # sümbolit
+* Quicksy kasutab vaikimisi „alati“ OMEMO krüptimist (sellega läheb peitu ka luku ikoon)
