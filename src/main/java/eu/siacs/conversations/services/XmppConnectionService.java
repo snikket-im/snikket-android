@@ -5433,12 +5433,6 @@ public class XmppConnectionService extends Service {
                 && getBooleanPreference("use_tor", R.bool.use_tor);
     }
 
-    public boolean showExtendedConnectionOptions() {
-        return QuickConversationsService.isConversations()
-                && getBooleanPreference(
-                        AppSettings.SHOW_CONNECTION_OPTIONS, R.bool.show_connection_options);
-    }
-
     public boolean broadcastLastActivity() {
         return getBooleanPreference(AppSettings.BROADCAST_LAST_ACTIVITY, R.bool.last_activity);
     }

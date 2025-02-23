@@ -304,8 +304,8 @@ public class XmppConnection implements Runnable {
             Socket localSocket;
             shouldAuthenticate = !account.isOptionSet(Account.OPTION_REGISTER);
             this.changeStatus(Account.State.CONNECTING);
-            final boolean useTorSetting = mXmppConnectionService.useTorToConnect();
-            final boolean extended = mXmppConnectionService.showExtendedConnectionOptions();
+            final boolean useTorSetting = appSettings.isUseTor();
+            final boolean extended = appSettings.isExtendedConnectionOptions();
             final boolean useTor = useTorSetting || account.isOnion();
             // TODO collapse Tor usage into normal connection code path
             if (useTor) {
@@ -1885,8 +1885,7 @@ public class XmppConnection implements Runnable {
                                 is = null;
                             }
                         } else {
-                            final boolean useTor =
-                                    mXmppConnectionService.useTorToConnect() || account.isOnion();
+                            final boolean useTor = this.appSettings.isUseTor() || account.isOnion();
                             try {
                                 final String url = data.getValue("url");
                                 final String fallbackUrl = data.getValue("captcha-fallback-url");

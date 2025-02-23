@@ -7,6 +7,7 @@ import androidx.annotation.BoolRes;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 import com.google.common.base.Strings;
+import eu.siacs.conversations.services.QuickConversationsService;
 import java.security.SecureRandom;
 
 public class AppSettings {
@@ -121,7 +122,14 @@ public class AppSettings {
     }
 
     public boolean isUseTor() {
-        return getBooleanPreference(USE_TOR, R.bool.use_tor);
+        return QuickConversationsService.isConversations()
+                && getBooleanPreference(USE_TOR, R.bool.use_tor);
+    }
+
+    public boolean isExtendedConnectionOptions() {
+        return QuickConversationsService.isConversations()
+                && getBooleanPreference(
+                        AppSettings.SHOW_CONNECTION_OPTIONS, R.bool.show_connection_options);
     }
 
     public boolean isAcceptInvitesFromStrangers() {
