@@ -29,7 +29,11 @@ public class Plain extends SaslMechanism {
         Preconditions.checkState(
                 this.state == State.INITIAL, "Calling getClientFirstMessage from invalid state");
         this.state = State.AUTH_TEXT_SENT;
-        final String message = '\u0000' + account.getUsername() + '\u0000' + account.getPassword();
+        return getMessage(account.getUsername(), account.getPassword());
+    }
+
+    public static String getMessage(final String username, final String password) {
+        final String message = '\u0000' + username + '\u0000' + password;
         return BaseEncoding.base64().encode(message.getBytes());
     }
 
