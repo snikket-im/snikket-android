@@ -1,0 +1,2 @@
+* Parandasime olukorra, kus teavitusi polnud mõnel spetsiifilisel juhul näha
+* Parandasime hääl- ja videokõnede ühilduvusvigu ja kokkujooksmisi

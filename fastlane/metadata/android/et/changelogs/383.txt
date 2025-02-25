@@ -1,0 +1,3 @@
+* Selleks, et muud tööriistariba ikoonid oleks järjepidevalt samas kohas, nihutasime kõne ikooni vasakule
+* Häälkõnede ajal näitame kõne kestust
+* Lisasime lahenduse samaaegsete hääl- ja videokõnede jaoks (olukord, kus kaks inimest helistavad samal hetkel üksteisele)

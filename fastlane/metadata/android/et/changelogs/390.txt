@@ -1,0 +1,1 @@
+* Kui teine osapool on hõivatud, siis pakume võimalust häälsõnumi jätmiseks
