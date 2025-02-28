@@ -1,0 +1,4 @@
+* Permitir pausar a gravación de audio tocando no temporizador
+* Arranxo das reaccións nas MUC PMs 
+* Deixar de aceptar 'fallback messages' para reaccións, acuses de recibo e marcadores de posición
+* Engadir máis iconas de previsualización multimedia
