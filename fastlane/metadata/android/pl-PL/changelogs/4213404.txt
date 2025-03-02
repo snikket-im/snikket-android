@@ -1,0 +1,1 @@
+* Naprawienie awarii podczas przesyłania plików w fińskiej wersji językowej

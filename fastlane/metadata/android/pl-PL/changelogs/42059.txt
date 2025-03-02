@@ -1,0 +1,2 @@
+* Ponowne podniesienie docelowego SDK do 33
+* Poprawienie błędów na serwerach obsługujących SASL2 bez Inline Stream Management
