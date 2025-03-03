@@ -1159,4 +1159,5 @@
     <string name="account_status_connection_timeout">Час очікування з\'єднання вичерпано</string>
     <string name="retry_with_p2p">Повторити спробу з P2P</string>
     <string name="account_status_channel_binding">Прив\'язка каналу недоступна</string>
+    <string name="word_document">документ Word</string>
 </resources>
