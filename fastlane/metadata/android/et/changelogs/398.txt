@@ -1,0 +1,4 @@
+* Üksikute vestluste otsing
+* Kasutaja teavitus, kui sõnumi edastamine ei õnnestu
+* Jätame meelde Quicksy kasutajate kuvatavad nimed (hüüdnimed) ka peale rakenduse taaskäivitamist
+* Lisasime nupu Orboti (Tor) teavitusest käivitamiseks (kui peaks vaja olema)

@@ -1,0 +1,2 @@
+* Parandasime otsinguvea Android <= 5 puhul
+* Optimeerisime mälukasutust
