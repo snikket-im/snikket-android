@@ -1111,4 +1111,5 @@
     <string name="account_status_connection_timeout">Zeitüberschreitung beim Verbinden</string>
     <string name="retry_with_p2p">Erneut mit P2P versuchen</string>
     <string name="account_status_channel_binding">Kanalbindung nicht verfügbar</string>
+    <string name="word_document">Worddatei</string>
 </resources>
