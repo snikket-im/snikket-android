@@ -91,7 +91,7 @@
     <string name="send_unencrypted_message">Отправить сообщение без шифрования</string>
     <string name="send_message">Сообщение</string>
     <string name="send_message_to_x">Сообщение для %s</string>
-    <string name="send_omemo_x509_message">Зашифрованное vOMEMO сообщение</string>
+    <string name="send_omemo_x509_message">Зашифрованное v\\OMEMO сообщение</string>
     <string name="your_nick_has_been_changed">Используется новое имя</string>
     <string name="send_unencrypted">Отправить в незашифрованном виде</string>
     <string name="decryption_failed">Расшифровка невозможна. Вероятно, у вас нет надлежащего ключа.</string>
@@ -218,9 +218,9 @@
     <string name="openpgp_messages_found">Найдены новые зашифрованные OpenPGP сообщения</string>
     <string name="openpgp_key_id">ID ключа OpenPGP</string>
     <string name="omemo_fingerprint">Отпечаток OMEMO</string>
-    <string name="omemo_fingerprint_x509">Отпечаток vOMEMO</string>
+    <string name="omemo_fingerprint_x509">Отпечаток v\\OMEMO</string>
     <string name="omemo_fingerprint_selected_message">Отпечаток OMEMO (выбранного сообщения)</string>
-    <string name="omemo_fingerprint_x509_selected_message">Отпечаток vOMEMO (выбранного сообщения)</string>
+    <string name="omemo_fingerprint_x509_selected_message">Отпечаток v\\OMEMO (выбранного сообщения)</string>
     <string name="other_devices">Другие устройства</string>
     <string name="trust_omemo_fingerprints">Доверенные отпечатки OMEMO</string>
     <string name="fetching_keys">Получение ключей…</string>
@@ -422,7 +422,7 @@
     <string name="video">видео</string>
     <string name="image">изображение</string>
     <string name="vector_graphic">векторная графика</string>
-    <string name="pdf_document">PDF-документ</string>
+    <string name="pdf_document">Документ PDF</string>
     <string name="apk">Приложение Android</string>
     <string name="vcard">Контакт</string>
     <string name="avatar_has_been_published">Аватар загружен!</string>
@@ -1158,4 +1158,5 @@
     <string name="account_status_connection_timeout">Истекло время ожидания подключения</string>
     <string name="retry_with_p2p">Повторить через P2P</string>
     <string name="account_status_channel_binding">Привязка канала недоступна</string>
+    <string name="word_document">Документ Word</string>
 </resources>
