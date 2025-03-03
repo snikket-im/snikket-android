@@ -18,11 +18,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.color.MaterialColors;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ItemMediaBinding;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.ViewUtil;
+import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.worker.ExportBackupWorker;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -33,13 +35,12 @@ import java.util.concurrent.RejectedExecutionException;
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHolder> {
 
     public static final List<String> DOCUMENT_MIMES =
-            Arrays.asList(
-                    "application/pdf",
-                    "application/vnd.oasis.opendocument.text",
-                    "application/msword",
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    "text/x-tex",
-                    "text/plain");
+            new ImmutableList.Builder<String>()
+                    .add("application/pdf")
+                    .add("text/x-tex")
+                    .add("text/plain")
+                    .addAll(MimeUtils.WORD_DOCUMENT_MIMES)
+                    .build();
     public static final List<String> SPREAD_SHEET_MIMES =
             Arrays.asList(
                     "text/comma-separated-values",
