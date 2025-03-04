@@ -415,7 +415,7 @@
     <string name="image">obraz</string>
     <string name="vector_graphic">grafika wektorowa</string>
     <string name="multimedia_file">plik multimediów</string>
-    <string name="pdf_document">Dokument PDF</string>
+    <string name="pdf_document">dokument PDF</string>
     <string name="apk">Aplikacja Androida</string>
     <string name="vcard">Kontakt</string>
     <string name="avatar_has_been_published">Avatar został pomyślnie opublikowany!</string>
@@ -464,7 +464,7 @@
     <string name="download_failed_could_not_write_file">Pobieranie niepowiodło się: brak możliwości zapisu pliku</string>
     <string name="download_failed_invalid_file">Pobieranie nieudane: Nieprawidłowy plik</string>
     <string name="account_status_tor_unavailable">Sieć TOR jest niedostepna</string>
-    <string name="account_status_bind_failure">Błąd połączenia (zasób)</string>
+    <string name="account_status_bind_failure">Błąd przywiązania kanału (zasobu)</string>
     <string name="account_status_host_unknown">Nie odpowiada za domenę</string>
     <string name="server_info_broken">Zepsute</string>
     <string name="pref_presence_settings">Dostępność</string>
@@ -1142,4 +1142,6 @@
     <string name="show_to_contacts_only">Pokazuj wyłącznie kontaktom</string>
     <string name="account_status_connection_timeout">Limit czasu połączenia</string>
     <string name="retry_with_p2p">Spróbuj ponownie używając P2P</string>
+    <string name="word_document">dokument Microsoft Word</string>
+    <string name="account_status_channel_binding">Przywiązywanie kanału niedostępne</string>
 </resources>
