@@ -1,0 +1,4 @@
+* Võimalus valida helinaid
+* Parandasime OpenPGP võtmete tuvastuse OpenKeychain 5.6+puhul
+* Mitte-ASCII tähtedes TLS sertifikaatide korrektne verifitseerimine
+* Stabiilsem RTP-sessioonide loomine (helistamisel)

@@ -1,0 +1,2 @@
+* Erinevad veaparandused Tor toe kontekstis
+* Parem kõnede ühilduvus Dinoga
