@@ -1084,7 +1084,7 @@
     <string name="call_is_using_earpiece_tap_to_switch_to_speaker">正在使用听筒进行通话，点按即可切换到扬声器。</string>
     <string name="server_info_login_mechanism">登录机制</string>
     <string name="server_info_bind2">XEP-0386：绑定 2</string>
-    <string name="server_info_sasl2">XEP-0388：可扩展 SASL 配置文件</string>
+    <string name="server_info_sasl2">XEP-0388：可扩展 SASL 配置</string>
     <string name="could_not_add_reaction">无法添加回应</string>
     <string name="add_reaction">添加回应…</string>
     <string name="more_reactions">更多回应</string>
@@ -1107,4 +1107,5 @@
     <string name="account_status_connection_timeout">连接超时</string>
     <string name="retry_with_p2p">使用 P2P 重试</string>
     <string name="account_status_channel_binding">不支持通道绑定</string>
+    <string name="word_document">Word 文档</string>
 </resources>
