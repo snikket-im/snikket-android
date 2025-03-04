@@ -1,5 +1,5 @@
 Versión 2.10.9
-* Pedir permisos Bluetooth al hacer llamadas A/V (Puede rechazar esto si no utiliza auriculares Bluetooth).
+* Pedir permisos Bluetooth al hacer llamadas A/V (Puede rechazar esto si no utiliza auriculares Bluetooth)
 * Corrección de error al llamar a Movim
 * Corregir avatar incorrecto que se muestra para los chats de grupo
 * Preguntar siempre por las optimizaciones de batería
