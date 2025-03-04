@@ -1131,4 +1131,5 @@
     <string name="account_status_connection_timeout">Ühenduse on aegunud</string>
     <string name="retry_with_p2p">Proovi uuesti võrdõigusvõrguga</string>
     <string name="account_status_channel_binding">Edastuskanaliga sidumine pole võimalik</string>
+    <string name="word_document">Wordi-dokument</string>
 </resources>
