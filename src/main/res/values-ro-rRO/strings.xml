@@ -1130,4 +1130,5 @@
     <string name="account_status_connection_timeout">Timp limită de conectare expirat</string>
     <string name="retry_with_p2p">Reîncearcă cu P2P</string>
     <string name="account_status_channel_binding">Channel binding indisponibil</string>
+    <string name="word_document">Document Word</string>
 </resources>
