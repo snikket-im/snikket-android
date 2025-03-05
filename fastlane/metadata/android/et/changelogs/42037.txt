@@ -1,0 +1,11 @@
+Versioon 2.10.9
+* Kõnede puhul BT loa küsimine (kui BT kõrvaklappe pole, siis keeldu)
+* Movimile helistamise vea parandus
+* Rühmavestluste avatariviga
+* Küsime akukasutuse optimeerimisest loobumist
+* „x kontot ühendatud“ arvestab vaid kohalikke ühendusi
+* Parandasime liidestuse Google Maps asukoha jagamise lisamooduliga
+* Serveritasu ääremärkus on eemaldatud
+* Failide salvestamine vastavalt Android 11 reeglitele
+* Kõne taastamine peale võrguvahetust
+* Helistaja ja konto JID saabuva kõne vaates
