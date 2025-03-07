@@ -18,7 +18,7 @@ import org.webrtc.PeerConnection;
 public final class IceServers {
 
     public static Set<PeerConnection.IceServer> parse(final Iq response) {
-        if (response.getType() == Iq.Type.RESULT) {
+        if (response.getType() != Iq.Type.RESULT) {
             return Collections.emptySet();
         }
         final var builder = new ImmutableSet.Builder<PeerConnection.IceServer>();
