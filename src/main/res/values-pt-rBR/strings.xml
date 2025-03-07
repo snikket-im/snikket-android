@@ -1129,4 +1129,5 @@
     <string name="account_status_connection_timeout">Conexão demorou muito</string>
     <string name="retry_with_p2p">Tentar novamente com P2P</string>
     <string name="account_status_channel_binding">Vínculo de canal indisponível</string>
+    <string name="word_document">Documento do Word</string>
 </resources>
