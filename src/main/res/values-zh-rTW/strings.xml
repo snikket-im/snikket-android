@@ -432,7 +432,7 @@
     <string name="download_failed_invalid_file">下載失敗：無效的檔案</string>
     <string name="account_status_tor_unavailable">Tor 網路無法使用</string>
     <string name="account_status_bind_failure">繫結失敗</string>
-    <string name="account_status_host_unknown">伺服器無法回應此網域</string>
+    <string name="account_status_host_unknown">無法回應網域</string>
     <string name="server_info_broken">已損毀</string>
     <string name="pref_presence_settings">可用性</string>
     <string name="pref_away_when_screen_off">裝置上鎖時離開</string>
@@ -1099,4 +1099,22 @@
     <string name="call_is_using_speaker">呼叫正在使用揚聲器。</string>
     <string name="could_not_add_reaction">無法添加回應</string>
     <string name="add_reaction">添加回應…</string>
+    <string name="account_status_connection_timeout">連接超時</string>
+    <string name="word_document">Word 文件</string>
+    <string name="custom_notifications">自訂通知</string>
+    <string name="retry_with_p2p">使用 P2P 重試</string>
+    <string name="account_status_channel_binding">通道綁定不可用</string>
+    <string name="custom_notifications_enable">為此對話啟用自定義通知設定（重要性、聲音、振動）設定？</string>
+    <string name="clients_may_not_support_av">您聯絡人的 XMPP 用戶端可能不支援音訊/視訊通話。</string>
+    <string name="pref_align_start">左對齊訊息</string>
+    <string name="pref_align_start_summary">在左側顯示所有訊息，包括已傳送的訊息，以實現統一的聊天佈局。</string>
+    <string name="pref_call_integration">呼叫集成</string>
+    <string name="pref_call_integration_summary">來自此應用程式的呼叫與常規電話交互，例如在另一個呼叫開始時結束一個呼叫。</string>
+    <string name="delete_avatar_message">是否要刪除您的大頭貼？某些用戶端可能會繼續顯示您的大頭貼的緩存副本。</string>
+    <string name="show_to_contacts_only">僅向聯絡人顯示</string>
+    <string name="pref_chat_bubbles">聊天氣泡</string>
+    <string name="pref_chat_bubbles_summary">背景顏色、字體大小、大頭貼</string>
+    <string name="pref_title_bubbles">聊天氣泡</string>
+    <string name="pref_show_avatars">顯示大頭貼</string>
+    <string name="pref_show_avatars_summary">除了群聊之外，還可以顯示您的訊息和 1 對 1 聊天的大頭貼。</string>
 </resources>
