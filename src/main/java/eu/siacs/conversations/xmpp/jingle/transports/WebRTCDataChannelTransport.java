@@ -14,12 +14,12 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.IceServers;
 import eu.siacs.conversations.xmpp.jingle.WebRTCWrapper;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.WebRTCDataChannelTransportInfo;
+import im.conversations.android.xmpp.model.disco.external.Services;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import java.io.IOException;
 import java.io.InputStream;
@@ -233,7 +233,7 @@ public class WebRTCDataChannelTransport implements Transport {
                     SettableFuture.create();
             final Iq request = new Iq(Iq.Type.GET);
             request.setTo(this.account.getDomain());
-            request.addChild("services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
+            request.addExtension(new Services());
             xmppConnection.sendIqPacket(
                     request,
                     (response) -> {

@@ -44,6 +44,7 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.Proceed;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Propose;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
+import im.conversations.android.xmpp.model.disco.external.Services;
 import im.conversations.android.xmpp.model.jingle.Jingle;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import java.util.Arrays;
@@ -2824,7 +2825,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         if (id.account.getXmppConnection().getFeatures().externalServiceDiscovery()) {
             final Iq request = new Iq(Iq.Type.GET);
             request.setTo(id.account.getDomain());
-            request.addChild("services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
+            request.addExtension(new Services());
             xmppConnectionService.sendIqPacket(
                     id.account,
                     request,
