@@ -96,8 +96,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.11.0"
     implementation "com.squareup.okhttp3:okhttp:4.12.0"
 
-    implementation 'com.google.guava:guava:32.1.3-android'
-    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.13.35'
+    implementation 'com.google.guava:guava:33.4.0-android'
+    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.13.52'
     implementation 'im.conversations.webrtc:webrtc-android:129.0.0'
 }
 
@@ -113,7 +113,7 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 34
-        versionCode 42134
+        versionCode 42135
         versionName "2.17.12"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"

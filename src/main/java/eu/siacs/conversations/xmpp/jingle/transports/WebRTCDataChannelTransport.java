@@ -5,7 +5,6 @@ import static eu.siacs.conversations.xmpp.jingle.WebRTCWrapper.logDescription;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Closeables;
@@ -13,7 +12,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Namespace;
@@ -22,17 +20,7 @@ import eu.siacs.conversations.xmpp.jingle.IceServers;
 import eu.siacs.conversations.xmpp.jingle.WebRTCWrapper;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.WebRTCDataChannelTransportInfo;
-
 import im.conversations.android.xmpp.model.stanza.Iq;
-
-import org.webrtc.CandidatePairChangeEvent;
-import org.webrtc.DataChannel;
-import org.webrtc.IceCandidate;
-import org.webrtc.MediaStream;
-import org.webrtc.PeerConnection;
-import org.webrtc.PeerConnectionFactory;
-import org.webrtc.SessionDescription;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -46,14 +34,21 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import javax.annotation.Nonnull;
+import org.webrtc.CandidatePairChangeEvent;
+import org.webrtc.DataChannel;
+import org.webrtc.IceCandidate;
+import org.webrtc.MediaStream;
+import org.webrtc.PeerConnection;
+import org.webrtc.PeerConnectionFactory;
+import org.webrtc.SessionDescription;
 
 public class WebRTCDataChannelTransport implements Transport {
 
@@ -229,12 +224,12 @@ public class WebRTCDataChannelTransport implements Transport {
         }
     }
 
-    private ListenableFuture<List<PeerConnection.IceServer>> getIceServers() {
+    private ListenableFuture<Set<PeerConnection.IceServer>> getIceServers() {
         if (Config.DISABLE_PROXY_LOOKUP) {
-            return Futures.immediateFuture(Collections.emptyList());
+            return Futures.immediateFuture(Collections.emptySet());
         }
         if (xmppConnection.getFeatures().externalServiceDiscovery()) {
-            final SettableFuture<List<PeerConnection.IceServer>> iceServerFuture =
+            final SettableFuture<Set<PeerConnection.IceServer>> iceServerFuture =
                     SettableFuture.create();
             final Iq request = new Iq(Iq.Type.GET);
             request.setTo(this.account.getDomain());
@@ -254,12 +249,12 @@ public class WebRTCDataChannelTransport implements Transport {
                     });
             return iceServerFuture;
         } else {
-            return Futures.immediateFuture(Collections.emptyList());
+            return Futures.immediateFuture(Collections.emptySet());
         }
     }
 
     private PeerConnection createPeerConnection(
-            final List<PeerConnection.IceServer> iceServers, final boolean trickle) {
+            final Set<PeerConnection.IceServer> iceServers, final boolean trickle) {
         final PeerConnection.RTCConfiguration rtcConfig = buildConfiguration(iceServers, trickle);
         final PeerConnection peerConnection =
                 requirePeerConnectionFactory()
