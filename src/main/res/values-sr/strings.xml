@@ -1145,4 +1145,5 @@
     <string name="account_status_connection_timeout">Истекла веза</string>
     <string name="retry_with_p2p">Покушај поново са P2P</string>
     <string name="account_status_channel_binding">Везивање канала недоступно</string>
+    <string name="word_document">Word документ</string>
 </resources>
