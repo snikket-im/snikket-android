@@ -5721,13 +5721,13 @@ public class XmppConnectionService extends Service {
             if (conversation.getMode() == Conversational.MODE_MULTI && !isPrivateMessage) {
                 final var mucOptions = conversation.getMucOptions();
                 if (!mucOptions.participating()) {
-                    Log.d(Config.LOGTAG, "not participating in MUC");
+                    Log.e(Config.LOGTAG, "not participating in MUC");
                     return false;
                 }
                 final var self = mucOptions.getSelf();
                 final String occupantId = self.getOccupantId();
                 if (Strings.isNullOrEmpty(occupantId)) {
-                    Log.d(Config.LOGTAG, "occupant id not found for reaction in MUC");
+                    Log.e(Config.LOGTAG, "occupant id not found for reaction in MUC");
                     return false;
                 }
                 final var existingRaw =
@@ -5771,6 +5771,7 @@ public class XmppConnectionService extends Service {
                                 conversation.getAccount().getJid());
             }
             if (reactTo == null || Strings.isNullOrEmpty(reactToId)) {
+                Log.e(Config.LOGTAG, "could not find id to react to");
                 return false;
             }
             final var reactionMessage =
