@@ -88,6 +88,13 @@ public class PresenceParser extends AbstractParser
                                         && jid.equals(
                                                 Jid.Invalid.getNullForInvalid(
                                                         item.getAttributeAsJid("jid"))))) {
+                            Log.d(
+                                    Config.LOGTAG,
+                                    account.getJid().asBareJid()
+                                            + ": got self-presence from "
+                                            + user.getFullJid()
+                                            + ". occupant-id="
+                                            + occupantId);
                             if (mucOptions.setOnline()) {
                                 mXmppConnectionService.getAvatarService().clear(mucOptions);
                             }
