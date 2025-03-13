@@ -30,11 +30,11 @@ import java.io.PipedOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -224,12 +224,12 @@ public class WebRTCDataChannelTransport implements Transport {
         }
     }
 
-    private ListenableFuture<Set<PeerConnection.IceServer>> getIceServers() {
+    private ListenableFuture<Collection<PeerConnection.IceServer>> getIceServers() {
         if (Config.DISABLE_PROXY_LOOKUP) {
             return Futures.immediateFuture(Collections.emptySet());
         }
         if (xmppConnection.getFeatures().externalServiceDiscovery()) {
-            final SettableFuture<Set<PeerConnection.IceServer>> iceServerFuture =
+            final SettableFuture<Collection<PeerConnection.IceServer>> iceServerFuture =
                     SettableFuture.create();
             final Iq request = new Iq(Iq.Type.GET);
             request.setTo(this.account.getDomain());
@@ -254,7 +254,7 @@ public class WebRTCDataChannelTransport implements Transport {
     }
 
     private PeerConnection createPeerConnection(
-            final Set<PeerConnection.IceServer> iceServers, final boolean trickle) {
+            final Collection<PeerConnection.IceServer> iceServers, final boolean trickle) {
         final PeerConnection.RTCConfiguration rtcConfig = buildConfiguration(iceServers, trickle);
         final PeerConnection peerConnection =
                 requirePeerConnectionFactory()

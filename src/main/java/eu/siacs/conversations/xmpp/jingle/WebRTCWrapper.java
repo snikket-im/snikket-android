@@ -13,6 +13,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.services.XmppConnectionService;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
@@ -230,7 +231,7 @@ public class WebRTCWrapper {
 
     synchronized void initializePeerConnection(
             final Set<Media> media,
-            final Set<PeerConnection.IceServer> iceServers,
+            final Collection<PeerConnection.IceServer> iceServers,
             final boolean trickle)
             throws InitializationException {
         Preconditions.checkState(this.eglBase != null);
@@ -373,7 +374,7 @@ public class WebRTCWrapper {
     }
 
     public static PeerConnection.RTCConfiguration buildConfiguration(
-            final Set<PeerConnection.IceServer> iceServers, final boolean trickle) {
+            final Collection<PeerConnection.IceServer> iceServers, final boolean trickle) {
         final PeerConnection.RTCConfiguration rtcConfig =
                 new PeerConnection.RTCConfiguration(ImmutableList.copyOf(iceServers));
         rtcConfig.tcpCandidatePolicy =
@@ -749,7 +750,7 @@ public class WebRTCWrapper {
         }
     }
 
-    static class InitializationException extends Exception {
+    public static class InitializationException extends Exception {
 
         private InitializationException(final String message, final Throwable throwable) {
             super(message, throwable);

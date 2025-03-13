@@ -1,7 +1,12 @@
 package im.conversations.android.xmpp.model.disco.external;
 
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.common.base.Objects;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Ints;
 import eu.siacs.conversations.Config;
@@ -10,7 +15,6 @@ import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Set;
 import org.webrtc.PeerConnection;
 
 @XmlElement
@@ -24,8 +28,8 @@ public class Services extends Extension {
         return this.getExtensions(Service.class);
     }
 
-    public Set<PeerConnection.IceServer> getIceServers() {
-        final var builder = new ImmutableSet.Builder<PeerConnection.IceServer>();
+    public Collection<PeerConnection.IceServer> getIceServers() {
+        final var builder = new ImmutableSet.Builder<IceServerWrapper>();
         for (final var service : this.getServices()) {
             final String type = service.getAttribute("type");
             final String host = service.getAttribute("host");
@@ -70,8 +74,7 @@ public class Services extends Extension {
                     iceServerBuilder.setPassword(password);
                 } else if (Arrays.asList("turn", "turns").contains(type)) {
                     // The WebRTC spec requires throwing an
-                    // InvalidAccessError when username (from libwebrtc
-                    // source coder)
+                    // InvalidAccessError on empty username or password
                     // https://chromium.googlesource.com/external/webrtc/+/master/pc/ice_server_parsing.cc
                     Log.w(
                             Config.LOGTAG,
@@ -82,11 +85,42 @@ public class Services extends Extension {
                                     + " without username and password");
                     continue;
                 }
-                final PeerConnection.IceServer iceServer = iceServerBuilder.createIceServer();
+                final var iceServer = new IceServerWrapper(iceServerBuilder.createIceServer());
                 Log.w(Config.LOGTAG, "discovered ICE Server: " + iceServer);
                 builder.add(iceServer);
             }
         }
-        return builder.build();
+        final var set = builder.build();
+        Log.d(Config.LOGTAG, "discovered " + set.size() + " ice servers");
+        return Collections2.transform(set, i -> i.iceServer);
+    }
+
+    private static class IceServerWrapper {
+
+        private final PeerConnection.IceServer iceServer;
+
+        private IceServerWrapper(final PeerConnection.IceServer iceServer) {
+            this.iceServer = iceServer;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof IceServerWrapper that)) return false;
+            return Objects.equal(iceServer.urls, that.iceServer.urls)
+                    && Objects.equal(iceServer.username, that.iceServer.username)
+                    && Objects.equal(iceServer.password, that.iceServer.password);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(iceServer.urls, iceServer.urls, iceServer.password);
+        }
+
+        @Override
+        @NonNull
+        public String toString() {
+            return this.iceServer.toString();
+        }
     }
 }
