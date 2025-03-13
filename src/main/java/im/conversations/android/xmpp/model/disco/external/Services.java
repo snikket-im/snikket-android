@@ -1,9 +1,7 @@
 package im.conversations.android.xmpp.model.disco.external;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
