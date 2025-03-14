@@ -552,7 +552,7 @@
     <string name="registration_please_wait">El registro falló. Prueba de nuevo más tarde</string>
     <string name="registration_password_too_weak">Error en el registro: La contraseña es demasiado débil</string>
     <string name="choose_participants">Elige a los participantes</string>
-    <string name="creating_conference">Creando un chat de grupo…</string>
+    <string name="creating_conference">Creando una conversación grupal…</string>
     <string name="invite_again">Invitar de nuevo</string>
     <string name="gp_disable">Desactivar</string>
     <string name="gp_short">Corto</string>
@@ -703,7 +703,7 @@
     <string name="disable_now">Desactivar ahora</string>
     <string name="draft">Borrador:</string>
     <string name="pref_omemo_setting">Cifrado OMEMO</string>
-    <string name="pref_omemo_setting_summary_always">OMEMO siempre será usado para conversaciones uno a uno y en conversaciones en grupo privadas.</string>
+    <string name="pref_omemo_setting_summary_always">OMEMO siempre se usará para conversaciones uno a uno y en conversaciones grupales privadas.</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO será usado por defecto para chats nuevos.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO tendrá que ser activado explícitamente para los nuevos chats.</string>
     <string name="create_shortcut">Crear atajo</string>
@@ -836,9 +836,9 @@
     <string name="unable_to_decrypt_backup">No se ha podido descifrar la copia de respaldo. ¿Es la contraseña correcta?</string>
     <string name="backup_channel_name">Respaldar &amp; Restaurar</string>
     <string name="enter_jabber_id">Introduce dirección XMPP</string>
-    <string name="create_group_chat">Crear una conversación en grupo</string>
+    <string name="create_group_chat">Crear una conversación grupal</string>
     <string name="join_public_channel">Unirse a canal público</string>
-    <string name="create_private_group_chat">Crear una conversación en grupo privada</string>
+    <string name="create_private_group_chat">Crear una conversación grupal privada</string>
     <string name="create_public_channel">Crear un canal público</string>
     <string name="create_dialog_channel_name">Nombre del canal</string>
     <string name="xmpp_address">Dirección XMPP</string>
