@@ -95,7 +95,7 @@
     <string name="send_unencrypted">Envoyer non-chiffré</string>
     <string name="decryption_failed">Échec du déchiffrement. Peut-être que vous n\'avez pas la bonne clé privée.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long"><![CDATA[ %1$s utilise <b>OpenKeychain</b> pour chiffrer et déchiffrer les messages et pour gérer vos clés publiques.<br><br>OpenKeychain est sous licence GPLv3 et est disponible sur F-Droid et Google Play.<br><br><small>(Veuillez redémarrer %1$s après l'installation de l'application.)</small>]]></string>
+    <string name="openkeychain_required_long"><![CDATA[ %1$s utilise <b>OpenKeychain</b> pour chiffrer et déchiffrer les messages et pour gérer vos clés publiques.<br><br>OpenKeychain est sous licence GPLv3 et est disponible sur F-Droid et Google Play.<br><br><small>(Veuillez redémarrer %1$s après l\'installation de l\'application.)</small>]]></string>
     <string name="restart">Redémarrer</string>
     <string name="install">Installer</string>
     <string name="openkeychain_not_installed">Veuillez installer OpenKeychain</string>
