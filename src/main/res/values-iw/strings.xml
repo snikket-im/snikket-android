@@ -279,7 +279,6 @@
     <string name="crash_report_title">%1$s קרס</string>
     <string name="account_state_logged_out">התנתק</string>
     <string name="account_status_policy_violation">הפרת מדיניות</string>
-    <string name="account_status_stream_opening_error"></string>
     <string name="account_status_connection_timeout">פסק זמן התחברות</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d צ\'אט שלא נקרא</item>
