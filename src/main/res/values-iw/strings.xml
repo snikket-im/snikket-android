@@ -52,7 +52,7 @@
     <string name="action_clear_history">נקה היסטוריה</string>
     <string name="clear_conversation_history">נקה היסטוריית שיחה</string>
     <string name="send_unencrypted_message">שלח הודעה בלתי מוצפנת</string>
-    <string name="send_unencrypted">שלח ללא הצפנה</string>
+    <string name="send_unencrypted">שלח טקסט נקי</string>
     <string name="decryption_failed">פענוח נכשל. אולי אין לך את המפתח הפרטי המתאים.</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="restart">התחל מחדש</string>
@@ -341,4 +341,6 @@
     <string name="pref_prevent_screenshots_summary">הסתר את תוכן האפליקציה במחליף האפליקציות וחסום צילומי מסך</string>
     <string name="openkeychain_required_long"><![CDATA[%1$s משתמש ב-<b>OpenKeychain</b> כדי להצפין ולפענח הודעות ולנהל את המפתחות הציבוריים שלך.<br><br>הוא מורשה תחת GPLv3+ וזמין ב-F-Droid וב-Google Play.<br><br><small>(אנא הפעל מחדש את %1$s לאחר מכן.)</small>]]></string>
     <string name="delete_file_dialog_msg">האם אתה בטוח שברצונך למחוק את הקובץ הזה?\n\n<b>אזהרה:</b> פעולה זו לא תמחק עותקים של קובץ זה המאוחסנים במכשירים או שרתים אחרים.</string>
+    <string name="pref_call_ringtone_summary">רינגטון לשיחות נכנסות</string>
+    <string name="pref_notification_grace_period">תקופת החסד</string>
 </resources>
