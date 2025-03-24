@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pick_a_server">בחר את ספק ה-XMPP שלך</string>
+    <string name="use_conversations.im">השתמש ב-conversations.im</string>
+    <string name="create_new_account">צור חשבון חדש</string>
+    <string name="do_you_have_an_account">האם כבר יש לך חשבון XMPP? זה עשוי להיות המקרה אם אתה כבר משתמש בלקוח XMPP אחר או שהשתמשת ברפליקציה זו בעבר. אם לא, אתה יכול ליצור חשבון XMPP חדש כבר עכשיו.\nטיפ: ספקי דוא\"ל מסוימים מספקים גם חשבונות XMPP.</string>
+    <string name="server_select_text">XMPP היא רשת הודעות מיידיות שאינן תלויות בספק. אתה יכול להשתמש באפליקציה זו עם כל שרת XMPP שתבחר.\nעם זאת, לנוחיותך הקלנו ליצור חשבון ב-conversations.im; ספק המתאים במיוחד לשימוש עם שיחות.</string>
+    <string name="magic_create_text_on_x">הוזמנת ל-%1$s. אנו נדריך אותך בתהליך יצירת החשבון.\nבעת בחירת %1$s כספק, תוכל לתקשר עם משתמשים של ספקים אחרים על ידי מתן כתובת ה-XMPP המלאה שלך.</string>
+    <string name="magic_create_text_fixed">הוזמנת ל-%1$s. שם משתמש כבר נבחר עבורך. אנו נדריך אותך בתהליך יצירת החשבון.\nתוכל לתקשר עם משתמשים של ספקים אחרים על ידי מתן כתובת ה-XMPP המלאה שלך.</string>
+    <string name="your_server_invitation">הזמנת השרת שלך</string>
+    <string name="improperly_formatted_provisioning">קוד הקצאה בפורמט שגוי</string>
+    <string name="tap_share_button_send_invite">הקש על כפתור השיתוף כדי לשלוח לאיש הקשר שלך הזמנה אל %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">אם איש הקשר שלך נמצא בקרבת מקום, הוא יכול גם לסרוק את הקוד למטה כדי לקבל הזמנה.</string>
+    <string name="easy_invite_share_text">הצטרף ל-%1$s ושוחח איתי: %2$s</string>
+    <string name="share_invite_with">שתף הזמנה באמצעות…</string>
+</resources>
