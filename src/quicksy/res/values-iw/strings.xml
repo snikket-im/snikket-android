@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pref_notification_grace_period_summary">משך הזמן ש-Quicksy שומרת על שקט לאחר פעילות במכשיר אחר</string>
+    <string name="pref_never_send_crash_summary">על ידי שליחת יומן קריסות אתה עוזר לפיתוח המתמשך של Quicksy</string>
+    <string name="pref_broadcast_last_activity_summary">הודע לכל אנשי הקשר שלך כשאתה משתמש ב-Quicksy</string>
+    <string name="huawei_protected_apps_summary">כדי להמשיך לקבל התראות, גם כשהמסך כבוי, עליך להוסיף את Quicksy לרשימת האפליקציות המוגנות.</string>
+    <string name="set_profile_picture">תמונת פרופיל של Quicksy</string>
+    <string name="not_available_in_your_country">Quicksy אינו זמין במדינה שלך.</string>
+    <string name="unable_to_verify_server_identity">לא ניתן לאמת את זהות השרת.</string>
+    <string name="unknown_security_error">שגיאת אבטחה לא ידועה.</string>
+    <string name="timeout_while_connecting_to_server">פסק זמן בזמן ההתחברות לשרת.</string>
+</resources>
