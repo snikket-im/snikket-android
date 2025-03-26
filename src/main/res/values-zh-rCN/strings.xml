@@ -75,7 +75,7 @@
     <string name="preparing_image">正在准备发送图片</string>
     <string name="preparing_images">正在准备发送图片</string>
     <string name="sharing_files_please_wait">正在分享文件。请稍候…</string>
-    <string name="action_clear_history">清除历史记录</string>
+    <string name="action_clear_history">清除历史</string>
     <string name="clear_conversation_history">清除聊天记录</string>
     <string name="clear_histor_msg">是否要删除此对话中的所有消息？
 \n
@@ -93,7 +93,7 @@
     <string name="send_unencrypted">发送未加密</string>
     <string name="decryption_failed">解密失败。也许您没有合适的私钥。</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long"><![CDATA[%1$s 使用 <b>OpenKeychain</b> 来加密和解密消息并管理公钥。<br><br>它在 GPLv3+ 许可证下授权并可在 F-Droid 和 Google Play 上获得。<br><br><small>（请之后重启 %1$s。）</small>]]></string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s 使用 <b>OpenKeychain</b> 来加密和解密消息并管理公钥。<br><br>它采用 GPLv3+ 许可，可在 F-Droid 和 Google Play 上获取。<br><br><small>（之后请重启 %1$s。）</small>]]></string>
     <string name="restart">重启</string>
     <string name="install">安装</string>
     <string name="openkeychain_not_installed">请安装 OpenKeychain</string>
@@ -288,7 +288,7 @@
 \n<small>请前往“联系人详情”以验证在线状态订阅。</small></string>
     <string name="pref_security_settings">安全</string>
     <string name="pref_allow_message_correction">消息更正</string>
-    <string name="pref_allow_message_correction_summary">允许您的联系人发送后编辑其消息</string>
+    <string name="pref_allow_message_correction_summary">允许您的联系人重新编辑已发送的消息</string>
     <string name="pref_expert_options">专家设置</string>
     <string name="pref_expert_options_summary">请谨慎设置</string>
     <string name="title_activity_about_x">关于 %s</string>
@@ -540,7 +540,7 @@
     <string name="no_application_to_share_uri">未找到可以分享 URI 的应用</string>
     <string name="share_uri_with">分享 URI…</string>
     <string name="agree_and_continue">同意并继续</string>
-    <string name="magic_create_text">指导您在 conversations.im 上创建账号。\n选择 conversations.im 作为提供者时，向别人提供您的完整 XMPP 地址，就能和对方交流。</string>
+    <string name="magic_create_text">conversations.im 账号创建引导流程。\n当选择 conversations.im 作为服务提供者时，您只需向其他服务提供者的用户提供您的完整 XMPP 地址，即可与对方互通消息。</string>
     <string name="your_full_jid_will_be">您的完整 XMPP 地址将是：%s</string>
     <string name="create_account">创建账号</string>
     <string name="use_own_provider">使用我自己的提供者</string>
@@ -1094,15 +1094,15 @@
     <string name="pref_chat_bubbles_summary">背景颜色、字体大小、头像</string>
     <string name="pref_chat_bubbles">消息气泡</string>
     <string name="pref_title_bubbles">消息气泡</string>
-    <string name="pref_show_avatars_summary">在群聊和一对一聊天中为消息显示头像。</string>
+    <string name="pref_show_avatars_summary">在群聊和一对一聊天中，在消息旁显示头像。</string>
     <string name="pref_call_integration">通话集成</string>
     <string name="custom_notifications">自定义通知</string>
     <string name="custom_notifications_enable">是否为此对话启用自定义通知（重要程度、声音、振动）设置？</string>
     <string name="pref_call_integration_summary">此应用的通话与常规通话交互，例如另一个通话开始时结束一个通话。</string>
     <string name="pref_align_start_summary">在左侧显示所有消息，包括发送的消息，以实现统一的聊天布局。</string>
     <string name="pref_align_start">左对齐消息</string>
-    <string name="delete_avatar_message">是否删除头像？某些客户端可能会继续显示您头像的缓存副本。</string>
-    <string name="show_to_contacts_only">仅显示给联系人</string>
+    <string name="delete_avatar_message">是否删除头像？部分客户端可能会继续显示已缓存的头像副本。</string>
+    <string name="show_to_contacts_only">仅对联系人显示</string>
     <string name="account_status_connection_timeout">连接超时</string>
     <string name="retry_with_p2p">使用 P2P 重试</string>
     <string name="account_status_channel_binding">不支持通道绑定</string>
