@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="set_profile_picture">Tugna n umaɣnu n Quicksy</string>
+    <string name="unknown_security_error">Tuccḍa n tɣellist tarussint</string>
+    <string name="not_available_in_your_country">Quicksy ur yelli ara deg tmurt-nnwen.</string>
+</resources>
