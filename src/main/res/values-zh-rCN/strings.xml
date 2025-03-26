@@ -108,8 +108,8 @@
 \n
 \n<small>请通知对方设置 OpenPGP。</small></string>
     <string name="pref_general">常规</string>
-    <string name="pref_accept_files">接收文件</string>
-    <string name="pref_accept_files_summary">自动接收小于此大小的文件…</string>
+    <string name="pref_accept_files">接受文件</string>
+    <string name="pref_accept_files_summary">自动接受小于此大小的文件…</string>
     <string name="pref_attachments">附件</string>
     <string name="pref_notification_settings">通知</string>
     <string name="pref_vibrate">振动</string>
@@ -182,7 +182,7 @@
 \n您的联系人将无法再向您发送 OpenPGP 加密消息。</string>
     <string name="openpgp_has_been_published">OpenPGP 公钥已发布。</string>
     <string name="mgmt_account_enable">启用账号</string>
-    <string name="mgmt_account_delete_confirm_text">是否确定要删除账号？删除账号会清除全部聊天记录</string>
+    <string name="mgmt_account_delete_confirm_text">是否确定要删除账号？删除账号会清空全部聊天记录</string>
     <string name="attach_record_voice">录制语音</string>
     <string name="account_settings_jabber_id">XMPP 地址</string>
     <string name="block_jabber_id">屏蔽 XMPP 地址</string>
@@ -320,9 +320,9 @@
     <string name="copy_original_url">复制原始 URL</string>
     <string name="send_again">再次发送</string>
     <string name="file_url">文件 URL</string>
-    <string name="url_copied_to_clipboard">已复制 URL 到剪贴板</string>
-    <string name="jabber_id_copied_to_clipboard">已复制 XMPP 地址到剪贴板</string>
-    <string name="error_message_copied_to_clipboard">已复制出错信息到剪贴板</string>
+    <string name="url_copied_to_clipboard">URL 已复制到剪贴板</string>
+    <string name="jabber_id_copied_to_clipboard">XMPP 地址已复制到剪贴板</string>
+    <string name="error_message_copied_to_clipboard">错误消息已复制到剪贴板</string>
     <string name="web_address">网址</string>
     <string name="scan_qr_code">扫描二维码</string>
     <string name="show_qr_code">显示二维码</string>
@@ -365,7 +365,7 @@
     <string name="copy_omemo_clipboard_description">复制 OMEMO 指纹到剪贴板</string>
     <string name="regenerate_omemo_key">重新生成 OMEMO 密钥</string>
     <string name="clear_other_devices">清除设备</string>
-    <string name="clear_other_devices_desc">是否确定要从 OMEMO 公布中清除所有其他设备？下次连接时，设备将会重新公布，但可能不会收到在此期间发送的消息。</string>
+    <string name="clear_other_devices_desc">是否确定要从 OMEMO 公布中清除所有其他设备？下次连接时，设备将会重新公布，但可能无法接收在此期间发送的消息。</string>
     <string name="error_no_keys_to_trust_server_error">此联系人没有可用密钥。 \n无法从服务器获取新密钥。也许是对方的服务器有问题？</string>
     <string name="error_no_keys_to_trust_presence">此联系人没有可用密钥。 \n请确保双方都有在线状态订阅。</string>
     <string name="error_trustkeys_title">出了点问题</string>
@@ -381,7 +381,7 @@
     <string name="enable_all_accounts">启用所有账号</string>
     <string name="disable_all_accounts">禁用所有账号</string>
     <string name="perform_action_with">执行操作</string>
-    <string name="no_affiliation">无</string>
+    <string name="no_affiliation">访客</string>
     <string name="no_role">离线</string>
     <string name="outcast">被驱逐者</string>
     <string name="member">成员</string>
@@ -442,7 +442,7 @@
     <string name="location">位置</string>
     <string name="title_undo_swipe_out_group_chat">离开私人群聊</string>
     <string name="title_undo_swipe_out_channel">离开公开频道</string>
-    <string name="pref_dont_trust_system_cas_title">不信任系统 CA</string>
+    <string name="pref_dont_trust_system_cas_title">不要信任系统 CA</string>
     <string name="pref_dont_trust_system_cas_summary">所有证书必须手动批准</string>
     <string name="pref_remove_trusted_certificates_title">移除证书</string>
     <string name="pref_remove_trusted_certificates_summary">删除手动批准的证书</string>
@@ -470,7 +470,7 @@
     <string name="download_failed_invalid_file">下载失败：文件无效</string>
     <string name="account_status_tor_unavailable">无法连接到 Tor 网络</string>
     <string name="account_status_bind_failure">绑定失败</string>
-    <string name="account_status_host_unknown">域名未响应</string>
+    <string name="account_status_host_unknown">不对域名负责</string>
     <string name="server_info_broken">损坏</string>
     <string name="pref_presence_settings">在线状态</string>
     <string name="pref_away_when_screen_off">设备锁定时离开</string>
@@ -535,7 +535,7 @@
     <string name="correct_message">更正消息</string>
     <string name="send_corrected_message">发送更正后的消息</string>
     <string name="no_keys_just_confirm">您已信任此人的指纹。选择“完成”即表示您确认 %s 是此群聊的成员。</string>
-    <string name="this_account_is_disabled">您禁用了此账号</string>
+    <string name="this_account_is_disabled">您已禁用此账号</string>
     <string name="security_error_invalid_file_access">安全错误：文件访问无效！</string>
     <string name="no_application_to_share_uri">未找到可以分享 URI 的应用</string>
     <string name="share_uri_with">分享 URI…</string>
@@ -546,14 +546,14 @@
     <string name="use_own_provider">使用我自己的提供者</string>
     <string name="pick_your_username">选择您的用户名</string>
     <string name="pref_manually_change_presence">手动更改在线状态</string>
-    <string name="pref_manually_change_presence_summary">在编辑状态信息时，让您的联系人知道您是否可以聊天。</string>
-    <string name="status_message">状态信息</string>
+    <string name="pref_manually_change_presence_summary">在编辑状态消息时设置您的在线状态。</string>
+    <string name="status_message">状态消息</string>
     <string name="presence_chat">有空聊天</string>
     <string name="presence_online">在线</string>
     <string name="presence_away">离开</string>
     <string name="presence_xa">没空</string>
     <string name="presence_dnd">忙碌</string>
-    <string name="secure_password_generated">安全密码已生成</string>
+    <string name="secure_password_generated">已生成安全密码</string>
     <string name="device_does_not_support_battery_op">您的设备不支持选择退出电池优化</string>
     <string name="registration_please_wait">注册失败：请稍后重试</string>
     <string name="registration_password_too_weak">注册失败：密码太弱</string>
@@ -593,10 +593,10 @@
     <string name="pref_delete_omemo_identities_summary">重新生成 OMEMO 密钥。您的所有联系人将必须再次验证您。仅将此作为最后的方法。</string>
     <string name="delete_selected_keys">删除所选密钥</string>
     <string name="error_publish_avatar_offline">连接后才能发布头像。</string>
-    <string name="show_error_message">显示出错信息</string>
-    <string name="error_message">出错信息</string>
+    <string name="show_error_message">显示错误消息</string>
+    <string name="error_message">错误消息</string>
     <string name="data_saver_enabled">流量节省程序已启用</string>
-    <string name="data_saver_enabled_explained">操作系统正限制 %1$s 在后台时访问互联网。要接收新消息通知，应当在“流量节省程序”开启时允许 %1$s 无限制访问。 \n在可能的情况下，%1$s 仍会尽可能节省数据。</string>
+    <string name="data_saver_enabled_explained">您的操作系统正在限制 %1$s 在后台时访问互联网。要接收新消息通知，应当在“流量节省程序”开启时允许 %1$s 无限制访问。\n%1$s 仍会在可能的情况下尽可能节省数据。</string>
     <string name="device_does_not_support_data_saver">设备不支持为 %1$s 禁用流量节省程序。</string>
     <string name="error_unable_to_create_temporary_file">无法创建临时文件</string>
     <string name="this_device_has_been_verified">此设备已经过验证</string>
@@ -609,22 +609,22 @@
     <string name="share_as_uri">以 XMPP URI 形式分享</string>
     <string name="share_as_http">以 HTTP 链接形式分享</string>
     <string name="pref_blind_trust_before_verification">验证前盲目信任</string>
-    <string name="pref_blind_trust_before_verification_summary">信任未经验证的联系人的新设备，但提示手动确认已验证的联系人的新设备。</string>
-    <string name="blindly_trusted_omemo_keys">盲目信任的 OMEMO 密钥，这意味着它们可能是别人的，可能会有人窃听。</string>
+    <string name="pref_blind_trust_before_verification_summary">自动信任未经验证的联系人的新设备，但已验证的联系人的新设备需手动确认。</string>
+    <string name="blindly_trusted_omemo_keys">盲目信任的 OMEMO 密钥，意味着存在密钥冒用或第三方窃听的风险。</string>
     <string name="not_trusted">未受信任</string>
     <string name="invalid_barcode">二维码无效</string>
     <string name="pref_clean_cache_summary">清理缓存文件夹（由相机使用）</string>
     <string name="pref_clean_cache">清理缓存</string>
     <string name="pref_clean_private_storage">清理私人存储空间</string>
     <string name="pref_clean_private_storage_summary">清理保存文件的私人存储（可从服务器重新下载）</string>
-    <string name="i_followed_this_link_from_a_trusted_source">我从可信来源获得此链接</string>
-    <string name="verifying_omemo_keys_trusted_source">点击链接后，您将验证 %1$s 的 OMEMO 密钥。只有从可信来源（只有 %2$s 可以发布此链接）获得此链接才是安全的。</string>
-    <string name="verifying_omemo_keys_trusted_source_account">您将验证自己账号的 OMEMO 密钥。只有从可信来源（只有您可以发布此链接）获得此链接才是安全的。</string>
+    <string name="i_followed_this_link_from_a_trusted_source">我从可信来源访问此链接</string>
+    <string name="verifying_omemo_keys_trusted_source">点击链接后，您即将验证 %1$s 的 OMEMO 密钥。只有从可信来源（只有 %2$s 可以发布此链接）访问此链接才是安全的。</string>
+    <string name="verifying_omemo_keys_trusted_source_account">您即将验证自己账号的 OMEMO 密钥。只有从可信来源（只有您可以发布此链接）访问此链接才是安全的。</string>
     <string name="continue_btn">继续</string>
     <string name="verify_omemo_keys">验证 OMEMO 密钥</string>
     <string name="show_inactive_devices">显示非活动设备</string>
     <string name="hide_inactive_devices">隐藏非活动设备</string>
-    <string name="distrust_omemo_key">不再信任设备</string>
+    <string name="distrust_omemo_key">不信任设备</string>
     <string name="distrust_omemo_key_text">是否确定要移除此设备的验证？\n此设备及其消息将标记为“未受信任”。</string>
     <plurals name="seconds">
         <item quantity="other">%d 秒</item>
@@ -685,24 +685,23 @@
     <string name="qr_code_scanner_needs_access_to_camera">需要访问相机来扫描二维码</string>
     <string name="pref_scroll_to_bottom">滚动至底部</string>
     <string name="pref_scroll_to_bottom_summary">发送消息后向下滚屏</string>
-    <string name="edit_status_message_title">编辑状态信息</string>
-    <string name="edit_status_message">编辑状态信息</string>
+    <string name="edit_status_message_title">编辑状态消息</string>
+    <string name="edit_status_message">编辑状态消息</string>
     <string name="disable_encryption">禁用加密</string>
-    <string name="error_trustkey_general">%1$s 无法向 %2$s 发送加密消息。可能是由于您的联系人使用了无法处理 OMEMO 的过时服务器或客户端。</string>
+    <string name="error_trustkey_general">%1$s 无法向 %2$s 发送加密消息。可能是由于对方使用了无法处理 OMEMO 的过时服务器或客户端。</string>
     <string name="error_trustkey_device_list">无法获取设备列表</string>
     <string name="error_trustkey_bundle">无法获取密钥</string>
     <string name="error_trustkey_hint_mutual">提示：某些情况下，双方可以添加到联系人列表解决此问题。</string>
-    <string name="disable_encryption_message">是否确定要禁用此对话的 OMEMO 加密？
-\n将允许服务器管理员读取您的消息，但可能是与使用过时客户端的用户交流的唯一方法。</string>
+    <string name="disable_encryption_message">是否确定要禁用此对话的 OMEMO 加密？\n这将允许服务器管理员读取您的消息，但可能是与使用过时客户端的用户交流的唯一方式。</string>
     <string name="disable_now">立即禁用</string>
     <string name="draft">草稿：</string>
     <string name="pref_omemo_setting">OMEMO 加密</string>
     <string name="pref_omemo_setting_summary_always">OMEMO 将始终用于一对一聊天和私人群聊。</string>
     <string name="pref_omemo_setting_summary_default_on">新对话将默认使用 OMEMO。</string>
-    <string name="pref_omemo_setting_summary_default_off">新对话必须明确开启 OMEMO。</string>
+    <string name="pref_omemo_setting_summary_default_off">新对话必须手动启用 OMEMO。</string>
     <string name="create_shortcut">创建快捷方式</string>
-    <string name="default_on">默认开启</string>
-    <string name="default_off">默认关闭</string>
+    <string name="default_on">默认启用</string>
+    <string name="default_off">默认禁用</string>
     <string name="not_encrypted_for_this_device">未对此设备加密消息。</string>
     <string name="omemo_decryption_failed">无法解密 OMEMO 消息。</string>
     <string name="undo">撤销</string>
@@ -850,8 +849,8 @@
     <string name="admins_can_edit_subject">管理员可以编辑话题。</string>
     <string name="owners_can_invite_others">所有者可以邀请他人。</string>
     <string name="anyone_can_invite_others">参与者可以邀请他人。</string>
-    <string name="jabber_ids_are_visible_to_admins">管理员可以看到用户 XMPP 地址。</string>
-    <string name="jabber_ids_are_visible_to_anyone">任何参与者可以看到用户 XMPP 地址。</string>
+    <string name="jabber_ids_are_visible_to_admins">管理员可以查看用户 XMPP 地址。</string>
+    <string name="jabber_ids_are_visible_to_anyone">任何参与者可以查看用户 XMPP 地址。</string>
     <string name="no_users_hint_channel">此公开频道无参与者。邀请联系人或使用分享按钮分发频道的 XMPP 地址。</string>
     <string name="no_users_hint_group_chat">此私人群聊无参与者。</string>
     <string name="manage_permission">管理权限</string>
@@ -951,7 +950,7 @@
         <item quantity="other">查看 %1$d 位参与者</item>
     </plurals>
     <plurals name="some_messages_could_not_be_delivered">
-        <item quantity="other">一些消息发送失败</item>
+        <item quantity="other">部分消息无法成功发送</item>
     </plurals>
     <string name="failed_deliveries">发送失败</string>
     <string name="more_options">更多选项</string>
@@ -987,10 +986,10 @@
     <string name="outdated_backup_file_format">您正尝试导入过时的备份文件格式</string>
     <string name="audiobook">有声读物</string>
     <string name="reconnect_on_other_host">在其他主机上重新连接</string>
-    <string name="this_account_is_logged_out">您登出了此账号</string>
-    <string name="log_in">登入</string>
+    <string name="this_account_is_logged_out">您已登出此账号</string>
+    <string name="log_in">登录</string>
     <string name="hide_notification">隐藏通知</string>
-    <string name="contact_uses_unverified_keys">您的联系人使用未经验证的设备。扫描对方二维码进行验证并阻止主动式中间人攻击。</string>
+    <string name="contact_uses_unverified_keys">对方使用未经验证的设备。扫描其二维码进行验证并阻止主动式中间人攻击。</string>
     <string name="log_out">登出</string>
     <string name="account_state_logged_out">已登出</string>
     <string name="unverified_devices">您正在使用未经验证的设备。扫描您其他设备的二维码进行验证并阻止主动式中间人攻击。</string>
@@ -1062,7 +1061,7 @@
     <string name="pref_create_backup_one_off_summary">创建一次性备份</string>
     <string name="pref_backup_recurring">定期备份</string>
     <string name="pref_fullscreen_notification">全屏通知</string>
-    <string name="pref_fullscreen_notification_summary">当设备锁定时，允许此应用显示占据全屏的来电通知。</string>
+    <string name="pref_fullscreen_notification_summary">允许此应用在设备锁定时显示占据整个屏幕的来电通知。</string>
     <string name="unsupported_operation">不支持的操作</string>
     <string name="pref_backup_summary">创建一次性备份、设置定期备份</string>
     <string name="allow_private_messages">允许私信</string>
@@ -1090,7 +1089,7 @@
     <string name="more_reactions">更多回应</string>
     <string name="add_reaction_title">添加回应</string>
     <string name="could_not_modify_call">无法修改通话</string>
-    <string name="clients_may_not_support_av">您的联系人的 XMPP 客户端可能不支持音频/视频通话。</string>
+    <string name="clients_may_not_support_av">对方的 XMPP 客户端可能不支持音频/视频通话。</string>
     <string name="pref_show_avatars">显示头像</string>
     <string name="pref_chat_bubbles_summary">背景颜色、字体大小、头像</string>
     <string name="pref_chat_bubbles">消息气泡</string>
