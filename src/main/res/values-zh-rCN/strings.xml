@@ -824,7 +824,7 @@
     <string name="restore_backup">恢复备份</string>
     <string name="restore">恢复</string>
     <string name="enter_password_to_restore">请输入 %s 的密码以恢复备份。</string>
-    <string name="restore_warning">请勿使用恢复备份功能尝试克隆（同时运行）安装。恢复备份仅适用于迁移或您丢失原始设备的情况。</string>
+    <string name="restore_warning">请勿通过恢复 OMEMO 密钥尝试克隆（同时运行）安装。恢复 OMEMO 密钥仅适用于迁移或您丢失原始设备的情况。</string>
     <string name="unable_to_restore_backup">无法恢复备份。</string>
     <string name="unable_to_decrypt_backup">无法解密备份。密码是否正确？</string>
     <string name="backup_channel_name">备份和恢复</string>
@@ -982,7 +982,7 @@
     <string name="group_chats">群聊</string>
     <string name="search_group_chats">搜索群聊</string>
     <string name="delete_from_server">从服务器移除账号</string>
-    <string name="restore_warning_continued">请勿尝试恢复您尚未自行创建的备份！</string>
+    <string name="restore_warning_continued">仅恢复您亲自创建的备份。</string>
     <string name="outdated_backup_file_format">您正尝试导入过时的备份文件格式</string>
     <string name="audiobook">有声读物</string>
     <string name="reconnect_on_other_host">在其他主机上重新连接</string>
@@ -1107,4 +1107,6 @@
     <string name="retry_with_p2p">使用 P2P 重试</string>
     <string name="account_status_channel_binding">不支持通道绑定</string>
     <string name="word_document">Word 文档</string>
+    <string name="restore_omemo_key">恢复 OMEMO 密钥</string>
+    <string name="non_quicksy_backup">Quicksy 只能恢复 quicksy.im 账号的备份</string>
 </resources>
