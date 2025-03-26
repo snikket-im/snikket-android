@@ -838,7 +838,7 @@
     <string name="restore_backup">Restaurează o copie de siguranță</string>
     <string name="restore">Restaurează</string>
     <string name="enter_password_to_restore">Introduceți parola contului %s pentru a restaura copia de siguranță.</string>
-    <string name="restore_warning">Nu folosiți funcția de restaurare a copiei de siguranță pentru a încerca clonarea (rularea simultană a) instalării. Restaurarea copiei de siguranță este gândită doar pentru a migra pe un alt dispozitiv sau în cazul în care ați pierdut dispozitivul original.</string>
+    <string name="restore_warning">Nu restaurați cheile OMEMO în încercarea de a clona (rula simultan) aplicația. Restaurarea cheilor OMEMO este destinată doar migrărilor sau în cazul în care ați pierdut dispozitivul original.</string>
     <string name="unable_to_restore_backup">Nu s-a putut restaura copia de siguranță.</string>
     <string name="unable_to_decrypt_backup">Nu s-a putut decripta copia de siguranță. Este parola corectă?</string>
     <string name="backup_channel_name">Copie de siguranță &amp; Restaurare</string>
@@ -1006,7 +1006,7 @@
     <string name="delete_from_server">Șterge contul de pe server</string>
     <string name="group_chats">Discuții de grup</string>
     <string name="search_group_chats">Caută discuții de grup</string>
-    <string name="restore_warning_continued">Nu încercați să restaurați copii de rezervă pe care nu le-ați creat personal!</string>
+    <string name="restore_warning_continued">Restaurați numai copii de rezervă pe care le-ați creat personal.</string>
     <string name="outdated_backup_file_format">Încercați să importați un fișier copie de rezervă format vechi</string>
     <string name="audiobook">Carte audio</string>
     <string name="reconnect_on_other_host">Reconectat pe altă gazdă</string>
@@ -1131,4 +1131,6 @@
     <string name="retry_with_p2p">Reîncearcă cu P2P</string>
     <string name="account_status_channel_binding">Channel binding indisponibil</string>
     <string name="word_document">Document Word</string>
+    <string name="non_quicksy_backup">Quicksy poate restaura doar copiile de rezervă pentru conturile quicksy.im</string>
+    <string name="restore_omemo_key">Restaurare chei OMEMO</string>
 </resources>
