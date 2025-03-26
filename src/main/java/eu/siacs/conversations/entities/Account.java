@@ -148,13 +148,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         this.password = password;
         this.options = options;
         this.rosterVersion = rosterVersion;
-        JSONObject tmp;
-        try {
-            tmp = new JSONObject(keys);
-        } catch (JSONException e) {
-            tmp = new JSONObject();
-        }
-        this.keys = tmp;
+        this.keys = parseKeys(keys);
         this.avatar = avatar;
         this.displayName = displayName;
         this.hostname = hostname;
@@ -165,6 +159,17 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         this.pinnedChannelBinding = pinnedChannelBinding;
         this.fastMechanism = fastMechanism;
         this.fastToken = fastToken;
+    }
+
+    public static JSONObject parseKeys(final String keys) {
+        if (Strings.isNullOrEmpty(keys)) {
+            return new JSONObject();
+        }
+        try {
+            return new JSONObject(keys);
+        } catch (final JSONException e) {
+            return new JSONObject();
+        }
     }
 
     public static Account fromCursor(final Cursor cursor) {

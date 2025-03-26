@@ -11,49 +11,62 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ItemAccountBinding;
+import eu.siacs.conversations.services.AvatarService;
+import eu.siacs.conversations.utils.BackupFile;
+import eu.siacs.conversations.utils.BackupFileHeader;
+import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.Jid;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.databinding.ItemAccountBinding;
-import eu.siacs.conversations.services.AvatarService;
-import eu.siacs.conversations.services.ImportBackupService;
-import eu.siacs.conversations.utils.BackupFileHeader;
-import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.xmpp.Jid;
-
-public class BackupFileAdapter extends RecyclerView.Adapter<BackupFileAdapter.BackupFileViewHolder> {
+public class BackupFileAdapter
+        extends RecyclerView.Adapter<BackupFileAdapter.BackupFileViewHolder> {
 
     private OnItemClickedListener listener;
 
-    private final List<ImportBackupService.BackupFile> files = new ArrayList<>();
-
+    private final List<BackupFile> files = new ArrayList<>();
 
     @NonNull
     @Override
     public BackupFileViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new BackupFileViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.item_account, viewGroup, false));
+        return new BackupFileViewHolder(
+                DataBindingUtil.inflate(
+                        LayoutInflater.from(viewGroup.getContext()),
+                        R.layout.item_account,
+                        viewGroup,
+                        false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull BackupFileViewHolder backupFileViewHolder, int position) {
-        final ImportBackupService.BackupFile backupFile = files.get(position);
+        final BackupFile backupFile = files.get(position);
         final BackupFileHeader header = backupFile.getHeader();
         backupFileViewHolder.binding.accountJid.setText(header.getJid().asBareJid().toString());
-        backupFileViewHolder.binding.accountStatus.setText(String.format("%s · %s",header.getApp(), DateUtils.formatDateTime(backupFileViewHolder.binding.getRoot().getContext(), header.getTimestamp(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR)));
+        backupFileViewHolder.binding.accountStatus.setText(
+                String.format(
+                        "%s · %s",
+                        header.getApp(),
+                        DateUtils.formatDateTime(
+                                backupFileViewHolder.binding.getRoot().getContext(),
+                                header.getTimestamp(),
+                                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR)));
         backupFileViewHolder.binding.tglAccountStatus.setVisibility(View.GONE);
-        backupFileViewHolder.binding.getRoot().setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onClick(backupFile);
-            }
-        });
+        backupFileViewHolder
+                .binding
+                .getRoot()
+                .setOnClickListener(
+                        v -> {
+                            if (listener != null) {
+                                listener.onClick(backupFile);
+                            }
+                        });
         loadAvatar(header.getJid(), backupFileViewHolder.binding.accountImage);
     }
 
@@ -62,7 +75,7 @@ public class BackupFileAdapter extends RecyclerView.Adapter<BackupFileAdapter.Ba
         return files.size();
     }
 
-    public void setFiles(List<ImportBackupService.BackupFile> files) {
+    public void setFiles(List<BackupFile> files) {
         this.files.clear();
         this.files.addAll(files);
         notifyDataSetChanged();
@@ -79,22 +92,21 @@ public class BackupFileAdapter extends RecyclerView.Adapter<BackupFileAdapter.Ba
             super(binding.getRoot());
             this.binding = binding;
         }
-
     }
 
     public interface OnItemClickedListener {
-        void onClick(ImportBackupService.BackupFile backupFile);
+        void onClick(BackupFile backupFile);
     }
 
     static class BitmapWorkerTask extends AsyncTask<Jid, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
-        private Jid jid  = null;
+        private Jid jid = null;
         private final int size;
 
         BitmapWorkerTask(final ImageView imageView) {
             imageViewReference = new WeakReference<>(imageView);
             DisplayMetrics metrics = imageView.getContext().getResources().getDisplayMetrics();
-		this.size = ((int) (48 * metrics.density));
+            this.size = ((int) (48 * metrics.density));
         }
 
         @Override
@@ -120,7 +132,8 @@ public class BackupFileAdapter extends RecyclerView.Adapter<BackupFileAdapter.Ba
             imageView.setBackgroundColor(UIHelper.getColorForName(jid.asBareJid().toString()));
             imageView.setImageDrawable(null);
             final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-            final AsyncDrawable asyncDrawable = new AsyncDrawable(imageView.getContext().getResources(), null, task);
+            final AsyncDrawable asyncDrawable =
+                    new AsyncDrawable(imageView.getContext().getResources(), null, task);
             imageView.setImageDrawable(asyncDrawable);
             try {
                 task.execute(jid);
@@ -165,5 +178,4 @@ public class BackupFileAdapter extends RecyclerView.Adapter<BackupFileAdapter.Ba
             return bitmapWorkerTaskReference.get();
         }
     }
-
 }

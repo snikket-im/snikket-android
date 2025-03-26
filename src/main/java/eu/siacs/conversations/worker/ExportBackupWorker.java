@@ -31,6 +31,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.Compatibility;
 import java.io.DataOutputStream;
@@ -65,9 +66,9 @@ public class ExportBackupWorker extends Worker {
     private static final SimpleDateFormat DATE_FORMAT =
             new SimpleDateFormat("yyyy-MM-dd-HH-mm", Locale.US);
 
-    public static final String KEYTYPE = "AES";
-    public static final String CIPHERMODE = "AES/GCM/NoPadding";
-    public static final String PROVIDER = "BC";
+    private static final String KEY_TYPE = "AES";
+    private static final String CIPHER_MODE = "AES/GCM/NoPadding";
+    private static final String PROVIDER = "BC";
 
     public static final String MIME_TYPE = "application/vnd.conversations.backup";
 
@@ -240,10 +241,10 @@ public class ExportBackupWorker extends Worker {
 
         final Cipher cipher =
                 Compatibility.twentyEight()
-                        ? Cipher.getInstance(CIPHERMODE)
-                        : Cipher.getInstance(CIPHERMODE, PROVIDER);
+                        ? Cipher.getInstance(CIPHER_MODE)
+                        : Cipher.getInstance(CIPHER_MODE, PROVIDER);
         final byte[] key = getKey(password, salt);
-        SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
+        SecretKeySpec keySpec = new SecretKeySpec(key, KEY_TYPE);
         IvParameterSpec ivSpec = new IvParameterSpec(IV);
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
         CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
@@ -326,7 +327,9 @@ public class ExportBackupWorker extends Worker {
                     } else if (Account.OPTIONS.equals(accountCursor.getColumnName(i))
                             && value.matches("\\d+")) {
                         int intValue = Integer.parseInt(value);
-                        intValue |= 1 << Account.OPTION_DISABLED;
+                        if (QuickConversationsService.isConversations()) {
+                            intValue |= 1 << Account.OPTION_DISABLED;
+                        }
                         writer.value(intValue);
                     } else {
                         writer.value(value);
