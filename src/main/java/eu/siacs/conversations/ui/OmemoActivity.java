@@ -22,7 +22,7 @@ import eu.siacs.conversations.utils.XmppUri;
 public abstract class OmemoActivity extends XmppActivity {
 
     private Account mSelectedAccount;
-    private String mSelectedFingerprint;
+    protected String mSelectedFingerprint;
 
     protected XmppUri mPendingFingerprintVerificationUri = null;
 
@@ -50,25 +50,27 @@ public abstract class OmemoActivity extends XmppActivity {
                 distrust.setVisible(
                         status.isVerified() || (!status.isActive() && status.isTrusted()));
             }
+            // TODO can we rework this into using Intents?
             this.mSelectedAccount = (Account) account;
             this.mSelectedFingerprint = (String) fingerprint;
         }
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.distrust_key:
-                showPurgeKeyDialog(mSelectedAccount, mSelectedFingerprint);
-                break;
-            case R.id.copy_omemo_key:
-                copyOmemoFingerprint(mSelectedFingerprint);
-                break;
-            case R.id.verify_scan:
-                ScanActivity.scan(this);
-                break;
+    public boolean onContextItemSelected(final MenuItem item) {
+        final var itemId = item.getItemId();
+        if (itemId == R.id.distrust_key) {
+            showPurgeKeyDialog(mSelectedAccount, mSelectedFingerprint);
+            return true;
+        } else if (itemId == R.id.copy_omemo_key) {
+            copyOmemoFingerprint(mSelectedFingerprint);
+            return true;
+        } else if (itemId == R.id.verify_scan) {
+            ScanActivity.scan(this);
+            return true;
+        } else {
+            return super.onContextItemSelected(item);
         }
-        return true;
     }
 
     @Override

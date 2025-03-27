@@ -1336,6 +1336,13 @@ public class EditAccountActivity extends OmemoActivity
                     this.mAccount.getAxolotlService().getOwnFingerprint();
             if (ownAxolotlFingerprint != null && Config.supportOmemo()) {
                 this.binding.axolotlFingerprintBox.setVisibility(View.VISIBLE);
+                this.binding.axolotlFingerprintBox.setOnCreateContextMenuListener(
+                        (menu, v, menuInfo) -> {
+                            getMenuInflater().inflate(R.menu.omemo_key_context, menu);
+                            menu.findItem(R.id.verify_scan).setVisible(false);
+                            menu.findItem(R.id.distrust_key).setVisible(false);
+                            this.mSelectedFingerprint = ownAxolotlFingerprint;
+                        });
                 if (ownAxolotlFingerprint.equals(messageFingerprint)) {
                     this.binding.ownFingerprintDesc.setTextColor(
                             MaterialColors.getColor(
