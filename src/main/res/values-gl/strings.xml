@@ -824,7 +824,7 @@
     <string name="restore_backup">Restablecer copia de apoio</string>
     <string name="restore">Restablecer</string>
     <string name="enter_password_to_restore">Escribe o contrasinal da conta %s para restablecer a copia.</string>
-    <string name="restore_warning">Non utilices a función de restaurar a copia nun intento de clonar (utilizar simultaneamente) unha instalación. Restaurar unha copia só ten sentido para migrar ou en caso de perda do dispositivo orixinal.</string>
+    <string name="restore_warning">Non restaures as claves OMEMO nun intento de clonar (utilizar simultaneamente) unha instalación. Restaurar as claves OMEMO só ten sentido para migrar ou en caso de perda do dispositivo orixinal.</string>
     <string name="unable_to_restore_backup">Non se puido restaurar a copia.</string>
     <string name="unable_to_decrypt_backup">Non se puido descifrar a copia. É correcto o contrasinal?</string>
     <string name="backup_channel_name">Respaldar &amp; Restaurar</string>
@@ -987,7 +987,7 @@
     <string name="could_not_delete_account_from_server">Non se puido eliminar a conta no servidor</string>
     <string name="search_group_chats">Buscar parolas en grupo</string>
     <string name="group_chats">Parolas en grupo</string>
-    <string name="restore_warning_continued">Non intentes restablecer unha copia de apoio que non tiveses creado ti!</string>
+    <string name="restore_warning_continued">Restaura só copias de apoio que crearas ti persoalmente.</string>
     <string name="outdated_backup_file_format">Estás intentando importar un ficheiro de apoio co formato antigo</string>
     <string name="audiobook">Audiolibro</string>
     <string name="reconnect_on_other_host">Volver conectar noutro servidor</string>
@@ -1112,4 +1112,6 @@
     <string name="retry_with_p2p">Reintentar con P2P</string>
     <string name="account_status_channel_binding">Non está dispoñible a vinculación de canles</string>
     <string name="word_document">Documento de Word</string>
+    <string name="restore_omemo_key">Restaurar claves OMEMO</string>
+    <string name="non_quicksy_backup">Quicksy só pode restaurar copias de apoio de contas quicksy.im</string>
 </resources>
