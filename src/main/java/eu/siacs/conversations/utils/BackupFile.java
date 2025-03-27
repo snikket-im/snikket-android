@@ -1,8 +1,12 @@
 package eu.siacs.conversations.utils;
 
 import android.content.Context;
+import android.content.UriPermission;
 import android.net.Uri;
+import android.os.Build;
+import android.provider.DocumentsContract;
 import android.util.Log;
+import androidx.documentfile.provider.DocumentFile;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableList;
@@ -15,6 +19,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.QuickConversationsService;
+import eu.siacs.conversations.worker.ExportBackupWorker;
 import eu.siacs.conversations.xmpp.Jid;
 import java.io.DataInputStream;
 import java.io.File;
@@ -81,11 +86,51 @@ public class BackupFile implements Comparable<BackupFile> {
         final var backupFiles = new ImmutableList.Builder<BackupFile>();
         final var apps =
                 ImmutableSet.of("Conversations", "Quicksy", context.getString(R.string.app_name));
+
+        final var uriPermissions = context.getContentResolver().getPersistedUriPermissions();
+
+        for (final UriPermission uriPermission : uriPermissions) {
+            final var uri = uriPermission.getUri();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+                    && DocumentsContract.isTreeUri(uri)) {
+                Log.d(Config.LOGTAG, "looking for backups in " + uri);
+                final var tree = DocumentFile.fromTreeUri(context, uriPermission.getUri());
+                final var files = tree == null ? new DocumentFile[0] : tree.listFiles();
+                for (final DocumentFile documentFile : files) {
+                    final var name = documentFile.getName();
+                    if (documentFile.isFile()
+                            && (ExportBackupWorker.MIME_TYPE.equals(documentFile.getType())
+                                    || (name != null && name.endsWith(".ceb")))) {
+                        try {
+                            final BackupFile backupFile =
+                                    BackupFile.read(context, documentFile.getUri());
+                            if (accounts.contains(backupFile.getHeader().getJid())) {
+                                Log.d(
+                                        Config.LOGTAG,
+                                        "skipping backup for " + backupFile.getHeader().getJid());
+                            } else {
+                                backupFiles.add(backupFile);
+                            }
+                        } catch (final IOException
+                                | IllegalArgumentException
+                                | BackupFileHeader.OutdatedBackupFileVersion e) {
+                            Log.d(Config.LOGTAG, "unable to read backup file ", e);
+                        }
+                    }
+                }
+            }
+        }
+
         final List<File> directories = new ArrayList<>();
         for (final String app : apps) {
             directories.add(FileBackend.getLegacyBackupDirectory(app));
         }
-        directories.add(FileBackend.getBackupDirectory(context));
+        if (uriPermissions.isEmpty()) {
+            Log.d(
+                    Config.LOGTAG,
+                    "including default directory since no uri permissions have been granted");
+            directories.add(FileBackend.getBackupDirectory(context));
+        }
         for (final File directory : directories) {
             if (!directory.exists() || !directory.isDirectory()) {
                 Log.d(Config.LOGTAG, "directory not found: " + directory.getAbsolutePath());
@@ -134,7 +179,7 @@ public class BackupFile implements Comparable<BackupFile> {
     public int compareTo(final BackupFile o) {
         return ComparisonChain.start()
                 .compare(header.getJid(), o.header.getJid())
-                .compare(header.getTimestamp(), o.header.getTimestamp())
+                .compare(o.header.getTimestamp(), header.getTimestamp())
                 .result();
     }
 }

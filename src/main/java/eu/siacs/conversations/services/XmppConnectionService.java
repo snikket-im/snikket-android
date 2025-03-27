@@ -6341,10 +6341,6 @@ public class XmppConnectionService extends Service {
         return verifiedSomething;
     }
 
-    public boolean blindTrustBeforeVerification() {
-        return getBooleanPreference(AppSettings.BLIND_TRUST_BEFORE_VERIFICATION, R.bool.btbv);
-    }
-
     public ShortcutService getShortcutService() {
         return mShortcutService;
     }

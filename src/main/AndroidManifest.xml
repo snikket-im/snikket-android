@@ -72,16 +72,11 @@
         </intent>
         <intent>
             <action android:name="android.intent.action.VIEW" />
-            <data android:mimeType="resource/folder" />
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
         </intent>
         <intent>
             <action android:name="org.unifiedpush.android.connector.MESSAGE" />
         </intent>
     </queries>
-
 
     <application
         android:name=".Conversations"

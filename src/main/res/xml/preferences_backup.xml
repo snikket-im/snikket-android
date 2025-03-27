@@ -14,7 +14,9 @@
         android:title="@string/pref_create_backup" />
 
     <Preference
-        android:key="backup_directory"
-        android:summary="@string/pref_create_backup_summary" />
+        android:icon="@drawable/ic_folder_open_24dp"
+        android:key="backup_location"
+        android:summary="@string/pref_create_backup_summary"
+        android:title="@string/pref_backup_location" />
 
 </PreferenceScreen>

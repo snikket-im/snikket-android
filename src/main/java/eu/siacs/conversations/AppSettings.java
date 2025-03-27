@@ -3,10 +3,14 @@ package eu.siacs.conversations;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Environment;
 import androidx.annotation.BoolRes;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.QuickConversationsService;
 import java.security.SecureRandom;
 
@@ -46,9 +50,13 @@ public class AppSettings {
     public static final String SHOW_AVATARS = "show_avatars";
     public static final String CALL_INTEGRATION = "call_integration";
     public static final String ALIGN_START = "align_start";
+    public static final String BACKUP_LOCATION = "backup_location";
 
     private static final String ACCEPT_INVITES_FROM_STRANGERS = "accept_invites_from_strangers";
     private static final String INSTALLATION_ID = "im.conversations.android.install_id";
+
+    private static final String EXTERNAL_STORAGE_AUTHORITY =
+            "com.android.externalstorage.documents";
 
     private final Context context;
 
@@ -148,6 +156,50 @@ public class AppSettings {
                 PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getString(
                 OMEMO, context.getString(R.string.omemo_setting_default));
+    }
+
+    public Uri getBackupLocation() {
+        final SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context);
+        final String location = sharedPreferences.getString(BACKUP_LOCATION, null);
+        if (Strings.isNullOrEmpty(location)) {
+            final var directory = FileBackend.getBackupDirectory(context);
+            return Uri.fromFile(directory);
+        }
+        return Uri.parse(location);
+    }
+
+    public String getBackupLocationAsPath() {
+        return asPath(getBackupLocation());
+    }
+
+    public static String asPath(final Uri uri) {
+        final var scheme = uri.getScheme();
+        final var path = uri.getPath();
+        if (path == null) {
+            return uri.toString();
+        }
+        if ("file".equalsIgnoreCase(scheme)) {
+            return path;
+        } else if ("content".equalsIgnoreCase(scheme)) {
+            if (EXTERNAL_STORAGE_AUTHORITY.equalsIgnoreCase(uri.getAuthority())) {
+                final var parts = Splitter.on(':').limit(2).splitToList(path);
+                if (parts.size() == 2 && "/tree/primary".equals(parts.get(0))) {
+                    return Joiner.on('/')
+                            .join(Environment.getExternalStorageDirectory(), parts.get(1));
+                }
+            }
+        }
+        return uri.toString();
+    }
+
+    public void setBackupLocation(final Uri uri) {
+        final SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences
+                .edit()
+                .putString(BACKUP_LOCATION, uri == null ? "" : uri.toString())
+                .apply();
     }
 
     public boolean isSendCrashReports() {
