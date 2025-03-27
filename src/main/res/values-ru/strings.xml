@@ -852,7 +852,7 @@
     <string name="restore_backup">Восстановить из резервной копии</string>
     <string name="restore">Восстановить</string>
     <string name="enter_password_to_restore">Введите пароль аккаунта %s для восстановления резервной копии.</string>
-    <string name="restore_warning">Не используйте восстановление резервной копии для дублирования установленного приложения (одновременного исполнения). Восстановление резервной копии нужно лишь для того, чтобы перенести данные на другое устройство или на случай потери своего устройства.</string>
+    <string name="restore_warning">Не используйте восстановление ключей OMEMO для дублирования установленного приложения (одновременного использования). Восстановление ключей OMEMO нужно только для переноса данных на другое устройство или на случай потери своего устройства.</string>
     <string name="unable_to_restore_backup">Невозможно восстановить резервную копию.</string>
     <string name="unable_to_decrypt_backup">Невозможно расшифровать резервную копию. Вы ввели верный пароль?</string>
     <string name="backup_channel_name">Резервное копирование и восстановление</string>
@@ -1022,7 +1022,7 @@
     <string name="pref_up_push_account_summary">Аккаунт для получения push-уведомлений</string>
     <string name="no_account_deactivated">Нет (неактивно)</string>
     <string name="verifying_omemo_keys_trusted_source_account">Вы собираетесь проверить ключи OMEMO своего аккаунта. Это безопасно только в том случае, если вы перешли по этой ссылке из надёжного источника, где только вы могли опубликовать эту ссылку.</string>
-    <string name="restore_warning_continued">Не пытайтесь восстановить резервные копии, которые не были созданы вами!</string>
+    <string name="restore_warning_continued">Восстанавливайте только те резервные копии, которые были созданы лично вами!</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d пропущенный вызов от %2$s</item>
         <item quantity="few">%1$d пропущенных вызова от %2$s</item>
@@ -1159,4 +1159,6 @@
     <string name="retry_with_p2p">Повторить через P2P</string>
     <string name="account_status_channel_binding">Привязка канала недоступна</string>
     <string name="word_document">Документ Word</string>
+    <string name="restore_omemo_key">Восстановить ключи OMEMO</string>
+    <string name="non_quicksy_backup">Quicksy может восстанавливать резервные копии только для аккаунтов quicksy.im</string>
 </resources>
