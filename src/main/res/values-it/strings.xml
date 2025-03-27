@@ -833,7 +833,7 @@
     <string name="restore_backup">Ripristina backup</string>
     <string name="restore">Ripristina</string>
     <string name="enter_password_to_restore">Inserisci la tua password per il profilo %s per ripristinare il backup.</string>
-    <string name="restore_warning">Non usare la funzione di ripristino del backup tentando di clonare (eseguire simultaneamente) un\'installazione. Il ripristino di un backup è inteso solo per migrazioni o in caso di smarrimento del dispositivo.</string>
+    <string name="restore_warning">Non ripristinare le chiavi OMEMO nel tentativo di clonare (eseguire simultaneamente) un\'installazione. Il ripristino delle chiavi OMEMO è inteso solo per migrazioni o in caso di smarrimento del dispositivo.</string>
     <string name="unable_to_restore_backup">Impossibile ripristinare il backup.</string>
     <string name="unable_to_decrypt_backup">Impossibile decifrare il backup. La password è giusta?</string>
     <string name="backup_channel_name">Backup e ripristino</string>
@@ -1001,7 +1001,7 @@
     <string name="could_not_delete_account_from_server">Impossibile eliminare il profilo dal server</string>
     <string name="group_chats">Chat di gruppo</string>
     <string name="search_group_chats">Cerca chat di gruppo</string>
-    <string name="restore_warning_continued">Non tentare di ripristinare dei backup che non hai creato te stesso!</string>
+    <string name="restore_warning_continued">Ripristina solo i backup che hai creato personalmente.</string>
     <string name="outdated_backup_file_format">Stai tentando di importare un formato di file di backup obsoleto</string>
     <string name="audiobook">Audiolibro</string>
     <string name="reconnect_on_other_host">Riconnetti su altro host</string>
@@ -1126,4 +1126,6 @@
     <string name="pref_title_bubbles">Messaggi di chat</string>
     <string name="account_status_channel_binding">Associazione dei canali non disponibile</string>
     <string name="word_document">Documento Word</string>
+    <string name="restore_omemo_key">Ripristina chiavi OMEMO</string>
+    <string name="non_quicksy_backup">Quicksy può ripristinare backup solo per profili quicksy.im</string>
 </resources>
