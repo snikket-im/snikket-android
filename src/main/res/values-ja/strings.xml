@@ -317,7 +317,7 @@
     <string name="pref_keep_foreground_service">フォアグラウンドサービス</string>
     <string name="pref_keep_foreground_service_summary">OSが接続を切断するのを防止します</string>
     <string name="pref_create_backup">バックアップを作成</string>
-    <string name="pref_create_backup_summary">バックアップファイルは %s に保存されます </string>
+    <string name="pref_create_backup_summary">バックアップファイルは %s に保存されます</string>
     <string name="notification_create_backup_title">バックアップファイルを作成しています</string>
     <string name="notification_backup_created_title">バックアップを作成しました</string>
     <string name="notification_backup_created_subtitle">バックアップファイルは %s に保存されました</string>
