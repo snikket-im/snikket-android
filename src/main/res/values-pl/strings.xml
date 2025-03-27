@@ -846,7 +846,7 @@
     <string name="restore_backup">Przywróć kopię zapasową</string>
     <string name="restore">Przywróć</string>
     <string name="enter_password_to_restore">Wpisz swoje hasło do konta %s aby przywrócić kopię zapasową.</string>
-    <string name="restore_warning">Nie używaj kopii zapasowej aby klonować (uruchamiać równolegle) instalację. Przywracanie kopii jest przeznaczone tylko do migracji albo kiedy urządzenie zostało zgubione.</string>
+    <string name="restore_warning">Nie przywracaj kluczy OMEMO aby klonować (uruchamiać równocześnie) instalację. Przywracanie kluczy OMEMO jest przeznaczone tylko do migracji albo kiedy urządzenie zostało zgubione.</string>
     <string name="unable_to_restore_backup">Nie można przywrócić kopii zapasowej.</string>
     <string name="unable_to_decrypt_backup">Nie można odszyfrować kopii zapasowej. Czy hasło jest poprawne?</string>
     <string name="backup_channel_name">Kopia i Przywracanie</string>
@@ -1019,7 +1019,7 @@
     <string name="could_not_delete_account_from_server">Nie można usunąć konta z serwera</string>
     <string name="search_group_chats">Przeszukaj rozmowy grupowe</string>
     <string name="group_chats">Rozmowy grupowe</string>
-    <string name="restore_warning_continued">Nie próbuj przywracać kopii zapasowych, których nie utworzono samodzielnie!</string>
+    <string name="restore_warning_continued">Przywracaj jedynie kopie zapasowe, które samodzielnie utworzyłeś.</string>
     <string name="outdated_backup_file_format">Próbujesz zaimportować plik kopii zapasowej o przestarzałym formacie</string>
     <string name="audiobook">Audiobook</string>
     <string name="reconnect_on_other_host">Połącz się ponownie na innym hoście</string>
@@ -1144,4 +1144,6 @@
     <string name="retry_with_p2p">Spróbuj ponownie używając P2P</string>
     <string name="word_document">dokument Microsoft Word</string>
     <string name="account_status_channel_binding">Przywiązywanie kanału niedostępne</string>
+    <string name="restore_omemo_key">Przywróć klucze OMEMO</string>
+    <string name="non_quicksy_backup">Quicksy potrafi przywracać kopie zapasowe jedynie dla kont quicksy.im</string>
 </resources>
