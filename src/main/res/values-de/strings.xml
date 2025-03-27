@@ -824,7 +824,7 @@
     <string name="restore_backup">Sicherung wiederherstellen</string>
     <string name="restore">Wiederherstellung</string>
     <string name="enter_password_to_restore">Gib dein Passwort für das Konto %s ein, um die Sicherung wiederherzustellen.</string>
-    <string name="restore_warning">Benutze die Sicherungsfunktion nicht, um eine Installation zu klonen (gleichzeitig auszuführen). Die Wiederherstellung einer Sicherung ist nur für Migrationen oder für den Fall gedacht, dass du das ursprüngliche Gerät verloren hast.</string>
+    <string name="restore_warning">Stelle die OMEMO-Schlüssel nicht wieder her, um eine Installation zu klonen (gleichzeitig auszuführen). Die Wiederherstellung von OMEMO-Schlüsseln ist nur für Migrationen oder für den Fall gedacht, dass du das ursprüngliche Gerät verloren hast.</string>
     <string name="unable_to_restore_backup">Sicherung konnte nicht wiederhergestellt werden.</string>
     <string name="unable_to_decrypt_backup">Sicherung konnte nicht entschlüsselt werden. Ist das Passwort korrekt?</string>
     <string name="backup_channel_name">Sicherung &amp; Wiederherstellung</string>
@@ -987,7 +987,7 @@
     <string name="could_not_delete_account_from_server">Konto konnte nicht vom Server gelöscht werden</string>
     <string name="group_chats">Gruppenchats</string>
     <string name="search_group_chats">Gruppenchats durchsuchen</string>
-    <string name="restore_warning_continued">Versuche nicht, Backups wiederherzustellen, die du nicht selbst erstellt hast!</string>
+    <string name="restore_warning_continued">Nur Sicherungen wiederherstellen, die du selbst erstellt hast.</string>
     <string name="outdated_backup_file_format">Du versuchst, ein veraltetes Sicherungsdateiformat zu importieren</string>
     <string name="audiobook">Hörbuch</string>
     <string name="reconnect_on_other_host">Verbindung auf anderem Host wiederherstellen</string>
@@ -1112,4 +1112,6 @@
     <string name="retry_with_p2p">Erneut mit P2P versuchen</string>
     <string name="account_status_channel_binding">Kanalbindung nicht verfügbar</string>
     <string name="word_document">Word-Dokument</string>
+    <string name="restore_omemo_key">OMEMO-Schlüssel wiederherstellen</string>
+    <string name="non_quicksy_backup">Quicksy kann nur Sicherungen für quicksy.im-Konten wiederherstellen</string>
 </resources>
