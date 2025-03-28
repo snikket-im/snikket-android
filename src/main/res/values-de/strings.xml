@@ -321,7 +321,7 @@
     <string name="pref_keep_foreground_service">Vordergrunddienst</string>
     <string name="pref_keep_foreground_service_summary">Verhindert, dass das Betriebssystem deine Verbindung unterbricht</string>
     <string name="pref_create_backup">Sicherung erstellen</string>
-    <string name="pref_create_backup_summary">Sicherungsdateien werden gespeichert in %s</string>
+    <string name="pref_create_backup_summary">Sicherungen werden gespeichert in %s</string>
     <string name="notification_create_backup_title">Erstelle Sicherungsdateien</string>
     <string name="notification_backup_created_title">Deine Sicherung wurde erstellt</string>
     <string name="notification_backup_created_subtitle">Die Sicherungsdateien wurden gespeichert in %s</string>
@@ -1114,4 +1114,5 @@
     <string name="word_document">Word-Dokument</string>
     <string name="restore_omemo_key">OMEMO-Schlüssel wiederherstellen</string>
     <string name="non_quicksy_backup">Quicksy kann nur Sicherungen für quicksy.im-Konten wiederherstellen</string>
+    <string name="pref_backup_location">Sicherungsort</string>
 </resources>
