@@ -558,7 +558,7 @@ public class ConferenceDetailsActivity extends XmppActivity
         if (printableValue(subject)) {
             SpannableStringBuilder spannable = new SpannableStringBuilder(subject);
             StylingHelper.format(spannable, this.binding.mucSubject.getCurrentTextColor());
-            MyLinkify.addLinks(spannable, false);
+            MyLinkify.addLinks(spannable);
             this.binding.mucSubject.setText(spannable);
             this.binding.mucSubject.setTextAppearance(
                     subject.length() > (hasTitle ? 128 : 196)

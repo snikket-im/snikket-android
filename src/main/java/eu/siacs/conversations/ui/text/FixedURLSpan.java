@@ -34,24 +34,21 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.URLSpan;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.Toast;
-
-import java.util.Arrays;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.ShowLocationActivity;
+import java.util.Arrays;
 
 @SuppressLint("ParcelCreator")
 public class FixedURLSpan extends URLSpan {
 
-    private FixedURLSpan(String url) {
+    private FixedURLSpan(final String url) {
         super(url);
     }
 
@@ -93,7 +90,7 @@ public class FixedURLSpan extends URLSpan {
         try {
             context.startActivity(intent);
             widget.playSoundEffect(SoundEffectConstants.CLICK);
-        } catch (ActivityNotFoundException e) {
+        } catch (final ActivityNotFoundException e) {
             Toast.makeText(context, R.string.no_application_found_to_open_link, Toast.LENGTH_SHORT)
                     .show();
         }

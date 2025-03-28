@@ -1034,7 +1034,7 @@ public class XmppConnection implements Runnable {
             if (Strings.isNullOrEmpty(text)) {
                 throw new StateChangingException(Account.State.UNAUTHORIZED);
             }
-            final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(text);
+            final Matcher matcher = Patterns.URI_HTTP.matcher(text);
             if (matcher.find()) {
                 final HttpUrl url;
                 try {
@@ -1925,7 +1925,7 @@ public class XmppConnection implements Runnable {
                         if (url != null) {
                             setAccountCreationFailed(url);
                         } else if (instructions != null) {
-                            final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(instructions);
+                            final Matcher matcher = Patterns.URI_HTTP.matcher(instructions);
                             if (matcher.find()) {
                                 setAccountCreationFailed(
                                         instructions.substring(matcher.start(), matcher.end()));

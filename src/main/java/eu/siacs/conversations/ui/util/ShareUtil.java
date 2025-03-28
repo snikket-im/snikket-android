@@ -149,7 +149,7 @@ public class ShareUtil {
     }
 
     public static String getLinkScheme(final SpannableStringBuilder body) {
-        MyLinkify.addLinks(body, false);
+        MyLinkify.addLinks(body);
         for (final String url : MyLinkify.extractLinks(body)) {
             final Uri uri = Uri.parse(url);
             if ("xmpp".equals(uri.getScheme())) {

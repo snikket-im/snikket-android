@@ -576,7 +576,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
 
         StylingHelper.format(body, viewHolder.messageBody().getCurrentTextColor());
-        MyLinkify.addLinks(body, true);
+        MyLinkify.addLinks(body);
         if (highlightedTerm != null) {
             StylingHelper.highlight(viewHolder.messageBody(), body, highlightedTerm);
         }

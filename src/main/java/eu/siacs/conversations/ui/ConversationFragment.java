@@ -112,6 +112,7 @@ import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.NickValidityChecker;
+import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.utils.QuickLoader;
 import eu.siacs.conversations.utils.StylingHelper;
@@ -2614,7 +2615,7 @@ public class ConversationFragment extends XmppFragment
                 }
             }
         } else {
-            if (text != null && GeoHelper.GEO_URI.matcher(text).matches()) {
+            if (text != null && Patterns.URI_GEO.matcher(text).matches()) {
                 mediaPreviewAdapter.addMediaPreviews(
                         Attachment.of(getActivity(), Uri.parse(text), Attachment.Type.LOCATION));
                 toggleInputMethod();
