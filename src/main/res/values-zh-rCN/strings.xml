@@ -333,7 +333,7 @@
     <string name="pref_keep_foreground_service">前台服务</string>
     <string name="pref_keep_foreground_service_summary">防止操作系统中断连接</string>
     <string name="pref_create_backup">创建备份</string>
-    <string name="pref_create_backup_summary">备份文件将存储在 %s</string>
+    <string name="pref_create_backup_summary">备份将存储在 %s</string>
     <string name="notification_create_backup_title">正在创建备份文件</string>
     <string name="notification_backup_created_title">备份已创建</string>
     <string name="notification_backup_created_subtitle">此备份文件已存储在 %s</string>
@@ -404,7 +404,7 @@
     <string name="channel_options">公开频道配置</string>
     <string name="members_only">私人，仅成员</string>
     <string name="non_anonymous">对任何参与者显示用户 XMPP 地址</string>
-    <string name="moderated">开启频道发言审核</string>
+    <string name="moderated">启用频道发言审核</string>
     <string name="you_are_not_participating">您没有发言权</string>
     <string name="modified_conference_options">群聊配置修改成功！</string>
     <string name="could_not_modify_conference_options">无法修改群聊配置</string>
@@ -1109,4 +1109,5 @@
     <string name="word_document">Word 文档</string>
     <string name="restore_omemo_key">恢复 OMEMO 密钥</string>
     <string name="non_quicksy_backup">Quicksy 只能恢复 quicksy.im 账号的备份</string>
+    <string name="pref_backup_location">备份位置</string>
 </resources>
