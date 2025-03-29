@@ -242,7 +242,7 @@
     <string name="joining_conference">グループチャットに参加しています…</string>
     <string name="leave">退出</string>
     <string name="contact_added_you">連絡先があなたを連絡先リストに追加しました</string>
-    <string name="add_back">戻りを追加</string>
+    <string name="add_back">連絡先を追加</string>
     <string name="contact_has_read_up_to_this_point">%s はここまで読みました</string>
     <string name="contacts_have_read_up_to_this_point">%s はここまで読みました</string>
     <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d人がここまで読みました</string>
@@ -1092,4 +1092,8 @@
     <string name="pref_chat_bubbles_summary">背景色、文字サイズ、プロフィール画像など</string>
     <string name="pref_title_bubbles">ふきだし</string>
     <string name="account_status_connection_timeout">接続タイムアウト</string>
+    <string name="restore_omemo_key">OMEMO鍵を復元</string>
+    <string name="non_quicksy_backup">Quicksyはquicksy.imのアカウントのバックアップしか復元できません</string>
+    <string name="pref_backup_location">バックアップの保存先</string>
+    <string name="word_document">Word 文書</string>
 </resources>
