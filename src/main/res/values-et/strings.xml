@@ -341,7 +341,7 @@
     <string name="group_chat_members">Osalejad</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Vaid omanik võib muuta vestlusrühma profiilipilte</string>
     <string name="contact_name">Kontakti nimi</string>
-    <string name="set_profile_picture">Conversationsi profiilipilt</string>
+    <string name="set_profile_picture">Tunnuspilt</string>
     <string name="enter_password_to_restore">Varukoopiast taastamiseks sisesta %s kasutajakonto salasõna.</string>
     <string name="enter_your_name_instructions">Selleks, et need, kellel pole sind oma aadressiraamatus, saaksid teada, kes sa oled, siis palun lisa oma nimi.</string>
     <string name="group_chat_will_make_your_jabber_id_public">See kanal teeb sinu XMPP-aadressi avalikuks</string>
