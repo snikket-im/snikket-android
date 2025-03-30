@@ -1,0 +1,2 @@
+* Shtim aftësie për zgjedhje vendndodhje kopjeruajtjesh
+* Më tepër URI (tel:, mailto:) të klikueshme
