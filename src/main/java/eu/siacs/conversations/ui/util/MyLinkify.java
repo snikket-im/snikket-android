@@ -29,6 +29,7 @@
 
 package eu.siacs.conversations.ui.util;
 
+import android.net.Uri;
 import android.text.Editable;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
@@ -39,6 +40,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import eu.siacs.conversations.ui.text.FixedURLSpan;
 import eu.siacs.conversations.utils.Patterns;
+import eu.siacs.conversations.utils.XmppUri;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -59,6 +61,7 @@ public class MyLinkify {
                     case "tel" -> Patterns.URI_TEL.matcher(match).matches();
                     case "http", "https" -> Patterns.URI_HTTP.matcher(match).matches();
                     case "geo" -> Patterns.URI_GEO.matcher(match).matches();
+                    case "xmpp" -> new XmppUri(Uri.parse(match.toString())).isValidJid();
                     default -> true;
                 };
             };
