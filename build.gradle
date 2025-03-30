@@ -58,7 +58,7 @@ dependencies {
     conversationsPlaystoreImplementation("com.android.installreferrer:installreferrer:2.2")
     quicksyPlaystoreImplementation 'com.google.android.gms:play-services-auth-api-phone:18.2.0'
     implementation 'com.github.open-keychain.open-keychain:openpgp-api:v5.7.1'
-    implementation("com.github.CanHub:Android-Image-Cropper:2.0.0")
+    implementation("com.vanniktech:android-image-cropper:4.6.0")
     implementation "androidx.sharetarget:sharetarget:1.2.0"
 
     implementation 'androidx.appcompat:appcompat:1.7.0'

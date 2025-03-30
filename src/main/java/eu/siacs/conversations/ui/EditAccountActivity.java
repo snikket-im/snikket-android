@@ -1202,6 +1202,10 @@ public class EditAccountActivity extends OmemoActivity
         this.binding.accountPassword.setFocusableInTouchMode(editPassword);
         this.binding.accountPassword.setCursorVisible(editPassword);
         this.binding.accountPassword.setEnabled(editPassword);
+        if (!editPassword && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.binding.accountJid.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
+            this.binding.accountPassword.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
+        }
 
         if (!mInitMode) {
             this.binding.avater.setVisibility(View.VISIBLE);
