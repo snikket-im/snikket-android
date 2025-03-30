@@ -808,7 +808,7 @@
     <string name="ebook">Електронна книга</string>
     <string name="video_original">Оригінал (нестиснений)</string>
     <string name="open_with">Відкрити…</string>
-    <string name="set_profile_picture">Зображення профілю для Conversations</string>
+    <string name="set_profile_picture">Аватар</string>
     <string name="choose_account">Виберіть обліковий запис</string>
     <string name="restore_backup">Відновити з резервної копії</string>
     <string name="restore">Відновити</string>
