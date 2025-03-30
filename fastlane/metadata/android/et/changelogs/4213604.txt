@@ -1,0 +1,2 @@
+* Lisasime võimaluse valida varukoopia asukohta
+* Senisest palju enam URI-sid on klikatavad (tel:, mailto:)
