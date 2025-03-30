@@ -819,7 +819,7 @@
     <string name="ebook">电子书</string>
     <string name="video_original">未压缩（原始）</string>
     <string name="open_with">打开…</string>
-    <string name="set_profile_picture">Conversations 个人资料照片</string>
+    <string name="set_profile_picture">头像</string>
     <string name="choose_account">选择账号</string>
     <string name="restore_backup">恢复备份</string>
     <string name="restore">恢复</string>
