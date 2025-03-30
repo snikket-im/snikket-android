@@ -6,12 +6,14 @@ public class Patterns {
 
     public static final Pattern URI_GENERIC =
             Pattern.compile(
-                    "(?<=^|\\s)(tel|xmpp|http|https|geo|mailto):[a-zA-Z0-9\\-._~:/?#\\[\\]@!$&'()*+,;=%]+");
+                    "(?<=^|\\s)(tel|xmpp|http|https|geo|mailto|web\\+ap):[a-zA-Z0-9\\-._~:/?#\\[\\]@!$&'()*+,;=%]+");
 
     public static final Pattern URI_TEL =
             Pattern.compile("^tel:\\+?(\\d{1,4}[-./()\\s]?)*\\d{1,4}(;.*)?$");
 
     public static final Pattern URI_HTTP = Pattern.compile("https?://\\S+");
+
+    public static final Pattern URI_WEB_AP = Pattern.compile("web\\+ap://\\S+");
 
     public static Pattern URI_GEO =
             Pattern.compile(

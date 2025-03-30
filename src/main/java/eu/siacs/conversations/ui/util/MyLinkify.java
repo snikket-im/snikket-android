@@ -62,6 +62,7 @@ public class MyLinkify {
                     case "http", "https" -> Patterns.URI_HTTP.matcher(match).matches();
                     case "geo" -> Patterns.URI_GEO.matcher(match).matches();
                     case "xmpp" -> new XmppUri(Uri.parse(match.toString())).isValidJid();
+                    case "web+ap" -> Patterns.URI_WEB_AP.matcher(match).matches();
                     default -> true;
                 };
             };
