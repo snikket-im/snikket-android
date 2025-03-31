@@ -54,6 +54,7 @@ public class ImportBackupActivity extends ActionBarActivity
     private BackupFileAdapter backupFileAdapter;
 
     private LiveData<Boolean> inProgressImport;
+    private Uri currentRestoreDialog;
     private UUID currentWorkRequest;
 
     private final ActivityResultLauncher<String[]> requestPermissions =
@@ -92,12 +93,19 @@ public class ImportBackupActivity extends ActionBarActivity
             if (currentWorkRequest != null) {
                 this.currentWorkRequest = UUID.fromString(currentWorkRequest);
             }
+            final var currentRestoreDialog = savedInstanceState.getString("current-restore-dialog");
+            if (currentRestoreDialog != null) {
+                this.currentRestoreDialog = Uri.parse(currentRestoreDialog);
+            }
         }
         monitorWorkRequest(this.currentWorkRequest);
 
         this.backupFileAdapter = new BackupFileAdapter();
         this.binding.list.setAdapter(this.backupFileAdapter);
         this.backupFileAdapter.setOnItemClickedListener(this);
+        if (this.currentRestoreDialog != null) {
+            openBackupFileFromUri(this.currentRestoreDialog, false);
+        }
     }
 
     @Override
@@ -114,6 +122,9 @@ public class ImportBackupActivity extends ActionBarActivity
     public void onSaveInstanceState(@NonNull final Bundle bundle) {
         if (this.currentWorkRequest != null) {
             bundle.putString("current-work-request", this.currentWorkRequest.toString());
+        }
+        if (this.currentRestoreDialog != null) {
+            bundle.putString("current-restore-dialog", this.currentRestoreDialog.toString());
         }
         super.onSaveInstanceState(bundle);
     }
@@ -251,6 +262,7 @@ public class ImportBackupActivity extends ActionBarActivity
 
     private void showEnterPasswordDialog(
             final BackupFile backupFile, final boolean finishOnCancel) {
+        this.currentRestoreDialog = backupFile.getUri();
         final DialogEnterPasswordBinding enterPasswordBinding =
                 DataBindingUtil.inflate(
                         LayoutInflater.from(this), R.layout.dialog_enter_password, null, false);
@@ -265,6 +277,7 @@ public class ImportBackupActivity extends ActionBarActivity
         builder.setNegativeButton(
                 R.string.cancel,
                 (dialog, which) -> {
+                    this.currentRestoreDialog = null;
                     if (finishOnCancel) {
                         finish();
                     }
