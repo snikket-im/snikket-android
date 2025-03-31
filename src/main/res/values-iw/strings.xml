@@ -91,7 +91,7 @@
     <string name="account_status_regis_conflict">שם משתמש כבר בשימוש</string>
     <string name="account_status_regis_success">הרשמה הושלמה</string>
     <string name="account_status_incompatible_server">שרת לא מתאים</string>
-    <string name="encryption_choice_unencrypted">לא מוצפן</string>
+    <string name="encryption_choice_unencrypted">טקסט נקי</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -343,4 +343,16 @@
     <string name="delete_file_dialog_msg">האם אתה בטוח שברצונך למחוק את הקובץ הזה?\n\n<b>אזהרה:</b> פעולה זו לא תמחק עותקים של קובץ זה המאוחסנים במכשירים או שרתים אחרים.</string>
     <string name="pref_call_ringtone_summary">רינגטון לשיחות נכנסות</string>
     <string name="pref_notification_grace_period">תקופת החסד</string>
+    <string name="account_status_regis_not_sup">הרישום אינו נתמך על ידי השרת</string>
+    <string name="account_status_incompatible_client">לקוח לא תואם</string>
+    <string name="account_status_regis_invalid_token">אסימון רישום לא חוקי</string>
+    <string name="account_status_tls_error">משא ומתן TLS נכשל</string>
+    <string name="account_status_stream_opening_error">שגיאת פתיחת זרם</string>
+    <string name="pref_notification_grace_period_summary">משך זמן השתקת התראות לאחר זיהוי פעילות באחד מהמכשירים האחרים שלך.</string>
+    <string name="pref_ui_options">UI</string>
+    <string name="bad_key_for_encryption">מפתח הצפנה שגוי.</string>
+    <string name="recording_error">שגיאה</string>
+    <string name="error_security_exception_during_image_copy">האפליקציה שבה השתמשת כדי לבחור תמונה זו לא סיפקה מספיק הרשאות לקרוא את הקובץ.\n\n<small>השתמש במנהל קבצים אחר כדי לבחור תמונה</small>.</string>
+    <string name="account_status_channel_binding">עטיפת ערוץ אינה זמינה</string>
+    <string name="unpublish_pgp">הסר את המפתח הציבורי של OpenPGP</string>
 </resources>
