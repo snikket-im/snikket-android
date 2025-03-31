@@ -847,7 +847,7 @@
     <string name="ebook">Электронная книга</string>
     <string name="video_original">Оригинал (без сжатия)</string>
     <string name="open_with">Открыть с помощью…</string>
-    <string name="set_profile_picture">Изображение профиля Conversations</string>
+    <string name="set_profile_picture">Аватар</string>
     <string name="choose_account">Выбрать аккаунт</string>
     <string name="restore_backup">Восстановить из резервной копии</string>
     <string name="restore">Восстановить</string>
