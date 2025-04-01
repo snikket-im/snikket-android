@@ -6,7 +6,7 @@ public class Patterns {
 
     public static final Pattern URI_GENERIC =
             Pattern.compile(
-                    "(?<=^|\\s)(tel|xmpp|http|https|geo|mailto|web\\+ap):[\\p{L}\\p{M}\\p{N}\\-._~:/?#\\[\\]@!$&'()*+,;=%]+");
+                    "(?<=^|\\s|\\()(tel|xmpp|http|https|geo|mailto|web\\+ap):[\\p{L}\\p{M}\\p{N}\\-._~:/?#\\[\\]@!$&'*+,;=%]+(\\([\\p{L}\\p{M}\\p{N}\\-._~:/?#\\[\\]@!$&'*+,;=%]+\\))*[\\p{L}\\p{M}\\p{N}\\-._~:/?#\\[\\]@!$&'*+,;=%]*");
 
     public static final Pattern URI_TEL =
             Pattern.compile("^tel:\\+?(\\d{1,4}[-./()\\s]?)*\\d{1,4}(;.*)?$");
