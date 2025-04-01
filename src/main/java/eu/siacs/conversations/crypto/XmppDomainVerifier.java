@@ -2,10 +2,20 @@ package eu.siacs.conversations.crypto;
 
 import android.util.Log;
 import android.util.Pair;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
-
+import java.io.IOException;
+import java.net.IDN;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateParsingException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLSession;
 import org.bouncycastle.asn1.ASN1Object;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.ASN1TaggedObject;
@@ -17,20 +27,6 @@ import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
-
-import java.io.IOException;
-import java.net.IDN;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateParsingException;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-
-import javax.net.ssl.SSLPeerUnverifiedException;
-import javax.net.ssl.SSLSession;
 
 public class XmppDomainVerifier {
 
@@ -82,16 +78,11 @@ public class XmppDomainVerifier {
     public static boolean matchDomain(final String needle, final List<String> haystack) {
         for (final String entry : haystack) {
             if (entry.startsWith("*.")) {
-                int offset = 0;
-                while (offset < needle.length()) {
-                    int i = needle.indexOf('.', offset);
-                    if (i < 0) {
-                        break;
-                    }
-                    if (needle.substring(i).equalsIgnoreCase(entry.substring(1))) {
-                        return true;
-                    }
-                    offset = i + 1;
+                // https://www.rfc-editor.org/rfc/rfc6125#section-6.4.3
+                // wild cards can only be in the left most label and don’t match '.'
+                final int i = needle.indexOf('.');
+                if (i != -1 && needle.substring(i).equalsIgnoreCase(entry.substring(1))) {
+                    return true;
                 }
             } else {
                 if (entry.equalsIgnoreCase(needle)) {
