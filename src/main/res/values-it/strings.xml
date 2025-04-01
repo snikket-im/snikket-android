@@ -322,7 +322,7 @@
     <string name="pref_keep_foreground_service">Servizio in primo piano</string>
     <string name="pref_keep_foreground_service_summary">Evita che il sistema operativo chiuda la connessione</string>
     <string name="pref_create_backup">Crea un backup</string>
-    <string name="pref_create_backup_summary">I file di backup verranno salvati in %s</string>
+    <string name="pref_create_backup_summary">I backup verranno salvati in %s</string>
     <string name="notification_create_backup_title">Creazione dei file di backup</string>
     <string name="notification_backup_created_title">Il tuo backup è stato creato</string>
     <string name="notification_backup_created_subtitle">I file di backup sono stati salvati in %s</string>
@@ -828,7 +828,7 @@
     <string name="ebook">e-book</string>
     <string name="video_original">Originale (non compresso)</string>
     <string name="open_with">Apri con…</string>
-    <string name="set_profile_picture">Immagine profilo di Conversations</string>
+    <string name="set_profile_picture">Avatar</string>
     <string name="choose_account">Scegli un profilo</string>
     <string name="restore_backup">Ripristina backup</string>
     <string name="restore">Ripristina</string>
@@ -1128,4 +1128,5 @@
     <string name="word_document">Documento Word</string>
     <string name="restore_omemo_key">Ripristina chiavi OMEMO</string>
     <string name="non_quicksy_backup">Quicksy può ripristinare backup solo per profili quicksy.im</string>
+    <string name="pref_backup_location">Percorso backup</string>
 </resources>
