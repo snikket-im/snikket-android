@@ -99,6 +99,10 @@ dependencies {
     implementation 'com.google.guava:guava:33.4.0-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.13.52'
     implementation 'im.conversations.webrtc:webrtc-android:129.0.0'
+
+    //Testing
+    testImplementation 'junit:junit:4.13.2'
+
 }
 
 ext {

@@ -319,6 +319,8 @@
     <string name="retry_with_p2p">Retry with P2P</string>
     <string name="file_url">File URL</string>
     <string name="url_copied_to_clipboard">Copied URL to clipboard</string>
+    <string name="uri_copied_to_clipboard">Copied URI to clipboard</string>
+    <string name="uri">URI</string>
     <string name="jabber_id_copied_to_clipboard">Copied XMPP address to clipboard</string>
     <string name="error_message_copied_to_clipboard">Copied error message to clipboard</string>
     <string name="web_address">web address</string>
@@ -747,7 +749,13 @@
     <string name="pref_use_share_location_plugin">Share Location Plugin</string>
     <string name="pref_use_share_location_plugin_summary">Use the Share Location Plugin instead of the built-in map</string>
     <string name="copy_link">Copy web address</string>
+    <string name="copy_URI">Copy URI</string>
+    <string name="copy_telephone_number">Copy phone number</string>
+    <string name="copy_geo_uri">Copy geo location</string>
     <string name="copy_jabber_id">Copy XMPP address</string>
+    <string name="copy_email_address">Copy email address</string>
+    <string name="copied_email_address">Copied email address to clipboard</string>
+    <string name="copied_phone_number">Copied phone number to clipboard</string>
     <string name="p1_s3_filetransfer">HTTP File Sharing for S3</string>
     <string name="pref_start_search">Direct Search</string>
     <string name="pref_start_search_summary">At ‘New chat’ screen open keyboard and place cursor in search field</string>

@@ -91,4 +91,30 @@ public class PatternTest {
 
         Assert.assertEquals(ImmutableList.of("https://conversations.im"), matches);
     }
+
+    @Test
+    public void newLine() {
+        final var message = "\nxmpp:example.com";
+        final var matches =
+                Patterns.URI_GENERIC
+                        .matcher(message)
+                        .results()
+                        .map(MatchResult::group)
+                        .collect(Collectors.toList());
+
+        Assert.assertEquals(ImmutableList.of("xmpp:example.com"), matches);
+    }
+
+    @Test
+    public void code() {
+        final var message = "`xmpp:example.com`";
+        final var matches =
+                Patterns.URI_GENERIC
+                        .matcher(message)
+                        .results()
+                        .map(MatchResult::group)
+                        .collect(Collectors.toList());
+
+        Assert.assertTrue(matches.isEmpty());
+    }
 }

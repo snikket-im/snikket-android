@@ -15,12 +15,14 @@ public class MiniUri {
 
     private static final String EMPTY_STRING = "";
 
+    private final String raw;
     private final String scheme;
     private final String authority;
     private final String path;
     private final Map<String, String> parameter;
 
     public MiniUri(final String uri) {
+        this.raw = uri;
         final var schemeAndRest = Splitter.on(':').limit(2).splitToList(uri);
         if (schemeAndRest.size() < 2) {
             this.scheme = uri;
@@ -102,6 +104,10 @@ public class MiniUri {
         return Strings.isNullOrEmpty(this.path) || this.authority == null
                 ? this.path
                 : '/' + this.path;
+    }
+
+    public String getRaw() {
+        return this.raw;
     }
 
     public Map<String, String> getParameter() {

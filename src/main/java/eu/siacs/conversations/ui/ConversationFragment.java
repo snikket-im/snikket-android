@@ -31,7 +31,6 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -65,6 +64,7 @@ import androidx.databinding.DataBindingUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import de.gultsch.common.Patterns;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -100,6 +100,7 @@ import eu.siacs.conversations.ui.util.EditMessageActionModeCallback;
 import eu.siacs.conversations.ui.util.ListViewUtils;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
+import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.ui.util.ScrollState;
@@ -1347,13 +1348,22 @@ public class ConversationFragment extends XmppFragment
                     && t == null) {
                 copyMessage.setVisible(true);
                 quoteMessage.setVisible(!showError && !MessageUtils.prepareQuote(m).isEmpty());
-                final String scheme =
-                        ShareUtil.getLinkScheme(new SpannableStringBuilder(m.getBody()));
-                if ("xmpp".equals(scheme)) {
-                    copyLink.setTitle(R.string.copy_jabber_id);
+                final var firstUri = Iterables.getFirst(MyLinkify.getLinks(m.getBody()), null);
+                if (firstUri != null) {
+                    final var scheme = firstUri.getScheme();
+                    final @StringRes int resForScheme =
+                            switch (scheme) {
+                                case "xmpp" -> R.string.copy_jabber_id;
+                                case "http", "https", "gemini" -> R.string.copy_link;
+                                case "geo" -> R.string.copy_geo_uri;
+                                case "tel" -> R.string.copy_telephone_number;
+                                case "mailto" -> R.string.copy_email_address;
+                                default -> R.string.copy_URI;
+                            };
+                    copyLink.setTitle(resForScheme);
                     copyLink.setVisible(true);
-                } else if (scheme != null) {
-                    copyLink.setVisible(true);
+                } else {
+                    copyLink.setVisible(false);
                 }
             }
             if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED && !deleted) {
