@@ -832,7 +832,7 @@
     <string name="ebook">e-book</string>
     <string name="video_original">Original (não comprimido)</string>
     <string name="open_with">Abrir com…</string>
-    <string name="set_profile_picture">Imagem de perfil do Conversations</string>
+    <string name="set_profile_picture">Avatar</string>
     <string name="choose_account">Selecione a conta</string>
     <string name="restore_backup">Restaurar o backup</string>
     <string name="restore">Restaurar</string>
