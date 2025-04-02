@@ -1,6 +1,7 @@
 package eu.siacs.conversations.utils;
 
 import com.google.common.net.InetAddresses;
+import de.gultsch.common.Patterns;
 import java.net.InetAddress;
 
 public class IP {
