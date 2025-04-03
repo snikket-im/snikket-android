@@ -248,8 +248,8 @@
 \n<b>警告：</b>将在服务器上完全移除频道。</string>
     <string name="could_not_destroy_room">无法解散群聊</string>
     <string name="could_not_destroy_channel">无法解散频道</string>
-    <string name="action_edit_subject">编辑群聊话题</string>
-    <string name="topic">话题</string>
+    <string name="action_edit_subject">编辑群聊主题</string>
+    <string name="topic">主题</string>
     <string name="joining_conference">正在加入群聊…</string>
     <string name="leave">离开</string>
     <string name="contact_added_you">对方已将您添加到联系人列表</string>
@@ -842,11 +842,11 @@
     <string name="channel_already_exists">此频道已存在</string>
     <string name="joined_an_existing_channel">您已加入现有的频道</string>
     <string name="unable_to_set_channel_configuration">无法保存频道配置</string>
-    <string name="allow_participants_to_edit_subject">允许参与者编辑话题</string>
+    <string name="allow_participants_to_edit_subject">允许参与者编辑主题</string>
     <string name="allow_participants_to_invite_others">允许参与者邀请他人</string>
-    <string name="anyone_can_edit_subject">参与者可以编辑话题。</string>
-    <string name="owners_can_edit_subject">所有者可以编辑话题。</string>
-    <string name="admins_can_edit_subject">管理员可以编辑话题。</string>
+    <string name="anyone_can_edit_subject">参与者可以编辑主题。</string>
+    <string name="owners_can_edit_subject">所有者可以编辑主题。</string>
+    <string name="admins_can_edit_subject">管理员可以编辑主题。</string>
     <string name="owners_can_invite_others">所有者可以邀请他人。</string>
     <string name="anyone_can_invite_others">参与者可以邀请他人。</string>
     <string name="jabber_ids_are_visible_to_admins">管理员可以查看用户 XMPP 地址。</string>
@@ -1069,7 +1069,7 @@
     <string name="your_avatar_tap_to_select_new_avatar">您的头像。点按即可从图库选择新头像。</string>
     <string name="could_not_disable_video">无法禁用视频。</string>
     <string name="delete_pgp_key">删除 OpenPGP 密钥</string>
-    <string name="edit_name_and_topic">编辑名称和话题</string>
+    <string name="edit_name_and_topic">编辑名称和主题</string>
     <string name="edit_configuration">更改配置</string>
     <string name="change_notification_settings">更改通知设置</string>
     <string name="call_is_using_earpiece">正在使用听筒进行通话。</string>
@@ -1110,4 +1110,12 @@
     <string name="restore_omemo_key">恢复 OMEMO 密钥</string>
     <string name="non_quicksy_backup">Quicksy 只能恢复 quicksy.im 账号的备份</string>
     <string name="pref_backup_location">备份位置</string>
+    <string name="uri_copied_to_clipboard">URI 已复制到剪贴板</string>
+    <string name="copy_email_address">复制电子邮件地址</string>
+    <string name="copied_email_address">电子邮件地址已复制到剪贴板</string>
+    <string name="copied_phone_number">电话号码已复制到剪贴板</string>
+    <string name="copy_geo_uri">复制地理位置</string>
+    <string name="uri">URI</string>
+    <string name="copy_URI">复制 URI</string>
+    <string name="copy_telephone_number">复制电话号码</string>
 </resources>
