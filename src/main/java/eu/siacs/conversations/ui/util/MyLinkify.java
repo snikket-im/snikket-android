@@ -40,6 +40,7 @@ import de.gultsch.common.Patterns;
 import eu.siacs.conversations.ui.text.FixedURLSpan;
 import eu.siacs.conversations.utils.XmppUri;
 import java.util.List;
+import java.util.Objects;
 
 public class MyLinkify {
 
@@ -56,7 +57,15 @@ public class MyLinkify {
             case "http", "https" -> Patterns.URI_HTTP.matcher(match).matches();
             case "geo" -> Patterns.URI_GEO.matcher(match).matches();
             case "xmpp" -> new XmppUri(Uri.parse(match)).isValidJid();
-            case "web+ap" -> Patterns.URI_WEB_AP.matcher(match).matches();
+            case "web+ap" -> {
+                if (Patterns.URI_WEB_AP.matcher(match).matches()) {
+                    final var webAp = new MiniUri(match);
+                    // TODO once we have fragment support check that there aren't any
+                    yield Objects.nonNull(webAp.getAuthority()) && webAp.getParameter().isEmpty();
+                } else {
+                    yield false;
+                }
+            }
             default -> true;
         };
     }
