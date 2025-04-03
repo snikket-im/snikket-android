@@ -1,5 +1,6 @@
 package de.gultsch.common;
 
+import android.net.Uri;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -7,6 +8,7 @@ import com.google.common.collect.ImmutableMap;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -33,6 +35,7 @@ public class MiniUri {
         }
         this.scheme = schemeAndRest.get(0);
         final var rest = schemeAndRest.get(1);
+        // TODO add fragment parser
         final var authorityPathAndQuery = Splitter.on('?').limit(2).splitToList(rest);
         final var authorityPath = authorityPathAndQuery.get(0);
         System.out.println("authorityPath " + authorityPath);
@@ -106,8 +109,18 @@ public class MiniUri {
                 : '/' + this.path;
     }
 
+    public List<String> getPathSegments() {
+        return Strings.isNullOrEmpty(this.path)
+                ? Collections.emptyList()
+                : Splitter.on('/').splitToList(this.path);
+    }
+
     public String getRaw() {
         return this.raw;
+    }
+
+    public Uri asUri() {
+        return Uri.parse(this.raw);
     }
 
     public Map<String, String> getParameter() {
