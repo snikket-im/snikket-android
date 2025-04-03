@@ -1162,4 +1162,12 @@
     <string name="restore_omemo_key">Восстановить ключи OMEMO</string>
     <string name="non_quicksy_backup">Quicksy может восстанавливать резервные копии только для аккаунтов quicksy.im</string>
     <string name="pref_backup_location">Расположение резервной копии</string>
+    <string name="uri_copied_to_clipboard">URI скопирован в буфер обмена</string>
+    <string name="uri">URI</string>
+    <string name="copy_telephone_number">Копировать номер телефона</string>
+    <string name="copied_phone_number">Номер телефона скопирован в буфер обмена</string>
+    <string name="copy_geo_uri">Копировать местоположение</string>
+    <string name="copy_email_address">Копировать адрес почты</string>
+    <string name="copy_URI">Копировать URI</string>
+    <string name="copied_email_address">Адрес электронной почты скопирован в буфер обмена</string>
 </resources>
