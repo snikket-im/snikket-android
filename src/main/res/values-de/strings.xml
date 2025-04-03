@@ -309,8 +309,8 @@
     <string name="send_again">Erneut senden</string>
     <string name="file_url">Datei-URL</string>
     <string name="url_copied_to_clipboard">URL in die Zwischenablage kopiert</string>
-    <string name="jabber_id_copied_to_clipboard">XMPP-Adresse in Zwischenablage kopiert</string>
-    <string name="error_message_copied_to_clipboard">Fehlermeldung in Zwischenablage kopiert</string>
+    <string name="jabber_id_copied_to_clipboard">XMPP-Adresse in die Zwischenablage kopiert</string>
+    <string name="error_message_copied_to_clipboard">Fehlermeldung in die Zwischenablage kopiert</string>
     <string name="web_address">Internetadresse</string>
     <string name="scan_qr_code">QR-Code scannen</string>
     <string name="show_qr_code">QR-Code anzeigen</string>
@@ -1115,4 +1115,12 @@
     <string name="restore_omemo_key">OMEMO-Schlüssel wiederherstellen</string>
     <string name="non_quicksy_backup">Quicksy kann nur Sicherungen für quicksy.im-Konten wiederherstellen</string>
     <string name="pref_backup_location">Sicherungsort</string>
+    <string name="uri">URI</string>
+    <string name="copy_telephone_number">Telefonnummer kopieren</string>
+    <string name="copy_geo_uri">Standort kopieren</string>
+    <string name="copy_email_address">E-Mail-Adresse kopieren</string>
+    <string name="copied_phone_number">Telefonnummer in die Zwischenablage kopiert</string>
+    <string name="uri_copied_to_clipboard">URI in die Zwischenablage kopiert</string>
+    <string name="copy_URI">URI kopieren</string>
+    <string name="copied_email_address">E-Mail-Adresse in die Zwischenablage kopiert</string>
 </resources>
