@@ -305,7 +305,7 @@
     <string name="file_url">URL файлу</string>
     <string name="url_copied_to_clipboard">URL скопійовано</string>
     <string name="jabber_id_copied_to_clipboard">Адресу XMPP скопійовано</string>
-    <string name="error_message_copied_to_clipboard">Текст повідомлення про помилку скопійовано</string>
+    <string name="error_message_copied_to_clipboard">Повідомлення про помилку скопійовано</string>
     <string name="web_address">вебадреса</string>
     <string name="scan_qr_code">Розпізнати QR-код</string>
     <string name="show_qr_code">Показати QR-код</string>
@@ -701,7 +701,7 @@
     <string name="location_disabled">Доступ до місцезнаходження вимкнено</string>
     <string name="action_fix_to_location">Закріпити розташування</string>
     <string name="action_unfix_from_location">Відкріпити розташування</string>
-    <string name="action_copy_location">Скопіювати місцезнаходження</string>
+    <string name="action_copy_location">Копіювати місцезнаходження</string>
     <string name="action_share_location">Поділитися місцезнаходженням</string>
     <string name="action_directions">Напрямки</string>
     <string name="title_activity_share_location">Поділитися місцезнаходженням</string>
@@ -1163,4 +1163,12 @@
     <string name="restore_omemo_key">Відновити ключі OMEMO</string>
     <string name="non_quicksy_backup">Quicksy може відновлювати резервні копії лише для облікових записів quicksy.im</string>
     <string name="pref_backup_location">Розташування резервних копій</string>
+    <string name="uri">URI</string>
+    <string name="copied_email_address">Адресу Email скопійовано</string>
+    <string name="copy_URI">Копіювати URI</string>
+    <string name="copy_telephone_number">Копіювати номер телефону</string>
+    <string name="copy_geo_uri">Копіювати місцезнаходження</string>
+    <string name="copied_phone_number">Номер телефону скопійовано</string>
+    <string name="copy_email_address">Копіювати адресу Email</string>
+    <string name="uri_copied_to_clipboard">URI скопійовано</string>
 </resources>
