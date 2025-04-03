@@ -5,7 +5,6 @@ import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
-
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.TrustManagers;
@@ -14,14 +13,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.TLSSocketFactory;
-
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.ResponseBody;
-
-import org.apache.http.conn.ssl.StrictHostnameVerifier;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -37,9 +28,13 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
+import org.apache.http.conn.ssl.StrictHostnameVerifier;
 
 public class HttpConnectionManager extends AbstractConnectionManager {
 
@@ -51,17 +46,19 @@ public class HttpConnectionManager extends AbstractConnectionManager {
     private static final OkHttpClient OK_HTTP_CLIENT;
 
     static {
-        OK_HTTP_CLIENT = new OkHttpClient.Builder()
-                .addInterceptor(chain -> {
-                    final Request original = chain.request();
-                    final Request modified = original.newBuilder()
-                            .header("User-Agent", getUserAgent())
-                            .build();
-                    return chain.proceed(modified);
-                })
-                .build();
+        OK_HTTP_CLIENT =
+                new OkHttpClient.Builder()
+                        .addInterceptor(
+                                chain -> {
+                                    final Request original = chain.request();
+                                    final Request modified =
+                                            original.newBuilder()
+                                                    .header("User-Agent", getUserAgent())
+                                                    .build();
+                                    return chain.proceed(modified);
+                                })
+                        .build();
     }
-
 
     public static String getUserAgent() {
         return String.format("%s/%s", BuildConfig.APP_NAME, BuildConfig.VERSION_NAME);
@@ -74,7 +71,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
     public static Proxy getProxy() {
         final InetAddress localhost;
         try {
-            localhost = InetAddress.getByAddress(new byte[]{127, 0, 0, 1});
+            localhost = InetAddress.getByAddress(new byte[] {127, 0, 0, 1});
         } catch (final UnknownHostException e) {
             throw new IllegalStateException(e);
         }
@@ -93,7 +90,10 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         synchronized (this.downloadConnections) {
             for (HttpDownloadConnection connection : this.downloadConnections) {
                 if (connection.getMessage() == message) {
-                    Log.d(Config.LOGTAG, message.getConversation().getAccount().getJid().asBareJid() + ": download already in progress");
+                    Log.d(
+                            Config.LOGTAG,
+                            message.getConversation().getAccount().getJid().asBareJid()
+                                    + ": download already in progress");
                     return;
                 }
             }
@@ -107,11 +107,18 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         synchronized (this.uploadConnections) {
             for (HttpUploadConnection connection : this.uploadConnections) {
                 if (connection.getMessage() == message) {
-                    Log.d(Config.LOGTAG, message.getConversation().getAccount().getJid().asBareJid() + ": upload already in progress");
+                    Log.d(
+                            Config.LOGTAG,
+                            message.getConversation().getAccount().getJid().asBareJid()
+                                    + ": upload already in progress");
                     return;
                 }
             }
-            HttpUploadConnection connection = new HttpUploadConnection(message, Method.determine(message.getConversation().getAccount()), this);
+            HttpUploadConnection connection =
+                    new HttpUploadConnection(
+                            message,
+                            Method.determine(message.getConversation().getAccount()),
+                            this);
             connection.init(delay);
             this.uploadConnections.add(connection);
         }
@@ -133,7 +140,8 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         return buildHttpClient(url, account, 30, interactive);
     }
 
-    OkHttpClient buildHttpClient(final HttpUrl url, final Account account, int readTimeout, boolean interactive) {
+    OkHttpClient buildHttpClient(
+            final HttpUrl url, final Account account, int readTimeout, boolean interactive) {
         final String slotHostname = url.host();
         final boolean onionSlot = slotHostname.endsWith(".onion");
         final OkHttpClient.Builder builder = OK_HTTP_CLIENT.newBuilder();
@@ -154,7 +162,8 @@ public class HttpConnectionManager extends AbstractConnectionManager {
             trustManager = mXmppConnectionService.getMemorizingTrustManager().getNonInteractive();
         }
         try {
-            final SSLSocketFactory sf = new TLSSocketFactory(new X509TrustManager[]{trustManager}, SECURE_RANDOM);
+            final SSLSocketFactory sf =
+                    new TLSSocketFactory(new X509TrustManager[] {trustManager}, SECURE_RANDOM);
             builder.sslSocketFactory(sf, trustManager);
             builder.hostnameVerifier(new StrictHostnameVerifier());
         } catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
@@ -179,13 +188,12 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         return body.byteStream();
     }
 
-
     public static OkHttpClient okHttpClient(final Context context) {
         final OkHttpClient.Builder builder = HttpConnectionManager.OK_HTTP_CLIENT.newBuilder();
         try {
             final X509TrustManager trustManager;
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
-                trustManager = TrustManagers.defaultWithBundledLetsEncrypt(context);
+                trustManager = TrustManagers.createDefaultWithBundledLetsEncrypt(context);
             } else {
                 trustManager = TrustManagers.createDefaultTrustManager();
             }
@@ -193,10 +201,10 @@ public class HttpConnectionManager extends AbstractConnectionManager {
                     new TLSSocketFactory(new X509TrustManager[] {trustManager}, SECURE_RANDOM);
             builder.sslSocketFactory(socketFactory, trustManager);
         } catch (final IOException
-                       | KeyManagementException
-                       | NoSuchAlgorithmException
-                       | KeyStoreException
-                       | CertificateException e) {
+                | KeyManagementException
+                | NoSuchAlgorithmException
+                | KeyStoreException
+                | CertificateException e) {
             Log.d(Config.LOGTAG, "not reconfiguring service to work with bundled LetsEncrypt");
             throw new RuntimeException(e);
         }
