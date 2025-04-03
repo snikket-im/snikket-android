@@ -1125,4 +1125,12 @@
     <string name="restore_omemo_key">Rikthe kyçe OMEMO</string>
     <string name="non_quicksy_backup">Quicksy mund të rikthejë vetëm kopjeruajtje për llogari quicksy.im</string>
     <string name="pref_backup_location">Vendndodhje kopjeruajtjesh</string>
+    <string name="uri">URI</string>
+    <string name="copy_telephone_number">Kopjo numër telefoni</string>
+    <string name="copy_geo_uri">Kopjo vendndodhje gjeografike</string>
+    <string name="copy_email_address">Kopjo adresë email</string>
+    <string name="copied_phone_number">Numri i telefonit u kopjua në të papastër</string>
+    <string name="uri_copied_to_clipboard">URI u kopjua në të papastër</string>
+    <string name="copied_email_address">Adresa email u kopjua në të papastër</string>
+    <string name="copy_URI">Kopjo URI-n</string>
 </resources>
