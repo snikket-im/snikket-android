@@ -1137,9 +1137,9 @@
     <string name="uri">adresă</string>
     <string name="copy_URI">Copiere adresă</string>
     <string name="copy_geo_uri">Copiere locație</string>
-    <string name="copied_phone_number">Număr de telefon copiat în memorie</string>
-    <string name="copy_email_address">Copiere adresă e-mail</string>
-    <string name="uri_copied_to_clipboard">Adresă copiată în memorie</string>
-    <string name="copy_telephone_number">Copiere număr de telefon</string>
-    <string name="copied_email_address">Adresă e-mail copiată în memorie</string>
+    <string name="copied_phone_number">Telefon copiat</string>
+    <string name="copy_email_address">Copiere e-mail</string>
+    <string name="uri_copied_to_clipboard">Adresă copiată</string>
+    <string name="copy_telephone_number">Copiere telefon</string>
+    <string name="copied_email_address">E-mail copiat</string>
 </resources>
