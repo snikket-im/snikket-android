@@ -2185,12 +2185,14 @@ public class ConversationFragment extends XmppFragment
         builder.setNegativeButton(
                 R.string.copy_to_clipboard,
                 (dialog, which) -> {
-                    activity.copyTextToClipboard(displayError, R.string.error_message);
-                    Toast.makeText(
-                                    activity,
-                                    R.string.error_message_copied_to_clipboard,
-                                    Toast.LENGTH_SHORT)
-                            .show();
+                    if (activity.copyTextToClipboard(displayError, R.string.error_message)
+                            && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                        Toast.makeText(
+                                        activity,
+                                        R.string.error_message_copied_to_clipboard,
+                                        Toast.LENGTH_SHORT)
+                                .show();
+                    }
                 });
         builder.setPositiveButton(R.string.confirm, null);
         builder.create().show();

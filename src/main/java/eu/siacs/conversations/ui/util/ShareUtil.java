@@ -31,6 +31,7 @@ package eu.siacs.conversations.ui.util;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.os.Build;
 import android.widget.Toast;
 import androidx.annotation.StringRes;
 import com.google.common.collect.Iterables;
@@ -93,14 +94,15 @@ public class ShareUtil {
         }
     }
 
-    public static void copyToClipboard(XmppActivity activity, Message message) {
-        if (activity.copyTextToClipboard(message.getBody(), R.string.message)) {
+    public static void copyToClipboard(final XmppActivity activity, final Message message) {
+        if (activity.copyTextToClipboard(message.getBody(), R.string.message)
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             Toast.makeText(activity, R.string.message_copied_to_clipboard, Toast.LENGTH_SHORT)
                     .show();
         }
     }
 
-    public static void copyUrlToClipboard(XmppActivity activity, Message message) {
+    public static void copyUrlToClipboard(final XmppActivity activity, final Message message) {
         final String url;
         final int resId;
         if (message.isGeoUri()) {
@@ -117,7 +119,8 @@ public class ShareUtil {
                             : message.getBody().trim();
             resId = R.string.file_url;
         }
-        if (activity.copyTextToClipboard(url, resId)) {
+        if (activity.copyTextToClipboard(url, resId)
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             Toast.makeText(activity, R.string.url_copied_to_clipboard, Toast.LENGTH_SHORT).show();
         }
     }
@@ -147,7 +150,8 @@ public class ShareUtil {
                     case "mailto" -> R.string.copied_email_address;
                     default -> R.string.uri_copied_to_clipboard;
                 };
-        if (activity.copyTextToClipboard(clip, label)) {
+        if (activity.copyTextToClipboard(clip, label)
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             Toast.makeText(activity, toast, Toast.LENGTH_SHORT).show();
         }
     }

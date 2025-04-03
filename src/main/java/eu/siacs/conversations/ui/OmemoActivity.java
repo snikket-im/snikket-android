@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui;
 
 import android.content.Intent;
+import android.os.Build;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,8 +93,9 @@ public abstract class OmemoActivity extends XmppActivity {
 
     protected void copyOmemoFingerprint(String fingerprint) {
         if (copyTextToClipboard(
-                CryptoHelper.prettifyFingerprint(fingerprint.substring(2)),
-                R.string.omemo_fingerprint)) {
+                        CryptoHelper.prettifyFingerprint(fingerprint.substring(2)),
+                        R.string.omemo_fingerprint)
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             Toast.makeText(this, R.string.toast_message_omemo_fingerprint, Toast.LENGTH_SHORT)
                     .show();
         }
