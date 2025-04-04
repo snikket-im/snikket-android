@@ -1135,4 +1135,12 @@
     <string name="restore_omemo_key">Taasta OMEMO võtmed</string>
     <string name="non_quicksy_backup">Quicksy saab taastada vaid quicksy.im teenuses asuvate kasutajakontode varukoopiaid</string>
     <string name="pref_backup_location">Varukoopia asukoht</string>
+    <string name="uri">URI</string>
+    <string name="copy_URI">Kopeeri URI</string>
+    <string name="copy_geo_uri">Kopeeri geograafilised koordinaadid</string>
+    <string name="copy_email_address">Kopeeri e-posti aadress</string>
+    <string name="copied_email_address">Kopeerisime e-posti aadressi lõikelauale</string>
+    <string name="uri_copied_to_clipboard">Kopeerisime URI lõikelauale</string>
+    <string name="copy_telephone_number">Kopeeri telefoninumber</string>
+    <string name="copied_phone_number">Kopeerisime telefoninumbri lõikelauale</string>
 </resources>
