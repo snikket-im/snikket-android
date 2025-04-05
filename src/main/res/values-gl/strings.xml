@@ -1115,4 +1115,12 @@
     <string name="restore_omemo_key">Restaurar claves OMEMO</string>
     <string name="non_quicksy_backup">Quicksy só pode restaurar copias de apoio de contas quicksy.im</string>
     <string name="pref_backup_location">Localización das copias</string>
+    <string name="uri_copied_to_clipboard">URI copiado ao portapapeis</string>
+    <string name="uri">URI</string>
+    <string name="copy_URI">Copiar URI</string>
+    <string name="copy_geo_uri">Copiar xeolocalización</string>
+    <string name="copy_email_address">Copiar enderezo de correo</string>
+    <string name="copied_email_address">Copiouse o enderezo ao portapapeis</string>
+    <string name="copied_phone_number">Copiouse o número ao portapapeis</string>
+    <string name="copy_telephone_number">Copiar número de teléfono</string>
 </resources>
