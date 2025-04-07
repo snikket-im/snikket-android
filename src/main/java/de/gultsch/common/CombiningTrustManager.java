@@ -1,9 +1,8 @@
-package eu.siacs.conversations.crypto;
+package de.gultsch.common;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
 import com.google.common.collect.ImmutableList;
-import eu.siacs.conversations.Config;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -45,11 +44,8 @@ public final class CombiningTrustManager implements X509TrustManager {
     public void checkServerTrusted(final X509Certificate[] chain, final String authType)
             throws CertificateException {
         Log.d(
-                Config.LOGTAG,
-                CombiningTrustManager.class.getSimpleName()
-                        + " is configured with "
-                        + this.trustManagers.size()
-                        + " TrustManagers");
+                CombiningTrustManager.class.getSimpleName(),
+                "configured with " + this.trustManagers.size() + " TrustManagers");
         for (final Iterator<X509TrustManager> iterator = this.trustManagers.iterator();
                 iterator.hasNext(); ) {
             final X509TrustManager trustManager = iterator.next();
@@ -77,7 +73,7 @@ public final class CombiningTrustManager implements X509TrustManager {
         return certificates.build().toArray(new X509Certificate[0]);
     }
 
-    public static X509TrustManager combineWithDefault(final X509TrustManager... trustManagers)
+    static X509TrustManager combineWithDefault(final X509TrustManager... trustManagers)
             throws NoSuchAlgorithmException, KeyStoreException {
         final ImmutableList.Builder<X509TrustManager> builder = ImmutableList.builder();
         builder.addAll(Arrays.asList(trustManagers));

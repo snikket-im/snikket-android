@@ -1,6 +1,7 @@
-package eu.siacs.conversations.crypto;
+package de.gultsch.common;
 
 import android.content.Context;
+import android.os.Build;
 import androidx.annotation.Nullable;
 import com.google.common.collect.Iterables;
 import eu.siacs.conversations.R;
@@ -33,12 +34,21 @@ public final class TrustManagers {
                         X509TrustManager.class));
     }
 
+    public static X509TrustManager createForAndroidVersion(final Context context)
+            throws NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+            return TrustManagers.createDefaultWithBundledLetsEncrypt(context);
+        } else {
+            return TrustManagers.createDefaultTrustManager();
+        }
+    }
+
     public static X509TrustManager createDefaultTrustManager()
             throws NoSuchAlgorithmException, KeyStoreException {
         return createTrustManager(null);
     }
 
-    public static X509TrustManager createDefaultWithBundledLetsEncrypt(final Context context)
+    private static X509TrustManager createDefaultWithBundledLetsEncrypt(final Context context)
             throws NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
         final var bundleTrustManager =
                 createWithKeyStore(context.getResources().openRawResource(R.raw.letsencrypt));

@@ -5,9 +5,9 @@ import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
+import de.gultsch.common.TrustManagers;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.crypto.TrustManagers;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AbstractConnectionManager;
@@ -191,12 +191,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
     public static OkHttpClient okHttpClient(final Context context) {
         final OkHttpClient.Builder builder = HttpConnectionManager.OK_HTTP_CLIENT.newBuilder();
         try {
-            final X509TrustManager trustManager;
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
-                trustManager = TrustManagers.createDefaultWithBundledLetsEncrypt(context);
-            } else {
-                trustManager = TrustManagers.createDefaultTrustManager();
-            }
+            final X509TrustManager trustManager = TrustManagers.createForAndroidVersion(context);
             final SSLSocketFactory socketFactory =
                     new TLSSocketFactory(new X509TrustManager[] {trustManager}, SECURE_RANDOM);
             builder.sslSocketFactory(socketFactory, trustManager);

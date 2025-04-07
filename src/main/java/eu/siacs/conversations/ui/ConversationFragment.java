@@ -65,6 +65,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import de.gultsch.common.Linkify;
 import de.gultsch.common.Patterns;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -100,7 +101,6 @@ import eu.siacs.conversations.ui.util.EditMessageActionModeCallback;
 import eu.siacs.conversations.ui.util.ListViewUtils;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
-import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.ui.util.ScrollState;
@@ -1348,7 +1348,7 @@ public class ConversationFragment extends XmppFragment
                     && t == null) {
                 copyMessage.setVisible(true);
                 quoteMessage.setVisible(!showError && !MessageUtils.prepareQuote(m).isEmpty());
-                final var firstUri = Iterables.getFirst(MyLinkify.getLinks(m.getBody()), null);
+                final var firstUri = Iterables.getFirst(Linkify.getLinks(m.getBody()), null);
                 if (firstUri != null) {
                     final var scheme = firstUri.getScheme();
                     final @StringRes int resForScheme =

@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import de.gultsch.common.Linkify;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityMucDetailsBinding;
 import eu.siacs.conversations.entities.Conversation;
@@ -34,13 +35,13 @@ import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.ui.adapter.MediaAdapter;
 import eu.siacs.conversations.ui.adapter.UserPreviewAdapter;
 import eu.siacs.conversations.ui.interfaces.OnMediaLoaded;
+import eu.siacs.conversations.ui.text.FixedURLSpan;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.GridManager;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.MucConfiguration;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
-import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
@@ -558,7 +559,8 @@ public class ConferenceDetailsActivity extends XmppActivity
         if (printableValue(subject)) {
             SpannableStringBuilder spannable = new SpannableStringBuilder(subject);
             StylingHelper.format(spannable, this.binding.mucSubject.getCurrentTextColor());
-            MyLinkify.addLinks(spannable);
+            Linkify.addLinks(spannable);
+            FixedURLSpan.fix(spannable);
             this.binding.mucSubject.setText(spannable);
             this.binding.mucSubject.setTextAppearance(
                     subject.length() > (hasTitle ? 128 : 196)

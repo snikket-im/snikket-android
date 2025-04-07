@@ -27,24 +27,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package eu.siacs.conversations.ui.util;
+package de.gultsch.common;
 
 import android.net.Uri;
 import android.text.Editable;
-import android.text.util.Linkify;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import de.gultsch.common.MiniUri;
-import de.gultsch.common.Patterns;
-import eu.siacs.conversations.ui.text.FixedURLSpan;
 import eu.siacs.conversations.utils.XmppUri;
 import java.util.List;
 import java.util.Objects;
 
-public class MyLinkify {
+public class Linkify {
 
-    private static final Linkify.MatchFilter MATCH_FILTER =
+    private static final android.text.util.Linkify.MatchFilter MATCH_FILTER =
             (s, start, end) -> isPassAdditionalValidation(s.subSequence(start, end).toString());
 
     private static boolean isPassAdditionalValidation(final String match) {
@@ -71,8 +67,7 @@ public class MyLinkify {
     }
 
     public static void addLinks(final Editable body) {
-        Linkify.addLinks(body, Patterns.URI_GENERIC, null, MATCH_FILTER, null);
-        FixedURLSpan.fix(body);
+        android.text.util.Linkify.addLinks(body, Patterns.URI_GENERIC, null, MATCH_FILTER, null);
     }
 
     public static List<MiniUri> getLinks(final String body) {

@@ -35,6 +35,7 @@ import android.os.Build;
 import android.widget.Toast;
 import androidx.annotation.StringRes;
 import com.google.common.collect.Iterables;
+import de.gultsch.common.Linkify;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
@@ -126,7 +127,7 @@ public class ShareUtil {
     }
 
     public static void copyLinkToClipboard(final XmppActivity activity, final Message message) {
-        final var firstUri = Iterables.getFirst(MyLinkify.getLinks(message.getBody()), null);
+        final var firstUri = Iterables.getFirst(Linkify.getLinks(message.getBody()), null);
         if (firstUri == null) {
             return;
         }
