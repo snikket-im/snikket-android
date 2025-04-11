@@ -1108,12 +1108,12 @@
     <string name="clients_may_not_support_av">El cliente XMPP de su contacto puede que no admita llamadas de audio/vídeo.</string>
     <string name="could_not_modify_call">No se pudo modificar la llamada</string>
     <string name="pref_chat_bubbles">Burbujas de chat</string>
-    <string name="pref_chat_bubbles_summary">Color, Tamaño de fuente, Imágenes de perfil</string>
+    <string name="pref_chat_bubbles_summary">Color de fondo, Tamaño de fuente, Imágenes de perfil</string>
     <string name="pref_title_bubbles">Burbujas de Chat</string>
     <string name="pref_call_integration">Integración de llamadas</string>
     <string name="pref_show_avatars">Mostrar avatares</string>
     <string name="pref_show_avatars_summary">Mostrar imágenes de perfil para tus mensajes y conversaciones 1:1, aparte de las conversaciones en grupo.</string>
-    <string name="pref_call_integration_summary">Las llamadas desde esta app interactúan con las llamadas telefónicas regulares, como ser finalizar una llamada cuando recibimos otra.</string>
+    <string name="pref_call_integration_summary">Las llamadas desde esta app interactúan con las llamadas telefónicas regulares, como finalizar una llamada cuando recibimos otra.</string>
     <string name="pref_align_start">Mensajes alineados a la izquierda</string>
     <string name="pref_align_start_summary">Mostrar todos los mensajes, incluso los propios, sobre el margen izquierdo para una distribución uniforme del chat.</string>
     <string name="custom_notifications">Notificaciones personalizadas</string>
