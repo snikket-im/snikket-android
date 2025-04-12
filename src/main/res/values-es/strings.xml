@@ -4,7 +4,7 @@
     <string name="action_accounts">Gestionar cuentas</string>
     <string name="action_account">Gestionar cuenta</string>
     <string name="action_contact_details">Detalles del contacto</string>
-    <string name="action_muc_details">Detalles de conversación</string>
+    <string name="action_muc_details">Detalles de la conversación grupal</string>
     <string name="channel_details">Detalles del canal</string>
     <string name="action_add_account">Añadir cuenta</string>
     <string name="action_edit_contact">Editar contacto</string>
@@ -119,7 +119,7 @@
     <string name="pref_notification_grace_period">Periodo de gracia</string>
     <string name="pref_notification_grace_period_summary">El tiempo que se silencian las notificaciones tras detectar actividad en otro de tus dispositivos.</string>
     <string name="pref_advanced_options">Avanzado</string>
-    <string name="pref_never_send_crash_summary">Al enviar los informes de los fallos, ayudará a un mayor desarrollo</string>
+    <string name="pref_never_send_crash_summary">Al enviar los informes, estás ayudando al desarrollo</string>
     <string name="pref_confirm_messages">Confirmar mensajes</string>
     <string name="pref_confirm_messages_summary">Permitir a sus contactos saber cuando ha recibido y leído sus mensajes</string>
     <string name="pref_prevent_screenshots">Impedir capturas de pantalla</string>
@@ -413,7 +413,7 @@
     <string name="pdf_document">documento PDF</string>
     <string name="apk">aplicación para Android</string>
     <string name="vcard">Contacto</string>
-    <string name="avatar_has_been_published">Se ha publicado el avatar.</string>
+    <string name="avatar_has_been_published">Foto de perfil ha sido publicada!</string>
     <string name="sending_x_file">Enviando %s</string>
     <string name="offering_x_file">Ofreciendo %s</string>
     <string name="hide_offline">Ocultar desconectados</string>
@@ -484,7 +484,7 @@
     <string name="action_renew_certificate">Renovar certificado</string>
     <string name="error_fetching_omemo_key">¡Error buscando clave OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">¡Clave OMEMO con certificado verificada!</string>
-    <string name="device_does_not_support_certificates">Su dispositivo no admite la selección de certificados de cliente.</string>
+    <string name="device_does_not_support_certificates">Tu dispositivo no admite la selección de certificados de cliente!</string>
     <string name="pref_connection_options">Conexión</string>
     <string name="pref_use_tor">Conectar via Tor</string>
     <string name="pref_use_tor_summary">Todas las conexiones se realizan a través de la red TOR. Requiere Orbot</string>
@@ -826,7 +826,7 @@
     <string name="ebook">e-book</string>
     <string name="video_original">Original (sin comprimir)</string>
     <string name="open_with">Abrir con…</string>
-    <string name="set_profile_picture">Avatar</string>
+    <string name="set_profile_picture">Foto de Perfil</string>
     <string name="choose_account">Elige una cuenta</string>
     <string name="restore_backup">Restaurar copia de respaldo</string>
     <string name="restore">Restaurar</string>
@@ -1127,4 +1127,12 @@
     <string name="pref_backup_location">Ubicación de la copia de seguridad</string>
     <string name="restore_omemo_key">Restaurar claves OMEMO</string>
     <string name="account_status_channel_binding">Canal no disponible</string>
+    <string name="uri">URI</string>
+    <string name="copy_geo_uri">Copiar geolocalización</string>
+    <string name="copy_email_address">Copiar dirección email</string>
+    <string name="copied_email_address">Email copiado al portapapeles</string>
+    <string name="uri_copied_to_clipboard">URI copiada al portapapeles</string>
+    <string name="copy_URI">Copiar URI</string>
+    <string name="copied_phone_number">Número de teléfono copiado al portapapeles</string>
+    <string name="copy_telephone_number">Copiar numero de teléfono</string>
 </resources>
