@@ -1,16 +1,13 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -20,10 +17,8 @@ import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
-
 import im.conversations.android.xmpp.model.jingle.Jingle;
 import im.conversations.android.xmpp.model.stanza.Iq;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -187,8 +182,7 @@ public abstract class AbstractJingleConnection {
 
     abstract void deliverPacket(Iq jinglePacket);
 
-    protected void receiveOutOfOrderAction(
-            final Iq jinglePacket, final Jingle.Action action) {
+    protected void receiveOutOfOrderAction(final Iq jinglePacket, final Jingle.Action action) {
         Log.d(
                 Config.LOGTAG,
                 String.format(
@@ -198,7 +192,8 @@ public abstract class AbstractJingleConnection {
             Log.d(
                     Config.LOGTAG,
                     String.format(
-                            "%s: got a reason to terminate with out-of-order. but already in state %s",
+                            "%s: got a reason to terminate with out-of-order. but already in state"
+                                    + " %s",
                             id.account.getJid().asBareJid(), getState()));
             respondWithOutOfOrder(jinglePacket);
         } else {
@@ -267,10 +262,7 @@ public abstract class AbstractJingleConnection {
     }
 
     private void respondWithJingleError(
-            final Iq original,
-            String jingleCondition,
-            String condition,
-            String conditionType) {
+            final Iq original, String jingleCondition, String condition, String conditionType) {
         jingleConnectionManager.respondWithJingleError(
                 id.account, original, jingleCondition, condition, conditionType);
     }
@@ -371,15 +363,15 @@ public abstract class AbstractJingleConnection {
             return new Id(account, with, sessionId);
         }
 
-        public static Id of(Account account, Jid with) {
+        public static Id of(final Account account, final Jid with) {
             return new Id(account, with, JingleConnectionManager.nextRandomId());
         }
 
-        public static Id of(Message message) {
+        public static Id of(final Message message) {
             return new Id(
                     message.getConversation().getAccount(),
                     message.getCounterpart(),
-                    JingleConnectionManager.nextRandomId());
+                    message.getUuid());
         }
 
         public Contact getContact() {
@@ -430,8 +422,8 @@ public abstract class AbstractJingleConnection {
             case DECLINE, BUSY -> State.TERMINATED_DECLINED_OR_BUSY;
             case CANCEL, TIMEOUT -> State.TERMINATED_CANCEL_OR_TIMEOUT;
             case SECURITY_ERROR -> State.TERMINATED_SECURITY_ERROR;
-            case FAILED_APPLICATION, UNSUPPORTED_TRANSPORTS, UNSUPPORTED_APPLICATIONS -> State
-                    .TERMINATED_APPLICATION_FAILURE;
+            case FAILED_APPLICATION, UNSUPPORTED_TRANSPORTS, UNSUPPORTED_APPLICATIONS ->
+                    State.TERMINATED_APPLICATION_FAILURE;
             default -> State.TERMINATED_CONNECTIVITY_ERROR;
         };
     }

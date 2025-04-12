@@ -101,6 +101,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
                 this.xmppConnectionService.findOrCreateConversation(
                         id.account, id.with.asBareJid(), false, false);
         this.message = new Message(conversation, "", Message.ENCRYPTION_NONE);
+        this.message.setRemoteMsgId(id.sessionId);
         this.message.setStatus(Message.STATUS_RECEIVED);
         this.message.setErrorMessage(null);
         this.message.setTransferable(this);
