@@ -1,7 +1,6 @@
 package eu.siacs.conversations.xml;
 
 import com.google.common.collect.Iterables;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 

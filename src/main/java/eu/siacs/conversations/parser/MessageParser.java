@@ -44,6 +44,7 @@ import im.conversations.android.xmpp.model.correction.Replace;
 import im.conversations.android.xmpp.model.forward.Forwarded;
 import im.conversations.android.xmpp.model.markers.Displayed;
 import im.conversations.android.xmpp.model.occupant.OccupantId;
+import im.conversations.android.xmpp.model.oob.OutOfBandData;
 import im.conversations.android.xmpp.model.reactions.Reactions;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -547,10 +548,13 @@ public class MessageParser extends AbstractParser
         final boolean isTypeGroupChat =
                 packet.getType()
                         == im.conversations.android.xmpp.model.stanza.Message.Type.GROUPCHAT;
-        final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
+        final var encrypted =
+                packet.getOnlyExtension(im.conversations.android.xmpp.model.pgp.Encrypted.class);
+        final String pgpEncrypted = encrypted == null ? null : encrypted.getContent();
+        ;
 
-        final Element oob = packet.findChild("x", Namespace.OOB);
-        final String oobUrl = oob != null ? oob.findChildContent("url") : null;
+        final var oob = packet.getExtension(OutOfBandData.class);
+        final String oobUrl = oob != null ? oob.getURL() : null;
         final var replace = packet.getExtension(Replace.class);
         final var replacementId = replace == null ? null : replace.getId();
         final var axolotlEncrypted = packet.getOnlyExtension(Encrypted.class);
