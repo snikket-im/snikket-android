@@ -1,9 +1,14 @@
 # Changelog
 
+### Version 2.18.1
+
+* Fix reactions on files received via P2P
+* Improve URI matching
+
 ### Version 2.18.0
 
 * Add ability to pick backup location
-* More more URIs (tel:, mailto:) clickable
+* Make more URIs (tel:, mailto:) clickable
 
 ### Version 2.17.12
 
