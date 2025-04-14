@@ -1157,9 +1157,7 @@ public class MessageParser extends AbstractParser
                         && !packet.hasChild("thread")) { // We already know it has no body per above
                     if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
                         conversation.setHasMessagesLeftOnServer(conversation.countMessages() > 0);
-                        final LocalizedContent subject =
-                                packet.findInternationalizedChildContentInDefaultNamespace(
-                                        "subject");
+                        final LocalizedContent subject = packet.getSubject();
                         if (subject != null
                                 && conversation.getMucOptions().setSubject(subject.content)) {
                             mXmppConnectionService.updateConversation(conversation);
