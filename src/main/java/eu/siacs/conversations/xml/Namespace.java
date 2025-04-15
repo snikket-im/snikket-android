@@ -112,4 +112,5 @@ public final class Namespace {
 
     public static final String ENTITY_CAPABILITIES = "http://jabber.org/protocol/caps";
     public static final String ENTITY_CAPABILITIES_2 = "urn:xmpp:caps";
+    public static final String PRIVATE_XML_STORAGE = "jabber:iq:private";
 }
