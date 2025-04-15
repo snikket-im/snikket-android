@@ -45,9 +45,11 @@ import im.conversations.android.xmpp.model.forward.Forwarded;
 import im.conversations.android.xmpp.model.markers.Displayed;
 import im.conversations.android.xmpp.model.occupant.OccupantId;
 import im.conversations.android.xmpp.model.oob.OutOfBandData;
+import im.conversations.android.xmpp.model.pubsub.event.Event;
 import im.conversations.android.xmpp.model.reactions.Reactions;
+import im.conversations.android.xmpp.model.receipts.Request;
+import im.conversations.android.xmpp.model.unique.StanzaId;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -72,7 +74,9 @@ public class MessageParser extends AbstractParser
     }
 
     private static String extractStanzaId(
-            Element packet, boolean isTypeGroupChat, Conversation conversation) {
+            final im.conversations.android.xmpp.model.stanza.Message packet,
+            final boolean isTypeGroupChat,
+            final Conversation conversation) {
         final Jid by;
         final boolean safeToExtract;
         if (isTypeGroupChat) {
@@ -83,23 +87,14 @@ public class MessageParser extends AbstractParser
             by = account.getJid().asBareJid();
             safeToExtract = account.getXmppConnection().getFeatures().stanzaIds();
         }
-        return safeToExtract ? extractStanzaId(packet, by) : null;
+        return safeToExtract ? StanzaId.get(packet, by) : null;
     }
 
-    private static String extractStanzaId(Account account, Element packet) {
+    private static String extractStanzaId(
+            final Account account,
+            final im.conversations.android.xmpp.model.stanza.Message packet) {
         final boolean safeToExtract = account.getXmppConnection().getFeatures().stanzaIds();
-        return safeToExtract ? extractStanzaId(packet, account.getJid().asBareJid()) : null;
-    }
-
-    private static String extractStanzaId(Element packet, Jid by) {
-        for (Element child : packet.getChildren()) {
-            if (child.getName().equals("stanza-id")
-                    && Namespace.STANZA_IDS.equals(child.getNamespace())
-                    && by.equals(Jid.Invalid.getNullForInvalid(child.getAttributeAsJid("by")))) {
-                return child.getAttribute("id");
-            }
-        }
-        return null;
+        return safeToExtract ? StanzaId.get(packet, account.getJid().asBareJid()) : null;
     }
 
     private static Jid getTrueCounterpart(Element mucUserElement, Jid fallback) {
@@ -249,7 +244,7 @@ public class MessageParser extends AbstractParser
         return null;
     }
 
-    private void parseEvent(final Element event, final Jid from, final Account account) {
+    private void parseEvent(final Event event, final Jid from, final Account account) {
         final Element items = event.findChild("items");
         final String node = items == null ? null : items.getAttribute("node");
         if ("urn:xmpp:avatar:metadata".equals(node)) {
@@ -551,7 +546,6 @@ public class MessageParser extends AbstractParser
         final var encrypted =
                 packet.getOnlyExtension(im.conversations.android.xmpp.model.pgp.Encrypted.class);
         final String pgpEncrypted = encrypted == null ? null : encrypted.getContent();
-        ;
 
         final var oob = packet.getExtension(OutOfBandData.class);
         final String oobUrl = oob != null ? oob.getURL() : null;
@@ -592,7 +586,8 @@ public class MessageParser extends AbstractParser
             final Jid mucTrueCounterPartByPresence;
             if (conversation != null) {
                 final var mucOptions = conversation.getMucOptions();
-                occupant = mucOptions.occupantId() ? packet.getExtension(OccupantId.class) : null;
+                occupant =
+                        mucOptions.occupantId() ? packet.getOnlyExtension(OccupantId.class) : null;
                 final var user =
                         occupant == null ? null : mucOptions.findUserByOccupantId(occupant.getId());
                 mucTrueCounterPartByPresence = user == null ? null : user.getRealJid();
@@ -611,7 +606,8 @@ public class MessageParser extends AbstractParser
                     mXmppConnectionService.find(account, from.asBareJid());
             if (conversation != null) {
                 final var mucOptions = conversation.getMucOptions();
-                occupant = mucOptions.occupantId() ? packet.getExtension(OccupantId.class) : null;
+                occupant =
+                        mucOptions.occupantId() ? packet.getOnlyExtension(OccupantId.class) : null;
             } else {
                 occupant = null;
             }
@@ -1396,8 +1392,7 @@ public class MessageParser extends AbstractParser
             // end no body
         }
 
-        final Element event =
-                original.findChild("event", "http://jabber.org/protocol/pubsub#event");
+        final var event = original.getExtension(Event.class);
         if (event != null && Jid.Invalid.hasValidFrom(original) && original.getFrom().isBareJid()) {
             if (event.hasChild("items")) {
                 parseEvent(event, original.getFrom(), account);
@@ -1696,27 +1691,14 @@ public class MessageParser extends AbstractParser
             final Account account,
             final im.conversations.android.xmpp.model.stanza.Message packet,
             final String remoteMsgId,
-            MessageArchiveService.Query query) {
-        final boolean markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
-        final boolean request = packet.hasChild("request", "urn:xmpp:receipts");
+            final MessageArchiveService.Query query) {
+        final var request = packet.hasExtension(Request.class);
         if (query == null) {
-            final ArrayList<String> receiptsNamespaces = new ArrayList<>();
-            if (markable) {
-                receiptsNamespaces.add("urn:xmpp:chat-markers:0");
-            }
             if (request) {
-                receiptsNamespaces.add("urn:xmpp:receipts");
-            }
-            if (receiptsNamespaces.size() > 0) {
                 final var receipt =
                         mXmppConnectionService
                                 .getMessageGenerator()
-                                .received(
-                                        account,
-                                        packet.getFrom(),
-                                        remoteMsgId,
-                                        receiptsNamespaces,
-                                        packet.getType());
+                                .received(packet.getFrom(), remoteMsgId, packet.getType());
                 mXmppConnectionService.sendMessagePacket(account, receipt);
             }
         } else if (query.isCatchup()) {

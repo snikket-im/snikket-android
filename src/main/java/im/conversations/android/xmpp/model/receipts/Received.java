@@ -10,6 +10,11 @@ public class Received extends DeliveryReceipt {
         super(Received.class);
     }
 
+    public Received(final String id) {
+        super(Received.class);
+        this.setId(id);
+    }
+
     public void setId(String id) {
         this.setAttribute("id", id);
     }
