@@ -164,7 +164,7 @@
     <string name="account_status_incompatible_client">Uyumsuz istemci</string>
     <string name="account_status_stream_error">Akış hatası</string>
     <string name="account_status_stream_opening_error">Akış açılım hatası</string>
-    <string name="encryption_choice_unencrypted">Şifrelenmemiş</string>
+    <string name="encryption_choice_unencrypted">Açık metin</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -322,7 +322,7 @@
     <string name="pref_keep_foreground_service">Ön planda çalışması</string>
     <string name="pref_keep_foreground_service_summary">İşletim sisteminin bağlantınızı koparmasına engel olur</string>
     <string name="pref_create_backup">Yedek oluştur</string>
-    <string name="pref_create_backup_summary">Yedekleme dosyaları %s\'da depolanacak</string>
+    <string name="pref_create_backup_summary">Yedekler %s\'da depolanacak</string>
     <string name="notification_create_backup_title">Yedekleme dosyaları oluşturuluyor</string>
     <string name="notification_backup_created_title">Yedeklemeniz oluşturuldu</string>
     <string name="notification_backup_created_subtitle">Yedekleme dosyaları %s\'da depolandı</string>
@@ -461,7 +461,7 @@
     <string name="download_failed_invalid_file">İndirme başarısız: Geçersiz dosya</string>
     <string name="account_status_tor_unavailable">Tor ağına erişilemiyor</string>
     <string name="account_status_bind_failure">Bağlantı başarısız</string>
-    <string name="account_status_host_unknown">Sunucu bu alan adı için sorumlu değil</string>
+    <string name="account_status_host_unknown">Bu alan için sorumlu değil</string>
     <string name="server_info_broken">Bozuk</string>
     <string name="pref_presence_settings">Mevcudiyet</string>
     <string name="pref_away_when_screen_off">Telefon kilitliyken uzakta</string>
@@ -822,12 +822,12 @@
     <string name="ebook">e-kitap</string>
     <string name="video_original">Orijinal (sıkıştırılmamış)</string>
     <string name="open_with">Şununla aç…</string>
-    <string name="set_profile_picture">Conversations profil resmi</string>
+    <string name="set_profile_picture">Profil resmi</string>
     <string name="choose_account">Hesap seç</string>
     <string name="restore_backup">Yedekleri yükle</string>
     <string name="restore">Geri getir</string>
     <string name="enter_password_to_restore"> Yedekleri geri getirmek için %s hesabının şifrenizi girin.</string>
-    <string name="restore_warning">Herhangi bir yüklemeyi klonlama (aynı anda çalışan) girişiminde yedekleri geri yükleme özelliğini kullanmayın. Yedeklerin geri yüklenmesi sadece hesap aktarımları veya asıl cihazı kaybetmeniz durumu için kullanılmalıdır.</string>
+    <string name="restore_warning">Herhangi bir yüklemeyi klonlama (aynı anda çalışan) girişiminde OMEMO anahtarlarını geri yüklemeyin. OMEMO anahtarlarının geri yüklenmesi sadece hesap aktarımları veya asıl cihazı kaybetmeniz durumu için kullanılmalıdır.</string>
     <string name="unable_to_restore_backup">Yedekler geri yüklenemedi.</string>
     <string name="unable_to_decrypt_backup">Yedekleme çözülemedi. Şifre doğru mu?</string>
     <string name="backup_channel_name">Yedekleme &amp; Geri yükle</string>
@@ -981,7 +981,7 @@
     <string name="pref_send_crash_reports">Çökme raporları gönder</string>
     <string name="welcome_header">Sohbete Katıl</string>
     <string name="welcome_header_quicksy">Quicksy\'e hoşgeldiniz!</string>
-    <string name="restore_warning_continued">Kendiniz oluşturmadığınız yedekleri geri yüklemeye çalışmayın!</string>
+    <string name="restore_warning_continued">Sadece kendinizin yarattığı yedekleri geri yükleyin.</string>
     <string name="log_out">Oturumu kapat</string>
     <string name="hide_notification">Bildirimi gizle</string>
     <string name="report_spam">Spam bildir</string>
@@ -1023,7 +1023,7 @@
     <string name="pref_use_colorful_bubbles">Renkli konuşma balonları</string>
     <string name="pref_use_colorful_bubbles_summary">Gönderilen ve alınan mesajlar için farklı renkler kullan</string>
     <string name="no_permission_to_place_call">Arama yapma izni yok</string>
-    <string name="corresponding_chats_closed">Uygun gelen sohbetler arşivlendi</string>
+    <string name="corresponding_chats_closed">İlgili sohbetler arşivlendi.</string>
     <string name="pref_dynamic_colors">Dinamik renklendirme</string>
     <string name="pref_dynamic_colors_summary">Sistem renkleri (Material You)</string>
     <string name="rtp_state_contact_offline">Kişi müsait değil</string>
@@ -1068,4 +1068,27 @@
     <string name="pref_accept_invites_from_strangers">Yabancılardan gelen davetler</string>
     <string name="pref_accept_invites_from_strangers_summary">Yabancılardan gelen grup davetlerini kabul et</string>
     <string name="edit_configuration">Yapılandırmayı değiştir</string>
+    <string name="account_status_connection_timeout">Bağlantı zaman aşımı</string>
+    <string name="restore_omemo_key">OMEMO anahtarlarını geri yükle</string>
+    <string name="non_quicksy_backup">Quicksy sadece quicksy.im hesaplarındaki yedekleri geri yükleyebilir</string>
+    <string name="word_document">Word dokümanı</string>
+    <string name="uri">URI</string>
+    <string name="copy_geo_uri">Coğrafi konumu kopyala</string>
+    <string name="copy_email_address">E-posta adresini kopyala</string>
+    <string name="copied_email_address">E-posta adresi geçici taşıma panosuna kopyalandı</string>
+    <string name="pref_create_backup_one_off_summary">Bir defaya mahsus yedekle</string>
+    <string name="pref_backup_recurring">Yinelenen yedekleme</string>
+    <string name="pref_fullscreen_notification">Tam ekran bildirim</string>
+    <string name="retry_with_p2p">P2P ile tekrar dene</string>
+    <string name="rtp_state_content_add">Ek iz eklensin mi?</string>
+    <string name="uri_copied_to_clipboard">URI geçici taşıma panosuna kopyalandı</string>
+    <string name="copy_URI">URI kopyala</string>
+    <string name="copy_telephone_number">Telefon numarasını kopyala</string>
+    <string name="copied_phone_number">Telefon numarası geçici taşıma panosuna kopyalandı</string>
+    <string name="could_not_disable_video">Video etkisizleştirilemedi.</string>
+    <string name="pref_backup_summary">Bir defaya mahsus yarat, Yinelemeyi zamanla</string>
+    <string name="account_status_channel_binding">Kanal bağlantısı mevcut değil</string>
+    <string name="your_avatar_tap_to_select_new_avatar">Profil resminiz. Galeriden yeni profil resmi seçmek için dokunun.</string>
+    <string name="server_info_bind2">XEP-0386: Bağlantı 2</string>
+    <string name="server_info_sasl2">XEP-0388: Genişletilebilir SASL Profili</string>
 </resources>
