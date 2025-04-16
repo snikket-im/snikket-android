@@ -58,6 +58,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -87,6 +90,7 @@ import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.http.HttpConnectionManager;
+import eu.siacs.conversations.http.ServiceOutageStatus;
 import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.persistance.DatabaseBackend;
@@ -170,6 +174,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import me.leolin.shortcutbadger.ShortcutBadger;
+import okhttp3.HttpUrl;
 import org.conscrypt.Conscrypt;
 import org.jxmpp.stringprep.libidn.LibIdnXmppStringprep;
 import org.openintents.openpgp.IOpenPgpService2;
@@ -358,6 +363,10 @@ public class XmppConnectionService extends Service {
 
                 @Override
                 public void onStatusChanged(final Account account) {
+                    final var status = account.getStatus();
+                    if (ServiceOutageStatus.isPossibleOutage(status)) {
+                        fetchServiceOutageStatus(account);
+                    }
                     XmppConnection connection = account.getXmppConnection();
                     updateAccountUi();
 
@@ -489,6 +498,7 @@ public class XmppConnectionService extends Service {
                     getNotificationService().updateErrorNotification();
                 }
             };
+
     private OpenPgpServiceConnection pgpServiceConnection;
     private PgpEngine mPgpEngine = null;
     private WakeLock wakeLock;
@@ -1131,6 +1141,33 @@ public class XmppConnectionService extends Service {
                 }
             }
         }
+    }
+
+    private void fetchServiceOutageStatus(final Account account) {
+        final var sosUrl = account.getKey(Account.KEY_SOS_URL);
+        if (Strings.isNullOrEmpty(sosUrl)) {
+            return;
+        }
+        final var url = HttpUrl.parse(sosUrl);
+        if (url == null) {
+            return;
+        }
+        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": fetching service outage " + url);
+        Futures.addCallback(
+                ServiceOutageStatus.fetch(getApplicationContext(), url),
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(final ServiceOutageStatus sos) {
+                        Log.d(Config.LOGTAG, "fetched " + sos);
+                        account.setServiceOutageStatus(sos);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.d(Config.LOGTAG, "error fetching sos", throwable);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
     public boolean processUnifiedPushMessage(

@@ -2,13 +2,11 @@ package im.conversations.android.xmpp.processor;
 
 import android.text.TextUtils;
 import android.util.Log;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
-
 import im.conversations.android.xmpp.model.stanza.Iq;
 
 public class BindProcessor implements Runnable {
@@ -24,14 +22,21 @@ public class BindProcessor implements Runnable {
     @Override
     public void run() {
         final XmppConnection connection = account.getXmppConnection();
+        final var features = connection.getFeatures();
         service.cancelAvatarFetches(account);
         final boolean loggedInSuccessfully =
                 account.setOption(Account.OPTION_LOGGED_IN_SUCCESSFULLY, true);
+        final boolean sosModified;
+        final var sos = features.getServiceOutageStatus();
+        if (sos != null) {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + " server has SOS on " + sos);
+            sosModified = account.setKey(Account.KEY_SOS_URL, sos.toString());
+        } else {
+            sosModified = false;
+        }
         final boolean gainedFeature =
-                account.setOption(
-                        Account.OPTION_HTTP_UPLOAD_AVAILABLE,
-                        connection.getFeatures().httpUpload(0));
-        if (loggedInSuccessfully || gainedFeature) {
+                account.setOption(Account.OPTION_HTTP_UPLOAD_AVAILABLE, features.httpUpload(0));
+        if (loggedInSuccessfully || gainedFeature || sosModified) {
             service.databaseBackend.updateAccount(account);
         }
 
@@ -57,18 +62,17 @@ public class BindProcessor implements Runnable {
 
         connection.fetchRoster();
 
-        if (connection.getFeatures().bookmarks2()) {
+        if (features.bookmarks2()) {
             service.fetchBookmarks2(account);
-        } else if (!connection.getFeatures().bookmarksConversion()) {
+        } else if (!features.bookmarksConversion()) {
             service.fetchBookmarks(account);
         }
 
-        if (connection.getFeatures().mds()) {
+        if (features.mds()) {
             service.fetchMessageDisplayedSynchronization(account);
         } else {
             Log.d(Config.LOGTAG, account.getJid() + ": server has no support for mds");
         }
-        final var features = connection.getFeatures();
         final boolean bind2 = features.bind2();
         final boolean flexible = features.flexibleOfflineMessageRetrieval();
         final boolean catchup = service.getMessageArchiveService().inCatchup(account);

@@ -1116,4 +1116,7 @@
     <string name="delete_avatar_message">Would you like to delete your avatar? Some clients might continue to display a cached copy of your avatar.</string>
     <string name="show_to_contacts_only">Show to contacts only</string>
     <string name="pref_backup_location">Backup location</string>
+    <string name="account_status_service_outage_scheduled">Planned Downtime</string>
+    <string name="account_status_service_outage_known">Service Down (Known Issue)</string>
+    <string name="sos_scheduled_return">The service is scheduled to return at %s</string>
 </resources>

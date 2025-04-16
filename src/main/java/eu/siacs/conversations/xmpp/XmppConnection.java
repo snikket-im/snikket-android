@@ -3138,6 +3138,20 @@ public class XmppConnection implements Runnable {
             this.blockListRequested = value;
         }
 
+        public HttpUrl getServiceOutageStatus() {
+            final var disco = connection.disco.get(account.getDomain());
+            if (disco == null) {
+                return null;
+            }
+            final var address =
+                    disco.getExtendedDiscoInformation(
+                            Namespace.SERVICE_OUTAGE_STATUS, "external-status-addresses");
+            if (Strings.isNullOrEmpty(address)) {
+                return null;
+            }
+            return HttpUrl.parse(address);
+        }
+
         public boolean httpUpload(long filesize) {
             if (Config.DISABLE_HTTP_UPLOAD) {
                 return false;

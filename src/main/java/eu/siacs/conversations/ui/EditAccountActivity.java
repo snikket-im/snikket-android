@@ -18,6 +18,7 @@ import android.security.KeyChainAliasCallback;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -503,7 +504,7 @@ public class EditAccountActivity extends OmemoActivity
 
         final List<Account> accounts =
                 xmppConnectionService == null ? null : xmppConnectionService.getAccounts();
-        if (accounts != null && accounts.size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
+        if (accounts != null && accounts.isEmpty() && Config.MAGIC_CREATE_DOMAIN != null) {
             Intent intent =
                     SignupUtils.getSignUpIntent(this, mForceRegister != null && mForceRegister);
             StartConversationActivity.addInviteUri(intent, getIntent());
@@ -905,9 +906,9 @@ public class EditAccountActivity extends OmemoActivity
     }
 
     @Override
-    public void onNewIntent(final Intent intent) {
+    public void onNewIntent(@NonNull final Intent intent) {
         super.onNewIntent(intent);
-        if (intent != null && intent.getData() != null) {
+        if (intent.getData() != null) {
             final XmppUri uri = new XmppUri(intent.getData());
             if (xmppConnectionServiceBound) {
                 processFingerprintVerification(uri, false);
@@ -1400,6 +1401,7 @@ public class EditAccountActivity extends OmemoActivity
             } else {
                 this.binding.otherDeviceKeysCard.setVisibility(View.GONE);
             }
+            this.binding.serviceOutage.setVisibility(View.GONE);
         } else {
             final TextInputLayout errorLayout;
             final var status = this.mAccount.getStatus();
@@ -1428,6 +1430,39 @@ public class EditAccountActivity extends OmemoActivity
             removeErrorsOnAllBut(errorLayout);
             this.binding.stats.setVisibility(View.GONE);
             this.binding.otherDeviceKeysCard.setVisibility(View.GONE);
+            final var sos = mAccount.getServiceOutageStatus();
+            if (mAccount.isServiceOutage() && sos != null) {
+                this.binding.serviceOutage.setVisibility(View.VISIBLE);
+                if (sos.isPlanned()) {
+                    this.binding.sosTitle.setText(R.string.account_status_service_outage_scheduled);
+                } else {
+                    this.binding.sosTitle.setText(R.string.account_status_service_outage_known);
+                }
+                final var sosMessage = sos.getMessage();
+                if (Strings.isNullOrEmpty(sosMessage)) {
+                    this.binding.sosMessage.setVisibility(View.GONE);
+                } else {
+                    this.binding.sosMessage.setText(sosMessage);
+                    this.binding.sosMessage.setVisibility(View.VISIBLE);
+                }
+                final var expectedEnd = sos.getExpectedEnd();
+                if (expectedEnd <= 0) {
+                    this.binding.sosScheduledEnd.setVisibility(View.GONE);
+                } else {
+                    this.binding.sosScheduledEnd.setVisibility(View.VISIBLE);
+                    this.binding.sosScheduledEnd.setText(
+                            getString(
+                                    R.string.sos_scheduled_return,
+                                    DateUtils.formatDateTime(
+                                            this,
+                                            expectedEnd,
+                                            DateUtils.FORMAT_SHOW_TIME
+                                                    | DateUtils.FORMAT_ABBREV_ALL
+                                                    | DateUtils.FORMAT_SHOW_DATE)));
+                }
+            } else {
+                this.binding.serviceOutage.setVisibility(View.GONE);
+            }
         }
     }
 
