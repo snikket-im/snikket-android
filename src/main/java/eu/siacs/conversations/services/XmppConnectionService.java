@@ -1160,6 +1160,7 @@ public class XmppConnectionService extends Service {
                     public void onSuccess(final ServiceOutageStatus sos) {
                         Log.d(Config.LOGTAG, "fetched " + sos);
                         account.setServiceOutageStatus(sos);
+                        updateAccountUi();
                     }
 
                     @Override

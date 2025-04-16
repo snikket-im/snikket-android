@@ -16,9 +16,11 @@ import android.provider.Settings;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.format.DateUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +42,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
+import de.gultsch.common.Linkify;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -58,6 +61,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.PresenceTemplateAdapter;
+import eu.siacs.conversations.ui.text.FixedURLSpan;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
@@ -1442,8 +1446,12 @@ public class EditAccountActivity extends OmemoActivity
                 if (Strings.isNullOrEmpty(sosMessage)) {
                     this.binding.sosMessage.setVisibility(View.GONE);
                 } else {
-                    this.binding.sosMessage.setText(sosMessage);
+                    final var sosMessageSpannable = new SpannableString(sosMessage);
+                    Linkify.addLinks(sosMessageSpannable);
+                    FixedURLSpan.fix(sosMessageSpannable);
+                    this.binding.sosMessage.setText(sosMessageSpannable);
                     this.binding.sosMessage.setVisibility(View.VISIBLE);
+                    this.binding.sosMessage.setMovementMethod(LinkMovementMethod.getInstance());
                 }
                 final var expectedEnd = sos.getExpectedEnd();
                 if (expectedEnd <= 0) {
@@ -1457,7 +1465,8 @@ public class EditAccountActivity extends OmemoActivity
                                             this,
                                             expectedEnd,
                                             DateUtils.FORMAT_SHOW_TIME
-                                                    | DateUtils.FORMAT_ABBREV_ALL
+                                                    | DateUtils.FORMAT_NUMERIC_DATE
+                                                    | DateUtils.FORMAT_SHOW_YEAR
                                                     | DateUtils.FORMAT_SHOW_DATE)));
                 }
             } else {

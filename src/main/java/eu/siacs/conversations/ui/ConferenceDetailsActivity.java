@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
@@ -557,7 +557,7 @@ public class ConferenceDetailsActivity extends XmppActivity
             this.binding.mucTitle.setVisibility(View.GONE);
         }
         if (printableValue(subject)) {
-            SpannableStringBuilder spannable = new SpannableStringBuilder(subject);
+            final var spannable = new SpannableString(subject);
             StylingHelper.format(spannable, this.binding.mucSubject.getCurrentTextColor());
             Linkify.addLinks(spannable);
             FixedURLSpan.fix(spannable);
@@ -568,7 +568,6 @@ public class ConferenceDetailsActivity extends XmppActivity
                                     .TextAppearance_Material3_BodyMedium
                             : com.google.android.material.R.style
                                     .TextAppearance_Material3_BodyLarge);
-            this.binding.mucSubject.setAutoLinkMask(0);
             this.binding.mucSubject.setVisibility(View.VISIBLE);
             this.binding.mucSubject.setMovementMethod(LinkMovementMethod.getInstance());
         } else {

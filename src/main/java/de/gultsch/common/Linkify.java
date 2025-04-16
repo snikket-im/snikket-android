@@ -30,7 +30,7 @@
 package de.gultsch.common;
 
 import android.net.Uri;
-import android.text.Editable;
+import android.text.Spannable;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -66,7 +66,7 @@ public class Linkify {
         };
     }
 
-    public static void addLinks(final Editable body) {
+    public static void addLinks(final Spannable body) {
         android.text.util.Linkify.addLinks(body, Patterns.URI_GENERIC, null, MATCH_FILTER, null);
     }
 

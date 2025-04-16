@@ -86,7 +86,6 @@
                                             android:id="@+id/muc_subject"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:autoLink="web"
                                             android:textAppearance="?textAppearanceTitleMedium" />
                                     </LinearLayout>
 

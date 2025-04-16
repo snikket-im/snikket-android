@@ -147,8 +147,8 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="?attr/materialCardViewElevatedStyle"
                     android:id="@+id/service_outage"
+                    style="?attr/materialCardViewElevatedStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -156,8 +156,8 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    app:cardBackgroundColor="?colorErrorContainer">
+                    app:cardBackgroundColor="?colorErrorContainer"
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -168,29 +168,30 @@
 
                         <TextView
                             android:id="@+id/sos_title"
-                            android:textColor="?colorOnErrorContainer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/account_status_service_outage_known"
-                            android:textAppearance="?textAppearanceTitleLarge" />
+                            android:textAppearance="?textAppearanceTitleLarge"
+                            android:textColor="?colorOnErrorContainer" />
 
                         <TextView
-                            android:textColor="?colorOnErrorContainer"
                             android:id="@+id/sos_message"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            tools:text="Our service is currently performing server updates"
-                            android:textAppearance="?textAppearanceBodyMedium" />
+                            android:textAppearance="?textAppearanceBodyMedium"
+                            android:textColor="?colorOnErrorContainer"
+                            android:textColorLink="?colorOnErrorContainer"
+                            tools:text="Our service is currently performing server updates" />
 
                         <TextView
-                            android:textColor="?colorOnErrorContainer"
                             android:id="@+id/sos_scheduled_end"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            tools:text="@string/sos_scheduled_return"
-                            android:textAppearance="?textAppearanceBodyMedium" />
+                            android:layout_marginTop="16sp"
+                            android:textAppearance="?textAppearanceBodyLarge"
+                            android:textColor="?colorOnErrorContainer"
+                            tools:text="@string/sos_scheduled_return" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

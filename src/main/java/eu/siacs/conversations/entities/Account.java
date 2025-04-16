@@ -796,7 +796,9 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public boolean isServiceOutage() {
         final var sos = this.serviceOutageStatus;
-        if (sos != null && ServiceOutageStatus.isPossibleOutage(this.status)) {
+        if (sos != null
+                && isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY)
+                && ServiceOutageStatus.isPossibleOutage(this.status)) {
             return sos.isNow();
         }
         return false;
