@@ -84,12 +84,12 @@
     <string name="delete_file_dialog">Dosyayı sil</string>
     <string name="delete_file_dialog_msg">Bu dosyayı silmek istediğinizden emin misiniz? \n\n<b>Uyarı:</b> Bu eylem, bu dosyanın diğer aygıt ve sunucularda kayıtlı kopyalarını silmeyecektir.</string>
     <string name="choose_presence">Aygıt seç</string>
-    <string name="send_unencrypted_message">Şifrelenmemiş ileti gönder</string>
+    <string name="send_unencrypted_message">Açık metin olarak ileti gönder</string>
     <string name="send_message">Mesajı gönder</string>
     <string name="send_message_to_x">%s kişisine ileti gönder</string>
     <string name="send_omemo_x509_message">v\\OMEMO ile şifrelenmiş ileti gönder</string>
     <string name="your_nick_has_been_changed">Yeni rumuz kullanımda</string>
-    <string name="send_unencrypted">Şifrelenmemiş gönder</string>
+    <string name="send_unencrypted">Açık metin olarak gönder</string>
     <string name="decryption_failed">Deşifre edilemedi. Uygun bir özel anahtarınız olmayabilir.</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="openkeychain_required_long">%1$s mesajları şifrelemek, deşifre etmek ve genel anahtarlarınızı yönetmek için &lt;b&gt;OpenKeychain&lt;/b&gt; kullanmaktadır.&lt;br&gt;&lt;br&gt;lt GPLv3+ altında lisanslıdır ve F-Droid ve Google Play\'de mevcuttur.&lt;br&gt;&lt;br&gt;&lt;small&gt;(Lütfen devamında %1$s\'ı yeniden başlatın.)&lt;/small&gt;</string>
@@ -1006,7 +1006,7 @@
     <string name="contact_uses_unverified_keys">Kişiniz doğrulanmamış bir cihaz kullanıyor. Aktif MITM (Ortadaki Adam) saldırılarını önlemek için kişinizin QR kodunu okutarak doğrulama yapın.</string>
     <string name="call_integration_not_available">Arama entegrasyonu mevcut değil!</string>
     <string name="action_archive_chat">Sohbeti arşivle</string>
-    <string name="archive_this_chat">Bu sohbeti arşivle</string>
+    <string name="archive_this_chat">Ardından sohbeti sil</string>
     <string name="switch_to_chat">Sohbete git</string>
     <string name="pref_up_push_account_summary">Bildirimlerin alınacağı hesap.</string>
     <string name="unified_push_distributor">UnifiedPush dağıtıcısı</string>
