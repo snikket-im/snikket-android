@@ -1142,4 +1142,7 @@
     <string name="uri_copied_to_clipboard">Adresă copiată</string>
     <string name="copy_telephone_number">Copiere telefon</string>
     <string name="copied_email_address">E-mail copiat</string>
+    <string name="account_status_service_outage_known">Serviciu oprit (Problemă cunoscută)</string>
+    <string name="sos_scheduled_return">Serviciul este programat să revină la %s</string>
+    <string name="account_status_service_outage_scheduled">Oprire planificată</string>
 </resources>
