@@ -1,6 +1,7 @@
 package de.gultsch.common;
 
 import android.net.Uri;
+import androidx.annotation.NonNull;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -11,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class MiniUri {
 

@@ -4,7 +4,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"
@@ -51,9 +52,9 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:contentDescription="@string/add_contact_or_create_or_join_group_chat"
-            app:sdMainFabClosedSrc="@drawable/ic_add_24dp"
             app:sdMainFabClosedBackgroundColor="?colorPrimaryContainer"
             app:sdMainFabClosedIconColor="?colorOnPrimaryContainer"
+            app:sdMainFabClosedSrc="@drawable/ic_add_24dp"
             app:sdMainFabOpenedBackgroundColor="?colorPrimaryContainer"
             app:sdMainFabOpenedIconColor="?colorOnPrimaryContainer"
             app:sdOverlayLayout="@id/overlay"

@@ -2,12 +2,15 @@ package eu.siacs.conversations.xmpp.jingle;
 
 import android.content.Context;
 import android.util.Log;
-
+import androidx.annotation.Nullable;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
-
+import eu.siacs.conversations.Config;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
 import org.webrtc.Camera2Enumerator;
 import org.webrtc.CameraEnumerationAndroid;
 import org.webrtc.CameraEnumerator;
@@ -16,14 +19,6 @@ import org.webrtc.EglBase;
 import org.webrtc.PeerConnectionFactory;
 import org.webrtc.SurfaceTextureHelper;
 import org.webrtc.VideoSource;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
-import eu.siacs.conversations.Config;
 
 class VideoSourceWrapper {
 
@@ -151,7 +146,7 @@ class VideoSourceWrapper {
                     return videoSourceWrapper;
                 }
             }
-            if (deviceNames.size() == 0) {
+            if (deviceNames.isEmpty()) {
                 return null;
             } else {
                 return of(enumerator, Iterables.get(deviceNames, 0), deviceNames);

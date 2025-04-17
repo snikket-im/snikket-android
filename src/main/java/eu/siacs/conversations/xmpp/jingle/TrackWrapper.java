@@ -1,22 +1,17 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import android.util.Log;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-
 import eu.siacs.conversations.Config;
-
+import java.util.UUID;
 import org.webrtc.MediaStreamTrack;
 import org.webrtc.PeerConnection;
 import org.webrtc.RtpSender;
 import org.webrtc.RtpTransceiver;
-
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 class TrackWrapper<T extends MediaStreamTrack> {
     public final T track;
@@ -63,7 +58,7 @@ class TrackWrapper<T extends MediaStreamTrack> {
     }
 
     public static <T extends MediaStreamTrack> RtpTransceiver getTransceiver(
-            @Nonnull final PeerConnection peerConnection, final TrackWrapper<T> trackWrapper) {
+            @NonNull final PeerConnection peerConnection, final TrackWrapper<T> trackWrapper) {
         final RtpSender rtpSender = trackWrapper.rtpSender;
         final String rtpSenderId;
         try {

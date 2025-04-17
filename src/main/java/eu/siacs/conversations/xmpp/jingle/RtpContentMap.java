@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import androidx.annotation.NonNull;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -25,7 +26,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.Nonnull;
 
 public class RtpContentMap extends AbstractContentMap<RtpDescription, IceUdpTransportInfo> {
 
@@ -491,7 +491,7 @@ public class RtpContentMap extends AbstractContentMap<RtpDescription, IceUdpTran
         }
 
         @Override
-        @Nonnull
+        @NonNull
         public String toString() {
             return MoreObjects.toStringHelper(this)
                     .add("added", added)

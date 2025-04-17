@@ -5,6 +5,7 @@ import static eu.siacs.conversations.xmpp.jingle.WebRTCWrapper.logDescription;
 
 import android.content.Context;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Closeables;
@@ -41,7 +42,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.annotation.Nonnull;
 import org.webrtc.CandidatePairChangeEvent;
 import org.webrtc.DataChannel;
 import org.webrtc.IceCandidate;
@@ -437,7 +437,7 @@ public class WebRTCDataChannelTransport implements Transport {
                 localDescriptionExecutorService);
     }
 
-    @Nonnull
+    @NonNull
     private PeerConnectionFactory requirePeerConnectionFactory() {
         final PeerConnectionFactory peerConnectionFactory = this.peerConnectionFactory;
         if (peerConnectionFactory == null) {
@@ -446,7 +446,7 @@ public class WebRTCDataChannelTransport implements Transport {
         return peerConnectionFactory;
     }
 
-    @Nonnull
+    @NonNull
     private PeerConnection requirePeerConnection() {
         final var future = this.peerConnectionFuture;
         if (future != null && future.isDone()) {
