@@ -5,9 +5,10 @@ import androidx.annotation.NonNull;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -21,7 +22,7 @@ public class MiniUri {
     private final String scheme;
     private final String authority;
     private final String path;
-    private final Map<String, String> parameter;
+    private final Map<String, Collection<String>> parameter;
 
     public MiniUri(final String uri) {
         this.raw = uri;
@@ -63,8 +64,9 @@ public class MiniUri {
         };
     }
 
-    private static Map<String, String> parseParameters(final String query, final char separator) {
-        final ImmutableMap.Builder<String, String> builder = new ImmutableMap.Builder<>();
+    private static Map<String, Collection<String>> parseParameters(
+            final String query, final char separator) {
+        final var builder = new ImmutableMultimap.Builder<String, String>();
         for (final String pair : Splitter.on(separator).split(query)) {
             final String[] parts = pair.split("=", 2);
             if (parts.length == 0) {
@@ -81,7 +83,7 @@ public class MiniUri {
                 builder.put(key, EMPTY_STRING);
             }
         }
-        return builder.build();
+        return builder.build().asMap();
     }
 
     @NonNull
@@ -123,7 +125,7 @@ public class MiniUri {
         return Uri.parse(this.raw);
     }
 
-    public Map<String, String> getParameter() {
+    public Map<String, Collection<String>> getParameter() {
         return this.parameter;
     }
 }
