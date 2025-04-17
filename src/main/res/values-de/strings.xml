@@ -1123,4 +1123,7 @@
     <string name="uri_copied_to_clipboard">URI in die Zwischenablage kopiert</string>
     <string name="copy_URI">URI kopieren</string>
     <string name="copied_email_address">E-Mail-Adresse in die Zwischenablage kopiert</string>
+    <string name="account_status_service_outage_known">Dienst nicht verfügbar (bekanntes Problem)</string>
+    <string name="sos_scheduled_return">Geplante Wiederaufnahme des Dienstes um %s</string>
+    <string name="account_status_service_outage_scheduled">Geplante Ausfallzeit</string>
 </resources>
