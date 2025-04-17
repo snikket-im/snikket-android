@@ -1,7 +1,11 @@
 package im.conversations.android.xmpp.model.stanza;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.LocalizedContent;
 import im.conversations.android.annotation.XmlElement;
@@ -31,7 +35,7 @@ public class Message extends Stanza {
     }
 
     private LocalizedContent getLocalizedContent(final Class<? extends Extension> clazz) {
-        final var builder = new ImmutableMap.Builder<String, String>();
+        final var builder = new ImmutableMultimap.Builder<String, String>();
         final var messageLanguage = this.getAttribute("xml:lang");
         final var parentLanguage =
                 Strings.isNullOrEmpty(messageLanguage)
@@ -47,11 +51,12 @@ public class Message extends Stanza {
             }
             builder.put(language, content);
         }
-        try {
-            return LocalizedContent.get(builder.buildOrThrow());
-        } catch (final IllegalArgumentException e) {
+        final var multiMap = builder.build().asMap();
+        if (Config.TREAT_MULTI_CONTENT_AS_INVALID
+                && Iterables.any(multiMap.values(), v -> v.size() > 1)) {
             return null;
         }
+        return LocalizedContent.get(Maps.transformValues(multiMap, v -> Joiner.on('\n').join(v)));
     }
 
     public Type getType() {
