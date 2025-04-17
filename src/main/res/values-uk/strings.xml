@@ -1171,4 +1171,7 @@
     <string name="copied_phone_number">Номер телефону скопійовано</string>
     <string name="copy_email_address">Копіювати адресу Email</string>
     <string name="uri_copied_to_clipboard">URI скопійовано</string>
+    <string name="account_status_service_outage_scheduled">Запланований простій</string>
+    <string name="account_status_service_outage_known">Сервіс не працює (відома проблема)</string>
+    <string name="sos_scheduled_return">Відновлення роботи заплановано на %s</string>
 </resources>
