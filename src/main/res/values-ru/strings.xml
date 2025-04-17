@@ -1170,4 +1170,7 @@
     <string name="copy_email_address">Копировать адрес почты</string>
     <string name="copy_URI">Копировать URI</string>
     <string name="copied_email_address">Адрес электронной почты скопирован в буфер обмена</string>
+    <string name="account_status_service_outage_known">Сервис не работает (известная проблема)</string>
+    <string name="account_status_service_outage_scheduled">Запланированный простой</string>
+    <string name="sos_scheduled_return">Сервис должен заработать %s</string>
 </resources>
