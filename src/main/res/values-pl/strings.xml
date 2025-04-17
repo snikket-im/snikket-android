@@ -1155,4 +1155,7 @@
     <string name="copy_URI">Kopiuj URI</string>
     <string name="copied_email_address">Skopiowano adres e‑mail do schowka</string>
     <string name="uri_copied_to_clipboard">Skopiowano URI do schowka</string>
+    <string name="account_status_service_outage_scheduled">Planowana niedostępność</string>
+    <string name="sos_scheduled_return">Przywrócenie usługi planowane na %s</string>
+    <string name="account_status_service_outage_known">Usługa niedostępna (znany problem)</string>
 </resources>
