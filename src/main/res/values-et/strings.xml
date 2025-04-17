@@ -1143,4 +1143,7 @@
     <string name="uri_copied_to_clipboard">Kopeerisime URI lõikelauale</string>
     <string name="copy_telephone_number">Kopeeri telefoninumber</string>
     <string name="copied_phone_number">Kopeerisime telefoninumbri lõikelauale</string>
+    <string name="account_status_service_outage_scheduled">Planeeritud teenuse katkestus</string>
+    <string name="account_status_service_outage_known">Teenus ei tööta (teadaolev probleem)</string>
+    <string name="sos_scheduled_return">Teenuse plaanilise taastumise aeg on %s</string>
 </resources>
