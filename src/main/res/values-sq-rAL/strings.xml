@@ -1133,4 +1133,7 @@
     <string name="uri_copied_to_clipboard">URI u kopjua në të papastër</string>
     <string name="copied_email_address">Adresa email u kopjua në të papastër</string>
     <string name="copy_URI">Kopjo URI-n</string>
+    <string name="sos_scheduled_return">Shërbimi është vënë në plan të rikthehet në funksionim më %s</string>
+    <string name="account_status_service_outage_known">Shërbim Jashtë Funksionimi (Problem i Ditur)</string>
+    <string name="account_status_service_outage_scheduled">Kohë Mosfunksionimi e Planifikuar</string>
 </resources>
