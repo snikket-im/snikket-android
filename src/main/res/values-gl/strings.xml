@@ -1123,4 +1123,7 @@
     <string name="copied_email_address">Copiouse o enderezo ao portapapeis</string>
     <string name="copied_phone_number">Copiouse o número ao portapapeis</string>
     <string name="copy_telephone_number">Copiar número de teléfono</string>
+    <string name="account_status_service_outage_scheduled">Desconexión programada</string>
+    <string name="sos_scheduled_return">Está previsto reactivar o servizo ás %s</string>
+    <string name="account_status_service_outage_known">Sen servizo (incidencia coñecida)</string>
 </resources>
