@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -103,8 +104,7 @@ public class ImportBackupWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        setForegroundAsync(
-                new ForegroundInfo(NOTIFICATION_ID, createImportBackupNotification(1, 0)));
+        setForegroundAsync(getForegroundInfo());
         final Result result;
         try {
             result = importBackup(this.uri, this.password);
@@ -125,6 +125,18 @@ public class ImportBackupWorker extends Worker {
         }
 
         return result;
+    }
+
+    @NonNull
+    @Override
+    public ForegroundInfo getForegroundInfo() {
+        final var notification = createImportBackupNotification(1, 0);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            return new ForegroundInfo(
+                    NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+        } else {
+            return new ForegroundInfo(NOTIFICATION_ID, notification);
+        }
     }
 
     private Result importBackup(final Uri uri, final String password)
