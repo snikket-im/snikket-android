@@ -44,65 +44,53 @@ spotless {
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 
-    implementation project(':libs:annotation')
     annotationProcessor project(':libs:annotation-processor')
-
-
+    implementation project(':libs:annotation')
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.emoji2:emoji2:1.5.0'
+    freeImplementation 'androidx.emoji2:emoji2-bundled:1.5.0'
+    implementation 'androidx.emoji2:emoji2-emojipicker:1.5.0'
+    implementation 'androidx.exifinterface:exifinterface:1.4.0'
+    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'androidx.sharetarget:sharetarget:1.2.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.viewpager:viewpager:1.1.0'
-
+    implementation 'androidx.work:work-runtime:2.10.0'
+    implementation 'com.github.open-keychain.open-keychain:openpgp-api:v5.7.1'
+    implementation 'com.google.android.material:material:1.13.0-alpha12'
+    implementation 'com.google.guava:guava:33.4.6-android'
+    implementation 'com.google.zxing:core:3.5.3'
+    implementation 'com.leinardi.android:speed-dial:3.3.0'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
+    implementation 'com.vanniktech:android-image-cropper:4.6.0'
+    implementation 'im.conversations.webrtc:webrtc-android:129.0.0'
+    implementation 'io.deepmedia.community:transcoder-android:0.11.2'
+    implementation 'me.drakeet.support:toastcompat:1.1.0'
+    implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
+    implementation 'org.bouncycastle:bcmail-jdk18on:1.80'
+    implementation 'org.conscrypt:conscrypt-android:2.5.2'
+    implementation 'org.hsluv:hsluv:0.2'
+    implementation 'org.jxmpp:jxmpp-jid:1.0.3'
+    implementation 'org.jxmpp:jxmpp-stringprep-libidn:1.0.3'
+    implementation 'org.minidns:minidns-client:1.0.4'
+    implementation 'org.minidns:minidns-dnssec:1.0.4'
+    implementation 'org.osmdroid:osmdroid-android:6.1.20'
+    implementation 'org.whispersystems:signal-protocol-java:2.6.2'
+    conversationsPlaystoreImplementation 'com.android.installreferrer:installreferrer:2.2'
     playstoreImplementation('com.google.firebase:firebase-messaging:24.1.1') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
+
     }
-    conversationsPlaystoreImplementation("com.android.installreferrer:installreferrer:2.2")
-    quicksyPlaystoreImplementation 'com.google.android.gms:play-services-auth-api-phone:18.2.0'
-    implementation 'com.github.open-keychain.open-keychain:openpgp-api:v5.7.1'
-    implementation("com.vanniktech:android-image-cropper:4.6.0")
-    implementation "androidx.sharetarget:sharetarget:1.2.0"
-
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.exifinterface:exifinterface:1.4.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation "androidx.preference:preference:1.2.1"
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'com.google.android.material:material:1.13.0-alpha12'
-    implementation 'androidx.work:work-runtime:2.10.0'
-
-    implementation "androidx.emoji2:emoji2:1.5.0"
-    freeImplementation "androidx.emoji2:emoji2-bundled:1.5.0"
-    implementation "androidx.emoji2:emoji2-emojipicker:1.5.0"
-
-    implementation 'org.bouncycastle:bcmail-jdk18on:1.80'
-    implementation 'com.google.zxing:core:3.5.3'
-    implementation 'org.minidns:minidns-client:1.0.4'
-    implementation 'org.minidns:minidns-dnssec:1.0.4'
-    implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
-    implementation 'org.whispersystems:signal-protocol-java:2.6.2'
-    implementation 'com.makeramen:roundedimageview:2.3.0'
-
-    //noinspection GradleDependency
-    implementation 'io.deepmedia.community:transcoder-android:0.11.2'
-
-    implementation 'org.jxmpp:jxmpp-jid:1.0.3'
-    implementation 'org.jxmpp:jxmpp-stringprep-libidn:1.0.3'
-    implementation 'org.osmdroid:osmdroid-android:6.1.11'
-    implementation 'org.hsluv:hsluv:0.2'
-    implementation 'org.conscrypt:conscrypt-android:2.5.2'
-    implementation 'me.drakeet.support:toastcompat:1.1.0'
-    implementation "com.leinardi.android:speed-dial:3.3.0"
-
-    implementation "com.squareup.retrofit2:retrofit:2.11.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.11.0"
-    implementation "com.squareup.okhttp3:okhttp:4.12.0"
-
-    implementation 'com.google.guava:guava:33.4.6-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.13.52'
-    implementation 'im.conversations.webrtc:webrtc-android:129.0.0'
+    quicksyPlaystoreImplementation 'com.google.android.gms:play-services-auth-api-phone:18.2.0'
 
-    //Testing
     testImplementation 'junit:junit:4.13.2'
-
 }
 
 ext {

@@ -43,23 +43,32 @@
 			\n\nYou should have received a copy of the GNU General Public License
 			along with this program. If not, see https://www.gnu.org/licenses
 			\n\nDownload the full source code at https://codeberg.org/iNPUTmice/Conversations
-			\n\n\nLibraries
-			\n\nhttps://webrtc.org\nCopyright (c) 2011, The WebRTC project authors. All rights reserved. (https://webrtc.org/support/license)
-			\n\nhttps://github.com/ypresto/android-transcoder\n(Apache License, Version 2.0)
-			\n\nhttps://www.bouncycastle.org\n(The MIT License (MIT))
-			\n\nhttps://www.gnu.org/software/libidn\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/ge0rg/MemorizingTrustManager\n(The MIT License (MIT))
-			\n\nhttps://github.com/rtreffer/minidns\n(WTFPL)
-			\n\nhttps://github.com/open-keychain/openkeychain-api-lib\n(Apache License, Version 2.0)
-			\n\nhttps://developer.android.com/tools/support-library\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/google/material-design-icons\n(CC BY 4.0)
-			\n\nhttps://github.com/leolin310148/ShortcutBadger\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/WhisperSystems/libaxolotl-java\n(GPLv3)
-			\n\nhttps://github.com/vinc3m1/RoundedImageView\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/jdamcd/android-crop\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/zxing/zxing\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/osmdroid/osmdroid\n(Apache License, Version 2.0)
-			\n\n\nMaps
+			\n\n\nThird-party libraries:
+
+			\n\nAndroid Jetpack\nhttps://android.googlesource.com/platform/frameworks/support\n(Apache License, Version 2.0)
+			\n\nOpenKeychain Intents\nhttps://github.com/open-keychain/openkeychain-api-lib\n(Apache License, Version 2.0)
+			\n\nMaterial Components for Android\nhttps://github.com/material-components/material-components-android\n(Apache License, Version 2.0)
+			\n\nGuava: Google Core Libraries for Java\nhttps://github.com/google/guava\n(Apache License, Version 2.0)
+			\n\nZXing barcode scanning library for Android\nhttps://github.com/zxing/zxing\n(Apache License, Version 2.0)
+			\n\nFloating Action Button Speed Dial\nhttps://github.com/leinardi/FloatingActionButtonSpeedDial\n(Apache License, Version 2.0)
+			\n\nRoundedImageView\nhttps://github.com/vinc3m1/RoundedImageView\n(Apache License, Version 2.0)
+			\n\nOkHttp\nhttps://github.com/square/okhttp\n(Apache License, Version 2.0)
+			\n\nRetrofit\nhttps://github.com/square/retrofit\n(Apache License, Version 2.0)
+			\n\nAndroid Image Cropper\nhttps://github.com/CanHub/Android-Image-Cropper\n(Apache License, Version 2.0)
+			\n\nWebRTC\nhttps://webrtc.googlesource.com/src\n(Copyright (c) 2011, The WebRTC project authors)
+			\n\nTranscoder\nhttps://github.com/deepmedia/Transcoder\n(Apache License, Version 2.0)
+			\n\nToastCompat\nhttps://github.com/PureWriter/ToastCompat\n(Apache License, Version 2.0)
+			\n\nShortcutBadger\nhttps://github.com/leolin310148/ShortcutBadger\n(Copyright 2014 Leo Lin, Apache License, Version 2.0)
+			\n\nThe Bouncy Castle Crypto Package For Java\nhttps://github.com/bcgit/bc-java\n(Copyright (c) 2000-2024 The Legion of the Bouncy Castle Inc, MIT License)
+			\n\nConscrypt - A Java Security Provider\nhttps://github.com/google/conscrypt\n(Apache License, Version 2.0)
+			\n\nHSLuv\nhttps://github.com/hsluv/hsluv-java\n(Copyright (c) 2016 Alexei Boronine, MIT License)
+			\n\nJXMPP\nhttps://github.com/igniterealtime/jxmpp\n(Apache License, Version 2.0)
+			\n\nMiniDNS\nhttps://github.com/MiniDNS/minidns\n(Apache License, Version 2.0)
+			\n\nOpenStreetMap-Tools for Android\nhttps://github.com/osmdroid/osmdroid\n(Apache License, Version 2.0)
+			\n\nlibsignal-protocol\nhttps://github.com/signalapp/libsignal-protocol-java\n(GNU General Public License v3.0)
+			\n\nAndroid port of Googles’s libphonenumber\nhttps://github.com/MichaelRocks/libphonenumber-android\n(Apache License, Version 2.0)
+
+			\n\n\nMaps:
 			\n\nMaps by Open Street Map (https://www.openstreetmap.org). Copyright restrictions may apply.
 	</string>
 </resources>
