@@ -1401,11 +1401,11 @@ public class XmppConnectionService extends Service {
     @Override
     public void onCreate() {
         LibIdnXmppStringprep.setup();
-        if (Compatibility.runsTwentySix()) {
+        if (Compatibility.twentySix()) {
             mNotificationService.initializeChannels();
         }
         mChannelDiscoveryService.initializeMuclumbusService();
-        mForceDuringOnCreate.set(Compatibility.runsAndTargetsTwentySix(this));
+        mForceDuringOnCreate.set(Compatibility.twentySix());
         toggleForegroundService();
         this.destroyed = false;
         OmemoSetting.load(this);
@@ -1657,7 +1657,7 @@ public class XmppConnectionService extends Service {
                 || mForceDuringOnCreate.get()
                 || ongoingVideoTranscoding
                 || ongoing != null
-                || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
+                || (appSettings.isKeepForegroundService() && hasEnabledAccounts())) {
             final Notification notification;
             if (ongoing != null) {
                 notification = this.mNotificationService.getOngoingCallNotification(ongoing);
@@ -1729,14 +1729,14 @@ public class XmppConnectionService extends Service {
     public boolean foregroundNotificationNeedsUpdatingWhenErrorStateChanges() {
         return !mOngoingVideoTranscoding.get()
                 && ongoingCall.get() == null
-                && Compatibility.keepForegroundService(this)
+                && appSettings.isKeepForegroundService()
                 && hasEnabledAccounts();
     }
 
     @Override
     public void onTaskRemoved(final Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-        if ((Compatibility.keepForegroundService(this) && hasEnabledAccounts())
+        if ((appSettings.isKeepForegroundService() && hasEnabledAccounts())
                 || mOngoingVideoTranscoding.get()
                 || ongoingCall.get() != null) {
             Log.d(Config.LOGTAG, "ignoring onTaskRemoved because foreground service is activated");

@@ -1820,7 +1820,7 @@ public class NotificationService {
                 .setSmallIcon(connected > 0 ? R.drawable.ic_link_24dp : R.drawable.ic_link_off_24dp)
                 .setLocalOnly(true);
 
-        if (Compatibility.runsTwentySix()) {
+        if (Compatibility.twentySix()) {
             mBuilder.setChannelId("foreground");
             mBuilder.addAction(
                     R.drawable.ic_logout_24dp,
@@ -1970,7 +1970,7 @@ public class NotificationService {
                         s()
                                 ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
                                 : PendingIntent.FLAG_UPDATE_CURRENT));
-        if (Compatibility.runsTwentySix()) {
+        if (Compatibility.twentySix()) {
             mBuilder.setChannelId("error");
         }
         notify(ERROR_NOTIFICATION_ID, mBuilder.build());
@@ -1995,7 +1995,7 @@ public class NotificationService {
             builder.setContentIntent(createContentIntent(message.getConversation()));
         }
         builder.setOngoing(true);
-        if (Compatibility.runsTwentySix()) {
+        if (Compatibility.twentySix()) {
             builder.setChannelId("compression");
         }
         return builder.build();
