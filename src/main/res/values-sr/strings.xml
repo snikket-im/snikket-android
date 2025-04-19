@@ -1157,4 +1157,7 @@
     <string name="copy_telephone_number">Копирај број телефона</string>
     <string name="copied_phone_number">Копиран број телефона у клипборд</string>
     <string name="copy_URI">Копирај URI</string>
+    <string name="account_status_service_outage_scheduled">Планирана недоступност</string>
+    <string name="account_status_service_outage_known">Сервис недоступан (познат проблем)</string>
+    <string name="sos_scheduled_return">Опоравак сервиса предвиђен у %s</string>
 </resources>
