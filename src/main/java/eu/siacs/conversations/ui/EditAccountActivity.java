@@ -8,7 +8,6 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -1177,10 +1176,6 @@ public class EditAccountActivity extends OmemoActivity
             this.binding.namePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
         }
 
-        if (!mInitMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.binding.accountPassword.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
-        }
-
         final boolean editable =
                 !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY)
                         && !mAccount.isOptionSet(Account.OPTION_FIXED_USERNAME)
@@ -1207,10 +1202,6 @@ public class EditAccountActivity extends OmemoActivity
         this.binding.accountPassword.setFocusableInTouchMode(editPassword);
         this.binding.accountPassword.setCursorVisible(editPassword);
         this.binding.accountPassword.setEnabled(editPassword);
-        if (!editPassword && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.binding.accountJid.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
-            this.binding.accountPassword.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
-        }
 
         if (!mInitMode) {
             this.binding.avater.setVisibility(View.VISIBLE);
