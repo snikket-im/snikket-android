@@ -191,7 +191,7 @@
     <string name="account_settings_example_jabber_id">username@example.com</string>
     <string name="password">Пароль</string>
     <string name="invalid_jid">Недопустимый XMPP-адрес</string>
-    <string name="error_out_of_memory">Нехватка памяти. Изображение слишком большое</string>
+    <string name="error_out_of_memory">Нехватка памяти. Изображение слишком большое.</string>
     <string name="add_phone_book_text">Добавить %s в вашу адресную книгу?</string>
     <string name="server_info_show_more">Информация о сервере</string>
     <string name="server_info_mam">XEP-0313: архив сообщений</string>
@@ -310,7 +310,7 @@
     <string name="using_account">используется аккаунт %s</string>
     <string name="hosted_on">размещено на %s</string>
     <string name="checking_x">Проверка %s на сервере HTTP</string>
-    <string name="not_connected_try_again">Вы не подключены. Попробуйте позже</string>
+    <string name="not_connected_try_again">Вы не подключены. Попробуйте позже.</string>
     <string name="check_x_filesize">Проверить размер (%s)</string>
     <string name="check_x_filesize_on_host">Проверить размер на %2$s (%1$s)</string>
     <string name="message_options">Параметры сообщения</string>
@@ -499,7 +499,7 @@
     <string name="device_does_not_support_certificates">Ваше устройство не поддерживает выбор клиентских сертификатов!</string>
     <string name="pref_connection_options">Подключение</string>
     <string name="pref_use_tor">Соединение через Tor</string>
-    <string name="pref_use_tor_summary">Направить все соединения через сеть Tor. Требуется Orbot</string>
+    <string name="pref_use_tor_summary">Направить все соединения через сеть Tor. Требуется Orbot.</string>
     <string name="account_settings_hostname">Имя сервера</string>
     <string name="account_settings_port">Порт</string>
     <string name="hostname_or_onion">Сервер или .onion-адрес</string>
@@ -556,7 +556,7 @@
     <string name="use_own_provider">Использовать своего провайдера</string>
     <string name="pick_your_username">Выберите имя пользователя</string>
     <string name="pref_manually_change_presence">Управлять доступностью вручную</string>
-    <string name="pref_manually_change_presence_summary">Устанавливать свою доступность при редактировании статусного сообщения.</string>
+    <string name="pref_manually_change_presence_summary">Устанавливать свою доступность при редактировании статусного сообщения</string>
     <string name="status_message">Статусное сообщение</string>
     <string name="presence_chat">Свободен для общения</string>
     <string name="presence_online">В сети</string>
@@ -620,7 +620,7 @@
     <string name="share_as_uri">Отправить XMPP URI</string>
     <string name="share_as_http">Отправить HTTP-ссылку</string>
     <string name="pref_blind_trust_before_verification">Слепое доверие до подтверждения</string>
-    <string name="pref_blind_trust_before_verification_summary">Автоматически доверять всем новым устройствам контактов, которые не были подтверждены ранее, но запрашивать ручное подтверждение каждый раз, когда подтверждённый контакт добавляет новое устройство.</string>
+    <string name="pref_blind_trust_before_verification_summary">Автоматически доверять всем новым устройствам контактов, которые не были подтверждены ранее, но запрашивать ручное подтверждение каждый раз, когда подтверждённый контакт добавляет новое устройство</string>
     <string name="blindly_trusted_omemo_keys">Принятие OMEMO-ключей вслепую. Это означает, что собеседник может оказаться недоверенным лицом.</string>
     <string name="not_trusted">Недоверенный</string>
     <string name="invalid_barcode">Некорректный QR-код</string>
@@ -679,7 +679,7 @@
     <string name="transcoding_video">Сжатие видео</string>
     <string name="contact_blocked_past_tense">Контакт заблокирован.</string>
     <string name="pref_notifications_from_strangers">Уведомления от неизвестных контактов</string>
-    <string name="pref_notifications_from_strangers_summary">Уведомлять о сообщениях и звонках от неизвестных контактов.</string>
+    <string name="pref_notifications_from_strangers_summary">Уведомлять о сообщениях и звонках от неизвестных контактов</string>
     <string name="received_message_from_stranger">Получено сообщение от неизвестного контакта</string>
     <string name="block_stranger">Заблокировать неизвестный контакт</string>
     <string name="block_entire_domain">Заблокировать весь домен</string>
@@ -725,9 +725,9 @@
     <string name="disable_now">Отключить сейчас</string>
     <string name="draft">Черновик:</string>
     <string name="pref_omemo_setting">OMEMO-шифрование</string>
-    <string name="pref_omemo_setting_summary_always">OMEMO будет всегда использоваться для одиночных бесед и приватных конференций.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO будет использоваться по умолчанию для новых бесед.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO нужно будет явно включать для новых бесед.</string>
+    <string name="pref_omemo_setting_summary_always">OMEMO будет всегда использоваться для одиночных бесед и приватных конференций</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO будет использоваться по умолчанию для новых бесед</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO нужно будет явно включать для новых бесед</string>
     <string name="create_shortcut">Создать ярлык</string>
     <string name="default_on">Включено по умолчанию</string>
     <string name="default_off">Выключено по умолчанию</string>
@@ -1011,7 +1011,7 @@
     <string name="could_not_delete_account_from_server">Невозможно удалить аккаунт на сервере</string>
     <string name="delete_from_server">Удалить аккаунт на сервере</string>
     <string name="pref_autojoin">Синхронизировать закладки</string>
-    <string name="pref_autojoin_summary">Устанавливать флаг \"автоприсоединение\" при входе и выходе из группового чата, и реагировать на изменения от других клиентов.</string>
+    <string name="pref_autojoin_summary">Устанавливать флаг \"автоприсоединение\" при входе и выходе из группового чата, и реагировать на изменения от других клиентов</string>
     <string name="search_group_chats">Поиск конференций</string>
     <string name="download_failed_invalid_file">Загрузка не выполнена: файл испорчен</string>
     <string name="rtp_state_content_add_video">Перейти на видеовызов\?</string>
@@ -1019,10 +1019,10 @@
     <string name="incoming_call_duration_timestamp">Входящий вызов (%s) · %s</string>
     <string name="account_registrations_are_not_supported">Регистрации аккаунтов не поддерживаются</string>
     <string name="audio_video_disabled_tor">Звонки отключены при использовании Tor</string>
-    <string name="pref_up_push_account_summary">Аккаунт для получения push-уведомлений.</string>
+    <string name="pref_up_push_account_summary">Аккаунт для получения push-уведомлений</string>
     <string name="no_account_deactivated">Нет (неактивно)</string>
     <string name="verifying_omemo_keys_trusted_source_account">Вы собираетесь проверить ключи OMEMO своего аккаунта. Это безопасно только в том случае, если вы перешли по этой ссылке из надёжного источника, где только вы могли опубликовать эту ссылку.</string>
-    <string name="restore_warning_continued">Восстанавливайте только те резервные копии, которые были созданы лично вами.</string>
+    <string name="restore_warning_continued">Восстанавливайте только те резервные копии, которые были созданы лично вами!</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d пропущенный вызов от %2$s</item>
         <item quantity="few">%1$d пропущенных вызова от %2$s</item>
@@ -1107,7 +1107,7 @@
     <string name="unsupported_operation">Операция не поддерживается</string>
     <string name="pref_fullscreen_notification">Полноэкранные уведомления</string>
     <string name="pref_backup_recurring">Регулярные резервные копии</string>
-    <string name="pref_fullscreen_notification_summary">Разрешить приложению показывать экраны входящих звонков при заблокированном экране.</string>
+    <string name="pref_fullscreen_notification_summary">Разрешить приложению показывать экраны входящих звонков при заблокированном экране</string>
     <string name="pref_up_long_summary">Conversations, будучи распределителем UnifiedPush, будет использовать стойкое, надёжное и малопотребляющее подключение XMPP для пробуждения других совместимых с UnifiedPush приложений, таких как Tusky, Ltt.rs, FluffyChat и др.</string>
     <string name="detect_mim">Требовать привязку канала</string>
     <string name="detect_mim_summary">Привязка канала может обнаружить некоторые атаки посредником</string>
@@ -1119,7 +1119,7 @@
     <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Звонок через динамик. Нажмите для переключения на наушники.</string>
     <string name="video_is_disabled_tap_to_enable">Видео не активно. Нажмите для включения.</string>
     <string name="call_is_using_earpiece">Звонок через наушники.</string>
-    <string name="call_is_using_wired_headset">Звонок через проводные наушники</string>
+    <string name="call_is_using_wired_headset">Звонок через проводные наушники.</string>
     <string name="call_is_using_speaker">Звонок через динамик.</string>
     <string name="call_is_using_bluetooth">Звонок через Bluetooth.</string>
     <string name="flip_camera">Сменить камеру</string>
@@ -1146,12 +1146,12 @@
     <string name="pref_show_avatars">Показывать аватары</string>
     <string name="pref_title_bubbles">Сообщения в пузырях</string>
     <string name="pref_chat_bubbles">Пузыри сообщений</string>
-    <string name="pref_show_avatars_summary">Показывать аватары в своих сообщениях и приватных беседах в дополнение к конференциям.</string>
+    <string name="pref_show_avatars_summary">Показывать аватары в своих сообщениях и приватных беседах в дополнение к конференциям</string>
     <string name="pref_call_integration">Интеграция звонков</string>
     <string name="pref_align_start">Выравнивать сообщения слева</string>
-    <string name="pref_align_start_summary">Показывать все сообщения, включая отправленные, выровненными по левому краю для единообразия вида беседы.</string>
+    <string name="pref_align_start_summary">Показывать все сообщения, включая отправленные, выровненными по левому краю для единообразия вида беседы</string>
     <string name="custom_notifications">Настраиваемые уведомления</string>
-    <string name="pref_call_integration_summary">Звонки из этого приложения взаимодействуют с обычными телефонными звонками, например, завершение одного звонка при начале другого.</string>
+    <string name="pref_call_integration_summary">Звонки из этого приложения взаимодействуют с обычными телефонными звонками, например, завершение одного звонка при начале другого</string>
     <string name="custom_notifications_enable">Использовать индивидуальные настройки уведомлений (важность, звук, вибрация) для этой беседы?</string>
     <string name="delete_avatar_message">Хотите удалить свой аватар? Некоторые клиенты могут продолжать отображать кэшированную копию вашего аватара.</string>
     <string name="show_to_contacts_only">Показывать только контактам</string>
