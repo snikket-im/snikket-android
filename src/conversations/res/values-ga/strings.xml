@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pick_a_server">Roghnaigh do freastalaí XMPP</string>
+    <string name="use_conversations.im">Bain úsáid as conversations.im</string>
+    <string name="create_new_account">Oscail cuntas nua</string>
+</resources>
