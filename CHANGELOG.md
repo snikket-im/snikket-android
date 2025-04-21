@@ -3,6 +3,7 @@
 ### Version 2.18.2
 
 * Support 'Service Outage Status'
+* Fix Backup Import
 * Minor security fixes for parsing multiple bodies, occupant-ids and stanza-id
 
 ### Version 2.18.1
