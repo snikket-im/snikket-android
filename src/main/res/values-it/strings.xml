@@ -1137,4 +1137,7 @@
     <string name="copy_telephone_number">Copia numero di telefono</string>
     <string name="copy_URI">Copia URI</string>
     <string name="uri_copied_to_clipboard">URI copiato negli appunti</string>
+    <string name="account_status_service_outage_scheduled">Manutenzione programmata</string>
+    <string name="account_status_service_outage_known">Servizio in manutenzione (problema noto)</string>
+    <string name="sos_scheduled_return">Il servizio è programmato per tornare il %s</string>
 </resources>
