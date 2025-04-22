@@ -1141,4 +1141,7 @@
     <string name="copied_email_address">Endereço de e-mail copiado para a área de transferência</string>
     <string name="uri_copied_to_clipboard">URI copiada para a área de transferência</string>
     <string name="copied_phone_number">Número de telefone copiado para a área de transferência</string>
+    <string name="account_status_service_outage_scheduled">Tempo de inatividade planejado</string>
+    <string name="account_status_service_outage_known">Serviço caído (problema conhecido)</string>
+    <string name="sos_scheduled_return">Se espera que o serviço volte às %s</string>
 </resources>
