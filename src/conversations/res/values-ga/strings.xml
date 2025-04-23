@@ -3,4 +3,5 @@
     <string name="pick_a_server">Roghnaigh do freastalaí XMPP</string>
     <string name="use_conversations.im">Bain úsáid as conversations.im</string>
     <string name="create_new_account">Oscail cuntas nua</string>
+    <string name="do_you_have_an_account">An bhfuil cuntas XMPP agat?</string>
 </resources>
