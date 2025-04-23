@@ -1,0 +1,2 @@
+* compatibilidade con 'Service Outage Status'
+* arranxo de problemas menores de seguridade ao procesar varios corpos da mensaxe, occupant-ids e stanza-id
