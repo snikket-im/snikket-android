@@ -18,6 +18,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.model.stanza.Iq;
+import im.conversations.android.xmpp.model.upload.Request;
 import java.nio.ByteBuffer;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -438,23 +439,13 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public Iq requestHttpUploadSlot(Jid host, DownloadableFile file, String mime) {
+    public Iq requestHttpUploadSlot(
+            final Jid host, final DownloadableFile file, final String mime) {
         final Iq packet = new Iq(Iq.Type.GET);
         packet.setTo(host);
-        Element request = packet.addChild("request", Namespace.HTTP_UPLOAD);
-        request.setAttribute("filename", convertFilename(file.getName()));
-        request.setAttribute("size", file.getExpectedSize());
-        request.setAttribute("content-type", mime);
-        return packet;
-    }
-
-    public Iq requestHttpUploadLegacySlot(Jid host, DownloadableFile file, String mime) {
-        final Iq packet = new Iq(Iq.Type.GET);
-        packet.setTo(host);
-        Element request = packet.addChild("request", Namespace.HTTP_UPLOAD_LEGACY);
-        request.addChild("filename").setContent(convertFilename(file.getName()));
-        request.addChild("size").setContent(String.valueOf(file.getExpectedSize()));
-        request.addChild("content-type").setContent(mime);
+        final var request = packet.addExtension(new Request());
+        request.setFilename(convertFilename(file.getName()));
+        request.setSize(file.getExpectedSize());
         return packet;
     }
 

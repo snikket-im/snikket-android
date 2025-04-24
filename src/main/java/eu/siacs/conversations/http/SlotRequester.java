@@ -29,21 +29,22 @@
 
 package eu.siacs.conversations.http;
 
+import android.util.Log;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.SettableFuture;
-
-import java.util.Map;
-
+import com.google.common.util.concurrent.MoreExecutors;
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
-import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.IqResponseException;
 import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.xmpp.model.stanza.Iq;
+import im.conversations.android.xmpp.model.upload.Header;
+import im.conversations.android.xmpp.model.upload.Slot;
+import java.util.Map;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 
@@ -55,83 +56,54 @@ public class SlotRequester {
         this.service = service;
     }
 
-    public ListenableFuture<Slot> request(Method method, Account account, DownloadableFile file, String mime) {
-        if (method == Method.HTTP_UPLOAD_LEGACY) {
-            final Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD_LEGACY);
-            return requestHttpUploadLegacy(account, host, file, mime);
-        } else {
-            final Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
-            return requestHttpUpload(account, host, file, mime);
+    public ListenableFuture<Slot> request(
+            final Account account, final DownloadableFile file, final String mime) {
+        final var result =
+                account.getXmppConnection()
+                        .getServiceDiscoveryResultByFeature(Namespace.HTTP_UPLOAD);
+        if (result == null) {
+            return Futures.immediateFailedFuture(
+                    new IllegalStateException("No HTTP upload host found"));
         }
+        return requestHttpUpload(account, result.getKey(), file, mime);
     }
 
-    private ListenableFuture<Slot> requestHttpUploadLegacy(Account account, Jid host, DownloadableFile file, String mime) {
-        final SettableFuture<Slot> future = SettableFuture.create();
-        final Iq request = service.getIqGenerator().requestHttpUploadLegacySlot(host, file, mime);
-        service.sendIqPacket(account, request, (packet) -> {
-            if (packet.getType() == Iq.Type.RESULT) {
-                final Element slotElement = packet.findChild("slot", Namespace.HTTP_UPLOAD_LEGACY);
-                if (slotElement != null) {
-                    try {
-                        final String putUrl = slotElement.findChildContent("put");
-                        final String getUrl = slotElement.findChildContent("get");
-                        if (getUrl != null && putUrl != null) {
-                            final Slot slot = new Slot(
-                                    HttpUrl.get(putUrl),
-                                    HttpUrl.get(getUrl),
-                                    Headers.of("Content-Type", mime == null ? "application/octet-stream" : mime)
-                            );
-                            future.set(slot);
-                            return;
-                        }
-                    } catch (final IllegalArgumentException e) {
-                        future.setException(e);
-                        return;
-                    }
-                }
-            }
-            future.setException(new IqResponseException(IqParser.extractErrorMessage(packet)));
-        });
-        return future;
-    }
-
-    private ListenableFuture<Slot> requestHttpUpload(Account account, Jid host, DownloadableFile file, String mime) {
-        final SettableFuture<Slot> future = SettableFuture.create();
+    private ListenableFuture<Slot> requestHttpUpload(
+            final Account account, final Jid host, final DownloadableFile file, final String mime) {
         final Iq request = service.getIqGenerator().requestHttpUploadSlot(host, file, mime);
-        service.sendIqPacket(account, request, (packet) -> {
-            if (packet.getType() == Iq.Type.RESULT) {
-                final Element slotElement = packet.findChild("slot", Namespace.HTTP_UPLOAD);
-                if (slotElement != null) {
-                    try {
-                        final Element put = slotElement.findChild("put");
-                        final Element get = slotElement.findChild("get");
-                        final String putUrl = put == null ? null : put.getAttribute("url");
-                        final String getUrl = get == null ? null : get.getAttribute("url");
-                        if (getUrl != null && putUrl != null) {
-                            final ImmutableMap.Builder<String, String> headers = new ImmutableMap.Builder<>();
-                            for (final Element child : put.getChildren()) {
-                                if ("header".equals(child.getName())) {
-                                    final String name = child.getAttribute("name");
-                                    final String value = child.getContent();
-                                    if (HttpUploadConnection.WHITE_LISTED_HEADERS.contains(name) && value != null && !value.trim().contains("\n")) {
-                                        headers.put(name, value.trim());
-                                    }
-                                }
-                            }
-                            headers.put("Content-Type", mime == null ? "application/octet-stream" : mime);
-                            final Slot slot = new Slot(HttpUrl.get(putUrl), HttpUrl.get(getUrl), headers.build());
-                            future.set(slot);
-                            return;
-                        }
-                    } catch (final IllegalArgumentException e) {
-                        future.setException(e);
-                        return;
+        final var iqFuture = service.sendIqPacket(account, request);
+        return Futures.transform(
+                iqFuture,
+                response -> {
+                    final var slot =
+                            response.getExtension(
+                                    im.conversations.android.xmpp.model.upload.Slot.class);
+                    if (slot == null) {
+                        Log.d(Config.LOGTAG, "-->" + response.toString());
+                        throw new IllegalStateException("Slot not found in IQ response");
                     }
-                }
-            }
-            future.setException(new IqResponseException(IqParser.extractErrorMessage(packet)));
-        });
-        return future;
+                    final var getUrl = slot.getGetUrl();
+                    final var put = slot.getPut();
+                    if (getUrl == null || put == null) {
+                        throw new IllegalStateException("Missing get or put in slot response");
+                    }
+                    final var putUrl = put.getUrl();
+                    if (putUrl == null) {
+                        throw new IllegalStateException("Missing put url");
+                    }
+                    final var headers = new ImmutableMap.Builder<String, String>();
+                    for (final Header header : put.getHeaders()) {
+                        final String name = header.getHeaderName();
+                        final String value = header.getContent();
+                        if (Strings.isNullOrEmpty(value) || value.contains("\n")) {
+                            continue;
+                        }
+                        headers.put(name, value.trim());
+                    }
+                    headers.put("Content-Type", mime == null ? "application/octet-stream" : mime);
+                    return new Slot(putUrl, getUrl, headers.buildKeepingLast());
+                },
+                MoreExecutors.directExecutor());
     }
 
     public static class Slot {
