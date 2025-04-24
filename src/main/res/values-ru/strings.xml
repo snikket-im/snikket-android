@@ -184,7 +184,7 @@
 \nВаши собеседники не смогут больше отправлять вам зашифрованные OpenPGP сообщения.</string>
     <string name="openpgp_has_been_published">Публичный ключ OpenPGP опубликован.</string>
     <string name="mgmt_account_enable">Включить аккаунт</string>
-    <string name="mgmt_account_delete_confirm_text">Удалить свой аккаунт? Удаление аккаунта также сотрёт все историю бесед.</string>
+    <string name="mgmt_account_delete_confirm_text">Удалить свой аккаунт? Удаление аккаунта также сотрёт всю историю бесед.</string>
     <string name="attach_record_voice">Записать голос</string>
     <string name="account_settings_jabber_id">XMPP-адрес</string>
     <string name="block_jabber_id">Заблокировать XMPP-адрес</string>
