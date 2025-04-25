@@ -1,0 +1,1 @@
+* Introduzir novo formato de arquivo de backup

@@ -1,0 +1,1 @@
+Chamadas de Áudio/Vídeo (Requer suporte do servidor na forma de servidores STUN e TURN descobertos via XEP-0215)
