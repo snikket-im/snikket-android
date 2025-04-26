@@ -1144,7 +1144,7 @@
     <string name="show_to_contacts_only">Приказуј само контактима</string>
     <string name="account_status_connection_timeout">Истекла веза</string>
     <string name="retry_with_p2p">Покушај поново са P2P</string>
-    <string name="account_status_channel_binding">Везивање канала недоступно</string>
+    <string name="account_status_channel_binding">Нема везивања канала</string>
     <string name="word_document">Word документ</string>
     <string name="non_quicksy_backup">Quicksy може да врати резервне копије само за quicksy.im налоге</string>
     <string name="pref_backup_location">Локација резервних копија</string>
@@ -1159,5 +1159,5 @@
     <string name="copy_URI">Копирај URI</string>
     <string name="account_status_service_outage_scheduled">Планирана недоступност</string>
     <string name="account_status_service_outage_known">Сервис недоступан (познат проблем)</string>
-    <string name="sos_scheduled_return">Опоравак сервиса предвиђен у %s</string>
+    <string name="sos_scheduled_return">Опоравак сервиса предвиђен за %s</string>
 </resources>
