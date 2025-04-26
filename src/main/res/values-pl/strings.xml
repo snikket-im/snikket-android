@@ -1143,7 +1143,7 @@
     <string name="account_status_connection_timeout">Limit czasu połączenia</string>
     <string name="retry_with_p2p">Spróbuj ponownie używając P2P</string>
     <string name="word_document">dokument Microsoft Word</string>
-    <string name="account_status_channel_binding">Przywiązywanie kanału niedostępne</string>
+    <string name="account_status_channel_binding">Brak przywiązywania kanału</string>
     <string name="restore_omemo_key">Przywróć klucze OMEMO</string>
     <string name="non_quicksy_backup">Quicksy potrafi przywracać kopie zapasowe jedynie dla kont quicksy.im</string>
     <string name="pref_backup_location">Lokalizacja kopii zapasowej</string>
