@@ -1485,7 +1485,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     private abstract static class MessageItemViewHolder /*extends RecyclerView.ViewHolder*/ {
 
-        private View itemView;
+        private final View itemView;
 
         private MessageItemViewHolder(@NonNull View itemView) {
             this.itemView = itemView;

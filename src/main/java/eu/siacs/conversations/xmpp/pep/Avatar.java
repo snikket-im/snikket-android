@@ -67,8 +67,7 @@ public class Avatar {
 
     @Override
     public boolean equals(Object object) {
-        if (object != null && object instanceof Avatar) {
-            Avatar other = (Avatar) object;
+        if (object != null && object instanceof Avatar other) {
             return other.getFilename().equals(this.getFilename());
         } else {
             return false;

@@ -507,7 +507,7 @@ public class XmppConnectionService extends Service {
     private LruCache<String, Bitmap> mBitmapCache;
     private final BroadcastReceiver mInternalEventReceiver = new InternalEventReceiver();
     private final BroadcastReceiver mInternalRestrictedEventReceiver =
-            new RestrictedEventReceiver(Arrays.asList(TorServiceUtils.ACTION_STATUS));
+            new RestrictedEventReceiver(List.of(TorServiceUtils.ACTION_STATUS));
     private final BroadcastReceiver mInternalScreenEventReceiver = new InternalEventReceiver();
 
     private static String generateFetchKey(Account account, final Avatar avatar) {
@@ -4535,7 +4535,7 @@ public class XmppConnectionService extends Service {
                                         if (packet.getType() == Iq.Type.RESULT) {
                                             callback.onPushSucceeded();
                                         } else {
-                                            Log.d(Config.LOGTAG, "failed: " + packet.toString());
+                                            Log.d(Config.LOGTAG, "failed: " + packet);
                                             callback.onPushFailed();
                                         }
                                     }
@@ -5125,7 +5125,7 @@ public class XmppConnectionService extends Service {
                         if (error == null) {
                             Log.d(Config.LOGTAG, ERROR + "(server error)");
                         } else {
-                            Log.d(Config.LOGTAG, ERROR + error.toString());
+                            Log.d(Config.LOGTAG, ERROR + error);
                         }
                     }
                     if (callback != null) {

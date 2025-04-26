@@ -12,8 +12,8 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ShareLocationActivity;
 import eu.siacs.conversations.ui.ShowLocationActivity;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import org.osmdroid.util.GeoPoint;
@@ -160,11 +160,8 @@ public class GeoHelper {
 
     private static String getLabel(Context context, Message message) {
         if (message.getStatus() == Message.STATUS_RECEIVED) {
-            try {
-                return URLEncoder.encode(UIHelper.getMessageDisplayName(message), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                throw new AssertionError(e);
-            }
+            return URLEncoder.encode(
+                    UIHelper.getMessageDisplayName(message), StandardCharsets.UTF_8);
         } else {
             return context.getString(R.string.me);
         }

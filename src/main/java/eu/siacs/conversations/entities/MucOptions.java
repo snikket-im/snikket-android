@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 public class MucOptions {
@@ -919,9 +920,8 @@ public class MucOptions {
 
             if (role != user.role) return false;
             if (affiliation != user.affiliation) return false;
-            if (realJid != null ? !realJid.equals(user.realJid) : user.realJid != null)
-                return false;
-            return fullJid != null ? fullJid.equals(user.fullJid) : user.fullJid == null;
+            if (!Objects.equals(realJid, user.realJid)) return false;
+            return Objects.equals(fullJid, user.fullJid);
         }
 
         public boolean isDomain() {

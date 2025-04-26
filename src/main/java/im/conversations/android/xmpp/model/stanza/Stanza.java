@@ -42,10 +42,7 @@ public abstract class Stanza extends StreamElement {
     public boolean isInvalid() {
         final var to = getTo();
         final var from = getFrom();
-        if (to instanceof Jid.Invalid || from instanceof Jid.Invalid) {
-            return true;
-        }
-        return false;
+        return to instanceof Jid.Invalid || from instanceof Jid.Invalid;
     }
 
     public boolean fromServer(final Account account) {

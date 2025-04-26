@@ -332,7 +332,6 @@ public class MessageParser extends AbstractParser
             }
         } else if (Namespace.BOOKMARKS2.equals(node) && account.getJid().asBareJid().equals(from)) {
             final var retractions = items.getRetractions();
-            ;
             for (final var item : items.getItemMap(Conference.class).entrySet()) {
                 final Bookmark bookmark =
                         Bookmark.parseFromItem(item.getKey(), item.getValue(), account);

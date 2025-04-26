@@ -5,5 +5,5 @@ public enum Affiliation {
     ADMIN,
     MEMBER,
     OUTCAST,
-    NONE;
+    NONE
 }

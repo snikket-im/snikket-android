@@ -425,9 +425,7 @@ public class FileBackend {
     }
 
     public static void updateFileParams(Message message, String url, long size) {
-        final StringBuilder body = new StringBuilder();
-        body.append(url).append('|').append(size);
-        message.setBody(body.toString());
+        message.setBody(url + '|' + size);
     }
 
     public Bitmap getPreviewForUri(Attachment attachment, int size, boolean cacheOnly) {
@@ -1244,7 +1242,7 @@ public class FileBackend {
             Log.d(Config.LOGTAG, "settled on char length " + chars + " with quality=" + quality);
             final Avatar avatar = new Avatar();
             avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
-            avatar.image = new String(mByteArrayOutputStream.toByteArray());
+            avatar.image = mByteArrayOutputStream.toString();
             if (format.equals(Bitmap.CompressFormat.WEBP)) {
                 avatar.type = "image/webp";
             } else if (format.equals(Bitmap.CompressFormat.JPEG)) {
@@ -1289,7 +1287,7 @@ public class FileBackend {
             os.flush();
             os.close();
             avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
-            avatar.image = new String(mByteArrayOutputStream.toByteArray());
+            avatar.image = mByteArrayOutputStream.toString();
             avatar.height = options.outHeight;
             avatar.width = options.outWidth;
             avatar.type = options.outMimeType;

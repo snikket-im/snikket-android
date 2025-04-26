@@ -951,7 +951,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                                     Config.LOGTAG,
                                     getLogprefix(account)
                                             + "Error received while publishing bundle: "
-                                            + response.toString());
+                                            + response);
                         }
                         pepBroken = true;
                     }
@@ -1416,7 +1416,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                                     Config.LOGTAG,
                                     AxolotlService.getLogprefix(account)
                                             + "Already have session for "
-                                            + address.toString()
+                                            + address
                                             + ", adding to cache...");
                             XmppAxolotlSession session =
                                     new XmppAxolotlSession(
@@ -1462,7 +1462,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                             Config.LOGTAG,
                             AxolotlService.getLogprefix(account)
                                     + "Already have session for "
-                                    + address.toString()
+                                    + address
                                     + ", adding to cache...");
                     XmppAxolotlSession session =
                             new XmppAxolotlSession(account, axolotlStore, address, identityKey);
@@ -1538,7 +1538,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                         Config.LOGTAG,
                         AxolotlService.getLogprefix(account)
                                 + "Already fetching bundle for "
-                                + address.toString());
+                                + address);
             }
         }
 

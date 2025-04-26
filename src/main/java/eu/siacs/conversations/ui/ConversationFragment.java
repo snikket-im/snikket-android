@@ -531,8 +531,7 @@ public class ConversationFragment extends XmppFragment
                 @Override
                 public void onClick(View v) {
                     Object tag = v.getTag();
-                    if (tag instanceof SendButtonAction) {
-                        SendButtonAction action = (SendButtonAction) tag;
+                    if (tag instanceof SendButtonAction action) {
                         switch (action) {
                             case TAKE_PHOTO:
                             case RECORD_VIDEO:

@@ -346,7 +346,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         final SQLiteDatabase db = getWritableDatabase();
         final Stopwatch stopwatch = Stopwatch.createStarted();
         db.execSQL(COPY_PREEXISTING_ENTRIES);
-        Log.d(Config.LOGTAG, "rebuilt message index in " + stopwatch.stop().toString());
+        Log.d(Config.LOGTAG, "rebuilt message index in " + stopwatch.stop());
     }
 
     public static synchronized DatabaseBackend getInstance(Context context) {
@@ -1561,7 +1561,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                         + " is not null and conversationUuid=(select uuid from conversations where"
                         + " accountUuid=? and (contactJid=? or contactJid like ?)) order by"
                         + " timeSent desc";
-        final String[] args = {account, jid.toString(), jid.toString() + "/%"};
+        final String[] args = {account, jid.toString(), jid + "/%"};
         Cursor cursor = db.rawQuery(SQL + (limit > 0 ? " limit " + limit : ""), args);
         List<FilePath> filesPaths = new ArrayList<>();
         while (cursor.moveToNext()) {

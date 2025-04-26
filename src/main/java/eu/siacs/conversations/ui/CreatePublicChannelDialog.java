@@ -288,7 +288,7 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
             mListener = (CreatePublicChannelDialogListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                    context.toString() + " must implement CreateConferenceDialogListener");
+                    context + " must implement CreateConferenceDialogListener");
         }
     }
 

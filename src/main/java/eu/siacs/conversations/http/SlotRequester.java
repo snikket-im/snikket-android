@@ -79,7 +79,7 @@ public class SlotRequester {
                             response.getExtension(
                                     im.conversations.android.xmpp.model.upload.Slot.class);
                     if (slot == null) {
-                        Log.d(Config.LOGTAG, "-->" + response.toString());
+                        Log.d(Config.LOGTAG, "-->" + response);
                         throw new IllegalStateException("Slot not found in IQ response");
                     }
                     final var getUrl = slot.getGetUrl();
