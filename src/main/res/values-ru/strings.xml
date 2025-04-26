@@ -1157,7 +1157,7 @@
     <string name="show_to_contacts_only">Показывать только контактам</string>
     <string name="account_status_connection_timeout">Истекло время ожидания подключения</string>
     <string name="retry_with_p2p">Повторить через P2P</string>
-    <string name="account_status_channel_binding">Привязка канала недоступна</string>
+    <string name="account_status_channel_binding">Нет привязки канала</string>
     <string name="word_document">Документ Word</string>
     <string name="restore_omemo_key">Восстановить ключи OMEMO</string>
     <string name="non_quicksy_backup">Quicksy может восстанавливать резервные копии только для аккаунтов quicksy.im</string>
