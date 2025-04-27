@@ -70,6 +70,7 @@ public class WebRTCWrapper {
                     .add("GT-I9515") // Samsung Galaxy S4 Value Edition (jfvelte)
                     .add("GT-I9515L") // Samsung Galaxy S4 Value Edition (jfvelte)
                     .add("GT-I9505") // Samsung Galaxy S4 (jfltexx)
+                    .add("Nexus 7") ASUS Nexus 7
                     .build();
 
     private final EventCallback eventCallback;
