@@ -353,7 +353,7 @@
     <string name="bad_key_for_encryption">מפתח הצפנה שגוי.</string>
     <string name="recording_error">שגיאה</string>
     <string name="error_security_exception_during_image_copy">האפליקציה שבה השתמשת כדי לבחור תמונה זו לא סיפקה מספיק הרשאות לקרוא את הקובץ.\n\n<small>השתמש במנהל קבצים אחר כדי לבחור תמונה</small>.</string>
-    <string name="account_status_channel_binding">עטיפת ערוץ אינה זמינה</string>
+    <string name="account_status_channel_binding">אין קישור ערוצים</string>
     <string name="unpublish_pgp">הסר את המפתח הציבורי של OpenPGP</string>
     <string name="unpublish_pgp_message">האם אתה בטוח שברצונך להסיר את מפתח OpenPGP הציבורי שלך מהודעת הנוכחות שלך?\nאנשי הקשר שלך לא יוכלו יותר לשלוח לך הודעות מוצפנות OpenPGP.</string>
     <string name="openpgp_has_been_published">מפתח ציבורי OpenPGP פורסם.</string>
