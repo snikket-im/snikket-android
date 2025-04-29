@@ -1002,7 +1002,7 @@
     <string name="account_state_logged_out">已登出</string>
     <string name="unverified_devices">您正在使用未驗證的設備。請掃描您其他設備上的 QR 碼進行驗證，以防止主動中間人攻擊。</string>
     <string name="audiobook">有聲書</string>
-    <string name="restore_warning_continued">請勿嘗試還原非您自己建立的備份！</string>
+    <string name="restore_warning_continued">僅還原由您親自建立的備份。</string>
     <string name="report_spam">報告垃圾訊息</string>
     <string name="pref_send_crash_reports">發送崩潰報告</string>
     <string name="corresponding_chats_closed">相應的會話已存檔。</string>
