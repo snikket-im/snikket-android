@@ -1145,4 +1145,6 @@
     <string name="copied_email_address">Adresse mail copiée dans le presse-papier</string>
     <string name="account_status_service_outage_scheduled">Interruption de Service Planifiée</string>
     <string name="sos_scheduled_return">Le retour du service est planifié pour %s</string>
+    <string name="copy_geo_uri">Copier la géolocalisation</string>
+    <string name="account_status_service_outage_known">Service en panne (problème connu)</string>
 </resources>
