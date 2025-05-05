@@ -820,12 +820,12 @@
     <string name="ebook">e-book</string>
     <string name="video_original">Original (non compressé)</string>
     <string name="open_with">Ouvrir avec…</string>
-    <string name="set_profile_picture">Photo de profil pour Conversations</string>
+    <string name="set_profile_picture">Photo de profil</string>
     <string name="choose_account">Choisir un compte</string>
     <string name="restore_backup">Restaurer la sauvegarde</string>
     <string name="restore">Restaurer</string>
     <string name="enter_password_to_restore">Entrez votre mot de passe pour que le compte %s restaure la sauvegarde.</string>
-    <string name="restore_warning">N\'utilisez pas la fonctionnalité de sauvegarde de la restauration pour tenter de cloner (exécuter simultanément) une installation. La restauration d’une sauvegarde ne concerne que les migrations ou en cas de perte de l\'appareil d’origine.</string>
+    <string name="restore_warning">Ne restaurez pas les clés OMEMO pour tenter de cloner (exécuter simultanément) une installation. La restauration de clés OMEMO ne concerne que les migrations ou en cas de perte de l\'appareil d’origine.</string>
     <string name="unable_to_restore_backup">Impossible de restaurer la sauvegarde.</string>
     <string name="unable_to_decrypt_backup">Impossible de déchiffrer la sauvegarde. Le mot de passe est-il correct ?</string>
     <string name="backup_channel_name">Sauvegarde &amp; restauration</string>
@@ -1010,7 +1010,7 @@
     <string name="outdated_backup_file_format">Vous essayez d\'importer un format de fichier de sauvegarde obsolète</string>
     <string name="audiobook">Livre audio</string>
     <string name="unified_push_distributor">Distributeur UnifiedPush</string>
-    <string name="restore_warning_continued">Ne tentez pas de restaurer des sauvegardes que vous n\'avez pas créées vous-même !</string>
+    <string name="restore_warning_continued">Ne restaurez que des sauvegardes que vous avez vous-même créées.</string>
     <string name="report_spam">Signaler un spam</string>
     <string name="privacy_policy">Politique de confidentialité</string>
     <string name="quicksy_wants_your_consent">Quicksy vous demande votre consentement pour utiliser vos données</string>
@@ -1099,7 +1099,7 @@
     <string name="change_notification_settings">Modifier les paramètres de notification</string>
     <string name="call_is_using_earpiece_tap_to_switch_to_speaker">L\'appel passe par les écouteurs. Tapotez pour passer sur haut-parleur.</string>
     <string name="call_is_using_earpiece">L\'appel passe par les écouteurs.</string>
-    <string name="server_info_bind2">XEP-0386: Bind 2</string>
+    <string name="server_info_bind2">XEP-0386 : Bind 2</string>
     <string name="edit_nick">Éditer le pseudo</string>
     <string name="delete_pgp_key">Supprimer la clé OpenPGP</string>
     <string name="call_is_using_bluetooth">L\'appel passe par le bluetooth.</string>
@@ -1121,7 +1121,7 @@
     <string name="show_to_contacts_only">Montrer aux contacts uniquement</string>
     <string name="pref_title_bubbles">Bulles de discussion</string>
     <string name="could_not_modify_call">Impossible de modifier l\'appel</string>
-    <string name="account_status_channel_binding">Channel binding indisponible</string>
+    <string name="account_status_channel_binding">Pas de Channel binding</string>
     <string name="clients_may_not_support_av">Le client XMPP de votre contact peut ne pas prendre en charge les appels audio/vidéo.</string>
     <string name="could_not_add_reaction">Impossible d\'ajouter une réaction</string>
     <string name="pref_call_integration">Intégration d\'appel</string>
@@ -1133,4 +1133,16 @@
     <string name="more_reactions">Plus de réactions</string>
     <string name="add_reaction_title">Ajouter une réaction</string>
     <string name="pref_show_avatars">Montrer l\'image de profil</string>
+    <string name="copied_phone_number">Numéro de téléphone copié dans le presse-papier</string>
+    <string name="copy_URI">Copier l\'URI</string>
+    <string name="uri_copied_to_clipboard">URI copiée dans le presse-papier</string>
+    <string name="copy_telephone_number">Copier le numéro de téléphone</string>
+    <string name="restore_omemo_key">Restaurer les clés OMEMO</string>
+    <string name="non_quicksy_backup">Quicksy ne peut restaurer des sauvegardes que pour des comptes de quicksy.im</string>
+    <string name="pref_backup_location">Emplacement de sauvegarde</string>
+    <string name="uri">URI</string>
+    <string name="copy_email_address">Copier l\'adresse mail</string>
+    <string name="copied_email_address">Adresse mail copiée dans le presse-papier</string>
+    <string name="account_status_service_outage_scheduled">Interruption de Service Planifiée</string>
+    <string name="sos_scheduled_return">Le retour du service est planifié pour %s</string>
 </resources>
