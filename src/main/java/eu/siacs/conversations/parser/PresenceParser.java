@@ -1,7 +1,12 @@
 package eu.siacs.conversations.parser;
 
 import android.util.Log;
+import androidx.annotation.NonNull;
 import com.google.common.base.Strings;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -10,7 +15,6 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
-import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -18,10 +22,13 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+import im.conversations.android.xmpp.Entity;
 import im.conversations.android.xmpp.model.occupant.OccupantId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
@@ -359,13 +366,17 @@ public class PresenceParser extends AbstractParser
 
             final int sizeBefore = contact.getPresences().size();
 
-            final String show = packet.findChildContent("show");
-            final Element caps = packet.findChild("c", "http://jabber.org/protocol/caps");
-            final String message = packet.findChildContent("status");
-            final Presence presence = Presence.parse(show, caps, message);
-            contact.updatePresence(resource, presence);
-            if (presence.hasCaps()) {
-                mXmppConnectionService.fetchCaps(account, from, presence);
+            contact.updatePresence(resource, packet);
+
+            final var nodeHash = packet.getCapabilities();
+            final var connection = account.getXmppConnection();
+            if (nodeHash != null && connection != null) {
+                final var discoFuture =
+                        connection
+                                .getManager(DiscoManager.class)
+                                .infoOrCache(Entity.presence(from), nodeHash.node, nodeHash.hash);
+
+                logDiscoFailure(from, discoFuture);
             }
 
             final Element idle = packet.findChild("idle", Namespace.IDLE);
@@ -412,7 +423,8 @@ public class PresenceParser extends AbstractParser
             } else {
                 contact.removePresence(from.getResource());
             }
-            if (contact.getShownStatus() == Presence.Status.OFFLINE) {
+            if (contact.getShownStatus()
+                    == im.conversations.android.xmpp.model.stanza.Presence.Availability.OFFLINE) {
                 contact.flagInactive();
             }
             mXmppConnectionService.onContactStatusChanged.onContactStatusChanged(contact, false);
@@ -451,6 +463,24 @@ public class PresenceParser extends AbstractParser
             }
         }
         mXmppConnectionService.updateRosterUi();
+    }
+
+    private static void logDiscoFailure(final Jid from, ListenableFuture<Void> discoFuture) {
+        Futures.addCallback(
+                discoFuture,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(Void result) {}
+
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        if (throwable instanceof TimeoutException) {
+                            return;
+                        }
+                        Log.d(Config.LOGTAG, "could not retrieve disco from " + from, throwable);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
     @Override

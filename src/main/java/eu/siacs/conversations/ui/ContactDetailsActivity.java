@@ -32,7 +32,9 @@ import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
@@ -44,7 +46,6 @@ import eu.siacs.conversations.databinding.ActivityContactDetailsBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
-import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.services.AbstractQuickConversationsService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
@@ -69,6 +70,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -424,11 +426,11 @@ public class ContactDetailsActivity extends OmemoActivity
             binding.detailsSendPresence.setOnCheckedChangeListener(null);
             binding.detailsReceivePresence.setOnCheckedChangeListener(null);
 
-            List<String> statusMessages = contact.getPresences().getStatusMessages();
-            if (statusMessages.size() == 0) {
+            Collection<String> statusMessages = contact.getPresences().getStatusMessages();
+            if (statusMessages.isEmpty()) {
                 binding.statusMessage.setVisibility(View.GONE);
             } else if (statusMessages.size() == 1) {
-                final String message = statusMessages.get(0);
+                final String message = Iterables.getOnlyElement(statusMessages);
                 binding.statusMessage.setVisibility(View.VISIBLE);
                 final Spannable span = new SpannableString(message);
                 if (Emoticons.isOnlyEmoji(message)) {
@@ -440,16 +442,7 @@ public class ContactDetailsActivity extends OmemoActivity
                 }
                 binding.statusMessage.setText(span);
             } else {
-                StringBuilder builder = new StringBuilder();
-                binding.statusMessage.setVisibility(View.VISIBLE);
-                int s = statusMessages.size();
-                for (int i = 0; i < s; ++i) {
-                    builder.append(statusMessages.get(i));
-                    if (i < s - 1) {
-                        builder.append("\n");
-                    }
-                }
-                binding.statusMessage.setText(builder);
+                binding.statusMessage.setText(Joiner.on('\n').join(statusMessages));
             }
 
             if (contact.getOption(Contact.Options.FROM)) {
@@ -592,7 +585,7 @@ public class ContactDetailsActivity extends OmemoActivity
 
         final List<ListItem.Tag> tagList = contact.getTags(this);
         final boolean hasMetaTags =
-                contact.isBlocked() || contact.getShownStatus() != Presence.Status.OFFLINE;
+                contact.isBlocked() || contact.getShownStatus() != Presence.Availability.OFFLINE;
         if ((tagList.isEmpty() && !hasMetaTags) || !this.showDynamicTags) {
             binding.tags.setVisibility(View.GONE);
         } else {
@@ -628,8 +621,8 @@ public class ContactDetailsActivity extends OmemoActivity
                 viewIdBuilder.add(id);
                 binding.tags.addView(tv);
             } else {
-                final Presence.Status status = contact.getShownStatus();
-                if (status != Presence.Status.OFFLINE) {
+                final Presence.Availability status = contact.getShownStatus();
+                if (status != Presence.Availability.OFFLINE) {
                     final TextView tv =
                             (TextView) inflater.inflate(R.layout.item_tag, binding.tags, false);
                     UIHelper.setStatus(tv, status);

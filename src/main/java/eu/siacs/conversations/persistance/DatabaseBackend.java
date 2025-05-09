@@ -21,7 +21,6 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.entities.Roster;
-import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.ShortcutService;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -31,9 +30,14 @@ import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
+import im.conversations.android.xml.XmlElementReader;
+import im.conversations.android.xmpp.EntityCapabilities;
+import im.conversations.android.xmpp.EntityCapabilities2;
+import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -46,7 +50,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.jxmpp.jid.parts.Localpart;
 import org.jxmpp.stringprep.XmppStringprepException;
@@ -61,11 +64,11 @@ import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "history";
-    private static final int DATABASE_VERSION = 53;
+    private static final int DATABASE_VERSION = 54;
 
     private static boolean requiresMessageIndexRebuild = false;
     private static DatabaseBackend instance = null;
-    private static final String CREATE_CONTATCS_STATEMENT =
+    private static final String CREATE_CONTACTS_STATEMENT =
             "create table "
                     + Contact.TABLENAME
                     + "("
@@ -106,22 +109,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                     + Contact.ACCOUNT
                     + ", "
                     + Contact.JID
-                    + ") ON CONFLICT REPLACE);";
-
-    private static final String CREATE_DISCOVERY_RESULTS_STATEMENT =
-            "create table "
-                    + ServiceDiscoveryResult.TABLENAME
-                    + "("
-                    + ServiceDiscoveryResult.HASH
-                    + " TEXT, "
-                    + ServiceDiscoveryResult.VER
-                    + " TEXT, "
-                    + ServiceDiscoveryResult.RESULT
-                    + " TEXT, "
-                    + "UNIQUE("
-                    + ServiceDiscoveryResult.HASH
-                    + ", "
-                    + ServiceDiscoveryResult.VER
                     + ") ON CONFLICT REPLACE);";
 
     private static final String CREATE_PRESENCE_TEMPLATES_STATEMENT =
@@ -251,6 +238,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                     + SQLiteAxolotlStore.FINGERPRINT
                     + ") ON CONFLICT IGNORE"
                     + ");";
+
+    private static final String CREATE_CAPS_CACHE_TABLE =
+            "CREATE TABLE caps_cache (caps TEXT, caps2 TEXT, disco_info TEXT, UNIQUE (caps), UNIQUE"
+                    + " (caps2));";
+    private static final String CREATE_CAPS_CACHE_INDEX_CAPS =
+            "CREATE INDEX idx_caps ON caps_cache(caps);";
+    private static final String CREATE_CAPS_CACHE_INDEX_CAPS2 =
+            "CREATE INDEX idx_caps2 ON caps_cache(caps2);";
 
     private static final String RESOLVER_RESULTS_TABLENAME = "resolver_results";
 
@@ -495,8 +490,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         db.execSQL(CREATE_MESSAGE_DELETED_INDEX);
         db.execSQL(CREATE_MESSAGE_RELATIVE_FILE_PATH_INDEX);
         db.execSQL(CREATE_MESSAGE_TYPE_INDEX);
-        db.execSQL(CREATE_CONTATCS_STATEMENT);
-        db.execSQL(CREATE_DISCOVERY_RESULTS_STATEMENT);
+        db.execSQL(CREATE_CONTACTS_STATEMENT);
         db.execSQL(CREATE_SESSIONS_STATEMENT);
         db.execSQL(CREATE_PREKEYS_STATEMENT);
         db.execSQL(CREATE_SIGNED_PREKEYS_STATEMENT);
@@ -507,6 +501,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         db.execSQL(CREATE_MESSAGE_INSERT_TRIGGER);
         db.execSQL(CREATE_MESSAGE_UPDATE_TRIGGER);
         db.execSQL(CREATE_MESSAGE_DELETE_TRIGGER);
+        db.execSQL(CREATE_CAPS_CACHE_TABLE);
+        db.execSQL(CREATE_CAPS_CACHE_INDEX_CAPS);
+        db.execSQL(CREATE_CAPS_CACHE_INDEX_CAPS2);
     }
 
     @Override
@@ -527,7 +524,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         }
         if (oldVersion < 5 && newVersion >= 5) {
             db.execSQL("DROP TABLE " + Contact.TABLENAME);
-            db.execSQL(CREATE_CONTATCS_STATEMENT);
+            db.execSQL(CREATE_CONTACTS_STATEMENT);
             db.execSQL("UPDATE " + Account.TABLENAME + " SET " + Account.ROSTERVERSION + " = NULL");
         }
         if (oldVersion < 6 && newVersion >= 6) {
@@ -727,10 +724,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                             + SQLiteAxolotlStore.CERTIFICATE);
         }
 
-        if (oldVersion < 23 && newVersion >= 23) {
-            db.execSQL(CREATE_DISCOVERY_RESULTS_STATEMENT);
-        }
-
         if (oldVersion < 24 && newVersion >= 24) {
             db.execSQL(
                     "ALTER TABLE " + Message.TABLENAME + " ADD COLUMN " + Message.EDITED + " TEXT");
@@ -743,10 +736,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
         if (oldVersion < 26 && newVersion >= 26) {
             db.execSQL(CREATE_PRESENCE_TEMPLATES_STATEMENT);
-        }
-
-        if (oldVersion < 27 && newVersion >= 27) {
-            db.execSQL("DELETE FROM " + ServiceDiscoveryResult.TABLENAME);
         }
 
         if (oldVersion < 28 && newVersion >= 28) {
@@ -1086,6 +1075,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 }
             }
         }
+        if (oldVersion < 54 && newVersion >= 54) {
+            db.execSQL("DROP TABLE discovery_results");
+            db.execSQL(CREATE_CAPS_CACHE_TABLE);
+            db.execSQL(CREATE_CAPS_CACHE_INDEX_CAPS);
+            db.execSQL(CREATE_CAPS_CACHE_INDEX_CAPS2);
+        }
     }
 
     private void canonicalizeJids(SQLiteDatabase db) {
@@ -1222,40 +1217,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     public void createAccount(Account account) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(Account.TABLENAME, null, account.getContentValues());
-    }
-
-    public void insertDiscoveryResult(ServiceDiscoveryResult result) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(ServiceDiscoveryResult.TABLENAME, null, result.getContentValues());
-    }
-
-    public ServiceDiscoveryResult findDiscoveryResult(final String hash, final String ver) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String[] selectionArgs = {hash, ver};
-        Cursor cursor =
-                db.query(
-                        ServiceDiscoveryResult.TABLENAME,
-                        null,
-                        ServiceDiscoveryResult.HASH + "=? AND " + ServiceDiscoveryResult.VER + "=?",
-                        selectionArgs,
-                        null,
-                        null,
-                        null);
-        if (cursor.getCount() == 0) {
-            cursor.close();
-            return null;
-        }
-        cursor.moveToFirst();
-
-        ServiceDiscoveryResult result = null;
-        try {
-            result = new ServiceDiscoveryResult(cursor);
-        } catch (JSONException e) {
-            /* result is still null */
-        }
-
-        cursor.close();
-        return result;
     }
 
     public void saveResolverResult(String domain, Resolver.Result result) {
@@ -1610,6 +1571,60 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         }
         cursor.close();
         return message;
+    }
+
+    public void insertCapsCache(
+            EntityCapabilities.EntityCapsHash caps,
+            EntityCapabilities2.EntityCaps2Hash caps2,
+            InfoQuery infoQuery) {
+        final var contentValues = new ContentValues();
+        contentValues.put("caps", caps.encoded());
+        contentValues.put("caps2", caps2.encoded());
+        contentValues.put("disco_info", infoQuery.toString());
+        getWritableDatabase()
+                .insertWithOnConflict(
+                        "caps_cache", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    public InfoQuery getInfoQuery(final EntityCapabilities.Hash hash) {
+        final String selection;
+        final String[] args;
+        if (hash instanceof EntityCapabilities.EntityCapsHash) {
+            selection = "caps=?";
+            args = new String[] {hash.encoded()};
+        } else if (hash instanceof EntityCapabilities2.EntityCaps2Hash) {
+            selection = "caps2=?";
+            args = new String[] {hash.encoded()};
+        } else {
+            return null;
+        }
+        try (final Cursor cursor =
+                getReadableDatabase()
+                        .query(
+                                "caps_cache",
+                                new String[] {"disco_info"},
+                                selection,
+                                args,
+                                null,
+                                null,
+                                null)) {
+            if (cursor.moveToFirst()) {
+                final var cached = cursor.getString(0);
+                try {
+                    final var element =
+                            XmlElementReader.read(cached.getBytes(StandardCharsets.UTF_8));
+                    if (element instanceof InfoQuery infoQuery) {
+                        return infoQuery;
+                    }
+                } catch (final IOException e) {
+                    Log.e(Config.LOGTAG, "could not restore info query from cache", e);
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+        return null;
     }
 
     public static class FilePath {

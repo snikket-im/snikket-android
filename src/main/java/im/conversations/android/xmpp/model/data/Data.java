@@ -29,6 +29,10 @@ public class Data extends Extension {
                 this.getExtensions(Field.class), f -> !FORM_TYPE.equals(f.getFieldName()));
     }
 
+    public Field getFieldByName(final String name) {
+        return Iterables.find(getFields(), f -> name.equals(f.getFieldName()), null);
+    }
+
     private void addField(final String name, final Object value) {
         addField(name, value, null);
     }

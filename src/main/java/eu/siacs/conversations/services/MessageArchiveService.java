@@ -19,6 +19,7 @@ import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Message;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -55,7 +56,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
             }
         }
 
-        private static Version get(List<String> features) {
+        private static Version get(final Collection<String> features) {
             final Version[] values = values();
             for (int i = values.length - 1; i >= 0; --i) {
                 for (String feature : features) {
@@ -67,7 +68,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
             return MAM_0;
         }
 
-        public static boolean has(List<String> features) {
+        public static boolean has(final Collection<String> features) {
             for (String feature : features) {
                 for (Version version : values()) {
                     if (version.namespace.equals(feature)) {

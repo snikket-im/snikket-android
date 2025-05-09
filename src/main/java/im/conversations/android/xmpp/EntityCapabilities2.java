@@ -8,7 +8,6 @@ import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import com.google.common.io.BaseEncoding;
 import com.google.common.primitives.Bytes;
-
 import eu.siacs.conversations.xml.Namespace;
 import im.conversations.android.xmpp.model.Hash;
 import im.conversations.android.xmpp.model.data.Data;
@@ -42,16 +41,12 @@ public class EntityCapabilities2 {
     }
 
     private static HashFunction toHashFunction(final Hash.Algorithm algorithm) {
-        switch (algorithm) {
-            case SHA_1:
-                return Hashing.sha1();
-            case SHA_256:
-                return Hashing.sha256();
-            case SHA_512:
-                return Hashing.sha512();
-            default:
-                throw new IllegalArgumentException("Unknown hash algorithm");
-        }
+        return switch (algorithm) {
+            case SHA_1 -> Hashing.sha1();
+            case SHA_256 -> Hashing.sha256();
+            case SHA_512 -> Hashing.sha512();
+            default -> throw new IllegalArgumentException("Unknown hash algorithm");
+        };
     }
 
     private static String asHex(final String message) {

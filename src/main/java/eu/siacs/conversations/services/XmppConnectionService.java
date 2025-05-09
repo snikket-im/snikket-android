@@ -81,11 +81,8 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
-import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.entities.Reaction;
-import eu.siacs.conversations.entities.Roster;
-import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.generator.AbstractGenerator;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
@@ -125,6 +122,7 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.LocalizedContent;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.IqErrorResponseException;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
@@ -140,10 +138,13 @@ import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
+import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.pep.PublishOptions;
+import im.conversations.android.xmpp.Entity;
 import im.conversations.android.xmpp.model.avatar.Metadata;
 import im.conversations.android.xmpp.model.bookmark.Storage;
+import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import im.conversations.android.xmpp.model.mds.Displayed;
 import im.conversations.android.xmpp.model.pubsub.PubSub;
 import im.conversations.android.xmpp.model.stanza.Iq;
@@ -358,8 +359,6 @@ public class XmppConnectionService extends Service {
     public final Set<String> FILENAMES_TO_IGNORE_DELETION = new HashSet<>();
 
     private final AtomicLong mLastExpiryRun = new AtomicLong(0);
-    private final LruCache<Pair<String, String>, ServiceDiscoveryResult> discoCache =
-            new LruCache<>(20);
     private final OnStatusChanged statusListener =
             new OnStatusChanged() {
 
@@ -1268,13 +1267,13 @@ public class XmppConnectionService extends Service {
                         getResources().getString(R.string.picture_compression));
     }
 
-    private Presence.Status getTargetPresence() {
+    private im.conversations.android.xmpp.model.stanza.Presence.Availability getTargetPresence() {
         if (dndOnSilentMode() && isPhoneSilenced()) {
-            return Presence.Status.DND;
+            return im.conversations.android.xmpp.model.stanza.Presence.Availability.DND;
         } else if (awayWhenScreenLocked() && isScreenLocked()) {
-            return Presence.Status.AWAY;
+            return im.conversations.android.xmpp.model.stanza.Presence.Availability.AWAY;
         } else {
-            return Presence.Status.ONLINE;
+            return im.conversations.android.xmpp.model.stanza.Presence.Availability.ONLINE;
         }
     }
 
@@ -3721,7 +3720,8 @@ public class XmppConnectionService extends Service {
                             final var packet =
                                     mPresenceGenerator.selfPresence(
                                             account,
-                                            Presence.Status.ONLINE,
+                                            im.conversations.android.xmpp.model.stanza.Presence
+                                                    .Availability.ONLINE,
                                             mucOptions.nonanonymous()
                                                     || onConferenceJoined != null);
                             packet.setTo(joinJid);
@@ -4117,7 +4117,9 @@ public class XmppConnectionService extends Service {
 
             final var packet =
                     mPresenceGenerator.selfPresence(
-                            account, Presence.Status.ONLINE, options.nonanonymous());
+                            account,
+                            im.conversations.android.xmpp.model.stanza.Presence.Availability.ONLINE,
+                            options.nonanonymous());
             packet.setTo(joinJid);
             sendPresencePacket(account, packet);
             if (nick.equals(MucOptions.defaultNick(account))
@@ -4174,7 +4176,9 @@ public class XmppConnectionService extends Service {
                         account.getJid().asBareJid(), joinJid, current));
         final var packet =
                 mPresenceGenerator.selfPresence(
-                        account, Presence.Status.ONLINE, options.nonanonymous());
+                        account,
+                        im.conversations.android.xmpp.model.stanza.Presence.Availability.ONLINE,
+                        options.nonanonymous());
         packet.setTo(joinJid);
         sendPresencePacket(account, packet);
     }
@@ -4367,11 +4371,19 @@ public class XmppConnectionService extends Service {
             final Conversation conversation, final OnConferenceConfigurationFetched callback) {
         final Iq request = mIqGenerator.queryDiscoInfo(conversation.getJid().asBareJid());
         final var account = conversation.getAccount();
-        sendIqPacket(
-                account,
-                request,
-                response -> {
-                    if (response.getType() == Iq.Type.RESULT) {
+        final var connection = account.getXmppConnection();
+        if (connection == null) {
+            return;
+        }
+        final var future =
+                connection
+                        .getManager(DiscoManager.class)
+                        .info(Entity.discoItem(conversation.getJid().asBareJid()), null);
+        Futures.addCallback(
+                future,
+                new FutureCallback<InfoQuery>() {
+                    @Override
+                    public void onSuccess(InfoQuery result) {
                         final MucOptions mucOptions = conversation.getMucOptions();
                         final Bookmark bookmark = conversation.getBookmark();
                         final boolean sameBefore =
@@ -4380,7 +4392,7 @@ public class XmppConnectionService extends Service {
                                         mucOptions.getName());
 
                         final var hadOccupantId = mucOptions.occupantId();
-                        if (mucOptions.updateConfiguration(new ServiceDiscoveryResult(response))) {
+                        if (mucOptions.updateConfiguration(result)) {
                             Log.d(
                                     Config.LOGTAG,
                                     account.getJid().asBareJid()
@@ -4402,7 +4414,8 @@ public class XmppConnectionService extends Service {
                             final var packet =
                                     mPresenceGenerator.selfPresence(
                                             account,
-                                            Presence.Status.ONLINE,
+                                            im.conversations.android.xmpp.model.stanza.Presence
+                                                    .Availability.ONLINE,
                                             mucOptions.nonanonymous());
                             packet.setTo(me);
                             sendPresencePacket(account, packet);
@@ -4421,18 +4434,27 @@ public class XmppConnectionService extends Service {
                         }
 
                         updateConversationUi();
-                    } else if (response.getType() == Iq.Type.TIMEOUT) {
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid()
-                                        + ": received timeout waiting for conference configuration"
-                                        + " fetch");
-                    } else {
-                        if (callback != null) {
-                            callback.onFetchFailed(conversation, response.getErrorCondition());
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        if (throwable instanceof TimeoutException) {
+                            Log.d(
+                                    Config.LOGTAG,
+                                    account.getJid().asBareJid()
+                                            + ": received timeout waiting for conference"
+                                            + " configuration fetch");
+                        } else if (throwable
+                                instanceof IqErrorResponseException errorResponseException) {
+                            if (callback != null) {
+                                callback.onFetchFailed(
+                                        conversation,
+                                        errorResponseException.getResponse().getErrorCondition());
+                            }
                         }
                     }
-                });
+                },
+                MoreExecutors.directExecutor());
     }
 
     public void pushNodeConfiguration(
@@ -5270,7 +5292,10 @@ public class XmppConnectionService extends Service {
                     if (mucOptions.online()) {
                         final var packet =
                                 mPresenceGenerator.selfPresence(
-                                        account, Presence.Status.ONLINE, mucOptions.nonanonymous());
+                                        account,
+                                        im.conversations.android.xmpp.model.stanza.Presence
+                                                .Availability.ONLINE,
+                                        mucOptions.nonanonymous());
                         packet.setTo(mucOptions.getSelf().getFullJid());
                         connection.sendPresencePacket(packet);
                     }
@@ -5982,7 +6007,7 @@ public class XmppConnectionService extends Service {
     }
 
     private void sendPresence(final Account account, final boolean includeIdleTimestamp) {
-        final Presence.Status status;
+        final im.conversations.android.xmpp.model.stanza.Presence.Availability status;
         if (manuallyChangePresence()) {
             status = account.getPresenceStatus();
         } else {
@@ -6215,100 +6240,6 @@ public class XmppConnectionService extends Service {
                                         + packet);
                     }
                 });
-    }
-
-    public ServiceDiscoveryResult getCachedServiceDiscoveryResult(Pair<String, String> key) {
-        ServiceDiscoveryResult result = discoCache.get(key);
-        if (result != null) {
-            return result;
-        } else {
-            result = databaseBackend.findDiscoveryResult(key.first, key.second);
-            if (result != null) {
-                discoCache.put(key, result);
-            }
-            return result;
-        }
-    }
-
-    public void fetchCaps(final Account account, final Jid jid, final Presence presence) {
-        final Pair<String, String> key = new Pair<>(presence.getHash(), presence.getVer());
-        final ServiceDiscoveryResult disco = getCachedServiceDiscoveryResult(key);
-        if (disco != null) {
-            presence.setServiceDiscoveryResult(disco);
-            final Contact contact = account.getRoster().getContact(jid);
-            if (contact.refreshRtpCapability()) {
-                syncRoster(account);
-            }
-        } else {
-            final Iq request = new Iq(Iq.Type.GET);
-            request.setTo(jid);
-            final String node = presence.getNode();
-            final String ver = presence.getVer();
-            final Element query = request.query(Namespace.DISCO_INFO);
-            if (node != null && ver != null) {
-                query.setAttribute("node", node + "#" + ver);
-            }
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid()
-                            + ": making disco request for "
-                            + key.second
-                            + " to "
-                            + jid);
-            sendIqPacket(
-                    account,
-                    request,
-                    (response) -> {
-                        if (response.getType() == Iq.Type.RESULT) {
-                            final ServiceDiscoveryResult discoveryResult =
-                                    new ServiceDiscoveryResult(response);
-                            if (presence.getVer().equals(discoveryResult.getVer())) {
-                                databaseBackend.insertDiscoveryResult(discoveryResult);
-                                injectServiceDiscoveryResult(
-                                        account.getRoster(),
-                                        presence.getHash(),
-                                        presence.getVer(),
-                                        discoveryResult);
-                            } else {
-                                Log.d(
-                                        Config.LOGTAG,
-                                        account.getJid().asBareJid()
-                                                + ": mismatch in caps for contact "
-                                                + jid
-                                                + " "
-                                                + presence.getVer()
-                                                + " vs "
-                                                + discoveryResult.getVer());
-                            }
-                        } else {
-                            Log.d(
-                                    Config.LOGTAG,
-                                    account.getJid().asBareJid()
-                                            + ": unable to fetch caps from "
-                                            + jid);
-                        }
-                    });
-        }
-    }
-
-    private void injectServiceDiscoveryResult(
-            Roster roster, String hash, String ver, ServiceDiscoveryResult disco) {
-        boolean rosterNeedsSync = false;
-        for (final Contact contact : roster.getContacts()) {
-            boolean serviceDiscoverySet = false;
-            for (final Presence presence : contact.getPresences().getPresences()) {
-                if (hash.equals(presence.getHash()) && ver.equals(presence.getVer())) {
-                    presence.setServiceDiscoveryResult(disco);
-                    serviceDiscoverySet = true;
-                }
-            }
-            if (serviceDiscoverySet) {
-                rosterNeedsSync |= contact.refreshRtpCapability();
-            }
-        }
-        if (rosterNeedsSync) {
-            syncRoster(roster.getAccount());
-        }
     }
 
     public void fetchMamPreferences(final Account account, final OnMamPreferencesFetched callback) {

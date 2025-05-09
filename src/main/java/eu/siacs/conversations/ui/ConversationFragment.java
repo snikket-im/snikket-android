@@ -81,7 +81,6 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.User;
-import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.ReadByMarker;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
@@ -128,6 +127,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -2938,7 +2938,7 @@ public class ConversationFragment extends XmppFragment
         boolean hasAttachments =
                 mediaPreviewAdapter != null && mediaPreviewAdapter.hasAttachments();
         final Conversation c = this.conversation;
-        final Presence.Status status;
+        final Presence.Availability status;
         final String text =
                 this.binding.textinput == null ? "" : this.binding.textinput.getText().toString();
         final SendButtonAction action;
@@ -2951,17 +2951,17 @@ public class ConversationFragment extends XmppFragment
             if (activity != null
                     && activity.xmppConnectionService != null
                     && activity.xmppConnectionService.getMessageArchiveService().isCatchingUp(c)) {
-                status = Presence.Status.OFFLINE;
+                status = Presence.Availability.OFFLINE;
             } else if (c.getMode() == Conversation.MODE_SINGLE) {
                 status = c.getContact().getShownStatus();
             } else {
                 status =
                         c.getMucOptions().online()
-                                ? Presence.Status.ONLINE
-                                : Presence.Status.OFFLINE;
+                                ? Presence.Availability.ONLINE
+                                : Presence.Availability.OFFLINE;
             }
         } else {
-            status = Presence.Status.OFFLINE;
+            status = Presence.Availability.OFFLINE;
         }
         this.binding.textSendButton.setTag(action);
         this.binding.textSendButton.setIconResource(

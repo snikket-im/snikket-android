@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Objects;
 
 public class PresenceTemplate extends AbstractEntity {
@@ -13,9 +14,9 @@ public class PresenceTemplate extends AbstractEntity {
 
     private long lastUsed = 0;
     private String statusMessage;
-    private Presence.Status status = Presence.Status.ONLINE;
+    private Presence.Availability status = Presence.Availability.ONLINE;
 
-    public PresenceTemplate(Presence.Status status, String statusMessage) {
+    public PresenceTemplate(Presence.Availability status, String statusMessage) {
         this.status = status;
         this.statusMessage = statusMessage;
         this.lastUsed = System.currentTimeMillis();
@@ -41,11 +42,11 @@ public class PresenceTemplate extends AbstractEntity {
         template.lastUsed = cursor.getLong(cursor.getColumnIndex(LAST_USED));
         template.statusMessage = cursor.getString(cursor.getColumnIndex(MESSAGE));
         template.status =
-                Presence.Status.fromShowString(cursor.getString(cursor.getColumnIndex(STATUS)));
+                Presence.Availability.valueOfShown(cursor.getString(cursor.getColumnIndex(STATUS)));
         return template;
     }
 
-    public Presence.Status getStatus() {
+    public Presence.Availability getStatus() {
         return status;
     }
 

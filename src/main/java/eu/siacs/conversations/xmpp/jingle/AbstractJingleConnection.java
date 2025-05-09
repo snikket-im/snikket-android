@@ -5,18 +5,16 @@ import androidx.annotation.NonNull;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.entities.Presence;
-import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
+import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import im.conversations.android.xmpp.model.jingle.Jingle;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import java.util.Arrays;
@@ -331,14 +329,15 @@ public abstract class AbstractJingleConnection {
     }
 
     protected boolean remoteHasFeature(final String feature) {
-        final Contact contact = id.getContact();
-        final Presence presence =
-                contact.getPresences().get(Strings.nullToEmpty(id.with.getResource()));
-        final ServiceDiscoveryResult serviceDiscoveryResult =
-                presence == null ? null : presence.getServiceDiscoveryResult();
-        final List<String> features =
-                serviceDiscoveryResult == null ? null : serviceDiscoveryResult.getFeatures();
-        return features != null && features.contains(feature);
+        final var connection = id.account.getXmppConnection();
+        if (connection == null) {
+            return false;
+        }
+        final var infoQuery = connection.getManager(DiscoManager.class).get(id.with);
+        if (infoQuery == null) {
+            return false;
+        }
+        return infoQuery.hasFeature(feature);
     }
 
     public static class Id {

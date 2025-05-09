@@ -14,9 +14,10 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
-import eu.siacs.conversations.xmpp.forms.Data;
-import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+import im.conversations.android.xmpp.model.data.Data;
+import im.conversations.android.xmpp.model.data.Field;
+import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,7 +44,7 @@ public class MucOptions {
     public OnRenameListener onRenameListener = null;
     private boolean mAutoPushConfiguration = true;
     private final Account account;
-    private ServiceDiscoveryResult serviceDiscoveryResult;
+    private InfoQuery infoQuery;
     private boolean isOnline = false;
     private Error error = Error.NONE;
     private User self;
@@ -110,15 +111,24 @@ public class MucOptions {
         return MessageArchiveService.Version.has(getFeatures());
     }
 
-    public boolean updateConfiguration(ServiceDiscoveryResult serviceDiscoveryResult) {
-        this.serviceDiscoveryResult = serviceDiscoveryResult;
+    private InfoQuery getServiceDiscoveryResult() {
+        return this.infoQuery;
+    }
+
+    public boolean updateConfiguration(final InfoQuery serviceDiscoveryResult) {
+        this.infoQuery = serviceDiscoveryResult;
+        final var roomInfo = getRoomInfoForm();
         String name;
-        Field roomConfigName = getRoomInfoForm().getFieldByName("muc#roomconfig_roomname");
+        Field roomConfigName =
+                roomInfo == null ? null : roomInfo.getFieldByName("muc#roomconfig_roomname");
         if (roomConfigName != null) {
             name = roomConfigName.getValue();
         } else {
             final var identities = serviceDiscoveryResult.getIdentities();
-            final String identityName = !identities.isEmpty() ? identities.get(0).getName() : null;
+            final String identityName =
+                    !identities.isEmpty()
+                            ? Iterables.getFirst(identities, null).getIdentityName()
+                            : null;
             final Jid jid = conversation.getJid();
             if (identityName != null && !identityName.equals(jid == null ? null : jid.getLocal())) {
                 name = identityName;
@@ -140,11 +150,11 @@ public class MucOptions {
     }
 
     private Data getRoomInfoForm() {
-        final List<Data> forms =
-                serviceDiscoveryResult == null
-                        ? Collections.emptyList()
-                        : serviceDiscoveryResult.forms;
-        return forms.isEmpty() ? new Data() : forms.get(0);
+        final var serviceDiscoveryResult = getServiceDiscoveryResult();
+        return serviceDiscoveryResult == null
+                ? null
+                : serviceDiscoveryResult.getServiceDiscoveryExtension(
+                        "http://jabber.org/protocol/muc#roominfo");
     }
 
     public String getAvatar() {
@@ -152,8 +162,9 @@ public class MucOptions {
     }
 
     public boolean hasFeature(String feature) {
-        return this.serviceDiscoveryResult != null
-                && this.serviceDiscoveryResult.features.contains(feature);
+        final var serviceDiscoveryResult = getServiceDiscoveryResult();
+        return serviceDiscoveryResult != null
+                && serviceDiscoveryResult.getFeatureStrings().contains(feature);
     }
 
     public boolean hasVCards() {
@@ -211,9 +222,10 @@ public class MucOptions {
         return conversation.getBooleanAttribute(Conversation.ATTRIBUTE_MEMBERS_ONLY, false);
     }
 
-    public List<String> getFeatures() {
-        return this.serviceDiscoveryResult != null
-                ? this.serviceDiscoveryResult.features
+    public Collection<String> getFeatures() {
+        final var serviceDiscoveryResult = getServiceDiscoveryResult();
+        return serviceDiscoveryResult != null
+                ? serviceDiscoveryResult.getFeatureStrings()
                 : Collections.emptyList();
     }
 

@@ -27,6 +27,7 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -101,7 +102,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private XmppConnection xmppConnection = null;
     private long mEndGracePeriod = 0L;
     private final Map<Jid, Bookmark> bookmarks = new HashMap<>();
-    private Presence.Status presenceStatus;
+    private im.conversations.android.xmpp.model.stanza.Presence.Availability presenceStatus;
     private String presenceStatusMessage;
     private String pinnedMechanism;
     private String pinnedChannelBinding;
@@ -121,7 +122,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                 null,
                 null,
                 Resolver.XMPP_PORT_STARTTLS,
-                Presence.Status.ONLINE,
+                im.conversations.android.xmpp.model.stanza.Presence.Availability.ONLINE,
                 null,
                 null,
                 null,
@@ -140,7 +141,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
             String displayName,
             String hostname,
             int port,
-            final Presence.Status status,
+            final im.conversations.android.xmpp.model.stanza.Presence.Availability status,
             String statusMessage,
             final String pinnedMechanism,
             final String pinnedChannelBinding,
@@ -203,7 +204,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                 cursor.getString(cursor.getColumnIndexOrThrow(DISPLAY_NAME)),
                 cursor.getString(cursor.getColumnIndexOrThrow(HOSTNAME)),
                 cursor.getInt(cursor.getColumnIndexOrThrow(PORT)),
-                Presence.Status.fromShowString(
+                im.conversations.android.xmpp.model.stanza.Presence.Availability.valueOfShown(
                         cursor.getString(cursor.getColumnIndexOrThrow(STATUS))),
                 cursor.getString(cursor.getColumnIndexOrThrow(STATUS_MESSAGE)),
                 cursor.getString(cursor.getColumnIndexOrThrow(PINNED_MECHANISM)),
@@ -451,11 +452,12 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                 && getXmppConnection().getAttempt() >= 3;
     }
 
-    public Presence.Status getPresenceStatus() {
+    public im.conversations.android.xmpp.model.stanza.Presence.Availability getPresenceStatus() {
         return this.presenceStatus;
     }
 
-    public void setPresenceStatus(Presence.Status status) {
+    public void setPresenceStatus(
+            im.conversations.android.xmpp.model.stanza.Presence.Availability status) {
         this.presenceStatus = status;
     }
 
@@ -584,9 +586,18 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public int activeDevicesWithRtpCapability() {
+        final var connection = getXmppConnection();
+        if (connection == null) {
+            return 0;
+        }
         int i = 0;
-        for (Presence presence : getSelfContact().getPresences().getPresences()) {
-            if (RtpCapability.check(presence) != RtpCapability.Capability.NONE) {
+        for (String resource : getSelfContact().getPresences().getPresencesMap().keySet()) {
+            final var jid =
+                    Strings.isNullOrEmpty(resource)
+                            ? getJid().asBareJid()
+                            : getJid().withResource(resource);
+            if (RtpCapability.check(connection.getManager(DiscoManager.class).get(jid))
+                    != RtpCapability.Capability.NONE) {
                 i++;
             }
         }

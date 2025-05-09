@@ -17,6 +17,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -55,7 +56,7 @@ public class Contact implements ListItem, Blockable {
     private String photoUri;
     private final JSONObject keys;
     private JSONArray groups = new JSONArray();
-    private final Presences presences = new Presences();
+    private final Presences presences = new Presences(this);
     protected Account account;
     protected Avatar avatar;
 
@@ -275,7 +276,7 @@ public class Contact implements ListItem, Blockable {
         this.resetOption(Options.PENDING_SUBSCRIPTION_REQUEST);
     }
 
-    public Presence.Status getShownStatus() {
+    public im.conversations.android.xmpp.model.stanza.Presence.Availability getShownStatus() {
         return this.presences.getShownStatus();
     }
 
