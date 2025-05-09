@@ -39,22 +39,6 @@ public class IqGenerator extends AbstractGenerator {
         super(service);
     }
 
-    public Iq discoResponse(final Account account, final Iq request) {
-        final var packet = new Iq(Iq.Type.RESULT);
-        packet.setId(request.getId());
-        packet.setTo(request.getFrom());
-        final Element query = packet.addChild("query", "http://jabber.org/protocol/disco#info");
-        query.setAttribute("node", request.query().getAttribute("node"));
-        final Element identity = query.addChild("identity");
-        identity.setAttribute("category", "client");
-        identity.setAttribute("type", getIdentityType());
-        identity.setAttribute("name", getIdentityName());
-        for (final String feature : getFeatures(account)) {
-            query.addChild("feature").setAttribute("var", feature);
-        }
-        return packet;
-    }
-
     public Iq versionResponse(final Iq request) {
         final var packet = request.generateResponse(Iq.Type.RESULT);
         Element query = packet.query("jabber:iq:version");

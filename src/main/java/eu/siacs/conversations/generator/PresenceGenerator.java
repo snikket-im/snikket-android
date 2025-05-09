@@ -5,8 +5,8 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import im.conversations.android.xmpp.model.stanza.Presence;
 
 public class PresenceGenerator extends AbstractGenerator {
@@ -66,25 +66,11 @@ public class PresenceGenerator extends AbstractGenerator {
 
     public im.conversations.android.xmpp.model.stanza.Presence selfPresence(
             final Account account, final Presence.Availability status, final boolean personal) {
-        final im.conversations.android.xmpp.model.stanza.Presence packet =
-                new im.conversations.android.xmpp.model.stanza.Presence();
-        if (personal) {
-            final String sig = account.getPgpSignature();
-            final String message = account.getPresenceStatusMessage();
-            packet.setAvailability(status);
-            packet.setStatus(message);
-            if (sig != null && mXmppConnectionService.getPgpEngine() != null) {
-                packet.addChild("x", "jabber:x:signed").setContent(sig);
-            }
+        final var connection = account.getXmppConnection();
+        if (connection == null) {
+            return new Presence();
         }
-        final String capHash = getCapHash(account);
-        if (capHash != null) {
-            Element cap = packet.addChild("c", "http://jabber.org/protocol/caps");
-            cap.setAttribute("hash", "sha-1");
-            cap.setAttribute("node", "http://conversations.im");
-            cap.setAttribute("ver", capHash);
-        }
-        return packet;
+        return connection.getManager(PresenceManager.class).getPresence(status, personal);
     }
 
     public im.conversations.android.xmpp.model.stanza.Presence leave(final MucOptions mucOptions) {

@@ -114,6 +114,8 @@ public final class Config {
     public static final boolean USE_DIRECT_JINGLE_CANDIDATES = true;
     public static final boolean USE_JINGLE_MESSAGE_INIT = true;
 
+    public static final boolean ENABLE_CAPS_CACHE = true;
+
     public static final boolean DISABLE_HTTP_UPLOAD = false;
     public static final boolean EXTENDED_SM_LOGGING = false; // log stanza counts
     public static final boolean BACKGROUND_STANZA_LOGGING =

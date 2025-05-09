@@ -74,10 +74,12 @@ import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.manager.AbstractManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import im.conversations.android.xmpp.Entity;
 import im.conversations.android.xmpp.model.AuthenticationFailure;
 import im.conversations.android.xmpp.model.AuthenticationRequest;
 import im.conversations.android.xmpp.model.AuthenticationStreamFeature;
+import im.conversations.android.xmpp.model.Extension;
 import im.conversations.android.xmpp.model.StreamElement;
 import im.conversations.android.xmpp.model.bind2.Bind;
 import im.conversations.android.xmpp.model.bind2.Bound;
@@ -224,6 +226,9 @@ public class XmppConnection implements Runnable {
                         .put(
                                 DiscoManager.class,
                                 new DiscoManager(service.getApplicationContext(), this))
+                        .put(
+                                PresenceManager.class,
+                                new PresenceManager(service.getApplicationContext(), this))
                         .build();
     }
 
@@ -2560,6 +2565,36 @@ public class XmppConnection implements Runnable {
         }
         this.sendPacket(packet, force);
         return packet.getId();
+    }
+
+    public void sendResultFor(final Iq request, final Extension... extensions) {
+        final var from = request.getFrom();
+        final var id = request.getId();
+        final var response = new Iq(Iq.Type.RESULT);
+        response.setTo(from);
+        response.setId(id);
+        for (final Extension extension : extensions) {
+            response.addExtension(extension);
+        }
+        this.sendPacket(response);
+    }
+
+    public void sendErrorFor(
+            final Iq request,
+            final im.conversations.android.xmpp.model.error.Error.Type type,
+            final Condition condition,
+            final im.conversations.android.xmpp.model.error.Error.Extension... extensions) {
+        final var from = request.getFrom();
+        final var id = request.getId();
+        final var response = new Iq(Iq.Type.ERROR);
+        response.setTo(from);
+        response.setId(id);
+        final var error =
+                response.addExtension(new im.conversations.android.xmpp.model.error.Error());
+        error.setType(type);
+        error.setCondition(condition);
+        error.addExtensions(extensions);
+        this.sendPacket(response);
     }
 
     public void sendMessagePacket(final im.conversations.android.xmpp.model.stanza.Message packet) {

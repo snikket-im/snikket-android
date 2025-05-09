@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_resource">Phone</string>
     <bool name="portrait_only">true</bool>
     <bool name="enter_is_send">false</bool>
     <bool name="notifications_from_strangers">true</bool>

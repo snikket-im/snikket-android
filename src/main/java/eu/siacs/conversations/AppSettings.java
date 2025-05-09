@@ -130,6 +130,18 @@ public class AppSettings {
         return getBooleanPreference(ALIGN_START, R.bool.align_start);
     }
 
+    public boolean isConfirmMessages() {
+        return getBooleanPreference(CONFIRM_MESSAGES, R.bool.confirm_messages);
+    }
+
+    public boolean isAllowMessageCorrection() {
+        return getBooleanPreference(ALLOW_MESSAGE_CORRECTION, R.bool.allow_message_correction);
+    }
+
+    public boolean isBroadcastLastActivity() {
+        return getBooleanPreference(BROADCAST_LAST_ACTIVITY, R.bool.last_activity);
+    }
+
     public boolean isUseTor() {
         return QuickConversationsService.isConversations()
                 && getBooleanPreference(USE_TOR, R.bool.use_tor);

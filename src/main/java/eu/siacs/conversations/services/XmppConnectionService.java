@@ -5527,11 +5527,11 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean confirmMessages() {
-        return getBooleanPreference("confirm_messages", R.bool.confirm_messages);
+        return appSettings.isConfirmMessages();
     }
 
     public boolean allowMessageCorrection() {
-        return getBooleanPreference("allow_message_correction", R.bool.allow_message_correction);
+        return appSettings.isAllowMessageCorrection();
     }
 
     public boolean sendChatStates() {
@@ -5539,12 +5539,11 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean useTorToConnect() {
-        return QuickConversationsService.isConversations()
-                && getBooleanPreference("use_tor", R.bool.use_tor);
+        return appSettings.isUseTor();
     }
 
     public boolean broadcastLastActivity() {
-        return getBooleanPreference(AppSettings.BROADCAST_LAST_ACTIVITY, R.bool.last_activity);
+        return appSettings.isBroadcastLastActivity();
     }
 
     public int unreadCount() {
