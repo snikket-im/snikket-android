@@ -4369,7 +4369,6 @@ public class XmppConnectionService extends Service {
 
     public void fetchConferenceConfiguration(
             final Conversation conversation, final OnConferenceConfigurationFetched callback) {
-        final Iq request = mIqGenerator.queryDiscoInfo(conversation.getJid().asBareJid());
         final var account = conversation.getAccount();
         final var connection = account.getXmppConnection();
         if (connection == null) {
@@ -4381,7 +4380,7 @@ public class XmppConnectionService extends Service {
                         .info(Entity.discoItem(conversation.getJid().asBareJid()), null);
         Futures.addCallback(
                 future,
-                new FutureCallback<InfoQuery>() {
+                new FutureCallback<>() {
                     @Override
                     public void onSuccess(InfoQuery result) {
                         final MucOptions mucOptions = conversation.getMucOptions();

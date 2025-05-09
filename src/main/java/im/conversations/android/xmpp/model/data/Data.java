@@ -33,6 +33,11 @@ public class Data extends Extension {
         return Iterables.find(getFields(), f -> name.equals(f.getFieldName()), null);
     }
 
+    public String getValue(final String name) {
+        final var field = getFieldByName(name);
+        return field == null ? null : field.getValue();
+    }
+
     private void addField(final String name, final Object value) {
         addField(name, value, null);
     }

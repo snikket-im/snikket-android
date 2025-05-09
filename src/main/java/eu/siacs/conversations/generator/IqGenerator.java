@@ -577,18 +577,4 @@ public class IqGenerator extends AbstractGenerator {
         }
         return packet;
     }
-
-    public Iq queryDiscoItems(final Jid jid) {
-        final Iq packet = new Iq(Iq.Type.GET);
-        packet.setTo(jid);
-        packet.addChild("query", Namespace.DISCO_ITEMS);
-        return packet;
-    }
-
-    public Iq queryDiscoInfo(final Jid jid) {
-        final Iq packet = new Iq(Iq.Type.GET);
-        packet.setTo(jid);
-        packet.addChild("query", Namespace.DISCO_INFO);
-        return packet;
-    }
 }
