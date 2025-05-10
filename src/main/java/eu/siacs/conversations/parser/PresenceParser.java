@@ -22,6 +22,7 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.Entity;
@@ -35,12 +36,13 @@ import org.openintents.openpgp.util.OpenPgpUtils;
 public class PresenceParser extends AbstractParser
         implements Consumer<im.conversations.android.xmpp.model.stanza.Presence> {
 
-    public PresenceParser(final XmppConnectionService service, final Account account) {
-        super(service, account);
+    public PresenceParser(final XmppConnectionService service, final XmppConnection connection) {
+        super(service, connection);
     }
 
     public void parseConferencePresence(
-            final im.conversations.android.xmpp.model.stanza.Presence packet, Account account) {
+            final im.conversations.android.xmpp.model.stanza.Presence packet) {
+        final var account = getAccount();
         final Conversation conversation =
                 packet.getFrom() == null
                         ? null
@@ -325,8 +327,8 @@ public class PresenceParser extends AbstractParser
     }
 
     private void parseContactPresence(
-            final im.conversations.android.xmpp.model.stanza.Presence packet,
-            final Account account) {
+            final im.conversations.android.xmpp.model.stanza.Presence packet) {
+        final var account = getAccount();
         final PresenceGenerator mPresenceGenerator = mXmppConnectionService.getPresenceGenerator();
         final Jid from = packet.getFrom();
         if (from == null || from.equals(account.getJid())) {
@@ -372,8 +374,7 @@ public class PresenceParser extends AbstractParser
             final var connection = account.getXmppConnection();
             if (nodeHash != null && connection != null) {
                 final var discoFuture =
-                        connection
-                                .getManager(DiscoManager.class)
+                        this.getManager(DiscoManager.class)
                                 .infoOrCache(Entity.presence(from), nodeHash.node, nodeHash.hash);
 
                 logDiscoFailure(from, discoFuture);
@@ -486,14 +487,14 @@ public class PresenceParser extends AbstractParser
     @Override
     public void accept(final im.conversations.android.xmpp.model.stanza.Presence packet) {
         if (packet.hasChild("x", Namespace.MUC_USER)) {
-            this.parseConferencePresence(packet, account);
+            this.parseConferencePresence(packet);
         } else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {
-            this.parseConferencePresence(packet, account);
+            this.parseConferencePresence(packet);
         } else if ("error".equals(packet.getAttribute("type"))
-                && mXmppConnectionService.isMuc(account, packet.getFrom())) {
-            this.parseConferencePresence(packet, account);
+                && mXmppConnectionService.isMuc(getAccount(), packet.getFrom())) {
+            this.parseConferencePresence(packet);
         } else {
-            this.parseContactPresence(packet, account);
+            this.parseContactPresence(packet);
         }
     }
 }

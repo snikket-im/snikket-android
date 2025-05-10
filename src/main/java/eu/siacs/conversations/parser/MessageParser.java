@@ -33,6 +33,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.LocalizedContent;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
@@ -79,8 +80,8 @@ public class MessageParser extends AbstractParser
     private static final List<String> JINGLE_MESSAGE_ELEMENT_NAMES =
             Arrays.asList("accept", "propose", "proceed", "reject", "retract", "ringing", "finish");
 
-    public MessageParser(final XmppConnectionService service, final Account account) {
-        super(service, account);
+    public MessageParser(final XmppConnectionService service, final XmppConnection connection) {
+        super(service, connection);
     }
 
     private static String extractStanzaId(
@@ -489,6 +490,7 @@ public class MessageParser extends AbstractParser
 
     @Override
     public void accept(final im.conversations.android.xmpp.model.stanza.Message original) {
+        final var account = connection.getAccount();
         if (handleErrorMessage(account, original)) {
             return;
         }
@@ -510,8 +512,7 @@ public class MessageParser extends AbstractParser
                 queryId == null
                         ? null
                         : mXmppConnectionService.getMessageArchiveService().findQuery(queryId);
-        final boolean offlineMessagesRetrieved =
-                account.getXmppConnection().isOfflineMessagesRetrieved();
+        final boolean offlineMessagesRetrieved = connection.isOfflineMessagesRetrieved();
         if (query != null && query.validFrom(original.getFrom())) {
             final var f = getForwardedMessagePacket(original, "result", query.version.namespace);
             if (f == null) {
@@ -692,7 +693,7 @@ public class MessageParser extends AbstractParser
             final boolean conversationIsProbablyMuc =
                     isTypeGroupChat
                             || mucUserElement != null
-                            || account.getXmppConnection()
+                            || connection
                                     .getMucServersWithholdAccount()
                                     .contains(counterpart.getDomain().toString());
             final Conversation conversation =
@@ -1445,6 +1446,7 @@ public class MessageParser extends AbstractParser
             final im.conversations.android.xmpp.model.stanza.Message packet,
             final MessageArchiveService.Query query,
             final Jid from) {
+        final var account = this.connection.getAccount();
         final var id = received.getId();
         if (packet.fromAccount(account)) {
             if (query != null && id != null && packet.getTo() != null) {
@@ -1475,9 +1477,10 @@ public class MessageParser extends AbstractParser
             final Jid counterpart,
             final MessageArchiveService.Query query,
             final boolean isTypeGroupChat,
-            Conversation conversation,
-            Element mucUserElement,
-            Jid from) {
+            final Conversation conversation,
+            final Element mucUserElement,
+            final Jid from) {
+        final var account = getAccount();
         final var id = displayed.getId();
         // TODO we don’t even use 'sender' any more. Remove this!
         final Jid sender = Jid.Invalid.getNullForInvalid(displayed.getAttributeAsJid("sender"));
@@ -1565,6 +1568,7 @@ public class MessageParser extends AbstractParser
             final Jid counterpart,
             final Jid mucTrueCounterPart,
             final im.conversations.android.xmpp.model.stanza.Message packet) {
+        final var account = getAccount();
         final String reactingTo = reactions.getId();
         if (conversation != null && reactingTo != null) {
             if (isTypeGroupChat && conversation.getMode() == Conversational.MODE_MULTI) {

@@ -30,6 +30,7 @@ import im.conversations.android.xmpp.model.disco.items.ItemsQuery;
 import im.conversations.android.xmpp.model.error.Condition;
 import im.conversations.android.xmpp.model.error.Error;
 import im.conversations.android.xmpp.model.stanza.Iq;
+import im.conversations.android.xmpp.model.version.Version;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -352,6 +353,19 @@ public class DiscoManager extends AbstractManager {
         } else {
             return "phone";
         }
+    }
+
+    public void handleVersionRequest(final Iq request) {
+        final var version = new Version();
+        version.setSoftwareName(context.getString(R.string.app_name));
+        version.setVersion(getIdentityVersion());
+        if ("chromium".equals(android.os.Build.BRAND)) {
+            version.setOs("Chrome OS");
+        } else {
+            version.setOs("Android");
+        }
+        Log.d(Config.LOGTAG, "responding to version request from " + request.getFrom());
+        connection.sendResultFor(request, version);
     }
 
     public void handleInfoQuery(final Iq request) {

@@ -14,9 +14,11 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import im.conversations.android.xmpp.model.stanza.Iq;
+import im.conversations.android.xmpp.model.version.Version;
 import java.io.ByteArrayInputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -37,8 +39,8 @@ import org.whispersystems.libsignal.state.PreKeyBundle;
 
 public class IqParser extends AbstractParser implements Consumer<Iq> {
 
-    public IqParser(final XmppConnectionService service, final Account account) {
-        super(service, account);
+    public IqParser(final XmppConnectionService service, final XmppConnection connection) {
+        super(service, connection);
     }
 
     public static List<Jid> items(final Iq packet) {
@@ -379,7 +381,7 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
 
     @Override
     public void accept(final Iq packet) {
-        final var connection = account.getXmppConnection();
+        final var account = getAccount();
         final boolean isGet = packet.getType() == Iq.Type.GET;
         if (packet.getType() == Iq.Type.ERROR || packet.getType() == Iq.Type.TIMEOUT) {
             return;
@@ -467,11 +469,10 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
                 || packet.hasChild("data", "http://jabber.org/protocol/ibb")
                 || packet.hasChild("close", "http://jabber.org/protocol/ibb")) {
             mXmppConnectionService.getJingleConnectionManager().deliverIbbPacket(account, packet);
-        } else if (packet.hasExtension(InfoQuery.class)) {
-            connection.getManager(DiscoManager.class).handleInfoQuery(packet);
-        } else if (packet.hasChild("query", "jabber:iq:version") && isGet) {
-            final Iq response = mXmppConnectionService.getIqGenerator().versionResponse(packet);
-            mXmppConnectionService.sendIqPacket(account, response, null);
+        } else if (packet.hasExtension(InfoQuery.class) && isGet) {
+            this.getManager(DiscoManager.class).handleInfoQuery(packet);
+        } else if (packet.hasExtension(Version.class) && isGet) {
+            this.getManager(DiscoManager.class).handleVersionRequest(packet);
         } else if (packet.hasChild("ping", "urn:xmpp:ping") && isGet) {
             final Iq response = packet.generateResponse(Iq.Type.RESULT);
             mXmppConnectionService.sendIqPacket(account, response, null);

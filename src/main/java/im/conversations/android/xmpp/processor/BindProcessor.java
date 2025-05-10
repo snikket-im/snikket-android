@@ -9,19 +9,18 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.xmpp.model.stanza.Iq;
 
-public class BindProcessor implements Runnable {
+public class BindProcessor extends XmppConnection.Delegate implements Runnable {
 
     private final XmppConnectionService service;
-    private final Account account;
 
-    public BindProcessor(XmppConnectionService service, Account account) {
+    public BindProcessor(final XmppConnectionService service, final XmppConnection connection) {
+        super(service.getApplicationContext(), connection);
         this.service = service;
-        this.account = account;
     }
 
     @Override
     public void run() {
-        final XmppConnection connection = account.getXmppConnection();
+        final var account = connection.getAccount();
         final var features = connection.getFeatures();
         service.cancelAvatarFetches(account);
         final boolean loggedInSuccessfully =

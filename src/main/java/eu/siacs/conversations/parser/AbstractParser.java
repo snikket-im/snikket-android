@@ -7,6 +7,7 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.xmpp.model.stanza.Stanza;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,14 +16,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public abstract class AbstractParser {
+public abstract class AbstractParser extends XmppConnection.Delegate {
 
     protected final XmppConnectionService mXmppConnectionService;
-    protected final Account account;
 
-    protected AbstractParser(final XmppConnectionService service, final Account account) {
+    protected AbstractParser(final XmppConnectionService service, final XmppConnection connection) {
+        super(service.getApplicationContext(), connection);
         this.mXmppConnectionService = service;
-        this.account = account;
     }
 
     public static Long parseTimestamp(Element element, Long d) {

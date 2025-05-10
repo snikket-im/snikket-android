@@ -20,7 +20,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ClassToInstanceMap;
-import com.google.common.collect.ImmutableClassToInstanceMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
@@ -74,7 +73,6 @@ import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.manager.AbstractManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
-import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import im.conversations.android.xmpp.Entity;
 import im.conversations.android.xmpp.model.AuthenticationFailure;
 import im.conversations.android.xmpp.model.AuthenticationRequest;
@@ -217,19 +215,11 @@ public class XmppConnection implements Runnable {
         this.account = account;
         this.mXmppConnectionService = service;
         this.appSettings = mXmppConnectionService.getAppSettings();
-        this.presenceListener = new PresenceParser(service, account);
-        this.unregisteredIqListener = new IqParser(service, account);
-        this.messageListener = new MessageParser(service, account);
-        this.bindListener = new BindProcessor(service, account);
-        this.managers =
-                new ImmutableClassToInstanceMap.Builder<AbstractManager>()
-                        .put(
-                                DiscoManager.class,
-                                new DiscoManager(service.getApplicationContext(), this))
-                        .put(
-                                PresenceManager.class,
-                                new PresenceManager(service.getApplicationContext(), this))
-                        .build();
+        this.presenceListener = new PresenceParser(service, this);
+        this.unregisteredIqListener = new IqParser(service, this);
+        this.messageListener = new MessageParser(service, this);
+        this.bindListener = new BindProcessor(service, this);
+        this.managers = Managers.get(service.getApplicationContext(), this);
     }
 
     private static void fixResource(final Context context, final Account account) {

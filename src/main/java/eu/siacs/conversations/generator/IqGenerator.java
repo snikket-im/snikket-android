@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
@@ -37,19 +36,6 @@ public class IqGenerator extends AbstractGenerator {
 
     public IqGenerator(final XmppConnectionService service) {
         super(service);
-    }
-
-    public Iq versionResponse(final Iq request) {
-        final var packet = request.generateResponse(Iq.Type.RESULT);
-        Element query = packet.query("jabber:iq:version");
-        query.addChild("name").setContent(mXmppConnectionService.getString(R.string.app_name));
-        query.addChild("version").setContent(getIdentityVersion());
-        if ("chromium".equals(android.os.Build.BRAND)) {
-            query.addChild("os").setContent("Chrome OS");
-        } else {
-            query.addChild("os").setContent("Android");
-        }
-        return packet;
     }
 
     public Iq entityTimeResponse(final Iq request) {
