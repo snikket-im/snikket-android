@@ -440,6 +440,22 @@ public class DiscoManager extends AbstractManager {
         }
     }
 
+    public void clear(final Jid address) {
+        synchronized (this.entityInformation) {
+            if (address.isFullJid()) {
+                this.entityInformation.remove(address);
+            } else {
+                final var iterator = this.entityInformation.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    final var entry = iterator.next();
+                    if (entry.getKey().asBareJid().equals(address)) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+    }
+
     public static final class CapsHashMismatchException extends IllegalStateException {
         public CapsHashMismatchException(final String message) {
             super(message);

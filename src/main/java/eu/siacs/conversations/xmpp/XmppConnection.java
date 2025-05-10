@@ -216,6 +216,9 @@ public class XmppConnection implements Runnable {
         this.mXmppConnectionService = service;
         this.appSettings = mXmppConnectionService.getAppSettings();
         this.presenceListener = new PresenceParser(service, this);
+        // TODO rename this to Iq request handler (it handles only IQ get and set; throw assert
+        // error in handler just to be safe)
+        // TODO requires roster and blocking not to be handled by this
         this.unregisteredIqListener = new IqParser(service, this);
         this.messageListener = new MessageParser(service, this);
         this.bindListener = new BindProcessor(service, this);

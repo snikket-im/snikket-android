@@ -4209,6 +4209,10 @@ public class XmppConnectionService extends Service {
                     conversation.getAccount().getJid().asBareJid()
                             + ": leaving muc "
                             + conversation.getJid());
+            final var connection = account.getXmppConnection();
+            if (connection != null) {
+                connection.getManager(DiscoManager.class).clear(conversation.getJid().asBareJid());
+            }
         } else {
             synchronized (account.pendingConferenceLeaves) {
                 account.pendingConferenceLeaves.add(conversation);
