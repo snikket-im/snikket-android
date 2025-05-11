@@ -183,7 +183,7 @@
     <string name="event">Tadyant</string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">Aqeddac adigan</string>
-    <string name="rtp_state_ringing">Yettṣuni…</string>
+    <string name="rtp_state_ringing">Yettṣuni</string>
     <string name="rtp_state_declined_or_busy">Ur yestuffi ara</string>
     <string name="help">Tallalt</string>
     <string name="ongoing_call">Asiwel iteddu</string>
