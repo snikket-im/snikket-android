@@ -422,6 +422,11 @@ public class DiscoManager extends AbstractManager {
         return builder.buildKeepingLast();
     }
 
+    public boolean hasServerFeature(final String feature) {
+        final var infoQuery = this.get(getAccount().getDomain());
+        return infoQuery != null && infoQuery.hasFeature(feature);
+    }
+
     private void put(final Jid address, final InfoQuery infoQuery) {
         synchronized (this.entityInformation) {
             this.entityInformation.put(address, infoQuery);

@@ -78,6 +78,7 @@ import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.forms.Data;
+import eu.siacs.conversations.xmpp.manager.CarbonsManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Arrays;
@@ -1226,7 +1227,8 @@ public class EditAccountActivity extends OmemoActivity
             this.binding.accountRegisterNew.setVisibility(View.GONE);
         }
         if (this.mAccount.isOnlineAndConnected() && !this.mFetchingAvatar) {
-            final Features features = this.mAccount.getXmppConnection().getFeatures();
+            final var connection = this.mAccount.getXmppConnection();
+            final Features features = connection.getFeatures();
             this.binding.stats.setVisibility(View.VISIBLE);
             boolean showBatteryWarning = isOptimizingBattery();
             boolean showDataSaverWarning = isAffectedByDataSaver();
@@ -1239,7 +1241,7 @@ public class EditAccountActivity extends OmemoActivity
             } else {
                 this.binding.serverInfoRosterVersion.setText(R.string.server_info_unavailable);
             }
-            if (features.carbons()) {
+            if (connection.getManager(CarbonsManager.class).isEnabled()) {
                 this.binding.serverInfoCarbons.setText(R.string.server_info_available);
             } else {
                 this.binding.serverInfoCarbons.setText(R.string.server_info_unavailable);

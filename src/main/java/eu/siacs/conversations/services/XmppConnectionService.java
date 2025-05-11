@@ -3610,6 +3610,7 @@ public class XmppConnectionService extends Service {
                 return;
             }
         }
+        // TODO use PingManager
         final Jid self = conversation.getMucOptions().getSelf().getFullJid();
         final Iq ping = new Iq(Iq.Type.GET);
         ping.setTo(self);
