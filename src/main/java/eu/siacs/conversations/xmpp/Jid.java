@@ -15,7 +15,7 @@ public abstract class Jid implements Comparable<Jid>, Serializable, CharSequence
 
     private static final Pattern HOSTNAME_PATTERN =
             Pattern.compile(
-                    "^(?=.{1,253}$)(?=.{1,253}$)(?!-)(?!.*--)(?!.*-$)[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)*$");
+                    "^(?=.{1,253}$)(?!-)[\\p{L}\\p{N}](?:[\\p{L}\\p{N}-]{0,61}[\\p{L}\\p{N}])?(?:\\.(?!-)[\\p{L}\\p{N}](?:[\\p{L}\\p{N}-]{0,61}[\\p{L}\\p{N}])?)*\\.?$");
 
     public static Jid of(
             final CharSequence local, final CharSequence domain, final CharSequence resource) {
