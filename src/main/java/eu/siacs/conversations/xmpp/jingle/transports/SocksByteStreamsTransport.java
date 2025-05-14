@@ -313,6 +313,7 @@ public class SocksByteStreamsTransport implements Transport {
         }
         final Iq iqRequest = new Iq(Iq.Type.GET);
         iqRequest.setTo(streamer);
+        // TODO urgent refactor to extension
         iqRequest.query(Namespace.BYTE_STREAMS);
         final SettableFuture<Candidate> candidateFuture = SettableFuture.create();
         xmppConnection.sendIqPacket(

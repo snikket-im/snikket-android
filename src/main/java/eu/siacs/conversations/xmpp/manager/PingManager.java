@@ -44,4 +44,8 @@ public class PingManager extends AbstractManager {
                 },
                 MoreExecutors.directExecutor());
     }
+
+    public void pong(final Iq packet) {
+        this.connection.sendResultFor(packet);
+    }
 }

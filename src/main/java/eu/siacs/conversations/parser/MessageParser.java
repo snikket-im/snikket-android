@@ -37,6 +37,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
+import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.model.Extension;
 import im.conversations.android.xmpp.model.avatar.Metadata;
@@ -276,7 +277,7 @@ public class MessageParser extends AbstractParser
                     } else {
                         final Contact contact = account.getRoster().getContact(from);
                         if (contact.setAvatar(avatar)) {
-                            mXmppConnectionService.syncRoster(account);
+                            connection.getManager(RosterManager.class).writeToDatabaseAsync();
                             mXmppConnectionService.getAvatarService().clear(contact);
                             mXmppConnectionService.updateConversationUi();
                             mXmppConnectionService.updateRosterUi();
@@ -410,7 +411,7 @@ public class MessageParser extends AbstractParser
         } else {
             Contact contact = account.getRoster().getContact(user);
             if (contact.setPresenceName(nick)) {
-                mXmppConnectionService.syncRoster(account);
+                connection.getManager(RosterManager.class).writeToDatabaseAsync();
                 mXmppConnectionService.getAvatarService().clear(contact);
             }
         }
@@ -1435,7 +1436,7 @@ public class MessageParser extends AbstractParser
             }
             final Contact contact = account.getRoster().getContact(from);
             if (contact.setPresenceName(nick)) {
-                mXmppConnectionService.syncRoster(account);
+                connection.getManager(RosterManager.class).writeToDatabaseAsync();
                 mXmppConnectionService.getAvatarService().clear(contact);
             }
         }

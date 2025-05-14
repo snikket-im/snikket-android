@@ -72,6 +72,7 @@ import eu.siacs.conversations.xmpp.bind.Bind2;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.manager.AbstractManager;
+import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.manager.PingManager;
@@ -224,7 +225,7 @@ public class XmppConnection implements Runnable {
         this.unregisteredIqListener = new IqParser(service, this);
         this.messageListener = new MessageParser(service, this);
         this.bindListener = new BindProcessor(service, this);
-        this.managers = Managers.get(service.getApplicationContext(), this);
+        this.managers = Managers.get(service, this);
     }
 
     private static void fixResource(final Context context, final Account account) {
@@ -2314,6 +2315,7 @@ public class XmppConnection implements Runnable {
     }
 
     private void discoverCommands() {
+        // TODO move result handling into DiscoManager too
         final var future =
                 getManager(DiscoManager.class).commands(Entity.discoItem(account.getDomain()));
         Futures.addCallback(
@@ -2357,9 +2359,9 @@ public class XmppConnection implements Runnable {
     }
 
     private void enableAdvancedStreamFeatures() {
-        if (getFeatures().blocking() && !features.blockListRequested) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": Requesting block list");
-            this.sendIqPacket(getIqGenerator().generateGetBlockList(), unregisteredIqListener);
+        final var blockingManager = getManager(BlockingManager.class);
+        if (blockingManager.hasFeature()) {
+            blockingManager.request();
         }
         for (final OnAdvancedStreamFeaturesLoaded listener :
                 advancedStreamFeaturesLoadedListeners) {
@@ -2751,15 +2753,6 @@ public class XmppConnection implements Runnable {
         return Iterables.getFirst(items, null).getKey();
     }
 
-    public boolean r() {
-        if (getFeatures().sm()) {
-            this.tagWriter.writeStanzaAsync(new Request());
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public List<String> getMucServersWithholdAccount() {
         final List<String> servers = getMucServers();
         servers.remove(account.getDomain().toString());
@@ -2846,10 +2839,6 @@ public class XmppConnection implements Runnable {
         this.mInteractive = interactive;
     }
 
-    private IqGenerator getIqGenerator() {
-        return mXmppConnectionService.getIqGenerator();
-    }
-
     public void trackOfflineMessageRetrieval(boolean trackOfflineMessageRetrieval) {
         if (trackOfflineMessageRetrieval) {
             getManager(PingManager.class)
@@ -2869,20 +2858,6 @@ public class XmppConnection implements Runnable {
 
     public boolean isOfflineMessagesRetrieved() {
         return this.offlineMessagesRetrieved;
-    }
-
-    public void fetchRoster() {
-        final Iq iqPacket = new Iq(Iq.Type.GET);
-        final var version = account.getRosterVersion();
-        if (Strings.isNullOrEmpty(account.getRosterVersion())) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": fetching roster");
-        } else {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid() + ": fetching roster version " + version);
-        }
-        iqPacket.query(Namespace.ROSTER).setAttribute("ver", version);
-        sendIqPacket(iqPacket, unregisteredIqListener);
     }
 
     public void triggerConnectionTimeout() {
@@ -2907,6 +2882,15 @@ public class XmppConnection implements Runnable {
 
     public Features getStreamFeatures() {
         return this.features;
+    }
+
+    public boolean fromServer(final Stanza stanza) {
+        final var account = getAccount().getJid();
+        final Jid from = stanza.getFrom();
+        return from == null
+                || from.equals(account.getDomain())
+                || from.equals(account.asBareJid())
+                || from.equals(account);
     }
 
     private class MyKeyManager implements X509KeyManager {

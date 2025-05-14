@@ -26,6 +26,7 @@ import eu.siacs.conversations.utils.TLSSocketFactory;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.manager.RosterManager;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import java.io.BufferedWriter;
@@ -407,7 +408,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
             }
             refresh(account, contacts.values());
             if (!considerSync(account, contacts, forced)) {
-                service.syncRoster(account);
+                account.getXmppConnection().getManager(RosterManager.class).writeToDatabaseAsync();
             }
         }
     }
@@ -422,7 +423,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     }
 
     private void refresh(Account account, Collection<PhoneNumberContact> contacts) {
-        for (Contact contact :
+        for (final var contact :
                 account.getRoster().getWithSystemAccounts(PhoneNumberContact.class)) {
             final Uri uri = contact.getSystemAccount();
             if (uri == null) {
@@ -498,9 +499,11 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                         final Element phoneBook =
                                 response.findChild("phone-book", Namespace.SYNCHRONIZATION);
                         if (phoneBook != null) {
-                            final List<Contact> withSystemAccounts =
-                                    account.getRoster()
-                                            .getWithSystemAccounts(PhoneNumberContact.class);
+                            final var remaining =
+                                    new ArrayList<>(
+                                            account.getRoster()
+                                                    .getWithSystemAccounts(
+                                                            PhoneNumberContact.class));
                             for (Entry entry : Entry.ofPhoneBook(phoneBook)) {
                                 final PhoneNumberContact phoneContact =
                                         contacts.get(entry.getNumber());
@@ -514,10 +517,10 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                                     if (needsCacheClean) {
                                         service.getAvatarService().clear(contact);
                                     }
-                                    withSystemAccounts.remove(contact);
+                                    remaining.remove(contact);
                                 }
                             }
-                            for (final Contact contact : withSystemAccounts) {
+                            for (final Contact contact : remaining) {
                                 final boolean needsCacheClean =
                                         contact.unsetPhoneContact(PhoneNumberContact.class);
                                 if (needsCacheClean) {
@@ -539,7 +542,9 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                                         + ": failed to sync contact list with api server");
                     }
                     mRunningSyncJobs.decrementAndGet();
-                    service.syncRoster(account);
+                    account.getXmppConnection()
+                            .getManager(RosterManager.class)
+                            .writeToDatabaseAsync();
                     service.updateRosterUi();
                 });
         return true;

@@ -82,7 +82,7 @@ public class EntityCapabilitiesTest {
     }
 
     @Test
-    public void entityCapsOpenFire() throws IOException {
+    public void entityCapsOpenFireOrg() throws IOException {
         final String xml =
                 """
   <iq type="result" xmlns="jabber:client" to="inputmice3@igniterealtime.org/Conversations.cI4W" from="igniterealtime.org" id="L3xl8X8_kzvx">
@@ -204,6 +204,104 @@ public class EntityCapabilitiesTest {
         final InfoQuery info = iq.getExtension(InfoQuery.class);
         final String var = EntityCapabilities.hash(info).encoded();
         Assert.assertEquals("Cd91QBSG4JGOCEvRsSz64xeJPMk=", var);
+    }
+
+    @Test
+    public void entityCapsOpenFireTestServer() throws IOException {
+        final String xml =
+                """
+<iq type="result" id="779-6" to="jane@example.org" xmlns="jabber:client">
+  <query xmlns="http://jabber.org/protocol/disco#info">
+    <identity category="server" name="Openfire Server" type="im"/>
+    <identity category="pubsub" type="pep"/>
+    <feature var="http://jabber.org/protocol/caps"/>
+    <feature var="http://jabber.org/protocol/pubsub#retrieve-default"/>
+    <feature var="http://jabber.org/protocol/pubsub#purge-nodes"/>
+    <feature var="http://jabber.org/protocol/pubsub#subscription-options"/>
+    <feature var="http://jabber.org/protocol/pubsub#outcast-affiliation"/>
+    <feature var="msgoffline"/>
+    <feature var="jabber:iq:register"/>
+    <feature var="http://jabber.org/protocol/pubsub#delete-nodes"/>
+    <feature var="http://jabber.org/protocol/pubsub#config-node"/>
+    <feature var="http://jabber.org/protocol/pubsub#retrieve-items"/>
+    <feature var="http://jabber.org/protocol/pubsub#auto-create"/>
+    <feature var="http://jabber.org/protocol/pubsub#delete-items"/>
+    <feature var="http://jabber.org/protocol/disco#items"/>
+    <feature var="http://jabber.org/protocol/pubsub#persistent-items"/>
+    <feature var="http://jabber.org/protocol/pubsub#create-and-configure"/>
+    <feature var="http://jabber.org/protocol/pubsub#retrieve-affiliations"/>
+    <feature var="urn:xmpp:time"/>
+    <feature var="http://jabber.org/protocol/pubsub#manage-subscriptions"/>
+    <feature var="urn:xmpp:bookmarks-conversion:0"/>
+    <feature var="http://jabber.org/protocol/offline"/>
+    <feature var="http://jabber.org/protocol/pubsub#auto-subscribe"/>
+    <feature var="http://jabber.org/protocol/pubsub#publish-options"/>
+    <feature var="urn:xmpp:carbons:2"/>
+    <feature var="http://jabber.org/protocol/address"/>
+    <feature var="http://jabber.org/protocol/pubsub#collections"/>
+    <feature var="http://jabber.org/protocol/pubsub#retrieve-subscriptions"/>
+    <feature var="vcard-temp"/>
+    <feature var="http://jabber.org/protocol/pubsub#subscribe"/>
+    <feature var="http://jabber.org/protocol/pubsub#create-nodes"/>
+    <feature var="http://jabber.org/protocol/pubsub#get-pending"/>
+    <feature var="urn:xmpp:blocking"/>
+    <feature var="http://jabber.org/protocol/pubsub#multi-subscribe"/>
+    <feature var="http://jabber.org/protocol/pubsub#presence-notifications"/>
+    <feature var="urn:xmpp:ping"/>
+    <feature var="http://jabber.org/protocol/pubsub#filtered-notifications"/>
+    <feature var="http://jabber.org/protocol/pubsub#item-ids"/>
+    <feature var="http://jabber.org/protocol/pubsub#meta-data"/>
+    <feature var="http://jabber.org/protocol/pubsub#multi-items"/>
+    <feature var="jabber:iq:roster"/>
+    <feature var="http://jabber.org/protocol/pubsub#instant-nodes"/>
+    <feature var="http://jabber.org/protocol/pubsub#modify-affiliations"/>
+    <feature var="http://jabber.org/protocol/pubsub"/>
+    <feature var="http://jabber.org/protocol/pubsub#publisher-affiliation"/>
+    <feature var="http://jabber.org/protocol/pubsub#access-open"/>
+    <feature var="jabber:iq:version"/>
+    <feature var="http://jabber.org/protocol/pubsub#retract-items"/>
+    <feature var="jabber:iq:privacy"/>
+    <feature var="jabber:iq:last"/>
+    <feature var="http://jabber.org/protocol/commands"/>
+    <feature var="http://jabber.org/protocol/pubsub#publish"/>
+    <feature var="http://jabber.org/protocol/disco#info"/>
+    <feature var="jabber:iq:private"/>
+    <feature var="http://jabber.org/protocol/rsm"/>
+    <x xmlns="jabber:x:data" type="result">
+      <field var="FORM_TYPE" type="hidden">
+        <value>http://jabber.org/network/serverinfo</value>
+      </field>
+      <field var="admin-addresses" type="list-multi">
+        <value>xmpp:admin@example.org</value>
+        <value>mailto:admin@example.com</value>
+      </field>
+    </x>
+    <x xmlns="jabber:x:data" type="result">
+      <field var="FORM_TYPE" type="hidden">
+        <value>urn:xmpp:dataforms:softwareinfo</value>
+      </field>
+      <field type="text-single" var="os">
+        <value>Linux</value>
+      </field>
+      <field type="text-single" var="os_version">
+        <value>6.8.0-59-generic amd64 - Java 21.0.7</value>
+      </field>
+      <field type="text-single" var="software">
+        <value>Openfire</value>
+      </field>
+      <field type="text-single" var="software_version">
+        <value>5.0.0 Alpha</value>
+      </field>
+    </x>
+  </query>
+</iq>
+""";
+        final Element element = XmlElementReader.read(xml.getBytes(StandardCharsets.UTF_8));
+        assertThat(element, instanceOf(Iq.class));
+        final var iq = (Iq) element;
+        final InfoQuery info = iq.getExtension(InfoQuery.class);
+        final String var = EntityCapabilities.hash(info).encoded();
+        Assert.assertEquals("3wkXXN9QL/i/AyVoHaqaiTT8BFA=", var);
     }
 
     @Test

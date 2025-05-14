@@ -24,6 +24,7 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.Entity;
 import im.conversations.android.xmpp.model.occupant.OccupantId;
@@ -172,8 +173,9 @@ public class PresenceParser extends AbstractParser
                                                     .getRoster()
                                                     .getContact(user.getRealJid());
                                     if (c.setAvatar(avatar)) {
-                                        mXmppConnectionService.syncRoster(
-                                                conversation.getAccount());
+                                        connection
+                                                .getManager(RosterManager.class)
+                                                .writeToDatabaseAsync();
                                         mXmppConnectionService.getAvatarService().clear(c);
                                     }
                                     mXmppConnectionService.updateRosterUi();
@@ -351,7 +353,7 @@ public class PresenceParser extends AbstractParser
                         mXmppConnectionService.updateAccountUi();
                     } else {
                         if (contact.setAvatar(avatar)) {
-                            mXmppConnectionService.syncRoster(account);
+                            connection.getManager(RosterManager.class).writeToDatabaseAsync();
                             mXmppConnectionService.getAvatarService().clear(contact);
                             mXmppConnectionService.updateConversationUi();
                             mXmppConnectionService.updateRosterUi();
@@ -371,8 +373,7 @@ public class PresenceParser extends AbstractParser
             contact.updatePresence(resource, packet);
 
             final var nodeHash = packet.getCapabilities();
-            final var connection = account.getXmppConnection();
-            if (nodeHash != null && connection != null) {
+            if (nodeHash != null) {
                 final var discoFuture =
                         this.getManager(DiscoManager.class)
                                 .infoOrCache(Entity.presence(from), nodeHash.node, nodeHash.hash);
@@ -410,7 +411,7 @@ public class PresenceParser extends AbstractParser
                                     + contact.getJid()
                                     + " "
                                     + OpenPgpUtils.convertKeyIdToHex(keyId));
-                    mXmppConnectionService.syncRoster(account);
+                    this.connection.getManager(RosterManager.class).writeToDatabaseAsync();
                 }
             }
             boolean online = sizeBefore < contact.getPresences().size();
@@ -440,7 +441,7 @@ public class PresenceParser extends AbstractParser
                 return;
             }
             if (contact.setPresenceName(packet.findChildContent("nick", Namespace.NICK))) {
-                mXmppConnectionService.syncRoster(account);
+                this.getManager(RosterManager.class).writeToDatabaseAsync();
                 mXmppConnectionService.getAvatarService().clear(contact);
             }
             if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {

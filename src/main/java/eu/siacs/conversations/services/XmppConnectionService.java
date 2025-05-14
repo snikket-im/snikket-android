@@ -112,7 +112,6 @@ import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.QuickLoader;
 import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
-import eu.siacs.conversations.utils.ReplacingTaskManager;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.utils.StringUtils;
@@ -139,6 +138,7 @@ import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.pep.PublishOptions;
 import im.conversations.android.xmpp.Entity;
@@ -149,6 +149,7 @@ import im.conversations.android.xmpp.model.mds.Displayed;
 import im.conversations.android.xmpp.model.pubsub.PubSub;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.storage.PrivateStorage;
+import im.conversations.android.xmpp.model.up.Push;
 import java.io.File;
 import java.security.Security;
 import java.security.cert.CertificateException;
@@ -228,7 +229,6 @@ public class XmppConnectionService extends Service {
             new SerialSingleThreadExecutor("DatabaseReader");
     private final SerialSingleThreadExecutor mNotificationExecutor =
             new SerialSingleThreadExecutor("NotificationExecutor");
-    private final ReplacingTaskManager mRosterSyncTaskManager = new ReplacingTaskManager();
     private final IBinder mBinder = new XmppConnectionBinder();
     private final List<Conversation> conversations = new CopyOnWriteArrayList<>();
     private final IqGenerator mIqGenerator = new IqGenerator(this);
@@ -1173,7 +1173,7 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean processUnifiedPushMessage(
-            final Account account, final Jid transport, final Element push) {
+            final Account account, final Jid transport, final Push push) {
         return unifiedPushBroker.processPushMessage(account, transport, push);
     }
 
@@ -1750,7 +1750,7 @@ public class XmppConnectionService extends Service {
         int activeAccounts = 0;
         for (final Account account : accounts) {
             if (account.isConnectionEnabled()) {
-                databaseBackend.writeRoster(account.getRoster());
+                account.getXmppConnection().getManager(RosterManager.class).writeToDatabase();
                 activeAccounts++;
             }
             if (account.getXmppConnection() != null) {
@@ -2529,10 +2529,9 @@ public class XmppConnectionService extends Service {
                         }
                         Log.d(Config.LOGTAG, "restoring roster...");
                         for (final Account account : accounts) {
-                            databaseBackend.readRoster(account.getRoster());
                             account.initAccountServices(
-                                    XmppConnectionService
-                                            .this); // roster needs to be loaded at this stage
+                                    this); // roster needs to be loaded at this stage
+                            account.getXmppConnection().getManager(RosterManager.class).restore();
                         }
                         getBitmapCache().evictAll();
                         loadPhoneContacts();
@@ -2583,9 +2582,13 @@ public class XmppConnectionService extends Service {
                 () -> {
                     final Map<Jid, JabberIdContact> contacts = JabberIdContact.load(this);
                     Log.d(Config.LOGTAG, "start merging phone contacts with roster");
+                    // TODO if we do this merge this only on enabled accounts we need to trigger
+                    // this upon enable
                     for (final Account account : accounts) {
-                        final List<Contact> withSystemAccounts =
-                                account.getRoster().getWithSystemAccounts(JabberIdContact.class);
+                        final var remaining =
+                                new ArrayList<>(
+                                        account.getRoster()
+                                                .getWithSystemAccounts(JabberIdContact.class));
                         for (final JabberIdContact jidContact : contacts.values()) {
                             final Contact contact =
                                     account.getRoster().getContact(jidContact.getJid());
@@ -2593,9 +2596,9 @@ public class XmppConnectionService extends Service {
                             if (needsCacheClean) {
                                 getAvatarService().clear(contact);
                             }
-                            withSystemAccounts.remove(contact);
+                            remaining.remove(contact);
                         }
-                        for (final Contact contact : withSystemAccounts) {
+                        for (final Contact contact : remaining) {
                             boolean needsCacheClean =
                                     contact.unsetPhoneContact(JabberIdContact.class);
                             if (needsCacheClean) {
@@ -2609,11 +2612,6 @@ public class XmppConnectionService extends Service {
                     updateRosterUi();
                     mQuickConversationsService.considerSync();
                 });
-    }
-
-    public void syncRoster(final Account account) {
-        mRosterSyncTaskManager.execute(
-                account, () -> databaseBackend.writeRoster(account.getRoster()));
     }
 
     public List<Conversation> getConversations() {
@@ -3260,7 +3258,6 @@ public class XmppConnectionService extends Service {
             if (CallIntegration.hasSystemFeature(this)) {
                 CallIntegrationConnectionService.unregisterPhoneAccount(this, account);
             }
-            this.mRosterSyncTaskManager.clear(account);
             updateAccountUi();
             mNotificationService.updateErrorNotification();
             syncEnabledAccountSetting();
@@ -4693,6 +4690,7 @@ public class XmppConnectionService extends Service {
         updateConversationUi();
     }
 
+    // TODO move this to RosterManager
     public void syncDirtyContacts(Account account) {
         for (Contact contact : account.getRoster().getContacts()) {
             if (contact.getOption(Contact.Options.DIRTY_PUSH)) {
@@ -4741,7 +4739,7 @@ public class XmppConnectionService extends Service {
                         account, mPresenceGenerator.requestPresenceUpdatesFrom(contact, preAuth));
             }
         } else {
-            syncRoster(contact.getAccount());
+            account.getXmppConnection().getManager(RosterManager.class).writeToDatabaseAsync();
         }
     }
 
@@ -5127,7 +5125,9 @@ public class XmppConnectionService extends Service {
                                     final Contact contact =
                                             account.getRoster().getContact(avatar.owner);
                                     contact.setAvatar(avatar);
-                                    syncRoster(account);
+                                    account.getXmppConnection()
+                                            .getManager(RosterManager.class)
+                                            .writeToDatabaseAsync();
                                     getAvatarService().clear(contact);
                                     updateConversationUi();
                                     updateRosterUi();
@@ -5202,7 +5202,9 @@ public class XmppConnectionService extends Service {
                                         final Contact contact =
                                                 account.getRoster().getContact(avatar.owner);
                                         contact.setAvatar(avatar, previouslyOmittedPepFetch);
-                                        syncRoster(account);
+                                        account.getXmppConnection()
+                                                .getManager(RosterManager.class)
+                                                .writeToDatabaseAsync();
                                         getAvatarService().clear(contact);
                                         updateRosterUi();
                                     }
@@ -5227,7 +5229,9 @@ public class XmppConnectionService extends Service {
                                                         account.getRoster()
                                                                 .getContact(user.getRealJid());
                                                 contact.setAvatar(avatar);
-                                                syncRoster(account);
+                                                account.getXmppConnection()
+                                                        .getManager(RosterManager.class)
+                                                        .writeToDatabaseAsync();
                                                 getAvatarService().clear(contact);
                                                 updateRosterUi();
                                             }
@@ -5329,16 +5333,7 @@ public class XmppConnectionService extends Service {
     private void reconnectAccount(
             final Account account, final boolean force, final boolean interactive) {
         synchronized (account) {
-            final XmppConnection existingConnection = account.getXmppConnection();
-            final XmppConnection connection;
-            if (existingConnection != null) {
-                connection = existingConnection;
-            } else if (account.isConnectionEnabled()) {
-                connection = createConnection(account);
-                account.setXmppConnection(connection);
-            } else {
-                return;
-            }
+            final XmppConnection connection = account.getXmppConnection();
             final boolean hasInternet = hasInternetConnection();
             if (account.isConnectionEnabled() && hasInternet) {
                 if (!force) {
@@ -5352,7 +5347,7 @@ public class XmppConnectionService extends Service {
                 scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
             } else {
                 disconnect(account, force || account.getTrueStatus().isError() || !hasInternet);
-                account.getRoster().clearPresences();
+                connection.getManager(RosterManager.class).clearPresences();
                 connection.resetEverything();
                 final AxolotlService axolotlService = account.getAxolotlService();
                 if (axolotlService != null) {

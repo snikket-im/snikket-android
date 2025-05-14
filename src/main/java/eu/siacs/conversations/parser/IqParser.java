@@ -7,24 +7,33 @@ import com.google.common.base.CharMatcher;
 import com.google.common.io.BaseEncoding;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.EntityTimeManager;
+import eu.siacs.conversations.xmpp.manager.PingManager;
+import eu.siacs.conversations.xmpp.manager.RosterManager;
+import eu.siacs.conversations.xmpp.manager.UnifiedPushManager;
+import im.conversations.android.xmpp.model.blocking.Block;
+import im.conversations.android.xmpp.model.blocking.Unblock;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
+import im.conversations.android.xmpp.model.error.Condition;
+import im.conversations.android.xmpp.model.error.Error;
+import im.conversations.android.xmpp.model.ibb.InBandByteStream;
+import im.conversations.android.xmpp.model.ping.Ping;
+import im.conversations.android.xmpp.model.roster.Query;
 import im.conversations.android.xmpp.model.stanza.Iq;
+import im.conversations.android.xmpp.model.time.Time;
+import im.conversations.android.xmpp.model.up.Push;
 import im.conversations.android.xmpp.model.version.Version;
 import java.io.ByteArrayInputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -41,76 +50,6 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
 
     public IqParser(final XmppConnectionService service, final XmppConnection connection) {
         super(service, connection);
-    }
-
-    public static List<Jid> items(final Iq packet) {
-        ArrayList<Jid> items = new ArrayList<>();
-        final Element query = packet.findChild("query", Namespace.DISCO_ITEMS);
-        if (query == null) {
-            return items;
-        }
-        for (Element child : query.getChildren()) {
-            if ("item".equals(child.getName())) {
-                Jid jid = child.getAttributeAsJid("jid");
-                if (jid != null) {
-                    items.add(jid);
-                }
-            }
-        }
-        return items;
-    }
-
-    private void rosterItems(final Account account, final Element query) {
-        final String version = query.getAttribute("ver");
-        if (version != null) {
-            account.getRoster().setVersion(version);
-        }
-        for (final Element item : query.getChildren()) {
-            if (item.getName().equals("item")) {
-                final Jid jid = Jid.Invalid.getNullForInvalid(item.getAttributeAsJid("jid"));
-                if (jid == null) {
-                    continue;
-                }
-                final String name = item.getAttribute("name");
-                final String subscription = item.getAttribute("subscription");
-                final Contact contact = account.getRoster().getContact(jid);
-                boolean bothPre =
-                        contact.getOption(Contact.Options.TO)
-                                && contact.getOption(Contact.Options.FROM);
-                if (!contact.getOption(Contact.Options.DIRTY_PUSH)) {
-                    contact.setServerName(name);
-                    contact.parseGroupsFromElement(item);
-                }
-                if ("remove".equals(subscription)) {
-                    contact.resetOption(Contact.Options.IN_ROSTER);
-                    contact.resetOption(Contact.Options.DIRTY_DELETE);
-                    contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
-                } else {
-                    contact.setOption(Contact.Options.IN_ROSTER);
-                    contact.resetOption(Contact.Options.DIRTY_PUSH);
-                    contact.parseSubscriptionFromElement(item);
-                }
-                boolean both =
-                        contact.getOption(Contact.Options.TO)
-                                && contact.getOption(Contact.Options.FROM);
-                if ((both != bothPre) && both) {
-                    Log.d(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid()
-                                    + ": gained mutual presence subscription with "
-                                    + contact.getJid());
-                    AxolotlService axolotlService = account.getAxolotlService();
-                    if (axolotlService != null) {
-                        axolotlService.clearErrorsInFetchStatusMap(contact.getJid());
-                    }
-                }
-                mXmppConnectionService.getAvatarService().clear(contact);
-            }
-        }
-        mXmppConnectionService.updateConversationUi();
-        mXmppConnectionService.updateRosterUi();
-        mXmppConnectionService.getShortcutService().refresh();
-        mXmppConnectionService.syncRoster(account);
     }
 
     public static String avatarData(final Iq packet) {
@@ -381,139 +320,47 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
 
     @Override
     public void accept(final Iq packet) {
-        final var account = getAccount();
-        final boolean isGet = packet.getType() == Iq.Type.GET;
-        if (packet.getType() == Iq.Type.ERROR || packet.getType() == Iq.Type.TIMEOUT) {
-            return;
+        final var type = packet.getType();
+        switch (type) {
+            case SET -> acceptPush(packet);
+            case GET -> acceptRequest(packet);
+            default ->
+                    throw new AssertionError(
+                            "IQ results and errors should are handled in callbacks");
         }
-        if (packet.hasChild("query", Namespace.ROSTER) && packet.fromServer(account)) {
-            final Element query = packet.findChild("query");
-            // If this is in response to a query for the whole roster:
-            if (packet.getType() == Iq.Type.RESULT) {
-                account.getRoster().markAllAsNotInRoster();
-            }
-            this.rosterItems(account, query);
-        } else if ((packet.hasChild("block", Namespace.BLOCKING)
-                        || packet.hasChild("blocklist", Namespace.BLOCKING))
-                && packet.fromServer(account)) {
-            // Block list or block push.
-            Log.d(Config.LOGTAG, "Received blocklist update from server");
-            final Element blocklist = packet.findChild("blocklist", Namespace.BLOCKING);
-            final Element block = packet.findChild("block", Namespace.BLOCKING);
-            final Collection<Element> items =
-                    blocklist != null
-                            ? blocklist.getChildren()
-                            : (block != null ? block.getChildren() : null);
-            // If this is a response to a blocklist query, clear the block list and replace with the
-            // new one.
-            // Otherwise, just update the existing blocklist.
-            if (packet.getType() == Iq.Type.RESULT) {
-                account.clearBlocklist();
-                connection.getFeatures().setBlockListRequested(true);
-            }
-            if (items != null) {
-                final Collection<Jid> jids = new ArrayList<>(items.size());
-                // Create a collection of Jids from the packet
-                for (final Element item : items) {
-                    if (item.getName().equals("item")) {
-                        final Jid jid =
-                                Jid.Invalid.getNullForInvalid(item.getAttributeAsJid("jid"));
-                        if (jid != null) {
-                            jids.add(jid);
-                        }
-                    }
-                }
-                account.getBlocklist().addAll(jids);
-                if (packet.getType() == Iq.Type.SET) {
-                    boolean removed = false;
-                    for (Jid jid : jids) {
-                        removed |= mXmppConnectionService.removeBlockedConversations(account, jid);
-                    }
-                    if (removed) {
-                        mXmppConnectionService.updateConversationUi();
-                    }
-                }
-            }
-            // Update the UI
-            mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
-            if (packet.getType() == Iq.Type.SET) {
-                final Iq response = packet.generateResponse(Iq.Type.RESULT);
-                mXmppConnectionService.sendIqPacket(account, response, null);
-            }
-        } else if (packet.hasChild("unblock", Namespace.BLOCKING)
-                && packet.fromServer(account)
-                && packet.getType() == Iq.Type.SET) {
-            Log.d(Config.LOGTAG, "Received unblock update from server");
-            final Collection<Element> items =
-                    packet.findChild("unblock", Namespace.BLOCKING).getChildren();
-            if (items.isEmpty()) {
-                // No children to unblock == unblock all
-                account.getBlocklist().clear();
-            } else {
-                final Collection<Jid> jids = new ArrayList<>(items.size());
-                for (final Element item : items) {
-                    if (item.getName().equals("item")) {
-                        final Jid jid =
-                                Jid.Invalid.getNullForInvalid(item.getAttributeAsJid("jid"));
-                        if (jid != null) {
-                            jids.add(jid);
-                        }
-                    }
-                }
-                account.getBlocklist().removeAll(jids);
-            }
-            mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.UNBLOCKED);
-            final Iq response = packet.generateResponse(Iq.Type.RESULT);
-            mXmppConnectionService.sendIqPacket(account, response, null);
-        } else if (packet.hasChild("open", "http://jabber.org/protocol/ibb")
-                || packet.hasChild("data", "http://jabber.org/protocol/ibb")
-                || packet.hasChild("close", "http://jabber.org/protocol/ibb")) {
-            mXmppConnectionService.getJingleConnectionManager().deliverIbbPacket(account, packet);
-        } else if (packet.hasExtension(InfoQuery.class) && isGet) {
-            this.getManager(DiscoManager.class).handleInfoQuery(packet);
-        } else if (packet.hasExtension(Version.class) && isGet) {
-            this.getManager(DiscoManager.class).handleVersionRequest(packet);
-        } else if (packet.hasChild("ping", "urn:xmpp:ping") && isGet) {
-            final Iq response = packet.generateResponse(Iq.Type.RESULT);
-            mXmppConnectionService.sendIqPacket(account, response, null);
-        } else if (packet.hasChild("time", "urn:xmpp:time") && isGet) {
-            final Iq response;
-            if (mXmppConnectionService.useTorToConnect() || account.isOnion()) {
-                response = packet.generateResponse(Iq.Type.ERROR);
-                final Element error = response.addChild("error");
-                error.setAttribute("type", "cancel");
-                error.addChild("not-allowed", "urn:ietf:params:xml:ns:xmpp-stanzas");
-            } else {
-                response = mXmppConnectionService.getIqGenerator().entityTimeResponse(packet);
-            }
-            mXmppConnectionService.sendIqPacket(account, response, null);
-        } else if (packet.hasChild("push", Namespace.UNIFIED_PUSH)
-                && packet.getType() == Iq.Type.SET) {
-            final Jid transport = packet.getFrom();
-            final Element push = packet.findChild("push", Namespace.UNIFIED_PUSH);
-            final boolean success =
-                    push != null
-                            && mXmppConnectionService.processUnifiedPushMessage(
-                                    account, transport, push);
-            final Iq response;
-            if (success) {
-                response = packet.generateResponse(Iq.Type.RESULT);
-            } else {
-                response = packet.generateResponse(Iq.Type.ERROR);
-                final Element error = response.addChild("error");
-                error.setAttribute("type", "cancel");
-                error.setAttribute("code", "404");
-                error.addChild("item-not-found", "urn:ietf:params:xml:ns:xmpp-stanzas");
-            }
-            mXmppConnectionService.sendIqPacket(account, response, null);
+    }
+
+    private void acceptPush(final Iq packet) {
+        if (packet.hasExtension(Query.class)) {
+            this.getManager(RosterManager.class).push(packet);
+        } else if (packet.hasExtension(Block.class)) {
+            this.getManager(BlockingManager.class).pushBlock(packet);
+        } else if (packet.hasExtension(Unblock.class)) {
+            this.getManager(BlockingManager.class).pushUnblock(packet);
+        } else if (packet.hasExtension(InBandByteStream.class)) {
+            mXmppConnectionService
+                    .getJingleConnectionManager()
+                    .deliverIbbPacket(getAccount(), packet);
+        } else if (packet.hasExtension(Push.class)) {
+            this.getManager(UnifiedPushManager.class).push(packet);
         } else {
-            if (packet.getType() == Iq.Type.GET || packet.getType() == Iq.Type.SET) {
-                final Iq response = packet.generateResponse(Iq.Type.ERROR);
-                final Element error = response.addChild("error");
-                error.setAttribute("type", "cancel");
-                error.addChild("feature-not-implemented", "urn:ietf:params:xml:ns:xmpp-stanzas");
-                connection.sendIqPacket(response, null);
-            }
+            this.connection.sendErrorFor(
+                    packet, Error.Type.CANCEL, new Condition.FeatureNotImplemented());
+        }
+    }
+
+    private void acceptRequest(final Iq packet) {
+        if (packet.hasExtension(InfoQuery.class)) {
+            this.getManager(DiscoManager.class).handleInfoQuery(packet);
+        } else if (packet.hasExtension(Version.class)) {
+            this.getManager(DiscoManager.class).handleVersionRequest(packet);
+        } else if (packet.hasExtension(Time.class)) {
+            this.getManager(EntityTimeManager.class).request(packet);
+        } else if (packet.hasExtension(Ping.class)) {
+            this.getManager(PingManager.class).pong(packet);
+        } else {
+            this.connection.sendErrorFor(
+                    packet, Error.Type.CANCEL, new Condition.FeatureNotImplemented());
         }
     }
 }

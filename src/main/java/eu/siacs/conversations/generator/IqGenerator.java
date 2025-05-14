@@ -23,9 +23,7 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.UUID;
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.ecc.ECPublicKey;
@@ -36,26 +34,6 @@ public class IqGenerator extends AbstractGenerator {
 
     public IqGenerator(final XmppConnectionService service) {
         super(service);
-    }
-
-    public Iq entityTimeResponse(final Iq request) {
-        final Iq packet = request.generateResponse(Iq.Type.RESULT);
-        Element time = packet.addChild("time", "urn:xmpp:time");
-        final long now = System.currentTimeMillis();
-        time.addChild("utc").setContent(getTimestamp(now));
-        TimeZone ourTimezone = TimeZone.getDefault();
-        long offsetSeconds = ourTimezone.getOffset(now) / 1000;
-        long offsetMinutes = Math.abs((offsetSeconds % 3600) / 60);
-        long offsetHours = offsetSeconds / 3600;
-        String hours;
-        if (offsetHours < 0) {
-            hours = String.format(Locale.US, "%03d", offsetHours);
-        } else {
-            hours = String.format(Locale.US, "%02d", offsetHours);
-        }
-        String minutes = String.format(Locale.US, "%02d", offsetMinutes);
-        time.addChild("tzo").setContent(hours + ":" + minutes);
-        return packet;
     }
 
     public static Iq purgeOfflineMessages() {
@@ -336,13 +314,6 @@ public class IqGenerator extends AbstractGenerator {
         }
         set.addChild("max").setContent(String.valueOf(Config.PAGE_SIZE));
         return packet;
-    }
-
-    public Iq generateGetBlockList() {
-        final Iq iq = new Iq(Iq.Type.GET);
-        iq.addChild("blocklist", Namespace.BLOCKING);
-
-        return iq;
     }
 
     public Iq generateSetBlockRequest(

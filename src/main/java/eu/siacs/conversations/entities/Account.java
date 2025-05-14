@@ -27,15 +27,17 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.RosterManager;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -77,10 +79,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private static final String KEY_PINNED_MECHANISM = "pinned_mechanism";
     public static final String KEY_SOS_URL = "sos_url";
     public static final String KEY_PRE_AUTH_REGISTRATION_TOKEN = "pre_auth_registration";
-
     protected final JSONObject keys;
-    private final Roster roster = new Roster(this);
-    private final Collection<Jid> blocklist = new CopyOnWriteArraySet<>();
     public final Set<Conversation> pendingConferenceJoins = new HashSet<>();
     public final Set<Conversation> pendingConferenceLeaves = new HashSet<>();
     public final Set<Conversation> inProgressConferenceJoins = new HashSet<>();
@@ -550,11 +549,10 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public void initAccountServices(final XmppConnectionService context) {
+        this.xmppConnection = new XmppConnection(this, context);
         this.axolotlService = new AxolotlService(this, context);
         this.pgpDecryptionService = new PgpDecryptionService(context);
-        if (xmppConnection != null) {
-            xmppConnection.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
-        }
+        this.xmppConnection.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
     }
 
     public PgpDecryptionService getPgpDecryptionService() {
@@ -565,16 +563,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         return this.xmppConnection;
     }
 
-    public void setXmppConnection(final XmppConnection connection) {
-        this.xmppConnection = connection;
-    }
-
     public String getRosterVersion() {
-        if (this.rosterVersion == null) {
-            return "";
-        } else {
-            return this.rosterVersion;
-        }
+        return Strings.emptyToNull(this.rosterVersion);
     }
 
     public void setRosterVersion(final String version) {
@@ -648,7 +638,11 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public Roster getRoster() {
-        return this.roster;
+        if (xmppConnection != null) {
+            return xmppConnection.getManager(RosterManager.class);
+        }
+        // TODO either return stub or always put XmppConnection into Account
+        return null;
     }
 
     public Collection<Bookmark> getBookmarks() {
@@ -767,20 +761,22 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public boolean isBlocked(final ListItem contact) {
         final Jid jid = contact.getJid();
+        final var blocklist = getBlocklist();
         return jid != null
                 && (blocklist.contains(jid.asBareJid()) || blocklist.contains(jid.getDomain()));
     }
 
     public boolean isBlocked(final Jid jid) {
+        final var blocklist = getBlocklist();
         return jid != null && blocklist.contains(jid.asBareJid());
     }
 
-    public Collection<Jid> getBlocklist() {
-        return this.blocklist;
-    }
-
-    public void clearBlocklist() {
-        getBlocklist().clear();
+    public Set<Jid> getBlocklist() {
+        final var connection = this.xmppConnection;
+        if (connection == null) {
+            return Collections.emptySet();
+        }
+        return connection.getManager(BlockingManager.class).getBlocklist();
     }
 
     public boolean isOnlineAndConnected() {

@@ -7,6 +7,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.manager.RosterManager;
 import im.conversations.android.xmpp.model.stanza.Iq;
 
 public class BindProcessor extends XmppConnection.Delegate implements Runnable {
@@ -49,7 +50,7 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
             }
         }
 
-        account.getRoster().clearPresences();
+        connection.getManager(RosterManager.class).clearPresences();
         synchronized (account.inProgressConferenceJoins) {
             account.inProgressConferenceJoins.clear();
         }
@@ -59,7 +60,7 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         service.getJingleConnectionManager().notifyRebound(account);
         service.getQuickConversationsService().considerSyncBackground(false);
 
-        connection.fetchRoster();
+        getManager(RosterManager.class).request();
 
         if (features.bookmarks2()) {
             service.fetchBookmarks2(account);

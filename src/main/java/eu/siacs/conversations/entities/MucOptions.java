@@ -883,7 +883,9 @@ public class MucOptions {
 
         public Contact getContact() {
             if (fullJid != null) {
-                return getAccount().getRoster().getContactFromContactList(realJid);
+                return realJid == null
+                        ? null
+                        : getAccount().getRoster().getContactFromContactList(realJid);
             } else if (realJid != null) {
                 return getAccount().getRoster().getContact(realJid);
             } else {

@@ -31,6 +31,7 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Presence;
+import im.conversations.android.xmpp.model.up.Push;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
@@ -320,8 +321,7 @@ public class UnifiedPushBroker {
         service.sendBroadcast(intent);
     }
 
-    public boolean processPushMessage(
-            final Account account, final Jid transport, final Element push) {
+    public boolean processPushMessage(final Account account, final Jid transport, final Push push) {
         final String instance = push.getAttribute("instance");
         final String application = push.getAttribute("application");
         if (Strings.isNullOrEmpty(instance) || Strings.isNullOrEmpty(application)) {

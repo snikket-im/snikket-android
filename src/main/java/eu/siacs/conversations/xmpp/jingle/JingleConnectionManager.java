@@ -898,6 +898,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public void deliverIbbPacket(final Account account, final Iq packet) {
+        // TODO use extensions
         final String sid;
         final Element payload;
         final InbandBytestreamsTransport.PacketType packetType;

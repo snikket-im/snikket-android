@@ -71,7 +71,7 @@ public class DiscoManager extends AbstractManager {
             Collections.singletonList(Namespace.LAST_MESSAGE_CORRECTION);
     private final List<String> PRIVACY_SENSITIVE =
             Collections.singletonList(
-                    "urn:xmpp:time" // XEP-0202: Entity Time leaks time zone
+                    Namespace.TIME // XEP-0202: Entity Time leaks time zone
                     );
     private final List<String> VOIP_NAMESPACES =
             Arrays.asList(
