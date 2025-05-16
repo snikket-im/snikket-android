@@ -1126,7 +1126,7 @@
     <string name="non_quicksy_backup">Quicksy solo puede restaurar las copias de seguridad de las cuentas quicksy.im</string>
     <string name="pref_backup_location">Ubicación de la copia de seguridad</string>
     <string name="restore_omemo_key">Restaurar claves OMEMO</string>
-    <string name="account_status_channel_binding">Canal no disponible</string>
+    <string name="account_status_channel_binding">Sin enlace de canal</string>
     <string name="uri">URI</string>
     <string name="copy_geo_uri">Copiar geolocalización</string>
     <string name="copy_email_address">Copiar dirección email</string>
@@ -1135,4 +1135,7 @@
     <string name="copy_URI">Copiar URI</string>
     <string name="copied_phone_number">Número de teléfono copiado al portapapeles</string>
     <string name="copy_telephone_number">Copiar numero de teléfono</string>
+    <string name="sos_scheduled_return">Está previsto que el servicio vuelva a las %s</string>
+    <string name="account_status_service_outage_scheduled">Interrupción Programada del Servicio</string>
+    <string name="account_status_service_outage_known">Servicio Interrumpido (Problema Conocido)</string>
 </resources>
