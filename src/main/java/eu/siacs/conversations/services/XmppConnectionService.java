@@ -137,7 +137,9 @@ import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
+import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.pep.PublishOptions;
@@ -1902,7 +1904,7 @@ public class XmppConnectionService extends Service {
                                 + ": adding "
                                 + contact.getJid()
                                 + " on sending message");
-                createContact(contact, true);
+                createContact(contact);
             }
         }
 
@@ -3022,10 +3024,13 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public void stopPresenceUpdatesTo(Contact contact) {
+    public void stopPresenceUpdatesTo(final Contact contact) {
         Log.d(Config.LOGTAG, "Canceling presence request from " + contact.getJid().toString());
-        sendPresencePacket(contact.getAccount(), mPresenceGenerator.stopPresenceUpdatesTo(contact));
         contact.resetOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
+        contact.getAccount()
+                .getXmppConnection()
+                .getManager(PresenceManager.class)
+                .unsubscribed(contact.getJid().asBareJid());
     }
 
     public void createAccount(final Account account) {
@@ -4690,57 +4695,20 @@ public class XmppConnectionService extends Service {
         updateConversationUi();
     }
 
-    // TODO move this to RosterManager
-    public void syncDirtyContacts(Account account) {
-        for (Contact contact : account.getRoster().getContacts()) {
-            if (contact.getOption(Contact.Options.DIRTY_PUSH)) {
-                pushContactToServer(contact);
-            }
-            if (contact.getOption(Contact.Options.DIRTY_DELETE)) {
-                deleteContactOnServer(contact);
-            }
-        }
+    public void createContact(final Contact contact) {
+        createContact(contact, null);
     }
 
-    public void createContact(final Contact contact, final boolean autoGrant) {
-        createContact(contact, autoGrant, null);
+    public void createContact(final Contact contact, final String preAuth) {
+        contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
+        contact.setOption(Contact.Options.ASKING);
+        final var connection = contact.getAccount().getXmppConnection();
+        connection.getManager(RosterManager.class).addRosterItem(contact, preAuth);
     }
 
-    public void createContact(
-            final Contact contact, final boolean autoGrant, final String preAuth) {
-        if (autoGrant) {
-            contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
-            contact.setOption(Contact.Options.ASKING);
-        }
-        pushContactToServer(contact, preAuth);
-    }
-
-    public void pushContactToServer(final Contact contact) {
-        pushContactToServer(contact, null);
-    }
-
-    private void pushContactToServer(final Contact contact, final String preAuth) {
-        contact.resetOption(Contact.Options.DIRTY_DELETE);
-        contact.setOption(Contact.Options.DIRTY_PUSH);
-        final Account account = contact.getAccount();
-        if (account.getStatus() == Account.State.ONLINE) {
-            final boolean ask = contact.getOption(Contact.Options.ASKING);
-            final boolean sendUpdates =
-                    contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)
-                            && contact.getOption(Contact.Options.PREEMPTIVE_GRANT);
-            final Iq iq = new Iq(Iq.Type.SET);
-            iq.query(Namespace.ROSTER).addChild(contact.asElement());
-            account.getXmppConnection().sendIqPacket(iq, mDefaultIqHandler);
-            if (sendUpdates) {
-                sendPresencePacket(account, mPresenceGenerator.sendPresenceUpdatesTo(contact));
-            }
-            if (ask) {
-                sendPresencePacket(
-                        account, mPresenceGenerator.requestPresenceUpdatesFrom(contact, preAuth));
-            }
-        } else {
-            account.getXmppConnection().getManager(RosterManager.class).writeToDatabaseAsync();
-        }
+    public void deleteContactOnServer(final Contact contact) {
+        final var connection = contact.getAccount().getXmppConnection();
+        connection.getManager(RosterManager.class).deleteRosterItem(contact);
     }
 
     public void publishMucAvatar(
@@ -5309,20 +5277,6 @@ public class XmppConnectionService extends Service {
                     }
                 }
             }
-        }
-    }
-
-    public void deleteContactOnServer(Contact contact) {
-        contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
-        contact.resetOption(Contact.Options.DIRTY_PUSH);
-        contact.setOption(Contact.Options.DIRTY_DELETE);
-        Account account = contact.getAccount();
-        if (account.getStatus() == Account.State.ONLINE) {
-            final Iq iq = new Iq(Iq.Type.SET);
-            Element item = iq.query(Namespace.ROSTER).addChild("item");
-            item.setAttribute("jid", contact.getJid());
-            item.setAttribute("subscription", "remove");
-            account.getXmppConnection().sendIqPacket(iq, mDefaultIqHandler);
         }
     }
 
@@ -6145,29 +6099,11 @@ public class XmppConnectionService extends Service {
 
     public boolean sendBlockRequest(
             final Blockable blockable, final boolean reportSpam, final String serverMsgId) {
-        if (blockable != null && blockable.getBlockedJid() != null) {
-            final var account = blockable.getAccount();
-            final Jid jid = blockable.getBlockedJid();
-            this.sendIqPacket(
-                    account,
-                    getIqGenerator().generateSetBlockRequest(jid, reportSpam, serverMsgId),
-                    (response) -> {
-                        if (response.getType() == Iq.Type.RESULT) {
-                            account.getBlocklist().add(jid);
-                            updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
-                        }
-                    });
-            if (blockable.getBlockedJid().isFullJid()) {
-                return false;
-            } else if (removeBlockedConversations(blockable.getAccount(), jid)) {
-                updateConversationUi();
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        final var account = blockable.getAccount();
+        final var connection = account.getXmppConnection();
+        return connection
+                .getManager(BlockingManager.class)
+                .block(blockable, reportSpam, serverMsgId);
     }
 
     public boolean removeBlockedConversations(final Account account, final Jid blockedJid) {
@@ -6202,19 +6138,9 @@ public class XmppConnectionService extends Service {
     }
 
     public void sendUnblockRequest(final Blockable blockable) {
-        if (blockable != null && blockable.getJid() != null) {
-            final var account = blockable.getAccount();
-            final Jid jid = blockable.getBlockedJid();
-            this.sendIqPacket(
-                    account,
-                    getIqGenerator().generateSetUnblockRequest(jid),
-                    response -> {
-                        if (response.getType() == Iq.Type.RESULT) {
-                            account.getBlocklist().remove(jid);
-                            updateBlocklistUi(OnUpdateBlocklist.Status.UNBLOCKED);
-                        }
-                    });
-        }
+        final var account = blockable.getAccount();
+        final var connection = account.getXmppConnection();
+        connection.getManager(BlockingManager.class).unblock(blockable);
     }
 
     public void publishDisplayName(final Account account) {

@@ -3071,7 +3071,7 @@ public class XmppConnection implements Runnable {
         }
 
         public boolean blocking() {
-            return hasDiscoFeature(account.getDomain(), Namespace.BLOCKING);
+            return connection.getManager(BlockingManager.class).hasFeature();
         }
 
         public boolean spamReporting() {

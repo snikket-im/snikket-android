@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import android.content.Context;
 import android.text.TextUtils;
+import androidx.annotation.NonNull;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import java.util.Collections;
@@ -13,7 +14,7 @@ public class RawBlockable implements ListItem, Blockable {
     private final Account account;
     private final Jid jid;
 
-    public RawBlockable(Account account, Jid jid) {
+    public RawBlockable(@NonNull Account account, @NonNull Jid jid) {
         this.account = account;
         this.jid = jid;
     }
@@ -29,6 +30,7 @@ public class RawBlockable implements ListItem, Blockable {
     }
 
     @Override
+    @NonNull
     public Jid getBlockedJid() {
         return this.jid;
     }

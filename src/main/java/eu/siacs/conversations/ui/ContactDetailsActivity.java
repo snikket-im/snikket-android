@@ -70,6 +70,8 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
+import eu.siacs.conversations.xmpp.manager.RosterManager;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Collection;
 import java.util.Collections;
@@ -109,11 +111,10 @@ public class ContactDetailsActivity extends OmemoActivity
                         }
                     } else {
                         contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
-                        xmppConnectionService.sendPresencePacket(
-                                contact.getAccount(),
-                                xmppConnectionService
-                                        .getPresenceGenerator()
-                                        .stopPresenceUpdatesTo(contact));
+                        final var connection = contact.getAccount().getXmppConnection();
+                        connection
+                                .getManager(PresenceManager.class)
+                                .unsubscribed(contact.getJid().asBareJid());
                     }
                 }
             };
@@ -122,18 +123,15 @@ public class ContactDetailsActivity extends OmemoActivity
 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    final var connection = contact.getAccount().getXmppConnection();
                     if (isChecked) {
-                        xmppConnectionService.sendPresencePacket(
-                                contact.getAccount(),
-                                xmppConnectionService
-                                        .getPresenceGenerator()
-                                        .requestPresenceUpdatesFrom(contact));
+                        connection
+                                .getManager(PresenceManager.class)
+                                .subscribe(contact.getJid().asBareJid());
                     } else {
-                        xmppConnectionService.sendPresencePacket(
-                                contact.getAccount(),
-                                xmppConnectionService
-                                        .getPresenceGenerator()
-                                        .stopPresenceUpdatesFrom(contact));
+                        connection
+                                .getManager(PresenceManager.class)
+                                .unsubscribe(contact.getJid().asBareJid());
                     }
                 }
             };
@@ -343,8 +341,10 @@ public class ContactDetailsActivity extends OmemoActivity
                             R.string.contact_name,
                             value -> {
                                 contact.setServerName(value);
-                                ContactDetailsActivity.this.xmppConnectionService
-                                        .pushContactToServer(contact);
+                                final var connection = contact.getAccount().getXmppConnection();
+                                connection
+                                        .getManager(RosterManager.class)
+                                        .addRosterItem(contact, null);
                                 populateView();
                                 return null;
                             },

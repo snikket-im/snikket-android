@@ -1,13 +1,10 @@
 package im.conversations.android.xmpp.model.roster;
 
 import com.google.common.collect.Collections2;
-
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
-
 import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -28,8 +25,16 @@ public class Item extends Extension {
         return getAttributeAsJid("jid");
     }
 
+    public void setJid(final Jid jid) {
+        this.setAttribute("jid", jid);
+    }
+
     public String getItemName() {
         return this.getAttribute("name");
+    }
+
+    public void setItemName(final String serverName) {
+        this.setAttribute("name", serverName);
     }
 
     public boolean isPendingOut() {
@@ -45,10 +50,24 @@ public class Item extends Extension {
         }
     }
 
+    public void setSubscription(final Subscription subscription) {
+        if (subscription == null) {
+            this.removeAttribute("subscription");
+        } else {
+            this.setAttribute("subscription", subscription.toString().toLowerCase(Locale.ROOT));
+        }
+    }
+
     public Collection<String> getGroups() {
         return Collections2.filter(
                 Collections2.transform(getExtensions(Group.class), Element::getContent),
                 Objects::nonNull);
+    }
+
+    public void setGroups(final Collection<String> groups) {
+        for (final String group : groups) {
+            this.addExtension(new Group());
+        }
     }
 
     public enum Subscription {

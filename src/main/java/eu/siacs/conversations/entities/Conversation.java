@@ -533,6 +533,7 @@ public class Conversation extends AbstractEntity
     }
 
     @Override
+    @NonNull
     public Jid getBlockedJid() {
         return getContact().getBlockedJid();
     }

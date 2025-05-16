@@ -5,12 +5,18 @@ import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.capabilties.EntityCapabilities;
 import im.conversations.android.xmpp.model.jabber.Show;
 import im.conversations.android.xmpp.model.jabber.Status;
+import java.util.Locale;
 
 @XmlElement
 public class Presence extends Stanza implements EntityCapabilities {
 
     public Presence() {
         super(Presence.class);
+    }
+
+    public Presence(final Type type) {
+        this();
+        this.setType(type);
     }
 
     public Availability getAvailability() {
@@ -28,6 +34,18 @@ public class Presence extends Stanza implements EntityCapabilities {
         this.addExtension(new Show()).setContent(availability.toShowString());
     }
 
+    public void setType(final Type type) {
+        if (type == null) {
+            this.removeAttribute("type");
+        } else {
+            this.setAttribute("type", type.toString().toLowerCase(Locale.ROOT));
+        }
+    }
+
+    public Type getType() {
+        return Type.valueOfOrNull(this.getAttribute("type"));
+    }
+
     public void setStatus(final String status) {
         if (Strings.isNullOrEmpty(status)) {
             return;
@@ -38,6 +56,27 @@ public class Presence extends Stanza implements EntityCapabilities {
     public String getStatus() {
         final var status = getExtension(Status.class);
         return status == null ? null : status.getContent();
+    }
+
+    public enum Type {
+        ERROR,
+        PROBE,
+        SUBSCRIBE,
+        SUBSCRIBED,
+        UNAVAILABLE,
+        UNSUBSCRIBE,
+        UNSUBSCRIBED;
+
+        public static Type valueOfOrNull(final String type) {
+            if (Strings.isNullOrEmpty(type)) {
+                return null;
+            }
+            try {
+                return valueOf(type.toUpperCase(Locale.ROOT));
+            } catch (final IllegalArgumentException e) {
+                return null;
+            }
+        }
     }
 
     public enum Availability {

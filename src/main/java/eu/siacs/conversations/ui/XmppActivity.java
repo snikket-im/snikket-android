@@ -85,6 +85,7 @@ import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -894,7 +895,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         builder.setNegativeButton(getString(R.string.cancel), null);
         builder.setPositiveButton(
                 getString(R.string.add_contact),
-                (dialog, which) -> xmppConnectionService.createContact(contact, true));
+                (dialog, which) -> xmppConnectionService.createContact(contact));
         builder.create().show();
     }
 
@@ -906,13 +907,10 @@ public abstract class XmppActivity extends ActionBarActivity {
         builder.setPositiveButton(
                 R.string.request_now,
                 (dialog, which) -> {
-                    if (xmppConnectionServiceBound) {
-                        xmppConnectionService.sendPresencePacket(
-                                contact.getAccount(),
-                                xmppConnectionService
-                                        .getPresenceGenerator()
-                                        .requestPresenceUpdatesFrom(contact));
-                    }
+                    final var connection = contact.getAccount().getXmppConnection();
+                    connection
+                            .getManager(PresenceManager.class)
+                            .subscribe(contact.getJid().asBareJid());
                 });
         builder.create().show();
     }

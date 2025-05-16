@@ -316,31 +316,6 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public Iq generateSetBlockRequest(
-            final Jid jid, final boolean reportSpam, final String serverMsgId) {
-        final Iq iq = new Iq(Iq.Type.SET);
-        final Element block = iq.addChild("block", Namespace.BLOCKING);
-        final Element item = block.addChild("item").setAttribute("jid", jid);
-        if (reportSpam) {
-            final Element report = item.addChild("report", Namespace.REPORTING);
-            report.setAttribute("reason", Namespace.REPORTING_REASON_SPAM);
-            if (serverMsgId != null) {
-                final Element stanzaId = report.addChild("stanza-id", Namespace.STANZA_IDS);
-                stanzaId.setAttribute("by", jid);
-                stanzaId.setAttribute("id", serverMsgId);
-            }
-        }
-        Log.d(Config.LOGTAG, iq.toString());
-        return iq;
-    }
-
-    public Iq generateSetUnblockRequest(final Jid jid) {
-        final Iq iq = new Iq(Iq.Type.SET);
-        final Element block = iq.addChild("unblock", Namespace.BLOCKING);
-        block.addChild("item").setAttribute("jid", jid);
-        return iq;
-    }
-
     public Iq generateSetPassword(final Account account, final String newPassword) {
         final Iq packet = new Iq(Iq.Type.SET);
         packet.setTo(account.getDomain());

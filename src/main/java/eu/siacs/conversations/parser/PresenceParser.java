@@ -24,6 +24,7 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.Entity;
@@ -445,8 +446,9 @@ public class PresenceParser extends AbstractParser
                 mXmppConnectionService.getAvatarService().clear(contact);
             }
             if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
-                mXmppConnectionService.sendPresencePacket(
-                        account, mPresenceGenerator.sendPresenceUpdatesTo(contact));
+                connection
+                        .getManager(PresenceManager.class)
+                        .subscribed(contact.getJid().asBareJid());
             } else {
                 contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
                 final Conversation conversation =

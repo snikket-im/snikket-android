@@ -647,7 +647,7 @@ public class StartConversationActivity extends XmppActivity
                                 invite == null
                                         ? null
                                         : invite.getParameter(XmppUri.PARAMETER_PRE_AUTH);
-                        xmppConnectionService.createContact(contact, true, preAuth);
+                        xmppConnectionService.createContact(contact, preAuth);
                         if (invite != null && invite.hasFingerprints()) {
                             xmppConnectionService.verifyFingerprints(
                                     contact, invite.getFingerprints());

@@ -98,7 +98,7 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
             service.getPushManagementService().registerPushTokenOnServer(account);
         }
         service.connectMultiModeConversations(account);
-        service.syncDirtyContacts(account);
+        connection.getManager(RosterManager.class).syncDirtyContacts();
 
         service.getUnifiedPushBroker().renewUnifiedPushEndpointsOnBind(account);
     }

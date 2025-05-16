@@ -2,11 +2,13 @@ package eu.siacs.conversations.xmpp.manager;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
@@ -18,7 +20,9 @@ import im.conversations.android.xmpp.model.blocking.Item;
 import im.conversations.android.xmpp.model.blocking.Unblock;
 import im.conversations.android.xmpp.model.error.Condition;
 import im.conversations.android.xmpp.model.error.Error;
+import im.conversations.android.xmpp.model.reporting.Report;
 import im.conversations.android.xmpp.model.stanza.Iq;
+import im.conversations.android.xmpp.model.unique.StanzaId;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -140,5 +144,86 @@ public class BlockingManager extends AbstractManager {
             builder.add(jid);
         }
         return builder.build();
+    }
+
+    public boolean block(
+            @NonNull final Blockable blockable,
+            final boolean reportSpam,
+            @Nullable final String serverMsgId) {
+        final var address = blockable.getBlockedJid();
+        final var iq = new Iq(Iq.Type.SET);
+        final var block = iq.addExtension(new Block());
+        final var item = block.addExtension(new Item());
+        item.setJid(address);
+        if (reportSpam) {
+            final var report = item.addExtension(new Report());
+            report.setReason(Namespace.REPORTING_REASON_SPAM);
+            if (serverMsgId != null) {
+                // XEP has a 'by' attribute that is the same as reported jid but that doesn't make
+                // sense this the 'by' attribute in the stanza-id refers to the arriving entity
+                // (usually the account or the MUC)
+                report.addExtension(new StanzaId(serverMsgId));
+            }
+        }
+        final var future = this.connection.sendIqPacket(iq);
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(Iq result) {
+                        synchronized (blocklist) {
+                            blocklist.add(address);
+                        }
+                        service.updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.d(
+                                Config.LOGTAG,
+                                getAccount().getJid().asBareJid() + ": could not block " + address,
+                                throwable);
+                    }
+                },
+                MoreExecutors.directExecutor());
+        if (address.isFullJid()) {
+            return false;
+        } else if (service.removeBlockedConversations(getAccount(), address)) {
+            service.updateConversationUi();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void unblock(@NonNull final Blockable blockable) {
+        final var address = blockable.getBlockedJid();
+        final var iq = new Iq(Iq.Type.SET);
+        final var unblock = iq.addExtension(new Unblock());
+        final var item = unblock.addExtension(new Item());
+        item.setJid(address);
+        final var future = this.connection.sendIqPacket(iq);
+        Futures.addCallback(
+                future,
+                new FutureCallback<Iq>() {
+                    @Override
+                    public void onSuccess(Iq result) {
+                        synchronized (blocklist) {
+                            blocklist.remove(address);
+                        }
+                        service.updateBlocklistUi(OnUpdateBlocklist.Status.UNBLOCKED);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.d(
+                                Config.LOGTAG,
+                                getAccount().getJid().asBareJid()
+                                        + ": could not unblock "
+                                        + address,
+                                t);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 }

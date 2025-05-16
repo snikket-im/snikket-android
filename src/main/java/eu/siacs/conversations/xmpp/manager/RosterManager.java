@@ -212,7 +212,7 @@ public class RosterManager extends AbstractManager implements Roster {
     public Contact getContactFromContactList(@NonNull final Jid jid) {
         synchronized (this.contacts) {
             final var contact =
-                    Iterables.find(this.contacts, c -> c.getJid().equals(jid.asBareJid()));
+                    Iterables.find(this.contacts, c -> c.getJid().equals(jid.asBareJid()), null);
             if (contact != null && contact.showInContactList()) {
                 return contact;
             } else {
@@ -272,5 +272,106 @@ public class RosterManager extends AbstractManager implements Roster {
             version = this.version;
         }
         getDatabase().writeRoster(account, version, contacts);
+    }
+
+    public void syncDirtyContacts() {
+        synchronized (this.contacts) {
+            for (final var contact : this.contacts) {
+                if (contact.getOption(Contact.Options.DIRTY_PUSH)) {
+                    addRosterItem(contact, null);
+                }
+                if (contact.getOption(Contact.Options.DIRTY_DELETE)) {
+                    deleteRosterItem(contact);
+                }
+            }
+        }
+    }
+
+    public void addRosterItem(final Contact contact, final String preAuth) {
+        final var address = contact.getJid().asBareJid();
+        contact.resetOption(Contact.Options.DIRTY_DELETE);
+        contact.setOption(Contact.Options.DIRTY_PUSH);
+        // sync the 'dirty push' flag to disk in case we are offline
+        this.writeToDatabaseAsync();
+        final boolean ask = contact.getOption(Contact.Options.ASKING);
+        final boolean sendUpdates =
+                contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)
+                        && contact.getOption(Contact.Options.PREEMPTIVE_GRANT);
+        final Iq iq = new Iq(Iq.Type.SET);
+        final var query = iq.addExtension(new Query());
+        final var item = query.addExtension(new Item());
+        item.setJid(address);
+        final var serverName = contact.getServerName();
+        if (serverName != null) {
+            item.setItemName(serverName);
+        }
+        item.setGroups(contact.getGroups(false));
+        final var future = this.connection.sendIqPacket(iq);
+        Futures.addCallback(
+                future,
+                new FutureCallback<Iq>() {
+                    @Override
+                    public void onSuccess(Iq result) {
+                        Log.d(
+                                Config.LOGTAG,
+                                getAccount().getJid().asBareJid()
+                                        + ": pushed roster item "
+                                        + address);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.d(
+                                Config.LOGTAG,
+                                getAccount().getJid().asBareJid()
+                                        + ": could not push roster item "
+                                        + address,
+                                t);
+                    }
+                },
+                MoreExecutors.directExecutor());
+        if (sendUpdates) {
+            getManager(PresenceManager.class).subscribed(contact.getJid().asBareJid());
+        }
+        if (ask) {
+            getManager(PresenceManager.class).subscribe(contact.getJid().asBareJid(), preAuth);
+        }
+    }
+
+    public void deleteRosterItem(final Contact contact) {
+        final var address = contact.getJid().asBareJid();
+        contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
+        contact.resetOption(Contact.Options.DIRTY_PUSH);
+        contact.setOption(Contact.Options.DIRTY_DELETE);
+        this.writeToDatabaseAsync();
+        final Iq iq = new Iq(Iq.Type.SET);
+        final var query = iq.addExtension(new Query());
+        final var item = query.addExtension(new Item());
+        item.setJid(address);
+        item.setSubscription(Item.Subscription.REMOVE);
+        final var future = this.connection.sendIqPacket(iq);
+        Futures.addCallback(
+                future,
+                new FutureCallback<Iq>() {
+                    @Override
+                    public void onSuccess(final Iq result) {
+                        Log.d(
+                                Config.LOGTAG,
+                                getAccount().getJid().asBareJid()
+                                        + ": removed roster item "
+                                        + address);
+                    }
+
+                    @Override
+                    public void onFailure(final @NonNull Throwable t) {
+                        Log.d(
+                                Config.LOGTAG,
+                                getAccount().getJid().asBareJid()
+                                        + ": could not remove roster item "
+                                        + address,
+                                t);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 }

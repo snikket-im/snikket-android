@@ -9,4 +9,9 @@ public class Group extends Extension {
     public Group() {
         super(Group.class);
     }
+
+    public Group(final String group) {
+        this();
+        this.setContent(group);
+    }
 }

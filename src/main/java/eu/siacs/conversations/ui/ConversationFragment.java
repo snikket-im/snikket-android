@@ -127,6 +127,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -446,7 +447,7 @@ public class ConversationFragment extends XmppFragment
                 public void onClick(View v) {
                     final Contact contact = conversation == null ? null : conversation.getContact();
                     if (contact != null) {
-                        activity.xmppConnectionService.createContact(contact, true);
+                        activity.xmppConnectionService.createContact(contact);
                         activity.switchToContactDetails(contact);
                     }
                 }
@@ -458,11 +459,10 @@ public class ConversationFragment extends XmppFragment
                 public void onClick(View v) {
                     final Contact contact = conversation == null ? null : conversation.getContact();
                     if (contact != null) {
-                        activity.xmppConnectionService.sendPresencePacket(
-                                contact.getAccount(),
-                                activity.xmppConnectionService
-                                        .getPresenceGenerator()
-                                        .sendPresenceUpdatesTo(contact));
+                        final var connection = contact.getAccount().getXmppConnection();
+                        connection
+                                .getManager(PresenceManager.class)
+                                .subscribed(contact.getJid().asBareJid());
                         hideSnackbar();
                     }
                 }

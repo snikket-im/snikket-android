@@ -316,7 +316,7 @@ public class Contact implements ListItem, Blockable {
         this.systemAccount = lookupUri;
     }
 
-    private Collection<String> getGroups(final boolean unique) {
+    public Collection<String> getGroups(final boolean unique) {
         final Collection<String> groups = unique ? new HashSet<>() : new ArrayList<>();
         for (int i = 0; i < this.groups.length(); ++i) {
             try {
@@ -428,18 +428,6 @@ public class Contact implements ListItem, Blockable {
         }
     }
 
-    public Element asElement() {
-        final Element item = new Element("item");
-        item.setAttribute("jid", this.jid);
-        if (this.serverName != null) {
-            item.setAttribute("name", this.serverName);
-        }
-        for (String group : getGroups(false)) {
-            item.addChild("group").setContent(group);
-        }
-        return item;
-    }
-
     @Override
     public int compareTo(@NonNull final ListItem another) {
         return this.getDisplayName().compareToIgnoreCase(another.getDisplayName());
@@ -490,6 +478,7 @@ public class Contact implements ListItem, Blockable {
     }
 
     @Override
+    @NonNull
     public Jid getBlockedJid() {
         if (isDomainBlocked()) {
             return getJid().getDomain();

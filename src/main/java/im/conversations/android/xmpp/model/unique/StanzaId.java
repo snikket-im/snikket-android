@@ -13,6 +13,11 @@ public class StanzaId extends Extension {
         super(StanzaId.class);
     }
 
+    public StanzaId(final String id) {
+        this();
+        this.setAttribute("id", id);
+    }
+
     public Jid getBy() {
         return this.getAttributeAsJid("by");
     }
