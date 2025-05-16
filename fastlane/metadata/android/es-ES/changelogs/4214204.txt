@@ -1,0 +1,2 @@
+* Compatibilidad con "Service Outage Status"
+* Correcciones menores de seguridad para resolver múltiples bodies, occupant-ids y stanza-id
