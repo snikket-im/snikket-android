@@ -33,6 +33,7 @@ import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.sasl.ChannelBinding;
@@ -77,6 +78,7 @@ import eu.siacs.conversations.xmpp.manager.CarbonsManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.manager.PingManager;
 import im.conversations.android.xmpp.Entity;
+import im.conversations.android.xmpp.IqErrorException;
 import im.conversations.android.xmpp.model.AuthenticationFailure;
 import im.conversations.android.xmpp.model.AuthenticationRequest;
 import im.conversations.android.xmpp.model.AuthenticationStreamFeature;
@@ -200,6 +202,8 @@ public class XmppConnection implements Runnable {
     private final Consumer<Presence> presenceListener;
     private final Consumer<Iq> unregisteredIqListener;
     private final Consumer<im.conversations.android.xmpp.model.stanza.Message> messageListener;
+    private AxolotlService axolotlService;
+    private final PgpDecryptionService pgpDecryptionService;
     private OnStatusChanged statusListener = null;
     private final Runnable bindListener;
     private OnMessageAcknowledged acknowledgedListener = null;
@@ -226,6 +230,8 @@ public class XmppConnection implements Runnable {
         this.messageListener = new MessageParser(service, this);
         this.bindListener = new BindProcessor(service, this);
         this.managers = Managers.get(service, this);
+        this.setAxolotlService(new AxolotlService(account, service));
+        this.pgpDecryptionService = new PgpDecryptionService(service);
     }
 
     private static void fixResource(final Context context, final Account account) {
@@ -277,7 +283,13 @@ public class XmppConnection implements Runnable {
             }
         }
         if (statusListener != null) {
-            statusListener.onStatusChanged(account);
+            try {
+                statusListener.onStatusChanged(account);
+            } catch (final Exception e) {
+                Log.d(Config.LOGTAG, "error executing shit", e);
+            }
+        } else {
+            Log.d(Config.LOGTAG, "status changed listener was null");
         }
     }
 
@@ -2520,7 +2532,7 @@ public class XmppConnection implements Runnable {
                     switch (type) {
                         case RESULT -> settable.set(response);
                         case TIMEOUT -> settable.setException(new TimeoutException());
-                        default -> settable.setException(new IqErrorResponseException(response));
+                        default -> settable.setException(new IqErrorException(response));
                     }
                 });
         return settable;
@@ -2891,6 +2903,29 @@ public class XmppConnection implements Runnable {
                 || from.equals(account.getDomain())
                 || from.equals(account.asBareJid())
                 || from.equals(account);
+    }
+
+    public boolean fromAccount(final Stanza stanza) {
+        final var account = getAccount().getJid();
+        final Jid from = stanza.getFrom();
+        return from == null || from.asBareJid().equals(account.asBareJid());
+    }
+
+    public AxolotlService getAxolotlService() {
+        return this.axolotlService;
+    }
+
+    public PgpDecryptionService getPgpDecryptionService() {
+        return this.pgpDecryptionService;
+    }
+
+    public void setAxolotlService(AxolotlService axolotlService) {
+        final var current = this.axolotlService;
+        if (current != null) {
+            this.advancedStreamFeaturesLoadedListeners.remove(current);
+        }
+        this.axolotlService = axolotlService;
+        this.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
     }
 
     private class MyKeyManager implements X509KeyManager {

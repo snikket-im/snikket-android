@@ -20,7 +20,6 @@ import eu.siacs.conversations.crypto.sasl.HashedTokenSha512;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
 import eu.siacs.conversations.http.ServiceOutageStatus;
 import eu.siacs.conversations.services.AvatarService;
-import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
@@ -96,8 +95,6 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     protected boolean online = false;
     private String rosterVersion;
     private String displayName = null;
-    private AxolotlService axolotlService = null;
-    private PgpDecryptionService pgpDecryptionService = null;
     private XmppConnection xmppConnection = null;
     private long mEndGracePeriod = 0L;
     private final Map<Jid, Bookmark> bookmarks = new HashMap<>();
@@ -233,11 +230,11 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean hasPendingPgpIntent(Conversation conversation) {
-        return pgpDecryptionService != null && pgpDecryptionService.hasPendingIntent(conversation);
+        return getPgpDecryptionService().hasPendingIntent(conversation);
     }
 
     public boolean isPgpDecryptionServiceConnected() {
-        return pgpDecryptionService != null && pgpDecryptionService.isConnected();
+        return getPgpDecryptionService().isConnected();
     }
 
     public boolean setShowErrorNotification(boolean newValue) {
@@ -285,11 +282,12 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         final Jid prev = this.jid != null ? this.jid.asBareJid() : null;
         final boolean changed = prev == null || (next != null && !prev.equals(next.asBareJid()));
         if (changed) {
-            final AxolotlService oldAxolotlService = this.axolotlService;
+            final AxolotlService oldAxolotlService = xmppConnection.getAxolotlService();
+            // TODO check that changing JID and recreating the AxolotlService still works
             if (oldAxolotlService != null) {
                 oldAxolotlService.destroy();
                 this.jid = next;
-                this.axolotlService = oldAxolotlService.makeNew();
+                xmppConnection.setAxolotlService(oldAxolotlService.makeNew());
             }
         }
         this.jid = next;
@@ -545,18 +543,11 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public AxolotlService getAxolotlService() {
-        return axolotlService;
-    }
-
-    public void initAccountServices(final XmppConnectionService context) {
-        this.xmppConnection = new XmppConnection(this, context);
-        this.axolotlService = new AxolotlService(this, context);
-        this.pgpDecryptionService = new PgpDecryptionService(context);
-        this.xmppConnection.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
+        return this.xmppConnection.getAxolotlService();
     }
 
     public PgpDecryptionService getPgpDecryptionService() {
-        return this.pgpDecryptionService;
+        return this.xmppConnection.getPgpDecryptionService();
     }
 
     public XmppConnection getXmppConnection() {
@@ -739,9 +730,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     private List<XmppUri.Fingerprint> getFingerprints() {
         ArrayList<XmppUri.Fingerprint> fingerprints = new ArrayList<>();
-        if (axolotlService == null) {
-            return fingerprints;
-        }
+        final var axolotlService = getAxolotlService();
         fingerprints.add(
                 new XmppUri.Fingerprint(
                         XmppUri.FingerprintType.OMEMO,
@@ -809,6 +798,10 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
             return sos.isNow();
         }
         return false;
+    }
+
+    public void setXmppConnection(final XmppConnection connection) {
+        this.xmppConnection = connection;
     }
 
     public enum State {

@@ -37,6 +37,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
+import eu.siacs.conversations.xmpp.manager.PubSubManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.model.Extension;
@@ -321,7 +322,7 @@ public class MessageParser extends AbstractParser
                 }
                 final var storage = items.getFirstItem(Storage.class);
                 final Map<Jid, Bookmark> bookmarks = Bookmark.parseFromStorage(storage, account);
-                mXmppConnectionService.processBookmarksInitial(account, bookmarks, true);
+                // mXmppConnectionService.processBookmarksInitial(account, bookmarks, true);
                 Log.d(
                         Config.LOGTAG,
                         account.getJid().asBareJid() + ": processing bookmark PEP event");
@@ -351,7 +352,7 @@ public class MessageParser extends AbstractParser
                     Log.d(
                             Config.LOGTAG,
                             account.getJid().asBareJid() + ": deleted bookmark for " + id);
-                    mXmppConnectionService.processDeletedBookmark(account, id);
+                    // mXmppConnectionService.processDeletedBookmark(account, id);
                     mXmppConnectionService.updateConversationUi();
                 }
             }
@@ -398,7 +399,7 @@ public class MessageParser extends AbstractParser
     private void deleteAllBookmarks(final Account account) {
         final var previous = account.getBookmarkedJids();
         account.setBookmarks(Collections.emptyMap());
-        mXmppConnectionService.processDeletedBookmarks(account, previous);
+        // mXmppConnectionService.processDeletedBookmarks(account, previous);
     }
 
     private void setNick(final Account account, final Jid user, final String nick) {
@@ -1410,6 +1411,9 @@ public class MessageParser extends AbstractParser
             // end no body
         }
 
+        if (original.hasExtension(Event.class)) {
+            getManager(PubSubManager.class).handleEvent(original);
+        }
         final var event = original.getExtension(Event.class);
         if (event != null && Jid.Invalid.hasValidFrom(original) && original.getFrom().isBareJid()) {
             final var action = event.getAction();

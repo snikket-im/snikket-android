@@ -7,6 +7,8 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.manager.BookmarkManager;
+import eu.siacs.conversations.xmpp.manager.PrivateStorageManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import im.conversations.android.xmpp.model.stanza.Iq;
 
@@ -21,6 +23,7 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
 
     @Override
     public void run() {
+        Log.d(Config.LOGTAG, "begin onBind()");
         final var account = connection.getAccount();
         final var features = connection.getFeatures();
         service.cancelAvatarFetches(account);
@@ -63,9 +66,10 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         getManager(RosterManager.class).request();
 
         if (features.bookmarks2()) {
-            service.fetchBookmarks2(account);
+            connection.getManager(BookmarkManager.class).fetch();
+            // log that we use bookmarks 1 and wait for +notify
         } else if (!features.bookmarksConversion()) {
-            service.fetchBookmarks(account);
+            connection.getManager(PrivateStorageManager.class).fetchBookmarks();
         }
 
         if (features.mds()) {
@@ -101,5 +105,6 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         connection.getManager(RosterManager.class).syncDirtyContacts();
 
         service.getUnifiedPushBroker().renewUnifiedPushEndpointsOnBind(account);
+        Log.d(Config.LOGTAG, "end onBind()");
     }
 }

@@ -121,7 +121,6 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.LocalizedContent;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.IqErrorResponseException;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
@@ -144,13 +143,12 @@ import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.pep.PublishOptions;
 import im.conversations.android.xmpp.Entity;
+import im.conversations.android.xmpp.IqErrorException;
 import im.conversations.android.xmpp.model.avatar.Metadata;
-import im.conversations.android.xmpp.model.bookmark.Storage;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import im.conversations.android.xmpp.model.mds.Displayed;
 import im.conversations.android.xmpp.model.pubsub.PubSub;
 import im.conversations.android.xmpp.model.stanza.Iq;
-import im.conversations.android.xmpp.model.storage.PrivateStorage;
 import im.conversations.android.xmpp.model.up.Push;
 import java.io.File;
 import java.security.Security;
@@ -366,6 +364,7 @@ public class XmppConnectionService extends Service {
 
                 @Override
                 public void onStatusChanged(final Account account) {
+                    Log.d(Config.LOGTAG, "begin onStatusChanged()");
                     final var status = account.getStatus();
                     if (ServiceOutageStatus.isPossibleOutage(status)) {
                         fetchServiceOutageStatus(account);
@@ -499,6 +498,7 @@ public class XmppConnectionService extends Service {
                         }
                     }
                     getNotificationService().updateErrorNotification();
+                    Log.d(Config.LOGTAG, "end onStatusChanged()");
                 }
             };
 
@@ -1843,15 +1843,13 @@ public class XmppConnectionService extends Service {
 
     public XmppConnection createConnection(final Account account) {
         final XmppConnection connection = new XmppConnection(account, this);
+        // TODO move status listener into final variable in XmppConnection
         connection.setOnStatusChangedListener(this.statusListener);
         connection.setOnJinglePacketReceivedListener((mJingleConnectionManager::deliverPacket));
+        // TODO move MessageAck into final Processor into XmppConnection
         connection.setOnMessageAcknowledgeListener(this.mOnMessageAcknowledgedListener);
         connection.addOnAdvancedStreamFeaturesAvailableListener(this.mMessageArchiveService);
         connection.addOnAdvancedStreamFeaturesAvailableListener(this.mAvatarService);
-        AxolotlService axolotlService = account.getAxolotlService();
-        if (axolotlService != null) {
-            connection.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
-        }
         return connection;
     }
 
@@ -2137,44 +2135,6 @@ public class XmppConnectionService extends Service {
                 });
     }
 
-    public void fetchBookmarks(final Account account) {
-        final Iq iqPacket = new Iq(Iq.Type.GET);
-        iqPacket.addExtension(new PrivateStorage()).addExtension(new Storage());
-        final Consumer<Iq> callback =
-                (response) -> {
-                    if (response.getType() == Iq.Type.RESULT) {
-                        final var privateStorage = response.getExtension(PrivateStorage.class);
-                        if (privateStorage == null) {
-                            return;
-                        }
-                        final var bookmarkStorage = privateStorage.getExtension(Storage.class);
-                        Map<Jid, Bookmark> bookmarks =
-                                Bookmark.parseFromStorage(bookmarkStorage, account);
-                        processBookmarksInitial(account, bookmarks, false);
-                    } else {
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid() + ": could not fetch bookmarks");
-                    }
-                };
-        sendIqPacket(account, iqPacket, callback);
-    }
-
-    public void fetchBookmarks2(final Account account) {
-        final Iq retrieve = mIqGenerator.retrieveBookmarks();
-        sendIqPacket(
-                account,
-                retrieve,
-                (response) -> {
-                    if (response.getType() == Iq.Type.RESULT) {
-                        final var pubsub = response.getExtension(PubSub.class);
-                        final Map<Jid, Bookmark> bookmarks =
-                                Bookmark.parseFromPubSub(pubsub, account);
-                        processBookmarksInitial(account, bookmarks, true);
-                    }
-                });
-    }
-
     public void fetchMessageDisplayedSynchronization(final Account account) {
         Log.d(Config.LOGTAG, account.getJid() + ": retrieve mds");
         final var retrieve = mIqGenerator.retrieveMds();
@@ -2252,43 +2212,7 @@ public class XmppConnectionService extends Service {
         return true;
     }
 
-    public void processBookmarksInitial(
-            final Account account, final Map<Jid, Bookmark> bookmarks, final boolean pep) {
-        final Set<Jid> previousBookmarks = account.getBookmarkedJids();
-        for (final Bookmark bookmark : bookmarks.values()) {
-            previousBookmarks.remove(bookmark.getJid().asBareJid());
-            processModifiedBookmark(bookmark, pep);
-        }
-        if (pep) {
-            processDeletedBookmarks(account, previousBookmarks);
-        }
-        account.setBookmarks(bookmarks);
-    }
-
-    public void processDeletedBookmarks(final Account account, final Collection<Jid> bookmarks) {
-        Log.d(
-                Config.LOGTAG,
-                account.getJid().asBareJid()
-                        + ": "
-                        + bookmarks.size()
-                        + " bookmarks have been removed");
-        for (final Jid bookmark : bookmarks) {
-            processDeletedBookmark(account, bookmark);
-        }
-    }
-
-    public void processDeletedBookmark(final Account account, final Jid jid) {
-        final Conversation conversation = find(account, jid);
-        if (conversation == null) {
-            return;
-        }
-        Log.d(
-                Config.LOGTAG,
-                account.getJid().asBareJid() + ": archiving MUC " + jid + " after PEP update");
-        archiveConversation(conversation, false);
-    }
-
-    private void processModifiedBookmark(final Bookmark bookmark, final boolean pep) {
+    public void processModifiedBookmark(final Bookmark bookmark, final boolean pep) {
         final Account account = bookmark.getAccount();
         Conversation conversation = find(bookmark);
         if (conversation != null) {
@@ -2407,6 +2331,7 @@ public class XmppConnectionService extends Service {
     private void pushBookmarksPrivateXml(Account account) {
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": pushing bookmarks via private xml");
         final Iq iqPacket = new Iq(Iq.Type.SET);
+        // TODO we have extensions for that
         Element query = iqPacket.query("jabber:iq:private");
         Element storage = query.addChild("storage", "storage:bookmarks");
         for (final Bookmark bookmark : account.getBookmarks()) {
@@ -2531,8 +2456,7 @@ public class XmppConnectionService extends Service {
                         }
                         Log.d(Config.LOGTAG, "restoring roster...");
                         for (final Account account : accounts) {
-                            account.initAccountServices(
-                                    this); // roster needs to be loaded at this stage
+                            account.setXmppConnection(createConnection(account));
                             account.getXmppConnection().getManager(RosterManager.class).restore();
                         }
                         getBitmapCache().evictAll();
@@ -2989,7 +2913,7 @@ public class XmppConnectionService extends Service {
         archiveConversation(conversation, true);
     }
 
-    private void archiveConversation(
+    public void archiveConversation(
             Conversation conversation, final boolean maySynchronizeWithBookmarks) {
         getNotificationService().clear(conversation);
         conversation.setStatus(Conversation.STATUS_ARCHIVED);
@@ -3034,7 +2958,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void createAccount(final Account account) {
-        account.initAccountServices(this);
+        account.setXmppConnection(createConnection(account));
         databaseBackend.createAccount(account);
         if (CallIntegration.hasSystemFeature(this)) {
             CallIntegrationConnectionService.togglePhoneAccountAsync(this, account);
@@ -4450,8 +4374,7 @@ public class XmppConnectionService extends Service {
                                     account.getJid().asBareJid()
                                             + ": received timeout waiting for conference"
                                             + " configuration fetch");
-                        } else if (throwable
-                                instanceof IqErrorResponseException errorResponseException) {
+                        } else if (throwable instanceof IqErrorException errorResponseException) {
                             if (callback != null) {
                                 callback.onFetchFailed(
                                         conversation,

@@ -12,7 +12,6 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.xmpp.model.bookmark.Storage;
 import im.conversations.android.xmpp.model.bookmark2.Conference;
-import im.conversations.android.xmpp.model.pubsub.PubSub;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,6 +40,7 @@ public class Bookmark extends Element implements ListItem {
 
     public static Map<Jid, Bookmark> parseFromStorage(
             final Storage storage, final Account account) {
+        // TODO refactor to use extensions. get rid of the 'old' handling
         if (storage == null) {
             return Collections.emptyMap();
         }
@@ -57,26 +57,6 @@ public class Bookmark extends Element implements ListItem {
                     }
                 }
             }
-        }
-        return bookmarks;
-    }
-
-    public static Map<Jid, Bookmark> parseFromPubSub(final PubSub pubSub, final Account account) {
-        if (pubSub == null) {
-            return Collections.emptyMap();
-        }
-        final var items = pubSub.getItems();
-        if (items == null || !Namespace.BOOKMARKS2.equals(items.getNode())) {
-            return Collections.emptyMap();
-        }
-        final Map<Jid, Bookmark> bookmarks = new HashMap<>();
-        for (final var item : items.getItemMap(Conference.class).entrySet()) {
-            final Bookmark bookmark =
-                    Bookmark.parseFromItem(item.getKey(), item.getValue(), account);
-            if (bookmark == null) {
-                continue;
-            }
-            bookmarks.put(bookmark.jid, bookmark);
         }
         return bookmarks;
     }
@@ -103,6 +83,9 @@ public class Bookmark extends Element implements ListItem {
         if (bookmark.jid == null) {
             return null;
         }
+
+        // TODO use proper API
+
         bookmark.setBookmarkName(conference.getAttribute("name"));
         bookmark.setAutojoin(conference.getAttributeAsBoolean("autojoin"));
         bookmark.setNick(conference.findChildContent("nick"));
