@@ -629,11 +629,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public Roster getRoster() {
-        if (xmppConnection != null) {
-            return xmppConnection.getManager(RosterManager.class);
-        }
-        // TODO either return stub or always put XmppConnection into Account
-        return null;
+        return xmppConnection.getManager(RosterManager.class);
     }
 
     public Collection<Bookmark> getBookmarks() {

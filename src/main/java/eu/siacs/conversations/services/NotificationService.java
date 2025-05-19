@@ -1866,7 +1866,7 @@ public class NotificationService {
         }
     }
 
-    void updateErrorNotification() {
+    public void updateErrorNotification() {
         if (Config.SUPPRESS_ERROR_NOTIFICATION) {
             cancel(ERROR_NOTIFICATION_ID);
             return;

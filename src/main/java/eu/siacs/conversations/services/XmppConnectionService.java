@@ -1,7 +1,6 @@
 package eu.siacs.conversations.services;
 
 import static eu.siacs.conversations.utils.Compatibility.s;
-import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -125,7 +124,6 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnMessageAcknowledged;
-import eu.siacs.conversations.xmpp.OnStatusChanged;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
@@ -219,7 +217,7 @@ public class XmppConnectionService extends Service {
     private static final Executor FILE_OBSERVER_EXECUTOR = Executors.newSingleThreadExecutor();
     public static final Executor FILE_ATTACHMENT_EXECUTOR = Executors.newSingleThreadExecutor();
 
-    private final ScheduledExecutorService internalPingExecutor =
+    public final ScheduledExecutorService internalPingExecutor =
             Executors.newSingleThreadScheduledExecutor();
     private static final SerialSingleThreadExecutor VIDEO_COMPRESSION_EXECUTOR =
             new SerialSingleThreadExecutor("VideoCompression");
@@ -234,7 +232,7 @@ public class XmppConnectionService extends Service {
     private final IqGenerator mIqGenerator = new IqGenerator(this);
     private final Set<String> mInProgressAvatarFetches = new HashSet<>();
     private final Set<String> mOmittedPepAvatarFetches = new HashSet<>();
-    private final HashSet<Jid> mLowPingTimeoutMode = new HashSet<>();
+    public final HashSet<Jid> mLowPingTimeoutMode = new HashSet<>();
     private final Consumer<Iq> mDefaultIqHandler =
             (packet) -> {
                 if (packet.getType() != Iq.Type.RESULT) {
@@ -359,148 +357,6 @@ public class XmppConnectionService extends Service {
     public final Set<String> FILENAMES_TO_IGNORE_DELETION = new HashSet<>();
 
     private final AtomicLong mLastExpiryRun = new AtomicLong(0);
-    private final OnStatusChanged statusListener =
-            new OnStatusChanged() {
-
-                @Override
-                public void onStatusChanged(final Account account) {
-                    Log.d(Config.LOGTAG, "begin onStatusChanged()");
-                    final var status = account.getStatus();
-                    if (ServiceOutageStatus.isPossibleOutage(status)) {
-                        fetchServiceOutageStatus(account);
-                    }
-                    XmppConnection connection = account.getXmppConnection();
-                    updateAccountUi();
-
-                    if (account.getStatus() == Account.State.ONLINE
-                            || account.getStatus().isError()) {
-                        mQuickConversationsService.signalAccountStateChange();
-                    }
-
-                    if (account.getStatus() == Account.State.ONLINE) {
-                        synchronized (mLowPingTimeoutMode) {
-                            if (mLowPingTimeoutMode.remove(account.getJid().asBareJid())) {
-                                Log.d(
-                                        Config.LOGTAG,
-                                        account.getJid().asBareJid()
-                                                + ": leaving low ping timeout mode");
-                            }
-                        }
-                        if (account.setShowErrorNotification(true)) {
-                            databaseBackend.updateAccount(account);
-                        }
-                        mMessageArchiveService.executePendingQueries(account);
-                        if (connection != null && connection.getFeatures().csi()) {
-                            if (checkListeners()) {
-                                Log.d(
-                                        Config.LOGTAG,
-                                        account.getJid().asBareJid() + " sending csi//inactive");
-                                connection.sendInactive();
-                            } else {
-                                Log.d(
-                                        Config.LOGTAG,
-                                        account.getJid().asBareJid() + " sending csi//active");
-                                connection.sendActive();
-                            }
-                        }
-                        List<Conversation> conversations = getConversations();
-                        for (Conversation conversation : conversations) {
-                            final boolean inProgressJoin;
-                            synchronized (account.inProgressConferenceJoins) {
-                                inProgressJoin =
-                                        account.inProgressConferenceJoins.contains(conversation);
-                            }
-                            final boolean pendingJoin;
-                            synchronized (account.pendingConferenceJoins) {
-                                pendingJoin = account.pendingConferenceJoins.contains(conversation);
-                            }
-                            if (conversation.getAccount() == account
-                                    && !pendingJoin
-                                    && !inProgressJoin) {
-                                sendUnsentMessages(conversation);
-                            }
-                        }
-                        final List<Conversation> pendingLeaves;
-                        synchronized (account.pendingConferenceLeaves) {
-                            pendingLeaves = new ArrayList<>(account.pendingConferenceLeaves);
-                            account.pendingConferenceLeaves.clear();
-                        }
-                        for (Conversation conversation : pendingLeaves) {
-                            leaveMuc(conversation);
-                        }
-                        final List<Conversation> pendingJoins;
-                        synchronized (account.pendingConferenceJoins) {
-                            pendingJoins = new ArrayList<>(account.pendingConferenceJoins);
-                            account.pendingConferenceJoins.clear();
-                        }
-                        for (Conversation conversation : pendingJoins) {
-                            joinMuc(conversation);
-                        }
-                        scheduleWakeUpCall(
-                                Config.PING_MAX_INTERVAL * 1000L, account.getUuid().hashCode());
-                    } else if (account.getStatus() == Account.State.OFFLINE
-                            || account.getStatus() == Account.State.DISABLED
-                            || account.getStatus() == Account.State.LOGGED_OUT) {
-                        resetSendingToWaiting(account);
-                        if (account.isConnectionEnabled() && isInLowPingTimeoutMode(account)) {
-                            Log.d(
-                                    Config.LOGTAG,
-                                    account.getJid().asBareJid()
-                                            + ": went into offline state during low ping mode."
-                                            + " reconnecting now");
-                            reconnectAccount(account, true, false);
-                        } else {
-                            final int timeToReconnect = SECURE_RANDOM.nextInt(10) + 2;
-                            scheduleWakeUpCall(timeToReconnect, account.getUuid().hashCode());
-                        }
-                    } else if (account.getStatus() == Account.State.REGISTRATION_SUCCESSFUL) {
-                        databaseBackend.updateAccount(account);
-                        reconnectAccount(account, true, false);
-                    } else if (account.getStatus() != Account.State.CONNECTING
-                            && account.getStatus() != Account.State.NO_INTERNET) {
-                        resetSendingToWaiting(account);
-                        if (connection != null && account.getStatus().isAttemptReconnect()) {
-                            final boolean aggressive =
-                                    account.getStatus() == Account.State.SEE_OTHER_HOST
-                                            || hasJingleRtpConnection(account);
-                            final int next = connection.getTimeToNextAttempt(aggressive);
-                            final boolean lowPingTimeoutMode = isInLowPingTimeoutMode(account);
-                            if (next <= 0) {
-                                Log.d(
-                                        Config.LOGTAG,
-                                        account.getJid().asBareJid()
-                                                + ": error connecting account. reconnecting now."
-                                                + " lowPingTimeout="
-                                                + lowPingTimeoutMode);
-                                reconnectAccount(account, true, false);
-                            } else {
-                                final int attempt = connection.getAttempt() + 1;
-                                Log.d(
-                                        Config.LOGTAG,
-                                        account.getJid().asBareJid()
-                                                + ": error connecting account. try again in "
-                                                + next
-                                                + "s for the "
-                                                + attempt
-                                                + " time. lowPingTimeout="
-                                                + lowPingTimeoutMode
-                                                + ", aggressive="
-                                                + aggressive);
-                                scheduleWakeUpCall(next, account.getUuid().hashCode());
-                                if (aggressive) {
-                                    internalPingExecutor.schedule(
-                                            XmppConnectionService.this
-                                                    ::manageAccountConnectionStatesInternal,
-                                            (next * 1000L) + 50,
-                                            TimeUnit.MILLISECONDS);
-                                }
-                            }
-                        }
-                    }
-                    getNotificationService().updateErrorNotification();
-                    Log.d(Config.LOGTAG, "end onStatusChanged()");
-                }
-            };
 
     private OpenPgpServiceConnection pgpServiceConnection;
     private PgpEngine mPgpEngine = null;
@@ -515,7 +371,7 @@ public class XmppConnectionService extends Service {
         return account.getJid().asBareJid() + "_" + avatar.owner + "_" + avatar.sha1sum;
     }
 
-    private boolean isInLowPingTimeoutMode(Account account) {
+    public boolean isInLowPingTimeoutMode(Account account) {
         synchronized (mLowPingTimeoutMode) {
             return mLowPingTimeoutMode.contains(account.getJid().asBareJid());
         }
@@ -987,7 +843,7 @@ public class XmppConnectionService extends Service {
         updateConversationUi();
     }
 
-    private void manageAccountConnectionStatesInternal() {
+    public void manageAccountConnectionStatesInternal() {
         manageAccountConnectionStates(ACTION_INTERNAL_PING, null);
     }
 
@@ -1050,17 +906,16 @@ public class XmppConnectionService extends Service {
             final boolean isUiAction,
             final boolean isAccountPushed,
             final HashSet<Account> pingCandidates) {
+        final var connection = account.getXmppConnection();
         if (!account.getStatus().isAttemptReconnect()) {
             return false;
         }
         final var requestCode = account.getUuid().hashCode();
         if (!hasInternetConnection()) {
-            account.setStatus(Account.State.NO_INTERNET);
-            statusListener.onStatusChanged(account);
+            connection.setStatusAndTriggerProcessor(Account.State.NO_INTERNET);
         } else {
             if (account.getStatus() == Account.State.NO_INTERNET) {
-                account.setStatus(Account.State.OFFLINE);
-                statusListener.onStatusChanged(account);
+                connection.setStatusAndTriggerProcessor(Account.State.OFFLINE);
             }
             if (account.getStatus() == Account.State.ONLINE) {
                 synchronized (mLowPingTimeoutMode) {
@@ -1111,7 +966,6 @@ public class XmppConnectionService extends Service {
             } else if (account.getStatus() == Account.State.OFFLINE) {
                 reconnectAccount(account, true, interactive);
             } else if (account.getStatus() == Account.State.CONNECTING) {
-                final var connection = account.getXmppConnection();
                 final var connectionDuration = connection.getConnectionDuration();
                 final var discoDuration = connection.getDiscoDuration();
                 final var connectionTimeout = Config.CONNECT_TIMEOUT * 1000L - connectionDuration;
@@ -1128,7 +982,7 @@ public class XmppConnectionService extends Service {
                 final boolean aggressive =
                         account.getStatus() == Account.State.SEE_OTHER_HOST
                                 || hasJingleRtpConnection(account);
-                if (account.getXmppConnection().getTimeToNextAttempt(aggressive) <= 0) {
+                if (connection.getTimeToNextAttempt(aggressive) <= 0) {
                     reconnectAccount(account, true, interactive);
                 }
             }
@@ -1146,7 +1000,7 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    private void fetchServiceOutageStatus(final Account account) {
+    public void fetchServiceOutageStatus(final Account account) {
         final var sosUrl = account.getKey(Account.KEY_SOS_URL);
         if (Strings.isNullOrEmpty(sosUrl)) {
             return;
@@ -1436,6 +1290,9 @@ public class XmppConnectionService extends Service {
         this.databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
         Log.d(Config.LOGTAG, "restoring accounts...");
         this.accounts = databaseBackend.getAccounts();
+        for (final var account : this.accounts) {
+            account.setXmppConnection(createConnection(account));
+        }
         final SharedPreferences.Editor editor = getPreferences().edit();
         final boolean hasEnabledAccounts = hasEnabledAccounts();
         editor.putBoolean(SystemEventReceiver.SETTING_ENABLED_ACCOUNTS, hasEnabledAccounts).apply();
@@ -1843,8 +1700,6 @@ public class XmppConnectionService extends Service {
 
     public XmppConnection createConnection(final Account account) {
         final XmppConnection connection = new XmppConnection(account, this);
-        // TODO move status listener into final variable in XmppConnection
-        connection.setOnStatusChangedListener(this.statusListener);
         connection.setOnJinglePacketReceivedListener((mJingleConnectionManager::deliverPacket));
         // TODO move MessageAck into final Processor into XmppConnection
         connection.setOnMessageAcknowledgeListener(this.mOnMessageAcknowledgedListener);
@@ -2077,7 +1932,7 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    private void sendUnsentMessages(final Conversation conversation) {
+    public void sendUnsentMessages(final Conversation conversation) {
         conversation.findWaitingMessages(message -> resendMessage(message, true));
     }
 
@@ -2456,7 +2311,6 @@ public class XmppConnectionService extends Service {
                         }
                         Log.d(Config.LOGTAG, "restoring roster...");
                         for (final Account account : accounts) {
-                            account.setXmppConnection(createConnection(account));
                             account.getXmppConnection().getManager(RosterManager.class).restore();
                         }
                         getBitmapCache().evictAll();
@@ -3100,7 +2954,8 @@ public class XmppConnectionService extends Service {
     public boolean updateAccount(final Account account) {
         if (databaseBackend.updateAccount(account)) {
             account.setShowErrorNotification(true);
-            this.statusListener.onStatusChanged(account);
+            // TODO what was the purpose of that? will likely be triggered by reconnect anyway?
+            // this.statusListener.onStatusChanged(account);
             databaseBackend.updateAccount(account);
             reconnectAccountInBackground(account);
             updateAccountUi();
@@ -5207,7 +5062,7 @@ public class XmppConnectionService extends Service {
         mDatabaseWriterExecutor.execute(() -> databaseBackend.updateConversation(conversation));
     }
 
-    private void reconnectAccount(
+    public void reconnectAccount(
             final Account account, final boolean force, final boolean interactive) {
         synchronized (account) {
             final XmppConnection connection = account.getXmppConnection();
@@ -5231,6 +5086,7 @@ public class XmppConnectionService extends Service {
                     axolotlService.resetBrokenness();
                 }
                 if (!hasInternet) {
+                    // TODO should this go via XmppConnection.setStatusAndTriggerProcessor()?
                     account.setStatus(Account.State.NO_INTERNET);
                 }
             }
@@ -5942,7 +5798,7 @@ public class XmppConnectionService extends Service {
         return this.mJingleConnectionManager;
     }
 
-    private boolean hasJingleRtpConnection(final Account account) {
+    public boolean hasJingleRtpConnection(final Account account) {
         return this.mJingleConnectionManager.hasJingleRtpConnection(account);
     }
 

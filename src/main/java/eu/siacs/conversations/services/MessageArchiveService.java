@@ -221,7 +221,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
         }
     }
 
-    void executePendingQueries(final Account account) {
+    public void executePendingQueries(final Account account) {
         final List<Query> pending = new ArrayList<>();
         synchronized (this.pendingQueries) {
             for (Iterator<Query> iterator = this.pendingQueries.iterator(); iterator.hasNext(); ) {

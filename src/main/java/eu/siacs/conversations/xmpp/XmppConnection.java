@@ -117,6 +117,7 @@ import im.conversations.android.xmpp.model.stanza.Stanza;
 import im.conversations.android.xmpp.model.streams.StreamError;
 import im.conversations.android.xmpp.model.tls.Proceed;
 import im.conversations.android.xmpp.model.tls.StartTls;
+import im.conversations.android.xmpp.processor.AccountStateProcessor;
 import im.conversations.android.xmpp.processor.BindProcessor;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -202,10 +203,10 @@ public class XmppConnection implements Runnable {
     private final Consumer<Presence> presenceListener;
     private final Consumer<Iq> unregisteredIqListener;
     private final Consumer<im.conversations.android.xmpp.model.stanza.Message> messageListener;
+    private final Consumer<Account.State> accountStateProcessor;
     private AxolotlService axolotlService;
     private final PgpDecryptionService pgpDecryptionService;
-    private OnStatusChanged statusListener = null;
-    private final Runnable bindListener;
+    private final Runnable bindProcessor;
     private OnMessageAcknowledged acknowledgedListener = null;
     private final PendingItem<String> pendingResumeId = new PendingItem<>();
     private LoginInfo loginInfo;
@@ -228,7 +229,8 @@ public class XmppConnection implements Runnable {
         // TODO requires roster and blocking not to be handled by this
         this.unregisteredIqListener = new IqParser(service, this);
         this.messageListener = new MessageParser(service, this);
-        this.bindListener = new BindProcessor(service, this);
+        this.bindProcessor = new BindProcessor(service, this);
+        this.accountStateProcessor = new AccountStateProcessor(service, this);
         this.managers = Managers.get(service, this);
         this.setAxolotlService(new AxolotlService(account, service));
         this.pgpDecryptionService = new PgpDecryptionService(service);
@@ -282,15 +284,7 @@ public class XmppConnection implements Runnable {
                 return;
             }
         }
-        if (statusListener != null) {
-            try {
-                statusListener.onStatusChanged(account);
-            } catch (final Exception e) {
-                Log.d(Config.LOGTAG, "error executing shit", e);
-            }
-        } else {
-            Log.d(Config.LOGTAG, "status changed listener was null");
-        }
+        this.accountStateProcessor.accept(nextStatus);
     }
 
     public Jid getJidForCommand(final String node) {
@@ -2366,7 +2360,7 @@ public class XmppConnection implements Runnable {
 
     private void finalizeBind() {
         this.offlineMessagesRetrieved = false;
-        this.bindListener.run();
+        this.bindProcessor.run();
         this.changeStatusToOnline();
     }
 
@@ -2660,10 +2654,6 @@ public class XmppConnection implements Runnable {
         this.jingleListener = listener;
     }
 
-    public void setOnStatusChangedListener(final OnStatusChanged listener) {
-        this.statusListener = listener;
-    }
-
     public void setOnMessageAcknowledgeListener(final OnMessageAcknowledged listener) {
         this.acknowledgedListener = listener;
     }
@@ -2926,6 +2916,11 @@ public class XmppConnection implements Runnable {
         }
         this.axolotlService = axolotlService;
         this.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
+    }
+
+    public void setStatusAndTriggerProcessor(final Account.State state) {
+        this.account.setStatus(state);
+        this.accountStateProcessor.accept(state);
     }
 
     private class MyKeyManager implements X509KeyManager {
