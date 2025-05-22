@@ -172,6 +172,10 @@ public class PubSubManager extends AbstractManager {
             getManager(LegacyBookmarkManager.class).handleItems(items);
             return;
         }
+        if (connection.fromAccount(message) && Namespace.MDS_DISPLAYED.equals(node)) {
+            getManager(MessageDisplayedSynchronizationManager.class).handleItems(items);
+            return;
+        }
         if (isFromBare && Namespace.AVATAR_METADATA.equals(node)) {
             getManager(AvatarManager.class).handleItems(from, items);
             return;
@@ -187,13 +191,29 @@ public class PubSubManager extends AbstractManager {
 
     private void handlePurge(final Message message, final Purge purge) {
         final var from = message.getFrom();
+        final var isFromBare = from == null || from.isBareJid();
         final var node = purge.getNode();
         if (connection.fromAccount(message) && Namespace.BOOKMARKS2.equals(node)) {
-            getManager(BookmarkManager.class).deleteAllItems();
+            getManager(BookmarkManager.class).handlePurge();
         }
     }
 
-    private void handleDelete(final Message message, final Delete delete) {}
+    private void handleDelete(final Message message, final Delete delete) {
+        final var from = message.getFrom();
+        final var isFromBare = from == null || from.isBareJid();
+        final var node = delete.getNode();
+        if (connection.fromAccount(message) && Namespace.BOOKMARKS2.equals(node)) {
+            getManager(BookmarkManager.class).handleDelete();
+            return;
+        }
+        if (isFromBare && Namespace.AVATAR_METADATA.equals(node)) {
+            getManager(AvatarManager.class).handleDelete(from);
+            return;
+        }
+        if (isFromBare && Namespace.NICK.equals(node)) {
+            getManager(NickManager.class).handleDelete(from);
+        }
+    }
 
     public ListenableFuture<Void> publishSingleton(
             Jid address, Extension item, final NodeConfiguration nodeConfiguration) {

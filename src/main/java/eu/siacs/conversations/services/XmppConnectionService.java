@@ -142,7 +142,6 @@ import im.conversations.android.xmpp.Entity;
 import im.conversations.android.xmpp.IqErrorException;
 import im.conversations.android.xmpp.model.avatar.Metadata;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
-import im.conversations.android.xmpp.model.mds.Displayed;
 import im.conversations.android.xmpp.model.pubsub.PubSub;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.up.Push;
@@ -1942,51 +1941,6 @@ public class XmppConnectionService extends Service {
                         callback.inviteRequestFailed(getString(R.string.remote_server_timeout));
                     }
                 });
-    }
-
-    public void fetchMessageDisplayedSynchronization(final Account account) {
-        Log.d(Config.LOGTAG, account.getJid() + ": retrieve mds");
-        final var retrieve = mIqGenerator.retrieveMds();
-        sendIqPacket(
-                account,
-                retrieve,
-                (response) -> {
-                    if (response.getType() != Iq.Type.RESULT) {
-                        return;
-                    }
-                    final var pubsub = response.getExtension(PubSub.class);
-                    if (pubsub == null) {
-                        return;
-                    }
-                    final var items = pubsub.getItems();
-                    if (items == null) {
-                        return;
-                    }
-                    if (Namespace.MDS_DISPLAYED.equals(items.getNode())) {
-                        for (final var item :
-                                items.getItemMap(
-                                                im.conversations.android.xmpp.model.mds.Displayed
-                                                        .class)
-                                        .entrySet()) {
-                            processMdsItem(account, item);
-                        }
-                    }
-                });
-    }
-
-    public void processMdsItem(final Account account, final Map.Entry<String, Displayed> item) {
-        final Jid jid = Jid.Invalid.getNullForInvalid(Jid.ofOrInvalid(item.getKey()));
-        if (jid == null) {
-            return;
-        }
-        final var displayed = item.getValue();
-        final var stanzaId = displayed.getStanzaId();
-        final String id = stanzaId == null ? null : stanzaId.getId();
-        final Conversation conversation = find(account, jid);
-        if (id != null && conversation != null) {
-            conversation.setDisplayState(id);
-            markReadUpToStanzaId(conversation, id);
-        }
     }
 
     public void markReadUpToStanzaId(final Conversation conversation, final String stanzaId) {

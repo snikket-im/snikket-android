@@ -17,6 +17,9 @@ import im.conversations.android.xmpp.NodeConfiguration;
 import im.conversations.android.xmpp.model.bookmark2.Conference;
 import im.conversations.android.xmpp.model.bookmark2.Nick;
 import im.conversations.android.xmpp.model.pubsub.Items;
+import im.conversations.android.xmpp.model.pubsub.event.Retract;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 public class BookmarkManager extends AbstractBookmarkManager {
@@ -54,13 +57,35 @@ public class BookmarkManager extends AbstractBookmarkManager {
     }
 
     public void handleItems(final Items items) {
-        final var retractions = items.getRetractions();
-        final var itemMap = items.getItemMap(Conference.class);
-        if (!retractions.isEmpty()) {
-            // deleteItems(retractions);
+        this.handleItems(items.getItemMap(Conference.class));
+        this.handleRetractions(items.getRetractions());
+    }
+
+    private void handleRetractions(final Collection<Retract> retractions) {
+        final var account = getAccount();
+        for (final var retract : retractions) {
+            final Jid id = Jid.Invalid.getNullForInvalid(retract.getAttributeAsJid("id"));
+            if (id != null) {
+                account.removeBookmark(id);
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleted bookmark for " + id);
+                processDeletedBookmark(id);
+                service.updateConversationUi();
+            }
         }
-        if (!itemMap.isEmpty()) {
-            // updateItems(itemMap);
+    }
+
+    private void handleItems(final Map<String, Conference> items) {
+        final var account = getAccount();
+        for (final var item : items.entrySet()) {
+            // TODO parseFromItem can be included in this Manager
+            final Bookmark bookmark =
+                    Bookmark.parseFromItem(item.getKey(), item.getValue(), account);
+            if (bookmark == null) {
+                continue;
+            }
+            account.putBookmark(bookmark);
+            service.processModifiedBookmark(bookmark);
+            service.updateConversationUi();
         }
     }
 
@@ -91,5 +116,20 @@ public class BookmarkManager extends AbstractBookmarkManager {
                 MoreExecutors.directExecutor());
     }
 
-    public void deleteAllItems() {}
+    private void deleteAllItems() {
+        final var account = getAccount();
+        final var previous = account.getBookmarkedJids();
+        account.setBookmarks(Collections.emptyMap());
+        processDeletedBookmarks(previous);
+    }
+
+    public void handleDelete() {
+        Log.d(Config.LOGTAG, getAccount().getJid().asBareJid() + ": deleted bookmarks node");
+        this.deleteAllItems();
+    }
+
+    public void handlePurge() {
+        Log.d(Config.LOGTAG, getAccount().getJid().asBareJid() + ": purged bookmarks");
+        this.deleteAllItems();
+    }
 }

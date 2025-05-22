@@ -2,7 +2,6 @@ package eu.siacs.conversations.parser;
 
 import android.util.Log;
 import android.util.Pair;
-import androidx.annotation.NonNull;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import eu.siacs.conversations.AppSettings;
@@ -14,7 +13,6 @@ import eu.siacs.conversations.crypto.axolotl.NotEncryptedForThisDeviceException;
 import eu.siacs.conversations.crypto.axolotl.OutdatedSenderException;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
@@ -26,7 +24,6 @@ import eu.siacs.conversations.entities.ReceiptRequest;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.MessageArchiveService;
-import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
@@ -39,25 +36,16 @@ import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.manager.PubSubManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
-import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.model.Extension;
-import im.conversations.android.xmpp.model.avatar.Metadata;
-import im.conversations.android.xmpp.model.axolotl.DeviceList;
 import im.conversations.android.xmpp.model.axolotl.Encrypted;
-import im.conversations.android.xmpp.model.bookmark.Storage;
-import im.conversations.android.xmpp.model.bookmark2.Conference;
 import im.conversations.android.xmpp.model.carbons.Received;
 import im.conversations.android.xmpp.model.carbons.Sent;
 import im.conversations.android.xmpp.model.correction.Replace;
 import im.conversations.android.xmpp.model.forward.Forwarded;
 import im.conversations.android.xmpp.model.markers.Displayed;
-import im.conversations.android.xmpp.model.nick.Nick;
 import im.conversations.android.xmpp.model.occupant.OccupantId;
 import im.conversations.android.xmpp.model.oob.OutOfBandData;
-import im.conversations.android.xmpp.model.pubsub.Items;
-import im.conversations.android.xmpp.model.pubsub.event.Delete;
 import im.conversations.android.xmpp.model.pubsub.event.Event;
-import im.conversations.android.xmpp.model.pubsub.event.Purge;
 import im.conversations.android.xmpp.model.reactions.Reactions;
 import im.conversations.android.xmpp.model.receipts.Request;
 import im.conversations.android.xmpp.model.unique.StanzaId;
@@ -65,10 +53,8 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -255,169 +241,6 @@ public class MessageParser extends AbstractParser
             return new Invite(room, conference.getAttribute("password"), true, from);
         }
         return null;
-    }
-
-    private void parseEvent(final Items items, final Jid from, final Account account) {
-        final String node = items.getNode();
-        if ("urn:xmpp:avatar:metadata".equals(node)) {
-            // TODO support retract
-            final var entry = items.getFirstItemWithId(Metadata.class);
-            final var avatar =
-                    entry == null ? null : Avatar.parseMetadata(entry.getKey(), entry.getValue());
-            if (avatar != null) {
-                avatar.owner = from.asBareJid();
-                if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
-                    if (account.getJid().asBareJid().equals(from)) {
-                        if (account.setAvatar(avatar.getFilename())) {
-                            mXmppConnectionService.databaseBackend.updateAccount(account);
-                            mXmppConnectionService.notifyAccountAvatarHasChanged(account);
-                        }
-                        mXmppConnectionService.getAvatarService().clear(account);
-                        mXmppConnectionService.updateConversationUi();
-                        mXmppConnectionService.updateAccountUi();
-                    } else {
-                        final Contact contact = account.getRoster().getContact(from);
-                        if (contact.setAvatar(avatar)) {
-                            connection.getManager(RosterManager.class).writeToDatabaseAsync();
-                            mXmppConnectionService.getAvatarService().clear(contact);
-                            mXmppConnectionService.updateConversationUi();
-                            mXmppConnectionService.updateRosterUi();
-                        }
-                    }
-                } else if (mXmppConnectionService.isDataSaverDisabled()) {
-                    mXmppConnectionService.fetchAvatar(account, avatar);
-                }
-            }
-        } else if (Namespace.NICK.equals(node)) {
-            final var nickItem = items.getFirstItem(Nick.class);
-            final String nick = nickItem == null ? null : nickItem.getContent();
-            if (nick != null) {
-                setNick(account, from, nick);
-            }
-        } else if (AxolotlService.PEP_DEVICE_LIST.equals(node)) {
-            final var deviceList = items.getFirstItem(DeviceList.class);
-            if (deviceList != null) {
-                final Set<Integer> deviceIds = deviceList.getDeviceIds();
-                Log.d(
-                        Config.LOGTAG,
-                        AxolotlService.getLogprefix(account)
-                                + "Received PEP device list "
-                                + deviceIds
-                                + " update from "
-                                + from
-                                + ", processing... ");
-                final AxolotlService axolotlService = account.getAxolotlService();
-                axolotlService.registerDevices(from, new HashSet<>(deviceIds));
-            }
-
-        } else if (Namespace.BOOKMARKS.equals(node) && account.getJid().asBareJid().equals(from)) {
-            final var connection = account.getXmppConnection();
-            if (connection.getFeatures().bookmarksConversion()) {
-                if (connection.getFeatures().bookmarks2()) {
-                    Log.w(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid()
-                                    + ": received storage:bookmark notification even though we"
-                                    + " opted into bookmarks:1");
-                }
-                final var storage = items.getFirstItem(Storage.class);
-                final Map<Jid, Bookmark> bookmarks = Bookmark.parseFromStorage(storage, account);
-                // mXmppConnectionService.processBookmarksInitial(account, bookmarks, true);
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid() + ": processing bookmark PEP event");
-            } else {
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid()
-                                + ": ignoring bookmark PEP event because bookmark conversion was"
-                                + " not detected");
-            }
-        } else if (Namespace.BOOKMARKS2.equals(node) && account.getJid().asBareJid().equals(from)) {
-            final var retractions = items.getRetractions();
-            for (final var item : items.getItemMap(Conference.class).entrySet()) {
-                final Bookmark bookmark =
-                        Bookmark.parseFromItem(item.getKey(), item.getValue(), account);
-                if (bookmark == null) {
-                    continue;
-                }
-                account.putBookmark(bookmark);
-                mXmppConnectionService.processModifiedBookmark(bookmark);
-                mXmppConnectionService.updateConversationUi();
-            }
-            for (final var retract : retractions) {
-                final Jid id = Jid.Invalid.getNullForInvalid(retract.getAttributeAsJid("id"));
-                if (id != null) {
-                    account.removeBookmark(id);
-                    Log.d(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid() + ": deleted bookmark for " + id);
-                    // mXmppConnectionService.processDeletedBookmark(account, id);
-                    mXmppConnectionService.updateConversationUi();
-                }
-            }
-        } else if (Config.MESSAGE_DISPLAYED_SYNCHRONIZATION
-                && Namespace.MDS_DISPLAYED.equals(node)
-                && account.getJid().asBareJid().equals(from)) {
-            for (final var item :
-                    items.getItemMap(im.conversations.android.xmpp.model.mds.Displayed.class)
-                            .entrySet()) {
-                mXmppConnectionService.processMdsItem(account, item);
-            }
-        }
-    }
-
-    private void parseDeleteEvent(final Delete delete, final Jid from, final Account account) {
-        final String node = delete.getNode();
-        if (Namespace.NICK.equals(node)) {
-            setNick(account, from, null);
-        } else if (Namespace.BOOKMARKS2.equals(node) && account.getJid().asBareJid().equals(from)) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleted bookmarks node");
-            deleteAllBookmarks(account);
-        } else if (Namespace.AVATAR_METADATA.equals(node)) {
-            final boolean isAccount = account.getJid().asBareJid().equals(from);
-            if (isAccount) {
-                account.setAvatar(null);
-                mXmppConnectionService.databaseBackend.updateAccount(account);
-                mXmppConnectionService.getAvatarService().clear(account);
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid() + ": deleted avatar metadata node");
-            }
-        }
-    }
-
-    private void parsePurgeEvent(
-            @NonNull final Purge purge, final Jid from, final Account account) {
-        final String node = purge.getNode();
-        if (Namespace.BOOKMARKS2.equals(node) && account.getJid().asBareJid().equals(from)) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": purged bookmarks");
-            deleteAllBookmarks(account);
-        }
-    }
-
-    private void deleteAllBookmarks(final Account account) {
-        final var previous = account.getBookmarkedJids();
-        account.setBookmarks(Collections.emptyMap());
-        // mXmppConnectionService.processDeletedBookmarks(account, previous);
-    }
-
-    private void setNick(final Account account, final Jid user, final String nick) {
-        if (user.asBareJid().equals(account.getJid().asBareJid())) {
-            account.setDisplayName(nick);
-            if (QuickConversationsService.isQuicksy()) {
-                mXmppConnectionService.getAvatarService().clear(account);
-            }
-            mXmppConnectionService.checkMucRequiresRename();
-        } else {
-            Contact contact = account.getRoster().getContact(user);
-            if (contact.setPresenceName(nick)) {
-                connection.getManager(RosterManager.class).writeToDatabaseAsync();
-                mXmppConnectionService.getAvatarService().clear(contact);
-            }
-        }
-        mXmppConnectionService.updateConversationUi();
-        mXmppConnectionService.updateAccountUi();
     }
 
     private boolean handleErrorMessage(
@@ -1413,24 +1236,6 @@ public class MessageParser extends AbstractParser
 
         if (original.hasExtension(Event.class)) {
             getManager(PubSubManager.class).handleEvent(original);
-        }
-        final var event = original.getExtension(Event.class);
-        if (event != null && Jid.Invalid.hasValidFrom(original) && original.getFrom().isBareJid()) {
-            final var action = event.getAction();
-            final var node = action == null ? null : action.getNode();
-            if (node == null) {
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid()
-                                + ": no node found in PubSub event from "
-                                + original.getFrom());
-            } else if (action instanceof Items items) {
-                parseEvent(items, original.getFrom(), account);
-            } else if (action instanceof Purge purge) {
-                parsePurgeEvent(purge, original.getFrom(), account);
-            } else if (action instanceof Delete delete) {
-                parseDeleteEvent(delete, from, account);
-            }
         }
 
         final String nick = packet.findChildContent("nick", Namespace.NICK);

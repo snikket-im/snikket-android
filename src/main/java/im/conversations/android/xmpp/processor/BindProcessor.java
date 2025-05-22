@@ -8,6 +8,7 @@ import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
+import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
 import eu.siacs.conversations.xmpp.manager.PrivateStorageManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import im.conversations.android.xmpp.model.stanza.Iq;
@@ -73,7 +74,7 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         }
 
         if (features.mds()) {
-            service.fetchMessageDisplayedSynchronization(account);
+            connection.getManager(MessageDisplayedSynchronizationManager.class).fetch();
         } else {
             Log.d(Config.LOGTAG, account.getJid() + ": server has no support for mds");
         }
