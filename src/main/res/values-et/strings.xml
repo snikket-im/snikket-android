@@ -908,7 +908,7 @@
     <string name="rtp_state_accepting_call">Võtame kõnet vastu</string>
     <string name="rtp_state_ending_call">Lõpetame kõnet</string>
     <string name="answer_call">Vasta</string>
-    <string name="dismiss_call">Keeldu</string>
+    <string name="dismiss_call">Loobu</string>
     <string name="rtp_state_finding_device">Tuvastame seadmeid</string>
     <string name="rtp_state_ringing">Helistame</string>
     <string name="rtp_state_contact_offline">Kontakt pole kättesaadav</string>
@@ -1067,7 +1067,7 @@
     <string name="delete_from_server">Eemalda kasutajakonto serverist</string>
     <string name="could_not_delete_account_from_server">Kasutajakonto eemaldamine serverist ei õnnestunud</string>
     <string name="contact_uses_unverified_keys">Vestluse teine osapool kasutab verifitseerimata nutiseadmeid. Verifitseerimiseks skaneeri tema QR-koodi ja takista võimalikke vahendusründeid.</string>
-    <string name="privacy_policy">Privaatsuspoliitika</string>
+    <string name="privacy_policy">Andmekaitsepõhimõtted</string>
     <string name="contact_list_integration_not_available">Kontaktiloendi lõimimine pole hetkel saadaval</string>
     <string name="unverified_devices">Sina kasutad verifitseerimata nutiseadmeid. Verifitseerimiseks skaneeri oma muus sedames kuvatavat QR-koodi ja takista võimalikke vahendusründeid.</string>
     <string name="report_spam">Teata spämmist</string>
