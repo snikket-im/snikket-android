@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="set_profile_picture">Tugna n umaɣnu n Quicksy</string>
-    <string name="unknown_security_error">Tuccḍa n tɣellist tarussint</string>
+    <string name="unknown_security_error">Tuccḍa n tɣellist tarussint.</string>
     <string name="not_available_in_your_country">Quicksy ur yelli ara deg tmurt-nnwen.</string>
+    <string name="unable_to_verify_server_identity">D awezɣi asefqed n timagit n uqeddac.</string>
+    <string name="timeout_while_connecting_to_server">Iɛedda wakud lawan n tuqqna ɣer uqeddac.</string>
+    <string name="pref_broadcast_last_activity_summary">Eǧǧ akk inermisen-ik⋅im ad ẓrenmi ara tesqedceḍ Quicksy</string>
 </resources>
