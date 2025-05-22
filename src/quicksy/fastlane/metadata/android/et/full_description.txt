@@ -11,4 +11,4 @@ Suhtlusparterite soovitused leitakse teiste Quicksy kasutajate hulgast ja tavali
 MÄRKUS: Oma Jabberi kasutajatunnuse lisamine (https://quicksy.im/enter/) Quicksy kataloogi
 eeldab ühekordse registreerimistasu maksmist.
 
-Lisateavet leiad meie privaatsuspoliitkast (https://quicksy.im/#privacy).
+Lisateavet leiad meie privaatsusreeglitest ja andmekaitsepõhimõtetest (https://quicksy.im/#privacy).
