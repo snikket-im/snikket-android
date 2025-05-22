@@ -119,6 +119,7 @@ import im.conversations.android.xmpp.model.tls.Proceed;
 import im.conversations.android.xmpp.model.tls.StartTls;
 import im.conversations.android.xmpp.processor.AccountStateProcessor;
 import im.conversations.android.xmpp.processor.BindProcessor;
+import im.conversations.android.xmpp.processor.MessageAcknowledgedProcessor;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -150,6 +151,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import javax.net.ssl.KeyManager;
@@ -204,10 +206,10 @@ public class XmppConnection implements Runnable {
     private final Consumer<Iq> unregisteredIqListener;
     private final Consumer<im.conversations.android.xmpp.model.stanza.Message> messageListener;
     private final Consumer<Account.State> accountStateProcessor;
+    private final BiFunction<Jid, String, Boolean> messageAcknowledgedProcessor;
     private AxolotlService axolotlService;
     private final PgpDecryptionService pgpDecryptionService;
     private final Runnable bindProcessor;
-    private OnMessageAcknowledged acknowledgedListener = null;
     private final PendingItem<String> pendingResumeId = new PendingItem<>();
     private LoginInfo loginInfo;
     private HashedToken.Mechanism hashTokenRequest;
@@ -231,6 +233,7 @@ public class XmppConnection implements Runnable {
         this.messageListener = new MessageParser(service, this);
         this.bindProcessor = new BindProcessor(service, this);
         this.accountStateProcessor = new AccountStateProcessor(service, this);
+        this.messageAcknowledgedProcessor = new MessageAcknowledgedProcessor(service, this);
         this.managers = Managers.get(service, this);
         this.setAxolotlService(new AxolotlService(account, service));
         this.pgpDecryptionService = new PgpDecryptionService(service);
@@ -1249,12 +1252,11 @@ public class XmppConnection implements Runnable {
                 }
                 final Stanza stanza = mStanzaQueue.valueAt(i);
                 if (stanza instanceof im.conversations.android.xmpp.model.stanza.Message packet
-                        && acknowledgedListener != null) {
+                        && messageAcknowledgedProcessor != null) {
                     final String id = packet.getId();
                     final Jid to = packet.getTo();
                     if (id != null && to != null) {
-                        acknowledgedMessages |=
-                                acknowledgedListener.onMessageAcknowledged(account, to, id);
+                        acknowledgedMessages |= messageAcknowledgedProcessor.apply(to, id);
                     }
                 }
                 mStanzaQueue.removeAt(i);
@@ -2652,10 +2654,6 @@ public class XmppConnection implements Runnable {
 
     public void setOnJinglePacketReceivedListener(final OnJinglePacketReceived listener) {
         this.jingleListener = listener;
-    }
-
-    public void setOnMessageAcknowledgeListener(final OnMessageAcknowledged listener) {
-        this.acknowledgedListener = listener;
     }
 
     public void addOnAdvancedStreamFeaturesAvailableListener(

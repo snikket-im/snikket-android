@@ -123,14 +123,12 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
-import eu.siacs.conversations.xmpp.OnMessageAcknowledged;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
-import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
@@ -291,43 +289,6 @@ public class XmppConnectionService extends Service {
                     markFileDeleted(file);
                 }
             };
-    private final OnMessageAcknowledged mOnMessageAcknowledgedListener =
-            new OnMessageAcknowledged() {
-
-                @Override
-                public boolean onMessageAcknowledged(
-                        final Account account, final Jid to, final String id) {
-                    if (id.startsWith(JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX)) {
-                        final String sessionId =
-                                id.substring(
-                                        JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX
-                                                .length());
-                        mJingleConnectionManager.updateProposedSessionDiscovered(
-                                account,
-                                to,
-                                sessionId,
-                                JingleConnectionManager.DeviceDiscoveryState
-                                        .SEARCHING_ACKNOWLEDGED);
-                    }
-
-                    final Jid bare = to.asBareJid();
-
-                    for (final Conversation conversation : getConversations()) {
-                        if (conversation.getAccount() == account
-                                && conversation.getJid().asBareJid().equals(bare)) {
-                            final Message message = conversation.findUnsentMessageWithUuid(id);
-                            if (message != null) {
-                                message.setStatus(Message.STATUS_SEND);
-                                message.setErrorMessage(null);
-                                databaseBackend.updateMessage(message, false);
-                                return true;
-                            }
-                        }
-                    }
-                    return false;
-                }
-            };
-
     private boolean destroyed = false;
 
     private int unreadCount = -1;
@@ -1642,13 +1603,8 @@ public class XmppConnectionService extends Service {
                                     ? PendingIntent.FLAG_IMMUTABLE
                                             | PendingIntent.FLAG_UPDATE_CURRENT
                                     : PendingIntent.FLAG_UPDATE_CURRENT);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setAndAllowWhileIdle(
-                        AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtMillis, pendingIntent);
-            } else {
-                alarmManager.set(
-                        AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtMillis, pendingIntent);
-            }
+            alarmManager.setAndAllowWhileIdle(
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtMillis, pendingIntent);
         } catch (RuntimeException e) {
             Log.e(Config.LOGTAG, "unable to schedule alarm for post connectivity change", e);
         }
@@ -1701,8 +1657,6 @@ public class XmppConnectionService extends Service {
     public XmppConnection createConnection(final Account account) {
         final XmppConnection connection = new XmppConnection(account, this);
         connection.setOnJinglePacketReceivedListener((mJingleConnectionManager::deliverPacket));
-        // TODO move MessageAck into final Processor into XmppConnection
-        connection.setOnMessageAcknowledgeListener(this.mOnMessageAcknowledgedListener);
         connection.addOnAdvancedStreamFeaturesAvailableListener(this.mMessageArchiveService);
         connection.addOnAdvancedStreamFeaturesAvailableListener(this.mAvatarService);
         return connection;
