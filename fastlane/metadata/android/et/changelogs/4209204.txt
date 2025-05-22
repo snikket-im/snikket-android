@@ -1,2 +1,2 @@
-* Play Store'i versioonis on nüüd lihtsam ligipääs privaatsuspoliitikale (Quicksy ja Conversations)
+* Play Store'i versioonis on nüüd lihtsam ligipääs andmekaitsepõhimõtetele (Quicksy ja Conversations)
 * Conversationsi Play Store'i versioonist oleme eemaldanud lõimingu aadressiraamatuga
