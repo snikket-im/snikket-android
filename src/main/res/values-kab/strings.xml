@@ -231,4 +231,24 @@
     <string name="new_password">Awal n uɛeddi amaynut</string>
     <string name="view_conversation">Wali asqerdec</string>
     <string name="add_anway">Rnu-t akken yebɣu yili</string>
+    <string name="set">Sbadu</string>
+    <string name="unblock">Kkes asekkeṛ</string>
+    <string name="pref_ui_options">Agrudem n useqdac</string>
+    <string name="server_info_unavailable">ulac</string>
+    <string name="decrypt">Kkes awgelhen</string>
+    <string name="channel_bare_jid_example">abadu@conference.example.com</string>
+    <string name="leave">Ffeɣ</string>
+    <string name="gp_short">Meẓẓiy</string>
+    <string name="gp_medium">Alemmas</string>
+    <string name="gp_long">Meqqer</string>
+    <string name="invite">Snubget</string>
+    <string name="title_activity_settings">Iɣewwaren</string>
+    <string name="pref_attachments">Imeddayen</string>
+    <string name="server_info_available">yella</string>
+    <string name="location">Adig</string>
+    <string name="blocked">Yettusewḥel</string>
+    <string name="channel_full_jid_example">abadu@conference.example.com/nick</string>
+    <string name="publishing">Asuffeɣ…</string>
+    <string name="pref_input_options">Sekcem</string>
+    <string name="server_info_broken">Yerreẓ</string>
 </resources>
