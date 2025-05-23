@@ -5,6 +5,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.xmpp.NodeConfiguration;
@@ -48,10 +49,13 @@ public class NickManager extends AbstractManager {
         service.updateAccountUi();
     }
 
-    public ListenableFuture<Void> publishNick(final String name) {
-        final Nick nick = new Nick();
-        nick.setContent(name);
-        return getManager(PepManager.class).publishSingleton(nick, NodeConfiguration.PRESENCE);
+    public ListenableFuture<Void> publish(final String name) {
+        if (Strings.isNullOrEmpty(name)) {
+            return getManager(PepManager.class).delete(Namespace.NICK);
+        } else {
+            return getManager(PepManager.class)
+                    .publishSingleton(new Nick(name), NodeConfiguration.PRESENCE);
+        }
     }
 
     public void handleDelete(final Jid from) {

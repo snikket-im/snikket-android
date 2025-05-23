@@ -4,6 +4,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Bookmark;
@@ -13,6 +14,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.xmpp.model.bookmark.Storage;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.storage.PrivateStorage;
+import java.util.Collection;
 import java.util.Map;
 
 public class PrivateStorageManager extends AbstractBookmarkManager {
@@ -51,5 +53,16 @@ public class PrivateStorageManager extends AbstractBookmarkManager {
                     }
                 },
                 MoreExecutors.directExecutor());
+    }
+
+    public ListenableFuture<Void> publishBookmarks(Collection<Bookmark> bookmarks) {
+        final var iq = new Iq(Iq.Type.SET);
+        final var privateStorage = iq.addExtension(new PrivateStorage());
+        final var storage = privateStorage.addExtension(new Storage());
+        for (final var bookmark : bookmarks) {
+            storage.addChild(bookmark);
+        }
+        return Futures.transform(
+                connection.sendIqPacket(iq), result -> null, MoreExecutors.directExecutor());
     }
 }

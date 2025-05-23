@@ -132,9 +132,14 @@ import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
+import eu.siacs.conversations.xmpp.manager.AvatarManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
+import eu.siacs.conversations.xmpp.manager.BookmarkManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.LegacyBookmarkManager;
+import eu.siacs.conversations.xmpp.manager.NickManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
+import eu.siacs.conversations.xmpp.manager.PrivateStorageManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.pep.PublishOptions;
@@ -230,16 +235,6 @@ public class XmppConnectionService extends Service {
     private final Set<String> mInProgressAvatarFetches = new HashSet<>();
     private final Set<String> mOmittedPepAvatarFetches = new HashSet<>();
     public final HashSet<Jid> mLowPingTimeoutMode = new HashSet<>();
-    private final Consumer<Iq> mDefaultIqHandler =
-            (packet) -> {
-                if (packet.getType() != Iq.Type.RESULT) {
-                    final var error = packet.getError();
-                    String text = error != null ? error.findChildContent("text") : null;
-                    if (text != null) {
-                        Log.d(Config.LOGTAG, "received iq error: " + text);
-                    }
-                }
-            };
     public DatabaseBackend databaseBackend;
     private final ReplacingSerialSingleThreadExecutor mContactMergerExecutor =
             new ReplacingSerialSingleThreadExecutor("ContactMerger");
@@ -2040,81 +2035,76 @@ public class XmppConnectionService extends Service {
     public void createBookmark(final Account account, final Bookmark bookmark) {
         account.putBookmark(bookmark);
         final XmppConnection connection = account.getXmppConnection();
-        if (connection == null) {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid() + ": no connection. ignoring bookmark creation");
-        } else if (connection.getFeatures().bookmarks2()) {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid() + ": pushing bookmark via Bookmarks 2");
-            final Element item = mIqGenerator.publishBookmarkItem(bookmark);
-            pushNodeAndEnforcePublishOptions(
-                    account,
-                    Namespace.BOOKMARKS2,
-                    item,
-                    bookmark.getJid().asBareJid().toString(),
-                    PublishOptions.persistentWhitelistAccessMaxItems());
-        } else if (connection.getFeatures().bookmarksConversion()) {
-            pushBookmarksPep(account);
+        final ListenableFuture<Void> future;
+        if (connection.getManager(BookmarkManager.class).hasFeature()) {
+            future = connection.getManager(BookmarkManager.class).publish(bookmark);
+        } else if (connection.getManager(LegacyBookmarkManager.class).hasConversion()) {
+            future =
+                    connection
+                            .getManager(LegacyBookmarkManager.class)
+                            .publish(account.getBookmarks());
         } else {
-            pushBookmarksPrivateXml(account);
+            future =
+                    connection
+                            .getManager(PrivateStorageManager.class)
+                            .publishBookmarks(account.getBookmarks());
         }
+        Futures.addCallback(
+                future,
+                new FutureCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": created bookmark");
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid() + ": could not create bookmark",
+                                t);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
     public void deleteBookmark(final Account account, final Bookmark bookmark) {
         account.removeBookmark(bookmark);
         final XmppConnection connection = account.getXmppConnection();
-        if (connection.getFeatures().bookmarks2()) {
-            final Iq request =
-                    mIqGenerator.deleteItem(
-                            Namespace.BOOKMARKS2, bookmark.getJid().asBareJid().toString());
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid() + ": removing bookmark via Bookmarks 2");
-            sendIqPacket(
-                    account,
-                    request,
-                    (response) -> {
-                        if (response.getType() == Iq.Type.ERROR) {
-                            Log.d(
-                                    Config.LOGTAG,
-                                    account.getJid().asBareJid()
-                                            + ": unable to delete bookmark "
-                                            + response.getErrorCondition());
-                        }
-                    });
-        } else if (connection.getFeatures().bookmarksConversion()) {
-            pushBookmarksPep(account);
+        final ListenableFuture<Void> future;
+        if (connection.getManager(BookmarkManager.class).hasFeature()) {
+            future =
+                    connection
+                            .getManager(BookmarkManager.class)
+                            .retract(bookmark.getJid().asBareJid());
+        } else if (connection.getManager(LegacyBookmarkManager.class).hasConversion()) {
+            future =
+                    connection
+                            .getManager(LegacyBookmarkManager.class)
+                            .publish(account.getBookmarks());
         } else {
-            pushBookmarksPrivateXml(account);
+            future =
+                    connection
+                            .getManager(PrivateStorageManager.class)
+                            .publishBookmarks(account.getBookmarks());
         }
-    }
+        Futures.addCallback(
+                future,
+                new FutureCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleted bookmark");
+                    }
 
-    private void pushBookmarksPrivateXml(Account account) {
-        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": pushing bookmarks via private xml");
-        final Iq iqPacket = new Iq(Iq.Type.SET);
-        // TODO we have extensions for that
-        Element query = iqPacket.query("jabber:iq:private");
-        Element storage = query.addChild("storage", "storage:bookmarks");
-        for (final Bookmark bookmark : account.getBookmarks()) {
-            storage.addChild(bookmark);
-        }
-        sendIqPacket(account, iqPacket, mDefaultIqHandler);
-    }
-
-    private void pushBookmarksPep(Account account) {
-        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": pushing bookmarks via pep");
-        final Element storage = new Element("storage", "storage:bookmarks");
-        for (final Bookmark bookmark : account.getBookmarks()) {
-            storage.addChild(bookmark);
-        }
-        pushNodeAndEnforcePublishOptions(
-                account,
-                Namespace.BOOKMARKS,
-                storage,
-                "current",
-                PublishOptions.persistentWhitelistAccess());
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid() + ": could not delete bookmark",
+                                t);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
     private void pushNodeAndEnforcePublishOptions(
@@ -4942,7 +4932,8 @@ public class XmppConnectionService extends Service {
 
     public void notifyAccountAvatarHasChanged(final Account account) {
         final XmppConnection connection = account.getXmppConnection();
-        if (connection != null && connection.getFeatures().bookmarksConversion()) {
+        // this was bookmark conversion for a bit which doesn't make sense
+        if (connection.getManager(AvatarManager.class).hasPepToVCardConversion()) {
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid()
@@ -5831,26 +5822,26 @@ public class XmppConnectionService extends Service {
     }
 
     public void publishDisplayName(final Account account) {
-        String displayName = account.getDisplayName();
-        final Iq request;
-        if (TextUtils.isEmpty(displayName)) {
-            request = mIqGenerator.deleteNode(Namespace.NICK);
-        } else {
-            request = mIqGenerator.publishNick(displayName);
-        }
+        final var connection = account.getXmppConnection();
+        final String displayName = account.getDisplayName();
         mAvatarService.clear(account);
-        sendIqPacket(
-                account,
-                request,
-                (packet) -> {
-                    if (packet.getType() == Iq.Type.ERROR) {
+        final var future = connection.getManager(NickManager.class).publish(displayName);
+        Futures.addCallback(
+                future,
+                new FutureCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
                         Log.d(
                                 Config.LOGTAG,
-                                account.getJid().asBareJid()
-                                        + ": unable to modify nick name "
-                                        + packet);
+                                account.getJid().asBareJid() + ": published User Nick");
                     }
-                });
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.d(Config.LOGTAG, "could not publish User Nick", t);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
     public void fetchMamPreferences(final Account account, final OnMamPreferencesFetched callback) {

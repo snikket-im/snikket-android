@@ -28,6 +28,12 @@ public class NodeConfiguration implements Map<String, Object> {
                             .put(PERSIST_ITEMS, Boolean.TRUE)
                             .put(ACCESS_MODEL, "presence")
                             .build());
+    public static final NodeConfiguration WHITELIST =
+            new NodeConfiguration(
+                    new ImmutableMap.Builder<String, Object>()
+                            .put(PERSIST_ITEMS, Boolean.TRUE)
+                            .put(ACCESS_MODEL, "whitelist")
+                            .build());
     public static final NodeConfiguration WHITELIST_MAX_ITEMS =
             new NodeConfiguration(
                     new ImmutableMap.Builder<String, Object>()

@@ -6,7 +6,6 @@ import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.services.MessageArchiveService;
@@ -191,26 +190,6 @@ public class IqGenerator extends AbstractGenerator {
             list.addChild(device);
         }
         return publish(AxolotlService.PEP_DEVICE_LIST, item, publishOptions);
-    }
-
-    public Element publishBookmarkItem(final Bookmark bookmark) {
-        final String name = bookmark.getBookmarkName();
-        final String nick = bookmark.getNick();
-        final String password = bookmark.getPassword();
-        final boolean autojoin = bookmark.autojoin();
-        final Element conference = new Element("conference", Namespace.BOOKMARKS2);
-        if (name != null) {
-            conference.setAttribute("name", name);
-        }
-        if (nick != null) {
-            conference.addChild("nick").setContent(nick);
-        }
-        if (password != null) {
-            conference.addChild("password").setContent(password);
-        }
-        conference.setAttribute("autojoin", String.valueOf(autojoin));
-        conference.addChild(bookmark.getExtensions());
-        return conference;
     }
 
     public Element mdsDisplayed(final String stanzaId, final Conversation conversation) {

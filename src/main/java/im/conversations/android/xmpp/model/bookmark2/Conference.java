@@ -29,4 +29,8 @@ public class Conference extends Extension {
     public Extensions getExtensions() {
         return this.getExtension(Extensions.class);
     }
+
+    public void setConferenceName(String name) {
+        this.setAttribute("name", name);
+    }
 }

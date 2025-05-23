@@ -331,7 +331,7 @@ public class DiscoManager extends AbstractManager {
         if (appSettings.isBroadcastLastActivity()) {
             features.add(Namespace.IDLE);
         }
-        if (connection.getFeatures().bookmarks2()) {
+        if (getManager(BookmarkManager.class).hasFeature()) {
             features.add(Namespace.BOOKMARKS2 + "+notify");
         } else {
             features.add(Namespace.BOOKMARKS + "+notify");
@@ -424,6 +424,11 @@ public class DiscoManager extends AbstractManager {
 
     public boolean hasServerFeature(final String feature) {
         final var infoQuery = this.get(getAccount().getDomain());
+        return infoQuery != null && infoQuery.hasFeature(feature);
+    }
+
+    public boolean hasAccountFeature(final String feature) {
+        final var infoQuery = this.get(getAccount().getJid().asBareJid());
         return infoQuery != null && infoQuery.hasFeature(feature);
     }
 

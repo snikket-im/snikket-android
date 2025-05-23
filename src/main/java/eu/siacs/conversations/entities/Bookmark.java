@@ -8,10 +8,10 @@ import com.google.common.collect.ImmutableList;
 import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.xmpp.model.bookmark.Storage;
 import im.conversations.android.xmpp.model.bookmark2.Conference;
+import im.conversations.android.xmpp.model.bookmark2.Extensions;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class Bookmark extends Element implements ListItem {
     private final Account account;
     private WeakReference<Conversation> conversation;
     private Jid jid;
-    protected Element extensions = new Element("extensions", Namespace.BOOKMARKS2);
+    protected Extensions extensions = new Extensions();
 
     public Bookmark(final Account account, final Jid jid) {
         super("conference");
@@ -90,14 +90,14 @@ public class Bookmark extends Element implements ListItem {
         bookmark.setAutojoin(conference.getAttributeAsBoolean("autojoin"));
         bookmark.setNick(conference.findChildContent("nick"));
         bookmark.setPassword(conference.findChildContent("password"));
-        final Element extensions = conference.findChild("extensions", Namespace.BOOKMARKS2);
+        final var extensions = conference.getExtensions();
         if (extensions != null) {
-            bookmark.extensions = extensions;
+            bookmark.extensions = conference.getExtensions();
         }
         return bookmark;
     }
 
-    public Element getExtensions() {
+    public Extensions getExtensions() {
         return extensions;
     }
 

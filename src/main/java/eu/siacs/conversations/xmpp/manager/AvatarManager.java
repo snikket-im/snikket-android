@@ -4,6 +4,7 @@ import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.pep.Avatar;
@@ -60,5 +61,9 @@ public class AvatarManager extends AbstractManager {
             service.getAvatarService().clear(account);
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleted avatar metadata node");
         }
+    }
+
+    public boolean hasPepToVCardConversion() {
+        return getManager(DiscoManager.class).hasAccountFeature(Namespace.AVATAR_CONVERSION);
     }
 }

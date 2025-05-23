@@ -1,12 +1,10 @@
 package eu.siacs.conversations.xmpp.manager;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -62,7 +60,11 @@ public class MessageDisplayedSynchronizationManager extends AbstractManager {
 
                     @Override
                     public void onFailure(@NonNull Throwable t) {
-                        Log.d(Config.LOGTAG,getAccount().getJid().asBareJid()+": could not retrieve MDS items", t);
+                        Log.d(
+                                Config.LOGTAG,
+                                getAccount().getJid().asBareJid()
+                                        + ": could not retrieve MDS items",
+                                t);
                     }
                 },
                 MoreExecutors.directExecutor());

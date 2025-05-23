@@ -1,14 +1,16 @@
 package im.conversations.android.xmpp.processor;
 
-import android.text.TextUtils;
 import android.util.Log;
+import com.google.common.base.Strings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
+import eu.siacs.conversations.xmpp.manager.LegacyBookmarkManager;
 import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
+import eu.siacs.conversations.xmpp.manager.NickManager;
 import eu.siacs.conversations.xmpp.manager.PrivateStorageManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import im.conversations.android.xmpp.model.stanza.Iq;
@@ -45,12 +47,13 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         }
 
         if (loggedInSuccessfully) {
-            if (!TextUtils.isEmpty(account.getDisplayName())) {
+            final String displayName = account.getDisplayName();
+            if (!Strings.isNullOrEmpty(displayName)) {
                 Log.d(
                         Config.LOGTAG,
                         account.getJid().asBareJid()
                                 + ": display name wasn't empty on first log in. publishing");
-                service.publishDisplayName(account);
+                getManager(NickManager.class).publish(displayName);
             }
         }
 
@@ -66,10 +69,13 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
 
         getManager(RosterManager.class).request();
 
-        if (features.bookmarks2()) {
+        if (getManager(BookmarkManager.class).hasFeature()) {
             connection.getManager(BookmarkManager.class).fetch();
-            // log that we use bookmarks 1 and wait for +notify
-        } else if (!features.bookmarksConversion()) {
+        } else if (getManager(LegacyBookmarkManager.class).hasConversion()) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid() + ": not fetching bookmarks. waiting for server to push");
+        } else {
             connection.getManager(PrivateStorageManager.class).fetchBookmarks();
         }
 

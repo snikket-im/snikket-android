@@ -345,6 +345,16 @@ public class PubSubManager extends AbstractManager {
         return connection.sendIqPacket(iq);
     }
 
+    public ListenableFuture<Iq> delete(final Jid address, final String node) {
+        final var iq = new Iq(Iq.Type.SET);
+        iq.setTo(address);
+        final var pubSub = iq.addExtension(new PubSubOwner());
+        final var delete =
+                pubSub.addExtension(new im.conversations.android.xmpp.model.pubsub.owner.Delete());
+        delete.setNode(node);
+        return connection.sendIqPacket(iq);
+    }
+
     private static class PubSubExceptionTransformer<V>
             implements AsyncFunction<IqErrorException, V> {
 

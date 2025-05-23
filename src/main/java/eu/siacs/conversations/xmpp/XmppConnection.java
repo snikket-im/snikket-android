@@ -3093,11 +3093,6 @@ public class XmppConnection implements Runnable {
             }
         }
 
-        public boolean bookmarksConversion() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.BOOKMARKS_CONVERSION)
-                    && pepPublishOptions();
-        }
-
         public boolean blocking() {
             return connection.getManager(BlockingManager.class).hasFeature();
         }
@@ -3260,12 +3255,6 @@ public class XmppConnection implements Runnable {
 
         public boolean stanzaIds() {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.STANZA_IDS);
-        }
-
-        public boolean bookmarks2() {
-            return pepPublishOptions()
-                    && pepConfigNodeMax()
-                    && hasDiscoFeature(account.getJid().asBareJid(), Namespace.BOOKMARKS2_COMPAT);
         }
 
         public boolean externalServiceDiscovery() {

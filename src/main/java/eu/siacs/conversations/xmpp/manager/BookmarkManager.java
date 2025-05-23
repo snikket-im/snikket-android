@@ -16,6 +16,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.xmpp.NodeConfiguration;
 import im.conversations.android.xmpp.model.bookmark2.Conference;
 import im.conversations.android.xmpp.model.bookmark2.Nick;
+import im.conversations.android.xmpp.model.bookmark2.Password;
 import im.conversations.android.xmpp.model.pubsub.Items;
 import im.conversations.android.xmpp.model.pubsub.event.Retract;
 import java.util.Collection;
@@ -89,18 +90,24 @@ public class BookmarkManager extends AbstractBookmarkManager {
         }
     }
 
-    public ListenableFuture<Void> publishBookmark(final Jid address, final boolean autoJoin) {
-        return publishBookmark(address, autoJoin, null);
-    }
-
-    public ListenableFuture<Void> publishBookmark(
-            final Jid address, final boolean autoJoin, final String nick) {
+    public ListenableFuture<Void> publish(final Bookmark bookmark) {
+        final var address = bookmark.getJid();
+        final var name = bookmark.getBookmarkName();
+        final var nick = bookmark.getNick();
+        final String password = bookmark.getPassword();
         final var itemId = address.toString();
         final var conference = new Conference();
-        conference.setAutoJoin(autoJoin);
+        conference.setAutoJoin(bookmark.autojoin());
         if (nick != null) {
             conference.addExtension(new Nick()).setContent(nick);
         }
+        if (name != null) {
+            conference.setConferenceName(name);
+        }
+        if (password != null) {
+            conference.addExtension(new Password()).setContent(password);
+        }
+        conference.addExtension(bookmark.getExtensions());
         return Futures.transform(
                 getManager(PepManager.class)
                         .publish(conference, itemId, NodeConfiguration.WHITELIST_MAX_ITEMS),
@@ -108,7 +115,7 @@ public class BookmarkManager extends AbstractBookmarkManager {
                 MoreExecutors.directExecutor());
     }
 
-    public ListenableFuture<Void> retractBookmark(final Jid address) {
+    public ListenableFuture<Void> retract(final Jid address) {
         final var itemId = address.toString();
         return Futures.transform(
                 getManager(PepManager.class).retract(itemId, Namespace.BOOKMARKS2),
@@ -131,5 +138,13 @@ public class BookmarkManager extends AbstractBookmarkManager {
     public void handlePurge() {
         Log.d(Config.LOGTAG, getAccount().getJid().asBareJid() + ": purged bookmarks");
         this.deleteAllItems();
+    }
+
+    public boolean hasFeature() {
+        final var pep = getManager(PepManager.class);
+        final var disco = getManager(DiscoManager.class);
+        return pep.hasPublishOptions()
+                && pep.hasConfigNodeMax()
+                && disco.hasAccountFeature(Namespace.BOOKMARKS2_COMPAT);
     }
 }
