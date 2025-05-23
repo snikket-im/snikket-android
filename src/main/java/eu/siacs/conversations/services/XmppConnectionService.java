@@ -137,6 +137,7 @@ import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.manager.LegacyBookmarkManager;
+import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
 import eu.siacs.conversations.xmpp.manager.NickManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import eu.siacs.conversations.xmpp.manager.PrivateStorageManager;
@@ -2105,66 +2106,6 @@ public class XmppConnectionService extends Service {
                     }
                 },
                 MoreExecutors.directExecutor());
-    }
-
-    private void pushNodeAndEnforcePublishOptions(
-            final Account account,
-            final String node,
-            final Element element,
-            final String id,
-            final Bundle options) {
-        pushNodeAndEnforcePublishOptions(account, node, element, id, options, true);
-    }
-
-    private void pushNodeAndEnforcePublishOptions(
-            final Account account,
-            final String node,
-            final Element element,
-            final String id,
-            final Bundle options,
-            final boolean retry) {
-        final Iq packet = mIqGenerator.publishElement(node, element, id, options);
-        sendIqPacket(
-                account,
-                packet,
-                (response) -> {
-                    if (response.getType() == Iq.Type.RESULT) {
-                        return;
-                    }
-                    if (retry && PublishOptions.preconditionNotMet(response)) {
-                        pushNodeConfiguration(
-                                account,
-                                node,
-                                options,
-                                new OnConfigurationPushed() {
-                                    @Override
-                                    public void onPushSucceeded() {
-                                        pushNodeAndEnforcePublishOptions(
-                                                account, node, element, id, options, false);
-                                    }
-
-                                    @Override
-                                    public void onPushFailed() {
-                                        Log.d(
-                                                Config.LOGTAG,
-                                                account.getJid().asBareJid()
-                                                        + ": unable to push node configuration ("
-                                                        + node
-                                                        + ")");
-                                    }
-                                });
-                    } else {
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid()
-                                        + ": error publishing "
-                                        + node
-                                        + " (retry="
-                                        + retry
-                                        + ") "
-                                        + response);
-                    }
-                });
     }
 
     private void restoreFromDatabase() {
@@ -5387,7 +5328,8 @@ public class XmppConnectionService extends Service {
         final String stanzaId = last.getServerMsgId();
 
         if (sendDisplayedMarker && serverAssist) {
-            final var mdsDisplayed = mIqGenerator.mdsDisplayed(stanzaId, conversation);
+            final var mdsDisplayed =
+                    MessageDisplayedSynchronizationManager.displayed(stanzaId, conversation);
             final var packet = mMessageGenerator.confirm(last);
             packet.addChild(mdsDisplayed);
             if (!last.isPrivateMessage()) {
@@ -5434,21 +5376,11 @@ public class XmppConnectionService extends Service {
             itemId = conversation.getJid().asBareJid();
         }
         Log.d(Config.LOGTAG, "publishing mds for " + itemId + "/" + stanzaId);
-        publishMds(account, itemId, stanzaId, conversation);
-    }
-
-    private void publishMds(
-            final Account account,
-            final Jid itemId,
-            final String stanzaId,
-            final Conversation conversation) {
-        final var item = mIqGenerator.mdsDisplayed(stanzaId, conversation);
-        pushNodeAndEnforcePublishOptions(
-                account,
-                Namespace.MDS_DISPLAYED,
-                item,
-                itemId.toString(),
-                PublishOptions.persistentWhitelistAccessMaxItems());
+        final var displayed =
+                MessageDisplayedSynchronizationManager.displayed(stanzaId, conversation);
+        connection
+                .getManager(MessageDisplayedSynchronizationManager.class)
+                .publish(itemId, displayed);
     }
 
     public boolean sendReactions(final Message message, final Collection<String> reactions) {

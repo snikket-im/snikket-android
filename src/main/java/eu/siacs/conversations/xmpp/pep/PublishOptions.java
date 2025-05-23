@@ -23,26 +23,6 @@ public class PublishOptions {
         return options;
     }
 
-    public static Bundle persistentWhitelistAccess() {
-        final Bundle options = new Bundle();
-        options.putString("pubsub#persist_items", "true");
-        options.putString("pubsub#access_model", "whitelist");
-        return options;
-    }
-
-    public static Bundle persistentWhitelistAccessMaxItems() {
-        final Bundle options = new Bundle();
-        options.putString("pubsub#persist_items", "true");
-        options.putString("pubsub#access_model", "whitelist");
-        options.putString("pubsub#send_last_published_item", "never");
-        options.putString("pubsub#max_items", "max");
-        options.putString("pubsub#notify_delete", "true");
-        options.putString(
-                "pubsub#notify_retract", "true"); // one could also set notify=true on the retract
-
-        return options;
-    }
-
     public static boolean preconditionNotMet(Iq response) {
         final Element error =
                 response.getType() == Iq.Type.ERROR ? response.findChild("error") : null;

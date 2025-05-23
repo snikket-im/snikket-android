@@ -192,24 +192,6 @@ public class IqGenerator extends AbstractGenerator {
         return publish(AxolotlService.PEP_DEVICE_LIST, item, publishOptions);
     }
 
-    public Element mdsDisplayed(final String stanzaId, final Conversation conversation) {
-        final Jid by;
-        if (conversation.getMode() == Conversation.MODE_MULTI) {
-            by = conversation.getJid().asBareJid();
-        } else {
-            by = conversation.getAccount().getJid().asBareJid();
-        }
-        return mdsDisplayed(stanzaId, by);
-    }
-
-    private Element mdsDisplayed(final String stanzaId, final Jid by) {
-        final Element displayed = new Element("displayed", Namespace.MDS_DISPLAYED);
-        final Element stanzaIdElement = displayed.addChild("stanza-id", Namespace.STANZA_IDS);
-        stanzaIdElement.setAttribute("id", stanzaId);
-        stanzaIdElement.setAttribute("by", by);
-        return displayed;
-    }
-
     public Iq publishBundles(
             final SignedPreKeyRecord signedPreKeyRecord,
             final IdentityKey identityKey,

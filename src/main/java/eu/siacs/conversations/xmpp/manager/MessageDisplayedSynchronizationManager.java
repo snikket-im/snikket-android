@@ -4,14 +4,17 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import im.conversations.android.xmpp.NodeConfiguration;
 import im.conversations.android.xmpp.model.mds.Displayed;
 import im.conversations.android.xmpp.model.pubsub.Items;
+import im.conversations.android.xmpp.model.unique.StanzaId;
 import java.util.Map;
 
 public class MessageDisplayedSynchronizationManager extends AbstractManager {
@@ -68,5 +71,23 @@ public class MessageDisplayedSynchronizationManager extends AbstractManager {
                     }
                 },
                 MoreExecutors.directExecutor());
+    }
+
+    public static Displayed displayed(final String id, final Conversation conversation) {
+        final Jid by;
+        if (conversation.getMode() == Conversation.MODE_MULTI) {
+            by = conversation.getJid().asBareJid();
+        } else {
+            by = conversation.getAccount().getJid().asBareJid();
+        }
+        final var displayed = new Displayed();
+        final var stanzaId = displayed.addExtension(new StanzaId(id));
+        stanzaId.setBy(by);
+        return displayed;
+    }
+
+    public ListenableFuture<Void> publish(final Jid itemId, final Displayed displayed) {
+        return getManager(PepManager.class)
+                .publish(displayed, itemId.toString(), NodeConfiguration.WHITELIST_MAX_ITEMS);
     }
 }

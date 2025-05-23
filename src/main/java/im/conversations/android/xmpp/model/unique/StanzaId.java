@@ -22,6 +22,10 @@ public class StanzaId extends Extension {
         return this.getAttributeAsJid("by");
     }
 
+    public void setBy(final Jid by) {
+        this.setAttribute("by", by);
+    }
+
     public String getId() {
         return this.getAttribute("id");
     }
