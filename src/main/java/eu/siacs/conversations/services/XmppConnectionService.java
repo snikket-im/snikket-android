@@ -143,7 +143,6 @@ import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import eu.siacs.conversations.xmpp.manager.PrivateStorageManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
-import eu.siacs.conversations.xmpp.pep.PublishOptions;
 import im.conversations.android.xmpp.Entity;
 import im.conversations.android.xmpp.IqErrorException;
 import im.conversations.android.xmpp.model.avatar.Metadata;
@@ -1653,7 +1652,6 @@ public class XmppConnectionService extends Service {
         final XmppConnection connection = new XmppConnection(account, this);
         connection.setOnJinglePacketReceivedListener((mJingleConnectionManager::deliverPacket));
         connection.addOnAdvancedStreamFeaturesAvailableListener(this.mMessageArchiveService);
-        connection.addOnAdvancedStreamFeaturesAvailableListener(this.mAvatarService);
         return connection;
     }
 
@@ -3561,6 +3559,7 @@ public class XmppConnectionService extends Service {
                         updateAccountUi();
                     }
                 };
+        // TODO execute this via the respective Managers
         deleteVcardAvatar(account, onDeleted);
         deletePepNode(account, Namespace.AVATAR_DATA);
         deletePepNode(account, Namespace.AVATAR_METADATA, onDeleted);
@@ -4368,15 +4367,36 @@ public class XmppConnectionService extends Service {
         final Bitmap.CompressFormat format = Config.AVATAR_FORMAT;
         final int size = Config.AVATAR_SIZE;
         final Avatar avatar = getFileBackend().getPepAvatar(image, size, format);
-        if (avatar != null) {
-            if (!getFileBackend().save(avatar)) {
-                Log.d(Config.LOGTAG, "unable to save vcard");
-                callback.onAvatarPublicationFailed(R.string.error_saving_avatar);
-                return;
-            }
-            publishAvatar(account, avatar, open, callback);
-        } else {
+        if (avatar == null) {
             callback.onAvatarPublicationFailed(R.string.error_publish_avatar_converting);
+            return;
+        }
+        if (fileBackend.save(avatar)) {
+            final var connection = account.getXmppConnection();
+            final var future = connection.getManager(AvatarManager.class).publish(avatar, open);
+            Futures.addCallback(
+                    future,
+                    new FutureCallback<Void>() {
+                        @Override
+                        public void onSuccess(Void result) {
+                            callback.onAvatarPublicationSucceeded();
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Throwable t) {
+                            Log.d(
+                                    Config.LOGTAG,
+                                    account.getJid().asBareJid() + ": could not publish avatar",
+                                    t);
+                            callback.onAvatarPublicationFailed(
+                                    R.string.error_publish_avatar_server_reject);
+                        }
+                    },
+                    MoreExecutors.directExecutor());
+
+        } else {
+            Log.d(Config.LOGTAG, "could not save avatar");
+            callback.onAvatarPublicationFailed(R.string.error_saving_avatar);
         }
     }
 
@@ -4426,211 +4446,6 @@ public class XmppConnectionService extends Service {
                         Log.d(Config.LOGTAG, "failed to request vcard " + response);
                         callback.onAvatarPublicationFailed(
                                 R.string.error_publish_avatar_no_server_support);
-                    }
-                });
-    }
-
-    public void publishAvatar(
-            final Account account,
-            final Avatar avatar,
-            final boolean open,
-            final OnAvatarPublication callback) {
-        final Bundle options;
-        if (account.getXmppConnection().getFeatures().pepPublishOptions()) {
-            options = open ? PublishOptions.openAccess() : PublishOptions.presenceAccess();
-        } else {
-            options = null;
-        }
-        publishAvatar(account, avatar, options, true, callback);
-    }
-
-    public void publishAvatar(
-            Account account,
-            final Avatar avatar,
-            final Bundle options,
-            final boolean retry,
-            final OnAvatarPublication callback) {
-        Log.d(
-                Config.LOGTAG,
-                account.getJid().asBareJid() + ": publishing avatar. options=" + options);
-        final Iq packet = this.mIqGenerator.publishAvatar(avatar, options);
-        this.sendIqPacket(
-                account,
-                packet,
-                result -> {
-                    if (result.getType() == Iq.Type.RESULT) {
-                        publishAvatarMetadata(account, avatar, options, true, callback);
-                    } else if (retry && PublishOptions.preconditionNotMet(result)) {
-                        pushNodeConfiguration(
-                                account,
-                                Namespace.AVATAR_DATA,
-                                options,
-                                new OnConfigurationPushed() {
-                                    @Override
-                                    public void onPushSucceeded() {
-                                        Log.d(
-                                                Config.LOGTAG,
-                                                account.getJid().asBareJid()
-                                                        + ": changed node configuration for avatar"
-                                                        + " node");
-                                        publishAvatar(account, avatar, options, false, callback);
-                                    }
-
-                                    @Override
-                                    public void onPushFailed() {
-                                        Log.d(
-                                                Config.LOGTAG,
-                                                account.getJid().asBareJid()
-                                                        + ": unable to change node configuration"
-                                                        + " for avatar node");
-                                        publishAvatar(account, avatar, null, false, callback);
-                                    }
-                                });
-                    } else {
-                        Element error = result.findChild("error");
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid()
-                                        + ": server rejected avatar "
-                                        + (avatar.size / 1024)
-                                        + "KiB "
-                                        + (error != null ? error.toString() : ""));
-                        if (callback != null) {
-                            callback.onAvatarPublicationFailed(
-                                    R.string.error_publish_avatar_server_reject);
-                        }
-                    }
-                });
-    }
-
-    public void publishAvatarMetadata(
-            Account account,
-            final Avatar avatar,
-            final Bundle options,
-            final boolean retry,
-            final OnAvatarPublication callback) {
-        final Iq packet =
-                XmppConnectionService.this.mIqGenerator.publishAvatarMetadata(avatar, options);
-        sendIqPacket(
-                account,
-                packet,
-                result -> {
-                    if (result.getType() == Iq.Type.RESULT) {
-                        if (account.setAvatar(avatar.getFilename())) {
-                            getAvatarService().clear(account);
-                            databaseBackend.updateAccount(account);
-                            notifyAccountAvatarHasChanged(account);
-                        }
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid()
-                                        + ": published avatar "
-                                        + (avatar.size / 1024)
-                                        + "KiB");
-                        if (callback != null) {
-                            callback.onAvatarPublicationSucceeded();
-                        }
-                    } else if (retry && PublishOptions.preconditionNotMet(result)) {
-                        pushNodeConfiguration(
-                                account,
-                                Namespace.AVATAR_METADATA,
-                                options,
-                                new OnConfigurationPushed() {
-                                    @Override
-                                    public void onPushSucceeded() {
-                                        Log.d(
-                                                Config.LOGTAG,
-                                                account.getJid().asBareJid()
-                                                        + ": changed node configuration for avatar"
-                                                        + " meta data node");
-                                        publishAvatarMetadata(
-                                                account, avatar, options, false, callback);
-                                    }
-
-                                    @Override
-                                    public void onPushFailed() {
-                                        Log.d(
-                                                Config.LOGTAG,
-                                                account.getJid().asBareJid()
-                                                        + ": unable to change node configuration"
-                                                        + " for avatar meta data node");
-                                        publishAvatarMetadata(
-                                                account, avatar, null, false, callback);
-                                    }
-                                });
-                    } else {
-                        if (callback != null) {
-                            callback.onAvatarPublicationFailed(
-                                    R.string.error_publish_avatar_server_reject);
-                        }
-                    }
-                });
-    }
-
-    public void republishAvatarIfNeeded(final Account account) {
-        if (account.getAxolotlService().isPepBroken()) {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid()
-                            + ": skipping republication of avatar because pep is broken");
-            return;
-        }
-        final Iq packet = this.mIqGenerator.retrieveAvatarMetaData(null);
-        this.sendIqPacket(
-                account,
-                packet,
-                new Consumer<Iq>() {
-
-                    private Avatar parseAvatar(final Iq packet) {
-                        final var pubsub = packet.getExtension(PubSub.class);
-                        if (pubsub == null) {
-                            return null;
-                        }
-                        final var items = pubsub.getItems();
-                        if (items == null) {
-                            return null;
-                        }
-                        final var item = items.getFirstItemWithId(Metadata.class);
-                        if (item == null) {
-                            return null;
-                        }
-                        return Avatar.parseMetadata(item.getKey(), item.getValue());
-                    }
-
-                    private boolean errorIsItemNotFound(Iq packet) {
-                        Element error = packet.findChild("error");
-                        return packet.getType() == Iq.Type.ERROR
-                                && error != null
-                                && error.hasChild("item-not-found");
-                    }
-
-                    @Override
-                    public void accept(final Iq packet) {
-                        if (packet.getType() == Iq.Type.RESULT || errorIsItemNotFound(packet)) {
-                            final Avatar serverAvatar = parseAvatar(packet);
-                            if (serverAvatar == null && account.getAvatar() != null) {
-                                final Avatar avatar =
-                                        fileBackend.getStoredPepAvatar(account.getAvatar());
-                                if (avatar != null) {
-                                    Log.d(
-                                            Config.LOGTAG,
-                                            account.getJid().asBareJid()
-                                                    + ": avatar on server was null. republishing");
-                                    // publishing as 'open' - old server (that requires
-                                    // republication) likely doesn't support access models anyway
-                                    publishAvatar(
-                                            account,
-                                            fileBackend.getStoredPepAvatar(account.getAvatar()),
-                                            true,
-                                            null);
-                                } else {
-                                    Log.e(
-                                            Config.LOGTAG,
-                                            account.getJid().asBareJid()
-                                                    + ": error rereading avatar");
-                                }
-                            }
-                        }
                     }
                 });
     }

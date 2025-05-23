@@ -34,4 +34,24 @@ public class Info extends Extension {
     public String getId() {
         return this.getAttribute("id");
     }
+
+    public void setBytes(final long size) {
+        this.setAttribute("bytes", size);
+    }
+
+    public void setId(final String id) {
+        this.setAttribute("id", id);
+    }
+
+    public void setHeight(final long height) {
+        this.setAttribute("height", height);
+    }
+
+    public void setWidth(final long width) {
+        this.setAttribute("width", width);
+    }
+
+    public void setType(final String type) {
+        this.setAttribute("type", type);
+    }
 }

@@ -69,65 +69,11 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public Iq retrieveBookmarks() {
-        return retrieve(Namespace.BOOKMARKS2, null);
-    }
-
-    public Iq retrieveMds() {
-        return retrieve(Namespace.MDS_DISPLAYED, null);
-    }
-
-    public Iq publishNick(String nick) {
-        final Element item = new Element("item");
-        item.setAttribute("id", "current");
-        item.addChild("nick", Namespace.NICK).setContent(nick);
-        return publish(Namespace.NICK, item);
-    }
-
     public Iq deleteNode(final String node) {
         final var packet = new Iq(Iq.Type.SET);
         final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB_OWNER);
         pubsub.addChild("delete").setAttribute("node", node);
         return packet;
-    }
-
-    public Iq deleteItem(final String node, final String id) {
-        final var packet = new Iq(Iq.Type.SET);
-        final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB);
-        final Element retract = pubsub.addChild("retract");
-        retract.setAttribute("node", node);
-        retract.setAttribute("notify", "true");
-        retract.addChild("item").setAttribute("id", id);
-        return packet;
-    }
-
-    public Iq publishAvatar(Avatar avatar, Bundle options) {
-        final Element item = new Element("item");
-        item.setAttribute("id", avatar.sha1sum);
-        final Element data = item.addChild("data", Namespace.AVATAR_DATA);
-        data.setContent(avatar.image);
-        return publish(Namespace.AVATAR_DATA, item, options);
-    }
-
-    public Iq publishElement(
-            final String namespace, final Element element, String id, final Bundle options) {
-        final Element item = new Element("item");
-        item.setAttribute("id", id);
-        item.addChild(element);
-        return publish(namespace, item, options);
-    }
-
-    public Iq publishAvatarMetadata(final Avatar avatar, final Bundle options) {
-        final Element item = new Element("item");
-        item.setAttribute("id", avatar.sha1sum);
-        final Element metadata = item.addChild("metadata", Namespace.AVATAR_METADATA);
-        final Element info = metadata.addChild("info");
-        info.setAttribute("bytes", avatar.size);
-        info.setAttribute("id", avatar.sha1sum);
-        info.setAttribute("height", avatar.height);
-        info.setAttribute("width", avatar.height);
-        info.setAttribute("type", avatar.type);
-        return publish(Namespace.AVATAR_METADATA, item, options);
     }
 
     public Iq retrievePepAvatar(final Avatar avatar) {

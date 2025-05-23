@@ -14,12 +14,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import com.google.common.base.Strings;
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
@@ -33,15 +31,13 @@ import eu.siacs.conversations.entities.RawBlockable;
 import eu.siacs.conversations.entities.Room;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
-import eu.siacs.conversations.xmpp.XmppConnection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
+public class AvatarService {
 
     private static final int FG_COLOR = 0xFFFAFAFA;
     private static final int TRANSPARENT = 0x00000000;
@@ -712,17 +708,6 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
         Rect dst = new Rect(dstleft, dsttop, dstright, dstbottom);
         canvas.drawBitmap(bm, null, dst, null);
         return true;
-    }
-
-    @Override
-    public void onAdvancedStreamFeaturesAvailable(Account account) {
-        XmppConnection.Features features = account.getXmppConnection().getFeatures();
-        if (features.pep() && !features.pepPersistent()) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": has pep but is not persistent");
-            if (account.getAvatar() != null) {
-                mXmppConnectionService.republishAvatarIfNeeded(account);
-            }
-        }
     }
 
     private static String emptyOnNull(@Nullable Jid value) {

@@ -311,6 +311,7 @@ public class DiscoManager extends AbstractManager {
         final var appSettings = new AppSettings(context);
         final var account = connection.getAccount();
         final ImmutableList.Builder<String> features = ImmutableList.builder();
+        features.addAll(STATIC_FEATURES);
         if (Config.MESSAGE_DISPLAYED_SYNCHRONIZATION) {
             features.add(Namespace.MDS_DISPLAYED + "+notify");
         }
