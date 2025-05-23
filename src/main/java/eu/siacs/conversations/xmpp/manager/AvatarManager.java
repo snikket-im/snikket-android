@@ -1,6 +1,9 @@
 package eu.siacs.conversations.xmpp.manager;
 
 import android.util.Log;
+import androidx.annotation.NonNull;
+import com.google.common.io.BaseEncoding;
+import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -12,6 +15,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.NodeConfiguration;
+import im.conversations.android.xmpp.model.ByteContent;
 import im.conversations.android.xmpp.model.avatar.Data;
 import im.conversations.android.xmpp.model.avatar.Info;
 import im.conversations.android.xmpp.model.avatar.Metadata;
@@ -26,11 +30,50 @@ public class AvatarManager extends AbstractManager {
         this.service = service;
     }
 
+    public ListenableFuture<byte[]> fetch(final Jid address, final String itemId) {
+        final var future = getManager(PubSubManager.class).fetchItem(address, itemId, Data.class);
+        return Futures.transform(future, ByteContent::asBytes, MoreExecutors.directExecutor());
+    }
+
+    public ListenableFuture<Void> fetchAndStore(final Avatar avatar) {
+        final var future = fetch(avatar.owner, avatar.sha1sum);
+        return Futures.transform(
+                future,
+                data -> {
+                    avatar.image = BaseEncoding.base64().encode(data);
+                    if (service.getFileBackend().save(avatar)) {
+                        setPepAvatar(avatar);
+                        return null;
+                    } else {
+                        throw new IllegalStateException("Could not store avatar");
+                    }
+                },
+                MoreExecutors.directExecutor());
+    }
+
+    private void setPepAvatar(final Avatar avatar) {
+        final var account = getAccount();
+        if (account.getJid().asBareJid().equals(avatar.owner)) {
+            if (account.setAvatar(avatar.getFilename())) {
+                getDatabase().updateAccount(account);
+            }
+            this.service.getAvatarService().clear(account);
+            this.service.updateConversationUi();
+            this.service.updateAccountUi();
+        } else {
+            final Contact contact = account.getRoster().getContact(avatar.owner);
+            contact.setAvatar(avatar);
+            account.getXmppConnection().getManager(RosterManager.class).writeToDatabaseAsync();
+            this.service.getAvatarService().clear(contact);
+            this.service.updateConversationUi();
+            this.service.updateRosterUi();
+        }
+    }
+
     public void handleItems(final Jid from, final Items items) {
         final var account = getAccount();
         // TODO support retract
         final var entry = items.getFirstItemWithId(Metadata.class);
-        Log.d(Config.LOGTAG, "<-- " + entry + " (" + from + ")");
         final var avatar =
                 entry == null ? null : Avatar.parseMetadata(entry.getKey(), entry.getValue());
         if (avatar == null) {
@@ -57,8 +100,25 @@ public class AvatarManager extends AbstractManager {
                 }
             }
         } else if (service.isDataSaverDisabled()) {
-            // TODO use internal mechanism to fetch PEP avatars
-            service.fetchAvatar(account, avatar);
+            final var future = this.fetchAndStore(avatar);
+            Futures.addCallback(
+                    future,
+                    new FutureCallback<Void>() {
+                        @Override
+                        public void onSuccess(Void result) {
+                            Log.d(
+                                    Config.LOGTAG,
+                                    account.getJid().asBareJid()
+                                            + ": successfully fetched pep avatar for "
+                                            + avatar.owner);
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Throwable t) {
+                            Log.d(Config.LOGTAG, "could not fetch avatar", t);
+                        }
+                    },
+                    MoreExecutors.directExecutor());
         }
     }
 

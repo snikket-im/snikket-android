@@ -8,4 +8,8 @@ public class Photo extends Extension {
     public Photo() {
         super(Photo.class);
     }
+
+    public BinaryValue getBinaryValue() {
+        return this.getExtension(BinaryValue.class);
+    }
 }

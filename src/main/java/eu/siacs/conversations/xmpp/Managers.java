@@ -21,6 +21,7 @@ import eu.siacs.conversations.xmpp.manager.PrivateStorageManager;
 import eu.siacs.conversations.xmpp.manager.PubSubManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.manager.UnifiedPushManager;
+import eu.siacs.conversations.xmpp.manager.VCardManager;
 
 public class Managers {
 
@@ -50,6 +51,7 @@ public class Managers {
                 .put(PubSubManager.class, new PubSubManager(context, connection))
                 .put(RosterManager.class, new RosterManager(context, connection))
                 .put(UnifiedPushManager.class, new UnifiedPushManager(context, connection))
+                .put(VCardManager.class, new VCardManager(context, connection))
                 .build();
     }
 }

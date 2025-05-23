@@ -438,15 +438,10 @@ public class Contact implements ListItem, Blockable {
     }
 
     public boolean setAvatar(final Avatar avatar) {
-        return setAvatar(avatar, false);
-    }
-
-    public boolean setAvatar(final Avatar avatar, final boolean previouslyOmittedPepFetch) {
         if (this.avatar != null && this.avatar.equals(avatar)) {
             return false;
         }
-        if (!previouslyOmittedPepFetch
-                && this.avatar != null
+        if (this.avatar != null
                 && this.avatar.origin == Avatar.Origin.PEP
                 && avatar.origin == Avatar.Origin.VCARD) {
             return false;
