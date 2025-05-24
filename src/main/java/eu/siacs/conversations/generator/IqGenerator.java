@@ -87,13 +87,6 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public Iq retrieveVcardAvatar(final Jid to) {
-        final Iq packet = new Iq(Iq.Type.GET);
-        packet.setTo(to);
-        packet.addChild("vCard", "vcard-temp");
-        return packet;
-    }
-
     public Iq retrieveAvatarMetaData(final Jid to) {
         final Iq packet = retrieve("urn:xmpp:avatar:metadata", null);
         if (to != null) {

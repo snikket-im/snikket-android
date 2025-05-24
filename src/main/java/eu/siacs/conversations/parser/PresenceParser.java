@@ -491,7 +491,6 @@ public class PresenceParser extends AbstractParser
 
     @Override
     public void accept(final im.conversations.android.xmpp.model.stanza.Presence packet) {
-        // Log.d(Config.LOGTAG,"<--"+packet);
         if (packet.hasChild("x", Namespace.MUC_USER)) {
             this.parseConferencePresence(packet);
         } else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {

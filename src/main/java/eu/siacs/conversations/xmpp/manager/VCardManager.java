@@ -8,7 +8,11 @@ import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import im.conversations.android.xmpp.IqErrorException;
+import im.conversations.android.xmpp.model.error.Condition;
 import im.conversations.android.xmpp.model.stanza.Iq;
+import im.conversations.android.xmpp.model.vcard.BinaryValue;
+import im.conversations.android.xmpp.model.vcard.Photo;
 import im.conversations.android.xmpp.model.vcard.VCard;
 import java.util.Objects;
 
@@ -54,8 +58,12 @@ public class VCardManager extends AbstractManager {
     }
 
     public ListenableFuture<Void> publish(final VCard vCard) {
+        return publish(getAccount().getJid().asBareJid(), vCard);
+    }
+
+    public ListenableFuture<Void> publish(final Jid address, final VCard vCard) {
         final var iq = new Iq(Iq.Type.SET, vCard);
-        iq.setTo(getAccount().getJid().asBareJid());
+        iq.setTo(address);
         return Futures.transform(
                 connection.sendIqPacket(iq), result -> null, MoreExecutors.directExecutor());
     }
@@ -75,6 +83,44 @@ public class VCardManager extends AbstractManager {
                                     + Objects.nonNull(photo.getBinaryValue()));
                     photo.clearChildren();
                     return publish(vCard);
+                },
+                MoreExecutors.directExecutor());
+    }
+
+    public ListenableFuture<Void> publishPhoto(
+            final Jid address, final String type, final byte[] image) {
+        final var retrieveFuture = this.retrieve(address);
+
+        final var caughtFuture =
+                Futures.catchingAsync(
+                        retrieveFuture,
+                        IqErrorException.class,
+                        ex -> {
+                            final var error = ex.getError();
+                            if (error != null
+                                    && error.getCondition() instanceof Condition.ItemNotFound) {
+                                return Futures.immediateFuture(null);
+                            } else {
+                                return Futures.immediateFailedFuture(ex);
+                            }
+                        },
+                        MoreExecutors.directExecutor());
+
+        return Futures.transformAsync(
+                caughtFuture,
+                existing -> {
+                    final VCard vCard;
+                    if (existing == null) {
+                        Log.d(Config.LOGTAG, "item-not-found. created fresh vCard");
+                        vCard = new VCard();
+                    } else {
+                        vCard = existing;
+                    }
+                    final var photo = new Photo();
+                    photo.setType(type);
+                    photo.addExtension(new BinaryValue()).setContent(image);
+                    vCard.setExtension(photo);
+                    return publish(address, vCard);
                 },
                 MoreExecutors.directExecutor());
     }

@@ -1220,7 +1220,7 @@ public class FileBackend {
         try {
             ByteArrayOutputStream mByteArrayOutputStream = new ByteArrayOutputStream();
             Base64OutputStream mBase64OutputStream =
-                    new Base64OutputStream(mByteArrayOutputStream, Base64.DEFAULT);
+                    new Base64OutputStream(mByteArrayOutputStream, Base64.DEFAULT | Base64.NO_WRAP);
             MessageDigest digest = MessageDigest.getInstance("SHA-1");
             DigestOutputStream mDigestOutputStream =
                     new DigestOutputStream(mBase64OutputStream, digest);

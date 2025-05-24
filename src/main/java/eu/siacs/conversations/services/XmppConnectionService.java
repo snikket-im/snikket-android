@@ -4366,53 +4366,39 @@ public class XmppConnectionService extends Service {
     }
 
     private void publishMucAvatar(
-            Conversation conversation, Avatar avatar, OnAvatarPublication callback) {
+            final Conversation conversation,
+            final Avatar avatar,
+            final OnAvatarPublication callback) {
         final var account = conversation.getAccount();
-        final Iq retrieve = mIqGenerator.retrieveVcardAvatar(avatar);
-        sendIqPacket(
-                account,
-                retrieve,
-                (response) -> {
-                    boolean itemNotFound =
-                            response.getType() == Iq.Type.ERROR
-                                    && response.hasChild("error")
-                                    && response.findChild("error").hasChild("item-not-found");
-                    if (response.getType() == Iq.Type.RESULT || itemNotFound) {
-                        Element vcard = response.findChild("vCard", "vcard-temp");
-                        if (vcard == null) {
-                            vcard = new Element("vCard", "vcard-temp");
-                        }
-                        Element photo = vcard.findChild("PHOTO");
-                        if (photo == null) {
-                            photo = vcard.addChild("PHOTO");
-                        }
-                        photo.clearChildren();
-                        photo.addChild("TYPE").setContent(avatar.type);
-                        photo.addChild("BINVAL").setContent(avatar.image);
-                        final Iq publication = new Iq(Iq.Type.SET);
-                        publication.setTo(conversation.getJid().asBareJid());
-                        publication.addChild(vcard);
-                        sendIqPacket(
-                                account,
-                                publication,
-                                (publicationResponse) -> {
-                                    if (publicationResponse.getType() == Iq.Type.RESULT) {
-                                        callback.onAvatarPublicationSucceeded();
-                                    } else {
-                                        Log.d(
-                                                Config.LOGTAG,
-                                                "failed to publish vcard "
-                                                        + publicationResponse.getErrorCondition());
-                                        callback.onAvatarPublicationFailed(
-                                                R.string.error_publish_avatar_server_reject);
-                                    }
-                                });
-                    } else {
-                        Log.d(Config.LOGTAG, "failed to request vcard " + response);
-                        callback.onAvatarPublicationFailed(
-                                R.string.error_publish_avatar_no_server_support);
+        final var connection = account.getXmppConnection();
+        final var future =
+                connection
+                        .getManager(VCardManager.class)
+                        .publishPhoto(
+                                avatar.owner,
+                                avatar.type,
+                                BaseEncoding.base64().decode(avatar.image));
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        Log.d(Config.LOGTAG, "published muc avatar");
+                        final var c = account.getRoster().getContact(avatar.owner);
+                        c.setAvatar(avatar);
+                        getAvatarService().clear(c);
+                        getAvatarService().clear(conversation.getMucOptions());
+                        callback.onAvatarPublicationSucceeded();
                     }
-                });
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.d(Config.LOGTAG, "could not publish muc avatar", t);
+                        callback.onAvatarPublicationFailed(
+                                R.string.error_publish_avatar_server_reject);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
     public void cancelAvatarFetches(final Account account) {
@@ -4563,6 +4549,8 @@ public class XmppConnectionService extends Service {
                 getAvatarService().clear(account);
                 updateAccountUi();
             } else {
+                // TODO if this is a MUC clear MucOptions too
+                // TODO do the same clearing for when setting a cached version
                 final Contact contact = account.getRoster().getContact(avatar.owner);
                 contact.setAvatar(avatar);
                 account.getXmppConnection().getManager(RosterManager.class).writeToDatabaseAsync();
