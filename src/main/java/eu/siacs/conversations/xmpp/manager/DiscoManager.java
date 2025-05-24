@@ -7,6 +7,8 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
 import com.google.common.io.BaseEncoding;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -465,6 +467,15 @@ public class DiscoManager extends AbstractManager {
                 }
             }
         }
+    }
+
+    public Map<Jid, InfoQuery> findDiscoItemsByFeature(final String feature) {
+        return Maps.filterValues(getServerItems(), v -> v.hasFeature(feature));
+    }
+
+    public Map.Entry<Jid, InfoQuery> findDiscoItemByFeature(final String feature) {
+        final var items = findDiscoItemsByFeature(feature);
+        return Iterables.getFirst(items.entrySet(), null);
     }
 
     public static final class CapsHashMismatchException extends IllegalStateException {

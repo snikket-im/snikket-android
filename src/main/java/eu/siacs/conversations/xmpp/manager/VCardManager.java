@@ -37,11 +37,13 @@ public class VCardManager extends AbstractManager {
                 vCard -> {
                     final var photo = vCard.getPhoto();
                     if (photo == null) {
-                        throw new IllegalStateException("No photo in vCard");
+                        throw new IllegalStateException(
+                                String.format("No photo in vCard of %s", address));
                     }
                     final var binaryValue = photo.getBinaryValue();
                     if (binaryValue == null) {
-                        throw new IllegalStateException("Photo has no binary value");
+                        throw new IllegalStateException(
+                                String.format("Photo has no binary value in vCard of %s", address));
                     }
                     return binaryValue.asBytes();
                 },

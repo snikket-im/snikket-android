@@ -29,6 +29,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.DirectConnectionUtils;
 import eu.siacs.conversations.xmpp.jingle.stanzas.SocksByteStreamsTransportInfo;
+import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import java.io.IOException;
 import java.io.InputStream;
@@ -306,14 +307,18 @@ public class SocksByteStreamsTransport implements Transport {
             return Futures.immediateFailedFuture(
                     new IllegalStateException("Proxy look up is disabled"));
         }
-        final Jid streamer = xmppConnection.findDiscoItemByFeature(Namespace.BYTE_STREAMS);
+        final var streamer =
+                xmppConnection
+                        .getManager(DiscoManager.class)
+                        .findDiscoItemByFeature(Namespace.BYTE_STREAMS);
         if (streamer == null) {
             return Futures.immediateFailedFuture(
                     new IllegalStateException("No proxy/streamer found"));
         }
         final Iq iqRequest = new Iq(Iq.Type.GET);
-        iqRequest.setTo(streamer);
+        iqRequest.setTo(streamer.getKey());
         // TODO urgent refactor to extension
+        // TODO and maybe move to Manager
         iqRequest.query(Namespace.BYTE_STREAMS);
         final SettableFuture<Candidate> candidateFuture = SettableFuture.create();
         xmppConnection.sendIqPacket(
@@ -342,7 +347,7 @@ public class SocksByteStreamsTransport implements Transport {
                                 new Candidate(
                                         UUID.randomUUID().toString(),
                                         host,
-                                        streamer,
+                                        streamer.getKey(),
                                         port,
                                         655360 + (initiator ? 0 : 15),
                                         CandidateType.PROXY));

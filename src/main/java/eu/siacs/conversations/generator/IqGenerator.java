@@ -7,7 +7,6 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
@@ -16,14 +15,11 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.model.stanza.Iq;
-import im.conversations.android.xmpp.model.upload.Request;
-import java.nio.ByteBuffer;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.ecc.ECPublicKey;
 import org.whispersystems.libsignal.state.PreKeyRecord;
@@ -260,35 +256,6 @@ public class IqGenerator extends AbstractGenerator {
         item.setAttribute("nick", nick);
         item.setAttribute("role", role);
         return packet;
-    }
-
-    public Iq requestHttpUploadSlot(
-            final Jid host, final DownloadableFile file, final String mime) {
-        final Iq packet = new Iq(Iq.Type.GET);
-        packet.setTo(host);
-        final var request = packet.addExtension(new Request());
-        request.setFilename(convertFilename(file.getName()));
-        request.setSize(file.getExpectedSize());
-        return packet;
-    }
-
-    private static String convertFilename(String name) {
-        int pos = name.indexOf('.');
-        if (pos != -1) {
-            try {
-                UUID uuid = UUID.fromString(name.substring(0, pos));
-                ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
-                bb.putLong(uuid.getMostSignificantBits());
-                bb.putLong(uuid.getLeastSignificantBits());
-                return Base64.encodeToString(
-                                bb.array(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP)
-                        + name.substring(pos);
-            } catch (Exception e) {
-                return name;
-            }
-        } else {
-            return name;
-        }
     }
 
     public static Iq generateCreateAccountWithCaptcha(

@@ -17,6 +17,7 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -39,12 +40,12 @@ public class HttpUploadConnection
     private boolean delayed = false;
     private DownloadableFile file;
     private final Message message;
-    private SlotRequester.Slot slot;
+    private HttpUploadManager.Slot slot;
     private byte[] key = null;
 
     private long transmitted = 0;
     private Call mostRecentCall;
-    private ListenableFuture<SlotRequester.Slot> slotFuture;
+    private ListenableFuture<HttpUploadManager.Slot> slotFuture;
 
     public HttpUploadConnection(
             final Message message, final HttpConnectionManager httpConnectionManager) {
@@ -78,7 +79,7 @@ public class HttpUploadConnection
 
     @Override
     public void cancel() {
-        final ListenableFuture<SlotRequester.Slot> slotFuture = this.slotFuture;
+        final ListenableFuture<HttpUploadManager.Slot> slotFuture = this.slotFuture;
         if (slotFuture != null && !slotFuture.isDone()) {
             if (slotFuture.cancel(true)) {
                 Log.d(Config.LOGTAG, "cancelled slot requester");
@@ -94,7 +95,7 @@ public class HttpUploadConnection
     private void fail(String errorMessage) {
         finish();
         final Call call = this.mostRecentCall;
-        final Future<SlotRequester.Slot> slotFuture = this.slotFuture;
+        final Future<HttpUploadManager.Slot> slotFuture = this.slotFuture;
         final boolean cancelled =
                 (call != null && call.isCanceled())
                         || (slotFuture != null && slotFuture.isCancelled());
@@ -109,8 +110,9 @@ public class HttpUploadConnection
         message.setTransferable(null);
     }
 
-    public void init(boolean delay) {
+    public void init(final boolean delay) {
         final Account account = message.getConversation().getAccount();
+        final var connection = account.getXmppConnection();
         this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
         final String mime;
         if (message.getEncryption() == Message.ENCRYPTION_PGP
@@ -129,12 +131,12 @@ public class HttpUploadConnection
         }
         this.file.setExpectedSize(originalFileSize + (file.getKey() != null ? 16 : 0));
         message.resetFileParams();
-        this.slotFuture = new SlotRequester(mXmppConnectionService).request(account, file, mime);
+        this.slotFuture = connection.getManager(HttpUploadManager.class).request(file, mime);
         Futures.addCallback(
                 this.slotFuture,
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(@Nullable SlotRequester.Slot result) {
+                    public void onSuccess(@Nullable HttpUploadManager.Slot result) {
                         HttpUploadConnection.this.slot = result;
                         try {
                             HttpUploadConnection.this.upload();

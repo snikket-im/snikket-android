@@ -2730,29 +2730,6 @@ public class XmppConnection implements Runnable {
         return this.managers.getInstance(clazz);
     }
 
-    private List<Entry<Jid, InfoQuery>> findDiscoItemsByFeature(final String feature) {
-        final List<Entry<Jid, InfoQuery>> items = new ArrayList<>();
-        for (final Entry<Jid, InfoQuery> cursor :
-                getManager(DiscoManager.class).getServerItems().entrySet()) {
-            if (cursor.getValue().getFeatureStrings().contains(feature)) {
-                items.add(cursor);
-            }
-        }
-        return items;
-    }
-
-    public Entry<Jid, InfoQuery> getServiceDiscoveryResultByFeature(final String feature) {
-        return Iterables.getFirst(findDiscoItemsByFeature(feature), null);
-    }
-
-    public Jid findDiscoItemByFeature(final String feature) {
-        final var items = findDiscoItemsByFeature(feature);
-        if (items.isEmpty()) {
-            return null;
-        }
-        return Iterables.getFirst(items, null).getKey();
-    }
-
     public List<String> getMucServersWithholdAccount() {
         final List<String> servers = getMucServers();
         servers.remove(account.getDomain().toString());
@@ -3207,7 +3184,8 @@ public class XmppConnection implements Runnable {
             if (Config.DISABLE_HTTP_UPLOAD) {
                 return false;
             }
-            final var result = getServiceDiscoveryResultByFeature(Namespace.HTTP_UPLOAD);
+            final var result =
+                    getManager(DiscoManager.class).findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
             if (result == null) {
                 return false;
             }
@@ -3238,7 +3216,8 @@ public class XmppConnection implements Runnable {
         }
 
         public long getMaxHttpUploadSize() {
-            final var result = getServiceDiscoveryResultByFeature(Namespace.HTTP_UPLOAD);
+            final var result =
+                    getManager(DiscoManager.class).findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
             if (result == null) {
                 return -1;
             }

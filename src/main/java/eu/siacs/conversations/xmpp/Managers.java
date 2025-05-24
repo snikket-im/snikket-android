@@ -11,6 +11,7 @@ import eu.siacs.conversations.xmpp.manager.BookmarkManager;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.manager.EntityTimeManager;
+import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.LegacyBookmarkManager;
 import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
 import eu.siacs.conversations.xmpp.manager.NickManager;
@@ -39,6 +40,7 @@ public class Managers {
                 .put(CarbonsManager.class, new CarbonsManager(context, connection))
                 .put(DiscoManager.class, new DiscoManager(context, connection))
                 .put(EntityTimeManager.class, new EntityTimeManager(context, connection))
+                .put(HttpUploadManager.class, new HttpUploadManager(context, connection))
                 .put(LegacyBookmarkManager.class, new LegacyBookmarkManager(context, connection))
                 .put(
                         MessageDisplayedSynchronizationManager.class,
