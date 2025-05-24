@@ -3551,27 +3551,40 @@ public class XmppConnectionService extends Service {
     }
 
     public void deleteAvatar(final Account account) {
-        final AtomicBoolean executed = new AtomicBoolean(false);
-        final Runnable onDeleted =
-                () -> {
-                    if (executed.compareAndSet(false, true)) {
+        final var connection = account.getXmppConnection();
+
+        final var vCardPhotoDeletionFuture =
+                connection.getManager(VCardManager.class).deletePhoto();
+        final var pepDeletionFuture = connection.getManager(AvatarManager.class).delete();
+
+        final var deletionFuture = Futures.allAsList(vCardPhotoDeletionFuture, pepDeletionFuture);
+
+        Futures.addCallback(
+                deletionFuture,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(List<Void> result) {
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid() + ": deleted avatar from server");
                         account.setAvatar(null);
                         databaseBackend.updateAccount(account);
                         getAvatarService().clear(account);
                         updateAccountUi();
                     }
-                };
-        // TODO execute this via the respective Managers
-        deleteVcardAvatar(account, onDeleted);
-        deletePepNode(account, Namespace.AVATAR_DATA);
-        deletePepNode(account, Namespace.AVATAR_METADATA, onDeleted);
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid() + ": could not delete avatar",
+                                t);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
     public void deletePepNode(final Account account, final String node) {
-        deletePepNode(account, node, null);
-    }
-
-    private void deletePepNode(final Account account, final String node, final Runnable runnable) {
         final Iq request = mIqGenerator.deleteNode(node);
         sendIqPacket(
                 account,
@@ -3583,61 +3596,11 @@ public class XmppConnectionService extends Service {
                                 account.getJid().asBareJid()
                                         + ": successfully deleted pep node "
                                         + node);
-                        if (runnable != null) {
-                            runnable.run();
-                        }
                     } else {
                         Log.d(
                                 Config.LOGTAG,
                                 account.getJid().asBareJid() + ": failed to delete " + packet);
                     }
-                });
-    }
-
-    private void deleteVcardAvatar(final Account account, @NonNull final Runnable runnable) {
-        final Iq retrieveVcard = mIqGenerator.retrieveVcardAvatar(account.getJid().asBareJid());
-        sendIqPacket(
-                account,
-                retrieveVcard,
-                (response) -> {
-                    if (response.getType() != Iq.Type.RESULT) {
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid() + ": no vCard set. nothing to do");
-                        return;
-                    }
-                    final Element vcard = response.findChild("vCard", "vcard-temp");
-                    if (vcard == null) {
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid() + ": no vCard set. nothing to do");
-                        return;
-                    }
-                    Element photo = vcard.findChild("PHOTO");
-                    if (photo == null) {
-                        photo = vcard.addChild("PHOTO");
-                    }
-                    photo.clearChildren();
-                    final Iq publication = new Iq(Iq.Type.SET);
-                    publication.setTo(account.getJid().asBareJid());
-                    publication.addChild(vcard);
-                    sendIqPacket(
-                            account,
-                            publication,
-                            (publicationResponse) -> {
-                                if (publicationResponse.getType() == Iq.Type.RESULT) {
-                                    Log.d(
-                                            Config.LOGTAG,
-                                            account.getJid().asBareJid()
-                                                    + ": successfully deleted vcard avatar");
-                                    runnable.run();
-                                } else {
-                                    Log.d(
-                                            Config.LOGTAG,
-                                            "failed to publish vcard "
-                                                    + publicationResponse.getErrorCondition());
-                                }
-                            });
                 });
     }
 
@@ -4576,12 +4539,9 @@ public class XmppConnectionService extends Service {
                     public void onFailure(@NonNull Throwable t) {
                         Log.d(
                                 Config.LOGTAG,
-                                "could not retrieve avatar from "
-                                        + address
-                                        + " ("
-                                        + avatar.sha1sum
-                                        + ")",
-                                t);
+                                account.getJid().asBareJid()
+                                        + ": could not retrieve vCard avatar of "
+                                        + avatar.owner);
                     }
                 },
                 MoreExecutors.directExecutor());

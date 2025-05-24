@@ -1,13 +1,16 @@
 package eu.siacs.conversations.xmpp.manager;
 
 import android.content.Context;
+import android.util.Log;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.vcard.VCard;
+import java.util.Objects;
 
 public class VCardManager extends AbstractManager {
 
@@ -46,6 +49,32 @@ public class VCardManager extends AbstractManager {
                                 String.format("Photo has no binary value in vCard of %s", address));
                     }
                     return binaryValue.asBytes();
+                },
+                MoreExecutors.directExecutor());
+    }
+
+    public ListenableFuture<Void> publish(final VCard vCard) {
+        final var iq = new Iq(Iq.Type.SET, vCard);
+        iq.setTo(getAccount().getJid().asBareJid());
+        return Futures.transform(
+                connection.sendIqPacket(iq), result -> null, MoreExecutors.directExecutor());
+    }
+
+    public ListenableFuture<Void> deletePhoto() {
+        final var vCardFuture = retrieve(getAccount().getJid().asBareJid());
+        return Futures.transformAsync(
+                vCardFuture,
+                vCard -> {
+                    final var photo = vCard.getPhoto();
+                    if (photo == null) {
+                        return Futures.immediateFuture(null);
+                    }
+                    Log.d(
+                            Config.LOGTAG,
+                            "deleting photo from vCard. binaryValue="
+                                    + Objects.nonNull(photo.getBinaryValue()));
+                    photo.clearChildren();
+                    return publish(vCard);
                 },
                 MoreExecutors.directExecutor());
     }

@@ -159,4 +159,14 @@ public class AvatarManager extends AbstractManager {
     public boolean hasPepToVCardConversion() {
         return getManager(DiscoManager.class).hasAccountFeature(Namespace.AVATAR_CONVERSION);
     }
+
+    public ListenableFuture<Void> delete() {
+        final var pepManager = getManager(PepManager.class);
+        final var deleteMetaDataFuture = pepManager.delete(Namespace.AVATAR_METADATA);
+        final var deleteDataFuture = pepManager.delete(Namespace.AVATAR_DATA);
+        return Futures.transform(
+                Futures.allAsList(deleteDataFuture, deleteMetaDataFuture),
+                vs -> null,
+                MoreExecutors.directExecutor());
+    }
 }
