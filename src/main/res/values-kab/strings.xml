@@ -155,7 +155,7 @@
     <string name="gif">GIF</string>
     <string name="group_chat_name">Isem</string>
     <string name="create_shortcut">Rnu anegzum</string>
-    <string name="action_copy_location">Nɣel adeg</string>
+    <string name="action_copy_location">Nɣel adig</string>
     <string name="action_share_location">Bḍu adeg</string>
     <string name="title_activity_share_location">Bḍu adeg</string>
     <string name="title_activity_show_location">Sken-d adeg</string>
@@ -251,4 +251,13 @@
     <string name="publishing">Asuffeɣ…</string>
     <string name="pref_input_options">Sekcem</string>
     <string name="server_info_broken">Yerreẓ</string>
+    <string name="copy_omemo_clipboard_description">Nɣel adsil umḍin OMEMO ɣer tecfawt</string>
+    <string name="copy_fingerprint">Nɣel adsil umḍin</string>
+    <string name="copy_link">Nɣel tansa web</string>
+    <string name="copy_URI">Nɣel URI</string>
+    <string name="copy_telephone_number">Nɣel uṭṭun n tiliɣri</string>
+    <string name="copy_jabber_id">Nɣel tansa XMPP</string>
+    <string name="copy_to_clipboard">Nɣel ɣer tecfawt</string>
+    <string name="copy_email_address">Nɣel tansa n yimayl</string>
+    <string name="copy_original_url">Nɣel URL aɣbalu</string>
 </resources>
