@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.9.1'
+        classpath 'com.android.tools.build:gradle:8.9.3'
         classpath "com.diffplug.spotless:spotless-plugin-gradle:7.0.2"
     }
 }
@@ -51,14 +51,15 @@ dependencies {
     implementation 'androidx.emoji2:emoji2:1.5.0'
     freeImplementation 'androidx.emoji2:emoji2-bundled:1.5.0'
     implementation 'androidx.emoji2:emoji2-emojipicker:1.5.0'
-    implementation 'androidx.exifinterface:exifinterface:1.4.0'
+    implementation 'androidx.exifinterface:exifinterface:1.4.1'
+    implementation 'androidx.heifwriter:heifwriter:1.1.0-beta01'
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'androidx.sharetarget:sharetarget:1.2.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.viewpager:viewpager:1.1.0'
-    implementation 'androidx.work:work-runtime:2.10.0'
+    implementation 'androidx.work:work-runtime:2.10.1'
     implementation 'com.github.open-keychain.open-keychain:openpgp-api:v5.7.1'
-    implementation 'com.google.android.material:material:1.13.0-alpha12'
+    implementation 'com.google.android.material:material:1.13.0-alpha13'
     implementation 'com.google.guava:guava:33.4.6-android'
     implementation 'com.google.zxing:core:3.5.3'
     implementation 'com.leinardi.android:speed-dial:3.3.0'

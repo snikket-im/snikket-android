@@ -136,7 +136,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         return buildHttpClient(url, account, 30, interactive);
     }
 
-    OkHttpClient buildHttpClient(
+    public OkHttpClient buildHttpClient(
             final HttpUrl url, final Account account, int readTimeout, boolean interactive) {
         final String slotHostname = url.host();
         final boolean onionSlot = slotHostname.endsWith(".onion");

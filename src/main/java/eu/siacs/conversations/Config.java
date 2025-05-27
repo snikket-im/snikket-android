@@ -79,6 +79,7 @@ public final class Config {
     // and webp
     public static final int AVATAR_SIZE = 192;
     public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
+    public static final int AVATAR_FULL_SIZE = 1024;
     public static final int AVATAR_CHAR_LIMIT = 9400;
 
     public static final int IMAGE_SIZE = 1920;
@@ -131,6 +132,7 @@ public final class Config {
             false; // require a/v calls to be verified with OMEMO
     public static final boolean JINGLE_MESSAGE_INIT_STRICT_OFFLINE_CHECK = false;
     public static final boolean JINGLE_MESSAGE_INIT_STRICT_DEVICE_TIMEOUT = false;
+    // TODO extend this to 12s
     public static final long DEVICE_DISCOVERY_TIMEOUT = 6000; // in milliseconds
 
     public static final boolean ONLY_INTERNAL_STORAGE =

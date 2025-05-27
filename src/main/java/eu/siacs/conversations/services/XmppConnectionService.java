@@ -4329,40 +4329,29 @@ public class XmppConnectionService extends Service {
             final Uri image,
             final boolean open,
             final OnAvatarPublication callback) {
-        final Bitmap.CompressFormat format = Config.AVATAR_FORMAT;
-        final int size = Config.AVATAR_SIZE;
-        final Avatar avatar = getFileBackend().getPepAvatar(image, size, format);
-        if (avatar == null) {
-            callback.onAvatarPublicationFailed(R.string.error_publish_avatar_converting);
-            return;
-        }
-        if (fileBackend.save(avatar)) {
-            final var connection = account.getXmppConnection();
-            final var future = connection.getManager(AvatarManager.class).publish(avatar, open);
-            Futures.addCallback(
-                    future,
-                    new FutureCallback<Void>() {
-                        @Override
-                        public void onSuccess(Void result) {
-                            callback.onAvatarPublicationSucceeded();
-                        }
 
-                        @Override
-                        public void onFailure(@NonNull Throwable t) {
-                            Log.d(
-                                    Config.LOGTAG,
-                                    account.getJid().asBareJid() + ": could not publish avatar",
-                                    t);
-                            callback.onAvatarPublicationFailed(
-                                    R.string.error_publish_avatar_server_reject);
-                        }
-                    },
-                    MoreExecutors.directExecutor());
+        final var connection = account.getXmppConnection();
+        final var publicationFuture =
+                connection.getManager(AvatarManager.class).uploadAndPublish(image, open);
 
-        } else {
-            Log.d(Config.LOGTAG, "could not save avatar");
-            callback.onAvatarPublicationFailed(R.string.error_saving_avatar);
-        }
+        Futures.addCallback(
+                publicationFuture,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(final Void result) {
+                        Log.d(Config.LOGTAG, "published avatar");
+                        callback.onAvatarPublicationSucceeded();
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull final Throwable t) {
+                        Log.d(Config.LOGTAG, "avatar upload failed", t);
+                        // TODO actually figure out what went wrong
+                        callback.onAvatarPublicationFailed(
+                                R.string.error_publish_avatar_server_reject);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
     private void publishMucAvatar(

@@ -1,11 +1,30 @@
 package eu.siacs.conversations.xmpp.pep;
 
 import android.util.Base64;
+import androidx.annotation.NonNull;
+import com.google.common.base.MoreObjects;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.xmpp.model.avatar.Metadata;
+import okhttp3.HttpUrl;
 
 public class Avatar {
+
+    @Override
+    @NonNull
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("type", type)
+                .add("sha1sum", sha1sum)
+                .add("url", url)
+                .add("image", image)
+                .add("height", height)
+                .add("width", width)
+                .add("size", size)
+                .add("owner", owner)
+                .add("origin", origin)
+                .toString();
+    }
 
     public enum Origin {
         PEP,
@@ -14,6 +33,7 @@ public class Avatar {
 
     public String type;
     public String sha1sum;
+    public HttpUrl url;
     public String image;
     public int height;
     public int width;

@@ -37,6 +37,10 @@ public class Compatibility {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
     }
 
+    public static boolean thirtyFour() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
+    }
+
     public static void startService(final Context context, final Intent intent) {
         try {
             if (Compatibility.twentySix()) {

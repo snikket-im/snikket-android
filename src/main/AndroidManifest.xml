@@ -60,6 +60,8 @@
         android:name="android.hardware.microphone"
         android:required="false" />
 
+    <uses-sdk tools:overrideLibrary="androidx.heifwriter"/>
+
     <queries>
         <package android:name="org.sufficientlysecure.keychain" />
         <package android:name="org.torproject.android" />

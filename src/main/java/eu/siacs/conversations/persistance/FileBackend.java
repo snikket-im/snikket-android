@@ -773,7 +773,7 @@ public class FileBackend {
                 throw new ImageCompressionException("Source file had alpha channel");
             }
             Bitmap scaledBitmap = resize(originalBitmap, Config.IMAGE_SIZE);
-            final int rotation = getRotation(image);
+            final int rotation = getRotation(mXmppConnectionService, image);
             scaledBitmap = rotate(scaledBitmap, rotation);
             boolean targetSizeReached = false;
             int quality = Config.IMAGE_QUALITY;
@@ -930,9 +930,8 @@ public class FileBackend {
         }
     }
 
-    private int getRotation(final Uri image) {
-        try (final InputStream is =
-                mXmppConnectionService.getContentResolver().openInputStream(image)) {
+    private static int getRotation(final Context context, final Uri image) {
+        try (final InputStream is = context.getContentResolver().openInputStream(image)) {
             return is == null ? 0 : getRotation(is);
         } catch (final Exception e) {
             return 0;
@@ -1123,7 +1122,6 @@ public class FileBackend {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Bitmap cropCenterSquarePdf(final Uri uri, final int size) {
         try {
             ParcelFileDescriptor fileDescriptor =
@@ -1137,7 +1135,6 @@ public class FileBackend {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Bitmap renderPdfDocument(
             ParcelFileDescriptor fileDescriptor, int targetSize, boolean fit) throws IOException {
         final PdfRenderer pdfRenderer = new PdfRenderer(fileDescriptor);
@@ -1173,7 +1170,8 @@ public class FileBackend {
         return getUriForFile(mXmppConnectionService, file);
     }
 
-    public Avatar getPepAvatar(Uri image, int size, Bitmap.CompressFormat format) {
+    public Avatar getPepAvatar(
+            final Uri image, final int size, final Bitmap.CompressFormat format) {
 
         final Avatar uncompressAvatar = getUncompressedAvatar(image);
         if (uncompressAvatar != null
@@ -1261,6 +1259,7 @@ public class FileBackend {
         }
     }
 
+    // this was used by republishAvatarIfNeeded()
     public Avatar getStoredPepAvatar(String hash) {
         if (hash == null) {
             return null;
@@ -1385,8 +1384,12 @@ public class FileBackend {
         return new File(mXmppConnectionService.getFilesDir(), "/avatars/");
     }
 
-    private File getAvatarFile(String avatar) {
-        return new File(mXmppConnectionService.getCacheDir(), "/avatars/" + avatar);
+    public File getAvatarFile(final String avatar) {
+        return getAvatarFile(mXmppConnectionService, avatar);
+    }
+
+    public static File getAvatarFile(Context context, final String avatar) {
+        return new File(context.getCacheDir(), "/avatars/" + avatar);
     }
 
     public Uri getAvatarUri(String avatar) {
@@ -1394,18 +1397,21 @@ public class FileBackend {
     }
 
     public Bitmap cropCenterSquare(final Uri image, final int size) {
+        return cropCenterSquare(mXmppConnectionService, image, size);
+    }
+
+    public static Bitmap cropCenterSquare(final Context context, final Uri image, final int size) {
         if (image == null) {
             return null;
         }
         final BitmapFactory.Options options = new BitmapFactory.Options();
         try {
-            options.inSampleSize = calcSampleSize(image, size);
+            options.inSampleSize = calcSampleSize(context, image, size);
         } catch (final IOException | SecurityException e) {
             Log.d(Config.LOGTAG, "unable to calculate sample size for " + image, e);
             return null;
         }
-        try (final InputStream is =
-                mXmppConnectionService.getContentResolver().openInputStream(image)) {
+        try (final InputStream is = context.getContentResolver().openInputStream(image)) {
             if (is == null) {
                 return null;
             }
@@ -1413,7 +1419,7 @@ public class FileBackend {
             if (originalBitmap == null) {
                 return null;
             } else {
-                final var bitmap = rotate(originalBitmap, getRotation(image));
+                final var bitmap = rotate(originalBitmap, getRotation(context, image));
                 return cropCenterSquare(bitmap, size);
             }
         } catch (final SecurityException | IOException e) {
@@ -1465,7 +1471,7 @@ public class FileBackend {
         }
     }
 
-    public Bitmap cropCenterSquare(Bitmap input, int size) {
+    public static Bitmap cropCenterSquare(Bitmap input, int size) {
         int w = input.getWidth();
         int h = input.getHeight();
 
@@ -1487,10 +1493,14 @@ public class FileBackend {
     }
 
     private int calcSampleSize(final Uri image, int size) throws IOException, SecurityException {
+        return calcSampleSize(mXmppConnectionService, image, size);
+    }
+
+    private static int calcSampleSize(final Context context, final Uri image, int size)
+            throws IOException, SecurityException {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        try (final InputStream inputStream =
-                mXmppConnectionService.getContentResolver().openInputStream(image)) {
+        try (final InputStream inputStream = context.getContentResolver().openInputStream(image)) {
             BitmapFactory.decodeStream(inputStream, null, options);
             return calcSampleSize(options, size);
         }

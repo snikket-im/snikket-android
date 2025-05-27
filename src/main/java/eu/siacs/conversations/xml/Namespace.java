@@ -33,6 +33,7 @@ public final class Namespace {
     public static final String REGISTER_STREAM_FEATURE = "http://jabber.org/features/iq-register";
     public static final String BYTE_STREAMS = "http://jabber.org/protocol/bytestreams";
     public static final String HTTP_UPLOAD = "urn:xmpp:http:upload:0";
+    public static final String HTTP_UPLOAD_PURPOSE = "urn:xmpp:http:upload:purpose:0";
     public static final String STANZA_IDS = "urn:xmpp:sid:0";
     public static final String IDLE = "urn:xmpp:idle:1";
     public static final String DATA = "jabber:x:data";

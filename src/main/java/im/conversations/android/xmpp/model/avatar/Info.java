@@ -1,14 +1,30 @@
 package im.conversations.android.xmpp.model.avatar;
 
+import com.google.common.base.Strings;
 import eu.siacs.conversations.xml.Namespace;
 import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
+import okhttp3.HttpUrl;
 
 @XmlElement(namespace = Namespace.AVATAR_METADATA)
 public class Info extends Extension {
 
     public Info() {
         super(Info.class);
+    }
+
+    public Info(
+            final String id,
+            final long bytes,
+            final String type,
+            final int height,
+            final int width) {
+        this();
+        this.setId(id);
+        this.setBytes(bytes);
+        this.setType(type);
+        this.setHeight(height);
+        this.setWidth(width);
     }
 
     public long getHeight() {
@@ -27,8 +43,12 @@ public class Info extends Extension {
         return this.getAttribute("type");
     }
 
-    public String getUrl() {
-        return this.getAttribute("url");
+    public HttpUrl getUrl() {
+        final var url = this.getAttribute("url");
+        if (Strings.isNullOrEmpty(url)) {
+            return null;
+        }
+        return HttpUrl.parse(url);
     }
 
     public String getId() {
@@ -53,5 +73,9 @@ public class Info extends Extension {
 
     public void setType(final String type) {
         this.setAttribute("type", type);
+    }
+
+    public void setUrl(final HttpUrl url) {
+        this.setAttribute("url", url.toString());
     }
 }
