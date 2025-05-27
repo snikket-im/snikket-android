@@ -1,6 +1,6 @@
 Quicksy on variatsioon populaarsest Jabber/XMPP kliendist Conversationsist, kuhu on lisandunud kontaktide automaatne tuvastus.
 
-Sa lisad liitumisel oma telefoninumbri ja Quicksyautomaatselt telefoniraamatus leiduvate numbrite alusel pakub sulle välja võimalikke suhtluspartnereid.
+Sa lisad liitumisel oma telefoninumbri ja Quicksy telefoniraamatus leiduvate numbrite alusel pakub sulle automaatselt välja võimalikke suhtluspartnereid.
 
 Olemuselt on Quicksy tavaline täisfunktsionaalne Jabberi klient, mis lubab sul suhelda kasutajatega ükspuha missuguses muus avalikus XMPP/Jabberi serveris. Samamoodi saad ükspuha missuguse Quicksy kasutajaga suhelda lisades +telefoninumber@quicksy.im oma kontaktide loendisse.
 
