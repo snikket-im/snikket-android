@@ -147,9 +147,7 @@ import eu.siacs.conversations.xmpp.manager.VCardManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.Entity;
 import im.conversations.android.xmpp.IqErrorException;
-import im.conversations.android.xmpp.model.avatar.Metadata;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
-import im.conversations.android.xmpp.model.pubsub.PubSub;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.up.Push;
 import java.io.File;
@@ -4292,6 +4290,8 @@ public class XmppConnectionService extends Service {
         connection.getManager(RosterManager.class).deleteRosterItem(contact);
     }
 
+    // TODO get thumbnail via AvatarManager
+    // TODO call AvatarManager.getInbandAvatar form vcard manager and simplify publication process
     public void publishMucAvatar(
             final Conversation conversation, final Uri image, final OnAvatarPublication callback) {
         new Thread(
@@ -4316,6 +4316,7 @@ public class XmppConnectionService extends Service {
                 .start();
     }
 
+    // TODO get rid of the async part. Manager is already async
     public void publishAvatarAsync(
             final Account account,
             final Uri image,
@@ -4374,7 +4375,7 @@ public class XmppConnectionService extends Service {
                     public void onSuccess(Void result) {
                         Log.d(Config.LOGTAG, "published muc avatar");
                         final var c = account.getRoster().getContact(avatar.owner);
-                        c.setAvatar(avatar);
+                        c.setAvatar(avatar.sha1sum);
                         getAvatarService().clear(c);
                         getAvatarService().clear(conversation.getMucOptions());
                         callback.onAvatarPublicationSucceeded();
@@ -4459,7 +4460,7 @@ public class XmppConnectionService extends Service {
                                 } else {
                                     final Contact contact =
                                             account.getRoster().getContact(avatar.owner);
-                                    contact.setAvatar(avatar);
+                                    contact.setAvatar(avatar.sha1sum);
                                     account.getXmppConnection()
                                             .getManager(RosterManager.class)
                                             .writeToDatabaseAsync();
@@ -4522,6 +4523,7 @@ public class XmppConnectionService extends Service {
                 MoreExecutors.directExecutor());
     }
 
+    // TODO move this into VCard manager
     private void setVCardAvatar(final Account account, final Avatar avatar) {
         Log.d(
                 Config.LOGTAG,
@@ -4541,7 +4543,7 @@ public class XmppConnectionService extends Service {
                 // TODO if this is a MUC clear MucOptions too
                 // TODO do the same clearing for when setting a cached version
                 final Contact contact = account.getRoster().getContact(avatar.owner);
-                contact.setAvatar(avatar);
+                contact.setAvatar(avatar.sha1sum);
                 account.getXmppConnection().getManager(RosterManager.class).writeToDatabaseAsync();
                 getAvatarService().clear(contact);
                 updateRosterUi();
@@ -4557,9 +4559,10 @@ public class XmppConnectionService extends Service {
                         updateConversationUi();
                         updateMucRosterUi();
                     }
+                    // TODO don’t do that. this will put lower quality vCard avatars into contacts
                     if (user.getRealJid() != null) {
                         Contact contact = account.getRoster().getContact(user.getRealJid());
-                        contact.setAvatar(avatar);
+                        contact.setAvatar(avatar.sha1sum);
                         account.getXmppConnection()
                                 .getManager(RosterManager.class)
                                 .writeToDatabaseAsync();
@@ -4571,46 +4574,11 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public void checkForAvatar(final Account account, final UiCallback<Avatar> callback) {
-        final Iq packet = this.mIqGenerator.retrieveAvatarMetaData(null);
-        this.sendIqPacket(
-                account,
-                packet,
-                response -> {
-                    if (response.getType() != Iq.Type.RESULT) {
-                        callback.error(0, null);
-                    }
-                    final var pubsub = packet.getExtension(PubSub.class);
-                    if (pubsub == null) {
-                        callback.error(0, null);
-                        return;
-                    }
-                    final var items = pubsub.getItems();
-                    if (items == null) {
-                        callback.error(0, null);
-                        return;
-                    }
-                    final var item = items.getFirstItemWithId(Metadata.class);
-                    if (item == null) {
-                        callback.error(0, null);
-                        return;
-                    }
-                    final var avatar = Avatar.parseMetadata(item.getKey(), item.getValue());
-                    if (avatar == null) {
-                        callback.error(0, null);
-                        return;
-                    }
-                    avatar.owner = account.getJid().asBareJid();
-                    if (fileBackend.isAvatarCached(avatar)) {
-                        if (account.setAvatar(avatar.getFilename())) {
-                            databaseBackend.updateAccount(account);
-                        }
-                        getAvatarService().clear(account);
-                        callback.success(avatar);
-                    } else {
-                        fetchAvatarPep(account, avatar, callback);
-                    }
-                });
+    public ListenableFuture<Void> checkForAvatar(final Account account) {
+        final var connection = account.getXmppConnection();
+        return connection
+                .getManager(AvatarManager.class)
+                .fetchAndStore(account.getJid().asBareJid());
     }
 
     public void notifyAccountAvatarHasChanged(final Account account) {

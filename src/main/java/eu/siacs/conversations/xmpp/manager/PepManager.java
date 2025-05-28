@@ -22,6 +22,10 @@ public class PepManager extends AbstractManager {
         return pubSubManager().fetchItems(pepService(), clazz);
     }
 
+    public <T extends Extension> ListenableFuture<T> fetchMostRecentItem(final Class<T> clazz) {
+        return pubSubManager().fetchMostRecentItem(pepService(), clazz);
+    }
+
     public <T extends Extension> ListenableFuture<T> fetchMostRecentItem(
             final String node, final Class<T> clazz) {
         return pubSubManager().fetchMostRecentItem(pepService(), node, clazz);

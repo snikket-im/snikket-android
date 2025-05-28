@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
 import androidx.annotation.BoolRes;
+import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 import com.google.common.base.Joiner;
@@ -14,6 +15,7 @@ import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.Compatibility;
 import java.security.SecureRandom;
+import java.util.Optional;
 
 public class AppSettings {
 
@@ -52,6 +54,7 @@ public class AppSettings {
     public static final String CALL_INTEGRATION = "call_integration";
     public static final String ALIGN_START = "align_start";
     public static final String BACKUP_LOCATION = "backup_location";
+    public static final String AUTO_ACCEPT_FILE_SIZE = "auto_accept_file_size";
 
     private static final String ACCEPT_INVITES_FROM_STRANGERS = "accept_invites_from_strangers";
     private static final String INSTALLATION_ID = "im.conversations.android.install_id";
@@ -163,10 +166,21 @@ public class AppSettings {
                 || getBooleanPreference(KEEP_FOREGROUND_SERVICE, R.bool.enable_foreground_service);
     }
 
-    private boolean getBooleanPreference(@NonNull final String name, @BoolRes int res) {
+    private boolean getBooleanPreference(@NonNull final String name, @BoolRes final int res) {
         final SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(name, context.getResources().getBoolean(res));
+    }
+
+    private long getLongPreference(final String name, @IntegerRes final int res) {
+        final long defaultValue = context.getResources().getInteger(res);
+        final SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context);
+        try {
+            return Long.parseLong(sharedPreferences.getString(name, String.valueOf(defaultValue)));
+        } catch (final NumberFormatException e) {
+            return defaultValue;
+        }
     }
 
     public String getOmemo() {
@@ -244,6 +258,12 @@ public class AppSettings {
         final var installationId = secureRandom.nextLong();
         sharedPreferences.edit().putLong(INSTALLATION_ID, installationId).apply();
         return installationId;
+    }
+
+    public Optional<Long> getAutoAcceptFileSize() {
+        final long autoAcceptFileSize =
+                getLongPreference(AUTO_ACCEPT_FILE_SIZE, R.integer.auto_accept_filesize);
+        return autoAcceptFileSize <= 0 ? Optional.empty() : Optional.of(autoAcceptFileSize);
     }
 
     public synchronized void resetInstallationId() {

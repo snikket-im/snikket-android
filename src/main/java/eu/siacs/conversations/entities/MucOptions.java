@@ -158,7 +158,7 @@ public class MucOptions {
     }
 
     public String getAvatar() {
-        return account.getRoster().getContact(conversation.getJid()).getAvatarFilename();
+        return account.getRoster().getContact(conversation.getJid()).getAvatar();
     }
 
     public boolean hasFeature(String feature) {
@@ -903,14 +903,20 @@ public class MucOptions {
         }
 
         public String getAvatar() {
+
+            // TODO prefer potentially better quality avatars from contact
+            // TODO use getContact and if that’s not null and avatar is set use that
+
+            getContact();
+
             if (avatar != null) {
                 return avatar.getFilename();
             }
-            Avatar avatar =
-                    realJid != null
-                            ? getAccount().getRoster().getContact(realJid).getAvatar()
-                            : null;
-            return avatar == null ? null : avatar.getFilename();
+            if (realJid == null) {
+                return null;
+            }
+            final var contact = getAccount().getRoster().getContact(realJid);
+            return contact.getAvatar();
         }
 
         public Account getAccount() {

@@ -168,13 +168,16 @@ public class PresenceParser extends AbstractParser
                                 if (user.setAvatar(avatar)) {
                                     mXmppConnectionService.getAvatarService().clear(user);
                                 }
+
+                                // TODO don’t do that. This will just overwrite (better) PEP avatars
+
                                 if (user.getRealJid() != null) {
                                     final Contact c =
                                             conversation
                                                     .getAccount()
                                                     .getRoster()
                                                     .getContact(user.getRealJid());
-                                    if (c.setAvatar(avatar)) {
+                                    if (c.setAvatar(avatar.sha1sum)) {
                                         connection
                                                 .getManager(RosterManager.class)
                                                 .writeToDatabaseAsync();
@@ -342,6 +345,10 @@ public class PresenceParser extends AbstractParser
         final Contact contact = account.getRoster().getContact(from);
         if (type == null) {
             final String resource = from.isBareJid() ? "" : from.getResource();
+
+            // TODO simply don’t parse avatars for contacts at all. Only if presence is bare and a
+            // MUC
+
             final Avatar avatar =
                     Avatar.parsePresence(packet.findChild("x", "vcard-temp:x:update"));
             if (avatar != null && (!contact.isSelf() || account.getAvatar() == null)) {
@@ -354,7 +361,7 @@ public class PresenceParser extends AbstractParser
                         mXmppConnectionService.updateConversationUi();
                         mXmppConnectionService.updateAccountUi();
                     } else {
-                        if (contact.setAvatar(avatar)) {
+                        if (contact.setAvatar(avatar.sha1sum)) {
                             connection.getManager(RosterManager.class).writeToDatabaseAsync();
                             mXmppConnectionService.getAvatarService().clear(contact);
                             mXmppConnectionService.updateConversationUi();

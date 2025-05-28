@@ -137,6 +137,17 @@ public class PubSubManager extends AbstractManager {
     }
 
     public <T extends Extension> ListenableFuture<T> fetchMostRecentItem(
+            final Jid address, final Class<T> clazz) {
+        final var id = ExtensionFactory.id(clazz);
+        if (id == null) {
+            return Futures.immediateFailedFuture(
+                    new IllegalArgumentException(
+                            String.format("%s is not a registered extension", clazz.getName())));
+        }
+        return fetchMostRecentItem(address, id.namespace, clazz);
+    }
+
+    public <T extends Extension> ListenableFuture<T> fetchMostRecentItem(
             final Jid address, final String node, final Class<T> clazz) {
         final Iq request = new Iq(Iq.Type.GET);
         request.setTo(address);

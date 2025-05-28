@@ -6,16 +6,22 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.heifwriter.AvifWriter;
 import androidx.heifwriter.HeifWriter;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Ordering;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingOutputStream;
-import com.google.common.io.BaseEncoding;
+import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.SettableFuture;
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.persistance.FileBackend;
@@ -25,7 +31,6 @@ import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.NodeConfiguration;
 import im.conversations.android.xmpp.model.ByteContent;
 import im.conversations.android.xmpp.model.avatar.Data;
@@ -38,13 +43,54 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class AvatarManager extends AbstractManager {
+
+    private static final Object RENAME_LOCK = new Object();
+
+    private static final List<String> SUPPORTED_CONTENT_TYPES;
+
+    private static final Ordering<Info> AVATAR_ORDERING =
+            new Ordering<>() {
+                @Override
+                public int compare(Info left, Info right) {
+                    return ComparisonChain.start()
+                            .compare(
+                                    right.getWidth() * right.getHeight(),
+                                    left.getWidth() * left.getHeight())
+                            .compare(
+                                    ImageFormat.formatPriority(right.getType()),
+                                    ImageFormat.formatPriority(left.getType()))
+                            .result();
+                }
+            };
+
+    static {
+        final ImmutableList.Builder<ImageFormat> builder = new ImmutableList.Builder<>();
+        builder.add(ImageFormat.JPEG, ImageFormat.PNG, ImageFormat.WEBP);
+        if (Compatibility.twentyEight()) {
+            builder.add(ImageFormat.HEIF);
+        }
+        if (Compatibility.thirtyFour()) {
+            builder.add(ImageFormat.AVIF);
+        }
+        final var supportedFormats = builder.build();
+        SUPPORTED_CONTENT_TYPES =
+                ImmutableList.copyOf(
+                        Collections2.transform(supportedFormats, ImageFormat::toContentType));
+    }
 
     private static final Executor AVATAR_COMPRESSION_EXECUTOR =
             MoreExecutors.newSequentialExecutor(Executors.newSingleThreadScheduledExecutor());
@@ -56,43 +102,154 @@ public class AvatarManager extends AbstractManager {
         this.service = service;
     }
 
-    public ListenableFuture<byte[]> fetch(final Jid address, final String itemId) {
+    private ListenableFuture<byte[]> fetch(final Jid address, final String itemId) {
         final var future = getManager(PubSubManager.class).fetchItem(address, itemId, Data.class);
         return Futures.transform(future, ByteContent::asBytes, MoreExecutors.directExecutor());
     }
 
-    public ListenableFuture<Void> fetchAndStore(final Avatar avatar) {
-        final var future = fetch(avatar.owner, avatar.sha1sum);
-        return Futures.transform(
+    private ListenableFuture<Info> fetchAndStoreWithFallback(
+            final Jid address, final Info picked, final Info fallback) {
+        Preconditions.checkArgument(fallback.getUrl() == null, "fallback avatar must be in-band");
+        final var url = picked.getUrl();
+        if (url != null) {
+            final var httpDownloadFuture = fetchAndStoreHttp(url, picked);
+            return Futures.catchingAsync(
+                    httpDownloadFuture,
+                    Exception.class,
+                    ex -> {
+                        Log.d(
+                                Config.LOGTAG,
+                                getAccount().getJid().asBareJid()
+                                        + ": could not download avatar for "
+                                        + address
+                                        + " from "
+                                        + url,
+                                ex);
+                        return fetchAndStoreInBand(address, fallback);
+                    },
+                    MoreExecutors.directExecutor());
+        } else {
+            return fetchAndStoreInBand(address, picked);
+        }
+    }
+
+    private ListenableFuture<Info> fetchAndStoreInBand(final Jid address, final Info avatar) {
+        final var future = fetch(address, avatar.getId());
+        return Futures.transformAsync(
                 future,
                 data -> {
-                    avatar.image = BaseEncoding.base64().encode(data);
-                    if (service.getFileBackend().save(avatar)) {
-                        setPepAvatar(avatar);
-                        return null;
-                    } else {
-                        throw new IllegalStateException("Could not store avatar");
+                    final var actualHash = Hashing.sha1().hashBytes(data).toString();
+                    if (!actualHash.equals(avatar.getId())) {
+                        throw new IllegalStateException(
+                                String.format("In-band avatar hash of %s did not match", address));
                     }
+
+                    final var file = FileBackend.getAvatarFile(context, avatar.getId());
+                    if (file.exists()) {
+                        return Futures.immediateFuture(avatar);
+                    }
+                    return Futures.transform(
+                            write(file, data), v -> avatar, MoreExecutors.directExecutor());
                 },
                 MoreExecutors.directExecutor());
     }
 
-    private void setPepAvatar(final Avatar avatar) {
+    private ListenableFuture<Void> write(final File destination, byte[] bytes) {
+        return Futures.submit(
+                () -> {
+                    final var randomFile =
+                            new File(context.getCacheDir(), UUID.randomUUID().toString());
+                    Files.write(bytes, randomFile);
+                    if (moveAvatarIntoCache(randomFile, destination)) {
+                        return null;
+                    }
+                    throw new IllegalStateException(
+                            String.format(
+                                    "Could not move file to %s", destination.getAbsolutePath()));
+                },
+                AVATAR_COMPRESSION_EXECUTOR);
+    }
+
+    private ListenableFuture<Info> fetchAndStoreHttp(final HttpUrl url, final Info avatar) {
+        final SettableFuture<Info> settableFuture = SettableFuture.create();
+        final OkHttpClient client =
+                service.getHttpConnectionManager().buildHttpClient(url, getAccount(), 30, false);
+        final var request = new Request.Builder().url(url).get().build();
+        client.newCall(request)
+                .enqueue(
+                        new Callback() {
+                            @Override
+                            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                                settableFuture.setException(e);
+                            }
+
+                            @Override
+                            public void onResponse(@NonNull Call call, @NonNull Response response) {
+                                if (response.isSuccessful()) {
+                                    try {
+                                        write(avatar, response);
+                                    } catch (final Exception e) {
+                                        settableFuture.setException(e);
+                                        return;
+                                    }
+                                    settableFuture.set(avatar);
+                                } else {
+                                    settableFuture.setException(
+                                            new IOException("HTTP call was not successful"));
+                                }
+                            }
+                        });
+        return settableFuture;
+    }
+
+    private void write(final Info avatar, Response response) throws IOException {
+        final var body = response.body();
+        if (body == null) {
+            throw new IOException("Body was null");
+        }
+        final long bytes = avatar.getBytes();
+        final long actualBytes;
+        final var inputStream = ByteStreams.limit(body.byteStream(), avatar.getBytes());
+        final var randomFile = new File(context.getCacheDir(), UUID.randomUUID().toString());
+        final String actualHash;
+        try (final var fileOutputStream = new FileOutputStream(randomFile);
+                var hashingOutputStream =
+                        new HashingOutputStream(Hashing.sha1(), fileOutputStream)) {
+            actualBytes = ByteStreams.copy(inputStream, hashingOutputStream);
+            actualHash = hashingOutputStream.hash().toString();
+        }
+        if (actualBytes != bytes) {
+            throw new IllegalStateException("File size did not meet expected size");
+        }
+        if (!actualHash.equals(avatar.getId())) {
+            throw new IllegalStateException("File hash did not match");
+        }
+        final var avatarFile = FileBackend.getAvatarFile(context, avatar.getId());
+        if (moveAvatarIntoCache(randomFile, avatarFile)) {
+            return;
+        }
+        throw new IOException("Could not move avatar to avatar location");
+    }
+
+    private void setAvatar(final Jid from, final Info info) {
+        Log.d(Config.LOGTAG, "setting avatar for " + from + " to " + info.getId());
         final var account = getAccount();
-        if (account.getJid().asBareJid().equals(avatar.owner)) {
-            if (account.setAvatar(avatar.getFilename())) {
+        if (account.getJid().asBareJid().equals(from)) {
+            if (account.setAvatar(info.getId())) {
                 getDatabase().updateAccount(account);
+                service.notifyAccountAvatarHasChanged(account);
             }
-            this.service.getAvatarService().clear(account);
-            this.service.updateConversationUi();
-            this.service.updateAccountUi();
+            service.getAvatarService().clear(account);
+            service.updateConversationUi();
+            service.updateAccountUi();
         } else {
-            final Contact contact = account.getRoster().getContact(avatar.owner);
-            contact.setAvatar(avatar);
-            account.getXmppConnection().getManager(RosterManager.class).writeToDatabaseAsync();
-            this.service.getAvatarService().clear(contact);
-            this.service.updateConversationUi();
-            this.service.updateRosterUi();
+            final Contact contact = account.getRoster().getContact(from);
+            if (contact.setAvatar(info.getId())) {
+                connection.getManager(RosterManager.class).writeToDatabaseAsync();
+                service.getAvatarService().clear(contact);
+                service.updateConversationUi();
+                service.updateRosterUi();
+            }
         }
     }
 
@@ -100,43 +257,34 @@ public class AvatarManager extends AbstractManager {
         final var account = getAccount();
         // TODO support retract
         final var entry = items.getFirstItemWithId(Metadata.class);
-        final var avatar =
-                entry == null ? null : Avatar.parseMetadata(entry.getKey(), entry.getValue());
-        if (avatar == null) {
-            Log.d(Config.LOGTAG, "could not parse avatar metadata from " + from);
+        if (entry == null) {
             return;
         }
-        avatar.owner = from.asBareJid();
-        if (service.getFileBackend().isAvatarCached(avatar)) {
-            if (account.getJid().asBareJid().equals(from)) {
-                if (account.setAvatar(avatar.getFilename())) {
-                    service.databaseBackend.updateAccount(account);
-                    service.notifyAccountAvatarHasChanged(account);
-                }
-                service.getAvatarService().clear(account);
-                service.updateConversationUi();
-                service.updateAccountUi();
-            } else {
-                final Contact contact = account.getRoster().getContact(from);
-                if (contact.setAvatar(avatar)) {
-                    connection.getManager(RosterManager.class).writeToDatabaseAsync();
-                    service.getAvatarService().clear(contact);
-                    service.updateConversationUi();
-                    service.updateRosterUi();
-                }
-            }
+        final var avatar = getPreferredFallback(entry);
+        if (avatar == null) {
+            return;
+        }
+
+        Log.d(Config.LOGTAG, "picked avatar from " + from + ": " + avatar.preferred);
+
+        final var cache = FileBackend.getAvatarFile(context, avatar.preferred.getId());
+
+        if (cache.exists()) {
+            setAvatar(from, avatar.preferred);
         } else if (service.isDataSaverDisabled()) {
-            final var future = this.fetchAndStore(avatar);
+            final var future =
+                    this.fetchAndStoreWithFallback(from, avatar.preferred, avatar.fallback);
             Futures.addCallback(
                     future,
-                    new FutureCallback<Void>() {
+                    new FutureCallback<Info>() {
                         @Override
-                        public void onSuccess(Void result) {
+                        public void onSuccess(Info result) {
+                            setAvatar(from, result);
                             Log.d(
                                     Config.LOGTAG,
                                     account.getJid().asBareJid()
                                             + ": successfully fetched pep avatar for "
-                                            + avatar.owner);
+                                            + from);
                         }
 
                         @Override
@@ -145,6 +293,46 @@ public class AvatarManager extends AbstractManager {
                         }
                     },
                     MoreExecutors.directExecutor());
+        }
+    }
+
+    private PreferredFallback getPreferredFallback(final Map.Entry<String, Metadata> entry) {
+        final var mainItemId = entry.getKey();
+        final var infos = entry.getValue().getInfos();
+
+        final var inBandAvatar = Iterables.find(infos, i -> mainItemId.equals(i.getId()), null);
+
+        if (inBandAvatar == null || inBandAvatar.getUrl() != null) {
+            return null;
+        }
+
+        final var optionalAutoAcceptSize = new AppSettings(context).getAutoAcceptFileSize();
+        if (optionalAutoAcceptSize.isEmpty()) {
+            return new PreferredFallback(inBandAvatar);
+        } else {
+
+            final var supported =
+                    Collections2.filter(
+                            infos,
+                            i ->
+                                    Objects.nonNull(i.getId())
+                                            && i.getBytes() > 0
+                                            && i.getHeight() > 0
+                                            && i.getWidth() > 0
+                                            && SUPPORTED_CONTENT_TYPES.contains(i.getType()));
+
+            final var autoAcceptSize = optionalAutoAcceptSize.get();
+
+            final var supportedBelowLimit =
+                    Collections2.filter(supported, i -> i.getBytes() <= autoAcceptSize);
+
+            if (supportedBelowLimit.isEmpty()) {
+                return new PreferredFallback(inBandAvatar);
+            } else {
+                final var preferred =
+                        Iterables.getFirst(AVATAR_ORDERING.sortedCopy(supportedBelowLimit), null);
+                return new PreferredFallback(preferred, inBandAvatar);
+            }
         }
     }
 
@@ -202,7 +390,7 @@ public class AvatarManager extends AbstractManager {
         hashingOutputStream.close();
         final var sha1 = hashingOutputStream.hash().toString();
         final var avatarFile = FileBackend.getAvatarFile(context, sha1);
-        if (randomFile.renameTo(avatarFile)) {
+        if (moveAvatarIntoCache(randomFile, avatarFile)) {
             return new Info(
                     sha1,
                     avatarFile.length(),
@@ -260,7 +448,7 @@ public class AvatarManager extends AbstractManager {
             throws IOException {
         final var sha1 = Files.asByteSource(randomFile).hash(Hashing.sha1()).toString();
         final var avatarFile = FileBackend.getAvatarFile(context, sha1);
-        if (randomFile.renameTo(avatarFile)) {
+        if (moveAvatarIntoCache(randomFile, avatarFile)) {
             return new Info(sha1, avatarFile.length(), type.toContentType(), height, width);
         }
         throw new IllegalStateException(
@@ -374,14 +562,59 @@ public class AvatarManager extends AbstractManager {
                 MoreExecutors.directExecutor());
     }
 
-    private String asContentType(final ImageFormat format) {
-        return switch (format) {
-            case WEBP -> "image/webp";
-            case PNG -> "image/png";
-            case JPEG -> "image/jpeg";
-            case AVIF -> "image/avif";
-            case HEIF -> "image/heif";
-        };
+    public ListenableFuture<Void> fetchAndStore(final Jid address) {
+        final var metaDataFuture =
+                getManager(PubSubManager.class).fetchItems(address, Metadata.class);
+        return Futures.transformAsync(
+                metaDataFuture,
+                metaData -> {
+                    final var entry = Iterables.getFirst(metaData.entrySet(), null);
+                    if (entry == null) {
+                        throw new IllegalStateException("Metadata item not found");
+                    }
+                    final var avatar = getPreferredFallback(entry);
+
+                    if (avatar == null) {
+                        throw new IllegalStateException("No avatar found");
+                    }
+
+                    final var cache = FileBackend.getAvatarFile(context, avatar.preferred.getId());
+
+                    if (cache.exists()) {
+                        Log.d(
+                                Config.LOGTAG,
+                                "fetchAndStore. file existed " + cache.getAbsolutePath());
+                        setAvatar(address, avatar.preferred);
+                        return Futures.immediateVoidFuture();
+                    } else {
+                        final var future =
+                                this.fetchAndStoreWithFallback(
+                                        address, avatar.preferred, avatar.fallback);
+                        return Futures.transform(
+                                future,
+                                info -> {
+                                    setAvatar(address, info);
+                                    return null;
+                                },
+                                MoreExecutors.directExecutor());
+                    }
+                },
+                MoreExecutors.directExecutor());
+    }
+
+    private static boolean moveAvatarIntoCache(final File randomFile, final File destination) {
+        synchronized (RENAME_LOCK) {
+            if (destination.exists()) {
+                return true;
+            }
+            final var directory = destination.getParentFile();
+            if (directory != null && directory.mkdirs()) {
+                Log.d(
+                        Config.LOGTAG,
+                        "create avatar cache directory: " + directory.getAbsolutePath());
+            }
+            return randomFile.renameTo(destination);
+        }
     }
 
     public enum ImageFormat {
@@ -401,6 +634,22 @@ public class AvatarManager extends AbstractManager {
             };
         }
 
+        public static int formatPriority(final String type) {
+            final var format = ofContentType(type);
+            return format == null ? Integer.MIN_VALUE : format.ordinal();
+        }
+
+        private static ImageFormat ofContentType(final String type) {
+            return switch (type) {
+                case "image/png" -> PNG;
+                case "image/jpeg" -> JPEG;
+                case "image/webp" -> WEBP;
+                case "image/heif" -> HEIF;
+                case "image/avif" -> AVIF;
+                default -> null;
+            };
+        }
+
         public static ImageFormat of(final Bitmap.CompressFormat compressFormat) {
             return switch (compressFormat) {
                 case PNG -> PNG;
@@ -408,6 +657,20 @@ public class AvatarManager extends AbstractManager {
                 case JPEG -> JPEG;
                 default -> throw new AssertionError("Not implemented");
             };
+        }
+    }
+
+    private static final class PreferredFallback {
+        private final Info preferred;
+        private final Info fallback;
+
+        private PreferredFallback(final Info fallback) {
+            this(fallback, fallback);
+        }
+
+        private PreferredFallback(Info preferred, Info fallback) {
+            this.preferred = preferred;
+            this.fallback = fallback;
         }
     }
 }

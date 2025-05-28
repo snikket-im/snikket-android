@@ -87,14 +87,6 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public Iq retrieveAvatarMetaData(final Jid to) {
-        final Iq packet = retrieve("urn:xmpp:avatar:metadata", null);
-        if (to != null) {
-            packet.setTo(to);
-        }
-        return packet;
-    }
-
     public Iq retrieveDeviceIds(final Jid to) {
         final var packet = retrieve(AxolotlService.PEP_DEVICE_LIST, null);
         if (to != null) {

@@ -107,11 +107,8 @@ public class AvatarService {
         if (avatar != null || cachedOnly) {
             return avatar;
         }
-        if (contact.getAvatarFilename() != null && QuickConversationsService.isQuicksy()) {
-            avatar =
-                    mXmppConnectionService
-                            .getFileBackend()
-                            .getAvatar(contact.getAvatarFilename(), size);
+        if (contact.getAvatar() != null && QuickConversationsService.isQuicksy()) {
+            avatar = mXmppConnectionService.getFileBackend().getAvatar(contact.getAvatar(), size);
         }
         if (avatar == null && contact.getProfilePhoto() != null) {
             avatar =
@@ -119,11 +116,8 @@ public class AvatarService {
                             .getFileBackend()
                             .cropCenterSquare(Uri.parse(contact.getProfilePhoto()), size);
         }
-        if (avatar == null && contact.getAvatarFilename() != null) {
-            avatar =
-                    mXmppConnectionService
-                            .getFileBackend()
-                            .getAvatar(contact.getAvatarFilename(), size);
+        if (avatar == null && contact.getAvatar() != null) {
+            avatar = mXmppConnectionService.getFileBackend().getAvatar(contact.getAvatar(), size);
         }
         if (avatar == null) {
             avatar =
@@ -227,7 +221,7 @@ public class AvatarService {
         Contact c = user.getContact();
         if (c != null
                 && (c.getProfilePhoto() != null
-                        || c.getAvatarFilename() != null
+                        || c.getAvatar() != null
                         || user.getAvatar() == null)) {
             return get(c, size, cachedOnly);
         } else {
@@ -322,7 +316,7 @@ public class AvatarService {
                 Jid jid = bookmark.getJid();
                 Account account = bookmark.getAccount();
                 Contact contact = jid == null ? null : account.getRoster().getContact(jid);
-                if (contact != null && contact.getAvatarFilename() != null) {
+                if (contact != null && contact.getAvatar() != null) {
                     return get(contact, size, cachedOnly);
                 }
                 String seed = jid != null ? jid.asBareJid().toString() : null;
@@ -497,7 +491,7 @@ public class AvatarService {
             return get(message.getCounterparts(), size, cachedOnly);
         } else if (message.getStatus() == Message.STATUS_RECEIVED) {
             Contact c = message.getContact();
-            if (c != null && (c.getProfilePhoto() != null || c.getAvatarFilename() != null)) {
+            if (c != null && (c.getProfilePhoto() != null || c.getAvatar() != null)) {
                 return get(c, size, cachedOnly);
             } else if (conversation instanceof Conversation
                     && message.getConversation().getMode() == Conversation.MODE_MULTI) {
@@ -621,18 +615,12 @@ public class AvatarService {
         Contact contact = user.getContact();
         if (contact != null) {
             Uri uri = null;
-            if (contact.getAvatarFilename() != null && QuickConversationsService.isQuicksy()) {
-                uri =
-                        mXmppConnectionService
-                                .getFileBackend()
-                                .getAvatarUri(contact.getAvatarFilename());
+            if (contact.getAvatar() != null && QuickConversationsService.isQuicksy()) {
+                uri = mXmppConnectionService.getFileBackend().getAvatarUri(contact.getAvatar());
             } else if (contact.getProfilePhoto() != null) {
                 uri = Uri.parse(contact.getProfilePhoto());
-            } else if (contact.getAvatarFilename() != null) {
-                uri =
-                        mXmppConnectionService
-                                .getFileBackend()
-                                .getAvatarUri(contact.getAvatarFilename());
+            } else if (contact.getAvatar() != null) {
+                uri = mXmppConnectionService.getFileBackend().getAvatarUri(contact.getAvatar());
             }
             if (drawTile(canvas, uri, left, top, right, bottom)) {
                 return true;
