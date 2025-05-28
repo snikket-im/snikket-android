@@ -11,7 +11,7 @@ import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 import com.google.common.base.Stopwatch;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
@@ -1809,8 +1809,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return rows == 1;
     }
 
-    public List<Contact> readRoster(final Account account) {
-        final var builder = new ImmutableList.Builder<Contact>();
+    public Map<Jid, Contact> readRoster(final Account account) {
+        final var builder = new ImmutableMap.Builder<Jid, Contact>();
         final SQLiteDatabase db = this.getReadableDatabase();
         final String[] args = {account.getUuid()};
         try (final Cursor cursor =
@@ -1819,11 +1819,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 final var contact = Contact.fromCursor(cursor);
                 if (contact != null) {
                     contact.setAccount(account);
-                    builder.add(contact);
+                    builder.put(contact.getJid(), contact);
                 }
             }
         }
-        return builder.build();
+        return builder.buildKeepingLast();
     }
 
     public void writeRoster(

@@ -1,7 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import static eu.siacs.conversations.ui.XmppActivity.configureActionBar;
-
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;

@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -22,9 +21,10 @@ import im.conversations.android.xmpp.model.error.Error;
 import im.conversations.android.xmpp.model.roster.Item;
 import im.conversations.android.xmpp.model.roster.Query;
 import im.conversations.android.xmpp.model.stanza.Iq;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class RosterManager extends AbstractManager implements Roster {
@@ -32,7 +32,7 @@ public class RosterManager extends AbstractManager implements Roster {
     private final ReplacingSerialSingleThreadExecutor dbExecutor =
             new ReplacingSerialSingleThreadExecutor(RosterManager.class.getName());
 
-    private final List<Contact> contacts = new ArrayList<>();
+    private final Map<Jid, Contact> contacts = new HashMap<>();
     private String version;
 
     private final XmppConnectionService service;
@@ -196,14 +196,13 @@ public class RosterManager extends AbstractManager implements Roster {
 
     @NonNull
     public Contact getContactInternal(@NonNull final Jid jid) {
-        final var existing =
-                Iterables.find(this.contacts, c -> c.getJid().equals(jid.asBareJid()), null);
+        final var existing = this.contacts.get(jid.asBareJid());
         if (existing != null) {
             return existing;
         }
         final var contact = new Contact(jid.asBareJid());
         contact.setAccount(getAccount());
-        this.contacts.add(contact);
+        this.contacts.put(jid.asBareJid(), contact);
         return contact;
     }
 
@@ -211,8 +210,7 @@ public class RosterManager extends AbstractManager implements Roster {
     @Nullable
     public Contact getContactFromContactList(@NonNull final Jid jid) {
         synchronized (this.contacts) {
-            final var contact =
-                    Iterables.find(this.contacts, c -> c.getJid().equals(jid.asBareJid()), null);
+            final var contact = this.contacts.get(jid.asBareJid());
             if (contact != null && contact.showInContactList()) {
                 return contact;
             } else {
@@ -224,7 +222,7 @@ public class RosterManager extends AbstractManager implements Roster {
     @Override
     public List<Contact> getContacts() {
         synchronized (this.contacts) {
-            return ImmutableList.copyOf(this.contacts);
+            return ImmutableList.copyOf(this.contacts.values());
         }
     }
 
@@ -234,20 +232,20 @@ public class RosterManager extends AbstractManager implements Roster {
         final int option = Contact.getOption(clazz);
         synchronized (this.contacts) {
             return ImmutableList.copyOf(
-                    Collections2.filter(this.contacts, c -> c.getOption(option)));
+                    Collections2.filter(this.contacts.values(), c -> c.getOption(option)));
         }
     }
 
     public void clearPresences() {
         synchronized (this.contacts) {
-            for (final var contact : this.contacts) {
+            for (final var contact : this.contacts.values()) {
                 contact.clearPresences();
             }
         }
     }
 
     private void markAllAsNotInRoster() {
-        for (final var contact : this.contacts) {
+        for (final var contact : this.contacts.values()) {
             contact.resetOption(Contact.Options.IN_ROSTER);
         }
     }
@@ -255,7 +253,7 @@ public class RosterManager extends AbstractManager implements Roster {
     public void restore() {
         synchronized (this.contacts) {
             this.contacts.clear();
-            this.contacts.addAll(getDatabase().readRoster(getAccount()));
+            this.contacts.putAll(getDatabase().readRoster(getAccount()));
         }
     }
 
@@ -268,7 +266,7 @@ public class RosterManager extends AbstractManager implements Roster {
         final List<Contact> contacts;
         final String version;
         synchronized (this.contacts) {
-            contacts = ImmutableList.copyOf(this.contacts);
+            contacts = ImmutableList.copyOf(this.contacts.values());
             version = this.version;
         }
         getDatabase().writeRoster(account, version, contacts);
@@ -276,7 +274,7 @@ public class RosterManager extends AbstractManager implements Roster {
 
     public void syncDirtyContacts() {
         synchronized (this.contacts) {
-            for (final var contact : this.contacts) {
+            for (final var contact : this.contacts.values()) {
                 if (contact.getOption(Contact.Options.DIRTY_PUSH)) {
                     addRosterItem(contact, null);
                 }
