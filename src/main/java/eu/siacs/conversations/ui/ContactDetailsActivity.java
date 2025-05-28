@@ -637,6 +637,13 @@ public class ContactDetailsActivity extends OmemoActivity
     }
 
     private void onBadgeClick(final View view) {
+        final var intent = new Intent(this, ViewProfilePictureActivity.class);
+        intent.setData(Uri.fromParts("avatar", contact.getAvatar(), null));
+        intent.putExtra(ViewProfilePictureActivity.EXTRA_DISPLAY_NAME, contact.getDisplayName());
+        startActivity(intent);
+    }
+
+    private void onAddToAddressBookClick(final View view) {
         if (QuickConversationsService.isContactListIntegration(this)) {
             final Uri systemAccount = contact.getSystemAccount();
             if (systemAccount == null) {
