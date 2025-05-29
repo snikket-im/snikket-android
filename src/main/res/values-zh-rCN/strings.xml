@@ -1120,4 +1120,7 @@
     <string name="account_status_service_outage_scheduled">计划停机时间</string>
     <string name="account_status_service_outage_known">服务中断（已知问题）</string>
     <string name="sos_scheduled_return">‌服务预计将于 %s 恢复</string>
+    <string name="save_to_contact">保存到联系人</string>
+    <string name="show_in_contacts">在联系人中显示</string>
+    <string name="no_contacts_permission">%1$s 需要访问您的联系人</string>
 </resources>
