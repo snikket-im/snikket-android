@@ -6,7 +6,6 @@
     <string name="action_muc_details">Gruppesludringsdetaljer</string>
     <string name="action_add_account">Legg til samtale</string>
     <string name="action_edit_contact">Rediger navn</string>
-    <string name="action_add_phone_book">Legg til i kontaktliste</string>
     <string name="action_delete_contact">Fjern fra kontaktliste</string>
     <string name="action_block_contact">Blokker kontakt</string>
     <string name="action_unblock_contact">Avblokker kontakt</string>

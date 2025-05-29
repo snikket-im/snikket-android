@@ -2,7 +2,6 @@
 <resources>
     <string name="action_settings">Seadistused</string>
     <string name="action_edit_contact">Muuda nime</string>
-    <string name="action_add_phone_book">Lisa aadressiraamatusse</string>
     <string name="title_activity_choose_contacts">Vali kontaktid</string>
     <string name="minute_ago">1 minut tagasi</string>
     <string name="action_contact_details">Kontaktandmed</string>

@@ -117,25 +117,7 @@ public class MucOptions {
 
     public boolean updateConfiguration(final InfoQuery serviceDiscoveryResult) {
         this.infoQuery = serviceDiscoveryResult;
-        final var roomInfo = getRoomInfoForm();
-        String name;
-        Field roomConfigName =
-                roomInfo == null ? null : roomInfo.getFieldByName("muc#roomconfig_roomname");
-        if (roomConfigName != null) {
-            name = roomConfigName.getValue();
-        } else {
-            final var identities = serviceDiscoveryResult.getIdentities();
-            final String identityName =
-                    !identities.isEmpty()
-                            ? Iterables.getFirst(identities, null).getIdentityName()
-                            : null;
-            final Jid jid = conversation.getJid();
-            if (identityName != null && !identityName.equals(jid == null ? null : jid.getLocal())) {
-                name = identityName;
-            } else {
-                name = null;
-            }
-        }
+        final String name = getName(serviceDiscoveryResult);
         boolean changed = conversation.setAttribute("muc_name", name);
         changed |=
                 conversation.setAttribute(
@@ -147,6 +129,29 @@ public class MucOptions {
                 conversation.setAttribute(
                         Conversation.ATTRIBUTE_NON_ANONYMOUS, this.hasFeature("muc_nonanonymous"));
         return changed;
+    }
+
+    private String getName(final InfoQuery serviceDiscoveryResult) {
+        final var roomInfo =
+                serviceDiscoveryResult.getServiceDiscoveryExtension(
+                        "http://jabber.org/protocol/muc#roominfo");
+        final Field roomConfigName =
+                roomInfo == null ? null : roomInfo.getFieldByName("muc#roomconfig_roomname");
+        if (roomConfigName != null) {
+            return roomConfigName.getValue();
+        } else {
+            final var identities = serviceDiscoveryResult.getIdentities();
+            final String identityName =
+                    !identities.isEmpty()
+                            ? Iterables.getFirst(identities, null).getIdentityName()
+                            : null;
+            final Jid jid = conversation.getJid();
+            if (identityName != null && !identityName.equals(jid == null ? null : jid.getLocal())) {
+                return identityName;
+            } else {
+                return null;
+            }
+        }
     }
 
     private Data getRoomInfoForm() {
@@ -178,7 +183,11 @@ public class MucOptions {
     }
 
     public boolean allowInvites() {
-        final Field field = getRoomInfoForm().getFieldByName("muc#roomconfig_allowinvites");
+        final var roomInfo = getRoomInfoForm();
+        if (roomInfo == null) {
+            return false;
+        }
+        final var field = roomInfo.getFieldByName("muc#roomconfig_allowinvites");
         return field != null && "1".equals(field.getValue());
     }
 
@@ -187,14 +196,22 @@ public class MucOptions {
     }
 
     public boolean participantsCanChangeSubject() {
-        final Field configField = getRoomInfoForm().getFieldByName("muc#roomconfig_changesubject");
-        final Field infoField = getRoomInfoForm().getFieldByName("muc#roominfo_changesubject");
+        final var roomInfo = getRoomInfoForm();
+        if (roomInfo == null) {
+            return false;
+        }
+        final Field configField = roomInfo.getFieldByName("muc#roomconfig_changesubject");
+        final Field infoField = roomInfo.getFieldByName("muc#roominfo_changesubject");
         final Field field = configField != null ? configField : infoField;
         return field != null && "1".equals(field.getValue());
     }
 
     public boolean allowPm() {
-        final Field field = getRoomInfoForm().getFieldByName("muc#roomconfig_allowpm");
+        final var roomInfo = getRoomInfoForm();
+        if (roomInfo == null) {
+            return true;
+        }
+        final Field field = roomInfo.getFieldByName("muc#roomconfig_allowpm");
         if (field == null) {
             return true; // fall back if field does not exists
         }
@@ -210,7 +227,9 @@ public class MucOptions {
     }
 
     public boolean allowPmRaw() {
-        final Field field = getRoomInfoForm().getFieldByName("muc#roomconfig_allowpm");
+        final var roomInfo = getRoomInfoForm();
+        final Field field =
+                roomInfo == null ? null : roomInfo.getFieldByName("muc#roomconfig_allowpm");
         return field == null || Arrays.asList("anyone", "participants").contains(field.getValue());
     }
 
@@ -752,6 +771,7 @@ public class MucOptions {
         }
 
         @Override
+        @NonNull
         public String toString() {
             return name().toLowerCase(Locale.US);
         }
@@ -842,7 +862,7 @@ public class MucOptions {
         private ChatState chatState = Config.DEFAULT_CHAT_STATE;
         private String occupantId;
 
-        public User(MucOptions options, Jid fullJid) {
+        public User(final MucOptions options, final Jid fullJid) {
             this.options = options;
             this.fullJid = fullJid;
         }

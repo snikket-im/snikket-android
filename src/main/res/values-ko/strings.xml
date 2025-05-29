@@ -5,7 +5,6 @@
     <string name="action_contact_details">연락처 정보</string>
     <string name="action_add_account">계정 추가 </string>
     <string name="action_edit_contact">이름 편집 </string>
-    <string name="action_add_phone_book">주소록에 추가</string>
     <string name="action_delete_contact">명단에서 삭제 </string>
     <string name="action_block_contact">연락처 </string>
     <string name="action_unblock_contact">연락처 차단 해제 </string>

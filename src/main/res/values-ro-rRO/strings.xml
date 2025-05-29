@@ -8,7 +8,6 @@
     <string name="channel_details">Detalii canal</string>
     <string name="action_add_account">Adaugă cont</string>
     <string name="action_edit_contact">Editează nume</string>
-    <string name="action_add_phone_book">Adaugă la lista de contacte</string>
     <string name="action_delete_contact">Șterge din lista de contacte</string>
     <string name="action_block_contact">Blochează contact</string>
     <string name="action_unblock_contact">Deblochează contact</string>

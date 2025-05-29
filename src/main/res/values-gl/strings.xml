@@ -8,7 +8,6 @@
     <string name="channel_details">Detalles da canle</string>
     <string name="action_add_account">Engadir conta</string>
     <string name="action_edit_contact">Editar contacto</string>
-    <string name="action_add_phone_book">Engadir a libreta de enderezos</string>
     <string name="action_delete_contact">Eliminar contacto da lista</string>
     <string name="action_block_contact">Bloquear contacto</string>
     <string name="action_unblock_contact">Desbloquear contacto</string>

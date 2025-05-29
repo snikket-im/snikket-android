@@ -8,7 +8,6 @@
     <string name="channel_details">Подробности за канала</string>
     <string name="action_add_account">Добавяне на профил</string>
     <string name="action_edit_contact">Редактиране на името</string>
-    <string name="action_add_phone_book">Добавяне към адресния указател</string>
     <string name="action_delete_contact">Изтриване от списъка</string>
     <string name="action_block_contact">Блокиране на контакта</string>
     <string name="action_unblock_contact">Деблокиране на контакта</string>

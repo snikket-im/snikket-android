@@ -8,7 +8,6 @@
     <string name="channel_details">Kanal ayrıntıları</string>
     <string name="action_add_account">Hesap ekle</string>
     <string name="action_edit_contact">İsmi düzenle</string>
-    <string name="action_add_phone_book">Telefon rehberine ekle</string>
     <string name="action_delete_contact">Kişi listesinden sil</string>
     <string name="action_block_contact">Kişiyi engelle</string>
     <string name="action_unblock_contact">Kişiyi engellemekten vazgeç</string>

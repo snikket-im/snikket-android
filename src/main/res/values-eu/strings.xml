@@ -8,7 +8,6 @@
     <string name="channel_details">Kanalaren xehetasunak</string>
     <string name="action_add_account">Kontua gehitu</string>
     <string name="action_edit_contact">Izena editatu</string>
-    <string name="action_add_phone_book">Helbideen liburura gehitu</string>
     <string name="action_delete_contact">Zerrendatik ezabatu</string>
     <string name="action_block_contact">Kontaktua blokeatu</string>
     <string name="action_unblock_contact">Kontaktua desblokeatu</string>

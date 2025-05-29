@@ -296,7 +296,6 @@
     <string name="crash_report_message">השימוש בחשבון XMPP שלך לשליחת באגים עוזר לפיתוח מתמשך של %1$s.</string>
     <string name="title_activity_share_with">שתף עם…</string>
     <string name="action_archive_chat">ארכיון צ\'אט</string>
-    <string name="action_add_phone_book">הוסף לפנקס הכתובות</string>
     <string name="action_block_participant">חסום משתתף</string>
     <string name="action_unblock_participant">בטל חסימת משתמש</string>
     <string name="title_activity_choose_contacts">בחר אנשי קשר</string>

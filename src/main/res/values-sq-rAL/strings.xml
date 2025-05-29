@@ -7,7 +7,6 @@
     <string name="channel_details">Hollësi kanali</string>
     <string name="action_add_account">Shtoni llogari</string>
     <string name="action_edit_contact">Përpunoni emër</string>
-    <string name="action_add_phone_book">Shtoje te libër adresash</string>
     <string name="action_block_contact">Bllokojeni kontaktin</string>
     <string name="action_unblock_contact">Zhbllokoje kontaktin</string>
     <string name="action_block_domain">Blloko përkatësin</string>

@@ -8,7 +8,6 @@
     <string name="channel_details">Gruppdetaljer</string>
     <string name="action_add_account">Lägg till konto</string>
     <string name="action_edit_contact">Redigera namn</string>
-    <string name="action_add_phone_book">Lägg till i kontakter</string>
     <string name="action_delete_contact">Ta bort kontakt</string>
     <string name="action_block_contact">Blockera kontakt</string>
     <string name="action_unblock_contact">Avblockera kontakt</string>

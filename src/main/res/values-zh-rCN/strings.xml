@@ -8,7 +8,6 @@
     <string name="channel_details">频道详情</string>
     <string name="action_add_account">添加账号</string>
     <string name="action_edit_contact">编辑名称</string>
-    <string name="action_add_phone_book">添加到通讯录</string>
     <string name="action_delete_contact">删除联系人</string>
     <string name="action_block_contact">屏蔽联系人</string>
     <string name="action_unblock_contact">取消屏蔽联系人</string>

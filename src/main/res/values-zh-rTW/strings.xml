@@ -8,7 +8,6 @@
     <string name="channel_details">頻道詳細資料</string>
     <string name="action_add_account">新增帳戶</string>
     <string name="action_edit_contact">編輯名稱</string>
-    <string name="action_add_phone_book">新增至通訊錄</string>
     <string name="action_delete_contact">從名冊中刪除</string>
     <string name="action_block_contact">封鎖聯絡人</string>
     <string name="action_unblock_contact">解除封鎖聯絡人</string>

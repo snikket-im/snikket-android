@@ -8,7 +8,6 @@
     <string name="channel_details">Csatorna részletei</string>
     <string name="action_add_account">Fiók hozzáadása</string>
     <string name="action_edit_contact">Név szerkesztése</string>
-    <string name="action_add_phone_book">Hozzáadás a címjegyzékhez</string>
     <string name="action_delete_contact">Törlés a névsorból</string>
     <string name="action_block_contact">Partner tiltása</string>
     <string name="action_unblock_contact">Partner tiltásának feloldása</string>
