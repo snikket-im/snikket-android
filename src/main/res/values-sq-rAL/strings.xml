@@ -1135,4 +1135,7 @@
     <string name="sos_scheduled_return">Shërbimi është vënë në plan të rikthehet në funksionim më %s</string>
     <string name="account_status_service_outage_known">Shërbim Jashtë Funksionimi (Problem i Ditur)</string>
     <string name="account_status_service_outage_scheduled">Kohë Mosfunksionimi e Planifikuar</string>
+    <string name="save_to_contact">Ruaje te Kontaktet</string>
+    <string name="show_in_contacts">Shfaqe te Kontakte</string>
+    <string name="no_contacts_permission">%1$s ka nevojë për hyrje te kontaktet tuaja</string>
 </resources>
