@@ -45,7 +45,7 @@
                         android:padding="@dimen/card_padding_regular">
 
                         <com.makeramen.roundedimageview.RoundedImageView
-                            android:id="@+id/details_contact_badge"
+                            android:id="@+id/details_avatar"
                             android:layout_width="@dimen/publish_avatar_size"
                             android:layout_height="@dimen/publish_avatar_size"
                             android:layout_alignParentTop="true"
@@ -57,7 +57,7 @@
                             android:id="@+id/details_contact_xmpp_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/details_contact_badge"
+                            android:layout_below="@+id/details_avatar"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="16sp"
                             android:gravity="center_horizontal"

@@ -18,7 +18,6 @@ import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -522,10 +521,11 @@ public class ContactDetailsActivity extends OmemoActivity
         binding.detailsContactXmppAddress.setText(
                 IrregularUnicodeDetector.style(this, contact.getJid()));
         final String account = contact.getAccount().getJid().asBareJid().toString();
+        binding.detailsAccount.setOnClickListener(this::onDetailsAccountClicked);
         binding.detailsAccount.setText(getString(R.string.using_account, account));
         AvatarWorkerTask.loadAvatar(
-                contact, binding.detailsContactBadge, R.dimen.avatar_on_details_screen_size);
-        binding.detailsContactBadge.setOnClickListener(this::onBadgeClick);
+                contact, binding.detailsAvatar, R.dimen.avatar_on_details_screen_size);
+        binding.detailsAvatar.setOnClickListener(this::onAvatarClicked);
         if (QuickConversationsService.isContactListIntegration(this)) {
             if (contact.getSystemAccount() == null) {
                 binding.addAddressBook.setText(R.string.save_to_contact);
@@ -669,9 +669,25 @@ public class ContactDetailsActivity extends OmemoActivity
         }
     }
 
-    private void onBadgeClick(final View view) {
+    private void onDetailsAccountClicked(final View view) {
+        final var contact = this.contact;
+        if (contact == null) {
+            return;
+        }
+        switchToAccount(contact.getAccount());
+    }
+
+    private void onAvatarClicked(final View view) {
+        final var contact = this.contact;
+        if (contact == null) {
+            return;
+        }
+        final var avatar = contact.getAvatar();
+        if (avatar == null) {
+            return;
+        }
         final var intent = new Intent(this, ViewProfilePictureActivity.class);
-        intent.setData(Uri.fromParts("avatar", contact.getAvatar(), null));
+        intent.setData(Uri.fromParts("avatar", avatar, null));
         intent.putExtra(ViewProfilePictureActivity.EXTRA_DISPLAY_NAME, contact.getDisplayName());
         startActivity(intent);
     }
