@@ -46,76 +46,109 @@
 
                         <com.makeramen.roundedimageview.RoundedImageView
                             android:id="@+id/details_contact_badge"
-                            android:layout_width="@dimen/avatar_on_details_screen_size"
-                            android:layout_height="@dimen/avatar_on_details_screen_size"
+                            android:layout_width="@dimen/publish_avatar_size"
+                            android:layout_height="@dimen/publish_avatar_size"
                             android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
                             android:scaleType="centerCrop"
                             app:riv_corner_radius="8dp" />
 
-                        <LinearLayout
-                            android:id="@+id/details_jidbox"
+                        <TextView
+                            android:id="@+id/details_contact_xmpp_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_toRightOf="@+id/details_contact_badge"
+                            android:layout_below="@+id/details_contact_badge"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="16sp"
+                            android:gravity="center_horizontal"
+                            android:minWidth="288dp"
+                            android:text="@string/account_settings_example_jabber_id"
+                            android:textAppearance="?textAppearanceTitleLarge" />
+
+
+
+                        <LinearLayout
+                            android:id="@+id/button_box"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/details_contact_xmpp_address"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="16dp"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/add_contact_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="8dp"
+                                android:text="@string/add_contact" />
+
+                            <Button
+                                android:id="@+id/add_address_book"
+                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="8dp"
+                                android:text="@string/save_to_contact"
+                                app:icon="@drawable/ic_contacts_24dp" />
+                        </LinearLayout>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/tags"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/button_box"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="16sp"
+                            android:visibility="gone">
+
+                            <androidx.constraintlayout.helper.widget.Flow
+                                android:id="@+id/flow_widget"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:flow_horizontalBias="0"
+                                app:flow_horizontalGap="8sp"
+                                app:flow_horizontalStyle="packed"
+                                app:flow_verticalGap="4sp"
+                                app:flow_wrapMode="chain"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/details_last_seen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tags"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="8sp"
+                            android:textAppearance="?textAppearanceTitleSmall"
+                            tools:text="@string/just_now" />
+
+                        <LinearLayout
+                            android:id="@+id/status_message_subscription_box"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/details_last_seen"
+                            android:layout_alignStart="@+id/details_contact_xmpp_address"
+                            android:layout_marginTop="8sp"
                             android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/details_contactjid"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/account_settings_example_jabber_id"
-                                android:textAppearance="?textAppearanceTitleMedium" />
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/tags"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8sp">
-
-                                <androidx.constraintlayout.helper.widget.Flow
-                                    android:id="@+id/flow_widget"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    app:flow_horizontalBias="0"
-                                    app:flow_horizontalGap="8sp"
-                                    app:flow_horizontalStyle="packed"
-                                    app:flow_verticalGap="4sp"
-                                    app:flow_wrapMode="chain"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <TextView
-                                android:id="@+id/details_lastseen"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:textAppearance="?textAppearanceTitleSmall"
-                                tools:text="@string/just_now" />
 
                             <TextView
                                 android:id="@+id/status_message"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginBottom="8sp"
                                 android:textAppearance="?textAppearanceBodyMedium"
                                 tools:text="Hey there! I’m using Conversations" />
-
-                            <Button
-                                android:id="@+id/add_contact_button"
-                                style="@style/Widget.Material3.Button.ElevatedButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:text="@string/add_contact" />
 
                             <CheckBox
                                 android:id="@+id/details_send_presence"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
                                 android:text="@string/send_presence_updates" />
 
                             <CheckBox
@@ -129,9 +162,10 @@
                             android:id="@+id/details_account"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/details_jidbox"
+                            android:layout_below="@+id/status_message_subscription_box"
                             android:layout_alignParentEnd="true"
-                            android:layout_marginTop="32dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="16sp"
                             android:text="@string/using_account"
                             android:textAppearance="?textAppearanceLabelMedium" />
                     </RelativeLayout>

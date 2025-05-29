@@ -472,17 +472,17 @@ public class MucOptions {
         return subset;
     }
 
-    public static List<User> sub(List<User> users, int max) {
-        ArrayList<User> subset = new ArrayList<>();
-        HashSet<Jid> jids = new HashSet<>();
-        for (User user : users) {
-            jids.add(user.getAccount().getJid().asBareJid());
-            if (user.getRealJid() == null
-                    || (user.getRealJid().getLocal() != null && jids.add(user.getRealJid()))) {
+    public static List<User> sub(final List<User> users, final int max) {
+        final var subset = new ArrayList<User>();
+        final var addresses = new HashSet<Jid>();
+        for (final var user : users) {
+            addresses.add(user.getAccount().getJid().asBareJid());
+            final var address = user.getRealJid();
+            if (address == null || (address.getLocal() != null && addresses.add(address))) {
                 subset.add(user);
             }
             if (subset.size() >= max) {
-                break;
+                return subset;
             }
         }
         return subset;

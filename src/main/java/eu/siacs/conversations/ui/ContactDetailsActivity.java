@@ -14,9 +14,11 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
+import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -145,16 +147,14 @@ public class ContactDetailsActivity extends OmemoActivity
     private void checkContactPermissionAndShowAddDialog() {
         if (hasContactsPermission()) {
             showAddToPhoneBookDialog();
-        } else if (QuickConversationsService.isContactListIntegration(this)
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        } else if (QuickConversationsService.isContactListIntegration(this)) {
             requestPermissions(
                     new String[] {Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
         }
     }
 
     private boolean hasContactsPermission() {
-        if (QuickConversationsService.isContactListIntegration(this)
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (QuickConversationsService.isContactListIntegration(this)) {
             return checkSelfPermission(Manifest.permission.READ_CONTACTS)
                     == PackageManager.PERMISSION_GRANTED;
         } else {
@@ -175,7 +175,7 @@ public class ContactDetailsActivity extends OmemoActivity
             value = jid.toString();
         }
         final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle(getString(R.string.action_add_phone_book));
+        builder.setTitle(getString(R.string.save_to_contact));
         builder.setMessage(getString(R.string.add_phone_book_text, value));
         builder.setNegativeButton(getString(R.string.cancel), null);
         builder.setPositiveButton(
@@ -295,14 +295,35 @@ public class ContactDetailsActivity extends OmemoActivity
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         // TODO check for Camera / Scan permission
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults.length > 0)
+        if (grantResults.length == 0) {
+            return;
+        }
+        if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
-                    showAddToPhoneBookDialog();
-                    xmppConnectionService.loadPhoneContacts();
-                    xmppConnectionService.startContactObserver();
-                }
+                showAddToPhoneBookDialog();
+                xmppConnectionService.loadPhoneContacts();
+                xmppConnectionService.startContactObserver();
+            } else {
+                showRedirectToAppSettings();
             }
+        }
+    }
+
+    private void showRedirectToAppSettings() {
+        final var dialogBuilder = new MaterialAlertDialogBuilder(this);
+        dialogBuilder.setTitle(R.string.save_to_contact);
+        dialogBuilder.setMessage(
+                getString(R.string.no_contacts_permission, getString(R.string.app_name)));
+        dialogBuilder.setPositiveButton(
+                R.string.continue_btn,
+                (d, w) -> {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                });
+        dialogBuilder.setNegativeButton(R.string.cancel, null);
+        dialogBuilder.create().show();
     }
 
     @Override
@@ -481,29 +502,41 @@ public class ContactDetailsActivity extends OmemoActivity
         }
 
         if (contact.isBlocked() && !this.showDynamicTags) {
-            binding.detailsLastseen.setVisibility(View.VISIBLE);
-            binding.detailsLastseen.setText(R.string.contact_blocked);
+            binding.detailsLastSeen.setVisibility(View.VISIBLE);
+            binding.detailsLastSeen.setText(R.string.contact_blocked);
         } else {
             if (showLastSeen
                     && contact.getLastseen() > 0
                     && contact.getPresences().allOrNonSupport(Namespace.IDLE)) {
-                binding.detailsLastseen.setVisibility(View.VISIBLE);
-                binding.detailsLastseen.setText(
+                binding.detailsLastSeen.setVisibility(View.VISIBLE);
+                binding.detailsLastSeen.setText(
                         UIHelper.lastseen(
                                 getApplicationContext(),
                                 contact.isActive(),
                                 contact.getLastseen()));
             } else {
-                binding.detailsLastseen.setVisibility(View.GONE);
+                binding.detailsLastSeen.setVisibility(View.GONE);
             }
         }
 
-        binding.detailsContactjid.setText(IrregularUnicodeDetector.style(this, contact.getJid()));
+        binding.detailsContactXmppAddress.setText(
+                IrregularUnicodeDetector.style(this, contact.getJid()));
         final String account = contact.getAccount().getJid().asBareJid().toString();
         binding.detailsAccount.setText(getString(R.string.using_account, account));
         AvatarWorkerTask.loadAvatar(
                 contact, binding.detailsContactBadge, R.dimen.avatar_on_details_screen_size);
         binding.detailsContactBadge.setOnClickListener(this::onBadgeClick);
+        if (QuickConversationsService.isContactListIntegration(this)) {
+            if (contact.getSystemAccount() == null) {
+                binding.addAddressBook.setText(R.string.save_to_contact);
+            } else {
+                binding.addAddressBook.setText(R.string.show_in_contacts);
+            }
+            binding.addAddressBook.setVisibility(View.VISIBLE);
+            binding.addAddressBook.setOnClickListener(this::onAddToAddressBookClick);
+        } else {
+            binding.addAddressBook.setVisibility(View.GONE);
+        }
 
         binding.detailsContactKeys.removeAllViews();
         boolean hasKeys = false;

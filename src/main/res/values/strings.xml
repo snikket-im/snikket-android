@@ -9,7 +9,6 @@
     <string name="channel_details">Channel details</string>
     <string name="action_add_account">Add account</string>
     <string name="action_edit_contact">Edit name</string>
-    <string name="action_add_phone_book">Add to address book</string>
     <string name="action_delete_contact">Delete from roster</string>
     <string name="action_block_contact">Block contact</string>
     <string name="action_unblock_contact">Unblock contact</string>
@@ -521,6 +520,7 @@
     <string name="shared_text_with_x">Text shared with %s</string>
     <string name="no_storage_permission">Grant %1$s access to external storage</string>
     <string name="no_camera_permission">Grant %1$s access to the camera</string>
+    <string name="no_contacts_permission">%1$s needs access to your contacts</string>
     <string name="quicksy_wants_your_consent">Quicksy asks for your consent to use your data</string>
     <string name="sync_with_contacts">Contact list integration</string>
     <string name="sync_with_contacts_long">%1$s processes your contact list locally, on your device, to show you the names and profile pictures for matching contacts on XMPP.\n\nNo contact list data ever leaves your device!</string>
@@ -1119,4 +1119,6 @@
     <string name="account_status_service_outage_scheduled">Planned Downtime</string>
     <string name="account_status_service_outage_known">Service Down (Known Issue)</string>
     <string name="sos_scheduled_return">The service is scheduled to return at %s</string>
+    <string name="save_to_contact">Save to Contacts</string>
+    <string name="show_in_contacts">Show in Contacts</string>
 </resources>

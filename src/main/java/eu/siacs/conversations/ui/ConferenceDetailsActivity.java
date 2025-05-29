@@ -641,8 +641,12 @@ public class ConferenceDetailsActivity extends XmppActivity
                         }
                     }
                 });
-        this.mUserPreviewAdapter.submitList(
-                MucOptions.sub(users, GridManager.getCurrentColumnCount(binding.users)));
+        this.binding.users.post(
+                () -> {
+                    final var list =
+                            MucOptions.sub(users, GridManager.getCurrentColumnCount(binding.users));
+                    this.mUserPreviewAdapter.submitList(list);
+                });
         this.binding.invite.setVisibility(mucOptions.canInvite() ? View.VISIBLE : View.GONE);
         this.binding.showUsers.setVisibility(users.size() > 0 ? View.VISIBLE : View.GONE);
         this.binding.showUsers.setText(
