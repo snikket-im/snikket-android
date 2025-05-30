@@ -1125,4 +1125,7 @@
     <string name="account_status_service_outage_scheduled">Desconexión programada</string>
     <string name="sos_scheduled_return">Está previsto reactivar o servizo ás %s</string>
     <string name="account_status_service_outage_known">Sen servizo (incidencia coñecida)</string>
+    <string name="no_contacts_permission">%1$s precisa acceso aos teus contactos</string>
+    <string name="save_to_contact">Gardar nos contactos</string>
+    <string name="show_in_contacts">Mostrar nos contactos</string>
 </resources>
