@@ -47,6 +47,7 @@ public final class Namespace {
     public static final String PUBSUB = "http://jabber.org/protocol/pubsub";
     public static final String PUBSUB_EVENT = PUBSUB + "#event";
     public static final String MUC = "http://jabber.org/protocol/muc";
+    public static final String MUC_ROOM_INFO = MUC + "#roominfo";
     public static final String PUBSUB_PUBLISH_OPTIONS = PUBSUB + "#publish-options";
     public static final String PUBSUB_CONFIG_NODE_MAX = PUBSUB + "#config-node-max";
     public static final String PUBSUB_ERROR = PUBSUB + "#errors";

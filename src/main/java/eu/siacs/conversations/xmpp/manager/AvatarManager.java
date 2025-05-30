@@ -24,6 +24,8 @@ import com.google.common.util.concurrent.SettableFuture;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Compatibility;
@@ -38,6 +40,7 @@ import im.conversations.android.xmpp.model.avatar.Info;
 import im.conversations.android.xmpp.model.avatar.Metadata;
 import im.conversations.android.xmpp.model.pubsub.Items;
 import im.conversations.android.xmpp.model.upload.purpose.Profile;
+import im.conversations.android.xmpp.model.vcard.update.VCardUpdate;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -231,11 +234,23 @@ public class AvatarManager extends AbstractManager {
         throw new IOException("Could not move avatar to avatar location");
     }
 
-    private void setAvatar(final Jid from, final Info info) {
-        Log.d(Config.LOGTAG, "setting avatar for " + from + " to " + info.getId());
+    private void setAvatar(final Jid address, final Info info) {
+        setAvatar(address, info.getId());
+    }
+
+    private void setAvatar(final Jid from, final String id) {
+        Log.d(Config.LOGTAG, "setting avatar for " + from + " to " + id);
+        if (from.isBareJid()) {
+            setAvatarContact(from, id);
+        } else {
+            setAvatarMucUser(from, id);
+        }
+    }
+
+    private void setAvatarContact(final Jid from, final String id) {
         final var account = getAccount();
         if (account.getJid().asBareJid().equals(from)) {
-            if (account.setAvatar(info.getId())) {
+            if (account.setAvatar(id)) {
                 getDatabase().updateAccount(account);
                 service.notifyAccountAvatarHasChanged(account);
             }
@@ -244,12 +259,35 @@ public class AvatarManager extends AbstractManager {
             service.updateAccountUi();
         } else {
             final Contact contact = account.getRoster().getContact(from);
-            if (contact.setAvatar(info.getId())) {
+            if (contact.setAvatar(id)) {
                 connection.getManager(RosterManager.class).writeToDatabaseAsync();
                 service.getAvatarService().clear(contact);
+
+                final var conversation = service.find(account, from);
+                if (conversation != null && conversation.getMode() == Conversational.MODE_MULTI) {
+                    service.getAvatarService().clear(conversation.getMucOptions());
+                }
+
                 service.updateConversationUi();
                 service.updateRosterUi();
             }
+        }
+    }
+
+    private void setAvatarMucUser(final Jid from, final String id) {
+        final var account = getAccount();
+        final Conversation conversation = service.find(account, from.asBareJid());
+        if (conversation == null || conversation.getMode() != Conversation.MODE_MULTI) {
+            return;
+        }
+        final var user = conversation.getMucOptions().findUserByFullJid(from);
+        if (user == null) {
+            return;
+        }
+        if (user.setAvatar(id)) {
+            service.getAvatarService().clear(user);
+            service.updateConversationUi();
+            service.updateMucRosterUi();
         }
     }
 
@@ -290,6 +328,38 @@ public class AvatarManager extends AbstractManager {
                         @Override
                         public void onFailure(@NonNull Throwable t) {
                             Log.d(Config.LOGTAG, "could not fetch avatar", t);
+                        }
+                    },
+                    MoreExecutors.directExecutor());
+        }
+    }
+
+    public void handleVCardUpdate(final Jid address, final VCardUpdate vCardUpdate) {
+        final var hash = vCardUpdate.getHash();
+        if (hash == null) {
+            return;
+        }
+        handleVCardUpdate(address, hash);
+    }
+
+    public void handleVCardUpdate(final Jid address, final String hash) {
+        Preconditions.checkArgument(VCardUpdate.isValidSHA1(hash));
+        final var avatarFile = FileBackend.getAvatarFile(context, hash);
+        if (avatarFile.exists()) {
+            setAvatar(address, hash);
+        } else if (service.isDataSaverDisabled()) {
+            final var future = this.fetchAndStoreVCard(address, hash);
+            Futures.addCallback(
+                    future,
+                    new FutureCallback<Void>() {
+                        @Override
+                        public void onSuccess(Void result) {
+                            Log.d(Config.LOGTAG, "successfully fetch vCard avatar for " + address);
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Throwable t) {
+                            Log.d(Config.LOGTAG, "could not fetch avatar for " + address, t);
                         }
                     },
                     MoreExecutors.directExecutor());
@@ -615,6 +685,36 @@ public class AvatarManager extends AbstractManager {
             }
             return randomFile.renameTo(destination);
         }
+    }
+
+    public ListenableFuture<Void> fetchAndStoreVCard(final Jid address, final String expectedHash) {
+        final var future = connection.getManager(VCardManager.class).retrievePhoto(address);
+        return Futures.transformAsync(
+                future,
+                photo -> {
+                    final var actualHash = Hashing.sha1().hashBytes(photo).toString();
+                    if (!actualHash.equals(expectedHash)) {
+                        return Futures.immediateFailedFuture(
+                                new IllegalStateException(
+                                        String.format(
+                                                "Hash in vCard update for %s did not match",
+                                                address)));
+                    }
+                    final var avatarFile = FileBackend.getAvatarFile(context, actualHash);
+                    if (avatarFile.exists()) {
+                        setAvatar(address, actualHash);
+                        return Futures.immediateVoidFuture();
+                    }
+                    final var writeFuture = write(avatarFile, photo);
+                    return Futures.transform(
+                            writeFuture,
+                            v -> {
+                                setAvatar(address, actualHash);
+                                return null;
+                            },
+                            MoreExecutors.directExecutor());
+                },
+                AVATAR_COMPRESSION_EXECUTOR);
     }
 
     public enum ImageFormat {

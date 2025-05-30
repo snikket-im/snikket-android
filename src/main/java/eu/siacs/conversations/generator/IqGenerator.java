@@ -13,7 +13,6 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.forms.Data;
-import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -69,21 +68,6 @@ public class IqGenerator extends AbstractGenerator {
         final var packet = new Iq(Iq.Type.SET);
         final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB_OWNER);
         pubsub.addChild("delete").setAttribute("node", node);
-        return packet;
-    }
-
-    public Iq retrievePepAvatar(final Avatar avatar) {
-        final Element item = new Element("item");
-        item.setAttribute("id", avatar.sha1sum);
-        final var packet = retrieve(Namespace.AVATAR_DATA, item);
-        packet.setTo(avatar.owner);
-        return packet;
-    }
-
-    public Iq retrieveVcardAvatar(final Avatar avatar) {
-        final Iq packet = new Iq(Iq.Type.GET);
-        packet.setTo(avatar.owner);
-        packet.addChild("vCard", "vcard-temp");
         return packet;
     }
 

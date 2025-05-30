@@ -14,7 +14,6 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
-import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.model.data.Data;
 import im.conversations.android.xmpp.model.data.Field;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
@@ -158,8 +157,7 @@ public class MucOptions {
         final var serviceDiscoveryResult = getServiceDiscoveryResult();
         return serviceDiscoveryResult == null
                 ? null
-                : serviceDiscoveryResult.getServiceDiscoveryExtension(
-                        "http://jabber.org/protocol/muc#roominfo");
+                : serviceDiscoveryResult.getServiceDiscoveryExtension(Namespace.MUC_ROOM_INFO);
     }
 
     public String getAvatar() {
@@ -857,7 +855,7 @@ public class MucOptions {
         private Jid realJid;
         private Jid fullJid;
         private long pgpKeyId = 0;
-        private Avatar avatar;
+        private String avatar;
         private final MucOptions options;
         private ChatState chatState = Config.DEFAULT_CHAT_STATE;
         private String occupantId;
@@ -913,7 +911,7 @@ public class MucOptions {
             }
         }
 
-        public boolean setAvatar(final Avatar avatar) {
+        public boolean setAvatar(final String avatar) {
             if (this.avatar != null && this.avatar.equals(avatar)) {
                 return false;
             } else {
@@ -930,7 +928,7 @@ public class MucOptions {
             getContact();
 
             if (avatar != null) {
-                return avatar.getFilename();
+                return avatar;
             }
             if (realJid == null) {
                 return null;

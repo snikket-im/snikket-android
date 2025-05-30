@@ -150,6 +150,7 @@ import im.conversations.android.xmpp.IqErrorException;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.up.Push;
+import im.conversations.android.xmpp.model.vcard.update.VCardUpdate;
 import java.io.File;
 import java.security.Security;
 import java.security.cert.CertificateException;
@@ -3958,18 +3959,25 @@ public class XmppConnectionService extends Service {
             final Conversation conversation, final OnConferenceConfigurationFetched callback) {
         final var account = conversation.getAccount();
         final var connection = account.getXmppConnection();
+        final var address = conversation.getJid().asBareJid();
         if (connection == null) {
             return;
         }
         final var future =
-                connection
-                        .getManager(DiscoManager.class)
-                        .info(Entity.discoItem(conversation.getJid().asBareJid()), null);
+                connection.getManager(DiscoManager.class).info(Entity.discoItem(address), null);
         Futures.addCallback(
                 future,
                 new FutureCallback<>() {
                     @Override
                     public void onSuccess(InfoQuery result) {
+                        final var avatarHash =
+                                result.getServiceDiscoveryExtension(
+                                        Namespace.MUC_ROOM_INFO, "muc#roominfo_avatarhash");
+                        if (VCardUpdate.isValidSHA1(avatarHash)) {
+                            connection
+                                    .getManager(AvatarManager.class)
+                                    .handleVCardUpdate(address, avatarHash);
+                        }
                         final MucOptions mucOptions = conversation.getMucOptions();
                         final Bookmark bookmark = conversation.getBookmark();
                         final boolean sameBefore =
@@ -4398,177 +4406,6 @@ public class XmppConnectionService extends Service {
                 final String KEY = iterator.next();
                 if (KEY.startsWith(account.getJid().asBareJid() + "_")) {
                     iterator.remove();
-                }
-            }
-        }
-    }
-
-    public void fetchAvatar(Account account, final Avatar avatar) {
-        final String KEY = generateFetchKey(account, avatar);
-        synchronized (this.mInProgressAvatarFetches) {
-            if (mInProgressAvatarFetches.add(KEY)) {
-                switch (avatar.origin) {
-                    case PEP:
-                        this.mInProgressAvatarFetches.add(KEY);
-                        fetchAvatarPep(account, avatar, null);
-                        break;
-                    case VCARD:
-                        this.mInProgressAvatarFetches.add(KEY);
-                        fetchAvatarVcard(account, avatar);
-                        break;
-                }
-            } else if (avatar.origin == Avatar.Origin.PEP) {
-                mOmittedPepAvatarFetches.add(KEY);
-            } else {
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid()
-                                + ": already fetching "
-                                + avatar.origin
-                                + " avatar for "
-                                + avatar.owner);
-            }
-        }
-    }
-
-    private void fetchAvatarPep(
-            final Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
-        final Iq packet = this.mIqGenerator.retrievePepAvatar(avatar);
-        sendIqPacket(
-                account,
-                packet,
-                (result) -> {
-                    synchronized (mInProgressAvatarFetches) {
-                        mInProgressAvatarFetches.remove(generateFetchKey(account, avatar));
-                    }
-                    final String ERROR =
-                            account.getJid().asBareJid()
-                                    + ": fetching avatar for "
-                                    + avatar.owner
-                                    + " failed ";
-                    if (result.getType() == Iq.Type.RESULT) {
-                        avatar.image = IqParser.avatarData(result);
-                        if (avatar.image != null) {
-                            if (getFileBackend().save(avatar)) {
-                                if (account.getJid().asBareJid().equals(avatar.owner)) {
-                                    if (account.setAvatar(avatar.getFilename())) {
-                                        databaseBackend.updateAccount(account);
-                                    }
-                                    getAvatarService().clear(account);
-                                    updateConversationUi();
-                                    updateAccountUi();
-                                } else {
-                                    final Contact contact =
-                                            account.getRoster().getContact(avatar.owner);
-                                    contact.setAvatar(avatar.sha1sum);
-                                    account.getXmppConnection()
-                                            .getManager(RosterManager.class)
-                                            .writeToDatabaseAsync();
-                                    getAvatarService().clear(contact);
-                                    updateConversationUi();
-                                    updateRosterUi();
-                                }
-                                if (callback != null) {
-                                    callback.success(avatar);
-                                }
-                                Log.d(
-                                        Config.LOGTAG,
-                                        account.getJid().asBareJid()
-                                                + ": successfully fetched pep avatar for "
-                                                + avatar.owner);
-                                return;
-                            }
-                        } else {
-
-                            Log.d(Config.LOGTAG, ERROR + "(parsing error)");
-                        }
-                    } else {
-                        Element error = result.findChild("error");
-                        if (error == null) {
-                            Log.d(Config.LOGTAG, ERROR + "(server error)");
-                        } else {
-                            Log.d(Config.LOGTAG, ERROR + error);
-                        }
-                    }
-                    if (callback != null) {
-                        callback.error(0, null);
-                    }
-                });
-    }
-
-    private void fetchAvatarVcard(final Account account, final Avatar avatar) {
-        final var address = avatar.owner;
-        final var connection = account.getXmppConnection();
-        final var future = connection.getManager(VCardManager.class).retrievePhoto(address);
-        Futures.addCallback(
-                future,
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(byte[] result) {
-                        avatar.image = BaseEncoding.base64().encode(result);
-                        if (fileBackend.save(avatar)) {
-                            setVCardAvatar(account, avatar);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Throwable t) {
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid()
-                                        + ": could not retrieve vCard avatar of "
-                                        + avatar.owner);
-                    }
-                },
-                MoreExecutors.directExecutor());
-    }
-
-    // TODO move this into VCard manager
-    private void setVCardAvatar(final Account account, final Avatar avatar) {
-        Log.d(
-                Config.LOGTAG,
-                account.getJid().asBareJid()
-                        + ": successfully fetched vCard avatar for "
-                        + avatar.owner);
-        if (avatar.owner.isBareJid()) {
-            if (account.getJid().asBareJid().equals(avatar.owner) && account.getAvatar() == null) {
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid() + ": had no avatar. replacing with vcard");
-                account.setAvatar(avatar.getFilename());
-                databaseBackend.updateAccount(account);
-                getAvatarService().clear(account);
-                updateAccountUi();
-            } else {
-                // TODO if this is a MUC clear MucOptions too
-                // TODO do the same clearing for when setting a cached version
-                final Contact contact = account.getRoster().getContact(avatar.owner);
-                contact.setAvatar(avatar.sha1sum);
-                account.getXmppConnection().getManager(RosterManager.class).writeToDatabaseAsync();
-                getAvatarService().clear(contact);
-                updateRosterUi();
-            }
-            updateConversationUi();
-        } else {
-            Conversation conversation = find(account, avatar.owner.asBareJid());
-            if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
-                MucOptions.User user = conversation.getMucOptions().findUserByFullJid(avatar.owner);
-                if (user != null) {
-                    if (user.setAvatar(avatar)) {
-                        getAvatarService().clear(user);
-                        updateConversationUi();
-                        updateMucRosterUi();
-                    }
-                    // TODO don’t do that. this will put lower quality vCard avatars into contacts
-                    if (user.getRealJid() != null) {
-                        Contact contact = account.getRoster().getContact(user.getRealJid());
-                        contact.setAvatar(avatar.sha1sum);
-                        account.getXmppConnection()
-                                .getManager(RosterManager.class)
-                                .writeToDatabaseAsync();
-                        getAvatarService().clear(contact);
-                        updateRosterUi();
-                    }
                 }
             }
         }

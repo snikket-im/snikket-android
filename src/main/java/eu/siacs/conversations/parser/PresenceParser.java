@@ -23,12 +23,13 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.manager.AvatarManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
-import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.Entity;
 import im.conversations.android.xmpp.model.occupant.OccupantId;
+import im.conversations.android.xmpp.model.vcard.update.VCardUpdate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -81,7 +82,7 @@ public class PresenceParser extends AbstractParser
         if (!from.isBareJid()) {
             final String type = packet.getAttribute("type");
             final Element x = packet.findChild("x", Namespace.MUC_USER);
-            Avatar avatar = Avatar.parsePresence(packet.findChild("x", "vcard-temp:x:update"));
+            final var vCardUpdate = packet.getExtension(VCardUpdate.class);
             final List<String> codes = getStatusCodes(x);
             if (type == null) {
                 if (x != null) {
@@ -162,32 +163,8 @@ public class PresenceParser extends AbstractParser
                                 }
                             }
                         }
-                        if (avatar != null) {
-                            avatar.owner = from;
-                            if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
-                                if (user.setAvatar(avatar)) {
-                                    mXmppConnectionService.getAvatarService().clear(user);
-                                }
-
-                                // TODO don’t do that. This will just overwrite (better) PEP avatars
-
-                                if (user.getRealJid() != null) {
-                                    final Contact c =
-                                            conversation
-                                                    .getAccount()
-                                                    .getRoster()
-                                                    .getContact(user.getRealJid());
-                                    if (c.setAvatar(avatar.sha1sum)) {
-                                        connection
-                                                .getManager(RosterManager.class)
-                                                .writeToDatabaseAsync();
-                                        mXmppConnectionService.getAvatarService().clear(c);
-                                    }
-                                    mXmppConnectionService.updateRosterUi();
-                                }
-                            } else if (mXmppConnectionService.isDataSaverDisabled()) {
-                                mXmppConnectionService.fetchAvatar(mucOptions.getAccount(), avatar);
-                            }
+                        if (vCardUpdate != null) {
+                            getManager(AvatarManager.class).handleVCardUpdate(from, vCardUpdate);
                         }
                     }
                 }
@@ -345,33 +322,6 @@ public class PresenceParser extends AbstractParser
         final Contact contact = account.getRoster().getContact(from);
         if (type == null) {
             final String resource = from.isBareJid() ? "" : from.getResource();
-
-            // TODO simply don’t parse avatars for contacts at all. Only if presence is bare and a
-            // MUC
-
-            final Avatar avatar =
-                    Avatar.parsePresence(packet.findChild("x", "vcard-temp:x:update"));
-            if (avatar != null && (!contact.isSelf() || account.getAvatar() == null)) {
-                avatar.owner = from.asBareJid();
-                if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
-                    if (avatar.owner.equals(account.getJid().asBareJid())) {
-                        account.setAvatar(avatar.getFilename());
-                        mXmppConnectionService.databaseBackend.updateAccount(account);
-                        mXmppConnectionService.getAvatarService().clear(account);
-                        mXmppConnectionService.updateConversationUi();
-                        mXmppConnectionService.updateAccountUi();
-                    } else {
-                        if (contact.setAvatar(avatar.sha1sum)) {
-                            connection.getManager(RosterManager.class).writeToDatabaseAsync();
-                            mXmppConnectionService.getAvatarService().clear(contact);
-                            mXmppConnectionService.updateConversationUi();
-                            mXmppConnectionService.updateRosterUi();
-                        }
-                    }
-                } else if (mXmppConnectionService.isDataSaverDisabled()) {
-                    mXmppConnectionService.fetchAvatar(account, avatar);
-                }
-            }
 
             if (mXmppConnectionService.isMuc(account, from)) {
                 return;
