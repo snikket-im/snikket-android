@@ -57,7 +57,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
-import com.google.common.io.BaseEncoding;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -4298,42 +4297,32 @@ public class XmppConnectionService extends Service {
         connection.getManager(RosterManager.class).deleteRosterItem(contact);
     }
 
-    // TODO get thumbnail via AvatarManager
-    // TODO call AvatarManager.getInbandAvatar form vcard manager and simplify publication process
     public void publishMucAvatar(
             final Conversation conversation, final Uri image, final OnAvatarPublication callback) {
-        new Thread(
-                        () -> {
-                            final Bitmap.CompressFormat format = Config.AVATAR_FORMAT;
-                            final int size = Config.AVATAR_SIZE;
-                            final Avatar avatar =
-                                    getFileBackend().getPepAvatar(image, size, format);
-                            if (avatar != null) {
-                                if (!getFileBackend().save(avatar)) {
-                                    callback.onAvatarPublicationFailed(
-                                            R.string.error_saving_avatar);
-                                    return;
-                                }
-                                avatar.owner = conversation.getJid().asBareJid();
-                                publishMucAvatar(conversation, avatar, callback);
-                            } else {
-                                callback.onAvatarPublicationFailed(
-                                        R.string.error_publish_avatar_converting);
-                            }
-                        })
-                .start();
+        final var connection = conversation.getAccount().getXmppConnection();
+        final var future =
+                connection
+                        .getManager(AvatarManager.class)
+                        .publishVCard(conversation.getJid().asBareJid(), image);
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        callback.onAvatarPublicationSucceeded();
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.d(Config.LOGTAG, "could not publish MUC avatar", t);
+                        callback.onAvatarPublicationFailed(
+                                R.string.error_publish_avatar_server_reject);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
-    // TODO get rid of the async part. Manager is already async
-    public void publishAvatarAsync(
-            final Account account,
-            final Uri image,
-            final boolean open,
-            final OnAvatarPublication callback) {
-        new Thread(() -> publishAvatar(account, image, open, callback)).start();
-    }
-
-    private void publishAvatar(
+    public void publishAvatar(
             final Account account,
             final Uri image,
             final boolean open,
@@ -4361,54 +4350,6 @@ public class XmppConnectionService extends Service {
                     }
                 },
                 MoreExecutors.directExecutor());
-    }
-
-    private void publishMucAvatar(
-            final Conversation conversation,
-            final Avatar avatar,
-            final OnAvatarPublication callback) {
-        final var account = conversation.getAccount();
-        final var connection = account.getXmppConnection();
-        final var future =
-                connection
-                        .getManager(VCardManager.class)
-                        .publishPhoto(
-                                avatar.owner,
-                                avatar.type,
-                                BaseEncoding.base64().decode(avatar.image));
-        Futures.addCallback(
-                future,
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(Void result) {
-                        Log.d(Config.LOGTAG, "published muc avatar");
-                        final var c = account.getRoster().getContact(avatar.owner);
-                        c.setAvatar(avatar.sha1sum);
-                        getAvatarService().clear(c);
-                        getAvatarService().clear(conversation.getMucOptions());
-                        callback.onAvatarPublicationSucceeded();
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Throwable t) {
-                        Log.d(Config.LOGTAG, "could not publish muc avatar", t);
-                        callback.onAvatarPublicationFailed(
-                                R.string.error_publish_avatar_server_reject);
-                    }
-                },
-                MoreExecutors.directExecutor());
-    }
-
-    public void cancelAvatarFetches(final Account account) {
-        synchronized (mInProgressAvatarFetches) {
-            for (final Iterator<String> iterator = mInProgressAvatarFetches.iterator();
-                    iterator.hasNext(); ) {
-                final String KEY = iterator.next();
-                if (KEY.startsWith(account.getJid().asBareJid() + "_")) {
-                    iterator.remove();
-                }
-            }
-        }
     }
 
     public ListenableFuture<Void> checkForAvatar(final Account account) {

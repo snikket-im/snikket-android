@@ -421,6 +421,7 @@ public class AvatarManager extends AbstractManager {
             final Uri image, final int size, final ImageFormat format, final Integer charLimit)
             throws Exception {
         final var centerSquare = FileBackend.cropCenterSquare(context, image, size);
+        // TODO do an alpha check. if alpha and format JPEG half size and use PNG
         if (charLimit == null || format == ImageFormat.PNG) {
             return resizeAndStoreAvatar(centerSquare, format, 90);
         } else {
@@ -525,7 +526,7 @@ public class AvatarManager extends AbstractManager {
                 String.format("Could not move file to %s", avatarFile.getAbsolutePath()));
     }
 
-    public ListenableFuture<List<Info>> uploadAvatar(final Uri image, final int size) {
+    private ListenableFuture<List<Info>> uploadAvatar(final Uri image, final int size) {
         final var avatarFutures = new ImmutableList.Builder<ListenableFuture<Info>>();
         final var avatarFuture = resizeAndStoreAvatarAsync(image, size, ImageFormat.JPEG);
         final var avatarWithUrlFuture =
@@ -580,7 +581,7 @@ public class AvatarManager extends AbstractManager {
                 AVATAR_COMPRESSION_EXECUTOR);
     }
 
-    public ListenableFuture<Void> publish(final Collection<Info> avatars, final boolean open) {
+    private ListenableFuture<Void> publish(final Collection<Info> avatars, final boolean open) {
         final Info mainAvatarInfo;
         final byte[] mainAvatar;
         try {
@@ -609,11 +610,24 @@ public class AvatarManager extends AbstractManager {
                 MoreExecutors.directExecutor());
     }
 
+    public ListenableFuture<Void> publishVCard(final Jid address, final Uri image) {
+        final var avatarThumbnailFuture =
+                resizeAndStoreAvatarAsync(
+                        image, Config.AVATAR_SIZE, ImageFormat.JPEG, Config.AVATAR_CHAR_LIMIT);
+        return Futures.transformAsync(
+                avatarThumbnailFuture,
+                info -> {
+                    final var avatar =
+                            Files.asByteSource(FileBackend.getAvatarFile(context, info.getId()))
+                                    .read();
+                    return getManager(VCardManager.class)
+                            .publishPhoto(address, info.getType(), avatar);
+                },
+                AVATAR_COMPRESSION_EXECUTOR);
+    }
+
     public ListenableFuture<Void> uploadAndPublish(final Uri image, final boolean open) {
-        final var infoFuture =
-                connection
-                        .getManager(AvatarManager.class)
-                        .uploadAvatar(image, Config.AVATAR_FULL_SIZE);
+        final var infoFuture = uploadAvatar(image, Config.AVATAR_FULL_SIZE);
         return Futures.transformAsync(
                 infoFuture, avatars -> publish(avatars, open), MoreExecutors.directExecutor());
     }

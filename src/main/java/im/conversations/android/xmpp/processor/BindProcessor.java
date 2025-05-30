@@ -26,10 +26,8 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
 
     @Override
     public void run() {
-        Log.d(Config.LOGTAG, "begin onBind()");
         final var account = connection.getAccount();
         final var features = connection.getFeatures();
-        service.cancelAvatarFetches(account);
         final boolean loggedInSuccessfully =
                 account.setOption(Account.OPTION_LOGGED_IN_SUCCESSFULLY, true);
         final boolean sosModified;
@@ -112,6 +110,5 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         connection.getManager(RosterManager.class).syncDirtyContacts();
 
         service.getUnifiedPushBroker().renewUnifiedPushEndpointsOnBind(account);
-        Log.d(Config.LOGTAG, "end onBind()");
     }
 }

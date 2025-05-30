@@ -112,7 +112,7 @@ public class PublishProfilePictureActivity extends XmppActivity
                     }
                     publishing = true;
                     togglePublishButton(false, R.string.publishing);
-                    xmppConnectionService.publishAvatarAsync(account, uri, open, this);
+                    xmppConnectionService.publishAvatar(account, uri, open, this);
                 });
         this.binding.cancelButton.setOnClickListener(
                 v -> {
