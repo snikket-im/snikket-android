@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.heifwriter.AvifWriter;
 import androidx.heifwriter.HeifWriter;
 import com.google.common.base.Preconditions;
@@ -234,11 +235,11 @@ public class AvatarManager extends AbstractManager {
         throw new IOException("Could not move avatar to avatar location");
     }
 
-    private void setAvatar(final Jid address, final Info info) {
+    private void setAvatarInfo(final Jid address, @NonNull final Info info) {
         setAvatar(address, info.getId());
     }
 
-    private void setAvatar(final Jid from, final String id) {
+    private void setAvatar(final Jid from, @Nullable final String id) {
         Log.d(Config.LOGTAG, "setting avatar for " + from + " to " + id);
         if (from.isBareJid()) {
             setAvatarContact(from, id);
@@ -247,7 +248,7 @@ public class AvatarManager extends AbstractManager {
         }
     }
 
-    private void setAvatarContact(final Jid from, final String id) {
+    private void setAvatarContact(final Jid from, @Nullable final String id) {
         final var account = getAccount();
         if (account.getJid().asBareJid().equals(from)) {
             if (account.setAvatar(id)) {
@@ -308,7 +309,7 @@ public class AvatarManager extends AbstractManager {
         final var cache = FileBackend.getAvatarFile(context, avatar.preferred.getId());
 
         if (cache.exists()) {
-            setAvatar(from, avatar.preferred);
+            setAvatarInfo(from, avatar.preferred);
         } else if (service.isDataSaverDisabled()) {
             final var future =
                     this.fetchAndStoreWithFallback(from, avatar.preferred, avatar.fallback);
@@ -317,7 +318,7 @@ public class AvatarManager extends AbstractManager {
                     new FutureCallback<Info>() {
                         @Override
                         public void onSuccess(Info result) {
-                            setAvatar(from, result);
+                            setAvatarInfo(from, result);
                             Log.d(
                                     Config.LOGTAG,
                                     account.getJid().asBareJid()
@@ -407,14 +408,9 @@ public class AvatarManager extends AbstractManager {
     }
 
     public void handleDelete(final Jid from) {
-        final var account = getAccount();
-        final boolean isAccount = account.getJid().asBareJid().equals(from);
-        if (isAccount) {
-            account.setAvatar(null);
-            getDatabase().updateAccount(account);
-            service.getAvatarService().clear(account);
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleted avatar metadata node");
-        }
+        Preconditions.checkArgument(
+                from.isBareJid(), "node deletion can only be triggered from bare JIDs");
+        setAvatar(from, null);
     }
 
     private Info resizeAndStoreAvatar(
@@ -668,7 +664,7 @@ public class AvatarManager extends AbstractManager {
                         Log.d(
                                 Config.LOGTAG,
                                 "fetchAndStore. file existed " + cache.getAbsolutePath());
-                        setAvatar(address, avatar.preferred);
+                        setAvatarInfo(address, avatar.preferred);
                         return Futures.immediateVoidFuture();
                     } else {
                         final var future =
@@ -677,7 +673,7 @@ public class AvatarManager extends AbstractManager {
                         return Futures.transform(
                                 future,
                                 info -> {
-                                    setAvatar(address, info);
+                                    setAvatarInfo(address, info);
                                     return null;
                                 },
                                 MoreExecutors.directExecutor());

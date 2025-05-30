@@ -207,6 +207,10 @@ public class PubSubManager extends AbstractManager {
         if (connection.fromAccount(message) && Namespace.BOOKMARKS2.equals(node)) {
             getManager(BookmarkManager.class).handlePurge();
         }
+        if (isFromBare && Namespace.AVATAR_METADATA.equals(node)) {
+            // purge (delete all items in a node) is functionally equivalent to delete
+            getManager(AvatarManager.class).handleDelete(from);
+        }
     }
 
     private void handleDelete(final Message message, final Delete delete) {
