@@ -417,7 +417,14 @@ public class AvatarManager extends AbstractManager {
             final Uri image, final int size, final ImageFormat format, final Integer charLimit)
             throws Exception {
         final var centerSquare = FileBackend.cropCenterSquare(context, image, size);
-        // TODO do an alpha check. if alpha and format JPEG half size and use PNG
+        final var info = resizeAndStoreAvatar(centerSquare, format, charLimit);
+        centerSquare.recycle();
+        return info;
+    }
+
+    private Info resizeAndStoreAvatar(
+            final Bitmap centerSquare, final ImageFormat format, final Integer charLimit)
+            throws Exception {
         if (charLimit == null || format == ImageFormat.PNG) {
             return resizeAndStoreAvatar(centerSquare, format, 90);
         } else {
@@ -522,34 +529,66 @@ public class AvatarManager extends AbstractManager {
                 String.format("Could not move file to %s", avatarFile.getAbsolutePath()));
     }
 
-    private ListenableFuture<List<Info>> uploadAvatar(final Uri image, final int size) {
+    private ListenableFuture<List<Info>> uploadAvatar(final Uri image) {
+        return Futures.transformAsync(
+                hasAlphaChannel(image),
+                hasAlphaChannel -> uploadAvatar(image, hasAlphaChannel),
+                MoreExecutors.directExecutor());
+    }
+
+    private ListenableFuture<List<Info>> uploadAvatar(
+            final Uri image, final boolean hasAlphaChannel) {
         final var avatarFutures = new ImmutableList.Builder<ListenableFuture<Info>>();
-        final var avatarFuture = resizeAndStoreAvatarAsync(image, size, ImageFormat.JPEG);
+
+        final ListenableFuture<Info> avatarThumbnailFuture;
+        final ListenableFuture<Info> avatarFuture;
+        if (hasAlphaChannel) {
+            avatarThumbnailFuture =
+                    resizeAndStoreAvatarAsync(image, Config.AVATAR_SIZE / 2, ImageFormat.PNG);
+            avatarFuture =
+                    resizeAndStoreAvatarAsync(image, Config.AVATAR_FULL_SIZE / 2, ImageFormat.PNG);
+        } else {
+            avatarThumbnailFuture =
+                    resizeAndStoreAvatarAsync(
+                            image, Config.AVATAR_SIZE, ImageFormat.JPEG, Config.AVATAR_CHAR_LIMIT);
+            avatarFuture =
+                    resizeAndStoreAvatarAsync(image, Config.AVATAR_FULL_SIZE, ImageFormat.JPEG);
+
+            if (Compatibility.twentyEight() && !PhoneHelper.isEmulator()) {
+                final var avatarHeifFuture =
+                        resizeAndStoreAvatarAsync(image, Config.AVATAR_FULL_SIZE, ImageFormat.HEIF);
+                final var avatarHeifWithUrlFuture =
+                        Futures.transformAsync(
+                                avatarHeifFuture, this::upload, MoreExecutors.directExecutor());
+                avatarFutures.add(avatarHeifWithUrlFuture);
+            }
+            if (Compatibility.thirtyFour() && !PhoneHelper.isEmulator()) {
+                final var avatarAvifFuture =
+                        resizeAndStoreAvatarAsync(image, Config.AVATAR_FULL_SIZE, ImageFormat.AVIF);
+                final var avatarAvifWithUrlFuture =
+                        Futures.transformAsync(
+                                avatarAvifFuture, this::upload, MoreExecutors.directExecutor());
+                avatarFutures.add(avatarAvifWithUrlFuture);
+            }
+        }
+        avatarFutures.add(avatarThumbnailFuture);
         final var avatarWithUrlFuture =
                 Futures.transformAsync(avatarFuture, this::upload, MoreExecutors.directExecutor());
         avatarFutures.add(avatarWithUrlFuture);
 
-        if (Compatibility.twentyEight() && !PhoneHelper.isEmulator()) {
-            final var avatarHeifFuture = resizeAndStoreAvatarAsync(image, size, ImageFormat.HEIF);
-            final var avatarHeifWithUrlFuture =
-                    Futures.transformAsync(
-                            avatarHeifFuture, this::upload, MoreExecutors.directExecutor());
-            avatarFutures.add(avatarHeifWithUrlFuture);
-        }
-        if (Compatibility.thirtyFour() && !PhoneHelper.isEmulator()) {
-            final var avatarAvifFuture = resizeAndStoreAvatarAsync(image, size, ImageFormat.AVIF);
-            final var avatarAvifWithUrlFuture =
-                    Futures.transformAsync(
-                            avatarAvifFuture, this::upload, MoreExecutors.directExecutor());
-            avatarFutures.add(avatarAvifWithUrlFuture);
-        }
-
-        final var avatarThumbnailFuture =
-                resizeAndStoreAvatarAsync(
-                        image, Config.AVATAR_SIZE, ImageFormat.JPEG, Config.AVATAR_CHAR_LIMIT);
-        avatarFutures.add(avatarThumbnailFuture);
-
         return Futures.allAsList(avatarFutures.build());
+    }
+
+    private ListenableFuture<Boolean> hasAlphaChannel(final Uri image) {
+        return Futures.submit(
+                () -> {
+                    final var cropped =
+                            FileBackend.cropCenterSquare(context, image, Config.AVATAR_FULL_SIZE);
+                    final var hasAlphaChannel = FileBackend.hasAlpha(cropped);
+                    cropped.recycle();
+                    return hasAlphaChannel;
+                },
+                AVATAR_COMPRESSION_EXECUTOR);
     }
 
     private ListenableFuture<Info> upload(final Info avatar) {
@@ -607,9 +646,23 @@ public class AvatarManager extends AbstractManager {
     }
 
     public ListenableFuture<Void> publishVCard(final Jid address, final Uri image) {
-        final var avatarThumbnailFuture =
-                resizeAndStoreAvatarAsync(
-                        image, Config.AVATAR_SIZE, ImageFormat.JPEG, Config.AVATAR_CHAR_LIMIT);
+
+        ListenableFuture<Info> avatarThumbnailFuture =
+                Futures.transformAsync(
+                        hasAlphaChannel(image),
+                        hasAlphaChannel -> {
+                            if (hasAlphaChannel) {
+                                return resizeAndStoreAvatarAsync(
+                                        image, Config.AVATAR_SIZE / 2, ImageFormat.PNG);
+                            } else {
+                                return resizeAndStoreAvatarAsync(
+                                        image,
+                                        Config.AVATAR_SIZE,
+                                        ImageFormat.JPEG,
+                                        Config.AVATAR_CHAR_LIMIT);
+                            }
+                        },
+                        MoreExecutors.directExecutor());
         return Futures.transformAsync(
                 avatarThumbnailFuture,
                 info -> {
@@ -623,7 +676,7 @@ public class AvatarManager extends AbstractManager {
     }
 
     public ListenableFuture<Void> uploadAndPublish(final Uri image, final boolean open) {
-        final var infoFuture = uploadAvatar(image, Config.AVATAR_FULL_SIZE);
+        final var infoFuture = uploadAvatar(image);
         return Futures.transformAsync(
                 infoFuture, avatars -> publish(avatars, open), MoreExecutors.directExecutor());
     }

@@ -21,8 +21,6 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.system.Os;
 import android.system.StructStat;
-import android.util.Base64;
-import android.util.Base64OutputStream;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
@@ -41,12 +39,9 @@ import eu.siacs.conversations.services.AttachFileToConversationRunnable;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.MediaAdapter;
 import eu.siacs.conversations.ui.util.Attachment;
-import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.FileWriterException;
 import eu.siacs.conversations.utils.MimeUtils;
-import eu.siacs.conversations.xmpp.pep.Avatar;
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileDescriptor;
@@ -58,15 +53,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.DigestOutputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 public class FileBackend {
 
@@ -227,7 +218,7 @@ public class FileBackend {
         return context.getPackageName() + FILE_PROVIDER;
     }
 
-    private static boolean hasAlpha(final Bitmap bitmap) {
+    public static boolean hasAlpha(final Bitmap bitmap) {
         final int w = bitmap.getWidth();
         final int h = bitmap.getHeight();
         final int yStep = Math.max(1, w / 100);
@@ -1168,198 +1159,6 @@ public class FileBackend {
         final File file = new File(directory, filename);
         file.getParentFile().mkdirs();
         return getUriForFile(mXmppConnectionService, file);
-    }
-
-    public Avatar getPepAvatar(
-            final Uri image, final int size, final Bitmap.CompressFormat format) {
-
-        final Avatar uncompressAvatar = getUncompressedAvatar(image);
-        if (uncompressAvatar != null
-                && uncompressAvatar.image.length() <= Config.AVATAR_CHAR_LIMIT) {
-            return uncompressAvatar;
-        }
-        if (uncompressAvatar != null) {
-            Log.d(
-                    Config.LOGTAG,
-                    "uncompressed avatar exceeded char limit by "
-                            + (uncompressAvatar.image.length() - Config.AVATAR_CHAR_LIMIT));
-        }
-
-        Bitmap bm = cropCenterSquare(image, size);
-        if (bm == null) {
-            return null;
-        }
-        if (hasAlpha(bm)) {
-            Log.d(Config.LOGTAG, "alpha in avatar detected; uploading as PNG");
-            bm.recycle();
-            bm = cropCenterSquare(image, 96);
-            return getPepAvatar(bm, Bitmap.CompressFormat.PNG, 100);
-        }
-        return getPepAvatar(bm, format, 100);
-    }
-
-    private Avatar getUncompressedAvatar(Uri uri) {
-        Bitmap bitmap = null;
-        try {
-            bitmap =
-                    BitmapFactory.decodeStream(
-                            mXmppConnectionService.getContentResolver().openInputStream(uri));
-            return getPepAvatar(bitmap, Bitmap.CompressFormat.PNG, 100);
-        } catch (Exception e) {
-            return null;
-        } finally {
-            if (bitmap != null) {
-                bitmap.recycle();
-            }
-        }
-    }
-
-    private Avatar getPepAvatar(Bitmap bitmap, Bitmap.CompressFormat format, int quality) {
-        try {
-            ByteArrayOutputStream mByteArrayOutputStream = new ByteArrayOutputStream();
-            Base64OutputStream mBase64OutputStream =
-                    new Base64OutputStream(mByteArrayOutputStream, Base64.DEFAULT | Base64.NO_WRAP);
-            MessageDigest digest = MessageDigest.getInstance("SHA-1");
-            DigestOutputStream mDigestOutputStream =
-                    new DigestOutputStream(mBase64OutputStream, digest);
-            if (!bitmap.compress(format, quality, mDigestOutputStream)) {
-                return null;
-            }
-            mDigestOutputStream.flush();
-            mDigestOutputStream.close();
-            long chars = mByteArrayOutputStream.size();
-            if (format != Bitmap.CompressFormat.PNG
-                    && quality >= 50
-                    && chars >= Config.AVATAR_CHAR_LIMIT) {
-                int q = quality - 2;
-                Log.d(
-                        Config.LOGTAG,
-                        "avatar char length was " + chars + " reducing quality to " + q);
-                return getPepAvatar(bitmap, format, q);
-            }
-            Log.d(Config.LOGTAG, "settled on char length " + chars + " with quality=" + quality);
-            final Avatar avatar = new Avatar();
-            avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
-            avatar.image = mByteArrayOutputStream.toString();
-            if (format.equals(Bitmap.CompressFormat.WEBP)) {
-                avatar.type = "image/webp";
-            } else if (format.equals(Bitmap.CompressFormat.JPEG)) {
-                avatar.type = "image/jpeg";
-            } else if (format.equals(Bitmap.CompressFormat.PNG)) {
-                avatar.type = "image/png";
-            }
-            avatar.width = bitmap.getWidth();
-            avatar.height = bitmap.getHeight();
-            return avatar;
-        } catch (OutOfMemoryError e) {
-            Log.d(Config.LOGTAG, "unable to convert avatar to base64 due to low memory");
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    // this was used by republishAvatarIfNeeded()
-    public Avatar getStoredPepAvatar(String hash) {
-        if (hash == null) {
-            return null;
-        }
-        Avatar avatar = new Avatar();
-        final File file = getAvatarFile(hash);
-        FileInputStream is = null;
-        try {
-            avatar.size = file.length();
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            is = new FileInputStream(file);
-            ByteArrayOutputStream mByteArrayOutputStream = new ByteArrayOutputStream();
-            Base64OutputStream mBase64OutputStream =
-                    new Base64OutputStream(mByteArrayOutputStream, Base64.DEFAULT);
-            MessageDigest digest = MessageDigest.getInstance("SHA-1");
-            DigestOutputStream os = new DigestOutputStream(mBase64OutputStream, digest);
-            byte[] buffer = new byte[4096];
-            int length;
-            while ((length = is.read(buffer)) > 0) {
-                os.write(buffer, 0, length);
-            }
-            os.flush();
-            os.close();
-            avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
-            avatar.image = mByteArrayOutputStream.toString();
-            avatar.height = options.outHeight;
-            avatar.width = options.outWidth;
-            avatar.type = options.outMimeType;
-            return avatar;
-        } catch (NoSuchAlgorithmException | IOException e) {
-            return null;
-        } finally {
-            close(is);
-        }
-    }
-
-    public boolean isAvatarCached(Avatar avatar) {
-        final File file = getAvatarFile(avatar.getFilename());
-        return file.exists();
-    }
-
-    public boolean save(final Avatar avatar) {
-        File file;
-        if (isAvatarCached(avatar)) {
-            file = getAvatarFile(avatar.getFilename());
-            avatar.size = file.length();
-        } else {
-            file =
-                    new File(
-                            mXmppConnectionService.getCacheDir().getAbsolutePath()
-                                    + "/"
-                                    + UUID.randomUUID().toString());
-            if (file.getParentFile().mkdirs()) {
-                Log.d(Config.LOGTAG, "created cache directory");
-            }
-            OutputStream os = null;
-            try {
-                if (!file.createNewFile()) {
-                    Log.d(
-                            Config.LOGTAG,
-                            "unable to create temporary file " + file.getAbsolutePath());
-                }
-                os = new FileOutputStream(file);
-                MessageDigest digest = MessageDigest.getInstance("SHA-1");
-                digest.reset();
-                DigestOutputStream mDigestOutputStream = new DigestOutputStream(os, digest);
-                final byte[] bytes = avatar.getImageAsBytes();
-                mDigestOutputStream.write(bytes);
-                mDigestOutputStream.flush();
-                mDigestOutputStream.close();
-                String sha1sum = CryptoHelper.bytesToHex(digest.digest());
-                if (sha1sum.equals(avatar.sha1sum)) {
-                    final File outputFile = getAvatarFile(avatar.getFilename());
-                    if (outputFile.getParentFile().mkdirs()) {
-                        Log.d(Config.LOGTAG, "created avatar directory");
-                    }
-                    final File avatarFile = getAvatarFile(avatar.getFilename());
-                    if (!file.renameTo(avatarFile)) {
-                        Log.d(
-                                Config.LOGTAG,
-                                "unable to rename " + file.getAbsolutePath() + " to " + outputFile);
-                        return false;
-                    }
-                } else {
-                    Log.d(Config.LOGTAG, "sha1sum mismatch for " + avatar.owner);
-                    if (!file.delete()) {
-                        Log.d(Config.LOGTAG, "unable to delete temporary file");
-                    }
-                    return false;
-                }
-                avatar.size = bytes.length;
-            } catch (IllegalArgumentException | IOException | NoSuchAlgorithmException e) {
-                return false;
-            } finally {
-                close(os);
-            }
-        }
-        return true;
     }
 
     public void deleteHistoricAvatarPath() {
