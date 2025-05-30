@@ -75,12 +75,9 @@ public final class Config {
     public static final int CONNECT_DISCO_TIMEOUT = 20;
     public static final int MINI_GRACE_PERIOD = 750;
 
-    // media file formats. Homogenous Android or Conversations only deployments can switch to opus
-    // and webp
-    public static final int AVATAR_SIZE = 192;
-    public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
-    public static final int AVATAR_FULL_SIZE = 1024;
-    public static final int AVATAR_CHAR_LIMIT = 9400;
+    public static final int AVATAR_THUMBNAIL_SIZE = 192;
+    public static final int AVATAR_THUMBNAIL_CHAR_LIMIT = 9400;
+    public static final int AVATAR_FULL_SIZE = 1280;
 
     public static final int IMAGE_SIZE = 1920;
     public static final Bitmap.CompressFormat IMAGE_FORMAT = Bitmap.CompressFormat.JPEG;

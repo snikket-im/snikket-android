@@ -24,6 +24,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
@@ -544,19 +545,30 @@ public class AvatarManager extends AbstractManager {
         final ListenableFuture<Info> avatarFuture;
         if (hasAlphaChannel) {
             avatarThumbnailFuture =
-                    resizeAndStoreAvatarAsync(image, Config.AVATAR_SIZE / 2, ImageFormat.PNG);
+                    resizeAndStoreAvatarAsync(
+                            image, Config.AVATAR_THUMBNAIL_SIZE / 2, ImageFormat.PNG);
             avatarFuture =
                     resizeAndStoreAvatarAsync(image, Config.AVATAR_FULL_SIZE / 2, ImageFormat.PNG);
         } else {
+            final int autoAcceptFileSize =
+                    context.getResources().getInteger(R.integer.auto_accept_filesize);
             avatarThumbnailFuture =
                     resizeAndStoreAvatarAsync(
-                            image, Config.AVATAR_SIZE, ImageFormat.JPEG, Config.AVATAR_CHAR_LIMIT);
+                            image,
+                            Config.AVATAR_THUMBNAIL_SIZE,
+                            ImageFormat.JPEG,
+                            Config.AVATAR_THUMBNAIL_CHAR_LIMIT);
             avatarFuture =
-                    resizeAndStoreAvatarAsync(image, Config.AVATAR_FULL_SIZE, ImageFormat.JPEG);
+                    resizeAndStoreAvatarAsync(
+                            image, Config.AVATAR_FULL_SIZE, ImageFormat.JPEG, autoAcceptFileSize);
 
             if (Compatibility.twentyEight() && !PhoneHelper.isEmulator()) {
                 final var avatarHeifFuture =
-                        resizeAndStoreAvatarAsync(image, Config.AVATAR_FULL_SIZE, ImageFormat.HEIF);
+                        resizeAndStoreAvatarAsync(
+                                image,
+                                Config.AVATAR_FULL_SIZE,
+                                ImageFormat.HEIF,
+                                autoAcceptFileSize);
                 final var avatarHeifWithUrlFuture =
                         Futures.transformAsync(
                                 avatarHeifFuture, this::upload, MoreExecutors.directExecutor());
@@ -564,7 +576,11 @@ public class AvatarManager extends AbstractManager {
             }
             if (Compatibility.thirtyFour() && !PhoneHelper.isEmulator()) {
                 final var avatarAvifFuture =
-                        resizeAndStoreAvatarAsync(image, Config.AVATAR_FULL_SIZE, ImageFormat.AVIF);
+                        resizeAndStoreAvatarAsync(
+                                image,
+                                Config.AVATAR_FULL_SIZE,
+                                ImageFormat.AVIF,
+                                autoAcceptFileSize);
                 final var avatarAvifWithUrlFuture =
                         Futures.transformAsync(
                                 avatarAvifFuture, this::upload, MoreExecutors.directExecutor());
@@ -653,13 +669,13 @@ public class AvatarManager extends AbstractManager {
                         hasAlphaChannel -> {
                             if (hasAlphaChannel) {
                                 return resizeAndStoreAvatarAsync(
-                                        image, Config.AVATAR_SIZE / 2, ImageFormat.PNG);
+                                        image, Config.AVATAR_THUMBNAIL_SIZE / 2, ImageFormat.PNG);
                             } else {
                                 return resizeAndStoreAvatarAsync(
                                         image,
-                                        Config.AVATAR_SIZE,
+                                        Config.AVATAR_THUMBNAIL_SIZE,
                                         ImageFormat.JPEG,
-                                        Config.AVATAR_CHAR_LIMIT);
+                                        Config.AVATAR_THUMBNAIL_CHAR_LIMIT);
                             }
                         },
                         MoreExecutors.directExecutor());

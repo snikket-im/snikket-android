@@ -192,8 +192,8 @@ public class PublishProfilePictureActivity extends XmppActivity
         cropImageOptions.fixAspectRatio = true;
         cropImageOptions.outputCompressFormat = Bitmap.CompressFormat.PNG;
         cropImageOptions.imageSourceIncludeCamera = false;
-        cropImageOptions.minCropResultHeight = Config.AVATAR_SIZE;
-        cropImageOptions.minCropResultWidth = Config.AVATAR_SIZE;
+        cropImageOptions.minCropResultHeight = Config.AVATAR_THUMBNAIL_SIZE;
+        cropImageOptions.minCropResultWidth = Config.AVATAR_THUMBNAIL_SIZE;
         return cropImageOptions;
     }
 
