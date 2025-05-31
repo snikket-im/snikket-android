@@ -100,7 +100,7 @@
     <string name="try_again">Ɛreḍ tikkelt nniḍen</string>
     <string name="file">afaylu</string>
     <string name="choose_file">Fren afaylu</string>
-    <string name="download_x_file">Zḍem-d %S</string>
+    <string name="download_x_file">Zḍem-d %s</string>
     <string name="delete_x_file">Kkes %s</string>
     <string name="open_x_file">Ldi %s</string>
     <string name="file_deleted">Afaylu yettwakkes</string>
