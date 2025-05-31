@@ -1159,4 +1159,7 @@
     <string name="account_status_service_outage_scheduled">Планирана недоступност</string>
     <string name="account_status_service_outage_known">Сервис недоступан (познат проблем)</string>
     <string name="sos_scheduled_return">Опоравак сервиса предвиђен за %s</string>
+    <string name="save_to_contact">Сачувај у контакте</string>
+    <string name="no_contacts_permission">%1$s тражи приступ твојим контактима</string>
+    <string name="show_in_contacts">Прикажи у контактима</string>
 </resources>
