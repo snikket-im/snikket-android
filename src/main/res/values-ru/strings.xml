@@ -1172,4 +1172,7 @@
     <string name="account_status_service_outage_known">Сервис не работает (известная проблема)</string>
     <string name="account_status_service_outage_scheduled">Запланированный простой</string>
     <string name="sos_scheduled_return">Сервис должен заработать %s</string>
+    <string name="no_contacts_permission">%1$s требуется доступ к вашим контактам</string>
+    <string name="save_to_contact">Сохранить в контакты</string>
+    <string name="show_in_contacts">Показать в контактах</string>
 </resources>
