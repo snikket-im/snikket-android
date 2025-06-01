@@ -100,7 +100,7 @@
     <string name="try_again">Ɛreḍ tikkelt nniḍen</string>
     <string name="file">afaylu</string>
     <string name="choose_file">Fren afaylu</string>
-    <string name="download_x_file">Zḍem-d %s</string>
+    <string name="download_x_file">Sader %s</string>
     <string name="delete_x_file">Kkes %s</string>
     <string name="open_x_file">Ldi %s</string>
     <string name="file_deleted">Afaylu yettwakkes</string>
@@ -260,4 +260,16 @@
     <string name="copy_to_clipboard">Nɣel ɣer tecfawt</string>
     <string name="copy_email_address">Nɣel tansa n yimayl</string>
     <string name="copy_original_url">Nɣel URL aɣbalu</string>
+    <string name="action_archive_chat">Ḥrez adiwenni</string>
+    <string name="channel_details">Talqayt n ubadu</string>
+    <string name="action_delete_contact">Kkes seg yinermisen</string>
+    <string name="action_block_contact">Sewḥel anermis</string>
+    <string name="action_unblock_contact">Serreḥ i unermis</string>
+    <string name="action_block_domain">Sewḥel taɣult</string>
+    <string name="action_unblock_domain">Serreḥ i taɣult</string>
+    <string name="action_block_participant">Sewḥel imttekki</string>
+    <string name="action_unblock_participant">Serreḥ imttekki</string>
+    <string name="title_activity_block_list">Sewḥel tabdart</string>
+    <string name="minute_ago">1 tesdidt aya</string>
+    <string name="minutes_ago">%d tesdidin aya</string>
 </resources>
