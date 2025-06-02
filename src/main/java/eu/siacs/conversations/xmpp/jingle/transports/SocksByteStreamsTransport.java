@@ -14,7 +14,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
 import com.google.common.hash.Hashing;
 import com.google.common.io.ByteStreams;
-import com.google.common.primitives.Ints;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -29,7 +28,9 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.DirectConnectionUtils;
 import eu.siacs.conversations.xmpp.jingle.stanzas.SocksByteStreamsTransportInfo;
-import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.StreamHostManager;
+import im.conversations.android.xmpp.model.socks5.Activate;
+import im.conversations.android.xmpp.model.socks5.Query;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import java.io.IOException;
 import java.io.InputStream;
@@ -249,10 +250,9 @@ public class SocksByteStreamsTransport implements Transport {
         final SettableFuture<String> iqFuture = SettableFuture.create();
         final Iq proxyActivation = new Iq(Iq.Type.SET);
         proxyActivation.setTo(candidate.jid);
-        final Element query = proxyActivation.addChild("query", Namespace.BYTE_STREAMS);
-        query.setAttribute("sid", this.streamId);
-        final Element activate = query.addChild("activate");
-        activate.setContent(id.with.toString());
+        final var query = proxyActivation.addExtension(new Query());
+        query.setSid(this.streamId);
+        query.addExtension(new Activate(id.with));
         xmppConnection.sendIqPacket(
                 proxyActivation,
                 (response) -> {
@@ -276,7 +276,8 @@ public class SocksByteStreamsTransport implements Transport {
     }
 
     private ListenableFuture<Connection> getOurProxyConnection(final String ourDestination) {
-        final var proxyFuture = getProxyCandidate();
+        final var proxyFuture =
+                xmppConnection.getManager(StreamHostManager.class).getProxyCandidate(initiator);
         return Futures.transformAsync(
                 proxyFuture,
                 proxy -> {
@@ -300,67 +301,6 @@ public class SocksByteStreamsTransport implements Transport {
                             MoreExecutors.directExecutor());
                 },
                 MoreExecutors.directExecutor());
-    }
-
-    private ListenableFuture<Candidate> getProxyCandidate() {
-        if (Config.DISABLE_PROXY_LOOKUP) {
-            return Futures.immediateFailedFuture(
-                    new IllegalStateException("Proxy look up is disabled"));
-        }
-        final var streamer =
-                xmppConnection
-                        .getManager(DiscoManager.class)
-                        .findDiscoItemByFeature(Namespace.BYTE_STREAMS);
-        if (streamer == null) {
-            return Futures.immediateFailedFuture(
-                    new IllegalStateException("No proxy/streamer found"));
-        }
-        final Iq iqRequest = new Iq(Iq.Type.GET);
-        iqRequest.setTo(streamer.getKey());
-        // TODO urgent refactor to extension
-        // TODO and maybe move to Manager
-        iqRequest.query(Namespace.BYTE_STREAMS);
-        final SettableFuture<Candidate> candidateFuture = SettableFuture.create();
-        xmppConnection.sendIqPacket(
-                iqRequest,
-                (response) -> {
-                    if (response.getType() == Iq.Type.RESULT) {
-                        final Element query = response.findChild("query", Namespace.BYTE_STREAMS);
-                        final Element streamHost =
-                                query == null
-                                        ? null
-                                        : query.findChild("streamhost", Namespace.BYTE_STREAMS);
-                        final String host =
-                                streamHost == null ? null : streamHost.getAttribute("host");
-                        final Integer port =
-                                Ints.tryParse(
-                                        Strings.nullToEmpty(
-                                                streamHost == null
-                                                        ? null
-                                                        : streamHost.getAttribute("port")));
-                        if (Strings.isNullOrEmpty(host) || port == null) {
-                            candidateFuture.setException(
-                                    new IOException("Proxy response is missing attributes"));
-                            return;
-                        }
-                        candidateFuture.set(
-                                new Candidate(
-                                        UUID.randomUUID().toString(),
-                                        host,
-                                        streamer.getKey(),
-                                        port,
-                                        655360 + (initiator ? 0 : 15),
-                                        CandidateType.PROXY));
-
-                    } else if (response.getType() == Iq.Type.TIMEOUT) {
-                        candidateFuture.setException(new TimeoutException());
-                    } else {
-                        candidateFuture.setException(
-                                new IOException(
-                                        "received iq error in response to proxy discovery"));
-                    }
-                });
-        return candidateFuture;
     }
 
     @Override

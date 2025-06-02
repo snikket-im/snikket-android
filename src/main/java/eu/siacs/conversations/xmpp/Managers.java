@@ -20,7 +20,9 @@ import eu.siacs.conversations.xmpp.manager.PingManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import eu.siacs.conversations.xmpp.manager.PrivateStorageManager;
 import eu.siacs.conversations.xmpp.manager.PubSubManager;
+import eu.siacs.conversations.xmpp.manager.RegistrationManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
+import eu.siacs.conversations.xmpp.manager.StreamHostManager;
 import eu.siacs.conversations.xmpp.manager.UnifiedPushManager;
 import eu.siacs.conversations.xmpp.manager.VCardManager;
 
@@ -51,7 +53,9 @@ public class Managers {
                 .put(PresenceManager.class, new PresenceManager(context, connection))
                 .put(PrivateStorageManager.class, new PrivateStorageManager(context, connection))
                 .put(PubSubManager.class, new PubSubManager(context, connection))
+                .put(RegistrationManager.class, new RegistrationManager(context, connection))
                 .put(RosterManager.class, new RosterManager(context, connection))
+                .put(StreamHostManager.class, new StreamHostManager(context, connection))
                 .put(UnifiedPushManager.class, new UnifiedPushManager(context, connection))
                 .put(VCardManager.class, new VCardManager(context, connection))
                 .build();

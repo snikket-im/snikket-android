@@ -2520,8 +2520,12 @@ public class XmppConnection implements Runnable {
     }
 
     public ListenableFuture<Iq> sendIqPacket(final Iq request) {
+        return sendIqPacket(request, false);
+    }
+
+    public ListenableFuture<Iq> sendIqPacket(final Iq request, final boolean allowUnbound) {
         final SettableFuture<Iq> settable = SettableFuture.create();
-        this.sendIqPacket(
+        this.sendUnmodifiedIqPacket(
                 request,
                 response -> {
                     final var type = response.getType();
@@ -2530,7 +2534,8 @@ public class XmppConnection implements Runnable {
                         case TIMEOUT -> settable.setException(new TimeoutException());
                         default -> settable.setException(new IqErrorException(response));
                     }
-                });
+                },
+                allowUnbound);
         return settable;
     }
 

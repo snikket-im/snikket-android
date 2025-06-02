@@ -14,6 +14,7 @@ public final class Namespace {
     public static final String RESULT_SET_MANAGEMENT = "http://jabber.org/protocol/rsm";
     public static final String CHAT_MARKERS = "urn:xmpp:chat-markers:0";
     public static final String CHAT_STATES = "http://jabber.org/protocol/chatstates";
+    public static final String CAPTCHA = "urn:xmpp:captcha";
     public static final String DELIVERY_RECEIPTS = "urn:xmpp:receipts";
     public static final String REACTIONS = "urn:xmpp:reactions:0";
     public static final String VCARD_TEMP = "vcard-temp";

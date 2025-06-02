@@ -181,7 +181,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
                     }
 
                     @Override
-                    public void onFailure(@NonNull Throwable throwable) {}
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.d(Config.LOGTAG, "could not prepare transport info", throwable);
+                    }
                 },
                 MoreExecutors.directExecutor());
     }
