@@ -1139,4 +1139,7 @@
     <string name="account_status_service_outage_scheduled">Manutenzione programmata</string>
     <string name="account_status_service_outage_known">Servizio in manutenzione (problema noto)</string>
     <string name="sos_scheduled_return">Il servizio è programmato per tornare il %s</string>
+    <string name="no_contacts_permission">%1$s richiede l\'accesso ai tuoi contatti</string>
+    <string name="save_to_contact">Salva nei contatti</string>
+    <string name="show_in_contacts">Mostra nei contatti</string>
 </resources>
