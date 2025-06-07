@@ -1137,4 +1137,7 @@
     <string name="sos_scheduled_return">Está previsto que el servicio vuelva a las %s</string>
     <string name="account_status_service_outage_scheduled">Interrupción Programada del Servicio</string>
     <string name="account_status_service_outage_known">Servicio Interrumpido (Problema Conocido)</string>
+    <string name="no_contacts_permission">%1$s necesita acceso a sus contactos</string>
+    <string name="save_to_contact">Guardar en contactos</string>
+    <string name="show_in_contacts">Mostrar en contactos</string>
 </resources>
