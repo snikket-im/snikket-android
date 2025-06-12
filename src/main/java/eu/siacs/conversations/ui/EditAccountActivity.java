@@ -80,8 +80,9 @@ import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
-import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
+import eu.siacs.conversations.xmpp.manager.RegistrationManager;
+import im.conversations.android.xmpp.model.data.Data;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Arrays;
 import java.util.List;
@@ -788,10 +789,10 @@ public class EditAccountActivity extends OmemoActivity
                 showBlocklist.setVisible(false);
             }
 
-            if (!mAccount.getXmppConnection().getFeatures().register()) {
-                changePassword.setVisible(false);
-                deleteAccount.setVisible(false);
-            }
+            final var registration =
+                    mAccount.getXmppConnection().getManager(RegistrationManager.class).hasFeature();
+            changePassword.setVisible(registration);
+            deleteAccount.setVisible(registration);
             mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
             changePresence.setVisible(!mInitMode);
         } else {
@@ -1601,8 +1602,7 @@ public class EditAccountActivity extends OmemoActivity
     }
 
     @Override
-    public void onCaptchaRequested(
-            final Account account, final String id, final Data data, final Bitmap captcha) {
+    public void onCaptchaRequested(final Account account, final Data data, final Bitmap captcha) {
         runOnUiThread(
                 () -> {
                     if (mCaptchaDialog != null && mCaptchaDialog.isShowing()) {
@@ -1624,34 +1624,15 @@ public class EditAccountActivity extends OmemoActivity
 
                     builder.setPositiveButton(
                             getString(R.string.ok),
-                            (dialog, which) -> {
-                                String rc = input.getText().toString();
-                                data.put("username", account.getUsername());
-                                data.put("password", account.getPassword());
-                                data.put("ocr", rc);
-                                data.submit();
-
-                                if (xmppConnectionServiceBound) {
-                                    xmppConnectionService.sendCreateAccountWithCaptchaPacket(
-                                            account, id, data);
-                                }
-                            });
+                            (dialog, which) ->
+                                    account.getXmppConnection()
+                                            .register(data, input.getText().toString()));
                     builder.setNegativeButton(
                             getString(R.string.cancel),
-                            (dialog, which) -> {
-                                if (xmppConnectionService != null) {
-                                    xmppConnectionService.sendCreateAccountWithCaptchaPacket(
-                                            account, null, null);
-                                }
-                            });
+                            (dialog, which) -> account.getXmppConnection().cancelRegistration());
 
                     builder.setOnCancelListener(
-                            dialog -> {
-                                if (xmppConnectionService != null) {
-                                    xmppConnectionService.sendCreateAccountWithCaptchaPacket(
-                                            account, null, null);
-                                }
-                            });
+                            dialog -> account.getXmppConnection().cancelRegistration());
                     mCaptchaDialog = builder.create();
                     mCaptchaDialog.show();
                     input.requestFocus();

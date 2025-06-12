@@ -188,16 +188,6 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public Iq generateSetPassword(final Account account, final String newPassword) {
-        final Iq packet = new Iq(Iq.Type.SET);
-        packet.setTo(account.getDomain());
-        final Element query = packet.addChild("query", Namespace.REGISTER);
-        final Jid jid = account.getJid();
-        query.addChild("username").setContent(jid.getLocal());
-        query.addChild("password").setContent(newPassword);
-        return packet;
-    }
-
     public Iq changeAffiliation(Conversation conference, Jid jid, String affiliation) {
         List<Jid> jids = new ArrayList<>();
         jids.add(jid);

@@ -3,6 +3,7 @@ package eu.siacs.conversations.xml;
 public final class Namespace {
     public static final String ADDRESSING = "http://jabber.org/protocol/address";
     public static final String AXOLOTL = "eu.siacs.conversations.axolotl";
+    public static final String BOB = "urn:xmpp:bob";
     public static final String PGP_SIGNED = "jabber:x:signed";
     public static final String PGP_ENCRYPTED = "jabber:x:encrypted";
     public static final String AXOLOTL_BUNDLES = AXOLOTL + ".bundles";
@@ -98,7 +99,7 @@ public final class Namespace {
     public static final String MUC_USER = "http://jabber.org/protocol/muc#user";
     public static final String BOOKMARKS2 = "urn:xmpp:bookmarks:1";
     public static final String BOOKMARKS2_COMPAT = BOOKMARKS2 + "#compat";
-    public static final String INVITE = "urn:xmpp:invite";
+    public static final String PRE_AUTHENTICATED_IN_BAND_REGISTRATION = "urn:xmpp:ibr-token:0";
     public static final String PARS = "urn:xmpp:pars:0";
     public static final String EASY_ONBOARDING_INVITE = "urn:xmpp:invite#invite";
     public static final String OMEMO_DTLS_SRTP_VERIFICATION =
@@ -110,6 +111,7 @@ public final class Namespace {
     public static final String REPORTING_REASON_SPAM = "urn:xmpp:reporting:spam";
     public static final String SDP_OFFER_ANSWER = "urn:ietf:rfc:3264";
     public static final String HASHES = "urn:xmpp:hashes:2";
+    public static final String MEDIA_ELEMENT = "urn:xmpp:media-element";
     public static final String MDS_DISPLAYED = "urn:xmpp:mds:displayed:0";
     public static final String MDS_SERVER_ASSIST = "urn:xmpp:mds:server-assist:0";
 

@@ -56,6 +56,9 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
@@ -86,6 +89,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
+import eu.siacs.conversations.xmpp.manager.RegistrationManager;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -390,90 +394,94 @@ public abstract class XmppActivity extends ActionBarActivity {
     protected void deleteAccount(final Account account, final Runnable postDelete) {
         final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         final View dialogView = getLayoutInflater().inflate(R.layout.dialog_delete_account, null);
-        final CheckBox deleteFromServer = dialogView.findViewById(R.id.delete_from_server);
         builder.setView(dialogView);
         builder.setTitle(R.string.mgmt_account_delete);
         builder.setPositiveButton(getString(R.string.delete), null);
         builder.setNegativeButton(getString(R.string.cancel), null);
         final AlertDialog dialog = builder.create();
         dialog.setOnShowListener(
-                dialogInterface -> {
-                    final Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    button.setOnClickListener(
-                            v -> {
-                                final boolean unregister = deleteFromServer.isChecked();
-                                if (unregister) {
-                                    if (account.isOnlineAndConnected()) {
-                                        deleteFromServer.setEnabled(false);
-                                        button.setText(R.string.please_wait);
-                                        button.setEnabled(false);
-                                        xmppConnectionService.unregisterAccount(
-                                                account,
-                                                result -> {
-                                                    runOnUiThread(
-                                                            () -> {
-                                                                if (result) {
-                                                                    dialog.dismiss();
-                                                                    if (postDelete != null) {
-                                                                        postDelete.run();
-                                                                    }
-                                                                    if (xmppConnectionService
-                                                                                            .getAccounts()
-                                                                                            .size()
-                                                                                    == 0
-                                                                            && Config
-                                                                                            .MAGIC_CREATE_DOMAIN
-                                                                                    != null) {
-                                                                        final Intent intent =
-                                                                                SignupUtils
-                                                                                        .getSignUpIntent(
-                                                                                                this);
-                                                                        intent.setFlags(
-                                                                                Intent
-                                                                                                .FLAG_ACTIVITY_NEW_TASK
-                                                                                        | Intent
-                                                                                                .FLAG_ACTIVITY_CLEAR_TASK);
-                                                                        startActivity(intent);
-                                                                    }
-                                                                } else {
-                                                                    deleteFromServer.setEnabled(
-                                                                            true);
-                                                                    button.setText(R.string.delete);
-                                                                    button.setEnabled(true);
-                                                                    Toast.makeText(
-                                                                                    this,
-                                                                                    R.string
-                                                                                            .could_not_delete_account_from_server,
-                                                                                    Toast
-                                                                                            .LENGTH_LONG)
-                                                                            .show();
-                                                                }
-                                                            });
-                                                });
-                                    } else {
-                                        Toast.makeText(
-                                                        this,
-                                                        R.string.not_connected_try_again,
-                                                        Toast.LENGTH_LONG)
-                                                .show();
-                                    }
-                                } else {
-                                    xmppConnectionService.deleteAccount(account);
-                                    dialog.dismiss();
-                                    if (xmppConnectionService.getAccounts().size() == 0
-                                            && Config.MAGIC_CREATE_DOMAIN != null) {
-                                        final Intent intent = SignupUtils.getSignUpIntent(this);
-                                        intent.setFlags(
-                                                Intent.FLAG_ACTIVITY_NEW_TASK
-                                                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                    } else if (postDelete != null) {
-                                        postDelete.run();
-                                    }
-                                }
-                            });
-                });
+                dialogInterface -> onShowDeleteDialog(dialogInterface, account, postDelete));
         dialog.show();
+    }
+
+    private void onShowDeleteDialog(
+            final DialogInterface dialogInterface,
+            final Account account,
+            final Runnable postDelete) {
+        final AlertDialog alertDialog;
+        if (dialogInterface instanceof AlertDialog dialog) {
+            alertDialog = dialog;
+        } else {
+            throw new IllegalStateException("DialogInterface was not of type AlertDialog");
+        }
+        final var button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        button.setOnClickListener(
+                v -> onDeleteDialogButtonClicked(alertDialog, account, postDelete));
+    }
+
+    private void onDeleteDialogButtonClicked(
+            final AlertDialog dialog, final Account account, final Runnable postDelete) {
+        final CheckBox deleteFromServer = dialog.findViewById(R.id.delete_from_server);
+        if (deleteFromServer == null) {
+            throw new IllegalStateException("AlertDialog did not have button");
+        }
+        final var button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        final boolean unregister = deleteFromServer.isChecked();
+        if (unregister) {
+            if (account.isOnlineAndConnected()) {
+                final var connection = account.getXmppConnection();
+                deleteFromServer.setEnabled(false);
+                button.setText(R.string.please_wait);
+                button.setEnabled(false);
+                final var future = connection.getManager(RegistrationManager.class).unregister();
+                Futures.addCallback(
+                        future,
+                        new FutureCallback<>() {
+                            @Override
+                            public void onSuccess(Void result) {
+                                runOnUiThread(
+                                        () -> onAccountDeletedSuccess(account, dialog, postDelete));
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Throwable t) {
+                                Log.d(Config.LOGTAG, "could not unregister account", t);
+                                runOnUiThread(() -> onAccountDeletionFailure(dialog, postDelete));
+                            }
+                        },
+                        MoreExecutors.directExecutor());
+            } else {
+                Toast.makeText(this, R.string.not_connected_try_again, Toast.LENGTH_LONG).show();
+            }
+        } else {
+            onAccountDeletedSuccess(account, dialog, postDelete);
+        }
+    }
+
+    private void onAccountDeletedSuccess(
+            final Account account, final AlertDialog dialog, final Runnable postDelete) {
+        xmppConnectionService.deleteAccount(account);
+        dialog.dismiss();
+        if (xmppConnectionService.getAccounts().isEmpty() && Config.MAGIC_CREATE_DOMAIN != null) {
+            final Intent intent = SignupUtils.getSignUpIntent(this);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        } else if (postDelete != null) {
+            postDelete.run();
+        }
+    }
+
+    private void onAccountDeletionFailure(final AlertDialog dialog, final Runnable postDelete) {
+        final CheckBox deleteFromServer = dialog.findViewById(R.id.delete_from_server);
+        if (deleteFromServer == null) {
+            throw new IllegalStateException("AlertDialog did not have button");
+        }
+        final var button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        deleteFromServer.setEnabled(true);
+        button.setText(R.string.delete);
+        button.setEnabled(true);
+        Toast.makeText(this, R.string.could_not_delete_account_from_server, Toast.LENGTH_LONG)
+                .show();
     }
 
     protected abstract void onBackendConnected();

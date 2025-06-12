@@ -39,7 +39,6 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.security.KeyChain;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
 import android.util.Pair;
@@ -141,6 +140,7 @@ import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManage
 import eu.siacs.conversations.xmpp.manager.NickManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import eu.siacs.conversations.xmpp.manager.PrivateStorageManager;
+import eu.siacs.conversations.xmpp.manager.RegistrationManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.manager.VCardManager;
 import eu.siacs.conversations.xmpp.pep.Avatar;
@@ -2809,41 +2809,10 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public void updateAccountPasswordOnServer(
-            final Account account,
-            final String newPassword,
-            final OnAccountPasswordChanged callback) {
-        final Iq iq = getIqGenerator().generateSetPassword(account, newPassword);
-        sendIqPacket(
-                account,
-                iq,
-                (packet) -> {
-                    if (packet.getType() == Iq.Type.RESULT) {
-                        account.setPassword(newPassword);
-                        account.setOption(Account.OPTION_MAGIC_CREATE, false);
-                        databaseBackend.updateAccount(account);
-                        callback.onPasswordChangeSucceeded();
-                    } else {
-                        callback.onPasswordChangeFailed();
-                    }
-                });
-    }
-
-    public void unregisterAccount(final Account account, final Consumer<Boolean> callback) {
-        final Iq iqPacket = new Iq(Iq.Type.SET);
-        final Element query = iqPacket.addChild("query", Namespace.REGISTER);
-        query.addChild("remove");
-        sendIqPacket(
-                account,
-                iqPacket,
-                (response) -> {
-                    if (response.getType() == Iq.Type.RESULT) {
-                        deleteAccount(account);
-                        callback.accept(true);
-                    } else {
-                        callback.accept(false);
-                    }
-                });
+    public ListenableFuture<Void> updateAccountPasswordOnServer(
+            final Account account, final String newPassword) {
+        final var connection = account.getXmppConnection();
+        return connection.getManager(RegistrationManager.class).setPassword(newPassword);
     }
 
     public void deleteAccount(final Account account) {
@@ -4664,21 +4633,24 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public boolean displayCaptchaRequest(Account account, String id, Data data, Bitmap captcha) {
-        if (mOnCaptchaRequested.size() > 0) {
-            DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
-            Bitmap scaled =
-                    Bitmap.createScaledBitmap(
-                            captcha,
-                            (int) (captcha.getWidth() * metrics.scaledDensity),
-                            (int) (captcha.getHeight() * metrics.scaledDensity),
-                            false);
-            for (OnCaptchaRequested listener : threadSafeList(this.mOnCaptchaRequested)) {
-                listener.onCaptchaRequested(account, id, data, scaled);
-            }
-            return true;
+    public boolean displayCaptchaRequest(
+            final Account account,
+            final im.conversations.android.xmpp.model.data.Data data,
+            final Bitmap captcha) {
+        if (mOnCaptchaRequested.isEmpty()) {
+            return false;
         }
-        return false;
+        final var metrics = getApplicationContext().getResources().getDisplayMetrics();
+        Bitmap scaled =
+                Bitmap.createScaledBitmap(
+                        captcha,
+                        (int) (captcha.getWidth() * metrics.scaledDensity),
+                        (int) (captcha.getHeight() * metrics.scaledDensity),
+                        false);
+        for (final OnCaptchaRequested listener : threadSafeList(this.mOnCaptchaRequested)) {
+            listener.onCaptchaRequested(account, data, scaled);
+        }
+        return true;
     }
 
     public void updateBlocklistUi(final OnUpdateBlocklist.Status status) {
@@ -5025,14 +4997,6 @@ public class XmppConnectionService extends Service {
         if (connection != null) {
             connection.sendPresencePacket(packet);
         }
-    }
-
-    public void sendCreateAccountWithCaptchaPacket(Account account, String id, Data data) {
-        final XmppConnection connection = account.getXmppConnection();
-        if (connection == null) {
-            return;
-        }
-        connection.sendCreateAccountWithCaptchaPacket(id, data);
     }
 
     public ListenableFuture<Iq> sendIqPacket(final Account account, final Iq request) {
@@ -5401,12 +5365,6 @@ public class XmppConnectionService extends Service {
         void informUser(int r);
     }
 
-    public interface OnAccountPasswordChanged {
-        void onPasswordChangeSucceeded();
-
-        void onPasswordChangeFailed();
-    }
-
     public interface OnRoomDestroy {
         void onRoomDestroySucceeded();
 
@@ -5440,7 +5398,10 @@ public class XmppConnectionService extends Service {
     }
 
     public interface OnCaptchaRequested {
-        void onCaptchaRequested(Account account, String id, Data data, Bitmap captcha);
+        void onCaptchaRequested(
+                Account account,
+                im.conversations.android.xmpp.model.data.Data data,
+                Bitmap captcha);
     }
 
     public interface OnRosterUpdate {

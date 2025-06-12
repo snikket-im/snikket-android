@@ -3,8 +3,6 @@ package eu.siacs.conversations.xmpp;
 import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.SystemClock;
 import android.security.KeyChain;
@@ -44,8 +42,6 @@ import eu.siacs.conversations.crypto.sasl.SaslMechanism;
 import eu.siacs.conversations.crypto.sasl.ScramMechanism;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.generator.IqGenerator;
-import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.parser.MessageParser;
 import eu.siacs.conversations.parser.PresenceParser;
@@ -70,13 +66,13 @@ import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.TagWriter;
 import eu.siacs.conversations.xml.XmlReader;
 import eu.siacs.conversations.xmpp.bind.Bind2;
-import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.manager.AbstractManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.manager.PingManager;
+import eu.siacs.conversations.xmpp.manager.RegistrationManager;
 import im.conversations.android.xmpp.Entity;
 import im.conversations.android.xmpp.IqErrorException;
 import im.conversations.android.xmpp.model.AuthenticationFailure;
@@ -120,9 +116,7 @@ import im.conversations.android.xmpp.model.tls.StartTls;
 import im.conversations.android.xmpp.processor.AccountStateProcessor;
 import im.conversations.android.xmpp.processor.BindProcessor;
 import im.conversations.android.xmpp.processor.MessageAcknowledgedProcessor;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ConnectException;
 import java.net.IDN;
 import java.net.InetAddress;
@@ -135,7 +129,6 @@ import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -260,9 +253,13 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private void changeStatus(final Account.State nextStatus) {
+    private void changeState(final Account.State nextStatus) {
+        this.changeState(nextStatus, true);
+    }
+
+    private void changeState(final Account.State nextStatus, final boolean skipOnInterrupt) {
         synchronized (this) {
-            if (Thread.currentThread().isInterrupted()) {
+            if (skipOnInterrupt && Thread.currentThread().isInterrupted()) {
                 Log.d(
                         Config.LOGTAG,
                         account.getJid().asBareJid()
@@ -290,6 +287,14 @@ public class XmppConnection implements Runnable {
         this.accountStateProcessor.accept(nextStatus);
     }
 
+    private void changeStateTerminal(final Account.State state) {
+        // interrupt needs to be called before status change; otherwise we interrupt the newly
+        // created thread
+        this.interrupt();
+        this.forceCloseSocket();
+        this.changeState(state, false);
+    }
+
     public Jid getJidForCommand(final String node) {
         synchronized (this.commands) {
             return this.commands.get(node);
@@ -301,7 +306,7 @@ public class XmppConnection implements Runnable {
         this.lastPingSent = SystemClock.elapsedRealtime();
         this.lastDiscoStarted = Long.MAX_VALUE;
         this.mWaitingForSmCatchup.set(false);
-        this.changeStatus(Account.State.CONNECTING);
+        this.changeState(Account.State.CONNECTING);
     }
 
     public boolean isWaitingForSmCatchup() {
@@ -331,7 +336,7 @@ public class XmppConnection implements Runnable {
         try {
             Socket localSocket;
             shouldAuthenticate = !account.isOptionSet(Account.OPTION_REGISTER);
-            this.changeStatus(Account.State.CONNECTING);
+            this.changeState(Account.State.CONNECTING);
             final boolean useTorSetting = appSettings.isUseTor();
             final boolean extended = appSettings.isExtendedConnectionOptions();
             final boolean useTor = useTorSetting || account.isOnion();
@@ -533,27 +538,27 @@ public class XmppConnection implements Runnable {
             }
             processStream();
         } catch (final SecurityException e) {
-            this.changeStatus(Account.State.MISSING_INTERNET_PERMISSION);
+            this.changeState(Account.State.MISSING_INTERNET_PERMISSION);
         } catch (final StateChangingException e) {
-            this.changeStatus(e.state);
+            this.changeState(e.state);
         } catch (final UnknownHostException
                 | ConnectException
                 | SocksSocketFactory.HostNotFoundException e) {
-            this.changeStatus(Account.State.SERVER_NOT_FOUND);
+            this.changeState(Account.State.SERVER_NOT_FOUND);
         } catch (final SocksSocketFactory.SocksProxyNotFoundException e) {
-            this.changeStatus(Account.State.TOR_NOT_AVAILABLE);
+            this.changeState(Account.State.TOR_NOT_AVAILABLE);
         } catch (final IOException | XmlPullParserException e) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": " + e.getMessage());
-            this.changeStatus(Account.State.OFFLINE);
+            this.changeState(Account.State.OFFLINE);
             this.attempt = Math.max(0, this.attempt - 1);
         } finally {
-            if (!Thread.currentThread().isInterrupted()) {
-                forceCloseSocket();
-            } else {
+            if (Thread.currentThread().isInterrupted()) {
                 Log.d(
                         Config.LOGTAG,
                         account.getJid().asBareJid()
                                 + ": not force closing socket because thread was interrupted");
+            } else {
+                forceCloseSocket();
             }
         }
     }
@@ -1189,7 +1194,7 @@ public class XmppConnection implements Runnable {
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid() + ": awaiting disco results after resume");
-            changeStatus(Account.State.CONNECTING);
+            changeState(Account.State.CONNECTING);
         } else {
             changeStatusToOnline();
         }
@@ -1199,7 +1204,7 @@ public class XmppConnection implements Runnable {
         Log.d(
                 Config.LOGTAG,
                 account.getJid().asBareJid() + ": online with resource " + account.getResource());
-        changeStatus(Account.State.ONLINE);
+        changeState(Account.State.ONLINE);
     }
 
     private void processFailed(final Failed failed, final boolean sendBindRequest) {
@@ -1539,12 +1544,12 @@ public class XmppConnection implements Runnable {
             mXmppConnectionService.databaseBackend.updateAccount(account);
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
-        if (streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
-                && account.isOptionSet(Account.OPTION_REGISTER)) {
-            register();
-        } else if (!streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
-                && account.isOptionSet(Account.OPTION_REGISTER)) {
-            throw new StateChangingException(Account.State.REGISTRATION_NOT_SUPPORTED);
+        if (account.isOptionSet(Account.OPTION_REGISTER)) {
+            if (this.streamFeatures.register()) {
+                this.register();
+            } else {
+                throw new StateChangingException(Account.State.REGISTRATION_NOT_SUPPORTED);
+            }
         } else if (streamFeatures.hasStreamFeature(Authentication.class)
                 && shouldAuthenticate
                 && this.loginInfo == null) {
@@ -1847,167 +1852,95 @@ public class XmppConnection implements Runnable {
     }
 
     private void register() {
-        final String preAuth = account.getKey(Account.KEY_PRE_AUTH_REGISTRATION_TOKEN);
-        if (preAuth != null && features.invite()) {
-            final Iq preAuthRequest = new Iq(Iq.Type.SET);
-            preAuthRequest.addChild("preauth", Namespace.PARS).setAttribute("token", preAuth);
-            sendUnmodifiedIqPacket(
-                    preAuthRequest,
-                    (response) -> {
-                        if (response.getType() == Iq.Type.RESULT) {
-                            sendRegistryRequest();
+        final String preAuthToken =
+                Strings.emptyToNull(account.getKey(Account.KEY_PRE_AUTH_REGISTRATION_TOKEN));
+        final ListenableFuture<RegistrationManager.Registration> registrationFuture;
+        if (preAuthToken != null && streamFeatures.preAuthenticatedInBandRegistration()) {
+            registrationFuture =
+                    getManager(RegistrationManager.class).getRegistration(preAuthToken);
+        } else {
+            registrationFuture = getManager(RegistrationManager.class).getRegistration();
+        }
+        // TODO should we store this future and cancel it during disconnect or something
+        Futures.addCallback(
+                registrationFuture,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(final RegistrationManager.Registration registration) {
+                        if (registration instanceof RegistrationManager.SimpleRegistration) {
+                            final var future = getManager(RegistrationManager.class).register();
+                            awaitRegistrationResponse(future);
+                        } else if (registration
+                                instanceof RegistrationManager.ExtendedRegistration er) {
+                            mXmppConnectionService.displayCaptchaRequest(
+                                    account, er.getData(), er.getCaptcha());
+                        } else if (registration
+                                instanceof
+                                RegistrationManager.RedirectRegistration redirectRegistration) {
+                            XmppConnection.this.redirectionUrl = redirectRegistration.getURL();
+                            changeStateTerminal(Account.State.REGISTRATION_WEB);
                         } else {
-                            final String error = response.getErrorCondition();
                             Log.d(
                                     Config.LOGTAG,
-                                    account.getJid().asBareJid()
-                                            + ": failed to pre auth. "
-                                            + error);
-                            throw new StateChangingError(Account.State.REGISTRATION_INVALID_TOKEN);
+                                    "got registration: " + registration.getClass().getName());
+                            changeStateTerminal(Account.State.REGISTRATION_NOT_SUPPORTED);
                         }
-                    },
-                    true);
-        } else {
-            sendRegistryRequest();
-        }
-    }
+                    }
 
-    private void sendRegistryRequest() {
-        final Iq register = new Iq(Iq.Type.GET);
-        register.query(Namespace.REGISTER);
-        register.setTo(account.getDomain());
-        sendUnmodifiedIqPacket(
-                register,
-                (packet) -> {
-                    if (packet.getType() == Iq.Type.TIMEOUT) {
-                        return;
-                    }
-                    if (packet.getType() == Iq.Type.ERROR) {
-                        throw new StateChangingError(Account.State.REGISTRATION_FAILED);
-                    }
-                    final Element query = packet.query(Namespace.REGISTER);
-                    if (query.hasChild("username") && (query.hasChild("password"))) {
-                        final Iq register1 = new Iq(Iq.Type.SET);
-                        final Element username =
-                                new Element("username").setContent(account.getUsername());
-                        final Element password =
-                                new Element("password").setContent(account.getPassword());
-                        register1.query(Namespace.REGISTER).addChild(username);
-                        register1.query().addChild(password);
-                        register1.setFrom(account.getJid().asBareJid());
-                        sendUnmodifiedIqPacket(register1, this::processRegistrationResponse, true);
-                    } else if (query.hasChild("x", Namespace.DATA)) {
-                        final Data data = Data.parse(query.findChild("x", Namespace.DATA));
-                        final Element blob = query.findChild("data", "urn:xmpp:bob");
-                        final String id = packet.getId();
-                        InputStream is;
-                        if (blob != null) {
-                            try {
-                                final String base64Blob = blob.getContent();
-                                final byte[] strBlob = Base64.decode(base64Blob, Base64.DEFAULT);
-                                is = new ByteArrayInputStream(strBlob);
-                            } catch (Exception e) {
-                                is = null;
-                            }
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        if (t instanceof TimeoutException) {
+                            return;
+                        }
+                        if (t instanceof RegistrationManager.InvalidTokenException) {
+                            changeStateTerminal(Account.State.REGISTRATION_INVALID_TOKEN);
                         } else {
-                            final boolean useTor = this.appSettings.isUseTor() || account.isOnion();
-                            try {
-                                final String url = data.getValue("url");
-                                final String fallbackUrl = data.getValue("captcha-fallback-url");
-                                if (url != null) {
-                                    is = HttpConnectionManager.open(url, useTor);
-                                } else if (fallbackUrl != null) {
-                                    is = HttpConnectionManager.open(fallbackUrl, useTor);
-                                } else {
-                                    is = null;
-                                }
-                            } catch (final IOException e) {
-                                Log.d(
-                                        Config.LOGTAG,
-                                        account.getJid().asBareJid() + ": unable to fetch captcha",
-                                        e);
-                                is = null;
-                            }
+                            changeStateTerminal(Account.State.REGISTRATION_FAILED);
                         }
-
-                        if (is != null) {
-                            Bitmap captcha = BitmapFactory.decodeStream(is);
-                            try {
-                                if (mXmppConnectionService.displayCaptchaRequest(
-                                        account, id, data, captcha)) {
-                                    return;
-                                }
-                            } catch (Exception e) {
-                                throw new StateChangingError(Account.State.REGISTRATION_FAILED);
-                            }
-                        }
-                        throw new StateChangingError(Account.State.REGISTRATION_FAILED);
-                    } else if (query.hasChild("instructions")
-                            || query.hasChild("x", Namespace.OOB)) {
-                        final String instructions = query.findChildContent("instructions");
-                        final Element oob = query.findChild("x", Namespace.OOB);
-                        final String url = oob == null ? null : oob.findChildContent("url");
-                        if (url != null) {
-                            setAccountCreationFailed(url);
-                        } else if (instructions != null) {
-                            final Matcher matcher = Patterns.URI_HTTP.matcher(instructions);
-                            if (matcher.find()) {
-                                setAccountCreationFailed(
-                                        instructions.substring(matcher.start(), matcher.end()));
-                            }
-                        }
-                        throw new StateChangingError(Account.State.REGISTRATION_FAILED);
                     }
                 },
-                true);
+                MoreExecutors.directExecutor());
     }
 
-    public void sendCreateAccountWithCaptchaPacket(final String id, final Data data) {
-        final Iq request = IqGenerator.generateCreateAccountWithCaptcha(account, id, data);
-        this.sendUnmodifiedIqPacket(request, this::processRegistrationResponse, true);
+    public void register(
+            final im.conversations.android.xmpp.model.data.Data data, final String ocr) {
+        final var future = getManager(RegistrationManager.class).register(data, ocr);
+        awaitRegistrationResponse(future);
     }
 
-    private void processRegistrationResponse(final Iq response) {
-        if (response.getType() == Iq.Type.RESULT) {
-            account.setOption(Account.OPTION_REGISTER, false);
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid()
-                            + ": successfully registered new account on server");
-            throw new StateChangingError(Account.State.REGISTRATION_SUCCESSFUL);
-        } else {
-            final Account.State state = getRegistrationFailedState(response);
-            throw new StateChangingError(state);
-        }
+    private void awaitRegistrationResponse(final ListenableFuture<Void> registration) {
+        Futures.addCallback(
+                registration,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        account.setOption(Account.OPTION_REGISTER, false);
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid()
+                                        + ": successfully registered new account on server");
+                        changeStateTerminal(Account.State.REGISTRATION_SUCCESSFUL);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        if (t instanceof TimeoutException) {
+                            return;
+                        }
+                        if (t
+                                instanceof
+                                RegistrationManager.RegistrationFailedException exception) {
+                            changeStateTerminal(exception.asAccountState());
+                        } else {
+                            changeStateTerminal(Account.State.REGISTRATION_FAILED);
+                        }
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
-    @NonNull
-    private static Account.State getRegistrationFailedState(final Iq response) {
-        final List<String> PASSWORD_TOO_WEAK_MESSAGES =
-                Arrays.asList("The password is too weak", "Please use a longer password.");
-        final var error = response.getError();
-        final var condition = error == null ? null : error.getCondition();
-        final Account.State state;
-        if (condition instanceof Condition.Conflict) {
-            state = Account.State.REGISTRATION_CONFLICT;
-        } else if (condition instanceof Condition.ResourceConstraint) {
-            state = Account.State.REGISTRATION_PLEASE_WAIT;
-        } else if (condition instanceof Condition.NotAcceptable
-                && PASSWORD_TOO_WEAK_MESSAGES.contains(error.getTextAsString())) {
-            state = Account.State.REGISTRATION_PASSWORD_TOO_WEAK;
-        } else {
-            state = Account.State.REGISTRATION_FAILED;
-        }
-        return state;
-    }
-
-    private void setAccountCreationFailed(final String url) {
-        final HttpUrl httpUrl = url == null ? null : HttpUrl.parse(url);
-        if (httpUrl != null && httpUrl.isHttps()) {
-            this.redirectionUrl = httpUrl;
-            throw new StateChangingError(Account.State.REGISTRATION_WEB);
-        }
-        throw new StateChangingError(Account.State.REGISTRATION_FAILED);
+    public void cancelRegistration() {
+        this.changeStateTerminal(Account.State.REGISTRATION_FAILED);
     }
 
     public HttpUrl getRedirectionUrl() {
@@ -2608,6 +2541,7 @@ public class XmppConnection implements Runnable {
             return;
         }
         synchronized (this.mStanzaQueue) {
+            // TODO should we fail IQs for unbound streams?
             if (force || isBound) {
                 tagWriter.writeStanzaAsync(packet);
             } else {
@@ -2843,6 +2777,9 @@ public class XmppConnection implements Runnable {
     }
 
     public void triggerConnectionTimeout() {
+
+        // TODO not triggering timeout while waiting for captcha input
+
         final var duration = getConnectionDuration();
         Log.d(
                 Config.LOGTAG,
@@ -2851,11 +2788,7 @@ public class XmppConnection implements Runnable {
         // last connection time gets reset so time to next attempt is calculated correctly
         this.lastConnectionStarted = SystemClock.elapsedRealtime();
 
-        // interrupt needs to be called before status change; otherwise we interrupt the newly
-        // created thread
-        this.interrupt();
-        this.forceCloseSocket();
-        this.changeStatus(Account.State.CONNECTION_TIMEOUT);
+        this.changeStateTerminal(Account.State.CONNECTION_TIMEOUT);
     }
 
     public Account getAccount() {
@@ -3088,15 +3021,6 @@ public class XmppConnection implements Runnable {
                     account.getDomain(), Namespace.FLEXIBLE_OFFLINE_MESSAGE_RETRIEVAL);
         }
 
-        public boolean register() {
-            return hasDiscoFeature(account.getDomain(), Namespace.REGISTER);
-        }
-
-        public boolean invite() {
-            return connection.streamFeatures != null
-                    && connection.streamFeatures.hasChild("register", Namespace.INVITE);
-        }
-
         public boolean sm() {
             return streamId != null
                     || (connection.streamFeatures != null
@@ -3108,6 +3032,7 @@ public class XmppConnection implements Runnable {
                     && connection.streamFeatures.clientStateIndication();
         }
 
+        // TODO move to manager
         public boolean pep() {
             final var infoQuery = getManager(DiscoManager.class).get(account.getJid().asBareJid());
             return infoQuery != null && infoQuery.hasIdentityWithCategoryAndType("pubsub", "pep");
