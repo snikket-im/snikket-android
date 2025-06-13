@@ -1303,7 +1303,8 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
             this.file = file;
             this.transportSecurity = transportSecurity;
             this.transportTerminationLatch = transportTerminationLatch;
-            this.total = transportSecurity == null ? total : (total + 16);
+            this.total =
+                    transportSecurity == null ? total : (total + GCM_AUTHENTICATION_TAG_LENGTH);
             this.updateRunnable = updateRunnable;
         }
 
@@ -1445,7 +1446,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
             if (this.transportSecurity == null) {
                 return fileOutputStream;
             } else {
-                final AEADBlockCipher cipher = new GCMBlockCipher(new AESEngine());
+                final var cipher = GCMBlockCipher.newInstance(AESEngine.newInstance());
                 cipher.init(
                         false,
                         new AEADParameters(
