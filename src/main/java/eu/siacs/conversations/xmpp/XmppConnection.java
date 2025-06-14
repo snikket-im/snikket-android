@@ -131,12 +131,10 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -161,7 +159,6 @@ public class XmppConnection implements Runnable {
 
     protected final Account account;
     private final Features features = new Features(this);
-    private final HashMap<String, Jid> commands = new HashMap<>();
     private final SparseArray<Stanza> mStanzaQueue = new SparseArray<>();
     private final Hashtable<String, Pair<Iq, Consumer<Iq>>> packetCallbacks = new Hashtable<>();
     private final Set<OnAdvancedStreamFeaturesLoaded> advancedStreamFeaturesLoadedListeners =
@@ -293,12 +290,6 @@ public class XmppConnection implements Runnable {
         this.interrupt();
         this.forceCloseSocket();
         this.changeState(state, false);
-    }
-
-    public Jid getJidForCommand(final String node) {
-        synchronized (this.commands) {
-            return this.commands.get(node);
-        }
     }
 
     public void prepareNewConnection() {
@@ -1957,9 +1948,6 @@ public class XmppConnection implements Runnable {
         }
         this.redirectionUrl = null;
         getManager(DiscoManager.class).clear();
-        synchronized (this.commands) {
-            this.commands.clear();
-        }
         this.loginInfo = null;
     }
 
@@ -2255,32 +2243,6 @@ public class XmppConnection implements Runnable {
                 });
     }
 
-    private void discoverCommands() {
-        // TODO move result handling into DiscoManager too
-        final var future =
-                getManager(DiscoManager.class).commands(Entity.discoItem(account.getDomain()));
-        Futures.addCallback(
-                future,
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(Map<String, Jid> result) {
-                        synchronized (XmppConnection.this.commands) {
-                            XmppConnection.this.commands.clear();
-                            XmppConnection.this.commands.putAll(result);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Throwable throwable) {
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid() + ": could not fetch commands",
-                                throwable);
-                    }
-                },
-                MoreExecutors.directExecutor());
-    }
-
     public boolean isMamPreferenceAlways() {
         return isMamPreferenceAlways;
     }
@@ -2312,8 +2274,9 @@ public class XmppConnection implements Runnable {
         if (carbonsManager.hasFeature() && !carbonsManager.isEnabled()) {
             carbonsManager.enable();
         }
-        if (getFeatures().commands()) {
-            discoverCommands();
+        final var discoManager = getManager(DiscoManager.class);
+        if (discoManager.hasServerCommands()) {
+            discoManager.fetchServerCommands();
         }
     }
 
@@ -2996,16 +2959,6 @@ public class XmppConnection implements Runnable {
         private boolean hasDiscoFeature(final Jid server, final String feature) {
             final var infoQuery = getManager(DiscoManager.class).get(server);
             return infoQuery != null && infoQuery.getFeatureStrings().contains(feature);
-        }
-
-        public boolean commands() {
-            return hasDiscoFeature(account.getDomain(), Namespace.COMMANDS);
-        }
-
-        public boolean easyOnboardingInvites() {
-            synchronized (commands) {
-                return commands.containsKey(Namespace.EASY_ONBOARDING_INVITE);
-            }
         }
 
         public boolean blocking() {

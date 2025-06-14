@@ -1889,18 +1889,16 @@ public class XmppConnectionService extends Service {
 
     public void requestEasyOnboardingInvite(
             final Account account, final EasyOnboardingInvite.OnInviteRequested callback) {
-        final XmppConnection connection = account.getXmppConnection();
-        final Jid jid =
-                connection == null
-                        ? null
-                        : connection.getJidForCommand(Namespace.EASY_ONBOARDING_INVITE);
-        if (jid == null) {
+        final var connection = account.getXmppConnection();
+        final var discoManager = connection.getManager(DiscoManager.class);
+        final var address = discoManager.getAddressForCommand(Namespace.EASY_ONBOARDING_INVITE);
+        if (address == null) {
             callback.inviteRequestFailed(
                     getString(R.string.server_does_not_support_easy_onboarding_invites));
             return;
         }
         final Iq request = new Iq(Iq.Type.SET);
-        request.setTo(jid);
+        request.setTo(address);
         final Element command = request.addChild("command", Namespace.COMMANDS);
         command.setAttribute("node", Namespace.EASY_ONBOARDING_INVITE);
         command.setAttribute("action", "execute");
@@ -1922,7 +1920,7 @@ public class XmppConnectionService extends Service {
                             if (uri != null) {
                                 final EasyOnboardingInvite invite =
                                         new EasyOnboardingInvite(
-                                                jid.getDomain().toString(), uri, landingUrl);
+                                                address.getDomain().toString(), uri, landingUrl);
                                 callback.inviteRequested(invite);
                                 return;
                             }

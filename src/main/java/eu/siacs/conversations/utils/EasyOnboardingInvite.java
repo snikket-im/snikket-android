@@ -2,17 +2,16 @@ package eu.siacs.conversations.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-
-import java.util.Collections;
-import java.util.List;
-
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public class EasyOnboardingInvite implements Parcelable {
 
@@ -44,43 +43,45 @@ public class EasyOnboardingInvite implements Parcelable {
         return 0;
     }
 
-    public static final Creator<EasyOnboardingInvite> CREATOR = new Creator<EasyOnboardingInvite>() {
-        @Override
-        public EasyOnboardingInvite createFromParcel(Parcel in) {
-            return new EasyOnboardingInvite(in);
-        }
+    public static final Creator<EasyOnboardingInvite> CREATOR =
+            new Creator<EasyOnboardingInvite>() {
+                @Override
+                public EasyOnboardingInvite createFromParcel(Parcel in) {
+                    return new EasyOnboardingInvite(in);
+                }
 
-        @Override
-        public EasyOnboardingInvite[] newArray(int size) {
-            return new EasyOnboardingInvite[size];
-        }
-    };
+                @Override
+                public EasyOnboardingInvite[] newArray(int size) {
+                    return new EasyOnboardingInvite[size];
+                }
+            };
 
     public static boolean anyHasSupport(final XmppConnectionService service) {
         if (QuickConversationsService.isQuicksy()) {
             return false;
         }
-        return getSupportingAccounts(service).size() > 0;
-
+        return !getSupportingAccounts(service).isEmpty();
     }
 
     public static List<Account> getSupportingAccounts(final XmppConnectionService service) {
-        final ImmutableList.Builder<Account> supportingAccountsBuilder = new ImmutableList.Builder<>();
-        final List<Account> accounts = service == null ? Collections.emptyList() : service.getAccounts();
-        for(Account account : accounts) {
-            final XmppConnection xmppConnection = account.getXmppConnection();
-            if (xmppConnection != null && xmppConnection.getFeatures().easyOnboardingInvites()) {
+        final ImmutableList.Builder<Account> supportingAccountsBuilder =
+                new ImmutableList.Builder<>();
+        final List<Account> accounts =
+                service == null ? Collections.emptyList() : service.getAccounts();
+        for (final var account : accounts) {
+            final var connection = account.getXmppConnection();
+            final var discoManager = connection.getManager(DiscoManager.class);
+            if (Objects.nonNull(
+                    discoManager.getAddressForCommand(Namespace.EASY_ONBOARDING_INVITE))) {
                 supportingAccountsBuilder.add(account);
             }
         }
         return supportingAccountsBuilder.build();
     }
 
-
     public String getShareableLink() {
         return Strings.isNullOrEmpty(landingUrl) ? uri : landingUrl;
     }
-
 
     public String getDomain() {
         return domain;
@@ -88,6 +89,7 @@ public class EasyOnboardingInvite implements Parcelable {
 
     public interface OnInviteRequested {
         void inviteRequested(EasyOnboardingInvite invite);
+
         void inviteRequestFailed(String message);
     }
 }

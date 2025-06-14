@@ -523,8 +523,7 @@ public class ContactDetailsActivity extends OmemoActivity
         final String account = contact.getAccount().getJid().asBareJid().toString();
         binding.detailsAccount.setOnClickListener(this::onDetailsAccountClicked);
         binding.detailsAccount.setText(getString(R.string.using_account, account));
-        AvatarWorkerTask.loadAvatar(
-                contact, binding.detailsAvatar, R.dimen.publish_avatar_size);
+        AvatarWorkerTask.loadAvatar(contact, binding.detailsAvatar, R.dimen.publish_avatar_size);
         binding.detailsAvatar.setOnClickListener(this::onAvatarClicked);
         if (QuickConversationsService.isContactListIntegration(this)) {
             if (contact.getSystemAccount() == null) {

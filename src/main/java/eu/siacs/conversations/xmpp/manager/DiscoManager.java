@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.io.BaseEncoding;
+import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -91,6 +92,7 @@ public class DiscoManager extends AbstractManager {
 
     private final Map<Jid, InfoQuery> entityInformation = new HashMap<>();
     private final Map<Jid, ImmutableSet<Jid>> discoItems = new HashMap<>();
+    private final Map<String, Jid> commands = new HashMap<>();
 
     public DiscoManager(Context context, XmppConnection connection) {
         super(context, connection);
@@ -447,9 +449,18 @@ public class DiscoManager extends AbstractManager {
         }
     }
 
+    public Jid getAddressForCommand(final String node) {
+        synchronized (this.commands) {
+            return this.commands.get(node);
+        }
+    }
+
     public void clear() {
         synchronized (this.entityInformation) {
             this.entityInformation.clear();
+        }
+        synchronized (this.commands) {
+            this.commands.clear();
         }
     }
 
@@ -476,6 +487,34 @@ public class DiscoManager extends AbstractManager {
     public Map.Entry<Jid, InfoQuery> findDiscoItemByFeature(final String feature) {
         final var items = findDiscoItemsByFeature(feature);
         return Iterables.getFirst(items.entrySet(), null);
+    }
+
+    public boolean hasServerCommands() {
+        return hasServerFeature(Namespace.COMMANDS);
+    }
+
+    public void fetchServerCommands() {
+        final var future = commands(Entity.discoItem(getAccount().getDomain()));
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(Map<String, Jid> result) {
+                        synchronized (commands) {
+                            commands.clear();
+                            commands.putAll(result);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@androidx.annotation.NonNull Throwable throwable) {
+                        Log.d(
+                                Config.LOGTAG,
+                                getAccount().getJid().asBareJid() + ": could not fetch commands",
+                                throwable);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
     public static final class CapsHashMismatchException extends IllegalStateException {
