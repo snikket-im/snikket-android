@@ -114,7 +114,6 @@ public class HttpDownloadConnection implements Transferable {
             } else {
                 knownFileSize = message.getFileParams().size;
             }
-            Log.d(Config.LOGTAG, "knownFileSize: " + knownFileSize + ", body=" + message.getBody());
             if (knownFileSize != null && interactive) {
                 if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL
                         && this.file.getKey() != null) {
@@ -436,6 +435,16 @@ public class HttpDownloadConnection implements Transferable {
         }
 
         private void download() throws Exception {
+            final long expected = file.getExpectedSize();
+            final var fileExists = file.exists();
+            final var existingFileSize = fileExists ? file.length() : -1L;
+
+            if (fileExists) {
+                if (expected > 0 && existingFileSize == expected) {
+                    Log.d(Config.LOGTAG, "file already exits (presumably decryption failure)");
+                    return;
+                }
+            }
             final OkHttpClient client =
                     mHttpConnectionManager.buildHttpClient(
                             mUrl, message.getConversation().getAccount(), interactive);
@@ -443,14 +452,11 @@ public class HttpDownloadConnection implements Transferable {
             final Request.Builder requestBuilder =
                     new Request.Builder().url(URL.stripFragment(mUrl));
 
-            final long expected = file.getExpectedSize();
-            // TODO potentially just skip if file exists and size == expected? (this can happen if
-            // the decryption failed)
             final boolean tryResume =
-                    file.exists() && file.getSize() > 0 && file.getSize() < expected;
+                    fileExists && existingFileSize > 0 && existingFileSize < expected;
             final long resumeSize;
             if (tryResume) {
-                resumeSize = file.getSize();
+                resumeSize = existingFileSize;
                 Log.d(
                         Config.LOGTAG,
                         "http download trying resume after " + resumeSize + " of " + expected);
