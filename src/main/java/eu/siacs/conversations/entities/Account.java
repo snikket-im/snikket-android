@@ -28,6 +28,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -209,8 +210,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                 cursor.getString(cursor.getColumnIndexOrThrow(FAST_TOKEN)));
     }
 
-    public boolean httpUploadAvailable(long size) {
-        return xmppConnection != null && xmppConnection.getFeatures().httpUpload(size);
+    public boolean httpUploadAvailable(long fileSize) {
+        return xmppConnection.getManager(HttpUploadManager.class).isAvailableForSize(fileSize);
     }
 
     public boolean httpUploadAvailable() {

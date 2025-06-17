@@ -127,6 +127,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.ArrayList;
@@ -2229,9 +2230,9 @@ public class ConversationFragment extends XmppFragment
                 if (!message.hasFileOnRemoteHost()
                         && xmppConnection != null
                         && conversation.getMode() == Conversational.MODE_SINGLE
-                        && (!xmppConnection
-                                        .getFeatures()
-                                        .httpUpload(message.getFileParams().getSize())
+                        && (!conversation
+                                        .getAccount()
+                                        .httpUploadAvailable(message.getFileParams().getSize())
                                 || forceP2P)) {
                     activity.selectPresence(
                             conversation,
@@ -2917,9 +2918,14 @@ public class ConversationFragment extends XmppFragment
         mSendingPgpMessage.set(false);
     }
 
-    public long getMaxHttpUploadSize(Conversation conversation) {
-        final XmppConnection connection = conversation.getAccount().getXmppConnection();
-        return connection == null ? -1 : connection.getFeatures().getMaxHttpUploadSize();
+    public Long getMaxHttpUploadSize(final Conversation conversation) {
+
+        final var connection = conversation.getAccount().getXmppConnection();
+        final var httpUploadService = connection.getManager(HttpUploadManager.class).getService();
+        if (httpUploadService == null) {
+            return -1L;
+        }
+        return httpUploadService.getMaxFileSize();
     }
 
     private void updateEditablity() {

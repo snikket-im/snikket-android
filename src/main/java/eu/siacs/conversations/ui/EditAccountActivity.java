@@ -81,6 +81,7 @@ import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
+import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.RegistrationManager;
 import im.conversations.android.xmpp.model.data.Data;
 import im.conversations.android.xmpp.model.stanza.Presence;
@@ -1295,13 +1296,15 @@ public class EditAccountActivity extends OmemoActivity
             } else {
                 this.binding.serverInfoPep.setText(R.string.server_info_unavailable);
             }
-            if (features.httpUpload(0)) {
-                final long maxFileSize = features.getMaxHttpUploadSize();
-                if (maxFileSize > 0) {
+            final var httpUploadManager = connection.getManager(HttpUploadManager.class);
+            final var uploadService = httpUploadManager.getService();
+            if (uploadService != null) {
+                final Long maxFileSize = uploadService.getMaxFileSize();
+                if (maxFileSize == null) {
+                    this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
+                } else {
                     this.binding.serverInfoHttpUpload.setText(
                             UIHelper.filesizeToString(maxFileSize));
-                } else {
-                    this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
                 }
             } else {
                 this.binding.serverInfoHttpUpload.setText(R.string.server_info_unavailable);

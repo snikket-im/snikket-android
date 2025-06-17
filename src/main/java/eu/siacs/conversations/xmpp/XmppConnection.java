@@ -3063,58 +3063,6 @@ public class XmppConnection implements Runnable {
             return HttpUrl.parse(address);
         }
 
-        public boolean httpUpload(long fileSize) {
-            if (Config.DISABLE_HTTP_UPLOAD) {
-                return false;
-            }
-            final var result =
-                    getManager(DiscoManager.class).findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
-            if (result == null) {
-                return false;
-            }
-            final long maxSize;
-            try {
-                maxSize =
-                        Long.parseLong(
-                                result.getValue()
-                                        .getServiceDiscoveryExtension(
-                                                Namespace.HTTP_UPLOAD, "max-file-size"));
-            } catch (final Exception e) {
-                return true;
-            }
-            if (fileSize <= maxSize) {
-                return true;
-            } else {
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid()
-                                + ": http upload is not available for files with"
-                                + " size "
-                                + fileSize
-                                + " (max is "
-                                + maxSize
-                                + ")");
-                return false;
-            }
-        }
-
-        public long getMaxHttpUploadSize() {
-            final var result =
-                    getManager(DiscoManager.class).findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
-            if (result == null) {
-                return -1;
-            }
-            try {
-                return Long.parseLong(
-                        result.getValue()
-                                .getServiceDiscoveryExtension(
-                                        Namespace.HTTP_UPLOAD, "max-file-size"));
-            } catch (final Exception e) {
-                return -1;
-                // ignored
-            }
-        }
-
         public boolean stanzaIds() {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.STANZA_IDS);
         }

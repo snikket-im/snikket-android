@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.primitives.Longs;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -16,6 +17,8 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import im.conversations.android.xmpp.ExtensionFactory;
+import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.upload.Request;
 import im.conversations.android.xmpp.model.upload.purpose.Purpose;
@@ -147,6 +150,15 @@ public class HttpUploadManager extends AbstractManager {
                 MoreExecutors.directExecutor());
     }
 
+    public Service getService() {
+        if (Config.ENABLE_HTTP_UPLOAD) {
+            final var entry =
+                    getManager(DiscoManager.class).findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
+            return entry == null ? null : new Service(entry);
+        }
+        return null;
+    }
+
     private static String convertFilename(final String name) {
         int pos = name.indexOf('.');
         if (pos < 0) {
@@ -162,6 +174,63 @@ public class HttpUploadManager extends AbstractManager {
                     + name.substring(pos);
         } catch (final Exception e) {
             return name;
+        }
+    }
+
+    public boolean isAvailableForSize(final long size) {
+        final var result = getManager(HttpUploadManager.class).getService();
+        if (result == null) {
+            return false;
+        }
+        final Long maxSize = result.getMaxFileSize();
+        if (maxSize == null) {
+            return true;
+        }
+        if (size <= maxSize) {
+            return true;
+        } else {
+            Log.d(
+                    Config.LOGTAG,
+                    getAccount().getJid().asBareJid()
+                            + ": http upload is not available for files with"
+                            + " size "
+                            + size
+                            + " (max is "
+                            + maxSize
+                            + ")");
+            return false;
+        }
+    }
+
+    public static final class Service {
+        private final Map.Entry<Jid, InfoQuery> addressInfoQuery;
+
+        public Service(final Map.Entry<Jid, InfoQuery> addressInfoQuery) {
+            this.addressInfoQuery = addressInfoQuery;
+        }
+
+        public Jid getAddress() {
+            return this.addressInfoQuery.getKey();
+        }
+
+        public InfoQuery getInfoQuery() {
+            return this.addressInfoQuery.getValue();
+        }
+
+        public boolean supportsPurpose(final Class<? extends Purpose> purpose) {
+            final var id = ExtensionFactory.id(purpose);
+            if (id == null) {
+                throw new IllegalStateException("Purpose has not been annotated as @XmlElement");
+            }
+            final var feature = String.format("%s#%s", id.namespace, id.name);
+            return getInfoQuery().hasFeature(feature);
+        }
+
+        public Long getMaxFileSize() {
+            final var value =
+                    getInfoQuery()
+                            .getServiceDiscoveryExtension(Namespace.HTTP_UPLOAD, "max-file-size");
+            return value == null ? null : Longs.tryParse(value);
         }
     }
 

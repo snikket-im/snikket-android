@@ -39,7 +39,8 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
             sosModified = false;
         }
         final boolean gainedFeature =
-                account.setOption(Account.OPTION_HTTP_UPLOAD_AVAILABLE, features.httpUpload(0));
+                account.setOption(
+                        Account.OPTION_HTTP_UPLOAD_AVAILABLE, account.httpUploadAvailable(0));
         if (loggedInSuccessfully || gainedFeature || sosModified) {
             service.databaseBackend.updateAccount(account);
         }

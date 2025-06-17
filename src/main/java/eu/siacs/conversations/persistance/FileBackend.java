@@ -107,11 +107,11 @@ public class FileBackend {
     }
 
     public static boolean allFilesUnderSize(
-            Context context, List<Attachment> attachments, long max) {
+            Context context, List<Attachment> attachments, final Long max) {
         final boolean compressVideo =
                 !AttachFileToConversationRunnable.getVideoCompression(context)
                         .equals("uncompressed");
-        if (max <= 0) {
+        if (max == null || max <= 0) {
             Log.d(Config.LOGTAG, "server did not report max file size for http upload");
             return true; // exception to be compatible with HTTP Upload < v0.2
         }

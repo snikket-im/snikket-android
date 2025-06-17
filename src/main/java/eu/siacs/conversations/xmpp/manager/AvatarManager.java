@@ -1,6 +1,7 @@
 package eu.siacs.conversations.xmpp.manager;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -520,6 +521,16 @@ public class AvatarManager extends AbstractManager {
             avifWriter.addBitmap(image);
             avifWriter.stop(3_000);
         }
+        var readCheck = BitmapFactory.decodeFile(randomFile.getAbsolutePath());
+        if (readCheck == null) {
+            throw new AvifCompressionException("AVIF image was null after trying to decode");
+        }
+        if (readCheck.getWidth() != image.getWidth()
+                || readCheck.getHeight() != image.getHeight()) {
+            readCheck.recycle();
+            throw new AvifCompressionException("AVIF had wrong image bounds");
+        }
+        readCheck.recycle();
         return storeAsAvatar(randomFile, ImageFormat.AVIF, image.getHeight(), image.getWidth());
     }
 
@@ -535,34 +546,49 @@ public class AvatarManager extends AbstractManager {
                 String.format("Could not move file to %s", avatarFile.getAbsolutePath()));
     }
 
-    private ListenableFuture<List<Info>> uploadAvatar(final Uri image) {
+    private ListenableFuture<Collection<Info>> uploadAvatar(final Uri image) {
         return Futures.transformAsync(
                 hasAlphaChannel(image),
                 hasAlphaChannel -> uploadAvatar(image, hasAlphaChannel),
                 MoreExecutors.directExecutor());
     }
 
-    private ListenableFuture<List<Info>> uploadAvatar(
+    private ListenableFuture<Collection<Info>> uploadAvatar(
             final Uri image, final boolean hasAlphaChannel) {
         final var avatarFutures = new ImmutableList.Builder<ListenableFuture<Info>>();
 
         final ListenableFuture<Info> avatarThumbnailFuture;
-        final ListenableFuture<Info> avatarFuture;
         if (hasAlphaChannel) {
             avatarThumbnailFuture =
                     resizeAndStoreAvatarAsync(
                             image, Config.AVATAR_THUMBNAIL_SIZE / 2, ImageFormat.PNG);
-            avatarFuture =
-                    resizeAndStoreAvatarAsync(image, Config.AVATAR_FULL_SIZE / 2, ImageFormat.PNG);
         } else {
-            final int autoAcceptFileSize =
-                    context.getResources().getInteger(R.integer.auto_accept_filesize);
             avatarThumbnailFuture =
                     resizeAndStoreAvatarAsync(
                             image,
                             Config.AVATAR_THUMBNAIL_SIZE,
                             ImageFormat.JPEG,
                             Config.AVATAR_THUMBNAIL_CHAR_LIMIT);
+        }
+
+        final var uploadManager = getManager(HttpUploadManager.class);
+
+        final var uploadService = uploadManager.getService();
+        if (uploadService == null || !uploadService.supportsPurpose(Profile.class)) {
+            Log.d(
+                    Config.LOGTAG,
+                    getAccount().getJid() + ": 'profile' upload purpose not supported");
+            return Futures.transform(
+                    avatarThumbnailFuture, ImmutableList::of, MoreExecutors.directExecutor());
+        }
+
+        final ListenableFuture<Info> avatarFuture;
+        if (hasAlphaChannel) {
+            avatarFuture =
+                    resizeAndStoreAvatarAsync(image, Config.AVATAR_FULL_SIZE / 2, ImageFormat.PNG);
+        } else {
+            final int autoAcceptFileSize =
+                    context.getResources().getInteger(R.integer.auto_accept_filesize);
             avatarFuture =
                     resizeAndStoreAvatarAsync(
                             image, Config.AVATAR_FULL_SIZE, ImageFormat.JPEG, autoAcceptFileSize);
@@ -589,7 +615,16 @@ public class AvatarManager extends AbstractManager {
                 final var avatarAvifWithUrlFuture =
                         Futures.transformAsync(
                                 avatarAvifFuture, this::upload, MoreExecutors.directExecutor());
-                avatarFutures.add(avatarAvifWithUrlFuture);
+                final var caughtAvifWithUrlFuture =
+                        Futures.catching(
+                                avatarAvifWithUrlFuture,
+                                Exception.class,
+                                ex -> {
+                                    Log.d(Config.LOGTAG, "ignoring AVIF compression failure", ex);
+                                    return null;
+                                },
+                                MoreExecutors.directExecutor());
+                avatarFutures.add(caughtAvifWithUrlFuture);
             }
         }
         avatarFutures.add(avatarThumbnailFuture);
@@ -597,7 +632,11 @@ public class AvatarManager extends AbstractManager {
                 Futures.transformAsync(avatarFuture, this::upload, MoreExecutors.directExecutor());
         avatarFutures.add(avatarWithUrlFuture);
 
-        return Futures.allAsList(avatarFutures.build());
+        final var all = Futures.allAsList(avatarFutures.build());
+        return Futures.transform(
+                all,
+                input -> Collections2.filter(input, Objects::nonNull),
+                MoreExecutors.directExecutor());
     }
 
     private ListenableFuture<Boolean> hasAlphaChannel(final Uri image) {
@@ -799,6 +838,12 @@ public class AvatarManager extends AbstractManager {
                             MoreExecutors.directExecutor());
                 },
                 AVATAR_COMPRESSION_EXECUTOR);
+    }
+
+    private static final class AvifCompressionException extends IllegalStateException {
+        AvifCompressionException(final String message) {
+            super(message);
+        }
     }
 
     public enum ImageFormat {

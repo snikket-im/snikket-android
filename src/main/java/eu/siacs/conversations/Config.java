@@ -114,7 +114,7 @@ public final class Config {
 
     public static final boolean ENABLE_CAPS_CACHE = true;
 
-    public static final boolean DISABLE_HTTP_UPLOAD = false;
+    public static final boolean ENABLE_HTTP_UPLOAD = true;
     public static final boolean EXTENDED_SM_LOGGING = false; // log stanza counts
     public static final boolean BACKGROUND_STANZA_LOGGING =
             false; // log all stanzas that were received while the app is in background
