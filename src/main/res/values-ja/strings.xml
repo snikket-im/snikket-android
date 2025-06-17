@@ -1105,4 +1105,8 @@
     <string name="account_status_service_outage_scheduled">予定停止期間</string>
     <string name="no_contacts_permission">%1$s には、あなたの連絡先集へのアクセスが必要です</string>
     <string name="copied_email_address">電子メールアドレスをクリップボードにコピーしました</string>
+    <string name="save_to_contact">連絡先に保存</string>
+    <string name="show_in_contacts">連絡先内で表示</string>
+    <string name="account_status_service_outage_known">機能停止（既知の問題）</string>
+    <string name="sos_scheduled_return">%s に復帰するように予定されています</string>
 </resources>
