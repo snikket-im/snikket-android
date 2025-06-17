@@ -312,11 +312,16 @@ public class AvatarManager extends AbstractManager {
         if (cache.exists()) {
             setAvatarInfo(from, avatar.preferred);
         } else if (service.isDataSaverDisabled()) {
-            final var future =
-                    this.fetchAndStoreWithFallback(from, avatar.preferred, avatar.fallback);
+            final var contact = getManager(RosterManager.class).getContactFromContactList(from);
+            final ListenableFuture<Info> future;
+            if (contact != null && contact.showInContactList()) {
+                future = this.fetchAndStoreWithFallback(from, avatar.preferred, avatar.fallback);
+            } else {
+                future = fetchAndStoreInBand(from, avatar.fallback);
+            }
             Futures.addCallback(
                     future,
-                    new FutureCallback<Info>() {
+                    new FutureCallback<>() {
                         @Override
                         public void onSuccess(Info result) {
                             setAvatarInfo(from, result);
