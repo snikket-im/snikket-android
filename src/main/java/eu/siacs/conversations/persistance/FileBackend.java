@@ -1270,20 +1270,28 @@ public class FileBackend {
         }
     }
 
-    public static Bitmap cropCenterSquare(Bitmap input, int size) {
-        int w = input.getWidth();
-        int h = input.getHeight();
-
-        float scale = Math.max((float) size / h, (float) size / w);
-
-        float outWidth = scale * w;
-        float outHeight = scale * h;
+    public static Bitmap cropCenterSquare(final Bitmap input, final int sizeIn) {
+        final int w = input.getWidth();
+        final int h = input.getHeight();
+        final int size;
+        final float outWidth;
+        final float outHeight;
+        if (w < sizeIn || h < sizeIn) {
+            size = Math.min(w, h);
+            outWidth = w;
+            outHeight = h;
+        } else {
+            size = sizeIn;
+            final float scale = Math.max((float) sizeIn / h, (float) sizeIn / w);
+            outWidth = scale * w;
+            outHeight = scale * h;
+        }
         float left = (size - outWidth) / 2;
         float top = (size - outHeight) / 2;
-        RectF target = new RectF(left, top, left + outWidth, top + outHeight);
+        final var target = new RectF(left, top, left + outWidth, top + outHeight);
 
-        Bitmap output = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
+        final var output = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        final var canvas = new Canvas(output);
         canvas.drawBitmap(input, null, target, createAntiAliasingPaint());
         if (!input.isRecycled()) {
             input.recycle();
