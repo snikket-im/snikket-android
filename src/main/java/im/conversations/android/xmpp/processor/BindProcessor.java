@@ -8,6 +8,7 @@ import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
+import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.LegacyBookmarkManager;
 import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
 import eu.siacs.conversations.xmpp.manager.NickManager;
@@ -40,7 +41,8 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         }
         final boolean gainedFeature =
                 account.setOption(
-                        Account.OPTION_HTTP_UPLOAD_AVAILABLE, account.httpUploadAvailable(0));
+                        Account.OPTION_HTTP_UPLOAD_AVAILABLE,
+                        getManager(HttpUploadManager.class).isAvailableForSize(0));
         if (loggedInSuccessfully || gainedFeature || sosModified) {
             service.databaseBackend.updateAccount(account);
         }
@@ -56,7 +58,7 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
             }
         }
 
-        connection.getManager(RosterManager.class).clearPresences();
+        getManager(RosterManager.class).clearPresences();
         synchronized (account.inProgressConferenceJoins) {
             account.inProgressConferenceJoins.clear();
         }
@@ -69,17 +71,17 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         getManager(RosterManager.class).request();
 
         if (getManager(BookmarkManager.class).hasFeature()) {
-            connection.getManager(BookmarkManager.class).fetch();
+            getManager(BookmarkManager.class).fetch();
         } else if (getManager(LegacyBookmarkManager.class).hasConversion()) {
             Log.d(
                     Config.LOGTAG,
                     account.getJid() + ": not fetching bookmarks. waiting for server to push");
         } else {
-            connection.getManager(PrivateStorageManager.class).fetchBookmarks();
+            getManager(PrivateStorageManager.class).fetchBookmarks();
         }
 
         if (features.mds()) {
-            connection.getManager(MessageDisplayedSynchronizationManager.class).fetch();
+            getManager(MessageDisplayedSynchronizationManager.class).fetch();
         } else {
             Log.d(Config.LOGTAG, account.getJid() + ": server has no support for mds");
         }
@@ -108,7 +110,7 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
             service.getPushManagementService().registerPushTokenOnServer(account);
         }
         service.connectMultiModeConversations(account);
-        connection.getManager(RosterManager.class).syncDirtyContacts();
+        getManager(RosterManager.class).syncDirtyContacts();
 
         service.getUnifiedPushBroker().renewUnifiedPushEndpointsOnBind(account);
     }

@@ -2230,9 +2230,9 @@ public class ConversationFragment extends XmppFragment
                 if (!message.hasFileOnRemoteHost()
                         && xmppConnection != null
                         && conversation.getMode() == Conversational.MODE_SINGLE
-                        && (!conversation
-                                        .getAccount()
-                                        .httpUploadAvailable(message.getFileParams().getSize())
+                        && (!xmppConnection
+                                        .getManager(HttpUploadManager.class)
+                                        .isAvailableForSize(message.getFileParams().getSize())
                                 || forceP2P)) {
                     activity.selectPresence(
                             conversation,

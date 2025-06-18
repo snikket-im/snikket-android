@@ -210,12 +210,14 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                 cursor.getString(cursor.getColumnIndexOrThrow(FAST_TOKEN)));
     }
 
-    public boolean httpUploadAvailable(long fileSize) {
+    // TODO remove this method and call HttpUploadManager directly i
+    public boolean httpUploadAvailable(final long fileSize) {
         return xmppConnection.getManager(HttpUploadManager.class).isAvailableForSize(fileSize);
     }
 
     public boolean httpUploadAvailable() {
-        return isOptionSet(OPTION_HTTP_UPLOAD_AVAILABLE) || httpUploadAvailable(0);
+        return isOptionSet(OPTION_HTTP_UPLOAD_AVAILABLE)
+                || xmppConnection.getManager(HttpUploadManager.class).isAvailableForSize(0);
     }
 
     public String getDisplayName() {
