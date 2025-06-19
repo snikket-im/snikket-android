@@ -169,7 +169,7 @@
     <string name="contact_has_read_up_to_this_point">%s leu até este ponto</string>
     <string name="everyone_has_read_up_to_this_point">Todos leram até este ponto</string>
     <string name="publish">Publicar</string>
-    <string name="publishing">Publicando...</string>
+    <string name="publishing">Publicando…</string>
     <string name="error_publish_avatar_server_reject">O servidor rejeitou a sua publicação</string>
     <string name="error_saving_avatar">Não foi possível guardar o avatar no disco</string>
     <string name="or_long_press_for_default">(Ou mantenha pressionado por um tempo para voltar para o padrão)</string>
@@ -187,7 +187,7 @@
     <string name="request_now">Solicitar agora</string>
     <string name="ignore">Ignorar</string>
     <string name="pref_security_settings">Segurança</string>
-    <string name="pref_allow_message_correction">Permitir a correção de mensagens</string>
+    <string name="pref_allow_message_correction">Correção de mensagens</string>
     <string name="pref_allow_message_correction_summary">Permitir que os seus contactos editem as suas mensagens depois de enviadas</string>
     <string name="pref_expert_options">Definições avançadas</string>
     <string name="pref_expert_options_summary">Por favor tenha cuidado com estas</string>
@@ -212,8 +212,8 @@
     <string name="file_url">URL do ficheiro</string>
     <string name="url_copied_to_clipboard">URL copiado para a área de transferência</string>
     <string name="web_address">endereço web</string>
-    <string name="scan_qr_code">Ler código de barras 2D</string>
-    <string name="show_qr_code">Mostrar código de barras 2D</string>
+    <string name="scan_qr_code">Ler código QR</string>
+    <string name="show_qr_code">Mostrar código QR</string>
     <string name="show_block_list">Mostar lista de bloqueios</string>
     <string name="account_details">Detalhes da conta</string>
     <string name="confirm">Confirmar</string>
@@ -489,4 +489,26 @@
     <string name="destroy_room_dialog">Tem a certeza que quer destruir esta conversa de grupo?\n\n<b>Aviso:</b> A conversa de grupo será completamente removida do servidor.</string>
     <string name="server_info_bind2">XEP-0386: Vinculação 2</string>
     <string name="server_info_sasl2">XEP-0388: Perfil SASL extensível</string>
+    <string name="conference_technical_problems">Saiu desta conversa de grupo por questões técnicas</string>
+    <string name="pref_keep_foreground_service">Serviço em primeiro plano</string>
+    <string name="jabber_id_copied_to_clipboard">Endereço XMPP copiado para a área de transferência</string>
+    <string name="uri">URI</string>
+    <string name="server_info_session_established">Sessão estabelecida</string>
+    <string name="request_presence_updates">Por favor solicite atualizações de presença do seu contacto primeiro.\n\n<small>Isto será utilizado para determinar que aplicação de chat o seu contacto usa</small>.</string>
+    <string name="conference_resource_constraint">Limitação de recursos</string>
+    <string name="conference_kicked">Foi expulso desta conversa de grupo</string>
+    <string name="conference_shutdown">A conversa de grupo foi encerrada</string>
+    <string name="hosted_on">hospedado em %s</string>
+    <string name="retry_with_p2p">Tentar outra vez com P2P</string>
+    <string name="uri_copied_to_clipboard">URI copiado para a área de transferência</string>
+    <string name="error_message_copied_to_clipboard">Mensagem de erro copiada para a área de transferência</string>
+    <string name="touch_to_choose_picture">Clica no avatar para selecionar uma imagem da galeria</string>
+    <string name="error_publish_avatar_no_server_support">O seu servidor não suporta publicação de avatares</string>
+    <string name="without_mutual_presence_updates">&lt;b&gt;Aviso:&lt;/b&gt; se enviar isto sem atualização de presença mútua com os seus contactos podem se produzir problemas inesperados.\n\n&lt;b&gt;Vá a “Detalhes do contacto” para verificar a sua inscrição de presença.&lt;/small&gt;</string>
+    <string name="title_activity_about_x">Sobre %s</string>
+    <string name="pref_autojoin">Sincronizar marcadores</string>
+    <string name="pref_autojoin_summary">Defina a opção “autojoin” quando entra ou sai de um MUC e reagir a modificações feitas por outros clientes.</string>
+    <string name="toast_message_omemo_fingerprint">Impressão digital OMEMO copiada para a área de transferência</string>
+    <string name="conference_unknown_error">Já não está mais nesta conversa de grupo</string>
+    <string name="error_publish_avatar_converting">Não foi possível converter a imagem</string>
 </resources>
