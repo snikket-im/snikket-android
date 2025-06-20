@@ -137,6 +137,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -1319,9 +1320,9 @@ public class ConversationFragment extends XmppFragment
                             && m.getErrorMessage() != null
                             && !Message.ERROR_MESSAGE_CANCELLED.equals(m.getErrorMessage());
             final Conversational conversational = m.getConversation();
+            final var connection = conversational.getAccount().getXmppConnection();
             if (m.getStatus() == Message.STATUS_RECEIVED
                     && conversational instanceof Conversation c) {
-                final XmppConnection connection = c.getAccount().getXmppConnection();
                 if (c.isWithStranger()
                         && m.getServerMsgId() != null
                         && !c.isBlocked()
@@ -1332,7 +1333,7 @@ public class ConversationFragment extends XmppFragment
             }
             if (conversational instanceof Conversation c) {
                 addReaction.setVisible(
-                        !showError
+                        m.getStatus() != Message.STATUS_SEND_FAILED
                                 && !m.isDeleted()
                                 && (c.getMode() == Conversational.MODE_SINGLE
                                         || (c.getMucOptions().occupantId()
@@ -1384,12 +1385,18 @@ public class ConversationFragment extends XmppFragment
             }
             if (m.getStatus() == Message.STATUS_SEND_FAILED) {
                 sendAgain.setVisible(true);
+                final var httpUploadAvailable =
+                        connection != null
+                                && Objects.nonNull(
+                                        connection
+                                                .getManager(HttpUploadManager.class)
+                                                .getService());
                 final var fileNotUploaded = m.isFileOrImage() && !m.hasFileOnRemoteHost();
                 final var isPeerOnline =
                         conversational.getMode() == Conversation.MODE_SINGLE
                                 && (conversational instanceof Conversation c)
                                 && !c.getContact().getPresences().isEmpty();
-                retryAsP2P.setVisible(fileNotUploaded && isPeerOnline);
+                retryAsP2P.setVisible(fileNotUploaded && isPeerOnline && httpUploadAvailable);
             }
             if (m.hasFileOnRemoteHost()
                     || m.isGeoUri()
