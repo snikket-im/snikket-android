@@ -12,7 +12,10 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.color.MaterialColors;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -247,38 +250,60 @@ public class UIHelper {
                                 getFileDescriptionString(context, message)),
                         true);
             } else {
-                SpannableStringBuilder styledBody = new SpannableStringBuilder(body);
                 if (textColor != 0) {
-                    StylingHelper.format(styledBody, 0, styledBody.length() - 1, textColor);
+                    return new Pair<>(getStyledBodyOneLine(body, textColor), false);
+                } else {
+                    return new Pair<>(getBodyOmitQuotesAndBlocks(body), false);
                 }
-                SpannableStringBuilder builder = new SpannableStringBuilder();
-                for (CharSequence l : CharSequenceUtils.split(styledBody, '\n')) {
-                    if (l.length() > 0) {
-                        if (l.toString().equals("```")) {
-                            continue;
-                        }
-                        char first = l.charAt(0);
-                        if ((!QuoteHelper.isPositionQuoteStart(l, 0))) {
-                            CharSequence line = CharSequenceUtils.trim(l);
-                            if (line.length() == 0) {
-                                continue;
-                            }
-                            char last = line.charAt(line.length() - 1);
-                            if (builder.length() != 0) {
-                                builder.append(' ');
-                            }
-                            builder.append(line);
-                            if (!PUNCTIONATION.contains(last)) {
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (builder.length() == 0) {
-                    builder.append(body.trim());
-                }
-                return new Pair<>(builder, false);
             }
+        }
+    }
+
+    private static CharSequence getBodyOmitQuotesAndBlocks(final String body) {
+        final var parts = Splitter.on('\n').trimResults().omitEmptyStrings().splitToList(body);
+        final var filtered =
+                Collections2.filter(
+                        parts,
+                        line ->
+                                !QuoteHelper.isPositionQuoteCharacter(line, 0)
+                                        && !line.equals("```"));
+        if (filtered.isEmpty()) {
+            return body;
+        }
+        return Joiner.on(' ').join(filtered);
+    }
+
+    private static CharSequence getStyledBodyOneLine(final String body, final int textColor) {
+        final var styledBody = new SpannableStringBuilder(body);
+        StylingHelper.format(styledBody, 0, styledBody.length() - 1, textColor);
+        final var builder = new SpannableStringBuilder();
+        for (final var l : CharSequenceUtils.split(styledBody, '\n')) {
+            if (l.length() == 0) {
+                continue;
+            }
+            if (l.toString().equals("```")) {
+                continue;
+            }
+            if (QuoteHelper.isPositionQuoteCharacter(l, 0)) {
+                continue;
+            }
+            final var trimmed = CharSequenceUtils.trim(l);
+            if (trimmed.length() == 0) {
+                continue;
+            }
+            char last = trimmed.charAt(trimmed.length() - 1);
+            if (builder.length() != 0) {
+                builder.append(' ');
+            }
+            builder.append(trimmed);
+            if (!PUNCTIONATION.contains(last)) {
+                break;
+            }
+        }
+        if (builder.length() == 0) {
+            return body.trim();
+        } else {
+            return builder;
         }
     }
 
