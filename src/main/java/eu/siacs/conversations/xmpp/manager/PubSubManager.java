@@ -308,12 +308,19 @@ public class PubSubManager extends AbstractManager {
 
     private ListenableFuture<Void> reconfigureNode(
             final Jid address, final String node, final NodeConfiguration nodeConfiguration) {
+        return Futures.transformAsync(
+                getNodeConfiguration(address, node),
+                data -> setNodeConfiguration(address, node, data.submit(nodeConfiguration)),
+                MoreExecutors.directExecutor());
+    }
+
+    public ListenableFuture<Data> getNodeConfiguration(final Jid address, final String node) {
         final Iq iq = new Iq(Iq.Type.GET);
         iq.setTo(address);
         final var pubSub = iq.addExtension(new PubSubOwner());
         final var configure = pubSub.addExtension(new Configure());
         configure.setNode(node);
-        return Futures.transformAsync(
+        return Futures.transform(
                 connection.sendIqPacket(iq),
                 result -> {
                     final var pubSubOwnerResult = result.getExtension(PubSubOwner.class);
@@ -325,8 +332,7 @@ public class PubSubManager extends AbstractManager {
                         throw new IllegalStateException(
                                 "No configuration found in configuration request result");
                     }
-                    final var data = configureResult.getData();
-                    return setNodeConfiguration(address, node, data.submit(nodeConfiguration));
+                    return configureResult.getData();
                 },
                 MoreExecutors.directExecutor());
     }

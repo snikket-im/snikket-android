@@ -13,11 +13,15 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import com.canhub.cropper.CropImageContract;
 import com.canhub.cropper.CropImageContractOptions;
 import com.canhub.cropper.CropImageOptions;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityPublishProfilePictureBinding;
@@ -25,14 +29,15 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
 import eu.siacs.conversations.utils.PhoneHelper;
+import eu.siacs.conversations.xmpp.manager.AvatarManager;
+import im.conversations.android.xmpp.NodeConfiguration;
 
 public class PublishProfilePictureActivity extends XmppActivity
         implements XmppConnectionService.OnAccountUpdate, OnAvatarPublication {
 
-    public static final int REQUEST_CHOOSE_PICTURE = 0x1337;
-
     private ActivityPublishProfilePictureBinding binding;
     private Uri avatarUri;
+    private NodeConfiguration.AccessModel accessModel;
     private Uri defaultUri;
     private Account account;
     private boolean support = false;
@@ -136,6 +141,10 @@ public class PublishProfilePictureActivity extends XmppActivity
         this.defaultUri = PhoneHelper.getProfilePictureUri(getApplicationContext());
         if (savedInstanceState != null) {
             this.avatarUri = savedInstanceState.getParcelable("uri");
+            final var accessModel = savedInstanceState.getString("access-model");
+            if (accessModel != null) {
+                this.accessModel = NodeConfiguration.AccessModel.valueOf(accessModel);
+            }
         }
     }
 
@@ -178,6 +187,9 @@ public class PublishProfilePictureActivity extends XmppActivity
         if (this.avatarUri != null) {
             outState.putParcelable("uri", this.avatarUri);
         }
+        if (this.accessModel != null) {
+            outState.putString("access-model", this.accessModel.toString());
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -209,18 +221,57 @@ public class PublishProfilePictureActivity extends XmppActivity
 
     @Override
     protected void onBackendConnected() {
-        this.account = extractAccount(getIntent());
-        if (this.account != null) {
-            reloadAvatar();
+        final var account = extractAccount(getIntent());
+        this.account = account;
+        if (account != null) {
+            loadCurrentAccessModel(account);
+            reloadAvatar(account);
         }
     }
 
+    private void loadCurrentAccessModel(final Account account) {
+        binding.contactOnly.setVisibility(View.INVISIBLE);
+        final var currentPepAccessModel = getPepAccessModelOrCached(account);
+        Futures.addCallback(
+                currentPepAccessModel,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(final NodeConfiguration.AccessModel result) {
+                        accessModel = result; // cache for after rotation
+                        Log.d(Config.LOGTAG, "current access model: " + result);
+                        binding.contactOnly.setChecked(
+                                result == NodeConfiguration.AccessModel.PRESENCE);
+                        binding.contactOnly.jumpDrawablesToCurrentState();
+                        binding.contactOnly.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.d(Config.LOGTAG, "could not fetch access model", t);
+                        binding.contactOnly.setChecked(false);
+                        binding.contactOnly.setVisibility(View.VISIBLE);
+                    }
+                },
+                ContextCompat.getMainExecutor(getApplication()));
+    }
+
+    private ListenableFuture<NodeConfiguration.AccessModel> getPepAccessModelOrCached(
+            final Account account) {
+        final var cached = this.accessModel;
+        if (cached != null) {
+            return Futures.immediateFuture(cached);
+        }
+        return account.getXmppConnection().getManager(AvatarManager.class).getPepAccessModel();
+    }
+
     private void reloadAvatar() {
-        this.support =
-                this.account.getXmppConnection() != null
-                        && this.account.getXmppConnection().getFeatures().pep();
+        reloadAvatar(this.account);
+    }
+
+    private void reloadAvatar(final Account account) {
+        this.support = account.getXmppConnection().getFeatures().pep();
         if (this.avatarUri == null) {
-            if (this.account.getAvatar() != null || this.defaultUri == null) {
+            if (account.getAvatar() != null || this.defaultUri == null) {
                 loadImageIntoPreview(null);
             } else {
                 this.avatarUri = this.defaultUri;
@@ -308,6 +359,7 @@ public class PublishProfilePictureActivity extends XmppActivity
         final boolean status = enabled && !publishing;
         this.binding.publishButton.setText(publishing ? R.string.publishing : res);
         this.binding.publishButton.setEnabled(status);
+        this.binding.contactOnly.setEnabled(status);
     }
 
     public void refreshUiReal() {

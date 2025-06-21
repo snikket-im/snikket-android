@@ -8,7 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.heifwriter.AvifWriter;
 import androidx.heifwriter.HeifWriter;
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableList;
@@ -106,6 +108,23 @@ public class AvatarManager extends AbstractManager {
     public AvatarManager(final XmppConnectionService service, XmppConnection connection) {
         super(service.getApplicationContext(), connection);
         this.service = service;
+    }
+
+    public ListenableFuture<NodeConfiguration.AccessModel> getPepAccessModel() {
+        final var nodeConfiguration =
+                getManager(PepManager.class).getNodeConfiguration(Namespace.AVATAR_DATA);
+        return Futures.transform(
+                nodeConfiguration,
+                data -> {
+                    final var accessModel = data.getValue(NodeConfiguration.ACCESS_MODEL);
+                    if (Strings.isNullOrEmpty(accessModel)) {
+                        throw new IllegalStateException(
+                                "Access model missing from node configuration");
+                    }
+                    return NodeConfiguration.AccessModel.valueOf(
+                            CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE, accessModel));
+                },
+                MoreExecutors.directExecutor());
     }
 
     private ListenableFuture<byte[]> fetch(final Jid address, final String itemId) {
@@ -476,8 +495,8 @@ public class AvatarManager extends AbstractManager {
                     sha1,
                     avatarFile.length(),
                     ImageFormat.of(format).toContentType(),
-                    image.getHeight(),
-                    image.getWidth());
+                    image.getWidth(),
+                    image.getHeight());
         }
         throw new IllegalStateException(
                 String.format("Could not move file to %s", avatarFile.getAbsolutePath()));
@@ -501,7 +520,10 @@ public class AvatarManager extends AbstractManager {
             heifWriter.addBitmap(image);
             heifWriter.stop(3_000);
         }
-        return storeAsAvatar(randomFile, ImageFormat.HEIF, image.getHeight(), image.getWidth());
+        final var width = image.getWidth();
+        final var height = image.getHeight();
+        checkDecoding(randomFile, ImageFormat.HEIF, width, height);
+        return storeAsAvatar(randomFile, ImageFormat.HEIF, width, height);
     }
 
     private Info resizeAndStoreAvatarAsAvif(final Bitmap image, final int quality)
@@ -521,26 +543,33 @@ public class AvatarManager extends AbstractManager {
             avifWriter.addBitmap(image);
             avifWriter.stop(3_000);
         }
+        final var width = image.getWidth();
+        final var height = image.getHeight();
+        checkDecoding(randomFile, ImageFormat.AVIF, width, height);
+        return storeAsAvatar(randomFile, ImageFormat.AVIF, width, height);
+    }
+
+    private void checkDecoding(
+            final File randomFile, final ImageFormat format, final int width, final int height) {
         var readCheck = BitmapFactory.decodeFile(randomFile.getAbsolutePath());
         if (readCheck == null) {
-            throw new AvifCompressionException("AVIF image was null after trying to decode");
+            throw new ImageCompressionException(
+                    String.format("%s image was null after trying to decode", format));
         }
-        if (readCheck.getWidth() != image.getWidth()
-                || readCheck.getHeight() != image.getHeight()) {
+        if (readCheck.getWidth() != width || readCheck.getHeight() != height) {
             readCheck.recycle();
-            throw new AvifCompressionException("AVIF had wrong image bounds");
+            throw new ImageCompressionException(String.format("%s had wrong image bounds", format));
         }
         readCheck.recycle();
-        return storeAsAvatar(randomFile, ImageFormat.AVIF, image.getHeight(), image.getWidth());
     }
 
     private Info storeAsAvatar(
-            final File randomFile, final ImageFormat type, final int height, final int width)
+            final File randomFile, final ImageFormat type, final int width, final int height)
             throws IOException {
         final var sha1 = Files.asByteSource(randomFile).hash(Hashing.sha1()).toString();
         final var avatarFile = FileBackend.getAvatarFile(context, sha1);
         if (moveAvatarIntoCache(randomFile, avatarFile)) {
-            return new Info(sha1, avatarFile.length(), type.toContentType(), height, width);
+            return new Info(sha1, avatarFile.length(), type.toContentType(), width, height);
         }
         throw new IllegalStateException(
                 String.format("Could not move file to %s", avatarFile.getAbsolutePath()));
@@ -840,8 +869,8 @@ public class AvatarManager extends AbstractManager {
                 AVATAR_COMPRESSION_EXECUTOR);
     }
 
-    private static final class AvifCompressionException extends IllegalStateException {
-        AvifCompressionException(final String message) {
+    private static final class ImageCompressionException extends IllegalStateException {
+        ImageCompressionException(final String message) {
             super(message);
         }
     }

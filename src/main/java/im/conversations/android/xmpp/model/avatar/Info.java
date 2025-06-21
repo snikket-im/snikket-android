@@ -17,14 +17,14 @@ public class Info extends Extension {
             final String id,
             final long bytes,
             final String type,
-            final int height,
-            final int width) {
+            final int width,
+            final int height) {
         this();
         this.setId(id);
         this.setBytes(bytes);
         this.setType(type);
-        this.setHeight(height);
         this.setWidth(width);
+        this.setHeight(height);
     }
 
     public long getHeight() {

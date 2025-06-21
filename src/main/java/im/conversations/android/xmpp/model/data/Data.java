@@ -1,5 +1,6 @@
 package im.conversations.android.xmpp.model.data;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import im.conversations.android.annotation.XmlElement;
@@ -67,6 +68,9 @@ public class Data extends Extension {
             final var valueExtension = field.addExtension(new Value());
             if (value instanceof String) {
                 valueExtension.setContent((String) value);
+            } else if (value instanceof Enum<?> e) {
+                valueExtension.setContent(
+                        CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, e.toString()));
             } else if (value instanceof Integer) {
                 valueExtension.setContent(String.valueOf(value));
             } else if (value instanceof Boolean) {

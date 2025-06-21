@@ -9,6 +9,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.xmpp.NodeConfiguration;
 import im.conversations.android.xmpp.model.Extension;
+import im.conversations.android.xmpp.model.data.Data;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import java.util.Map;
 
@@ -53,6 +54,10 @@ public class PepManager extends AbstractManager {
     public ListenableFuture<Void> delete(final String node) {
         final var future = pubSubManager().delete(pepService(), node);
         return Futures.transform(future, iq -> null, MoreExecutors.directExecutor());
+    }
+
+    public ListenableFuture<Data> getNodeConfiguration(final String node) {
+        return pubSubManager().getNodeConfiguration(pepService(), node);
     }
 
     public boolean hasPublishOptions() {
