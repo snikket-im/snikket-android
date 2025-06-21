@@ -5,7 +5,6 @@ import android.util.Base64;
 import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
-import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -28,12 +27,6 @@ public class IqGenerator extends AbstractGenerator {
 
     public IqGenerator(final XmppConnectionService service) {
         super(service);
-    }
-
-    public static Iq purgeOfflineMessages() {
-        final Iq packet = new Iq(Iq.Type.SET);
-        packet.addChild("offline", Namespace.FLEXIBLE_OFFLINE_MESSAGE_RETRIEVAL).addChild("purge");
-        return packet;
     }
 
     protected Iq publish(final String node, final Element item, final Bundle options) {
@@ -215,19 +208,6 @@ public class IqGenerator extends AbstractGenerator {
         item.setAttribute("nick", nick);
         item.setAttribute("role", role);
         return packet;
-    }
-
-    public static Iq generateCreateAccountWithCaptcha(
-            final Account account, final String id, final Data data) {
-        final Iq register = new Iq(Iq.Type.SET);
-        register.setFrom(account.getJid().asBareJid());
-        register.setTo(account.getDomain());
-        register.setId(id);
-        Element query = register.query(Namespace.REGISTER);
-        if (data != null) {
-            query.addChild(data);
-        }
-        return register;
     }
 
     public Iq pushTokenToAppServer(Jid appServer, String token, String deviceId) {

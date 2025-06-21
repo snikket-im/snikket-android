@@ -2969,11 +2969,6 @@ public class XmppConnection implements Runnable {
             return hasDiscoFeature(account.getDomain(), Namespace.REPORTING);
         }
 
-        public boolean flexibleOfflineMessageRetrieval() {
-            return hasDiscoFeature(
-                    account.getDomain(), Namespace.FLEXIBLE_OFFLINE_MESSAGE_RETRIEVAL);
-        }
-
         public boolean sm() {
             return streamId != null
                     || (connection.streamFeatures != null

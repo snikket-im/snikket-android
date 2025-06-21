@@ -15,6 +15,7 @@ import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.LegacyBookmarkManager;
 import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
 import eu.siacs.conversations.xmpp.manager.NickManager;
+import eu.siacs.conversations.xmpp.manager.OfflineMessagesManager;
 import eu.siacs.conversations.xmpp.manager.PepManager;
 import eu.siacs.conversations.xmpp.manager.PingManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
@@ -48,6 +49,7 @@ public class Managers {
                         MessageDisplayedSynchronizationManager.class,
                         new MessageDisplayedSynchronizationManager(context, connection))
                 .put(NickManager.class, new NickManager(context, connection))
+                .put(OfflineMessagesManager.class, new OfflineMessagesManager(context, connection))
                 .put(PepManager.class, new PepManager(context, connection))
                 .put(PingManager.class, new PingManager(context, connection))
                 .put(PresenceManager.class, new PresenceManager(context, connection))
