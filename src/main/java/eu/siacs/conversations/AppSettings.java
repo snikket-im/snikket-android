@@ -27,13 +27,13 @@ public class AppSettings {
     public static final String BLIND_TRUST_BEFORE_VERIFICATION = "btbv";
     public static final String AUTOMATIC_MESSAGE_DELETION = "automatic_message_deletion";
     public static final String BROADCAST_LAST_ACTIVITY = "last_activity";
+    public static final String SEND_CHAT_STATES = "chat_states";
     public static final String THEME = "theme";
     public static final String DYNAMIC_COLORS = "dynamic_colors";
     public static final String SHOW_DYNAMIC_TAGS = "show_dynamic_tags";
     public static final String OMEMO = "omemo";
     public static final String ALLOW_SCREENSHOTS = "allow_screenshots";
     public static final String RINGTONE = "call_ringtone";
-    public static final String BTBV = "btbv";
 
     public static final String CONFIRM_MESSAGES = "confirm_messages";
     public static final String ALLOW_MESSAGE_CORRECTION = "allow_message_correction";
@@ -57,6 +57,7 @@ public class AppSettings {
     public static final String AUTO_ACCEPT_FILE_SIZE = "auto_accept_file_size";
 
     private static final String ACCEPT_INVITES_FROM_STRANGERS = "accept_invites_from_strangers";
+    private static final String NOTIFICATIONS_FROM_STRANGERS = "notifications_from_strangers";
     private static final String INSTALLATION_ID = "im.conversations.android.install_id";
 
     private static final String EXTERNAL_STORAGE_AUTHORITY =
@@ -102,7 +103,7 @@ public class AppSettings {
     }
 
     public boolean isBTBVEnabled() {
-        return getBooleanPreference(BTBV, R.bool.btbv);
+        return getBooleanPreference(BLIND_TRUST_BEFORE_VERIFICATION, R.bool.btbv);
     }
 
     public boolean isTrustSystemCAStore() {
@@ -145,9 +146,35 @@ public class AppSettings {
         return getBooleanPreference(BROADCAST_LAST_ACTIVITY, R.bool.last_activity);
     }
 
+    public boolean isUserManagedAvailability() {
+        return getBooleanPreference(MANUALLY_CHANGE_PRESENCE, R.bool.manually_change_presence);
+    }
+
+    public boolean isAutomaticAvailability() {
+        return !isUserManagedAvailability();
+    }
+
+    public boolean isDndOnSilentMode() {
+        return getBooleanPreference(AppSettings.DND_ON_SILENT_MODE, R.bool.dnd_on_silent_mode);
+    }
+
+    public boolean isTreatVibrateAsSilent() {
+        return getBooleanPreference(
+                AppSettings.TREAT_VIBRATE_AS_SILENT, R.bool.treat_vibrate_as_silent);
+    }
+
+    public boolean isAwayWhenScreenLocked() {
+        return getBooleanPreference(
+                AppSettings.AWAY_WHEN_SCREEN_IS_OFF, R.bool.away_when_screen_off);
+    }
+
     public boolean isUseTor() {
         return QuickConversationsService.isConversations()
                 && getBooleanPreference(USE_TOR, R.bool.use_tor);
+    }
+
+    public boolean isSendChatStates() {
+        return getBooleanPreference(SEND_CHAT_STATES, R.bool.chat_states);
     }
 
     public boolean isExtendedConnectionOptions() {
@@ -159,6 +186,11 @@ public class AppSettings {
     public boolean isAcceptInvitesFromStrangers() {
         return getBooleanPreference(
                 ACCEPT_INVITES_FROM_STRANGERS, R.bool.accept_invites_from_strangers);
+    }
+
+    public boolean isNotificationsFromStrangers() {
+        return getBooleanPreference(
+                NOTIFICATIONS_FROM_STRANGERS, R.bool.notifications_from_strangers);
     }
 
     public boolean isKeepForegroundService() {

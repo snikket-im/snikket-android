@@ -13,11 +13,6 @@ public class PresenceGenerator extends AbstractGenerator {
     }
 
     public im.conversations.android.xmpp.model.stanza.Presence selfPresence(
-            Account account, Presence.Availability status) {
-        return selfPresence(account, status, true);
-    }
-
-    public im.conversations.android.xmpp.model.stanza.Presence selfPresence(
             final Account account, final Presence.Availability status, final boolean personal) {
         final var connection = account.getXmppConnection();
         if (connection == null) {

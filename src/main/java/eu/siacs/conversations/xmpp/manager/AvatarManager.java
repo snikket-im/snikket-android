@@ -28,13 +28,13 @@ import com.google.common.util.concurrent.SettableFuture;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.android.Device;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Compatibility;
-import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -622,7 +622,9 @@ public class AvatarManager extends AbstractManager {
                     resizeAndStoreAvatarAsync(
                             image, Config.AVATAR_FULL_SIZE, ImageFormat.JPEG, autoAcceptFileSize);
 
-            if (Compatibility.twentyEight() && !PhoneHelper.isEmulator()) {
+            final var device = new Device(context);
+
+            if (Compatibility.twentyEight() && device.isPhysicalDevice()) {
                 final var avatarHeifFuture =
                         resizeAndStoreAvatarAsync(
                                 image,
@@ -634,7 +636,7 @@ public class AvatarManager extends AbstractManager {
                                 avatarHeifFuture, this::upload, MoreExecutors.directExecutor());
                 avatarFutures.add(avatarHeifWithUrlFuture);
             }
-            if (Compatibility.thirtyFour() && !PhoneHelper.isEmulator()) {
+            if (Compatibility.thirtyFour() && device.isPhysicalDevice()) {
                 final var avatarAvifFuture =
                         resizeAndStoreAvatarAsync(
                                 image,

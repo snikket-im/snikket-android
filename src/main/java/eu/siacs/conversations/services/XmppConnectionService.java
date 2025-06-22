@@ -5,7 +5,6 @@ import static eu.siacs.conversations.utils.Compatibility.s;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -42,7 +41,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.LruCache;
 import android.util.Pair;
-import androidx.annotation.BoolRes;
 import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -706,7 +704,7 @@ public class XmppConnectionService extends Service {
                         });
             case AudioManager.RINGER_MODE_CHANGED_ACTION:
             case NotificationManager.ACTION_INTERRUPTION_FILTER_CHANGED:
-                if (dndOnSilentMode()) {
+                if (appSettings.isDndOnSilentMode() && appSettings.isAutomaticAvailability()) {
                     refreshAllPresences();
                 }
                 break;
@@ -714,7 +712,7 @@ public class XmppConnectionService extends Service {
                 deactivateGracePeriod();
             case Intent.ACTION_USER_PRESENT:
             case Intent.ACTION_SCREEN_OFF:
-                if (awayWhenScreenLocked()) {
+                if (appSettings.isAwayWhenScreenLocked() && appSettings.isAutomaticAvailability()) {
                     refreshAllPresences();
                 }
                 break;
@@ -1052,79 +1050,11 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    private boolean dndOnSilentMode() {
-        return getBooleanPreference(AppSettings.DND_ON_SILENT_MODE, R.bool.dnd_on_silent_mode);
-    }
-
-    private boolean manuallyChangePresence() {
-        return getBooleanPreference(
-                AppSettings.MANUALLY_CHANGE_PRESENCE, R.bool.manually_change_presence);
-    }
-
-    private boolean treatVibrateAsSilent() {
-        return getBooleanPreference(
-                AppSettings.TREAT_VIBRATE_AS_SILENT, R.bool.treat_vibrate_as_silent);
-    }
-
-    private boolean awayWhenScreenLocked() {
-        return getBooleanPreference(
-                AppSettings.AWAY_WHEN_SCREEN_IS_OFF, R.bool.away_when_screen_off);
-    }
-
     private String getCompressPicturesPreference() {
         return getPreferences()
                 .getString(
                         "picture_compression",
                         getResources().getString(R.string.picture_compression));
-    }
-
-    private im.conversations.android.xmpp.model.stanza.Presence.Availability getTargetPresence() {
-        if (dndOnSilentMode() && isPhoneSilenced()) {
-            return im.conversations.android.xmpp.model.stanza.Presence.Availability.DND;
-        } else if (awayWhenScreenLocked() && isScreenLocked()) {
-            return im.conversations.android.xmpp.model.stanza.Presence.Availability.AWAY;
-        } else {
-            return im.conversations.android.xmpp.model.stanza.Presence.Availability.ONLINE;
-        }
-    }
-
-    public boolean isScreenLocked() {
-        final KeyguardManager keyguardManager = getSystemService(KeyguardManager.class);
-        final PowerManager powerManager = getSystemService(PowerManager.class);
-        final boolean locked = keyguardManager != null && keyguardManager.isKeyguardLocked();
-        final boolean interactive;
-        try {
-            interactive = powerManager != null && powerManager.isInteractive();
-        } catch (final Exception e) {
-            return false;
-        }
-        return locked || !interactive;
-    }
-
-    private boolean isPhoneSilenced() {
-        final NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        final int filter =
-                notificationManager == null
-                        ? NotificationManager.INTERRUPTION_FILTER_UNKNOWN
-                        : notificationManager.getCurrentInterruptionFilter();
-        final boolean notificationDnd = filter >= NotificationManager.INTERRUPTION_FILTER_PRIORITY;
-        final AudioManager audioManager = getSystemService(AudioManager.class);
-        final int ringerMode =
-                audioManager == null
-                        ? AudioManager.RINGER_MODE_NORMAL
-                        : audioManager.getRingerMode();
-        try {
-            if (treatVibrateAsSilent()) {
-                return notificationDnd || ringerMode != AudioManager.RINGER_MODE_NORMAL;
-            } else {
-                return notificationDnd || ringerMode == AudioManager.RINGER_MODE_SILENT;
-            }
-        } catch (final Throwable throwable) {
-            Log.d(
-                    Config.LOGTAG,
-                    "platform bug in isPhoneSilenced (" + throwable.getMessage() + ")");
-            return notificationDnd;
-        }
     }
 
     private void resetAllAttemptCounts(boolean reallyAll, boolean retryImmediately) {
@@ -1433,7 +1363,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void toggleScreenEventReceiver() {
-        if (awayWhenScreenLocked() && !manuallyChangePresence()) {
+        if (appSettings.isAwayWhenScreenLocked() && appSettings.isAutomaticAvailability()) {
             final IntentFilter filter = new IntentFilter();
             filter.addAction(Intent.ACTION_SCREEN_ON);
             filter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -1655,8 +1585,8 @@ public class XmppConnectionService extends Service {
         return connection;
     }
 
-    public void sendChatState(Conversation conversation) {
-        if (sendChatStates()) {
+    public void sendChatState(final Conversation conversation) {
+        if (appSettings.isSendChatStates()) {
             final var packet = mMessageGenerator.generateChatState(conversation);
             sendMessagePacket(conversation.getAccount(), packet);
         }
@@ -1848,7 +1778,7 @@ public class XmppConnectionService extends Service {
                 mMessageGenerator.addDelay(packet, message.getTimeSent());
             }
             if (conversation.setOutgoingChatState(Config.DEFAULT_CHAT_STATE)) {
-                if (this.sendChatStates()) {
+                if (this.appSettings.isSendChatStates()) {
                     packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));
                 }
             }
@@ -3112,7 +3042,7 @@ public class XmppConnectionService extends Service {
 
     private void switchToForeground() {
         toggleSoftDisabled(false);
-        final boolean broadcastLastActivity = broadcastLastActivity();
+        final boolean broadcastLastActivity = appSettings.isBroadcastLastActivity();
         for (Conversation conversation : getConversations()) {
             if (conversation.getMode() == Conversation.MODE_MULTI) {
                 conversation.getMucOptions().resetChatState();
@@ -3120,45 +3050,41 @@ public class XmppConnectionService extends Service {
                 conversation.setIncomingChatState(Config.DEFAULT_CHAT_STATE);
             }
         }
-        for (Account account : getAccounts()) {
-            if (account.getStatus() == Account.State.ONLINE) {
-                account.deactivateGracePeriod();
-                final XmppConnection connection = account.getXmppConnection();
-                if (connection != null) {
-                    if (connection.getFeatures().csi()) {
-                        connection.sendActive();
-                    }
-                    if (broadcastLastActivity) {
-                        sendPresence(
-                                account,
-                                false); // send new presence but don't include idle because we are
-                        // not
-                    }
-                }
+        for (final var account : getAccounts()) {
+            if (account.getStatus() != Account.State.ONLINE) {
+                continue;
+            }
+            account.deactivateGracePeriod();
+            final XmppConnection connection = account.getXmppConnection();
+            if (connection.getFeatures().csi()) {
+                connection.sendActive();
+            }
+            if (broadcastLastActivity) {
+                // send new presence but don't include idle because we are not
+                connection.getManager(PresenceManager.class).available(false);
             }
         }
         Log.d(Config.LOGTAG, "app switched into foreground");
     }
 
     private void switchToBackground() {
-        final boolean broadcastLastActivity = broadcastLastActivity();
+        final boolean broadcastLastActivity = appSettings.isBroadcastLastActivity();
         if (broadcastLastActivity) {
             mLastActivity = System.currentTimeMillis();
             final SharedPreferences.Editor editor = getPreferences().edit();
             editor.putLong(SETTING_LAST_ACTIVITY_TS, mLastActivity);
             editor.apply();
         }
-        for (Account account : getAccounts()) {
-            if (account.getStatus() == Account.State.ONLINE) {
-                XmppConnection connection = account.getXmppConnection();
-                if (connection != null) {
-                    if (broadcastLastActivity) {
-                        sendPresence(account, true);
-                    }
-                    if (connection.getFeatures().csi()) {
-                        connection.sendInactive();
-                    }
-                }
+        for (final var account : getAccounts()) {
+            if (account.getStatus() != Account.State.ONLINE) {
+                continue;
+            }
+            final var connection = account.getXmppConnection();
+            if (broadcastLastActivity) {
+                connection.getManager(PresenceManager.class).available(true);
+            }
+            if (connection.getFeatures().csi()) {
+                connection.sendInactive();
             }
         }
         this.mNotificationService.setIsInForeground(false);
@@ -4218,7 +4144,7 @@ public class XmppConnectionService extends Service {
                     }
                 }
             }
-            sendOfflinePresence(account);
+            connection.getManager(PresenceManager.class).unavailable();
         }
         connection.disconnect(force);
     }
@@ -4549,10 +4475,6 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public boolean getBooleanPreference(String name, @BoolRes int res) {
-        return getPreferences().getBoolean(name, getResources().getBoolean(res));
-    }
-
     public boolean confirmMessages() {
         return appSettings.isConfirmMessages();
     }
@@ -4561,16 +4483,8 @@ public class XmppConnectionService extends Service {
         return appSettings.isAllowMessageCorrection();
     }
 
-    public boolean sendChatStates() {
-        return getBooleanPreference("chat_states", R.bool.chat_states);
-    }
-
     public boolean useTorToConnect() {
         return appSettings.isUseTor();
-    }
-
-    public boolean broadcastLastActivity() {
-        return appSettings.isBroadcastLastActivity();
     }
 
     public int unreadCount() {
@@ -5014,27 +4928,6 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public void sendPresence(final Account account) {
-        sendPresence(account, checkListeners() && broadcastLastActivity());
-    }
-
-    private void sendPresence(final Account account, final boolean includeIdleTimestamp) {
-        final im.conversations.android.xmpp.model.stanza.Presence.Availability status;
-        if (manuallyChangePresence()) {
-            status = account.getPresenceStatus();
-        } else {
-            status = getTargetPresence();
-        }
-        final var packet = mPresenceGenerator.selfPresence(account, status);
-        if (mLastActivity > 0 && includeIdleTimestamp) {
-            long since =
-                    Math.min(mLastActivity, System.currentTimeMillis()); // don't send future dates
-            packet.addChild("idle", Namespace.IDLE)
-                    .setAttribute("since", AbstractGenerator.getTimestamp(since));
-        }
-        sendPresencePacket(account, packet);
-    }
-
     private void deactivateGracePeriod() {
         for (Account account : getAccounts()) {
             account.deactivateGracePeriod();
@@ -5042,10 +4935,13 @@ public class XmppConnectionService extends Service {
     }
 
     public void refreshAllPresences() {
-        boolean includeIdleTimestamp = checkListeners() && broadcastLastActivity();
-        for (Account account : getAccounts()) {
+        final boolean includeIdleTimestamp =
+                checkListeners() && appSettings.isBroadcastLastActivity();
+        for (final var account : getAccounts()) {
             if (account.isConnectionEnabled()) {
-                sendPresence(account, includeIdleTimestamp);
+                account.getXmppConnection()
+                        .getManager(PresenceManager.class)
+                        .available(includeIdleTimestamp);
             }
         }
     }
@@ -5056,11 +4952,6 @@ public class XmppConnectionService extends Service {
                 mPushManagementService.registerPushTokenOnServer(account);
             }
         }
-    }
-
-    private void sendOfflinePresence(final Account account) {
-        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": sending offline presence");
-        sendPresencePacket(account, mPresenceGenerator.sendOfflinePresence(account));
     }
 
     public MessageGenerator getMessageGenerator() {
@@ -5247,7 +5138,8 @@ public class XmppConnectionService extends Service {
         return mPushManagementService;
     }
 
-    public void changeStatus(Account account, PresenceTemplate template, String signature) {
+    public void changeStatus(
+            final Account account, final PresenceTemplate template, final String signature) {
         if (!template.getStatusMessage().isEmpty()) {
             databaseBackend.insertPresenceTemplate(template);
         }
@@ -5255,7 +5147,7 @@ public class XmppConnectionService extends Service {
         account.setPresenceStatus(template.getStatus());
         account.setPresenceStatusMessage(template.getStatusMessage());
         databaseBackend.updateAccount(account);
-        sendPresence(account);
+        account.getXmppConnection().getManager(PresenceManager.class).available();
     }
 
     public List<PresenceTemplate> getPresenceTemplates(Account account) {
@@ -5343,6 +5235,10 @@ public class XmppConnectionService extends Service {
         if (mBitmapCache.remove(uuid) != null) {
             Log.d(Config.LOGTAG, "deleted cached preview");
         }
+    }
+
+    public long getLastActivity() {
+        return this.mLastActivity;
     }
 
     public interface OnMamPreferencesFetched {

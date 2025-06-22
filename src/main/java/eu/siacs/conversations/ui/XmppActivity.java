@@ -828,7 +828,9 @@ public abstract class XmppActivity extends ActionBarActivity {
                                 public void success(String signature) {
                                     account.setPgpSignature(signature);
                                     xmppConnectionService.databaseBackend.updateAccount(account);
-                                    xmppConnectionService.sendPresence(account);
+                                    account.getXmppConnection()
+                                            .getManager(PresenceManager.class)
+                                            .available();
                                     if (conversation != null) {
                                         conversation.setNextEncryption(Message.ENCRYPTION_PGP);
                                         xmppConnectionService.updateConversation(conversation);

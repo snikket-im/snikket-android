@@ -31,6 +31,7 @@ import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.android.Device;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -54,7 +55,6 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SSLSockets;
 import eu.siacs.conversations.utils.SocksSocketFactory;
@@ -1799,7 +1799,7 @@ public class XmppConnection implements Runnable {
                                         account, appSettings.getInstallationId())));
         userAgent.setSoftware(
                 String.format("%s %s", BuildConfig.APP_NAME, BuildConfig.VERSION_NAME));
-        if (!PhoneHelper.isEmulator()) {
+        if (new Device(mXmppConnectionService).isPhysicalDevice()) {
             userAgent.setDevice(String.format("%s %s", Build.MANUFACTURER, Build.MODEL));
         }
         // do not include bind if 'inlineStreamManagement' is missing and we have a streamId

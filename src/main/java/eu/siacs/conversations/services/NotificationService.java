@@ -50,6 +50,7 @@ import com.google.common.primitives.Ints;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.android.Device;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -390,22 +391,18 @@ public class NotificationService {
     }
 
     private boolean notifyMessage(final Message message) {
+        final var appSettings = new AppSettings(mXmppConnectionService.getApplicationContext());
         final Conversation conversation = (Conversation) message.getConversation();
         return message.getStatus() == Message.STATUS_RECEIVED
                 && !conversation.isMuted()
                 && (conversation.alwaysNotify() || wasHighlightedOrPrivate(message))
-                && (!conversation.isWithStranger() || notificationsFromStrangers())
+                && (!conversation.isWithStranger() || appSettings.isNotificationsFromStrangers())
                 && message.getType() != Message.TYPE_RTP_SESSION;
     }
 
     private boolean notifyMissedCall(final Message message) {
         return message.getType() == Message.TYPE_RTP_SESSION
                 && message.getStatus() == Message.STATUS_RECEIVED;
-    }
-
-    public boolean notificationsFromStrangers() {
-        return mXmppConnectionService.getBooleanPreference(
-                "notifications_from_strangers", R.bool.notifications_from_strangers);
     }
 
     public void pushFromBacklog(final Message message) {
@@ -513,9 +510,8 @@ public class NotificationService {
 
     public void pushFailedDelivery(final Message message) {
         final Conversation conversation = (Conversation) message.getConversation();
-        final boolean isScreenLocked = !mXmppConnectionService.isScreenLocked();
         if (this.mIsInForeground
-                && isScreenLocked
+                && !new Device(mXmppConnectionService).isScreenLocked()
                 && this.mOpenConversation == message.getConversation()) {
             Log.d(
                     Config.LOGTAG,
@@ -755,7 +751,7 @@ public class NotificationService {
                             + ": suppressing notification because turned off");
             return;
         }
-        final boolean isScreenLocked = mXmppConnectionService.isScreenLocked();
+        final boolean isScreenLocked = new Device(mXmppConnectionService).isScreenLocked();
         if (this.mIsInForeground
                 && !isScreenLocked
                 && this.mOpenConversation == message.getConversation()) {

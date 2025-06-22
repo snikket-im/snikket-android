@@ -16,6 +16,7 @@ import eu.siacs.conversations.xmpp.manager.LegacyBookmarkManager;
 import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
 import eu.siacs.conversations.xmpp.manager.NickManager;
 import eu.siacs.conversations.xmpp.manager.OfflineMessagesManager;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import eu.siacs.conversations.xmpp.manager.PrivateStorageManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 
@@ -115,7 +116,7 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         } else {
             trackOfflineMessageRetrieval = true;
         }
-        service.sendPresence(account);
+        getManager(PresenceManager.class).available();
         connection.trackOfflineMessageRetrieval(trackOfflineMessageRetrieval);
         if (service.getPushManagementService().available(account)) {
             service.getPushManagementService().registerPushTokenOnServer(account);

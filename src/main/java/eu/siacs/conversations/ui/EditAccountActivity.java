@@ -82,6 +82,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import eu.siacs.conversations.xmpp.manager.RegistrationManager;
 import im.conversations.android.xmpp.model.data.Data;
 import im.conversations.android.xmpp.model.stanza.Presence;
@@ -1518,7 +1519,7 @@ public class EditAccountActivity extends OmemoActivity
                     mAccount.setPgpSignId(0);
                     mAccount.unsetPgpSignature();
                     xmppConnectionService.databaseBackend.updateAccount(mAccount);
-                    xmppConnectionService.sendPresence(mAccount);
+                    mAccount.getXmppConnection().getManager(PresenceManager.class).available();
                     refreshUiReal();
                 });
         builder.create().show();

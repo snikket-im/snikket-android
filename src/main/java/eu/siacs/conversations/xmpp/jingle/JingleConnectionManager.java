@@ -13,6 +13,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -249,7 +250,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
     private boolean isWithStrangerAndStrangerNotificationsAreOff(final Account account, Jid with) {
         final boolean notifyForStrangers =
-                mXmppConnectionService.getNotificationService().notificationsFromStrangers();
+                new AppSettings(mXmppConnectionService.getApplicationContext())
+                        .isNotificationsFromStrangers();
         if (notifyForStrangers) {
             return false;
         }

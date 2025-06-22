@@ -14,6 +14,7 @@ import eu.siacs.conversations.xmpp.manager.EntityTimeManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.LegacyBookmarkManager;
 import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.NickManager;
 import eu.siacs.conversations.xmpp.manager.OfflineMessagesManager;
 import eu.siacs.conversations.xmpp.manager.PepManager;
@@ -48,6 +49,7 @@ public class Managers {
                 .put(
                         MessageDisplayedSynchronizationManager.class,
                         new MessageDisplayedSynchronizationManager(context, connection))
+                .put(MultiUserChatManager.class, new MultiUserChatManager(context, connection))
                 .put(NickManager.class, new NickManager(context, connection))
                 .put(OfflineMessagesManager.class, new OfflineMessagesManager(context, connection))
                 .put(PepManager.class, new PepManager(context, connection))
