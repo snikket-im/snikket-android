@@ -1096,4 +1096,6 @@
     <string name="pref_chat_bubbles">Csevegőbuborékok</string>
     <string name="pref_chat_bubbles_summary">Háttérszín, betűméret, avatárok</string>
     <string name="pref_title_bubbles">Csevegőbuborékok</string>
+    <string name="account_status_channel_binding">Nincs channel binding</string>
+    <string name="account_status_connection_timeout">Kapcsolati időkorlát</string>
 </resources>
