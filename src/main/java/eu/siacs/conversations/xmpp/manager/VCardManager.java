@@ -2,6 +2,8 @@ package eu.siacs.conversations.xmpp.manager;
 
 import android.content.Context;
 import android.util.Log;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -14,9 +16,16 @@ import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.vcard.BinaryValue;
 import im.conversations.android.xmpp.model.vcard.Photo;
 import im.conversations.android.xmpp.model.vcard.VCard;
+import java.time.Duration;
 import java.util.Objects;
 
 public class VCardManager extends AbstractManager {
+
+    private final Cache<Jid, Exception> photoExceptionCache =
+            CacheBuilder.newBuilder()
+                    .maximumSize(24_576)
+                    .expireAfterWrite(Duration.ofHours(36))
+                    .build();
 
     public VCardManager(final Context context, final XmppConnection connection) {
         super(context, connection);
@@ -37,10 +46,25 @@ public class VCardManager extends AbstractManager {
                 MoreExecutors.directExecutor());
     }
 
-    public ListenableFuture<byte[]> retrievePhoto(final Jid address) {
+    public ListenableFuture<byte[]> retrievePhotoCacheException(final Jid address) {
+        final var existingException = this.photoExceptionCache.getIfPresent(address);
+        if (existingException != null) {
+            return Futures.immediateFailedFuture(existingException);
+        }
+        final var future = retrievePhoto(address);
+        return Futures.catchingAsync(
+                future,
+                Exception.class,
+                ex -> {
+                    if (ex instanceof IllegalStateException || ex instanceof IqErrorException) {
+                        photoExceptionCache.put(address, ex);
+                    }
+                    return Futures.immediateFailedFuture(ex);
+                },
+                MoreExecutors.directExecutor());
+    }
 
-        // TODO add a caching variant
-
+    private ListenableFuture<byte[]> retrievePhoto(final Jid address) {
         final var vCardFuture = retrieve(address);
         return Futures.transform(
                 vCardFuture,

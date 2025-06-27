@@ -842,7 +842,8 @@ public class AvatarManager extends AbstractManager {
     }
 
     public ListenableFuture<Void> fetchAndStoreVCard(final Jid address, final String expectedHash) {
-        final var future = connection.getManager(VCardManager.class).retrievePhoto(address);
+        final var future =
+                connection.getManager(VCardManager.class).retrievePhotoCacheException(address);
         return Futures.transformAsync(
                 future,
                 photo -> {
