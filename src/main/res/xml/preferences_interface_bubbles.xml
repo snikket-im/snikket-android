@@ -7,6 +7,7 @@
         android:summary="@string/pref_use_colorful_bubbles_summary"
         android:title="@string/pref_use_colorful_bubbles" />
     <SwitchPreferenceCompat
+        android:defaultValue="@bool/align_start"
         android:icon="@drawable/ic_format_align_left_24dp"
         android:key="align_start"
         android:summary="@string/pref_align_start_summary"
