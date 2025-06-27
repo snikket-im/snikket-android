@@ -80,10 +80,6 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public static final String KEY_SOS_URL = "sos_url";
     public static final String KEY_PRE_AUTH_REGISTRATION_TOKEN = "pre_auth_registration";
     protected final JSONObject keys;
-    public final Set<Conversation> pendingConferenceJoins = new HashSet<>();
-    public final Set<Conversation> pendingConferenceLeaves = new HashSet<>();
-    public final Set<Conversation> inProgressConferenceJoins = new HashSet<>();
-    public final Set<Conversation> inProgressConferencePings = new HashSet<>();
     protected Jid jid;
     protected String password;
     protected int options = 0;

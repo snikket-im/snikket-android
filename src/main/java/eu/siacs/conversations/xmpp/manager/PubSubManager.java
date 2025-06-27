@@ -176,7 +176,7 @@ public class PubSubManager extends AbstractManager {
         final var isFromBare = from == null || from.isBareJid();
         final var node = items.getNode();
         if (connection.fromAccount(message) && Namespace.BOOKMARKS2.equals(node)) {
-            getManager(BookmarkManager.class).handleItems(items);
+            getManager(NativeBookmarkManager.class).handleItems(items);
             return;
         }
         if (connection.fromAccount(message) && Namespace.BOOKMARKS.equals(node)) {
@@ -205,7 +205,7 @@ public class PubSubManager extends AbstractManager {
         final var isFromBare = from == null || from.isBareJid();
         final var node = purge.getNode();
         if (connection.fromAccount(message) && Namespace.BOOKMARKS2.equals(node)) {
-            getManager(BookmarkManager.class).handlePurge();
+            getManager(NativeBookmarkManager.class).handlePurge();
         }
         if (isFromBare && Namespace.AVATAR_METADATA.equals(node)) {
             // purge (delete all items in a node) is functionally equivalent to delete
@@ -218,7 +218,7 @@ public class PubSubManager extends AbstractManager {
         final var isFromBare = from == null || from.isBareJid();
         final var node = delete.getNode();
         if (connection.fromAccount(message) && Namespace.BOOKMARKS2.equals(node)) {
-            getManager(BookmarkManager.class).handleDelete();
+            getManager(NativeBookmarkManager.class).handleDelete();
             return;
         }
         if (isFromBare && Namespace.AVATAR_METADATA.equals(node)) {

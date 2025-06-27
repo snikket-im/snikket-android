@@ -24,7 +24,7 @@ public class LegacyBookmarkManager extends AbstractBookmarkManager {
     public void handleItems(final Items items) {
         final var account = this.getAccount();
         if (this.hasConversion()) {
-            if (getManager(BookmarkManager.class).hasFeature()) {
+            if (getManager(NativeBookmarkManager.class).hasFeature()) {
                 Log.w(
                         Config.LOGTAG,
                         account.getJid().asBareJid()

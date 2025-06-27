@@ -5,7 +5,6 @@ import android.util.Base64;
 import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
-import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
@@ -15,8 +14,6 @@ import eu.siacs.conversations.xmpp.forms.Data;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.ecc.ECPublicKey;
@@ -54,13 +51,6 @@ public class IqGenerator extends AbstractGenerator {
         if (item != null) {
             items.addChild(item);
         }
-        return packet;
-    }
-
-    public Iq deleteNode(final String node) {
-        final var packet = new Iq(Iq.Type.SET);
-        final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB_OWNER);
-        pubsub.addChild("delete").setAttribute("node", node);
         return packet;
     }
 
@@ -152,7 +142,7 @@ public class IqGenerator extends AbstractGenerator {
 
     public Iq queryMessageArchiveManagement(final MessageArchiveService.Query mam) {
         final Iq packet = new Iq(Iq.Type.SET);
-        final Element query = packet.query(mam.version.namespace);
+        final Element query = packet.addChild("query", mam.version.namespace);
         query.setAttribute("queryid", mam.getQueryId());
         final Data data = new Data();
         data.setFormType(mam.version.namespace);
@@ -178,35 +168,6 @@ public class IqGenerator extends AbstractGenerator {
             set.addChild("after").setContent(mam.getReference());
         }
         set.addChild("max").setContent(String.valueOf(Config.PAGE_SIZE));
-        return packet;
-    }
-
-    public Iq changeAffiliation(Conversation conference, Jid jid, String affiliation) {
-        List<Jid> jids = new ArrayList<>();
-        jids.add(jid);
-        return changeAffiliation(conference, jids, affiliation);
-    }
-
-    public Iq changeAffiliation(Conversation conference, List<Jid> jids, String affiliation) {
-        final Iq packet = new Iq(Iq.Type.SET);
-        packet.setTo(conference.getJid().asBareJid());
-        packet.setFrom(conference.getAccount().getJid());
-        Element query = packet.query("http://jabber.org/protocol/muc#admin");
-        for (Jid jid : jids) {
-            Element item = query.addChild("item");
-            item.setAttribute("jid", jid);
-            item.setAttribute("affiliation", affiliation);
-        }
-        return packet;
-    }
-
-    public Iq changeRole(Conversation conference, String nick, String role) {
-        final Iq packet = new Iq(Iq.Type.SET);
-        packet.setTo(conference.getJid().asBareJid());
-        packet.setFrom(conference.getAccount().getJid());
-        Element item = packet.query("http://jabber.org/protocol/muc#admin").addChild("item");
-        item.setAttribute("nick", nick);
-        item.setAttribute("role", role);
         return packet;
     }
 
@@ -266,42 +227,6 @@ public class IqGenerator extends AbstractGenerator {
         disable.setAttribute("jid", jid);
         disable.setAttribute("node", node);
         return packet;
-    }
-
-    public Iq queryAffiliation(Conversation conversation, String affiliation) {
-        final Iq packet = new Iq(Iq.Type.GET);
-        packet.setTo(conversation.getJid().asBareJid());
-        packet.query("http://jabber.org/protocol/muc#admin")
-                .addChild("item")
-                .setAttribute("affiliation", affiliation);
-        return packet;
-    }
-
-    public static Bundle defaultGroupChatConfiguration() {
-        Bundle options = new Bundle();
-        options.putString("muc#roomconfig_persistentroom", "1");
-        options.putString("muc#roomconfig_membersonly", "1");
-        options.putString("muc#roomconfig_publicroom", "0");
-        options.putString("muc#roomconfig_whois", "anyone");
-        options.putString("muc#roomconfig_changesubject", "0");
-        options.putString("muc#roomconfig_allowinvites", "0");
-        options.putString("muc#roomconfig_enablearchiving", "1"); // prosody
-        options.putString("mam", "1"); // ejabberd community
-        options.putString("muc#roomconfig_mam", "1"); // ejabberd saas
-        return options;
-    }
-
-    public static Bundle defaultChannelConfiguration() {
-        Bundle options = new Bundle();
-        options.putString("muc#roomconfig_persistentroom", "1");
-        options.putString("muc#roomconfig_membersonly", "0");
-        options.putString("muc#roomconfig_publicroom", "1");
-        options.putString("muc#roomconfig_whois", "moderators");
-        options.putString("muc#roomconfig_changesubject", "0");
-        options.putString("muc#roomconfig_enablearchiving", "1"); // prosody
-        options.putString("mam", "1"); // ejabberd community
-        options.putString("muc#roomconfig_mam", "1"); // ejabberd saas
-        return options;
     }
 
     public Iq requestPubsubConfiguration(Jid jid, String node) {

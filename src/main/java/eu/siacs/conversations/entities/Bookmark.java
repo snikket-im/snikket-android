@@ -10,7 +10,6 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.xmpp.model.bookmark.Storage;
-import im.conversations.android.xmpp.model.bookmark2.Conference;
 import im.conversations.android.xmpp.model.bookmark2.Extensions;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
@@ -33,7 +32,7 @@ public class Bookmark extends Element implements ListItem {
         this.account = account;
     }
 
-    private Bookmark(Account account) {
+    public Bookmark(Account account) {
         super("conference");
         this.account = account;
     }
@@ -68,31 +67,6 @@ public class Bookmark extends Element implements ListItem {
         bookmark.jid = Jid.Invalid.getNullForInvalid(bookmark.getAttributeAsJid("jid"));
         if (bookmark.jid == null) {
             return null;
-        }
-        return bookmark;
-    }
-
-    public static Bookmark parseFromItem(
-            final String id, final Conference conference, final Account account) {
-        if (id == null || conference == null) {
-            return null;
-        }
-        final Bookmark bookmark = new Bookmark(account);
-        bookmark.jid = Jid.Invalid.getNullForInvalid(Jid.ofOrInvalid(id));
-        // TODO verify that we only use bare jids and ignore full jids
-        if (bookmark.jid == null) {
-            return null;
-        }
-
-        // TODO use proper API
-
-        bookmark.setBookmarkName(conference.getAttribute("name"));
-        bookmark.setAutojoin(conference.getAttributeAsBoolean("autojoin"));
-        bookmark.setNick(conference.findChildContent("nick"));
-        bookmark.setPassword(conference.findChildContent("password"));
-        final var extensions = conference.getExtensions();
-        if (extensions != null) {
-            bookmark.extensions = conference.getExtensions();
         }
         return bookmark;
     }
@@ -259,5 +233,9 @@ public class Bookmark extends Element implements ListItem {
     @Override
     public String getAvatarName() {
         return getDisplayName();
+    }
+
+    public void setExtensions(Extensions extensions) {
+        this.extensions = extensions;
     }
 }

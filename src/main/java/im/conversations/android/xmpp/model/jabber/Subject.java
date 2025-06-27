@@ -9,4 +9,9 @@ public class Subject extends Extension {
     public Subject() {
         super(Subject.class);
     }
+
+    public Subject(final String subject) {
+        this();
+        this.setContent(subject);
+    }
 }

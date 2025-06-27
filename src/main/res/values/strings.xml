@@ -93,7 +93,7 @@
     <string name="send_message_to_x">Send message to %s</string>
     <string name="send_encrypted_message">Send encrypted message</string>
     <string name="send_omemo_x509_message">Send v\\OMEMO encrypted message</string>
-    <string name="your_nick_has_been_changed">New nickname in use</string>
+    <string name="your_nick_has_been_changed">Your nickname has been changed</string>
     <string name="send_unencrypted">Send clear text</string>
     <string name="decryption_failed">Decryption failed. Maybe you don’t have the proper private key.</string>
     <string name="openkeychain_required">OpenKeychain</string>

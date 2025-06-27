@@ -38,6 +38,9 @@ public class VCardManager extends AbstractManager {
     }
 
     public ListenableFuture<byte[]> retrievePhoto(final Jid address) {
+
+        // TODO add a caching variant
+
         final var vCardFuture = retrieve(address);
         return Futures.transform(
                 vCardFuture,

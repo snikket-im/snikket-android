@@ -18,6 +18,14 @@ public class IqErrorException extends Exception {
         return this.response.getError();
     }
 
+    public Condition getErrorCondition() {
+        final var error = getError();
+        if (error == null) {
+            return null;
+        }
+        return error.getCondition();
+    }
+
     private static String getErrorText(final Iq response) {
         final var error = response.getError();
         final var text = error == null ? null : error.getText();

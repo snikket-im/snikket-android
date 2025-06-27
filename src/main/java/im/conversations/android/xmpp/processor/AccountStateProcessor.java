@@ -5,12 +5,10 @@ import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.http.ServiceOutageStatus;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import java.util.ArrayList;
-import java.util.List;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -48,7 +46,7 @@ public class AccountStateProcessor extends XmppConnection.Delegate
                 this.service.databaseBackend.updateAccount(account);
             }
             this.service.getMessageArchiveService().executePendingQueries(account);
-            if (connection != null && connection.getFeatures().csi()) {
+            if (this.connection.getFeatures().csi()) {
                 if (this.service.checkListeners()) {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + " sending csi//inactive");
                     connection.sendInactive();
@@ -57,35 +55,13 @@ public class AccountStateProcessor extends XmppConnection.Delegate
                     connection.sendActive();
                 }
             }
-            List<Conversation> conversations = this.service.getConversations();
-            for (Conversation conversation : conversations) {
-                final boolean inProgressJoin;
-                synchronized (account.inProgressConferenceJoins) {
-                    inProgressJoin = account.inProgressConferenceJoins.contains(conversation);
-                }
-                final boolean pendingJoin;
-                synchronized (account.pendingConferenceJoins) {
-                    pendingJoin = account.pendingConferenceJoins.contains(conversation);
-                }
-                if (conversation.getAccount() == account && !pendingJoin && !inProgressJoin) {
+            final var mucManager = getManager(MultiUserChatManager.class);
+            final var conversations = this.service.getConversations();
+            for (final var conversation : conversations) {
+                final boolean inProgressJoin = mucManager.isJoinInProgress(conversation);
+                if (conversation.getAccount() == account && !inProgressJoin) {
                     this.service.sendUnsentMessages(conversation);
                 }
-            }
-            final List<Conversation> pendingLeaves;
-            synchronized (account.pendingConferenceLeaves) {
-                pendingLeaves = new ArrayList<>(account.pendingConferenceLeaves);
-                account.pendingConferenceLeaves.clear();
-            }
-            for (Conversation conversation : pendingLeaves) {
-                this.service.leaveMuc(conversation);
-            }
-            final List<Conversation> pendingJoins;
-            synchronized (account.pendingConferenceJoins) {
-                pendingJoins = new ArrayList<>(account.pendingConferenceJoins);
-                account.pendingConferenceJoins.clear();
-            }
-            for (Conversation conversation : pendingJoins) {
-                this.service.joinMuc(conversation);
             }
             this.service.scheduleWakeUpCall(
                     Config.PING_MAX_INTERVAL * 1000L, account.getUuid().hashCode());

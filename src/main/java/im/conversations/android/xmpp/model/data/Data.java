@@ -1,8 +1,10 @@
 package im.conversations.android.xmpp.model.data;
 
+import android.util.Log;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
+import eu.siacs.conversations.Config;
 import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
 import java.util.Collection;
@@ -52,11 +54,14 @@ public class Data extends Extension {
         if (type != null) {
             field.setType(type);
         }
-        if (value instanceof Collection) {
-            for (final Object subValue : (Collection<?>) value) {
-                if (subValue instanceof String) {
+        if (value instanceof Collection<?> collection) {
+            Log.d(Config.LOGTAG, "submitting collection: " + collection);
+            for (final Object subValue : collection) {
+                if (subValue == null) {
+                    Log.d(Config.LOGTAG, "null value in the values for " + name);
+                } else if (subValue instanceof String s) {
                     final var valueExtension = field.addExtension(new Value());
-                    valueExtension.setContent((String) subValue);
+                    valueExtension.setContent(s);
                 } else {
                     throw new IllegalArgumentException(
                             String.format(
@@ -66,15 +71,15 @@ public class Data extends Extension {
             }
         } else {
             final var valueExtension = field.addExtension(new Value());
-            if (value instanceof String) {
-                valueExtension.setContent((String) value);
+            if (value instanceof String s) {
+                valueExtension.setContent(s);
             } else if (value instanceof Enum<?> e) {
                 valueExtension.setContent(
                         CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, e.toString()));
-            } else if (value instanceof Integer) {
-                valueExtension.setContent(String.valueOf(value));
-            } else if (value instanceof Boolean) {
-                valueExtension.setContent(Boolean.TRUE.equals(value) ? "1" : "0");
+            } else if (value instanceof Integer i) {
+                valueExtension.setContent(String.valueOf(i));
+            } else if (value instanceof Boolean b) {
+                valueExtension.setContent(Boolean.TRUE.equals(b) ? "1" : "0");
             } else {
                 throw new IllegalArgumentException(
                         String.format(
@@ -109,9 +114,11 @@ public class Data extends Extension {
             final var fieldName = existingField.getFieldName();
             final Object submittedValue = values.get(fieldName);
             if (submittedValue != null) {
+                Log.d(Config.LOGTAG, "submitting value " + fieldName + ": " + submittedValue);
                 submit.addField(fieldName, submittedValue);
             } else {
-                submit.addField(fieldName, existingField.getValues());
+                Log.d(Config.LOGTAG, "staying with default for: " + fieldName);
+                submit.addExtension(existingField);
             }
         }
         return submit;

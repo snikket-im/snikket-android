@@ -19,6 +19,7 @@ import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.http.services.MuclumbusService;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import im.conversations.android.xmpp.model.disco.items.Item;
 import im.conversations.android.xmpp.model.disco.items.ItemsQuery;
@@ -304,10 +305,10 @@ public class ChannelDiscoveryService {
         for (final var account : service.getAccounts()) {
             final var connection = account.getXmppConnection();
             if (connection != null && account.isEnabled()) {
-                for (final String mucService : connection.getMucServers()) {
-                    final Jid jid = Jid.ofOrInvalid(mucService);
-                    if (Jid.Invalid.isValid(jid)) {
-                        localMucServices.put(jid, connection);
+                for (final var mucService :
+                        connection.getManager(MultiUserChatManager.class).getServices()) {
+                    if (Jid.Invalid.isValid(mucService)) {
+                        localMucServices.put(mucService, connection);
                     }
                 }
             }

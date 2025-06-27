@@ -18,7 +18,9 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
 import com.google.common.util.concurrent.FutureCallback;
@@ -71,6 +73,7 @@ import eu.siacs.conversations.xmpp.manager.AbstractManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.PingManager;
 import eu.siacs.conversations.xmpp.manager.RegistrationManager;
 import im.conversations.android.xmpp.Entity;
@@ -85,7 +88,6 @@ import im.conversations.android.xmpp.model.bind2.Bound;
 import im.conversations.android.xmpp.model.cb.SaslChannelBinding;
 import im.conversations.android.xmpp.model.csi.Active;
 import im.conversations.android.xmpp.model.csi.Inactive;
-import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import im.conversations.android.xmpp.model.error.Condition;
 import im.conversations.android.xmpp.model.fast.Fast;
 import im.conversations.android.xmpp.model.fast.RequestToken;
@@ -135,7 +137,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -2632,29 +2633,10 @@ public class XmppConnection implements Runnable {
         return this.managers.getInstance(clazz);
     }
 
-    public List<String> getMucServersWithholdAccount() {
-        final List<String> servers = getMucServers();
-        servers.remove(account.getDomain().toString());
-        return servers;
-    }
-
-    public List<String> getMucServers() {
-        List<String> servers = new ArrayList<>();
-        for (final Entry<Jid, InfoQuery> entry :
-                getManager(DiscoManager.class).getServerItems().entrySet()) {
-            final var value = entry.getValue();
-            if (value.getFeatureStrings().contains("http://jabber.org/protocol/muc")
-                    && value.hasIdentityWithCategoryAndType("conference", "text")
-                    && !value.getFeatureStrings().contains("jabber:iq:gateway")
-                    && !value.hasIdentityWithCategoryAndType("conference", "irc")) {
-                servers.add(entry.getKey().toString());
-            }
-        }
-        return servers;
-    }
-
-    public String getMucServer() {
-        return Iterables.getFirst(getMucServers(), null);
+    public Set<Jid> getMucServersWithholdAccount() {
+        final var services = getManager(MultiUserChatManager.class).getServices();
+        return ImmutableSet.copyOf(
+                Collections2.filter(services, s -> !s.equals(account.getDomain())));
     }
 
     public int getTimeToNextAttempt(final boolean aggressive) {

@@ -128,6 +128,7 @@ import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.ArrayList;
@@ -1178,9 +1179,9 @@ public class ConversationFragment extends XmppFragment
                 }
                 menuContactDetails.setVisible(!this.conversation.withSelf());
                 menuMucDetails.setVisible(false);
+                final var connection = this.conversation.getAccount().getXmppConnection();
                 menuInviteContact.setVisible(
-                        service != null
-                                && service.findConferenceServer(conversation.getAccount()) != null);
+                        !connection.getManager(MultiUserChatManager.class).getServices().isEmpty());
             }
             if (conversation.isMuted()) {
                 menuMute.setVisible(false);

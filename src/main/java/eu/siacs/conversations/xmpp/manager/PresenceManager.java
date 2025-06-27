@@ -105,9 +105,7 @@ public class PresenceManager extends AbstractManager {
         presence.setAvailability(availability);
         presence.setStatus(message);
         if (pgpSignature != null) {
-            final var signed = new Signed();
-            signed.setContent(pgpSignature);
-            presence.addExtension(signed);
+            presence.addExtension(new Signed(pgpSignature));
         }
 
         final var lastActivity = service.getLastActivity();
@@ -127,8 +125,13 @@ public class PresenceManager extends AbstractManager {
     }
 
     public void available(final Jid to, final Extension... extensions) {
+        available(to, null, extensions);
+    }
+
+    public void available(final Jid to, final String message, final Extension... extensions) {
         final var presence = new Presence();
         presence.setTo(to);
+        presence.setStatus(message);
         for (final var extension : extensions) {
             presence.addExtension(extension);
         }

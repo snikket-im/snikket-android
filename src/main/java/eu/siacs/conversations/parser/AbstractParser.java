@@ -133,7 +133,7 @@ public abstract class AbstractParser extends XmppConnection.Delegate {
         return item.findChildContent("data", "urn:xmpp:avatar:data");
     }
 
-    public static MucOptions.User parseItem(Conversation conference, Element item) {
+    public static MucOptions.User parseItem(final Conversation conference, final Element item) {
         return parseItem(conference, item, null);
     }
 
@@ -156,8 +156,8 @@ public abstract class AbstractParser extends XmppConnection.Delegate {
         if (Jid.Invalid.isValid(realJid)) {
             user.setRealJid(realJid);
         }
-        user.setAffiliation(affiliation);
-        user.setRole(role);
+        // user.setAffiliation(affiliation);
+        // user.setRole(role);
         return user;
     }
 

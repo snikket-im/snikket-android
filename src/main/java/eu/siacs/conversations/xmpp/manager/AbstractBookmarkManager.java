@@ -28,7 +28,7 @@ public class AbstractBookmarkManager extends AbstractManager {
         final Set<Jid> previousBookmarks = account.getBookmarkedJids();
         for (final Bookmark bookmark : bookmarks.values()) {
             previousBookmarks.remove(bookmark.getJid().asBareJid());
-            service.processModifiedBookmark(bookmark, pep);
+            getManager(BookmarkManager.class).processModifiedBookmark(bookmark, pep);
         }
         if (pep) {
             this.processDeletedBookmarks(previousBookmarks);

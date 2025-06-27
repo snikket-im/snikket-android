@@ -1,12 +1,11 @@
 package eu.siacs.conversations.ui.util;
 
 import android.content.Context;
-import android.os.Bundle;
-
 import androidx.annotation.StringRes;
-
+import com.google.common.collect.ImmutableMap;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.MucOptions;
+import java.util.Map;
 
 public class MucConfiguration {
 
@@ -116,22 +115,23 @@ public class MucConfiguration {
         return builder.toString();
     }
 
-    public Bundle toBundle(boolean[] values) {
-        Bundle bundle = new Bundle();
+    public Map<String, Object> toBundle(boolean[] values) {
+        final var builder = new ImmutableMap.Builder<String, Object>();
         for (int i = 0; i < values.length; ++i) {
             final Option option = options[i];
-            bundle.putString(option.name, option.values[values[i] ? 0 : 1]);
+            builder.put(option.name, option.values[values[i] ? 0 : 1]);
         }
-        return bundle;
+        builder.put("muc#roomconfig_persistentroom", true);
+        return builder.buildOrThrow();
     }
 
     private static class Option {
         public final String name;
-        public final String[] values;
+        public final Object[] values;
 
         private Option(String name) {
             this.name = name;
-            this.values = new String[] {"1", "0"};
+            this.values = new Boolean[] {true, false};
         }
 
         private Option(String name, String on, String off) {

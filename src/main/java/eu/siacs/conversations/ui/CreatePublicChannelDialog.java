@@ -26,6 +26,7 @@ import eu.siacs.conversations.ui.util.DelayedHintHelper;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -158,7 +159,7 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
         }
         final Editable nameText = binding.groupChatName.getText();
         final String name = nameText == null ? "" : nameText.toString().trim();
-        final String domain = connection.getMucServer();
+        final var domain = connection.getManager(MultiUserChatManager.class).getService();
         if (domain == null) {
             return "";
         }
@@ -270,9 +271,8 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
 
     private void refreshKnownHosts() {
         Activity activity = getActivity();
-        if (activity instanceof XmppActivity) {
-            Collection<String> hosts =
-                    ((XmppActivity) activity).xmppConnectionService.getKnownConferenceHosts();
+        if (activity instanceof XmppActivity xmppActivity) {
+            Collection<String> hosts = xmppActivity.xmppConnectionService.getKnownConferenceHosts();
             this.knownHostsAdapter.refresh(hosts);
         }
     }

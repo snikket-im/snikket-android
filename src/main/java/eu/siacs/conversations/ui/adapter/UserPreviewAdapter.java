@@ -5,18 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ItemUserPreviewBinding;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
+import im.conversations.android.xmpp.model.muc.Role;
 
 public class UserPreviewAdapter extends ListAdapter<MucOptions.User, UserPreviewAdapter.ViewHolder>
         implements View.OnCreateContextMenuListener {
@@ -52,7 +51,7 @@ public class UserPreviewAdapter extends ListAdapter<MucOptions.User, UserPreview
                                 return;
                             }
                             final var contact = user.getContact();
-                            if (user.getRole() == MucOptions.Role.NONE && contact != null) {
+                            if (user.getRole() == Role.NONE && contact != null) {
                                 Toast.makeText(
                                                 activity,
                                                 activity.getString(

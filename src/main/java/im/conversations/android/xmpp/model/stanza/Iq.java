@@ -1,7 +1,6 @@
 package im.conversations.android.xmpp.model.stanza;
 
 import com.google.common.base.Strings;
-import eu.siacs.conversations.xml.Element;
 import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
 import im.conversations.android.xmpp.model.error.Error;
@@ -48,22 +47,6 @@ public class Iq extends Stanza {
             return true;
         }
         return super.isInvalid();
-    }
-
-    // Legacy methods that need to be refactored:
-
-    public Element query() {
-        final Element query = findChild("query");
-        if (query != null) {
-            return query;
-        }
-        return addChild("query");
-    }
-
-    public Element query(final String xmlns) {
-        final Element query = query();
-        query.setAttribute("xmlns", xmlns);
-        return query();
     }
 
     public Iq generateResponse(final Iq.Type type) {

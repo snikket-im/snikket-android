@@ -12,12 +12,11 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
-import eu.siacs.conversations.xmpp.manager.LegacyBookmarkManager;
 import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.NickManager;
 import eu.siacs.conversations.xmpp.manager.OfflineMessagesManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
-import eu.siacs.conversations.xmpp.manager.PrivateStorageManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 
 public class BindProcessor extends XmppConnection.Delegate implements Runnable {
@@ -63,26 +62,12 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         }
 
         getManager(RosterManager.class).clearPresences();
-        synchronized (account.inProgressConferenceJoins) {
-            account.inProgressConferenceJoins.clear();
-        }
-        synchronized (account.inProgressConferencePings) {
-            account.inProgressConferencePings.clear();
-        }
+        getManager(MultiUserChatManager.class).clearInProgress();
         service.getJingleConnectionManager().notifyRebound(account);
         service.getQuickConversationsService().considerSyncBackground(false);
 
         getManager(RosterManager.class).request();
-
-        if (getManager(BookmarkManager.class).hasFeature()) {
-            getManager(BookmarkManager.class).fetch();
-        } else if (getManager(LegacyBookmarkManager.class).hasConversion()) {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid() + ": not fetching bookmarks. waiting for server to push");
-        } else {
-            getManager(PrivateStorageManager.class).fetchBookmarks();
-        }
+        getManager(BookmarkManager.class).request();
 
         if (features.mds()) {
             getManager(MessageDisplayedSynchronizationManager.class).fetch();

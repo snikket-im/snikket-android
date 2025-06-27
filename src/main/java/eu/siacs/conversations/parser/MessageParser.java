@@ -34,15 +34,18 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.PubSubManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import im.conversations.android.xmpp.model.Extension;
 import im.conversations.android.xmpp.model.axolotl.Encrypted;
 import im.conversations.android.xmpp.model.carbons.Received;
 import im.conversations.android.xmpp.model.carbons.Sent;
+import im.conversations.android.xmpp.model.conference.DirectInvite;
 import im.conversations.android.xmpp.model.correction.Replace;
 import im.conversations.android.xmpp.model.forward.Forwarded;
 import im.conversations.android.xmpp.model.markers.Displayed;
+import im.conversations.android.xmpp.model.muc.user.MucUser;
 import im.conversations.android.xmpp.model.occupant.OccupantId;
 import im.conversations.android.xmpp.model.oob.OutOfBandData;
 import im.conversations.android.xmpp.model.pubsub.event.Event;
@@ -212,7 +215,7 @@ public class MessageParser extends AbstractParser
         return null;
     }
 
-    private Invite extractInvite(final Element message) {
+    private Invite extractInvite(final im.conversations.android.xmpp.model.stanza.Message message) {
         final Element mucUser = message.findChild("x", Namespace.MUC_USER);
         if (mucUser != null) {
             final Element invite = mucUser.findChild("invite");
@@ -231,7 +234,7 @@ public class MessageParser extends AbstractParser
                 return new Invite(room, password, false, from);
             }
         }
-        final Element conference = message.findChild("x", "jabber:x:conference");
+        final var conference = message.getExtension(DirectInvite.class);
         if (conference != null) {
             Jid from = Jid.Invalid.getNullForInvalid(message.getAttributeAsJid("from"));
             Jid room = Jid.Invalid.getNullForInvalid(conference.getAttributeAsJid("jid"));
@@ -303,7 +306,7 @@ public class MessageParser extends AbstractParser
                                             + ": received ping worthy error for seemingly online"
                                             + " muc at "
                                             + from);
-                            mXmppConnectionService.mucSelfPingAndRejoin(conversation);
+                            getManager(MultiUserChatManager.class).pingAndRejoin(conversation);
                         }
                     }
                 }
@@ -347,6 +350,12 @@ public class MessageParser extends AbstractParser
             packet = f.first;
             serverMsgId = result.getAttribute("id");
             query.incrementMessageCount();
+
+            if (query.isImplausibleFrom(packet.getFrom())) {
+                Log.d(Config.LOGTAG, "found implausible from in MUC MAM archive");
+                return;
+            }
+
             if (handleErrorMessage(account, packet)) {
                 return;
             }
@@ -520,7 +529,7 @@ public class MessageParser extends AbstractParser
                             || mucUserElement != null
                             || connection
                                     .getMucServersWithholdAccount()
-                                    .contains(counterpart.getDomain().toString());
+                                    .contains(counterpart.getDomain());
             final Conversation conversation =
                     mXmppConnectionService.findOrCreateConversation(
                             account,
@@ -1009,69 +1018,11 @@ public class MessageParser extends AbstractParser
                     }
                 }
             }
-            if (conversation != null
-                    && mucUserElement != null
-                    && Jid.Invalid.hasValidFrom(packet)
-                    && from.isBareJid()) {
-                for (Element child : mucUserElement.getChildren()) {
-                    if ("status".equals(child.getName())) {
-                        try {
-                            int code = Integer.parseInt(child.getAttribute("code"));
-                            if ((code >= 170 && code <= 174) || (code >= 102 && code <= 104)) {
-                                mXmppConnectionService.fetchConferenceConfiguration(conversation);
-                                break;
-                            }
-                        } catch (Exception e) {
-                            // ignored
-                        }
-                    } else if ("item".equals(child.getName())) {
-                        final var user = AbstractParser.parseItem(conversation, child);
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid()
-                                        + ": changing affiliation for "
-                                        + user.getRealJid()
-                                        + " to "
-                                        + user.getAffiliation()
-                                        + " in "
-                                        + conversation.getJid().asBareJid());
-                        if (!user.realJidMatchesAccount()) {
-                            final var mucOptions = conversation.getMucOptions();
-                            final boolean isNew = mucOptions.updateUser(user);
-                            final var avatarService = mXmppConnectionService.getAvatarService();
-                            if (Strings.isNullOrEmpty(mucOptions.getAvatar())) {
-                                avatarService.clear(mucOptions);
-                            }
-                            avatarService.clear(user);
-                            mXmppConnectionService.updateMucRosterUi();
-                            mXmppConnectionService.updateConversationUi();
-                            Contact contact = user.getContact();
-                            if (!user.getAffiliation().ranks(MucOptions.Affiliation.MEMBER)) {
-                                Jid jid = user.getRealJid();
-                                List<Jid> cryptoTargets = conversation.getAcceptedCryptoTargets();
-                                if (cryptoTargets.remove(user.getRealJid())) {
-                                    Log.d(
-                                            Config.LOGTAG,
-                                            account.getJid().asBareJid()
-                                                    + ": removed "
-                                                    + jid
-                                                    + " from crypto targets of "
-                                                    + conversation.getName());
-                                    conversation.setAcceptedCryptoTargets(cryptoTargets);
-                                    mXmppConnectionService.updateConversation(conversation);
-                                }
-                            } else if (isNew
-                                    && user.getRealJid() != null
-                                    && conversation.getMucOptions().isPrivateAndNonAnonymous()
-                                    && (contact == null || !contact.mutualPresenceSubscription())
-                                    && account.getAxolotlService()
-                                            .hasEmptyDeviceList(user.getRealJid())) {
-                                account.getAxolotlService().fetchDeviceIds(user.getRealJid());
-                            }
-                        }
-                    }
-                }
+
+            if (original.hasExtension(MucUser.class)) {
+                getManager(MultiUserChatManager.class).handleStatusMessage(original);
             }
+
             if (!isTypeGroupChat) {
                 for (Element child : packet.getChildren()) {
                     if (Namespace.JINGLE_MESSAGE.equals(child.getNamespace())
@@ -1239,7 +1190,7 @@ public class MessageParser extends AbstractParser
         }
 
         final String nick = packet.findChildContent("nick", Namespace.NICK);
-        if (nick != null && Jid.Invalid.hasValidFrom(original)) {
+        if (nick != null && Jid.Invalid.isValid(from)) {
             if (mXmppConnectionService.isMuc(account, from)) {
                 return;
             }
@@ -1599,12 +1550,15 @@ public class MessageParser extends AbstractParser
                                     + ": received invite to "
                                     + jid
                                     + " but muc is considered to be online");
-                    mXmppConnectionService.mucSelfPingAndRejoin(conversation);
+                    getManager(MultiUserChatManager.class).pingAndRejoin(conversation);
                 } else {
                     conversation.getMucOptions().setPassword(password);
                     mXmppConnectionService.databaseBackend.updateConversation(conversation);
-                    mXmppConnectionService.joinMuc(
-                            conversation, contact != null && contact.showInContactList());
+                    if (contact != null && contact.showInContactList()) {
+                        getManager(MultiUserChatManager.class).joinFollowingInvite(conversation);
+                    } else {
+                        getManager(MultiUserChatManager.class).join(conversation);
+                    }
                     mXmppConnectionService.updateConversationUi();
                 }
                 return true;

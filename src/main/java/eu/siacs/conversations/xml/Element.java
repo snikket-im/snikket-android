@@ -1,6 +1,7 @@
 package eu.siacs.conversations.xml;
 
 import androidx.annotation.NonNull;
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
@@ -119,6 +120,16 @@ public class Element {
     public Element setAttribute(String name, String value) {
         if (name != null && value != null) {
             this.attributes.put(name, value);
+        }
+        return this;
+    }
+
+    public Element setAttribute(final String name, final Enum<?> e) {
+        if (e == null) {
+            this.attributes.remove(name);
+        } else {
+            this.attributes.put(
+                    name, CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, e.toString()));
         }
         return this;
     }

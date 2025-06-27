@@ -19,6 +19,7 @@ public class Field extends Extension {
     }
 
     public Collection<String> getValues() {
+        // TODO filter null
         return Collections2.transform(getExtensions(Value.class), Element::getContent);
     }
 

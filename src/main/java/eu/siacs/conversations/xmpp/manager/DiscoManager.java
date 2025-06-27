@@ -336,7 +336,7 @@ public class DiscoManager extends AbstractManager {
         if (appSettings.isBroadcastLastActivity()) {
             features.add(Namespace.IDLE);
         }
-        if (getManager(BookmarkManager.class).hasFeature()) {
+        if (getManager(NativeBookmarkManager.class).hasFeature()) {
             features.add(Namespace.BOOKMARKS2 + "+notify");
         } else {
             features.add(Namespace.BOOKMARKS + "+notify");
