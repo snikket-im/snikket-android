@@ -151,7 +151,7 @@
     <string name="account_status_offline">Offline</string>
     <string name="account_status_unauthorized">Non autorizzato</string>
     <string name="account_status_not_found">Server non trovato</string>
-    <string name="account_status_no_internet">Connettività assente</string>
+    <string name="account_status_no_internet">Connessione assente</string>
     <string name="account_status_regis_fail">Registrazione fallita</string>
     <string name="account_status_regis_conflict">Nome utente già in uso</string>
     <string name="account_status_regis_success">Registrazione completata</string>
@@ -748,7 +748,7 @@
     <string name="foreground_service_channel_name">Servizio in primo piano</string>
     <string name="foreground_service_channel_description">Questa categoria di notifiche è usata per mostrare una notifica permanente per indicare che %1$s è in esecuzione.</string>
     <string name="notification_group_status_information">Informazioni di stato</string>
-    <string name="error_channel_name">Problemi di connettività</string>
+    <string name="error_channel_name">Problemi di connessione</string>
     <string name="error_channel_description">Questa categoria di notifiche è usata per mostrare un notifica in caso si verifichi un problema nella connessione ad un profilo.</string>
     <string name="notification_group_messages">Messaggi</string>
     <string name="notification_group_calls">Chiamate</string>
