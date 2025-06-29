@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="omemo_setting_default">always</string>
+    <bool name="show_avatars_accounts">false</bool>
 </resources>

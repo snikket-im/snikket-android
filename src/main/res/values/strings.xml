@@ -1102,8 +1102,6 @@
     <string name="more_reactions">More reactions</string>
     <string name="could_not_modify_call">Could not modify call</string>
     <string name="clients_may_not_support_av">Your contact’s XMPP client might not support audio/video calls.</string>
-    <string name="pref_show_avatars">Show avatars</string>
-    <string name="pref_show_avatars_summary">Display avatars for your messages and in 1:1 chats, in addition to group chats.</string>
     <string name="pref_chat_bubbles">Chat bubbles</string>
     <string name="pref_chat_bubbles_summary">Background color, Font size, Avatars</string>
     <string name="pref_title_bubbles">Chat Bubbles</string>
@@ -1121,4 +1119,10 @@
     <string name="sos_scheduled_return">The service is scheduled to return at %s</string>
     <string name="save_to_contact">Save to Contacts</string>
     <string name="show_in_contacts">Show in Contacts</string>
+    <string name="pref_account_avatar">Accounts</string>
+    <string name="pref_account_avatar_summary">Display account avatars on outgoing messages for easy identification and management.</string>
+    <string name="pref_category_avatars">Avatars</string>
+    <string name="pref_show_11_chats">1:1 chats</string>
+    <string name="pref_show_11_chats_summary">Display avatars in 1:1 chats. (Avatars in group chats will always been shown.)</string>
+    <string name="pref_show_11_sender_chats_summary">Display avatars in 1:1 chats on received messages. (Avatars in group chats will always been shown.)</string>
 </resources>
