@@ -67,25 +67,25 @@ public class AvatarService {
     }
 
     public Bitmap get(final Avatarable avatarable, final int size, final boolean cachedOnly) {
-        if (avatarable instanceof Account) {
-            return get((Account) avatarable, size, cachedOnly);
-        } else if (avatarable instanceof Conversation) {
-            return get((Conversation) avatarable, size, cachedOnly);
-        } else if (avatarable instanceof Message) {
-            return get((Message) avatarable, size, cachedOnly);
-        } else if (avatarable instanceof ListItem) {
-            return get((ListItem) avatarable, size, cachedOnly);
-        } else if (avatarable instanceof MucOptions.User) {
-            return get((MucOptions.User) avatarable, size, cachedOnly);
-        } else if (avatarable instanceof Room) {
-            return get((Room) avatarable, size, cachedOnly);
+        if (avatarable instanceof Account a) {
+            return get(a, size, cachedOnly);
+        } else if (avatarable instanceof Conversation c) {
+            return get(c, size, cachedOnly);
+        } else if (avatarable instanceof Message m) {
+            return get(m, size, cachedOnly);
+        } else if (avatarable instanceof ListItem li) {
+            return get(li, size, cachedOnly);
+        } else if (avatarable instanceof MucOptions.User u) {
+            return get(u, size, cachedOnly);
+        } else if (avatarable instanceof Room r) {
+            return get(r, size, cachedOnly);
         }
         throw new AssertionError(
                 "AvatarService does not know how to generate avatar from "
                         + avatarable.getClass().getName());
     }
 
-    private Bitmap get(final Room result, final int size, boolean cacheOnly) {
+    private Bitmap get(final Room result, final int size, final boolean cacheOnly) {
         final Jid room = result.getRoom();
         Conversation conversation = room != null ? mXmppConnectionService.findFirstMuc(room) : null;
         if (conversation != null) {
@@ -167,17 +167,20 @@ public class AvatarService {
         return output;
     }
 
-    private static void drawAvatar(Bitmap bitmap, Canvas canvas, Paint paint) {
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+    private static void drawAvatar(final Bitmap bitmap, final Canvas canvas, final Paint paint) {
+        final var rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
         canvas.drawCircle(
-                bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
+                bitmap.getWidth() / 2.0f,
+                bitmap.getHeight() / 2.0f,
+                bitmap.getWidth() / 2.0f,
+                paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);
     }
 
-    private void drawIcon(Canvas canvas, Paint paint) {
+    private void drawIcon(final Canvas canvas, final Paint paint) {
         final Resources resources = mXmppConnectionService.getResources();
         final Bitmap icon = getRoundLauncherIcon(resources);
         if (icon == null) {
@@ -201,8 +204,8 @@ public class AvatarService {
             return null;
         }
 
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable) drawable).getBitmap();
+        if (drawable instanceof BitmapDrawable bitmapDrawable) {
+            return bitmapDrawable.getBitmap();
         }
 
         Bitmap bitmap =
@@ -307,8 +310,8 @@ public class AvatarService {
     public Bitmap get(ListItem item, int size, boolean cachedOnly) {
         if (item instanceof RawBlockable) {
             return get(item.getDisplayName(), item.getJid().toString(), size, cachedOnly);
-        } else if (item instanceof Contact) {
-            return get((Contact) item, size, cachedOnly);
+        } else if (item instanceof Contact contact) {
+            return get(contact, size, cachedOnly);
         } else if (item instanceof Bookmark bookmark) {
             if (bookmark.getConversation() != null) {
                 return get(bookmark.getConversation(), size, cachedOnly);
@@ -484,7 +487,7 @@ public class AvatarService {
     }
 
     public Bitmap get(Message message, int size, boolean cachedOnly) {
-        final Conversational conversation = message.getConversation();
+        final Conversational conversational = message.getConversation();
         if (message.getType() == Message.TYPE_STATUS
                 && message.getCounterparts() != null
                 && message.getCounterparts().size() > 1) {
@@ -493,10 +496,10 @@ public class AvatarService {
             Contact c = message.getContact();
             if (c != null && (c.getProfilePhoto() != null || c.getAvatar() != null)) {
                 return get(c, size, cachedOnly);
-            } else if (conversation instanceof Conversation
-                    && message.getConversation().getMode() == Conversation.MODE_MULTI) {
+            } else if (conversational instanceof Conversation conversation
+                    && conversation.getMode() == Conversation.MODE_MULTI) {
                 final Jid trueCounterpart = message.getTrueCounterpart();
-                final MucOptions mucOptions = ((Conversation) conversation).getMucOptions();
+                final MucOptions mucOptions = conversation.getMucOptions();
                 MucOptions.User user;
                 if (trueCounterpart != null) {
                     user =
@@ -515,7 +518,7 @@ public class AvatarService {
             String seed = tcp != null ? tcp.asBareJid().toString() : null;
             return get(UIHelper.getMessageDisplayName(message), seed, size, cachedOnly);
         } else {
-            return get(conversation.getAccount(), size, cachedOnly);
+            return get(conversational.getAccount(), size, cachedOnly);
         }
     }
 
