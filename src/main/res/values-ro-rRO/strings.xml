@@ -90,7 +90,7 @@
     <string name="send_message">Trimite mesaj</string>
     <string name="send_message_to_x">Trimite mesaj către %s</string>
     <string name="send_omemo_x509_message">Trimite mesaj criptat cu v\\OMEMO</string>
-    <string name="your_nick_has_been_changed">Numele de utilizator este deja alocat</string>
+    <string name="your_nick_has_been_changed">Numele de utilizator a fost schimbat</string>
     <string name="send_unencrypted">Trimite necriptat</string>
     <string name="decryption_failed">Decriptarea a eșuat. Poate nu aveți cheia privată corectă.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -1147,4 +1147,10 @@
     <string name="save_to_contact">Salvează în contacte</string>
     <string name="show_in_contacts">Arată în contacte</string>
     <string name="no_contacts_permission">%1$s are nevoie de acces la contacte</string>
+    <string name="pref_account_avatar">Conturi</string>
+    <string name="pref_account_avatar_summary">Afișează avatarele contului pe mesajele de ieșire pentru identificare și gestionare facilă.</string>
+    <string name="pref_category_avatars">Poze de profil</string>
+    <string name="pref_show_11_chats">Discuții 1:1</string>
+    <string name="pref_show_11_chats_summary">Afișează poze de profil în discuții 1:1. (Pozele de profil în discuțiile de grup vor fi întotdeauna afișate.)</string>
+    <string name="pref_show_11_sender_chats_summary">Afișează poze de profil în discuții 1:1 pe mesajele primite. (Pozele de profil în discuțiile de grup vor fi întotdeauna afișate.)</string>
 </resources>
