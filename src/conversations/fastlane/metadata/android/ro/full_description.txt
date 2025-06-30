@@ -13,7 +13,7 @@ Caracteristici:
 * Trimiterea și primirea de imagini
 * Apeluri audio și video criptate (DTLS-SRTP)
 * Interfață intuitivă care respectă liniile directoare Android Design
-* Imagini / Avataruri pentru contactele dvs.
+* Imagini / Poze de profil pentru contactele dvs.
 * Se sincronizează cu clientul desktop
 * Conferințe (cu suport pentru marcaje)
 * Integrare cu lista de contacte
