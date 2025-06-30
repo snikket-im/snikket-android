@@ -83,7 +83,7 @@
     <string name="send_message">Надіслати повідомлення</string>
     <string name="send_message_to_x">Повідомлення %s</string>
     <string name="send_omemo_x509_message">Повідомлення, зашифроване v\\OMEMO</string>
-    <string name="your_nick_has_been_changed">Використовується нове прізвисько</string>
+    <string name="your_nick_has_been_changed">Ваше прізвисько змінено</string>
     <string name="send_unencrypted">Надіслати без шифрування</string>
     <string name="decryption_failed">Не вдалося розшифрувати. Можливо, у Вас відсутній потрібний приватний ключ.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -1176,4 +1176,10 @@
     <string name="no_contacts_permission">%1$s потребує доступу до Ваших контактів</string>
     <string name="save_to_contact">Зберегти до контактів</string>
     <string name="show_in_contacts">Показати в контактах</string>
+    <string name="pref_account_avatar">Облікові записи</string>
+    <string name="pref_category_avatars">Аватари</string>
+    <string name="pref_show_11_chats">Приватні чати</string>
+    <string name="pref_show_11_sender_chats_summary">Показувати аватари в отриманих повідомленнях у приватних чатах. (Аватари в групових чатах відображатимуться завжди)</string>
+    <string name="pref_account_avatar_summary">Показувати аватари облікових записів у вихідних повідомленнях для зручності керування ними.</string>
+    <string name="pref_show_11_chats_summary">Показувати аватари у приватних чатах. (Аватари в групових чатах відображатимуться завжди)</string>
 </resources>
