@@ -91,7 +91,7 @@
     <string name="send_message">Сообщение</string>
     <string name="send_message_to_x">Сообщение для %s</string>
     <string name="send_omemo_x509_message">Зашифрованное v\\OMEMO сообщение</string>
-    <string name="your_nick_has_been_changed">Используется новое имя</string>
+    <string name="your_nick_has_been_changed">Ваше имя изменено</string>
     <string name="send_unencrypted">Отправить в незашифрованном виде</string>
     <string name="decryption_failed">Расшифровка невозможна. Вероятно, у вас нет надлежащего ключа.</string>
     <string name="openkeychain_required">Установите OpenKeychain</string>
@@ -1085,7 +1085,7 @@
     <string name="appearance">Внешний вид</string>
     <string name="pref_title_interface">Интерфейс</string>
     <string name="pref_light_dark_mode">Светлая/тёмная тема</string>
-    <string name="pref_allow_screenshots_summary">Отображать содержимое экрана приложения в переключателе и разрешить делать снимки экрана</string>
+    <string name="pref_allow_screenshots_summary">Показывать содержимое экрана приложения в переключателе и разрешить делать снимки экрана</string>
     <string name="pref_category_e2ee">Сквозное шифрование</string>
     <string name="pref_title_trust_system_ca_store">Удостоверяющие центры</string>
     <string name="pref_category_operating_system">Операционная система</string>
@@ -1175,4 +1175,5 @@
     <string name="no_contacts_permission">%1$s требуется доступ к вашим контактам</string>
     <string name="save_to_contact">Сохранить в контакты</string>
     <string name="show_in_contacts">Показать в контактах</string>
+    <string name="pref_account_avatar">Аккаунты</string>
 </resources>
