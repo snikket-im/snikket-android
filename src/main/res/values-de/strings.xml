@@ -89,7 +89,7 @@
     <string name="send_message">Nachricht senden</string>
     <string name="send_message_to_x">Nachricht an %s senden</string>
     <string name="send_omemo_x509_message">v\\OMEMO-verschlüsselte Nachricht senden</string>
-    <string name="your_nick_has_been_changed">Neuer Nickname wird jetzt verwendet</string>
+    <string name="your_nick_has_been_changed">Dein Nickname wurde geändert</string>
     <string name="send_unencrypted">Unverschlüsselt senden</string>
     <string name="decryption_failed">Entschlüsselung fehlgeschlagen. Vielleicht hast du nicht den richtigen privaten Schlüssel.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -1128,4 +1128,10 @@
     <string name="no_contacts_permission">%1$s benötigt Zugriff auf deine Kontakte</string>
     <string name="save_to_contact">In Kontakten speichern</string>
     <string name="show_in_contacts">In Kontakten anzeigen</string>
+    <string name="pref_account_avatar">Konten</string>
+    <string name="pref_account_avatar_summary">Kontoaprofilbilder bei gesendeten Nachrichten anzeigen, um die Identifizierung und Verwaltung zu erleichtern.</string>
+    <string name="pref_category_avatars">Profilbilder</string>
+    <string name="pref_show_11_chats">1:1 Chats</string>
+    <string name="pref_show_11_sender_chats_summary">Profilbilder in 1:1-Chats bei empfangenen Nachrichten anzeigen. (Profilbilder in Gruppenchats werden immer angezeigt.)</string>
+    <string name="pref_show_11_chats_summary">Profilbilder in 1:1-Chats anzeigen. (Profilbilder in Gruppenchats werden immer angezeigt.)</string>
 </resources>
