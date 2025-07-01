@@ -355,7 +355,7 @@
     <string name="no_application_found_to_open_link">Не найдено приложения, способного открыть эту ссылку</string>
     <string name="no_application_found_to_view_contact">Не найдено приложения для просмотра контакта</string>
     <string name="pref_show_dynamic_tags">Динамические теги</string>
-    <string name="pref_show_dynamic_tags_summary">Отображать теги только для чтения под контактами</string>
+    <string name="pref_show_dynamic_tags_summary">Показывать теги только для чтения под контактами</string>
     <string name="enable_notifications">Включить уведомления</string>
     <string name="no_conference_server_found">Сервер конференции не найден</string>
     <string name="conference_creation_failed">Невозможно создать конференцию</string>
@@ -1152,7 +1152,7 @@
     <string name="custom_notifications">Настраиваемые уведомления</string>
     <string name="pref_call_integration_summary">Звонки из этого приложения взаимодействуют с обычными телефонными звонками, например, завершение одного звонка при начале другого</string>
     <string name="custom_notifications_enable">Использовать индивидуальные настройки уведомлений (важность, звук, вибрация) для этой беседы?</string>
-    <string name="delete_avatar_message">Хотите удалить свой аватар? Некоторые клиенты могут продолжать отображать кэшированную копию вашего аватара.</string>
+    <string name="delete_avatar_message">Хотите удалить свой аватар? Некоторые клиенты могут продолжать показывать кэшированную копию вашего аватара.</string>
     <string name="show_to_contacts_only">Показывать только контактам</string>
     <string name="account_status_connection_timeout">Истекло время ожидания подключения</string>
     <string name="retry_with_p2p">Повторить через P2P</string>
@@ -1176,4 +1176,9 @@
     <string name="save_to_contact">Сохранить в контакты</string>
     <string name="show_in_contacts">Показать в контактах</string>
     <string name="pref_account_avatar">Аккаунты</string>
+    <string name="pref_account_avatar_summary">Показывать аватары аккаунтов в исходящих сообщениях для упрощения идентификации и управления</string>
+    <string name="pref_category_avatars">Аватары</string>
+    <string name="pref_show_11_chats">Беседы 1:1</string>
+    <string name="pref_show_11_chats_summary">Показывать аватары в беседах 1:1 (в конференциях аватары отображаются всегда)</string>
+    <string name="pref_show_11_sender_chats_summary">Показывать аватары у входящих сообщений в беседах 1:1 (в конференциях аватары отображаются всегда)</string>
 </resources>
