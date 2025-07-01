@@ -317,8 +317,8 @@
     <string name="server_info_broken">Existe um problema</string>
     <string name="pref_presence_settings">Disponibilidade</string>
     <string name="pref_treat_vibrate_as_silent">Tratar vibrar como modo silencioso</string>
-    <string name="pref_show_connection_options">Definições de conexão</string>
-    <string name="pref_show_connection_options_summary">Mostrar as definições do hostname e do porto ao configurar uma conta</string>
+    <string name="pref_show_connection_options">Host &amp; Porta</string>
+    <string name="pref_show_connection_options_summary">Mostrar as definições da configuração extendida ao configurar uma conta</string>
     <string name="hostname_example">xmpp.exemplo.com</string>
     <string name="mam_prefs">Preferências de arquivamento</string>
     <string name="server_side_mam_prefs">Preferências de arquivamento do servidor</string>
@@ -342,7 +342,7 @@
         <item quantity="other">%d mensagens</item>
     </plurals>
     <string name="load_more_messages">Carregar mais mensagens</string>
-    <string name="sync_with_contacts">Sincronizar com contactos</string>
+    <string name="sync_with_contacts">Integração da lista de contactos</string>
     <string name="notify_on_all_messages">Notificar em todas as mensagens</string>
     <string name="notify_only_when_highlighted">Notificar apenas quando mencionado</string>
     <string name="notify_never">Notificações desativadas</string>
@@ -453,7 +453,7 @@
     <string name="openpgp_has_been_published">Chave pública OpenPGP publicada.</string>
     <string name="delete_file_dialog_msg">Tem a certeza que quer apagar este ficheiro?\n\n<b>Aviso:</b> Isto não irá apagar cópias deste ficheiro que estão guardadas noutros dispositivos ou servidores.</string>
     <string name="preparing_image">Preparando para enviar a imagem</string>
-    <string name="your_nick_has_been_changed">Novo nickname em uso</string>
+    <string name="your_nick_has_been_changed">O seu nickname foi alterado</string>
     <string name="contacts_have_no_pgp_keys">Não foi possível encriptar a sua mensagem porque os contactos não estão a anunciar a sua chave pública.\n\n<small>Por favor peça-lhes para configurarem o OpenPGP.</small></string>
     <string name="clear_histor_msg">Quer apagar todas as mensagens neste chat?\n\n<b>Aviso:</b> Isto não irá influenciar as mensagens guardadas noutros dispositivos ou servidores.</string>
     <string name="openkeychain_required_long"><![CDATA[%1$s usa o <b>OpenKeychain</b> para encriptar e desencriptar mensagens e gerir as suas chaves públicas.<br><br>Está licenciado sob GPLv3+ e disponível no F-Droid e na Google Play.<br><br><small>(Reinicie %1$s depois.)</small>]]></string>
@@ -563,4 +563,22 @@
     <string name="title_undo_swipe_out_group_chat">Sair da conversa em grupo privada</string>
     <string name="download_failed_invalid_file">Download falhou: Ficheiro inválido</string>
     <string name="pref_away_when_screen_off">Ausente quando o dispositivo está bloqueado</string>
+    <string name="shared_images_with_x">Imagens partilhadas com %s</string>
+    <string name="shared_text_with_x">Texto partilhado com %s</string>
+    <string name="pref_dnd_on_silent_mode">Ocupado em modo silencioso</string>
+    <string name="pref_dnd_on_silent_mode_summary">Mostra como Ocupado quando o dispositivo está em modo silencioso</string>
+    <string name="unable_to_fetch_mam_prefs">Não foi possível obter as preferências do arquivamento</string>
+    <string name="certificate_chain_is_not_trusted">Cadeia de certificado não confiada</string>
+    <string name="jid_does_not_match_certificate">Endereço XMPP não coincide com o certificado</string>
+    <string name="hostname_or_onion">Endereço do Servidor ou .onion</string>
+    <string name="no_storage_permission">Permita %1$s acesso ao armazenamento externo</string>
+    <string name="no_camera_permission">Garantir a %1$s acesso à câmara</string>
+    <string name="no_contacts_permission">%1$s necessita de acesso aos seus contactos</string>
+    <string name="action_add_account_with_certificate">Login com certificado</string>
+    <string name="unable_to_parse_certificate">Não foi possível analisar certificado</string>
+    <string name="captcha_required">CAPTCHA necessária</string>
+    <string name="shared_file_with_x">Ficheiro partilhado com %s</string>
+    <string name="shared_image_with_x">Imagem partilhada com %s</string>
+    <string name="pref_treat_vibrate_as_dnd_summary">Mostra como Ocupado quando o dispositivo está em modo vibração</string>
+    <string name="quicksy_wants_your_consent">Quicksy pede o seu consentimento ao usar a sua data</string>
 </resources>
