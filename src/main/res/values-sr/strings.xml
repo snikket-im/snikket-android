@@ -90,7 +90,7 @@
     <string name="send_message">Пошаљи поруку</string>
     <string name="send_message_to_x">Пошаљи поруку ка %s</string>
     <string name="send_omemo_x509_message">Пошаљи v\\ОМЕМО шифровану поруку</string>
-    <string name="your_nick_has_been_changed">Нови надимак је у употреби</string>
+    <string name="your_nick_has_been_changed">Твој надимак је измењен</string>
     <string name="send_unencrypted">Пошаљи нешифровано</string>
     <string name="decryption_failed">Дешифровање није успело. Можда немаш одговарајући приватни кључ.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -1162,4 +1162,10 @@
     <string name="save_to_contact">Сачувај у контакте</string>
     <string name="no_contacts_permission">%1$s тражи приступ твојим контактима</string>
     <string name="show_in_contacts">Прикажи у контактима</string>
+    <string name="pref_account_avatar">Налози</string>
+    <string name="pref_account_avatar_summary">Приказуј аватаре налога на одлазним порукама ради лакшег распознавања и управљања.</string>
+    <string name="pref_category_avatars">Аватари</string>
+    <string name="pref_show_11_chats">Један-на-један преписка</string>
+    <string name="pref_show_11_chats_summary">Приказуј аватаре у један-на-један препискама. (Аватари у групним препискама ће увек бити приказани.)</string>
+    <string name="pref_show_11_sender_chats_summary">Приказуј аватаре у један-на-један препискама на примљеним порукама. (Аватари у групним препискама ће увек бити приказани.)</string>
 </resources>
