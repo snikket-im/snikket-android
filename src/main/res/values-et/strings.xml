@@ -90,7 +90,7 @@
     <string name="send_message_to_x">Saada sõnum kasutajale %s</string>
     <string name="send_encrypted_message">Saada krüptitud sõnum</string>
     <string name="send_omemo_x509_message">Saada v\\OMEMO-krüptitud sõnum</string>
-    <string name="your_nick_has_been_changed">Uus hüüdnimi on juba kasutusel</string>
+    <string name="your_nick_has_been_changed">Sinu hüüdnimi on muutunud</string>
     <string name="send_unencrypted">Saada sõnum krüptimata tekstina</string>
     <string name="decryption_failed">Dekrüptimine ei õnnestunud. Võib-olla pole sul õiget privaatvõtit.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -1148,4 +1148,10 @@
     <string name="save_to_contact">Salvesta kontaktidesse</string>
     <string name="no_contacts_permission">%1$s vajab ligipääsu sinu kontaktidele</string>
     <string name="show_in_contacts">Näita kontaktides</string>
+    <string name="pref_account_avatar">Kasutajakontod</string>
+    <string name="pref_category_avatars">Tunnuspildid ehk avatarid</string>
+    <string name="pref_show_11_chats">1:1 vestlused</string>
+    <string name="pref_show_11_chats_summary">Näita tunnuspilte ka 1:1 vestlustes. (Rühmavestlustes näidatakse alati tunnuspilte.)</string>
+    <string name="pref_account_avatar_summary">Lihtsamaks tuvastamiseks ja halduseks kuva ka saadetud sõnumite puhul konto tunnuspilti.</string>
+    <string name="pref_show_11_sender_chats_summary">Näita tunnuspilte ka 1:1 vestluste saabunud sõnumitel. (Rühmavestlustes näidatakse alati tunnuspilte.)</string>
 </resources>
