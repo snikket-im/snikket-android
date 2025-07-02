@@ -87,7 +87,7 @@
     <string name="send_message">Enviar mensaxe</string>
     <string name="send_message_to_x">Enviar mensaxe a 1%s</string>
     <string name="send_omemo_x509_message">Enviar mensaxe cifrada v\\OMEMO</string>
-    <string name="your_nick_has_been_changed">Novo alcume en uso</string>
+    <string name="your_nick_has_been_changed">Cambiouse o teu alcume</string>
     <string name="send_unencrypted">Enviar texto sen cifrar</string>
     <string name="decryption_failed">Fallou o desencriptado. Quizais non teñas a chave privada apropiada.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -1128,4 +1128,10 @@
     <string name="no_contacts_permission">%1$s precisa acceso aos teus contactos</string>
     <string name="save_to_contact">Gardar nos contactos</string>
     <string name="show_in_contacts">Mostrar nos contactos</string>
+    <string name="pref_account_avatar">Contas</string>
+    <string name="pref_category_avatars">Avatares</string>
+    <string name="pref_show_11_chats">Conversas 1:1</string>
+    <string name="pref_show_11_chats_summary">Mostrar avatares nas conversas 1:1. (Os avatares móstranse sempre nas conversas en grupo.)</string>
+    <string name="pref_account_avatar_summary">Mostrar avatares das contas para as mensaxes enviadas para unha xestión e identificación doadas.</string>
+    <string name="pref_show_11_sender_chats_summary">Mostrar avatares nas mensaxes recibidas para conversas 1:1. (Os avatares sempre se mostran nas conversas en grupo.)</string>
 </resources>
