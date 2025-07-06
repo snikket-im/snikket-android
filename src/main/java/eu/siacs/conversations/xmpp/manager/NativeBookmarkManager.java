@@ -9,15 +9,14 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import im.conversations.android.model.Bookmark;
+import im.conversations.android.model.ImmutableBookmark;
 import im.conversations.android.xmpp.NodeConfiguration;
 import im.conversations.android.xmpp.model.bookmark2.Conference;
-import im.conversations.android.xmpp.model.bookmark2.Nick;
-import im.conversations.android.xmpp.model.bookmark2.Password;
 import im.conversations.android.xmpp.model.pubsub.Items;
 import im.conversations.android.xmpp.model.pubsub.event.Retract;
 import java.util.Collection;
@@ -37,6 +36,11 @@ public class NativeBookmarkManager extends AbstractBookmarkManager {
                 new FutureCallback<>() {
                     @Override
                     public void onSuccess(final Map<String, Conference> bookmarks) {
+                        Log.d(
+                                Config.LOGTAG,
+                                "NativeBookmarkManager.onSuccess("
+                                        + bookmarks.size()
+                                        + ") bookmarks");
                         final var builder = new ImmutableMap.Builder<Jid, Bookmark>();
                         for (final var entry : bookmarks.entrySet()) {
                             final Bookmark bookmark =
@@ -44,7 +48,7 @@ public class NativeBookmarkManager extends AbstractBookmarkManager {
                             if (bookmark == null) {
                                 continue;
                             }
-                            builder.put(bookmark.getJid(), bookmark);
+                            builder.put(bookmark.getAddress(), bookmark);
                         }
                         processBookmarksInitial(builder.buildKeepingLast(), true);
                     }
@@ -66,12 +70,13 @@ public class NativeBookmarkManager extends AbstractBookmarkManager {
         final var account = getAccount();
         for (final var retract : retractions) {
             final Jid id = Jid.Invalid.getNullForInvalid(retract.getAttributeAsJid("id"));
-            if (id != null) {
-                account.removeBookmark(id);
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleted bookmark for " + id);
-                processDeletedBookmark(id);
-                service.updateConversationUi();
+            if (id == null) {
+                return;
             }
+            getManager(BookmarkManager.class).removeBookmark(id);
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleted bookmark for " + id);
+            processDeletedBookmark(id);
+            service.updateConversationUi();
         }
     }
 
@@ -82,30 +87,18 @@ public class NativeBookmarkManager extends AbstractBookmarkManager {
             if (bookmark == null) {
                 continue;
             }
-            account.putBookmark(bookmark);
-            getManager(BookmarkManager.class).processModifiedBookmark(bookmark, true);
+            final var manager = getManager(BookmarkManager.class);
+            manager.putBookmark(bookmark);
+            manager.processModifiedBookmark(bookmark, true);
             service.updateConversationUi();
         }
     }
 
     public ListenableFuture<Void> publish(final Bookmark bookmark) {
-        final var address = bookmark.getJid();
-        final var name = bookmark.getBookmarkName();
-        final var nick = bookmark.getNick();
-        final String password = bookmark.getPassword();
+        final var address = bookmark.getAddress();
         final var itemId = address.toString();
-        final var conference = new Conference();
-        conference.setAutoJoin(bookmark.autojoin());
-        if (nick != null) {
-            conference.addExtension(new Nick()).setContent(nick);
-        }
-        if (name != null) {
-            conference.setConferenceName(name);
-        }
-        if (password != null) {
-            conference.addExtension(new Password()).setContent(password);
-        }
-        conference.addExtension(bookmark.getExtensions());
+        final var conference = bookmarkToItem(bookmark);
+        Log.d(Config.LOGTAG, "NativeBookmarkManager.publish(" + conference + ")");
         return Futures.transform(
                 getManager(PepManager.class)
                         .publish(conference, itemId, NodeConfiguration.WHITELIST_MAX_ITEMS),
@@ -122,9 +115,9 @@ public class NativeBookmarkManager extends AbstractBookmarkManager {
     }
 
     private void deleteAllItems() {
-        final var account = getAccount();
-        final var previous = account.getBookmarkedJids();
-        account.setBookmarks(Collections.emptyMap());
+        final var manager = getManager(BookmarkManager.class);
+        final var previous = manager.getBookmarkAddresses();
+        manager.setBookmarks(Collections.emptyMap());
         processDeletedBookmarks(previous);
     }
 
@@ -148,6 +141,7 @@ public class NativeBookmarkManager extends AbstractBookmarkManager {
 
     private static Bookmark itemToBookmark(
             final String id, final Conference conference, final Account account) {
+
         if (id == null || conference == null) {
             return null;
         }
@@ -155,18 +149,29 @@ public class NativeBookmarkManager extends AbstractBookmarkManager {
         if (jid == null || jid.isFullJid()) {
             return null;
         }
-        final Bookmark bookmark = new Bookmark(account, jid);
-
-        // TODO use proper API
-
-        bookmark.setBookmarkName(conference.getAttribute("name"));
-        bookmark.setAutojoin(conference.getAttributeAsBoolean("autojoin"));
-        bookmark.setNick(conference.findChildContent("nick"));
-        bookmark.setPassword(conference.findChildContent("password"));
-        final var extensions = conference.getExtensions();
-        if (extensions != null) {
-            bookmark.setExtensions(conference.getExtensions());
+        try {
+            return ImmutableBookmark.builder()
+                    .account(account)
+                    .address(jid)
+                    .name(conference.getConferenceName())
+                    .isAutoJoin(conference.isAutoJoin())
+                    .nick(conference.getNick())
+                    .password(conference.getPassword())
+                    .extensions(conference.getExtensions())
+                    .build();
+        } catch (final Exception e) {
+            Log.d(Config.LOGTAG, "could not parse bookmark", e);
+            return null;
         }
-        return bookmark;
+    }
+
+    private static Conference bookmarkToItem(final Bookmark bookmark) {
+        final var conference = new Conference();
+        conference.setAutoJoin(bookmark.isAutoJoin());
+        conference.setNick(bookmark.getNick());
+        conference.setConferenceName(bookmark.getName());
+        conference.setPassword(bookmark.getPassword());
+        conference.setExtensions(bookmark.getExtensions());
+        return conference;
     }
 }

@@ -115,7 +115,7 @@ public class ContactDetailsActivity extends OmemoActivity
                         final var connection = contact.getAccount().getXmppConnection();
                         connection
                                 .getManager(PresenceManager.class)
-                                .unsubscribed(contact.getJid().asBareJid());
+                                .unsubscribed(contact.getAddress().asBareJid());
                     }
                 }
             };
@@ -128,11 +128,11 @@ public class ContactDetailsActivity extends OmemoActivity
                     if (isChecked) {
                         connection
                                 .getManager(PresenceManager.class)
-                                .subscribe(contact.getJid().asBareJid());
+                                .subscribe(contact.getAddress().asBareJid());
                     } else {
                         connection
                                 .getManager(PresenceManager.class)
-                                .unsubscribe(contact.getJid().asBareJid());
+                                .unsubscribe(contact.getAddress().asBareJid());
                     }
                 }
             };
@@ -162,7 +162,7 @@ public class ContactDetailsActivity extends OmemoActivity
     }
 
     private void showAddToPhoneBookDialog() {
-        final Jid jid = contact.getJid();
+        final Jid jid = contact.getAddress();
         final boolean quicksyContact =
                 AbstractQuickConversationsService.isQuicksy()
                         && Config.QUICKSY_DOMAIN.equals(jid.getDomain())
@@ -232,9 +232,9 @@ public class ContactDetailsActivity extends OmemoActivity
     protected String getShareableUri(boolean http) {
         if (http) {
             return "https://conversations.im/i/"
-                    + XmppUri.lameUrlEncode(contact.getJid().asBareJid().toString());
+                    + XmppUri.lameUrlEncode(contact.getAddress().asBareJid().toString());
         } else {
-            return "xmpp:" + contact.getJid().asBareJid().toString();
+            return "xmpp:" + contact.getAddress().asBareJid().toString();
         }
     }
 
@@ -348,7 +348,7 @@ public class ContactDetailsActivity extends OmemoActivity
                                 JidDialog.style(
                                         this,
                                         R.string.remove_contact_text,
-                                        contact.getJid().toString()))
+                                        contact.getAddress().toString()))
                         .setPositiveButton(getString(R.string.delete), removeFromRoster)
                         .create()
                         .show();
@@ -519,7 +519,7 @@ public class ContactDetailsActivity extends OmemoActivity
         }
 
         binding.detailsContactXmppAddress.setText(
-                IrregularUnicodeDetector.style(this, contact.getJid()));
+                IrregularUnicodeDetector.style(this, contact.getAddress()));
         final String account = contact.getAccount().getJid().asBareJid().toString();
         binding.detailsAccount.setOnClickListener(this::onDetailsAccountClicked);
         binding.detailsAccount.setText(getString(R.string.using_account, account));
@@ -615,7 +615,7 @@ public class ContactDetailsActivity extends OmemoActivity
         }
         binding.keysWrapper.setVisibility(hasKeys ? View.VISIBLE : View.GONE);
 
-        final List<ListItem.Tag> tagList = contact.getTags(this);
+        final var tagList = contact.getTags();
         final boolean hasMetaTags =
                 contact.isBlocked() || contact.getShownStatus() != Presence.Availability.OFFLINE;
         if ((tagList.isEmpty() && !hasMetaTags) || !this.showDynamicTags) {
@@ -733,7 +733,7 @@ public class ContactDetailsActivity extends OmemoActivity
             if (Compatibility.hasStoragePermission(this)) {
                 final int limit = GridManager.getCurrentColumnCount(this.binding.media);
                 xmppConnectionService.getAttachments(
-                        account, contact.getJid().asBareJid(), limit, this);
+                        account, contact.getAddress().asBareJid(), limit, this);
                 this.binding.showMedia.setOnClickListener(
                         (v) -> MediaBrowserActivity.launch(this, contact));
             }
@@ -749,7 +749,7 @@ public class ContactDetailsActivity extends OmemoActivity
     @Override
     protected void processFingerprintVerification(XmppUri uri) {
         if (contact != null
-                && contact.getJid().asBareJid().equals(uri.getJid())
+                && contact.getAddress().asBareJid().equals(uri.getJid())
                 && uri.hasFingerprints()) {
             if (xmppConnectionService.verifyFingerprints(contact, uri.getFingerprints())) {
                 Toast.makeText(this, R.string.verified_fingerprints, Toast.LENGTH_SHORT).show();

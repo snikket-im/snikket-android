@@ -6,7 +6,6 @@ import android.os.SystemClock;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
@@ -31,17 +30,13 @@ import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Account extends AbstractEntity implements AvatarService.Avatarable {
+public class Account extends AbstractEntity implements AvatarService.Avatar {
 
     public static final String TABLENAME = "accounts";
 
@@ -94,7 +89,6 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private String displayName = null;
     private XmppConnection xmppConnection = null;
     private long mEndGracePeriod = 0L;
-    private final Map<Jid, Bookmark> bookmarks = new HashMap<>();
     private im.conversations.android.xmpp.model.stanza.Presence.Availability presenceStatus;
     private String presenceStatusMessage;
     private String pinnedMechanism;
@@ -631,49 +625,6 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         return xmppConnection.getManager(RosterManager.class);
     }
 
-    public Collection<Bookmark> getBookmarks() {
-        synchronized (this.bookmarks) {
-            return ImmutableList.copyOf(this.bookmarks.values());
-        }
-    }
-
-    public void setBookmarks(final Map<Jid, Bookmark> bookmarks) {
-        synchronized (this.bookmarks) {
-            this.bookmarks.clear();
-            this.bookmarks.putAll(bookmarks);
-        }
-    }
-
-    public void putBookmark(final Bookmark bookmark) {
-        synchronized (this.bookmarks) {
-            this.bookmarks.put(bookmark.getJid(), bookmark);
-        }
-    }
-
-    public void removeBookmark(Bookmark bookmark) {
-        synchronized (this.bookmarks) {
-            this.bookmarks.remove(bookmark.getJid());
-        }
-    }
-
-    public void removeBookmark(Jid jid) {
-        synchronized (this.bookmarks) {
-            this.bookmarks.remove(jid);
-        }
-    }
-
-    public Set<Jid> getBookmarkedJids() {
-        synchronized (this.bookmarks) {
-            return new HashSet<>(this.bookmarks.keySet());
-        }
-    }
-
-    public Bookmark getBookmark(final Jid jid) {
-        synchronized (this.bookmarks) {
-            return this.bookmarks.get(jid.asBareJid());
-        }
-    }
-
     public boolean setAvatar(final String filename) {
         if (this.avatar != null && this.avatar.equals(filename)) {
             return false;
@@ -744,7 +695,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean isBlocked(final ListItem contact) {
-        final Jid jid = contact.getJid();
+        final Jid jid = contact.getAddress();
         final var blocklist = getBlocklist();
         return jid != null
                 && (blocklist.contains(jid.asBareJid()) || blocklist.contains(jid.getDomain()));
@@ -755,6 +706,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         return jid != null && blocklist.contains(jid.asBareJid());
     }
 
+    // TODO get rid of this method in favor of calling manager directly
     public Set<Jid> getBlocklist() {
         final var connection = this.xmppConnection;
         if (connection == null) {

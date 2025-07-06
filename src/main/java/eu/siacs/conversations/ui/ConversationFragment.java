@@ -465,7 +465,7 @@ public class ConversationFragment extends XmppFragment
                         final var connection = contact.getAccount().getXmppConnection();
                         connection
                                 .getManager(PresenceManager.class)
-                                .subscribed(contact.getJid().asBareJid());
+                                .subscribed(contact.getAddress().asBareJid());
                         hideSnackbar();
                     }
                 }
@@ -1671,7 +1671,7 @@ public class ConversationFragment extends XmppFragment
         }
         final Contact contact = conversation.getContact();
         if (Config.USE_JINGLE_MESSAGE_INIT && RtpCapability.jmiSupport(contact)) {
-            triggerRtpSession(contact.getAccount(), contact.getJid().asBareJid(), action);
+            triggerRtpSession(contact.getAccount(), contact.getAddress().asBareJid(), action);
         } else {
             final RtpCapability.Capability capability;
             if (action.equals(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL)) {
@@ -1753,7 +1753,7 @@ public class ConversationFragment extends XmppFragment
                         Config.LOGTAG,
                         AxolotlService.getLogprefix(conversation.getAccount())
                                 + "Enabled axolotl for Contact "
-                                + conversation.getContact().getJid());
+                                + conversation.getContact().getAddress());
                 updated = conversation.setNextEncryption(Message.ENCRYPTION_AXOLOTL);
                 item.setChecked(true);
                 break;
@@ -2621,7 +2621,7 @@ public class ConversationFragment extends XmppFragment
         }
         if (nick != null) {
             if (pm) {
-                Jid jid = conversation.getJid();
+                Jid jid = conversation.getAddress();
                 try {
                     Jid next = Jid.of(jid.getLocal(), jid.getDomain(), nick);
                     privateMessageWith(next);
@@ -2687,7 +2687,7 @@ public class ConversationFragment extends XmppFragment
     }
 
     private boolean showBlockSubmenu(View view) {
-        final Jid jid = conversation.getJid();
+        final Jid jid = conversation.getAddress();
         final boolean showReject =
                 !conversation.isWithStranger()
                         && conversation
@@ -3604,7 +3604,7 @@ public class ConversationFragment extends XmppFragment
                                     activity.showQrCode(
                                             "xmpp:"
                                                     + message.getContact()
-                                                            .getJid()
+                                                            .getAddress()
                                                             .asBareJid()
                                                             .toString());
                                     break;

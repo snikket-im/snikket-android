@@ -634,7 +634,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             if (entry.getValue() instanceof JingleRtpConnection jingleRtpConnection) {
                 final AbstractJingleConnection.Id id = entry.getKey();
                 if (id.account == contact.getAccount()
-                        && id.with.asBareJid().equals(contact.getJid().asBareJid())) {
+                        && id.with.asBareJid().equals(contact.getAddress().asBareJid())) {
                     return Optional.of(jingleRtpConnection);
                 }
             }
@@ -644,7 +644,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     this.rtpSessionProposals.entrySet()) {
                 final RtpSessionProposal proposal = entry.getKey();
                 if (proposal.account == contact.getAccount()
-                        && contact.getJid().asBareJid().equals(proposal.with)) {
+                        && contact.getAddress().asBareJid().equals(proposal.with)) {
                     final DeviceDiscoveryState preexistingState = entry.getValue();
                     if (preexistingState != null
                             && preexistingState != DeviceDiscoveryState.FAILED) {
@@ -860,7 +860,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         final var messagePacket =
                 mXmppConnectionService
                         .getMessageGenerator()
-                        .sessionFinish(contact.getJid(), sessionId, reason);
+                        .sessionFinish(contact.getAddress(), sessionId, reason);
         mXmppConnectionService.sendMessagePacket(account, messagePacket);
     }
 

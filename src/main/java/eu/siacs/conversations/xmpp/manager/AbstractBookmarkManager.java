@@ -2,11 +2,11 @@ package eu.siacs.conversations.xmpp.manager;
 
 import android.util.Log;
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import im.conversations.android.model.Bookmark;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -23,17 +23,16 @@ public class AbstractBookmarkManager extends AbstractManager {
 
     // TODO rename to setBookmarks?
     protected void processBookmarksInitial(final Map<Jid, Bookmark> bookmarks, final boolean pep) {
-        final var account = getAccount();
-        // TODO we can internalize this getBookmarkedJid
-        final Set<Jid> previousBookmarks = account.getBookmarkedJids();
+        final var manager = getManager(BookmarkManager.class);
+        final Set<Jid> previousBookmarks = manager.getBookmarkAddresses();
         for (final Bookmark bookmark : bookmarks.values()) {
-            previousBookmarks.remove(bookmark.getJid().asBareJid());
-            getManager(BookmarkManager.class).processModifiedBookmark(bookmark, pep);
+            previousBookmarks.remove(bookmark.getAddress().asBareJid());
+            manager.processModifiedBookmark(bookmark, pep);
         }
         if (pep) {
             this.processDeletedBookmarks(previousBookmarks);
         }
-        account.setBookmarks(bookmarks);
+        manager.setBookmarks(bookmarks);
     }
 
     protected void processDeletedBookmarks(final Collection<Jid> bookmarks) {

@@ -1,31 +1,76 @@
 package eu.siacs.conversations.entities;
 
-import android.content.Context;
-
-import java.util.List;
-
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.xmpp.Jid;
+import java.util.Collection;
+import java.util.Locale;
 
+public interface ListItem extends Comparable<ListItem>, AvatarService.Avatar {
+    String getDisplayName();
 
-public interface ListItem extends Comparable<ListItem>, AvatarService.Avatarable {
-	String getDisplayName();
+    Jid getAddress();
 
-	Jid getJid();
+    Collection<Tag> getTags();
 
-	List<Tag> getTags(Context context);
+    default boolean match(final String needle) {
+        if (Strings.isNullOrEmpty(needle)) {
+            return true;
+        }
+        final var parts =
+                Splitter.on(CharMatcher.whitespace())
+                        .omitEmptyStrings()
+                        .trimResults()
+                        .splitToList(needle.toLowerCase(Locale.ROOT));
+        if (parts.size() == 1) {
+            return matchInItem(Iterables.getOnlyElement(parts));
+        } else {
+            for (final var part : parts) {
+                if (!matchInItem(part)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 
-	final class Tag {
-		private final String name;
+    @Override
+    default int compareTo(final ListItem another) {
+        return this.getDisplayName().compareToIgnoreCase(another.getDisplayName());
+    }
 
-		public Tag(final String name) {
-			this.name = name;
-		}
+    private boolean matchInItem(final String needle) {
+        return getAddress().toString().contains(needle)
+                || getDisplayName().toLowerCase(Locale.US).contains(needle)
+                || matchInTag(needle);
+    }
 
-		public String getName() {
-			return this.name;
-		}
-	}
+    private boolean matchInTag(final String needle) {
+        for (final Tag tag : getTags()) {
+            if (tag.getName().toLowerCase(Locale.US).contains(needle)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	boolean match(Context context, final String needle);
+    final class Tag {
+        private final String name;
+
+        private Tag(final String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public static Collection<Tag> of(final Collection<String> tags) {
+            return Collections2.transform(tags, Tag::new);
+        }
+    }
 }

@@ -165,12 +165,12 @@ public class ShortcutService {
         return Joiner.on(ID_SEPARATOR)
                 .join(
                         contact.getAccount().getJid().asBareJid().toString(),
-                        contact.getJid().asBareJid().toString());
+                        contact.getAddress().asBareJid().toString());
     }
 
     private static String getShortcutId(final MucOptions mucOptions) {
         final Account account = mucOptions.getAccount();
-        final Jid jid = mucOptions.getConversation().getJid();
+        final Jid jid = mucOptions.getConversation().getAddress();
         return Joiner.on(ID_SEPARATOR)
                 .join(account.getJid().asBareJid().toString(), jid.asBareJid().toString());
     }
@@ -182,12 +182,13 @@ public class ShortcutService {
                 Uri.parse(
                         String.format(
                                 "xmpp:%s?join",
-                                mucOptions.getConversation().getJid().asBareJid().toString())));
+                                mucOptions.getConversation().getAddress().asBareJid().toString())));
     }
 
     private Intent getShortcutIntent(final Contact contact) {
         return getShortcutIntent(
-                contact.getAccount(), Uri.parse("xmpp:" + contact.getJid().asBareJid().toString()));
+                contact.getAccount(),
+                Uri.parse("xmpp:" + contact.getAddress().asBareJid().toString()));
     }
 
     private Intent getShortcutIntent(final Account account, final Uri uri) {

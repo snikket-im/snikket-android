@@ -30,7 +30,6 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.android.Device;
 import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -287,7 +286,10 @@ public class AvatarManager extends AbstractManager {
 
                 final var conversation = service.find(account, from);
                 if (conversation != null && conversation.getMode() == Conversational.MODE_MULTI) {
-                    service.getAvatarService().clear(conversation.getMucOptions());
+                    service.getAvatarService()
+                            .clear(
+                                    getManager(MultiUserChatManager.class)
+                                            .getOrCreateState(conversation));
                 }
 
                 service.updateConversationUi();
@@ -297,12 +299,8 @@ public class AvatarManager extends AbstractManager {
     }
 
     private void setAvatarMucUser(final Jid from, final String id) {
-        final var account = getAccount();
-        final Conversation conversation = service.find(account, from.asBareJid());
-        if (conversation == null || conversation.getMode() != Conversation.MODE_MULTI) {
-            return;
-        }
-        final var user = conversation.getMucOptions().findUserByFullJid(from);
+        final var mucOptions = getManager(MultiUserChatManager.class).getState(from.asBareJid());
+        final var user = mucOptions == null ? null : mucOptions.findUserByFullJid(from);
         if (user == null) {
             return;
         }

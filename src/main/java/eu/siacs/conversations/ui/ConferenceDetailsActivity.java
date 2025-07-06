@@ -1,6 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import static eu.siacs.conversations.entities.Bookmark.printableValue;
 import static eu.siacs.conversations.utils.StringUtils.changed;
 
 import android.app.Activity;
@@ -55,6 +54,7 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
+import im.conversations.android.model.Bookmark;
 import im.conversations.android.xmpp.model.muc.Affiliation;
 import im.conversations.android.xmpp.model.muc.Role;
 import java.util.Collections;
@@ -369,7 +369,7 @@ public class ConferenceDetailsActivity extends XmppActivity
             final String name = mucOptions.getName();
             this.binding.mucEditTitle.setText("");
             final boolean owner = mucOptions.getSelf().ranks(Affiliation.OWNER);
-            if (owner || printableValue(name)) {
+            if (owner || Bookmark.printableValue(name)) {
                 this.binding.mucEditTitle.setVisibility(View.VISIBLE);
                 if (name != null) {
                     this.binding.mucEditTitle.append(name);
@@ -436,9 +436,9 @@ public class ConferenceDetailsActivity extends XmppActivity
         if (mConversation != null) {
             if (http) {
                 return "https://conversations.im/j/"
-                        + XmppUri.lameUrlEncode(mConversation.getJid().asBareJid().toString());
+                        + XmppUri.lameUrlEncode(mConversation.getAddress().asBareJid().toString());
             } else {
-                return "xmpp:" + mConversation.getJid().asBareJid() + "?join";
+                return "xmpp:" + mConversation.getAddress().asBareJid() + "?join";
             }
         } else {
             return null;
@@ -585,20 +585,20 @@ public class ConferenceDetailsActivity extends XmppActivity
         this.binding.detailsAccount.setText(getString(R.string.using_account, account));
         if (mConversation.isPrivateAndNonAnonymous()) {
             this.binding.jid.setText(
-                    getString(R.string.hosted_on, mConversation.getJid().getDomain()));
+                    getString(R.string.hosted_on, mConversation.getAddress().getDomain()));
         } else {
-            this.binding.jid.setText(mConversation.getJid().asBareJid().toString());
+            this.binding.jid.setText(mConversation.getAddress().asBareJid().toString());
         }
         AvatarWorkerTask.loadAvatar(
                 mConversation, binding.yourPhoto, R.dimen.avatar_on_details_screen_size);
         String roomName = mucOptions.getName();
         String subject = mucOptions.getSubject();
         final boolean hasTitle;
-        if (printableValue(roomName)) {
+        if (Bookmark.printableValue(roomName)) {
             this.binding.mucTitle.setText(roomName);
             this.binding.mucTitle.setVisibility(View.VISIBLE);
             hasTitle = true;
-        } else if (!printableValue(subject)) {
+        } else if (!Bookmark.printableValue(subject)) {
             this.binding.mucTitle.setText(mConversation.getName());
             hasTitle = true;
             this.binding.mucTitle.setVisibility(View.VISIBLE);
@@ -606,7 +606,7 @@ public class ConferenceDetailsActivity extends XmppActivity
             hasTitle = false;
             this.binding.mucTitle.setVisibility(View.GONE);
         }
-        if (printableValue(subject)) {
+        if (Bookmark.printableValue(subject)) {
             final var spannable = new SpannableString(subject);
             StylingHelper.format(spannable, this.binding.mucSubject.getCurrentTextColor());
             Linkify.addLinks(spannable);

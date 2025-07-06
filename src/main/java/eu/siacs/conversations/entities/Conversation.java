@@ -1,7 +1,5 @@
 package eu.siacs.conversations.entities;
 
-import static eu.siacs.conversations.entities.Bookmark.printableValue;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.text.TextUtils;
@@ -23,6 +21,9 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
+import eu.siacs.conversations.xmpp.manager.BookmarkManager;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
+import im.conversations.android.model.Bookmark;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Conversation extends AbstractEntity
-        implements Blockable, Comparable<Conversation>, Conversational, AvatarService.Avatarable {
+        implements Blockable, Comparable<Conversation>, Conversational, AvatarService.Avatar {
     public static final String TABLENAME = "conversations";
 
     public static final int STATUS_AVAILABLE = 0;
@@ -76,7 +77,6 @@ public class Conversation extends AbstractEntity
     private int mode;
     private final JSONObject attributes;
     private Jid nextCounterpart;
-    private transient MucOptions mucOptions = null;
     private boolean messagesLeftOnServer = true;
     private ChatState mOutgoingChatState = Config.DEFAULT_CHAT_STATE;
     private ChatState mIncomingChatState = Config.DEFAULT_CHAT_STATE;
@@ -158,7 +158,7 @@ public class Conversation extends AbstractEntity
     }
 
     private static boolean suitableForOmemoByDefault(final Conversation conversation) {
-        if (conversation.getJid().asBareJid().equals(Config.BUG_REPORTS)) {
+        if (conversation.getAddress().asBareJid().equals(Config.BUG_REPORTS)) {
             return false;
         }
         if (conversation.getContact().isOwnServer()) {
@@ -534,8 +534,8 @@ public class Conversation extends AbstractEntity
 
     @Override
     @NonNull
-    public Jid getBlockedJid() {
-        return getContact().getBlockedJid();
+    public Jid getBlockedAddress() {
+        return getContact().getBlockedAddress();
     }
 
     public int countMessages() {
@@ -566,7 +566,7 @@ public class Conversation extends AbstractEntity
 
     public List<Jid> getAcceptedCryptoTargets() {
         if (mode == MODE_SINGLE) {
-            return Collections.singletonList(getJid().asBareJid());
+            return Collections.singletonList(getAddress().asBareJid());
         } else {
             return getJidListAttribute(ATTRIBUTE_CRYPTO_TARGETS);
         }
@@ -650,7 +650,7 @@ public class Conversation extends AbstractEntity
 
     public Message getLatestMessage() {
         synchronized (this.messages) {
-            if (this.messages.size() == 0) {
+            if (this.messages.isEmpty()) {
                 Message message = new Message(this, "", Message.ENCRYPTION_NONE);
                 message.setType(Message.TYPE_STATUS);
                 message.setTime(Math.max(getCreated(), getLastClearHistory().getTimestamp()));
@@ -663,30 +663,38 @@ public class Conversation extends AbstractEntity
 
     public @NonNull CharSequence getName() {
         if (getMode() == MODE_MULTI) {
-            final String roomName = getMucOptions().getName();
-            final String subject = getMucOptions().getSubject();
-            final Bookmark bookmark = getBookmark();
-            final String bookmarkName = bookmark != null ? bookmark.getBookmarkName() : null;
-            if (printableValue(roomName)) {
-                return roomName;
-            } else if (printableValue(subject)) {
-                return subject;
-            } else if (printableValue(bookmarkName, false)) {
-                return bookmarkName;
-            } else {
-                final String generatedName = getMucOptions().createNameFromParticipants();
-                if (printableValue(generatedName)) {
-                    return generatedName;
-                } else {
-                    return contactJid.getLocal() != null ? contactJid.getLocal() : contactJid;
-                }
-            }
+            return getName(getMucOptions(), getBookmark());
         } else if ((QuickConversationsService.isConversations()
                         || !Config.QUICKSY_DOMAIN.equals(contactJid.getDomain()))
                 && isWithStranger()) {
             return contactJid;
         } else {
             return this.getContact().getDisplayName();
+        }
+    }
+
+    public static String getName(final MucOptions mucOptions, @Nullable final Bookmark bookmark) {
+        final String roomName = mucOptions.getName();
+        final String subject = mucOptions.getSubject();
+        final String bookmarkName = bookmark != null ? bookmark.getName() : null;
+        if (Bookmark.printableValue(roomName)) {
+            return roomName;
+        } else if (Bookmark.printableValue(subject)) {
+            return subject;
+        } else if (Bookmark.printableValue(bookmarkName)) {
+            return bookmarkName;
+        } else {
+            final String generatedName = mucOptions.createNameFromParticipants();
+            if (Bookmark.printableValue(generatedName)) {
+                return generatedName;
+            } else {
+                final var address = mucOptions.getConversation().getAddress();
+                if (address.isDomainJid()) {
+                    return address.toString();
+                } else {
+                    return address.getLocal();
+                }
+            }
         }
     }
 
@@ -707,7 +715,7 @@ public class Conversation extends AbstractEntity
     }
 
     @Override
-    public Jid getJid() {
+    public Jid getAddress() {
         return this.contactJid;
     }
 
@@ -757,14 +765,10 @@ public class Conversation extends AbstractEntity
     }
 
     public synchronized MucOptions getMucOptions() {
-        if (this.mucOptions == null) {
-            this.mucOptions = new MucOptions(this);
-        }
-        return this.mucOptions;
-    }
-
-    public void resetMucOptions() {
-        this.mucOptions = null;
+        return getAccount()
+                .getXmppConnection()
+                .getManager(MultiUserChatManager.class)
+                .getOrCreateState(this);
     }
 
     public void setContactJid(final Jid jid) {
@@ -835,7 +839,10 @@ public class Conversation extends AbstractEntity
     }
 
     public Bookmark getBookmark() {
-        return this.account.getBookmark(this.contactJid);
+        return this.account
+                .getXmppConnection()
+                .getManager(BookmarkManager.class)
+                .getBookmark(this.contactJid);
     }
 
     public Message findDuplicateMessage(Message message) {
@@ -1148,7 +1155,8 @@ public class Conversation extends AbstractEntity
                 && !contact.isOwnServer()
                 && !contact.showInContactList()
                 && !contact.isSelf()
-                && !(contact.getJid().isDomainJid() && JidHelper.isQuicksyDomain(contact.getJid()))
+                && !(contact.getAddress().isDomainJid()
+                        && JidHelper.isQuicksyDomain(contact.getAddress()))
                 && sentMessagesCount() == 0;
     }
 

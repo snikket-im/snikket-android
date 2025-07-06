@@ -75,15 +75,18 @@ public class MessageParser extends AbstractParser
         super(service, connection);
     }
 
-    private static String extractStanzaId(
+    private String extractStanzaId(
             final im.conversations.android.xmpp.model.stanza.Message packet,
             final boolean isTypeGroupChat,
             final Conversation conversation) {
         final Jid by;
         final boolean safeToExtract;
         if (isTypeGroupChat) {
-            by = conversation.getJid().asBareJid();
-            safeToExtract = conversation.getMucOptions().hasFeature(Namespace.STANZA_IDS);
+            by = conversation.getAddress().asBareJid();
+            safeToExtract =
+                    getManager(MultiUserChatManager.class)
+                            .getOrCreateState(conversation)
+                            .hasFeature(Namespace.STANZA_IDS);
         } else {
             Account account = conversation.getAccount();
             by = account.getJid().asBareJid();
@@ -126,7 +129,10 @@ public class MessageParser extends AbstractParser
                 return false;
             } else {
                 if (isTypeGroupChat) {
-                    MucOptions.User user = c.getMucOptions().findUserByFullJid(from);
+                    MucOptions.User user =
+                            getManager(MultiUserChatManager.class)
+                                    .getOrCreateState(c)
+                                    .findUserByFullJid(from);
                     if (user != null) {
                         return user.setChatState(state);
                     } else {
@@ -299,7 +305,9 @@ public class MessageParser extends AbstractParser
                     Conversation conversation = mXmppConnectionService.find(account, from);
                     if (conversation != null
                             && conversation.getMode() == Conversational.MODE_MULTI) {
-                        if (conversation.getMucOptions().online()) {
+                        if (getManager(MultiUserChatManager.class)
+                                .getOrCreateState(conversation)
+                                .online()) {
                             Log.d(
                                     Config.LOGTAG,
                                     account.getJid().asBareJid()
@@ -436,7 +444,8 @@ public class MessageParser extends AbstractParser
                     mXmppConnectionService.find(account, from.asBareJid());
             final Jid mucTrueCounterPartByPresence;
             if (conversation != null) {
-                final var mucOptions = conversation.getMucOptions();
+                final var mucOptions =
+                        getManager(MultiUserChatManager.class).getOrCreateState(conversation);
                 occupant =
                         mucOptions.occupantId() ? packet.getOnlyExtension(OccupantId.class) : null;
                 final var user =
@@ -456,7 +465,8 @@ public class MessageParser extends AbstractParser
             final Conversation conversation =
                     mXmppConnectionService.find(account, from.asBareJid());
             if (conversation != null) {
-                final var mucOptions = conversation.getMucOptions();
+                final var mucOptions =
+                        getManager(MultiUserChatManager.class).getOrCreateState(conversation);
                 occupant =
                         mucOptions.occupantId() ? packet.getOnlyExtension(OccupantId.class) : null;
             } else {
@@ -563,7 +573,9 @@ public class MessageParser extends AbstractParser
             }
 
             if (isTypeGroupChat) {
-                if (conversation.getMucOptions().isSelf(counterpart)) {
+                if (getManager(MultiUserChatManager.class)
+                        .getOrCreateState(conversation)
+                        .isSelf(counterpart)) {
                     status = Message.STATUS_SEND_RECEIVED;
                     isCarbon = true; // not really carbon but received from another resource
                     // don’t store serverMsgId on reflections for edits
@@ -593,7 +605,9 @@ public class MessageParser extends AbstractParser
                 Set<Jid> fallbacksBySourceId = Collections.emptySet();
                 if (conversationMultiMode) {
                     final Jid fallback =
-                            conversation.getMucOptions().getTrueCounterpart(counterpart);
+                            getManager(MultiUserChatManager.class)
+                                    .getOrCreateState(conversation)
+                                    .getTrueCounterpart(counterpart);
                     origin = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
                     if (origin == null) {
                         try {
@@ -712,7 +726,8 @@ public class MessageParser extends AbstractParser
             }
             message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
             if (conversationMultiMode) {
-                final var mucOptions = conversation.getMucOptions();
+                final var mucOptions =
+                        getManager(MultiUserChatManager.class).getOrCreateState(conversation);
                 if (occupant != null) {
                     message.setOccupantId(occupant.getId());
                 }
@@ -962,7 +977,9 @@ public class MessageParser extends AbstractParser
                 Jid origin;
                 if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
                     final Jid fallback =
-                            conversation.getMucOptions().getTrueCounterpart(counterpart);
+                            getManager(MultiUserChatManager.class)
+                                    .getOrCreateState(conversation)
+                                    .getTrueCounterpart(counterpart);
                     origin = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
                     if (origin == null) {
                         Log.d(
@@ -1010,7 +1027,9 @@ public class MessageParser extends AbstractParser
                         conversation.setHasMessagesLeftOnServer(conversation.countMessages() > 0);
                         final LocalizedContent subject = packet.getSubject();
                         if (subject != null
-                                && conversation.getMucOptions().setSubject(subject.content)) {
+                                && getManager(MultiUserChatManager.class)
+                                        .getOrCreateState(conversation)
+                                        .setSubject(subject.content)) {
                             mXmppConnectionService.updateConversation(conversation);
                         }
                         mXmppConnectionService.updateConversationUi();
@@ -1268,7 +1287,10 @@ public class MessageParser extends AbstractParser
             }
             if (message != null) {
                 // TODO use occupantId to extract true counterpart from presence
-                final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
+                final Jid fallback =
+                        getManager(MultiUserChatManager.class)
+                                .getOrCreateState(conversation)
+                                .getTrueCounterpart(counterpart);
                 // TODO try to externalize mucTrueCounterpart
                 final Jid trueJid =
                         getTrueCounterpart(
@@ -1280,7 +1302,10 @@ public class MessageParser extends AbstractParser
                         account.getJid()
                                 .asBareJid()
                                 .equals(trueJid == null ? null : trueJid.asBareJid());
-                if (trueJidMatchesAccount || conversation.getMucOptions().isSelf(counterpart)) {
+                if (trueJidMatchesAccount
+                        || getManager(MultiUserChatManager.class)
+                                .getOrCreateState(conversation)
+                                .isSelf(counterpart)) {
                     if (!message.isRead()
                             && (query == null || query.isCatchup())) { // checking if message is
                         // unread fixes race conditions
@@ -1290,7 +1315,9 @@ public class MessageParser extends AbstractParser
                 } else if (!counterpart.isBareJid() && trueJid != null) {
                     final ReadByMarker readByMarker = ReadByMarker.from(counterpart, trueJid);
                     if (message.addReadByMarker(readByMarker)) {
-                        final var mucOptions = conversation.getMucOptions();
+                        final var mucOptions =
+                                getManager(MultiUserChatManager.class)
+                                        .getOrCreateState(conversation);
                         final var everyone = ImmutableSet.copyOf(mucOptions.getMembers(false));
                         final var readyBy = message.getReadyByTrue();
                         final var mStatus = message.getStatus();
@@ -1333,7 +1360,8 @@ public class MessageParser extends AbstractParser
         final String reactingTo = reactions.getId();
         if (conversation != null && reactingTo != null) {
             if (isTypeGroupChat && conversation.getMode() == Conversational.MODE_MULTI) {
-                final var mucOptions = conversation.getMucOptions();
+                final var mucOptions =
+                        getManager(MultiUserChatManager.class).getOrCreateState(conversation);
                 final var occupantId = occupant == null ? null : occupant.getId();
                 if (occupantId != null) {
                     final boolean isReceived = !mucOptions.isSelf(occupantId);
@@ -1381,7 +1409,8 @@ public class MessageParser extends AbstractParser
                 final Jid reactionFrom;
                 if (conversation.getMode() == Conversational.MODE_MULTI) {
                     Log.d(Config.LOGTAG, "received reaction as MUC PM. triggering validation");
-                    final var mucOptions = conversation.getMucOptions();
+                    final var mucOptions =
+                            getManager(MultiUserChatManager.class).getOrCreateState(conversation);
                     final var occupantId = occupant == null ? null : occupant.getId();
                     if (occupantId == null) {
                         Log.d(
@@ -1534,7 +1563,7 @@ public class MessageParser extends AbstractParser
                         Config.LOGTAG,
                         account.getJid().asBareJid()
                                 + ": ignore invite from "
-                                + contact.getJid()
+                                + contact.getAddress()
                                 + " because contact is blocked");
                 return false;
             }

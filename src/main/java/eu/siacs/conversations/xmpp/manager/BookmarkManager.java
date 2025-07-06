@@ -1,23 +1,33 @@
 package eu.siacs.conversations.xmpp.manager;
 
-import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import im.conversations.android.model.Bookmark;
+import im.conversations.android.model.ImmutableBookmark;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class BookmarkManager extends AbstractManager {
 
     private final XmppConnectionService service;
+
+    private final Map<Jid, Bookmark> bookmarks = new HashMap<>();
 
     public BookmarkManager(final XmppConnectionService service, final XmppConnection connection) {
         super(service.getApplicationContext(), connection);
@@ -39,45 +49,45 @@ public class BookmarkManager extends AbstractManager {
 
     public void save(final Conversation conversation, final String name) {
         final Account account = conversation.getAccount();
-        final Bookmark bookmark = new Bookmark(account, conversation.getJid().asBareJid());
-        final String nick = conversation.getJid().getResource();
-        if (nick != null && !nick.isEmpty() && !nick.equals(MucOptions.defaultNick(account))) {
-            bookmark.setNick(nick);
-        }
-        if (!TextUtils.isEmpty(name)) {
-            bookmark.setBookmarkName(name);
-        }
-        bookmark.setAutojoin(true);
+        final var address = conversation.getAddress();
+        final String nick = Bookmark.nickOfAddress(account, address);
+        final var bookmark =
+                ImmutableBookmark.builder()
+                        .account(account)
+                        .address(address.asBareJid())
+                        .nick(nick)
+                        .name(Strings.emptyToNull(name))
+                        .isAutoJoin(true)
+                        .build();
         this.create(bookmark);
-        bookmark.setConversation(conversation);
     }
 
     public void create(final Bookmark bookmark) {
-        final var account = getAccount();
-        account.putBookmark(bookmark);
+        this.putBookmark(bookmark);
         final ListenableFuture<Void> future;
         if (getManager(NativeBookmarkManager.class).hasFeature()) {
             future = getManager(NativeBookmarkManager.class).publish(bookmark);
         } else if (getManager(LegacyBookmarkManager.class).hasConversion()) {
-            future = getManager(LegacyBookmarkManager.class).publish(account.getBookmarks());
+            Log.d(Config.LOGTAG, "pushing via legacy bookmark manager");
+            future = getManager(LegacyBookmarkManager.class).publish(this.getBookmarks());
         } else {
-            future =
-                    getManager(PrivateStorageManager.class)
-                            .publishBookmarks(account.getBookmarks());
+            future = getManager(PrivateStorageManager.class).publishBookmarks(this.getBookmarks());
         }
         Futures.addCallback(
                 future,
                 new FutureCallback<>() {
                     @Override
                     public void onSuccess(Void result) {
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": created bookmark");
+                        Log.d(
+                                Config.LOGTAG,
+                                getAccount().getJid().asBareJid() + ": bookmark pushed");
                     }
 
                     @Override
                     public void onFailure(@NonNull Throwable t) {
                         Log.d(
                                 Config.LOGTAG,
-                                account.getJid().asBareJid() + ": could not create bookmark",
+                                getAccount().getJid().asBareJid() + ": could not create bookmark",
                                 t);
                     }
                 },
@@ -85,31 +95,32 @@ public class BookmarkManager extends AbstractManager {
     }
 
     public void delete(final Bookmark bookmark) {
-        final var account = getAccount();
-        account.removeBookmark(bookmark);
+        this.removeBookmark(bookmark);
         final ListenableFuture<Void> future;
         if (getManager(NativeBookmarkManager.class).hasFeature()) {
-            future = getManager(NativeBookmarkManager.class).retract(bookmark.getJid().asBareJid());
-        } else if (getManager(LegacyBookmarkManager.class).hasConversion()) {
-            future = getManager(LegacyBookmarkManager.class).publish(account.getBookmarks());
-        } else {
             future =
-                    getManager(PrivateStorageManager.class)
-                            .publishBookmarks(account.getBookmarks());
+                    getManager(NativeBookmarkManager.class)
+                            .retract(bookmark.getAddress().asBareJid());
+        } else if (getManager(LegacyBookmarkManager.class).hasConversion()) {
+            future = getManager(LegacyBookmarkManager.class).publish(this.getBookmarks());
+        } else {
+            future = getManager(PrivateStorageManager.class).publishBookmarks(this.getBookmarks());
         }
         Futures.addCallback(
                 future,
                 new FutureCallback<>() {
                     @Override
                     public void onSuccess(Void result) {
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleted bookmark");
+                        Log.d(
+                                Config.LOGTAG,
+                                getAccount().getJid().asBareJid() + ": deleted bookmark");
                     }
 
                     @Override
                     public void onFailure(@NonNull Throwable t) {
                         Log.d(
                                 Config.LOGTAG,
-                                account.getJid().asBareJid() + ": could not delete bookmark",
+                                getAccount().getJid().asBareJid() + ": could not delete bookmark",
                                 t);
                     }
                 },
@@ -118,17 +129,22 @@ public class BookmarkManager extends AbstractManager {
 
     public void ensureBookmarkIsAutoJoin(final Conversation conversation) {
         final var account = getAccount();
-        final var existingBookmark = conversation.getBookmark();
+        final var existingBookmark = this.getBookmark(conversation.getAddress());
         if (existingBookmark == null) {
-            final var bookmark = new Bookmark(account, conversation.getJid().asBareJid());
-            bookmark.setAutojoin(true);
+            final var bookmark =
+                    ImmutableBookmark.builder()
+                            .account(account)
+                            .address(conversation.getAddress().asBareJid())
+                            .isAutoJoin(true)
+                            .build();
             create(bookmark);
         } else {
-            if (existingBookmark.autojoin()) {
+            if (existingBookmark.isAutoJoin()) {
                 return;
             }
-            existingBookmark.setAutojoin(true);
-            create(existingBookmark);
+            final var modified =
+                    ImmutableBookmark.builder().from(existingBookmark).isAutoJoin(true).build();
+            this.create(modified);
         }
     }
 
@@ -138,17 +154,17 @@ public class BookmarkManager extends AbstractManager {
             if (existing.getMode() != Conversation.MODE_MULTI) {
                 return;
             }
-            bookmark.setConversation(existing);
-            if (pep && !bookmark.autojoin()) {
+            if (pep && !bookmark.isAutoJoin()) {
                 Log.d(
                         Config.LOGTAG,
                         getAccount().getJid().asBareJid()
                                 + ": archiving conference ("
-                                + existing.getJid()
+                                + existing.getAddress()
                                 + ") after receiving pep");
                 service.archiveConversation(existing, false);
             } else {
-                final MucOptions mucOptions = existing.getMucOptions();
+                final MucOptions mucOptions =
+                        getManager(MultiUserChatManager.class).getOrCreateState(existing);
                 if (mucOptions.getError() == MucOptions.Error.NICK_IN_USE) {
                     final String current = mucOptions.getActualNick();
                     final String proposed = mucOptions.getProposedNickPure();
@@ -166,11 +182,52 @@ public class BookmarkManager extends AbstractManager {
                     getManager(MultiUserChatManager.class).checkMucRequiresRename(existing);
                 }
             }
-        } else if (bookmark.autojoin()) {
-            final var fresh =
-                    this.service.findOrCreateConversation(
-                            getAccount(), bookmark.getFullJid(), true, true, false);
-            bookmark.setConversation(fresh);
+        } else if (bookmark.isAutoJoin()) {
+            this.service.findOrCreateConversation(
+                    getAccount(), bookmark.getFullAddress(), true, true, false);
+        }
+    }
+
+    public Collection<Bookmark> getBookmarks() {
+        synchronized (this.bookmarks) {
+            return ImmutableList.copyOf(this.bookmarks.values());
+        }
+    }
+
+    public void setBookmarks(final Map<Jid, Bookmark> bookmarks) {
+        synchronized (this.bookmarks) {
+            this.bookmarks.clear();
+            this.bookmarks.putAll(bookmarks);
+        }
+    }
+
+    public void putBookmark(final Bookmark bookmark) {
+        synchronized (this.bookmarks) {
+            this.bookmarks.put(bookmark.getAddress(), bookmark);
+        }
+    }
+
+    public void removeBookmark(final Bookmark bookmark) {
+        synchronized (this.bookmarks) {
+            this.bookmarks.remove(bookmark.getAddress());
+        }
+    }
+
+    public void removeBookmark(Jid jid) {
+        synchronized (this.bookmarks) {
+            this.bookmarks.remove(jid);
+        }
+    }
+
+    public Set<Jid> getBookmarkAddresses() {
+        synchronized (this.bookmarks) {
+            return new HashSet<>(this.bookmarks.keySet());
+        }
+    }
+
+    public Bookmark getBookmark(final Jid jid) {
+        synchronized (this.bookmarks) {
+            return this.bookmarks.get(jid.asBareJid());
         }
     }
 }

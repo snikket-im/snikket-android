@@ -7,12 +7,12 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.9.3'
-        classpath "com.diffplug.spotless:spotless-plugin-gradle:7.0.2"
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:7.0.2'
     }
 }
 
 apply plugin: 'com.android.application'
-apply plugin: "com.diffplug.spotless"
+apply plugin: 'com.diffplug.spotless'
 
 repositories {
     google()
@@ -44,6 +44,8 @@ spotless {
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 
+    annotationProcessor 'org.immutables:value:2.11.0'
+    implementation 'org.immutables:value-annotations:2.11.0'
     annotationProcessor project(':libs:annotation-processor')
     implementation project(':libs:annotation')
     implementation 'androidx.appcompat:appcompat:1.7.1'

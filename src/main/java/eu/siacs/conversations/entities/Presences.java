@@ -154,8 +154,8 @@ public class Presences {
                                 .getManager(DiscoManager.class)
                                 .get(
                                         Strings.isNullOrEmpty(resource)
-                                                ? contact.getJid().asBareJid()
-                                                : contact.getJid().withResource(resource));
+                                                ? contact.getAddress().asBareJid()
+                                                : contact.getAddress().withResource(resource));
                 if (disco == null || !disco.getFeatureStrings().contains(namespace)) {
                     return false;
                 }
@@ -178,8 +178,8 @@ public class Presences {
                                 .getManager(DiscoManager.class)
                                 .get(
                                         Strings.isNullOrEmpty(resource)
-                                                ? contact.getJid().asBareJid()
-                                                : contact.getJid().withResource(resource));
+                                                ? contact.getAddress().asBareJid()
+                                                : contact.getAddress().withResource(resource));
                 if (serviceDiscoveryResult != null
                         && !serviceDiscoveryResult.getIdentities().isEmpty()) {
                     final Identity identity =

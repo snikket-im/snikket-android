@@ -7,10 +7,10 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import im.conversations.android.model.Bookmark;
 import im.conversations.android.xmpp.model.bookmark.Storage;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.storage.PrivateStorage;
@@ -30,7 +30,7 @@ public class PrivateStorageManager extends AbstractBookmarkManager {
         final var future = this.connection.sendIqPacket(iq);
         Futures.addCallback(
                 future,
-                new FutureCallback<Iq>() {
+                new FutureCallback<>() {
                     @Override
                     public void onSuccess(Iq result) {
                         final var privateStorage = result.getExtension(PrivateStorage.class);
@@ -39,7 +39,8 @@ public class PrivateStorageManager extends AbstractBookmarkManager {
                         }
                         final var bookmarkStorage = privateStorage.getExtension(Storage.class);
                         final Map<Jid, Bookmark> bookmarks =
-                                Bookmark.parseFromStorage(bookmarkStorage, getAccount());
+                                LegacyBookmarkManager.storageToBookmarks(
+                                        bookmarkStorage, getAccount());
                         processBookmarksInitial(bookmarks, false);
                     }
 
@@ -55,13 +56,10 @@ public class PrivateStorageManager extends AbstractBookmarkManager {
                 MoreExecutors.directExecutor());
     }
 
-    public ListenableFuture<Void> publishBookmarks(Collection<Bookmark> bookmarks) {
+    public ListenableFuture<Void> publishBookmarks(final Collection<Bookmark> bookmarks) {
         final var iq = new Iq(Iq.Type.SET);
         final var privateStorage = iq.addExtension(new PrivateStorage());
-        final var storage = privateStorage.addExtension(new Storage());
-        for (final var bookmark : bookmarks) {
-            storage.addChild(bookmark);
-        }
+        privateStorage.addExtension(LegacyBookmarkManager.asStorage(bookmarks));
         return Futures.transform(
                 connection.sendIqPacket(iq), result -> null, MoreExecutors.directExecutor());
     }

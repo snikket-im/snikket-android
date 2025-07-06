@@ -341,6 +341,7 @@ public class DiscoManager extends AbstractManager {
         } else {
             features.add(Namespace.BOOKMARKS + "+notify");
         }
+        Log.d(Config.LOGTAG, "our features: " + features.build());
         return new ServiceDescription(
                 features.build(),
                 new ServiceDescription.Identity(BuildConfig.APP_NAME, "client", getIdentityType()));

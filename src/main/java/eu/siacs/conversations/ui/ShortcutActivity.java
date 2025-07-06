@@ -70,7 +70,7 @@ public class ShortcutActivity extends AbstractSearchableListItemActivity {
         for (final Account account : xmppConnectionService.getAccounts()) {
             if (account.isEnabled()) {
                 for (final Contact contact : account.getRoster().getContacts()) {
-                    if (contact.showInContactList() && contact.match(this, needle)) {
+                    if (contact.showInContactList() && contact.match(needle)) {
                         getListItems().add(contact);
                     }
                 }

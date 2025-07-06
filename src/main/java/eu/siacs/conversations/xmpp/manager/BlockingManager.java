@@ -117,6 +117,7 @@ public class BlockingManager extends AbstractManager {
         }
     }
 
+    // TODO create getBlocklistAsListItems
     public ImmutableSet<Jid> getBlocklist() {
         synchronized (this.blocklist) {
             return ImmutableSet.copyOf(this.blocklist);
@@ -150,7 +151,7 @@ public class BlockingManager extends AbstractManager {
             @NonNull final Blockable blockable,
             final boolean reportSpam,
             @Nullable final String serverMsgId) {
-        final var address = blockable.getBlockedJid();
+        final var address = blockable.getBlockedAddress();
         final var iq = new Iq(Iq.Type.SET);
         final var block = iq.addExtension(new Block());
         final var item = block.addExtension(new Item());
@@ -197,7 +198,7 @@ public class BlockingManager extends AbstractManager {
     }
 
     public void unblock(@NonNull final Blockable blockable) {
-        final var address = blockable.getBlockedJid();
+        final var address = blockable.getBlockedAddress();
         final var iq = new Iq(Iq.Type.SET);
         final var unblock = iq.addExtension(new Unblock());
         final var item = unblock.addExtension(new Item());

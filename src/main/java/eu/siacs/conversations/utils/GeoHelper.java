@@ -95,7 +95,7 @@ public class GeoHelper {
                 Contact contact = message.getContact();
                 if (contact != null) {
                     locationPluginIntent.putExtra("name", contact.getDisplayName());
-                    locationPluginIntent.putExtra("jid", contact.getJid().toString());
+                    locationPluginIntent.putExtra("jid", contact.getAddress().toString());
                 } else {
                     locationPluginIntent.putExtra(
                             "name", UIHelper.getDisplayedMucCounterpart(message.getCounterpart()));

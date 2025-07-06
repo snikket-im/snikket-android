@@ -52,8 +52,8 @@ public class RtpCapability {
         for (final String resource : presences.getPresencesMap().keySet()) {
             final var jid =
                     Strings.isNullOrEmpty(resource)
-                            ? contact.getJid().asBareJid()
-                            : contact.getJid().withResource(resource);
+                            ? contact.getAddress().asBareJid()
+                            : contact.getAddress().withResource(resource);
             final Capability capability = check(connection.getManager(DiscoManager.class).get(jid));
             if (capability == Capability.NONE) {
                 continue;
@@ -82,8 +82,8 @@ public class RtpCapability {
         for (final String resource : presences.getPresencesMap().keySet()) {
             final var jid =
                     Strings.isNullOrEmpty(resource)
-                            ? contact.getJid().asBareJid()
-                            : contact.getJid().withResource(resource);
+                            ? contact.getAddress().asBareJid()
+                            : contact.getAddress().withResource(resource);
             final Capability capability = check(connection.getManager(DiscoManager.class).get(jid));
             if (capability == Capability.VIDEO) {
                 result = capability;
@@ -109,9 +109,9 @@ public class RtpCapability {
                                                                 .getManager(DiscoManager.class)
                                                                 .get(
                                                                         Strings.isNullOrEmpty(p)
-                                                                                ? contact.getJid()
+                                                                                ? contact.getAddress()
                                                                                         .asBareJid()
-                                                                                : contact.getJid()
+                                                                                : contact.getAddress()
                                                                                         .withResource(
                                                                                                 p)))
                                                 != Capability.NONE),
@@ -121,8 +121,8 @@ public class RtpCapability {
                                             .getManager(DiscoManager.class)
                                             .get(
                                                     Strings.isNullOrEmpty(p)
-                                                            ? contact.getJid().asBareJid()
-                                                            : contact.getJid().withResource(p));
+                                                            ? contact.getAddress().asBareJid()
+                                                            : contact.getAddress().withResource(p));
                             return disco != null
                                     && disco.getFeatureStrings().contains(Namespace.JINGLE_MESSAGE);
                         })

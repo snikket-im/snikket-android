@@ -1,7 +1,5 @@
 package im.conversations.android.xmpp.model.roster;
 
-import com.google.common.collect.Collections2;
-import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
@@ -9,7 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
+import java.util.Set;
 
 @XmlElement
 public class Item extends Extension {
@@ -58,15 +56,13 @@ public class Item extends Extension {
         }
     }
 
-    public Collection<String> getGroups() {
-        return Collections2.filter(
-                Collections2.transform(getExtensions(Group.class), Element::getContent),
-                Objects::nonNull);
+    public Set<String> getGroups() {
+        return Group.getGroups(this.getExtensions(Group.class));
     }
 
     public void setGroups(final Collection<String> groups) {
         for (final String group : groups) {
-            this.addExtension(new Group());
+            this.addExtension(new Group(group));
         }
     }
 

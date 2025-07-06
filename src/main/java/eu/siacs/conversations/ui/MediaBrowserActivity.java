@@ -48,11 +48,14 @@ public class MediaBrowserActivity extends XmppActivity implements OnMediaLoaded 
     }
 
     public static void launch(Context context, Contact contact) {
-        launch(context, contact.getAccount(), contact.getJid().asBareJid().toString());
+        launch(context, contact.getAccount(), contact.getAddress().asBareJid().toString());
     }
 
     public static void launch(Context context, Conversation conversation) {
-        launch(context, conversation.getAccount(), conversation.getJid().asBareJid().toString());
+        launch(
+                context,
+                conversation.getAccount(),
+                conversation.getAddress().asBareJid().toString());
     }
 
     private static void launch(Context context, Account account, String jid) {

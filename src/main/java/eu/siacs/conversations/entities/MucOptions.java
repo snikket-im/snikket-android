@@ -167,7 +167,7 @@ public class MucOptions {
                     !identities.isEmpty()
                             ? Iterables.getFirst(identities, null).getIdentityName()
                             : null;
-            final Jid jid = conversation.getJid();
+            final Jid jid = conversation.getAddress();
             if (identityName != null && !identityName.equals(jid == null ? null : jid.getLocal())) {
                 return identityName;
             } else {
@@ -184,7 +184,7 @@ public class MucOptions {
     }
 
     public String getAvatar() {
-        return account.getRoster().getContact(conversation.getJid()).getAvatar();
+        return account.getRoster().getContact(conversation.getAddress()).getAvatar();
     }
 
     public boolean hasFeature(String feature) {
@@ -448,7 +448,7 @@ public class MucOptions {
     }
 
     public boolean isContactInRoom(Contact contact) {
-        return contact != null && findUserByRealJid(contact.getJid().asBareJid()) != null;
+        return contact != null && findUserByRealJid(contact.getAddress().asBareJid()) != null;
     }
 
     public boolean isUserInRoom(Jid jid) {
@@ -534,12 +534,12 @@ public class MucOptions {
     }
 
     private String getProposedNick() {
-        final Bookmark bookmark = this.conversation.getBookmark();
+        final var bookmark = this.conversation.getBookmark();
         if (bookmark != null) {
             // if we already have a bookmark we consider this the source of truth
             return getProposedNickPure();
         }
-        final var storedJid = conversation.getJid();
+        final var storedJid = conversation.getAddress();
         if (storedJid.isBareJid()) {
             return defaultNick(account);
         } else {
@@ -548,7 +548,7 @@ public class MucOptions {
     }
 
     public String getProposedNickPure() {
-        final Bookmark bookmark = this.conversation.getBookmark();
+        final var bookmark = this.conversation.getBookmark();
         final String bookmarkedNick =
                 normalize(account.getJid(), bookmark == null ? null : bookmark.getNick());
         if (bookmarkedNick != null) {
@@ -601,14 +601,6 @@ public class MucOptions {
 
     public void setOnRenameListener(OnRenameListener listener) {
         this.onRenameListener = listener;
-    }
-
-    public void setOffline() {
-        synchronized (users) {
-            this.users.clear();
-        }
-        this.error = Error.NO_RESPONSE;
-        this.isOnline = false;
     }
 
     public User getSelf() {
@@ -705,7 +697,7 @@ public class MucOptions {
 
     public Jid createJoinJid(String nick) {
         try {
-            return conversation.getJid().withResource(nick);
+            return conversation.getAddress().withResource(nick);
         } catch (final IllegalArgumentException e) {
             return null;
         }
@@ -730,12 +722,8 @@ public class MucOptions {
         }
     }
 
-    public void setPassword(String password) {
-        if (conversation.getBookmark() != null) {
-            conversation.getBookmark().setPassword(password);
-        } else {
-            this.password = password;
-        }
+    public void setPassword(final String password) {
+        this.password = password;
         conversation.setAttribute(Conversation.ATTRIBUTE_MUC_PASSWORD, password);
     }
 
@@ -787,7 +775,7 @@ public class MucOptions {
 
     public interface OnRenameListener extends OnEventListener {}
 
-    public static class User implements Comparable<User>, AvatarService.Avatarable {
+    public static class User implements Comparable<User>, AvatarService.Avatar {
         private Role role = Role.NONE;
         private Affiliation affiliation = Affiliation.NONE;
         private Jid realJid;

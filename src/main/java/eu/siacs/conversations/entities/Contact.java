@@ -1,7 +1,6 @@
 package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -17,11 +16,8 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import im.conversations.android.xmpp.model.stanza.Presence;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -181,47 +177,13 @@ public class Contact implements ListItem, Blockable {
         return this.photoUri;
     }
 
-    public Jid getJid() {
+    public Jid getAddress() {
         return jid;
     }
 
     @Override
-    public List<Tag> getTags(final Context context) {
-        final ArrayList<Tag> tags = new ArrayList<>();
-        for (final String group : getGroups(true)) {
-            tags.add(new Tag(group));
-        }
-        return tags;
-    }
-
-    public boolean match(Context context, String needle) {
-        if (TextUtils.isEmpty(needle)) {
-            return true;
-        }
-        needle = needle.toLowerCase(Locale.US).trim();
-        String[] parts = needle.split("\\s+");
-        if (parts.length > 1) {
-            for (String part : parts) {
-                if (!match(context, part)) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return jid.toString().contains(needle)
-                    || getDisplayName().toLowerCase(Locale.US).contains(needle)
-                    || matchInTag(context, needle);
-        }
-    }
-
-    private boolean matchInTag(Context context, String needle) {
-        needle = needle.toLowerCase(Locale.US);
-        for (Tag tag : getTags(context)) {
-            if (tag.getName().toLowerCase(Locale.US).contains(needle)) {
-                return true;
-            }
-        }
-        return false;
+    public Collection<Tag> getTags() {
+        return Tag.of(this.getGroups());
     }
 
     public ContentValues getContentValues() {
@@ -311,8 +273,8 @@ public class Contact implements ListItem, Blockable {
         this.systemAccount = lookupUri;
     }
 
-    public Collection<String> getGroups(final boolean unique) {
-        final Collection<String> groups = unique ? new HashSet<>() : new ArrayList<>();
+    public Collection<String> getGroups() {
+        final Collection<String> groups = new HashSet<>();
         for (int i = 0; i < this.groups.length(); ++i) {
             try {
                 groups.add(this.groups.getString(i));
@@ -429,7 +391,7 @@ public class Contact implements ListItem, Blockable {
     }
 
     public String getServer() {
-        return getJid().getDomain().toString();
+        return getAddress().getDomain().toString();
     }
 
     public boolean setAvatar(final String avatar) {
@@ -455,16 +417,16 @@ public class Contact implements ListItem, Blockable {
 
     @Override
     public boolean isDomainBlocked() {
-        return getAccount().isBlocked(this.getJid().getDomain());
+        return getAccount().isBlocked(this.getAddress().getDomain());
     }
 
     @Override
     @NonNull
-    public Jid getBlockedJid() {
+    public Jid getBlockedAddress() {
         if (isDomainBlocked()) {
-            return getJid().getDomain();
+            return getAddress().getDomain();
         } else {
-            return getJid();
+            return getAddress();
         }
     }
 

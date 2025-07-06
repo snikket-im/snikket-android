@@ -2,8 +2,6 @@ package eu.siacs.conversations.parser;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
@@ -131,34 +129,6 @@ public abstract class AbstractParser extends XmppConnection.Delegate {
             return null;
         }
         return item.findChildContent("data", "urn:xmpp:avatar:data");
-    }
-
-    public static MucOptions.User parseItem(final Conversation conference, final Element item) {
-        return parseItem(conference, item, null);
-    }
-
-    public static MucOptions.User parseItem(
-            final Conversation conference, Element item, Jid fullJid) {
-        final String local = conference.getJid().getLocal();
-        final String domain = conference.getJid().getDomain().toString();
-        String affiliation = item.getAttribute("affiliation");
-        String role = item.getAttribute("role");
-        String nick = item.getAttribute("nick");
-        if (nick != null && fullJid == null) {
-            try {
-                fullJid = Jid.of(local, domain, nick);
-            } catch (IllegalArgumentException e) {
-                fullJid = null;
-            }
-        }
-        final Jid realJid = item.getAttributeAsJid("jid");
-        MucOptions.User user = new MucOptions.User(conference.getMucOptions(), fullJid);
-        if (Jid.Invalid.isValid(realJid)) {
-            user.setRealJid(realJid);
-        }
-        // user.setAffiliation(affiliation);
-        // user.setRole(role);
-        return user;
     }
 
     public static String extractErrorMessage(final Element packet) {

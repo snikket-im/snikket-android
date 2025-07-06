@@ -15,7 +15,6 @@ import com.google.common.util.concurrent.SettableFuture;
 import de.gultsch.common.FutureMerger;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.MucOptions;
@@ -25,6 +24,7 @@ import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import im.conversations.android.model.ImmutableBookmark;
 import im.conversations.android.xmpp.Entity;
 import im.conversations.android.xmpp.IqErrorException;
 import im.conversations.android.xmpp.model.Extension;
@@ -54,6 +54,7 @@ import im.conversations.android.xmpp.model.vcard.update.VCardUpdate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,7 @@ public class MultiUserChatManager extends AbstractManager {
 
     private final Set<Conversation> inProgressConferenceJoins = new HashSet<>();
     private final Set<Conversation> inProgressConferencePings = new HashSet<>();
+    private final HashMap<Jid, MucOptions> states = new HashMap<>();
 
     public MultiUserChatManager(final XmppConnectionService service, XmppConnection connection) {
         super(service.getApplicationContext(), connection);
@@ -72,20 +74,20 @@ public class MultiUserChatManager extends AbstractManager {
     }
 
     public ListenableFuture<Void> join(final Conversation conversation) {
+        Log.d(Config.LOGTAG, "join(" + conversation.getAddress() + ")");
         return join(conversation, true);
     }
 
     private ListenableFuture<Void> join(
             final Conversation conversation, final boolean autoPushConfiguration) {
-        final var account = getAccount();
         synchronized (this.inProgressConferenceJoins) {
             this.inProgressConferenceJoins.add(conversation);
         }
         if (Config.MUC_LEAVE_BEFORE_JOIN) {
             unavailable(conversation);
         }
-        conversation.resetMucOptions();
-        conversation.getMucOptions().setAutoPushConfiguration(autoPushConfiguration);
+        resetState(conversation);
+        this.getOrCreateState(conversation).setAutoPushConfiguration(autoPushConfiguration);
         conversation.setHasMessagesLeftOnServer(false);
         final var disco = fetchDiscoInfo(conversation);
 
@@ -107,8 +109,7 @@ public class MultiUserChatManager extends AbstractManager {
                                 synchronized (this.inProgressConferenceJoins) {
                                     this.inProgressConferenceJoins.remove(conversation);
                                 }
-                                conversation
-                                        .getMucOptions()
+                                getOrCreateState(conversation)
                                         .setError(MucOptions.Error.SERVER_NOT_FOUND);
                                 service.updateConversationUi();
                                 return Futures.immediateFailedFuture(ex);
@@ -127,6 +128,31 @@ public class MultiUserChatManager extends AbstractManager {
                 MoreExecutors.directExecutor());
     }
 
+    public MucOptions getOrCreateState(final Conversation conversation) {
+        final var address = conversation.getAddress().asBareJid();
+        synchronized (this.states) {
+            final var existing = this.states.get(address);
+            if (existing != null) {
+                return existing;
+            }
+            final var fresh = new MucOptions(conversation);
+            this.states.put(address, fresh);
+            return fresh;
+        }
+    }
+
+    public MucOptions getState(final Jid address) {
+        synchronized (this.states) {
+            return this.states.get(address);
+        }
+    }
+
+    private void resetState(final Conversation conversation) {
+        synchronized (this.states) {
+            this.states.remove(conversation.getAddress().asBareJid());
+        }
+    }
+
     public ListenableFuture<Void> joinFollowingInvite(final Conversation conversation) {
         // TODO this special treatment is probably unnecessary; just always make sure the bookmark
         // exists
@@ -134,13 +160,19 @@ public class MultiUserChatManager extends AbstractManager {
                 join(conversation),
                 v -> {
                     // we used to do this only for private groups
-                    final Bookmark bookmark = conversation.getBookmark();
+                    final var bookmark =
+                            getManager(BookmarkManager.class)
+                                    .getBookmark(conversation.getAddress().asBareJid());
                     if (bookmark != null) {
-                        if (bookmark.autojoin()) {
+                        if (bookmark.isAutoJoin()) {
                             return null;
                         }
-                        bookmark.setAutojoin(true);
-                        getManager(BookmarkManager.class).create(bookmark);
+                        getManager(BookmarkManager.class)
+                                .create(
+                                        ImmutableBookmark.builder()
+                                                .from(bookmark)
+                                                .isAutoJoin(true)
+                                                .build());
                     } else {
                         getManager(BookmarkManager.class).save(conversation, null);
                     }
@@ -150,9 +182,11 @@ public class MultiUserChatManager extends AbstractManager {
     }
 
     private void checkConfigurationSendPresenceFetchHistory(final Conversation conversation) {
-
-        Account account = conversation.getAccount();
-        final MucOptions mucOptions = conversation.getMucOptions();
+        final Account account = conversation.getAccount();
+        final MucOptions mucOptions = getOrCreateState(conversation);
+        Log.d(
+                Config.LOGTAG,
+                "checkConfigurationSendPresenceFetchHistory(" + conversation.getAddress() + ")");
 
         if (mucOptions.nonanonymous()
                 && !mucOptions.membersOnly()
@@ -188,7 +222,7 @@ public class MultiUserChatManager extends AbstractManager {
             history.setSince(conversation.getLastMessageTransmitted().getTimestamp());
         }
         available(joinJid, mucOptions.nonanonymous(), x);
-        if (!joinJid.equals(conversation.getJid())) {
+        if (!joinJid.equals(conversation.getAddress())) {
             conversation.setContactJid(joinJid);
             getDatabase().updateConversation(conversation);
         }
@@ -278,9 +312,8 @@ public class MultiUserChatManager extends AbstractManager {
     }
 
     public void leave(final Conversation conversation) {
-        final var mucOptions = conversation.getMucOptions();
-        mucOptions.setOffline();
-        getManager(DiscoManager.class).clear(conversation.getJid().asBareJid());
+        getManager(DiscoManager.class).clear(conversation.getAddress().asBareJid());
+        resetState(conversation);
         unavailable(conversation);
     }
 
@@ -318,11 +351,11 @@ public class MultiUserChatManager extends AbstractManager {
                         + " to "
                         + user.getAffiliation()
                         + " in "
-                        + conversation.getJid().asBareJid());
+                        + conversation.getAddress().asBareJid());
         if (user.realJidMatchesAccount()) {
             return;
         }
-        final var mucOptions = conversation.getMucOptions();
+        final var mucOptions = getOrCreateState(conversation);
         final boolean isNew = mucOptions.updateUser(user);
         final var avatarService = this.service.getAvatarService();
         if (Strings.isNullOrEmpty(mucOptions.getAvatar())) {
@@ -375,7 +408,8 @@ public class MultiUserChatManager extends AbstractManager {
     }
 
     public ListenableFuture<Void> fetchDiscoInfo(final Conversation conversation) {
-        final var address = conversation.getJid().asBareJid();
+        final var address = conversation.getAddress().asBareJid();
+        Log.d(Config.LOGTAG, "fetchDiscoInfo(" + address + ")");
         final var future =
                 connection.getManager(DiscoManager.class).info(Entity.discoItem(address), null);
         return Futures.transform(
@@ -389,18 +423,20 @@ public class MultiUserChatManager extends AbstractManager {
 
     private void setDiscoInfo(final Conversation conversation, final InfoQuery result) {
         final var account = conversation.getAccount();
-        final var address = conversation.getJid().asBareJid();
+        final var address = conversation.getAddress().asBareJid();
         final var avatarHash =
                 result.getServiceDiscoveryExtension(
                         Namespace.MUC_ROOM_INFO, "muc#roominfo_avatarhash");
         if (VCardUpdate.isValidSHA1(avatarHash)) {
             connection.getManager(AvatarManager.class).handleVCardUpdate(address, avatarHash);
         }
-        final MucOptions mucOptions = conversation.getMucOptions();
-        final Bookmark bookmark = conversation.getBookmark();
+        final MucOptions mucOptions = getOrCreateState(conversation);
+        final var bookmark =
+                getManager(BookmarkManager.class)
+                        .getBookmark(conversation.getAddress().asBareJid());
         final boolean sameBefore =
                 StringUtils.equals(
-                        bookmark == null ? null : bookmark.getBookmarkName(), mucOptions.getName());
+                        bookmark == null ? null : bookmark.getName(), mucOptions.getName());
 
         final var hadOccupantId = mucOptions.occupantId();
         if (mucOptions.updateConfiguration(result)) {
@@ -408,7 +444,7 @@ public class MultiUserChatManager extends AbstractManager {
                     Config.LOGTAG,
                     account.getJid().asBareJid()
                             + ": muc configuration changed for "
-                            + conversation.getJid().asBareJid());
+                            + conversation.getAddress().asBareJid());
             getDatabase().updateConversation(conversation);
         }
 
@@ -425,16 +461,19 @@ public class MultiUserChatManager extends AbstractManager {
             this.available(me, mucOptions.nonanonymous());
         }
 
-        if (bookmark != null && (sameBefore || bookmark.getBookmarkName() == null)) {
-            if (bookmark.setBookmarkName(StringUtils.nullOnEmpty(mucOptions.getName()))) {
-                getManager(BookmarkManager.class).create(bookmark);
-            }
+        if (bookmark != null && (sameBefore || Strings.isNullOrEmpty(bookmark.getName()))) {
+            final var modifiedBookmark =
+                    ImmutableBookmark.builder()
+                            .from(bookmark)
+                            .name(Strings.emptyToNull(mucOptions.getName()))
+                            .build();
+            getManager(BookmarkManager.class).create(modifiedBookmark);
         }
         this.service.updateConversationUi();
     }
 
     public void resendPresence(final Conversation conversation) {
-        final MucOptions mucOptions = conversation.getMucOptions();
+        final MucOptions mucOptions = getOrCreateState(conversation);
         if (mucOptions.online()) {
             available(mucOptions.getSelf().getFullJid(), mucOptions.nonanonymous());
         }
@@ -455,7 +494,7 @@ public class MultiUserChatManager extends AbstractManager {
     }
 
     public void unavailable(final Conversation conversation) {
-        final var mucOptions = conversation.getMucOptions();
+        final var mucOptions = getOrCreateState(conversation);
         getManager(PresenceManager.class).unavailable(mucOptions.getSelf().getFullJid());
     }
 
@@ -469,7 +508,7 @@ public class MultiUserChatManager extends AbstractManager {
 
     public ListenableFuture<Void> pushConfiguration(
             final Conversation conversation, final Map<String, Object> input) {
-        final var address = conversation.getJid().asBareJid();
+        final var address = conversation.getAddress().asBareJid();
         final var configuration = modifyBestInteroperability(input);
 
         if (configuration.get("muc#roomconfig_whois") instanceof String whois
@@ -530,14 +569,14 @@ public class MultiUserChatManager extends AbstractManager {
     }
 
     private void setMembers(final Conversation conversation, final List<MucOptions.User> users) {
+        final var mucOptions = this.getOrCreateState(conversation);
         for (final var user : users) {
             if (user.realJidMatchesAccount()) {
                 continue;
             }
-            boolean isNew = conversation.getMucOptions().updateUser(user);
+            boolean isNew = mucOptions.updateUser(user);
             fetchDeviceIdsIfNeeded(isNew, user);
         }
-        final var mucOptions = conversation.getMucOptions();
         final var members = mucOptions.getMembers(true);
         final var cryptoTargets = conversation.getAcceptedCryptoTargets();
         boolean changed = false;
@@ -568,7 +607,7 @@ public class MultiUserChatManager extends AbstractManager {
     private ListenableFuture<Collection<MucOptions.User>> fetchAffiliations(
             final Conversation conversation, final Affiliation affiliation) {
         final var iq = new Iq(Iq.Type.GET);
-        iq.setTo(conversation.getJid().asBareJid());
+        iq.setTo(conversation.getAddress().asBareJid());
         iq.addExtension(new MucAdmin()).addExtension(new Item()).setAffiliation(affiliation);
         return Futures.transform(
                 this.connection.sendIqPacket(iq),
@@ -585,12 +624,10 @@ public class MultiUserChatManager extends AbstractManager {
 
     public ListenableFuture<Void> changeUsername(
             final Conversation conversation, final String username) {
-
-        // TODO when online send normal available presence
-        // TODO when not online do a normal join
-
-        final Bookmark bookmark = conversation.getBookmark();
-        final MucOptions options = conversation.getMucOptions();
+        final var bookmark =
+                getManager(BookmarkManager.class)
+                        .getBookmark(conversation.getAddress().asBareJid());
+        final MucOptions options = getOrCreateState(conversation);
         final Jid joinJid = options.createJoinJid(username);
         if (joinJid == null) {
             return Futures.immediateFailedFuture(new IllegalArgumentException());
@@ -621,17 +658,17 @@ public class MultiUserChatManager extends AbstractManager {
                         Config.LOGTAG,
                         getAccount().getJid().asBareJid()
                                 + ": removing nick from bookmark for "
-                                + bookmark.getJid());
-                bookmark.setNick(null);
-                getManager(BookmarkManager.class).create(bookmark);
+                                + bookmark.getAddress());
+                getManager(BookmarkManager.class)
+                        .create(ImmutableBookmark.builder().from(bookmark).nick(null).build());
             }
             return renameFuture;
         } else {
             conversation.setContactJid(joinJid);
             getDatabase().updateConversation(conversation);
             if (bookmark != null) {
-                bookmark.setNick(username);
-                getManager(BookmarkManager.class).create(bookmark);
+                getManager(BookmarkManager.class)
+                        .create(ImmutableBookmark.builder().from(bookmark).nick(username).build());
             }
             join(conversation);
             return Futures.immediateVoidFuture();
@@ -639,7 +676,7 @@ public class MultiUserChatManager extends AbstractManager {
     }
 
     public void checkMucRequiresRename(final Conversation conversation) {
-        final var options = conversation.getMucOptions();
+        final var options = getOrCreateState(conversation);
         if (!options.online()) {
             return;
         }
@@ -658,11 +695,18 @@ public class MultiUserChatManager extends AbstractManager {
     }
 
     public void setPassword(final Conversation conversation, final String password) {
-        final var bookmark = conversation.getBookmark();
-        conversation.getMucOptions().setPassword(password);
+        final var bookmark =
+                getManager(BookmarkManager.class)
+                        .getBookmark(conversation.getAddress().asBareJid());
+        this.getOrCreateState(conversation).setPassword(password);
         if (bookmark != null) {
-            bookmark.setAutojoin(true);
-            getManager(BookmarkManager.class).create(bookmark);
+            getManager(BookmarkManager.class)
+                    .create(
+                            ImmutableBookmark.builder()
+                                    .from(bookmark)
+                                    .isAutoJoin(true)
+                                    .password(password)
+                                    .build());
         }
         getDatabase().updateConversation(conversation);
         this.join(conversation);
@@ -688,8 +732,8 @@ public class MultiUserChatManager extends AbstractManager {
                 return;
             }
         }
-        final Jid self = conversation.getMucOptions().getSelf().getFullJid();
-        final var future = getManager(PingManager.class).ping(self);
+        final Jid self = this.getOrCreateState(conversation).getSelf().getFullJid();
+        final var future = this.getManager(PingManager.class).ping(self);
         Futures.addCallback(
                 future,
                 new FutureCallback<>() {
@@ -757,7 +801,7 @@ public class MultiUserChatManager extends AbstractManager {
             final Conversation conversation,
             final Affiliation affiliation,
             final Collection<Jid> users) {
-        final var address = conversation.getJid().asBareJid();
+        final var address = conversation.getAddress().asBareJid();
         final var iq = new Iq(Iq.Type.SET);
         iq.setTo(address);
         final var admin = iq.addExtension(new MucAdmin());
@@ -773,7 +817,7 @@ public class MultiUserChatManager extends AbstractManager {
                     // is this a work around for some servers not sending notifications when
                     // changing the affiliation of people not in the room? this would explain this
                     // firing only when getRole == None
-                    final var mucOptions = conversation.getMucOptions();
+                    final var mucOptions = getOrCreateState(conversation);
                     for (final var user : users) {
                         mucOptions.changeAffiliation(user, affiliation);
                     }
@@ -804,7 +848,7 @@ public class MultiUserChatManager extends AbstractManager {
     public void setSubject(final Conversation conversation, final String subject) {
         final var message = new Message();
         message.setType(Message.Type.GROUPCHAT);
-        message.setTo(conversation.getJid().asBareJid());
+        message.setTo(conversation.getAddress().asBareJid());
         message.addExtension(new Subject(subject));
         connection.sendMessagePacket(message);
     }
@@ -816,15 +860,15 @@ public class MultiUserChatManager extends AbstractManager {
                         + ": inviting "
                         + address
                         + " to "
-                        + conversation.getJid().asBareJid());
+                        + conversation.getAddress().asBareJid());
         final MucOptions.User user =
-                conversation.getMucOptions().findUserByRealJid(address.asBareJid());
+                getOrCreateState(conversation).findUserByRealJid(address.asBareJid());
         if (user == null || user.getAffiliation() == Affiliation.OUTCAST) {
             this.setAffiliation(conversation, Affiliation.NONE, address);
         }
 
         final var packet = new Message();
-        packet.setTo(conversation.getJid().asBareJid());
+        packet.setTo(conversation.getAddress().asBareJid());
         final var x = packet.addExtension(new MucUser());
         final var invite = x.addExtension(new Invite());
         invite.setTo(address.asBareJid());
@@ -835,8 +879,8 @@ public class MultiUserChatManager extends AbstractManager {
         final var message = new Message();
         message.setTo(address);
         final var directInvite = message.addExtension(new DirectInvite());
-        directInvite.setJid(conversation.getJid().asBareJid());
-        final var password = conversation.getMucOptions().getPassword();
+        directInvite.setJid(conversation.getAddress().asBareJid());
+        final var password = getOrCreateState(conversation).getPassword();
         if (password != null) {
             directInvite.setPassword(password);
         }
@@ -918,7 +962,7 @@ public class MultiUserChatManager extends AbstractManager {
 
     private static Jid ofNick(final Conversation conversation, final String nick) {
         try {
-            return conversation.getJid().withResource(nick);
+            return conversation.getAddress().withResource(nick);
         } catch (final IllegalArgumentException e) {
             return null;
         }

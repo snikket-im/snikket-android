@@ -157,6 +157,7 @@ public class RosterManager extends AbstractManager implements Roster {
                 contact.getOption(Contact.Options.TO) && contact.getOption(Contact.Options.FROM);
         if (!contact.getOption(Contact.Options.DIRTY_PUSH)) {
             contact.setServerName(name);
+            // TODO use item.getGroups()
             contact.parseGroupsFromElement(item);
         }
         if (subscription == Item.Subscription.REMOVE) {
@@ -177,10 +178,10 @@ public class RosterManager extends AbstractManager implements Roster {
                     Config.LOGTAG,
                     account.getJid().asBareJid()
                             + ": gained mutual presence subscription with "
-                            + contact.getJid());
+                            + contact.getAddress());
             final var axolotlService = account.getAxolotlService();
             if (axolotlService != null) {
-                axolotlService.clearErrorsInFetchStatusMap(contact.getJid());
+                axolotlService.clearErrorsInFetchStatusMap(contact.getAddress());
             }
         }
         service.getAvatarService().clear(contact);
@@ -286,7 +287,7 @@ public class RosterManager extends AbstractManager implements Roster {
     }
 
     public void addRosterItem(final Contact contact, final String preAuth) {
-        final var address = contact.getJid().asBareJid();
+        final var address = contact.getAddress().asBareJid();
         contact.resetOption(Contact.Options.DIRTY_DELETE);
         contact.setOption(Contact.Options.DIRTY_PUSH);
         // sync the 'dirty push' flag to disk in case we are offline
@@ -303,7 +304,7 @@ public class RosterManager extends AbstractManager implements Roster {
         if (serverName != null) {
             item.setItemName(serverName);
         }
-        item.setGroups(contact.getGroups(false));
+        item.setGroups(contact.getGroups());
         final var future = this.connection.sendIqPacket(iq);
         Futures.addCallback(
                 future,
@@ -329,15 +330,15 @@ public class RosterManager extends AbstractManager implements Roster {
                 },
                 MoreExecutors.directExecutor());
         if (sendUpdates) {
-            getManager(PresenceManager.class).subscribed(contact.getJid().asBareJid());
+            getManager(PresenceManager.class).subscribed(contact.getAddress().asBareJid());
         }
         if (ask) {
-            getManager(PresenceManager.class).subscribe(contact.getJid().asBareJid(), preAuth);
+            getManager(PresenceManager.class).subscribe(contact.getAddress().asBareJid(), preAuth);
         }
     }
 
     public void deleteRosterItem(final Contact contact) {
-        final var address = contact.getJid().asBareJid();
+        final var address = contact.getAddress().asBareJid();
         contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
         contact.resetOption(Contact.Options.DIRTY_PUSH);
         contact.setOption(Contact.Options.DIRTY_DELETE);

@@ -159,7 +159,7 @@ public class MessageGenerator extends AbstractGenerator {
                 conversation.getMode() == Conversation.MODE_MULTI
                         ? im.conversations.android.xmpp.model.stanza.Message.Type.GROUPCHAT
                         : im.conversations.android.xmpp.model.stanza.Message.Type.CHAT);
-        packet.setTo(conversation.getJid().asBareJid());
+        packet.setTo(conversation.getAddress().asBareJid());
         packet.setFrom(account.getJid());
         packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));
         packet.addExtension(new NoStore());

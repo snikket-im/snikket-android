@@ -167,7 +167,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
     public void preVerifyFingerprint(Contact contact, String fingerprint) {
         axolotlStore.preVerifyFingerprint(
-                contact.getAccount(), contact.getJid().asBareJid().toString(), fingerprint);
+                contact.getAccount(), contact.getAddress().asBareJid().toString(), fingerprint);
     }
 
     public void preVerifyFingerprint(Account account, String fingerprint) {
@@ -236,7 +236,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     }
 
     public Collection<XmppAxolotlSession> findSessionsForContact(Contact contact) {
-        SignalProtocolAddress contactAddress = getAddressForJid(contact.getJid());
+        SignalProtocolAddress contactAddress = getAddressForJid(contact.getAddress());
         ArrayList<XmppAxolotlSession> s =
                 new ArrayList<>(this.sessions.getAll(contactAddress.getName()).values());
         Collections.sort(s);
@@ -970,7 +970,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         final List<Jid> jids;
         if (conversation.getMode() == Conversation.MODE_SINGLE) {
             jids = new ArrayList<>();
-            jids.add(conversation.getJid().asBareJid());
+            jids.add(conversation.getAddress().asBareJid());
         } else {
             jids = conversation.getMucOptions().getMembers(false);
         }

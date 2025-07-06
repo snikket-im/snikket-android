@@ -20,7 +20,6 @@ import androidx.core.content.res.ResourcesCompat;
 import com.google.common.base.Strings;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
@@ -31,6 +30,8 @@ import eu.siacs.conversations.entities.RawBlockable;
 import eu.siacs.conversations.entities.Room;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
+import im.conversations.android.model.Bookmark;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -66,23 +67,23 @@ public class AvatarService {
         return (int) (SYSTEM_UI_AVATAR_SIZE * context.getResources().getDisplayMetrics().density);
     }
 
-    public Bitmap get(final Avatarable avatarable, final int size, final boolean cachedOnly) {
-        if (avatarable instanceof Account a) {
+    public Bitmap get(final Avatar avatar, final int size, final boolean cachedOnly) {
+        if (avatar instanceof Account a) {
             return get(a, size, cachedOnly);
-        } else if (avatarable instanceof Conversation c) {
+        } else if (avatar instanceof Conversation c) {
             return get(c, size, cachedOnly);
-        } else if (avatarable instanceof Message m) {
+        } else if (avatar instanceof Message m) {
             return get(m, size, cachedOnly);
-        } else if (avatarable instanceof ListItem li) {
+        } else if (avatar instanceof ListItem li) {
             return get(li, size, cachedOnly);
-        } else if (avatarable instanceof MucOptions.User u) {
+        } else if (avatar instanceof MucOptions.User u) {
             return get(u, size, cachedOnly);
-        } else if (avatarable instanceof Room r) {
+        } else if (avatar instanceof Room r) {
             return get(r, size, cachedOnly);
         }
         throw new AssertionError(
                 "AvatarService does not know how to generate avatar from "
-                        + avatarable.getClass().getName());
+                        + avatar.getClass().getName());
     }
 
     private Bitmap get(final Room result, final int size, final boolean cacheOnly) {
@@ -123,7 +124,7 @@ public class AvatarService {
             avatar =
                     get(
                             contact.getDisplayName(),
-                            contact.getJid().asBareJid().toString(),
+                            contact.getAddress().asBareJid().toString(),
                             size,
                             false);
         }
@@ -264,7 +265,7 @@ public class AvatarService {
         for (final Conversation conversation :
                 mXmppConnectionService.findAllConferencesWith(contact)) {
             final var mucOptions = conversation.getMucOptions();
-            final var user = mucOptions.findUserByRealJid(contact.getJid().asBareJid());
+            final var user = mucOptions.findUserByRealJid(contact.getAddress().asBareJid());
             if (user != null) {
                 clear(user);
             }
@@ -283,7 +284,7 @@ public class AvatarService {
                 + '\0'
                 + contact.getAccount().getJid().asBareJid()
                 + '\0'
-                + emptyOnNull(contact.getJid())
+                + emptyOnNull(contact.getAddress())
                 + '\0'
                 + size;
     }
@@ -309,14 +310,19 @@ public class AvatarService {
 
     public Bitmap get(ListItem item, int size, boolean cachedOnly) {
         if (item instanceof RawBlockable) {
-            return get(item.getDisplayName(), item.getJid().toString(), size, cachedOnly);
+            return get(item.getDisplayName(), item.getAddress().toString(), size, cachedOnly);
         } else if (item instanceof Contact contact) {
             return get(contact, size, cachedOnly);
         } else if (item instanceof Bookmark bookmark) {
-            if (bookmark.getConversation() != null) {
-                return get(bookmark.getConversation(), size, cachedOnly);
+            final MucOptions mucOptions =
+                    bookmark.getAccount()
+                            .getXmppConnection()
+                            .getManager(MultiUserChatManager.class)
+                            .getState(bookmark.getAddress().asBareJid());
+            if (mucOptions != null) {
+                return get(mucOptions, size, cachedOnly);
             } else {
-                Jid jid = bookmark.getJid();
+                Jid jid = bookmark.getAddress();
                 Account account = bookmark.getAccount();
                 Contact contact = jid == null ? null : account.getRoster().getContact(jid);
                 if (contact != null && contact.getAvatar() != null) {
@@ -326,7 +332,8 @@ public class AvatarService {
                 return get(bookmark.getDisplayName(), seed, size, cachedOnly);
             }
         } else {
-            String seed = item.getJid() != null ? item.getJid().asBareJid().toString() : null;
+            String seed =
+                    item.getAddress() != null ? item.getAddress().asBareJid().toString() : null;
             return get(item.getDisplayName(), seed, size, cachedOnly);
         }
     }
@@ -360,13 +367,13 @@ public class AvatarService {
                     bitmap =
                             getImpl(
                                     c.getName().toString(),
-                                    c.getJid().asBareJid().toString(),
+                                    c.getAddress().asBareJid().toString(),
                                     size);
                 } else {
                     bitmap = getImpl(users, size);
                 }
             } else {
-                bitmap = getImpl(CHANNEL_SYMBOL, c.getJid().asBareJid().toString(), size);
+                bitmap = getImpl(CHANNEL_SYMBOL, c.getAddress().asBareJid().toString(), size);
             }
         }
 
@@ -635,7 +642,7 @@ public class AvatarService {
             }
         }
         if (contact != null) {
-            String seed = contact.getJid().asBareJid().toString();
+            String seed = contact.getAddress().asBareJid().toString();
             drawTile(canvas, contact.getDisplayName(), seed, left, top, right, bottom);
         } else {
             String seed =
@@ -694,18 +701,17 @@ public class AvatarService {
         return false;
     }
 
-    private boolean drawTile(
+    private void drawTile(
             Canvas canvas, Bitmap bm, int dstleft, int dsttop, int dstright, int dstbottom) {
         Rect dst = new Rect(dstleft, dsttop, dstright, dstbottom);
         canvas.drawBitmap(bm, null, dst, null);
-        return true;
     }
 
     private static String emptyOnNull(@Nullable Jid value) {
         return value == null ? "" : value.toString();
     }
 
-    public interface Avatarable {
+    public interface Avatar {
         @ColorInt
         int getAvatarBackgroundColor();
 

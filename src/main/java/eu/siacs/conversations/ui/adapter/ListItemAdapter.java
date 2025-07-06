@@ -75,7 +75,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
             Log.d(Config.LOGTAG, "item " + item.getDisplayName() + " is activated");
         }
         // view.setBackground(StyledAttributes.getDrawable(view.getContext(),R.attr.list_item_background));
-        final List<ListItem.Tag> tags = item.getTags(activity);
+        final var tags = item.getTags();
         final boolean hasMetaTags;
         if (item instanceof Contact contact) {
             hasMetaTags =
@@ -136,7 +136,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
             }
             viewHolder.flowWidget.setReferencedIds(Ints.toArray(viewIdBuilder.build()));
         }
-        final Jid jid = item.getJid();
+        final Jid jid = item.getAddress();
         if (jid != null) {
             viewHolder.jid.setVisibility(View.VISIBLE);
             viewHolder.jid.setText(IrregularUnicodeDetector.style(activity, jid));

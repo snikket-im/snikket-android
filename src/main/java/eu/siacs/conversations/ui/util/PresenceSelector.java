@@ -33,15 +33,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Pair;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -49,30 +41,46 @@ import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PresenceSelector {
 
-    public static void showPresenceSelectionDialog(Activity activity, final Conversation conversation, final OnPresenceSelected listener) {
+    public static void showPresenceSelectionDialog(
+            Activity activity, final Conversation conversation, final OnPresenceSelected listener) {
         final Contact contact = conversation.getContact();
         final String[] resourceArray = contact.getPresences().toResourceArray();
-        showPresenceSelectionDialog(activity, contact, resourceArray, fullJid -> {
-            conversation.setNextCounterpart(fullJid);
-            listener.onPresenceSelected();
-        });
+        showPresenceSelectionDialog(
+                activity,
+                contact,
+                resourceArray,
+                fullJid -> {
+                    conversation.setNextCounterpart(fullJid);
+                    listener.onPresenceSelected();
+                });
     }
 
-    public static void selectFullJidForDirectRtpConnection(final Activity activity, final Contact contact, final RtpCapability.Capability required, final OnFullJidSelected onFullJidSelected) {
+    public static void selectFullJidForDirectRtpConnection(
+            final Activity activity,
+            final Contact contact,
+            final RtpCapability.Capability required,
+            final OnFullJidSelected onFullJidSelected) {
         final String[] resources = RtpCapability.filterPresences(contact, required);
         if (resources.length == 0) {
-            Toast.makeText(activity,R.string.rtp_state_contact_offline,Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, R.string.rtp_state_contact_offline, Toast.LENGTH_LONG).show();
         } else if (resources.length == 1) {
-            onFullJidSelected.onFullJidSelected(contact.getJid().withResource(resources[0]));
+            onFullJidSelected.onFullJidSelected(contact.getAddress().withResource(resources[0]));
         } else {
             showPresenceSelectionDialog(activity, contact, resources, onFullJidSelected);
         }
     }
 
-    private static void showPresenceSelectionDialog(final Activity activity, final Contact contact, final String[] resourceArray, final OnFullJidSelected onFullJidSelected) {
+    private static void showPresenceSelectionDialog(
+            final Activity activity,
+            final Contact contact,
+            final String[] resourceArray,
+            final OnFullJidSelected onFullJidSelected) {
         final Presences presences = contact.getPresences();
         final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
         builder.setTitle(activity.getString(R.string.choose_presence));
@@ -96,7 +104,13 @@ public class PresenceSelector {
                             || CryptoHelper.UUID_PATTERN.matcher(resource).matches()) {
                         readableIdentities[i] = translateType(activity, type) + "  (" + name + ")";
                     } else {
-                        readableIdentities[i] = translateType(activity, type) + " (" + name + " / " + resource + ")";
+                        readableIdentities[i] =
+                                translateType(activity, type)
+                                        + " ("
+                                        + name
+                                        + " / "
+                                        + resource
+                                        + ")";
                     }
                 } else {
                     readableIdentities[i] = translateType(activity, type) + " (" + resource + ")";
@@ -105,21 +119,22 @@ public class PresenceSelector {
                 readableIdentities[i] = resource;
             }
         }
-        builder.setSingleChoiceItems(readableIdentities,
+        builder.setSingleChoiceItems(
+                readableIdentities,
                 selectedResource.get(),
                 (dialog, which) -> selectedResource.set(which));
         builder.setNegativeButton(R.string.cancel, null);
         builder.setPositiveButton(
                 R.string.ok,
-                (dialog, which) -> onFullJidSelected.onFullJidSelected(
-                        getNextCounterpart(contact, resourceArray[selectedResource.get()])
-                )
-        );
+                (dialog, which) ->
+                        onFullJidSelected.onFullJidSelected(
+                                getNextCounterpart(
+                                        contact, resourceArray[selectedResource.get()])));
         builder.create().show();
     }
 
     public static Jid getNextCounterpart(final Contact contact, final String resource) {
-        return getNextCounterpart(contact.getJid(), resource);
+        return getNextCounterpart(contact.getAddress(), resource);
     }
 
     public static Jid getNextCounterpart(final Jid jid, final String resource) {
@@ -130,17 +145,22 @@ public class PresenceSelector {
         }
     }
 
-    public static void warnMutualPresenceSubscription(final Activity activity, final Conversation conversation, final OnPresenceSelected listener) {
+    public static void warnMutualPresenceSubscription(
+            final Activity activity,
+            final Conversation conversation,
+            final OnPresenceSelected listener) {
         final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
-        builder.setTitle(conversation.getContact().getJid().toString());
+        builder.setTitle(conversation.getContact().getAddress().toString());
         builder.setMessage(R.string.without_mutual_presence_updates);
         builder.setNegativeButton(R.string.cancel, null);
-        builder.setPositiveButton(R.string.ignore, (dialog, which) -> {
-            conversation.setNextCounterpart(null);
-            if (listener != null) {
-                listener.onPresenceSelected();
-            }
-        });
+        builder.setPositiveButton(
+                R.string.ignore,
+                (dialog, which) -> {
+                    conversation.setNextCounterpart(null);
+                    if (listener != null) {
+                        listener.onPresenceSelected();
+                    }
+                });
         builder.create().show();
     }
 

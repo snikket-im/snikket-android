@@ -9,9 +9,9 @@ public interface Blockable {
     boolean isDomainBlocked();
 
     @NonNull
-    Jid getBlockedJid();
+    Jid getBlockedAddress();
 
-    Jid getJid();
+    Jid getAddress();
 
     Account getAccount();
 }

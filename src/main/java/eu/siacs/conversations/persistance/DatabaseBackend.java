@@ -1306,7 +1306,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                         selectionArgs);
         while (cursor.moveToNext()) {
             final Conversation conversation = Conversation.fromCursor(cursor);
-            if (conversation.getJid() instanceof Jid.Invalid) {
+            if (conversation.getAddress() instanceof Jid.Invalid) {
                 continue;
             }
             list.add(conversation);
@@ -1669,7 +1669,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             }
             cursor.moveToFirst();
             final Conversation conversation = Conversation.fromCursor(cursor);
-            if (conversation.getJid() instanceof Jid.Invalid) {
+            if (conversation.getAddress() instanceof Jid.Invalid) {
                 return null;
             }
             return conversation;
@@ -1702,7 +1702,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             }
             cursor.moveToFirst();
             final Conversation conversation = Conversation.fromCursor(cursor);
-            if (conversation.getJid() instanceof Jid.Invalid) {
+            if (conversation.getAddress() instanceof Jid.Invalid) {
                 return null;
             }
             conversation.setAccount(account);
@@ -1819,7 +1819,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 final var contact = Contact.fromCursor(cursor);
                 if (contact != null) {
                     contact.setAccount(account);
-                    builder.put(contact.getJid(), contact);
+                    builder.put(contact.getAddress(), contact);
                 }
             }
         }
@@ -1838,7 +1838,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 db.insert(Contact.TABLENAME, null, contact.getContentValues());
             } else {
                 String where = Contact.ACCOUNT + "=? AND " + Contact.JID + "=?";
-                String[] whereArgs = {account.getUuid(), contact.getJid().toString()};
+                String[] whereArgs = {account.getUuid(), contact.getAddress().toString()};
                 db.delete(Contact.TABLENAME, where, whereArgs);
             }
         }
@@ -1865,7 +1865,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 "deleted "
                         + num
                         + " messages for "
-                        + conversation.getJid().asBareJid()
+                        + conversation.getAddress().asBareJid()
                         + " in "
                         + (SystemClock.elapsedRealtime() - start)
                         + "ms");

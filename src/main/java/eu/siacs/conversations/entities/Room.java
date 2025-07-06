@@ -11,7 +11,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 
-public class Room implements AvatarService.Avatarable, Comparable<Room> {
+public class Room implements AvatarService.Avatar, Comparable<Room> {
 
     public final String address;
     public final String name;

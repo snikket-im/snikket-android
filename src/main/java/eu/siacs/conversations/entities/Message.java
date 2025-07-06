@@ -31,7 +31,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import org.json.JSONException;
 
-public class Message extends AbstractEntity implements AvatarService.Avatarable {
+public class Message extends AbstractEntity implements AvatarService.Avatar {
 
     public static final String TABLENAME = "messages";
 
@@ -137,7 +137,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 conversation,
                 java.util.UUID.randomUUID().toString(),
                 conversation.getUuid(),
-                conversation.getJid() == null ? null : conversation.getJid().asBareJid(),
+                conversation.getAddress() == null ? null : conversation.getAddress().asBareJid(),
                 null,
                 body,
                 System.currentTimeMillis(),
@@ -166,7 +166,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 conversation,
                 java.util.UUID.randomUUID().toString(),
                 conversation.getUuid(),
-                conversation.getJid() == null ? null : conversation.getJid().asBareJid(),
+                conversation.getAddress() == null ? null : conversation.getAddress().asBareJid(),
                 null,
                 null,
                 System.currentTimeMillis(),

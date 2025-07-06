@@ -38,7 +38,7 @@ public class MessageAcknowledgedProcessor extends XmppConnection.Delegate
 
         for (final Conversation conversation : service.getConversations()) {
             if (conversation.getAccount() == getAccount()
-                    && conversation.getJid().asBareJid().equals(bare)) {
+                    && conversation.getAddress().asBareJid().equals(bare)) {
                 final Message message = conversation.findUnsentMessageWithUuid(id);
                 if (message != null) {
                     message.setStatus(Message.STATUS_SEND);

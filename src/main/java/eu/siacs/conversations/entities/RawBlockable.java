@@ -1,13 +1,10 @@
 package eu.siacs.conversations.entities;
 
-import android.content.Context;
-import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class RawBlockable implements ListItem, Blockable {
 
@@ -31,7 +28,7 @@ public class RawBlockable implements ListItem, Blockable {
 
     @Override
     @NonNull
-    public Jid getBlockedJid() {
+    public Jid getBlockedAddress() {
         return this.jid;
     }
 
@@ -45,28 +42,13 @@ public class RawBlockable implements ListItem, Blockable {
     }
 
     @Override
-    public Jid getJid() {
+    public Jid getAddress() {
         return this.jid;
     }
 
     @Override
-    public List<Tag> getTags(Context context) {
+    public List<Tag> getTags() {
         return Collections.emptyList();
-    }
-
-    @Override
-    public boolean match(Context context, String needle) {
-        if (TextUtils.isEmpty(needle)) {
-            return true;
-        }
-        needle = needle.toLowerCase(Locale.US).trim();
-        String[] parts = needle.split("\\s+");
-        for (String part : parts) {
-            if (!jid.toString().contains(part)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override
@@ -82,10 +64,5 @@ public class RawBlockable implements ListItem, Blockable {
     @Override
     public String getAvatarName() {
         return getDisplayName();
-    }
-
-    @Override
-    public int compareTo(ListItem o) {
-        return this.getDisplayName().compareToIgnoreCase(o.getDisplayName());
     }
 }

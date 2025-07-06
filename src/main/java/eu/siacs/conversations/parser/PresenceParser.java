@@ -55,7 +55,8 @@ public class PresenceParser extends AbstractParser
             Log.d(Config.LOGTAG, "conversation not found for parsing conference presence");
             return;
         }
-        final MucOptions mucOptions = conversation.getMucOptions();
+        final MucOptions mucOptions =
+                getManager(MultiUserChatManager.class).getOrCreateState(conversation);
         boolean before = mucOptions.online();
         int count = mucOptions.getUserCount();
         final List<MucOptions.User> tileUserBefore = mucOptions.getUsers(5);
@@ -77,7 +78,8 @@ public class PresenceParser extends AbstractParser
             final im.conversations.android.xmpp.model.stanza.Presence packet,
             Conversation conversation) {
         final Account account = conversation.getAccount();
-        final MucOptions mucOptions = conversation.getMucOptions();
+        final MucOptions mucOptions =
+                getManager(MultiUserChatManager.class).getOrCreateState(conversation);
         final Jid jid = conversation.getAccount().getJid();
         final Jid from = packet.getFrom();
         if (!from.isBareJid()) {
@@ -89,6 +91,7 @@ public class PresenceParser extends AbstractParser
                 if (x != null) {
                     final var item = x.getItem();
                     if (item != null && !from.isBareJid()) {
+                        // TODO this isBareJid is already happening in outer check
                         mucOptions.setError(MucOptions.Error.NONE);
                         final MucOptions.User user =
                                 MultiUserChatManager.itemToUser(conversation, item, from);
@@ -137,7 +140,8 @@ public class PresenceParser extends AbstractParser
                         }
                         if (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED)
                                 && mucOptions.autoPushConfiguration()) {
-                            final var address = mucOptions.getConversation().getJid().asBareJid();
+                            final var address =
+                                    mucOptions.getConversation().getAddress().asBareJid();
                             Log.d(
                                     Config.LOGTAG,
                                     account.getJid().asBareJid()
@@ -198,7 +202,7 @@ public class PresenceParser extends AbstractParser
                                 Config.LOGTAG,
                                 account.getJid().asBareJid()
                                         + ": received status code 333 in room "
-                                        + mucOptions.getConversation().getJid().asBareJid()
+                                        + mucOptions.getConversation().getAddress().asBareJid()
                                         + " online="
                                         + wasOnline);
                         if (wasOnline) {
@@ -219,6 +223,7 @@ public class PresenceParser extends AbstractParser
                         Log.d(Config.LOGTAG, "unknown error in conference: " + packet);
                     }
                 } else if (!from.isBareJid()) {
+                    // TODO this is already being check in the outer if
                     final var item = x.getItem();
                     if (item != null) {
                         mucOptions.updateUser(
@@ -371,7 +376,7 @@ public class PresenceParser extends AbstractParser
                             Config.LOGTAG,
                             account.getJid().asBareJid()
                                     + ": found OpenPGP key id for "
-                                    + contact.getJid()
+                                    + contact.getAddress()
                                     + " "
                                     + OpenPgpUtils.convertKeyIdToHex(keyId));
                     this.connection.getManager(RosterManager.class).writeToDatabaseAsync();
@@ -410,12 +415,12 @@ public class PresenceParser extends AbstractParser
             if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
                 connection
                         .getManager(PresenceManager.class)
-                        .subscribed(contact.getJid().asBareJid());
+                        .subscribed(contact.getAddress().asBareJid());
             } else {
                 contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
                 final Conversation conversation =
                         mXmppConnectionService.findOrCreateConversation(
-                                account, contact.getJid().asBareJid(), false, false);
+                                account, contact.getAddress().asBareJid(), false, false);
                 final String statusMessage = packet.findChildContent("status");
                 if (statusMessage != null
                         && !statusMessage.isEmpty()
@@ -455,6 +460,7 @@ public class PresenceParser extends AbstractParser
         if (packet.hasChild("x", Namespace.MUC_USER)) {
             this.parseConferencePresence(packet);
         } else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {
+            // TODO this is probably only relevant for error reflections
             this.parseConferencePresence(packet);
         } else if ("error".equals(packet.getAttribute("type"))
                 && mXmppConnectionService.isMuc(getAccount(), packet.getFrom())) {

@@ -8,24 +8,27 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import okhttp3.HttpUrl;
 
 public class EasyOnboardingInvite implements Parcelable {
 
-    private final String domain;
+    private final Jid domain;
     private final String uri;
-    private final String landingUrl;
+    private final HttpUrl landingUrl;
 
-    protected EasyOnboardingInvite(Parcel in) {
-        domain = in.readString();
-        uri = in.readString();
-        landingUrl = in.readString();
+    protected EasyOnboardingInvite(final Parcel in) {
+        this.domain = Jid.ofDomain(in.readString());
+        this.uri = in.readString();
+        final var landingUrl = in.readString();
+        this.landingUrl = Strings.isNullOrEmpty(landingUrl) ? null : HttpUrl.parse(landingUrl);
     }
 
-    public EasyOnboardingInvite(String domain, String uri, String landingUrl) {
+    public EasyOnboardingInvite(final Jid domain, final String uri, final HttpUrl landingUrl) {
         this.domain = domain;
         this.uri = uri;
         this.landingUrl = landingUrl;
@@ -33,9 +36,9 @@ public class EasyOnboardingInvite implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(domain);
+        dest.writeString(domain.toString());
         dest.writeString(uri);
-        dest.writeString(landingUrl);
+        dest.writeString(landingUrl.toString());
     }
 
     @Override
@@ -44,7 +47,7 @@ public class EasyOnboardingInvite implements Parcelable {
     }
 
     public static final Creator<EasyOnboardingInvite> CREATOR =
-            new Creator<EasyOnboardingInvite>() {
+            new Creator<>() {
                 @Override
                 public EasyOnboardingInvite createFromParcel(Parcel in) {
                     return new EasyOnboardingInvite(in);
@@ -79,17 +82,11 @@ public class EasyOnboardingInvite implements Parcelable {
         return supportingAccountsBuilder.build();
     }
 
-    public String getShareableLink() {
-        return Strings.isNullOrEmpty(landingUrl) ? uri : landingUrl;
-    }
-
     public String getDomain() {
-        return domain;
+        return domain.toString();
     }
 
-    public interface OnInviteRequested {
-        void inviteRequested(EasyOnboardingInvite invite);
-
-        void inviteRequestFailed(String message);
+    public String getShareableLink() {
+        return this.landingUrl.toString();
     }
 }

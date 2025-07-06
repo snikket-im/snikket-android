@@ -76,7 +76,7 @@ public class MessageDisplayedSynchronizationManager extends AbstractManager {
     public static Displayed displayed(final String id, final Conversation conversation) {
         final Jid by;
         if (conversation.getMode() == Conversation.MODE_MULTI) {
-            by = conversation.getJid().asBareJid();
+            by = conversation.getAddress().asBareJid();
         } else {
             by = conversation.getAccount().getJid().asBareJid();
         }
