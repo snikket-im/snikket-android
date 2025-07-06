@@ -260,7 +260,6 @@ public class AvatarManager extends AbstractManager {
     }
 
     private void setAvatar(final Jid from, @Nullable final String id) {
-        Log.d(Config.LOGTAG, "setting avatar for " + from + " to " + id);
         if (from.isBareJid()) {
             setAvatarContact(from, id);
         } else {
@@ -384,7 +383,7 @@ public class AvatarManager extends AbstractManager {
 
                         @Override
                         public void onFailure(@NonNull Throwable t) {
-                            Log.d(Config.LOGTAG, "could not fetch avatar for " + address, t);
+                            Log.d(Config.LOGTAG, "could not fetch avatar for " + address);
                         }
                     },
                     MoreExecutors.directExecutor());

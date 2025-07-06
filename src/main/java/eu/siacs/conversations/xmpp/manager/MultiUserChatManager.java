@@ -462,12 +462,19 @@ public class MultiUserChatManager extends AbstractManager {
         }
 
         if (bookmark != null && (sameBefore || Strings.isNullOrEmpty(bookmark.getName()))) {
-            final var modifiedBookmark =
-                    ImmutableBookmark.builder()
-                            .from(bookmark)
-                            .name(Strings.emptyToNull(mucOptions.getName()))
-                            .build();
-            getManager(BookmarkManager.class).create(modifiedBookmark);
+            if (StringUtils.changed(bookmark.getName(), mucOptions.getName())) {
+                Log.d(
+                        Config.LOGTAG,
+                        getAccount().getJid().asBareJid()
+                                + ": name of MUC changed. pushing bookmark for: "
+                                + address);
+                final var modifiedBookmark =
+                        ImmutableBookmark.builder()
+                                .from(bookmark)
+                                .name(Strings.emptyToNull(mucOptions.getName()))
+                                .build();
+                getManager(BookmarkManager.class).create(modifiedBookmark);
+            }
         }
         this.service.updateConversationUi();
     }

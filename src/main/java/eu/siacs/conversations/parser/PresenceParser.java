@@ -52,7 +52,10 @@ public class PresenceParser extends AbstractParser
                         ? null
                         : mXmppConnectionService.find(account, packet.getFrom().asBareJid());
         if (conversation == null) {
-            Log.d(Config.LOGTAG, "conversation not found for parsing conference presence");
+            Log.d(
+                    Config.LOGTAG,
+                    "conversation not found for parsing conference presence from "
+                            + packet.getFrom());
             return;
         }
         final MucOptions mucOptions =

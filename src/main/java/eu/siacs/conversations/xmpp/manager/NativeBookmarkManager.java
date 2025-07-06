@@ -98,7 +98,6 @@ public class NativeBookmarkManager extends AbstractBookmarkManager {
         final var address = bookmark.getAddress();
         final var itemId = address.toString();
         final var conference = bookmarkToItem(bookmark);
-        Log.d(Config.LOGTAG, "NativeBookmarkManager.publish(" + conference + ")");
         return Futures.transform(
                 getManager(PepManager.class)
                         .publish(conference, itemId, NodeConfiguration.WHITELIST_MAX_ITEMS),
