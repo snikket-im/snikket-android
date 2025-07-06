@@ -1089,11 +1089,9 @@
     <string name="add_reaction_title">添加回应</string>
     <string name="could_not_modify_call">无法修改通话</string>
     <string name="clients_may_not_support_av">对方的 XMPP 客户端可能不支持音频/视频通话。</string>
-    <string name="pref_show_avatars">显示头像</string>
     <string name="pref_chat_bubbles_summary">背景颜色、字体大小、头像</string>
     <string name="pref_chat_bubbles">消息气泡</string>
     <string name="pref_title_bubbles">消息气泡</string>
-    <string name="pref_show_avatars_summary">在群聊和一对一聊天中，在消息旁显示头像。</string>
     <string name="pref_call_integration">通话集成</string>
     <string name="custom_notifications">自定义通知</string>
     <string name="custom_notifications_enable">是否为此对话启用自定义通知（重要程度、声音、振动）设置？</string>

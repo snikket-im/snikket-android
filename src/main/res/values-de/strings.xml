@@ -1095,8 +1095,6 @@
     <string name="could_not_modify_call">Anruf konnte nicht geändert werden</string>
     <string name="clients_may_not_support_av">Der XMPP-Client deines Kontakts unterstützt möglicherweise keine Audio-/Videoanrufe.</string>
     <string name="pref_chat_bubbles">Sprechblasen</string>
-    <string name="pref_show_avatars">Profilbilder anzeigen</string>
-    <string name="pref_show_avatars_summary">Profilbilder in deinen Nachrichten und in 1:1 Chats statt nur in Gruppenchats anzeigen.</string>
     <string name="pref_chat_bubbles_summary">Hintergrundfarbe, Schriftgröße, Profilbilder</string>
     <string name="pref_title_bubbles">Sprechblasen</string>
     <string name="pref_call_integration">Anrufintegration</string>

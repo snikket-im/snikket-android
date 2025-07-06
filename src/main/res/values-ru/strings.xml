@@ -1142,10 +1142,8 @@
     <string name="could_not_modify_call">Невозможно изменить звонок</string>
     <string name="clients_may_not_support_av">XMPP-клиент вашего контакта может не поддерживать аудио- и видеозвонки.</string>
     <string name="pref_chat_bubbles_summary">Цвет фона, размер текста, аватары</string>
-    <string name="pref_show_avatars">Показывать аватары</string>
     <string name="pref_title_bubbles">Сообщения в пузырях</string>
     <string name="pref_chat_bubbles">Пузыри сообщений</string>
-    <string name="pref_show_avatars_summary">Показывать аватары в своих сообщениях и приватных беседах в дополнение к конференциям</string>
     <string name="pref_call_integration">Интеграция звонков</string>
     <string name="pref_align_start">Выравнивать сообщения слева</string>
     <string name="pref_align_start_summary">Показывать все сообщения, включая отправленные, выровненными по левому краю для единообразия вида беседы</string>

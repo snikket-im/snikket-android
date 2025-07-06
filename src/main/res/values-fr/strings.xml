@@ -1113,7 +1113,6 @@
     <string name="add_reaction">Ajouter une réaction…</string>
     <string name="pref_chat_bubbles_summary">Couleur de fond, taille de police, images de profil</string>
     <string name="word_document">Document Word</string>
-    <string name="pref_show_avatars_summary">Montrer les images de profil pour vos messages et dans les discussions un-à-un, en plus des groupes de discussion.</string>
     <string name="delete_avatar_message">Voulez-vous supprimer votre image de profil ? Certains clients pourraient continuer d\'en afficher une version mise en cache.</string>
     <string name="retry_with_p2p">Réessayer avec P2P</string>
     <string name="pref_chat_bubbles">Bulles de discussion</string>
@@ -1131,7 +1130,6 @@
     <string name="pref_call_integration_summary">Les appels de cette application intéragissent avec les appels téléphoniques normaux, comme en coupant un appel quand un autre commence.</string>
     <string name="more_reactions">Plus de réactions</string>
     <string name="add_reaction_title">Ajouter une réaction</string>
-    <string name="pref_show_avatars">Montrer l\'image de profil</string>
     <string name="copied_phone_number">Numéro de téléphone copié dans le presse-papier</string>
     <string name="copy_URI">Copier l\'URI</string>
     <string name="uri_copied_to_clipboard">URI copiée dans le presse-papier</string>

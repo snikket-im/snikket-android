@@ -1126,8 +1126,6 @@
     <string name="more_reactions">Więcej reakcji</string>
     <string name="could_not_modify_call">Nie można zmodyfikować rozmowy</string>
     <string name="clients_may_not_support_av">Klient XMPP Twojego kontaktu może nie obsługiwać rozmów/wideorozmów.</string>
-    <string name="pref_show_avatars">Pokaż awatary</string>
-    <string name="pref_show_avatars_summary">Pokazuj awatary dla Twoich wiadomości i w rozmowach 1:1, a nie tylko w rozmowach grupowych.</string>
     <string name="pref_chat_bubbles">Dymki rozmowy</string>
     <string name="pref_chat_bubbles_summary">Kolor tła, rozmiar czcionki, awatary</string>
     <string name="pref_title_bubbles">Dymki rozmowy</string>

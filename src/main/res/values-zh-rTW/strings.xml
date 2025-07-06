@@ -1114,6 +1114,4 @@
     <string name="pref_chat_bubbles">聊天氣泡</string>
     <string name="pref_chat_bubbles_summary">背景顏色、字體大小、大頭貼</string>
     <string name="pref_title_bubbles">聊天氣泡</string>
-    <string name="pref_show_avatars">顯示大頭貼</string>
-    <string name="pref_show_avatars_summary">除了群聊之外，還可以顯示您的訊息和 1 對 1 聊天的大頭貼。</string>
 </resources>

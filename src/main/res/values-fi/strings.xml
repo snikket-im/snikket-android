@@ -1097,8 +1097,6 @@
     <string name="show_to_contacts_only">Näytä vain yhteyshenkilöille</string>
     <string name="add_reaction_title">Lisää reaktio</string>
     <string name="more_reactions">Lisää reaktioita</string>
-    <string name="pref_show_avatars_summary">Näytä avatarit viestillesi ja kahdenkeskisissä pikakeskusteluissa ryhmäpikakeskustelujen lisäksi.</string>
     <string name="pref_chat_bubbles">Pikakeskustelukuplat</string>
-    <string name="pref_show_avatars">Näytä avatarit</string>
     <string name="pref_title_bubbles">Pikakeskustelukuplat</string>
 </resources>

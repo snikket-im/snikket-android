@@ -1091,8 +1091,6 @@
     <string name="blindly_trusted_omemo_keys">Vakon bizalomba fogadott OMEMO kulcsok. Ez azt a veszélyt is magába foglalja, hogy lehet valaki más kulcsa vagy hamisított a kulcs.</string>
     <string name="could_not_add_reaction">Nem sikerült reakciót hozzáadni</string>
     <string name="delete_avatar_message">Szeretné törölni az avatárját? Egyes alkalmazások továbbra is megjeleníthetik az avatárjának gyorsítótárazott másolatát.</string>
-    <string name="pref_show_avatars">Avatárok mutatása</string>
-    <string name="pref_show_avatars_summary">A csoportos csevegések mellett az üzenetekben és az 1:1-es csevegésekben is megjelennek az avatárok.</string>
     <string name="pref_chat_bubbles">Csevegőbuborékok</string>
     <string name="pref_chat_bubbles_summary">Háttérszín, betűméret, avatárok</string>
     <string name="pref_title_bubbles">Csevegőbuborékok</string>

@@ -1114,8 +1114,6 @@
     </plurals>
     <string name="could_not_modify_call">Kõne muutmine ei õnnestunud</string>
     <string name="clients_may_not_support_av">Vestluse teise osapoole XMPP-klient ilmselt ei toeta hääl- ja videokõnesid.</string>
-    <string name="pref_show_avatars_summary">Näita oma sõnumite puhul tunnuspilte otsevestlustes ja vestlusrühmades.</string>
-    <string name="pref_show_avatars">Näita tunnuspilte</string>
     <string name="pref_chat_bubbles">Jutumullid</string>
     <string name="pref_chat_bubbles_summary">Taustavärv, kirjatüübi suurus, tunnuspildid</string>
     <string name="pref_title_bubbles">Jutumullid</string>

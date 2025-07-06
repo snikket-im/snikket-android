@@ -1142,11 +1142,9 @@
     <string name="add_reaction_title">Додати реакцію</string>
     <string name="could_not_modify_call">Не вдалося змінити виклик</string>
     <string name="clients_may_not_support_av">Можливо, клієнт XMPP Вашого контакту не підтримує аудіо- та відеовиклики.</string>
-    <string name="pref_show_avatars">Показувати аватари</string>
     <string name="pref_chat_bubbles">Бульбашки повідомлень</string>
     <string name="pref_chat_bubbles_summary">Колір фону, розмір шрифту, аватари</string>
     <string name="pref_title_bubbles">Вигляд повідомлень</string>
-    <string name="pref_show_avatars_summary">Крім групових чатів, показувати аватари також у Ваших повідомленнях і приватних чатах.</string>
     <string name="pref_call_integration">Інтеграція викликів</string>
     <string name="pref_call_integration_summary">Виклики з цього застосунку взаємодіють зі звичайними телефонними дзвінками — наприклад, завершення одного дзвінка, коли починається інший.</string>
     <string name="pref_align_start">Вирівнювання повідомлень ліворуч</string>

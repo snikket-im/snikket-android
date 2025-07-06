@@ -1114,10 +1114,8 @@
     <string name="could_not_modify_call">Nu s-a putut modifica apelul</string>
     <string name="clients_may_not_support_av">Clientul XMPP al contactului dvs. este posibil să nu accepte apeluri audio/video.</string>
     <string name="pref_chat_bubbles_summary">Culoare de fundal, mărime font, poze profil</string>
-    <string name="pref_show_avatars_summary">Afișați poze de profil pentru mesajele dvs. și în discuțiile 1:1, în plus față de cele de grup.</string>
     <string name="pref_title_bubbles">Bule de mesaj</string>
     <string name="pref_chat_bubbles">Bule de mesaj</string>
-    <string name="pref_show_avatars">Arată poze de profil</string>
     <string name="custom_notifications_enable">Activați setările de notificare personalizate (importanță, sunet, vibrații) pentru această conversație?</string>
     <string name="custom_notifications">Notificări personalizate</string>
     <string name="pref_align_start_summary">Afișați toate mesajele, inclusiv cele trimise, în partea stângă pentru un aspect uniform al discuției.</string>

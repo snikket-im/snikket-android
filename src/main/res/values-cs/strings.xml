@@ -1121,8 +1121,6 @@
     <string name="custom_notifications">Vlastní oznámení</string>
     <string name="custom_notifications_enable">Povolit vlastní oznámení (důležitost, zvuk, vibrace) pro tuto konverzaci?</string>
     <string name="show_to_contacts_only">Zobrazit pouze kontaktům</string>
-    <string name="pref_show_avatars">Zobrazení avatarů</string>
-    <string name="pref_show_avatars_summary">Kromě skupinových chatů zobrazit avatary také u vašich zpráv a v chatech 1:1.</string>
     <string name="pref_chat_bubbles">Bubliny chatu</string>
     <string name="pref_chat_bubbles_summary">Barva pozadí, velikost písma, avatary</string>
     <string name="pref_title_bubbles">Bubliny chatu</string>

@@ -1114,8 +1114,6 @@
     <string name="pref_call_integration">Integrazione di chiamate</string>
     <string name="pref_call_integration_summary">Le chiamate da questa app interagiscono con le normali chiamate telefoniche, come terminare una chiamata quando un\'altra inizia.</string>
     <string name="pref_align_start">Messaggi allineati a sinistra</string>
-    <string name="pref_show_avatars">Mostra gli avatar</string>
-    <string name="pref_show_avatars_summary">Mostra gli avatar per i tuoi messaggi e nelle chat 1:1, in aggiunta alle chat di gruppo.</string>
     <string name="custom_notifications_enable">Attivare le impostazioni di notifica personalizzate (importanza, suono, vibrazione) per questa conversazione?</string>
     <string name="pref_align_start_summary">Mostra tutti i messaggi, inclusi quelli inviati, sul lato sinistro per una disposizione uniforme della chat.</string>
     <string name="custom_notifications">Notifiche personalizzate</string>

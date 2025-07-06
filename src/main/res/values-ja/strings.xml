@@ -1085,8 +1085,6 @@
     <string name="show_to_contacts_only">画像の受信を連絡先だけに許可する</string>
     <string name="could_not_modify_call">変更できませんでした</string>
     <string name="custom_notifications_enable">このチャットには独自の通知設定（優先度、通知音、バイブレーションなど）を使用しますか？</string>
-    <string name="pref_show_avatars">プロフィール画像を表示</string>
-    <string name="pref_show_avatars_summary">グループチャットと個人チャットでプロフィール画像を表示する。</string>
     <string name="pref_chat_bubbles">ふきだし</string>
     <string name="pref_chat_bubbles_summary">背景色、文字サイズ、プロフィール画像など</string>
     <string name="pref_title_bubbles">ふきだし</string>
