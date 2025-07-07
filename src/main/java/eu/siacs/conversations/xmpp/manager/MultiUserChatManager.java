@@ -2,6 +2,7 @@ package eu.siacs.conversations.xmpp.manager;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
@@ -14,13 +15,16 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import de.gultsch.common.FutureMerger;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.StringUtils;
+import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -46,6 +50,7 @@ import im.conversations.android.xmpp.model.muc.owner.Destroy;
 import im.conversations.android.xmpp.model.muc.owner.MucOwner;
 import im.conversations.android.xmpp.model.muc.user.Invite;
 import im.conversations.android.xmpp.model.muc.user.MucUser;
+import im.conversations.android.xmpp.model.occupant.OccupantId;
 import im.conversations.android.xmpp.model.pgp.Signed;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Message;
@@ -317,7 +322,280 @@ public class MultiUserChatManager extends AbstractManager {
         unavailable(conversation);
     }
 
-    public void handlePresence(final Presence presence) {}
+    public void handlePresence(final Presence presence) {
+        final var type = presence.getType();
+        final var from = presence.getFrom();
+        if (from == null || from.isBareJid()) {
+            Log.d(Config.LOGTAG, "found invalid from in muc presence " + from);
+            return;
+        }
+        final var mucOptions = getState(from.asBareJid());
+        if (mucOptions == null) {
+            Log.d(Config.LOGTAG, "received MUC presence but conversation was not joined " + from);
+            return;
+        }
+        final boolean before = mucOptions.online();
+        final int count = mucOptions.getUserCount();
+        final var isGeneratedAvatar = Strings.isNullOrEmpty(mucOptions.getAvatar());
+        final var tileUserBefore =
+                isGeneratedAvatar ? mucOptions.getUsers(5) : Collections.emptyList();
+        if (type == null) {
+            handleAvailablePresence(presence);
+        } else if (type == Presence.Type.UNAVAILABLE) {
+            handleUnavailablePresence(presence);
+        } else {
+            throw new AssertionError("presences of this type should not be routed here");
+        }
+        final var tileUserAfter =
+                isGeneratedAvatar ? mucOptions.getUsers(5) : Collections.emptyList();
+        if (isGeneratedAvatar && !tileUserAfter.equals(tileUserBefore)) {
+            // TODO test that this is doing something
+            service.getAvatarService().clear(mucOptions);
+        }
+        if (before != mucOptions.online()
+                || (mucOptions.online() && count != mucOptions.getUserCount())) {
+            service.updateConversationUi();
+        } else if (mucOptions.online()) {
+            service.updateMucRosterUi();
+        }
+    }
+
+    private void handleAvailablePresence(final Presence presence) {
+        final var from = presence.getFrom();
+        final var mucUser = presence.getExtension(MucUser.class);
+        final var vCardUpdate = presence.getExtension(VCardUpdate.class);
+        final var item = mucUser == null ? null : mucUser.getItem();
+
+        if (item == null) {
+            Log.d(Config.LOGTAG, "received muc#user presence w/o item");
+            return;
+        }
+
+        final var mucOptions = getState(from.asBareJid());
+        if (mucOptions == null) {
+            return;
+        }
+        final var codes = mucUser.getStatus();
+        final var account = getAccount();
+        final Jid jid = account.getJid();
+        final var conversation = mucOptions.getConversation();
+
+        mucOptions.setError(MucOptions.Error.NONE);
+        final MucOptions.User user = MultiUserChatManager.itemToUser(conversation, item, from);
+        final var occupant = presence.getOnlyExtension(OccupantId.class);
+        final String occupantId =
+                mucOptions.occupantId() && occupant != null ? occupant.getId() : null;
+        user.setOccupantId(occupantId);
+        if (codes.contains(MucUser.STATUS_CODE_SELF_PRESENCE)
+                || (codes.contains(MucUser.STATUS_CODE_ROOM_CREATED)
+                        && jid.equals(
+                                Jid.Invalid.getNullForInvalid(item.getAttributeAsJid("jid"))))) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": got self-presence from "
+                            + user.getFullJid()
+                            + ". occupant-id="
+                            + occupantId);
+            if (mucOptions.setOnline()) {
+                service.getAvatarService().clear(mucOptions);
+            }
+            final var current = mucOptions.getSelf().getFullJid();
+            if (mucOptions.setSelf(user)) {
+                Log.d(Config.LOGTAG, "role or affiliation changed");
+                getDatabase().updateConversation(conversation);
+            }
+            final var modified = current == null || !current.equals(user.getFullJid());
+            service.persistSelfNick(user, modified);
+            invokeRenameListener(mucOptions, true);
+        }
+        boolean isNew = mucOptions.updateUser(user);
+        final AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
+        Contact contact = user.getContact();
+        if (isNew
+                && user.getRealJid() != null
+                && mucOptions.isPrivateAndNonAnonymous()
+                && (contact == null || !contact.mutualPresenceSubscription())
+                && axolotlService.hasEmptyDeviceList(user.getRealJid())) {
+            axolotlService.fetchDeviceIds(user.getRealJid());
+        }
+        if (codes.contains(MucUser.STATUS_CODE_ROOM_CREATED)
+                && mucOptions.autoPushConfiguration()) {
+            final var address = mucOptions.getConversation().getAddress().asBareJid();
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": room '"
+                            + address
+                            + "' created. pushing default configuration");
+            getManager(MultiUserChatManager.class)
+                    .pushConfiguration(
+                            conversation, MultiUserChatManager.defaultChannelConfiguration());
+        }
+        final var pgpEngine = service.getPgpEngine();
+        if (pgpEngine != null) {
+            final var signed = presence.getExtension(Signed.class);
+            if (signed != null) {
+                final var status = presence.getStatus();
+                final long keyId =
+                        pgpEngine.fetchKeyId(mucOptions.getAccount(), status, signed.getContent());
+                if (keyId != 0) {
+                    user.setPgpKeyId(keyId);
+                }
+            }
+        }
+        if (vCardUpdate != null) {
+            getManager(AvatarManager.class).handleVCardUpdate(from, vCardUpdate);
+        }
+    }
+
+    private void handleUnavailablePresence(final Presence presence) {
+        final var from = presence.getFrom();
+        final var x = presence.getExtension(MucUser.class);
+        Preconditions.checkArgument(from.isFullJid(), "from should be a full jid");
+        Preconditions.checkNotNull(x, "only presences with muc#user element are handled here");
+
+        final var mucOptions = getState(from.asBareJid());
+        if (mucOptions == null) {
+            return;
+        }
+        final var account = getAccount();
+        final var conversation = mucOptions.getConversation();
+        final var codes = x.getStatus();
+        final boolean fullJidMatches = from.equals(mucOptions.getSelf().getFullJid());
+        if (x.hasExtension(im.conversations.android.xmpp.model.muc.user.Destroy.class)
+                && fullJidMatches) {
+            final var destroy =
+                    x.getExtension(im.conversations.android.xmpp.model.muc.user.Destroy.class);
+            final Jid alternate = destroy.getJid();
+            mucOptions.setError(MucOptions.Error.DESTROYED);
+            if (alternate != null) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": muc destroyed. alternate location "
+                                + alternate);
+            }
+        } else if (codes.contains(MucUser.STATUS_CODE_SHUTDOWN) && fullJidMatches) {
+            mucOptions.setError(MucOptions.Error.SHUTDOWN);
+        } else if (codes.contains(MucUser.STATUS_CODE_SELF_PRESENCE)) {
+            if (codes.contains(MucUser.STATUS_CODE_TECHNICAL_REASONS)) {
+                final boolean wasOnline = mucOptions.online();
+                mucOptions.setError(MucOptions.Error.TECHNICAL_PROBLEMS);
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": received status code 333 in room "
+                                + mucOptions.getConversation().getAddress().asBareJid()
+                                + " online="
+                                + wasOnline);
+                if (wasOnline) {
+                    this.pingAndRejoin(conversation);
+                }
+            } else if (codes.contains(MucUser.STATUS_CODE_KICKED)) {
+                mucOptions.setError(MucOptions.Error.KICKED);
+            } else if (codes.contains(MucUser.STATUS_CODE_BANNED)) {
+                mucOptions.setError(MucOptions.Error.BANNED);
+            } else if (codes.contains(MucUser.STATUS_CODE_LOST_MEMBERSHIP)) {
+                mucOptions.setError(MucOptions.Error.MEMBERS_ONLY);
+            } else if (codes.contains(MucUser.STATUS_CODE_AFFILIATION_CHANGE)) {
+                mucOptions.setError(MucOptions.Error.MEMBERS_ONLY);
+            } else if (codes.contains(MucUser.STATUS_CODE_SHUTDOWN)) {
+                mucOptions.setError(MucOptions.Error.SHUTDOWN);
+            } else if (!codes.contains(MucUser.STATUS_CODE_CHANGED_NICK)) {
+                mucOptions.setError(MucOptions.Error.UNKNOWN);
+                Log.d(Config.LOGTAG, "unknown unavailable in MUC: " + presence);
+            }
+        } else {
+            final var item = x.getItem();
+            if (item != null) {
+                mucOptions.updateUser(MultiUserChatManager.itemToUser(conversation, item, from));
+            }
+            final var user = mucOptions.deleteUser(from);
+            if (user != null) {
+                service.getAvatarService().clear(user);
+            }
+        }
+    }
+
+    public void handleErrorPresence(final Presence presence) {
+        final var from = presence.getFrom();
+        final var error = presence.getError();
+        if (from == null || error == null) {
+            Log.d(Config.LOGTAG, "received invalid error presence for MUC. Missing error or from");
+            return;
+        }
+
+        final var mucOptions = getState(from.asBareJid());
+        if (mucOptions == null) {
+            return;
+        }
+        final var conversation = mucOptions.getConversation();
+
+        final var condition = error.getCondition();
+
+        if (condition instanceof Condition.Conflict) {
+            if (mucOptions.online()) {
+                invokeRenameListener(mucOptions, false);
+            } else {
+                mucOptions.setError(MucOptions.Error.NICK_IN_USE);
+            }
+        } else if (condition instanceof Condition.NotAuthorized) {
+            mucOptions.setError(MucOptions.Error.PASSWORD_REQUIRED);
+        } else if (condition instanceof Condition.Forbidden) {
+            mucOptions.setError(MucOptions.Error.BANNED);
+        } else if (condition instanceof Condition.RegistrationRequired) {
+            mucOptions.setError(MucOptions.Error.MEMBERS_ONLY);
+        } else if (condition instanceof Condition.ResourceConstraint) {
+            mucOptions.setError(MucOptions.Error.RESOURCE_CONSTRAINT);
+        } else if (condition instanceof Condition.RemoteServerTimeout) {
+            mucOptions.setError(MucOptions.Error.REMOTE_SERVER_TIMEOUT);
+        } else if (condition instanceof Condition.Gone conditionGone) {
+            final String gone = conditionGone.getContent();
+            final Jid alternate;
+            if (gone != null) {
+                final XmppUri xmppUri = new XmppUri(gone);
+                if (xmppUri.isValidJid()) {
+                    alternate = xmppUri.getJid();
+                } else {
+                    alternate = null;
+                }
+            } else {
+                alternate = null;
+            }
+            mucOptions.setError(MucOptions.Error.DESTROYED);
+            if (alternate != null) {
+                Log.d(
+                        Config.LOGTAG,
+                        conversation.getAccount().getJid().asBareJid()
+                                + ": muc destroyed. alternate location "
+                                + alternate);
+            }
+        } else {
+            final var text = error.getTextAsString();
+            if (text != null && text.contains("attribute 'to'")) {
+                if (mucOptions.online()) {
+                    invokeRenameListener(mucOptions, false);
+                } else {
+                    mucOptions.setError(MucOptions.Error.INVALID_NICK);
+                }
+            } else {
+                mucOptions.setError(MucOptions.Error.UNKNOWN);
+                Log.d(Config.LOGTAG, "unknown error in conference: " + presence);
+            }
+        }
+    }
+
+    private static void invokeRenameListener(final MucOptions options, final boolean success) {
+        if (options.onRenameListener != null) {
+            if (success) {
+                options.onRenameListener.onSuccess();
+            } else {
+                options.onRenameListener.onFailure();
+            }
+        }
+        options.onRenameListener = null;
+    }
 
     public void handleStatusMessage(final Message message) {
         final var from = Jid.Invalid.getNullForInvalid(message.getFrom());
@@ -631,6 +909,7 @@ public class MultiUserChatManager extends AbstractManager {
 
     public ListenableFuture<Void> changeUsername(
             final Conversation conversation, final String username) {
+        Log.d(Config.LOGTAG, "changeUsername(" + username + ")");
         final var bookmark =
                 getManager(BookmarkManager.class)
                         .getBookmark(conversation.getAddress().asBareJid());
@@ -896,6 +1175,11 @@ public class MultiUserChatManager extends AbstractManager {
             message.addExtension(new NoCopy());
         }
         this.connection.sendMessagePacket(message);
+    }
+
+    public boolean isMuc(final Jid address) {
+        final var state = address == null ? null : getState(address.asBareJid());
+        return state != null && state.getConversation().getMode() == Conversational.MODE_MULTI;
     }
 
     public boolean isJoinInProgress(final Conversation conversation) {

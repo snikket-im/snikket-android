@@ -1,6 +1,7 @@
 package eu.siacs.conversations.entities;
 
 import androidx.annotation.NonNull;
+import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -26,7 +27,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 public class MucOptions {
@@ -50,15 +50,6 @@ public class MucOptions {
                             .put(Role.NONE, 0)
                             .build());
 
-    public static final String STATUS_CODE_SELF_PRESENCE = "110";
-    public static final String STATUS_CODE_ROOM_CREATED = "201";
-    public static final String STATUS_CODE_BANNED = "301";
-    public static final String STATUS_CODE_CHANGED_NICK = "303";
-    public static final String STATUS_CODE_KICKED = "307";
-    public static final String STATUS_CODE_AFFILIATION_CHANGE = "321";
-    public static final String STATUS_CODE_LOST_MEMBERSHIP = "322";
-    public static final String STATUS_CODE_SHUTDOWN = "332";
-    public static final String STATUS_CODE_TECHNICAL_REASONS = "333";
     // TODO this should be a list
     private final Set<User> users = new HashSet<>();
     private final Conversation conversation;
@@ -847,20 +838,11 @@ public class MucOptions {
         }
 
         public String getAvatar() {
-
-            // TODO prefer potentially better quality avatars from contact
-            // TODO use getContact and if that’s not null and avatar is set use that
-
-            getContact();
-
-            if (avatar != null) {
-                return avatar;
+            final var contact = getContact();
+            if (contact != null && contact.getAvatar() != null) {
+                return contact.getAvatar();
             }
-            if (realJid == null) {
-                return null;
-            }
-            final var contact = getAccount().getRoster().getContact(realJid);
-            return contact.getAvatar();
+            return this.avatar;
         }
 
         public Account getAccount() {
@@ -879,41 +861,8 @@ public class MucOptions {
             return fullJid;
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            User user = (User) o;
-
-            if (role != user.role) return false;
-            if (affiliation != user.affiliation) return false;
-            if (!Objects.equals(realJid, user.realJid)) return false;
-            return Objects.equals(fullJid, user.fullJid);
-        }
-
         public boolean isDomain() {
             return realJid != null && realJid.getLocal() == null && role == Role.NONE;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = role != null ? role.hashCode() : 0;
-            result = 31 * result + (affiliation != null ? affiliation.hashCode() : 0);
-            result = 31 * result + (realJid != null ? realJid.hashCode() : 0);
-            result = 31 * result + (fullJid != null ? fullJid.hashCode() : 0);
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "[fulljid:"
-                    + fullJid
-                    + ",realjid:"
-                    + realJid
-                    + ",affiliation"
-                    + affiliation.toString()
-                    + "]";
         }
 
         public boolean realJidMatchesAccount() {
@@ -988,6 +937,24 @@ public class MucOptions {
         public boolean outranks(final Affiliation affiliation) {
             return AFFILIATION_RANKS.getInt(this.affiliation)
                     > AFFILIATION_RANKS.getInt(affiliation);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof User user)) return false;
+            return pgpKeyId == user.pgpKeyId
+                    && role == user.role
+                    && affiliation == user.affiliation
+                    && Objects.equal(realJid, user.realJid)
+                    && Objects.equal(fullJid, user.fullJid)
+                    && Objects.equal(avatar, user.avatar)
+                    && Objects.equal(occupantId, user.occupantId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(
+                    role, affiliation, realJid, fullJid, pgpKeyId, avatar, occupantId);
         }
     }
 }

@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import de.gultsch.common.Linkify;
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityMucDetailsBinding;
 import eu.siacs.conversations.entities.Conversation;
@@ -78,19 +80,36 @@ public class ConferenceDetailsActivity extends XmppActivity
 
     private boolean mAdvancedMode = false;
 
-    private FutureCallback<Void> renameCallback =
+    private final FutureCallback<Void> renameCallback =
             new FutureCallback<Void>() {
                 @Override
                 public void onSuccess(Void result) {
-                    displayToast(getString(R.string.your_nick_has_been_changed));
+                    Toast.makeText(
+                                    getApplicationContext(),
+                                    R.string.your_nick_has_been_changed,
+                                    Toast.LENGTH_SHORT)
+                            .show();
                     updateView();
                 }
 
                 @Override
                 public void onFailure(Throwable t) {
-
-                    // TODO check for NickInUseException and NickInvalid exception
-
+                    if (t instanceof IllegalStateException) {
+                        Toast.makeText(
+                                        getApplicationContext(),
+                                        R.string.nick_in_use,
+                                        Toast.LENGTH_SHORT)
+                                .show();
+                        ;
+                    } else if (t instanceof IllegalArgumentException) {
+                        Toast.makeText(
+                                        getApplicationContext(),
+                                        R.string.invalid_muc_nick,
+                                        Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        Log.d(Config.LOGTAG, "error renaming", t);
+                    }
                 }
             };
 
