@@ -204,6 +204,14 @@ public class MultiUserChatManager extends AbstractManager {
             return;
         }
 
+        Log.d(
+                Config.LOGTAG,
+                "moderation: "
+                        + mucOptions.moderation()
+                        + " ("
+                        + mucOptions.getConversation().getAddress().asBareJid()
+                        + ")");
+
         final Jid joinJid = mucOptions.getSelf().getFullJid();
         Log.d(
                 Config.LOGTAG,

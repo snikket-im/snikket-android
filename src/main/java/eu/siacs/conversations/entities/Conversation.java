@@ -1103,6 +1103,12 @@ public class Conversation extends AbstractEntity
         }
     }
 
+    public boolean remove(final Message message) {
+        final var success = this.messages.remove(message);
+        this.untieMessages();
+        return success;
+    }
+
     private void untieMessages() {
         for (Message message : this.messages) {
             message.untie();

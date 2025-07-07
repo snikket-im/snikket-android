@@ -795,6 +795,19 @@ public class NotificationService {
         clearMissedCalls(conversation);
     }
 
+    public void clear(final Message message) {
+        synchronized (this.notifications) {
+            final var conversation = message.getConversation().getUuid();
+            final var list = this.notifications.get(conversation);
+            if (list != null && list.remove(message)) {
+                if (list.isEmpty()) {
+                    this.notifications.remove(conversation);
+                }
+                updateNotification(false);
+            }
+        }
+    }
+
     public void clearMessages() {
         synchronized (notifications) {
             for (ArrayList<Message> messages : notifications.values()) {

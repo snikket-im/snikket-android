@@ -523,7 +523,7 @@ public class Contact implements ListItem, Blockable {
 
     public boolean refreshRtpCapability() {
         final RtpCapability.Capability previous = this.rtpCapability;
-        this.rtpCapability = RtpCapability.check(this, false);
+        this.rtpCapability = RtpCapability.check(this, getPresences());
         return !Objects.equals(previous, this.rtpCapability);
     }
 

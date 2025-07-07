@@ -34,6 +34,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
+import eu.siacs.conversations.xmpp.manager.ModerationManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.PubSubManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
@@ -51,6 +52,7 @@ import im.conversations.android.xmpp.model.oob.OutOfBandData;
 import im.conversations.android.xmpp.model.pubsub.event.Event;
 import im.conversations.android.xmpp.model.reactions.Reactions;
 import im.conversations.android.xmpp.model.receipts.Request;
+import im.conversations.android.xmpp.model.retraction.Retract;
 import im.conversations.android.xmpp.model.unique.StanzaId;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -326,6 +328,7 @@ public class MessageParser extends AbstractParser
 
     @Override
     public void accept(final im.conversations.android.xmpp.model.stanza.Message original) {
+        final var originalFrom = original.getFrom();
         final var account = connection.getAccount();
         if (handleErrorMessage(account, original)) {
             return;
@@ -337,9 +340,7 @@ public class MessageParser extends AbstractParser
         final Element fin =
                 original.findChild("fin", MessageArchiveService.Version.MAM_0.namespace);
         if (fin != null) {
-            mXmppConnectionService
-                    .getMessageArchiveService()
-                    .processFinLegacy(fin, original.getFrom());
+            mXmppConnectionService.getMessageArchiveService().processFinLegacy(fin, originalFrom);
             return;
         }
         final Element result = MessageArchiveService.Version.findResult(original);
@@ -1199,6 +1200,12 @@ public class MessageParser extends AbstractParser
                         counterpart,
                         mucTrueCounterPart,
                         packet);
+            }
+
+            if (original.hasExtension(Retract.class)
+                    && originalFrom != null
+                    && originalFrom.isBareJid()) {
+                getManager(ModerationManager.class).handleRetraction(original);
             }
 
             // end no body

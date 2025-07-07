@@ -940,7 +940,7 @@ public class RtpSessionActivity extends XmppActivity
         if (state == RtpEndUserState.CONNECTIVITY_ERROR
                 && getResources().getBoolean(R.bool.is_portrait_mode)) {
             binding.supportWarning.setVisibility(
-                    RtpCapability.check(contact) == RtpCapability.Capability.NONE
+                    RtpCapability.checkWithFallback(contact) == RtpCapability.Capability.NONE
                             ? View.VISIBLE
                             : View.GONE);
         } else {

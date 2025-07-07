@@ -393,6 +393,10 @@ public class RosterManager extends AbstractManager implements Roster {
         if (from == null || from.equals(getAccount().getJid())) {
             return;
         }
+        if (from.isBareJid() && getManager(MultiUserChatManager.class).isMuc(from.asBareJid())) {
+            // the old vCard updates will end up here
+            return;
+        }
         if (type == null) {
             this.handleAvailablePresence(presence);
         } else if (type == Presence.Type.UNAVAILABLE) {
@@ -421,7 +425,7 @@ public class RosterManager extends AbstractManager implements Roster {
                     this.getManager(DiscoManager.class)
                             .infoOrCache(Entity.presence(from), nodeHash.node, nodeHash.hash);
 
-            logDiscoFailure(from, discoFuture);
+            awaitDiscoFuture(contact, discoFuture);
         }
 
         final Element idle = presence.findChild("idle", Namespace.IDLE);
@@ -519,19 +523,26 @@ public class RosterManager extends AbstractManager implements Roster {
         }
     }
 
-    private static void logDiscoFailure(final Jid from, ListenableFuture<Void> discoFuture) {
+    private void awaitDiscoFuture(final Contact contact, ListenableFuture<Void> discoFuture) {
         Futures.addCallback(
                 discoFuture,
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(Void result) {}
+                    public void onSuccess(Void result) {
+                        if (contact.refreshRtpCapability()) {
+                            writeToDatabaseAsync();
+                        }
+                    }
 
                     @Override
                     public void onFailure(@NonNull Throwable throwable) {
                         if (throwable instanceof TimeoutException) {
                             return;
                         }
-                        Log.d(Config.LOGTAG, "could not retrieve disco from " + from, throwable);
+                        Log.d(
+                                Config.LOGTAG,
+                                "could not retrieve disco from " + contact.getAddress(),
+                                throwable);
                     }
                 },
                 MoreExecutors.directExecutor());

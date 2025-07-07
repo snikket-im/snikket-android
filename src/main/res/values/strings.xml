@@ -1125,4 +1125,10 @@
     <string name="pref_show_11_chats">1:1 chats</string>
     <string name="pref_show_11_chats_summary">Display avatars in 1:1 chats. (Avatars in group chats will always been shown.)</string>
     <string name="pref_show_11_sender_chats_summary">Display avatars in 1:1 chats on received messages. (Avatars in group chats will always been shown.)</string>
+    <string name="moderate_delete_dot_dot_dot">Delete as moderator…</string>
+    <string name="moderate_delete">Delete as moderator</string>
+    <string name="could_not_moderate_message">Could not moderate message</string>
+    <string name="delete_message">Delete message</string>
+    <string name="moderation_explained">This message will be deleted for you and every participant of this public channel.</string>
+    <string name="do_not_show_this_warning_again">Don’t show this warning again.</string>
 </resources>

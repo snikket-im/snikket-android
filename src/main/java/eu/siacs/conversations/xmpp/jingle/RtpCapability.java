@@ -65,33 +65,38 @@ public class RtpCapability {
         return resources.toArray(new String[0]);
     }
 
-    public static Capability check(final Contact contact) {
-        return check(contact, true);
-    }
-
-    public static Capability check(final Contact contact, final boolean allowFallback) {
+    public static Capability checkWithFallback(final Contact contact) {
         final Presences presences = contact.getPresences();
-        if (presences.isEmpty() && allowFallback && contact.getAccount().isEnabled()) {
+        if (presences.isEmpty() && contact.getAccount().isEnabled()) {
             return contact.getRtpCapability();
         }
+        return check(contact, presences);
+    }
+
+    public static Capability check(final Contact contact, final Presences presences) {
         final var connection = contact.getAccount().getXmppConnection();
         if (connection == null) {
             return Capability.NONE;
         }
-        Capability result = Capability.NONE;
-        for (final String resource : presences.getPresencesMap().keySet()) {
-            final var jid =
-                    Strings.isNullOrEmpty(resource)
-                            ? contact.getAddress().asBareJid()
-                            : contact.getAddress().withResource(resource);
-            final Capability capability = check(connection.getManager(DiscoManager.class).get(jid));
-            if (capability == Capability.VIDEO) {
-                result = capability;
-            } else if (capability == Capability.AUDIO && result == Capability.NONE) {
-                result = capability;
-            }
+        Set<Capability> capabilities =
+                ImmutableSet.copyOf(
+                        Collections2.transform(
+                                presences.getPresencesMap().keySet(),
+                                resource -> {
+                                    final var jid =
+                                            Strings.isNullOrEmpty(resource)
+                                                    ? contact.getAddress().asBareJid()
+                                                    : contact.getAddress().withResource(resource);
+                                    return check(
+                                            connection.getManager(DiscoManager.class).get(jid));
+                                }));
+        if (capabilities.contains(Capability.VIDEO)) {
+            return Capability.VIDEO;
+        } else if (capabilities.contains(Capability.AUDIO)) {
+            return Capability.AUDIO;
+        } else {
+            return Capability.NONE;
         }
-        return result;
     }
 
     // do all devices that support Rtp Call also support JMI?

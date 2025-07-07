@@ -281,6 +281,11 @@ public class MucOptions {
         return features.contains(Namespace.OCCUPANT_ID);
     }
 
+    public boolean moderation() {
+        final var features = getFeatures();
+        return features.contains(Namespace.MODERATION);
+    }
+
     public User deleteUser(Jid jid) {
         User user = findUserByFullJid(jid);
         if (user != null) {

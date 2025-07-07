@@ -6,6 +6,10 @@
         android:title="@string/add_reaction"
         android:visible="false" />
 
+    <item android:id="@+id/moderation"
+        android:title="@string/moderate_delete"
+        android:visible="false"/>
+
     <item
         android:id="@+id/action_report_and_block"
         android:title="@string/report_spam"
