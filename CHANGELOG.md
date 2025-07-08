@@ -3,6 +3,7 @@
 ### Version 2.19.0
 
 * Upload and show high resolution avatars (profile pictures) on servers that have support for them
+* Support 'XEP-0425: Moderated Message Retraction' in public channels
 
 ### Version 2.18.2
 
