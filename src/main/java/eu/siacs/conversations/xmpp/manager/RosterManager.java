@@ -253,7 +253,12 @@ public class RosterManager extends AbstractManager implements Roster {
     public void clearPresences() {
         synchronized (this.contacts) {
             for (final var contact : this.contacts.values()) {
-                contact.clearPresences();
+                final var bare = contact.getAddress();
+                for (final String resource : contact.clearPresences()) {
+                    if (!Strings.isNullOrEmpty(resource)) {
+                        getManager(DiscoManager.class).clear(bare.withResource(resource));
+                    }
+                }
             }
         }
     }

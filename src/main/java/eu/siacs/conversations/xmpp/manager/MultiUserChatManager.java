@@ -30,6 +30,8 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.model.ImmutableBookmark;
 import im.conversations.android.xmpp.Entity;
+import im.conversations.android.xmpp.EntityCapabilities;
+import im.conversations.android.xmpp.EntityCapabilities2;
 import im.conversations.android.xmpp.IqErrorException;
 import im.conversations.android.xmpp.model.Extension;
 import im.conversations.android.xmpp.model.conference.DirectInvite;
@@ -141,6 +143,15 @@ public class MultiUserChatManager extends AbstractManager {
                 return existing;
             }
             final var fresh = new MucOptions(conversation);
+            final var caps2Hash = fresh.getCaps2Hash();
+            if (caps2Hash != null) {
+                final var infoQuery = getDatabase().getInfoQuery(caps2Hash);
+                if (infoQuery != null
+                        && getManager(DiscoManager.class)
+                                .loadFromCache(Entity.discoItem(address), null, caps2Hash)) {
+                    Log.d(Config.LOGTAG, address + " muc#info came from cache");
+                }
+            }
             this.states.put(address, fresh);
             return fresh;
         }
@@ -695,48 +706,54 @@ public class MultiUserChatManager extends AbstractManager {
 
     public ListenableFuture<Void> fetchDiscoInfo(final Conversation conversation) {
         final var address = conversation.getAddress().asBareJid();
+        final var bookmark = getManager(BookmarkManager.class).getBookmark(address);
+        final MucOptions mucOptions = getOrCreateState(conversation);
+        final var mucConfig =
+                new MucConfigSummary(
+                        mucOptions.occupantId(),
+                        StringUtils.equals(
+                                bookmark == null ? null : bookmark.getName(),
+                                mucOptions.getName()));
+
         Log.d(Config.LOGTAG, "fetchDiscoInfo(" + address + ")");
         final var future =
                 connection.getManager(DiscoManager.class).info(Entity.discoItem(address), null);
         return Futures.transform(
                 future,
                 infoQuery -> {
-                    setDiscoInfo(conversation, infoQuery);
+                    setDiscoInfo(conversation, infoQuery, mucConfig);
                     return null;
                 },
                 MoreExecutors.directExecutor());
     }
 
-    private void setDiscoInfo(final Conversation conversation, final InfoQuery result) {
+    private void setDiscoInfo(
+            final Conversation conversation,
+            final InfoQuery infoQuery,
+            final MucConfigSummary previousMucConfig) {
+        final var caps = EntityCapabilities.hash(infoQuery);
+        final var caps2 = EntityCapabilities2.hash(infoQuery);
         final var account = conversation.getAccount();
         final var address = conversation.getAddress().asBareJid();
+        getDatabase().insertCapsCache(caps, caps2, infoQuery);
+        final MucOptions mucOptions = getOrCreateState(conversation);
+        if (mucOptions.setCaps2Hash(caps2.encoded())) {
+            Log.d(Config.LOGTAG, "caps hash has changed. persisting");
+            getDatabase().updateConversation(conversation);
+        }
         final var avatarHash =
-                result.getServiceDiscoveryExtension(
+                infoQuery.getServiceDiscoveryExtension(
                         Namespace.MUC_ROOM_INFO, "muc#roominfo_avatarhash");
         if (VCardUpdate.isValidSHA1(avatarHash)) {
             connection.getManager(AvatarManager.class).handleVCardUpdate(address, avatarHash);
         }
-        final MucOptions mucOptions = getOrCreateState(conversation);
         final var bookmark =
                 getManager(BookmarkManager.class)
                         .getBookmark(conversation.getAddress().asBareJid());
-        final boolean sameBefore =
-                StringUtils.equals(
-                        bookmark == null ? null : bookmark.getName(), mucOptions.getName());
-
-        final var hadOccupantId = mucOptions.occupantId();
-        if (mucOptions.updateConfiguration(result)) {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid()
-                            + ": muc configuration changed for "
-                            + conversation.getAddress().asBareJid());
-            getDatabase().updateConversation(conversation);
-        }
 
         final var hasOccupantId = mucOptions.occupantId();
 
-        if (!hadOccupantId && hasOccupantId && mucOptions.online()) {
+        if (!previousMucConfig.occupantId && hasOccupantId && mucOptions.online()) {
             final var me = mucOptions.getSelf().getFullJid();
             Log.d(
                     Config.LOGTAG,
@@ -747,7 +764,9 @@ public class MultiUserChatManager extends AbstractManager {
             this.available(me, mucOptions.nonanonymous());
         }
 
-        if (bookmark != null && (sameBefore || Strings.isNullOrEmpty(bookmark.getName()))) {
+        if (bookmark != null
+                && (previousMucConfig.mucNameMatchesBookmark
+                        || Strings.isNullOrEmpty(bookmark.getName()))) {
             if (StringUtils.changed(bookmark.getName(), mucOptions.getName())) {
                 Log.d(
                         Config.LOGTAG,
@@ -917,7 +936,6 @@ public class MultiUserChatManager extends AbstractManager {
 
     public ListenableFuture<Void> changeUsername(
             final Conversation conversation, final String username) {
-        Log.d(Config.LOGTAG, "changeUsername(" + username + ")");
         final var bookmark =
                 getManager(BookmarkManager.class)
                         .getBookmark(conversation.getAddress().asBareJid());
@@ -1289,6 +1307,16 @@ public class MultiUserChatManager extends AbstractManager {
         }
 
         return builder.buildOrThrow();
+    }
+
+    private static final class MucConfigSummary {
+        private final boolean occupantId;
+        private final boolean mucNameMatchesBookmark;
+
+        private MucConfigSummary(boolean occupantId, boolean mucNameMatchesBookmark) {
+            this.occupantId = occupantId;
+            this.mucNameMatchesBookmark = mucNameMatchesBookmark;
+        }
     }
 
     private static Map<String, Object> configWithName(

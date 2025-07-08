@@ -19,6 +19,7 @@ import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -228,9 +229,10 @@ public class Contact implements ListItem, Blockable {
         this.presences.removePresence(resource);
     }
 
-    public void clearPresences() {
-        this.presences.clearPresences();
+    public Set<String> clearPresences() {
+        final var resources = this.presences.clearPresences();
         this.resetOption(Options.PENDING_SUBSCRIPTION_REQUEST);
+        return resources;
     }
 
     public im.conversations.android.xmpp.model.stanza.Presence.Availability getShownStatus() {

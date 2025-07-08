@@ -15,6 +15,9 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
+import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import im.conversations.android.xmpp.EntityCapabilities2;
+import im.conversations.android.xmpp.model.Hash;
 import im.conversations.android.xmpp.model.data.Data;
 import im.conversations.android.xmpp.model.data.Field;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
@@ -56,7 +59,6 @@ public class MucOptions {
     public OnRenameListener onRenameListener = null;
     private boolean mAutoPushConfiguration = true;
     private final Account account;
-    private InfoQuery infoQuery;
     private boolean isOnline = false;
     private Error error = Error.NONE;
     private User self;
@@ -125,26 +127,17 @@ public class MucOptions {
     }
 
     private InfoQuery getServiceDiscoveryResult() {
-        return this.infoQuery;
+        return this.account
+                .getXmppConnection()
+                .getManager(DiscoManager.class)
+                .get(getConversation().getAddress().asBareJid());
     }
 
-    public boolean updateConfiguration(final InfoQuery serviceDiscoveryResult) {
-        this.infoQuery = serviceDiscoveryResult;
-        final String name = getName(serviceDiscoveryResult);
-        boolean changed = conversation.setAttribute("muc_name", name);
-        changed |=
-                conversation.setAttribute(
-                        Conversation.ATTRIBUTE_MEMBERS_ONLY, this.hasFeature("muc_membersonly"));
-        changed |=
-                conversation.setAttribute(
-                        Conversation.ATTRIBUTE_MODERATED, this.hasFeature("muc_moderated"));
-        changed |=
-                conversation.setAttribute(
-                        Conversation.ATTRIBUTE_NON_ANONYMOUS, this.hasFeature("muc_nonanonymous"));
-        return changed;
-    }
-
-    private String getName(final InfoQuery serviceDiscoveryResult) {
+    public String getName() {
+        final var serviceDiscoveryResult = getServiceDiscoveryResult();
+        if (serviceDiscoveryResult == null) {
+            return null;
+        }
         final var roomInfo =
                 serviceDiscoveryResult.getServiceDiscoveryExtension(
                         "http://jabber.org/protocol/muc#roominfo");
@@ -178,7 +171,7 @@ public class MucOptions {
         return account.getRoster().getContact(conversation.getAddress()).getAvatar();
     }
 
-    public boolean hasFeature(String feature) {
+    public boolean hasFeature(final String feature) {
         final var serviceDiscoveryResult = getServiceDiscoveryResult();
         return serviceDiscoveryResult != null
                 && serviceDiscoveryResult.getFeatureStrings().contains(feature);
@@ -250,7 +243,7 @@ public class MucOptions {
     }
 
     public boolean membersOnly() {
-        return conversation.getBooleanAttribute(Conversation.ATTRIBUTE_MEMBERS_ONLY, false);
+        return this.hasFeature("muc_membersonly");
     }
 
     public Collection<String> getFeatures() {
@@ -261,7 +254,7 @@ public class MucOptions {
     }
 
     public boolean nonanonymous() {
-        return conversation.getBooleanAttribute(Conversation.ATTRIBUTE_NON_ANONYMOUS, false);
+        return this.hasFeature("muc_nonanonymous");
     }
 
     public boolean isPrivateAndNonAnonymous() {
@@ -269,7 +262,7 @@ public class MucOptions {
     }
 
     public boolean moderated() {
-        return conversation.getBooleanAttribute(Conversation.ATTRIBUTE_MODERATED, false);
+        return this.hasFeature("muc_moderated");
     }
 
     public boolean stableId() {
@@ -611,10 +604,6 @@ public class MucOptions {
         return this.conversation.getAttribute("subject");
     }
 
-    public String getName() {
-        return this.conversation.getAttribute("muc_name");
-    }
-
     private List<User> getFallbackUsersFromCryptoTargets() {
         List<User> users = new ArrayList<>();
         for (Jid jid : conversation.getAcceptedCryptoTargets()) {
@@ -721,6 +710,18 @@ public class MucOptions {
     public void setPassword(final String password) {
         this.password = password;
         conversation.setAttribute(Conversation.ATTRIBUTE_MUC_PASSWORD, password);
+    }
+
+    public boolean setCaps2Hash(final String hash) {
+        return this.conversation.setAttribute(Conversation.ATTRIBUTE_CAPS2_HASH, hash);
+    }
+
+    public EntityCapabilities2.EntityCaps2Hash getCaps2Hash() {
+        final var caps2Hash = this.conversation.getAttribute(Conversation.ATTRIBUTE_CAPS2_HASH);
+        if (Strings.isNullOrEmpty(caps2Hash)) {
+            return null;
+        }
+        return EntityCapabilities2.EntityCaps2Hash.of(Hash.Algorithm.SHA_256, caps2Hash);
     }
 
     public Conversation getConversation() {
