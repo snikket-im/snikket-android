@@ -113,11 +113,12 @@ public class Data extends Extension {
         for (final Field existingField : this.getFields()) {
             final var fieldName = existingField.getFieldName();
             final Object submittedValue = values.get(fieldName);
+            if (fieldName == null && Field.Type.FIXED.equals(existingField.getType())) {
+                continue;
+            }
             if (submittedValue != null) {
-                Log.d(Config.LOGTAG, "submitting value " + fieldName + ": " + submittedValue);
                 submit.addField(fieldName, submittedValue);
             } else {
-                Log.d(Config.LOGTAG, "staying with default for: " + fieldName);
                 submit.addExtension(existingField);
             }
         }

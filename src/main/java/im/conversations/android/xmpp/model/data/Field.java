@@ -1,5 +1,7 @@
 package im.conversations.android.xmpp.model.data;
 
+import com.google.common.base.CaseFormat;
+import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import eu.siacs.conversations.xml.Element;
@@ -37,5 +39,30 @@ public class Field extends Extension {
 
     public Media getMedia() {
         return getOnlyExtension(Media.class);
+    }
+
+    public Type getType() {
+        final var type = this.getAttribute("type");
+        if (Strings.isNullOrEmpty(type)) {
+            return null;
+        }
+        try {
+            return Type.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE, type));
+        } catch (final IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public enum Type {
+        BOOLEAN,
+        FIXED,
+        HIDDEN,
+        JID_MULTI,
+        JID_SINGLE,
+        LIST_MULTI,
+        LIST_SINGLE,
+        TEXT_MULTI,
+        TEXT_PRIVATE,
+        TEXT_SINGLE
     }
 }
