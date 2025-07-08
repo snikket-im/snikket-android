@@ -626,8 +626,18 @@ public class MultiUserChatManager extends AbstractManager {
         if (conversation == null || conversation.getMode() != Conversation.MODE_MULTI) {
             return;
         }
-        for (final var status : mucUser.getStatus()) {
-            handleStatusCode(conversation, status);
+        final var status = mucUser.getStatus();
+        final var configurationChange =
+                Iterables.any(status, s -> (s >= 170 && s <= 174) || (s >= 102 && s <= 104));
+        if (configurationChange) {
+            Log.d(
+                    Config.LOGTAG,
+                    getAccount().getJid().asBareJid()
+                            + ": received configuration change "
+                            + status
+                            + " in "
+                            + from);
+            getManager(MultiUserChatManager.class).fetchDiscoInfo(conversation);
         }
         final var item = mucUser.getItem();
         if (item == null) {
@@ -693,17 +703,6 @@ public class MultiUserChatManager extends AbstractManager {
         }
     }
 
-    private void handleStatusCode(final Conversation conversation, final int status) {
-        if ((status >= 170 && status <= 174) || (status >= 102 && status <= 104)) {
-            Log.d(
-                    Config.LOGTAG,
-                    getAccount().getJid().asBareJid()
-                            + ": fetching disco#info on status code "
-                            + status);
-            getManager(MultiUserChatManager.class).fetchDiscoInfo(conversation);
-        }
-    }
-
     public ListenableFuture<Void> fetchDiscoInfo(final Conversation conversation) {
         final var address = conversation.getAddress().asBareJid();
         final var bookmark = getManager(BookmarkManager.class).getBookmark(address);
@@ -715,7 +714,6 @@ public class MultiUserChatManager extends AbstractManager {
                                 bookmark == null ? null : bookmark.getName(),
                                 mucOptions.getName()));
 
-        Log.d(Config.LOGTAG, "fetchDiscoInfo(" + address + ")");
         final var future =
                 connection.getManager(DiscoManager.class).info(Entity.discoItem(address), null);
         return Futures.transform(
@@ -842,7 +840,6 @@ public class MultiUserChatManager extends AbstractManager {
     public ListenableFuture<Data> fetchConfigurationForm(final Jid address) {
         final var iq = new Iq(Iq.Type.GET, new MucOwner());
         iq.setTo(address);
-        Log.d(Config.LOGTAG, "fetching configuration form: " + iq);
         return Futures.transform(
                 connection.sendIqPacket(iq),
                 response -> {
@@ -860,7 +857,6 @@ public class MultiUserChatManager extends AbstractManager {
         iq.setTo(address);
         final var mucOwner = iq.addExtension(new MucOwner());
         mucOwner.addExtension(data);
-        Log.d(Config.LOGTAG, "pushing configuration form: " + iq);
         return Futures.transform(
                 this.connection.sendIqPacket(iq), response -> null, MoreExecutors.directExecutor());
     }
@@ -910,8 +906,9 @@ public class MultiUserChatManager extends AbstractManager {
             conversation.setAcceptedCryptoTargets(cryptoTargets);
             getDatabase().updateConversation(conversation);
         }
-        // TODO only when room has no avatar
-        this.service.getAvatarService().clear(mucOptions);
+        if (Strings.isNullOrEmpty(mucOptions.getAvatar())) {
+            this.service.getAvatarService().clear(mucOptions);
+        }
         this.service.updateMucRosterUi();
         this.service.updateConversationUi();
     }
@@ -1341,6 +1338,7 @@ public class MultiUserChatManager extends AbstractManager {
                 .put("muc#roomconfig_enablearchiving", true) // prosody
                 .put("mam", true) // ejabberd community
                 .put("muc#roomconfig_mam", true) // ejabberd saas
+                .put("muc#roomconfig_enablelogging", false) // public logging
                 .buildOrThrow();
     }
 

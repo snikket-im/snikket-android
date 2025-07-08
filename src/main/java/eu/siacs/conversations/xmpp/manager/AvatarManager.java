@@ -322,8 +322,6 @@ public class AvatarManager extends AbstractManager {
             return;
         }
 
-        Log.d(Config.LOGTAG, "picked avatar from " + from + ": " + avatar.preferred);
-
         final var cache = FileBackend.getAvatarFile(context, avatar.preferred.getId());
 
         if (cache.exists()) {

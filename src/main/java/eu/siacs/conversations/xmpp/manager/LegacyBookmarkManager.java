@@ -27,7 +27,6 @@ public class LegacyBookmarkManager extends AbstractBookmarkManager {
     }
 
     public void handleItems(final Items items) {
-        Log.d(Config.LOGTAG, "LegacyBookmarkManager.handleItems(" + items + ")");
         final var account = this.getAccount();
         if (this.hasConversion()) {
             if (getManager(NativeBookmarkManager.class).hasFeature()) {
@@ -83,7 +82,6 @@ public class LegacyBookmarkManager extends AbstractBookmarkManager {
         if (storage == null) {
             return Collections.emptyMap();
         }
-        Log.d(Config.LOGTAG, "<-- " + storage);
         final var builder = new ImmutableMap.Builder<Jid, Bookmark>();
         for (final var conference : storage.getExtensions(Conference.class)) {
             final Bookmark bookmark = conferenceToBookmark(conference, account);
