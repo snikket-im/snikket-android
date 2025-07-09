@@ -400,11 +400,11 @@ public class MultiUserChatManager extends AbstractManager {
         final var conversation = mucOptions.getConversation();
 
         mucOptions.setError(MucOptions.Error.NONE);
-        final MucOptions.User user = MultiUserChatManager.itemToUser(conversation, item, from);
         final var occupant = presence.getOnlyExtension(OccupantId.class);
         final String occupantId =
                 mucOptions.occupantId() && occupant != null ? occupant.getId() : null;
-        user.setOccupantId(occupantId);
+        final MucOptions.User user =
+                MultiUserChatManager.itemToUser(conversation, item, from, occupantId);
         if (codes.contains(MucUser.STATUS_CODE_SELF_PRESENCE)
                 || (codes.contains(MucUser.STATUS_CODE_ROOM_CREATED)
                         && jid.equals(
@@ -528,7 +528,11 @@ public class MultiUserChatManager extends AbstractManager {
         } else {
             final var item = x.getItem();
             if (item != null) {
-                mucOptions.updateUser(MultiUserChatManager.itemToUser(conversation, item, from));
+                final var occupant = presence.getOnlyExtension(OccupantId.class);
+                final String occupantId =
+                        mucOptions.occupantId() && occupant != null ? occupant.getId() : null;
+                mucOptions.updateUser(
+                        MultiUserChatManager.itemToUser(conversation, item, from, occupantId));
             }
             final var user = mucOptions.deleteUser(from);
             if (user != null) {
@@ -643,7 +647,7 @@ public class MultiUserChatManager extends AbstractManager {
         if (item == null) {
             return;
         }
-        final var user = itemToUser(conversation, item, null);
+        final var user = itemToUser(conversation, item);
         this.handleAffiliationChange(conversation, user);
     }
 
@@ -926,7 +930,7 @@ public class MultiUserChatManager extends AbstractManager {
                         throw new IllegalStateException("No query in response");
                     }
                     return Collections2.transform(
-                            mucAdmin.getItems(), i -> itemToUser(conversation, i, null));
+                            mucAdmin.getItems(), i -> itemToUser(conversation, i));
                 },
                 MoreExecutors.directExecutor());
     }
@@ -1251,8 +1255,15 @@ public class MultiUserChatManager extends AbstractManager {
 
     public static MucOptions.User itemToUser(
             final Conversation conference,
-            im.conversations.android.xmpp.model.muc.Item item,
-            final Jid from) {
+            final im.conversations.android.xmpp.model.muc.Item item) {
+        return itemToUser(conference, item, null, null);
+    }
+
+    public static MucOptions.User itemToUser(
+            final Conversation conference,
+            final im.conversations.android.xmpp.model.muc.Item item,
+            final Jid from,
+            final String occupantId) {
         final var affiliation = item.getAffiliation();
         final var role = item.getRole();
         final var nick = item.getNick();
@@ -1264,14 +1275,9 @@ public class MultiUserChatManager extends AbstractManager {
         } else {
             fullAddress = ofNick(conference, nick);
         }
-        final Jid realJid = item.getAttributeAsJid("jid");
-        MucOptions.User user = new MucOptions.User(conference.getMucOptions(), fullAddress);
-        if (Jid.Invalid.isValid(realJid)) {
-            user.setRealJid(realJid);
-        }
-        user.setAffiliation(affiliation);
-        user.setRole(role);
-        return user;
+        final Jid realJid = Jid.Invalid.getNullForInvalid(item.getAttributeAsJid("jid"));
+        return new MucOptions.User(
+                conference.getMucOptions(), fullAddress, realJid, occupantId, role, affiliation);
     }
 
     private static Jid ofNick(final Conversation conversation, final String nick) {
