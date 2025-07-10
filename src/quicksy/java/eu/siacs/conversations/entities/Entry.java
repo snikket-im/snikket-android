@@ -78,7 +78,7 @@ public class Entry implements Comparable<Entry> {
             if (phoneNumberContact != null && phoneNumberContact.getPhoneNumber() != null) {
                 Entry entry =
                         findOrCreateByPhoneNumber(entries, phoneNumberContact.getPhoneNumber());
-                entry.jids.add(contact.getJid().asBareJid());
+                entry.jids.add(contact.getAddress().asBareJid());
             }
         }
         return entries;

@@ -454,7 +454,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     }
 
     private static String getNumber(final Contact contact) {
-        final Jid jid = contact.getJid();
+        final Jid jid = contact.getAddress();
         if (jid.getLocal() != null && Config.QUICKSY_DOMAIN.equals(jid.getDomain())) {
             return jid.getLocal();
         }
