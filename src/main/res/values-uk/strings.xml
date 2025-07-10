@@ -1180,4 +1180,10 @@
     <string name="pref_show_11_sender_chats_summary">Показувати аватари в отриманих повідомленнях у приватних чатах. (Аватари в групових чатах відображатимуться завжди)</string>
     <string name="pref_account_avatar_summary">Показувати аватари облікових записів у вихідних повідомленнях для зручності керування ними.</string>
     <string name="pref_show_11_chats_summary">Показувати аватари у приватних чатах. (Аватари в групових чатах відображатимуться завжди)</string>
+    <string name="do_not_show_this_warning_again">Більше не показувати це попередження.</string>
+    <string name="could_not_moderate_message">Не вдалося модерувати повідомлення</string>
+    <string name="moderate_delete_dot_dot_dot">Видалити як модератор…</string>
+    <string name="delete_message">Видалити повідомлення</string>
+    <string name="moderation_explained">Повідомлення буде видалено для Вас і всіх учасників цього публічного каналу.</string>
+    <string name="moderate_delete">Видалити як модератор</string>
 </resources>
