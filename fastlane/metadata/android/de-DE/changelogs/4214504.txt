@@ -1,0 +1,2 @@
+* Hochladen und Anzeigen von hochauflösenden Profilbildern auf Servern, die diese unterstützen
+* Unterstützung von ‚XEP-0425: Moderated Message Retraction‘ in öffentlichen Channels
