@@ -1164,4 +1164,10 @@
     <string name="pref_show_11_chats">Rozmowy 1:1</string>
     <string name="pref_show_11_sender_chats_summary">Pokazuj awatary w rozmowach 1:1 przy wiadomościach odebranych. (Awatary w rozmowach grupowych będą zawsze pokazywane.)</string>
     <string name="pref_show_11_chats_summary">Pokazuj awatary w rozmowach 1:1. (Awatary w rozmowach grupowych będą zawsze pokazywane.)</string>
+    <string name="moderate_delete">Usuń jako moderator</string>
+    <string name="could_not_moderate_message">Nie udało się zmoderować wiadomości</string>
+    <string name="delete_message">Usuń wiadomość</string>
+    <string name="do_not_show_this_warning_again">Nie pokazuj tego ostrzeżenia ponownie.</string>
+    <string name="moderation_explained">Wiadomość zostanie usunięta dla Ciebie i każdego uczestnika tego publicznego kanału.</string>
+    <string name="moderate_delete_dot_dot_dot">Usuń jako moderator…</string>
 </resources>
