@@ -120,7 +120,7 @@
     <string name="pref_notification_sound_summary">新消息的通知提示音</string>
     <string name="pref_call_ringtone_summary">来电铃声</string>
     <string name="pref_notification_grace_period">静默期</string>
-    <string name="pref_notification_grace_period_summary">在其他设备上检测到活动之后，通知在此期间静音。</string>
+    <string name="pref_notification_grace_period_summary">当检测到您在其他设备活动时，通知被静音的时长。</string>
     <string name="pref_advanced_options">高级</string>
     <string name="pref_never_send_crash_summary">通过发送崩溃报告，您可以帮助此应用的进一步开发</string>
     <string name="pref_confirm_messages">确认消息</string>
@@ -416,7 +416,7 @@
     <string name="pref_enter_is_send">Enter 键发送</string>
     <string name="pref_enter_is_send_summary">使用 Enter 键发送消息。即使禁用此选项，始终可以使用 Ctrl+Enter 发送消息。</string>
     <string name="pref_display_enter_key">显示 Enter 键</string>
-    <string name="pref_display_enter_key_summary">将表情符号键替换为 Enter 键</string>
+    <string name="pref_display_enter_key_summary">将表情符号键更改为 Enter 键</string>
     <string name="audio">音频</string>
     <string name="video">视频</string>
     <string name="image">图片</string>
@@ -451,7 +451,7 @@
     <plurals name="toast_delete_certificates">
         <item quantity="other">%d 个证书已删除</item>
     </plurals>
-    <string name="pref_quick_action_summary">以快捷操作替代“发送”按钮</string>
+    <string name="pref_quick_action_summary">将“发送”按钮替换为快捷操作</string>
     <string name="pref_quick_action">快捷操作</string>
     <string name="none">无</string>
     <string name="recently_used">最近用过</string>
@@ -650,7 +650,7 @@
     <string name="transcoding_video">正在压缩视频</string>
     <string name="contact_blocked_past_tense">联系人已屏蔽。</string>
     <string name="pref_notifications_from_strangers">陌生人的通知</string>
-    <string name="pref_notifications_from_strangers_summary">收到陌生人的消息和来电时通知。</string>
+    <string name="pref_notifications_from_strangers_summary">收到陌生人的消息和来电时发出通知。</string>
     <string name="received_message_from_stranger">收到了陌生人的消息</string>
     <string name="block_stranger">屏蔽陌生人</string>
     <string name="block_entire_domain">屏蔽整个域名</string>
@@ -1095,7 +1095,7 @@
     <string name="pref_call_integration">通话集成</string>
     <string name="custom_notifications">自定义通知</string>
     <string name="custom_notifications_enable">是否为此对话启用自定义通知（重要程度、声音、振动）设置？</string>
-    <string name="pref_call_integration_summary">此应用的通话与常规通话交互，例如另一个通话开始时结束一个通话。</string>
+    <string name="pref_call_integration_summary">此应用的通话会与常规通话交互，例如新通话开始时自动结束当前通话。</string>
     <string name="pref_align_start_summary">在左侧显示所有消息，包括发送的消息，以实现统一的聊天布局。</string>
     <string name="pref_align_start">左对齐消息</string>
     <string name="delete_avatar_message">是否删除头像？部分客户端可能会继续显示已缓存的头像副本。</string>
@@ -1127,4 +1127,10 @@
     <string name="pref_show_11_chats">一对一聊天</string>
     <string name="pref_show_11_chats_summary">在一对一聊天中显示头像。（群聊中始终显示头像。）</string>
     <string name="pref_show_11_sender_chats_summary">在一对一聊天中收到的消息旁显示头像。（群聊中始终显示头像。）</string>
+    <string name="moderation_explained">此消息将对您及本公开频道的所有参与者删除。</string>
+    <string name="do_not_show_this_warning_again">不再显示此警告。</string>
+    <string name="moderate_delete_dot_dot_dot">以主持人身份删除…</string>
+    <string name="moderate_delete">以主持人身份删除</string>
+    <string name="could_not_moderate_message">无法审核撤回消息</string>
+    <string name="delete_message">删除消息</string>
 </resources>
