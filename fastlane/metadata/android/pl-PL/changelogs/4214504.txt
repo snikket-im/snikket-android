@@ -1,0 +1,2 @@
+* Wysyłanie i pokazywanie awatarów (obrazków profilowych) w wysokiej rozdzielczości na serwerach, które je obsługują
+* Obsługa „XEP-0425: Moderated Message Retraction” w kanałach publicznych
