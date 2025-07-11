@@ -1150,4 +1150,10 @@
     <string name="pref_show_11_chats">Conversas privadas</string>
     <string name="pref_show_11_sender_chats_summary">Exibir avatares em mensagens recebidas em conversas privadas. (Avatares em conversas em grupo sempre serão exibidas.)</string>
     <string name="pref_show_11_chats_summary">Exibir avatares em conversas privadas. (Avatares em conversas em grupo sempre serão exibidas.)</string>
+    <string name="moderate_delete_dot_dot_dot">Apagar como moderador…</string>
+    <string name="moderate_delete">Apagar como moderador</string>
+    <string name="could_not_moderate_message">Não foi possível moderar a mensagem</string>
+    <string name="delete_message">Apagar mensagem</string>
+    <string name="do_not_show_this_warning_again">Não mostrar este aviso novamente.</string>
+    <string name="moderation_explained">Esta mensagem será apagada para você e todos os outros participantes deste canal público.</string>
 </resources>
