@@ -1132,4 +1132,10 @@
     <string name="pref_show_11_chats_summary">Mostrar avatares nas conversas 1:1. (Os avatares móstranse sempre nas conversas en grupo.)</string>
     <string name="pref_account_avatar_summary">Mostrar avatares das contas para as mensaxes enviadas para unha xestión e identificación doadas.</string>
     <string name="pref_show_11_sender_chats_summary">Mostrar avatares nas mensaxes recibidas para conversas 1:1. (Os avatares sempre se mostran nas conversas en grupo.)</string>
+    <string name="moderate_delete_dot_dot_dot">Eliminar como moderadora…</string>
+    <string name="moderate_delete">Eliminar como moderadora</string>
+    <string name="could_not_moderate_message">Non se puido moderar a mensaxe</string>
+    <string name="do_not_show_this_warning_again">Non volver a mostrar esta mensaxe.</string>
+    <string name="delete_message">Eliminar mensaxe</string>
+    <string name="moderation_explained">Vaise eliminar esta mensaxe para ti e todas as persoas participantes nesta canle pública.</string>
 </resources>
