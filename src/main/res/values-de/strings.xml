@@ -1132,4 +1132,10 @@
     <string name="pref_show_11_chats">1:1 Chats</string>
     <string name="pref_show_11_sender_chats_summary">Profilbilder in 1:1-Chats bei empfangenen Nachrichten anzeigen. (Profilbilder in Gruppenchats werden immer angezeigt.)</string>
     <string name="pref_show_11_chats_summary">Profilbilder in 1:1-Chats anzeigen. (Profilbilder in Gruppenchats werden immer angezeigt.)</string>
+    <string name="moderate_delete">Als Moderator löschen</string>
+    <string name="could_not_moderate_message">Nachricht konnte nicht moderiert werden</string>
+    <string name="delete_message">Nachricht löschen</string>
+    <string name="do_not_show_this_warning_again">Diese Warnung soll nicht mehr angezeigt werden.</string>
+    <string name="moderation_explained">Diese Nachricht wird für dich und jeden Teilnehmer dieses öffentlichen Channels gelöscht.</string>
+    <string name="moderate_delete_dot_dot_dot">Als Moderator löschen…</string>
 </resources>
