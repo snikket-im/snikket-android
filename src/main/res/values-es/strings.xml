@@ -88,7 +88,7 @@
     <string name="send_message">Enviar mensaje</string>
     <string name="send_message_to_x">Enviar mensaje a %s</string>
     <string name="send_omemo_x509_message">Enviar mensaje cifrado v\\OMEMO</string>
-    <string name="your_nick_has_been_changed">El apodo ha sido modificado</string>
+    <string name="your_nick_has_been_changed">Tu apodo ha sido modificado</string>
     <string name="send_unencrypted">Enviar sin cifrar</string>
     <string name="decryption_failed">Falló el descifrado. Tal vez no tenga la clave privada apropiada.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -1138,4 +1138,16 @@
     <string name="no_contacts_permission">%1$s necesita acceso a sus contactos</string>
     <string name="save_to_contact">Guardar en contactos</string>
     <string name="show_in_contacts">Mostrar en contactos</string>
+    <string name="pref_category_avatars">Avatares</string>
+    <string name="pref_show_11_chats">Chats 1:1</string>
+    <string name="pref_show_11_chats_summary">Mostrar avatares en chats 1:1. (En chats grupales siempre aparecerán los avatares.)</string>
+    <string name="pref_show_11_sender_chats_summary">Mostrar avatares en chats 1:1 en mensajes recibidos. (En chats grupales siempre aparecerán los avatares.)</string>
+    <string name="moderate_delete">Eliminar como moderador</string>
+    <string name="delete_message">Eliminar mensaje</string>
+    <string name="moderation_explained">Este mensaje se borrará para ti y para todo participante de este canal público.</string>
+    <string name="do_not_show_this_warning_again">No mostrar de nuevo esta advertencia.</string>
+    <string name="pref_account_avatar">Cuentas</string>
+    <string name="pref_account_avatar_summary">Mostrar avatares de las cuentas en mensajes salientes para facilitar su manejo e identificación.</string>
+    <string name="moderate_delete_dot_dot_dot">Eliminar como moderador…</string>
+    <string name="could_not_moderate_message">No se pudo moderar el mensaje</string>
 </resources>
