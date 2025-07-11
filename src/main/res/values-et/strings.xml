@@ -1152,4 +1152,10 @@
     <string name="pref_show_11_chats_summary">Näita tunnuspilte ka 1:1 vestlustes. (Rühmavestlustes näidatakse alati tunnuspilte.)</string>
     <string name="pref_account_avatar_summary">Lihtsamaks tuvastamiseks ja halduseks kuva ka saadetud sõnumite puhul konto tunnuspilti.</string>
     <string name="pref_show_11_sender_chats_summary">Näita tunnuspilte ka 1:1 vestluste saabunud sõnumitel. (Rühmavestlustes näidatakse alati tunnuspilte.)</string>
+    <string name="moderate_delete_dot_dot_dot">Kustuta moderaatorina…</string>
+    <string name="moderate_delete">Kustuta moderaatorina</string>
+    <string name="could_not_moderate_message">Sõnumi modereerimine ei õnnestunud</string>
+    <string name="delete_message">Kustuta sõnum</string>
+    <string name="moderation_explained">Järgnevaga see sõnum kustub sinu ja kõikide teiste selles kanalis osalejate jaoks.</string>
+    <string name="do_not_show_this_warning_again">Ära näita seda hoiatust uuesti.</string>
 </resources>
