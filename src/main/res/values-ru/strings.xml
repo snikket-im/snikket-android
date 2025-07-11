@@ -87,7 +87,7 @@
 \n 
 \n<b>Предупреждение:</b> данная операция не удалит копии файла, хранящиеся на других устройствах или серверах. </string>
     <string name="choose_presence">Выберите устройство</string>
-    <string name="send_unencrypted_message">Отправить сообщение без шифрования</string>
+    <string name="send_unencrypted_message">Отправить без шифрования</string>
     <string name="send_message">Сообщение</string>
     <string name="send_message_to_x">Сообщение для %s</string>
     <string name="send_omemo_x509_message">Зашифрованное v\\OMEMO сообщение</string>
@@ -1179,4 +1179,10 @@
     <string name="pref_show_11_chats">Беседы 1:1</string>
     <string name="pref_show_11_chats_summary">Показывать аватары в беседах 1:1 (в конференциях аватары отображаются всегда)</string>
     <string name="pref_show_11_sender_chats_summary">Показывать аватары у входящих сообщений в беседах 1:1 (в конференциях аватары отображаются всегда)</string>
+    <string name="moderate_delete_dot_dot_dot">Удалить как модератор…</string>
+    <string name="moderate_delete">Удалить как модератор</string>
+    <string name="delete_message">Удалить сообщение</string>
+    <string name="moderation_explained">Сообщение будет удалено для вас и всех остальных участников этого публичного канала.</string>
+    <string name="do_not_show_this_warning_again">Больше не предупреждать.</string>
+    <string name="could_not_moderate_message">Не удалось отмодерировать сообщение</string>
 </resources>
