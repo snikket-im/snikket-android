@@ -1151,4 +1151,10 @@
     <string name="pref_show_11_chats">Discuții 1:1</string>
     <string name="pref_show_11_chats_summary">Afișează poza de profil în discuții 1:1. (Pozele de profil în discuțiile de grup vor fi întotdeauna afișate.)</string>
     <string name="pref_show_11_sender_chats_summary">Afișează poza de profil în discuții 1:1 pe mesajele primite. (Pozele de profil în discuțiile de grup vor fi întotdeauna afișate.)</string>
+    <string name="do_not_show_this_warning_again">Nu mai arăta acest avertisment.</string>
+    <string name="moderation_explained">Acest mesaj va fi șters pentru dvs. și pentru fiecare participant al acestui canal public.</string>
+    <string name="delete_message">Șterge mesaj</string>
+    <string name="could_not_moderate_message">Nu s-a putut edita administrativ mesajul</string>
+    <string name="moderate_delete">Șterge ca moderator</string>
+    <string name="moderate_delete_dot_dot_dot">Șterge ca moderator…</string>
 </resources>
