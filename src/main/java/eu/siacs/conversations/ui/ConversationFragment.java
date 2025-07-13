@@ -1354,7 +1354,7 @@ public class ConversationFragment extends XmppFragment
                                 && (c.getMode() == Conversational.MODE_SINGLE
                                         || (c.getMucOptions().occupantId()
                                                 && c.getMucOptions().participating())));
-                if (m.getStatus() == Message.STATUS_RECEIVED
+                if (m.getStatus() != Message.STATUS_SEND_FAILED
                         && c.getMode() == Conversational.MODE_MULTI) {
                     final var mucOptions = c.getMucOptions();
                     moderateMessage.setVisible(

@@ -85,14 +85,15 @@ public class ModerationManager extends AbstractManager {
             Log.d(Config.LOGTAG, "received retraction for " + stanzaId + ". Message not found.");
             return;
         }
+        final var moderated = retraction.getModerated();
+        final var by = moderated == null ? null : moderated.getBy();
         conversation.remove(retractedMessage);
         this.service.getNotificationService().clear(retractedMessage);
         if (getDatabase().deleteMessage(retractedMessage.getUuid())) {
-            Log.d(Config.LOGTAG, "received retraction for " + stanzaId + " in " + from);
+            Log.d(
+                    Config.LOGTAG,
+                    "received retraction for " + stanzaId + " in " + from + " by " + by);
         }
         this.service.updateConversationUi();
     }
-
-    private void removeMessageFromConversation(
-            final eu.siacs.conversations.entities.Message message) {}
 }
