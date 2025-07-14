@@ -1141,4 +1141,15 @@
     <string name="save_to_contact">Salva nei contatti</string>
     <string name="show_in_contacts">Mostra nei contatti</string>
     <string name="pref_account_avatar">Profili</string>
+    <string name="pref_account_avatar_summary">Mostra gli avatar dei profili nei messaggi in uscita per una facile identificazione e gestione.</string>
+    <string name="pref_category_avatars">Avatar</string>
+    <string name="pref_show_11_chats">Chat 1:1</string>
+    <string name="pref_show_11_chats_summary">Mostra gli avatar nelle chat 1:1. (Gli avatar nelle chat di gruppo verranno sempre mostrati.)</string>
+    <string name="pref_show_11_sender_chats_summary">Mostra gli avatar nelle chat 1:1 per i messaggi ricevuti. (Gli avatar nelle chat di gruppo verranno sempre mostrati.)</string>
+    <string name="moderate_delete">Elimina come moderatore</string>
+    <string name="could_not_moderate_message">Non è stato possibile moderare il messaggio</string>
+    <string name="delete_message">Elimina messaggio</string>
+    <string name="do_not_show_this_warning_again">Non mostrare più questo avviso.</string>
+    <string name="moderate_delete_dot_dot_dot">Elimina come moderatore…</string>
+    <string name="moderation_explained">Questo messaggio verrà eliminato per te e per tutti i partecipanti di questo canale pubblico.</string>
 </resources>
