@@ -1,0 +1,2 @@
+* Invia e mostra avatar (immagini profilo) in alta risoluzione sui server che ne hanno supporto
+* Supporto a 'XEP-0425: Moderated Message Retraction' nei canali pubblici
