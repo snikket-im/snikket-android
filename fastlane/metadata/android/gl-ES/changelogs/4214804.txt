@@ -1,2 +1,2 @@
 * subir e mostrar avatares de alta resolución (imaxe de perfil) nos servidores compatibles
-* Compatibilidade con 'XEP-0425': Moderated Message Retraction' en canles públicas
+* Compatibilidade con 'XEP-0425: Moderated Message Retraction' en canles públicas
