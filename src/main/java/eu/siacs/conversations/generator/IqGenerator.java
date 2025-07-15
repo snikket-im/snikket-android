@@ -172,10 +172,6 @@ public class IqGenerator extends AbstractGenerator {
     }
 
     public Iq pushTokenToAppServer(Jid appServer, String token, String deviceId) {
-        return pushTokenToAppServer(appServer, token, deviceId, null);
-    }
-
-    public Iq pushTokenToAppServer(Jid appServer, String token, String deviceId, Jid muc) {
         final Iq packet = new Iq(Iq.Type.SET);
         packet.setTo(appServer);
         final Element command = packet.addChild("command", Namespace.COMMANDS);
@@ -183,23 +179,6 @@ public class IqGenerator extends AbstractGenerator {
         command.setAttribute("action", "execute");
         final Data data = new Data();
         data.put("token", token);
-        data.put("android-id", deviceId);
-        if (muc != null) {
-            data.put("muc", muc.toString());
-        }
-        data.submit();
-        command.addChild(data);
-        return packet;
-    }
-
-    public Iq unregisterChannelOnAppServer(Jid appServer, String deviceId, String channel) {
-        final Iq packet = new Iq(Iq.Type.SET);
-        packet.setTo(appServer);
-        final Element command = packet.addChild("command", Namespace.COMMANDS);
-        command.setAttribute("node", "unregister-push-fcm");
-        command.setAttribute("action", "execute");
-        final Data data = new Data();
-        data.put("channel", channel);
         data.put("android-id", deviceId);
         data.submit();
         command.addChild(data);

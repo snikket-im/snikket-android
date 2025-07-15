@@ -38,7 +38,7 @@ public class LegacyBookmarkManager extends AbstractBookmarkManager {
             }
             final var storage = items.getFirstItem(Storage.class);
             final Map<Jid, Bookmark> bookmarks = storageToBookmarks(storage, account);
-            this.processBookmarksInitial(bookmarks, true);
+            this.setBookmarks(bookmarks, true);
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": processing bookmark PEP event");
         } else {
             Log.d(

@@ -41,7 +41,7 @@ public class PrivateStorageManager extends AbstractBookmarkManager {
                         final Map<Jid, Bookmark> bookmarks =
                                 LegacyBookmarkManager.storageToBookmarks(
                                         bookmarkStorage, getAccount());
-                        processBookmarksInitial(bookmarks, false);
+                        setBookmarks(bookmarks, false);
                     }
 
                     @Override

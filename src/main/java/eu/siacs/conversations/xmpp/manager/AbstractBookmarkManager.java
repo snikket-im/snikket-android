@@ -21,9 +21,11 @@ public class AbstractBookmarkManager extends AbstractManager {
         this.service = service;
     }
 
-    // TODO rename to setBookmarks?
-    protected void processBookmarksInitial(final Map<Jid, Bookmark> bookmarks, final boolean pep) {
+    protected void setBookmarks(final Map<Jid, Bookmark> bookmarks, final boolean pep) {
         final var manager = getManager(BookmarkManager.class);
+        // leaving MUCs on bookmark deletion doesn't work on clean start because 'previous
+        // bookmarks' will be empty and we can't get the diff for which bookmarks have been deleted
+        // vs never existed. this could be circumvented by persisting bookmarks across restarts
         final Set<Jid> previousBookmarks = manager.getBookmarkAddresses();
         for (final Bookmark bookmark : bookmarks.values()) {
             previousBookmarks.remove(bookmark.getAddress().asBareJid());

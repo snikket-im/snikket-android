@@ -50,7 +50,7 @@ public class NativeBookmarkManager extends AbstractBookmarkManager {
                             }
                             builder.put(bookmark.getAddress(), bookmark);
                         }
-                        processBookmarksInitial(builder.buildKeepingLast(), true);
+                        setBookmarks(builder.buildKeepingLast(), true);
                     }
 
                     @Override
