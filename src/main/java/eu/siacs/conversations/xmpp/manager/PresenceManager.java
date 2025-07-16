@@ -42,8 +42,7 @@ public class PresenceManager extends AbstractManager {
     }
 
     public void subscribe(final Jid address, final String preAuth) {
-
-        var presence = new Presence(Presence.Type.SUBSCRIBE);
+        final var presence = new Presence(Presence.Type.SUBSCRIBE);
         presence.setTo(address);
 
         final var displayName = getAccount().getDisplayName();
@@ -57,13 +56,13 @@ public class PresenceManager extends AbstractManager {
     }
 
     public void unsubscribe(final Jid address) {
-        var presence = new Presence(Presence.Type.UNSUBSCRIBE);
+        final var presence = new Presence(Presence.Type.UNSUBSCRIBE);
         presence.setTo(address);
         this.connection.sendPresencePacket(presence);
     }
 
     public void unsubscribed(final Jid address) {
-        var presence = new Presence(Presence.Type.UNSUBSCRIBED);
+        final var presence = new Presence(Presence.Type.UNSUBSCRIBED);
         presence.setTo(address);
         this.connection.sendPresencePacket(presence);
     }
@@ -154,37 +153,6 @@ public class PresenceManager extends AbstractManager {
         } else {
             return im.conversations.android.xmpp.model.stanza.Presence.Availability.ONLINE;
         }
-    }
-
-    public Presence getPresence(final Presence.Availability availability, final boolean personal) {
-        final var account = connection.getAccount();
-        final var serviceDiscoveryFeatures = getManager(DiscoManager.class).getServiceDescription();
-        final var infoQuery = serviceDiscoveryFeatures.asInfoQuery();
-        final var capsHash = EntityCapabilities.hash(infoQuery);
-        final var caps2Hash = EntityCapabilities2.hash(infoQuery);
-        serviceDescriptions.put(capsHash, serviceDiscoveryFeatures);
-        serviceDescriptions.put(caps2Hash, serviceDiscoveryFeatures);
-        final var capabilities = new Capabilities();
-        capabilities.setHash(caps2Hash);
-        final var legacyCapabilities = new LegacyCapabilities();
-        legacyCapabilities.setNode(DiscoManager.CAPABILITY_NODE);
-        legacyCapabilities.setHash(capsHash);
-        final var presence = new Presence();
-        presence.addExtension(capabilities);
-        presence.addExtension(legacyCapabilities);
-
-        if (personal) {
-            final String pgpSignature = account.getPgpSignature();
-            final String message = account.getPresenceStatusMessage();
-            presence.setAvailability(availability);
-            presence.setStatus(message);
-            if (pgpSignature != null) {
-                final var signed = new Signed();
-                signed.setContent(pgpSignature);
-                presence.addExtension(new Signed());
-            }
-        }
-        return presence;
     }
 
     public ServiceDescription getCachedServiceDescription(final EntityCapabilities.Hash hash) {

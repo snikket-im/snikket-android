@@ -1,10 +1,10 @@
 package im.conversations.android.xmpp.model.pars;
 
-import im.conversations.android.annotation.XmlElement;
 import eu.siacs.conversations.xml.Namespace;
+import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
 
-@XmlElement(namespace = Namespace.PARS)
+@XmlElement(namespace = Namespace.PARS, name = "preauth")
 public class PreAuth extends Extension {
 
     public PreAuth() {

@@ -79,7 +79,6 @@ import eu.siacs.conversations.entities.Reaction;
 import eu.siacs.conversations.generator.AbstractGenerator;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
-import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.http.ServiceOutageStatus;
 import eu.siacs.conversations.persistance.DatabaseBackend;
@@ -253,7 +252,6 @@ public class XmppConnectionService extends Service {
                     }
                 }
             };
-    private final PresenceGenerator mPresenceGenerator = new PresenceGenerator(this);
     private List<Account> accounts;
     private final JingleConnectionManager mJingleConnectionManager =
             new JingleConnectionManager(this);
@@ -4034,10 +4032,6 @@ public class XmppConnectionService extends Service {
 
     public MessageGenerator getMessageGenerator() {
         return this.mMessageGenerator;
-    }
-
-    public PresenceGenerator getPresenceGenerator() {
-        return this.mPresenceGenerator;
     }
 
     public IqGenerator getIqGenerator() {

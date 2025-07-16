@@ -205,6 +205,7 @@ public class RegistrationManager extends AbstractManager {
                         preAuthentication,
                         IqErrorException.class,
                         ex -> {
+                            Log.d(Config.LOGTAG, "could not pre authenticate registration", ex);
                             final var error = ex.getError();
                             final var condition = error == null ? null : error.getCondition();
                             if (condition instanceof Condition.ItemNotFound) {
@@ -221,7 +222,7 @@ public class RegistrationManager extends AbstractManager {
 
     public ListenableFuture<Void> sendPreAuthentication(final String token) {
         final var account = getAccount();
-        final var iq = new Iq(Iq.Type.GET);
+        final var iq = new Iq(Iq.Type.SET);
         iq.setTo(account.getJid().getDomain());
         final var preAuthentication = iq.addExtension(new PreAuth());
         preAuthentication.setToken(token);
