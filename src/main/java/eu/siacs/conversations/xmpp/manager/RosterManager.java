@@ -32,6 +32,7 @@ import im.conversations.android.xmpp.model.roster.Item;
 import im.conversations.android.xmpp.model.roster.Query;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Presence;
+import im.conversations.android.xmpp.model.vcard.update.VCardUpdate;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -474,12 +475,17 @@ public class RosterManager extends AbstractManager implements Roster {
         final var account = getAccount().getJid().asBareJid();
         final var from = packet.getFrom();
         if (from == null || from.equals(account.getDomain()) || from.equals(account)) {
-            // snikket sends unavailable presence from the server domain. We ignore this mostly in
+            // Snikket sends unavailable presence from the server domain. We ignore this mostly in
             // order to avoid executing DiscoManager.clear() which would have caused server disco
             // features to go away
             // the operation on the 'Contact' object will also be ignored but those are irrelevant
             // anyway.
             Log.d(Config.LOGTAG, "ignoring unavailable presence from " + from);
+            final var vCardUpdate = packet.getExtension(VCardUpdate.class);
+            if (vCardUpdate != null && account.getDomain().equals(from)) {
+                // Snikket special feature
+                getManager(AvatarManager.class).handleVCardUpdate(from, vCardUpdate);
+            }
             return;
         }
         final var contact = this.getContact(from);
