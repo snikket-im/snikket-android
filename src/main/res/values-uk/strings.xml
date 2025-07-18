@@ -550,7 +550,7 @@
     <string name="type_tablet">Планшет</string>
     <string name="type_web">Браузер</string>
     <string name="type_console">Консоль</string>
-    <string name="payment_required">Вимагається оплата</string>
+    <string name="payment_required">Необхідна оплата</string>
     <string name="missing_internet_permission">Надати дозвіл на доступ до Інтернету</string>
     <string name="me">Я</string>
     <string name="contact_asks_for_presence_subscription">Контакт просить надавати інформацію про присутність</string>
