@@ -2,18 +2,19 @@ package eu.siacs.conversations.xmpp.jingle;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
-import java.util.ArrayList;
+import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.jspecify.annotations.Nullable;
 
 public class RtpCapability {
 
@@ -26,7 +27,7 @@ public class RtpCapability {
     private static final Collection<String> VIDEO_REQUIREMENTS =
             Arrays.asList(Namespace.JINGLE_FEATURE_AUDIO, Namespace.JINGLE_FEATURE_VIDEO);
 
-    public static Capability check(final InfoQuery infoQuery) {
+    public static Capability check(@Nullable final InfoQuery infoQuery) {
         final Set<String> features =
                 infoQuery == null
                         ? Collections.emptySet()
@@ -42,38 +43,33 @@ public class RtpCapability {
         return Capability.NONE;
     }
 
-    public static String[] filterPresences(final Contact contact, Capability required) {
+    public static List<Presence> filterPresences(final Contact contact, Capability required) {
         final var connection = contact.getAccount().getXmppConnection();
-        if (connection == null) {
-            return new String[0];
-        }
-        final Presences presences = contact.getPresences();
-        final ArrayList<String> resources = new ArrayList<>();
-        for (final String resource : presences.getPresencesMap().keySet()) {
-            final var jid =
-                    Strings.isNullOrEmpty(resource)
-                            ? contact.getAddress().asBareJid()
-                            : contact.getAddress().withResource(resource);
-            final Capability capability = check(connection.getManager(DiscoManager.class).get(jid));
+
+        final var builder = new ImmutableList.Builder<Presence>();
+
+        for (final var presence : contact.getPresences()) {
+            final Capability capability =
+                    check(connection.getManager(DiscoManager.class).get(presence.getFrom()));
             if (capability == Capability.NONE) {
                 continue;
             }
             if (required == Capability.AUDIO || capability == required) {
-                resources.add(resource);
+                builder.add(presence);
             }
         }
-        return resources.toArray(new String[0]);
+        return builder.build();
     }
 
     public static Capability checkWithFallback(final Contact contact) {
-        final Presences presences = contact.getPresences();
+        final var presences = contact.getPresences();
         if (presences.isEmpty() && contact.getAccount().isEnabled()) {
             return contact.getRtpCapability();
         }
         return check(contact, presences);
     }
 
-    public static Capability check(final Contact contact, final Presences presences) {
+    public static Capability check(final Contact contact, final List<Presence> presences) {
         final var connection = contact.getAccount().getXmppConnection();
         if (connection == null) {
             return Capability.NONE;
@@ -81,15 +77,12 @@ public class RtpCapability {
         Set<Capability> capabilities =
                 ImmutableSet.copyOf(
                         Collections2.transform(
-                                presences.getPresencesMap().keySet(),
-                                resource -> {
-                                    final var jid =
-                                            Strings.isNullOrEmpty(resource)
-                                                    ? contact.getAddress().asBareJid()
-                                                    : contact.getAddress().withResource(resource);
-                                    return check(
-                                            connection.getManager(DiscoManager.class).get(jid));
-                                }));
+                                presences,
+                                p ->
+                                        check(
+                                                connection
+                                                        .getManager(DiscoManager.class)
+                                                        .get(p.getFrom()))));
         if (capabilities.contains(Capability.VIDEO)) {
             return Capability.VIDEO;
         } else if (capabilities.contains(Capability.AUDIO)) {
@@ -107,27 +100,15 @@ public class RtpCapability {
         }
         return !Collections2.transform(
                         Collections2.filter(
-                                contact.getPresences().getPresencesMap().keySet(),
-                                p ->
+                                contact.getFullAddresses(),
+                                a ->
                                         RtpCapability.check(
                                                         connection
                                                                 .getManager(DiscoManager.class)
-                                                                .get(
-                                                                        Strings.isNullOrEmpty(p)
-                                                                                ? contact.getAddress()
-                                                                                        .asBareJid()
-                                                                                : contact.getAddress()
-                                                                                        .withResource(
-                                                                                                p)))
+                                                                .get(a))
                                                 != Capability.NONE),
-                        p -> {
-                            final var disco =
-                                    connection
-                                            .getManager(DiscoManager.class)
-                                            .get(
-                                                    Strings.isNullOrEmpty(p)
-                                                            ? contact.getAddress().asBareJid()
-                                                            : contact.getAddress().withResource(p));
+                        a -> {
+                            final var disco = connection.getManager(DiscoManager.class).get(a);
                             return disco != null
                                     && disco.getFeatureStrings().contains(Namespace.JINGLE_MESSAGE);
                         })

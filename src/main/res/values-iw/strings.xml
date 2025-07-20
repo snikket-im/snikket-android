@@ -115,10 +115,6 @@
     <string name="server_info_available">זמין</string>
     <string name="server_info_unavailable">לא זמין</string>
     <string name="missing_public_keys">הכרזות מפתח פומבי חסרות</string>
-    <string name="last_seen_now">נראה לאחרונה ממש עכשיו</string>
-    <string name="last_seen_mins">נראה לאחרונה לפני %d דקות</string>
-    <string name="last_seen_hours">נראה לאחרונה לפני %d שעות</string>
-    <string name="last_seen_days">נראה לאחרונה לפני %d ימים</string>
     <string name="omemo_fingerprint">טביעת אצבע של OMEMO</string>
     <string name="other_devices">מכשירים אחרים</string>
     <string name="trust_omemo_fingerprints">סמוך על טביעות אצבע OMEMO</string>
@@ -364,9 +360,6 @@
     <string name="error_out_of_memory">נגמר הזיכרון. תמונה גדולה מדי</string>
     <string name="server_info_external_service_discovery">XEP-0215: גילוי שירות חיצוני</string>
     <string name="server_info_push">XEP-0357: דחיפה</string>
-    <string name="last_seen_min">נראה לאחרונה לפני דקה</string>
-    <string name="last_seen_hour">נראה לאחרונה לפני שעה</string>
-    <string name="last_seen_day">נראה לאחרונה לפני יום אחד</string>
     <string name="install_openkeychain">הודעה מוצפנת. אנא התקן את OpenKeychain כדי לפענח אותו.</string>
     <string name="openpgp_messages_found">נמצאו הודעות מוצפנות חדשות של OpenPGP</string>
     <string name="openpgp_key_id">מזהה מפתח OpenPGP</string>

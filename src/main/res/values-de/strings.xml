@@ -198,13 +198,6 @@
     <string name="server_info_available">ja</string>
     <string name="server_info_unavailable">nein</string>
     <string name="missing_public_keys">Öffentlicher Schlüssel fehlt</string>
-    <string name="last_seen_now">gerade eben noch gesehen</string>
-    <string name="last_seen_min">vor einer Minute gesehen</string>
-    <string name="last_seen_mins">vor %d Minuten gesehen</string>
-    <string name="last_seen_hour">vor einer Stunde gesehen</string>
-    <string name="last_seen_hours">vor %d Stunden gesehen</string>
-    <string name="last_seen_day">vor einem Tag gesehen</string>
-    <string name="last_seen_days">vor %d Tagen gesehen</string>
     <string name="install_openkeychain">Verschlüsselte Nachricht. Bitte installiere OpenKeychain, um sie zu entschlüsseln.</string>
     <string name="openpgp_messages_found">Neue verschlüsselte OpenPGP-Nachricht gefunden</string>
     <string name="openpgp_key_id">OpenPGP Schlüssel-ID</string>

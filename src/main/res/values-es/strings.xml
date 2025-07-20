@@ -199,13 +199,6 @@
     <string name="server_info_available">Sí</string>
     <string name="server_info_unavailable">No</string>
     <string name="missing_public_keys">Anuncios de clave pública no notificados</string>
-    <string name="last_seen_now">Visto última vez ahora</string>
-    <string name="last_seen_min">visto última vez hace un minuto</string>
-    <string name="last_seen_mins">Visto última vez hace %d minutos</string>
-    <string name="last_seen_hour">visto última vez hace una hora</string>
-    <string name="last_seen_hours">Visto última vez hace %d horas</string>
-    <string name="last_seen_day">visto última vez hace un día</string>
-    <string name="last_seen_days">Visto última vez hace %d días</string>
     <string name="install_openkeychain">Mensaje cifrado. Por favor instala OpenKeychain para descifrarlo.</string>
     <string name="openpgp_messages_found">Encontrado un nuevo mensaje cifrado con OpenPGP</string>
     <string name="openpgp_key_id">Identificador de la clave OpenPGP</string>

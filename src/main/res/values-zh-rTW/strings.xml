@@ -183,13 +183,6 @@
     <string name="server_info_available">有效</string>
     <string name="server_info_unavailable">無效</string>
     <string name="missing_public_keys">缺少公開金鑰通知</string>
-    <string name="last_seen_now">剛剛查看過</string>
-    <string name="last_seen_min">1 分鐘前查看過</string>
-    <string name="last_seen_mins">%d 分鐘前查看過</string>
-    <string name="last_seen_hour">1 小時前查看過</string>
-    <string name="last_seen_hours">%d 小時前查看過</string>
-    <string name="last_seen_day">1 天前查看過</string>
-    <string name="last_seen_days">%d 天前查看過</string>
     <string name="install_openkeychain">訊息已加密，請安裝 OpenKeychain 以解密此訊息。</string>
     <string name="openpgp_messages_found">發現新的 OpenPGP 加密訊息</string>
     <string name="openpgp_key_id">OpenPGP 金鑰 ID</string>

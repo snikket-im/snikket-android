@@ -198,13 +198,6 @@
     <string name="server_info_available">mevcut</string>
     <string name="server_info_unavailable">mevcut değil</string>
     <string name="missing_public_keys">Kayıp genel anahtar bildirimleri</string>
-    <string name="last_seen_now">en son şimdi görüldü</string>
-    <string name="last_seen_min">en son bir dakika önce görüldü</string>
-    <string name="last_seen_mins">en son %d dakika önce görüldü</string>
-    <string name="last_seen_hour">en son bir saat önce görüldü</string>
-    <string name="last_seen_hours">en son %d saat önce görüldü</string>
-    <string name="last_seen_day">en son bir saat önce görüldü</string>
-    <string name="last_seen_days">en son %d gün önce görüldü</string>
     <string name="install_openkeychain">Şifrelenmiş mesaj. Çözmek için lütfen OpenKeychain yükleyin.</string>
     <string name="openpgp_messages_found">Yeni şifrelenmiş OpenPGP mesajları bulundu</string>
     <string name="openpgp_key_id">OpenPGP Anahtar ID</string>

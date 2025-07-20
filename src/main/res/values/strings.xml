@@ -208,13 +208,6 @@
     <string name="server_info_available">available</string>
     <string name="server_info_unavailable">unavailable</string>
     <string name="missing_public_keys">Missing public key announcements</string>
-    <string name="last_seen_now">last seen just now</string>
-    <string name="last_seen_min">last seen one minute ago</string>
-    <string name="last_seen_mins">last seen %d minutes ago</string>
-    <string name="last_seen_hour">last seen one hour ago</string>
-    <string name="last_seen_hours">last seen %d hours ago</string>
-    <string name="last_seen_day">last seen one day ago</string>
-    <string name="last_seen_days">last seen %d days ago</string>
     <string name="install_openkeychain">Encrypted message. Please install OpenKeychain to decrypt it.</string>
     <string name="openpgp_messages_found">New OpenPGP encrypted messages found</string>
     <string name="openpgp_key_id">OpenPGP Key ID</string>
@@ -576,8 +569,8 @@
     <string name="gp_short">Short</string>
     <string name="gp_medium">Medium</string>
     <string name="gp_long">Long</string>
-    <string name="pref_broadcast_last_activity">Last seen</string>
-    <string name="pref_broadcast_last_activity_summary">Let your contacts see when you last used the app</string>
+    <string name="pref_broadcast_last_activity">Show last seen</string>
+    <string name="pref_broadcast_last_activity_summary">Let your contacts see the time you were last active in the app</string>
     <string name="pref_privacy">Privacy</string>
     <string name="pref_theme_options">Theme</string>
     <string name="pref_theme_options_summary">Select the color palette</string>
@@ -1131,4 +1124,5 @@
     <string name="delete_message">Delete message</string>
     <string name="moderation_explained">This message will be deleted for you and every participant of this public channel.</string>
     <string name="do_not_show_this_warning_again">Don’t show this warning again.</string>
+    <string name="last_seen">last seen %s</string>
 </resources>

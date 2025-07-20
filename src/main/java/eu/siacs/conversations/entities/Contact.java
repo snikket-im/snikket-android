@@ -4,8 +4,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import androidx.annotation.NonNull;
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.android.AbstractPhoneContact;
 import eu.siacs.conversations.android.JabberIdContact;
@@ -15,11 +20,16 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
+import im.conversations.android.xmpp.model.disco.info.InfoQuery;
+import im.conversations.android.xmpp.model.idle.LastUserInteraction;
 import im.conversations.android.xmpp.model.stanza.Presence;
+import im.conversations.android.xmpp.model.stanza.Stanza;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,12 +62,9 @@ public class Contact implements ListItem, Blockable {
     private String photoUri;
     private final JSONObject keys;
     private JSONArray groups = new JSONArray();
-    private final Presences presences = new Presences(this);
     protected Account account;
     protected String avatar;
 
-    private boolean mActive = false;
-    private long mLastseen = 0;
     private String mLastPresence = null;
     private RtpCapability.Capability rtpCapability;
 
@@ -72,7 +79,6 @@ public class Contact implements ListItem, Blockable {
             final Uri systemAccount,
             final String keys,
             final String avatar,
-            final long lastseen,
             final String presence,
             final String groups,
             final RtpCapability.Capability rtpCapability) {
@@ -97,7 +103,6 @@ public class Contact implements ListItem, Blockable {
         } catch (JSONException e) {
             this.groups = new JSONArray();
         }
-        this.mLastseen = lastseen;
         this.mLastPresence = presence;
         this.rtpCapability = rtpCapability;
     }
@@ -110,33 +115,33 @@ public class Contact implements ListItem, Blockable {
     public static Contact fromCursor(final Cursor cursor) {
         final Jid jid;
         try {
-            jid = Jid.of(cursor.getString(cursor.getColumnIndex(JID)));
+            jid = Jid.of(cursor.getString(cursor.getColumnIndexOrThrow(JID)));
         } catch (final IllegalArgumentException e) {
             // TODO: Borked DB... handle this somehow?
             return null;
         }
         Uri systemAccount;
         try {
-            systemAccount = Uri.parse(cursor.getString(cursor.getColumnIndex(SYSTEMACCOUNT)));
+            systemAccount =
+                    Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(SYSTEMACCOUNT)));
         } catch (Exception e) {
             systemAccount = null;
         }
         return new Contact(
-                cursor.getString(cursor.getColumnIndex(ACCOUNT)),
-                cursor.getString(cursor.getColumnIndex(SYSTEMNAME)),
-                cursor.getString(cursor.getColumnIndex(SERVERNAME)),
-                cursor.getString(cursor.getColumnIndex(PRESENCE_NAME)),
+                cursor.getString(cursor.getColumnIndexOrThrow(ACCOUNT)),
+                cursor.getString(cursor.getColumnIndexOrThrow(SYSTEMNAME)),
+                cursor.getString(cursor.getColumnIndexOrThrow(SERVERNAME)),
+                cursor.getString(cursor.getColumnIndexOrThrow(PRESENCE_NAME)),
                 jid,
-                cursor.getInt(cursor.getColumnIndex(OPTIONS)),
-                cursor.getString(cursor.getColumnIndex(PHOTOURI)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(OPTIONS)),
+                cursor.getString(cursor.getColumnIndexOrThrow(PHOTOURI)),
                 systemAccount,
-                cursor.getString(cursor.getColumnIndex(KEYS)),
-                cursor.getString(cursor.getColumnIndex(AVATAR)),
-                cursor.getLong(cursor.getColumnIndex(LAST_TIME)),
-                cursor.getString(cursor.getColumnIndex(LAST_PRESENCE)),
-                cursor.getString(cursor.getColumnIndex(GROUPS)),
+                cursor.getString(cursor.getColumnIndexOrThrow(KEYS)),
+                cursor.getString(cursor.getColumnIndexOrThrow(AVATAR)),
+                cursor.getString(cursor.getColumnIndexOrThrow(LAST_PRESENCE)),
+                cursor.getString(cursor.getColumnIndexOrThrow(GROUPS)),
                 RtpCapability.Capability.of(
-                        cursor.getString(cursor.getColumnIndex(RTP_CAPABILITY))));
+                        cursor.getString(cursor.getColumnIndexOrThrow(RTP_CAPABILITY))));
     }
 
     public String getDisplayName() {
@@ -201,7 +206,6 @@ public class Contact implements ListItem, Blockable {
             values.put(KEYS, keys.toString());
             values.put(AVATAR, avatar);
             values.put(LAST_PRESENCE, mLastPresence);
-            values.put(LAST_TIME, mLastseen);
             values.put(GROUPS, groups.toString());
             values.put(RTP_CAPABILITY, rtpCapability == null ? null : rtpCapability.toString());
             return values;
@@ -217,26 +221,50 @@ public class Contact implements ListItem, Blockable {
         this.accountUuid = account.getUuid();
     }
 
-    public Presences getPresences() {
-        return this.presences;
+    public List<Presence> getPresences() {
+        return this.account
+                .getXmppConnection()
+                .getManager(PresenceManager.class)
+                .getPresences(getAddress());
     }
 
-    public void updatePresence(final String resource, final Presence presence) {
-        this.presences.updatePresence(resource, presence);
+    public Presence.Availability getShownStatus() {
+        final var availabilities = Lists.transform(getPresences(), Presence::getAvailability);
+        if (availabilities.isEmpty()) {
+            return Presence.Availability.OFFLINE;
+        } else if (availabilities.contains(Presence.Availability.DND)) {
+            return Presence.Availability.DND;
+        } else {
+            return Ordering.natural().min(availabilities);
+        }
     }
 
-    public void removePresence(final String resource) {
-        this.presences.removePresence(resource);
+    public LastUserInteraction getLastUserInteraction() {
+        final Collection<LastUserInteraction> interactions;
+        final var presences = getPresences();
+
+        // getShowStatus shows DND if any presence is DND
+        // if we were to look at all presence for last interaction title might show 'online' while
+        // send button is red
+        // only look at DND presences if there are any for user interaction fixes this
+        final var dnd =
+                Collections2.filter(
+                        presences, p -> p.getAvailability() == Presence.Availability.DND);
+        if (dnd.isEmpty()) {
+            interactions = Collections2.transform(presences, Presence::getLastUserInteraction);
+        } else {
+            interactions = Collections2.transform(dnd, Presence::getLastUserInteraction);
+        }
+        Log.d(Config.LOGTAG, "interactions: " + interactions);
+        return LastUserInteraction.max(interactions);
     }
 
-    public Set<String> clearPresences() {
-        final var resources = this.presences.clearPresences();
-        this.resetOption(Options.PENDING_SUBSCRIPTION_REQUEST);
-        return resources;
+    public List<Optional<InfoQuery>> getCapabilities() {
+        return this.account.getXmppConnection().getManager(DiscoManager.class).get(getPresences());
     }
 
-    public im.conversations.android.xmpp.model.stanza.Presence.Availability getShownStatus() {
-        return this.presences.getShownStatus();
+    public List<Jid> getFullAddresses() {
+        return Lists.transform(getPresences(), Stanza::getFrom);
     }
 
     public boolean setPhotoUri(String uri) {
@@ -442,31 +470,6 @@ public class Contact implements ListItem, Blockable {
 
     public void setCommonName(String cn) {
         this.commonName = cn;
-    }
-
-    public void flagActive() {
-        this.mActive = true;
-    }
-
-    public void flagInactive() {
-        this.mActive = false;
-    }
-
-    public boolean isActive() {
-        return this.mActive;
-    }
-
-    public boolean setLastseen(long timestamp) {
-        if (timestamp > this.mLastseen) {
-            this.mLastseen = timestamp;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public long getLastseen() {
-        return this.mLastseen;
     }
 
     public void setLastResource(String resource) {

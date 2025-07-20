@@ -3,43 +3,29 @@ package eu.siacs.conversations.xmpp.manager;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.android.AbstractPhoneContact;
-import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Roster;
-import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
-import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import im.conversations.android.xmpp.Entity;
 import im.conversations.android.xmpp.model.error.Condition;
 import im.conversations.android.xmpp.model.error.Error;
-import im.conversations.android.xmpp.model.pgp.Signed;
 import im.conversations.android.xmpp.model.roster.Item;
 import im.conversations.android.xmpp.model.roster.Query;
 import im.conversations.android.xmpp.model.stanza.Iq;
-import im.conversations.android.xmpp.model.stanza.Presence;
-import im.conversations.android.xmpp.model.vcard.update.VCardUpdate;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeoutException;
-import org.openintents.openpgp.util.OpenPgpUtils;
 
 public class RosterManager extends AbstractManager implements Roster {
 
@@ -251,19 +237,6 @@ public class RosterManager extends AbstractManager implements Roster {
         }
     }
 
-    public void clearPresences() {
-        synchronized (this.contacts) {
-            for (final var contact : this.contacts.values()) {
-                final var bare = contact.getAddress();
-                for (final String resource : contact.clearPresences()) {
-                    if (!Strings.isNullOrEmpty(resource)) {
-                        getManager(DiscoManager.class).clear(bare.withResource(resource));
-                    }
-                }
-            }
-        }
-    }
-
     private void markAllAsNotInRoster() {
         for (final var contact : this.contacts.values()) {
             contact.resetOption(Contact.Options.IN_ROSTER);
@@ -388,185 +361,6 @@ public class RosterManager extends AbstractManager implements Roster {
                                         + ": could not remove roster item "
                                         + address,
                                 t);
-                    }
-                },
-                MoreExecutors.directExecutor());
-    }
-
-    public void handlePresence(final Presence presence) {
-        final var from = presence.getFrom();
-        final var type = presence.getType();
-        if (from == null || from.equals(getAccount().getJid())) {
-            return;
-        }
-        if (from.isBareJid() && getManager(MultiUserChatManager.class).isMuc(from.asBareJid())) {
-            // the old vCard updates will end up here
-            return;
-        }
-        if (type == null) {
-            this.handleAvailablePresence(presence);
-        } else if (type == Presence.Type.UNAVAILABLE) {
-            this.handleUnavailablePresence(presence);
-        } else if (type == Presence.Type.SUBSCRIBE) {
-            this.handleSubscribePresence(presence);
-        } else {
-            Log.e(Config.LOGTAG, getAccount().getJid().asBareJid() + ": not handling " + presence);
-        }
-        this.service.updateRosterUi();
-    }
-
-    private void handleAvailablePresence(final Presence presence) {
-        final var from = presence.getFrom();
-        final var account = getAccount();
-        final var contact = this.getContact(from);
-        final var resource = Strings.nullToEmpty(from.getResource());
-
-        final int sizeBefore = contact.getPresences().size();
-
-        contact.updatePresence(resource, presence);
-
-        final var nodeHash = presence.getCapabilities();
-        if (nodeHash != null) {
-            final var discoFuture =
-                    this.getManager(DiscoManager.class)
-                            .infoOrCache(Entity.presence(from), nodeHash.node, nodeHash.hash);
-
-            awaitDiscoFuture(contact, discoFuture);
-        }
-
-        final Element idle = presence.findChild("idle", Namespace.IDLE);
-        if (idle != null) {
-            try {
-                final String since = idle.getAttribute("since");
-                contact.setLastseen(AbstractParser.parseTimestamp(since));
-                contact.flagInactive();
-            } catch (Throwable throwable) {
-                if (contact.setLastseen(AbstractParser.parseTimestamp(presence))) {
-                    contact.flagActive();
-                }
-            }
-        } else {
-            if (contact.setLastseen(AbstractParser.parseTimestamp(presence))) {
-                contact.flagActive();
-            }
-        }
-
-        final PgpEngine pgp = this.service.getPgpEngine();
-        final Element x = presence.getExtension(Signed.class);
-        if (pgp != null && x != null) {
-            final String status = presence.getStatus();
-            final long keyId = pgp.fetchKeyId(account, status, x.getContent());
-            if (keyId != 0 && contact.setPgpKeyId(keyId)) {
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid()
-                                + ": found OpenPGP key id for "
-                                + contact.getAddress()
-                                + " "
-                                + OpenPgpUtils.convertKeyIdToHex(keyId));
-                this.connection.getManager(RosterManager.class).writeToDatabaseAsync();
-            }
-        }
-        final boolean online = sizeBefore < contact.getPresences().size();
-        this.service.onContactStatusChanged.onContactStatusChanged(contact, online);
-    }
-
-    private void handleUnavailablePresence(final Presence packet) {
-        final var account = getAccount().getJid().asBareJid();
-        final var from = packet.getFrom();
-        if (from == null || from.equals(account.getDomain()) || from.equals(account)) {
-            // Snikket sends unavailable presence from the server domain. We ignore this mostly in
-            // order to avoid executing DiscoManager.clear() which would have caused server disco
-            // features to go away
-            // the operation on the 'Contact' object will also be ignored but those are irrelevant
-            // anyway.
-            Log.d(Config.LOGTAG, "ignoring unavailable presence from " + from);
-            final var vCardUpdate = packet.getExtension(VCardUpdate.class);
-            if (vCardUpdate != null && account.getDomain().equals(from)) {
-                // Snikket special feature
-                getManager(AvatarManager.class).handleVCardUpdate(from, vCardUpdate);
-            }
-            return;
-        }
-        final var contact = this.getContact(from);
-        if (contact.setLastseen(AbstractParser.parseTimestamp(packet, 0L, true))) {
-            contact.flagInactive();
-        }
-        // the clear function will be a no-op in case the unavailable presence is coming from an
-        // item listed in disco#item. why that would be the case who knows but we are also
-        // deliberately ignoring presence from the server
-        getManager(DiscoManager.class).clear(from);
-        if (from.isBareJid()) {
-            contact.clearPresences();
-        } else {
-            contact.removePresence(from.getResource());
-        }
-        if (contact.getShownStatus()
-                == im.conversations.android.xmpp.model.stanza.Presence.Availability.OFFLINE) {
-            contact.flagInactive();
-        }
-        this.service.onContactStatusChanged.onContactStatusChanged(contact, false);
-    }
-
-    private void handleSubscribePresence(final Presence packet) {
-        final var from = packet.getFrom();
-        final var account = getAccount();
-        final var contact = this.getContact(from);
-        if (contact.isBlocked()) {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid()
-                            + ": ignoring 'subscribe' presence from blocked "
-                            + from);
-            return;
-        }
-        if (contact.setPresenceName(packet.findChildContent("nick", Namespace.NICK))) {
-            this.writeToDatabaseAsync();
-            this.service.getAvatarService().clear(contact);
-        }
-        if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
-            connection
-                    .getManager(PresenceManager.class)
-                    .subscribed(contact.getAddress().asBareJid());
-        } else {
-            contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
-            final Conversation conversation =
-                    this.service.findOrCreateConversation(
-                            account, contact.getAddress().asBareJid(), false, false);
-            final String statusMessage = packet.findChildContent("status");
-            if (statusMessage != null
-                    && !statusMessage.isEmpty()
-                    && conversation.countMessages() == 0) {
-                conversation.add(
-                        new Message(
-                                conversation,
-                                statusMessage,
-                                Message.ENCRYPTION_NONE,
-                                Message.STATUS_RECEIVED));
-            }
-        }
-    }
-
-    private void awaitDiscoFuture(final Contact contact, ListenableFuture<Void> discoFuture) {
-        Futures.addCallback(
-                discoFuture,
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(Void result) {
-                        if (contact.refreshRtpCapability()) {
-                            writeToDatabaseAsync();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Throwable throwable) {
-                        if (throwable instanceof TimeoutException) {
-                            return;
-                        }
-                        Log.d(
-                                Config.LOGTAG,
-                                "could not retrieve disco from " + contact.getAddress(),
-                                throwable);
                     }
                 },
                 MoreExecutors.directExecutor());

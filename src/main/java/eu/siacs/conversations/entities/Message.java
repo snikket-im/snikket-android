@@ -4,9 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.util.Log;
-import com.google.common.base.Strings;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.primitives.Longs;
 import de.gultsch.common.Patterns;
 import eu.siacs.conversations.Config;
@@ -14,7 +15,6 @@ import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.http.URL;
 import eu.siacs.conversations.services.AvatarService;
-import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.MessageUtils;
@@ -730,16 +730,14 @@ public class Message extends AbstractEntity implements AvatarService.Avatar {
     }
 
     public boolean fixCounterpart() {
-        final Presences presences = conversation.getContact().getPresences();
-        if (counterpart != null && presences.has(Strings.nullToEmpty(counterpart.getResource()))) {
+        final var fullAddresses = conversation.getContact().getFullAddresses();
+        if (counterpart != null && fullAddresses.contains(counterpart)) {
             return true;
-        } else if (presences.isEmpty()) {
+        } else if (fullAddresses.isEmpty()) {
             counterpart = null;
             return false;
         } else {
-            counterpart =
-                    PresenceSelector.getNextCounterpart(
-                            getContact(), presences.toResourceArray()[0]);
+            counterpart = Preconditions.checkNotNull(Iterables.getFirst(fullAddresses, null));
             return true;
         }
     }

@@ -3,7 +3,7 @@ package eu.siacs.conversations.parser;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
-import eu.siacs.conversations.xmpp.manager.RosterManager;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import im.conversations.android.xmpp.model.muc.MultiUserChat;
 import im.conversations.android.xmpp.model.muc.user.MucUser;
 import im.conversations.android.xmpp.model.stanza.Presence;
@@ -28,7 +28,7 @@ public class PresenceParser extends AbstractParser
                         || multiUserChatManager.isMuc(presence.getFrom()))) {
             multiUserChatManager.handleErrorPresence(presence);
         } else {
-            getManager(RosterManager.class).handlePresence(presence);
+            getManager(PresenceManager.class).handlePresence(presence);
         }
     }
 }

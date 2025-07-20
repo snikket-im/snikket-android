@@ -201,13 +201,6 @@
     <string name="server_info_available">доступан</string>
     <string name="server_info_unavailable">недоступан</string>
     <string name="missing_public_keys">Недостају објаве јавног кључа</string>
-    <string name="last_seen_now">виђен/а мало пре</string>
-    <string name="last_seen_min">виђен/а пре минут</string>
-    <string name="last_seen_mins">виђен/а пре %d минута</string>
-    <string name="last_seen_hour">виђен/а пре сат времена</string>
-    <string name="last_seen_hours">виђен/а пре %d сати</string>
-    <string name="last_seen_day">виђен/а јуче</string>
-    <string name="last_seen_days">виђен/а пре %d дана</string>
     <string name="install_openkeychain">Шифрована порука. Инсталирај OpenKeychain да је дешифрујеш.</string>
     <string name="openpgp_messages_found">Пронађене су нове OpenPGP шифроване поруке</string>
     <string name="openpgp_key_id">ID OpenPGP кључа</string>

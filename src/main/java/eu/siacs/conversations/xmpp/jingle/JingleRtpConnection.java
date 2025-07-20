@@ -204,10 +204,13 @@ public class JingleRtpConnection extends AbstractJingleConnection
         webRTCWrapper.close();
         final State target = reasonToState(wrapper.reason);
         transitionOrThrow(target);
-        writeLogMessage(target);
-        if (previous == State.PROPOSED || previous == State.SESSION_INITIALIZED) {
+        if ((previous == State.PROPOSED || previous == State.SESSION_INITIALIZED)
+                && isResponder()) {
+            message.markUnread();
             xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+            xmppConnectionService.getNotificationService().pushMissedCallNow(message);
         }
+        writeLogMessage(target);
         finish();
     }
 

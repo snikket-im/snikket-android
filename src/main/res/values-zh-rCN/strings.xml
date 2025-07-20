@@ -204,13 +204,6 @@
     <string name="server_info_available">有效</string>
     <string name="server_info_unavailable">无效</string>
     <string name="missing_public_keys">缺少公钥公布</string>
-    <string name="last_seen_now">最后上线于刚刚</string>
-    <string name="last_seen_min">最后上线于 1 分钟前</string>
-    <string name="last_seen_mins">最后上线于 %d 分钟前</string>
-    <string name="last_seen_hour">最后上线于 1 小时前</string>
-    <string name="last_seen_hours">最后上线于 %d 小时前</string>
-    <string name="last_seen_day">最后上线于 1 天前</string>
-    <string name="last_seen_days">最后上线于 %d 天前</string>
     <string name="install_openkeychain">加密消息。请安装 OpenKeychain 解密。</string>
     <string name="openpgp_messages_found">发现新的 OpenPGP 加密消息</string>
     <string name="openpgp_key_id">OpenPGP 密钥 ID</string>

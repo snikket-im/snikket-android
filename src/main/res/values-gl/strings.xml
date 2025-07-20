@@ -198,13 +198,6 @@
     <string name="server_info_available">Dispoñible</string>
     <string name="server_info_unavailable">Fallo</string>
     <string name="missing_public_keys">Anuncios de chave pública non notificados</string>
-    <string name="last_seen_now">acaba de estar dispoñible</string>
-    <string name="last_seen_min">visto hai un minuto</string>
-    <string name="last_seen_mins">visto hai 1%d minutos</string>
-    <string name="last_seen_hour">visto hai unha hora</string>
-    <string name="last_seen_hours">visto hai 1%d horas</string>
-    <string name="last_seen_day">visto hai un día</string>
-    <string name="last_seen_days">última conexión hai 1%d días</string>
     <string name="install_openkeychain">Mensaxe cifrada. Instala OpenKeychain para descifrala.</string>
     <string name="openpgp_messages_found">Atoparonse novas mensaxes cifradas cn OpenPGP</string>
     <string name="openpgp_key_id">ID da chave OpenPGP</string>

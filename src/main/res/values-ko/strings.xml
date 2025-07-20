@@ -133,10 +133,6 @@
     <string name="server_info_available">가능 </string>
     <string name="server_info_unavailable">불가 </string>
     <string name="missing_public_keys">공개 키 선언 누락 </string>
-    <string name="last_seen_now">방금 전까지 접속했었음 </string>
-    <string name="last_seen_mins">%d 분 전까지 접속했었음  </string>
-    <string name="last_seen_hours">%d 시간 전까지 접속했었음 </string>
-    <string name="last_seen_days">%d 일 전까지 접속했었음  </string>
     <string name="openpgp_key_id">OpenPGP 키ID</string>
     <string name="omemo_fingerprint">OMEMO 핑거프린트</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO 핑거프린트</string>

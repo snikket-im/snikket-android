@@ -26,7 +26,6 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
-import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import java.util.ArrayList;
@@ -565,13 +564,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatar {
             return 0;
         }
         int i = 0;
-        for (String resource : getSelfContact().getPresences().getPresencesMap().keySet()) {
-            final var jid =
-                    Strings.isNullOrEmpty(resource)
-                            ? getJid().asBareJid()
-                            : getJid().withResource(resource);
-            if (RtpCapability.check(connection.getManager(DiscoManager.class).get(jid))
-                    != RtpCapability.Capability.NONE) {
+        for (final var optionalInfoQuery : getSelfContact().getCapabilities()) {
+            if (RtpCapability.check(optionalInfoQuery.orNull()) != RtpCapability.Capability.NONE) {
                 i++;
             }
         }

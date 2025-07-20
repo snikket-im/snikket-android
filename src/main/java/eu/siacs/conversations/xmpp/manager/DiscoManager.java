@@ -2,12 +2,14 @@ package eu.siacs.conversations.xmpp.manager;
 
 import android.content.Context;
 import android.util.Log;
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.BaseEncoding;
 import com.google.common.util.concurrent.FutureCallback;
@@ -33,6 +35,7 @@ import im.conversations.android.xmpp.model.disco.items.ItemsQuery;
 import im.conversations.android.xmpp.model.error.Condition;
 import im.conversations.android.xmpp.model.error.Error;
 import im.conversations.android.xmpp.model.stanza.Iq;
+import im.conversations.android.xmpp.model.stanza.Presence;
 import im.conversations.android.xmpp.model.version.Version;
 import java.util.Arrays;
 import java.util.Collection;
@@ -458,9 +461,19 @@ public class DiscoManager extends AbstractManager {
         }
     }
 
+    // TODO would optional be better instead of returning null?!
     public InfoQuery get(final Jid address) {
         synchronized (this.entityInformation) {
             return this.entityInformation.get(address);
+        }
+    }
+
+    public List<Optional<InfoQuery>> get(final List<Presence> presences) {
+        synchronized (this.entityInformation) {
+            return ImmutableList.copyOf(
+                    Lists.transform(
+                            presences,
+                            p -> Optional.fromNullable(this.entityInformation.get(p.getFrom()))));
         }
     }
 

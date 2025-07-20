@@ -61,7 +61,7 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
             }
         }
 
-        getManager(RosterManager.class).clearPresences();
+        getManager(PresenceManager.class).clear();
         getManager(MultiUserChatManager.class).clearInProgress();
         service.getJingleConnectionManager().notifyRebound(account);
         service.getQuickConversationsService().considerSyncBackground(false);

@@ -204,13 +204,6 @@
     <string name="server_info_available">tillgänglig</string>
     <string name="server_info_unavailable">otillgänglig</string>
     <string name="missing_public_keys">Tillkännagivanden om offentliga nyckel saknas</string>
-    <string name="last_seen_now">sågs senast nyss</string>
-    <string name="last_seen_min">sågs senast för en minut sedan</string>
-    <string name="last_seen_mins">sågs senast för %d minuter sedan</string>
-    <string name="last_seen_hour">sågs senast för en timme sedan</string>
-    <string name="last_seen_hours">sågs senast för %d timmar sedan</string>
-    <string name="last_seen_day">sågs senast för en dag sedan</string>
-    <string name="last_seen_days">sågs senast för %d dagar sedan</string>
     <string name="install_openkeychain">Krypterat meddelande. Installera OpenKeychain för att avkryptera meddelandet.</string>
     <string name="openpgp_messages_found">Nya OpenPGP-krypterade meddelande hittades</string>
     <string name="openpgp_key_id">OpenPGP-nyckel-ID</string>

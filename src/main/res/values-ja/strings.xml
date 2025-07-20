@@ -197,13 +197,6 @@
     <string name="server_info_available">利用可能</string>
     <string name="server_info_unavailable">利用不可</string>
     <string name="missing_public_keys">公開鍵の告知がありません</string>
-    <string name="last_seen_now">ちょうど今会いました</string>
-    <string name="last_seen_min">1分前に会いました</string>
-    <string name="last_seen_mins">%d分前に会いました</string>
-    <string name="last_seen_hour">1時間前に会いました</string>
-    <string name="last_seen_hours">%d時間前に会いました</string>
-    <string name="last_seen_day">1日前に会いました</string>
-    <string name="last_seen_days">%d日前に会いました</string>
     <string name="install_openkeychain">暗号化されたメッセージです。復号するには OpenKeychain をインストールしてください。</string>
     <string name="openpgp_messages_found">新規の OpenPGP で暗号化されたメッセージが見つかりました</string>
     <string name="openpgp_key_id">OpenPGP 鍵 ID</string>

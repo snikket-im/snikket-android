@@ -157,10 +157,6 @@
     <string name="server_info_available">eskuragarri</string>
     <string name="server_info_unavailable">ez eskuragarri</string>
     <string name="missing_public_keys">Gako publikoen iragarpenak faltan</string>
-    <string name="last_seen_now">azkenengoz ikusia orain</string>
-    <string name="last_seen_mins">azkenengoz ikusia %d minutu lehenago</string>
-    <string name="last_seen_hours">azkenengoz ikusia %d ordu lehenago</string>
-    <string name="last_seen_days">azkenengoz ikusia %d egun lehenago</string>
     <string name="openpgp_key_id">OpenPGP gakoaren nortasuna</string>
     <string name="omemo_fingerprint">OMEMO hatz-marka</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO hatz-marka</string>

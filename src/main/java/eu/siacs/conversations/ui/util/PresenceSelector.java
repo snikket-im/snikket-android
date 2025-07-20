@@ -34,6 +34,7 @@ import android.content.Context;
 import android.util.Pair;
 import android.widget.Toast;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.common.collect.Iterables;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -41,7 +42,9 @@ import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -50,11 +53,10 @@ public class PresenceSelector {
     public static void showPresenceSelectionDialog(
             Activity activity, final Conversation conversation, final OnPresenceSelected listener) {
         final Contact contact = conversation.getContact();
-        final String[] resourceArray = contact.getPresences().toResourceArray();
         showPresenceSelectionDialog(
                 activity,
                 contact,
-                resourceArray,
+                contact.getPresences(),
                 fullJid -> {
                     conversation.setNextCounterpart(fullJid);
                     listener.onPresenceSelected();
@@ -66,11 +68,11 @@ public class PresenceSelector {
             final Contact contact,
             final RtpCapability.Capability required,
             final OnFullJidSelected onFullJidSelected) {
-        final String[] resources = RtpCapability.filterPresences(contact, required);
-        if (resources.length == 0) {
+        final var resources = RtpCapability.filterPresences(contact, required);
+        if (resources.isEmpty()) {
             Toast.makeText(activity, R.string.rtp_state_contact_offline, Toast.LENGTH_LONG).show();
-        } else if (resources.length == 1) {
-            onFullJidSelected.onFullJidSelected(contact.getAddress().withResource(resources[0]));
+        } else if (resources.size() == 1) {
+            onFullJidSelected.onFullJidSelected(Iterables.getFirst(resources, null).getFrom());
         } else {
             showPresenceSelectionDialog(activity, contact, resources, onFullJidSelected);
         }
@@ -79,23 +81,24 @@ public class PresenceSelector {
     private static void showPresenceSelectionDialog(
             final Activity activity,
             final Contact contact,
-            final String[] resourceArray,
+            final List<Presence> presences,
             final OnFullJidSelected onFullJidSelected) {
-        final Presences presences = contact.getPresences();
         final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
         builder.setTitle(activity.getString(R.string.choose_presence));
-        Pair<Map<String, String>, Map<String, String>> typeAndName = presences.toTypeAndNameMap();
-        final Map<String, String> resourceTypeMap = typeAndName.first;
-        final Map<String, String> resourceNameMap = typeAndName.second;
-        final String[] readableIdentities = new String[resourceArray.length];
+        Pair<Map<Jid, String>, Map<Jid, String>> typeAndName =
+                Presences.toTypeAndNameMap(contact.getAccount(), presences);
+        final Map<Jid, String> resourceTypeMap = typeAndName.first;
+        final Map<Jid, String> resourceNameMap = typeAndName.second;
+        final String[] readableIdentities = new String[presences.size()];
         final AtomicInteger selectedResource = new AtomicInteger(0);
-        for (int i = 0; i < resourceArray.length; ++i) {
-            String resource = resourceArray[i];
+        int i = 0;
+        for (final var presence : presences) {
+            String resource = presence.getFrom().getResource();
             if (resource.equals(contact.getLastResource())) {
                 selectedResource.set(i);
             }
-            String type = resourceTypeMap.get(resource);
-            String name = resourceNameMap.get(resource);
+            String type = resourceTypeMap.get(presence.getFrom());
+            String name = resourceNameMap.get(presence.getFrom());
             if (type != null) {
                 if (Collections.frequency(resourceTypeMap.values(), type) == 1) {
                     readableIdentities[i] = translateType(activity, type);
@@ -118,6 +121,7 @@ public class PresenceSelector {
             } else {
                 readableIdentities[i] = resource;
             }
+            ++i;
         }
         builder.setSingleChoiceItems(
                 readableIdentities,
@@ -126,10 +130,10 @@ public class PresenceSelector {
         builder.setNegativeButton(R.string.cancel, null);
         builder.setPositiveButton(
                 R.string.ok,
-                (dialog, which) ->
-                        onFullJidSelected.onFullJidSelected(
-                                getNextCounterpart(
-                                        contact, resourceArray[selectedResource.get()])));
+                (dialog, which) -> {
+                    final var selectedPresence = presences.get(selectedResource.get());
+                    onFullJidSelected.onFullJidSelected(selectedPresence.getFrom());
+                });
         builder.create().show();
     }
 

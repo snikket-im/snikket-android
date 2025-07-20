@@ -75,6 +75,7 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.PresenceTemplate;
+import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.entities.Reaction;
 import eu.siacs.conversations.generator.AbstractGenerator;
 import eu.siacs.conversations.generator.IqGenerator;
@@ -3401,7 +3402,7 @@ public class XmppConnectionService extends Service {
                 scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
             } else {
                 disconnect(account, force || account.getTrueStatus().isError() || !hasInternet);
-                connection.getManager(RosterManager.class).clearPresences();
+                connection.getManager(PresenceManager.class).clear();
                 connection.resetEverything();
                 final AxolotlService axolotlService = account.getAxolotlService();
                 if (axolotlService != null) {
@@ -4224,7 +4225,8 @@ public class XmppConnectionService extends Service {
 
     public List<PresenceTemplate> getPresenceTemplates(Account account) {
         List<PresenceTemplate> templates = databaseBackend.getPresenceTemplates();
-        for (PresenceTemplate template : account.getSelfContact().getPresences().asTemplates()) {
+        for (PresenceTemplate template :
+                Presences.asTemplates(account.getSelfContact().getPresences())) {
             if (!templates.contains(template)) {
                 templates.add(0, template);
             }

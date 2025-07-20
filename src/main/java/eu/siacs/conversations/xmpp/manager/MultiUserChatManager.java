@@ -292,9 +292,8 @@ public class MultiUserChatManager extends AbstractManager {
                         this.service.invite(conversation, invitee);
                     }
                     final var account = getAccount();
-                    for (final var resource :
-                            account.getSelfContact().getPresences().toResourceArray()) {
-                        Jid other = getAccount().getJid().withResource(resource);
+                    for (final var presence : account.getSelfContact().getPresences()) {
+                        Jid other = presence.getFrom();
                         Log.d(
                                 Config.LOGTAG,
                                 account.getJid().asBareJid()

@@ -152,13 +152,6 @@
     <string name="server_info_pep">XEP-0163: PEP (Avatarë / OMEMO)</string>
     <string name="server_info_http_upload">XEP-0363: Ngarkim Kartelash HTTP</string>
     <string name="server_info_unavailable">jo i passhëm</string>
-    <string name="last_seen_now">parë së fundi mu tani</string>
-    <string name="last_seen_min">parë së fundi një minutë më parë</string>
-    <string name="last_seen_mins">parë së fundi %d minuta më parë</string>
-    <string name="last_seen_hour">parë së fundi një orë më parë</string>
-    <string name="last_seen_hours">parë së fundi %d orë më parë</string>
-    <string name="last_seen_day">parë së fundi një ditë më parë</string>
-    <string name="last_seen_days">parë së fundi %d ditë më parë</string>
     <string name="openpgp_messages_found">U gjetën mesazhe të rinj të fshehtëzuar me OpenPGP</string>
     <string name="openpgp_key_id">ID Kyçi OpenPGP</string>
     <string name="omemo_fingerprint">Shenja gishtash OMEMO</string>

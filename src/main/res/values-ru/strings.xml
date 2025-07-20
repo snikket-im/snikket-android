@@ -206,13 +206,6 @@
     <string name="server_info_available">доступно</string>
     <string name="server_info_unavailable">недоступно</string>
     <string name="missing_public_keys">Отсутствие анонсирования публичных ключей</string>
-    <string name="last_seen_now">Присутствие: только что</string>
-    <string name="last_seen_min">Присутствие: минуту назад</string>
-    <string name="last_seen_mins">Присутствие: %d мин. назад</string>
-    <string name="last_seen_hour">Присутствие: час назад</string>
-    <string name="last_seen_hours">Присутствие: %d час. назад</string>
-    <string name="last_seen_day">Присутствие: день назад</string>
-    <string name="last_seen_days">Присутствие: %d дн. назад</string>
     <string name="install_openkeychain">Зашифрованное сообщение. Установите OpenKeychain для расшифровки.</string>
     <string name="openpgp_messages_found">Найдены новые зашифрованные OpenPGP сообщения</string>
     <string name="openpgp_key_id">ID ключа OpenPGP</string>

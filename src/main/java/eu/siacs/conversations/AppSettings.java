@@ -34,6 +34,7 @@ public class AppSettings {
     public static final String OMEMO = "omemo";
     public static final String ALLOW_SCREENSHOTS = "allow_screenshots";
     public static final String RINGTONE = "call_ringtone";
+    public static final String DISPLAY_ENTER_KEY = "display_enter_key";
 
     public static final String CONFIRM_MESSAGES = "confirm_messages";
     public static final String ALLOW_MESSAGE_CORRECTION = "allow_message_correction";
@@ -273,6 +274,10 @@ public class AppSettings {
 
     public boolean isSendCrashReports() {
         return getBooleanPreference(SEND_CRASH_REPORTS, R.bool.send_crash_reports);
+    }
+
+    public boolean isDisplayEnterKey() {
+        return getBooleanPreference(DISPLAY_ENTER_KEY, R.bool.display_enter_key);
     }
 
     public void setSendCrashReports(boolean value) {

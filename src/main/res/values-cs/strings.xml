@@ -195,13 +195,6 @@
     <string name="server_info_available">dostupný</string>
     <string name="server_info_unavailable">nedostupný</string>
     <string name="missing_public_keys">Chybí oznámení o veřejném klíči</string>
-    <string name="last_seen_now">právě spatřen</string>
-    <string name="last_seen_min">naposledy spatřen před minutou</string>
-    <string name="last_seen_mins">naposledy spatřen před %d minutami</string>
-    <string name="last_seen_hour">naposledy spatřen před hodinou</string>
-    <string name="last_seen_hours">naposledy spatřen před %d hodinami</string>
-    <string name="last_seen_day">naposledy spatřen včera</string>
-    <string name="last_seen_days">naposledy spatřen před %d dny</string>
     <string name="install_openkeychain">Šifrovaná zpráva. Nainstalujte OpenKeychain pro její dešifrování.</string>
     <string name="openpgp_messages_found">Nalezeny nové OpenPGP šifrované zprávy</string>
     <string name="openpgp_key_id">OpenPGP ID klíče</string>

@@ -193,13 +193,6 @@
     <string name="server_info_available">käytössä</string>
     <string name="server_info_unavailable">ei käytössä</string>
     <string name="missing_public_keys">Julkisten avainten mainostus puuttuu</string>
-    <string name="last_seen_now">nähty juuri äsken</string>
-    <string name="last_seen_min">nähty minuutti sitten</string>
-    <string name="last_seen_mins">nähty %d minuuttia sitten</string>
-    <string name="last_seen_hour">nähty tunti sitten</string>
-    <string name="last_seen_hours">nähty %d tuntia sitten</string>
-    <string name="last_seen_day">nähty päivä sitten</string>
-    <string name="last_seen_days">nähty %d päivää sitten</string>
     <string name="install_openkeychain">Salattu viesti. Asenna OpenKeychain purkaaksesi salauksen.</string>
     <string name="openpgp_messages_found">Löytyi uusi OpenPGP-salattu viesti</string>
     <string name="openpgp_key_id">OpenPGP-avaimen tunniste</string>

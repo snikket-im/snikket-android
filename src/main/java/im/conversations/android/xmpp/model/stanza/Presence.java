@@ -3,6 +3,8 @@ package im.conversations.android.xmpp.model.stanza;
 import com.google.common.base.Strings;
 import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.capabilties.EntityCapabilities;
+import im.conversations.android.xmpp.model.idle.Idle;
+import im.conversations.android.xmpp.model.idle.LastUserInteraction;
 import im.conversations.android.xmpp.model.jabber.Show;
 import im.conversations.android.xmpp.model.jabber.Status;
 import java.util.Locale;
@@ -56,6 +58,20 @@ public class Presence extends Stanza implements EntityCapabilities {
     public String getStatus() {
         final var status = getExtension(Status.class);
         return status == null ? null : status.getContent();
+    }
+
+    public LastUserInteraction getLastUserInteraction() {
+        final var idle = getExtension(Idle.class);
+        final var since = idle == null ? null : idle.getSince();
+        if (since != null) {
+            return LastUserInteraction.idle(since);
+        }
+        final var availability = getAvailability();
+        if (availability == Availability.ONLINE || availability == Availability.CHAT) {
+            return LastUserInteraction.online();
+        } else {
+            return LastUserInteraction.none();
+        }
     }
 
     public enum Type {

@@ -198,13 +198,6 @@
     <string name="server_info_available">understøttet</string>
     <string name="server_info_unavailable">utilgængelig</string>
     <string name="missing_public_keys">Ingen meddelelser om offentlige nøgler</string>
-    <string name="last_seen_now">sidst set lige nu</string>
-    <string name="last_seen_min">sidst set for et minut siden</string>
-    <string name="last_seen_mins">sidst set for %d minutter siden</string>
-    <string name="last_seen_hour">sidst set for en time siden</string>
-    <string name="last_seen_hours">sidst set %d time siden</string>
-    <string name="last_seen_day">sidst set for en dag siden</string>
-    <string name="last_seen_days">sidst set %d dage siden</string>
     <string name="install_openkeychain">Krypteret besked. Installer venligst OpenKeychain for dekryptere den.</string>
     <string name="openpgp_messages_found">Ny OpenPGP krypteret beskeder fundet</string>
     <string name="openpgp_key_id">OpenPGP nøgle ID</string>

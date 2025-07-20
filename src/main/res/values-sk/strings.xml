@@ -189,13 +189,6 @@
     <string name="server_info_available">dostupný</string>
     <string name="server_info_unavailable">nedostupný</string>
     <string name="missing_public_keys">Chýba oznámenie o verejnom kľúči</string>
-    <string name="last_seen_now">práve prihlásený</string>
-    <string name="last_seen_min">naposledy videný pred minútou</string>
-    <string name="last_seen_mins">naposledy prihlásený pred %d minútami</string>
-    <string name="last_seen_hour">naposledy videný pred hodinou</string>
-    <string name="last_seen_hours">naposledy prihlásený pred %d hodinami</string>
-    <string name="last_seen_day">naposledy videný včera</string>
-    <string name="last_seen_days">naposledy prihlásený pred %d dňami</string>
     <string name="omemo_fingerprint">OMEMO identifikátor</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO odtlačok</string>
     <string name="omemo_fingerprint_selected_message">OMEMO odtlačok (pôvod správy)</string>

@@ -30,6 +30,7 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.worker.ExportBackupWorker;
 import eu.siacs.conversations.xmpp.Jid;
+import im.conversations.android.xmpp.model.idle.LastUserInteraction;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -76,7 +77,8 @@ public class UIHelper {
         return readableTimeDifference(context, time, true);
     }
 
-    private static String readableTimeDifference(Context context, long time, boolean fullDate) {
+    private static String readableTimeDifference(
+            final Context context, final long time, final boolean fullDate) {
         if (time == 0) {
             return context.getString(R.string.just_now);
         }
@@ -130,26 +132,18 @@ public class UIHelper {
                 && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
     }
 
-    public static String lastseen(Context context, boolean active, long time) {
-        long difference = (System.currentTimeMillis() - time) / 1000;
-        if (active) {
-            return context.getString(R.string.online_right_now);
-        } else if (difference < 60) {
-            return context.getString(R.string.last_seen_now);
-        } else if (difference < 60 * 2) {
-            return context.getString(R.string.last_seen_min);
-        } else if (difference < 60 * 60) {
-            return context.getString(R.string.last_seen_mins, Math.round(difference / 60.0));
-        } else if (difference < 60 * 60 * 2) {
-            return context.getString(R.string.last_seen_hour);
-        } else if (difference < 60 * 60 * 24) {
+    public static String lastUserInteraction(
+            final Context context, final LastUserInteraction interaction) {
+        if (interaction instanceof LastUserInteraction.Online) {
+            return context.getString(R.string.presence_online);
+        } else if (interaction instanceof LastUserInteraction.None) {
+            return null; // just hide the subtitle
+        } else if (interaction instanceof LastUserInteraction.Idle idle) {
             return context.getString(
-                    R.string.last_seen_hours, Math.round(difference / (60.0 * 60.0)));
-        } else if (difference < 60 * 60 * 48) {
-            return context.getString(R.string.last_seen_day);
+                    R.string.last_seen,
+                    UIHelper.readableTimeDifferenceFull(context, idle.getSince().toEpochMilli()));
         } else {
-            return context.getString(
-                    R.string.last_seen_days, Math.round(difference / (60.0 * 60.0 * 24.0)));
+            return null;
         }
     }
 

@@ -186,13 +186,6 @@
     <string name="server_info_available">tersedia</string>
     <string name="server_info_unavailable">tidak tersedia</string>
     <string name="missing_public_keys">Pemberitahuan kunci publik tidak ditemukan</string>
-    <string name="last_seen_now">terakhir terlihat sekarang</string>
-    <string name="last_seen_min">Muncul satu menit yang lalu</string>
-    <string name="last_seen_mins">terlihat %d menit lalu</string>
-    <string name="last_seen_hour">Muncul satu jam yang lalu</string>
-    <string name="last_seen_hours">terlihat %d jam lalu</string>
-    <string name="last_seen_day">Muncul satu hari yang lalu</string>
-    <string name="last_seen_days">terlihat %d hari lalu</string>
     <string name="install_openkeychain">Pesan terenkripsi. Harap instal OpenKeychain untuk mendekripsi.</string>
     <string name="openpgp_messages_found">Pesan terenkripsi OpenPGP ditemukan</string>
     <string name="openpgp_key_id">ID Kunci OpenPGP</string>

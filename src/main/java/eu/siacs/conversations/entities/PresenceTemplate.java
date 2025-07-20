@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Objects;
+import org.jspecify.annotations.NonNull;
 
 public class PresenceTemplate extends AbstractEntity {
 
@@ -38,11 +39,12 @@ public class PresenceTemplate extends AbstractEntity {
 
     public static PresenceTemplate fromCursor(Cursor cursor) {
         PresenceTemplate template = new PresenceTemplate();
-        template.uuid = cursor.getString(cursor.getColumnIndex(UUID));
-        template.lastUsed = cursor.getLong(cursor.getColumnIndex(LAST_USED));
-        template.statusMessage = cursor.getString(cursor.getColumnIndex(MESSAGE));
+        template.uuid = cursor.getString(cursor.getColumnIndexOrThrow(UUID));
+        template.lastUsed = cursor.getLong(cursor.getColumnIndexOrThrow(LAST_USED));
+        template.statusMessage = cursor.getString(cursor.getColumnIndexOrThrow(MESSAGE));
         template.status =
-                Presence.Availability.valueOfShown(cursor.getString(cursor.getColumnIndex(STATUS)));
+                Presence.Availability.valueOfShown(
+                        cursor.getString(cursor.getColumnIndexOrThrow(STATUS)));
         return template;
     }
 
@@ -73,6 +75,7 @@ public class PresenceTemplate extends AbstractEntity {
     }
 
     @Override
+    @NonNull
     public String toString() {
         return statusMessage;
     }

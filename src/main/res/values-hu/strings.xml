@@ -195,13 +195,6 @@
     <string name="server_info_available">elérhető</string>
     <string name="server_info_unavailable">nem érhető el</string>
     <string name="missing_public_keys">Hiányzó nyilvános kulcs bejelentései</string>
-    <string name="last_seen_now">éppen most volt aktív</string>
-    <string name="last_seen_min">egy perce volt aktív</string>
-    <string name="last_seen_mins">%d perce volt aktív</string>
-    <string name="last_seen_hour">egy órája volt aktív</string>
-    <string name="last_seen_hours">%d órája volt aktív</string>
-    <string name="last_seen_day">egy napja volt aktív</string>
-    <string name="last_seen_days">%d napja volt aktív</string>
     <string name="install_openkeychain">Titkosított üzenet. Telepítse az OpenKeychain alkalmazást a visszafejtéshez.</string>
     <string name="openpgp_messages_found">Új OpenPGP titkosítású üzenetek találhatók</string>
     <string name="openpgp_key_id">OpenPGP kulcsazonosító</string>

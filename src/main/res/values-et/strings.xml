@@ -242,14 +242,7 @@
     <string name="no_xmpp_adddress_found">XMPP-aadressi ei leidu</string>
     <string name="server_info_available">saadaval</string>
     <string name="missing_public_keys">Avalikke võtmeid pole avaldatud</string>
-    <string name="last_seen_now">viimati nähtud just nüüd</string>
     <string name="server_info_unavailable">pole saadaval</string>
-    <string name="last_seen_min">viimati nähtud ühe minuti eest</string>
-    <string name="last_seen_mins">viimati nähtud %d minutit tagasi</string>
-    <string name="last_seen_hour">viimati nähtud ühe tunni eest</string>
-    <string name="last_seen_hours">viimati nähtud %d tundi tagasi</string>
-    <string name="last_seen_day">viimati nähtud ühe päeva eest</string>
-    <string name="last_seen_days">viimati nähtud %d päeva tagasi</string>
     <string name="install_openkeychain">Krüptitud sõnum. Dekrüptimiseks palun paigalda OpenKeychain.</string>
     <string name="openpgp_messages_found">Leidub uus OpenPGPga krüptitud sõnum</string>
     <string name="openpgp_key_id">OpenPGP võtme tunnus</string>

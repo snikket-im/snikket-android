@@ -159,11 +159,6 @@
     <string name="server_info_push">XEP-0357: الدفع</string>
     <string name="server_info_available">متاح</string>
     <string name="server_info_unavailable">غير متاح</string>
-    <string name="last_seen_now">آخر ظهور الآن</string>
-    <string name="last_seen_min">آخر مشاهدة منذ دقيقة</string>
-    <string name="last_seen_mins">آخر ظهور منذ %d دقيقة</string>
-    <string name="last_seen_hours">آخر ظهور منذ %d ساعة</string>
-    <string name="last_seen_days">آخر ظهور منذ %d يوم</string>
     <string name="openpgp_key_id">معرف ID مفتاح ال OpenPGP</string>
     <string name="omemo_fingerprint">بصمة OMEMO</string>
     <string name="omemo_fingerprint_x509">بصمة v\\OMEMO</string>
@@ -644,8 +639,6 @@
     <string name="openpgp_error">لقد أَبلَغَ OpenKeychain عند حدوث خطأ.</string>
     <string name="openpgp_has_been_published">تم نشر مفتاح OpenPGP العمومي.</string>
     <string name="pref_prevent_screenshots">منع أخذ لقطات للشاشة</string>
-    <string name="last_seen_day">آخِر ظهور البارحة</string>
-    <string name="last_seen_hour">آخر ظهور منذ ساعة</string>
     <string name="account_status_regis_invalid_token">رمز التسجيل غير صالح</string>
     <string name="bad_key_for_encryption">مفتاح تعمية خاطئ.</string>
     <string name="invalid_jid">هذا ليس عنوان XMPP صالح</string>

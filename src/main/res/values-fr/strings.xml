@@ -199,13 +199,6 @@
     <string name="server_info_available">supportée</string>
     <string name="server_info_unavailable">non supportée</string>
     <string name="missing_public_keys">Annonce de clé publique manquante</string>
-    <string name="last_seen_now">en ligne à l\'instant</string>
-    <string name="last_seen_min">en ligne il y a 1 minute</string>
-    <string name="last_seen_mins">en ligne il y a %d minutes</string>
-    <string name="last_seen_hour">en ligne il y a 1 heure</string>
-    <string name="last_seen_hours">en ligne il y a %d heures</string>
-    <string name="last_seen_day">en ligne hier</string>
-    <string name="last_seen_days">en ligne il y a %d jours</string>
     <string name="install_openkeychain">Message chiffré. Veuillez installer OpenKeychain pour le déchiffrer.</string>
     <string name="openpgp_messages_found">Nouveaux messages chiffrés avec OpenPGP détectés</string>
     <string name="openpgp_key_id">ID de clé OpenPGP</string>

@@ -43,7 +43,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Toast;
-import androidx.annotation.BoolRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
@@ -56,6 +55,7 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -70,12 +70,10 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.entities.Reaction;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.services.NotificationService;
-import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
@@ -115,6 +113,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     protected boolean mUsingEnterKey = false;
     protected boolean mUseTor = false;
+    protected boolean mShowLastUserInteraction = false;
     protected Toast mToast;
     public Runnable onOpenPGPKeyPublished =
             () ->
@@ -234,8 +233,10 @@ public abstract class XmppActivity extends ActionBarActivity {
             this.registerListeners();
             this.onBackendConnected();
         }
-        this.mUsingEnterKey = usingEnterKey();
-        this.mUseTor = useTor();
+        final var appSettings = new AppSettings(this);
+        this.mUsingEnterKey = appSettings.isDisplayEnterKey();
+        this.mUseTor = appSettings.isUseTor();
+        this.mShowLastUserInteraction = appSettings.isBroadcastLastActivity();
     }
 
     public void connectToBackend() {
@@ -605,8 +606,8 @@ public abstract class XmppActivity extends ActionBarActivity {
             final Conversation conversation, final PresenceSelector.OnPresenceSelected listener) {
         final Contact contact = conversation.getContact();
         if (contact.showInRoster() || contact.isSelf()) {
-            final Presences presences = contact.getPresences();
-            if (presences.size() == 0) {
+            final var presences = contact.getPresences();
+            if (presences.isEmpty()) {
                 if (contact.isSelf()) {
                     conversation.setNextCounterpart(null);
                     listener.onPresenceSelected();
@@ -622,9 +623,7 @@ public abstract class XmppActivity extends ActionBarActivity {
                     listener.onPresenceSelected();
                 }
             } else if (presences.size() == 1) {
-                final String presence = presences.toResourceArray()[0];
-                conversation.setNextCounterpart(
-                        PresenceSelector.getNextCounterpart(contact, presence));
+                conversation.setNextCounterpart(Iterables.getFirst(presences, null).getFrom());
                 listener.onPresenceSelected();
             } else {
                 PresenceSelector.showPresenceSelectionDialog(this, conversation, listener);
@@ -665,21 +664,8 @@ public abstract class XmppActivity extends ActionBarActivity {
         }
     }
 
-    private boolean usingEnterKey() {
-        return getBooleanPreference("display_enter_key", R.bool.display_enter_key);
-    }
-
-    private boolean useTor() {
-        return QuickConversationsService.isConversations()
-                && getBooleanPreference("use_tor", R.bool.use_tor);
-    }
-
     protected SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-    }
-
-    protected boolean getBooleanPreference(String name, @BoolRes int res) {
-        return getPreferences().getBoolean(name, getResources().getBoolean(res));
     }
 
     public void switchToConversation(Conversation conversation) {
@@ -1034,11 +1020,6 @@ public abstract class XmppActivity extends ActionBarActivity {
             return true;
         }
         return false;
-    }
-
-    protected boolean manuallyChangePresence() {
-        return getBooleanPreference(
-                AppSettings.MANUALLY_CHANGE_PRESENCE, R.bool.manually_change_presence);
     }
 
     protected String getShareableUri() {

@@ -9,6 +9,8 @@ import com.google.common.primitives.Longs;
 import eu.siacs.conversations.utils.XmlHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.xmpp.model.stanza.Message;
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -234,5 +236,17 @@ public class Element {
 
     public String getNamespace() {
         return getAttribute("xmlns");
+    }
+
+    protected Instant getAttributeAsInstant(final String name) {
+        final var value = getAttribute(name);
+        if (Strings.isNullOrEmpty(value)) {
+            return null;
+        }
+        try {
+            return Instant.parse(value);
+        } catch (final DateTimeParseException e) {
+            return null;
+        }
     }
 }
