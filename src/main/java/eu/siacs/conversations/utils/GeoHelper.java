@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-
-import com.google.common.base.Charsets;
-
 import de.gultsch.common.Patterns;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
@@ -15,10 +12,8 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ShareLocationActivity;
 import eu.siacs.conversations.ui.ShowLocationActivity;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import org.osmdroid.util.GeoPoint;
