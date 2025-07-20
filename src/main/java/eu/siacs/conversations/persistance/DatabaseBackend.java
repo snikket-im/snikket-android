@@ -37,7 +37,6 @@ import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -1611,8 +1610,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 final var cached = cursor.getString(0);
                 try {
-                    final var element =
-                            XmlElementReader.read(cached.getBytes(StandardCharsets.UTF_8));
+                    final var element = XmlElementReader.read(cached);
                     if (element instanceof InfoQuery infoQuery) {
                         return infoQuery;
                     }

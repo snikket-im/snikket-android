@@ -20,7 +20,6 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.xmpp.Entity;
@@ -170,7 +169,8 @@ public class PresenceManager extends AbstractManager {
                             + from);
             return;
         }
-        if (contact.setPresenceName(packet.findChildContent("nick", Namespace.NICK))) {
+        final var nick = packet.getExtension(Nick.class);
+        if (nick != null && contact.setPresenceName(nick.getContent())) {
             getManager(RosterManager.class).writeToDatabaseAsync();
             this.service.getAvatarService().clear(contact);
         }

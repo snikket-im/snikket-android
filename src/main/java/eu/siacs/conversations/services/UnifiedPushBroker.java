@@ -179,6 +179,7 @@ public class UnifiedPushBroker {
                 Log.w(Config.LOGTAG, "endpoint was null in up registration");
                 return;
             }
+            // TODO replace with Instant.parse (in model)
             final long expiration;
             try {
                 expiration = AbstractParser.getTimestamp(registered.getAttribute("expiration"));

@@ -47,6 +47,7 @@ import im.conversations.android.xmpp.model.correction.Replace;
 import im.conversations.android.xmpp.model.forward.Forwarded;
 import im.conversations.android.xmpp.model.markers.Displayed;
 import im.conversations.android.xmpp.model.muc.user.MucUser;
+import im.conversations.android.xmpp.model.nick.Nick;
 import im.conversations.android.xmpp.model.occupant.OccupantId;
 import im.conversations.android.xmpp.model.oob.OutOfBandData;
 import im.conversations.android.xmpp.model.pubsub.event.Event;
@@ -1215,13 +1216,13 @@ public class MessageParser extends AbstractParser
             getManager(PubSubManager.class).handleEvent(original);
         }
 
-        final String nick = packet.findChildContent("nick", Namespace.NICK);
+        final var nick = packet.getExtension(Nick.class);
         if (nick != null && Jid.Invalid.isValid(from)) {
             if (mXmppConnectionService.isMuc(account, from)) {
                 return;
             }
             final Contact contact = account.getRoster().getContact(from);
-            if (contact.setPresenceName(nick)) {
+            if (contact.setPresenceName(nick.getContent())) {
                 connection.getManager(RosterManager.class).writeToDatabaseAsync();
                 mXmppConnectionService.getAvatarService().clear(contact);
             }
