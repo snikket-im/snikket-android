@@ -93,11 +93,6 @@ public class Element {
         return null;
     }
 
-    public String findChildContent(String name, String xmlns) {
-        Element element = findChild(name, xmlns);
-        return element == null ? null : element.getContent();
-    }
-
     public boolean hasChild(final String name) {
         return findChild(name) != null;
     }

@@ -52,18 +52,6 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
         super(service, connection);
     }
 
-    public static String avatarData(final Iq packet) {
-        final Element pubsub = packet.findChild("pubsub", Namespace.PUBSUB);
-        if (pubsub == null) {
-            return null;
-        }
-        final Element items = pubsub.findChild("items");
-        if (items == null) {
-            return null;
-        }
-        return AbstractParser.avatarData(items);
-    }
-
     public static Element getItem(final Iq packet) {
         final Element pubsub = packet.findChild("pubsub", Namespace.PUBSUB);
         if (pubsub == null) {

@@ -123,14 +123,6 @@ public abstract class AbstractParser extends XmppConnection.Delegate {
         contact.setLastResource(from.isBareJid() ? "" : from.getResource());
     }
 
-    protected static String avatarData(Element items) {
-        Element item = items.findChild("item");
-        if (item == null) {
-            return null;
-        }
-        return item.findChildContent("data", "urn:xmpp:avatar:data");
-    }
-
     public static String extractErrorMessage(final Element packet) {
         final Element error = packet.findChild("error");
         if (error != null && error.getChildren().size() > 0) {
