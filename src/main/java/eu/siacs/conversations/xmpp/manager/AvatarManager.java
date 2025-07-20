@@ -702,7 +702,7 @@ public class AvatarManager extends AbstractManager {
                 AVATAR_COMPRESSION_EXECUTOR);
     }
 
-    private ListenableFuture<Void> publish(final Collection<Info> avatars, final boolean open) {
+    private ListenableFuture<Void> publish(final List<Info> avatars, final boolean open) {
         final Info mainAvatarInfo;
         final byte[] mainAvatar;
         try {
@@ -764,7 +764,22 @@ public class AvatarManager extends AbstractManager {
     public ListenableFuture<Void> uploadAndPublish(final Uri image, final boolean open) {
         final var infoFuture = uploadAvatar(image);
         return Futures.transformAsync(
-                infoFuture, avatars -> publish(avatars, open), MoreExecutors.directExecutor());
+                infoFuture,
+                avatars -> publish(ordered(avatars), open),
+                MoreExecutors.directExecutor());
+    }
+
+    private static List<Info> ordered(final Collection<Info> infos) {
+        return new Ordering<Info>() {
+            @Override
+            public int compare(final Info left, final Info right) {
+                return ComparisonChain.start()
+                        .compareTrueFirst(
+                                Objects.isNull(left.getUrl()), Objects.isNull(right.getUrl()))
+                        .compare(left.getId(), right.getId())
+                        .result();
+            }
+        }.sortedCopy(infos);
     }
 
     public boolean hasPepToVCardConversion() {

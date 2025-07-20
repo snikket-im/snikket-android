@@ -60,14 +60,14 @@ public class DiscoManager extends AbstractManager {
                     Namespace.JINGLE_TRANSPORTS_IBB,
                     Namespace.JINGLE_ENCRYPTED_TRANSPORT,
                     Namespace.JINGLE_ENCRYPTED_TRANSPORT_OMEMO,
-                    "http://jabber.org/protocol/muc",
-                    "jabber:x:conference",
+                    Namespace.MUC,
+                    Namespace.DIRECT_MUC_INVITATIONS,
                     Namespace.OOB,
                     Namespace.ENTITY_CAPABILITIES,
                     Namespace.ENTITY_CAPABILITIES_2,
                     Namespace.DISCO_INFO,
-                    "urn:xmpp:avatar:metadata+notify",
-                    Namespace.NICK + "+notify",
+                    notify(Namespace.AVATAR_METADATA),
+                    notify(Namespace.NICK),
                     Namespace.PING,
                     Namespace.VERSION,
                     Namespace.CHAT_STATES,
@@ -329,7 +329,7 @@ public class DiscoManager extends AbstractManager {
         final ImmutableList.Builder<String> features = ImmutableList.builder();
         features.addAll(STATIC_FEATURES);
         if (Config.MESSAGE_DISPLAYED_SYNCHRONIZATION) {
-            features.add(Namespace.MDS_DISPLAYED + "+notify");
+            features.add(notify(Namespace.MDS_DISPLAYED));
         }
         if (appSettings.isConfirmMessages()) {
             features.addAll(MESSAGE_CONFIRMATION_FEATURES);
@@ -349,9 +349,9 @@ public class DiscoManager extends AbstractManager {
             features.add(Namespace.IDLE);
         }
         if (getManager(NativeBookmarkManager.class).hasFeature()) {
-            features.add(Namespace.BOOKMARKS2 + "+notify");
+            features.add(notify(Namespace.BOOKMARKS2));
         } else {
-            features.add(Namespace.BOOKMARKS + "+notify");
+            features.add(notify(Namespace.BOOKMARKS));
         }
         return new ServiceDescription(
                 features.build(),
@@ -563,6 +563,10 @@ public class DiscoManager extends AbstractManager {
                     }
                 },
                 MoreExecutors.directExecutor());
+    }
+
+    private static String notify(final String feature) {
+        return String.format("%s+notify", feature);
     }
 
     public static final class CapsHashMismatchException extends IllegalStateException {
