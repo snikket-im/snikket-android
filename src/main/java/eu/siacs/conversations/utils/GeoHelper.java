@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+
+import com.google.common.base.Charsets;
+
 import de.gultsch.common.Patterns;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
@@ -12,6 +15,8 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ShareLocationActivity;
 import eu.siacs.conversations.ui.ShowLocationActivity;
+
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -160,8 +165,11 @@ public class GeoHelper {
 
     private static String getLabel(Context context, Message message) {
         if (message.getStatus() == Message.STATUS_RECEIVED) {
-            return URLEncoder.encode(
-                    UIHelper.getMessageDisplayName(message), StandardCharsets.UTF_8);
+            try {
+                return URLEncoder.encode(UIHelper.getMessageDisplayName(message), "UTF-8");
+            } catch (final UnsupportedEncodingException e) {
+                throw new AssertionError(e);
+            }
         } else {
             return context.getString(R.string.me);
         }
