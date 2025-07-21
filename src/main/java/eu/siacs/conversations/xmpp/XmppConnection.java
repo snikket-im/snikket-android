@@ -1587,10 +1587,17 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate() throws IOException {
+        final var streamFeatures = this.streamFeatures;
         final boolean isSecure = isSecure();
-        if (isSecure && this.streamFeatures.hasStreamFeature(Authentication.class)) {
+        if (streamFeatures == null) {
+            Log.d(
+                    Config.LOGTAG,
+                    "could not pick alternate authentication mechanism. server never sent"
+                            + " features");
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        } else if (isSecure && streamFeatures.hasStreamFeature(Authentication.class)) {
             authenticate(SaslMechanism.Version.SASL_2);
-        } else if (isSecure && this.streamFeatures.hasStreamFeature(Mechanisms.class)) {
+        } else if (isSecure && streamFeatures.hasStreamFeature(Mechanisms.class)) {
             authenticate(SaslMechanism.Version.SASL);
         } else {
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
