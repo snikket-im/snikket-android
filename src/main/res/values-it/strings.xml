@@ -552,8 +552,8 @@
     <string name="gp_short">Breve</string>
     <string name="gp_medium">Medio</string>
     <string name="gp_long">Lungo</string>
-    <string name="pref_broadcast_last_activity">Ultimo accesso</string>
-    <string name="pref_broadcast_last_activity_summary">Fai sapere ai tuoi contatti quando hai usato l\'app l\'ultima volta</string>
+    <string name="pref_broadcast_last_activity">Mostra ultimo accesso</string>
+    <string name="pref_broadcast_last_activity_summary">Fai sapere ai tuoi contatti quando hai avuto l\'ultima attività nell\'app</string>
     <string name="pref_privacy">Privacy</string>
     <string name="pref_theme_options">Tema</string>
     <string name="pref_theme_options_summary">Seleziona il colore</string>
@@ -1145,4 +1145,5 @@
     <string name="do_not_show_this_warning_again">Non mostrare più questo avviso.</string>
     <string name="moderate_delete_dot_dot_dot">Elimina come moderatore…</string>
     <string name="moderation_explained">Questo messaggio verrà eliminato per te e per tutti i partecipanti di questo canale pubblico.</string>
+    <string name="last_seen">ultimo accesso %s</string>
 </resources>
