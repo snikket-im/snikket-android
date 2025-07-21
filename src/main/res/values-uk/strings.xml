@@ -535,8 +535,8 @@
     <string name="gp_short">Короткий</string>
     <string name="gp_medium">Середній</string>
     <string name="gp_long">Довгий</string>
-    <string name="pref_broadcast_last_activity">Остання активність</string>
-    <string name="pref_broadcast_last_activity_summary">Дозволити контактам бачити, коли Ви востаннє користувалися додатком</string>
+    <string name="pref_broadcast_last_activity">Показувати останню активність</string>
+    <string name="pref_broadcast_last_activity_summary">Дозволити контактам бачити час Вашої останньої активності в додатку</string>
     <string name="pref_privacy">Приватність</string>
     <string name="pref_theme_options">Тема</string>
     <string name="pref_theme_options_summary">Виберіть колір теми</string>
@@ -1179,4 +1179,5 @@
     <string name="delete_message">Видалити повідомлення</string>
     <string name="moderation_explained">Повідомлення буде видалено для Вас і всіх учасників цього публічного каналу.</string>
     <string name="moderate_delete">Видалити як модератор</string>
+    <string name="last_seen">остання активність %s</string>
 </resources>
