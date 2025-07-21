@@ -556,8 +556,8 @@
     <string name="gp_short">短</string>
     <string name="gp_medium">中</string>
     <string name="gp_long">长</string>
-    <string name="pref_broadcast_last_activity">最后上线</string>
-    <string name="pref_broadcast_last_activity_summary">让您的联系人知道您最后一次使用此应用的时间</string>
+    <string name="pref_broadcast_last_activity">显示最后上线</string>
+    <string name="pref_broadcast_last_activity_summary">允许您的联系人查看您最后一次在应用中的活动时间</string>
     <string name="pref_privacy">隐私</string>
     <string name="pref_theme_options">主题</string>
     <string name="pref_theme_options_summary">选择调色板</string>
@@ -1126,4 +1126,5 @@
     <string name="moderate_delete">以主持人身份删除</string>
     <string name="could_not_moderate_message">无法审核撤回消息</string>
     <string name="delete_message">删除消息</string>
+    <string name="last_seen">最后上线：%s</string>
 </resources>
