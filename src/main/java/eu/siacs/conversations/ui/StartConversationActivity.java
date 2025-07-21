@@ -44,6 +44,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -56,6 +57,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 import eu.siacs.conversations.BuildConfig;
@@ -82,6 +85,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import im.conversations.android.model.Bookmark;
 import im.conversations.android.model.ImmutableBookmark;
 import im.conversations.android.xmpp.model.stanza.Presence;
@@ -1319,32 +1323,33 @@ public class StartConversationActivity extends XmppActivity
     public void onCreatePublicChannel(Account account, String name, Jid address) {
         mToast = Toast.makeText(this, R.string.creating_channel, Toast.LENGTH_LONG);
         mToast.show();
-        xmppConnectionService.createPublicChannel(
-                account,
-                name,
-                address,
-                new UiCallback<Conversation>() {
+        final var future =
+                account.getXmppConnection()
+                        .getManager(MultiUserChatManager.class)
+                        .createPublicChannel(address, name);
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
                     @Override
-                    public void success(Conversation conversation) {
-                        runOnUiThread(
-                                () -> {
-                                    hideToast();
-                                    switchToConversation(conversation);
-                                });
+                    public void onSuccess(final Conversation conversation) {
+                        hideToast();
+                        switchToConversation(conversation);
                     }
 
                     @Override
-                    public void error(int errorCode, Conversation conversation) {
-                        runOnUiThread(
-                                () -> {
-                                    replaceToast(getString(errorCode));
-                                    switchToConversation(conversation);
-                                });
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.d(Config.LOGTAG, "could not create channel", t);
+                        replaceToast(getString(R.string.unable_to_set_channel_configuration));
+                        // creation failed. this most likely means it existed. we can join it anyway
+                        // if we ever decide not to join it the createPublicChannel call needs to
+                        // archive it
+                        final var conversation = xmppConnectionService.find(account, address);
+                        if (conversation != null) {
+                            switchToConversation(conversation);
+                        }
                     }
-
-                    @Override
-                    public void userInputRequired(PendingIntent pi, Conversation object) {}
-                });
+                },
+                ContextCompat.getMainExecutor(this));
     }
 
     public static class MyListFragment extends SwipeRefreshListFragment {

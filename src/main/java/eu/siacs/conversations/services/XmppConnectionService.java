@@ -3064,34 +3064,6 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public void createPublicChannel(
-            final Account account,
-            final String name,
-            final Jid address,
-            final UiCallback<Conversation> callback) {
-        final var future =
-                account.getXmppConnection()
-                        .getManager(MultiUserChatManager.class)
-                        .createPublicChannel(address, name);
-
-        Futures.addCallback(
-                future,
-                new FutureCallback<Conversation>() {
-                    @Override
-                    public void onSuccess(Conversation result) {
-                        callback.success(result);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        Log.d(Config.LOGTAG, "could not create public channel", t);
-                        // TODO I guess it’s better to just not use callbacks here
-                        callback.error(R.string.unable_to_set_channel_configuration, null);
-                    }
-                },
-                MoreExecutors.directExecutor());
-    }
-
     public boolean createAdhocConference(
             final Account account,
             final String name,
