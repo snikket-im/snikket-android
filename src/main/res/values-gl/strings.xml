@@ -549,7 +549,7 @@
     <string name="gp_short">Breve</string>
     <string name="gp_medium">Medio</string>
     <string name="gp_long">Longo</string>
-    <string name="pref_broadcast_last_activity">Último uso</string>
+    <string name="pref_broadcast_last_activity">Mostrar último uso</string>
     <string name="pref_broadcast_last_activity_summary">Permitirlle aos teus contactos ver a última vez que usaches a app</string>
     <string name="pref_privacy">Privacidade</string>
     <string name="pref_theme_options">Decorado</string>
@@ -1131,4 +1131,5 @@
     <string name="do_not_show_this_warning_again">Non volver a mostrar esta mensaxe.</string>
     <string name="delete_message">Eliminar mensaxe</string>
     <string name="moderation_explained">Vaise eliminar esta mensaxe para ti e todas as persoas participantes nesta canle pública.</string>
+    <string name="last_seen">último uso %s</string>
 </resources>
