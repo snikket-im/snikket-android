@@ -1336,7 +1336,7 @@ public class XmppConnectionService extends Service {
             unregisterReceiver(this.mInternalEventReceiver);
             unregisterReceiver(this.mInternalRestrictedEventReceiver);
             unregisterReceiver(this.mInternalScreenEventReceiver);
-        } catch (final IllegalArgumentException e) {
+        } catch (final RuntimeException e) {
             // ignored
         }
         destroyed = false;
