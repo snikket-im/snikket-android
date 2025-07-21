@@ -16,17 +16,18 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:titleCentered="true"
+                android:minHeight="?attr/actionBarSize"
                 app:subtitleCentered="true"
                 app:subtitleTextAppearance="?textAppearanceBodySmall"
                 app:subtitleTextColor="?colorOnSurfaceVariant"
-                android:minHeight="?attr/actionBarSize" />
+                app:titleCentered="true" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:baselineAligned="false">
 
             <FrameLayout
                 android:id="@+id/main_fragment"
