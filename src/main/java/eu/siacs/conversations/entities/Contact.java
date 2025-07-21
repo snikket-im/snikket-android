@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
@@ -255,7 +254,6 @@ public class Contact implements ListItem, Blockable {
         } else {
             interactions = Collections2.transform(dnd, Presence::getLastUserInteraction);
         }
-        Log.d(Config.LOGTAG, "interactions: " + interactions);
         return LastUserInteraction.max(interactions);
     }
 

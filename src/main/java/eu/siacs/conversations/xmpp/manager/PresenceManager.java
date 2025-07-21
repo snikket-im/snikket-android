@@ -75,7 +75,8 @@ public class PresenceManager extends AbstractManager {
         } else if (type == Presence.Type.SUBSCRIBE) {
             this.handleSubscribePresence(presence);
         } else {
-            Log.e(Config.LOGTAG, getAccount().getJid().asBareJid() + ": not handling " + presence);
+            // TODO we can do something with error presence and show a tag on contacts who’s server
+            // is not found or something
         }
         this.service.updateRosterUi();
     }
@@ -99,9 +100,6 @@ public class PresenceManager extends AbstractManager {
 
             awaitDiscoFuture(contact, discoFuture);
         }
-
-        final var interaction = contact.getLastUserInteraction();
-        Log.d(Config.LOGTAG, "interaction for " + contact.getAddress() + ": " + interaction);
 
         final PgpEngine pgp = this.service.getPgpEngine();
         final Element x = presence.getExtension(Signed.class);
