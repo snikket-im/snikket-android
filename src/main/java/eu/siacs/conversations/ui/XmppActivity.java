@@ -149,7 +149,7 @@ public abstract class XmppActivity extends ActionBarActivity {
                 refreshUiReal();
             };
     private final UiCallback<Conversation> adhocCallback =
-            new UiCallback<Conversation>() {
+            new UiCallback<>() {
                 @Override
                 public void success(final Conversation conversation) {
                     runOnUiThread(
