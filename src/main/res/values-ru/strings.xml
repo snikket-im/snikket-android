@@ -566,8 +566,8 @@
     <string name="gp_short">Короткий</string>
     <string name="gp_medium">Средний</string>
     <string name="gp_long">Длинный</string>
-    <string name="pref_broadcast_last_activity">Последняя активность</string>
-    <string name="pref_broadcast_last_activity_summary">Позволяет вашим контактам видеть, когда вы в последний раз использовали приложение</string>
+    <string name="pref_broadcast_last_activity">Показывать последнюю активность</string>
+    <string name="pref_broadcast_last_activity_summary">Позволяет вашим контактам видеть, когда вы в последний раз были активны в приложении</string>
     <string name="pref_privacy">Приватность</string>
     <string name="pref_theme_options">Тема</string>
     <string name="pref_theme_options_summary">Выбрать цветовую палитру</string>
@@ -1178,4 +1178,5 @@
     <string name="moderation_explained">Сообщение будет удалено для вас и всех остальных участников этого публичного канала.</string>
     <string name="do_not_show_this_warning_again">Больше не предупреждать.</string>
     <string name="could_not_moderate_message">Не удалось отмодерировать сообщение</string>
+    <string name="last_seen">последняя активность %s</string>
 </resources>
