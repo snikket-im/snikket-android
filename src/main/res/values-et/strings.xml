@@ -756,8 +756,8 @@
     <string name="gp_short">Lühike</string>
     <string name="gp_medium">Keskmine</string>
     <string name="gp_long">Pikk</string>
-    <string name="pref_broadcast_last_activity">Viimati nähtud</string>
-    <string name="pref_broadcast_last_activity_summary">Luba oma kontaktidel näha, millal sa viimati vestlusrakendust kasutasid</string>
+    <string name="pref_broadcast_last_activity">Näita märget „viimati nähtud“</string>
+    <string name="pref_broadcast_last_activity_summary">Luba oma kontaktidel näha aega, millal sa viimati vestlusrakendust kasutasid</string>
     <string name="today">Täna</string>
     <string name="yesterday">Eile</string>
     <string name="pref_validate_hostname">Kontrolli hosti nime DNSSECi abil</string>
@@ -1151,4 +1151,5 @@
     <string name="delete_message">Kustuta sõnum</string>
     <string name="moderation_explained">Järgnevaga see sõnum kustub sinu ja kõikide teiste selles kanalis osalejate jaoks.</string>
     <string name="do_not_show_this_warning_again">Ära näita seda hoiatust uuesti.</string>
+    <string name="last_seen">viimati nähtud %s</string>
 </resources>
