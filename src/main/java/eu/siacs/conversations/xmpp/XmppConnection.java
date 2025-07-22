@@ -139,6 +139,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -157,6 +159,9 @@ import okhttp3.HttpUrl;
 import org.xmlpull.v1.XmlPullParserException;
 
 public class XmppConnection implements Runnable {
+
+    public static final Executor RECONNNECTION_EXECUTOR =
+            MoreExecutors.newSequentialExecutor(Executors.newCachedThreadPool());
 
     protected final Account account;
     private final Features features = new Features(this);
@@ -1939,7 +1944,8 @@ public class XmppConnection implements Runnable {
     }
 
     public void cancelRegistration() {
-        this.changeStateTerminal(Account.State.REGISTRATION_FAILED);
+        RECONNNECTION_EXECUTOR.execute(
+                () -> this.changeStateTerminal(Account.State.REGISTRATION_FAILED));
     }
 
     public HttpUrl getRedirectionUrl() {
@@ -2114,7 +2120,6 @@ public class XmppConnection implements Runnable {
     private void sendPostBindInitialization(
             final boolean waitForDisco, final boolean carbonsEnabled) {
         getManager(CarbonsManager.class).setEnabledOnBind(carbonsEnabled);
-        features.blockListRequested = false;
         getManager(DiscoManager.class).clear();
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": starting service discovery");
         mWaitForDisco.set(waitForDisco);
@@ -2939,7 +2944,6 @@ public class XmppConnection implements Runnable {
 
         // TODO move these three into their respective managers or into XmppConnection
         private boolean encryptionEnabled = false;
-        private boolean blockListRequested = false;
 
         public Features(final XmppConnection connection) {
             this.connection = connection;
@@ -2976,6 +2980,7 @@ public class XmppConnection implements Runnable {
         }
 
         public boolean pepPersistent() {
+            // TODO combine this with pep(); PEP w/o persistence is not useful in 2025
             final var infoQuery = getManager(DiscoManager.class).get(account.getJid().asBareJid());
             return infoQuery != null
                     && infoQuery
@@ -3027,10 +3032,6 @@ public class XmppConnection implements Runnable {
 
         public boolean rosterVersioning() {
             return connection.streamFeatures != null && connection.streamFeatures.hasChild("ver");
-        }
-
-        public void setBlockListRequested(boolean value) {
-            this.blockListRequested = value;
         }
 
         public HttpUrl getServiceOutageStatus() {

@@ -1486,9 +1486,7 @@ public class XmppConnectionService extends Service {
                 account.getXmppConnection().getManager(RosterManager.class).writeToDatabase();
                 activeAccounts++;
             }
-            if (account.getXmppConnection() != null) {
-                new Thread(() -> disconnect(account, false)).start();
-            }
+            XmppConnection.RECONNNECTION_EXECUTOR.execute(() -> disconnect(account, false));
         }
         if (stop || activeAccounts == 0) {
             Log.d(Config.LOGTAG, "good bye");
@@ -2562,18 +2560,8 @@ public class XmppConnectionService extends Service {
                     mNotificationService.clear(conversation);
                 }
             }
-            if (account.getXmppConnection() != null) {
-                new Thread(() -> disconnect(account, !connected)).start();
-            }
-            final Runnable runnable =
-                    () -> {
-                        if (!databaseBackend.deleteAccount(account)) {
-                            Log.d(
-                                    Config.LOGTAG,
-                                    account.getJid().asBareJid() + ": unable to delete account");
-                        }
-                    };
-            mDatabaseWriterExecutor.execute(runnable);
+            XmppConnection.RECONNNECTION_EXECUTOR.execute(() -> disconnect(account, !connected));
+            mDatabaseWriterExecutor.execute(() -> databaseBackend.deleteAccount(account));
             this.accounts.remove(account);
             if (CallIntegration.hasSystemFeature(this)) {
                 CallIntegrationConnectionService.unregisterPhoneAccount(this, account);
@@ -3389,7 +3377,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void reconnectAccountInBackground(final Account account) {
-        new Thread(() -> reconnectAccount(account, false, true)).start();
+        XmppConnection.RECONNNECTION_EXECUTOR.execute(() -> reconnectAccount(account, false, true));
     }
 
     public void invite(final Conversation conversation, final Jid contact) {
