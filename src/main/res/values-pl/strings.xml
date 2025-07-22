@@ -559,8 +559,8 @@
     <string name="gp_short">Krótki</string>
     <string name="gp_medium">Średni</string>
     <string name="gp_long">Długi</string>
-    <string name="pref_broadcast_last_activity">Ostatnio widziany</string>
-    <string name="pref_broadcast_last_activity_summary">Pozwól kontaktom widzieć kiedy ostatnio używałeś aplikacji</string>
+    <string name="pref_broadcast_last_activity">Pokaż „ostatnio widziany”</string>
+    <string name="pref_broadcast_last_activity_summary">Pozwól kontaktom widzieć czas Twojej ostatniej aktywności w aplikacji</string>
     <string name="pref_privacy">Prywatność</string>
     <string name="pref_theme_options">Skórka</string>
     <string name="pref_theme_options_summary">Wybierz paletę kolorów</string>
@@ -1163,4 +1163,5 @@
     <string name="do_not_show_this_warning_again">Nie pokazuj tego ostrzeżenia ponownie.</string>
     <string name="moderation_explained">Wiadomość zostanie usunięta dla Ciebie i każdego uczestnika tego publicznego kanału.</string>
     <string name="moderate_delete_dot_dot_dot">Usuń jako moderator…</string>
+    <string name="last_seen">ostatnio widziany %s</string>
 </resources>
