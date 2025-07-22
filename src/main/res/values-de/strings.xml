@@ -549,8 +549,8 @@
     <string name="gp_short">Kurz</string>
     <string name="gp_medium">Mittel</string>
     <string name="gp_long">Lang</string>
-    <string name="pref_broadcast_last_activity">Zuletzt genutzt</string>
-    <string name="pref_broadcast_last_activity_summary">Zeige deinen Kontakten, wann du die App zuletzt genutzt hast</string>
+    <string name="pref_broadcast_last_activity">Zuletzt genutzt anzeigen</string>
+    <string name="pref_broadcast_last_activity_summary">Lass deine Kontakte sehen, wann du zuletzt in der App aktiv warst</string>
     <string name="pref_privacy">Privatsphäre</string>
     <string name="pref_theme_options">Design</string>
     <string name="pref_theme_options_summary">Wähle die Farbpalette aus</string>
@@ -1131,4 +1131,5 @@
     <string name="do_not_show_this_warning_again">Diese Warnung soll nicht mehr angezeigt werden.</string>
     <string name="moderation_explained">Diese Nachricht wird für dich und jeden Teilnehmer dieses öffentlichen Channels gelöscht.</string>
     <string name="moderate_delete_dot_dot_dot">Als Moderator löschen…</string>
+    <string name="last_seen">Zuletzt genutzt %s</string>
 </resources>
