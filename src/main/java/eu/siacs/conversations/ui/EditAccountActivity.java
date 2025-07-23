@@ -82,6 +82,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
+import eu.siacs.conversations.xmpp.manager.PepManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import eu.siacs.conversations.xmpp.manager.RegistrationManager;
 import im.conversations.android.xmpp.model.data.Data;
@@ -533,7 +534,7 @@ public class EditAccountActivity extends OmemoActivity
                     final boolean wasFirstAccount =
                             xmppConnectionService != null
                                     && xmppConnectionService.getAccounts().size() == 1;
-                    if (avatar || (connection != null && !connection.getFeatures().pep())) {
+                    if (avatar || !connection.getManager(PepManager.class).isAvailable()) {
                         intent =
                                 new Intent(
                                         getApplicationContext(), StartConversationActivity.class);
@@ -1285,7 +1286,7 @@ public class EditAccountActivity extends OmemoActivity
                 this.binding.serverInfoSasl2.setText(R.string.server_info_unavailable);
             }
             this.binding.loginMechanism.setText(Strings.nullToEmpty(features.loginMechanism()));
-            if (features.pep()) {
+            if (connection.getManager(PepManager.class).isAvailable()) {
                 AxolotlService axolotlService = this.mAccount.getAxolotlService();
                 if (axolotlService != null && axolotlService.isPepBroken()) {
                     this.binding.serverInfoPep.setText(R.string.server_info_broken);

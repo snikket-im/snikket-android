@@ -1,5 +1,5 @@
-@XmlPackage(namespace = Namespace.PUBSUB_EVENT)
+@XmlPackage(namespace = Namespace.PUB_SUB_EVENT)
 package im.conversations.android.xmpp.model.pubsub.event;
 
-import im.conversations.android.annotation.XmlPackage;
 import eu.siacs.conversations.xml.Namespace;
+import im.conversations.android.annotation.XmlPackage;

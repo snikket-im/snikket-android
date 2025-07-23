@@ -2973,21 +2973,6 @@ public class XmppConnection implements Runnable {
                     && connection.streamFeatures.clientStateIndication();
         }
 
-        // TODO move to manager
-        public boolean pep() {
-            final var infoQuery = getManager(DiscoManager.class).get(account.getJid().asBareJid());
-            return infoQuery != null && infoQuery.hasIdentityWithCategoryAndType("pubsub", "pep");
-        }
-
-        public boolean pepPersistent() {
-            // TODO combine this with pep(); PEP w/o persistence is not useful in 2025
-            final var infoQuery = getManager(DiscoManager.class).get(account.getJid().asBareJid());
-            return infoQuery != null
-                    && infoQuery
-                            .getFeatureStrings()
-                            .contains("http://jabber.org/protocol/pubsub#persistent-items");
-        }
-
         public boolean bind2() {
             final var loginInfo = XmppConnection.this.loginInfo;
             return loginInfo != null && !loginInfo.inlineBindFeatures.isEmpty();
@@ -3004,11 +2989,11 @@ public class XmppConnection implements Runnable {
         }
 
         public boolean pepPublishOptions() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUBSUB_PUBLISH_OPTIONS);
+            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUB_SUB_PUBLISH_OPTIONS);
         }
 
         public boolean pepConfigNodeMax() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUBSUB_CONFIG_NODE_MAX);
+            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUB_SUB_CONFIG_NODE_MAX);
         }
 
         public boolean pepOmemoWhitelisted() {

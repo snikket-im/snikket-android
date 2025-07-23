@@ -30,6 +30,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xmpp.manager.AvatarManager;
+import eu.siacs.conversations.xmpp.manager.PepManager;
 import im.conversations.android.xmpp.NodeConfiguration;
 
 public class PublishProfilePictureActivity extends XmppActivity
@@ -269,7 +270,7 @@ public class PublishProfilePictureActivity extends XmppActivity
     }
 
     private void reloadAvatar(final Account account) {
-        this.support = account.getXmppConnection().getFeatures().pep();
+        this.support = account.getXmppConnection().getManager(PepManager.class).isAvailable();
         if (this.avatarUri == null) {
             if (account.getAvatar() != null || this.defaultUri == null) {
                 loadImageIntoPreview(null);

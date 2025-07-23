@@ -60,12 +60,21 @@ public class PepManager extends AbstractManager {
         return pubSubManager().getNodeConfiguration(pepService(), node);
     }
 
+    public boolean isAvailable() {
+        final var infoQuery = getManager(DiscoManager.class).get(pepService());
+        if (infoQuery == null) {
+            return false;
+        }
+        return infoQuery.hasIdentityWithCategoryAndType("pubsub", "pep")
+                && infoQuery.hasFeature(Namespace.PUB_SUB_PERSISTENT_ITEMS);
+    }
+
     public boolean hasPublishOptions() {
-        return getManager(DiscoManager.class).hasAccountFeature(Namespace.PUBSUB_PUBLISH_OPTIONS);
+        return getManager(DiscoManager.class).hasAccountFeature(Namespace.PUB_SUB_PUBLISH_OPTIONS);
     }
 
     public boolean hasConfigNodeMax() {
-        return getManager(DiscoManager.class).hasAccountFeature(Namespace.PUBSUB_CONFIG_NODE_MAX);
+        return getManager(DiscoManager.class).hasAccountFeature(Namespace.PUB_SUB_CONFIG_NODE_MAX);
     }
 
     private PubSubManager pubSubManager() {

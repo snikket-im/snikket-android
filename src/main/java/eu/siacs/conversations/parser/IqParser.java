@@ -53,7 +53,7 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
     }
 
     public static Element getItem(final Iq packet) {
-        final Element pubsub = packet.findChild("pubsub", Namespace.PUBSUB);
+        final Element pubsub = packet.findChild("pubsub", Namespace.PUB_SUB);
         if (pubsub == null) {
             return null;
         }

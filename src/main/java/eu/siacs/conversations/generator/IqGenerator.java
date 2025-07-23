@@ -28,13 +28,13 @@ public class IqGenerator extends AbstractGenerator {
 
     protected Iq publish(final String node, final Element item, final Bundle options) {
         final var packet = new Iq(Iq.Type.SET);
-        final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB);
+        final Element pubsub = packet.addChild("pubsub", Namespace.PUB_SUB);
         final Element publish = pubsub.addChild("publish");
         publish.setAttribute("node", node);
         publish.addChild(item);
         if (options != null) {
             final Element publishOptions = pubsub.addChild("publish-options");
-            publishOptions.addChild(Data.create(Namespace.PUBSUB_PUBLISH_OPTIONS, options));
+            publishOptions.addChild(Data.create(Namespace.PUB_SUB_PUBLISH_OPTIONS, options));
         }
         return packet;
     }
@@ -45,7 +45,7 @@ public class IqGenerator extends AbstractGenerator {
 
     private Iq retrieve(String node, Element item) {
         final var packet = new Iq(Iq.Type.GET);
-        final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB);
+        final Element pubsub = packet.addChild("pubsub", Namespace.PUB_SUB);
         final Element items = pubsub.addChild("items");
         items.setAttribute("node", node);
         if (item != null) {
@@ -192,7 +192,7 @@ public class IqGenerator extends AbstractGenerator {
         enable.setAttribute("node", node);
         if (secret != null) {
             Data data = new Data();
-            data.setFormType(Namespace.PUBSUB_PUBLISH_OPTIONS);
+            data.setFormType(Namespace.PUB_SUB_PUBLISH_OPTIONS);
             data.put("secret", secret);
             data.submit();
             enable.addChild(data);

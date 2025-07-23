@@ -47,17 +47,18 @@ public final class Namespace {
     public static final String FAST = "urn:xmpp:fast:0";
     public static final String TIME = "urn:xmpp:time";
     public static final String TLS = "urn:ietf:params:xml:ns:xmpp-tls";
-    public static final String PUBSUB = "http://jabber.org/protocol/pubsub";
-    public static final String PUBSUB_EVENT = PUBSUB + "#event";
     public static final String MUC = "http://jabber.org/protocol/muc";
     public static final String MUC_ADMIN = MUC + "#admin";
     public static final String MUC_OWNER = MUC + "#owner";
     public static final String MUC_USER = MUC + "#user";
     public static final String MUC_ROOM_INFO = MUC + "#roominfo";
-    public static final String PUBSUB_PUBLISH_OPTIONS = PUBSUB + "#publish-options";
-    public static final String PUBSUB_CONFIG_NODE_MAX = PUBSUB + "#config-node-max";
-    public static final String PUBSUB_ERROR = PUBSUB + "#errors";
-    public static final String PUBSUB_OWNER = PUBSUB + "#owner";
+    public static final String PUB_SUB = "http://jabber.org/protocol/pubsub";
+    public static final String PUB_SUB_EVENT = PUB_SUB + "#event";
+    public static final String PUB_SUB_PUBLISH_OPTIONS = PUB_SUB + "#publish-options";
+    public static final String PUB_SUB_CONFIG_NODE_MAX = PUB_SUB + "#config-node-max";
+    public static final String PUB_SUB_ERROR = PUB_SUB + "#errors";
+    public static final String PUB_SUB_OWNER = PUB_SUB + "#owner";
+    public static final String PUB_SUB_PERSISTENT_ITEMS = PUB_SUB + "#persistent-items";
     public static final String NICK = "http://jabber.org/protocol/nick";
     public static final String FLEXIBLE_OFFLINE_MESSAGE_RETRIEVAL =
             "http://jabber.org/protocol/offline";

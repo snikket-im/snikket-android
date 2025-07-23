@@ -35,6 +35,7 @@ import eu.siacs.conversations.xmpp.jingle.RtpContentMap;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.OmemoVerifiedIceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
+import eu.siacs.conversations.xmpp.manager.PepManager;
 import eu.siacs.conversations.xmpp.pep.PublishOptions;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import java.security.PrivateKey;
@@ -129,7 +130,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     public void onAdvancedStreamFeaturesAvailable(Account account) {
         if (Config.supportOmemo()
                 && account.getXmppConnection() != null
-                && account.getXmppConnection().getFeatures().pep()) {
+                && account.getXmppConnection().getManager(PepManager.class).isAvailable()) {
             publishBundlesIfNeeded(true, false);
         } else {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": skipping OMEMO initialization");
