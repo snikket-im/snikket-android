@@ -558,7 +558,7 @@
     <string name="gp_medium">Medie</string>
     <string name="gp_long">Lungă</string>
     <string name="pref_broadcast_last_activity">Văzut ultima dată</string>
-    <string name="pref_broadcast_last_activity_summary">Permiteți contactelor voastre să vadă când ați folosit ultima dată aplicația</string>
+    <string name="pref_broadcast_last_activity_summary">Permiteți contactelor să vadă când ați fost ultima dată activi în aplicație</string>
     <string name="pref_privacy">Intimitate</string>
     <string name="pref_theme_options">Temă</string>
     <string name="pref_theme_options_summary">Selecție paletă de culori interfață</string>
@@ -1150,4 +1150,5 @@
     <string name="could_not_moderate_message">Nu s-a putut edita administrativ mesajul</string>
     <string name="moderate_delete">Șterge ca moderator</string>
     <string name="moderate_delete_dot_dot_dot">Șterge ca moderator…</string>
+    <string name="last_seen">văzut ultima dată %s</string>
 </resources>
