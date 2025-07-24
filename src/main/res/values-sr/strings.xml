@@ -543,8 +543,8 @@
     <string name="gp_short">Кратак</string>
     <string name="gp_medium">Средњи</string>
     <string name="gp_long">Дуг</string>
-    <string name="pref_broadcast_last_activity">Последњи пут виђен/а</string>
-    <string name="pref_broadcast_last_activity_summary">Дозволи својим контактима да виде када си последњи пут користио/ла апликацију</string>
+    <string name="pref_broadcast_last_activity">Приказуј \"последњи пут виђен/а\"</string>
+    <string name="pref_broadcast_last_activity_summary">Дозволи својим контактима да виде када си последњи пут био/ла активан/на у апликацији</string>
     <string name="pref_privacy">Приватност</string>
     <string name="pref_theme_options">Тема</string>
     <string name="pref_theme_options_summary">Изабери палету боја</string>
@@ -1165,4 +1165,5 @@
     <string name="moderate_delete_dot_dot_dot">Обриши као модератор…</string>
     <string name="could_not_moderate_message">Није могуће уредити поруку</string>
     <string name="moderation_explained">Ова порука ће бити обрисана за тебе и сваког учесника овог јавног канала.</string>
+    <string name="last_seen">последње виђен/а %s</string>
 </resources>
