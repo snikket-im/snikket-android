@@ -566,7 +566,7 @@
     <string name="gp_short">Короткий</string>
     <string name="gp_medium">Средний</string>
     <string name="gp_long">Длинный</string>
-    <string name="pref_broadcast_last_activity">Показывать последнюю активность</string>
+    <string name="pref_broadcast_last_activity">Показывать активность</string>
     <string name="pref_broadcast_last_activity_summary">Позволяет вашим контактам видеть, когда вы в последний раз были активны в приложении</string>
     <string name="pref_privacy">Приватность</string>
     <string name="pref_theme_options">Тема</string>
