@@ -1151,4 +1151,9 @@
     <string name="moderate_delete">Șterge ca moderator</string>
     <string name="moderate_delete_dot_dot_dot">Șterge ca moderator…</string>
     <string name="last_seen">văzut ultima dată %s</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d participant</item>
+        <item quantity="few">%1$d participanți</item>
+        <item quantity="other">%1$d de participanți</item>
+    </plurals>
 </resources>
