@@ -1180,4 +1180,10 @@
     <string name="moderation_explained">Повідомлення буде видалено для Вас і всіх учасників цього публічного каналу.</string>
     <string name="moderate_delete">Видалити як модератор</string>
     <string name="last_seen">остання активність %s</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d учасник</item>
+        <item quantity="few">%1$d учасники</item>
+        <item quantity="many">%1$d учасників</item>
+        <item quantity="other">%1$d учасників</item>
+    </plurals>
 </resources>
