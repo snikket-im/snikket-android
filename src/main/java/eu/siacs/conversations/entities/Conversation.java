@@ -673,12 +673,9 @@ public class Conversation extends AbstractEntity
 
     public static String getName(final MucOptions mucOptions, @Nullable final Bookmark bookmark) {
         final String roomName = mucOptions.getName();
-        final String subject = mucOptions.getSubject();
         final String bookmarkName = bookmark != null ? bookmark.getName() : null;
         if (Bookmark.printableValue(roomName)) {
             return roomName;
-        } else if (Bookmark.printableValue(subject)) {
-            return subject;
         } else if (Bookmark.printableValue(bookmarkName)) {
             return bookmarkName;
         } else {
