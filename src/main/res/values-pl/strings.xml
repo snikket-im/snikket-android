@@ -43,8 +43,8 @@
     <string name="remove_contact_text">Czy chcesz usunąć %s ze swojej listy kontaktów? Rozmowa z tym kontaktem nie zostanie usunięta.</string>
     <string name="block_contact_text">Czy na pewno chcesz zablokować wiadomości od użytkownika %s?</string>
     <string name="unblock_contact_text">Czy na pewno chcesz odblokować wiadomości przychodzące od użytkownika %s?</string>
-    <string name="block_domain_text">Zablokować wszystkie kontakty z %s?</string>
-    <string name="unblock_domain_text">Odblokować wszystkie kontakty z %s?</string>
+    <string name="block_domain_text">Zablokować wszystkie kontakty z %s?</string>
+    <string name="unblock_domain_text">Odblokować wszystkie kontakty z %s?</string>
     <string name="contact_blocked">Kontakt zablokowany</string>
     <string name="blocked">Zablokowane</string>
     <string name="register_account">Zarejestruj nowe konto na serwerze</string>
@@ -67,8 +67,8 @@
     <string name="crash_report_message">Używanie Twojego konta XMPP do wysyłania śladów stosu pomaga w ciągłym rozwoju %1$s.</string>
     <string name="send_now">Wyślij teraz</string>
     <string name="send_never">Nie pytaj ponownie</string>
-    <string name="problem_connecting_to_account">Nie można połączyć z kontem</string>
-    <string name="problem_connecting_to_accounts">Nie można połączyć z wieloma kontami</string>
+    <string name="problem_connecting_to_account">Nie można połączyć z kontem</string>
+    <string name="problem_connecting_to_accounts">Nie można połączyć z wieloma kontami</string>
     <string name="touch_to_fix">Dotknij aby zarządzać swoimi kontami</string>
     <string name="attach_file">Załącz plik</string>
     <string name="not_in_roster">Dodać ten brakujący kontakt do twojej listy kontaktów?</string>
@@ -95,7 +95,7 @@
     <string name="send_unencrypted">Wyślij czysty tekst</string>
     <string name="decryption_failed">Nie można odszyfrować. Sprawdź poprawność klucza prywatnego.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long"><![CDATA[%1$s używa <b>OpenKeychain</b> aby szyfrować i odszyfrowywać wiadomości i zarządzać twoimi kluczami publicznymi.<br><br>OpenKeychain jest na licencji GPLv3+ i jest dostępny przez F-Droid lub Google Play.<br><br><small>(Proszę zrestartować %1$s po zainstalowaniu.)</small>]]></string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s używa <b>OpenKeychain</b> aby szyfrować i odszyfrowywać wiadomości i zarządzać twoimi kluczami publicznymi.<br><br>OpenKeychain jest na licencji GPLv3+ i jest dostępny przez F‑Droid lub Google Play.<br><br><small>(Proszę zrestartować %1$s po zainstalowaniu.)</small>]]></string>
     <string name="restart">Zrestartuj</string>
     <string name="install">Zainstaluj</string>
     <string name="openkeychain_not_installed">Proszę zainstalować OpenKeychain</string>
@@ -119,11 +119,11 @@
     <string name="pref_notification_sound_summary">Dźwięk powiadomień dla nowych wiadomości</string>
     <string name="pref_call_ringtone_summary">Dzwonek dla przychodzących rozmów</string>
     <string name="pref_notification_grace_period">Czas bez powiadomień</string>
-    <string name="pref_notification_grace_period_summary">Długość czasu kiedy powiadomienia są uśpione po wykryciu aktywności na jednym z twoich innych urządzeń.</string>
+    <string name="pref_notification_grace_period_summary">Długość czasu kiedy powiadomienia są uśpione po wykryciu aktywności na jednym z twoich innych urządzeń.</string>
     <string name="pref_advanced_options">Zaawansowane</string>
     <string name="pref_never_send_crash_summary">Wysyłając ślady stosu pomagasz w rozwoju</string>
     <string name="pref_confirm_messages">Potwierdzenia wiadomości</string>
-    <string name="pref_confirm_messages_summary">Zezwól na wysyłanie do osób z twojej listy kontaktów informacji o tym, kiedy otrzymałeś i przeczytałeś wiadomość od nich</string>
+    <string name="pref_confirm_messages_summary">Zezwól na wysyłanie do osób z twojej listy kontaktów informacji o tym, kiedy otrzymałeś i przeczytałeś wiadomość od nich</string>
     <string name="pref_prevent_screenshots">Zapobiegaj zrzutom ekranu</string>
     <string name="pref_prevent_screenshots_summary">Ukryj zawartość aplikacji w podglądzie aplikacji oraz zablokuj zrzuty ekranu </string>
     <string name="pref_ui_options">UI</string>
@@ -135,7 +135,7 @@
     <string name="your_account">Twoje konto</string>
     <string name="send_presence_updates">Wysyłaj powiadomienia obecności</string>
     <string name="receive_presence_updates">Otrzymuj powiadomienia obecności</string>
-    <string name="ask_for_presence_updates">Poproś o powiadomienia obecności</string>
+    <string name="ask_for_presence_updates">Poproś o powiadomienia obecności</string>
     <string name="attach_choose_picture">Wybierz obraz</string>
     <string name="attach_take_picture">Zrób zdjęcie</string>
     <string name="preemptively_grant">Automatyczne powiadomienia obecności</string>
@@ -188,7 +188,7 @@
     <string name="invalid_jid">To nie jest poprawny adres XMPP</string>
     <string name="error_out_of_memory">Brak pamięci. Obraz jest za duży</string>
     <string name="add_phone_book_text">Czy chcesz dodać %s do listy kontaktów?</string>
-    <string name="server_info_show_more">Informacje o serwerze</string>
+    <string name="server_info_show_more">Informacje o serwerze</string>
     <string name="server_info_mam">XEP-0313: zarządzanie archiwami wiadomości</string>
     <string name="server_info_carbon_messages">XEP-0280: kopie wiadomości</string>
     <string name="server_info_csi">XEP-0352: wskazywanie stanu klienta</string>
@@ -201,7 +201,7 @@
     <string name="server_info_push">XEP-0357: powiadomienia Push</string>
     <string name="server_info_available">dostępny</string>
     <string name="server_info_unavailable">niedostępny</string>
-    <string name="missing_public_keys">Brak informacji o kluczu publicznym</string>
+    <string name="missing_public_keys">Brak informacji o kluczu publicznym</string>
     <string name="install_openkeychain">Wiadomość zaszyfrowana. Zainstaluj OpenKeychain aby odszyfrować.</string>
     <string name="openpgp_messages_found">Znaleziono nowe wiadomości zaszyfrowane przez OpenPGP</string>
     <string name="openpgp_key_id">ID klucza OpenPGP</string>
@@ -231,7 +231,7 @@
     <string name="destroy_room">Usuń konferencję</string>
     <string name="destroy_channel">Usuń kanał</string>
     <string name="destroy_room_dialog">Czy jesteś pewien, że chcesz usunąć tą konferencję?\n\n<b>Ostrzeżenie:</b> Ta konferencja zostanie całkowicie usunięta na serwerze.</string>
-    <string name="destroy_channel_dialog">Czy na pewno chcesz usunąć ten kanał publiczny?\n\n<b>Ostrzeżenie:</b> Ten kanał zostanie całkowicie usunięty z serwera.</string>
+    <string name="destroy_channel_dialog">Czy na pewno chcesz usunąć ten kanał publiczny?\n\n<b>Ostrzeżenie:</b> Ten kanał zostanie całkowicie usunięty z serwera.</string>
     <string name="could_not_destroy_room">Usuwanie konferencji nieudane</string>
     <string name="could_not_destroy_channel">Nie można usunąć kanału</string>
     <string name="action_edit_subject">Edytuj tytuł konferencji</string>
@@ -242,10 +242,10 @@
     <string name="add_back">Również dodaj</string>
     <string name="contact_has_read_up_to_this_point">%s przeczytał do tego miejsca</string>
     <string name="contacts_have_read_up_to_this_point">%s przeczytali do tego miejsca</string>
-    <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s i %2$d osób przeczytało do tego miejsca</string>
+    <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s i %2$d osób przeczytało do tego miejsca</string>
     <string name="everyone_has_read_up_to_this_point">Wszyscy przeczytali do tego miejsca</string>
     <string name="publish">Publikuj</string>
-    <string name="touch_to_choose_picture">Dotknij awatar, żeby wybrać obraz z galerii</string>
+    <string name="touch_to_choose_picture">Dotknij awatar, żeby wybrać obraz z galerii</string>
     <string name="publishing">Publikowanie…</string>
     <string name="error_publish_avatar_server_reject">Serwer odrzucił żądanie publikacji</string>
     <string name="error_publish_avatar_converting">Nie można skonwertować obrazu</string>
@@ -258,18 +258,16 @@
     <string name="connect">Połącz</string>
     <string name="account_already_exists">Konto już istnieje</string>
     <string name="next">Dalej</string>
-    <string name="server_info_session_established">Połączono z serwerem</string>
+    <string name="server_info_session_established">Połączono z serwerem</string>
     <string name="skip">Pomiń</string>
     <string name="disable_notifications">Wyłącz powiadomienia</string>
     <string name="enable">Włącz</string>
     <string name="conference_requires_password">Konferencja wymaga hasła</string>
     <string name="enter_password">Wprowadź hasło</string>
-    <string name="request_presence_updates">Poproś kontakt o udostępnianie powiadomień o obecności.
-\n
-\n<small>Pozwoli to na ustalenie klienta, z którego korzysta rozmówca</small>.</string>
+    <string name="request_presence_updates">Poproś kontakt o udostępnianie powiadomień o obecności. \n \n<small>Pozwoli to na ustalenie klienta, z którego korzysta rozmówca</small>.</string>
     <string name="request_now">Zażądaj teraz</string>
     <string name="ignore">Ignoruj</string>
-    <string name="without_mutual_presence_updates"><b>Uwaga:</b> Wysyłanie bez obustronnych powiadomień o obecności może powodować nieoczekiwane problemy.\n\n<small>Sprawdź subskrypcję powiadomień w szczegółach kontaktu.</small></string>
+    <string name="without_mutual_presence_updates"><b>Uwaga:</b> Wysyłanie bez obustronnych powiadomień o obecności może powodować nieoczekiwane problemy.\n\n<small>Sprawdź subskrypcję powiadomień w szczegółach kontaktu.</small></string>
     <string name="pref_security_settings">Bezpieczeństwo</string>
     <string name="pref_allow_message_correction">Poprawianie wiadomości</string>
     <string name="pref_allow_message_correction_summary">Pozwól swoim kontaktom poprawiać wiadomości</string>
@@ -291,7 +289,7 @@
     <string name="conference_kicked">Wykopany</string>
     <string name="conference_shutdown">Konferencja została zamknięta</string>
     <string name="conference_unknown_error">Nie uczestniczysz już w tej konferencji</string>
-    <string name="conference_technical_problems">Opuszczono rozmowę grupową z powodu usterki technicznej</string>
+    <string name="conference_technical_problems">Opuszczono rozmowę grupową z powodu usterki technicznej</string>
     <string name="using_account">używając konta %s</string>
     <string name="hosted_on">udostępnione na %s</string>
     <string name="checking_x">Sprawdzanie %s na hoście HTTP</string>
@@ -323,7 +321,7 @@
     <string name="notification_backup_created_subtitle">Kopia zapasowa zapisana w %s</string>
     <string name="restoring_backup">Przywracanie kopii zapasowej</string>
     <string name="notification_restored_backup_title">Kopia zapasowa została przywrócona</string>
-    <string name="notification_restored_backup_subtitle">Nie zapomnij o włączeniu tego konta.</string>
+    <string name="notification_restored_backup_subtitle">Nie zapomnij o włączeniu tego konta.</string>
     <string name="choose_file">Wybierz plik</string>
     <string name="receiving_x_file">Odbieranie %1$s (ukończono %2$d%%)</string>
     <string name="download_x_file">Pobierz %s</string>
@@ -349,11 +347,11 @@
     <string name="copy_omemo_clipboard_description">Skopiuj odcisk klucza OMEMO do schowka</string>
     <string name="regenerate_omemo_key">Wygeneruj ponownie klucz OMEMO</string>
     <string name="clear_other_devices">Wyczyść urządzenia</string>
-    <string name="clear_other_devices_desc">Czy na pewno chcesz usunąć wszystkie inne urządzenia z ogłoszenia OMEMO? Następnym razem gdy połączą się Twoje urządzenia, ogłoszą się one ponownie, ale mogą nie otrzymać wiadomości wysłanych w międzyczasie.</string>
-    <string name="error_no_keys_to_trust_server_error">Nie ma dostępnych kluczy dla tego kontaktu.\nPobieranie nowych kluczy z serwera nie powiodło się. Być może jest coś nie tak z serwerem którego używa kontakt?</string>
-    <string name="error_no_keys_to_trust_presence">Brak dostępnych kluczy dla tego kontaktu.\nUpewnij się, że wzajemnie powiadamiacie się o obecności.</string>
+    <string name="clear_other_devices_desc">Czy na pewno chcesz usunąć wszystkie inne urządzenia z ogłoszenia OMEMO? Następnym razem gdy połączą się Twoje urządzenia, ogłoszą się one ponownie, ale mogą nie otrzymać wiadomości wysłanych w międzyczasie.</string>
+    <string name="error_no_keys_to_trust_server_error">Nie ma dostępnych kluczy dla tego kontaktu.\nPobieranie nowych kluczy z serwera nie powiodło się. Być może jest coś nie tak z serwerem którego używa kontakt?</string>
+    <string name="error_no_keys_to_trust_presence">Brak dostępnych kluczy dla tego kontaktu.\nUpewnij się, że wzajemnie powiadamiacie się o obecności.</string>
     <string name="error_trustkeys_title">Coś poszło źle</string>
-    <string name="fetching_history_from_server">Pobieranie historii z serwera</string>
+    <string name="fetching_history_from_server">Pobieranie historii z serwera</string>
     <string name="no_more_history_on_server">Koniec historii na serwerze</string>
     <string name="updating">Aktualizowanie…</string>
     <string name="password_changed">Hasło zostało zmienione!</string>
@@ -376,12 +374,12 @@
     <string name="remove_admin_privileges">Odbierz uprawnienia administratora</string>
     <string name="grant_owner_privileges">Przyznaj uprawnienia właściciela</string>
     <string name="remove_owner_privileges">Usuń uprawnienia właściciela</string>
-    <string name="remove_from_room">Usuń z konferencji</string>
-    <string name="remove_from_channel">Usuń z kanału</string>
+    <string name="remove_from_room">Usuń z konferencji</string>
+    <string name="remove_from_channel">Usuń z kanału</string>
     <string name="could_not_change_affiliation">Nie udało się zmienić stanowiska dla %s</string>
     <string name="ban_from_conference">Zbanuj</string>
     <string name="ban_from_channel">Zbanuj na kanale</string>
-    <string name="removing_from_public_conference">Chcesz usunąć %s z publicznego kanału. Jedynym sposobem aby to zrobić jest zbanowanie tego użytkownika na zawsze.</string>
+    <string name="removing_from_public_conference">Chcesz usunąć %s z publicznego kanału. Jedynym sposobem aby to zrobić jest zbanowanie tego użytkownika na zawsze.</string>
     <string name="ban_now">Zbanuj teraz</string>
     <string name="could_not_change_role">Nie udało się zmienić funkcji %s</string>
     <string name="conference_options">Konfiguracja prywatnej rozmowy grupowej</string>
@@ -452,7 +450,7 @@
     <string name="invalid_username">Błędna nazwa użytkownika</string>
     <string name="download_failed_server_not_found">Pobieranie nieudane: Nie odnaleziono serwera</string>
     <string name="download_failed_file_not_found">Pobieranie nieudane: Nie odnaleziono pliku</string>
-    <string name="download_failed_could_not_connect">Pobieranie nieudane: Nie można połączyć z hostem</string>
+    <string name="download_failed_could_not_connect">Pobieranie nieudane: Nie można połączyć z hostem</string>
     <string name="download_failed_could_not_write_file">Pobieranie niepowiodło się: brak możliwości zapisu pliku</string>
     <string name="download_failed_invalid_file">Pobieranie nieudane: Nieprawidłowy plik</string>
     <string name="account_status_tor_unavailable">Sieć TOR jest niedostepna</string>
@@ -476,7 +474,7 @@
     <string name="fetching_mam_prefs">Pobieranie preferencji archiwizacji. Proszę czekać…</string>
     <string name="unable_to_fetch_mam_prefs">Nie można pobrać preferencji archiwizacji</string>
     <string name="captcha_required">CAPTCHA wymagana</string>
-    <string name="captcha_hint">Wprowadź tekst z powyższego obrazka</string>
+    <string name="captcha_hint">Wprowadź tekst z powyższego obrazka</string>
     <string name="certificate_chain_is_not_trusted">Łańcuch certyfikatów nie jest zaufany</string>
     <string name="jid_does_not_match_certificate">Adres XMPP nie pasuje do certyfikatu</string>
     <string name="action_renew_certificate">Odnów certyfikat</string>
@@ -491,7 +489,7 @@
     <string name="hostname_or_onion">Adres serwera lub adres \".onion\"</string>
     <string name="not_a_valid_port">To nie jest prawidłowy numer portu</string>
     <string name="not_valid_hostname">To nie jest prawidłowa nazwa hosta</string>
-    <string name="connected_accounts">%1$d z %2$d kont połączonych</string>
+    <string name="connected_accounts">%1$d z %2$d kont połączonych</string>
     <plurals name="x_messages">
         <item quantity="one">%d wiadomość</item>
         <item quantity="few">%d wiadomości</item>
@@ -506,11 +504,9 @@
     <string name="no_storage_permission">Pozwól %1$s na dostęp do zewnętrznego magazynu</string>
     <string name="no_camera_permission">Pozwól %1$s na dostępu do aparatu</string>
     <string name="sync_with_contacts">Integracja listy kontaktów</string>
-    <string name="sync_with_contacts_long">%1$s przetwarza twoje kontakty lokalnie, na twoim urządzeniu, by pokazać nazwę i awatar profilu zgodny z kontaktami z XMPP.
-\n
-\nŻaden kontakt nie opuści twojego urządzenia!</string>
-    <string name="notify_on_all_messages">Powiadom o wszystkich wiadomościach</string>
-    <string name="notify_only_when_highlighted">Powiadamiaj tylko w przypadku wzmianki o mnie</string>
+    <string name="sync_with_contacts_long">%1$s przetwarza twoje kontakty lokalnie, na twoim urządzeniu, by pokazać nazwę i awatar profilu zgodny z kontaktami z XMPP. \n \nŻaden kontakt nie opuści twojego urządzenia!</string>
+    <string name="notify_on_all_messages">Powiadom o wszystkich wiadomościach</string>
+    <string name="notify_only_when_highlighted">Powiadamiaj tylko w przypadku wzmianki o mnie</string>
     <string name="notify_never">Powiadomienia wyłączone</string>
     <string name="notify_paused">Powiadomienia wstrzymane</string>
     <string name="pref_picture_compression">Kompresja obrazów</string>
@@ -518,10 +514,8 @@
     <string name="always">Zawsze</string>
     <string name="large_images_only">Tylko duże obrazki</string>
     <string name="battery_optimizations_enabled">Optymalizacje zużycia baterii włączone</string>
-    <string name="battery_optimizations_enabled_explained">Twoje urządzenie ma włączone agresywne oszczędzanie baterii przez co %1$s może odbierać wiadomości z opóźnieniem.\nZalecamy wyłączenie tych optymalizacji.</string>
-    <string name="battery_optimizations_enabled_dialog">Twoje urządzenie stosuje agresywne oszczędzanie baterii, przez co %1$s może odbierać wiadomości z opóźnieniem lub nawet je tracić.
-\n
-\nZostaniesz poproszony o wyłączenie tej funkcjonalności.</string>
+    <string name="battery_optimizations_enabled_explained">Twoje urządzenie ma włączone agresywne oszczędzanie baterii przez co %1$s może odbierać wiadomości z opóźnieniem.\nZalecamy wyłączenie tych optymalizacji.</string>
+    <string name="battery_optimizations_enabled_dialog">Twoje urządzenie stosuje agresywne oszczędzanie baterii, przez co %1$s może odbierać wiadomości z opóźnieniem lub nawet je tracić. \n \nZostaniesz poproszony o wyłączenie tej funkcjonalności.</string>
     <string name="disable">Wyłącz</string>
     <string name="selection_too_large">Zaznaczony obszar jest zbyt duży</string>
     <string name="no_accounts">(Brak aktywynych kont)</string>
@@ -533,9 +527,8 @@
     <string name="security_error_invalid_file_access">Błąd bezpieczeństwa: nieprawidłowy dostęp do pliku!</string>
     <string name="no_application_to_share_uri">Nie odnaleziono aplikacji do udostępnienia URI</string>
     <string name="share_uri_with">Udostępnij URI za pomocą…</string>
-    <string name="agree_and_continue">Zgoda i kontynuuj</string>
-    <string name="magic_create_text">Poprowadzimy cię przez proces tworzenia konta na conversations.im.
-\nKiedy wybierzesz conversations.im jako dostawcę będziesz mógł komunikować się z innymi osobami jeśli podasz im swój pełen adres XMPP.</string>
+    <string name="agree_and_continue">Zgoda i kontynuuj</string>
+    <string name="magic_create_text">Poprowadzimy cię przez proces tworzenia konta na conversations.im. \nKiedy wybierzesz conversations.im jako dostawcę będziesz mógł komunikować się z innymi osobami jeśli podasz im swój pełen adres XMPP.</string>
     <string name="your_full_jid_will_be">Twój pełen adres XMPP to: %s</string>
     <string name="create_account">Utwórz konto</string>
     <string name="use_own_provider">Użyj innego serwera</string>
@@ -567,7 +560,7 @@
     <string name="pref_theme_automatic">Automatycznie</string>
     <string name="pref_theme_light">Jasny</string>
     <string name="pref_theme_dark">Ciemny</string>
-    <string name="unable_to_connect_to_keychain">Nie można połączyć się z OpenKeychain</string>
+    <string name="unable_to_connect_to_keychain">Nie można połączyć się z OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Urządzenie to nie jest już używane</string>
     <string name="type_pc">Komputer</string>
     <string name="type_phone">Komórka</string>
@@ -577,7 +570,7 @@
     <string name="payment_required">Płatność wymagana</string>
     <string name="missing_internet_permission">Udziel pozwolenia na dostęp do Internetu</string>
     <string name="me">Ja</string>
-    <string name="contact_asks_for_presence_subscription">Kontakt prosi o udostępnienie statusu</string>
+    <string name="contact_asks_for_presence_subscription">Kontakt prosi o udostępnienie statusu</string>
     <string name="allow">Pozwól</string>
     <string name="no_permission_to_access_x">Brak pozwolenia na dostęp do %s</string>
     <string name="remote_server_not_found">Nie znaleziono serwera</string>
@@ -589,9 +582,9 @@
     <string name="delete_selected_keys">Usuń zaznaczone klucze</string>
     <string name="error_publish_avatar_offline">Musisz być połączony/na, aby opublikować swój awatar.</string>
     <string name="show_error_message">Pokaż komunikaty błędów</string>
-    <string name="error_message">Komunikat o błędzie</string>
+    <string name="error_message">Komunikat o błędzie</string>
     <string name="data_saver_enabled">Oszczędzanie danych jest włączone</string>
-    <string name="data_saver_enabled_explained">Twój system operacyjny ogranicza %1$s dostęp do internetu w tle. Aby otrzymywać powiadomienia o nowych wiadomościach należy pozwolić %1$s na nieograniczone dostęp kiedy opcja Oszczędzania Danych jest włączona.\n%1$s będzie oszczędzać transfer danych kiedy to możliwe.</string>
+    <string name="data_saver_enabled_explained">Twój system operacyjny ogranicza %1$s dostęp do internetu w tle. Aby otrzymywać powiadomienia o nowych wiadomościach należy pozwolić %1$s na nieograniczone dostęp kiedy opcja Oszczędzania Danych jest włączona.\n%1$s będzie oszczędzać transfer danych kiedy to możliwe.</string>
     <string name="device_does_not_support_data_saver">Twoje urządzenie nie wspiera wyłączenia Oszczędzania danych dla %1$s.</string>
     <string name="error_unable_to_create_temporary_file">Niemożna utworzyć pliku tymczasowego</string>
     <string name="this_device_has_been_verified">To urządzenie zostało zweryfikowane</string>
@@ -604,23 +597,23 @@
     <string name="share_as_uri">Udostępnij przez URI XMPP</string>
     <string name="share_as_http">Udostępnij przez link HTTP</string>
     <string name="pref_blind_trust_before_verification">Ślepo Ufaj Przed Weryfikacją</string>
-    <string name="pref_blind_trust_before_verification_summary">Automatycznie ufaj wszystkim nowym urządzeniom kontaktów, którzy nie zostali zweryfikowani wcześniej i poproś o ręczne potwierdzenie za każdym razem, kiedy zweryfikowany kontakt dodaje nowe urządzenie.</string>
+    <string name="pref_blind_trust_before_verification_summary">Automatycznie ufaj wszystkim nowym urządzeniom kontaktów, którzy nie zostali zweryfikowani wcześniej i poproś o ręczne potwierdzenie za każdym razem, kiedy zweryfikowany kontakt dodaje nowe urządzenie.</string>
     <string name="blindly_trusted_omemo_keys">Ślepo zaufane klucze OMEMO, to jest mogą należeć do kogoś innego lub ktoś może się podszywać.</string>
     <string name="not_trusted">Niezaufane</string>
     <string name="invalid_barcode">Nieprawidłowy kod QR</string>
     <string name="pref_clean_cache_summary">Wyczyść cache (używane przez aparat)</string>
     <string name="pref_clean_cache">Wyczyść cache</string>
     <string name="pref_clean_private_storage">Wyczyść prywatny magazyn</string>
-    <string name="pref_clean_private_storage_summary">Wyczyść prywatny magazyn gdzie trzymane są pliki (mogą zostać pobrane ponownie z serwera)</string>
+    <string name="pref_clean_private_storage_summary">Wyczyść prywatny magazyn gdzie trzymane są pliki (mogą zostać pobrane ponownie z serwera)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Trafiłem na ten link w zaufanym źródle</string>
-    <string name="verifying_omemo_keys_trusted_source">Zaraz zweryfikujesz klucz OMEMO %1$s klikając w link. Jest to bezpieczne jedynie, kiedy link pochodzi z zaufanego źródła gdzie tylko %2$s mógł go opublikować.</string>
+    <string name="verifying_omemo_keys_trusted_source">Zaraz zweryfikujesz klucz OMEMO %1$s klikając w link. Jest to bezpieczne jedynie, kiedy link pochodzi z zaufanego źródła gdzie tylko %2$s mógł go opublikować.</string>
     <string name="verifying_omemo_keys_trusted_source_account">Weryfikujesz właśnie klucze OMEMO własnego konta. To jest bezpieczne tylko jeśli kliknąłeś łącze w miejscu w którym jedynie ty mogłeś je zamieścić. </string>
     <string name="continue_btn">Kontynuuj</string>
     <string name="verify_omemo_keys">Zweryfikuj klucze OMEMO</string>
     <string name="show_inactive_devices">Pokaż nieaktywne</string>
     <string name="hide_inactive_devices">Ukryj nieaktywne</string>
     <string name="distrust_omemo_key">Przestań ufać urządzeniu</string>
-    <string name="distrust_omemo_key_text">Czy jesteś pewien, że chcesz cofnąć weryfikację tego urządzenia?\nUrządzenie to, i wiadomości z niego przychodzące będą oznaczane jako niezaufane.</string>
+    <string name="distrust_omemo_key_text">Czy jesteś pewien, że chcesz cofnąć weryfikację tego urządzenia?\nUrządzenie to, i wiadomości z niego przychodzące będą oznaczane jako niezaufane.</string>
     <plurals name="seconds">
         <item quantity="one">%d sekunda</item>
         <item quantity="few">%d sekundy</item>
@@ -658,13 +651,13 @@
         <item quantity="other">%d miesięcy</item>
     </plurals>
     <string name="pref_automatically_delete_messages">Automatyczne usuwanie wiadomości</string>
-    <string name="pref_automatically_delete_messages_description">Automatycznie usuwaj z tego urządzenia wiadomości starsze niż skonfigurowany okres czasu.</string>
+    <string name="pref_automatically_delete_messages_description">Automatycznie usuwaj z tego urządzenia wiadomości starsze niż skonfigurowany okres czasu.</string>
     <string name="encrypting_message">Szyfrowanie wiadomości</string>
     <string name="not_fetching_history_retention_period">Nie pobieram wiadomości przez lokalny okres retencji.</string>
     <string name="transcoding_video">Kompresuję film</string>
     <string name="contact_blocked_past_tense">Kontakt zablokowany.</string>
     <string name="pref_notifications_from_strangers">Powiadomienia od nieznajomych</string>
-    <string name="pref_notifications_from_strangers_summary">Powiadamiaj przy wiadomościach i połączeniach od nieznajomych.</string>
+    <string name="pref_notifications_from_strangers_summary">Powiadamiaj przy wiadomościach i połączeniach od nieznajomych.</string>
     <string name="received_message_from_stranger">Odebrano wiadomość od nieznajomego</string>
     <string name="block_stranger">Zablokuj nieznajomego</string>
     <string name="block_entire_domain">Zablokuj całą domenę</string>
@@ -705,8 +698,7 @@
     <string name="error_trustkey_device_list">Nie powiodło się pobranie listy urządzeń</string>
     <string name="error_trustkey_bundle">Nie powiodło się pobranie kluczy szyfrowania</string>
     <string name="error_trustkey_hint_mutual">Podpowiedź: W niektórych przypadkach może pomóc wzajemne dodanie się do listy kontaktów.</string>
-    <string name="disable_encryption_message">Czy na pewno chcesz wyłączyć szyfrowanie OMEMO dla tej rozmowy?
-\nAdministrator twojego serwera będzie mógł czytać twoje wiadomości, ale może to być jedyny sposób aby komunikować się z ludźmi korzystającymi z przestarzałych klientów.</string>
+    <string name="disable_encryption_message">Czy na pewno chcesz wyłączyć szyfrowanie OMEMO dla tej rozmowy? \nAdministrator twojego serwera będzie mógł czytać twoje wiadomości, ale może to być jedyny sposób aby komunikować się z ludźmi korzystającymi z przestarzałych klientów.</string>
     <string name="disable_now">Wyłącz teraz</string>
     <string name="draft">Szkic:</string>
     <string name="pref_omemo_setting">Szyfrowanie OMEMO</string>
@@ -740,7 +732,7 @@
     <string name="copy_jabber_id">Skopiuj adres XMPP</string>
     <string name="p1_s3_filetransfer">Udostępnianie plików przez HTTP S3</string>
     <string name="pref_start_search">Wyszukiwanie bezpośrednie</string>
-    <string name="pref_start_search_summary">Na ekranie „Nowa rozmowa” otwórz klawiaturę i umieść kursor w polu wyszukiwania</string>
+    <string name="pref_start_search_summary">Na ekranie „Nowa rozmowa” otwórz klawiaturę i umieść kursor w polu wyszukiwania</string>
     <string name="group_chat_avatar">Awatar rozmowy grupowej</string>
     <string name="host_does_not_support_group_chat_avatars">Serwer nie obsługuje awatarów rozmów grupowych</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Tylko właściciel może zmienić awatar rozmowy grupowej</string>
@@ -754,8 +746,8 @@
     <string name="foreground_service_channel_name">Usługa na pierwszym planie</string>
     <string name="foreground_service_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać stałe powiadomienie oznaczające, że %1$s działa.</string>
     <string name="notification_group_status_information">Wiadomość Statusu</string>
-    <string name="error_channel_name">Problemy z połączeniem</string>
-    <string name="error_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać powiadomienia oznaczające, że Conversations ma problemy z połączeniem.</string>
+    <string name="error_channel_name">Problemy z połączeniem</string>
+    <string name="error_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać powiadomienia oznaczające, że Conversations ma problemy z połączeniem.</string>
     <string name="notification_group_messages">Wiadomości</string>
     <string name="notification_group_calls">Połączenia</string>
     <string name="messages_channel_name">Wiadomości</string>
@@ -772,7 +764,7 @@
     <string name="view_media">Pokaż media</string>
     <string name="group_chat_members">Uczestnicy</string>
     <string name="media_browser">Przeglądarka mediów</string>
-    <string name="security_violation_not_attaching_file">Plik pominięty w związku z naruszeniem bezpieczeństwa.</string>
+    <string name="security_violation_not_attaching_file">Plik pominięty w związku z naruszeniem bezpieczeństwa.</string>
     <string name="pref_video_compression">Jakość wideo</string>
     <string name="pref_video_compression_summary">Niższa jakość gwarantuje mniejszy rozmiar</string>
     <string name="video_360p">Średnia (360p)</string>
@@ -790,11 +782,11 @@
     <string name="please_enter_your_phone_number">Proszę wpisać swój numer telefonu.</string>
     <string name="search_countries">Przeszukaj kraje</string>
     <string name="verify_x">Zweryfikuj %s</string>
-    <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Wysłaliśmy SMS do <b>%s</b>.]]></string>
-    <string name="we_have_sent_you_another_sms">Wysłaliśmy kolejny SMS z 6 cyfrowym kodem.</string>
+    <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Wysłaliśmy SMS‑a do <b>%s</b>.]]></string>
+    <string name="we_have_sent_you_another_sms">Wysłaliśmy kolejnego SMS‑a z 6‑cyfrowym kodem.</string>
     <string name="please_enter_pin_below">Proszę wpisać 6‐cyfrowy PIN poniżej.</string>
-    <string name="resend_sms">Wyślij SMSa ponownie</string>
-    <string name="resend_sms_in">Wyślij SMSa ponownie (%s)</string>
+    <string name="resend_sms">Wyślij SMS‑a ponownie</string>
+    <string name="resend_sms_in">Wyślij SMS‑a ponownie (%s)</string>
     <string name="wait_x">Proszę czekać (%s)</string>
     <string name="back">Wstecz</string>
     <string name="possible_pin">Automatycznie wklejono prawdopodobny PIN ze schowka.</string>
@@ -808,13 +800,13 @@
     <string name="pin_expired">Wysłany przez nas do ciebie PIN stracił ważność.</string>
     <string name="unknown_api_error_network">Nieznany błąd sieci.</string>
     <string name="unknown_api_error_response">Nieznana odpowiedź serwera.</string>
-    <string name="unable_to_connect_to_server">Nie można połączyć się z serwerem.</string>
+    <string name="unable_to_connect_to_server">Nie można połączyć się z serwerem.</string>
     <string name="unable_to_establish_secure_connection">Nie można uzyskać bezpiecznego połączenia.</string>
-    <string name="unable_to_find_server">Nie można połączyć się z serwerem.</string>
+    <string name="unable_to_find_server">Nie można połączyć się z serwerem.</string>
     <string name="something_went_wrong_processing_your_request">Wystąpił błąd przy przetwarzaniu twojego żądania.</string>
     <string name="invalid_user_input">Nieprawidłowa wartość użytkownika</string>
     <string name="temporarily_unavailable">Tymczasowo niedostępne. Spróbuj później.</string>
-    <string name="no_network_connection">Brak połączenia z siecią.</string>
+    <string name="no_network_connection">Brak połączenia z siecią.</string>
     <string name="try_again_in_x">Spróbuj ponownie po %s</string>
     <string name="rate_limited">Wykorzystałeś limit zapytań</string>
     <string name="too_many_attempts">Za dużo prób</string>
@@ -830,7 +822,7 @@
     <string name="start_orbot">Uruchom Orbot</string>
     <string name="no_market_app_installed">Aplikacja marketu niezainstalowana.</string>
     <string name="group_chat_will_make_your_jabber_id_public">Ten kanał sprawi, że twój adres XMPP będzie publiczny</string>
-    <string name="ebook">e-book</string>
+    <string name="ebook">e‑book</string>
     <string name="video_original">Oryginalne (nieskompresowane)</string>
     <string name="open_with">Otwórz za pomocą…</string>
     <string name="set_profile_picture">Awatar</string>
@@ -841,7 +833,7 @@
     <string name="restore_warning">Nie przywracaj kluczy OMEMO aby klonować (uruchamiać równocześnie) instalację. Przywracanie kluczy OMEMO jest przeznaczone tylko do migracji albo kiedy urządzenie zostało zgubione.</string>
     <string name="unable_to_restore_backup">Nie można przywrócić kopii zapasowej.</string>
     <string name="unable_to_decrypt_backup">Nie można odszyfrować kopii zapasowej. Czy hasło jest poprawne?</string>
-    <string name="backup_channel_name">Kopia i Przywracanie</string>
+    <string name="backup_channel_name">Kopia i przywracanie</string>
     <string name="enter_jabber_id">Wpisz adres XMPP</string>
     <string name="create_group_chat">Nowa rozmowa grupowa</string>
     <string name="join_public_channel">Dołącz do kanału publicznego</string>
@@ -878,7 +870,7 @@
     <string name="add_existing_account">Dodaj istniejące konto</string>
     <string name="register_new_account">Zarejestruj nowe konto</string>
     <string name="this_looks_like_a_domain">To wygląda jak nazwa domeny</string>
-    <string name="add_anway">Dodaj i tak</string>
+    <string name="add_anway">Dodaj i tak</string>
     <string name="this_looks_like_channel">To wygląda jak adres kanału</string>
     <string name="share_backup_files">Udostępnij pliki kopii zapasowych</string>
     <string name="conversations_backup">Kopia zapasowa Conversations</string>
@@ -890,10 +882,10 @@
     <string name="unable_to_perform_this_action">Nie można wykonać tej akcji</string>
     <string name="open_join_dialog">Dołącz do publicznego kanału…</string>
     <string name="sharing_application_not_grant_permission">Aplikacja udostępniająca nie udzieliła pozwolenia na dostęp do tego pliku.</string>
-    <string name="group_chats_and_channels"><![CDATA[Rozmowy grupowe i kanały]]></string>
+    <string name="group_chats_and_channels"><![CDATA[Rozmowy grupowe i kanały]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">Serwer lokalny</string>
-    <string name="pref_channel_discovery_summary">Większość użytkowników powinna wybrać \'jabber.network\' dla lepszych sugestii z całego ekosystemu XMPP. </string>
+    <string name="pref_channel_discovery_summary">Większość użytkowników powinna wybrać jabber.network dla lepszych sugestii z całego publicznego ekosystemu XMPP.</string>
     <string name="pref_channel_discovery">Metoda odkrywania kanałów</string>
     <string name="backup">Kopia zapasowa</string>
     <string name="category_about">O aplikacji</string>
@@ -917,7 +909,7 @@
     <string name="rtp_state_connectivity_lost_error">Utracono połączenie</string>
     <string name="rtp_state_retracted">Anulowane połączenie</string>
     <string name="rtp_state_application_failure">Błąd aplikacji</string>
-    <string name="rtp_state_security_error">Problem z weryfikacją </string>
+    <string name="rtp_state_security_error">Problem z weryfikacją</string>
     <string name="hang_up">Rozłącz</string>
     <string name="ongoing_call">Połączenie wychodzące</string>
     <string name="ongoing_video_call">Wideorozmowa wychodząca</string>
@@ -1007,28 +999,28 @@
     <string name="incoming_call_duration_timestamp">Połączenie przychodzące (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">Połączenie wychodzące (%s) · %s</string>
     <string name="outgoing_call_timestamp">Połączenie wychodzące · %s</string>
-    <string name="delete_from_server">Usuń konto z serwera</string>
-    <string name="could_not_delete_account_from_server">Nie można usunąć konta z serwera</string>
+    <string name="delete_from_server">Usuń konto z serwera</string>
+    <string name="could_not_delete_account_from_server">Nie można usunąć konta z serwera</string>
     <string name="search_group_chats">Przeszukaj rozmowy grupowe</string>
     <string name="group_chats">Rozmowy grupowe</string>
     <string name="restore_warning_continued">Przywracaj jedynie kopie zapasowe, które samodzielnie utworzyłeś.</string>
-    <string name="outdated_backup_file_format">Próbujesz zaimportować plik kopii zapasowej o przestarzałym formacie</string>
+    <string name="outdated_backup_file_format">Próbujesz zaimportować plik kopii zapasowej o przestarzałym formacie</string>
     <string name="audiobook">Audiobook</string>
     <string name="reconnect_on_other_host">Połącz się ponownie na innym hoście</string>
-    <string name="this_account_is_logged_out">Wylogowano się z tego konta</string>
+    <string name="this_account_is_logged_out">Wylogowano się z tego konta</string>
     <string name="log_in">Zaloguj się</string>
     <string name="hide_notification">Ukryj powiadomienie</string>
-    <string name="contact_uses_unverified_keys">Twój kontakt korzysta z niezweryfikowanych urządzeń. Zeskanuj ich kod QR, aby przeprowadzić weryfikację i uniemożliwić aktywne ataki MITM.</string>
-    <string name="report_spam_and_block">Zgłoś spam i zablokuj nadawcę</string>
+    <string name="contact_uses_unverified_keys">Twój kontakt korzysta z niezweryfikowanych urządzeń. Zeskanuj ich kod QR, aby przeprowadzić weryfikację i uniemożliwić aktywne ataki MITM.</string>
+    <string name="report_spam_and_block">Zgłoś spam i zablokuj nadawcę</string>
     <string name="log_out">Wyloguj się</string>
     <string name="account_state_logged_out">Wylogowano</string>
-    <string name="unverified_devices">Korzystasz z niezweryfikowanych urządzeń. Zeskanuj kod QR na innych urządzeniach, aby przeprowadzić weryfikację i uniemożliwić aktywne ataki MITM.</string>
+    <string name="unverified_devices">Korzystasz z niezweryfikowanych urządzeń. Zeskanuj kod QR na innych urządzeniach, aby przeprowadzić weryfikację i uniemożliwić aktywne ataki MITM.</string>
     <string name="report_spam">Zgłoś spam</string>
     <string name="privacy_policy">Polityka prywatności</string>
     <string name="welcome_header_quicksy">Witamy w Quicksy!</string>
     <string name="rtp_state_contact_offline">Kontakt nie jest dostępny</string>
     <string name="contact_list_integration_not_available">Integracja listy kontaktów nie jest dostępna</string>
-    <string name="quicksy_wants_your_consent">Quicksy pyta o pozwolenie na użycie twoich danych</string>
+    <string name="quicksy_wants_your_consent">Quicksy pyta o pozwolenie na użycie twoich danych</string>
     <string name="no_permission_to_place_call">Brak pozwolenia na wypisanie numeru telefonu</string>
     <string name="call_integration_not_available">Integracja połączeń nie jest dostępna!</string>
     <string name="remove_bookmark">Czy chcesz usunąć zakładkę dla %s?</string>
@@ -1062,7 +1054,7 @@
     <string name="pref_automatic_download">Automatyczne pobieranie</string>
     <string name="pref_light_dark_mode">Jasny/ciemny tryb</string>
     <string name="pref_allow_screenshots">Pozwól na zrzuty ekranu</string>
-    <string name="pref_allow_screenshots_summary">Pokazuj zawartość aplikacji w Ostatnio Używanych i pozwalaj na robienie zrzutów ekranu</string>
+    <string name="pref_allow_screenshots_summary">Pokazuj zawartość aplikacji w Ostatnio Używanych i pozwalaj na robienie zrzutów ekranu</string>
     <string name="pref_category_e2ee">Szyfrowanie od końca do końca</string>
     <string name="pref_title_trust_system_ca_store">Urzędy certyfikacji</string>
     <string name="pref_title_trust_system_ca_store_summary">Ufaj systemowym certyfikatom CA</string>
@@ -1164,4 +1156,10 @@
     <string name="moderation_explained">Wiadomość zostanie usunięta dla Ciebie i każdego uczestnika tego publicznego kanału.</string>
     <string name="moderate_delete_dot_dot_dot">Usuń jako moderator…</string>
     <string name="last_seen">ostatnio widziany %s</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d uczestnik</item>
+        <item quantity="few">%1$d uczestnicy</item>
+        <item quantity="many">%1$d uczestników</item>
+        <item quantity="other">%1$d uczestników</item>
+    </plurals>
 </resources>
