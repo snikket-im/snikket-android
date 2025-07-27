@@ -989,6 +989,10 @@
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>
     </plurals>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d Participant</item>
+        <item quantity="other">%1$d Participants</item>
+    </plurals>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="one">A message could not be delivered</item>
         <item quantity="other">Some messages could not be delivered</item>

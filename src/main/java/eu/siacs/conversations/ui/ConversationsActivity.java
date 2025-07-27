@@ -688,6 +688,16 @@ public class ConversationsActivity extends XmppActivity
             final var contact = conversation.getContact();
             actionBar.setSubtitle(
                     UIHelper.lastUserInteraction(this, contact.getLastUserInteraction()));
+        } else if (conversation.getMode() == Conversation.MODE_MULTI) {
+            final var mucOptions = conversation.getMucOptions();
+            final var userCount = mucOptions.getUserCount();
+            if (mucOptions.isPrivateAndNonAnonymous() || userCount < 1) {
+                actionBar.setSubtitle(null);
+            } else {
+                actionBar.setSubtitle(
+                        getResources()
+                                .getQuantityString(R.plurals.x_participants, userCount, userCount));
+            }
         } else {
             actionBar.setSubtitle(null);
         }
