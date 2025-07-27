@@ -220,8 +220,6 @@ public class XmppConnectionService extends Service {
     private final IBinder mBinder = new XmppConnectionBinder();
     private final List<Conversation> conversations = new CopyOnWriteArrayList<>();
     private final IqGenerator mIqGenerator = new IqGenerator(this);
-    private final Set<String> mInProgressAvatarFetches = new HashSet<>();
-    private final Set<String> mOmittedPepAvatarFetches = new HashSet<>();
     public final HashSet<Jid> mLowPingTimeoutMode = new HashSet<>();
     public DatabaseBackend databaseBackend;
     private final ReplacingSerialSingleThreadExecutor mContactMergerExecutor =
@@ -259,7 +257,6 @@ public class XmppConnectionService extends Service {
     private final HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(this);
     private final AvatarService mAvatarService = new AvatarService(this);
     private final MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
-    private final PushManagementService mPushManagementService = new PushManagementService(this);
     private final QuickConversationsService mQuickConversationsService =
             new QuickConversationsService(this);
     private final ConversationsFileObserver fileObserver =
@@ -3984,9 +3981,10 @@ public class XmppConnectionService extends Service {
     }
 
     private void refreshAllFcmTokens() {
-        for (Account account : getAccounts()) {
-            if (account.isOnlineAndConnected() && mPushManagementService.available(account)) {
-                mPushManagementService.registerPushTokenOnServer(account);
+        final var pushManagementService = new PushManagementService(this.getApplicationContext());
+        for (final var account : getAccounts()) {
+            if (account.isConnectionEnabled() && pushManagementService.available(account)) {
+                pushManagementService.registerPushTokenOnServer(account);
             }
         }
     }
@@ -4165,10 +4163,6 @@ public class XmppConnectionService extends Service {
                         callback.onPreferencesFetchFailed();
                     }
                 });
-    }
-
-    public PushManagementService getPushManagementService() {
-        return mPushManagementService;
     }
 
     public void changeStatus(

@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import android.content.Context;
 import android.util.Log;
 import androidx.concurrent.futures.CallbackToFutureAdapter;
 import com.google.android.gms.common.ConnectionResult;
@@ -13,32 +14,22 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.PhoneHelper;
-import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.manager.PushNotificationManager;
-import im.conversations.android.xmpp.model.stanza.Iq;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 
 public class PushManagementService {
 
-    protected final XmppConnectionService mXmppConnectionService;
+    protected final Context context;
 
-    PushManagementService(XmppConnectionService service) {
-        this.mXmppConnectionService = service;
-    }
-
-    private static Data findResponseData(Iq response) {
-        final Element command = response.findChild("command", Namespace.COMMANDS);
-        final Element x = command == null ? null : command.findChild("x", Namespace.DATA);
-        return x == null ? null : Data.parse(x);
+    public PushManagementService(final Context service) {
+        this.context = service;
     }
 
     private Jid getAppServer() {
-        return Jid.of(mXmppConnectionService.getString(R.string.app_server));
+        return Jid.of(context.getString(R.string.app_server));
     }
 
     public void registerPushTokenOnServer(final Account account) {
@@ -50,7 +41,7 @@ public class PushManagementService {
                 Futures.transformAsync(
                         fcmTokenFuture,
                         fcmToken -> {
-                            final var androidId = PhoneHelper.getAndroidId(mXmppConnectionService);
+                            final var androidId = PhoneHelper.getAndroidId(context);
                             final var appServer = getAppServer();
                             return pushManager.register(appServer, fcmToken, androidId);
                         },
@@ -112,12 +103,11 @@ public class PushManagementService {
     }
 
     private boolean playServicesAvailable() {
-        return GoogleApiAvailabilityLight.getInstance()
-                        .isGooglePlayServicesAvailable(mXmppConnectionService)
+        return GoogleApiAvailabilityLight.getInstance().isGooglePlayServicesAvailable(context)
                 == ConnectionResult.SUCCESS;
     }
 
-    public boolean isStub() {
+    public static boolean isStub() {
         return false;
     }
 }

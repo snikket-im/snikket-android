@@ -8,6 +8,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.services.PushManagementService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
@@ -103,8 +104,12 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         }
         getManager(PresenceManager.class).available();
         connection.trackOfflineMessageRetrieval(trackOfflineMessageRetrieval);
-        if (service.getPushManagementService().available(account)) {
-            service.getPushManagementService().registerPushTokenOnServer(account);
+
+        final var pushManagementService =
+                new PushManagementService(context.getApplicationContext());
+
+        if (pushManagementService.available(account)) {
+            pushManagementService.registerPushTokenOnServer(account);
         }
         service.connectMultiModeConversations(account);
         getManager(RosterManager.class).syncDirtyContacts();
