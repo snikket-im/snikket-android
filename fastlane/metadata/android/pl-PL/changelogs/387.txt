@@ -1,0 +1,2 @@
+* Przebudowa interfejsu użytkownika logowania z certyfikatem
+* Dodanie możliwości przypięcia rozmów na początku (dodania do ulubionych)

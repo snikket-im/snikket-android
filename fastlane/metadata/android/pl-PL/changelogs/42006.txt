@@ -1,0 +1,2 @@
+* Weryfikacja rozmów audio/wideo z już istniejącymi sesjami OMEMO
+* Poprawienie kompatybilności z implementacjami WebRTC nieużywającymi libwebrtc

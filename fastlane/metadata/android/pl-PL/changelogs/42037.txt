@@ -1,0 +1,9 @@
+* Pytanie o dostęp do Bluetooth przy rozmowach (można odrzucić jeśli nie używa się zestawu słuchawkowego)
+* Naprawienie dzwonienia do Movima
+* Naprawienie awatarów rozmów grupowych
+* Pytanie o wyłączenie optymalizacji baterii
+* Naprawienie interakcji z wtyczką Google Maps
+* Usunięcie stopki dotyczącej opłat za serwer
+* Przechowywanie plików w lokalizacji odpowiedniej dla Androida 11
+* Ponawianie rozmowy po przełączeniu sieci
+* Pokazywanie JID rozmówców na ekranie połączenia przychodzącego

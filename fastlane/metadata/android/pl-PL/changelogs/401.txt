@@ -1,0 +1,2 @@
+* Naprawienie wyszukiwania na Androidzie ≤ 5
+* Optymalizacja zużycia pamięci

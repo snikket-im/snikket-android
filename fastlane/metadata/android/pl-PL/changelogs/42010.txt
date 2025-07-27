@@ -1,0 +1,2 @@
+* Naprawienie różnych błędów związanych z obsługą Tor
+* Poprawienie kompatybilności rozmów z Dino

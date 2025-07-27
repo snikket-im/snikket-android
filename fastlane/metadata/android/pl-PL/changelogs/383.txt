@@ -1,0 +1,3 @@
+* Przeniesienie ikony rozmowy na lewo w celu utrzymania innych ikon na pasku w spójnej kolejności
+* Pokazywanie czasu trwania rozmów audio
+* Rozwiązanie problemu dwóch osób dzwoniących do siebie jednocześnie

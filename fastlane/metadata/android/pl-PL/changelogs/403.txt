@@ -1,0 +1,3 @@
+* Naprawienie problemów z połączeniem gdy różne konta używają różnych mechanizmów SCRAM
+* Dodanie obsługi SCRAM-SHA-512
+* Umożliwienie przesyłania plików P2P (Jingle) samemu sobie

@@ -1,0 +1,3 @@
+* Pokazywanie czarnych pasów gdy zdalne wideo nie pasuje do wymiarów ekranu
+* Poprawienie wydajności wyszukiwania
+* Dodanie ustawienia uniemożliwiającego zrzuty ekranu

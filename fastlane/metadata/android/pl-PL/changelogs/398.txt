@@ -1,0 +1,4 @@
+* Przeszukiwanie pojedynczej rozmowy
+* Powiadamianie użytkownika gdy dostarczenie wiadomości się nie powiedzie
+* Pamiętanie pseudonimów użytkowników Quicksy pomiędzy restartami
+* Dodanie przycisku uruchamiania Orbota (Tor) z powiadomienia gdy jest to konieczne

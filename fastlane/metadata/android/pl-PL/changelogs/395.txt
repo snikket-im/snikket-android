@@ -1,0 +1,3 @@
+* Dodanie „Powróć do rozmowy” na ekranie rozmowy audio
+* Poprawienie skrótów klawiaturowych
+* Naprawienie błędów

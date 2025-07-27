@@ -1,0 +1,3 @@
+* Pokazywanie przycisku rozmowy dla rozłączonych kontaktów jeśli wcześniej ogłaszały obsługę
+* Przycisk wstecz nie kończy rozmowy
+* Naprawienie błędów
