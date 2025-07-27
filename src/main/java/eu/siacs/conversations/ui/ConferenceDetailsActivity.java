@@ -385,13 +385,13 @@ public class ConferenceDetailsActivity extends XmppActivity
             this.binding.mucDisplay.setVisibility(View.GONE);
             this.binding.editMucNameButton.setImageResource(R.drawable.ic_cancel_24dp);
             this.binding.editMucNameButton.setContentDescription(getString(R.string.cancel));
-            final String name = mucOptions.getName();
+            final String roomConfigName = mucOptions.getRoomConfigName();
             this.binding.mucEditTitle.setText("");
             final boolean owner = mucOptions.getSelf().ranks(Affiliation.OWNER);
-            if (owner || Bookmark.printableValue(name)) {
+            if (owner || Bookmark.printableValue(roomConfigName)) {
                 this.binding.mucEditTitle.setVisibility(View.VISIBLE);
-                if (name != null) {
-                    this.binding.mucEditTitle.append(name);
+                if (roomConfigName != null) {
+                    this.binding.mucEditTitle.append(roomConfigName);
                 }
             } else {
                 this.binding.mucEditTitle.setVisibility(View.GONE);
@@ -429,13 +429,14 @@ public class ConferenceDetailsActivity extends XmppActivity
                 getString(R.string.edit_name_and_topic));
     }
 
-    private void onMucInfoUpdated(String subject, String name) {
+    private void onMucInfoUpdated(final String subject, final String name) {
         final var account = mConversation.getAccount();
         final MucOptions mucOptions = mConversation.getMucOptions();
         if (mucOptions.canChangeSubject() && changed(mucOptions.getSubject(), subject)) {
             xmppConnectionService.pushSubjectToConference(mConversation, subject);
         }
-        if (mucOptions.getSelf().ranks(Affiliation.OWNER) && changed(mucOptions.getName(), name)) {
+        if (mucOptions.getSelf().ranks(Affiliation.OWNER)
+                && changed(mucOptions.getRoomConfigName(), name)) {
             final var options =
                     new ImmutableMap.Builder<String, Object>()
                             .put("muc#roomconfig_persistentroom", true)
@@ -722,7 +723,7 @@ public class ConferenceDetailsActivity extends XmppActivity
                 getResources().getQuantityString(R.plurals.view_users, users.size(), users.size()));
         this.binding.usersWrapper.setVisibility(
                 users.size() > 0 || mucOptions.canInvite() ? View.VISIBLE : View.GONE);
-        if (users.size() == 0) {
+        if (users.isEmpty()) {
             this.binding.noUsersHints.setText(
                     mucOptions.isPrivateAndNonAnonymous()
                             ? R.string.no_users_hint_group_chat
@@ -794,7 +795,7 @@ public class ConferenceDetailsActivity extends XmppActivity
     public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(final Editable s) {
         if (mConversation == null) {
             return;
         }
@@ -807,7 +808,7 @@ public class ConferenceDetailsActivity extends XmppActivity
             boolean nameChanged =
                     changed(
                             binding.mucEditTitle.getEditableText().toString(),
-                            mucOptions.getName());
+                            mucOptions.getRoomConfigName());
             if (subjectChanged || nameChanged) {
                 this.binding.editMucNameButton.setImageResource(R.drawable.ic_save_24dp);
                 this.binding.editMucNameButton.setContentDescription(getString(R.string.save));
