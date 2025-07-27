@@ -13,9 +13,9 @@ public class PublishOptions extends Extension {
         super(PublishOptions.class);
     }
 
-    public static PublishOptions of(NodeConfiguration nodeConfiguration) {
+    public static PublishOptions of(final NodeConfiguration nodeConfiguration) {
         final var publishOptions = new PublishOptions();
-        publishOptions.addExtension(Data.of(Namespace.PUB_SUB_PUBLISH_OPTIONS, nodeConfiguration));
+        publishOptions.addExtension(Data.of(nodeConfiguration, Namespace.PUB_SUB_PUBLISH_OPTIONS));
         return publishOptions;
     }
 }

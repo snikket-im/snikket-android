@@ -3010,11 +3010,6 @@ public class XmppConnection implements Runnable {
             return infoQuery == null ? Collections.emptyList() : infoQuery.getFeatureStrings();
         }
 
-        public boolean push() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUSH)
-                    || hasDiscoFeature(account.getDomain(), Namespace.PUSH);
-        }
-
         public boolean rosterVersioning() {
             return connection.streamFeatures != null && connection.streamFeatures.hasChild("ver");
         }

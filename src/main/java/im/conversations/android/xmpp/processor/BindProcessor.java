@@ -83,7 +83,7 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
             trackOfflineMessageRetrieval = false;
             Futures.addCallback(
                     offlineManager.purge(),
-                    new FutureCallback<Void>() {
+                    new FutureCallback<>() {
                         @Override
                         public void onSuccess(Void result) {
                             Log.d(

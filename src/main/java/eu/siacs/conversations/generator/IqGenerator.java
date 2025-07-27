@@ -171,43 +171,6 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public Iq pushTokenToAppServer(Jid appServer, String token, String deviceId) {
-        final Iq packet = new Iq(Iq.Type.SET);
-        packet.setTo(appServer);
-        final Element command = packet.addChild("command", Namespace.COMMANDS);
-        command.setAttribute("node", "register-push-fcm");
-        command.setAttribute("action", "execute");
-        final Data data = new Data();
-        data.put("token", token);
-        data.put("android-id", deviceId);
-        data.submit();
-        command.addChild(data);
-        return packet;
-    }
-
-    public Iq enablePush(final Jid jid, final String node, final String secret) {
-        final Iq packet = new Iq(Iq.Type.SET);
-        Element enable = packet.addChild("enable", Namespace.PUSH);
-        enable.setAttribute("jid", jid);
-        enable.setAttribute("node", node);
-        if (secret != null) {
-            Data data = new Data();
-            data.setFormType(Namespace.PUB_SUB_PUBLISH_OPTIONS);
-            data.put("secret", secret);
-            data.submit();
-            enable.addChild(data);
-        }
-        return packet;
-    }
-
-    public Iq disablePush(final Jid jid, final String node) {
-        Iq packet = new Iq(Iq.Type.SET);
-        Element disable = packet.addChild("disable", Namespace.PUSH);
-        disable.setAttribute("jid", jid);
-        disable.setAttribute("node", node);
-        return packet;
-    }
-
     public Iq requestPubsubConfiguration(Jid jid, String node) {
         return pubsubConfiguration(jid, node, null);
     }

@@ -9,6 +9,7 @@ import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
 import java.util.Collection;
 import java.util.Map;
+import org.jspecify.annotations.Nullable;
 
 @XmlElement(name = "x")
 public class Data extends Extension {
@@ -93,10 +94,12 @@ public class Data extends Extension {
         this.addField(FORM_TYPE, formType, FIELD_TYPE_HIDDEN);
     }
 
-    public static Data of(final String formType, final Map<String, Object> values) {
+    public static Data of(final Map<String, Object> values, @Nullable final String formType) {
         final var data = new Data();
         data.setType(FORM_TYPE_SUBMIT);
-        data.setFormType(formType);
+        if (formType != null) {
+            data.setFormType(formType);
+        }
         for (final Map.Entry<String, Object> entry : values.entrySet()) {
             data.addField(entry.getKey(), entry.getValue());
         }
