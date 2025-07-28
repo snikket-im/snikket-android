@@ -550,11 +550,11 @@
     <string name="gp_short">Corto</string>
     <string name="gp_medium">Medio</string>
     <string name="gp_long">Largo</string>
-    <string name="pref_broadcast_last_activity">Visto por ultima vez</string>
-    <string name="pref_broadcast_last_activity_summary">Permitir que tus contactos vean la última vez que usaste la aplicación</string>
+    <string name="pref_broadcast_last_activity">Mostrar última conexión</string>
+    <string name="pref_broadcast_last_activity_summary">Permitir que tus contactos vean la última vez que estuviste activo en la app</string>
     <string name="pref_privacy">Privacidad</string>
     <string name="pref_theme_options">Tema</string>
-    <string name="pref_theme_options_summary">Selecciona el color de la paleta</string>
+    <string name="pref_theme_options_summary">Selecciona la paleta de colores</string>
     <string name="pref_theme_automatic">Automático</string>
     <string name="pref_theme_light">Claro</string>
     <string name="pref_theme_dark">Oscuro</string>
@@ -571,7 +571,7 @@
     <string name="contact_asks_for_presence_subscription">El contacto solicita ver tus actualizaciones de estado</string>
     <string name="allow">Permitir</string>
     <string name="no_permission_to_access_x">Sin permiso de acceso a %s</string>
-    <string name="remote_server_not_found">No se encontró ningún servidor remoto</string>
+    <string name="remote_server_not_found">Servidor remoto no encontrado</string>
     <string name="remote_server_timeout">Tiempo de espera agotado al servidor remoto</string>
     <string name="unable_to_update_account">No se ha podido actualizar la cuenta</string>
     <string name="report_jid_as_spammer">Reporta esta dirección XMPP como spam.</string>
@@ -582,7 +582,7 @@
     <string name="show_error_message">Mostrar mensaje de error</string>
     <string name="error_message">Mensaje de error</string>
     <string name="data_saver_enabled">Optimización de datos habilitado</string>
-    <string name="data_saver_enabled_explained">Tu sistema operativo está restringiendo a %1$s el acceso a Internet cuando está en segundo plano. Para recibir notificaciones de nuevos mensajes deberías permitir a %1$s un acceso sin restricciones cuando la optimización de datos está habilitada.\n%1$s se esforzará igualmente en ahorrar datos cuando sea posible.</string>
+    <string name="data_saver_enabled_explained">Tu sistema operativo está restringiendo a %1$s el acceso a Internet cuando está en segundo plano. Para recibir notificaciones de nuevos mensajes deberías permitir a %1$s un acceso sin restricciones cuando la “optimización de datos” está habilitada.\n%1$s se esforzará igualmente en ahorrar datos cuando sea posible.</string>
     <string name="device_does_not_support_data_saver">Su dispositivo no admite la desactivación de la optimización de datos para %1$s.</string>
     <string name="error_unable_to_create_temporary_file">No se ha podido crear el archivo temporal </string>
     <string name="this_device_has_been_verified">Este dispositivo ha sido verificado</string>
@@ -994,7 +994,7 @@
     <string name="restore_warning_continued">Restaura solo las copias de seguridad que hayas creado personalmente.</string>
     <string name="outdated_backup_file_format">Estás intentando importar un formato de copia de seguridad obsoleto</string>
     <string name="audiobook">Audiolibro</string>
-    <string name="reconnect_on_other_host">Reconectarse a otros hosts</string>
+    <string name="reconnect_on_other_host">Reconectarse a otro host</string>
     <string name="this_account_is_logged_out">Has salido de esta cuenta</string>
     <string name="log_in">Iniciar sesión</string>
     <string name="hide_notification">Ocultar la notificación</string>
@@ -1143,4 +1143,10 @@
     <string name="pref_account_avatar_summary">Mostrar avatares de las cuentas en mensajes salientes para facilitar su manejo e identificación.</string>
     <string name="moderate_delete_dot_dot_dot">Eliminar como moderador…</string>
     <string name="could_not_moderate_message">No se pudo moderar el mensaje</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d Participante</item>
+        <item quantity="many">%1$d Participantes</item>
+        <item quantity="other">%1$d Participante(s)</item>
+    </plurals>
+    <string name="last_seen">Última vez en línea %s</string>
 </resources>
