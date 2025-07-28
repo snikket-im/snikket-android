@@ -187,7 +187,10 @@ public class DiscoManager extends AbstractManager {
                     if (infoQuery == null) {
                         throw new IllegalStateException("Response did not have query child");
                     }
-                    if (!Objects.equals(requestNode, infoQuery.getNode())) {
+                    // it's safer to do this check only when we actually requested a node
+                    // Prosody <0.11.8 for example puts an empty string in node attribute in the
+                    // response
+                    if (requestNode != null && !Objects.equals(requestNode, infoQuery.getNode())) {
                         throw new IllegalStateException(
                                 "Node in response did not match node in request");
                     }
