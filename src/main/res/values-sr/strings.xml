@@ -895,7 +895,7 @@
     <string name="title_undo_swipe_out_chat">Преписка је архивирана</string>
     <string name="pref_large_font">Велика слова</string>
     <plurals name="view_users">
-        <item quantity="one">Погледај %1$dог учесника</item>
+        <item quantity="one">Погледај %1$d учесника</item>
         <item quantity="few">Погледај %1$d учесника</item>
         <item quantity="other">Погледај %1$d учесника</item>
     </plurals>
@@ -1166,4 +1166,9 @@
     <string name="could_not_moderate_message">Није могуће уредити поруку</string>
     <string name="moderation_explained">Ова порука ће бити обрисана за тебе и сваког учесника овог јавног канала.</string>
     <string name="last_seen">последње виђен/а %s</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d учесник</item>
+        <item quantity="few">%1$d учесника</item>
+        <item quantity="other">%1$d учесника</item>
+    </plurals>
 </resources>
