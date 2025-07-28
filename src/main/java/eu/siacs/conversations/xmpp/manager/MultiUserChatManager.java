@@ -66,6 +66,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
 public class MultiUserChatManager extends AbstractManager {
 
@@ -101,38 +102,47 @@ public class MultiUserChatManager extends AbstractManager {
         final var caughtDisco =
                 Futures.catchingAsync(
                         disco,
-                        IqErrorException.class,
-                        ex -> {
-                            if (conversation.getStatus() == Conversation.STATUS_ARCHIVED) {
-                                return Futures.immediateFailedFuture(
-                                        new IllegalStateException(
-                                                "conversation got archived before disco returned"));
-                            }
-                            Log.d(Config.LOGTAG, "error fetching disco#info", ex);
-                            final var iqError = ex.getError();
-                            if (iqError != null
-                                    && iqError.getCondition()
-                                            instanceof Condition.RemoteServerNotFound) {
-                                synchronized (this.inProgressConferenceJoins) {
-                                    this.inProgressConferenceJoins.remove(conversation);
-                                }
-                                getOrCreateState(conversation)
-                                        .setError(MucOptions.Error.SERVER_NOT_FOUND);
-                                service.updateConversationUi();
-                                return Futures.immediateFailedFuture(ex);
-                            } else {
-                                return Futures.immediateFuture(new InfoQuery());
-                            }
-                        },
+                        Exception.class,
+                        ex -> catchDiscoError(ex, conversation),
                         MoreExecutors.directExecutor());
 
         return Futures.transform(
                 caughtDisco,
-                v -> {
-                    checkConfigurationSendPresenceFetchHistory(conversation);
-                    return null;
-                },
+                v -> checkConfigurationSendPresenceFetchHistory(conversation),
                 MoreExecutors.directExecutor());
+    }
+
+    private ListenableFuture<Void> catchDiscoError(
+            final Exception ex, final Conversation conversation) {
+        final var address = conversation.getAddress().asBareJid();
+        if (ex instanceof TimeoutException) {
+            return Futures.immediateFailedFuture(ex);
+        }
+        Log.d(
+                Config.LOGTAG,
+                getAccount().getJid().asBareJid()
+                        + ": could not fetch disco#info for MUC "
+                        + address,
+                ex);
+        if (conversation.getStatus() == Conversation.STATUS_ARCHIVED) {
+            return Futures.immediateFailedFuture(
+                    new IllegalStateException("conversation got archived before disco returned"));
+        } else if (ex instanceof IqErrorException iqErrorException) {
+            final var iqError = iqErrorException.getError();
+            if (iqError != null
+                    && iqError.getCondition() instanceof Condition.RemoteServerNotFound) {
+                synchronized (this.inProgressConferenceJoins) {
+                    this.inProgressConferenceJoins.remove(conversation);
+                }
+                getOrCreateState(conversation).setError(MucOptions.Error.SERVER_NOT_FOUND);
+                service.updateConversationUi();
+                return Futures.immediateFailedFuture(ex);
+            } else {
+                return Futures.immediateVoidFuture();
+            }
+        } else {
+            return Futures.immediateVoidFuture();
+        }
     }
 
     public MucOptions getOrCreateState(final Conversation conversation) {
@@ -197,7 +207,7 @@ public class MultiUserChatManager extends AbstractManager {
                 MoreExecutors.directExecutor());
     }
 
-    private void checkConfigurationSendPresenceFetchHistory(final Conversation conversation) {
+    private Void checkConfigurationSendPresenceFetchHistory(final Conversation conversation) {
         final Account account = conversation.getAccount();
         final MucOptions mucOptions = getOrCreateState(conversation);
         Log.d(
@@ -212,7 +222,7 @@ public class MultiUserChatManager extends AbstractManager {
             }
             mucOptions.setError(MucOptions.Error.NON_ANONYMOUS);
             service.updateConversationUi();
-            return;
+            return null;
         }
 
         Log.d(
@@ -261,6 +271,7 @@ public class MultiUserChatManager extends AbstractManager {
             this.inProgressConferenceJoins.remove(conversation);
             this.service.sendUnsentMessages(conversation);
         }
+        return null;
     }
 
     public ListenableFuture<Conversation> createPrivateGroupChat(
@@ -721,14 +732,11 @@ public class MultiUserChatManager extends AbstractManager {
                 connection.getManager(DiscoManager.class).info(Entity.discoItem(address), null);
         return Futures.transform(
                 future,
-                infoQuery -> {
-                    setDiscoInfo(conversation, infoQuery, mucConfig);
-                    return null;
-                },
+                infoQuery -> setDiscoInfo(conversation, infoQuery, mucConfig),
                 MoreExecutors.directExecutor());
     }
 
-    private void setDiscoInfo(
+    private Void setDiscoInfo(
             final Conversation conversation,
             final InfoQuery infoQuery,
             final MucConfigSummary previousMucConfig) {
@@ -783,6 +791,7 @@ public class MultiUserChatManager extends AbstractManager {
             }
         }
         this.service.updateConversationUi();
+        return null;
     }
 
     public void resendPresence(final Conversation conversation) {
