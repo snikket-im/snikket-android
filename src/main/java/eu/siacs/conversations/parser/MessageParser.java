@@ -789,9 +789,7 @@ public class MessageParser extends AbstractParser
                                             .equals(message.getOccupantId());
                     final boolean duplicate = conversation.hasDuplicateMessage(message);
                     if (fingerprintsMatch
-                            && (trueCountersMatch
-                                    || occupantIdMatch
-                                    || !conversationMultiMode)
+                            && (trueCountersMatch || occupantIdMatch || !conversationMultiMode)
                             && !duplicate) {
                         synchronized (replacedMessage) {
                             final String uuid = replacedMessage.getUuid();
