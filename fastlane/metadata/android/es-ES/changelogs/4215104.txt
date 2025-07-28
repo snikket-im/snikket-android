@@ -1,0 +1,2 @@
+* Mostrar 'Última vez visto' de forma destacada en el título del chat (cuando esté habilitado)
+* Varias correcciones de errores
