@@ -1120,7 +1120,7 @@
     <string name="save_to_contact">In Kontakten speichern</string>
     <string name="show_in_contacts">In Kontakten anzeigen</string>
     <string name="pref_account_avatar">Konten</string>
-    <string name="pref_account_avatar_summary">Kontoaprofilbilder bei gesendeten Nachrichten anzeigen, um die Identifizierung und Verwaltung zu erleichtern.</string>
+    <string name="pref_account_avatar_summary">Kontoprofilbilder bei gesendeten Nachrichten anzeigen, um die Identifizierung und Verwaltung zu erleichtern.</string>
     <string name="pref_category_avatars">Profilbilder</string>
     <string name="pref_show_11_chats">1:1 Chats</string>
     <string name="pref_show_11_sender_chats_summary">Profilbilder in 1:1-Chats bei empfangenen Nachrichten anzeigen. (Profilbilder in Gruppenchats werden immer angezeigt.)</string>
