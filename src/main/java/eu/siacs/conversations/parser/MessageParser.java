@@ -733,7 +733,6 @@ public class MessageParser extends AbstractParser
                 if (occupant != null) {
                     message.setOccupantId(occupant.getId());
                 }
-                message.setMucUser(mucOptions.findUserByFullJid(counterpart));
                 final Jid fallback = mucOptions.getTrueCounterpart(counterpart);
                 Jid trueCounterpart;
                 if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
@@ -788,16 +787,11 @@ public class MessageParser extends AbstractParser
                                     && replacedMessage
                                             .getOccupantId()
                                             .equals(message.getOccupantId());
-                    final boolean mucUserMatches =
-                            query == null
-                                    && replacedMessage.sameMucUser(
-                                            message); // can not be checked when using mam
                     final boolean duplicate = conversation.hasDuplicateMessage(message);
                     if (fingerprintsMatch
                             && (trueCountersMatch
                                     || occupantIdMatch
-                                    || !conversationMultiMode
-                                    || mucUserMatches)
+                                    || !conversationMultiMode)
                             && !duplicate) {
                         synchronized (replacedMessage) {
                             final String uuid = replacedMessage.getUuid();
