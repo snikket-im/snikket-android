@@ -1150,7 +1150,7 @@
     <string name="could_not_moderate_message">Nu s-a putut edita administrativ mesajul</string>
     <string name="moderate_delete">Șterge ca moderator</string>
     <string name="moderate_delete_dot_dot_dot">Șterge ca moderator…</string>
-    <string name="last_seen">văzut ultima dată %s</string>
+    <string name="last_seen">văzut(ă) %s</string>
     <plurals name="x_participants">
         <item quantity="one">%1$d participant</item>
         <item quantity="few">%1$d participanți</item>
