@@ -1152,4 +1152,8 @@
     <string name="moderation_explained">Järgnevaga see sõnum kustub sinu ja kõikide teiste selles kanalis osalejate jaoks.</string>
     <string name="do_not_show_this_warning_again">Ära näita seda hoiatust uuesti.</string>
     <string name="last_seen">viimati nähtud %s</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d osaleja</item>
+        <item quantity="other">%1$d osalejat</item>
+    </plurals>
 </resources>
