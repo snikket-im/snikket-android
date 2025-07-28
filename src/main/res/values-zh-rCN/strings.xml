@@ -1128,6 +1128,6 @@
     <string name="delete_message">删除消息</string>
     <string name="last_seen">最后上线：%s</string>
     <plurals name="x_participants">
-        <item quantity="other">%1$d 名参与者</item>
+        <item quantity="other">%1$d 位参与者</item>
     </plurals>
 </resources>
