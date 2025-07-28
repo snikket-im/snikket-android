@@ -1499,7 +1499,7 @@ public class NotificationService {
                     messagingStyle.addMessage(imageMessage);
                 } else {
                     messagingStyle.addMessage(
-                            UIHelper.getMessagePreview(mXmppConnectionService, message).first,
+                            UIHelper.getMessagePreview(mXmppConnectionService, message, '\n').first,
                             message.getTimeSent(),
                             sender);
                 }
@@ -1583,7 +1583,9 @@ public class NotificationService {
                 .join(
                         Collections2.transform(
                                 messages,
-                                m -> UIHelper.getMessagePreview(mXmppConnectionService, m).first));
+                                m ->
+                                        UIHelper.getMessagePreview(mXmppConnectionService, m, '\n')
+                                                .first));
     }
 
     private PendingIntent createShowLocationIntent(final Message message) {

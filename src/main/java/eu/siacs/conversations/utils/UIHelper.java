@@ -37,6 +37,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import org.jspecify.annotations.Nullable;
 
 public class UIHelper {
 
@@ -153,11 +154,24 @@ public class UIHelper {
 
     public static Pair<CharSequence, Boolean> getMessagePreview(
             final Context context, final Message message) {
-        return getMessagePreview(context, message, 0);
+        return getMessagePreview(context, message, null, ' ');
     }
 
     public static Pair<CharSequence, Boolean> getMessagePreview(
-            final Context context, final Message message, @ColorInt int textColor) {
+            final Context context, final Message message, final char separator) {
+        return getMessagePreview(context, message, null, separator);
+    }
+
+    public static Pair<CharSequence, Boolean> getMessagePreview(
+            final Context context, final Message message, final @ColorInt int textColor) {
+        return getMessagePreview(context, message, textColor, null);
+    }
+
+    private static Pair<CharSequence, Boolean> getMessagePreview(
+            final Context context,
+            final Message message,
+            final @Nullable @ColorInt Integer textColor,
+            @Nullable final Character separator) {
         final Transferable d = message.getTransferable();
         if (d != null) {
             switch (d.getStatus()) {
@@ -244,16 +258,19 @@ public class UIHelper {
                                 getFileDescriptionString(context, message)),
                         true);
             } else {
-                if (textColor != 0) {
+                if (textColor != null) {
                     return new Pair<>(getStyledBodyOneLine(body, textColor), false);
+                } else if (separator != null) {
+                    return new Pair<>(getBodyOmitQuotesAndBlocks(body, separator), false);
                 } else {
-                    return new Pair<>(getBodyOmitQuotesAndBlocks(body), false);
+                    throw new AssertionError("specify either separator or textColor");
                 }
             }
         }
     }
 
-    private static CharSequence getBodyOmitQuotesAndBlocks(final String body) {
+    private static CharSequence getBodyOmitQuotesAndBlocks(
+            final String body, final char separator) {
         final var parts = Splitter.on('\n').trimResults().omitEmptyStrings().splitToList(body);
         final var filtered =
                 Collections2.filter(
@@ -264,7 +281,7 @@ public class UIHelper {
         if (filtered.isEmpty()) {
             return body;
         }
-        return Joiner.on(' ').join(filtered);
+        return Joiner.on(separator).join(filtered);
     }
 
     private static CharSequence getStyledBodyOneLine(final String body, final int textColor) {
