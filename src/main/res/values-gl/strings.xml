@@ -1132,4 +1132,8 @@
     <string name="delete_message">Eliminar mensaxe</string>
     <string name="moderation_explained">Vaise eliminar esta mensaxe para ti e todas as persoas participantes nesta canle pública.</string>
     <string name="last_seen">último uso %s</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d Participante</item>
+        <item quantity="other">%1$d Participantes</item>
+    </plurals>
 </resources>
