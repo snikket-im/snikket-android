@@ -1348,12 +1348,14 @@ public class ConversationFragment extends XmppFragment
                 }
             }
             if (conversational instanceof Conversation c) {
+                final var singleOrOccupantId =
+                        c.getMode() == Conversational.MODE_SINGLE
+                                || (c.getMucOptions().occupantId()
+                                        && c.getMucOptions().participating());
                 addReaction.setVisible(
                         m.getStatus() != Message.STATUS_SEND_FAILED
                                 && !m.isDeleted()
-                                && (c.getMode() == Conversational.MODE_SINGLE
-                                        || (c.getMucOptions().occupantId()
-                                                && c.getMucOptions().participating())));
+                                && singleOrOccupantId);
                 if (m.getStatus() != Message.STATUS_SEND_FAILED
                         && c.getMode() == Conversational.MODE_MULTI) {
                     final var mucOptions = c.getMucOptions();
@@ -1369,9 +1371,16 @@ public class ConversationFragment extends XmppFragment
                         isAckedModerationDisclaimer()
                                 ? R.string.moderate_delete
                                 : R.string.moderate_delete_dot_dot_dot);
+                correctMessage.setVisible(
+                        !showError
+                                && m.getType() == Message.TYPE_TEXT
+                                && !m.isGeoUri()
+                                && m.isLastCorrectableMessage()
+                                && singleOrOccupantId);
             } else {
                 moderateMessage.setVisible(false);
                 addReaction.setVisible(false);
+                correctMessage.setVisible(false);
             }
             if (!m.isFileOrImage()
                     && !encrypted
@@ -1401,13 +1410,6 @@ public class ConversationFragment extends XmppFragment
             }
             if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED && !deleted) {
                 retryDecryption.setVisible(true);
-            }
-            if (!showError
-                    && m.getType() == Message.TYPE_TEXT
-                    && !m.isGeoUri()
-                    && m.isLastCorrectableMessage()
-                    && m.getConversation() instanceof Conversation) {
-                correctMessage.setVisible(true);
             }
             if ((m.isFileOrImage() && !deleted && !receiving)
                     || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable())
