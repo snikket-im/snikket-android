@@ -22,7 +22,7 @@
     <string name="title_activity_share_via_account">Teilen über Konto</string>
     <string name="title_activity_block_list">Sperrliste</string>
     <string name="just_now">gerade</string>
-    <string name="minute_ago">vor einer Minute</string>
+    <string name="minute_ago">vor 1 Minute</string>
     <string name="minutes_ago">vor %d Minuten</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d ungelesener Chat</item>
