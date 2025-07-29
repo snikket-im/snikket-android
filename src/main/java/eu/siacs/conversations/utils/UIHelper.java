@@ -140,9 +140,14 @@ public class UIHelper {
         } else if (interaction instanceof LastUserInteraction.None) {
             return null; // just hide the subtitle
         } else if (interaction instanceof LastUserInteraction.Idle idle) {
-            return context.getString(
-                    R.string.last_seen,
-                    UIHelper.readableTimeDifferenceFull(context, idle.getSince().toEpochMilli()));
+            if (context.getResources().getBoolean(R.bool.last_seen_full_text)) {
+                return context.getString(
+                        R.string.last_seen,
+                        UIHelper.readableTimeDifferenceFull(
+                                context, idle.getSince().toEpochMilli()));
+            } else {
+                return UIHelper.readableTimeDifference(context, idle.getSince().toEpochMilli());
+            }
         } else {
             return null;
         }
