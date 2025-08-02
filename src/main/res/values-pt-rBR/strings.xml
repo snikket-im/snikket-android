@@ -1150,4 +1150,9 @@
     <string name="do_not_show_this_warning_again">Não mostrar este aviso novamente.</string>
     <string name="moderation_explained">Esta mensagem será apagada para você e todos os outros participantes deste canal público.</string>
     <string name="last_seen">visto por último %s</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d participante</item>
+        <item quantity="many">%1$d de participantes</item>
+        <item quantity="other">%1$d participantes</item>
+    </plurals>
 </resources>
