@@ -1,0 +1,2 @@
+* Pokazywanie liczby uczestników w podtytule kanału publicznego
+* Naprawienie dołączania do rozmów grupowych na bardzo starych serwerach Prosody
