@@ -1263,7 +1263,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     Collections2.filter(
                             message.getReactions(), r -> r.normalizedReaction().equals(emoji));
             final var mucOptions = conversation.getMucOptions();
-            final var users = mucOptions.findUsers(reactions);
+            final var users = mucOptions.getUsersOrStubs(reactions);
             if (users.isEmpty()) {
                 return true;
             }

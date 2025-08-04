@@ -33,7 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Contact implements ListItem, Blockable {
+public class Contact implements ListItem, Blockable, MucOptions.IdentifiableUser {
     public static final String TABLENAME = "contacts";
 
     public static final String SYSTEMNAME = "systemname";
@@ -532,6 +532,21 @@ public class Contact implements ListItem, Blockable {
 
     public RtpCapability.Capability getRtpCapability() {
         return this.rtpCapability == null ? RtpCapability.Capability.NONE : this.rtpCapability;
+    }
+
+    @Override
+    public Jid mucUserAddress() {
+        return null;
+    }
+
+    @Override
+    public Jid mucUserRealAddress() {
+        return getAddress();
+    }
+
+    @Override
+    public String mucUserOccupantId() {
+        return null;
     }
 
     public static final class Options {

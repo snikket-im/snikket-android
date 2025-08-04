@@ -62,7 +62,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity
         final Intent intent = new Intent(activity, ChooseContactActivity.class);
         List<String> contacts = new ArrayList<>();
         if (conversation.getMode() == Conversation.MODE_MULTI) {
-            for (MucOptions.User user : conversation.getMucOptions().getUsers(false)) {
+            for (MucOptions.User user : conversation.getMucOptions().getOnlineUsers()) {
                 Jid jid = user.getRealJid();
                 if (jid != null) {
                     contacts.add(jid.asBareJid().toString());

@@ -5,6 +5,7 @@ import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.TypefaceSpan;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -138,6 +139,7 @@ public final class MucDetailsContextMenuHelper {
     }
 
     public static boolean onContextItemSelected(MenuItem item, User user, XmppActivity activity) {
+        Log.d(Config.LOGTAG, "occupant id of " + user.getFullJid() + ": " + user.getOccupantId());
         return onContextItemSelected(item, user, activity, null);
     }
 

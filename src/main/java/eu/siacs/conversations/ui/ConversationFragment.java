@@ -64,6 +64,7 @@ import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.databinding.DataBindingUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Optional;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.FutureCallback;
@@ -84,7 +85,6 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
-import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.entities.ReadByMarker;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
@@ -888,8 +888,8 @@ public class ConversationFragment extends XmppFragment
     }
 
     protected boolean trustKeysIfNeeded(int requestCode) {
-        AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
-        final List<Jid> targets = axolotlService.getCryptoTargets(conversation);
+        final var axolotlService = conversation.getAccount().getAxolotlService();
+        final var targets = axolotlService.getCryptoTargets(conversation);
         boolean hasUnaccepted = !conversation.getAcceptedCryptoTargets().containsAll(targets);
         boolean hasUndecidedOwn =
                 !axolotlService
@@ -909,12 +909,10 @@ public class ConversationFragment extends XmppFragment
                 || hasUnaccepted
                 || downloadInProgress) {
             axolotlService.createSessionsIfNeeded(conversation);
-            Intent intent = new Intent(getActivity(), TrustKeysActivity.class);
-            String[] contacts = new String[targets.size()];
-            for (int i = 0; i < contacts.length; ++i) {
-                contacts[i] = targets.get(i).toString();
-            }
-            intent.putExtra("contacts", contacts);
+            final Intent intent = new Intent(requireActivity(), TrustKeysActivity.class);
+            intent.putExtra(
+                    "contacts",
+                    Collections2.transform(targets, Jid::toString).toArray(new String[0]));
             intent.putExtra(
                     EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toString());
             intent.putExtra("conversation", conversation.getUuid());
@@ -1863,7 +1861,7 @@ public class ConversationFragment extends XmppFragment
                                     });
                 } else if (mode == Conversation.MODE_MULTI
                         && conversation.getMucOptions().pgpKeysInUse()) {
-                    if (!conversation.getMucOptions().everybodyHasKeys()) {
+                    if (conversation.getMucOptions().missingPgpKeys()) {
                         Toast warning =
                                 Toast.makeText(
                                         getActivity(),
@@ -3121,7 +3119,7 @@ public class ConversationFragment extends XmppFragment
             ChatState state = ChatState.COMPOSING;
             List<MucOptions.User> users =
                     conversation.getMucOptions().getUsersWithChatState(state, 5);
-            if (users.size() == 0) {
+            if (users.isEmpty()) {
                 state = ChatState.PAUSED;
                 users = conversation.getMucOptions().getUsersWithChatState(state, 5);
             }
@@ -3135,7 +3133,7 @@ public class ConversationFragment extends XmppFragment
                             addedMarkers.add(
                                     marker); // may be put outside this condition. set should do
                             // dedup anyway
-                            MucOptions.User user = mucOptions.findUser(marker);
+                            MucOptions.User user = mucOptions.getUser(marker);
                             if (user != null && !users.contains(user)) {
                                 shownMarkers.add(user);
                             }
@@ -3334,7 +3332,7 @@ public class ConversationFragment extends XmppFragment
             }
         } else {
             if (conversation.getMucOptions().pgpKeysInUse()) {
-                if (!conversation.getMucOptions().everybodyHasKeys()) {
+                if (conversation.getMucOptions().missingPgpKeys()) {
                     Toast warning =
                             Toast.makeText(
                                     getActivity(), R.string.missing_public_keys, Toast.LENGTH_LONG);
@@ -3656,19 +3654,7 @@ public class ConversationFragment extends XmppFragment
         if (message.getStatus() <= Message.STATUS_RECEIVED
                 && (contact == null || !contact.isSelf())) {
             if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
-                final Jid cp = message.getCounterpart();
-                if (cp == null || cp.isBareJid()) {
-                    return;
-                }
-                final Jid tcp = message.getTrueCounterpart();
-                final User userByRealJid =
-                        tcp != null
-                                ? conversation.getMucOptions().findOrCreateUserByRealJid(tcp, cp)
-                                : null;
-                final User user =
-                        userByRealJid != null
-                                ? userByRealJid
-                                : conversation.getMucOptions().findUserByFullJid(cp);
+                final var user = conversation.getMucOptions().getUserOrStub(message);
                 popupMenu.inflate(R.menu.muc_details_context);
                 final Menu menu = popupMenu.getMenu();
                 MucDetailsContextMenuHelper.configureMucDetailsContextMenu(
@@ -3739,36 +3725,36 @@ public class ConversationFragment extends XmppFragment
         }
         final boolean received = message.getStatus() <= Message.STATUS_RECEIVED;
         if (received) {
-            if (message.getConversation() instanceof Conversation
+            if (message.getConversation() instanceof Conversation c
                     && message.getConversation().getMode() == Conversation.MODE_MULTI) {
-                Jid tcp = message.getTrueCounterpart();
-                Jid user = message.getCounterpart();
-                if (user != null && !user.isBareJid()) {
-                    final MucOptions mucOptions =
-                            ((Conversation) message.getConversation()).getMucOptions();
-                    if (mucOptions.participating()
-                            || ((Conversation) message.getConversation()).getNextCounterpart()
-                                    != null) {
-                        if (!mucOptions.isUserInRoom(user)
-                                && mucOptions.findUserByRealJid(
-                                                tcp == null ? null : tcp.asBareJid())
-                                        == null) {
+                final var mucOptions = c.getMucOptions();
+                if (mucOptions.participating()) {
+                    final var user = mucOptions.getUserOrStub(message);
+                    if (user.getFullJid() != null) {
+                        // TODO this is probably not a good condition
+                        // maybe either ranks Visitor or ranks member
+                        if (user.getRole() == Role.NONE) {
                             Toast.makeText(
-                                            getActivity(),
+                                            requireActivity(),
                                             activity.getString(
                                                     R.string.user_has_left_conference,
-                                                    user.getResource()),
+                                                    user.getFullJid().getResource()),
                                             Toast.LENGTH_SHORT)
                                     .show();
                         }
-                        highlightInConference(user.getResource());
+                        highlightInConference(user.getFullJid().getResource());
                     } else {
-                        Toast.makeText(
-                                        getActivity(),
-                                        R.string.you_are_not_participating,
-                                        Toast.LENGTH_SHORT)
-                                .show();
+                        final var counterpart = message.getCounterpart();
+                        if (counterpart != null && counterpart.isFullJid()) {
+                            highlightInConference(counterpart.getResource());
+                        }
                     }
+                } else {
+                    Toast.makeText(
+                                    requireActivity(),
+                                    R.string.you_are_not_participating,
+                                    Toast.LENGTH_SHORT)
+                            .show();
                 }
                 return;
             } else {

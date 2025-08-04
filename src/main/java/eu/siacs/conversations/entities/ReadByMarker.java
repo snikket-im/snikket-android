@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ReadByMarker {
+public class ReadByMarker implements MucOptions.IdentifiableUser {
 
     private ReadByMarker() {}
 
@@ -33,6 +33,7 @@ public class ReadByMarker {
 
     private Jid fullJid;
     private Jid realJid;
+    private String occupantId;
 
     public Jid getFullJid() {
         return fullJid;
@@ -58,6 +59,13 @@ public class ReadByMarker {
                 // ignore
             }
         }
+        if (occupantId != null) {
+            try {
+                jsonObject.put("occupantId", occupantId);
+            } catch (JSONException e) {
+                // ignore
+            }
+        }
         return jsonObject;
     }
 
@@ -73,22 +81,17 @@ public class ReadByMarker {
         return readByMarkers;
     }
 
-    public static ReadByMarker from(Jid fullJid, Jid realJid) {
-        final ReadByMarker marker = new ReadByMarker();
-        marker.fullJid = fullJid;
-        marker.realJid = realJid == null ? null : realJid.asBareJid();
-        return marker;
-    }
-
     public static ReadByMarker from(Message message) {
         final ReadByMarker marker = new ReadByMarker();
+        marker.occupantId = message.getOccupantId();
         marker.fullJid = message.getCounterpart();
         marker.realJid = message.getTrueCounterpart();
         return marker;
     }
 
-    public static ReadByMarker from(MucOptions.User user) {
+    public static ReadByMarker from(final MucOptions.User user) {
         final ReadByMarker marker = new ReadByMarker();
+        marker.occupantId = user.getOccupantId();
         marker.fullJid = user.getFullJid();
         marker.realJid = user.getRealJid();
         return marker;
@@ -114,6 +117,13 @@ public class ReadByMarker {
         } catch (JSONException | IllegalArgumentException e) {
             marker.realJid = null;
         }
+
+        try {
+            marker.occupantId = jsonObject.getString("occupantId");
+        } catch (JSONException | IllegalArgumentException e) {
+            marker.occupantId = null;
+        }
+
         return marker;
     }
 
@@ -135,7 +145,9 @@ public class ReadByMarker {
 
     public static boolean contains(ReadByMarker needle, final Set<ReadByMarker> readByMarkers) {
         for (final ReadByMarker marker : readByMarkers) {
-            if (marker.realJid != null && needle.realJid != null) {
+            if (marker.occupantId != null && needle.occupantId != null) {
+                return marker.occupantId.equals(needle.occupantId);
+            } else if (marker.realJid != null && needle.realJid != null) {
                 if (marker.realJid.asBareJid().equals(needle.realJid.asBareJid())) {
                     return true;
                 }
@@ -163,5 +175,21 @@ public class ReadByMarker {
         final Set<ReadByMarker> markersCopy = new CopyOnWriteArraySet<>(markers);
         markersCopy.add(marker);
         return allUsersRepresented(users, markersCopy);
+    }
+
+    @Override
+    public Jid mucUserAddress() {
+        return this.fullJid;
+    }
+
+    @Override
+    public Jid mucUserRealAddress() {
+        final var address = this.realJid;
+        return address == null ? null : address.asBareJid();
+    }
+
+    @Override
+    public String mucUserOccupantId() {
+        return this.occupantId;
     }
 }

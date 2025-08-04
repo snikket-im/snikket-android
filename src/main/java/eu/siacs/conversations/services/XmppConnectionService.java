@@ -2105,25 +2105,6 @@ public class XmppConnectionService extends Service {
         return this.accounts;
     }
 
-    /**
-     * This will find all conferences with the contact as member and also the conference that is the
-     * contact (that 'fake' contact is used to store the avatar)
-     */
-    public List<Conversation> findAllConferencesWith(Contact contact) {
-        final ArrayList<Conversation> results = new ArrayList<>();
-        for (final Conversation c : conversations) {
-            if (c.getMode() != Conversation.MODE_MULTI) {
-                continue;
-            }
-            final MucOptions mucOptions = c.getMucOptions();
-            if (c.getAddress().asBareJid().equals(contact.getAddress().asBareJid())
-                    || (mucOptions != null && mucOptions.isContactInRoom(contact))) {
-                results.add(c);
-            }
-        }
-        return results;
-    }
-
     public Conversation find(final Contact contact) {
         for (final Conversation conversation : this.conversations) {
             if (conversation.getContact() == contact) {

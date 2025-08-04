@@ -59,7 +59,6 @@ import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import im.conversations.android.model.Bookmark;
 import im.conversations.android.xmpp.model.muc.Affiliation;
 import im.conversations.android.xmpp.model.muc.Role;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import me.drakeet.support.toast.ToastCompat;
@@ -693,37 +692,21 @@ public class ConferenceDetailsActivity extends XmppActivity
             this.binding.notificationStatusButton.setImageResource(
                     R.drawable.ic_notifications_none_24dp);
         }
-        final List<User> users = mucOptions.getUsers();
-        Collections.sort(
-                users,
-                (a, b) -> {
-                    if (b.outranks(a.getAffiliation())) {
-                        return 1;
-                    } else if (a.outranks(b.getAffiliation())) {
-                        return -1;
-                    } else {
-                        if (a.getAvatar() != null && b.getAvatar() == null) {
-                            return -1;
-                        } else if (a.getAvatar() == null && b.getAvatar() != null) {
-                            return 1;
-                        } else {
-                            return a.getComparableName().compareToIgnoreCase(b.getComparableName());
-                        }
-                    }
-                });
         this.binding.users.post(
                 () -> {
                     final var list =
-                            MucOptions.sub(users, GridManager.getCurrentColumnCount(binding.users));
+                            mucOptions.getUsersVisual(
+                                    GridManager.getCurrentColumnCount(binding.users));
                     this.mUserPreviewAdapter.submitList(list);
                 });
+        final var userCount = mucOptions.getUserCount();
         this.binding.invite.setVisibility(mucOptions.canInvite() ? View.VISIBLE : View.GONE);
-        this.binding.showUsers.setVisibility(users.size() > 0 ? View.VISIBLE : View.GONE);
+        this.binding.showUsers.setVisibility(userCount == 0 ? View.GONE : View.VISIBLE);
         this.binding.showUsers.setText(
-                getResources().getQuantityString(R.plurals.view_users, users.size(), users.size()));
+                getResources().getQuantityString(R.plurals.view_users, userCount, userCount));
         this.binding.usersWrapper.setVisibility(
-                users.size() > 0 || mucOptions.canInvite() ? View.VISIBLE : View.GONE);
-        if (users.isEmpty()) {
+                userCount > 0 || mucOptions.canInvite() ? View.VISIBLE : View.GONE);
+        if (userCount == 0) {
             this.binding.noUsersHints.setText(
                     mucOptions.isPrivateAndNonAnonymous()
                             ? R.string.no_users_hint_group_chat

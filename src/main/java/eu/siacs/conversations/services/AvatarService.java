@@ -222,6 +222,7 @@ public class AvatarService {
     }
 
     public Bitmap get(final MucOptions.User user, final int size, boolean cachedOnly) {
+        // TODO skip this redundancy; user.getAvatar already does all the routing we want
         Contact c = user.getContact();
         if (c != null
                 && (c.getProfilePhoto() != null
@@ -262,13 +263,10 @@ public class AvatarService {
                 this.mXmppConnectionService.getBitmapCache().remove(key(contact, size));
             }
         }
-        for (final Conversation conversation :
-                mXmppConnectionService.findAllConferencesWith(contact)) {
-            final var mucOptions = conversation.getMucOptions();
-            final var user = mucOptions.findUserByRealJid(contact.getAddress().asBareJid());
-            if (user != null) {
-                clear(user);
-            }
+        final var connection = contact.getAccount().getXmppConnection();
+        for (final var user : connection.getManager(MultiUserChatManager.class).getUsers(contact)) {
+            final var mucOptions = user.getMucOptions();
+            clear(user);
             if (Strings.isNullOrEmpty(mucOptions.getAvatar())
                     && mucOptions.isPrivateAndNonAnonymous()) {
                 clear(mucOptions);
@@ -493,31 +491,22 @@ public class AvatarService {
         return avatar;
     }
 
-    public Bitmap get(Message message, int size, boolean cachedOnly) {
+    public Bitmap get(final Message message, final int size, final boolean cachedOnly) {
         final Conversational conversational = message.getConversation();
         if (message.getType() == Message.TYPE_STATUS
                 && message.getCounterparts() != null
                 && message.getCounterparts().size() > 1) {
             return get(message.getCounterparts(), size, cachedOnly);
         } else if (message.getStatus() == Message.STATUS_RECEIVED) {
+            // TODO simplify this logic a little bit. use contact for 1:1 use getUserOrStub for
+            // multi
             Contact c = message.getContact();
             if (c != null && (c.getProfilePhoto() != null || c.getAvatar() != null)) {
                 return get(c, size, cachedOnly);
             } else if (conversational instanceof Conversation conversation
                     && conversation.getMode() == Conversation.MODE_MULTI) {
-                final Jid trueCounterpart = message.getTrueCounterpart();
                 final MucOptions mucOptions = conversation.getMucOptions();
-                MucOptions.User user;
-                if (trueCounterpart != null) {
-                    user =
-                            mucOptions.findOrCreateUserByRealJid(
-                                    trueCounterpart, message.getCounterpart());
-                } else {
-                    user = mucOptions.findUserByFullJid(message.getCounterpart());
-                }
-                if (user != null) {
-                    return getImpl(user, size, cachedOnly);
-                }
+                return get(mucOptions.getUserOrStub(message), size, cachedOnly);
             } else if (c != null) {
                 return get(c, size, cachedOnly);
             }

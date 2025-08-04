@@ -30,7 +30,8 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import org.json.JSONException;
 
-public class Message extends AbstractEntity implements AvatarService.Avatar {
+public class Message extends AbstractEntity
+        implements AvatarService.Avatar, MucOptions.IdentifiableUser {
 
     public static final String TABLENAME = "messages";
 
@@ -860,6 +861,22 @@ public class Message extends AbstractEntity implements AvatarService.Avatar {
         return isFileOrImage() && getFileParams().url == null;
     }
 
+    @Override
+    public Jid mucUserAddress() {
+        return this.counterpart;
+    }
+
+    @Override
+    public Jid mucUserRealAddress() {
+        final var address = this.trueCounterpart;
+        return address == null ? null : address.asBareJid();
+    }
+
+    @Override
+    public String mucUserOccupantId() {
+        return this.occupantId;
+    }
+
     public static class FileParams {
         public String url;
         public Long size = null;
@@ -975,7 +992,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatar {
         if (counterpart.equals(mucOptions.getSelf().getFullJid())) {
             message.setTrueCounterpart(conversation.getAccount().getJid().asBareJid());
         } else {
-            final var user = mucOptions.findUserByFullJid(counterpart);
+            final var user = mucOptions.getUser(counterpart);
             if (user != null) {
                 message.setTrueCounterpart(user.getRealJid());
                 message.setOccupantId(user.getOccupantId());

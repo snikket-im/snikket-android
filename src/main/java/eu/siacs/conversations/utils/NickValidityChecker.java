@@ -13,7 +13,7 @@ public class NickValidityChecker {
         try {
             Jid full = Jid.of(room.getLocal(), room.getDomain(), nick);
             return conversation.hasMessageWithCounterpart(full)
-                    || conversation.getMucOptions().findUserByFullJid(full) != null;
+                    || conversation.getMucOptions().getUser(full) != null;
         } catch (IllegalArgumentException e) {
             return false;
         }

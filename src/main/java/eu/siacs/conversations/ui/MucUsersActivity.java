@@ -12,18 +12,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Locale;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityMucUsersBinding;
 import eu.siacs.conversations.entities.Contact;
@@ -33,8 +25,15 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.UserAdapter;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
 import eu.siacs.conversations.xmpp.Jid;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Locale;
 
-public class MucUsersActivity extends XmppActivity implements XmppConnectionService.OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, MenuItem.OnActionExpandListener, TextWatcher {
+public class MucUsersActivity extends XmppActivity
+        implements XmppConnectionService.OnMucRosterUpdate,
+                XmppConnectionService.OnAffiliationChanged,
+                MenuItem.OnActionExpandListener,
+                TextWatcher {
 
     private UserAdapter userAdapter;
 
@@ -42,11 +41,10 @@ public class MucUsersActivity extends XmppActivity implements XmppConnectionServ
 
     private EditText mSearchEditText;
 
-    private ArrayList<MucOptions.User> allUsers = new ArrayList<>();
+    private Collection<MucOptions.User> allUsers = Collections.emptyList();
 
     @Override
-    protected void refreshUiReal() {
-    }
+    protected void refreshUiReal() {}
 
     @Override
     protected void onBackendConnected() {
@@ -61,7 +59,8 @@ public class MucUsersActivity extends XmppActivity implements XmppConnectionServ
     private void loadAndSubmitUsers() {
         if (mConversation != null) {
             allUsers = mConversation.getMucOptions().getUsers();
-            submitFilteredList(mSearchEditText != null ? mSearchEditText.getText().toString() : null);
+            submitFilteredList(
+                    mSearchEditText != null ? mSearchEditText.getText().toString() : null);
         }
     }
 
@@ -93,7 +92,8 @@ public class MucUsersActivity extends XmppActivity implements XmppConnectionServ
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if (!MucDetailsContextMenuHelper.onContextItemSelected(item, userAdapter.getSelectedUser(), this)) {
+        if (!MucDetailsContextMenuHelper.onContextItemSelected(
+                item, userAdapter.getSelectedUser(), this)) {
             return super.onContextItemSelected(item);
         }
         return true;
@@ -102,7 +102,8 @@ public class MucUsersActivity extends XmppActivity implements XmppConnectionServ
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final ActivityMucUsersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_muc_users);
+        final ActivityMucUsersBinding binding =
+                DataBindingUtil.setContentView(this, R.layout.activity_muc_users);
         setSupportActionBar(binding.toolbar);
         Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         configureActionBar(getSupportActionBar(), true);
@@ -110,20 +111,17 @@ public class MucUsersActivity extends XmppActivity implements XmppConnectionServ
         binding.list.setAdapter(this.userAdapter);
     }
 
-
     @Override
     public void onMucRosterUpdate() {
         loadAndSubmitUsers();
     }
 
-     private void displayToast(final String msg) {
+    private void displayToast(final String msg) {
         runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
     }
 
     @Override
-    public void onAffiliationChangedSuccessful(Jid jid) {
-
-    }
+    public void onAffiliationChangedSuccessful(Jid jid) {}
 
     @Override
     public void onAffiliationChangeFailed(Jid jid, int resId) {
@@ -144,32 +142,32 @@ public class MucUsersActivity extends XmppActivity implements XmppConnectionServ
 
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
-        mSearchEditText.post(() -> {
-            mSearchEditText.requestFocus();
-            final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(mSearchEditText, InputMethodManager.SHOW_IMPLICIT);
-        });
+        mSearchEditText.post(
+                () -> {
+                    mSearchEditText.requestFocus();
+                    final InputMethodManager imm =
+                            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(mSearchEditText, InputMethodManager.SHOW_IMPLICIT);
+                });
         return true;
     }
 
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
-        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+        final InputMethodManager imm =
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(
+                mSearchEditText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
         mSearchEditText.setText("");
         submitFilteredList("");
         return true;
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
+    public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
     @Override
     public void afterTextChanged(Editable s) {

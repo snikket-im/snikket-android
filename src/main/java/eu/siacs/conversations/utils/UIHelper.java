@@ -16,6 +16,8 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -34,6 +36,7 @@ import im.conversations.android.xmpp.model.idle.LastUserInteraction;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -427,23 +430,21 @@ public class UIHelper {
         }
     }
 
-    public static String concatNames(List<MucOptions.User> users) {
-        return concatNames(users, users.size());
+    public static String concatNames(final Collection<MucOptions.User> users) {
+        final boolean shortNames = users.size() >= 3;
+        return Joiner.on(", ")
+                .join(
+                        Collections2.transform(
+                                users,
+                                u -> {
+                                    final var name =
+                                            Strings.nullToEmpty(UIHelper.getDisplayName(u));
+                                    return shortNames ? name.split("\\s+")[0] : name;
+                                }));
     }
 
-    public static String concatNames(List<MucOptions.User> users, int max) {
-        StringBuilder builder = new StringBuilder();
-        final boolean shortNames = users.size() >= 3;
-        for (int i = 0; i < Math.min(users.size(), max); ++i) {
-            if (builder.length() != 0) {
-                builder.append(", ");
-            }
-            final String name = UIHelper.getDisplayName(users.get(i));
-            if (name != null) {
-                builder.append(shortNames ? name.split("\\s+")[0] : name);
-            }
-        }
-        return builder.toString();
+    public static String concatNames(final Collection<MucOptions.User> users, final int max) {
+        return concatNames(ImmutableList.copyOf(Iterables.limit(users, max)));
     }
 
     public static String getFileDescriptionString(final Context context, final Message message) {
