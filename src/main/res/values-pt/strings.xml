@@ -587,8 +587,8 @@
     <string name="no_application_to_share_uri">Nenhuma aplicação para partilhar URI</string>
     <string name="agree_and_continue">Concordar e continuar</string>
     <string name="your_full_jid_will_be">O seu endereço de XMPP será: %s</string>
-    <string name="pref_broadcast_last_activity">Última vez visto</string>
-    <string name="pref_broadcast_last_activity_summary">Permitir que os contactos vejam a última vez que usou a aplicação</string>
+    <string name="pref_broadcast_last_activity">Mostrar última vez visto</string>
+    <string name="pref_broadcast_last_activity_summary">Permitir que os contactos vejam a última vez que esteve ativo na aplicação</string>
     <string name="reconnect_on_other_host">Reconectar ao outro host</string>
     <string name="missing_internet_permission">Garantir permissão para usar a Internet</string>
     <string name="no_permission_to_place_call">Sem permissão para fazer um telefonema</string>
@@ -632,4 +632,49 @@
     <string name="i_followed_this_link_from_a_trusted_source">Eu segui este link de uma fonte que confio</string>
     <string name="not_trusted">Não conviável</string>
     <string name="blindly_trusted_omemo_keys">Confiar cegamente chaves OMEMO, o que significa que alguém pode ter interferido com elas.</string>
+    <plurals name="minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="many">%d de minutos</item>
+        <item quantity="other">%d minutos</item>
+    </plurals>
+    <plurals name="hours">
+        <item quantity="one">%d hora</item>
+        <item quantity="many">%d de horas</item>
+        <item quantity="other">%d horas</item>
+    </plurals>
+    <string name="pref_automatically_delete_messages">Exclusão de mensagens automático</string>
+    <string name="encrypting_message">Encriptando mensagem</string>
+    <string name="continue_btn">Continuar</string>
+    <string name="distrust_omemo_key_text">Tem a certeza que quer remover a verificação deste dispositivo? \nO dispositivo e as mensagens do mesmo serão marcadas como \"Não confiável\".</string>
+    <plurals name="days">
+        <item quantity="one">%d dia</item>
+        <item quantity="many">%d de dias</item>
+        <item quantity="other">%d dias</item>
+    </plurals>
+    <string name="verifying_omemo_keys_trusted_source_account">Está prestes a verificar as chaves OMEMO desta conta. Isto é apenas seguro se seguiu este link de uma fonte confiável onde apenas você poderia tê-lo publicado.</string>
+    <plurals name="seconds">
+        <item quantity="one">%d segundo</item>
+        <item quantity="many">%d de segundos</item>
+        <item quantity="other">%d segundos</item>
+    </plurals>
+    <plurals name="weeks">
+        <item quantity="one">%d semana</item>
+        <item quantity="many">%d de semanas</item>
+        <item quantity="other">%d semanas</item>
+    </plurals>
+    <plurals name="months">
+        <item quantity="one">%d mês</item>
+        <item quantity="many">%d de meses</item>
+        <item quantity="other">%d meses</item>
+    </plurals>
+    <string name="verify_omemo_keys">Verificar chaves OMEMO</string>
+    <string name="show_inactive_devices">Mostrar inativos</string>
+    <string name="hide_inactive_devices">Esconder inativos</string>
+    <string name="distrust_omemo_key">Remover confiança do dispositivo</string>
+    <string name="pref_automatically_delete_messages_description">Excluir automaticamente mensagens deste dispositivo que são mais antigas do que o tempo definido.</string>
+    <string name="not_fetching_history_retention_period">As mensagens não foram obtidas devido ao período de retenção local.</string>
+    <string name="transcoding_video">Comprimindo vídeo</string>
+    <string name="corresponding_chats_closed">Chats correspondentes arquivados.</string>
+    <string name="contact_blocked_past_tense">Contacto bloqueado.</string>
+    <string name="pref_notifications_from_strangers">Notificações de desconhecidos</string>
 </resources>
