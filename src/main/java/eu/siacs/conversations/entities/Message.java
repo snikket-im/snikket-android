@@ -683,7 +683,7 @@ public class Message extends AbstractEntity
     }
 
     @Override
-    public String getAvatarName() {
+    public String getDisplayName() {
         if (type == Message.TYPE_STATUS
                 && getCounterparts() != null
                 && getCounterparts().size() > 1) {

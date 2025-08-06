@@ -114,7 +114,7 @@ public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatar, Void, Bitm
             return;
         } else {
             imageView.setContentDescription(
-                    context.getString(R.string.avatar_for_x, avatar.getAvatarName()));
+                    context.getString(R.string.avatar_for_x, avatar.getDisplayName()));
         }
     }
 

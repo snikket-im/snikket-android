@@ -1,11 +1,10 @@
 package eu.siacs.conversations.utils;
 
 import android.graphics.Color;
-
-import org.hsluv.HUSLColorConverter;
-
+import androidx.annotation.ColorInt;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import org.hsluv.HUSLColorConverter;
 
 public class XEP0392Helper {
 
@@ -20,12 +19,16 @@ public class XEP0392Helper {
         }
     }
 
+    @ColorInt
     public static int rgbFromNick(String name) {
         double[] hsluv = new double[3];
         hsluv[0] = angle(name) * 360;
         hsluv[1] = 100;
         hsluv[2] = 50;
         double[] rgb = HUSLColorConverter.hsluvToRgb(hsluv);
-        return Color.rgb((int) Math.round(rgb[0] * 255), (int) Math.round(rgb[1] * 255), (int) Math.round(rgb[2] * 255));
+        return Color.rgb(
+                (int) Math.round(rgb[0] * 255),
+                (int) Math.round(rgb[1] * 255),
+                (int) Math.round(rgb[2] * 255));
     }
 }

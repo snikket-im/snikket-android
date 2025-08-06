@@ -143,6 +143,7 @@ public class Contact implements ListItem, Blockable, MucOptions.IdentifiableUser
                         cursor.getString(cursor.getColumnIndexOrThrow(RTP_CAPABILITY))));
     }
 
+    @Override
     public String getDisplayName() {
         if (isSelf()) {
             final String displayName = account.getDisplayName();
@@ -513,11 +514,6 @@ public class Contact implements ListItem, Blockable, MucOptions.IdentifiableUser
     public int getAvatarBackgroundColor() {
         return UIHelper.getColorForName(
                 jid != null ? jid.asBareJid().toString() : getDisplayName());
-    }
-
-    @Override
-    public String getAvatarName() {
-        return getDisplayName();
     }
 
     public boolean hasAvatarOrPresenceName() {

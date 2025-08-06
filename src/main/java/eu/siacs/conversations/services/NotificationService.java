@@ -1368,14 +1368,18 @@ public class NotificationService {
         final ShortcutInfoCompat info;
         if (conversation.getMode() == Conversation.MODE_SINGLE) {
             final Contact contact = conversation.getContact();
-            final Uri systemAccount = contact.getSystemAccount();
-            if (systemAccount != null) {
-                notificationBuilder.addPerson(systemAccount.toString());
+            if (contact.isSelf()) {
+                info = null;
+            } else {
+                final Uri systemAccount = contact.getSystemAccount();
+                if (systemAccount != null) {
+                    notificationBuilder.addPerson(systemAccount.toString());
+                }
+                info =
+                        mXmppConnectionService
+                                .getShortcutService()
+                                .getShortcutInfo(contact, conversation.getUuid());
             }
-            info =
-                    mXmppConnectionService
-                            .getShortcutService()
-                            .getShortcutInfo(contact, conversation.getUuid());
         } else {
             info =
                     mXmppConnectionService
@@ -1386,7 +1390,7 @@ public class NotificationService {
         notificationBuilder.setSmallIcon(R.drawable.ic_app_icon_notification);
         notificationBuilder.setDeleteIntent(createDeleteIntent(conversation));
         notificationBuilder.setContentIntent(createContentIntent(conversation));
-        if (channel.equals(MESSAGES_NOTIFICATION_CHANNEL)) {
+        if (channel.equals(MESSAGES_NOTIFICATION_CHANNEL) && info != null) {
             // when do not want 'customized' notifications for silent notifications in their
             // respective channels
             notificationBuilder.setShortcutInfo(info);

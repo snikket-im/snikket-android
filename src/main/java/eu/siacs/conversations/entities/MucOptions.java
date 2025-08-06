@@ -894,6 +894,7 @@ public class MucOptions {
             }
         }
 
+        @Override
         @NonNull
         public String getDisplayName() {
             final var contact = this.getContact();
@@ -928,11 +929,6 @@ public class MucOptions {
         public int getAvatarBackgroundColor() {
             final String seed = realJid != null ? realJid.asBareJid().toString() : null;
             return UIHelper.getColorForName(seed == null ? resource() : seed);
-        }
-
-        @Override
-        public String getAvatarName() {
-            return getConversation().getName().toString();
         }
 
         public String getOccupantId() {

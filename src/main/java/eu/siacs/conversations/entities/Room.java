@@ -64,7 +64,7 @@ public class Room implements AvatarService.Avatar, Comparable<Room> {
     }
 
     @Override
-    public String getAvatarName() {
+    public String getDisplayName() {
         return name;
     }
 

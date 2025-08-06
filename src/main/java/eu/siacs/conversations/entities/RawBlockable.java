@@ -60,9 +60,4 @@ public class RawBlockable implements ListItem, Blockable {
     public int getAvatarBackgroundColor() {
         return UIHelper.getColorForName(jid.toString());
     }
-
-    @Override
-    public String getAvatarName() {
-        return getDisplayName();
-    }
 }

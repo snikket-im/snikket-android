@@ -1189,8 +1189,8 @@ public class Conversation extends AbstractEntity
     }
 
     @Override
-    public String getAvatarName() {
-        return getName().toString();
+    public CharSequence getDisplayName() {
+        return getName();
     }
 
     public void setDisplayState(final String stanzaId) {

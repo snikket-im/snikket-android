@@ -56,12 +56,6 @@ public abstract class Bookmark implements ListItem {
 
     @Override
     @Value.Derived
-    public String getAvatarName() {
-        return this.getDisplayName();
-    }
-
-    @Override
-    @Value.Derived
     public String getDisplayName() {
         final var mucOptions =
                 getAccount()

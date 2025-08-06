@@ -155,6 +155,7 @@ public class UIHelper {
         }
     }
 
+    @ColorInt
     public static int getColorForName(final String name) {
         return XEP0392Helper.rgbFromNick(name);
     }

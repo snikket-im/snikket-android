@@ -11,6 +11,7 @@ import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -2650,25 +2651,25 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                         + " on conversations.uuid=messages.conversationUuid where"
                         + " messages.status!=0 and carbon==0  and conversations.mode=0 and"
                         + " messages.timeSent>=? group by conversations.uuid order by count(body)"
-                        + " desc limit 4;";
-        String[] whereArgs =
+                        + " desc limit 6;";
+
+        // ^ we only want 4 but we are removing self contacts in a later step
+
+        final String[] whereArgs =
                 new String[] {
                     String.valueOf(System.currentTimeMillis() - (Config.MILLISECONDS_IN_DAY * days))
                 };
-        Cursor cursor = db.rawQuery(SQL, whereArgs);
-        ArrayList<ShortcutService.FrequentContact> contacts = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            try {
-                contacts.add(
+        final var builder = new ImmutableList.Builder<ShortcutService.FrequentContact>();
+        try (final var cursor = db.rawQuery(SQL, whereArgs)) {
+
+            while (cursor.moveToNext()) {
+                builder.add(
                         new ShortcutService.FrequentContact(
                                 cursor.getString(0),
                                 cursor.getString(1),
                                 Jid.of(cursor.getString(2))));
-            } catch (final Exception e) {
-                Log.e(Config.LOGTAG, "could not create frequent contact", e);
             }
         }
-        cursor.close();
-        return contacts;
+        return builder.build();
     }
 }
