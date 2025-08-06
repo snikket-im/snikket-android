@@ -14,11 +14,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Ordering;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityMucUsersBinding;
-import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -73,21 +73,17 @@ public class MucUsersActivity extends XmppActivity
                     Ordering.natural()
                             .immutableSortedCopy(
                                     Collections2.filter(
-                                            this.allUsers,
-                                            user -> {
-                                                final String name = user.getName();
-                                                final Contact contact = user.getContact();
-                                                return name != null
-                                                                && name.toLowerCase(
-                                                                                Locale.getDefault())
-                                                                        .contains(needle)
-                                                        || contact != null
-                                                                && contact.getDisplayName()
-                                                                        .toLowerCase(
-                                                                                Locale.getDefault())
-                                                                        .contains(needle);
-                                            })));
+                                            this.allUsers, user -> contains(user, needle))));
         }
+    }
+
+    private static boolean contains(final MucOptions.User user, final String needle) {
+        final String name = user.getDisplayName();
+        final var resource = user.resource();
+        final var realAddress = user.getRealJid();
+        return name.toLowerCase(Locale.getDefault()).contains(needle)
+                || Strings.nullToEmpty(resource).toLowerCase(Locale.getDefault()).contains(needle)
+                || (realAddress != null && realAddress.toString().contains(needle));
     }
 
     @Override

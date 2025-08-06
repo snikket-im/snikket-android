@@ -22,7 +22,6 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
@@ -413,32 +412,19 @@ public class UIHelper {
         return false;
     }
 
-    public static String getDisplayName(MucOptions.User user) {
-        Contact contact = user.getContact();
-        if (contact != null) {
-            return contact.getDisplayName();
-        } else {
-            final String name = user.getName();
-            if (name != null) {
-                return name;
-            }
-            final Jid realJid = user.getRealJid();
-            if (realJid != null) {
-                return JidHelper.localPartOrFallback(realJid);
-            }
-            return null;
-        }
+    public static String concatNames(final Collection<MucOptions.User> users) {
+        return concatNames(users, users.size() >= 3);
     }
 
-    public static String concatNames(final Collection<MucOptions.User> users) {
-        final boolean shortNames = users.size() >= 3;
+    public static String concatNames(
+            final Collection<MucOptions.User> users, final boolean shortNames) {
+
         return Joiner.on(", ")
                 .join(
                         Collections2.transform(
                                 users,
                                 u -> {
-                                    final var name =
-                                            Strings.nullToEmpty(UIHelper.getDisplayName(u));
+                                    final var name = u.getDisplayName();
                                     return shortNames ? name.split("\\s+")[0] : name;
                                 }));
     }
@@ -492,26 +478,28 @@ public class UIHelper {
     public static String getMessageDisplayName(final Message message) {
         final Conversational conversation = message.getConversation();
         if (message.getStatus() == Message.STATUS_RECEIVED) {
-            final Contact contact = message.getContact();
             if (conversation.getMode() == Conversation.MODE_MULTI) {
-                if (contact != null) {
-                    return contact.getDisplayName();
+                if (conversation instanceof Conversation c) {
+                    return c.getMucOptions().getUserOrStub(message).getDisplayName();
                 } else {
-                    return getDisplayedMucCounterpart(message.getCounterpart());
+                    final var counterpart = message.getCounterpart();
+                    return counterpart.isBareJid()
+                            ? counterpart.toString()
+                            : counterpart.getResource();
                 }
             } else {
-                return contact != null ? contact.getDisplayName() : "";
+                return conversation.getContact().getDisplayName();
             }
         } else {
-            if (conversation instanceof Conversation
+            if (conversation instanceof Conversation c
                     && conversation.getMode() == Conversation.MODE_MULTI) {
-                return ((Conversation) conversation).getMucOptions().getSelf().getName();
+                return c.getMucOptions().getSelf().getDisplayName();
             } else {
                 final Account account = conversation.getAccount();
                 final Jid jid = account.getJid();
                 final String displayName = account.getDisplayName();
                 if (Strings.isNullOrEmpty(displayName)) {
-                    return jid.getLocal() != null ? jid.getLocal() : jid.getDomain().toString();
+                    return jid.isDomainJid() ? jid.getDomain().toString() : jid.getLocal();
                 } else {
                     return displayName;
                 }
@@ -538,16 +526,6 @@ public class UIHelper {
             }
             default -> context.getString(R.string.send_encrypted_message);
         };
-    }
-
-    public static String getDisplayedMucCounterpart(final Jid counterpart) {
-        if (counterpart == null) {
-            return "";
-        } else if (!counterpart.isBareJid()) {
-            return counterpart.getResource().trim();
-        } else {
-            return counterpart.toString().trim();
-        }
     }
 
     public static boolean receivedLocationQuestion(final Message message) {

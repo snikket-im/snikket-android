@@ -81,7 +81,7 @@ public class ReadByMarker implements MucOptions.IdentifiableUser {
         return readByMarkers;
     }
 
-    public static ReadByMarker from(Message message) {
+    public static ReadByMarker from(final Message message) {
         final ReadByMarker marker = new ReadByMarker();
         marker.occupantId = message.getOccupantId();
         marker.fullJid = message.getCounterpart();
@@ -143,10 +143,13 @@ public class ReadByMarker implements MucOptions.IdentifiableUser {
         return jsonArray;
     }
 
-    public static boolean contains(ReadByMarker needle, final Set<ReadByMarker> readByMarkers) {
+    public static boolean contains(
+            final ReadByMarker needle, final Set<ReadByMarker> readByMarkers) {
         for (final ReadByMarker marker : readByMarkers) {
             if (marker.occupantId != null && needle.occupantId != null) {
-                return marker.occupantId.equals(needle.occupantId);
+                if (marker.occupantId.equals(needle.occupantId)) {
+                    return true;
+                }
             } else if (marker.realJid != null && needle.realJid != null) {
                 if (marker.realJid.asBareJid().equals(needle.realJid.asBareJid())) {
                     return true;

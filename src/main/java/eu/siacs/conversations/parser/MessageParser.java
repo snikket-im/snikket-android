@@ -470,7 +470,7 @@ public class MessageParser extends AbstractParser
             } else if (invite.direct
                     && (mucUserElement != null
                             || invite.inviter == null
-                            || mXmppConnectionService.isMuc(account, invite.inviter))) {
+                            || getManager(MultiUserChatManager.class).isMuc(invite.inviter))) {
                 Log.d(
                         Config.LOGTAG,
                         account.getJid().asBareJid()
@@ -1107,8 +1107,7 @@ public class MessageParser extends AbstractParser
 
         final var nick = packet.getExtension(Nick.class);
         if (nick != null && Jid.Invalid.isValid(from)) {
-            // TODO use manager for this check
-            if (mXmppConnectionService.isMuc(account, from)) {
+            if (getManager(MultiUserChatManager.class).isMuc(from)) {
                 return;
             }
             final Contact contact = account.getRoster().getContact(from);

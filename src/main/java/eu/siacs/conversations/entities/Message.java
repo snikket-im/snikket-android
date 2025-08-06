@@ -363,15 +363,16 @@ public class Message extends AbstractEntity
     public Contact getContact() {
         if (this.conversation.getMode() == Conversation.MODE_SINGLE) {
             return this.conversation.getContact();
+        } else if (this.conversation instanceof Conversation c
+                && c.getMode() == Conversational.MODE_MULTI) {
+            return c.getMucOptions().getUserOrStub(this).getContact();
+        } else if (this.counterpart != null) {
+            return this.conversation
+                    .getAccount()
+                    .getRoster()
+                    .getContactFromContactList(this.trueCounterpart);
         } else {
-            if (this.trueCounterpart == null) {
-                return null;
-            } else {
-                return this.conversation
-                        .getAccount()
-                        .getRoster()
-                        .getContactFromContactList(this.trueCounterpart);
-            }
+            return null;
         }
     }
 
@@ -683,7 +684,13 @@ public class Message extends AbstractEntity
 
     @Override
     public String getAvatarName() {
-        return UIHelper.getMessageDisplayName(this);
+        if (type == Message.TYPE_STATUS
+                && getCounterparts() != null
+                && getCounterparts().size() > 1) {
+            return "";
+        } else {
+            return UIHelper.getMessageDisplayName(this);
+        }
     }
 
     public boolean isOOb() {

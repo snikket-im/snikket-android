@@ -15,7 +15,6 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
-import im.conversations.android.xmpp.model.muc.Role;
 
 public class UserPreviewAdapter extends ListAdapter<MucOptions.User, UserPreviewAdapter.ViewHolder>
         implements View.OnCreateContextMenuListener {
@@ -50,17 +49,16 @@ public class UserPreviewAdapter extends ListAdapter<MucOptions.User, UserPreview
                             if (activity == null) {
                                 return;
                             }
-                            final var contact = user.getContact();
-                            if (user.getRole() == Role.NONE && contact != null) {
+                            if (user.resource() == null) {
                                 Toast.makeText(
                                                 activity,
                                                 activity.getString(
                                                         R.string.user_has_left_conference,
-                                                        contact.getDisplayName()),
+                                                        user.getDisplayName()),
                                                 Toast.LENGTH_SHORT)
                                         .show();
                             }
-                            activity.highlightInMuc(user.getConversation(), user.getName());
+                            activity.highlightInMuc(user.getConversation(), user.resource());
                         });
         viewHolder.binding.getRoot().setOnCreateContextMenuListener(this);
         viewHolder.binding.getRoot().setTag(user);

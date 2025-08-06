@@ -75,7 +75,7 @@ public class MucOptions {
                         } else if (a.getAvatar() == null && b.getAvatar() != null) {
                             return 1;
                         } else {
-                            return a.getComparableName().compareToIgnoreCase(b.getComparableName());
+                            return a.getDisplayName().compareToIgnoreCase(b.getDisplayName());
                         }
                     }
                 }
@@ -84,12 +84,12 @@ public class MucOptions {
     private final Map<AddressableId, User> users = new HashMap<>();
     private final Map<Id, User> usersByOccupantId = new HashMap<>();
     private final Conversation conversation;
+    private final Account account;
     public OnRenameListener onRenameListener = null;
     private boolean mAutoPushConfiguration = true;
-    private final Account account;
-    private boolean isOnline = false;
     private Error error = Error.NONE;
     private Self self;
+    // TODO get rid of password; access password through attributes
     private String password = null;
 
     public MucOptions(final Conversation conversation) {
@@ -104,7 +104,8 @@ public class MucOptions {
                         this.account.getJid().asBareJid(),
                         null,
                         role,
-                        affiliation);
+                        affiliation,
+                        false);
     }
 
     public Account getAccount() {
@@ -113,7 +114,14 @@ public class MucOptions {
 
     public boolean setSelf(final Self user) {
         Log.d(Config.LOGTAG, "setSelf(" + user + ")");
-        this.self = user.asSelf();
+        synchronized (this.users) {
+            // on same nick merges we need to remove the other device
+            this.users.remove(Id.resource(user.getFullJid()));
+            // this should not be happening but attempting to remove it does not hurt
+            this.users.remove(Id.realAddress(user.getRealJid()));
+            this.self = user.asConnectedSelf();
+            this.resetOccupantIdMap();
+        }
         final boolean roleChanged =
                 this.conversation.setAttribute("role", user.getRole().toString());
         final boolean affiliationChanged =
@@ -152,14 +160,6 @@ public class MucOptions {
         return self.getRealJid().equals(user.getRealJid())
                 || (self.getOccupantId() != null
                         && self.getOccupantId().equals(user.getOccupantId()));
-    }
-
-    // TODO somehow put the 'online' status into the self user; when setting self it will be set
-    // automatically
-    public boolean setOnline() {
-        boolean before = this.isOnline;
-        this.isOnline = true;
-        return !before;
     }
 
     public void resetChatState() {
@@ -528,7 +528,7 @@ public class MucOptions {
         }
     }
 
-    public List<User> getUsersVisual(final int max) {
+    public List<User> getUsersPreview(final int max) {
         synchronized (this.users) {
             final Collection<User> users;
             if (this.usersByOccupantId.isEmpty()) {
@@ -592,23 +592,25 @@ public class MucOptions {
     }
 
     public String getActualNick() {
-        if (this.self.getName() != null) {
-            return this.self.getName();
+        if (this.self.resource() != null) {
+            return this.self.resource();
         } else {
             return this.getProposedNick();
         }
     }
 
     public boolean online() {
-        return this.isOnline;
+        final var self = getSelf();
+        return self != null && self.connected;
     }
 
     public Error getError() {
         return this.error;
     }
 
-    public void setError(Error error) {
-        this.isOnline = isOnline && error == Error.NONE;
+    public void setError(final Error error) {
+        // TODO flip self to not connected
+        // this.isOnline = isOnline && error == Error.NONE;
         this.error = error;
     }
 
@@ -635,34 +637,14 @@ public class MucOptions {
                         jid -> new Stub(this, null, jid, null)));
     }
 
-    public List<User> getUsersRelevantForNameAndAvatar() {
+    public List<User> getUsersPreviewWithFallback() {
         final List<User> users;
-        if (isOnline) {
-            users = getUsersVisual(5);
+        if (online()) {
+            users = getUsersPreview(5);
         } else {
             users = getFallbackUsersFromCryptoTargets();
         }
         return users;
-    }
-
-    String createNameFromParticipants() {
-        // TODO do something nice with Joiner
-        List<User> users = getUsersRelevantForNameAndAvatar();
-        if (users.size() >= 2) {
-            StringBuilder builder = new StringBuilder();
-            for (User user : users) {
-                if (builder.length() != 0) {
-                    builder.append(", ");
-                }
-                String name = UIHelper.getDisplayName(user);
-                if (name != null) {
-                    builder.append(name.split("\\s+")[0]);
-                }
-            }
-            return builder.toString();
-        } else {
-            return null;
-        }
     }
 
     public long[] getPgpKeyIds() {
@@ -822,7 +804,7 @@ public class MucOptions {
             }
         }
 
-        public String getName() {
+        public String resource() {
             return fullJid == null ? null : fullJid.getResource();
         }
 
@@ -908,17 +890,25 @@ public class MucOptions {
             } else if (outranks(another.getAffiliation())) {
                 return -1;
             } else {
-                return getComparableName().compareToIgnoreCase(another.getComparableName());
+                return getDisplayName().compareToIgnoreCase(another.getDisplayName());
             }
         }
 
-        public String getComparableName() {
-            Contact contact = getContact();
+        @NonNull
+        public String getDisplayName() {
+            final var contact = this.getContact();
             if (contact != null) {
                 return contact.getDisplayName();
             } else {
-                String name = getName();
-                return name == null ? "" : name;
+                final String resource = this.resource();
+                if (resource != null) {
+                    return resource;
+                }
+                if (realJid != null) {
+                    return JidHelper.localPartOrFallback(realJid);
+                } else {
+                    return fullJid.toString();
+                }
             }
         }
 
@@ -937,7 +927,7 @@ public class MucOptions {
         @Override
         public int getAvatarBackgroundColor() {
             final String seed = realJid != null ? realJid.asBareJid().toString() : null;
-            return UIHelper.getColorForName(seed == null ? getName() : seed);
+            return UIHelper.getColorForName(seed == null ? resource() : seed);
         }
 
         @Override
@@ -996,7 +986,7 @@ public class MucOptions {
                     affiliation);
         }
 
-        public Self asSelf() {
+        public Self asConnectedSelf() {
             final var address =
                     this.realJid == null
                             ? this.options.getAccount().getJid().asBareJid()
@@ -1007,7 +997,8 @@ public class MucOptions {
                     address,
                     this.occupantId,
                     this.role,
-                    this.affiliation);
+                    this.affiliation,
+                    true);
         }
 
         @Override
@@ -1028,16 +1019,22 @@ public class MucOptions {
 
     public static final class Self extends User {
 
+        private final boolean connected;
+
         private Self(
-                MucOptions options,
-                Jid fullJid,
-                Jid realJid,
-                String occupantId,
-                Role role,
-                Affiliation affiliation) {
+                final MucOptions options,
+                final Jid fullJid,
+                final Jid realJid,
+                final String occupantId,
+                final Role role,
+                final Affiliation affiliation,
+                final boolean connected) {
             super(options, fullJid, realJid, occupantId, role, affiliation);
             Preconditions.checkNotNull(
                     realJid, "The self muc user should not have a null real jid");
+            Preconditions.checkArgument(
+                    fullJid != null && fullJid.isFullJid(), "the full jid needs to be a full jid");
+            this.connected = connected;
         }
     }
 

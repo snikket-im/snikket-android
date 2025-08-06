@@ -35,16 +35,7 @@ public final class MucDetailsContextMenuHelper {
         final Object tag = v.getTag();
         if (tag instanceof User user && activity != null) {
             activity.getMenuInflater().inflate(R.menu.muc_details_context, menu);
-            String name;
-            final Contact contact = user.getContact();
-            if (contact != null && contact.showInContactList()) {
-                name = contact.getDisplayName();
-            } else if (user.getRealJid() != null) {
-                name = user.getRealJid().asBareJid().toString();
-            } else {
-                name = user.getName();
-            }
-            menu.setHeaderTitle(name);
+            menu.setHeaderTitle(user.getDisplayName());
             MucDetailsContextMenuHelper.configureMucDetailsContextMenu(
                     activity, menu, user.getConversation(), user);
         }
@@ -75,12 +66,14 @@ public final class MucDetailsContextMenuHelper {
             banFromConference.setTitle(
                     isGroupChat ? R.string.ban_from_conference : R.string.ban_from_channel);
             MenuItem invite = menu.findItem(R.id.invite);
-            startConversation.setVisible(true);
-            final Contact contact = user.getContact();
             final User self = conversation.getMucOptions().getSelf();
-            if ((contact != null && contact.showInRoster())
-                    || mucOptions.isPrivateAndNonAnonymous()) {
-                showContactDetails.setVisible(contact == null || !contact.isSelf());
+            if (user.realJidMatchesAccount()) {
+                showContactDetails.setVisible(true);
+                showContactDetails.setTitle(R.string.account_details);
+            } else {
+                showContactDetails.setVisible(true);
+                startConversation.setVisible(true);
+                showContactDetails.setTitle(R.string.action_contact_details);
             }
             if ((activity instanceof ConferenceDetailsActivity
                             || activity instanceof MucUsersActivity)
@@ -158,7 +151,11 @@ public final class MucDetailsContextMenuHelper {
                 final Contact contact =
                         realJid == null ? null : account.getRoster().getContact(realJid);
                 if (contact != null) {
-                    activity.switchToContactDetails(contact, fingerprint);
+                    if (contact.isSelf()) {
+                        activity.switchToAccount(account);
+                    } else {
+                        activity.switchToContactDetails(contact, fingerprint);
+                    }
                 }
                 return true;
             case R.id.start_conversation:
@@ -190,7 +187,7 @@ public final class MucDetailsContextMenuHelper {
                         conversation, jid, Affiliation.OUTCAST, onAffiliationChanged);
                 if (user.getRole() != Role.NONE) {
                     activity.xmppConnectionService.changeRoleInConference(
-                            conversation, user.getName(), Role.NONE);
+                            conversation, user.resource(), Role.NONE);
                 }
                 return true;
             case R.id.send_private_message:
@@ -201,7 +198,7 @@ public final class MucDetailsContextMenuHelper {
                         return true;
                     }
                 }
-                activity.privateMsgInMuc(conversation, user.getName());
+                activity.privateMsgInMuc(conversation, user.resource());
                 return true;
             case R.id.invite:
                 // TODO use direct invites for public conferences
@@ -226,7 +223,7 @@ public final class MucDetailsContextMenuHelper {
                     conversation, user.getRealJid(), Affiliation.NONE, onAffiliationChanged);
             if (user.getRole() != Role.NONE) {
                 activity.xmppConnectionService.changeRoleInConference(
-                        conversation, user.getName(), Role.NONE);
+                        conversation, user.resource(), Role.NONE);
             }
         } else {
             final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
@@ -255,7 +252,7 @@ public final class MucDetailsContextMenuHelper {
                                 onAffiliationChanged);
                         if (user.getRole() != Role.NONE) {
                             activity.xmppConnectionService.changeRoleInConference(
-                                    conversation, user.getName(), Role.NONE);
+                                    conversation, user.resource(), Role.NONE);
                         }
                     });
             builder.create().show();

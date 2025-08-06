@@ -681,16 +681,17 @@ public class Conversation extends AbstractEntity
         } else if (Bookmark.printableValue(bookmarkName)) {
             return bookmarkName;
         } else {
-            final String generatedName = mucOptions.createNameFromParticipants();
-            if (Bookmark.printableValue(generatedName)) {
-                return generatedName;
-            } else {
-                final var address = mucOptions.getConversation().getAddress();
-                if (address.isDomainJid()) {
-                    return address.toString();
-                } else {
-                    return address.getLocal();
+            if (mucOptions.isPrivateAndNonAnonymous()) {
+                final var users = mucOptions.getUsersPreviewWithFallback();
+                if (!users.isEmpty()) {
+                    return UIHelper.concatNames(users, true);
                 }
+            }
+            final var address = mucOptions.getConversation().getAddress();
+            if (address.isDomainJid()) {
+                return address.toString();
+            } else {
+                return address.getLocal();
             }
         }
     }

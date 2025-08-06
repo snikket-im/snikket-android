@@ -695,7 +695,7 @@ public class ConferenceDetailsActivity extends XmppActivity
         this.binding.users.post(
                 () -> {
                     final var list =
-                            mucOptions.getUsersVisual(
+                            mucOptions.getUsersPreview(
                                     GridManager.getCurrentColumnCount(binding.users));
                     this.mUserPreviewAdapter.submitList(list);
                 });

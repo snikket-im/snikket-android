@@ -77,7 +77,7 @@ public class AvatarService {
         } else if (avatar instanceof ListItem li) {
             return get(li, size, cachedOnly);
         } else if (avatar instanceof MucOptions.User u) {
-            return get(u, size, cachedOnly);
+            return getImpl(u, size, cachedOnly);
         } else if (avatar instanceof Room r) {
             return get(r, size, cachedOnly);
         }
@@ -221,38 +221,23 @@ public class AvatarService {
         return bitmap;
     }
 
-    public Bitmap get(final MucOptions.User user, final int size, boolean cachedOnly) {
-        // TODO skip this redundancy; user.getAvatar already does all the routing we want
-        Contact c = user.getContact();
-        if (c != null
-                && (c.getProfilePhoto() != null
-                        || c.getAvatar() != null
-                        || user.getAvatar() == null)) {
-            return get(c, size, cachedOnly);
-        } else {
-            return getImpl(user, size, cachedOnly);
-        }
-    }
-
     private Bitmap getImpl(final MucOptions.User user, final int size, boolean cachedOnly) {
         final String KEY = key(user, size);
-        Bitmap avatar = this.mXmppConnectionService.getBitmapCache().get(KEY);
-        if (avatar != null || cachedOnly) {
-            return avatar;
+        final Bitmap cached = this.mXmppConnectionService.getBitmapCache().get(KEY);
+        if (cached != null || cachedOnly) {
+            return cached;
         }
         if (user.getAvatar() != null) {
-            avatar = mXmppConnectionService.getFileBackend().getAvatar(user.getAvatar(), size);
-        }
-        if (avatar == null) {
-            Contact contact = user.getContact();
-            if (contact != null) {
-                avatar = get(contact, size, false);
-            } else {
-                String seed =
-                        user.getRealJid() != null ? user.getRealJid().asBareJid().toString() : null;
-                avatar = get(user.getName(), seed, size, false);
+            final Bitmap avatar =
+                    mXmppConnectionService.getFileBackend().getAvatar(user.getAvatar(), size);
+            if (avatar != null) {
+                this.mXmppConnectionService.getBitmapCache().put(KEY, avatar);
+                return avatar;
             }
         }
+        final String seed =
+                user.getRealJid() != null ? user.getRealJid().asBareJid().toString() : null;
+        final var avatar = get(user.getDisplayName(), seed, size, false);
         this.mXmppConnectionService.getBitmapCache().put(KEY, avatar);
         return avatar;
     }
@@ -360,7 +345,7 @@ public class AvatarService {
         if (bitmap == null) {
             Conversation c = mucOptions.getConversation();
             if (mucOptions.isPrivateAndNonAnonymous()) {
-                final List<MucOptions.User> users = mucOptions.getUsersRelevantForNameAndAvatar();
+                final List<MucOptions.User> users = mucOptions.getUsersPreviewWithFallback();
                 if (users.isEmpty()) {
                     bitmap =
                             getImpl(
@@ -492,29 +477,25 @@ public class AvatarService {
     }
 
     public Bitmap get(final Message message, final int size, final boolean cachedOnly) {
-        final Conversational conversational = message.getConversation();
+        final Conversational conversation = message.getConversation();
         if (message.getType() == Message.TYPE_STATUS
                 && message.getCounterparts() != null
                 && message.getCounterparts().size() > 1) {
             return get(message.getCounterparts(), size, cachedOnly);
         } else if (message.getStatus() == Message.STATUS_RECEIVED) {
-            // TODO simplify this logic a little bit. use contact for 1:1 use getUserOrStub for
-            // multi
-            Contact c = message.getContact();
-            if (c != null && (c.getProfilePhoto() != null || c.getAvatar() != null)) {
-                return get(c, size, cachedOnly);
-            } else if (conversational instanceof Conversation conversation
-                    && conversation.getMode() == Conversation.MODE_MULTI) {
-                final MucOptions mucOptions = conversation.getMucOptions();
-                return get(mucOptions.getUserOrStub(message), size, cachedOnly);
-            } else if (c != null) {
-                return get(c, size, cachedOnly);
+            if (conversation.getMode() == Conversation.MODE_MULTI) {
+                if (conversation instanceof Conversation c) {
+                    return get(c.getMucOptions().getUserOrStub(message), size, cachedOnly);
+                } else {
+                    Jid tcp = message.getTrueCounterpart();
+                    String seed = tcp != null ? tcp.asBareJid().toString() : null;
+                    return get(UIHelper.getMessageDisplayName(message), seed, size, cachedOnly);
+                }
+            } else {
+                return get(conversation.getContact(), size, cachedOnly);
             }
-            Jid tcp = message.getTrueCounterpart();
-            String seed = tcp != null ? tcp.asBareJid().toString() : null;
-            return get(UIHelper.getMessageDisplayName(message), seed, size, cachedOnly);
         } else {
-            return get(conversational.getAccount(), size, cachedOnly);
+            return get(conversation.getAccount(), size, cachedOnly);
         }
     }
 
@@ -553,10 +534,6 @@ public class AvatarService {
         return PREFIX_ACCOUNT + "_" + account.getUuid() + "_" + size;
     }
 
-    /*public Bitmap get(String name, int size) {
-    	return get(name,null, size,false);
-    }*/
-
     public Bitmap get(final String name, String seed, final int size, boolean cachedOnly) {
         final String KEY = key(seed == null ? name : name + "\0" + seed, size);
         Bitmap bitmap = mXmppConnectionService.getBitmapCache().get(KEY);
@@ -587,7 +564,7 @@ public class AvatarService {
         return PREFIX_GENERIC + "_" + name + "_" + size;
     }
 
-    private static boolean drawTile(
+    private static void drawTile(
             Canvas canvas, String letter, int tileColor, int left, int top, int right, int bottom) {
         letter = letter.toUpperCase(Locale.getDefault());
         Paint tilePaint = new Paint(), textPaint = new Paint();
@@ -603,68 +580,45 @@ public class AvatarService {
         float width = textPaint.measureText(letter);
         canvas.drawText(
                 letter,
-                (right + left) / 2 - width / 2,
-                (top + bottom) / 2 + rect.height() / 2,
+                (right + left) / 2f - width / 2f,
+                (top + bottom) / 2f + rect.height() / 2f,
                 textPaint);
-        return true;
     }
 
-    private boolean drawTile(
+    private void drawTile(
             Canvas canvas, MucOptions.User user, int left, int top, int right, int bottom) {
-        Contact contact = user.getContact();
-        if (contact != null) {
-            Uri uri = null;
-            if (contact.getAvatar() != null && QuickConversationsService.isQuicksy()) {
-                uri = mXmppConnectionService.getFileBackend().getAvatarUri(contact.getAvatar());
-            } else if (contact.getProfilePhoto() != null) {
-                uri = Uri.parse(contact.getProfilePhoto());
-            } else if (contact.getAvatar() != null) {
-                uri = mXmppConnectionService.getFileBackend().getAvatarUri(contact.getAvatar());
-            }
-            if (drawTile(canvas, uri, left, top, right, bottom)) {
-                return true;
-            }
-        } else if (user.getAvatar() != null) {
+        if (user.getAvatar() != null) {
             Uri uri = mXmppConnectionService.getFileBackend().getAvatarUri(user.getAvatar());
             if (drawTile(canvas, uri, left, top, right, bottom)) {
-                return true;
+                return;
             }
         }
-        if (contact != null) {
-            String seed = contact.getAddress().asBareJid().toString();
-            drawTile(canvas, contact.getDisplayName(), seed, left, top, right, bottom);
-        } else {
-            String seed =
-                    user.getRealJid() == null ? null : user.getRealJid().asBareJid().toString();
-            drawTile(canvas, user.getName(), seed, left, top, right, bottom);
-        }
-        return true;
+        String seed = user.getRealJid() == null ? null : user.getRealJid().asBareJid().toString();
+        drawTile(canvas, user.getDisplayName(), seed, left, top, right, bottom);
     }
 
-    private boolean drawTile(
+    private void drawTile(
             Canvas canvas, Account account, int left, int top, int right, int bottom) {
         String avatar = account.getAvatar();
         if (avatar != null) {
             Uri uri = mXmppConnectionService.getFileBackend().getAvatarUri(avatar);
             if (uri != null) {
                 if (drawTile(canvas, uri, left, top, right, bottom)) {
-                    return true;
+                    return;
                 }
             }
         }
         String name = account.getJid().asBareJid().toString();
-        return drawTile(canvas, name, name, left, top, right, bottom);
+        drawTile(canvas, name, name, left, top, right, bottom);
     }
 
-    private static boolean drawTile(
+    private static void drawTile(
             Canvas canvas, String name, String seed, int left, int top, int right, int bottom) {
         if (name != null) {
             final String letter = name.equals(CHANNEL_SYMBOL) ? name : getFirstLetter(name);
             final int color = UIHelper.getColorForName(seed == null ? name : seed);
             drawTile(canvas, letter, color, left, top, right, bottom);
-            return true;
         }
-        return false;
     }
 
     private static String getFirstLetter(String name) {

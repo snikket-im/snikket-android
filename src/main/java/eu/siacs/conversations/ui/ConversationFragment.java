@@ -3167,7 +3167,7 @@ public class ConversationFragment extends XmppFragment
                                         conversation,
                                         getString(
                                                 R.string.contact_has_read_up_to_this_point,
-                                                UIHelper.getDisplayName(shownMarkers.get(0))));
+                                                shownMarkers.get(0).getDisplayName()));
                         statusMessage.setCounterpart(shownMarkers.get(0).getFullJid());
                         statusMessage.setTrueCounterpart(shownMarkers.get(0).getRealJid());
                     } else {
@@ -3192,7 +3192,7 @@ public class ConversationFragment extends XmppFragment
                                     : R.string.contact_has_stopped_typing;
                     statusMessage =
                             Message.createStatusMessage(
-                                    conversation, getString(id, UIHelper.getDisplayName(user)));
+                                    conversation, getString(id, user.getDisplayName()));
                     statusMessage.setTrueCounterpart(user.getRealJid());
                     statusMessage.setCounterpart(user.getFullJid());
                 } else {
@@ -3534,7 +3534,7 @@ public class ConversationFragment extends XmppFragment
         }
         List<String> completions = new ArrayList<>();
         for (MucOptions.User user : conversation.getMucOptions().getUsers()) {
-            String name = user.getName();
+            String name = user.resource();
             if (name != null && name.startsWith(incomplete)) {
                 completions.add(name + (firstWord ? ": " : " "));
             }
@@ -3730,19 +3730,17 @@ public class ConversationFragment extends XmppFragment
                 final var mucOptions = c.getMucOptions();
                 if (mucOptions.participating()) {
                     final var user = mucOptions.getUserOrStub(message);
-                    if (user.getFullJid() != null) {
-                        // TODO this is probably not a good condition
-                        // maybe either ranks Visitor or ranks member
-                        if (user.getRole() == Role.NONE) {
+                    if (user.resource() != null) {
+                        if (user instanceof MucOptions.Stub) {
                             Toast.makeText(
                                             requireActivity(),
                                             activity.getString(
                                                     R.string.user_has_left_conference,
-                                                    user.getFullJid().getResource()),
+                                                    user.getDisplayName()),
                                             Toast.LENGTH_SHORT)
                                     .show();
                         }
-                        highlightInConference(user.getFullJid().getResource());
+                        highlightInConference(user.resource());
                     } else {
                         final var counterpart = message.getCounterpart();
                         if (counterpart != null && counterpart.isFullJid()) {

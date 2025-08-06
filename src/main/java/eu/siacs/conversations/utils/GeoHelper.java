@@ -92,13 +92,10 @@ public class GeoHelper {
                 locationPluginIntent.putExtra(
                         "name", conversation.getAccount().getJid().getLocal());
             } else {
-                Contact contact = message.getContact();
+                locationPluginIntent.putExtra("name", UIHelper.getMessageDisplayName(message));
+                final Contact contact = message.getContact();
                 if (contact != null) {
-                    locationPluginIntent.putExtra("name", contact.getDisplayName());
                     locationPluginIntent.putExtra("jid", contact.getAddress().toString());
-                } else {
-                    locationPluginIntent.putExtra(
-                            "name", UIHelper.getDisplayedMucCounterpart(message.getCounterpart()));
                 }
             }
             intents.add(locationPluginIntent);

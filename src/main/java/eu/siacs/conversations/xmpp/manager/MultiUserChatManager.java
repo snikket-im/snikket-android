@@ -381,7 +381,7 @@ public class MultiUserChatManager extends AbstractManager {
         final int count = mucOptions.getUserCount();
         final var isGeneratedAvatar = Strings.isNullOrEmpty(mucOptions.getAvatar());
         final var tileUserBefore =
-                isGeneratedAvatar ? mucOptions.getUsersVisual(5) : Collections.emptyList();
+                isGeneratedAvatar ? mucOptions.getUsersPreview(5) : Collections.emptyList();
         if (type == null) {
             handleAvailablePresence(presence);
         } else if (type == Presence.Type.UNAVAILABLE) {
@@ -390,7 +390,7 @@ public class MultiUserChatManager extends AbstractManager {
             throw new AssertionError("presences of this type should not be routed here");
         }
         final var tileUserAfter =
-                isGeneratedAvatar ? mucOptions.getUsersVisual(5) : Collections.emptyList();
+                isGeneratedAvatar ? mucOptions.getUsersPreview(5) : Collections.emptyList();
         if (isGeneratedAvatar && !tileUserAfter.equals(tileUserBefore)) {
             // TODO test that this is doing something
             service.getAvatarService().clear(mucOptions);
@@ -432,25 +432,15 @@ public class MultiUserChatManager extends AbstractManager {
         if (codes.contains(MucUser.STATUS_CODE_SELF_PRESENCE)
                 || (codes.contains(MucUser.STATUS_CODE_ROOM_CREATED)
                         && jid.equals(item.getJid()))) {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid()
-                            + ": got self-presence from "
-                            + user.getFullJid()
-                            + ". occupant-id="
-                            + occupantId);
-            if (mucOptions.setOnline()) {
-                service.getAvatarService().clear(mucOptions);
-            }
             final var current = mucOptions.getSelf().getFullJid();
-            // TODO remove Id.real from users list in case it got in there somehow
-            if (mucOptions.setSelf(user.asSelf())) {
+            if (mucOptions.setSelf(user.asConnectedSelf())) {
                 Log.d(Config.LOGTAG, "role or affiliation changed");
                 getDatabase().updateConversation(conversation);
             }
             final var modified = current == null || !current.equals(user.getFullJid());
             service.persistSelfNick(user, modified);
             invokeRenameListener(mucOptions, true);
+            service.getAvatarService().clear(mucOptions);
         } else {
             final var previousMembers = mucOptions.getMembers();
             mucOptions.updateUser(user);
