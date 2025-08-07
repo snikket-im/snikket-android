@@ -12,14 +12,6 @@ public class PublishOptions {
     public static Bundle openAccess() {
         final Bundle options = new Bundle();
         options.putString("pubsub#access_model", "open");
-        options.putString("pubsub#notify_delete", "true");
-        return options;
-    }
-
-    public static Bundle presenceAccess() {
-        final Bundle options = new Bundle();
-        options.putString("pubsub#access_model", "presence");
-        options.putString("pubsub#notify_delete", "true");
         return options;
     }
 
