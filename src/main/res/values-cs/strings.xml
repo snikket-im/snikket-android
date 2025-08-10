@@ -90,7 +90,7 @@
     <string name="send_message">Odeslat zprávu</string>
     <string name="send_message_to_x">Odeslat zprávu pro %s</string>
     <string name="send_omemo_x509_message">Odeslat v\\OMEMO šifrovanou zprávu</string>
-    <string name="your_nick_has_been_changed">Přezdívka změněna</string>
+    <string name="your_nick_has_been_changed">Přezdívka byla změněna.</string>
     <string name="send_unencrypted">Odeslat nešifrovaný text</string>
     <string name="decryption_failed">Zašifrování se nezdařilo. Možná nemáte správný privátní klíč.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -492,10 +492,7 @@
     <string name="no_storage_permission">Povolit %1$s přístup k externímu úložišti</string>
     <string name="no_camera_permission">Povolit %1$s přístup ke kameře</string>
     <string name="sync_with_contacts">Integrace seznamu kontaktů</string>
-    <string name="sync_with_contacts_long">%1$s zpracovává Váš seznam kontaktů místně na Vašem zařízení za účelem zobrazení jmen a profilových obrázků odpovídajících kontaktů na XMPP.
-\n
-\n
-\nŽádná data kontaktů nikdy neopouštějí Vaše zařízení!</string>
+    <string name="sync_with_contacts_long">%1$s zpracovává Váš seznam kontaktů místně na Vašem zařízení za účelem zobrazení jmen a profilových obrázků odpovídajících kontaktů na XMPP.\n\nŽádná data kontaktů nikdy neopouštějí Vaše zařízení!</string>
     <string name="notify_on_all_messages">Upozorňovat na všechny zprávy</string>
     <string name="notify_only_when_highlighted">Upozornit pouze, když mě někdo zmíní</string>
     <string name="notify_never">Upozornění vypnuta</string>
@@ -1157,4 +1154,5 @@
     <string name="copy_geo_uri">Kopírovat polohu</string>
     <string name="copy_email_address">Kopírovat e-mailovou adresu</string>
     <string name="copied_email_address">E-mailová adresa zkopírována do schránky</string>
+    <string name="welcome_header">Začněte používat Conversation</string>
 </resources>
