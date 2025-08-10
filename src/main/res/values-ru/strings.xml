@@ -1178,7 +1178,7 @@
     <string name="moderation_explained">Сообщение будет удалено для вас и всех остальных участников этого публичного канала.</string>
     <string name="do_not_show_this_warning_again">Больше не предупреждать.</string>
     <string name="could_not_moderate_message">Не удалось отмодерировать сообщение</string>
-    <string name="last_seen">активность %s</string>
+    <string name="last_seen">Активность %s</string>
     <plurals name="x_participants">
         <item quantity="one">%1$d участник</item>
         <item quantity="few">%1$d участника</item>
