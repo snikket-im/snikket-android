@@ -17,7 +17,12 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -32,7 +37,6 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import im.conversations.android.model.Bookmark;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,12 +61,11 @@ public class AvatarService {
     private static final String PREFIX_GENERIC = "generic";
 
     private final Set<Integer> sizes = new HashSet<>();
-    // TODO refactor to multimap
-    private final HashMap<String, Set<String>> conversationDependentKeys = new HashMap<>();
+    private final Multimap<String, String> conversationDependentKeys = ArrayListMultimap.create();
 
-    protected XmppConnectionService mXmppConnectionService = null;
+    protected final XmppConnectionService mXmppConnectionService;
 
-    AvatarService(XmppConnectionService service) {
+    AvatarService(final XmppConnectionService service) {
         this.mXmppConnectionService = service;
     }
 
@@ -282,22 +285,22 @@ public class AvatarService {
                 + size;
     }
 
-    private String key(MucOptions.User user, int size) {
+    private String key(final MucOptions.User user, final int size) {
         synchronized (this.sizes) {
             this.sizes.add(size);
         }
-        return PREFIX_CONTACT
-                + '\0'
-                + user.getAccount().getJid().asBareJid()
+        return PREFIX_CONTACT + '\0' + key(user) + '\0' + size;
+    }
+
+    private static String key(final MucOptions.User user) {
+        return emptyOnNull(user.getAccount().getJid().asBareJid())
                 + '\0'
                 + emptyOnNull(user.getFullJid())
                 + '\0'
-                + emptyOnNull(user.getRealJid())
-                + '\0'
-                + size;
+                + emptyOnNull(user.getRealJid());
     }
 
-    public Bitmap get(ListItem item, int size) {
+    public Bitmap get(final ListItem item, final int size) {
         return get(item, size, false);
     }
 
@@ -453,28 +456,16 @@ public class AvatarService {
     }
 
     private String key(final List<MucOptions.User> users, final int size) {
-        final Conversation conversation = users.get(0).getConversation();
-        StringBuilder builder = new StringBuilder("TILE_");
-        builder.append(conversation.getUuid());
-
-        for (final MucOptions.User user : users) {
-            builder.append("\0");
-            builder.append(emptyOnNull(user.getRealJid()));
-            builder.append("\0");
-            builder.append(emptyOnNull(user.getFullJid()));
-        }
-        builder.append('\0');
-        builder.append(size);
-        final String key = builder.toString();
+        final var uuid = Iterables.getFirst(users, null).getConversation().getUuid();
+        final String key =
+                "TILE_"
+                        + uuid
+                        + '\0'
+                        + Joiner.on('\0').join(Collections2.transform(users, AvatarService::key))
+                        + '\0'
+                        + size;
         synchronized (this.conversationDependentKeys) {
-            Set<String> keys;
-            if (this.conversationDependentKeys.containsKey(conversation.getUuid())) {
-                keys = this.conversationDependentKeys.get(conversation.getUuid());
-            } else {
-                keys = new HashSet<>();
-                this.conversationDependentKeys.put(conversation.getUuid(), keys);
-            }
-            keys.add(key);
+            this.conversationDependentKeys.put(uuid, key);
         }
         return key;
     }
@@ -542,17 +533,13 @@ public class AvatarService {
                 this.mXmppConnectionService.getBitmapCache().remove(key(user, size));
             }
         }
+        final var uuid = user.getConversation().getUuid();
         synchronized (this.conversationDependentKeys) {
-            final Set<String> keys =
-                    this.conversationDependentKeys.get(user.getConversation().getUuid());
-            if (keys == null) {
-                return;
-            }
+            final var keys = this.conversationDependentKeys.removeAll(uuid);
             final var cache = this.mXmppConnectionService.getBitmapCache();
             for (final String key : keys) {
                 cache.remove(key);
             }
-            keys.clear();
         }
     }
 

@@ -305,6 +305,10 @@ public class AvatarManager extends AbstractManager {
         }
         if (user.setAvatar(id)) {
             service.getAvatarService().clear(user);
+            if (Strings.isNullOrEmpty(mucOptions.getAvatar())
+                    && mucOptions.isPrivateAndNonAnonymous()) {
+                service.getAvatarService().clear(mucOptions);
+            }
             service.updateConversationUi();
             service.updateMucRosterUi();
         }
