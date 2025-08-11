@@ -5,6 +5,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.time.Instant;
 
 public class BackupFileHeader {
 
@@ -91,6 +92,10 @@ public class BackupFileHeader {
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public Instant getInstant() {
+        return Instant.ofEpochMilli(this.timestamp);
     }
 
     public static class OutdatedBackupFileVersion extends RuntimeException {}
