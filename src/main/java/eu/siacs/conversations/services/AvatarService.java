@@ -373,7 +373,7 @@ public class AvatarService {
         if (mucOptions.isPrivateAndNonAnonymous()) {
             final List<MucOptions.User> users = mucOptions.getUsersPreviewWithFallback();
             // for adaptive icons do not render the icons consisting of participants
-            if (users.isEmpty() || fontSize == FONT_SIZE_ADAPTIVE) {
+            if (users.size() <= 1 || fontSize == FONT_SIZE_ADAPTIVE) {
                 bitmap = getImpl(getFirstLetter(c), c.getAvatarBackgroundColor(), fontSize, size);
             } else {
                 bitmap = getImpl(users, size);
@@ -400,15 +400,12 @@ public class AvatarService {
     }
 
     private Bitmap getImpl(final List<MucOptions.User> users, final int size) {
-        int count = users.size();
+        final int count = users.size();
         Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         bitmap.eraseColor(TRANSPARENT);
-        if (count == 0) {
-            throw new AssertionError("Unable to draw tiles for 0 users");
-        } else if (count == 1) {
-            drawTile(canvas, users.get(0), 0, 0, size / 2 - 1, size);
-            drawTile(canvas, users.get(0).getAccount(), size / 2 + 1, 0, size, size);
+        if (count <= 1) {
+            throw new AssertionError("Unable to draw tiles for 0 or 1 users");
         } else if (count == 2) {
             drawTile(canvas, users.get(0), 0, 0, size / 2 - 1, size);
             drawTile(canvas, users.get(1), size / 2 + 1, 0, size, size);
@@ -661,6 +658,12 @@ public class AvatarService {
             final int top,
             final int right,
             final int bottom) {
+
+        if (user instanceof MucOptions.Self) {
+            drawTile(canvas, user.getAccount(), left, top, right, bottom);
+            return;
+        }
+
         if (user.getAvatar() != null) {
             Uri uri = mXmppConnectionService.getFileBackend().getAvatarUri(user.getAvatar());
             if (drawTile(canvas, uri, left, top, right, bottom)) {

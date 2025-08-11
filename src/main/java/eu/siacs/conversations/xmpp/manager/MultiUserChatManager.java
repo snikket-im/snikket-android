@@ -422,8 +422,6 @@ public class MultiUserChatManager extends AbstractManager {
         final var account = getAccount();
         final Jid jid = account.getJid();
         final var conversation = mucOptions.getConversation();
-
-        mucOptions.setError(MucOptions.Error.NONE);
         final var occupant = presence.getOnlyExtension(OccupantId.class);
         final String occupantId =
                 mucOptions.occupantId() && occupant != null ? occupant.getId() : null;
@@ -443,7 +441,7 @@ public class MultiUserChatManager extends AbstractManager {
             service.getAvatarService().clear(mucOptions);
         } else {
             final var previousMembers = mucOptions.getMembers();
-            mucOptions.updateUser(user);
+            mucOptions.updateUser(user, null);
             fetchDeviceIdsIfNeeded(previousMembers, user);
         }
         if (codes.contains(MucUser.STATUS_CODE_ROOM_CREATED)
@@ -644,6 +642,9 @@ public class MultiUserChatManager extends AbstractManager {
         if (from == null || from.isFullJid() || mucUser == null) {
             return;
         }
+
+        // TODO just get state?!
+
         final var conversation = this.service.find(getAccount(), from);
         if (conversation == null || conversation.getMode() != Conversation.MODE_MULTI) {
             return;
@@ -686,6 +687,7 @@ public class MultiUserChatManager extends AbstractManager {
         }
         final var mucOptions = getOrCreateState(conversation);
         final var previousMembers = mucOptions.getMembers();
+        mucOptions.updateUser(user);
         final var avatarService = this.service.getAvatarService();
         if (Strings.isNullOrEmpty(mucOptions.getAvatar())) {
             avatarService.clear(mucOptions);

@@ -541,6 +541,7 @@ public class ConferenceDetailsActivity extends XmppActivity
         builder.setPositiveButton(
                 R.string.ok,
                 (dialog, which) -> {
+                    // TODO call manager directly
                     final var future = xmppConnectionService.destroyRoom(mConversation);
                     Futures.addCallback(
                             future,

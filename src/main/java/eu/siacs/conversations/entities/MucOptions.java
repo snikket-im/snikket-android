@@ -349,7 +349,15 @@ public class MucOptions {
     }
 
     public void updateUser(final User user) {
-        updateUser(user, null);
+        // these updates are coming from MUC status messages and from member/owner lookups
+        // figure out 'availability' based on role and resource
+        final Presence.Type availability;
+        if (user.getRole() == Role.NONE || user.resource() == null) {
+            availability = Presence.Type.UNAVAILABLE;
+        } else {
+            availability = null;
+        }
+        updateUser(user, availability);
     }
 
     public void updateUser(final User user, final Presence.Type type) {
@@ -361,11 +369,6 @@ public class MucOptions {
             }
             if (resource != null) {
                 this.users.remove(Id.resource(resource));
-            } else {
-                if (real != null && isOnline(real, this.users)) {
-                    this.resetOccupantIdMap();
-                    return;
-                }
             }
 
             // if type null add normal; if type == unavailable add as real jid
@@ -608,10 +611,11 @@ public class MucOptions {
         return this.error;
     }
 
+    // TODO inject 'self' from <x/> element
     public void setError(final Error error) {
-        // TODO flip self to not connected
-        // this.isOnline = isOnline && error == Error.NONE;
+        final var self = getSelf();
         this.error = error;
+        this.self = self.asDisconnected();
     }
 
     public void setOnRenameListener(OnRenameListener listener) {
@@ -644,7 +648,11 @@ public class MucOptions {
         } else {
             users = getFallbackUsersFromCryptoTargets();
         }
-        return users;
+        if (users.size() == 1) {
+            return new ImmutableList.Builder<User>().addAll(users).add(self).build();
+        } else {
+            return users;
+        }
     }
 
     public long[] getPgpKeyIds() {
@@ -1031,6 +1039,28 @@ public class MucOptions {
             Preconditions.checkArgument(
                     fullJid != null && fullJid.isFullJid(), "the full jid needs to be a full jid");
             this.connected = connected;
+        }
+
+        @Override
+        public Contact getContact() {
+            return null;
+        }
+
+        @Override
+        @NonNull
+        public String getDisplayName() {
+            return resource();
+        }
+
+        public Self asDisconnected() {
+            return new Self(
+                    getMucOptions(),
+                    getFullJid(),
+                    getRealJid(),
+                    getOccupantId(),
+                    Role.NONE,
+                    getAffiliation(),
+                    false);
         }
     }
 
