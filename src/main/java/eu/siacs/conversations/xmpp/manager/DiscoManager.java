@@ -512,7 +512,10 @@ public class DiscoManager extends AbstractManager {
     }
 
     public void clear(final Jid address) {
-        if (hasServerItem(address)) {
+        final var account = getAccount().getJid().asBareJid();
+        if (hasServerItem(address)
+                || account.equals(address)
+                || account.getDomain().equals(address)) {
             Log.d(Config.LOGTAG, "do not clear disco#info for " + address);
             return;
         }
