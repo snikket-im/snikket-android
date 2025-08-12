@@ -751,4 +751,20 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO será usado para novas conversas por predefinição.</string>
     <string name="view_conversation">Ver conversa</string>
     <string name="pref_use_share_location_plugin_summary">Usar o Plugin de Partilha de Localização em vez do mapa integrado</string>
+    <string name="pref_start_search">Pesquisa Direta</string>
+    <string name="pref_start_search_summary">No ecrã ‘New chat’, abra o teclado e coloque o cursor no campo de pesquisa</string>
+    <string name="group_chat_avatar">Avatar da conversa de grupo</string>
+    <string name="host_does_not_support_group_chat_avatars">O anfitrião não suporta avatares de conversa de grupo</string>
+    <string name="only_the_owner_can_change_group_chat_avatar">Apenas o dono pode alterar o avatar da conversa em grupo</string>
+    <string name="contact_name">Nome do contacto</string>
+    <string name="group_chat_name">Nome</string>
+    <string name="nickname">Alcunha</string>
+    <string name="copy_geo_uri">Copiar geolocalização</string>
+    <string name="copy_jabber_id">Copiar endereço XMPP</string>
+    <string name="copy_email_address">Copiar endereço de email</string>
+    <string name="copied_email_address">Endereço de email copiado</string>
+    <string name="copied_phone_number">Número de telemóvel copiado</string>
+    <string name="p1_s3_filetransfer">HTTP File Sharing para S3</string>
+    <string name="create_dialog_group_chat_name">Nome da conversa em grupo</string>
+    <string name="providing_a_name_is_optional">O nome é opcional</string>
 </resources>
