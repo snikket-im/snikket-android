@@ -2267,9 +2267,10 @@ public class XmppConnection implements Runnable {
             discoManager.fetchServerCommands();
         }
 
-        // TODO check if MamManager has feature and
         final var messageArchiveManager = getManager(MessageArchiveManager.class);
-        messageArchiveManager.catchup(account);
+        if (messageArchiveManager.hasFeature()) {
+            messageArchiveManager.catchup();
+        }
     }
 
     private void processStreamError(final StreamError streamError) throws IOException {
