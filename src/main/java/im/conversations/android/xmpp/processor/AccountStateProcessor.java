@@ -45,7 +45,6 @@ public class AccountStateProcessor extends XmppConnection.Delegate
             if (account.setShowErrorNotification(true)) {
                 this.service.databaseBackend.updateAccount(account);
             }
-            this.service.getMessageArchiveService().executePendingQueries(account);
             if (this.connection.getFeatures().csi()) {
                 if (this.service.checkListeners()) {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + " sending csi//inactive");

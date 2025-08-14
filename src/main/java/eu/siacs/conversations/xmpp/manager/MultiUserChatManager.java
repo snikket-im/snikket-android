@@ -21,7 +21,6 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.MucOptions;
-import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.StringUtils;
@@ -224,10 +223,6 @@ public class MultiUserChatManager extends AbstractManager {
     private Void checkConfigurationSendPresenceFetchHistory(final Conversation conversation) {
         final Account account = conversation.getAccount();
         final MucOptions mucOptions = getOrCreateState(conversation);
-        Log.d(
-                Config.LOGTAG,
-                "checkConfigurationSendPresenceFetchHistory(" + conversation.getAddress() + ")");
-
         if (mucOptions.nonanonymous()
                 && !mucOptions.membersOnly()
                 && !conversation.getBooleanAttribute("accept_non_anonymous", false)) {
@@ -238,15 +233,6 @@ public class MultiUserChatManager extends AbstractManager {
             service.updateConversationUi();
             return null;
         }
-
-        Log.d(
-                Config.LOGTAG,
-                "moderation: "
-                        + mucOptions.moderation()
-                        + " ("
-                        + mucOptions.getConversation().getAddress().asBareJid()
-                        + ")");
-
         final Jid joinJid = mucOptions.getSelf().getFullJid();
         Log.d(
                 Config.LOGTAG,
@@ -276,7 +262,7 @@ public class MultiUserChatManager extends AbstractManager {
         }
 
         if (mucOptions.mamSupport()) {
-            this.service.getMessageArchiveService().catchupMUC(conversation);
+            getManager(MessageArchiveManager.class).catchupMUC(conversation);
         }
         if (mucOptions.isPrivateAndNonAnonymous()) {
             fetchMembers(conversation);
@@ -1281,7 +1267,7 @@ public class MultiUserChatManager extends AbstractManager {
 
     @Nullable
     public MucOptions.User getMucUser(
-            @NonNull final Message message, @Nullable final MessageArchiveService.Query query) {
+            @NonNull final Message message, @Nullable final MessageArchiveManager.Query query) {
         final var from = message.getFrom();
         if (from == null) {
             return null;

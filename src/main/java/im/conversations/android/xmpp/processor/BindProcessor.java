@@ -13,6 +13,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
+import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.NickManager;
@@ -75,12 +76,13 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         } else {
             Log.d(Config.LOGTAG, account.getJid() + ": server has no support for mds");
         }
+        final var archiveManager = getManager(MessageArchiveManager.class);
         final var offlineManager = getManager(OfflineMessagesManager.class);
         final boolean bind2 = features.bind2();
         final boolean flexible = offlineManager.hasFeature();
-        final boolean catchup = service.getMessageArchiveService().inCatchup(account);
+        final boolean catchup = archiveManager.inCatchup();
         final boolean trackOfflineMessageRetrieval;
-        if (!bind2 && flexible && catchup && connection.isMamPreferenceAlways()) {
+        if (!bind2 && flexible && catchup && archiveManager.isMamPreferenceAlways()) {
             trackOfflineMessageRetrieval = false;
             Futures.addCallback(
                     offlineManager.purge(),

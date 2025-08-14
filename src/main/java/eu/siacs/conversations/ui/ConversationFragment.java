@@ -91,7 +91,6 @@ import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.http.HttpDownloadConnection;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.CallIntegrationConnectionService;
-import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.MediaPreviewAdapter;
@@ -113,6 +112,7 @@ import eu.siacs.conversations.ui.util.ShareUtil;
 import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.EditMessage;
 import eu.siacs.conversations.utils.AccountUtils;
+import eu.siacs.conversations.utils.CharSequenceUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
@@ -132,6 +132,7 @@ import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
+import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.ModerationManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
@@ -3036,9 +3037,9 @@ public class ConversationFragment extends XmppFragment
         boolean hasAttachments =
                 mediaPreviewAdapter != null && mediaPreviewAdapter.hasAttachments();
         final Conversation c = this.conversation;
+        final var connection = c.getAccount().getXmppConnection();
         final Presence.Availability status;
-        final String text =
-                this.binding.textinput == null ? "" : this.binding.textinput.getText().toString();
+        final String text = CharSequenceUtils.nullToEmpty(this.binding.textinput.getText());
         final SendButtonAction action;
         if (hasAttachments) {
             action = SendButtonAction.TEXT;
@@ -3046,9 +3047,7 @@ public class ConversationFragment extends XmppFragment
             action = SendButtonTool.getAction(getActivity(), c, text);
         }
         if (c.getAccount().getStatus() == Account.State.ONLINE) {
-            if (activity != null
-                    && activity.xmppConnectionService != null
-                    && activity.xmppConnectionService.getMessageArchiveService().isCatchingUp(c)) {
+            if (connection.getManager(MessageArchiveManager.class).isCatchingUp(c)) {
                 status = Presence.Availability.OFFLINE;
             } else if (c.getMode() == Conversation.MODE_SINGLE) {
                 status = c.getContact().getShownStatus();
@@ -3220,9 +3219,9 @@ public class ConversationFragment extends XmppFragment
         if (activity == null || activity.xmppConnectionService == null) {
             return false;
         }
+        final var connection = c.getAccount().getXmppConnection();
         final boolean mam = hasMamSupport(c) && !c.getContact().isBlocked();
-        final MessageArchiveService service =
-                activity.xmppConnectionService.getMessageArchiveService();
+        final MessageArchiveManager service = connection.getManager(MessageArchiveManager.class);
         return mam
                 && (c.getLastClearHistory().getTimestamp() != 0
                         || (c.countMessages() == 0
@@ -3233,8 +3232,8 @@ public class ConversationFragment extends XmppFragment
 
     private boolean hasMamSupport(final Conversation c) {
         if (c.getMode() == Conversation.MODE_SINGLE) {
-            final XmppConnection connection = c.getAccount().getXmppConnection();
-            return connection != null && connection.getFeatures().mam();
+            final var connection = c.getAccount().getXmppConnection();
+            return connection.getManager(MessageArchiveManager.class).hasFeature();
         } else {
             return c.getMucOptions().mamSupport();
         }

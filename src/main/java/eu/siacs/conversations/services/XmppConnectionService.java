@@ -125,6 +125,7 @@ import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.manager.AvatarManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
+import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.NickManager;
@@ -256,7 +257,6 @@ public class XmppConnectionService extends Service {
             new JingleConnectionManager(this);
     private final HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(this);
     private final AvatarService mAvatarService = new AvatarService(this);
-    private final MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
     private final QuickConversationsService mQuickConversationsService =
             new QuickConversationsService(this);
     private final ConversationsFileObserver fileObserver =
@@ -1560,7 +1560,6 @@ public class XmppConnectionService extends Service {
     public XmppConnection createConnection(final Account account) {
         final XmppConnection connection = new XmppConnection(account, this);
         connection.setOnJinglePacketReceivedListener((mJingleConnectionManager::deliverPacket));
-        connection.addOnAdvancedStreamFeaturesAvailableListener(this.mMessageArchiveService);
         return connection;
     }
 
@@ -2044,8 +2043,9 @@ public class XmppConnectionService extends Service {
             final Conversation conversation,
             final long timestamp,
             final OnMoreMessagesLoaded callback) {
-        if (XmppConnectionService.this
-                .getMessageArchiveService()
+        final var connection = conversation.getAccount().getXmppConnection();
+        if (connection
+                .getManager(MessageArchiveManager.class)
                 .queryInProgress(conversation, callback)) {
             return;
         } else if (timestamp == 0) {
@@ -2071,14 +2071,17 @@ public class XmppConnectionService extends Service {
                         final boolean mamAvailable;
                         if (conversation.getMode() == Conversation.MODE_SINGLE) {
                             mamAvailable =
-                                    account.getXmppConnection().getFeatures().mam()
+                                    account.getXmppConnection()
+                                                    .getManager(MessageArchiveManager.class)
+                                                    .hasFeature()
                                             && !conversation.getContact().isBlocked();
                         } else {
                             mamAvailable = conversation.getMucOptions().mamSupport();
                         }
                         if (mamAvailable) {
-                            MessageArchiveService.Query query =
-                                    getMessageArchiveService()
+                            MessageArchiveManager.Query query =
+                                    connection
+                                            .getManager(MessageArchiveManager.class)
                                             .query(
                                                     conversation,
                                                     new MamReference(0),
@@ -2160,7 +2163,7 @@ public class XmppConnectionService extends Service {
             final Jid jid,
             final boolean muc,
             final boolean joinAfterCreate,
-            final MessageArchiveService.Query query,
+            final MessageArchiveManager.Query query,
             final boolean async) {
         synchronized (this.conversations) {
             final var cached = find(account, jid);
@@ -2268,7 +2271,7 @@ public class XmppConnectionService extends Service {
             final Conversation c,
             final boolean loadMessagesFromDb,
             final boolean joinAfterCreate,
-            final MessageArchiveService.Query query) {
+            final MessageArchiveManager.Query query) {
         final var singleMode = c.getMode() == Conversational.MODE_SINGLE;
         final var account = c.getAccount();
         if (loadMessagesFromDb) {
@@ -2276,15 +2279,17 @@ public class XmppConnectionService extends Service {
             updateConversationUi();
             c.messagesLoaded.set(true);
         }
+        final var connection = account.getXmppConnection();
+        final var archiveManager = connection.getManager(MessageArchiveManager.class);
         if (account.getXmppConnection() != null
                 && !c.getContact().isBlocked()
-                && account.getXmppConnection().getFeatures().mam()
+                && archiveManager.hasFeature()
                 && singleMode) {
             if (query == null) {
-                mMessageArchiveService.query(c);
+                archiveManager.query(c);
             } else {
                 if (query.getConversation() == null) {
-                    mMessageArchiveService.query(c, query.getStart(), query.isCatchup());
+                    archiveManager.query(c, query.getStart(), query.isCatchup());
                 }
             }
         }
@@ -2305,7 +2310,7 @@ public class XmppConnectionService extends Service {
         conversation.setStatus(Conversation.STATUS_ARCHIVED);
         conversation.setNextMessage(null);
         synchronized (this.conversations) {
-            getMessageArchiveService().kill(conversation);
+            connection.getManager(MessageArchiveManager.class).kill(conversation);
             if (conversation.getMode() == Conversation.MODE_MULTI) {
                 // TODO always clean up bookmarks no matter if we are currently connected
                 // TODO always delete reference to conversation in bookmark
@@ -3981,10 +3986,6 @@ public class XmppConnectionService extends Service {
         return this.mJingleConnectionManager.hasJingleRtpConnection(account);
     }
 
-    public MessageArchiveService getMessageArchiveService() {
-        return this.mMessageArchiveService;
-    }
-
     public QuickConversationsService getQuickConversationsService() {
         return this.mQuickConversationsService;
     }
@@ -4108,7 +4109,7 @@ public class XmppConnectionService extends Service {
         final var future = connection.getManager(NickManager.class).publish(displayName);
         Futures.addCallback(
                 future,
-                new FutureCallback<Void>() {
+                new FutureCallback<>() {
                     @Override
                     public void onSuccess(Void result) {
                         Log.d(
@@ -4122,23 +4123,6 @@ public class XmppConnectionService extends Service {
                     }
                 },
                 MoreExecutors.directExecutor());
-    }
-
-    public void fetchMamPreferences(final Account account, final OnMamPreferencesFetched callback) {
-        final MessageArchiveService.Version version = MessageArchiveService.Version.get(account);
-        final Iq request = new Iq(Iq.Type.GET);
-        request.addChild("prefs", version.namespace);
-        sendIqPacket(
-                account,
-                request,
-                (packet) -> {
-                    final Element prefs = packet.findChild("prefs", version.namespace);
-                    if (packet.getType() == Iq.Type.RESULT && prefs != null) {
-                        callback.onPreferencesFetched(prefs);
-                    } else {
-                        callback.onPreferencesFetchFailed();
-                    }
-                });
     }
 
     public void changeStatus(
@@ -4214,12 +4198,6 @@ public class XmppConnectionService extends Service {
         return mShortcutService;
     }
 
-    public void pushMamPreferences(Account account, Element prefs) {
-        final Iq set = new Iq(Iq.Type.SET);
-        set.addChild(prefs);
-        sendIqPacket(account, set, null);
-    }
-
     public void evictPreview(String uuid) {
         if (mBitmapCache.remove(uuid) != null) {
             Log.d(Config.LOGTAG, "deleted cached preview");
@@ -4228,12 +4206,6 @@ public class XmppConnectionService extends Service {
 
     public long getLastActivity() {
         return this.mLastActivity;
-    }
-
-    public interface OnMamPreferencesFetched {
-        void onPreferencesFetched(Element prefs);
-
-        void onPreferencesFetchFailed();
     }
 
     public interface OnAccountCreated {
@@ -4287,16 +4259,6 @@ public class XmppConnectionService extends Service {
 
     public interface OnMucRosterUpdate {
         void onMucRosterUpdate();
-    }
-
-    public interface OnConferenceConfigurationFetched {
-        void onConferenceConfigurationFetched(Conversation conversation);
-
-        void onFetchFailed(Conversation conversation, String errorCondition);
-    }
-
-    public interface OnConferenceJoined {
-        void onConferenceJoined(Conversation conversation);
     }
 
     public interface OnConfigurationPushed {

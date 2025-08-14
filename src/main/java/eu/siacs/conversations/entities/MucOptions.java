@@ -16,7 +16,6 @@ import com.google.common.primitives.Longs;
 import de.gultsch.common.IntMap;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.services.AvatarService;
-import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Namespace;
@@ -171,7 +170,7 @@ public class MucOptions {
     }
 
     public boolean mamSupport() {
-        return MessageArchiveService.Version.has(getFeatures());
+        return getFeatures().contains(Namespace.MESSAGE_ARCHIVE_MANAGEMENT);
     }
 
     private InfoQuery getServiceDiscoveryResult() {

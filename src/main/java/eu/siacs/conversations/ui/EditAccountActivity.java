@@ -34,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Lifecycle;
 import com.google.android.material.color.MaterialColors;
@@ -75,7 +76,6 @@ import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
-import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
@@ -83,10 +83,12 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
+import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.PepManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import eu.siacs.conversations.xmpp.manager.RegistrationManager;
 import im.conversations.android.xmpp.model.data.Data;
+import im.conversations.android.xmpp.model.mam.Preferences;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Arrays;
 import java.util.List;
@@ -101,8 +103,7 @@ public class EditAccountActivity extends OmemoActivity
                 OnKeyStatusUpdated,
                 OnCaptchaRequested,
                 KeyChainAliasCallback,
-                XmppConnectionService.OnShowErrorToast,
-                XmppConnectionService.OnMamPreferencesFetched {
+                XmppConnectionService.OnShowErrorToast {
 
     public static final String EXTRA_OPENED_FROM_NOTIFICATION = "opened_from_notification";
     public static final String EXTRA_FORCE_REGISTER = "force_register";
@@ -797,7 +798,10 @@ public class EditAccountActivity extends OmemoActivity
                     mAccount.getXmppConnection().getManager(RegistrationManager.class).hasFeature();
             changePassword.setVisible(registration);
             deleteAccount.setVisible(registration);
-            mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
+            mamPrefs.setVisible(
+                    mAccount.getXmppConnection()
+                            .getManager(MessageArchiveManager.class)
+                            .hasFeature());
             changePresence.setVisible(!mInitMode);
         } else {
             showBlocklist.setVisible(false);
@@ -1251,7 +1255,7 @@ public class EditAccountActivity extends OmemoActivity
             } else {
                 this.binding.serverInfoCarbons.setText(R.string.server_info_unavailable);
             }
-            if (features.mam()) {
+            if (connection.getManager(MessageArchiveManager.class).hasFeature()) {
                 this.binding.serverInfoMam.setText(R.string.server_info_available);
             } else {
                 this.binding.serverInfoMam.setText(R.string.server_info_unavailable);
@@ -1598,11 +1602,70 @@ public class EditAccountActivity extends OmemoActivity
     }
 
     private void editMamPrefs() {
+        final var account = this.mAccount;
+        if (account == null) {
+            return;
+        }
         this.mFetchingMamPrefsToast =
                 Toast.makeText(this, R.string.fetching_mam_prefs, Toast.LENGTH_LONG);
         this.mFetchingMamPrefsToast.show();
-        xmppConnectionService.fetchMamPreferences(mAccount, this);
+        final var future =
+                account.getXmppConnection()
+                        .getManager(MessageArchiveManager.class)
+                        .getArchivingPreference();
+        Futures.addCallback(
+                future, fetchArchivingPreferencesCallback, ContextCompat.getMainExecutor(this));
     }
+
+    private final FutureCallback<Preferences.Default> fetchArchivingPreferencesCallback =
+            new FutureCallback<>() {
+                @Override
+                public void onSuccess(final Preferences.Default current) {
+                    if (mFetchingMamPrefsToast != null) {
+                        mFetchingMamPrefsToast.cancel();
+                    }
+                    final MaterialAlertDialogBuilder builder =
+                            new MaterialAlertDialogBuilder(EditAccountActivity.this);
+                    builder.setTitle(R.string.server_side_mam_prefs);
+                    final List<Preferences.Default> defaults =
+                            Arrays.asList(
+                                    Preferences.Default.NEVER,
+                                    Preferences.Default.ROSTER,
+                                    Preferences.Default.ALWAYS);
+                    final AtomicInteger choice =
+                            new AtomicInteger(Math.max(0, defaults.indexOf(current)));
+                    builder.setSingleChoiceItems(
+                            R.array.mam_prefs, choice.get(), (dialog, which) -> choice.set(which));
+                    builder.setNegativeButton(R.string.cancel, null);
+                    builder.setPositiveButton(
+                            R.string.ok,
+                            (dialog, which) -> {
+                                final var account = mAccount;
+                                if (account == null) {
+                                    return;
+                                }
+                                account.getXmppConnection()
+                                        .getManager(MessageArchiveManager.class)
+                                        .setArchivingPreference(defaults.get(choice.get()));
+                            });
+                    if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                        builder.create().show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Throwable t) {
+                    Log.d(Config.LOGTAG, "error fetching mam preferences", t);
+                    if (mFetchingMamPrefsToast != null) {
+                        mFetchingMamPrefsToast.cancel();
+                    }
+                    Toast.makeText(
+                                    EditAccountActivity.this,
+                                    R.string.unable_to_fetch_mam_prefs,
+                                    Toast.LENGTH_LONG)
+                            .show();
+                }
+            };
 
     @Override
     public void onKeyStatusUpdated(AxolotlService.FetchStatus report) {
@@ -1650,50 +1713,6 @@ public class EditAccountActivity extends OmemoActivity
     public void onShowErrorToast(final int resId) {
         runOnUiThread(
                 () -> Toast.makeText(EditAccountActivity.this, resId, Toast.LENGTH_SHORT).show());
-    }
-
-    @Override
-    public void onPreferencesFetched(final Element prefs) {
-        runOnUiThread(
-                () -> {
-                    if (mFetchingMamPrefsToast != null) {
-                        mFetchingMamPrefsToast.cancel();
-                    }
-                    final MaterialAlertDialogBuilder builder =
-                            new MaterialAlertDialogBuilder(EditAccountActivity.this);
-                    builder.setTitle(R.string.server_side_mam_prefs);
-                    String defaultAttr = prefs.getAttribute("default");
-                    final List<String> defaults = Arrays.asList("never", "roster", "always");
-                    final AtomicInteger choice =
-                            new AtomicInteger(Math.max(0, defaults.indexOf(defaultAttr)));
-                    builder.setSingleChoiceItems(
-                            R.array.mam_prefs, choice.get(), (dialog, which) -> choice.set(which));
-                    builder.setNegativeButton(R.string.cancel, null);
-                    builder.setPositiveButton(
-                            R.string.ok,
-                            (dialog, which) -> {
-                                prefs.setAttribute("default", defaults.get(choice.get()));
-                                xmppConnectionService.pushMamPreferences(mAccount, prefs);
-                            });
-                    if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-                        builder.create().show();
-                    }
-                });
-    }
-
-    @Override
-    public void onPreferencesFetchFailed() {
-        runOnUiThread(
-                () -> {
-                    if (mFetchingMamPrefsToast != null) {
-                        mFetchingMamPrefsToast.cancel();
-                    }
-                    Toast.makeText(
-                                    EditAccountActivity.this,
-                                    R.string.unable_to_fetch_mam_prefs,
-                                    Toast.LENGTH_LONG)
-                            .show();
-                });
     }
 
     @Override

@@ -51,7 +51,6 @@ import eu.siacs.conversations.parser.PresenceParser;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MemorizingTrustManager;
-import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.PendingItem;
@@ -73,6 +72,7 @@ import eu.siacs.conversations.xmpp.manager.AbstractManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.PingManager;
 import eu.siacs.conversations.xmpp.manager.RegistrationManager;
@@ -191,7 +191,6 @@ public class XmppConnection implements Runnable {
     private long lastConnectionStarted = 0;
     private long lastSessionStarted = 0;
     private long lastDiscoStarted = 0;
-    private boolean isMamPreferenceAlways = false;
     private final AtomicBoolean mWaitForDisco = new AtomicBoolean(true);
     private final AtomicBoolean mWaitingForSmCatchup = new AtomicBoolean(false);
     private final AtomicInteger mSmCatchupMessageCounter = new AtomicInteger(0);
@@ -2134,7 +2133,7 @@ public class XmppConnection implements Runnable {
 
         final var features = getFeatures();
         if (!features.bind2()) {
-            discoverMamPreferences();
+            getManager(MessageArchiveManager.class).fetchArchivingPreferences();
         }
 
         final var accountInfoFuture =
@@ -2236,30 +2235,6 @@ public class XmppConnection implements Runnable {
         return false;
     }
 
-    private void discoverMamPreferences() {
-        final Iq request = new Iq(Iq.Type.GET);
-        request.addChild("prefs", MessageArchiveService.Version.MAM_2.namespace);
-        sendIqPacket(
-                request,
-                (response) -> {
-                    if (response.getType() == Iq.Type.RESULT) {
-                        Element prefs =
-                                response.findChild(
-                                        "prefs", MessageArchiveService.Version.MAM_2.namespace);
-                        isMamPreferenceAlways =
-                                "always"
-                                        .equals(
-                                                prefs == null
-                                                        ? null
-                                                        : prefs.getAttribute("default"));
-                    }
-                });
-    }
-
-    public boolean isMamPreferenceAlways() {
-        return isMamPreferenceAlways;
-    }
-
     private void finalizeBindOrError() {
         try {
             finalizeBind();
@@ -2291,6 +2266,10 @@ public class XmppConnection implements Runnable {
         if (discoManager.hasServerCommands()) {
             discoManager.fetchServerCommands();
         }
+
+        // TODO check if MamManager has feature and
+        final var messageArchiveManager = getManager(MessageArchiveManager.class);
+        messageArchiveManager.catchup(account);
     }
 
     private void processStreamError(final StreamError streamError) throws IOException {
@@ -2999,15 +2978,6 @@ public class XmppConnection implements Runnable {
         public boolean pepOmemoWhitelisted() {
             return hasDiscoFeature(
                     account.getJid().asBareJid(), AxolotlService.PEP_OMEMO_WHITELISTED);
-        }
-
-        public boolean mam() {
-            return MessageArchiveService.Version.has(getAccountFeatures());
-        }
-
-        public Collection<String> getAccountFeatures() {
-            final var infoQuery = getManager(DiscoManager.class).get(account.getJid().asBareJid());
-            return infoQuery == null ? Collections.emptyList() : infoQuery.getFeatureStrings();
         }
 
         public boolean rosterVersioning() {

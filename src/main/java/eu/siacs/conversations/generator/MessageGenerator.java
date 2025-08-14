@@ -214,26 +214,20 @@ public class MessageGenerator extends AbstractGenerator {
     }
 
     public im.conversations.android.xmpp.model.stanza.Message received(
-            final Jid from,
+            final Jid to,
             final String id,
             final im.conversations.android.xmpp.model.stanza.Message.Type type) {
         final var receivedPacket = new im.conversations.android.xmpp.model.stanza.Message();
         receivedPacket.setType(type);
-        receivedPacket.setTo(from);
+        receivedPacket.setTo(to);
         receivedPacket.addExtension(new Received(id));
         receivedPacket.addExtension(new Store());
         return receivedPacket;
     }
 
     public im.conversations.android.xmpp.model.stanza.Message received(
-            Account account, Jid to, String id) {
-        im.conversations.android.xmpp.model.stanza.Message packet =
-                new im.conversations.android.xmpp.model.stanza.Message();
-        packet.setFrom(account.getJid());
-        packet.setTo(to);
-        packet.addChild("received", "urn:xmpp:receipts").setAttribute("id", id);
-        packet.addExtension(new Store());
-        return packet;
+            final Jid to, final String id) {
+        return received(to, id, im.conversations.android.xmpp.model.stanza.Message.Type.NORMAL);
     }
 
     public im.conversations.android.xmpp.model.stanza.Message sessionFinish(

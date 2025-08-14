@@ -22,7 +22,6 @@ import eu.siacs.conversations.entities.ReadByMarker;
 import eu.siacs.conversations.entities.ReceiptRequest;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.http.HttpConnectionManager;
-import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
@@ -33,6 +32,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
+import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.ModerationManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.PubSubManager;
@@ -44,6 +44,7 @@ import im.conversations.android.xmpp.model.carbons.Sent;
 import im.conversations.android.xmpp.model.conference.DirectInvite;
 import im.conversations.android.xmpp.model.correction.Replace;
 import im.conversations.android.xmpp.model.forward.Forwarded;
+import im.conversations.android.xmpp.model.mam.Result;
 import im.conversations.android.xmpp.model.markers.Displayed;
 import im.conversations.android.xmpp.model.markers.Markable;
 import im.conversations.android.xmpp.model.muc.user.MucUser;
@@ -330,27 +331,23 @@ public class MessageParser extends AbstractParser
         Long timestamp = null;
         boolean isCarbon = false;
         String serverMsgId = null;
-        final Element fin =
-                original.findChild("fin", MessageArchiveService.Version.MAM_0.namespace);
-        if (fin != null) {
-            mXmppConnectionService.getMessageArchiveService().processFinLegacy(fin, originalFrom);
-            return;
-        }
-        final Element result = MessageArchiveService.Version.findResult(original);
-        final String queryId = result == null ? null : result.getAttribute("queryid");
-        final MessageArchiveService.Query query =
-                queryId == null
-                        ? null
-                        : mXmppConnectionService.getMessageArchiveService().findQuery(queryId);
+        final var result = original.getExtension(Result.class);
+        final String queryId = result == null ? null : result.getQueryId();
+        final MessageArchiveManager.Query query =
+                queryId == null ? null : getManager(MessageArchiveManager.class).findQuery(queryId);
         final boolean offlineMessagesRetrieved = connection.isOfflineMessagesRetrieved();
-        if (query != null && query.validFrom(original.getFrom())) {
-            final var f = getForwardedMessagePacket(original, "result", query.version.namespace);
-            if (f == null) {
+        if (query != null
+                && getManager(MessageArchiveManager.class).validFrom(query, original.getFrom())) {
+            final var f = result.getForwarded();
+            final var stamp = f == null ? null : f.getStamp();
+            final var m = f == null ? null : f.getMessage();
+            if (stamp == null || m == null) {
                 return;
             }
-            timestamp = f.second;
-            packet = f.first;
-            serverMsgId = result.getAttribute("id");
+
+            timestamp = stamp.toEpochMilli();
+            packet = m;
+            serverMsgId = result.getId();
             query.incrementMessageCount();
 
             if (query.isImplausibleFrom(packet.getFrom())) {
@@ -772,8 +769,7 @@ public class MessageParser extends AbstractParser
                             || message.isPrivateMessage()
                             || message.getServerMsgId() != null
                             || (query == null
-                                    && mXmppConnectionService
-                                            .getMessageArchiveService()
+                                    && getManager(MessageArchiveManager.class)
                                             .isCatchupInProgress(conversation));
             if (checkForDuplicates) {
                 final Message duplicate = conversation.findDuplicateMessage(message);
@@ -805,7 +801,7 @@ public class MessageParser extends AbstractParser
             }
 
             if (query != null
-                    && query.getPagingOrder() == MessageArchiveService.PagingOrder.REVERSE) {
+                    && query.getPagingOrder() == MessageArchiveManager.PagingOrder.REVERSE) {
                 conversation.prepend(query.getActualInThisQuery(), message);
             } else {
                 conversation.add(message);
@@ -1052,7 +1048,7 @@ public class MessageParser extends AbstractParser
                                     message.setTime(timestamp);
                                     message.setBody(new RtpSessionStatus(true, 0).toString());
                                     if (query.getPagingOrder()
-                                            == MessageArchiveService.PagingOrder.REVERSE) {
+                                            == MessageArchiveManager.PagingOrder.REVERSE) {
                                         c.prepend(query.getActualInThisQuery(), message);
                                     } else {
                                         c.add(message);
@@ -1121,7 +1117,7 @@ public class MessageParser extends AbstractParser
     private void processReceived(
             final im.conversations.android.xmpp.model.receipts.Received received,
             final im.conversations.android.xmpp.model.stanza.Message packet,
-            final MessageArchiveService.Query query,
+            final MessageArchiveManager.Query query,
             final Jid from) {
         final var account = this.connection.getAccount();
         final var id = received.getId();
@@ -1152,7 +1148,7 @@ public class MessageParser extends AbstractParser
             final im.conversations.android.xmpp.model.stanza.Message packet,
             final boolean selfAddressed,
             final Jid counterpart,
-            final MessageArchiveService.Query query,
+            final MessageArchiveManager.Query query,
             final boolean isTypeGroupChat,
             final Conversation conversation,
             final Jid from) {
@@ -1371,7 +1367,7 @@ public class MessageParser extends AbstractParser
     }
 
     private void dismissNotification(
-            Account account, Jid counterpart, MessageArchiveService.Query query, final String id) {
+            Account account, Jid counterpart, MessageArchiveManager.Query query, final String id) {
         final Conversation conversation =
                 mXmppConnectionService.find(account, counterpart.asBareJid());
         if (conversation != null && (query == null || query.isCatchup())) {
@@ -1392,7 +1388,7 @@ public class MessageParser extends AbstractParser
             final Account account,
             final im.conversations.android.xmpp.model.stanza.Message packet,
             final String remoteMsgId,
-            final MessageArchiveService.Query query) {
+            final MessageArchiveManager.Query query) {
         final var request = packet.hasExtension(Request.class);
         if (query == null) {
             if (request) {

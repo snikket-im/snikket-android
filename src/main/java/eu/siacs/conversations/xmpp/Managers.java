@@ -14,6 +14,7 @@ import eu.siacs.conversations.xmpp.manager.EasyOnboardingManager;
 import eu.siacs.conversations.xmpp.manager.EntityTimeManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.LegacyBookmarkManager;
+import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
 import eu.siacs.conversations.xmpp.manager.ModerationManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
@@ -51,6 +52,7 @@ public class Managers {
                 .put(EntityTimeManager.class, new EntityTimeManager(context, connection))
                 .put(HttpUploadManager.class, new HttpUploadManager(context, connection))
                 .put(LegacyBookmarkManager.class, new LegacyBookmarkManager(context, connection))
+                .put(MessageArchiveManager.class, new MessageArchiveManager(context, connection))
                 .put(
                         MessageDisplayedSynchronizationManager.class,
                         new MessageDisplayedSynchronizationManager(context, connection))

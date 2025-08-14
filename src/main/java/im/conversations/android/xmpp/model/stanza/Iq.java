@@ -1,6 +1,7 @@
 package im.conversations.android.xmpp.model.stanza;
 
 import com.google.common.base.Strings;
+import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
 import im.conversations.android.xmpp.model.error.Error;
@@ -24,6 +25,11 @@ public class Iq extends Stanza {
     public Iq(final Type type, final Extension... extensions) {
         this(type);
         this.addExtensions(Arrays.asList(extensions));
+    }
+
+    public Iq(final Type type, final Jid to, final Extension... extensions) {
+        this(type, extensions);
+        this.setTo(to);
     }
 
     // TODO get rid of timeout

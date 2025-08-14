@@ -5,7 +5,6 @@ import android.util.Base64;
 import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
-import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
@@ -138,37 +137,6 @@ public class IqGenerator extends AbstractGenerator {
                 .addChild("signature")
                 .setContent(Base64.encodeToString(signature, Base64.NO_WRAP));
         return publish(AxolotlService.PEP_VERIFICATION + ":" + deviceId, item);
-    }
-
-    public Iq queryMessageArchiveManagement(final MessageArchiveService.Query mam) {
-        final Iq packet = new Iq(Iq.Type.SET);
-        final Element query = packet.addChild("query", mam.version.namespace);
-        query.setAttribute("queryid", mam.getQueryId());
-        final Data data = new Data();
-        data.setFormType(mam.version.namespace);
-        if (mam.muc()) {
-            packet.setTo(mam.getWith());
-        } else if (mam.getWith() != null) {
-            data.put("with", mam.getWith().toString());
-        }
-        final long start = mam.getStart();
-        final long end = mam.getEnd();
-        if (start != 0) {
-            data.put("start", getTimestamp(start));
-        }
-        if (end != 0) {
-            data.put("end", getTimestamp(end));
-        }
-        data.submit();
-        query.addChild(data);
-        Element set = query.addChild("set", "http://jabber.org/protocol/rsm");
-        if (mam.getPagingOrder() == MessageArchiveService.PagingOrder.REVERSE) {
-            set.addChild("before").setContent(mam.getReference());
-        } else if (mam.getReference() != null) {
-            set.addChild("after").setContent(mam.getReference());
-        }
-        set.addChild("max").setContent(String.valueOf(Config.PAGE_SIZE));
-        return packet;
     }
 
     public Iq requestPubsubConfiguration(Jid jid, String node) {
