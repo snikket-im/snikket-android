@@ -3,7 +3,7 @@
     <string name="use_conversations.im">Použít conversations.im</string>
     <string name="create_new_account">Vytvořit nový účet</string>
     <string name="pick_a_server">Vyberte si poskytovatele XMPP</string>
-    <string name="do_you_have_an_account">Máte účet XMPP? Pokud již používáte jiného XMPP klienta nebo jste již dříve používali Conversation, účet pravděpodobně máte. Pokud ne, můžete si nyní vytvořit nový.\nTip: Někteří poskytovatelé e-mailu zároveň nabízejí i účty XMPP.</string>
+    <string name="do_you_have_an_account">Máte účet XMPP? Pokud již používáte jiného XMPP klienta nebo jste již dříve používali Conversations, účet pravděpodobně máte. Pokud ne, můžete si nyní vytvořit nový.\nTip: Někteří poskytovatelé e-mailu zároveň nabízejí i účty XMPP.</string>
     <string name="server_select_text">XMPP je nezávislá síť pro instant messaging. Tuto aplikaci můžete používat s jakýmkoli XMPP serverem, který si zvolíte.\nPro vaše pohodlí jsme však zjednodušili vytvoření účtu na conversations.im, poskytovateli speciálně uzpůsobeném pro použití s Conversations.</string>
     <string name="magic_create_text_on_x">Byli jste pozváni do %1$s. Provedeme vás procesem vytvoření účtu.\nPokud zvolíte %1$s jako poskytovatele, budete moci komunikovat s uživateli jiných poskytovatelů poskytnutím své kompletní XMPP adresy.</string>
     <string name="magic_create_text_fixed">Byli jste pozváni do %1$s. Předvybrali jsme vám uživatelské jméno. Provedeme vás vytvořením účtu.\nBudete moci komunikovat s uživateli jiných poskytovatelů, pokud jim poskytnete svou kompletní XMPP adresu.</string>
