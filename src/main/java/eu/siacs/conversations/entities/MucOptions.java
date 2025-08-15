@@ -115,7 +115,13 @@ public class MucOptions {
         Log.d(Config.LOGTAG, "setSelf(" + user + ")");
         synchronized (this.users) {
             // on same nick merges we need to remove the other device
-            this.users.remove(Id.resource(user.getFullJid()));
+            if (java.util.Objects.nonNull(this.users.remove(Id.resource(user.getFullJid())))) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": remove preexisting same-nick merge "
+                                + user.getFullJid());
+            }
             // this should not be happening but attempting to remove it does not hurt
             this.users.remove(Id.realAddress(user.getRealJid()));
             this.self = user.asConnectedSelf();
@@ -372,7 +378,16 @@ public class MucOptions {
 
             // if type null add normal; if type == unavailable add as real jid
             if (type == null) {
-                this.users.put(user.asId(), user);
+                final var self = getSelf();
+                if (self != null && self.connected && self.getFullJid().equals(user.getFullJid())) {
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid()
+                                    + ": ignore same-nick merge "
+                                    + user.getFullJid());
+                } else {
+                    this.users.put(user.asId(), user);
+                }
             } else if (type == Presence.Type.UNAVAILABLE
                     && real != null
                     && membersOnly()
