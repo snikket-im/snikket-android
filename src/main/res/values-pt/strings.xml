@@ -817,4 +817,18 @@
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Enviamos um SMS para <b>%s</b>.]]></string>
     <string name="we_have_sent_you_another_sms">Enviamos outro SMS com um código de 6 dígitos.</string>
     <string name="resend_sms_in">Reenviar SMS (%s)</string>
+    <string name="please_enter_pin">Por favor digite o PIN de 6 dígitos.</string>
+    <string name="verifying">Verificando…</string>
+    <string name="requesting_sms">Requisitando SMS…</string>
+    <string name="incorrect_pin">O PIN que introduziu está incorreto.</string>
+    <string name="pin_expired">O PIN que introduziu expirou.</string>
+    <string name="unknown_api_error_response">Resposta desconhecida do servidor.</string>
+    <string name="unknown_api_error_network">Erro de rede desconhecido.</string>
+    <string name="unable_to_connect_to_server">Não foi possível conectar ao servidor.</string>
+    <string name="unable_to_establish_secure_connection">Não foi possível estabelecer uma conexão segura.</string>
+    <string name="unable_to_find_server">Não foi possível encontrar o servidor.</string>
+    <string name="no">Não</string>
+    <string name="something_went_wrong_processing_your_request">Algo correu mal ao processar o seu pedido.</string>
+    <string name="invalid_user_input">Input do utilizador inválido</string>
+    <string name="possible_pin">Possível PIN automaticamente colado da área de transferência.</string>
 </resources>
