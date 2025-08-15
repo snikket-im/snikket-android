@@ -1130,4 +1130,6 @@
     <plurals name="x_participants">
         <item quantity="other">%1$d 位参与者</item>
     </plurals>
+    <string name="strong_transport_security">强传输安全性</string>
+    <string name="require_tls_v1_3">所有连接均需使用传输层安全性（TLS）协议版本 1.3</string>
 </resources>
