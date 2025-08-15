@@ -499,14 +499,6 @@ public class MucOptions {
         if (existing != null) {
             return existing;
         }
-        Log.d(
-                Config.LOGTAG,
-                "creating stub for getUser("
-                        + identifiableUser.getClass()
-                        + ") "
-                        + identifiableUser.mucUserAddress()
-                        + ","
-                        + identifiableUser.mucUserRealAddress());
         return new Stub(
                 this,
                 identifiableUser.mucUserAddress(),
