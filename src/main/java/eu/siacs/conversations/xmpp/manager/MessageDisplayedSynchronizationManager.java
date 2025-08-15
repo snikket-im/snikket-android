@@ -2,13 +2,16 @@ package eu.siacs.conversations.xmpp.manager;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
+import com.google.common.base.Strings;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.xmpp.NodeConfiguration;
@@ -73,6 +76,17 @@ public class MessageDisplayedSynchronizationManager extends AbstractManager {
                 MoreExecutors.directExecutor());
     }
 
+    public boolean hasFeature() {
+        final var pepManager = getManager(PepManager.class);
+        return pepManager.hasPublishOptions()
+                && pepManager.hasConfigNodeMax()
+                && Config.MESSAGE_DISPLAYED_SYNCHRONIZATION;
+    }
+
+    public boolean hasServerAssist() {
+        return getManager(DiscoManager.class).hasAccountFeature(Namespace.MDS_DISPLAYED);
+    }
+
     public static Displayed displayed(final String id, final Conversation conversation) {
         final Jid by;
         if (conversation.getMode() == Conversation.MODE_MULTI) {
@@ -86,7 +100,47 @@ public class MessageDisplayedSynchronizationManager extends AbstractManager {
         return displayed;
     }
 
-    public ListenableFuture<Void> publish(final Jid itemId, final Displayed displayed) {
+    public void displayed(final Message message) {
+        final String stanzaId = message.getServerMsgId();
+        if (Strings.isNullOrEmpty(stanzaId)) {
+            return;
+        }
+        final Conversation conversation;
+        final var conversational = message.getConversation();
+        if (conversational instanceof Conversation c) {
+            conversation = c;
+        } else {
+            return;
+        }
+        final var account = conversation.getAccount();
+        final var connection = account.getXmppConnection();
+        if (!connection.getManager(MessageDisplayedSynchronizationManager.class).hasFeature()) {
+            return;
+        }
+        final Jid itemId;
+        if (message.isPrivateMessage()) {
+            itemId = message.getCounterpart();
+        } else {
+            itemId = conversation.getAddress().asBareJid();
+        }
+        final var future = this.publish(itemId, displayed(stanzaId, conversation));
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        Log.d(Config.LOGTAG, "published mds for " + itemId + "#" + stanzaId);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.d(Config.LOGTAG, "failed to publish MDS", t);
+                    }
+                },
+                MoreExecutors.directExecutor());
+    }
+
+    private ListenableFuture<Void> publish(final Jid itemId, final Displayed displayed) {
         return getManager(PepManager.class)
                 .publish(displayed, itemId.toString(), NodeConfiguration.WHITELIST_MAX_ITEMS);
     }

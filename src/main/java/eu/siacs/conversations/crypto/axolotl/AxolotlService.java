@@ -76,7 +76,6 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     public static final String PEP_DEVICE_LIST_NOTIFY = PEP_DEVICE_LIST + "+notify";
     public static final String PEP_BUNDLES = PEP_PREFIX + ".bundles";
     public static final String PEP_VERIFICATION = PEP_PREFIX + ".verification";
-    public static final String PEP_OMEMO_WHITELISTED = PEP_PREFIX + ".whitelisted";
 
     public static final String LOGPREFIX = "AxolotlService";
 
@@ -207,10 +206,6 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             keys.addAll(axolotlStore.getContactKeysWithTrust(jid.toString(), status));
         }
         return keys;
-    }
-
-    public Set<Jid> findCounterpartsBySourceId(int sid) {
-        return sessions.findCounterpartsForSourceId(sid);
     }
 
     public long getNumTrustedKeys(Jid jid) {
@@ -2188,19 +2183,6 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             this.xmppConnectionService = service;
             this.account = account;
             this.fillMap(store);
-        }
-
-        public Set<Jid> findCounterpartsForSourceId(Integer sid) {
-            Set<Jid> candidates = new HashSet<>();
-            synchronized (MAP_LOCK) {
-                for (Map.Entry<String, Map<Integer, XmppAxolotlSession>> entry : map.entrySet()) {
-                    String key = entry.getKey();
-                    if (entry.getValue().containsKey(sid)) {
-                        candidates.add(Jid.of(key));
-                    }
-                }
-            }
-            return candidates;
         }
 
         private void putDevicesForJid(

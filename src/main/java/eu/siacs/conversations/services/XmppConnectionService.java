@@ -51,7 +51,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -125,8 +124,8 @@ import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.manager.AvatarManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
+import eu.siacs.conversations.xmpp.manager.DisplayedManager;
 import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
-import eu.siacs.conversations.xmpp.manager.MessageDisplayedSynchronizationManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.NickManager;
 import eu.siacs.conversations.xmpp.manager.PepManager;
@@ -3699,9 +3698,6 @@ public class XmppConnectionService extends Service {
     }
 
     public void sendReadMarker(final Conversation conversation, final String upToUuid) {
-        final boolean isPrivateAndNonAnonymousMuc =
-                conversation.getMode() == Conversation.MODE_MULTI
-                        && conversation.isPrivateAndNonAnonymous();
         final List<Message> readMessages = this.markRead(conversation, upToUuid, true);
         if (readMessages.isEmpty()) {
             return;
@@ -3709,82 +3705,7 @@ public class XmppConnectionService extends Service {
         final var account = conversation.getAccount();
         final var connection = account.getXmppConnection();
         updateConversationUi();
-        final var last =
-                Iterables.getLast(
-                        Collections2.filter(
-                                readMessages,
-                                m ->
-                                        !m.isPrivateMessage()
-                                                && m.getStatus() == Message.STATUS_RECEIVED),
-                        null);
-        if (last == null) {
-            return;
-        }
-
-        final boolean sendDisplayedMarker =
-                confirmMessages()
-                        && (last.trusted() || isPrivateAndNonAnonymousMuc)
-                        && last.getRemoteMsgId() != null
-                        && (last.markable || isPrivateAndNonAnonymousMuc);
-        final boolean serverAssist =
-                connection != null && connection.getFeatures().mdsServerAssist();
-
-        final String stanzaId = last.getServerMsgId();
-
-        if (sendDisplayedMarker && serverAssist) {
-            final var mdsDisplayed =
-                    MessageDisplayedSynchronizationManager.displayed(stanzaId, conversation);
-            final var packet = mMessageGenerator.confirm(last);
-            packet.addChild(mdsDisplayed);
-            if (!last.isPrivateMessage()) {
-                packet.setTo(packet.getTo().asBareJid());
-            }
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server assisted " + packet);
-            this.sendMessagePacket(account, packet);
-        } else {
-            publishMds(last);
-            // read markers will be sent after MDS to flush the CSI stanza queue
-            if (sendDisplayedMarker) {
-                Log.d(
-                        Config.LOGTAG,
-                        conversation.getAccount().getJid().asBareJid()
-                                + ": sending displayed marker to "
-                                + last.getCounterpart().toString());
-                final var packet = mMessageGenerator.confirm(last);
-                this.sendMessagePacket(account, packet);
-            }
-        }
-    }
-
-    private void publishMds(@Nullable final Message message) {
-        final String stanzaId = message == null ? null : message.getServerMsgId();
-        if (Strings.isNullOrEmpty(stanzaId)) {
-            return;
-        }
-        final Conversation conversation;
-        final var conversational = message.getConversation();
-        if (conversational instanceof Conversation c) {
-            conversation = c;
-        } else {
-            return;
-        }
-        final var account = conversation.getAccount();
-        final var connection = account.getXmppConnection();
-        if (connection == null || !connection.getFeatures().mds()) {
-            return;
-        }
-        final Jid itemId;
-        if (message.isPrivateMessage()) {
-            itemId = message.getCounterpart();
-        } else {
-            itemId = conversation.getAddress().asBareJid();
-        }
-        Log.d(Config.LOGTAG, "publishing mds for " + itemId + "/" + stanzaId);
-        final var displayed =
-                MessageDisplayedSynchronizationManager.displayed(stanzaId, conversation);
-        connection
-                .getManager(MessageDisplayedSynchronizationManager.class)
-                .publish(itemId, displayed);
+        connection.getManager(DisplayedManager.class).displayed(readMessages);
     }
 
     public boolean sendReactions(final Message message, final Collection<String> reactions) {

@@ -2738,16 +2738,12 @@ public class XmppConnection implements Runnable {
         this.changeStateTerminal(Account.State.CONNECTION_TIMEOUT);
     }
 
-    public Account getAccount() {
-        return this.account;
-    }
-
     public Features getStreamFeatures() {
         return this.features;
     }
 
     public boolean fromServer(final Stanza stanza) {
-        final var account = getAccount().getJid();
+        final var account = this.account.getJid();
         final Jid from = stanza.getFrom();
         return from == null
                 || from.equals(account.getDomain())
@@ -2756,7 +2752,7 @@ public class XmppConnection implements Runnable {
     }
 
     public boolean fromAccount(final Stanza stanza) {
-        final var account = getAccount().getJid();
+        final var account = this.account.getJid();
         final Jid from = stanza.getFrom();
         return from == null || from.asBareJid().equals(account.asBareJid());
     }
@@ -2982,15 +2978,6 @@ public class XmppConnection implements Runnable {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUB_SUB_PUBLISH_OPTIONS);
         }
 
-        public boolean pepConfigNodeMax() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUB_SUB_CONFIG_NODE_MAX);
-        }
-
-        public boolean pepOmemoWhitelisted() {
-            return hasDiscoFeature(
-                    account.getJid().asBareJid(), AxolotlService.PEP_OMEMO_WHITELISTED);
-        }
-
         public boolean rosterVersioning() {
             return connection.streamFeatures != null && connection.streamFeatures.hasChild("ver");
         }
@@ -3015,16 +3002,6 @@ public class XmppConnection implements Runnable {
 
         public boolean externalServiceDiscovery() {
             return hasDiscoFeature(account.getDomain(), Namespace.EXTERNAL_SERVICE_DISCOVERY);
-        }
-
-        public boolean mds() {
-            return pepPublishOptions()
-                    && pepConfigNodeMax()
-                    && Config.MESSAGE_DISPLAYED_SYNCHRONIZATION;
-        }
-
-        public boolean mdsServerAssist() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.MDS_DISPLAYED);
         }
     }
 }

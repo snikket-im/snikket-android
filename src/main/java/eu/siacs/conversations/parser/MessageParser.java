@@ -323,7 +323,7 @@ public class MessageParser extends AbstractParser
     @Override
     public void accept(final im.conversations.android.xmpp.model.stanza.Message original) {
         final var originalFrom = original.getFrom();
-        final var account = connection.getAccount();
+        final var account = this.getAccount();
         if (handleErrorMessage(account, original)) {
             return;
         }
@@ -1119,7 +1119,7 @@ public class MessageParser extends AbstractParser
             final im.conversations.android.xmpp.model.stanza.Message packet,
             final MessageArchiveManager.Query query,
             final Jid from) {
-        final var account = this.connection.getAccount();
+        final var account = this.getAccount();
         final var id = received.getId();
         if (packet.fromAccount(account)) {
             if (query != null && id != null && packet.getTo() != null) {

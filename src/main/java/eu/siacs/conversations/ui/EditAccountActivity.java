@@ -1295,7 +1295,7 @@ public class EditAccountActivity extends OmemoActivity
                 AxolotlService axolotlService = this.mAccount.getAxolotlService();
                 if (axolotlService != null && axolotlService.isPepBroken()) {
                     this.binding.serverInfoPep.setText(R.string.server_info_broken);
-                } else if (features.pepPublishOptions() || features.pepOmemoWhitelisted()) {
+                } else if (connection.getManager(PepManager.class).hasPublishOptions()) {
                     this.binding.serverInfoPep.setText(R.string.server_info_available);
                 } else {
                     this.binding.serverInfoPep.setText(R.string.server_info_partial);

@@ -13,4 +13,8 @@ public class Displayed extends Extension {
     public String getId() {
         return this.getAttribute("id");
     }
+
+    public void setId(final String id) {
+        this.setAttribute("id", id);
+    }
 }

@@ -19,6 +19,7 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import im.conversations.android.xmpp.model.correction.Replace;
 import im.conversations.android.xmpp.model.hints.NoStore;
 import im.conversations.android.xmpp.model.hints.Store;
+import im.conversations.android.xmpp.model.markers.Markable;
 import im.conversations.android.xmpp.model.reactions.Reaction;
 import im.conversations.android.xmpp.model.reactions.Reactions;
 import im.conversations.android.xmpp.model.receipts.Received;
@@ -63,7 +64,7 @@ public class MessageGenerator extends AbstractGenerator {
             packet.setType(im.conversations.android.xmpp.model.stanza.Message.Type.GROUPCHAT);
         }
         if (conversation.isSingleOrPrivateAndNonAnonymous() && !message.isPrivateMessage()) {
-            packet.addChild("markable", "urn:xmpp:chat-markers:0");
+            packet.addExtension(new Markable());
         }
         packet.setFrom(account.getJid());
         packet.setId(message.getUuid());
@@ -163,32 +164,6 @@ public class MessageGenerator extends AbstractGenerator {
         packet.setFrom(account.getJid());
         packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));
         packet.addExtension(new NoStore());
-        return packet;
-    }
-
-    public im.conversations.android.xmpp.model.stanza.Message confirm(final Message message) {
-        final boolean groupChat = message.getConversation().getMode() == Conversational.MODE_MULTI;
-        final Jid to = message.getCounterpart();
-        final im.conversations.android.xmpp.model.stanza.Message packet =
-                new im.conversations.android.xmpp.model.stanza.Message();
-        packet.setType(
-                groupChat
-                        ? im.conversations.android.xmpp.model.stanza.Message.Type.GROUPCHAT
-                        : im.conversations.android.xmpp.model.stanza.Message.Type.CHAT);
-        packet.setTo(groupChat ? to.asBareJid() : to);
-        final Element displayed = packet.addChild("displayed", "urn:xmpp:chat-markers:0");
-        if (groupChat) {
-            final String stanzaId = message.getServerMsgId();
-            if (stanzaId != null) {
-                displayed.setAttribute("id", stanzaId);
-            } else {
-                displayed.setAttribute("sender", to.toString());
-                displayed.setAttribute("id", message.getRemoteMsgId());
-            }
-        } else {
-            displayed.setAttribute("id", message.getRemoteMsgId());
-        }
-        packet.addExtension(new Store());
         return packet;
     }
 

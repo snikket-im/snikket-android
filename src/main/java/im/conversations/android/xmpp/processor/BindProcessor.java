@@ -32,7 +32,7 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
 
     @Override
     public void run() {
-        final var account = connection.getAccount();
+        final var account = this.getAccount();
         final var features = connection.getFeatures();
         final boolean loggedInSuccessfully =
                 account.setOption(Account.OPTION_LOGGED_IN_SUCCESSFULLY, true);
@@ -71,8 +71,9 @@ public class BindProcessor extends XmppConnection.Delegate implements Runnable {
         getManager(RosterManager.class).request();
         getManager(BookmarkManager.class).request();
 
-        if (features.mds()) {
-            getManager(MessageDisplayedSynchronizationManager.class).fetch();
+        final var mdsManager = getManager(MessageDisplayedSynchronizationManager.class);
+        if (mdsManager.hasFeature()) {
+            mdsManager.fetch();
         } else {
             Log.d(Config.LOGTAG, account.getJid() + ": server has no support for mds");
         }
