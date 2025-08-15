@@ -1466,7 +1466,7 @@ public class XmppConnection implements Runnable {
                 (SSLSocket)
                         sslSocketFactory.createSocket(
                                 socket, address.getHostAddress(), socket.getPort(), true);
-        SSLSockets.setSecurity(sslSocket);
+        SSLSockets.setSecurity(sslSocket, isRequireTlsV13());
         SSLSockets.setHostname(sslSocket, IDN.toASCII(account.getServer()));
         SSLSockets.setApplicationProtocol(sslSocket, "xmpp-client");
         final XmppDomainVerifier xmppDomainVerifier = new XmppDomainVerifier();
@@ -1755,7 +1755,7 @@ public class XmppConnection implements Runnable {
 
     private void checkRequireChannelBinding(@NonNull final SaslMechanism mechanism)
             throws StateChangingException {
-        if (appSettings.isRequireChannelBinding()) {
+        if (isRequireChannelBinding()) {
             if (mechanism instanceof ChannelBindingMechanism) {
                 return;
             }
@@ -2350,7 +2350,7 @@ public class XmppConnection implements Runnable {
                     SaslMechanism.ensureAvailable(
                             account.getQuickStartMechanism(),
                             sslVersion,
-                            appSettings.isRequireChannelBinding());
+                            isRequireChannelBinding());
         } else {
             quickStartMechanism = null;
         }
@@ -2385,6 +2385,16 @@ public class XmppConnection implements Runnable {
             sendStartStream(secureConnection, true);
             return false;
         }
+    }
+
+    private boolean isRequireChannelBinding() {
+        return AppSettings.SECURE_DOMAINS.contains(account.getDomain())
+                || appSettings.isRequireChannelBinding();
+    }
+
+    private boolean isRequireTlsV13() {
+        return AppSettings.SECURE_DOMAINS.contains(account.getDomain())
+                || appSettings.isRequireTlsV13();
     }
 
     private void sendStartStream(final boolean from, final boolean flush) throws IOException {

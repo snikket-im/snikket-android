@@ -1129,4 +1129,6 @@
     <string name="moderation_explained">This message will be deleted for you and every participant of this public channel.</string>
     <string name="do_not_show_this_warning_again">Don’t show this warning again.</string>
     <string name="last_seen">last seen %s</string>
+    <string name="strong_transport_security">Strong transport security</string>
+    <string name="require_tls_v1_3">Require Transport Layer Security (TLS) Protocol Version 1.3 for all connections</string>
 </resources>

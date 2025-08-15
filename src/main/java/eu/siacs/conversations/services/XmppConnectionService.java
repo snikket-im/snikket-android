@@ -3871,7 +3871,8 @@ public class XmppConnectionService extends Service {
 
     public void updateMemorizingTrustManager() {
         final MemorizingTrustManager trustManager;
-        if (appSettings.isTrustSystemCAStore()) {
+        // Quicksy hides security / Server connection preference category
+        if (QuickConversationsService.isQuicksy() || appSettings.isTrustSystemCAStore()) {
             trustManager = new MemorizingTrustManager(getApplicationContext());
         } else {
             trustManager = new MemorizingTrustManager(getApplicationContext(), null);

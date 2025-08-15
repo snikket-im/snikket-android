@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Pair;
 import androidx.annotation.StringRes;
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
@@ -20,10 +19,7 @@ import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 import org.bouncycastle.asn1.x500.X500Name;
@@ -147,31 +143,6 @@ public final class CryptoHelper {
             builder.insert(i, ':');
         }
         return builder.toString();
-    }
-
-    public static String[] getOrderedCipherSuites(final String[] platformSupportedCipherSuites) {
-        final Collection<String> cipherSuites =
-                new LinkedHashSet<>(Arrays.asList(Config.ENABLED_CIPHERS));
-        final List<String> platformCiphers = Arrays.asList(platformSupportedCipherSuites);
-        cipherSuites.retainAll(platformCiphers);
-        cipherSuites.addAll(platformCiphers);
-        filterWeakCipherSuites(cipherSuites);
-        cipherSuites.remove("TLS_FALLBACK_SCSV");
-        return cipherSuites.toArray(new String[cipherSuites.size()]);
-    }
-
-    private static void filterWeakCipherSuites(final Collection<String> cipherSuites) {
-        final Iterator<String> it = cipherSuites.iterator();
-        while (it.hasNext()) {
-            String cipherName = it.next();
-            // remove all ciphers with no or very weak encryption or no authentication
-            for (String weakCipherPattern : Config.WEAK_CIPHER_PATTERNS) {
-                if (cipherName.contains(weakCipherPattern)) {
-                    it.remove();
-                    break;
-                }
-            }
-        }
     }
 
     public static Pair<Jid, String> extractJidAndName(X509Certificate certificate)

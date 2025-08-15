@@ -2,46 +2,29 @@ package eu.siacs.conversations.utils;
 
 import android.os.Build;
 import android.util.Log;
-
 import androidx.annotation.RequiresApi;
-
 import com.google.common.base.Strings;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-
-import org.conscrypt.Conscrypt;
-
 import java.lang.reflect.Method;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
-
 import javax.net.ssl.SNIHostName;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
+import org.conscrypt.Conscrypt;
 
 public class SSLSockets {
 
-    public static void setSecurity(final SSLSocket sslSocket) {
-        final String[] supportProtocols;
-        final Collection<String> supportedProtocols =
-                new LinkedList<>(Arrays.asList(sslSocket.getSupportedProtocols()));
-        supportedProtocols.remove("SSLv3");
-        supportProtocols = supportedProtocols.toArray(new String[0]);
-
-        sslSocket.setEnabledProtocols(supportProtocols);
-
-        final String[] cipherSuites =
-                CryptoHelper.getOrderedCipherSuites(sslSocket.getSupportedCipherSuites());
-        if (cipherSuites.length > 0) {
-            sslSocket.setEnabledCipherSuites(cipherSuites);
+    public static void setSecurity(final SSLSocket sslSocket, final boolean requireTlsV13) {
+        if (requireTlsV13) {
+            sslSocket.setEnabledProtocols(new String[] {"TLSv1.3"});
+        } else {
+            sslSocket.setEnabledProtocols(new String[] {"TLSv1.2", "TLSv1.3"});
         }
     }
 
@@ -103,7 +86,7 @@ public class SSLSockets {
         }
     }
 
-    public static void log(Account account, SSLSocket socket) {
+    public static void log(final Account account, final SSLSocket socket) {
         SSLSession session = socket.getSession();
         Log.d(
                 Config.LOGTAG,
