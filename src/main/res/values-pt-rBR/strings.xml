@@ -1155,4 +1155,6 @@
         <item quantity="many">%1$d de participantes</item>
         <item quantity="other">%1$d participantes</item>
     </plurals>
+    <string name="strong_transport_security">Segurança forte de transporte</string>
+    <string name="require_tls_v1_3">Fazer o uso do TLS versão 1.3 obrigatório para todas as conexões</string>
 </resources>
