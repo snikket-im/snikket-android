@@ -1136,4 +1136,6 @@
         <item quantity="one">%1$d Teilnehmer</item>
         <item quantity="other">%1$d Teilnehmer</item>
     </plurals>
+    <string name="strong_transport_security">Hohe Transportsicherheit</string>
+    <string name="require_tls_v1_3">Erfordert für alle Verbindungen das TLS-Protokoll (Transport Layer Security) Version 1.3</string>
 </resources>
