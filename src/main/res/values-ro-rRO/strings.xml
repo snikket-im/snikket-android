@@ -1156,4 +1156,6 @@
         <item quantity="few">%1$d participanți</item>
         <item quantity="other">%1$d de participanți</item>
     </plurals>
+    <string name="strong_transport_security">Securitate puternică a transportului</string>
+    <string name="require_tls_v1_3">Necesită Transport Layer Security (TLS) Protocol Versiunea 1.3 pentru toate conexiunile</string>
 </resources>
