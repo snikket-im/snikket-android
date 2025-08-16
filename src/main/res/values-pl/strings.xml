@@ -1162,4 +1162,6 @@
         <item quantity="many">%1$d uczestników</item>
         <item quantity="other">%1$d uczestników</item>
     </plurals>
+    <string name="require_tls_v1_3">Wymaganie protokołu Transport Layer Security (TLS) w wersji 1.3 dla wszystkich połączeń</string>
+    <string name="strong_transport_security">Silne zabezpieczenie transportu</string>
 </resources>
