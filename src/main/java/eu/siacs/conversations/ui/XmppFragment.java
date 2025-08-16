@@ -29,19 +29,14 @@
 
 package eu.siacs.conversations.ui;
 
-import android.app.Activity;
-import android.app.Fragment;
-
+import androidx.fragment.app.Fragment;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 
 public abstract class XmppFragment extends Fragment implements OnBackendConnected {
 
-	abstract void refresh();
+    abstract void refresh();
 
-	protected void runOnUiThread(Runnable runnable) {
-		final Activity activity = getActivity();
-		if (activity != null) {
-			activity.runOnUiThread(runnable);
-		}
-	}
+    protected void runOnUiThread(final Runnable runnable) {
+        requireActivity().runOnUiThread(runnable);
+    }
 }

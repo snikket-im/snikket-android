@@ -108,11 +108,11 @@ ext {
 
 android {
     namespace 'eu.siacs.conversations'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 35
+        targetSdkVersion 36
         versionCode 42152
         versionName "2.19.2"
         archivesBaseName += "-$versionName"

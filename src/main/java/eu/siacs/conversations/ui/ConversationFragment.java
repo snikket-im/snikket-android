@@ -12,8 +12,6 @@ import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -58,10 +56,13 @@ import android.widget.Toast;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.inputmethod.InputConnectionCompat;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
@@ -586,40 +587,41 @@ public class ConversationFragment extends XmppFragment
     private boolean firstWord = false;
     private Message mPendingDownloadableMessage;
 
-    private static ConversationFragment findConversationFragment(Activity activity) {
-        Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
-        if (fragment instanceof ConversationFragment) {
-            return (ConversationFragment) fragment;
+    private static ConversationFragment findConversationFragment(AppCompatActivity activity) {
+        final var main = activity.getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+        if (main instanceof ConversationFragment conversationFragment) {
+            return conversationFragment;
         }
-        fragment = activity.getFragmentManager().findFragmentById(R.id.secondary_fragment);
-        if (fragment instanceof ConversationFragment) {
-            return (ConversationFragment) fragment;
+        final var secondary =
+                activity.getSupportFragmentManager().findFragmentById(R.id.secondary_fragment);
+        if (secondary instanceof ConversationFragment conversationFragment) {
+            return conversationFragment;
         }
         return null;
     }
 
-    public static void startStopPending(Activity activity) {
+    public static void startStopPending(AppCompatActivity activity) {
         ConversationFragment fragment = findConversationFragment(activity);
         if (fragment != null) {
             fragment.messageListAdapter.startStopPending();
         }
     }
 
-    public static void downloadFile(Activity activity, Message message) {
+    public static void downloadFile(AppCompatActivity activity, Message message) {
         ConversationFragment fragment = findConversationFragment(activity);
         if (fragment != null) {
             fragment.startDownloadable(message);
         }
     }
 
-    public static void registerPendingMessage(Activity activity, Message message) {
+    public static void registerPendingMessage(AppCompatActivity activity, Message message) {
         ConversationFragment fragment = findConversationFragment(activity);
         if (fragment != null) {
             fragment.pendingMessage.push(message);
         }
     }
 
-    public static void openPendingMessage(Activity activity) {
+    public static void openPendingMessage(AppCompatActivity activity) {
         ConversationFragment fragment = findConversationFragment(activity);
         if (fragment != null) {
             Message message = fragment.pendingMessage.pop();
@@ -629,33 +631,33 @@ public class ConversationFragment extends XmppFragment
         }
     }
 
-    public static Conversation getConversation(Activity activity) {
+    public static Conversation getConversation(FragmentActivity activity) {
         return getConversation(activity, R.id.secondary_fragment);
     }
 
-    private static Conversation getConversation(Activity activity, @IdRes int res) {
-        final Fragment fragment = activity.getFragmentManager().findFragmentById(res);
-        if (fragment instanceof ConversationFragment) {
-            return ((ConversationFragment) fragment).getConversation();
+    private static Conversation getConversation(FragmentActivity activity, @IdRes int res) {
+        final Fragment fragment = activity.getSupportFragmentManager().findFragmentById(res);
+        if (fragment instanceof ConversationFragment conversationFragment) {
+            return conversationFragment.getConversation();
         } else {
             return null;
         }
     }
 
-    public static ConversationFragment get(Activity activity) {
-        FragmentManager fragmentManager = activity.getFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.main_fragment);
-        if (fragment instanceof ConversationFragment) {
-            return (ConversationFragment) fragment;
-        } else {
-            fragment = fragmentManager.findFragmentById(R.id.secondary_fragment);
-            return fragment instanceof ConversationFragment
-                    ? (ConversationFragment) fragment
-                    : null;
+    public static ConversationFragment get(AppCompatActivity activity) {
+        final var fragmentManager = activity.getSupportFragmentManager();
+        final var main = fragmentManager.findFragmentById(R.id.main_fragment);
+        if (main instanceof ConversationFragment conversationFragment) {
+            return conversationFragment;
         }
+        final var secondary = fragmentManager.findFragmentById(R.id.secondary_fragment);
+        if (secondary instanceof ConversationFragment conversationFragment) {
+            return conversationFragment;
+        }
+        return null;
     }
 
-    public static Conversation getConversationReliable(Activity activity) {
+    public static Conversation getConversationReliable(AppCompatActivity activity) {
         final Conversation conversation = getConversation(activity, R.id.secondary_fragment);
         if (conversation != null) {
             return conversation;
@@ -776,7 +778,7 @@ public class ConversationFragment extends XmppFragment
                 conversation,
                 uri,
                 type,
-                new UiInformableCallback<Message>() {
+                new UiInformableCallback<>() {
                     @Override
                     public void inform(final String text) {
                         hidePrepareFileToast(prepareFileToast);
@@ -951,7 +953,7 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void handleActivityResult(ActivityResult activityResult) {
-        if (activityResult.resultCode == Activity.RESULT_OK) {
+        if (activityResult.resultCode == AppCompatActivity.RESULT_OK) {
             handlePositiveActivityResult(activityResult.requestCode, activityResult.data);
         } else {
             handleNegativeActivityResult(activityResult.requestCode);
@@ -3762,13 +3764,5 @@ public class ConversationFragment extends XmppFragment
             }
         }
         activity.switchToAccount(message.getConversation().getAccount(), fingerprint);
-    }
-
-    private Activity requireActivity() {
-        final Activity activity = getActivity();
-        if (activity == null) {
-            throw new IllegalStateException("Activity not attached");
-        }
-        return activity;
     }
 }

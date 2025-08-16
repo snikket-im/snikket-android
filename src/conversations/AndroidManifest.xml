@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application android:icon="@mipmap/new_launcher">
         <activity
@@ -13,8 +14,10 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".ui.PickServerActivity"
+            android:enableOnBackInvokedCallback="false"
             android:label="@string/create_new_account"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            tools:targetApi="33" />
         <activity
             android:name=".ui.MagicCreateActivity"
             android:label="@string/create_new_account"

@@ -497,7 +497,7 @@ public class EditAccountActivity extends OmemoActivity
         if (SignupUtils.isSupportTokenRegistry()
                 && jid != null
                 && magicCreate
-                && !jid.getDomain().equals(Config.MAGIC_CREATE_DOMAIN)) {
+                && !jid.getDomain().equals(Jid.ofDomain(Config.MAGIC_CREATE_DOMAIN))) {
             final Jid preset;
             if (mAccount.isOptionSet(Account.OPTION_FIXED_USERNAME)) {
                 preset = jid.asBareJid();
