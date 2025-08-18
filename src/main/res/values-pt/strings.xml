@@ -894,4 +894,29 @@
     <string name="channel_discovery_opt_in_title">Possível violação de privacidade!</string>
     <string name="anyone_can_edit_subject">Qualquer um pode editar o tópico.</string>
     <string name="no_users_hint_channel">Este canal público não tem participantes. Convide os seus contactos ou use o botão de partilha para distribuir o seu endereço de XMPP.</string>
+    <string name="i_already_have_an_account">Já tenho uma conta</string>
+    <string name="add_existing_account">Adicionar conta existente</string>
+    <string name="this_looks_like_a_domain">Isto parece um endereço de domínio</string>
+    <string name="not_a_backup_file">O ficheiro que selecionou não é um backup de Conversations</string>
+    <string name="outdated_backup_file_format">Está a tentar importar um ficheiro de backup com um formato desatualizado</string>
+    <string name="non_quicksy_backup">Quicksy só pode restaurar backups para contas quicksy.im</string>
+    <string name="pref_channel_discovery_summary">A maioria dos utilizadores deve escolher ‘jabber.network’ para melhores sugestões do ecossistema XMPP público inteiro.</string>
+    <string name="add_anway">Adicionar mesmo assim</string>
+    <string name="this_looks_like_channel">Isto parece um endereço de canal</string>
+    <string name="share_backup_files">Partilhar ficheiros de backup</string>
+    <string name="conversations_backup">Backup de Conversations</string>
+    <string name="register_new_account">Registar nova conta</string>
+    <string name="unable_to_perform_this_action">Não foi possível executar esta ação</string>
+    <string name="group_chats_and_channels"><![CDATA[Conversas de Grupo & Canais]]></string>
+    <string name="jabber_network">jabber.network</string>
+    <string name="local_server">Servidor local</string>
+    <string name="event">Evento</string>
+    <string name="open_backup">Abrir backup</string>
+    <string name="pref_channel_discovery">Método de descoberta de canais</string>
+    <string name="sharing_application_not_grant_permission">A aplicação de partilha não deu permissões para aceder este ficheiro.</string>
+    <string name="please_enter_password">Por favor digite a senha para esta conta</string>
+    <string name="backup">Backup</string>
+    <string name="channel_discover_opt_in_message">Descoberta de canais usa um serviço de terceiros chamado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;. O seu endereço de IP e termos de pesquisa irão ser transmitidos para este serviço caso use a funcionalidade. Veja a sua &lt;a href=https://search.jabber.network/privacy&gt;Política de Privacidade&lt;/a&gt; para mais informações.</string>
+    <string name="open_join_dialog">Entrar no canal público…</string>
+    <string name="account_already_setup">Esta conta já foi configurada</string>
 </resources>
