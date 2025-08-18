@@ -88,7 +88,6 @@ import eu.siacs.conversations.receiver.SystemEventReceiver;
 import eu.siacs.conversations.ui.ChooseAccountForProfilePictureActivity;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.RtpSessionActivity;
-import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
 import eu.siacs.conversations.ui.interfaces.OnMediaLoaded;
 import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
@@ -368,27 +367,16 @@ public class XmppConnectionService extends Service {
         return this.mAvatarService;
     }
 
-    public void attachLocationToConversation(
-            final Conversation conversation, final Uri uri, final UiCallback<Message> callback) {
-        int encryption = conversation.getNextEncryption();
-        if (encryption == Message.ENCRYPTION_PGP) {
-            encryption = Message.ENCRYPTION_DECRYPTED;
-        }
-        Message message = new Message(conversation, uri.toString(), encryption);
+    public ListenableFuture<Void> attachLocationToConversation(
+            final Conversation conversation, final Uri uri) {
+        final var encryption = conversation.getNextEncryption();
+        final Message message = new Message(conversation, uri.toString(), encryption);
         Message.configurePrivateMessage(message);
-        if (encryption == Message.ENCRYPTION_DECRYPTED) {
-            getPgpEngine().encrypt(message, callback);
-        } else {
-            sendMessage(message);
-            callback.success(message);
-        }
+        return encryptIfNeededAndSend(message);
     }
 
-    public void attachFileToConversation(
-            final Conversation conversation,
-            final Uri uri,
-            final String type,
-            final UiCallback<Message> callback) {
+    public ListenableFuture<Void> attachFileToConversation(
+            final Conversation conversation, final Uri uri, final String type) {
         final Message message;
         if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
             message = new Message(conversation, "", Message.ENCRYPTION_DECRYPTED);
@@ -402,19 +390,19 @@ public class XmppConnectionService extends Service {
         Log.d(Config.LOGTAG, "attachFile: type=" + message.getType());
         Log.d(Config.LOGTAG, "counterpart=" + message.getCounterpart());
         final AttachFileToConversationRunnable runnable =
-                new AttachFileToConversationRunnable(this, uri, type, message, callback);
+                new AttachFileToConversationRunnable(this, uri, type, message);
+        final ListenableFuture<Void> future;
         if (runnable.isVideoMessage()) {
-            VIDEO_COMPRESSION_EXECUTOR.execute(runnable);
+            future = Futures.submit(runnable, VIDEO_COMPRESSION_EXECUTOR);
         } else {
-            FILE_ATTACHMENT_EXECUTOR.execute(runnable);
+            future = Futures.submit(runnable, FILE_ATTACHMENT_EXECUTOR);
         }
+        return Futures.transformAsync(
+                future, v -> encryptIfNeededAndSend(message), MoreExecutors.directExecutor());
     }
 
-    public void attachImageToConversation(
-            final Conversation conversation,
-            final Uri uri,
-            final String type,
-            final UiCallback<Message> callback) {
+    public ListenableFuture<Void> attachImageToConversation(
+            final Conversation conversation, final Uri uri, final String type) {
         final String mimeType = MimeUtils.guessMimeTypeFromUriAndMime(this, uri, type);
         final String compressPictures = getCompressPicturesPreference();
 
@@ -426,8 +414,7 @@ public class XmppConnectionService extends Service {
                     Config.LOGTAG,
                     conversation.getAccount().getJid().asBareJid()
                             + ": not compressing picture. sending as file");
-            attachFileToConversation(conversation, uri, mimeType, callback);
-            return;
+            return attachFileToConversation(conversation, uri, mimeType);
         }
         final Message message;
         if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
@@ -440,33 +427,20 @@ public class XmppConnectionService extends Service {
             message.setType(Message.TYPE_IMAGE);
         }
         Log.d(Config.LOGTAG, "attachImage: type=" + message.getType());
-        FILE_ATTACHMENT_EXECUTOR.execute(
-                () -> {
-                    try {
-                        getFileBackend().copyImageToPrivateStorage(message, uri);
-                    } catch (FileBackend.ImageCompressionException e) {
-                        Log.d(
-                                Config.LOGTAG,
-                                "unable to compress image. fall back to file transfer",
-                                e);
-                        attachFileToConversation(conversation, uri, mimeType, callback);
-                        return;
-                    } catch (final FileBackend.FileCopyException e) {
-                        callback.error(e.getResId(), message);
-                        return;
-                    }
-                    if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
-                        final PgpEngine pgpEngine = getPgpEngine();
-                        if (pgpEngine != null) {
-                            pgpEngine.encrypt(message, callback);
-                        } else if (callback != null) {
-                            callback.error(R.string.unable_to_connect_to_keychain, null);
-                        }
-                    } else {
-                        sendMessage(message);
-                        callback.success(message);
-                    }
-                });
+        final var imageCopyFuture =
+                Futures.submit(
+                        () -> {
+                            getFileBackend().copyImageToPrivateStorage(message, uri);
+                        },
+                        FILE_ATTACHMENT_EXECUTOR);
+        final var future =
+                Futures.catchingAsync(
+                        imageCopyFuture,
+                        FileBackend.ImageCompressionException.class,
+                        ex -> attachFileToConversation(conversation, uri, mimeType),
+                        MoreExecutors.directExecutor());
+        return Futures.transformAsync(
+                future, v -> encryptIfNeededAndSend(message), MoreExecutors.directExecutor());
     }
 
     public Conversation find(Bookmark bookmark) {
@@ -988,7 +962,7 @@ public class XmppConnectionService extends Service {
                         == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED;
     }
 
-    private void directReply(
+    private ListenableFuture<Void> directReply(
             final Conversation conversation,
             final String body,
             final String lastMessageUuid,
@@ -1000,34 +974,18 @@ public class XmppConnectionService extends Service {
             Message.configurePrivateMessage(message, inReplyTo.getCounterpart());
         }
         message.markUnread();
-        if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-            getPgpEngine()
-                    .encrypt(
-                            message,
-                            new UiCallback<Message>() {
-                                @Override
-                                public void success(Message message) {
-                                    if (dismissAfterReply) {
-                                        markRead((Conversation) message.getConversation(), true);
-                                    } else {
-                                        mNotificationService.pushFromDirectReply(message);
-                                    }
-                                }
-
-                                @Override
-                                public void error(int errorCode, Message object) {}
-
-                                @Override
-                                public void userInputRequired(PendingIntent pi, Message object) {}
-                            });
-        } else {
-            sendMessage(message);
-            if (dismissAfterReply) {
-                markRead(conversation, true);
-            } else {
-                mNotificationService.pushFromDirectReply(message);
-            }
-        }
+        final var future = encryptIfNeededAndSend(message);
+        return Futures.transform(
+                future,
+                v -> {
+                    if (dismissAfterReply) {
+                        markRead(conversation, true);
+                    } else {
+                        mNotificationService.pushFromDirectReply(message);
+                    }
+                    return null;
+                },
+                MoreExecutors.directExecutor());
     }
 
     private String getCompressPicturesPreference() {
@@ -1582,6 +1540,16 @@ public class XmppConnectionService extends Service {
         } else {
             mJingleConnectionManager.startJingleFileTransfer(message);
         }
+    }
+
+    public ListenableFuture<Void> encryptIfNeededAndSend(final Message message) {
+        return Futures.transform(
+                PgpEngine.encryptIfNeeded(getPgpEngine(), message),
+                v -> {
+                    sendMessage(message);
+                    return null;
+                },
+                MoreExecutors.directExecutor());
     }
 
     public void sendMessage(final Message message) {
@@ -3029,34 +2997,10 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public boolean createAdhocConference(
-            final Account account,
-            final String name,
-            final Collection<Jid> addresses,
-            final UiCallback<Conversation> callback) {
+    public ListenableFuture<Conversation> createAdhocConference(
+            final Account account, final String name, final Collection<Jid> addresses) {
         final var manager = account.getXmppConnection().getManager(MultiUserChatManager.class);
-        if (manager.getServices().isEmpty()) {
-            return false;
-        }
-
-        final var future = manager.createPrivateGroupChat(name, addresses);
-
-        Futures.addCallback(
-                future,
-                new FutureCallback<>() {
-                    @Override
-                    public void onSuccess(Conversation result) {
-                        callback.success(result);
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Throwable t) {
-                        Log.d(Config.LOGTAG, "could not create private group chat", t);
-                        callback.error(R.string.conference_creation_failed, null);
-                    }
-                },
-                MoreExecutors.directExecutor());
-        return true;
+        return manager.createPrivateGroupChat(name, addresses);
     }
 
     public void pushNodeConfiguration(

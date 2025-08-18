@@ -161,10 +161,11 @@ public class XmppDomainVerifier {
                     }
                 } else if (type == 2) {
                     final Object value = san.get(1);
-                    if (value instanceof String) {
-                        domains.add(((String) value).toLowerCase(Locale.US));
+                    if (value instanceof String s) {
+                        domains.add(s.toLowerCase(Locale.US));
                     }
                 }
+                // TODO parse type == 7 für IPs
             }
         }
         if (srvNames.isEmpty() && xmppAddrs.isEmpty() && domains.isEmpty()) {

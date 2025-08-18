@@ -65,15 +65,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Optional;
+import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.MoreExecutors;
 import de.gultsch.common.Linkify;
 import de.gultsch.common.Patterns;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.databinding.DialogModerationBinding;
@@ -744,29 +747,17 @@ public class ConversationFragment extends XmppFragment
         }
     }
 
-    private void attachLocationToConversation(Conversation conversation, Uri uri) {
+    private void attachLocationToConversation(final Conversation conversation, final Uri uri) {
         if (conversation == null) {
             return;
         }
-        activity.xmppConnectionService.attachLocationToConversation(
-                conversation,
-                uri,
-                new UiCallback<Message>() {
-
-                    @Override
-                    public void success(Message message) {}
-
-                    @Override
-                    public void error(int errorCode, Message object) {
-                        // TODO show possible pgp error
-                    }
-
-                    @Override
-                    public void userInputRequired(PendingIntent pi, Message object) {}
-                });
+        final var future =
+                activity.xmppConnectionService.attachLocationToConversation(conversation, uri);
+        // TODO add callback to potentially show PGP errors
     }
 
-    private void attachFileToConversation(Conversation conversation, Uri uri, String type) {
+    private void attachFileToConversation(
+            final Conversation conversation, final Uri uri, final String type) {
         if (conversation == null) {
             return;
         }
@@ -774,34 +765,28 @@ public class ConversationFragment extends XmppFragment
                 Toast.makeText(getActivity(), getText(R.string.preparing_file), Toast.LENGTH_LONG);
         prepareFileToast.show();
         activity.delegateUriPermissionsToService(uri);
-        activity.xmppConnectionService.attachFileToConversation(
-                conversation,
-                uri,
-                type,
-                new UiInformableCallback<>() {
+        final var future =
+                activity.xmppConnectionService.attachFileToConversation(conversation, uri, type);
+        Futures.addCallback(
+                future,
+                new FutureCallback<Void>() {
                     @Override
-                    public void inform(final String text) {
-                        hidePrepareFileToast(prepareFileToast);
-                        runOnUiThread(() -> activity.replaceToast(text));
+                    public void onSuccess(final Void result) {
+                        prepareFileToast.cancel();
                     }
 
                     @Override
-                    public void success(Message message) {
-                        runOnUiThread(() -> activity.hideToast());
-                        hidePrepareFileToast(prepareFileToast);
+                    public void onFailure(@NonNull final Throwable t) {
+                        Log.d(Config.LOGTAG, "could not attach file", t);
+                        prepareFileToast.cancel();
+                        final String message = t.getMessage();
+                        if (Strings.isNullOrEmpty(message)) {
+                            return;
+                        }
+                        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
                     }
-
-                    @Override
-                    public void error(final int errorCode, Message message) {
-                        hidePrepareFileToast(prepareFileToast);
-                        runOnUiThread(() -> activity.replaceToast(getString(errorCode)));
-                    }
-
-                    @Override
-                    public void userInputRequired(PendingIntent pi, Message message) {
-                        hidePrepareFileToast(prepareFileToast);
-                    }
-                });
+                },
+                ContextCompat.getMainExecutor(requireContext()));
     }
 
     public void attachEditorContentToConversation(Uri uri) {
@@ -818,38 +803,27 @@ public class ConversationFragment extends XmppFragment
                 Toast.makeText(getActivity(), getText(R.string.preparing_image), Toast.LENGTH_LONG);
         prepareFileToast.show();
         activity.delegateUriPermissionsToService(uri);
-        activity.xmppConnectionService.attachImageToConversation(
-                conversation,
-                uri,
-                type,
-                new UiCallback<Message>() {
-
+        final var future =
+                activity.xmppConnectionService.attachImageToConversation(conversation, uri, type);
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
                     @Override
-                    public void userInputRequired(PendingIntent pi, Message object) {
-                        hidePrepareFileToast(prepareFileToast);
+                    public void onSuccess(final Void result) {
+                        prepareFileToast.cancel();
                     }
 
                     @Override
-                    public void success(Message message) {
-                        hidePrepareFileToast(prepareFileToast);
-                    }
-
-                    @Override
-                    public void error(final int error, final Message message) {
-                        hidePrepareFileToast(prepareFileToast);
-                        final ConversationsActivity activity = ConversationFragment.this.activity;
-                        if (activity == null) {
+                    public void onFailure(final @NonNull Throwable t) {
+                        prepareFileToast.cancel();
+                        final String message = t.getMessage();
+                        if (Strings.isNullOrEmpty(message)) {
                             return;
                         }
-                        activity.runOnUiThread(() -> activity.replaceToast(getString(error)));
+                        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
                     }
-                });
-    }
-
-    private void hidePrepareFileToast(final Toast prepareFileToast) {
-        if (prepareFileToast != null && activity != null) {
-            activity.runOnUiThread(prepareFileToast::cancel);
-        }
+                },
+                ContextCompat.getMainExecutor(requireContext()));
     }
 
     private void sendMessage() {
@@ -1840,28 +1814,31 @@ public class ConversationFragment extends XmppFragment
             if (activity.hasPgp()) {
                 if (mode == Conversation.MODE_SINGLE
                         && conversation.getContact().getPgpKeyId() != 0) {
-                    activity.xmppConnectionService
-                            .getPgpEngine()
-                            .hasKey(
-                                    conversation.getContact(),
-                                    new UiCallback<Contact>() {
+                    final var future =
+                            activity.xmppConnectionService
+                                    .getPgpEngine()
+                                    .hasKey(conversation.getContact());
+                    Futures.addCallback(
+                            future,
+                            new FutureCallback<>() {
+                                @Override
+                                public void onSuccess(Boolean result) {
+                                    invokeAttachFileIntent(attachmentChoice);
+                                }
 
-                                        @Override
-                                        public void userInputRequired(
-                                                PendingIntent pi, Contact contact) {
-                                            startPendingIntent(pi, attachmentChoice);
+                                @Override
+                                public void onFailure(@NonNull Throwable t) {
+                                    if (t instanceof PgpEngine.UserInputRequiredException e) {
+                                        startPendingIntent(e.getPendingIntent(), attachmentChoice);
+                                    } else {
+                                        final String msg = t.getMessage();
+                                        if (Strings.isNullOrEmpty(msg)) {
+                                            activity.replaceToast(msg);
                                         }
-
-                                        @Override
-                                        public void success(Contact contact) {
-                                            invokeAttachFileIntent(attachmentChoice);
-                                        }
-
-                                        @Override
-                                        public void error(int error, Contact contact) {
-                                            activity.replaceToast(getString(error));
-                                        }
-                                    });
+                                    }
+                                }
+                            },
+                            MoreExecutors.directExecutor());
                 } else if (mode == Conversation.MODE_MULTI
                         && conversation.getMucOptions().pgpKeysInUse()) {
                     if (conversation.getMucOptions().missingPgpKeys()) {
@@ -3267,7 +3244,7 @@ public class ConversationFragment extends XmppFragment
         this.binding.snackbar.setVisibility(View.GONE);
     }
 
-    protected void sendMessage(Message message) {
+    protected void sendMessage(final Message message) {
         activity.xmppConnectionService.sendMessage(message);
         messageSent();
     }
@@ -3289,37 +3266,31 @@ public class ConversationFragment extends XmppFragment
         }
         if (conversation.getMode() == Conversation.MODE_SINGLE) {
             if (contact.getPgpKeyId() != 0) {
-                xmppService
-                        .getPgpEngine()
-                        .hasKey(
-                                contact,
-                                new UiCallback<Contact>() {
+                final var future = xmppService.getPgpEngine().hasKey(contact);
+                Futures.addCallback(
+                        future,
+                        new FutureCallback<>() {
+                            @Override
+                            public void onSuccess(final Boolean result) {
+                                encryptTextMessage(message);
+                            }
 
-                                    @Override
-                                    public void userInputRequired(
-                                            PendingIntent pi, Contact contact) {
-                                        startPendingIntent(pi, REQUEST_ENCRYPT_MESSAGE);
+                            @Override
+                            public void onFailure(@NonNull Throwable t) {
+                                if (t instanceof PgpEngine.UserInputRequiredException e) {
+                                    startPendingIntent(
+                                            e.getPendingIntent(), REQUEST_ENCRYPT_MESSAGE);
+                                } else {
+                                    final var message = t.getMessage();
+                                    if (Strings.isNullOrEmpty(message)) {
+                                        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG)
+                                                .show();
                                     }
-
-                                    @Override
-                                    public void success(Contact contact) {
-                                        encryptTextMessage(message);
-                                    }
-
-                                    @Override
-                                    public void error(int error, Contact contact) {
-                                        activity.runOnUiThread(
-                                                () ->
-                                                        Toast.makeText(
-                                                                        activity,
-                                                                        R.string
-                                                                                .unable_to_connect_to_keychain,
-                                                                        Toast.LENGTH_SHORT)
-                                                                .show());
-                                        mSendingPgpMessage.set(false);
-                                    }
-                                });
-
+                                    mSendingPgpMessage.set(false);
+                                }
+                            }
+                        },
+                        ContextCompat.getMainExecutor(requireContext()));
             } else {
                 showNoPGPKeyDialog(
                         false,
@@ -3355,41 +3326,37 @@ public class ConversationFragment extends XmppFragment
         }
     }
 
-    public void encryptTextMessage(Message message) {
-        activity.xmppConnectionService
-                .getPgpEngine()
-                .encrypt(
-                        message,
-                        new UiCallback<Message>() {
+    public void encryptTextMessage(final Message message) {
+        final var future = activity.xmppConnectionService.encryptIfNeededAndSend(message);
+        Futures.addCallback(
+                future,
+                new FutureCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        messageSent();
+                    }
 
-                            @Override
-                            public void userInputRequired(PendingIntent pi, Message message) {
-                                startPendingIntent(pi, REQUEST_SEND_MESSAGE);
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        if (t instanceof PgpEngine.UserInputRequiredException e) {
+                            startPendingIntent(e.getPendingIntent(), REQUEST_SEND_MESSAGE);
+                        } else {
+                            final String errorMessage = t.getMessage();
+                            if (Strings.isNullOrEmpty(errorMessage)) {
+                                Toast.makeText(
+                                                requireContext(),
+                                                R.string.unable_to_connect_to_keychain,
+                                                Toast.LENGTH_LONG)
+                                        .show();
+                            } else {
+                                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG)
+                                        .show();
                             }
-
-                            @Override
-                            public void success(Message message) {
-                                // TODO the following two call can be made before the callback
-                                getActivity().runOnUiThread(() -> messageSent());
-                            }
-
-                            @Override
-                            public void error(final int error, Message message) {
-                                getActivity()
-                                        .runOnUiThread(
-                                                () -> {
-                                                    doneSendingPgpMessage();
-                                                    Toast.makeText(
-                                                                    getActivity(),
-                                                                    error == 0
-                                                                            ? R.string
-                                                                                    .unable_to_connect_to_keychain
-                                                                            : error,
-                                                                    Toast.LENGTH_SHORT)
-                                                            .show();
-                                                });
-                            }
-                        });
+                            doneSendingPgpMessage();
+                        }
+                    }
+                },
+                ContextCompat.getMainExecutor(requireContext()));
     }
 
     public void showNoPGPKeyDialog(

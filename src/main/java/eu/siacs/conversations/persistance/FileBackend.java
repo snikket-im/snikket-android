@@ -1510,14 +1510,14 @@ public class FileBackend {
         }
     }
 
-    public static class ImageCompressionException extends Exception {
+    public static class ImageCompressionException extends IllegalStateException {
 
         ImageCompressionException(String message) {
             super(message);
         }
     }
 
-    public static class FileCopyException extends Exception {
+    public static class FileCopyException extends IllegalStateException {
         private final int resId;
 
         private FileCopyException(@StringRes int resId) {

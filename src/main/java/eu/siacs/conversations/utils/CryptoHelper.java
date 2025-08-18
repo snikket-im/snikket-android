@@ -260,7 +260,10 @@ public final class CryptoHelper {
                             Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE,
                             Message.ENCRYPTION_AXOLOTL_FAILED ->
                     R.string.encryption_choice_omemo;
-            case Message.ENCRYPTION_PGP -> R.string.encryption_choice_pgp;
+            case Message.ENCRYPTION_PGP,
+                            Message.ENCRYPTION_DECRYPTED,
+                            Message.ENCRYPTION_DECRYPTION_FAILED ->
+                    R.string.encryption_choice_pgp;
             default -> R.string.encryption_choice_unencrypted;
         };
     }

@@ -1,7 +1,6 @@
 package eu.siacs.conversations.ui;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -49,6 +48,7 @@ import de.gultsch.common.Linkify;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
@@ -1125,38 +1125,38 @@ public class EditAccountActivity extends OmemoActivity
         builder.create().show();
     }
 
-    private void generateSignature(Intent intent, PresenceTemplate template) {
-        xmppConnectionService
-                .getPgpEngine()
-                .generateSignature(
-                        intent,
-                        mAccount,
-                        template.getStatusMessage(),
-                        new UiCallback<String>() {
-                            @Override
-                            public void success(String signature) {
-                                xmppConnectionService.changeStatus(mAccount, template, signature);
-                            }
+    private void generateSignature(final Intent intent, final PresenceTemplate template) {
+        final var future =
+                xmppConnectionService
+                        .getPgpEngine()
+                        .generateSignature(intent, mAccount, template.getStatusMessage());
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(final String signature) {
+                        xmppConnectionService.changeStatus(mAccount, template, signature);
+                    }
 
-                            @Override
-                            public void error(int errorCode, String object) {}
-
-                            @Override
-                            public void userInputRequired(PendingIntent pi, String object) {
-                                mPendingPresenceTemplate.push(template);
-                                try {
-                                    startIntentSenderForResult(
-                                            pi.getIntentSender(),
-                                            REQUEST_CHANGE_STATUS,
-                                            null,
-                                            0,
-                                            0,
-                                            0,
-                                            Compatibility.pgpStartIntentSenderOptions());
-                                } catch (final IntentSender.SendIntentException ignored) {
-                                }
+                    @Override
+                    public void onFailure(@NonNull final Throwable throwable) {
+                        if (throwable instanceof PgpEngine.UserInputRequiredException e) {
+                            mPendingPresenceTemplate.push(template);
+                            try {
+                                startIntentSenderForResult(
+                                        e.getPendingIntent().getIntentSender(),
+                                        REQUEST_CHANGE_STATUS,
+                                        null,
+                                        0,
+                                        0,
+                                        0,
+                                        Compatibility.pgpStartIntentSenderOptions());
+                            } catch (final IntentSender.SendIntentException ignored) {
                             }
-                        });
+                        }
+                    }
+                },
+                ContextCompat.getMainExecutor(this));
     }
 
     @Override

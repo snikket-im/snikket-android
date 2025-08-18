@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -188,26 +187,6 @@ public class StartConversationActivity extends XmppActivity
                 }
             };
     private Pair<Integer, Intent> mPostponedActivityResult;
-    private Toast mToast;
-    private final UiCallback<Conversation> mAdhocConferenceCallback =
-            new UiCallback<>() {
-                @Override
-                public void success(final Conversation conversation) {
-                    runOnUiThread(
-                            () -> {
-                                hideToast();
-                                switchToConversation(conversation);
-                            });
-                }
-
-                @Override
-                public void error(final int errorCode, Conversation object) {
-                    runOnUiThread(() -> replaceToast(getString(errorCode)));
-                }
-
-                @Override
-                public void userInputRequired(PendingIntent pi, Conversation object) {}
-            };
     private ActivityStartConversationBinding binding;
     private final TextView.OnEditorActionListener mSearchDone =
             new TextView.OnEditorActionListener() {
@@ -851,16 +830,13 @@ public class StartConversationActivity extends XmppActivity
                     Account account = extractAccount(intent);
                     final String name =
                             intent.getStringExtra(ChooseContactActivity.EXTRA_GROUP_CHAT_NAME);
-                    final List<Jid> jids = ChooseContactActivity.extractJabberIds(intent);
-                    if (account != null && jids.size() > 0) {
-                        if (xmppConnectionService.createAdhocConference(
-                                account, name, jids, mAdhocConferenceCallback)) {
-                            mToast =
-                                    Toast.makeText(
-                                            this, R.string.creating_conference, Toast.LENGTH_LONG);
-                            mToast.show();
-                        }
+                    final List<Jid> addresses = ChooseContactActivity.extractJabberIds(intent);
+                    if (account == null || addresses.isEmpty()) {
+                        return;
                     }
+                    final var future =
+                            xmppConnectionService.createAdhocConference(account, name, addresses);
+                    Futures.addCallback(future, adhocCallback, ContextCompat.getMainExecutor(this));
                 }
             } else {
                 this.mPostponedActivityResult = new Pair<>(requestCode, intent);
