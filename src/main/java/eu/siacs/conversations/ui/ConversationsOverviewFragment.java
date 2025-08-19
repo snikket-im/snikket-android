@@ -151,13 +151,13 @@ public class ConversationsOverviewFragment extends XmppFragment {
                         return;
                     }
                     conversationsAdapter.remove(swipedConversation.peek(), position);
+                    toggleHintVisibility();
                     activity.xmppConnectionService.markRead(swipedConversation.peek());
                     final boolean formerlySelected =
                             ConversationFragment.getConversation(getActivity())
                                     == swipedConversation.peek();
-                    if (activity instanceof OnConversationArchived) {
-                        ((OnConversationArchived) activity)
-                                .onConversationArchived(swipedConversation.peek());
+                    if (getActivity() instanceof OnConversationArchived callback) {
+                        callback.onConversationArchived(swipedConversation.peek());
                     }
                     final Conversation c = swipedConversation.peek();
                     final int title;
@@ -177,9 +177,12 @@ public class ConversationsOverviewFragment extends XmppFragment {
                                             R.string.undo,
                                             v -> {
                                                 pendingActionHelper.undo();
-                                                Conversation conversation =
-                                                        swipedConversation.pop();
-                                                conversationsAdapter.insert(conversation, position);
+                                                final var conversation = swipedConversation.pop();
+                                                if (!conversations.contains(conversation)) {
+                                                    conversationsAdapter.insert(
+                                                            conversation, position);
+                                                }
+                                                toggleHintVisibility();
                                                 if (formerlySelected) {
                                                     if (activity
                                                             instanceof OnConversationSelected on) {
@@ -468,10 +471,27 @@ public class ConversationsOverviewFragment extends XmppFragment {
                 pendingActionHelper.execute();
             }
         }
-        this.conversationsAdapter.notifyDataSetChanged();
-        final var scrollState = pendingScrollState.pop();
-        if (scrollState != null) {
-            setScrollPosition(scrollState);
+        if (this.conversations.isEmpty()) {
+            this.binding.list.setVisibility(View.GONE);
+            this.binding.emptyChatHint.setVisibility(View.VISIBLE);
+        } else {
+            this.binding.emptyChatHint.setVisibility(View.GONE);
+            this.binding.list.setVisibility(View.VISIBLE);
+            this.conversationsAdapter.notifyDataSetChanged();
+            final var scrollState = pendingScrollState.pop();
+            if (scrollState != null) {
+                setScrollPosition(scrollState);
+            }
+        }
+    }
+
+    private void toggleHintVisibility() {
+        if (this.conversations.isEmpty()) {
+            this.binding.list.setVisibility(View.GONE);
+            this.binding.emptyChatHint.setVisibility(View.VISIBLE);
+        } else {
+            this.binding.emptyChatHint.setVisibility(View.GONE);
+            this.binding.list.setVisibility(View.VISIBLE);
         }
     }
 
