@@ -20,7 +20,6 @@ import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.worker.ExportBackupWorker;
-import eu.siacs.conversations.xmpp.Jid;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -83,7 +82,7 @@ public class BackupFile implements Comparable<BackupFile> {
 
     private static List<BackupFile> list(final Context context) {
         final var database = DatabaseBackend.getInstance(context);
-        final List<Jid> accounts = database.getAccountJids(false);
+        final var accounts = database.getAccountAddresses(false);
         final var backupFiles = new ImmutableList.Builder<BackupFile>();
         final var apps =
                 ImmutableSet.of("Conversations", "Quicksy", context.getString(R.string.app_name));

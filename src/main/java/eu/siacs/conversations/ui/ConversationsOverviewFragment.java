@@ -45,6 +45,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -54,6 +55,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -150,12 +152,6 @@ public class ConversationsOverviewFragment extends XmppFragment {
                     }
                     conversationsAdapter.remove(swipedConversation.peek(), position);
                     activity.xmppConnectionService.markRead(swipedConversation.peek());
-
-                    if (position == 0 && conversationsAdapter.getItemCount() == 0) {
-                        final Conversation c = swipedConversation.pop();
-                        activity.xmppConnectionService.archiveConversation(c);
-                        return;
-                    }
                     final boolean formerlySelected =
                             ConversationFragment.getConversation(getActivity())
                                     == swipedConversation.peek();
@@ -186,9 +182,8 @@ public class ConversationsOverviewFragment extends XmppFragment {
                                                 conversationsAdapter.insert(conversation, position);
                                                 if (formerlySelected) {
                                                     if (activity
-                                                            instanceof OnConversationSelected) {
-                                                        ((OnConversationSelected) activity)
-                                                                .onConversationSelected(c);
+                                                            instanceof OnConversationSelected on) {
+                                                        on.onConversationSelected(c);
                                                     }
                                                 }
                                                 LinearLayoutManager layoutManager =
@@ -234,7 +229,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 
     private ItemTouchHelper touchHelper;
 
-    public static Conversation getSuggestion(FragmentActivity activity) {
+    public static Conversation getSuggestion(final FragmentActivity activity) {
         final Conversation exception;
         Fragment fragment =
                 activity.getSupportFragmentManager().findFragmentById(R.id.main_fragment);
@@ -246,20 +241,17 @@ public class ConversationsOverviewFragment extends XmppFragment {
         return getSuggestion(activity, exception);
     }
 
-    public static Conversation getSuggestion(FragmentActivity activity, Conversation exception) {
+    public static @Nullable Conversation getSuggestion(
+            final FragmentActivity activity, final Conversation exception) {
         Fragment fragment =
                 activity.getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         if (fragment instanceof ConversationsOverviewFragment conversationsOverviewFragment) {
-            List<Conversation> conversations = conversationsOverviewFragment.conversations;
-            if (conversations.size() > 0) {
-                Conversation suggestion = conversations.get(0);
-                if (suggestion == exception) {
-                    if (conversations.size() > 1) {
-                        return conversations.get(1);
-                    }
-                } else {
-                    return suggestion;
-                }
+            final var conversations = conversationsOverviewFragment.conversations;
+            final var filtered = Collections2.filter(conversations, c -> c != exception);
+            if (filtered.isEmpty()) {
+                return null;
+            } else {
+                return Iterables.getFirst(filtered, null);
             }
         }
         return null;

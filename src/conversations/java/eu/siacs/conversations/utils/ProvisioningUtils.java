@@ -9,7 +9,6 @@ import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.EditAccountActivity;
 import eu.siacs.conversations.xmpp.Jid;
-import java.util.List;
 
 public class ProvisioningUtils {
 
@@ -23,7 +22,7 @@ public class ProvisioningUtils {
             return;
         }
         final Jid jid = accountConfiguration.getJid();
-        final List<Jid> accounts = DatabaseBackend.getInstance(activity).getAccountJids(true);
+        final var accounts = DatabaseBackend.getInstance(activity).getAccountAddresses(true);
         if (accounts.contains(jid)) {
             Toast.makeText(activity, R.string.account_already_exists, Toast.LENGTH_LONG).show();
             return;

@@ -452,8 +452,8 @@ public class EditAccountActivity extends OmemoActivity
     public void refreshUiReal() {
         invalidateOptionsMenu();
         if (mAccount != null && mAccount.getStatus() != Account.State.ONLINE && mFetchingAvatar) {
-            Intent intent = new Intent(this, StartConversationActivity.class);
-            StartConversationActivity.addInviteUri(intent, getIntent());
+            final Intent intent =
+                    StartConversationActivity.startOrConversationsActivity(this, mAccount);
             startActivity(intent);
             finish();
         } else if (mInitMode && mAccount != null && mAccount.getStatus() == Account.State.ONLINE) {
@@ -538,12 +538,11 @@ public class EditAccountActivity extends OmemoActivity
                                     && xmppConnectionService.getAccounts().size() == 1;
                     if (avatar || !connection.getManager(PepManager.class).isAvailable()) {
                         intent =
-                                new Intent(
-                                        getApplicationContext(), StartConversationActivity.class);
+                                StartConversationActivity.startOrConversationsActivity(
+                                        this, mAccount);
                         if (wasFirstAccount) {
                             intent.putExtra("init", true);
                         }
-                        intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toString());
                     } else {
                         intent =
                                 new Intent(
@@ -551,12 +550,12 @@ public class EditAccountActivity extends OmemoActivity
                                         PublishProfilePictureActivity.class);
                         intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toString());
                         intent.putExtra("setup", true);
+                        StartConversationActivity.addInviteUri(intent, getIntent());
                     }
                     if (wasFirstAccount) {
                         intent.setFlags(
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     }
-                    StartConversationActivity.addInviteUri(intent, getIntent());
                     startActivity(intent);
                     finish();
                 });

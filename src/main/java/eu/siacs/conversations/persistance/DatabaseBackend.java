@@ -11,8 +11,10 @@ import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
@@ -43,6 +45,8 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -1746,34 +1750,43 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return getAccounts(db);
     }
 
-    public List<Jid> getAccountJids(final boolean enabledOnly) {
+    public Collection<Jid> getAccountAddresses(final boolean enabledOnly) {
+        return Collections2.transform(getAccountWithOptions(enabledOnly), a -> a.jid);
+    }
+
+    public Set<AccountWithOptions> getAccountWithOptions() {
+        return getAccountWithOptions(false);
+    }
+
+    private Set<AccountWithOptions> getAccountWithOptions(final boolean enabledOnly) {
         final SQLiteDatabase db = this.getReadableDatabase();
-        final List<Jid> jids = new ArrayList<>();
-        final String[] columns = new String[] {Account.USERNAME, Account.SERVER};
+        final var addresses = new ImmutableSet.Builder<AccountWithOptions>();
+        final String[] columns = new String[] {Account.USERNAME, Account.SERVER, Account.OPTIONS};
         final String where = enabledOnly ? "not options & (1 <<1)" : null;
         try (final Cursor cursor =
                 db.query(Account.TABLENAME, columns, where, null, null, null, null)) {
-            while (cursor != null && cursor.moveToNext()) {
-                jids.add(Jid.of(cursor.getString(0), cursor.getString(1), null));
+            while (cursor.moveToNext()) {
+                final var address = Jid.of(cursor.getString(0), cursor.getString(1), null);
+                addresses.add(new AccountWithOptions(address, cursor.getInt(2)));
             }
         } catch (final Exception e) {
-            return jids;
+            return Collections.emptySet();
         }
-        return jids;
+        return addresses.build();
     }
 
-    private List<Account> getAccounts(SQLiteDatabase db) {
+    private List<Account> getAccounts(final SQLiteDatabase db) {
         final List<Account> list = new ArrayList<>();
         try (final Cursor cursor =
                 db.query(Account.TABLENAME, null, null, null, null, null, null)) {
-            while (cursor != null && cursor.moveToNext()) {
+            while (cursor.moveToNext()) {
                 list.add(Account.fromCursor(cursor));
             }
         }
         return list;
     }
 
-    public boolean updateAccount(Account account) {
+    public boolean updateAccount(final Account account) {
         final var db = this.getWritableDatabase();
         final String[] args = {account.getUuid()};
         final int rows =
@@ -2671,5 +2684,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             }
         }
         return builder.build();
+    }
+
+    public record AccountWithOptions(Jid jid, int options) {
+        public boolean isOptionSet(final int option) {
+            return ((options & (1 << option)) != 0);
+        }
     }
 }

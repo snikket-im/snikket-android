@@ -175,7 +175,7 @@ public class ImportBackupWorker extends Worker {
         final BackupFileHeader backupFileHeader = BackupFileHeader.read(dataInputStream);
         Log.d(Config.LOGTAG, backupFileHeader.toString());
 
-        final var accounts = database.getAccountJids(false);
+        final var accounts = database.getAccountAddresses(false);
 
         if (QuickConversationsService.isQuicksy() && !accounts.isEmpty()) {
             return failure(Reason.ACCOUNT_ALREADY_EXISTS);

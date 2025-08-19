@@ -250,28 +250,6 @@ public class ManageAccountActivity extends XmppActivity
     }
 
     @Override
-    public boolean onNavigateUp() {
-        if (xmppConnectionService.getConversations().size() == 0) {
-            Intent contactsIntent = new Intent(this, StartConversationActivity.class);
-            contactsIntent.setFlags(
-                    // if activity exists in stack, pop the stack and go back to it
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP
-                            |
-                            // otherwise, make a new task for it
-                            Intent.FLAG_ACTIVITY_NEW_TASK
-                            |
-                            // don't use the new activity animation; finish
-                            // animation runs instead
-                            Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(contactsIntent);
-            finish();
-            return true;
-        } else {
-            return super.onNavigateUp();
-        }
-    }
-
-    @Override
     public void onClickTglAccountState(Account account, boolean enable) {
         if (enable) {
             enableAccount(account);

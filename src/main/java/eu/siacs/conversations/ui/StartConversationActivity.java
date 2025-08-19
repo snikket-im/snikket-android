@@ -54,6 +54,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.FutureCallback;
@@ -782,7 +783,7 @@ public class StartConversationActivity extends XmppActivity
         }
         switch (item.getItemId()) {
             case android.R.id.home:
-                navigateBack();
+                finish();
                 return true;
             case R.id.action_scan_qr_code:
                 UriHandlerActivity.scan(this);
@@ -967,10 +968,8 @@ public class StartConversationActivity extends XmppActivity
         if (actionBar == null) {
             return;
         }
-        boolean openConversations =
-                !createdByViewIntent && !xmppConnectionService.isConversationsListEmpty(null);
-        actionBar.setDisplayHomeAsUpEnabled(openConversations);
-        actionBar.setDisplayHomeAsUpEnabled(openConversations);
+        boolean openConversations = !createdByViewIntent;
+        actionBar.setDisplayHomeAsUpEnabled(!isTaskRoot());
     }
 
     @Override
@@ -1188,18 +1187,7 @@ public class StartConversationActivity extends XmppActivity
             binding.speedDial.close();
             return;
         }
-        navigateBack();
-    }
-
-    private void navigateBack() {
-        if (!createdByViewIntent
-                && xmppConnectionService != null
-                && !xmppConnectionService.isConversationsListEmpty(null)) {
-            Intent intent = new Intent(this, ConversationsActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(intent);
-        }
-        finish();
+        super.onBackPressed();
     }
 
     @Override
@@ -1518,10 +1506,26 @@ public class StartConversationActivity extends XmppActivity
         }
     }
 
-    public static void addInviteUri(Intent to, Intent from) {
+    public static void addInviteUri(final Intent to, final Intent from) {
         if (from != null && from.hasExtra(EXTRA_INVITE_URI)) {
             final String invite = from.getStringExtra(EXTRA_INVITE_URI);
+            Log.d(Config.LOGTAG, "dragging on invite uri: " + invite);
             to.putExtra(EXTRA_INVITE_URI, invite);
+        }
+    }
+
+    public static Intent startOrConversationsActivity(
+            final BaseActivity baseActivity, @Nullable final Account account) {
+        final var currentIntent = baseActivity.getIntent();
+        final var invite =
+                currentIntent == null ? null : currentIntent.getStringExtra(EXTRA_INVITE_URI);
+        if (Strings.isNullOrEmpty(invite) || account == null) {
+            return new Intent(baseActivity, ConversationsActivity.class);
+        } else {
+            final var intent = new Intent(baseActivity, StartConversationActivity.class);
+            intent.putExtra(EXTRA_INVITE_URI, invite);
+            intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
+            return intent;
         }
     }
 

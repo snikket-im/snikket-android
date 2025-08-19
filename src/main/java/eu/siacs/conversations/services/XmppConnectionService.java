@@ -2093,13 +2093,6 @@ public class XmppConnectionService extends Service {
         return null;
     }
 
-    public boolean isConversationsListEmpty(final Conversation ignore) {
-        synchronized (this.conversations) {
-            final int size = this.conversations.size();
-            return size == 0 || size == 1 && this.conversations.get(0) == ignore;
-        }
-    }
-
     public boolean isConversationStillOpen(final Conversation conversation) {
         synchronized (this.conversations) {
             for (Conversation current : this.conversations) {
@@ -2506,7 +2499,12 @@ public class XmppConnectionService extends Service {
                 }
             }
             XmppConnection.RECONNNECTION_EXECUTOR.execute(() -> disconnect(account, !connected));
-            mDatabaseWriterExecutor.execute(() -> databaseBackend.deleteAccount(account));
+            mDatabaseWriterExecutor.execute(
+                    () -> {
+                        if (databaseBackend.deleteAccount(account)) {
+                            Log.d(Config.LOGTAG, "deleted account from database");
+                        }
+                    });
             this.accounts.remove(account);
             if (CallIntegration.hasSystemFeature(this)) {
                 CallIntegrationConnectionService.unregisterPhoneAccount(this, account);
@@ -2528,7 +2526,7 @@ public class XmppConnectionService extends Service {
                         listener.getClass().getName()
                                 + " is already registered as ConversationListChangedListener");
             }
-            this.mNotificationService.setIsInForeground(this.mOnConversationUpdates.size() > 0);
+            this.mNotificationService.setIsInForeground(!this.mOnConversationUpdates.isEmpty());
         }
         if (remainingListeners) {
             switchToForeground();
@@ -2539,7 +2537,7 @@ public class XmppConnectionService extends Service {
         final boolean remainingListeners;
         synchronized (LISTENER_LOCK) {
             this.mOnConversationUpdates.remove(listener);
-            this.mNotificationService.setIsInForeground(this.mOnConversationUpdates.size() > 0);
+            this.mNotificationService.setIsInForeground(!this.mOnConversationUpdates.isEmpty());
             remainingListeners = checkListeners();
         }
         if (remainingListeners) {
