@@ -1187,4 +1187,5 @@
     </plurals>
     <string name="strong_transport_security">Строгая транспортная безопасность</string>
     <string name="require_tls_v1_3">Требовать протокол безопасности транспортного уровня (TLS) версии 1.3 для всех соединений.</string>
+    <string name="download_failed_could_not_establish_tls">Невозможно установить TLS-соединение</string>
 </resources>
