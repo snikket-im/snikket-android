@@ -225,7 +225,7 @@ public class HttpDownloadConnection implements Transferable {
         }
     }
 
-    private void changeStatus(int status) {
+    private void changeStatus(final int status) {
         this.mStatus = status;
         mHttpConnectionManager.updateConversationUi(true);
     }
@@ -240,6 +240,9 @@ public class HttpDownloadConnection implements Transferable {
             mXmppConnectionService.showErrorToastInUi(R.string.download_failed_server_not_found);
         } else if (e instanceof java.net.ConnectException) {
             mXmppConnectionService.showErrorToastInUi(R.string.download_failed_could_not_connect);
+        } else if (e instanceof SSLHandshakeException) {
+            mXmppConnectionService.showErrorToastInUi(
+                    R.string.download_failed_could_not_establish_tls);
         } else if (e instanceof FileWriterException) {
             mXmppConnectionService.showErrorToastInUi(
                     R.string.download_failed_could_not_write_file);

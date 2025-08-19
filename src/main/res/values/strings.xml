@@ -463,6 +463,7 @@
     <string name="download_failed_server_not_found">Download failed: Server not found</string>
     <string name="download_failed_file_not_found">Download failed: File not found</string>
     <string name="download_failed_could_not_connect">Download failed: Could not connect to host</string>
+    <string name="download_failed_could_not_establish_tls">Could not establish TLS connection</string>
     <string name="download_failed_could_not_write_file">Download failed: Could not write file</string>
     <string name="download_failed_invalid_file">Download failed: Invalid file</string>
     <string name="account_status_tor_unavailable">Tor network unavailable</string>
