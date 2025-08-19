@@ -66,7 +66,7 @@
     <string name="send_now">Enviar agora</string>
     <string name="send_never">Non preguntar de novo</string>
     <string name="problem_connecting_to_account">Non se puido conectar a conta</string>
-    <string name="problem_connecting_to_accounts">Non puido conectarse a múltiples contas</string>
+    <string name="problem_connecting_to_accounts">Non se puido conectar con varias contas</string>
     <string name="touch_to_fix">Toca para xestionar as túas contas</string>
     <string name="attach_file">Adxuntar</string>
     <string name="not_in_roster">Engadir este novo contacto á lista de contactos?</string>
@@ -1138,4 +1138,5 @@
     </plurals>
     <string name="require_tls_v1_3">Requerir Transport Layer Security (TLS) Protocol Version 1.3 para todas as conexións</string>
     <string name="strong_transport_security">Seguridade en tránsito forte</string>
+    <string name="download_failed_could_not_establish_tls">Non se puido establecer conexión TLS</string>
 </resources>
