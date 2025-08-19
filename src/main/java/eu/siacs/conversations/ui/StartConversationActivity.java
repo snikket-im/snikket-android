@@ -1128,18 +1128,17 @@ public class StartConversationActivity extends XmppActivity
         }
     }
 
-    protected void filterContacts(String needle) {
+    protected void filterContacts(final String needle) {
         this.contacts.clear();
         final List<Account> accounts = xmppConnectionService.getAccounts();
+        final var showOffline = !this.mHideOfflineContacts;
         for (final Account account : accounts) {
             if (account.isEnabled()) {
                 for (Contact contact : account.getRoster().getContacts()) {
                     Presence.Availability s = contact.getShownStatus();
                     if (contact.showInContactList()
                             && contact.match(needle)
-                            && (!this.mHideOfflineContacts
-                                    || (needle != null && !needle.trim().isEmpty())
-                                    || s.compareTo(Presence.Availability.OFFLINE) < 0)) {
+                            && (showOffline || s.compareTo(Presence.Availability.OFFLINE) < 0)) {
                         this.contacts.add(contact);
                     }
                 }
@@ -1149,7 +1148,7 @@ public class StartConversationActivity extends XmppActivity
         mContactsAdapter.notifyDataSetChanged();
     }
 
-    protected void filterConferences(String needle) {
+    protected void filterConferences(final String needle) {
         this.conferences.clear();
         for (final Account account : xmppConnectionService.getAccounts()) {
             if (account.isEnabled()) {
