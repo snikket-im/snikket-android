@@ -5,18 +5,18 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import eu.siacs.conversations.utils.IP;
 import java.io.IOException;
 import java.net.IDN;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 import org.bouncycastle.asn1.ASN1Object;
@@ -37,8 +37,8 @@ public class XmppDomainVerifier {
     private static final String SRV_NAME = "1.3.6.1.5.5.7.8.7";
     private static final String XMPP_ADDR = "1.3.6.1.5.5.7.8.5";
 
-    private static List<String> getCommonNames(final X509Certificate certificate) {
-        final var domains = new ImmutableList.Builder<String>();
+    private static Set<String> getCommonNames(final X509Certificate certificate) {
+        final var domains = new ImmutableSet.Builder<String>();
         try {
             final var x500name = new JcaX509CertificateHolder(certificate).getSubject();
             final RDN[] nameRDNs = x500name.getRDNs(BCStyle.CN);
@@ -49,7 +49,7 @@ public class XmppDomainVerifier {
             }
             return domains.build();
         } catch (final CertificateEncodingException e) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
     }
 
@@ -77,7 +77,8 @@ public class XmppDomainVerifier {
         }
     }
 
-    public static boolean matchDomain(final String domain, final List<String> certificateDomains) {
+    public static boolean matchDomain(
+            final String domain, final Collection<String> certificateDomains) {
         for (final String certificateDomain : certificateDomains) {
             if (certificateDomain.startsWith("*.")) {
                 // https://www.rfc-editor.org/rfc/rfc6125#section-6.4.3
@@ -109,9 +110,10 @@ public class XmppDomainVerifier {
         final String hostname = unicodeHostname == null ? null : IDN.toASCII(unicodeHostname);
         final Certificate[] chain = sslSession.getPeerCertificates();
         if (chain.length == 0 || !(chain[0] instanceof X509Certificate certificate)) {
+            Log.d(LOGTAG, "chain length 0");
             return false;
         }
-        final List<String> commonNames = getCommonNames(certificate);
+        final var commonNames = getCommonNames(certificate);
         if (isSelfSigned(certificate)) {
             if (commonNames.size() == 1 && matchDomain(domain, commonNames)) {
                 Log.d(LOGTAG, "accepted CN in self signed cert as work around for " + domain);
@@ -125,6 +127,7 @@ public class XmppDomainVerifier {
                 Log.d(LOGTAG, "also trying to verify hostname " + hostname);
             }
             return validDomains.xmppAddresses.contains(domain)
+                    || (IP.matches(domain) && validDomains.ipAddresses.contains(domain))
                     || validDomains.srvNames.contains("_xmpp-client." + domain)
                     || matchDomain(domain, validDomains.domains)
                     || (hostname != null && matchDomain(hostname, validDomains.domains));
@@ -135,69 +138,85 @@ public class XmppDomainVerifier {
 
     public static ValidDomains parseValidDomains(final X509Certificate certificate)
             throws CertificateParsingException {
-        final List<String> commonNames = getCommonNames(certificate);
-        final Collection<List<?>> alternativeNames = certificate.getSubjectAlternativeNames();
-        final List<String> xmppAddrs = new ArrayList<>();
-        final List<String> srvNames = new ArrayList<>();
-        final List<String> domains = new ArrayList<>();
-        if (alternativeNames != null) {
-            for (List<?> san : alternativeNames) {
-                final Integer type = (Integer) san.get(0);
-                if (type == 0) {
-                    final Pair<String, String> otherName = parseOtherName((byte[]) san.get(1));
-                    if (otherName != null && otherName.first != null && otherName.second != null) {
-                        switch (otherName.first) {
-                            case SRV_NAME:
-                                srvNames.add(otherName.second.toLowerCase(Locale.US));
-                                break;
-                            case XMPP_ADDR:
-                                xmppAddrs.add(otherName.second.toLowerCase(Locale.US));
-                                break;
-                            default:
-                                Log.d(
-                                        LOGTAG,
-                                        "oid: " + otherName.first + " value: " + otherName.second);
-                        }
-                    }
-                } else if (type == 2) {
-                    final Object value = san.get(1);
-                    if (value instanceof String s) {
-                        domains.add(s.toLowerCase(Locale.US));
+        final var commonNames = getCommonNames(certificate);
+        final var alternativeNames = certificate.getSubjectAlternativeNames();
+        final var xmppAddresses = new ImmutableSet.Builder<String>();
+        final var srvNames = new ImmutableSet.Builder<String>();
+        final var domains = new ImmutableSet.Builder<String>();
+        final var ips = new ImmutableSet.Builder<String>();
+        if (alternativeNames.isEmpty()) {
+            return new ValidDomains(
+                    Collections.emptySet(),
+                    Collections.emptySet(),
+                    Collections.emptySet(),
+                    commonNames);
+        }
+        for (final var san : alternativeNames) {
+            final Integer type = (Integer) san.get(0);
+            if (type == 0) {
+                final Pair<String, String> otherName = parseOtherName((byte[]) san.get(1));
+                if (otherName != null && otherName.first != null && otherName.second != null) {
+                    switch (otherName.first) {
+                        case SRV_NAME:
+                            srvNames.add(otherName.second.toLowerCase(Locale.US));
+                            break;
+                        case XMPP_ADDR:
+                            xmppAddresses.add(otherName.second.toLowerCase(Locale.US));
+                            break;
+                        default:
+                            Log.d(
+                                    LOGTAG,
+                                    "oid: " + otherName.first + " value: " + otherName.second);
                     }
                 }
-                // TODO parse type == 7 für IPs
+            } else if (type == 2) {
+                final Object value = san.get(1);
+                if (value instanceof String s) {
+                    domains.add(s.toLowerCase(Locale.US));
+                }
+            } else if (type == 7) {
+                final Object value = san.get(1);
+                if (value instanceof String s) {
+                    ips.add(s);
+                }
+            } else {
+                Log.d(LOGTAG, "found more types: " + type);
             }
         }
-        if (srvNames.isEmpty() && xmppAddrs.isEmpty() && domains.isEmpty()) {
-            domains.addAll(commonNames);
-        }
-        return new ValidDomains(xmppAddrs, srvNames, domains);
+        return new ValidDomains(
+                ips.build(), xmppAddresses.build(), srvNames.build(), domains.build());
     }
 
     public static final class ValidDomains {
-        final List<String> xmppAddresses;
-        final List<String> srvNames;
-        final List<String> domains;
+        final Set<String> ipAddresses;
+        final Set<String> xmppAddresses;
+        final Set<String> srvNames;
+        final Set<String> domains;
 
         private ValidDomains(
-                List<String> xmppAddresses, List<String> srvNames, List<String> domains) {
+                Set<String> ipAddresses,
+                Set<String> xmppAddresses,
+                Set<String> srvNames,
+                Set<String> domains) {
+            this.ipAddresses = ipAddresses;
             this.xmppAddresses = xmppAddresses;
             this.srvNames = srvNames;
             this.domains = domains;
         }
 
-        public List<String> all() {
-            ImmutableList.Builder<String> all = new ImmutableList.Builder<>();
-            all.addAll(xmppAddresses);
-            all.addAll(srvNames);
-            all.addAll(domains);
-            return all.build();
+        public Set<String> all() {
+            return new ImmutableSet.Builder<String>()
+                    .addAll(xmppAddresses)
+                    .addAll(srvNames)
+                    .addAll(domains)
+                    .build();
         }
 
-        @NonNull
         @Override
+        @NonNull
         public String toString() {
             return MoreObjects.toStringHelper(this)
+                    .add("ipAddresses", ipAddresses)
                     .add("xmppAddresses", xmppAddresses)
                     .add("srvNames", srvNames)
                     .add("domains", domains)
@@ -205,11 +224,11 @@ public class XmppDomainVerifier {
         }
     }
 
-    private boolean isSelfSigned(X509Certificate certificate) {
+    private boolean isSelfSigned(final X509Certificate certificate) {
         try {
             certificate.verify(certificate.getPublicKey());
             return true;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             return false;
         }
     }
