@@ -1158,4 +1158,5 @@
     </plurals>
     <string name="strong_transport_security">Securitate puternică a transportului</string>
     <string name="require_tls_v1_3">Necesită Transport Layer Security (TLS) Protocol Versiunea 1.3 pentru toate conexiunile</string>
+    <string name="download_failed_could_not_establish_tls">Nu s-a putut stabili conexiunea TLS</string>
 </resources>
