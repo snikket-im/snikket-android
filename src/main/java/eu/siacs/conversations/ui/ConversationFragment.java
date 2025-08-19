@@ -779,11 +779,7 @@ public class ConversationFragment extends XmppFragment
                     public void onFailure(@NonNull final Throwable t) {
                         Log.d(Config.LOGTAG, "could not attach file", t);
                         prepareFileToast.cancel();
-                        final String message = t.getMessage();
-                        if (Strings.isNullOrEmpty(message)) {
-                            return;
-                        }
-                        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+                        displayToastForException(t);
                     }
                 },
                 ContextCompat.getMainExecutor(requireContext()));
@@ -795,7 +791,8 @@ public class ConversationFragment extends XmppFragment
         toggleInputMethod();
     }
 
-    private void attachImageToConversation(Conversation conversation, Uri uri, String type) {
+    private void attachImageToConversation(
+            final Conversation conversation, final Uri uri, final String type) {
         if (conversation == null) {
             return;
         }
@@ -815,15 +812,24 @@ public class ConversationFragment extends XmppFragment
 
                     @Override
                     public void onFailure(final @NonNull Throwable t) {
+                        Log.d(Config.LOGTAG, "could not attach image", t);
                         prepareFileToast.cancel();
-                        final String message = t.getMessage();
-                        if (Strings.isNullOrEmpty(message)) {
-                            return;
-                        }
-                        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+                        displayToastForException(t);
                     }
                 },
                 ContextCompat.getMainExecutor(requireContext()));
+    }
+
+    private void displayToastForException(final Throwable t) {
+        if (t instanceof FileBackend.FileCopyException e) {
+            Toast.makeText(requireContext(), e.getResId(), Toast.LENGTH_LONG).show();
+        } else {
+            final String message = t.getMessage();
+            if (Strings.isNullOrEmpty(message)) {
+                return;
+            }
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void sendMessage() {

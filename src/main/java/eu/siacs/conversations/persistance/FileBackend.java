@@ -733,7 +733,7 @@ public class FileBackend {
         return pos > 0 ? filename.substring(pos + 1) : null;
     }
 
-    private void copyImageToPrivateStorage(File file, Uri image, int sampleSize)
+    private void copyImageToPrivateStorage(final File file, final Uri image, int sampleSize)
             throws FileCopyException, ImageCompressionException {
         final File parent = file.getParentFile();
         if (parent != null && parent.mkdirs()) {
@@ -827,22 +827,15 @@ public class FileBackend {
         copyImageToPrivateStorage(file, image, 0);
     }
 
-    public void copyImageToPrivateStorage(Message message, Uri image)
+    public void copyImageToPrivateStorage(final Message message, final Uri image)
             throws FileCopyException, ImageCompressionException {
-        final String filename;
-        switch (Config.IMAGE_FORMAT) {
-            case JPEG:
-                filename = String.format("%s.%s", message.getUuid(), "jpg");
-                break;
-            case PNG:
-                filename = String.format("%s.%s", message.getUuid(), "png");
-                break;
-            case WEBP:
-                filename = String.format("%s.%s", message.getUuid(), "webp");
-                break;
-            default:
-                throw new IllegalStateException("Unknown image format");
-        }
+        final String filename =
+                switch (Config.IMAGE_FORMAT) {
+                    case JPEG -> String.format("%s.%s", message.getUuid(), "jpg");
+                    case PNG -> String.format("%s.%s", message.getUuid(), "png");
+                    case WEBP -> String.format("%s.%s", message.getUuid(), "webp");
+                    default -> throw new IllegalStateException("Unknown image format");
+                };
         setupRelativeFilePath(message, filename);
         copyImageToPrivateStorage(getFile(message), image);
         updateFileParams(message);
