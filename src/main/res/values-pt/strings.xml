@@ -919,4 +919,30 @@
     <string name="channel_discover_opt_in_message">Descoberta de canais usa um serviço de terceiros chamado &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;. O seu endereço de IP e termos de pesquisa irão ser transmitidos para este serviço caso use a funcionalidade. Veja a sua &lt;a href=https://search.jabber.network/privacy&gt;Política de Privacidade&lt;/a&gt; para mais informações.</string>
     <string name="open_join_dialog">Entrar no canal público…</string>
     <string name="account_already_setup">Esta conta já foi configurada</string>
+    <string name="answer_call">Atender</string>
+    <string name="rtp_state_finding_device">Descobrindo dispositivos</string>
+    <string name="reconnecting_call">Reconectando chamada</string>
+    <string name="rtp_state_accepting_call">Aceitando chamada</string>
+    <string name="rtp_state_connectivity_lost_error">Conexão perdida</string>
+    <string name="rtp_state_security_error">Problema de verificação</string>
+    <string name="rtp_state_content_add_video">Mudar para videochamada?</string>
+    <string name="ongoing_call">Chamada a decorrer</string>
+    <string name="category_about">Sobre</string>
+    <string name="rtp_state_incoming_call">Chamada recebida</string>
+    <string name="make_call">Fazer chamada</string>
+    <string name="rtp_state_application_failure">Falha na aplicação</string>
+    <string name="download_failed_could_not_establish_tls">Não foi possível estabelecer conexão TLS</string>
+    <string name="please_enable_an_account">Por favor ative uma conta</string>
+    <string name="rtp_state_incoming_video_call">Videochamada recebida</string>
+    <string name="rtp_state_connecting">Conectando</string>
+    <string name="rtp_state_connected">Conectado</string>
+    <string name="rtp_state_reconnecting">Reconectando</string>
+    <string name="rtp_state_ending_call">Encerrando chamada</string>
+    <string name="dismiss_call">Rejeitar</string>
+    <string name="rtp_state_ringing">Ligando</string>
+    <string name="rtp_state_contact_offline">Contacto não está disponível</string>
+    <string name="rtp_state_connectivity_error">Impossível conectar à chamada</string>
+    <string name="rtp_state_retracted">Chamada rejeitada</string>
+    <string name="hang_up">Desligar</string>
+    <string name="ongoing_video_call">Videochamada a decorrer</string>
 </resources>
