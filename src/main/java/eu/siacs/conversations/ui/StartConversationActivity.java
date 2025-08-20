@@ -85,6 +85,7 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import im.conversations.android.model.Bookmark;
@@ -1395,7 +1396,9 @@ public class StartConversationActivity extends XmppActivity
                         contact.showInRoster()
                                 && !contact.getOption(Contact.Options.SYNCED_VIA_OTHER));
                 final XmppConnection xmpp = contact.getAccount().getXmppConnection();
-                if (xmpp != null && xmpp.getFeatures().blocking() && !contact.isSelf()) {
+                if (xmpp != null
+                        && xmpp.getManager(BlockingManager.class).hasFeature()
+                        && !contact.isSelf()) {
                     if (contact.isBlocked()) {
                         blockUnblockItem.setTitle(R.string.unblock_contact);
                     } else {

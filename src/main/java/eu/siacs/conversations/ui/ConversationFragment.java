@@ -135,6 +135,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.ModerationManager;
@@ -1324,7 +1325,7 @@ public class ConversationFragment extends XmppFragment
                         && m.getServerMsgId() != null
                         && !c.isBlocked()
                         && connection != null
-                        && connection.getFeatures().spamReporting()) {
+                        && connection.getManager(BlockingManager.class).hasSpamReporting()) {
                     reportAndBlock.setVisible(true);
                 }
             }
@@ -2899,7 +2900,7 @@ public class ConversationFragment extends XmppFragment
         } else if (account.hasPendingPgpIntent(conversation)) {
             showSnackbar(R.string.openpgp_messages_found, R.string.decrypt, clickToDecryptListener);
         } else if (connection != null
-                && connection.getFeatures().blocking()
+                && connection.getManager(BlockingManager.class).hasFeature()
                 && conversation.countMessages() != 0
                 && !conversation.isBlocked()
                 && conversation.isWithStranger()) {

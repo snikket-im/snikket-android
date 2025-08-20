@@ -135,6 +135,10 @@ public class BlockingManager extends AbstractManager {
         return getManager(DiscoManager.class).hasServerFeature(Namespace.BLOCKING);
     }
 
+    public boolean hasSpamReporting() {
+        return getManager(DiscoManager.class).hasServerFeature(Namespace.REPORTING);
+    }
+
     private static Set<Jid> itemsAsAddresses(final Collection<Item> items) {
         final var builder = new ImmutableSet.Builder<Jid>();
         for (final var item : items) {

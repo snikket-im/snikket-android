@@ -81,6 +81,7 @@ import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
+import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
@@ -789,7 +790,7 @@ public class EditAccountActivity extends OmemoActivity
         share.setVisible(mAccount != null && !mInitMode);
 
         if (mAccount != null && mAccount.isOnlineAndConnected()) {
-            if (!mAccount.getXmppConnection().getFeatures().blocking()) {
+            if (!mAccount.getXmppConnection().getManager(BlockingManager.class).hasFeature()) {
                 showBlocklist.setVisible(false);
             }
 
@@ -1264,7 +1265,7 @@ public class EditAccountActivity extends OmemoActivity
             } else {
                 this.binding.serverInfoCsi.setText(R.string.server_info_unavailable);
             }
-            if (features.blocking()) {
+            if (connection.getManager(BlockingManager.class).hasFeature()) {
                 this.binding.serverInfoBlocking.setText(R.string.server_info_available);
             } else {
                 this.binding.serverInfoBlocking.setText(R.string.server_info_unavailable);

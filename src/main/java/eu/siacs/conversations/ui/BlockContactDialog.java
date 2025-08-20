@@ -10,6 +10,7 @@ import eu.siacs.conversations.databinding.DialogBlockContactBinding;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.ui.util.JidDialog;
+import eu.siacs.conversations.xmpp.manager.BlockingManager;
 
 public final class BlockContactDialog {
 
@@ -29,7 +30,11 @@ public final class BlockContactDialog {
                         null,
                         false);
         final boolean reporting =
-                blockable.getAccount().getXmppConnection().getFeatures().spamReporting();
+                blockable
+                        .getAccount()
+                        .getXmppConnection()
+                        .getManager(BlockingManager.class)
+                        .hasSpamReporting();
         if (reporting && !isBlocked) {
             binding.reportSpam.setVisibility(View.VISIBLE);
             if (serverMsgId != null) {

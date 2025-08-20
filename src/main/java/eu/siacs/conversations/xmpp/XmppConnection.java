@@ -2940,14 +2940,6 @@ public class XmppConnection implements Runnable {
             return infoQuery != null && infoQuery.getFeatureStrings().contains(feature);
         }
 
-        public boolean blocking() {
-            return connection.getManager(BlockingManager.class).hasFeature();
-        }
-
-        public boolean spamReporting() {
-            return hasDiscoFeature(account.getDomain(), Namespace.REPORTING);
-        }
-
         public boolean sm() {
             return streamId != null
                     || (connection.streamFeatures != null
