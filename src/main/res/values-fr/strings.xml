@@ -547,7 +547,7 @@
     <string name="gp_short">Courte</string>
     <string name="gp_medium">Moyenne</string>
     <string name="gp_long">Longue</string>
-    <string name="pref_broadcast_last_activity">Dernière connexion</string>
+    <string name="pref_broadcast_last_activity">Montrer la dernière connexion</string>
     <string name="pref_broadcast_last_activity_summary">Informer vos contacts de la dernière fois que vous avez utilisé l\'application</string>
     <string name="pref_privacy">Confidentialité</string>
     <string name="pref_theme_options">Thème</string>
@@ -1137,4 +1137,28 @@
     <string name="sos_scheduled_return">Le retour du service est planifié pour %s</string>
     <string name="copy_geo_uri">Copier la géolocalisation</string>
     <string name="account_status_service_outage_known">Service en panne (problème connu)</string>
+    <string name="download_failed_could_not_establish_tls">Impossible d\'établir la connection TLS</string>
+    <string name="save_to_contact">Enregistrer dans Contacts</string>
+    <string name="show_in_contacts">Montrer dans Contacts</string>
+    <string name="pref_account_avatar">Comptes</string>
+    <string name="pref_category_avatars">Images de profils</string>
+    <string name="pref_show_11_chats">Discussions 1:1</string>
+    <string name="pref_show_11_chats_summary">Affiche les images de profils dans les discussions 1:1. (Les images de profils dans les groupes seront toujours affichées.)</string>
+    <string name="pref_show_11_sender_chats_summary">Affiche les images de profils dans les discussions 1:1 pour les messages reçus. (Les images de profils dans les groupes seront toujours affichées.)</string>
+    <string name="moderate_delete_dot_dot_dot">Supprimer en tant que modérateur·ice…</string>
+    <string name="moderate_delete">Supprimer en tant que modérateur·ice</string>
+    <string name="could_not_moderate_message">Impossible de modérer le message</string>
+    <string name="delete_message">Supprimer le message</string>
+    <string name="do_not_show_this_warning_again">Ne plus montrer cet avertissement.</string>
+    <string name="last_seen">vu pour la dernière fois %s</string>
+    <string name="strong_transport_security">Sécurité de transport forte</string>
+    <string name="require_tls_v1_3">Nécessite le protocole Transport Layer Security (TLS) Version 1.3 pour toutes les connections</string>
+    <string name="empty_conversations_list_hint">Quand une nouvelle conversation sera lancé, elle sera listé ici</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d Participant·e</item>
+        <item quantity="many">%1$d Participant·es</item>
+        <item quantity="other">%1$d Participant·es</item>
+    </plurals>
+    <string name="moderation_explained">Ce message sera supprimé pour vous et tous les participants de ce salon public.</string>
+    <string name="pref_account_avatar_summary">Affiche les images de profils de compte sur les messages sortants pour identifier et gérer facilement.</string>
 </resources>
