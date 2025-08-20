@@ -448,11 +448,11 @@
     <string name="username">Nazwa użytkownika</string>
     <string name="username_hint">Nazwa użytkownika</string>
     <string name="invalid_username">Błędna nazwa użytkownika</string>
-    <string name="download_failed_server_not_found">Pobieranie nieudane: Nie odnaleziono serwera</string>
-    <string name="download_failed_file_not_found">Pobieranie nieudane: Nie odnaleziono pliku</string>
-    <string name="download_failed_could_not_connect">Pobieranie nieudane: Nie można połączyć z hostem</string>
-    <string name="download_failed_could_not_write_file">Pobieranie niepowiodło się: brak możliwości zapisu pliku</string>
-    <string name="download_failed_invalid_file">Pobieranie nieudane: Nieprawidłowy plik</string>
+    <string name="download_failed_server_not_found">Pobieranie nieudane: nie odnaleziono serwera</string>
+    <string name="download_failed_file_not_found">Pobieranie nieudane: nie odnaleziono pliku</string>
+    <string name="download_failed_could_not_connect">Pobieranie nieudane: nie można połączyć z hostem</string>
+    <string name="download_failed_could_not_write_file">Pobieranie nieudane: nie można zapisać pliku</string>
+    <string name="download_failed_invalid_file">Pobieranie nieudane: nieprawidłowy plik</string>
     <string name="account_status_tor_unavailable">Sieć TOR jest niedostepna</string>
     <string name="account_status_bind_failure">Błąd przywiązania kanału (zasobu)</string>
     <string name="account_status_host_unknown">Nie odpowiada za domenę</string>
@@ -604,7 +604,7 @@
     <string name="pref_clean_cache_summary">Wyczyść cache (używane przez aparat)</string>
     <string name="pref_clean_cache">Wyczyść cache</string>
     <string name="pref_clean_private_storage">Wyczyść prywatny magazyn</string>
-    <string name="pref_clean_private_storage_summary">Wyczyść prywatny magazyn gdzie trzymane są pliki (mogą zostać pobrane ponownie z serwera)</string>
+    <string name="pref_clean_private_storage_summary">Wyczyść prywatny magazyn plików (mogą zostać pobrane ponownie z serwera)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Trafiłem na ten link w zaufanym źródle</string>
     <string name="verifying_omemo_keys_trusted_source">Zaraz zweryfikujesz klucz OMEMO %1$s klikając w link. Jest to bezpieczne jedynie, kiedy link pochodzi z zaufanego źródła gdzie tylko %2$s mógł go opublikować.</string>
     <string name="verifying_omemo_keys_trusted_source_account">Weryfikujesz właśnie klucze OMEMO własnego konta. To jest bezpieczne tylko jeśli kliknąłeś łącze w miejscu w którym jedynie ty mogłeś je zamieścić. </string>
@@ -1164,4 +1164,5 @@
     </plurals>
     <string name="require_tls_v1_3">Wymaganie protokołu Transport Layer Security (TLS) w wersji 1.3 dla wszystkich połączeń</string>
     <string name="strong_transport_security">Silne zabezpieczenie transportu</string>
+    <string name="download_failed_could_not_establish_tls">Nie można zestawić połączenia TLS</string>
 </resources>
