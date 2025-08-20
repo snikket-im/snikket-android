@@ -35,6 +35,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -187,6 +188,13 @@ public class StartConversationActivity extends XmppActivity
                     }
                 }
             };
+    private final OnBackPressedCallback fabBackPressedCallback =
+            new OnBackPressedCallback(false) {
+                @Override
+                public void handleOnBackPressed() {
+                    binding.speedDial.close();
+                }
+            };
     private Pair<Integer, Intent> mPostponedActivityResult;
     private ActivityStartConversationBinding binding;
     private final TextView.OnEditorActionListener mSearchDone =
@@ -334,6 +342,19 @@ public class StartConversationActivity extends XmppActivity
                         && savedInstanceState.getBoolean("requested_contacts_permission", false));
         mOpenedFab.set(
                 savedInstanceState != null && savedInstanceState.getBoolean("opened_fab", false));
+        binding.speedDial.setOnChangeListener(
+                new SpeedDialView.OnChangeListener() {
+                    @Override
+                    public boolean onMainActionSelected() {
+                        return false;
+                    }
+
+                    @Override
+                    public void onToggleChanged(boolean isOpen) {
+                        Log.d(Config.LOGTAG, "onToggleChanged(" + isOpen + ")");
+                        fabBackPressedCallback.setEnabled(isOpen);
+                    }
+                });
         binding.speedDial.setOnActionSelectedListener(
                 actionItem -> {
                     final String searchString =
@@ -368,6 +389,8 @@ public class StartConversationActivity extends XmppActivity
                     }
                     return false;
                 });
+        final var backDispatcher = this.getOnBackPressedDispatcher();
+        backDispatcher.addCallback(this, this.fabBackPressedCallback);
     }
 
     private void inflateFab(final SpeedDialView speedDialView, final @MenuRes int menuRes) {
@@ -998,18 +1021,18 @@ public class StartConversationActivity extends XmppActivity
                 filter(null);
             }
         }
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_DIALOG);
-        if (fragment instanceof OnBackendConnected) {
+        final var fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_DIALOG);
+        if (fragment instanceof OnBackendConnected callback) {
             Log.d(Config.LOGTAG, "calling on backend connected on dialog");
-            ((OnBackendConnected) fragment).onBackendConnected();
+            callback.onBackendConnected();
         }
         if (QuickConversationsService.isQuicksy()) {
             setRefreshing(xmppConnectionService.getQuickConversationsService().isSynchronizing());
         }
         if (QuickConversationsService.isConversations()
                 && AccountUtils.hasEnabledAccounts(xmppConnectionService)
-                && this.contacts.size() == 0
-                && this.conferences.size() == 0
+                && this.contacts.isEmpty()
+                && this.conferences.isEmpty()
                 && mOpenedFab.compareAndSet(false, true)) {
             binding.speedDial.open();
         }
@@ -1179,15 +1202,6 @@ public class StartConversationActivity extends XmppActivity
         if (QuickConversationsService.isQuicksy()) {
             setRefreshing(xmppConnectionService.getQuickConversationsService().isSynchronizing());
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (binding.speedDial.isOpen()) {
-            binding.speedDial.close();
-            return;
-        }
-        super.onBackPressed();
     }
 
     @Override
@@ -1519,14 +1533,16 @@ public class StartConversationActivity extends XmppActivity
         final var currentIntent = baseActivity.getIntent();
         final var invite =
                 currentIntent == null ? null : currentIntent.getStringExtra(EXTRA_INVITE_URI);
+        final Intent intent;
         if (Strings.isNullOrEmpty(invite) || account == null) {
-            return new Intent(baseActivity, ConversationsActivity.class);
+            intent = new Intent(baseActivity, ConversationsActivity.class);
         } else {
-            final var intent = new Intent(baseActivity, StartConversationActivity.class);
+            intent = new Intent(baseActivity, StartConversationActivity.class);
             intent.putExtra(EXTRA_INVITE_URI, invite);
             intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
-            return intent;
         }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return intent;
     }
 
     private class Invite extends XmppUri {
