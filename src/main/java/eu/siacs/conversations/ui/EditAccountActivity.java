@@ -83,6 +83,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
+import eu.siacs.conversations.xmpp.manager.ExternalServiceDiscoveryManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.PepManager;
@@ -1275,7 +1276,7 @@ public class EditAccountActivity extends OmemoActivity
             } else {
                 this.binding.serverInfoSm.setText(R.string.server_info_unavailable);
             }
-            if (features.externalServiceDiscovery()) {
+            if (connection.getManager(ExternalServiceDiscoveryManager.class).hasFeature()) {
                 this.binding.serverInfoExternalService.setText(R.string.server_info_available);
             } else {
                 this.binding.serverInfoExternalService.setText(R.string.server_info_unavailable);

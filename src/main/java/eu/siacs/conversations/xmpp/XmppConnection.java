@@ -2991,9 +2991,5 @@ public class XmppConnection implements Runnable {
         public boolean stanzaIds() {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.STANZA_IDS);
         }
-
-        public boolean externalServiceDiscovery() {
-            return hasDiscoFeature(account.getDomain(), Namespace.EXTERNAL_SERVICE_DISCOVERY);
-        }
     }
 }

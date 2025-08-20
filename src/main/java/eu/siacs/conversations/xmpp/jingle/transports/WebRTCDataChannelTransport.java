@@ -16,12 +16,10 @@ import com.google.common.util.concurrent.SettableFuture;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.jingle.IceServers;
 import eu.siacs.conversations.xmpp.jingle.WebRTCWrapper;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.WebRTCDataChannelTransportInfo;
-import im.conversations.android.xmpp.model.disco.external.Services;
-import im.conversations.android.xmpp.model.stanza.Iq;
+import eu.siacs.conversations.xmpp.manager.ExternalServiceDiscoveryManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -228,29 +226,14 @@ public class WebRTCDataChannelTransport implements Transport {
         if (Config.DISABLE_PROXY_LOOKUP) {
             return Futures.immediateFuture(Collections.emptySet());
         }
-        if (xmppConnection.getFeatures().externalServiceDiscovery()) {
-            final SettableFuture<Collection<PeerConnection.IceServer>> iceServerFuture =
-                    SettableFuture.create();
-            final Iq request = new Iq(Iq.Type.GET);
-            request.setTo(this.account.getDomain());
-            request.addExtension(new Services());
-            xmppConnection.sendIqPacket(
-                    request,
-                    (response) -> {
-                        final var iceServers = IceServers.parse(response);
-                        if (iceServers.isEmpty()) {
-                            Log.w(
-                                    Config.LOGTAG,
-                                    account.getJid().asBareJid()
-                                            + ": no ICE server found "
-                                            + response);
-                        }
-                        iceServerFuture.set(iceServers);
-                    });
-            return iceServerFuture;
-        } else {
-            return Futures.immediateFuture(Collections.emptySet());
-        }
+        return Futures.catching(
+                xmppConnection.getManager(ExternalServiceDiscoveryManager.class).getIceServers(),
+                Exception.class,
+                ex -> {
+                    Log.d(Config.LOGTAG, "could not discover ice servers", ex);
+                    return Collections.emptySet();
+                },
+                MoreExecutors.directExecutor());
     }
 
     private PeerConnection createPeerConnection(
