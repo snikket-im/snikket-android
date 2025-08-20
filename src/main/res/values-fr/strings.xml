@@ -327,7 +327,7 @@
     <string name="open_x_file">Ouvrir %s</string>
     <string name="sending_file">envoi (%1$d%% complété)</string>
     <string name="preparing_file">Préparation pour l\'envoi du fichier</string>
-    <string name="x_file_offered_for_download">%s proposé à télécharger</string>
+    <string name="x_file_offered_for_download">%s disponible pour téléchargement</string>
     <string name="cancel_transmission">Annuler l\'envoi</string>
     <string name="file_transmission_failed">impossible de partager le fichier</string>
     <string name="file_transmission_cancelled">Transfert de fichier annulé</string>
