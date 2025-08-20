@@ -1161,4 +1161,5 @@
     </plurals>
     <string name="moderation_explained">Ce message sera supprimé pour vous et tous les participants de ce salon public.</string>
     <string name="pref_account_avatar_summary">Affiche les images de profils de compte sur les messages sortants pour identifier et gérer facilement.</string>
+    <string name="no_contacts_permission">%1$s nécessite l\'accès à vos contacts</string>
 </resources>
