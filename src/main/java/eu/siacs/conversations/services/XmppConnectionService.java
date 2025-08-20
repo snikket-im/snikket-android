@@ -87,8 +87,8 @@ import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.persistance.UnifiedPushDatabase;
 import eu.siacs.conversations.receiver.SystemEventReceiver;
 import eu.siacs.conversations.ui.ChooseAccountForProfilePictureActivity;
-import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.RtpSessionActivity;
+import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
 import eu.siacs.conversations.ui.interfaces.OnMediaLoaded;
 import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
@@ -388,18 +388,20 @@ public class XmppConnectionService extends Service {
             message.setCounterpart(conversation.getNextCounterpart());
             message.setType(Message.TYPE_FILE);
         }
-        Log.d(Config.LOGTAG, "attachFile: type=" + message.getType());
-        Log.d(Config.LOGTAG, "counterpart=" + message.getCounterpart());
-        final AttachFileToConversationRunnable runnable =
-                new AttachFileToConversationRunnable(this, uri, type, message);
-        final ListenableFuture<Void> future;
-        if (runnable.isVideoMessage()) {
-            future = Futures.submit(runnable, VIDEO_COMPRESSION_EXECUTOR);
-        } else {
-            future = Futures.submit(runnable, FILE_ATTACHMENT_EXECUTOR);
-        }
+        final var future = submitAttachToConversation(uri, type, message);
         return Futures.transformAsync(
                 future, v -> encryptIfNeededAndSend(message), MoreExecutors.directExecutor());
+    }
+
+    private ListenableFuture<Void> submitAttachToConversation(
+            final Uri uri, final String type, final Message message) {
+        final AttachFileToConversationRunnable runnable =
+                new AttachFileToConversationRunnable(this, uri, type, message);
+        if (runnable.isVideoMessage()) {
+            return Futures.submit(runnable, VIDEO_COMPRESSION_EXECUTOR);
+        } else {
+            return Futures.submit(runnable, FILE_ATTACHMENT_EXECUTOR);
+        }
     }
 
     public ListenableFuture<Void> attachImageToConversation(
@@ -430,15 +432,16 @@ public class XmppConnectionService extends Service {
         Log.d(Config.LOGTAG, "attachImage: type=" + message.getType());
         final var imageCopyFuture =
                 Futures.submit(
-                        () -> {
-                            getFileBackend().copyImageToPrivateStorage(message, uri);
-                        },
+                        () -> getFileBackend().copyImageToPrivateStorage(message, uri),
                         FILE_ATTACHMENT_EXECUTOR);
         final var future =
                 Futures.catchingAsync(
                         imageCopyFuture,
                         FileBackend.ImageCompressionException.class,
-                        ex -> attachFileToConversation(conversation, uri, mimeType),
+                        ex -> {
+                            message.setType(Message.TYPE_FILE);
+                            return submitAttachToConversation(uri, type, message);
+                        },
                         MoreExecutors.directExecutor());
         return Futures.transformAsync(
                 future, v -> encryptIfNeededAndSend(message), MoreExecutors.directExecutor());
@@ -4187,7 +4190,7 @@ public class XmppConnectionService extends Service {
         service.toggleForegroundService();
     }
 
-    public static void toggleForegroundService(final ConversationsActivity activity) {
+    public static void toggleForegroundService(final XmppActivity activity) {
         if (activity == null) {
             return;
         }
