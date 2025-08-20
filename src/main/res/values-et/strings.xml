@@ -1158,4 +1158,6 @@
     </plurals>
     <string name="strong_transport_security">Parim võrguühenduse turvalisus</string>
     <string name="require_tls_v1_3">Eelda kõikide ühenduste jaoks TLS-protokolli versiooni 1.3 kasutamist</string>
+    <string name="download_failed_could_not_establish_tls">TLS-ühenduse loomine ei õnnestunud</string>
+    <string name="empty_conversations_list_hint">Kui alustad uut vestlust, siis ta saab olema leitav siit</string>
 </resources>
