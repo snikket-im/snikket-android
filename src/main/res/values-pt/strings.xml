@@ -945,4 +945,41 @@
     <string name="rtp_state_retracted">Chamada rejeitada</string>
     <string name="hang_up">Desligar</string>
     <string name="ongoing_video_call">Videochamada a decorrer</string>
+    <string name="incoming_call">Chamada recebida</string>
+    <string name="outgoing_call_duration_timestamp">Chamada enviada (%s) · %s</string>
+    <string name="missed_call_timestamp">Chamada perdida · %s</string>
+    <string name="outgoing_call">Chamada enviada</string>
+    <string name="video_call">Videochamada</string>
+    <string name="only_one_call_at_a_time">Apenas pode fazer uma chamada de cada vez.</string>
+    <string name="return_to_ongoing_call">Voltar a chamada a decorrer</string>
+    <string name="rtp_state_content_add">Adicionar trilhos adicionais?</string>
+    <string name="outgoing_call_timestamp">Chamada enviada · %s</string>
+    <string name="missed_call">Chamada perdida</string>
+    <string name="audio_call">Chamada de áudio</string>
+    <string name="add_to_favorites">Fixar ao topo</string>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d chamadas perdidas de %2$d contacto</item>
+        <item quantity="many">%1$d chamadas perdidas de %2$d contactos</item>
+        <item quantity="other">%1$d chamadas perdidas de %2$d contactos</item>
+    </plurals>
+    <string name="gpx_track">Trilho GPX</string>
+    <string name="could_not_correct_message">Impossível corrigir mensagem</string>
+    <string name="help">Ajuda</string>
+    <string name="reconnecting_video_call">Reconectando videochamada</string>
+    <string name="disable_tor_to_make_call">Desative Tor para fazer chamadas</string>
+    <string name="incoming_call_duration_timestamp">Chamada recebida (%s) · %s</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d chamada perdida de %2$s</item>
+        <item quantity="many">%1$d chamadas perdidas de %2$s</item>
+        <item quantity="other">%1$d chamadas perdidas de %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d chamada perdida</item>
+        <item quantity="many">%d chamada perdidas</item>
+        <item quantity="other">%d chamada perdidas</item>
+    </plurals>
+    <string name="switch_to_chat">Trocar para conversa</string>
+    <string name="could_not_switch_camera">Impossível mudar câmara</string>
+    <string name="remove_from_favorites">Desafixar do topo</string>
+    <string name="microphone_unavailable">O microfone está indisponível</string>
 </resources>
