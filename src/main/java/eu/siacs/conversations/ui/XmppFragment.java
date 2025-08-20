@@ -39,4 +39,11 @@ public abstract class XmppFragment extends Fragment implements OnBackendConnecte
     protected void runOnUiThread(final Runnable runnable) {
         requireActivity().runOnUiThread(runnable);
     }
+
+    public XmppActivity requireXmppActivity() {
+        if (getActivity() instanceof XmppActivity xmppActivity) {
+            return xmppActivity;
+        }
+        throw new IllegalStateException("Fragment is not hosted by XmppActivity");
+    }
 }

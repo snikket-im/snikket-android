@@ -1,6 +1,6 @@
 package eu.siacs.conversations.ui;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -198,7 +198,7 @@ public class EasyOnboardingInviteActivity extends XmppActivity {
                 ContextCompat.getMainExecutor(this));
     }
 
-    public static void launch(final Account account, final Activity context) {
+    public static void launch(final Account account, final Context context) {
         final Intent intent = new Intent(context, EasyOnboardingInviteActivity.class);
         intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
         context.startActivity(intent);
