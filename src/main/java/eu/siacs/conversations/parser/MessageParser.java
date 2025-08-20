@@ -322,7 +322,6 @@ public class MessageParser extends AbstractParser
 
     @Override
     public void accept(final im.conversations.android.xmpp.model.stanza.Message original) {
-        Log.d(Config.LOGTAG, "<-- " + original);
         final var originalFrom = original.getFrom();
         final var account = this.getAccount();
         if (handleErrorMessage(account, original)) {

@@ -12,6 +12,8 @@ import com.google.android.material.color.DynamicColorsOptions;
 import com.google.common.base.Stopwatch;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import com.google.common.collect.Iterables;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.services.EmojiInitializationService;
 import eu.siacs.conversations.utils.ExceptionHelper;
@@ -111,5 +113,13 @@ public class Conversations extends Application {
 
     public Collection<DatabaseBackend.AccountWithOptions> getAccounts() {
         return this.accountWithOptions.get();
+    }
+
+    public boolean hasEnabledAccount() {
+        return Iterables.any(
+                getAccounts(),
+                a ->
+                        !a.isOptionSet(Account.OPTION_DISABLED)
+                                && !a.isOptionSet(Account.OPTION_SOFT_DISABLED));
     }
 }

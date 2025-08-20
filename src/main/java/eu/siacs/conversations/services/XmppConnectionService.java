@@ -58,6 +58,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.Conversations;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.android.JabberIdContact;
 import eu.siacs.conversations.crypto.OmemoSetting;
@@ -1116,10 +1117,7 @@ public class XmppConnectionService extends Service {
         for (final var account : this.accounts) {
             account.setXmppConnection(createConnection(account));
         }
-        final SharedPreferences.Editor editor = getPreferences().edit();
         final boolean hasEnabledAccounts = hasEnabledAccounts();
-        editor.putBoolean(SystemEventReceiver.SETTING_ENABLED_ACCOUNTS, hasEnabledAccounts).apply();
-        editor.apply();
         toggleSetProfilePictureActivity(hasEnabledAccounts);
         reconfigurePushDistributor();
 
@@ -1959,11 +1957,6 @@ public class XmppConnectionService extends Service {
     }
 
     public void populateWithOrderedConversations(
-            final List<Conversation> list, final boolean includeNoFileUpload) {
-        populateWithOrderedConversations(list, includeNoFileUpload, true);
-    }
-
-    public void populateWithOrderedConversations(
             final List<Conversation> list, final boolean includeNoFileUpload, final boolean sort) {
         final List<String> orderedUuids;
         if (sort) {
@@ -2321,17 +2314,8 @@ public class XmppConnectionService extends Service {
         this.accounts.add(account);
         this.reconnectAccountInBackground(account);
         updateAccountUi();
-        syncEnabledAccountSetting();
+        Conversations.getInstance(this).resetAccounts();
         toggleForegroundService();
-    }
-
-    private void syncEnabledAccountSetting() {
-        final boolean hasEnabledAccounts = hasEnabledAccounts();
-        getPreferences()
-                .edit()
-                .putBoolean(SystemEventReceiver.SETTING_ENABLED_ACCOUNTS, hasEnabledAccounts)
-                .apply();
-        toggleSetProfilePictureActivity(hasEnabledAccounts);
     }
 
     private void toggleSetProfilePictureActivity(final boolean enabled) {
@@ -2462,7 +2446,7 @@ public class XmppConnectionService extends Service {
             updateAccountUi();
             getNotificationService().updateErrorNotification();
             toggleForegroundService();
-            syncEnabledAccountSetting();
+            Conversations.getInstance(this).resetAccounts();
             mChannelDiscoveryService.cleanCache();
             if (CallIntegration.hasSystemFeature(this)) {
                 CallIntegrationConnectionService.togglePhoneAccountAsync(this, account);
@@ -2511,7 +2495,7 @@ public class XmppConnectionService extends Service {
             }
             updateAccountUi();
             mNotificationService.updateErrorNotification();
-            syncEnabledAccountSetting();
+            Conversations.getInstance(this).resetAccounts();
             toggleForegroundService();
         }
     }

@@ -316,7 +316,9 @@ public class ConversationsOverviewFragment extends XmppFragment {
 
     @Override
     public View onCreateView(
-            final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            @NonNull final LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState) {
         this.binding =
                 DataBindingUtil.inflate(
                         inflater, R.layout.fragment_conversations_overview, container, false);
@@ -344,7 +346,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.fragment_conversations_overview, menu);
         AccountUtils.showHideMenuItems(menu);
         final MenuItem easyOnboardInvite = menu.findItem(R.id.action_easy_invite);
@@ -363,7 +365,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
+    public void onSaveInstanceState(@NonNull Bundle bundle) {
         super.onSaveInstanceState(bundle);
         ScrollState scrollState = getScrollState();
         if (scrollState != null) {
