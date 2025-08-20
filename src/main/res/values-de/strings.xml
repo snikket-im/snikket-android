@@ -1138,4 +1138,5 @@
     </plurals>
     <string name="strong_transport_security">Hohe Transportsicherheit</string>
     <string name="require_tls_v1_3">Erfordert für alle Verbindungen das TLS-Protokoll (Transport Layer Security) Version 1.3</string>
+    <string name="download_failed_could_not_establish_tls">TLS-Verbindung konnte nicht hergestellt werden</string>
 </resources>
