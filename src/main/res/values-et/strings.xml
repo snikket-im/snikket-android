@@ -1160,4 +1160,6 @@
     <string name="require_tls_v1_3">Eelda kõikide ühenduste jaoks TLS-protokolli versiooni 1.3 kasutamist</string>
     <string name="download_failed_could_not_establish_tls">TLS-ühenduse loomine ei õnnestunud</string>
     <string name="empty_conversations_list_hint">Kui alustad uut vestlust, siis ta saab olema leitav siit</string>
+    <string name="server_info_occupant_id">XEP-0421: Occupant identifiers (osalejate täpsem tuvastamine jututubades)</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425: Moderated Message Retraction (sõnumite eemaldamise võimalus moderaatorite poolt)</string>
 </resources>
