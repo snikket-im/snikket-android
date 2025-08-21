@@ -1,0 +1,5 @@
+* Neue Seite „Leere Chats“ anstelle der Weiterleitung zu „Neuer Chat“
+* Verbesserung der Leistung für große öffentliche Channels
+* Unterstützung für vorhersagende Rückwärtsnavigation
+* Unterstützung für IP-Adressen in Zertifikaten
+* TLS 1.3 für alle Verbindungen erforderlich, mit der Option zur Deaktivierung
