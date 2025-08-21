@@ -4,6 +4,8 @@ import android.os.Build;
 import android.util.Log;
 import androidx.annotation.RequiresApi;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import java.lang.reflect.Method;
@@ -24,7 +26,10 @@ public class SSLSockets {
         if (requireTlsV13) {
             sslSocket.setEnabledProtocols(new String[] {"TLSv1.3"});
         } else {
-            sslSocket.setEnabledProtocols(new String[] {"TLSv1.2", "TLSv1.3"});
+            final var available = ImmutableSet.copyOf(sslSocket.getSupportedProtocols());
+            sslSocket.setEnabledProtocols(
+                    Sets.intersection(available, ImmutableSet.of("TLSv1.2", "TLSv1.3"))
+                            .toArray(new String[0]));
         }
     }
 
