@@ -1,5 +1,14 @@
 # Changelog
 
+### Version 2.19.3
+
+* New 'empty chats' page instead of redirect to 'new chat' screen
+* Improve performance for large public channels
+* Support predictive back
+* Support IP addresses in certificates
+* Require TLS 1.3 for all connections with setting to opt out
+
+
 ### Version 2.19.2
 
 * Show number of participants in subtitle for public channels
