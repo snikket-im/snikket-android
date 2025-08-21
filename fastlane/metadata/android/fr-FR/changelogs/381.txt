@@ -1,0 +1,2 @@
+* Retour audible (appel, appel démarré, appel terminé) pour les appels vocaux.
+* Correction de soucis lors de rappel après un appel vidéo échoué

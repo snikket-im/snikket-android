@@ -1,0 +1,2 @@
+* Corrige la sélection d'image de profil sur certains appareils Android 10
+* Corrige le transfert pour les gros fichiers
