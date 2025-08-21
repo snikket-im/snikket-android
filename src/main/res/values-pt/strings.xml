@@ -982,4 +982,44 @@
     <string name="could_not_switch_camera">Impossível mudar câmara</string>
     <string name="remove_from_favorites">Desafixar do topo</string>
     <string name="microphone_unavailable">O microfone está indisponível</string>
+    <string name="backup_started_message">O backup foi iniciado. Receberá uma notificação quando for concluído.</string>
+    <string name="no_application_found">Nenhuma aplicação encontrada</string>
+    <string name="invite_to_app">Convidar para o Conversations</string>
+    <string name="unable_to_parse_invite">Impossível processar o convite</string>
+    <string name="server_does_not_support_easy_onboarding_invites">O servidor não suporta geração de convites</string>
+    <string name="search_all_conversations">Todas as conversas</string>
+    <string name="search_this_conversation">Esta conversa</string>
+    <string name="encrypted_with_omemo">Encriptado com OMEMO</string>
+    <string name="encrypted_with_openpgp">Encriptado com OpenPGP</string>
+    <string name="not_encrypted">Não encriptado</string>
+    <plurals name="some_messages_could_not_be_delivered">
+        <item quantity="one">Não foi possível enviar a mensagem</item>
+        <item quantity="many">Não foi possível enviar muitas mensagens</item>
+        <item quantity="other">Não foi possível enviar algumas mensagens</item>
+    </plurals>
+    <string name="avatar_for_x">Avatar para %s</string>
+    <string name="exit">Sair</string>
+    <string name="record_voice_mail">Gravar mensagem de voz</string>
+    <string name="play_audio">Tocar áudio</string>
+    <string name="pause_audio">Pausar áudio</string>
+    <plurals name="view_users">
+        <item quantity="one">Ver %1$d Participante</item>
+        <item quantity="many">Ver %1$d Participantes</item>
+        <item quantity="other">Ver %1$d Participantes</item>
+    </plurals>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d Participante</item>
+        <item quantity="many">%1$d Participantes</item>
+        <item quantity="other">%1$d Participantes</item>
+    </plurals>
+    <string name="failed_deliveries">Envios falhados</string>
+    <string name="more_options">Mais opções</string>
+    <string name="no_active_accounts_support_this">Nenhuma conta ativa suporta esta funcionalidade</string>
+    <string name="could_not_disable_video">Impossível desativar vídeo.</string>
+    <string name="server_info_occupant_id">XEP-0421: Identificadores de ocupantes</string>
+    <string name="your_avatar_tap_to_select_new_avatar">O seu avatar. Toque para selecionar um novo da galeria.</string>
+    <string name="unable_to_enable_video">Impossível enviar vídeo.</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425: Redação de Mensagens Moderada</string>
+    <string name="your_avatar">Seu avatar</string>
+    <string name="add_contact_or_create_or_join_group_chat">Adicionar contacto, criar ou entrar em conversa de grupo, ou descobrir canais</string>
 </resources>
