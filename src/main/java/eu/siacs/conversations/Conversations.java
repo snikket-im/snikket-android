@@ -49,11 +49,19 @@ public class Conversations extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Security.insertProviderAt(Conscrypt.newProvider(), 1);
+        installSecurityProvider();
         CONTEXT = this.getApplicationContext();
         EmojiInitializationService.execute(getApplicationContext());
         ExceptionHelper.init(getApplicationContext());
         applyThemeSettings();
+    }
+
+    private static void installSecurityProvider() {
+        try {
+            Security.insertProviderAt(Conscrypt.newProvider(), 1);
+        } catch (final Throwable throwable) {
+            Log.e(Config.LOGTAG, "could not install security provider", throwable);
+        }
     }
 
     public static Conversations getInstance(final Context context) {

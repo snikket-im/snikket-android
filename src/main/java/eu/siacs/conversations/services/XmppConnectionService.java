@@ -141,7 +141,6 @@ import im.conversations.android.xmpp.model.muc.Role;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.up.Push;
 import java.io.File;
-import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -167,7 +166,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import me.leolin.shortcutbadger.ShortcutBadger;
 import okhttp3.HttpUrl;
-import org.conscrypt.Conscrypt;
 import org.jxmpp.stringprep.libidn.LibIdnXmppStringprep;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -1093,16 +1091,11 @@ public class XmppConnectionService extends Service {
         toggleForegroundService();
         this.destroyed = false;
         OmemoSetting.load(this);
-        try {
-            Security.insertProviderAt(Conscrypt.newProvider(), 1);
-        } catch (Throwable throwable) {
-            Log.e(Config.LOGTAG, "unable to initialize security provider", throwable);
-        }
         updateMemorizingTrustManager();
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 8;
         this.mBitmapCache =
-                new LruCache<String, Bitmap>(cacheSize) {
+                new LruCache<>(cacheSize) {
                     @Override
                     protected int sizeOf(final String key, final Bitmap bitmap) {
                         return bitmap.getByteCount() / 1024;
