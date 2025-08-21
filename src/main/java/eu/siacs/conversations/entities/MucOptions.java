@@ -540,10 +540,10 @@ public class MucOptions {
     public List<User> getUsersPreview(final int max) {
         synchronized (this.users) {
             final Collection<User> users;
-            if (this.usersByOccupantId.isEmpty()) {
-                users = this.users.values();
-            } else {
+            if (Iterables.any(this.usersByOccupantId.keySet(), id -> id instanceof OccupantId)) {
                 users = this.usersByOccupantId.values();
+            } else {
+                users = this.users.values();
             }
             return ImmutableList.copyOf(Iterables.limit(VISUAL_ORDERING.sortedCopy(users), max));
         }
