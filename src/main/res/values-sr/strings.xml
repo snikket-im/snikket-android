@@ -1174,4 +1174,7 @@
     <string name="strong_transport_security">Појачана безбедност транспорта</string>
     <string name="require_tls_v1_3">Захтевај Transport Layer Security (TLS) протокол верзије 1.3 за све везе</string>
     <string name="download_failed_could_not_establish_tls">Није могуће успоставити TLS везу</string>
+    <string name="empty_conversations_list_hint">Кад започнеш нову преписку, видећеш је излистану овде</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425: Moderated Message Retraction</string>
+    <string name="server_info_occupant_id">XEP-0421: Occupant identifiers</string>
 </resources>
