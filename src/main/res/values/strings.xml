@@ -194,6 +194,8 @@
     <string name="add_phone_book_text">Do you want to add %s to your address book?</string>
     <string name="server_info_show_more">Server info</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
+    <string name="server_info_occupant_id">XEP-0421: Occupant identifiers</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425: Moderated Message Retraction</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
     <string name="server_info_csi">XEP-0352: Client State Indication</string>
     <string name="server_info_blocking">XEP-0191: Blocking Command</string>

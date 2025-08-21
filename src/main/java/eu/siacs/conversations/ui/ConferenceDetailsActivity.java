@@ -664,6 +664,23 @@ public class ConferenceDetailsActivity extends XmppActivity
             } else {
                 this.binding.mucInfoMam.setText(R.string.server_info_unavailable);
             }
+            if (mucOptions.occupantId()) {
+                this.binding.mucInfoOccupantId.setText(R.string.server_info_available);
+            } else {
+                this.binding.mucInfoOccupantId.setText(R.string.server_info_unavailable);
+            }
+            if (mucOptions.isPrivateAndNonAnonymous()) {
+                this.binding.mucInfoModeratedRow.setVisibility(View.VISIBLE);
+                if (mucOptions.moderation()) {
+                    this.binding.mucInfoModeratedMessageRetraction.setText(
+                            R.string.server_info_available);
+                } else {
+                    this.binding.mucInfoModeratedMessageRetraction.setText(
+                            R.string.server_info_unavailable);
+                }
+            } else {
+                this.binding.mucInfoModeratedRow.setVisibility(View.GONE);
+            }
             if (self.ranks(Affiliation.OWNER)) {
                 this.binding.changeConferenceButton.setVisibility(View.VISIBLE);
             } else {

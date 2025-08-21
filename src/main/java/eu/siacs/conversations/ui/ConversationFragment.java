@@ -3390,7 +3390,7 @@ public class ConversationFragment extends XmppFragment
                 requireXmppActivity().xmppConnectionService.encryptIfNeededAndSend(message);
         Futures.addCallback(
                 future,
-                new FutureCallback<Void>() {
+                new FutureCallback<>() {
                     @Override
                     public void onSuccess(Void result) {
                         messageSent();
