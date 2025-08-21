@@ -81,7 +81,8 @@ public class SSLSockets {
     public static SSLContext getSSLContext() throws NoSuchAlgorithmException {
         try {
             return SSLContext.getInstance("TLSv1.3");
-        } catch (NoSuchAlgorithmException e) {
+        } catch (final NoSuchAlgorithmException e) {
+            Log.d(Config.LOGTAG, "Could not get TLSv1.3 context", e);
             return SSLContext.getInstance("TLSv1.2");
         }
     }

@@ -17,7 +17,9 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.services.EmojiInitializationService;
 import eu.siacs.conversations.utils.ExceptionHelper;
+import java.security.Security;
 import java.util.Collection;
+import org.conscrypt.Conscrypt;
 
 public class Conversations extends Application {
 
@@ -47,6 +49,7 @@ public class Conversations extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Security.insertProviderAt(Conscrypt.newProvider(), 1);
         CONTEXT = this.getApplicationContext();
         EmojiInitializationService.execute(getApplicationContext());
         ExceptionHelper.init(getApplicationContext());
