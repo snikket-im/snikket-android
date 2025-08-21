@@ -288,8 +288,9 @@ public class ExportBackupWorker extends Worker {
         jsonWriter.endArray();
         jsonWriter.flush();
         jsonWriter.close();
-        if ("file".equalsIgnoreCase(location.getScheme())) {
-            mediaScannerScanFile(new File(location.getPath()));
+        final var path = location.getPath();
+        if ("file".equalsIgnoreCase(location.getScheme()) && path != null) {
+            mediaScannerScanFile(new File(path));
         }
         Log.d(Config.LOGTAG, "written backup to " + location);
         return location;
@@ -416,12 +417,12 @@ public class ExportBackupWorker extends Worker {
                                 + " conversations.uuid=messages.conversationUuid where"
                                 + " conversations.accountUuid=?",
                         new String[] {uuid})) {
-            final int size = cursor != null ? cursor.getCount() : 0;
+            final int size = cursor.getCount();
             Log.d(Config.LOGTAG, "exporting " + size + " messages for account " + uuid);
             long lastUpdate = 0;
             int i = 0;
             int p = Integer.MIN_VALUE;
-            while (cursor != null && cursor.moveToNext()) {
+            while (cursor.moveToNext()) {
                 throwIfWorkStopped(location);
                 writer.beginObject();
                 writer.name("table");
@@ -443,6 +444,10 @@ public class ExportBackupWorker extends Worker {
                     notificationManager.notify(NOTIFICATION_ID, progress.build(p));
                 }
                 i++;
+                if (i % 500 == 0) {
+                    Log.d(Config.LOGTAG, "flushing writer after " + i + " messages");
+                    writer.flush();
+                }
             }
         }
     }
