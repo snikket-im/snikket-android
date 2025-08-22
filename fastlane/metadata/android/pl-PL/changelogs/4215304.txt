@@ -1,0 +1,5 @@
+* Nowa strona „brak rozmów” zamiast przekierowania do ekranu „nowej rozmowy”
+* Poprawienie wydajności dla dużych kanałów publicznych
+* Obsługa przewidywalnego cofnięcia
+* Obsługa adresów IP w certyfikatach
+* Wymaganie TLS 1.3 dla wszystkich połączeń z możliwością wyłączenia
