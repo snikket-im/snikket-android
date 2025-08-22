@@ -1166,4 +1166,6 @@
     <string name="strong_transport_security">Silne zabezpieczenie transportu</string>
     <string name="download_failed_could_not_establish_tls">Nie można zestawić połączenia TLS</string>
     <string name="empty_conversations_list_hint">Po rozpoczęciu nowej rozmowy zobaczysz ją tutaj</string>
+    <string name="server_info_occupant_id">XEP-0421: identyfikatory uczestników</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425: wycofywanie wiadomości przez moderację</string>
 </resources>
