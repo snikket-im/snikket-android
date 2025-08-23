@@ -636,7 +636,7 @@
         <item quantity="other">%d meses</item>
     </plurals>
     <string name="pref_automatically_delete_messages">Borrado automático de mensaxes</string>
-    <string name="pref_automatically_delete_messages_description">Borrar mensaxes de xeito automático de este dispositivo que anteriores ao marco temporal configurado.</string>
+    <string name="pref_automatically_delete_messages_description">Borrar mensaxes de xeito automático de este dispositivo anteriores ao marco temporal configurado.</string>
     <string name="encrypting_message">Cifrando mensaxe</string>
     <string name="not_fetching_history_retention_period">Sen obtención de mensaxes debido ao período de retención local.</string>
     <string name="transcoding_video">Comprimindo vídeo</string>
@@ -1140,4 +1140,6 @@
     <string name="strong_transport_security">Seguridade en tránsito forte</string>
     <string name="download_failed_could_not_establish_tls">Non se puido establecer conexión TLS</string>
     <string name="empty_conversations_list_hint">Cando inicies unha nova conversa, aparecerá nesta lista</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425: Retracción de mensaxes moderadas</string>
+    <string name="server_info_occupant_id">XEP-0421: Identificadores de participantes</string>
 </resources>
