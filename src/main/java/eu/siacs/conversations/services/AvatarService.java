@@ -17,6 +17,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.IconCompat;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
@@ -107,16 +108,18 @@ public class AvatarService {
                 cacheOnly);
     }
 
-    public Bitmap getAdaptive(final Contact contact) {
+    public IconCompat getAdaptive(final Contact contact) {
         final var metrics = this.mXmppConnectionService.getResources().getDisplayMetrics();
         int size = Math.round(metrics.density * AVATAR_SIZE_ADAPTIVE);
-        return get(contact, size, FONT_SIZE_ADAPTIVE, false);
+        final var bitmap = get(contact, size, FONT_SIZE_ADAPTIVE, false);
+        return IconCompat.createWithAdaptiveBitmap(bitmap);
     }
 
-    public Bitmap getAdaptive(final MucOptions mucOptions) {
+    public IconCompat getAdaptive(final MucOptions mucOptions) {
         final var metrics = this.mXmppConnectionService.getResources().getDisplayMetrics();
-        int size = Math.round(metrics.density * AVATAR_SIZE_ADAPTIVE);
-        return get(mucOptions, size, FONT_SIZE_ADAPTIVE, false);
+        final int size = Math.round(metrics.density * AVATAR_SIZE_ADAPTIVE);
+        final var bitmap = get(mucOptions, size, FONT_SIZE_ADAPTIVE, false);
+        return IconCompat.createWithAdaptiveBitmap(bitmap);
     }
 
     private Bitmap get(final Contact contact, final int size, boolean cachedOnly) {

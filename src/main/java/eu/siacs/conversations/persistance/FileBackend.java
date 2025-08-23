@@ -422,11 +422,12 @@ public class FileBackend {
     public Bitmap getPreviewForUri(Attachment attachment, int size, boolean cacheOnly) {
         final String key = "attachment_" + attachment.getUuid().toString() + "_" + size;
         final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
-        Bitmap bitmap = cache.get(key);
-        if (bitmap != null || cacheOnly) {
-            return bitmap;
+        final Bitmap cached = cache.get(key);
+        if (cached != null || cacheOnly) {
+            return cached;
         }
         final String mime = attachment.getMime();
+        final Bitmap bitmap;
         if ("application/pdf".equals(mime)) {
             bitmap = cropCenterSquarePdf(attachment.getUri(), size);
             drawOverlay(
@@ -444,17 +445,19 @@ public class FileBackend {
                             : R.drawable.play_video_white,
                     0.75f);
         } else {
-            bitmap = cropCenterSquare(attachment.getUri(), size);
-            if (bitmap != null && "image/gif".equals(mime)) {
-                Bitmap withGifOverlay = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+            final var preview = cropCenterSquare(attachment.getUri(), size);
+            if (preview != null && "image/gif".equals(mime)) {
+                Bitmap withGifOverlay = preview.copy(Bitmap.Config.ARGB_8888, true);
                 drawOverlay(
                         withGifOverlay,
                         paintOverlayBlack(withGifOverlay)
                                 ? R.drawable.play_gif_black
                                 : R.drawable.play_gif_white,
                         1.0f);
-                bitmap.recycle();
+                preview.recycle();
                 bitmap = withGifOverlay;
+            } else {
+                bitmap = preview;
             }
         }
         if (bitmap != null) {
@@ -1467,22 +1470,14 @@ public class FileBackend {
         return new Dimensions(h, w);
     }
 
-    public Bitmap getAvatar(String avatar, int size) {
-        if (avatar == null) {
+    public Bitmap getAvatar(final String avatar, final int size) {
+        if (Strings.isNullOrEmpty(avatar)) {
             return null;
         }
-        Bitmap bm = cropCenter(getAvatarUri(avatar), size, size);
-        return bm;
+        return cropCenterSquare(mXmppConnectionService, getAvatarUri(avatar), size);
     }
 
-    private static class Dimensions {
-        public final int width;
-        public final int height;
-
-        Dimensions(int height, int width) {
-            this.width = width;
-            this.height = height;
-        }
+    private record Dimensions(int height, int width) {
 
         public int getMin() {
             return Math.min(width, height);

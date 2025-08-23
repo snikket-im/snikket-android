@@ -11,7 +11,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
-import androidx.core.graphics.drawable.IconCompat;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -116,9 +115,7 @@ public class ShortcutService {
                         .setShortLabel(contact.getDisplayName())
                         .setIntent(getShortcutIntent(contact))
                         .setIsConversation();
-        builder.setIcon(
-                IconCompat.createWithAdaptiveBitmap(
-                        xmppConnectionService.getAvatarService().getAdaptive(contact)));
+        builder.setIcon(xmppConnectionService.getAvatarService().getAdaptive(contact));
         if (conversation != null) {
             setConversation(builder, conversation);
         }
@@ -131,9 +128,7 @@ public class ShortcutService {
                         .setShortLabel(mucOptions.getConversation().getName())
                         .setIntent(getShortcutIntent(mucOptions))
                         .setIsConversation();
-        builder.setIcon(
-                IconCompat.createWithAdaptiveBitmap(
-                        xmppConnectionService.getAvatarService().getAdaptive(mucOptions)));
+        builder.setIcon(xmppConnectionService.getAvatarService().getAdaptive(mucOptions));
         setConversation(builder, mucOptions.getConversation().getUuid());
         return builder.build();
     }
