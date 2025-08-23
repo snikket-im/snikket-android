@@ -57,6 +57,7 @@ public class AvatarService {
 
     private static final int AVATAR_SIZE_ADAPTIVE = 108;
     public static final int SYSTEM_UI_AVATAR_SIZE = 48;
+    private static final boolean PARALLAX_SAFE = true;
 
     private static final String PREFIX_CONTACT = "contact";
     private static final String PREFIX_CONVERSATION = "conversation";
@@ -179,6 +180,29 @@ public class AvatarService {
     private static AvatarWithSurface modifyForSurface(final Bitmap input, final Surface surface) {
         if (surface == Surface.REGULAR) {
             return new AvatarWithSurface(input);
+        }
+        if (PARALLAX_SAFE) {
+            // 18 out of 108 is the safe parallax area / border for adaptive drawables
+            final var width = input.getWidth();
+            final float sizeWithBorder = width / (1 - (2 * 18f / 108f));
+            final int border = Math.round((sizeWithBorder - width) / 2f);
+            final var output =
+                    Bitmap.createBitmap(
+                            Math.round(sizeWithBorder),
+                            Math.round(sizeWithBorder),
+                            Bitmap.Config.ARGB_8888);
+            final var canvas = new Canvas(output);
+            var blurred = Bitmap.createScaledBitmap(input, 10, 10, true);
+            canvas.drawBitmap(
+                    blurred,
+                    null,
+                    new Rect(0, 0, canvas.getWidth(), canvas.getHeight()),
+                    new Paint(Paint.FILTER_BITMAP_FLAG));
+
+            final Paint paint = new Paint();
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+            canvas.drawBitmap(input, border, border, paint);
+            return new AvatarWithSurface(output, Surface.ADAPTIVE);
         }
         final var output =
                 Bitmap.createBitmap(input.getWidth(), input.getHeight(), Bitmap.Config.ARGB_8888);
