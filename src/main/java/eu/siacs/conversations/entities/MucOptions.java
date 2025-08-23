@@ -214,15 +214,11 @@ public class MucOptions {
     }
 
     public String getRoomConfigName() {
-        final var serviceDiscoveryResult = getServiceDiscoveryResult();
-        if (serviceDiscoveryResult == null) {
+        final var roomInfo = getRoomInfoForm();
+        if (roomInfo == null) {
             return null;
         }
-        final var roomInfo =
-                serviceDiscoveryResult.getServiceDiscoveryExtension(
-                        "http://jabber.org/protocol/muc#roominfo");
-        final var roomConfigName =
-                roomInfo == null ? null : roomInfo.getFieldByName("muc#roomconfig_roomname");
+        final var roomConfigName = roomInfo.getFieldByName("muc#roomconfig_roomname");
         return roomConfigName == null ? null : roomConfigName.getValue();
     }
 
