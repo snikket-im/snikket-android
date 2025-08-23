@@ -43,7 +43,4 @@
     <item
         android:id="@+id/quote_message"
         android:title="@string/quote"/>
-    <item
-        android:id="@+id/copy_url"
-        android:title="@string/copy_original_url"/>
 </menu>

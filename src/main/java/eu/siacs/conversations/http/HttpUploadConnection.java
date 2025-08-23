@@ -195,6 +195,7 @@ public class HttpUploadConnection
                                 get = slot.get.toString();
                             }
                             mXmppConnectionService.getFileBackend().updateFileParams(message, get);
+                            mXmppConnectionService.updateMessage(message);
                             mXmppConnectionService.getFileBackend().updateMediaScanner(file);
                             finish();
                             if (!message.isPrivateMessage()) {
