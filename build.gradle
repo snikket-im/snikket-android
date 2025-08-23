@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.12.0'
+        classpath 'com.android.tools.build:gradle:8.12.1'
         classpath 'com.diffplug.spotless:spotless-plugin-gradle:7.2.1'
     }
 }
@@ -113,8 +113,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 36
-        versionCode 42152
-        versionName "2.19.2"
+        versionCode 42154
+        versionName "2.19.3"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
