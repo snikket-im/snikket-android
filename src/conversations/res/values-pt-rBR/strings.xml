@@ -10,9 +10,9 @@
     <string name="magic_create_text_on_x">Você foi convidado para %1$s. Nós iremos guiá-lo ao longo do processo de criação de uma conta.\nAo escolher %1$s como um provedor você conseguirá se comunicar com usuários de outros provedores dando a eles seu endereço XMPP completo.</string>
     <string name="magic_create_text_fixed">Você foi convidado para %1$s. Um nome de usuário já foi escolhido para você. Nós iremos guiá-lo ao longo do processo de criação de uma conta.\nVocê conseguirá se comunicar com usuários de outros provedores dando a eles seu endereço XMPP completo.</string>
     <string name="your_server_invitation">Seu convite do servidor</string>
-    <string name="improperly_formatted_provisioning">Código de provisionamento formatado de maneira imprópria</string>
+    <string name="improperly_formatted_provisioning">Código de provisionamento formatado de maneira incorreta</string>
     <string name="tap_share_button_send_invite">Toque no botão compartilhar para enviar, para seu contato, um convite para %1$s.</string>
-    <string name="if_contact_is_nearby_use_qr">Se seu contato estiver por perto, ele também pode escanear o código abaixo para aceitar seu convite.</string>
-    <string name="easy_invite_share_text">Junte-se a %1$s e converse comigo: %2$s</string>
+    <string name="if_contact_is_nearby_use_qr">Se seu contato estiver por perto, ele também pode ler o código abaixo para aceitar seu convite.</string>
+    <string name="easy_invite_share_text">Entre no %1$s e converse comigo: %2$s</string>
     <string name="share_invite_with">Compartilhe o convite com…</string>
 </resources>
