@@ -1,4 +1,4 @@
-Fácil de usar, estável, e bem otimizado. Com suporte à imagens, conversas em grupo, e criptografia de ponta-a-ponta.
+Fácil de usar, estável, e bem otimizado. Com suporte à imagens, grupos, e criptografia de ponta-a-ponta.
 
 Base do design:
 
