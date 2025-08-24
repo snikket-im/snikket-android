@@ -36,6 +36,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.RawBlockable;
 import eu.siacs.conversations.entities.Room;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
@@ -185,22 +186,25 @@ public class AvatarService {
             // 18 out of 108 is the safe parallax area / border for adaptive drawables
             final var width = input.getWidth();
             final float sizeWithBorder = width / (1 - (2 * 18f / 108f));
-            final int border = Math.round((sizeWithBorder - width) / 2f);
+            final float border = (sizeWithBorder - width) / 2f;
             final var output =
                     Bitmap.createBitmap(
                             Math.round(sizeWithBorder),
                             Math.round(sizeWithBorder),
                             Bitmap.Config.ARGB_8888);
             final var canvas = new Canvas(output);
-            var blurred = Bitmap.createScaledBitmap(input, 10, 10, true);
-            canvas.drawBitmap(
-                    blurred,
-                    null,
-                    new Rect(0, 0, canvas.getWidth(), canvas.getHeight()),
-                    new Paint(Paint.FILTER_BITMAP_FLAG));
-
+            if (FileBackend.hasAlpha(input)) {
+                canvas.drawColor(0xffeeeeee);
+            } else {
+                var blurred = Bitmap.createScaledBitmap(input, 6, 6, true);
+                canvas.drawBitmap(
+                        blurred,
+                        null,
+                        new Rect(0, 0, canvas.getWidth(), canvas.getHeight()),
+                        new Paint(Paint.FILTER_BITMAP_FLAG));
+            }
             final Paint paint = new Paint();
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
             canvas.drawBitmap(input, border, border, paint);
             return new AvatarWithSurface(output, Surface.ADAPTIVE);
         }
