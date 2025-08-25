@@ -1125,4 +1125,7 @@
     <string name="copied_email_address">Kopioitu sähköpostiosoite leikepöydälle</string>
     <string name="copied_phone_number">Kopioitu puhelinnumero leikepöydälle</string>
     <string name="non_quicksy_backup">Quicksy voi palauttaa vain varmuuskopioita jotka on tehty quicksy.im-tilille</string>
+    <string name="account_status_channel_binding">Ei ole kanava liitymä</string>
+    <string name="server_info_occupant_id">XEP-0421: Jäsenhenkilötunnukset</string>
+    <string name="download_failed_could_not_establish_tls">Ei voinut lyödä TLS yhteys</string>
 </resources>
