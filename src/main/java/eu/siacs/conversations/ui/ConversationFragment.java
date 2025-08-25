@@ -2164,11 +2164,13 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void fireReadEvent() {
-        if (this.conversation != null) {
-            String uuid = getLastVisibleMessageUuid();
-            if (uuid != null) {
-                requireConversationsActivity().onConversationRead(this.conversation, uuid);
-            }
+        final var c = this.conversation;
+        if (c == null) {
+            return;
+        }
+        final String uuid = getLastVisibleMessageUuid();
+        if (uuid != null && getActivity() instanceof ConversationsActivity ca) {
+            ca.onConversationRead(c, uuid);
         }
     }
 
