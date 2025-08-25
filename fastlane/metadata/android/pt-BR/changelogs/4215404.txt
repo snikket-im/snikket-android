@@ -1,0 +1,5 @@
+* Nova página de "Conversas vazias" em vez de redirecionar para a tela de "Nova conversa"
+* Melhorar a performance em canais públicos grandes
+* Suportar o voltar preditivo
+* Suportar endereços IP em certificados
+* Exigir TLS 1.3 em todas as conexões com uma configuração para desativar
