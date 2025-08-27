@@ -3486,7 +3486,12 @@ public class ConversationFragment extends XmppFragment
 
     @Override
     public void onTypingStarted() {
-        final XmppConnectionService service = requireXmppActivity().xmppConnectionService;
+        final XmppConnectionService service;
+        if (getActivity() instanceof XmppActivity xa) {
+            service = xa.xmppConnectionService;
+        } else {
+            service = null;
+        }
         if (service == null) {
             return;
         }
@@ -3500,7 +3505,12 @@ public class ConversationFragment extends XmppFragment
 
     @Override
     public void onTypingStopped() {
-        final XmppConnectionService service = requireXmppActivity().xmppConnectionService;
+        final XmppConnectionService service;
+        if (getActivity() instanceof XmppActivity xa) {
+            service = xa.xmppConnectionService;
+        } else {
+            service = null;
+        }
         if (service == null) {
             return;
         }
