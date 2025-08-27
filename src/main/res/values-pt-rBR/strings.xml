@@ -850,7 +850,7 @@
     <string name="attach">Anexar</string>
     <string name="discover_channels">Descobrir canais</string>
     <string name="search_channels">Pesquisar canais</string>
-    <string name="channel_discovery_opt_in_title">Provável violação de privacidade!</string>
+    <string name="channel_discovery_opt_in_title">Possível violação de privacidade!</string>
     <string name="i_already_have_an_account">Eu já tenho uma conta</string>
     <string name="add_existing_account">Adicionar uma conta existente</string>
     <string name="register_new_account">Registrar uma nova conta</string>
