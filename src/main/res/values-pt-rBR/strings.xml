@@ -675,7 +675,7 @@
     <string name="once">Uma vez</string>
     <string name="qr_code_scanner_needs_access_to_camera">O leitor de código QR precisa de acesso à câmera</string>
     <string name="pref_scroll_to_bottom">Rolar para baixo</string>
-    <string name="pref_scroll_to_bottom_summary">Rola para o final após enviar uma mensagem</string>
+    <string name="pref_scroll_to_bottom_summary">Rolar até o final após enviar uma mensagem</string>
     <string name="edit_status_message_title">Editar mensagem de estado</string>
     <string name="edit_status_message">Editar a mensagem de estado</string>
     <string name="disable_encryption">Desativar criptografia</string>
@@ -717,7 +717,7 @@
     <string name="copy_jabber_id">Copiar endereço XMPP</string>
     <string name="p1_s3_filetransfer">Compartilhamento de arquivos via HTTP para S3</string>
     <string name="pref_start_search">Pesquisa direta</string>
-    <string name="pref_start_search_summary">Na tela de \"Nova conversa\", abra o teclado e coloque o cursor no campo de pesquisa</string>
+    <string name="pref_start_search_summary">Na tela de \"Nova conversa\", abrir o teclado e colocar o cursor no campo de pesquisa</string>
     <string name="group_chat_avatar">Avatar do grupo</string>
     <string name="host_does_not_support_group_chat_avatars">O servidor não suporta avatares de grupo</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Somente o proprietário pode alterar o avatar do grupo</string>
@@ -1005,7 +1005,7 @@
     <string name="no_certificate_selected">Nenhum certificado de cliente selecionado!</string>
     <string name="pref_category_sending">Ao enviar</string>
     <string name="pref_category_receiving">Ao receber</string>
-    <string name="pref_automatic_download">Descarregar auromaticamente</string>
+    <string name="pref_automatic_download">Descarregar automaticamente</string>
     <string name="appearance">Aparência</string>
     <string name="pref_category_server_connection">Conexão com o servidor</string>
     <string name="pref_category_operating_system">Sistema operacional</string>
@@ -1142,7 +1142,7 @@
         <item quantity="other">%1$d participantes</item>
     </plurals>
     <string name="strong_transport_security">Segurança forte de transporte</string>
-    <string name="require_tls_v1_3">Fazer o uso do TLS versão 1.3 obrigatório para todas as conexões</string>
+    <string name="require_tls_v1_3">Tornar o uso do TLS versão 1.3 obrigatório para todas as conexões</string>
     <string name="server_info_moderated_message_retraction">XEP-0425: Remoção de mensagens moderadas</string>
     <string name="server_info_occupant_id">XEP-0421: Identificadores de ocupantes</string>
     <string name="empty_conversations_list_hint">Uma vez que você iniciar uma conversa nova, você verá ela aqui</string>
