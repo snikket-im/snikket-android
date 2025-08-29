@@ -54,7 +54,7 @@ public final class EntityCapabilities {
                 Ordering.natural()
                         .sortedCopy(Collections2.transform(info.getFeatures(), Feature::getVar));
         for (final String feature : features) {
-            s.append(clean(feature)).append("<");
+            s.append(blankNull(feature)).append("<");
         }
 
         final List<Data> extensions =
@@ -62,7 +62,7 @@ public final class EntityCapabilities {
                         .sortedCopy(info.getExtensions(Data.class));
 
         for (final Data extension : extensions) {
-            s.append(clean(extension.getFormType())).append("<");
+            s.append(blankNull(extension.getFormType())).append("<");
             final List<Field> fields =
                     Ordering.from(
                                     Comparator.comparing(
@@ -70,7 +70,7 @@ public final class EntityCapabilities {
                             .sortedCopy(extension.getFields());
             for (final Field field : fields) {
                 s.append(Strings.nullToEmpty(field.getFieldName())).append("<");
-                final List<String> values = Ordering.natural().sortedCopy(field.getValues());
+                final List<String> values = Ordering.natural().sortedCopy(field.getValuesRaw());
                 for (final String value : values) {
                     s.append(blankNull(value)).append("<");
                 }
@@ -84,7 +84,7 @@ public final class EntityCapabilities {
         return s.replace("<", "&lt;");
     }
 
-    private static String blankNull(String s) {
+    private static String blankNull(final String s) {
         return s == null ? "" : clean(s);
     }
 

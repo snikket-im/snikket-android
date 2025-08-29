@@ -25,8 +25,13 @@ public class Data extends Extension {
 
     public String getFormType() {
         final var fields = this.getExtensions(Field.class);
-        final var formTypeField = Iterables.find(fields, f -> FORM_TYPE.equals(f.getFieldName()));
-        return Iterables.getFirst(formTypeField.getValues(), null);
+        final var formTypeField =
+                Iterables.tryFind(fields, f -> FORM_TYPE.equals(f.getFieldName()));
+        if (formTypeField.isPresent()) {
+            return formTypeField.get().getValue();
+        } else {
+            return null;
+        }
     }
 
     public Collection<Field> getFields() {

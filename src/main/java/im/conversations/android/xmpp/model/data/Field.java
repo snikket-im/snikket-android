@@ -9,6 +9,7 @@ import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
 import im.conversations.android.xmpp.model.media.Media;
 import java.util.Collection;
+import java.util.Objects;
 
 @XmlElement
 public class Field extends Extension {
@@ -20,9 +21,12 @@ public class Field extends Extension {
         return getAttribute("var");
     }
 
-    public Collection<String> getValues() {
-        // TODO filter null
+    public Collection<String> getValuesRaw() {
         return Collections2.transform(getExtensions(Value.class), Element::getContent);
+    }
+
+    public Collection<String> getValues() {
+        return Collections2.filter(getValuesRaw(), Objects::nonNull);
     }
 
     public String getValue() {
