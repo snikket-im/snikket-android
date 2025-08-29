@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_notification_grace_period_summary">Espaço de tempo em que o Quicksy ficará sem notificações, após notar alguma atividade em outro dispositivo</string>
-    <string name="pref_never_send_crash_summary">Ao enviar stack traces você ajuda com o desenvolvimento do Quicksy</string>
+    <string name="pref_never_send_crash_summary">Ao enviar stack traces você ajuda com o desenvolvimento atual do Quicksy</string>
     <string name="pref_broadcast_last_activity_summary">Faça com que todos os seus contatos saibam quando você usa o Quicksy</string>
     <string name="huawei_protected_apps_summary">Para continuar recebendo notificações, mesmo com a tela apagada, você precisa adicionar o Quicksy à lista de apps protegidos.</string>
     <string name="set_profile_picture">Imagem de perfil do Quicksy</string>
