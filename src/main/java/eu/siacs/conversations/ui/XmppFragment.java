@@ -30,6 +30,7 @@
 package eu.siacs.conversations.ui;
 
 import androidx.fragment.app.Fragment;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 
 public abstract class XmppFragment extends Fragment implements OnBackendConnected {
@@ -45,5 +46,12 @@ public abstract class XmppFragment extends Fragment implements OnBackendConnecte
             return xmppActivity;
         }
         throw new IllegalStateException("Fragment is not hosted by XmppActivity");
+    }
+
+    public XmppConnectionService getXmppConnectionService() {
+        if (getActivity() instanceof XmppActivity xa) {
+            return xa.xmppConnectionService;
+        }
+        return null;
     }
 }
