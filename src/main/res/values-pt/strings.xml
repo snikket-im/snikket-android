@@ -293,7 +293,7 @@
     <string name="dialog_manage_certs_positivebutton">Apagar seleção</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificado apagado</item>
-        <item quantity="many">%d certificados apagados</item>
+        <item quantity="many">%d de certificados apagados</item>
         <item quantity="other">%d certificados apagados</item>
     </plurals>
     <string name="pref_quick_action">Ação rápida</string>
@@ -334,7 +334,7 @@
     <string name="connected_accounts">%1$d de %2$d contas conectadas</string>
     <plurals name="x_messages">
         <item quantity="one">%d mensagem</item>
-        <item quantity="many">%d mensagens</item>
+        <item quantity="many">%d de mensagens</item>
         <item quantity="other">%d mensagens</item>
     </plurals>
     <string name="load_more_messages">Carregar mais mensagens</string>
@@ -406,7 +406,7 @@
     <string name="action_block_participant">Ignorar membro</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d conversa não lida</item>
-        <item quantity="many">%d muitas conversas não lidas</item>
+        <item quantity="many">%d de conversas não lidas</item>
         <item quantity="other">%d conversas não lidas</item>
     </plurals>
     <string name="remove_bookmark">Gostaria de remover %s como favorito?</string>
@@ -959,7 +959,7 @@
     <string name="add_to_favorites">Fixar ao topo</string>
     <plurals name="n_missed_calls_from_m_contacts">
         <item quantity="one">%1$d chamadas perdidas de %2$d contacto</item>
-        <item quantity="many">%1$d chamadas perdidas de %2$d contactos</item>
+        <item quantity="many">%1$d de chamadas perdidas de %2$d contactos</item>
         <item quantity="other">%1$d chamadas perdidas de %2$d contactos</item>
     </plurals>
     <string name="gpx_track">Trilho GPX</string>
@@ -970,13 +970,13 @@
     <string name="incoming_call_duration_timestamp">Chamada recebida (%s) · %s</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d chamada perdida de %2$s</item>
-        <item quantity="many">%1$d chamadas perdidas de %2$s</item>
+        <item quantity="many">%1$d de chamadas perdidas de %2$s</item>
         <item quantity="other">%1$d chamadas perdidas de %2$s</item>
     </plurals>
     <plurals name="n_missed_calls">
         <item quantity="one">%d chamada perdida</item>
-        <item quantity="many">%d chamada perdidas</item>
-        <item quantity="other">%d chamada perdidas</item>
+        <item quantity="many">%d de chamadas perdidas</item>
+        <item quantity="other">%d chamadas perdidas</item>
     </plurals>
     <string name="switch_to_chat">Trocar para conversa</string>
     <string name="could_not_switch_camera">Impossível mudar câmara</string>
@@ -1003,14 +1003,14 @@
     <string name="play_audio">Tocar áudio</string>
     <string name="pause_audio">Pausar áudio</string>
     <plurals name="view_users">
-        <item quantity="one">Ver %1$d Participante</item>
-        <item quantity="many">Ver %1$d Participantes</item>
-        <item quantity="other">Ver %1$d Participantes</item>
+        <item quantity="one">Ver %1$d participante</item>
+        <item quantity="many">Ver %1$d de participantes</item>
+        <item quantity="other">Ver %1$d participantes</item>
     </plurals>
     <plurals name="x_participants">
-        <item quantity="one">%1$d Participante</item>
-        <item quantity="many">%1$d Participantes</item>
-        <item quantity="other">%1$d Participantes</item>
+        <item quantity="one">%1$d participante</item>
+        <item quantity="many">%1$d de participantes</item>
+        <item quantity="other">%1$d participantes</item>
     </plurals>
     <string name="failed_deliveries">Envios falhados</string>
     <string name="more_options">Mais opções</string>
