@@ -879,7 +879,7 @@
     <string name="rtp_state_declined_or_busy">Зайнято</string>
     <string name="rtp_state_connectivity_error">Неможливо здійснити виклик</string>
     <string name="rtp_state_connectivity_lost_error">З\'єднання втрачено</string>
-    <string name="rtp_state_retracted">Відхилені виклики</string>
+    <string name="rtp_state_retracted">Виклик скасовано</string>
     <string name="rtp_state_application_failure">Помилка застосунку</string>
     <string name="hang_up">Завершити</string>
     <string name="ongoing_call">Активний виклик</string>
