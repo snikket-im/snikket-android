@@ -82,7 +82,7 @@
     <string name="delete_file_dialog">Apagar arquivo</string>
     <string name="delete_file_dialog_msg">Tem certeza de que deseja apagar este arquivo? \n \n<b>Atenção:</b> Isto não apagará cópias deste arquivo armazenadas em outros dispositivos ou servidores.</string>
     <string name="choose_presence">Selecionar dispositivo</string>
-    <string name="send_unencrypted_message">Enviar mensagem de texto sem criptografia</string>
+    <string name="send_unencrypted_message">Enviar mensagem sem criptografia</string>
     <string name="send_message">Enviar mensagem</string>
     <string name="send_message_to_x">Enviar mensagem para %s</string>
     <string name="send_omemo_x509_message">Enviar mensagem criptografada via v\\OMEMO</string>
@@ -141,10 +141,10 @@
     <string name="error_security_exception_during_image_copy">O app que você usou para selecionar esta imagem não nos forneceu permissões suficientes para ler o arquivo.\n\n<small>Utilize um gerenciador de arquivos diferente para selecionar a imagem</small>.</string>
     <string name="error_security_exception">O app que você usou para compartilhar esse arquivo não forneceu permissões suficientes.</string>
     <string name="account_status_unknown">Desconhecido</string>
-    <string name="account_status_disabled">Desativado temporariamente</string>
-    <string name="account_status_online">Conectado</string>
+    <string name="account_status_disabled">Desativada temporariamente</string>
+    <string name="account_status_online">Conectada</string>
     <string name="account_status_connecting">Conectando\u2026</string>
-    <string name="account_status_offline">Desconectado</string>
+    <string name="account_status_offline">Desconectada</string>
     <string name="account_status_unauthorized">Não autorizado</string>
     <string name="account_status_not_found">Servidor não encontrado</string>
     <string name="account_status_no_internet">Sem conectividade</string>
@@ -358,7 +358,7 @@
     <string name="perform_action_with">Realizar a ação com</string>
     <string name="no_affiliation">Sem afiliação</string>
     <string name="no_role">Desconectado</string>
-    <string name="outcast">Banido</string>
+    <string name="outcast">Excluído</string>
     <string name="member">Membro</string>
     <string name="advanced_mode">Modo avançado</string>
     <string name="grant_membership">Conceder privilégios de membro</string>
@@ -434,7 +434,7 @@
     <string name="none">Nenhum</string>
     <string name="recently_used">Usado mais recentemente</string>
     <string name="choose_quick_action">Selecionar ação rápida</string>
-    <string name="search_contacts">Pesquisar contatos</string>
+    <string name="search_contacts">Buscar contatos</string>
     <string name="send_private_message">Enviar mensagem privada</string>
     <string name="user_has_left_conference">%1$s saiu do grupo</string>
     <string name="username">Nome de usuário</string>
@@ -450,7 +450,7 @@
     <string name="account_status_host_unknown">Não é responsável por este domínio</string>
     <string name="server_info_broken">Quebrado</string>
     <string name="pref_presence_settings">Disponibilidade</string>
-    <string name="pref_away_when_screen_off">\"Afastado\" quando o dispositivo estiver bloqueado</string>
+    <string name="pref_away_when_screen_off">\"Afastado\" no bloqueio</string>
     <string name="pref_away_when_screen_off_summary">Mostrar como Afastado quando o dispositivo estiver bloqueado</string>
     <string name="pref_dnd_on_silent_mode">\"Ocupado\" no modo silencioso</string>
     <string name="pref_dnd_on_silent_mode_summary">Mostrar como Ocupado quando o dispositivo estiver no modo silencioso</string>
@@ -481,7 +481,7 @@
     <string name="hostname_or_onion">Endereço server- ou .onion-</string>
     <string name="not_a_valid_port">Isto não é um número de porta válido</string>
     <string name="not_valid_hostname">Isto não é um nome de servidor válido</string>
-    <string name="connected_accounts">%1$d contas conectadas de %2$d</string>
+    <string name="connected_accounts">%1$d contas conectadas das %2$d</string>
     <plurals name="x_messages">
         <item quantity="one">%d mensagem</item>
         <item quantity="many">%d de mensagens</item>
@@ -524,7 +524,7 @@
     <string name="create_account">Criar conta</string>
     <string name="use_own_provider">Usar meu próprio provedor</string>
     <string name="pick_your_username">Escolha seu nome de usuário</string>
-    <string name="pref_manually_change_presence">Gerenciar disponibilidade manualmente</string>
+    <string name="pref_manually_change_presence">Disponibilidade manual</string>
     <string name="pref_manually_change_presence_summary">Configure sua disponibilidade ao editar a sua mensagem de estado.</string>
     <string name="status_message">Mensagem de estado</string>
     <string name="presence_chat">Livre para conversar</string>
@@ -677,7 +677,7 @@
     <string name="pref_scroll_to_bottom">Rolar para baixo</string>
     <string name="pref_scroll_to_bottom_summary">Rolar até o final após enviar uma mensagem</string>
     <string name="edit_status_message_title">Editar mensagem de estado</string>
-    <string name="edit_status_message">Editar a mensagem de estado</string>
+    <string name="edit_status_message">Editar mensagem de estado</string>
     <string name="disable_encryption">Desativar criptografia</string>
     <string name="error_trustkey_general">O %1$s não consegue enviar mensagens criptografadas para %2$s. Isto pode ocorrer caso o seu contato esteja usando um servidor ou cliente desatualizado que não consiga lidar com OMEMO.</string>
     <string name="error_trustkey_device_list">Não foi possível descarregar a lista de dispositivos</string>
@@ -977,7 +977,7 @@
     <string name="action_archive_chat">Arquivar conversa</string>
     <string name="title_activity_new_chat">Nova conversa</string>
     <string name="send_encrypted_message">Enviar mensagem criptografada</string>
-    <string name="account_state_logged_out">Desconectado</string>
+    <string name="account_state_logged_out">Desconectada (por você)</string>
     <string name="remove_bookmark">Gostaria de remover o favorito de %s?</string>
     <string name="unsupported_operation">Operação não suportada</string>
     <string name="delete_and_close">Apagar e arquivar a conversa</string>
@@ -1009,12 +1009,12 @@
     <string name="appearance">Aparência</string>
     <string name="pref_category_server_connection">Conexão com o servidor</string>
     <string name="pref_category_operating_system">Sistema operacional</string>
-    <string name="welcome_header">Entre na Conversa</string>
+    <string name="welcome_header">Participe da Conversa</string>
     <string name="welcome_header_quicksy">Boas-vindas ao Quicksy!</string>
     <string name="decline">Rejeitar</string>
     <string name="delete_from_server">Remover conta do servidor</string>
     <string name="could_not_delete_account_from_server">Não foi possível apagar a conta do servidor</string>
-    <string name="unified_push_summary">Transmissor de notificação para apps de terceiros compatíveis com o UnifiedPush</string>
+    <string name="unified_push_summary">Distribuição de notificações para apps de terceiros compatíveis com o UnifiedPush</string>
     <string name="pref_category_e2ee">Criptografia de ponta-a-ponta</string>
     <string name="pref_title_trust_system_ca_store">Autoridades de certificação</string>
     <string name="hide_notification">Ocultar notificação</string>
@@ -1080,8 +1080,8 @@
     <string name="detect_mim">Exigir vínculo do canal</string>
     <string name="detect_mim_summary">A vinculação de canal pode detectar alguns ataques de máquina-no-meio</string>
     <string name="pref_privacy_summary">Indicadores de digitação, visto por último, disponibilidade</string>
-    <string name="pref_connection_summary">Nome do host e porta, Tor</string>
-    <string name="pref_connection_summary_w_cd">Nome do host e porta, Tor, descoberta de canais</string>
+    <string name="pref_connection_summary">Nome do servidor e porta, Tor</string>
+    <string name="pref_connection_summary_w_cd">Nome do servidor e porta, Tor, descoberta de canais</string>
     <string name="pref_keyboard_options">Teclado</string>
     <string name="pref_category_engagement_notifications">Notificações de engajamento</string>
     <string name="pref_category_application">Aplicativo</string>
