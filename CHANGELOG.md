@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.19.4
+
+* minor bug fixes
+
 ### Version 2.19.3
 
 * New 'empty chats' page instead of redirect to 'new chat' screen
