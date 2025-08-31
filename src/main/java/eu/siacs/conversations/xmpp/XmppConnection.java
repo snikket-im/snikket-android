@@ -130,6 +130,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.security.PrivateKey;
+import java.security.cert.CertPathValidatorException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -151,7 +152,9 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLProtocolException;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509KeyManager;
@@ -1459,6 +1462,7 @@ public class XmppConnection implements Runnable {
         try {
             sslSocketFactory = getSSLSocketFactory();
         } catch (final NoSuchAlgorithmException | KeyManagementException e) {
+            Log.d(Config.LOGTAG, "could not create TLS Socket Factory", e);
             throw new StateChangingException(Account.State.TLS_ERROR);
         }
         final InetAddress address = socket.getInetAddress();
@@ -1471,6 +1475,7 @@ public class XmppConnection implements Runnable {
         SSLSockets.setApplicationProtocol(sslSocket, "xmpp-client");
         final XmppDomainVerifier xmppDomainVerifier = new XmppDomainVerifier();
         try {
+            sslSocket.startHandshake();
             if (!xmppDomainVerifier.verify(
                     account.getServer(), this.verifiedHostname, sslSocket.getSession())) {
                 Log.d(
@@ -1480,8 +1485,20 @@ public class XmppConnection implements Runnable {
                 FileBackend.close(sslSocket);
                 throw new StateChangingException(Account.State.TLS_ERROR_DOMAIN);
             }
+        } catch (final SSLHandshakeException e) {
+            FileBackend.close(sslSocket);
+            final var root = Throwables.getRootCause(e);
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS handshake failed", root);
+            if (root instanceof SSLProtocolException) {
+                throw new StateChangingException(Account.State.TLS_ERROR_PROTOCOL);
+            } else if (root instanceof CertPathValidatorException) {
+                throw new StateChangingException(Account.State.TLS_ERROR_UNTRUSTED);
+            }
+            throw new StateChangingException(Account.State.TLS_ERROR);
+
         } catch (final SSLPeerUnverifiedException e) {
             FileBackend.close(sslSocket);
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": peer unverified", e);
             throw new StateChangingException(Account.State.TLS_ERROR);
         }
         return sslSocket;
