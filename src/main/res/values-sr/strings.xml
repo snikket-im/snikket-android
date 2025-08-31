@@ -209,7 +209,7 @@
     <string name="omemo_fingerprint_selected_message">ОМЕМО отисак (порекло поруке)</string>
     <string name="omemo_fingerprint_x509_selected_message">v\\ОМЕМО отисак (порекло поруке)</string>
     <string name="other_devices">Остали уређаји</string>
-    <string name="trust_omemo_fingerprints">Поуздај се у ОМЕМО отиске</string>
+    <string name="trust_omemo_fingerprints">Веруј ОМЕМО отисцима</string>
     <string name="fetching_keys">Добављам кључеве…</string>
     <string name="done">Готово</string>
     <string name="decrypt">Дешифруј</string>
@@ -424,7 +424,7 @@
     <string name="location">Локација</string>
     <string name="title_undo_swipe_out_group_chat">Напустиo/ла си групну преписку</string>
     <string name="title_undo_swipe_out_channel">Напустиo/ла си јавни канал</string>
-    <string name="pref_dont_trust_system_cas_title">Не поуздај се у системска сертификациона тела</string>
+    <string name="pref_dont_trust_system_cas_title">Не веруј системским сертификационим телима</string>
     <string name="pref_dont_trust_system_cas_summary">Сви сертификати морају ручно да се одобре</string>
     <string name="pref_remove_trusted_certificates_title">Уклони сертификате</string>
     <string name="pref_remove_trusted_certificates_summary">Обриши ручно одобрене сертификате</string>
@@ -473,7 +473,7 @@
     <string name="unable_to_fetch_mam_prefs">Није могуће добавити подешавања архивирања</string>
     <string name="captcha_required">CAPTCHA је обавезан</string>
     <string name="captcha_hint">Унеси текст са слике изнад</string>
-    <string name="certificate_chain_is_not_trusted">Неповерљив ланац сертификата</string>
+    <string name="certificate_chain_is_not_trusted">Неодобрен ланац сертификата</string>
     <string name="jid_does_not_match_certificate">XMPP адреса се не слаже са сертификатом</string>
     <string name="action_renew_certificate">Обнови сертификат</string>
     <string name="error_fetching_omemo_key">Грешка у добављању OMEMO кључа!</string>
@@ -1087,7 +1087,7 @@
     <string name="appearance">Изглед</string>
     <string name="pref_category_e2ee">E2E шифровање</string>
     <string name="pref_title_trust_system_ca_store">Сертификациона тела</string>
-    <string name="pref_title_trust_system_ca_store_summary">Поуздај се у системске CA сертификате</string>
+    <string name="pref_title_trust_system_ca_store_summary">Веруј системским CA сертификатима</string>
     <string name="detect_mim">Захтевај везивање канала</string>
     <string name="detect_mim_summary">Везивање канала може да детектује неке “machine-in-the-middle” нападе</string>
     <string name="pref_category_server_connection">Веза ка серверу</string>
@@ -1177,4 +1177,6 @@
     <string name="empty_conversations_list_hint">Кад започнеш нову преписку, видећеш је излистану овде</string>
     <string name="server_info_moderated_message_retraction">XEP-0425: Moderated Message Retraction</string>
     <string name="server_info_occupant_id">XEP-0421: Occupant identifiers</string>
+    <string name="account_status_tls_error_protocol">Слаба безбедност транспорта (није TLS 1.3)</string>
+    <string name="account_status_tls_error_untrusted">Неодобрен сертификат</string>
 </resources>
