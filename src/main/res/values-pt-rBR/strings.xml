@@ -46,7 +46,7 @@
     <string name="unblock_domain_text">Desbloquear todos os contatos de %s?</string>
     <string name="contact_blocked">Contato bloqueado</string>
     <string name="blocked">Bloqueado</string>
-    <string name="register_account">Registrar nova conta no servidor</string>
+    <string name="register_account">Cadastrar nova conta no servidor</string>
     <string name="change_password_on_server">Alterar senha no servidor</string>
     <string name="share_with">Compartilhar com…</string>
     <string name="invite_contact">Convidar contato</string>
@@ -148,11 +148,11 @@
     <string name="account_status_unauthorized">Não autorizado</string>
     <string name="account_status_not_found">Servidor não encontrado</string>
     <string name="account_status_no_internet">Sem conectividade</string>
-    <string name="account_status_regis_fail">Registro falhou</string>
+    <string name="account_status_regis_fail">Falha ao cadastrar</string>
     <string name="account_status_regis_conflict">Este nome de usuário já está em uso</string>
-    <string name="account_status_regis_success">Registro efetuado</string>
-    <string name="account_status_regis_not_sup">O registro não é suportado pelo servidor</string>
-    <string name="account_status_regis_invalid_token">Token de registro inválido</string>
+    <string name="account_status_regis_success">Cadastro concluído</string>
+    <string name="account_status_regis_not_sup">O cadastro não é suportado pelo servidor</string>
+    <string name="account_status_regis_invalid_token">Token de cadastro inválido</string>
     <string name="account_status_tls_error">Falha na negociação TLS</string>
     <string name="account_status_tls_error_domain">Domínio não verificável</string>
     <string name="account_status_policy_violation">Violação de política</string>
@@ -534,8 +534,8 @@
     <string name="presence_dnd">Ocupado</string>
     <string name="secure_password_generated">Foi gerada uma senha segura</string>
     <string name="device_does_not_support_battery_op">Seu dispositivo não suporta a desativação da otimização de bateria</string>
-    <string name="registration_please_wait">Falha no registro: Tente novamente mais tarde</string>
-    <string name="registration_password_too_weak">Falha no registro: Senha muito fraca</string>
+    <string name="registration_please_wait">Falha ao cadastrar: Tente novamente mais tarde</string>
+    <string name="registration_password_too_weak">Falha ao cadastrar: Senha muito fraca</string>
     <string name="choose_participants">Selecionar participantes</string>
     <string name="creating_conference">Criando o grupo…</string>
     <string name="invite_again">Convidar novamente</string>
@@ -650,7 +650,7 @@
     <string name="retry_decryption">Tentar descriptografar novamente</string>
     <string name="session_failure">Falha na sessão</string>
     <string name="sasl_downgrade">O mecanismo SASL foi desatualizado</string>
-    <string name="account_status_regis_web">O servidor requer o registro no site</string>
+    <string name="account_status_regis_web">O servidor requer que o cadastro seja feito no site</string>
     <string name="open_website">Abrir site</string>
     <string name="application_found_to_open_website">Nenhum app encontrado para abrir o site</string>
     <string name="pref_headsup_notifications">Notificações pop-up</string>
@@ -776,7 +776,7 @@
     <string name="back">Voltar</string>
     <string name="possible_pin">A área de transferência foi automaticamente lida para um possível PIN.</string>
     <string name="please_enter_pin">Por favor, digite o seu PIN de 6 dígitos.</string>
-    <string name="abort_registration_procedure">Tem certeza de que deseja cancelar o registro?</string>
+    <string name="abort_registration_procedure">Tem certeza de que deseja cancelar o cadastro?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="verifying">Verificando…</string>
@@ -853,7 +853,7 @@
     <string name="channel_discovery_opt_in_title">Possível violação de privacidade!</string>
     <string name="i_already_have_an_account">Eu já tenho uma conta</string>
     <string name="add_existing_account">Adicionar uma conta existente</string>
-    <string name="register_new_account">Registrar uma nova conta</string>
+    <string name="register_new_account">Cadastrar uma nova conta</string>
     <string name="this_looks_like_a_domain">Isto se parece com um endereço de domínio</string>
     <string name="add_anway">Adicionar mesmo assim</string>
     <string name="this_looks_like_channel">Isto se parece com um endereço de canal</string>
@@ -963,7 +963,7 @@
     <string name="backup_started_message">O backup foi iniciado. Você receberá uma notificação assim que ele for concluído.</string>
     <string name="unable_to_enable_video">Não foi possível ativar o vídeo.</string>
     <string name="plain_text_document">Documento em texto simples</string>
-    <string name="account_registrations_are_not_supported">O registro de contas não é suportado</string>
+    <string name="account_registrations_are_not_supported">O cadastro de contas não é suportado</string>
     <string name="no_xmpp_adddress_found">Não foi encontrado nenhum endereço XMPP</string>
     <string name="account_status_temporary_auth_failure">Falha temporária na autenticação</string>
     <string name="delete_avatar">Apagar avatar</string>
