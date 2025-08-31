@@ -1162,4 +1162,6 @@
     <string name="empty_conversations_list_hint">Odată ce începeți o discuție nouă, o veți vedea listată aici</string>
     <string name="server_info_moderated_message_retraction">XEP-0425: Retragerea mesajului moderat</string>
     <string name="server_info_occupant_id">XEP-0421: Identificatori ocupanți</string>
+    <string name="account_status_tls_error_untrusted">Certificatul nu este de încredere</string>
+    <string name="account_status_tls_error_protocol">Securitate slabă a transportului (fără TLS 1.3)</string>
 </resources>
