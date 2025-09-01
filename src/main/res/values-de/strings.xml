@@ -1142,4 +1142,6 @@
     <string name="server_info_occupant_id">XEP-0421: Occupant identifiers</string>
     <string name="server_info_moderated_message_retraction">XEP-0425: Moderated Message Retraction</string>
     <string name="empty_conversations_list_hint">Sobald du eine neue Unterhaltung startest, wird sie hier angezeigt</string>
+    <string name="account_status_tls_error_protocol">Schwache Transportsicherheit (kein TLS 1.3)</string>
+    <string name="account_status_tls_error_untrusted">Nicht vertrauenswürdiges Zertifikat</string>
 </resources>
