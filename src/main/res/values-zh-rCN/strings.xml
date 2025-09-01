@@ -1136,4 +1136,6 @@
     <string name="empty_conversations_list_hint">开始新对话后，您将看到对话在此处列出</string>
     <string name="server_info_moderated_message_retraction">XEP-0425：消息审核撤回</string>
     <string name="server_info_occupant_id">XEP-0421：使用者标识符</string>
+    <string name="account_status_tls_error_untrusted">不受信任的证书</string>
+    <string name="account_status_tls_error_protocol">弱传输安全性（无 TLS 1.3）</string>
 </resources>
