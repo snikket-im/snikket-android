@@ -142,9 +142,9 @@
     <string name="error_security_exception">O app que você usou para compartilhar esse arquivo não forneceu permissões suficientes.</string>
     <string name="account_status_unknown">Desconhecido</string>
     <string name="account_status_disabled">Desativada temporariamente</string>
-    <string name="account_status_online">Conectada</string>
+    <string name="account_status_online">Na linha</string>
     <string name="account_status_connecting">Conectando\u2026</string>
-    <string name="account_status_offline">Desconectada</string>
+    <string name="account_status_offline">Fora da linha</string>
     <string name="account_status_unauthorized">Não autorizado</string>
     <string name="account_status_not_found">Servidor não encontrado</string>
     <string name="account_status_no_internet">Sem conectividade</string>
@@ -357,7 +357,7 @@
     <string name="disable_all_accounts">Desativar todas as contas</string>
     <string name="perform_action_with">Realizar a ação com</string>
     <string name="no_affiliation">Sem afiliação</string>
-    <string name="no_role">Desconectado</string>
+    <string name="no_role">Fora da linha</string>
     <string name="outcast">Excluído</string>
     <string name="member">Membro</string>
     <string name="advanced_mode">Modo avançado</string>
@@ -404,7 +404,7 @@
     <string name="avatar_has_been_published">O avatar foi publicado!</string>
     <string name="sending_x_file">Enviando %s</string>
     <string name="offering_x_file">Oferecendo %s</string>
-    <string name="hide_offline">Ocultar desconectados</string>
+    <string name="hide_offline">Ocultar pessoas fora da linha</string>
     <string name="contact_is_typing">%s está digitando…</string>
     <string name="contact_has_stopped_typing">%s parou de digitar</string>
     <string name="contacts_are_typing">%s estão digitando…</string>
@@ -528,7 +528,7 @@
     <string name="pref_manually_change_presence_summary">Configure sua disponibilidade ao editar a sua mensagem de estado.</string>
     <string name="status_message">Mensagem de estado</string>
     <string name="presence_chat">Livre para conversar</string>
-    <string name="presence_online">Conectado</string>
+    <string name="presence_online">Na linha</string>
     <string name="presence_away">Afastado</string>
     <string name="presence_xa">Não disponível</string>
     <string name="presence_dnd">Ocupado</string>
@@ -646,7 +646,7 @@
     <string name="received_message_from_stranger">Foi recebida uma mensagem de um desconhecido</string>
     <string name="block_stranger">Bloquear desconhecido</string>
     <string name="block_entire_domain">Bloquear domínio inteiro</string>
-    <string name="online_right_now">conectado no momento</string>
+    <string name="online_right_now">na linha agora</string>
     <string name="retry_decryption">Tentar descriptografar novamente</string>
     <string name="session_failure">Falha na sessão</string>
     <string name="sasl_downgrade">O mecanismo SASL foi desatualizado</string>
@@ -977,7 +977,7 @@
     <string name="action_archive_chat">Arquivar conversa</string>
     <string name="title_activity_new_chat">Nova conversa</string>
     <string name="send_encrypted_message">Enviar mensagem criptografada</string>
-    <string name="account_state_logged_out">Desconectada (por você)</string>
+    <string name="account_state_logged_out">Desconectada</string>
     <string name="remove_bookmark">Gostaria de remover o favorito de %s?</string>
     <string name="unsupported_operation">Operação não suportada</string>
     <string name="delete_and_close">Apagar e arquivar a conversa</string>
