@@ -34,6 +34,6 @@ Estas XEPs são - atualmente:
 * XEP-0198: Gerenciamento de Streams permite que o XMPP sobreviva a pequenas interrupções ou mudanças na conexão TCP.
 * XEP-0280: Carbonos de Mensagem que automaticamente sincroniza as mensagens que envia no computador e permite que você troque de cliente facilmente do seu celular para seu computador e ao contrário em uma conversa.
 * XEP-0237: Controle de Versões da Lista principalmente para economizar banda larga em conexões móveis ruins 
-* XEP-0313: Gerenciamento do Histórico de Mensagens para sincronizar o histórico de mensagens com o servidor. Recupere mensagens enviadas enquanto o Conversations estava off-line.
+* XEP-0313: Gerenciamento do Histórico de Mensagens para sincronizar o histórico de mensagens com o servidor. Recupere mensagens enviadas enquanto o Conversations estava desconectado.
 * XEP-0352: Indicação do Estado do Cliente permite que o servidor saiba quando o Conversations está ou não em segundo plano. Permite que o servidor economize banda larga.
-* XEP-0363: Envio de Arquivos HTTP permite que compartilhe arquivos em conferências e com contatos off-line. Requer um componente adicional em seu servidor.
+* XEP-0363: Envio de Arquivos HTTP permite que compartilhe arquivos em conferências e com contatos fora da linha. Requer um componente adicional em seu servidor.
