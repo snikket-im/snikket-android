@@ -1168,4 +1168,6 @@
     <string name="empty_conversations_list_hint">Po rozpoczęciu nowej rozmowy zobaczysz ją tutaj</string>
     <string name="server_info_occupant_id">XEP-0421: identyfikatory uczestników</string>
     <string name="server_info_moderated_message_retraction">XEP-0425: wycofywanie wiadomości przez moderację</string>
+    <string name="account_status_tls_error_protocol">Niskie bezpieczeństwo transportu (brak TLS 1.3)</string>
+    <string name="account_status_tls_error_untrusted">Niezaufany certyfikat</string>
 </resources>
