@@ -1142,4 +1142,6 @@
     <string name="empty_conversations_list_hint">Cando inicies unha nova conversa, aparecerá nesta lista</string>
     <string name="server_info_moderated_message_retraction">XEP-0425: Retracción de mensaxes moderadas</string>
     <string name="server_info_occupant_id">XEP-0421: Identificadores de participantes</string>
+    <string name="account_status_tls_error_protocol">Seguridade en tránsito feble (sen TLS 1.3)</string>
+    <string name="account_status_tls_error_untrusted">Certificado sen verificar</string>
 </resources>
