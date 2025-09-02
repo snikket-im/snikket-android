@@ -1,0 +1,2 @@
+* Mostra il numero di partecipanti nel sottotitolo dei canali pubblici
+* Corretto l'ingresso nei MUC su server Prosody molto vecchi
