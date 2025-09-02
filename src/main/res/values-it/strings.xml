@@ -1146,4 +1146,17 @@
     <string name="moderate_delete_dot_dot_dot">Elimina come moderatore…</string>
     <string name="moderation_explained">Questo messaggio verrà eliminato per te e per tutti i partecipanti di questo canale pubblico.</string>
     <string name="last_seen">ultimo accesso %s</string>
+    <string name="account_status_tls_error_protocol">Sicurezza del trasporto debole (non TLS 1.3)</string>
+    <string name="strong_transport_security">Sicurezza del trasporto robusta</string>
+    <string name="require_tls_v1_3">Richiedi la versione 1.3 di Transport Layer Security (TLS) per tutte le connessioni</string>
+    <string name="download_failed_could_not_establish_tls">Impossibile stabilire una connessione TLS</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d partecipante</item>
+        <item quantity="many">%1$d partecipanti</item>
+        <item quantity="other">%1$d partecipanti</item>
+    </plurals>
+    <string name="account_status_tls_error_untrusted">Certificato non fidato</string>
+    <string name="empty_conversations_list_hint">Una volta iniziata una nuova conversazione, la vedrai elencata qua</string>
+    <string name="server_info_occupant_id">XEP-0421: Occupant identifiers</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425: Moderated Message Retraction</string>
 </resources>
