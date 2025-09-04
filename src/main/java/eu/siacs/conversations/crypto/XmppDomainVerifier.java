@@ -144,7 +144,8 @@ public class XmppDomainVerifier {
         final var srvNames = new ImmutableSet.Builder<String>();
         final var domains = new ImmutableSet.Builder<String>();
         final var ips = new ImmutableSet.Builder<String>();
-        if (alternativeNames.isEmpty()) {
+        if (alternativeNames == null || alternativeNames.isEmpty()) {
+            Log.d(LOGTAG, "no alternative names found. using common names");
             return new ValidDomains(
                     Collections.emptySet(),
                     Collections.emptySet(),
