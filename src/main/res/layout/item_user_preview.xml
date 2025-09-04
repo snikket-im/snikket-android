@@ -12,7 +12,7 @@
             android:id="@+id/avatar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerInside"
+            android:scaleType="fitXY"
             app:riv_corner_radius="6dp" />
     </eu.siacs.conversations.ui.widget.SquareFrameLayout>
 </layout>

@@ -1097,8 +1097,8 @@ public class ConversationFragment extends XmppFragment
             this.binding.textinput.setHint(R.string.you_are_not_participating);
         } else {
             this.binding.textInputHint.setVisibility(View.GONE);
-            this.binding.textinput.setHint(UIHelper.getMessageHint(getActivity(), conversation));
-            getActivity().invalidateOptionsMenu();
+            this.binding.textinput.setHint(UIHelper.getMessageHint(requireContext(), conversation));
+            requireActivity().invalidateOptionsMenu();
         }
     }
 
@@ -1561,61 +1561,77 @@ public class ConversationFragment extends XmppFragment
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.share_with:
+        return switch (item.getItemId()) {
+            case R.id.share_with -> {
                 ShareUtil.share(requireXmppActivity(), selectedMessage);
-                return true;
-            case R.id.correct_message:
+                yield true;
+            }
+            case R.id.correct_message -> {
                 correctMessage(selectedMessage);
-                return true;
-            case R.id.copy_message:
+                yield true;
+            }
+            case R.id.copy_message -> {
                 ShareUtil.copyToClipboard(requireXmppActivity(), selectedMessage);
-                return true;
-            case R.id.copy_link:
+                yield true;
+            }
+            case R.id.copy_link -> {
                 ShareUtil.copyLinkToClipboard(requireXmppActivity(), selectedMessage);
-                return true;
-            case R.id.quote_message:
+                yield true;
+            }
+            case R.id.quote_message -> {
                 quoteMessage(selectedMessage);
-                return true;
-            case R.id.send_again:
+                yield true;
+            }
+            case R.id.send_again -> {
                 resendMessage(selectedMessage, false);
-                return true;
-            case R.id.send_again_as_p2p:
+                yield true;
+            }
+            case R.id.send_again_as_p2p -> {
                 resendMessage(selectedMessage, true);
-                return true;
-            case R.id.copy_url:
+                yield true;
+            }
+            case R.id.copy_url -> {
                 ShareUtil.copyUrlToClipboard(requireXmppActivity(), selectedMessage);
-                return true;
-            case R.id.download_file:
+                yield true;
+            }
+            case R.id.download_file -> {
                 startDownloadable(selectedMessage);
-                return true;
-            case R.id.cancel_transmission:
+                yield true;
+            }
+            case R.id.cancel_transmission -> {
                 cancelTransmission(selectedMessage);
-                return true;
-            case R.id.retry_decryption:
+                yield true;
+            }
+            case R.id.retry_decryption -> {
                 retryDecryption(selectedMessage);
-                return true;
-            case R.id.delete_file:
+                yield true;
+            }
+            case R.id.delete_file -> {
                 deleteFile(selectedMessage);
-                return true;
-            case R.id.moderation:
+                yield true;
+            }
+            case R.id.moderation -> {
                 moderate(selectedMessage);
-                return true;
-            case R.id.show_error_message:
+                yield true;
+            }
+            case R.id.show_error_message -> {
                 showErrorMessage(selectedMessage);
-                return true;
-            case R.id.open_with:
+                yield true;
+            }
+            case R.id.open_with -> {
                 openWith(selectedMessage);
-                return true;
-            case R.id.action_report_and_block:
+                yield true;
+            }
+            case R.id.action_report_and_block -> {
                 reportMessage(selectedMessage);
-                return true;
-            case R.id.action_add_reaction:
+                yield true;
+            }
+            case R.id.action_add_reaction -> {
                 addReaction(selectedMessage);
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
+                yield true;
+            }
+            default -> super.onContextItemSelected(item);
+        };
     }
 
     private void startSearch() {
@@ -2098,7 +2114,7 @@ public class ConversationFragment extends XmppFragment
                 missingPermissions.add(permission);
             }
         }
-        if (missingPermissions.size() == 0) {
+        if (missingPermissions.isEmpty()) {
             return true;
         } else {
             requestPermissions(missingPermissions.toArray(new String[0]), requestCode);
@@ -2739,7 +2755,7 @@ public class ConversationFragment extends XmppFragment
                 extras.getBoolean(ConversationsActivity.EXTRA_DO_NOT_APPEND, false);
         final String type = extras.getString(ConversationsActivity.EXTRA_TYPE);
         final List<Uri> uris = extractUris(extras);
-        if (uris != null && uris.size() > 0) {
+        if (uris != null && !uris.isEmpty()) {
             if (uris.size() == 1 && "geo".equals(uris.get(0).getScheme())) {
                 mediaPreviewAdapter.addMediaPreviews(
                         Attachment.of(getActivity(), uris.get(0), Attachment.Type.LOCATION));
