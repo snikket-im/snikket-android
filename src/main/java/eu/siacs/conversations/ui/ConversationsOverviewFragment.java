@@ -45,9 +45,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,7 +68,6 @@ import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
 import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
-import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingActionHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ScrollState;
@@ -149,6 +150,38 @@ public class ConversationsOverviewFragment extends XmppFragment {
                         return;
                     }
                     onConversationSwiped(conversation, position);
+                }
+            };
+
+    private final MenuProvider menuProvider =
+            new MenuProvider() {
+                @Override
+                public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                    menuInflater.inflate(R.menu.fragment_conversations_overview, menu);
+                    AccountUtils.showHideMenuItems(menu);
+                    final MenuItem easyOnboardInvite = menu.findItem(R.id.action_easy_invite);
+                    easyOnboardInvite.setVisible(
+                            EasyOnboardingInvite.anyHasSupport(
+                                    requireXmppActivity().xmppConnectionService));
+                    final MenuItem privacyPolicyMenuItem =
+                            menu.findItem(R.id.action_privacy_policy);
+                    privacyPolicyMenuItem.setVisible(
+                            BuildConfig.PRIVACY_POLICY != null
+                                    && QuickConversationsService.isPlayStoreFlavor());
+                }
+
+                @Override
+                public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                    final var id = menuItem.getItemId();
+                    if (id == R.id.action_search) {
+                        startActivity(new Intent(getActivity(), SearchActivity.class));
+                        return true;
+                    } else if (id == R.id.action_easy_invite) {
+                        selectAccountToStartEasyInvite();
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             };
 
@@ -257,9 +290,9 @@ public class ConversationsOverviewFragment extends XmppFragment {
         return null;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
+        requireActivity()
+                .addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
         if (savedInstanceState == null) {
             return;
         }
@@ -278,12 +311,6 @@ public class ConversationsOverviewFragment extends XmppFragment {
     public void onPause() {
         pendingActionHelper.execute();
         super.onPause();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -316,19 +343,6 @@ public class ConversationsOverviewFragment extends XmppFragment {
         this.touchHelper = new ItemTouchHelper(this.callback);
         this.touchHelper.attachToRecyclerView(this.binding.list);
         return binding.getRoot();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.fragment_conversations_overview, menu);
-        AccountUtils.showHideMenuItems(menu);
-        final MenuItem easyOnboardInvite = menu.findItem(R.id.action_easy_invite);
-        easyOnboardInvite.setVisible(
-                EasyOnboardingInvite.anyHasSupport(requireXmppActivity().xmppConnectionService));
-        final MenuItem privacyPolicyMenuItem = menu.findItem(R.id.action_privacy_policy);
-        privacyPolicyMenuItem.setVisible(
-                BuildConfig.PRIVACY_POLICY != null
-                        && QuickConversationsService.isPlayStoreFlavor());
     }
 
     @Override
@@ -368,22 +382,6 @@ public class ConversationsOverviewFragment extends XmppFragment {
         if (requireXmppActivity().xmppConnectionService != null) {
             refresh();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        if (MenuDoubleTabUtil.shouldIgnoreTap()) {
-            return false;
-        }
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                startActivity(new Intent(getActivity(), SearchActivity.class));
-                return true;
-            case R.id.action_easy_invite:
-                selectAccountToStartEasyInvite();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void selectAccountToStartEasyInvite() {

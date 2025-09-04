@@ -58,11 +58,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuProvider;
 import androidx.core.view.inputmethod.InputConnectionCompat;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
@@ -604,6 +606,150 @@ public class ConversationFragment extends XmppFragment
                     }
                 }
             };
+    private final MenuProvider menuProvider =
+            new MenuProvider() {
+                @Override
+                public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                    menuInflater.inflate(R.menu.fragment_conversation, menu);
+                    final MenuItem menuMucDetails = menu.findItem(R.id.action_muc_details);
+                    final MenuItem menuContactDetails = menu.findItem(R.id.action_contact_details);
+                    final MenuItem menuInviteContact = menu.findItem(R.id.action_invite);
+                    final MenuItem menuMute = menu.findItem(R.id.action_mute);
+                    final MenuItem menuUnmute = menu.findItem(R.id.action_unmute);
+                    final MenuItem menuCall = menu.findItem(R.id.action_call);
+                    final MenuItem menuOngoingCall = menu.findItem(R.id.action_ongoing_call);
+                    final MenuItem menuVideoCall = menu.findItem(R.id.action_video_call);
+                    final MenuItem menuTogglePinned = menu.findItem(R.id.action_toggle_pinned);
+                    final var c = ConversationFragment.this.conversation;
+                    if (c == null) {
+                        return;
+                    }
+                    if (c.getMode() == Conversation.MODE_MULTI) {
+                        menuContactDetails.setVisible(false);
+                        menuInviteContact.setVisible(c.getMucOptions().canInvite());
+                        menuMucDetails.setTitle(
+                                c.getMucOptions().isPrivateAndNonAnonymous()
+                                        ? R.string.action_muc_details
+                                        : R.string.channel_details);
+                        menuCall.setVisible(false);
+                        menuOngoingCall.setVisible(false);
+                    } else {
+                        final XmppConnectionService service = getXmppConnectionService();
+                        final Optional<OngoingRtpSession> ongoingRtpSession =
+                                service == null
+                                        ? Optional.absent()
+                                        : service.getJingleConnectionManager()
+                                                .getOngoingRtpConnection(c.getContact());
+                        if (ongoingRtpSession.isPresent()) {
+                            menuOngoingCall.setVisible(true);
+                            menuCall.setVisible(false);
+                        } else {
+                            menuOngoingCall.setVisible(false);
+                            // use RtpCapability.check(conversation.getContact()); to check if
+                            // contact
+                            // actually has support
+                            final boolean cameraAvailable =
+                                    requireXmppActivity().isCameraFeatureAvailable();
+                            menuCall.setVisible(true);
+                            menuVideoCall.setVisible(cameraAvailable);
+                        }
+                        menuContactDetails.setVisible(!c.withSelf());
+                        menuMucDetails.setVisible(false);
+                        final var connection = c.getAccount().getXmppConnection();
+                        menuInviteContact.setVisible(
+                                !connection
+                                        .getManager(MultiUserChatManager.class)
+                                        .getServices()
+                                        .isEmpty());
+                    }
+                    if (c.isMuted()) {
+                        menuMute.setVisible(false);
+                    } else {
+                        menuUnmute.setVisible(false);
+                    }
+                    ConversationMenuConfigurator.configureAttachmentMenu(c, menu);
+                    ConversationMenuConfigurator.configureEncryptionMenu(c, menu);
+                    if (c.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false)) {
+                        menuTogglePinned.setTitle(R.string.remove_from_favorites);
+                    } else {
+                        menuTogglePinned.setTitle(R.string.add_to_favorites);
+                    }
+                }
+
+                @Override
+                public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                    if (MenuDoubleTabUtil.shouldIgnoreTap()) {
+                        return false;
+                    } else if (conversation == null) {
+                        return false;
+                    }
+                    switch (menuItem.getItemId()) {
+                        case R.id.encryption_choice_axolotl:
+                        case R.id.encryption_choice_pgp:
+                        case R.id.encryption_choice_none:
+                            handleEncryptionSelection(menuItem);
+                            break;
+                        case R.id.attach_choose_picture:
+                        case R.id.attach_take_picture:
+                        case R.id.attach_record_video:
+                        case R.id.attach_choose_file:
+                        case R.id.attach_record_voice:
+                        case R.id.attach_location:
+                            handleAttachmentSelection(menuItem);
+                            break;
+                        case R.id.action_search:
+                            startSearch();
+                            break;
+                        case R.id.action_archive:
+                            requireXmppActivity()
+                                    .xmppConnectionService
+                                    .archiveConversation(conversation);
+                            break;
+                        case R.id.action_contact_details:
+                            requireXmppActivity().switchToContactDetails(conversation.getContact());
+                            break;
+                        case R.id.action_muc_details:
+                            ConferenceDetailsActivity.open(getActivity(), conversation);
+                            break;
+                        case R.id.action_invite:
+                            startActivityForResult(
+                                    ChooseContactActivity.create(requireActivity(), conversation),
+                                    REQUEST_INVITE_TO_CONVERSATION);
+                            break;
+                        case R.id.action_clear_history:
+                            clearHistoryDialog(conversation);
+                            break;
+                        case R.id.action_mute:
+                            muteConversationDialog(conversation);
+                            break;
+                        case R.id.action_unmute:
+                            unMuteConversation(conversation);
+                            break;
+                        case R.id.action_block:
+                        case R.id.action_unblock:
+                            final Activity activity = getActivity();
+                            if (activity instanceof XmppActivity) {
+                                BlockContactDialog.show((XmppActivity) activity, conversation);
+                            }
+                            break;
+                        case R.id.action_audio_call:
+                            checkPermissionAndTriggerAudioCall();
+                            break;
+                        case R.id.action_video_call:
+                            checkPermissionAndTriggerVideoCall();
+                            break;
+                        case R.id.action_ongoing_call:
+                            returnToOngoingCall();
+                            break;
+                        case R.id.action_toggle_pinned:
+                            togglePinned();
+                            break;
+                        default:
+                            break;
+                    }
+                    return false;
+                }
+            };
     private int completionIndex = 0;
     private int lastCompletionLength = 0;
     private String incomplete;
@@ -1132,78 +1278,20 @@ public class ConversationFragment extends XmppFragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.fragment_conversation, menu);
-        final MenuItem menuMucDetails = menu.findItem(R.id.action_muc_details);
-        final MenuItem menuContactDetails = menu.findItem(R.id.action_contact_details);
-        final MenuItem menuInviteContact = menu.findItem(R.id.action_invite);
-        final MenuItem menuMute = menu.findItem(R.id.action_mute);
-        final MenuItem menuUnmute = menu.findItem(R.id.action_unmute);
-        final MenuItem menuCall = menu.findItem(R.id.action_call);
-        final MenuItem menuOngoingCall = menu.findItem(R.id.action_ongoing_call);
-        final MenuItem menuVideoCall = menu.findItem(R.id.action_video_call);
-        final MenuItem menuTogglePinned = menu.findItem(R.id.action_toggle_pinned);
-
-        if (conversation != null) {
-            if (conversation.getMode() == Conversation.MODE_MULTI) {
-                menuContactDetails.setVisible(false);
-                menuInviteContact.setVisible(conversation.getMucOptions().canInvite());
-                menuMucDetails.setTitle(
-                        conversation.getMucOptions().isPrivateAndNonAnonymous()
-                                ? R.string.action_muc_details
-                                : R.string.channel_details);
-                menuCall.setVisible(false);
-                menuOngoingCall.setVisible(false);
-            } else {
-                final XmppConnectionService service = getXmppConnectionService();
-                final Optional<OngoingRtpSession> ongoingRtpSession =
-                        service == null
-                                ? Optional.absent()
-                                : service.getJingleConnectionManager()
-                                        .getOngoingRtpConnection(conversation.getContact());
-                if (ongoingRtpSession.isPresent()) {
-                    menuOngoingCall.setVisible(true);
-                    menuCall.setVisible(false);
-                } else {
-                    menuOngoingCall.setVisible(false);
-                    // use RtpCapability.check(conversation.getContact()); to check if contact
-                    // actually has support
-                    final boolean cameraAvailable =
-                            requireXmppActivity().isCameraFeatureAvailable();
-                    menuCall.setVisible(true);
-                    menuVideoCall.setVisible(cameraAvailable);
-                }
-                menuContactDetails.setVisible(!this.conversation.withSelf());
-                menuMucDetails.setVisible(false);
-                final var connection = this.conversation.getAccount().getXmppConnection();
-                menuInviteContact.setVisible(
-                        !connection.getManager(MultiUserChatManager.class).getServices().isEmpty());
-            }
-            if (conversation.isMuted()) {
-                menuMute.setVisible(false);
-            } else {
-                menuUnmute.setVisible(false);
-            }
-            ConversationMenuConfigurator.configureAttachmentMenu(conversation, menu);
-            ConversationMenuConfigurator.configureEncryptionMenu(conversation, menu);
-            if (conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false)) {
-                menuTogglePinned.setTitle(R.string.remove_from_favorites);
-            } else {
-                menuTogglePinned.setTitle(R.string.add_to_favorites);
-            }
+    public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
+        requireActivity()
+                .addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        if (savedInstanceState == null) {
+            return;
         }
-        super.onCreateOptionsMenu(menu, menuInflater);
+        this.processSavedInstanceState(savedInstanceState);
     }
 
     @Override
     public View onCreateView(
-            final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            @NonNull final LayoutInflater inflater,
+            final ViewGroup container,
+            final Bundle savedInstanceState) {
         this.binding =
                 DataBindingUtil.inflate(inflater, R.layout.fragment_conversation, container, false);
         binding.getRoot().setOnClickListener(null); // TODO why the fuck did we do this?
@@ -1261,7 +1349,7 @@ public class ConversationFragment extends XmppFragment
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NonNull ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         // This should cancel any remaining click events that would otherwise trigger links
         v.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
         synchronized (this.messageList) {
@@ -1528,78 +1616,6 @@ public class ConversationFragment extends XmppFragment
             default:
                 return super.onContextItemSelected(item);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        if (MenuDoubleTabUtil.shouldIgnoreTap()) {
-            return false;
-        } else if (conversation == null) {
-            return super.onOptionsItemSelected(item);
-        }
-        switch (item.getItemId()) {
-            case R.id.encryption_choice_axolotl:
-            case R.id.encryption_choice_pgp:
-            case R.id.encryption_choice_none:
-                handleEncryptionSelection(item);
-                break;
-            case R.id.attach_choose_picture:
-            case R.id.attach_take_picture:
-            case R.id.attach_record_video:
-            case R.id.attach_choose_file:
-            case R.id.attach_record_voice:
-            case R.id.attach_location:
-                handleAttachmentSelection(item);
-                break;
-            case R.id.action_search:
-                startSearch();
-                break;
-            case R.id.action_archive:
-                requireXmppActivity().xmppConnectionService.archiveConversation(conversation);
-                break;
-            case R.id.action_contact_details:
-                requireXmppActivity().switchToContactDetails(conversation.getContact());
-                break;
-            case R.id.action_muc_details:
-                ConferenceDetailsActivity.open(getActivity(), conversation);
-                break;
-            case R.id.action_invite:
-                startActivityForResult(
-                        ChooseContactActivity.create(requireActivity(), conversation),
-                        REQUEST_INVITE_TO_CONVERSATION);
-                break;
-            case R.id.action_clear_history:
-                clearHistoryDialog(conversation);
-                break;
-            case R.id.action_mute:
-                muteConversationDialog(conversation);
-                break;
-            case R.id.action_unmute:
-                unMuteConversation(conversation);
-                break;
-            case R.id.action_block:
-            case R.id.action_unblock:
-                final Activity activity = getActivity();
-                if (activity instanceof XmppActivity) {
-                    BlockContactDialog.show((XmppActivity) activity, conversation);
-                }
-                break;
-            case R.id.action_audio_call:
-                checkPermissionAndTriggerAudioCall();
-                break;
-            case R.id.action_video_call:
-                checkPermissionAndTriggerVideoCall();
-                break;
-            case R.id.action_ongoing_call:
-                returnToOngoingCall();
-                break;
-            case R.id.action_toggle_pinned:
-                togglePinned();
-                break;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void startSearch() {
@@ -2498,28 +2514,24 @@ public class ConversationFragment extends XmppFragment
         }
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState == null) {
-            return;
-        }
-        String uuid = savedInstanceState.getString(STATE_CONVERSATION_UUID);
-        ArrayList<Attachment> attachments =
+    private void processSavedInstanceState(@NonNull final Bundle savedInstanceState) {
+        final var uuid = savedInstanceState.getString(STATE_CONVERSATION_UUID);
+        final ArrayList<Attachment> attachments =
                 savedInstanceState.getParcelableArrayList(STATE_MEDIA_PREVIEWS);
         pendingLastMessageUuid.push(savedInstanceState.getString(STATE_LAST_MESSAGE_UUID, null));
-        if (uuid != null) {
-            QuickLoader.set(uuid);
-            this.pendingConversationsUuid.push(uuid);
-            if (attachments != null && !attachments.isEmpty()) {
-                this.pendingMediaPreviews.push(attachments);
-            }
-            String takePhotoUri = savedInstanceState.getString(STATE_PHOTO_URI);
-            if (takePhotoUri != null) {
-                pendingTakePhotoUri.push(Uri.parse(takePhotoUri));
-            }
-            pendingScrollState.push(savedInstanceState.getParcelable(STATE_SCROLL_POSITION));
+        if (uuid == null) {
+            return;
         }
+        QuickLoader.set(uuid);
+        this.pendingConversationsUuid.push(uuid);
+        if (attachments != null && !attachments.isEmpty()) {
+            this.pendingMediaPreviews.push(attachments);
+        }
+        String takePhotoUri = savedInstanceState.getString(STATE_PHOTO_URI);
+        if (takePhotoUri != null) {
+            pendingTakePhotoUri.push(Uri.parse(takePhotoUri));
+        }
+        pendingScrollState.push(savedInstanceState.getParcelable(STATE_SCROLL_POSITION));
     }
 
     @Override

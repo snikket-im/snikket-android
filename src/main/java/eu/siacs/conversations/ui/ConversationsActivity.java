@@ -600,6 +600,10 @@ public class ConversationsActivity extends XmppActivity
 
     private void initializeFragments() {
         final var fragmentManager = getSupportFragmentManager();
+        final var existing = fragmentManager.findFragmentById(R.id.main_fragment);
+        if (existing != null) {
+            return;
+        }
         final var transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_fragment, new ConversationsOverviewFragment());
         transaction.commitAllowingStateLoss();
