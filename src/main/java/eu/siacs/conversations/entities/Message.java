@@ -123,15 +123,19 @@ public class Message extends AbstractEntity
     private FileParams fileParams = null;
     private List<MucOptions.User> counterparts;
 
-    protected Message(Conversational conversation) {
+    protected Message(final Conversational conversation) {
         this.conversation = conversation;
     }
 
-    public Message(Conversational conversation, String body, int encryption) {
+    public Message(final Conversational conversation, final String body, final int encryption) {
         this(conversation, body, encryption, STATUS_UNSEND);
     }
 
-    public Message(Conversational conversation, String body, int encryption, int status) {
+    public Message(
+            final Conversational conversation,
+            final String body,
+            final int encryption,
+            final int status) {
         this(
                 conversation,
                 java.util.UUID.randomUUID().toString(),

@@ -402,6 +402,7 @@ public class MessageParser extends AbstractParser
         final var replace = packet.getExtension(Replace.class);
         final var replacementId = replace == null ? null : replace.getId();
         final var axolotlEncrypted = packet.getOnlyExtension(Encrypted.class);
+        // TODO this can probably be refactored to be final
         int status;
         final Jid counterpart;
         final Jid to = packet.getTo();
@@ -524,7 +525,7 @@ public class MessageParser extends AbstractParser
             }
 
             if (isTypeGroupChat) {
-                // TODO this should probably remain a counterpart check
+                // this should probably remain a counterpart check
                 if (getManager(MultiUserChatManager.class)
                         .getOrCreateState(conversation)
                         .isSelf(counterpart)) {
@@ -546,7 +547,20 @@ public class MessageParser extends AbstractParser
                         }
                     }
                 } else {
-                    status = Message.STATUS_RECEIVED;
+                    final var user =
+                            getManager(MultiUserChatManager.class).getMucUser(packet, query);
+                    if (user != null) {
+                        final var mucOptions =
+                                getManager(MultiUserChatManager.class).getState(from.asBareJid());
+                        if (mucOptions != null && mucOptions.isOurAccount(user)) {
+                            status = Message.STATUS_SEND_RECEIVED;
+                            isCarbon = true;
+                        } else {
+                            status = Message.STATUS_RECEIVED;
+                        }
+                    } else {
+                        status = Message.STATUS_RECEIVED;
+                    }
                 }
             }
             final Message message;
@@ -647,15 +661,6 @@ public class MessageParser extends AbstractParser
                 }
                 final var user = getManager(MultiUserChatManager.class).getMucUser(packet, query);
                 final var trueCounterpart = user == null ? null : user.getRealJid();
-                if (user != null && isTypeGroupChat) {
-                    if (mucOptions.isOurAccount(user)) {
-                        status = Message.STATUS_SEND_RECEIVED;
-                    } else {
-                        status = Message.STATUS_RECEIVED;
-                        message.setCarbon(false);
-                    }
-                }
-                message.setStatus(status);
                 message.setTrueCounterpart(trueCounterpart);
                 if (!isTypeGroupChat) {
                     message.setType(Message.TYPE_PRIVATE);
