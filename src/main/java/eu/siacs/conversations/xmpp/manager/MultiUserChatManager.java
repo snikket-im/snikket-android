@@ -1290,6 +1290,7 @@ public class MultiUserChatManager extends AbstractManager {
     @Nullable
     public MucOptions.User getMucUser(
             @NonNull final Message message, @Nullable final MessageArchiveManager.Query query) {
+
         final var from = message.getFrom();
         if (from == null) {
             return null;
@@ -1330,14 +1331,13 @@ public class MultiUserChatManager extends AbstractManager {
             final String occupantId) {
         final var affiliation = item.getAffiliation();
         final var role = item.getRole();
-        final var nick = item.getNick();
         final Jid fullAddress;
         if (from != null && from.isFullJid()) {
             fullAddress = from;
-        } else if (Strings.isNullOrEmpty(nick)) {
-            fullAddress = null;
         } else {
-            fullAddress = ofNick(conference, nick);
+            // we used to look at item.getNick() to construct a full address
+            // however this could push 'available' users w/ occupant ids out of the user list
+            fullAddress = null;
         }
         final Jid realJid = Jid.Invalid.getNullForInvalid(item.getAttributeAsJid("jid"));
         return new MucOptions.User(
