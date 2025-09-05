@@ -419,7 +419,18 @@ public class Message extends AbstractEntity
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(final int status) {
+        final var current = this.status;
+        if (current == Message.STATUS_RECEIVED) {
+            if (status != Message.STATUS_RECEIVED) {
+                throw new AssertionError(
+                        "A received message can not be converted to status=" + status);
+            }
+        } else {
+            if (status == Message.STATUS_RECEIVED) {
+                throw new AssertionError("A sent message can not be converted to received");
+            }
+        }
         this.status = status;
     }
 
