@@ -1030,12 +1030,10 @@ public class ConversationFragment extends XmppFragment
             message.putEdited(message.getUuid(), message.getServerMsgId());
             message.setUuid(UUID.randomUUID().toString());
         }
-        switch (conversation.getNextEncryption()) {
-            case Message.ENCRYPTION_PGP:
-                sendPgpMessage(message);
-                break;
-            default:
-                sendMessage(message);
+        if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+            sendPgpMessage(message);
+        } else {
+            sendMessage(message);
         }
     }
 
@@ -1044,10 +1042,11 @@ public class ConversationFragment extends XmppFragment
                 && trustKeysIfNeeded(requestCode);
     }
 
-    protected boolean trustKeysIfNeeded(int requestCode) {
+    protected boolean trustKeysIfNeeded(final int requestCode) {
         final var axolotlService = conversation.getAccount().getAxolotlService();
         final var targets = axolotlService.getCryptoTargets(conversation);
         boolean hasUnaccepted = !conversation.getAcceptedCryptoTargets().containsAll(targets);
+        // TODO basically all of those are hitting the database. This should be async
         boolean hasUndecidedOwn =
                 !axolotlService
                         .getKeysWithTrust(FingerprintStatus.createActiveUndecided())

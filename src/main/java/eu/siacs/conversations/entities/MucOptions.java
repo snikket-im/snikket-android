@@ -192,8 +192,7 @@ public class MucOptions {
             return null;
         }
         final var roomInfo =
-                serviceDiscoveryResult.getServiceDiscoveryExtension(
-                        "http://jabber.org/protocol/muc#roominfo");
+                serviceDiscoveryResult.getServiceDiscoveryExtension(Namespace.MUC_ROOM_INFO);
         final Field roomConfigName =
                 roomInfo == null ? null : roomInfo.getFieldByName("muc#roomconfig_roomname");
         if (roomConfigName != null) {
