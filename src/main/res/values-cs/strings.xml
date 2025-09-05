@@ -1144,9 +1144,9 @@
     <string name="account_status_connection_timeout">Vypršel čas spojení</string>
     <string name="uri_copied_to_clipboard">URI zkopírováno do schránky</string>
     <plurals name="x_participants">
-        <item quantity="one">účastník</item>
-        <item quantity="few">účastníci</item>
-        <item quantity="other">účastníků</item>
+        <item quantity="one">%1$d účastník</item>
+        <item quantity="few">%1$d účastníci</item>
+        <item quantity="other">%1$d účastníků</item>
     </plurals>
     <string name="last_seen">Naposledy spatřen %s</string>
     <string name="uri">URI</string>
