@@ -129,8 +129,7 @@ public final class Config {
             false; // require a/v calls to be verified with OMEMO
     public static final boolean JINGLE_MESSAGE_INIT_STRICT_OFFLINE_CHECK = false;
     public static final boolean JINGLE_MESSAGE_INIT_STRICT_DEVICE_TIMEOUT = false;
-    // TODO extend this to 12s
-    public static final long DEVICE_DISCOVERY_TIMEOUT = 6000; // in milliseconds
+    public static final long DEVICE_DISCOVERY_TIMEOUT = 12_000; // in milliseconds
 
     public static final boolean ONLY_INTERNAL_STORAGE =
             false; // use internal storage instead of sdcard to save attachments
