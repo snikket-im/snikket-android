@@ -871,8 +871,7 @@ public class MessageParser extends AbstractParser
             }
         } else if (!packet.hasChild("body")) { // no body
 
-            final Conversation conversation =
-                    mXmppConnectionService.find(account, from.asBareJid());
+            final var conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
             if (axolotlEncrypted != null) {
                 final Jid origin;
                 if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
@@ -910,11 +909,7 @@ public class MessageParser extends AbstractParser
                 }
             }
 
-            if (query == null
-                    && extractChatState(
-                            mXmppConnectionService.find(account, counterpart.asBareJid()),
-                            isTypeGroupChat,
-                            packet)) {
+            if (query == null && extractChatState(conversation, isTypeGroupChat, packet)) {
                 mXmppConnectionService.updateConversationUi();
             }
 
@@ -1236,7 +1231,6 @@ public class MessageParser extends AbstractParser
             final im.conversations.android.xmpp.model.stanza.Message packet) {
         final var account = getAccount();
         final String reactingTo = reactions.getId();
-        // TODO flip this condition to exit when either is null
         if (conversation == null || reactingTo == null) {
             return;
         }
