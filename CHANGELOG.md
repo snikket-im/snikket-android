@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.19.5
+
+* Improve error message for servers that do not support TLS 1.3
+* Fix issues with device rotation
+
 ### Version 2.19.4
 
 * minor bug fixes
