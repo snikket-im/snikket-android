@@ -1,10 +1,15 @@
 package eu.siacs.conversations.xmpp;
 
 import androidx.annotation.NonNull;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.IP;
 import im.conversations.android.xmpp.model.stanza.Stanza;
 import java.io.Serializable;
 import java.net.IDN;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.regex.Pattern;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.jid.parts.Domainpart;
@@ -282,7 +287,15 @@ public abstract class Jid implements Comparable<Jid>, Serializable, CharSequence
 
         @Override
         public Jid asBareJid() {
-            throw new AssertionError("Not implemented");
+            final var bare = Iterables.getFirst(Splitter.on('/').split(value), null);
+            if (bare == null) {
+                return null;
+            }
+            try {
+                return Jid.of(bare).asBareJid();
+            } catch (final IllegalArgumentException e) {
+                return this;
+            }
         }
 
         @Override
