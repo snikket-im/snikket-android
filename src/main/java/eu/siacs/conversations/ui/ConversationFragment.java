@@ -204,9 +204,9 @@ public class ConversationFragment extends XmppFragment
     private final PendingItem<ScrollState> pendingScrollState = new PendingItem<>();
     private final PendingItem<String> pendingLastMessageUuid = new PendingItem<>();
     private final PendingItem<Message> pendingMessage = new PendingItem<>();
+    private final MediaPreviewAdapter mediaPreviewAdapter = new MediaPreviewAdapter(this);
     public Uri mPendingEditorContent = null;
     protected MessageAdapter messageListAdapter;
-    private MediaPreviewAdapter mediaPreviewAdapter;
     private String lastMessageUuid = null;
     private Conversation conversation;
     private FragmentConversationBinding binding;
@@ -1113,7 +1113,7 @@ public class ConversationFragment extends XmppFragment
         }
     }
 
-    private void handlePositiveActivityResult(int requestCode, final Intent data) {
+    private void handlePositiveActivityResult(final int requestCode, final Intent data) {
         switch (requestCode) {
             case REQUEST_TRUST_KEYS_TEXT:
                 sendMessage();
@@ -1129,7 +1129,8 @@ public class ConversationFragment extends XmppFragment
                 break;
             case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
                 final List<Attachment> imageUris =
-                        Attachment.extractAttachments(getActivity(), data, Attachment.Type.IMAGE);
+                        Attachment.extractAttachments(
+                                requireContext(), data, Attachment.Type.IMAGE);
                 mediaPreviewAdapter.addMediaPreviews(imageUris);
                 toggleInputMethod();
                 break;
@@ -1137,7 +1138,7 @@ public class ConversationFragment extends XmppFragment
                 final Uri takePhotoUri = pendingTakePhotoUri.pop();
                 if (takePhotoUri != null) {
                     mediaPreviewAdapter.addMediaPreviews(
-                            Attachment.of(getActivity(), takePhotoUri, Attachment.Type.IMAGE));
+                            Attachment.of(requireContext(), takePhotoUri, Attachment.Type.IMAGE));
                     toggleInputMethod();
                 } else {
                     Log.d(Config.LOGTAG, "lost take photo uri. unable to to attach");
@@ -1151,7 +1152,7 @@ public class ConversationFragment extends XmppFragment
                                 ? Attachment.Type.RECORDING
                                 : Attachment.Type.FILE;
                 final List<Attachment> fileUris =
-                        Attachment.extractAttachments(getActivity(), data, type);
+                        Attachment.extractAttachments(requireContext(), data, type);
                 mediaPreviewAdapter.addMediaPreviews(fileUris);
                 toggleInputMethod();
                 break;
@@ -1306,7 +1307,6 @@ public class ConversationFragment extends XmppFragment
         binding.scrollToBottomButton.setOnClickListener(this.mScrollButtonListener);
         binding.messagesView.setOnScrollListener(mOnScrollListener);
         binding.messagesView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
-        mediaPreviewAdapter = new MediaPreviewAdapter(this);
         binding.mediaPreview.setAdapter(mediaPreviewAdapter);
         messageListAdapter = new MessageAdapter((XmppActivity) getActivity(), this.messageList);
         messageListAdapter.setOnContactPictureClicked(this);
@@ -2000,7 +2000,7 @@ public class ConversationFragment extends XmppFragment
         }
     }
 
-    public void startDownloadable(Message message) {
+    public void startDownloadable(final Message message) {
         if (!hasPermissions(REQUEST_START_DOWNLOAD, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             this.mPendingDownloadableMessage = message;
             return;
@@ -2519,10 +2519,7 @@ public class ConversationFragment extends XmppFragment
             if (scrollState != null) {
                 outState.putParcelable(STATE_SCROLL_POSITION, scrollState);
             }
-            final ArrayList<Attachment> attachments =
-                    mediaPreviewAdapter == null
-                            ? new ArrayList<>()
-                            : mediaPreviewAdapter.getAttachments();
+            final ArrayList<Attachment> attachments = mediaPreviewAdapter.getAttachments();
             if (!attachments.isEmpty()) {
                 outState.putParcelableArrayList(STATE_MEDIA_PREVIEWS, attachments);
             }
