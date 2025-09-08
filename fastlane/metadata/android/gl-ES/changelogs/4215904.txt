@@ -1,0 +1,2 @@
+* Mensaxe de erro máis clara para servidores incompatibles con TLS 1.3
+* Arranxo de incidencias ao rotar o dispositivo
