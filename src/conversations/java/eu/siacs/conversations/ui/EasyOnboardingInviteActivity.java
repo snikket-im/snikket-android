@@ -7,8 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -49,23 +47,6 @@ public class EasyOnboardingInviteActivity extends XmppActivity {
             }
         }
         this.showLoading();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.easy_onboarding_invite, menu);
-        final MenuItem share = menu.findItem(R.id.action_share);
-        share.setVisible(easyOnboardingInvite != null);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (menuItem.getItemId() == R.id.action_share) {
-            share();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(menuItem);
-        }
     }
 
     private void share() {

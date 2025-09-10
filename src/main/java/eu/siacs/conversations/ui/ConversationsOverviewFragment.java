@@ -72,7 +72,7 @@ import eu.siacs.conversations.ui.util.PendingActionHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ScrollState;
 import eu.siacs.conversations.utils.AccountUtils;
-import eu.siacs.conversations.utils.EasyOnboardingInvite;
+import eu.siacs.conversations.xmpp.manager.EasyOnboardingManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -161,7 +161,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
                     AccountUtils.showHideMenuItems(menu);
                     final MenuItem easyOnboardInvite = menu.findItem(R.id.action_easy_invite);
                     easyOnboardInvite.setVisible(
-                            EasyOnboardingInvite.anyHasSupport(
+                            EasyOnboardingManager.anyHasSupport(
                                     requireXmppActivity().xmppConnectionService));
                     final MenuItem privacyPolicyMenuItem =
                             menu.findItem(R.id.action_privacy_policy);
@@ -385,27 +385,23 @@ public class ConversationsOverviewFragment extends XmppFragment {
     }
 
     private void selectAccountToStartEasyInvite() {
-        final List<Account> accounts =
-                EasyOnboardingInvite.getSupportingAccounts(
-                        requireXmppActivity().xmppConnectionService);
+        final var accounts =
+                EasyOnboardingManager.getAccounts(requireXmppActivity().xmppConnectionService);
         if (accounts.isEmpty()) {
             // This can technically happen if opening the menu item races with accounts reconnecting
             // or something
             Toast.makeText(
-                            getActivity(),
+                            requireContext(),
                             R.string.no_active_accounts_support_this,
                             Toast.LENGTH_LONG)
                     .show();
         } else if (accounts.size() == 1) {
             openEasyInviteScreen(accounts.get(0));
         } else {
-            final AtomicReference<Account> selectedAccount = new AtomicReference<>(accounts.get(0));
-            final MaterialAlertDialogBuilder alertDialogBuilder =
-                    new MaterialAlertDialogBuilder(requireContext());
+            final var selectedAccount = new AtomicReference<>(accounts.get(0));
+            final var alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
             alertDialogBuilder.setTitle(R.string.choose_account);
-            final String[] asStrings =
-                    Collections2.transform(accounts, a -> a.getJid().asBareJid().toString())
-                            .toArray(new String[0]);
+            final var asStrings = AccountUtils.asStrings(accounts);
             alertDialogBuilder.setSingleChoiceItems(
                     asStrings, 0, (dialog, which) -> selectedAccount.set(accounts.get(which)));
             alertDialogBuilder.setNegativeButton(R.string.cancel, null);

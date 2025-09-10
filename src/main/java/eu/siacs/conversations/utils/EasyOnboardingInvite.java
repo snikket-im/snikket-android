@@ -2,17 +2,9 @@ package eu.siacs.conversations.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.NonNull;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.services.QuickConversationsService;
-import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.manager.DiscoManager;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 import okhttp3.HttpUrl;
 
 public class EasyOnboardingInvite implements Parcelable {
@@ -28,17 +20,26 @@ public class EasyOnboardingInvite implements Parcelable {
         this.landingUrl = Strings.isNullOrEmpty(landingUrl) ? null : HttpUrl.parse(landingUrl);
     }
 
-    public EasyOnboardingInvite(final Jid domain, final String uri, final HttpUrl landingUrl) {
+    public EasyOnboardingInvite(@NonNull final Jid domain, @NonNull final String uri) {
+        this.domain = domain;
+        this.uri = uri;
+        this.landingUrl = null;
+    }
+
+    public EasyOnboardingInvite(
+            @NonNull final Jid domain,
+            @NonNull final String uri,
+            @NonNull final HttpUrl landingUrl) {
         this.domain = domain;
         this.uri = uri;
         this.landingUrl = landingUrl;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeString(domain.toString());
         dest.writeString(uri);
-        dest.writeString(landingUrl.toString());
+        dest.writeString(landingUrl == null ? null : landingUrl.toString());
     }
 
     @Override
@@ -59,34 +60,11 @@ public class EasyOnboardingInvite implements Parcelable {
                 }
             };
 
-    public static boolean anyHasSupport(final XmppConnectionService service) {
-        if (QuickConversationsService.isQuicksy()) {
-            return false;
-        }
-        return !getSupportingAccounts(service).isEmpty();
-    }
-
-    public static List<Account> getSupportingAccounts(final XmppConnectionService service) {
-        final ImmutableList.Builder<Account> supportingAccountsBuilder =
-                new ImmutableList.Builder<>();
-        final List<Account> accounts =
-                service == null ? Collections.emptyList() : service.getAccounts();
-        for (final var account : accounts) {
-            final var connection = account.getXmppConnection();
-            final var discoManager = connection.getManager(DiscoManager.class);
-            if (Objects.nonNull(
-                    discoManager.getAddressForCommand(Namespace.EASY_ONBOARDING_INVITE))) {
-                supportingAccountsBuilder.add(account);
-            }
-        }
-        return supportingAccountsBuilder.build();
-    }
-
     public String getDomain() {
         return domain.toString();
     }
 
     public String getShareableLink() {
-        return this.landingUrl.toString();
+        return this.landingUrl != null ? this.landingUrl.toString() : this.uri;
     }
 }
