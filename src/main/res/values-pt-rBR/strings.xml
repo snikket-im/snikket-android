@@ -142,9 +142,9 @@
     <string name="error_security_exception">O app que você usou para compartilhar esse arquivo não forneceu permissões suficientes.</string>
     <string name="account_status_unknown">Desconhecido</string>
     <string name="account_status_disabled">Desativada temporariamente</string>
-    <string name="account_status_online">Na linha</string>
+    <string name="account_status_online">Conectada</string>
     <string name="account_status_connecting">Conectando\u2026</string>
-    <string name="account_status_offline">Fora da linha</string>
+    <string name="account_status_offline">Não conectada</string>
     <string name="account_status_unauthorized">Não autorizado</string>
     <string name="account_status_not_found">Servidor não encontrado</string>
     <string name="account_status_no_internet">Sem conectividade</string>
@@ -357,7 +357,7 @@
     <string name="disable_all_accounts">Desativar todas as contas</string>
     <string name="perform_action_with">Realizar a ação com</string>
     <string name="no_affiliation">Sem afiliação</string>
-    <string name="no_role">Fora da linha</string>
+    <string name="no_role">Off-line</string>
     <string name="outcast">Excluído</string>
     <string name="member">Membro</string>
     <string name="advanced_mode">Modo avançado</string>
@@ -404,7 +404,7 @@
     <string name="avatar_has_been_published">O avatar foi publicado!</string>
     <string name="sending_x_file">Enviando %s</string>
     <string name="offering_x_file">Oferecendo %s</string>
-    <string name="hide_offline">Ocultar pessoas fora da linha</string>
+    <string name="hide_offline">Ocultar pessoas off-line</string>
     <string name="contact_is_typing">%s está digitando…</string>
     <string name="contact_has_stopped_typing">%s parou de digitar</string>
     <string name="contacts_are_typing">%s estão digitando…</string>
