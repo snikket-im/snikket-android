@@ -559,7 +559,7 @@
     <string name="remote_server_not_found">Віддалений сервер не знайдено</string>
     <string name="remote_server_timeout">Затримка відповіді сервера</string>
     <string name="unable_to_update_account">Не вдалося оновити обліковий запис</string>
-    <string name="report_jid_as_spammer">Надіслати скаргу про те, що контакт із цим ID розсилає спам.</string>
+    <string name="report_jid_as_spammer">Надіслати скаргу про спам від цієї адреси XMPP.</string>
     <string name="pref_delete_omemo_identities">Вилучити ідентифікаційні дані OMEMO</string>
     <string name="pref_delete_omemo_identities_summary">Створити наново Ваші ключі OMEMO. Всі Ваші контакти будуть змушені підтвердити Вас знову. Використовуйте це, лише якщо немає іншого вибору.</string>
     <string name="delete_selected_keys">Вилучити вибрані ключі</string>
@@ -804,12 +804,12 @@
     <string name="choose_account">Виберіть обліковий запис</string>
     <string name="restore_backup">Відновити з резервної копії</string>
     <string name="restore">Відновити</string>
-    <string name="enter_password_to_restore">Введіть пароль до облікового запису %s, щоб відновити з резервної копії.</string>
+    <string name="enter_password_to_restore">Уведіть пароль до облікового запису %s, щоб відновити з резервної копії.</string>
     <string name="restore_warning">Не відновлюйте ключі OMEMO з метою клонування застосунку (запускати одночасно ще один примірник). Відновлення ключів OMEMO призначене виключно для перенесення даних або на випадок втрати оригінального пристрою.</string>
     <string name="unable_to_restore_backup">Неможливо відновити з резервної копії.</string>
     <string name="unable_to_decrypt_backup">Не вдалося розшифрувати резервну копію. Чи правильний пароль?</string>
     <string name="backup_channel_name">Створити або відновити резервну копію</string>
-    <string name="enter_jabber_id">Введіть адресу XMPP</string>
+    <string name="enter_jabber_id">Уведіть адресу XMPP</string>
     <string name="create_group_chat">Створити групу</string>
     <string name="join_public_channel">Приєднатися до публічного каналу</string>
     <string name="create_private_group_chat">Створити приватну групу</string>
@@ -818,7 +818,7 @@
     <string name="xmpp_address">Адреса XMPP</string>
     <string name="please_enter_name">Будь ласка, дайте назву цьому каналу</string>
     <string name="please_enter_xmpp_address">Будь ласка, надайте адресу XMPP</string>
-    <string name="this_is_an_xmpp_address">Це адреса XMPP. Будь ласка, додайте назву.</string>
+    <string name="this_is_an_xmpp_address">Це адреса XMPP. Будь ласка, надайте назву.</string>
     <string name="creating_channel">Створення публічного каналу…</string>
     <string name="channel_already_exists">Цей канал уже існує</string>
     <string name="joined_an_existing_channel">Ви приєдналися до наявного каналу</string>
