@@ -783,7 +783,7 @@
     <string name="temporarily_unavailable">Тимчасово недоступний. Будь ласка, спробуйте знову пізніше.</string>
     <string name="no_network_connection">Відсутнє з\'єднання з мережею.</string>
     <string name="try_again_in_x">Будь ласка, спробуйте ще раз через %s</string>
-    <string name="rate_limited">Ви обмежені за рейтингом</string>
+    <string name="rate_limited">У вас обмеження частоти звернень</string>
     <string name="too_many_attempts">Забагато спроб</string>
     <string name="the_app_is_out_of_date">Ви користуєтеся застарілою версією застосунку.</string>
     <string name="update">Оновити</string>
