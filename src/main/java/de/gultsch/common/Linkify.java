@@ -53,6 +53,7 @@ public class Linkify {
             case "http", "https" -> Patterns.URI_HTTP.matcher(match).matches();
             case "geo" -> Patterns.URI_GEO.matcher(match).matches();
             case "xmpp" -> new XmppUri(Uri.parse(match)).isValidJid();
+            case "taler" -> Patterns.URI_TALER.matcher(match).matches();
             case "web+ap" -> {
                 if (Patterns.URI_WEB_AP.matcher(match).matches()) {
                     final var webAp = new MiniUri(match);

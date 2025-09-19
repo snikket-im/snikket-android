@@ -6,7 +6,7 @@ public class Patterns {
 
     public static final Pattern URI_GENERIC =
             Pattern.compile(
-                    "(?<=^|\\p{Z}|\\s|\\p{P}|<)(tel|xmpp|http|https|geo|mailto|web\\+ap|gemini|magnet):[\\p{L}\\p{M}\\p{N}\\-._~:/?#\\[\\]@!$&'*+,;=%]+(\\([\\p{L}\\p{M}\\p{N}\\-._~:/?#\\[\\]@!$&'*+,;=%]+\\))*[\\p{L}\\p{M}\\p{N}\\-._~:/?#\\[\\]@!$&'*+,;=%]*");
+                    "(?<=^|\\p{Z}|\\s|\\p{P}|<)(tel|xmpp|http|https|geo|mailto|web\\+ap|gemini|magnet|taler):[\\p{L}\\p{M}\\p{N}\\-._~:/?#\\[\\]@!$&'*+,;=%]+(\\([\\p{L}\\p{M}\\p{N}\\-._~:/?#\\[\\]@!$&'*+,;=%]+\\))*[\\p{L}\\p{M}\\p{N}\\-._~:/?#\\[\\]@!$&'*+,;=%]*");
 
     public static final Pattern URI_TEL =
             Pattern.compile("^tel:\\+?(\\d{1,4}[-./()\\s]?)*\\d{1,4}(;.*)?$");
@@ -35,6 +35,8 @@ public class Patterns {
     public static final Pattern IPV6_HEX_COMPRESSED =
             Pattern.compile(
                     "\\A((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)\\z");
+
+    public static final Pattern URI_TALER = Pattern.compile("taler://\\S+");
 
     private Patterns() {
         throw new AssertionError("Do not instantiate me");
