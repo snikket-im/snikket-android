@@ -133,6 +133,7 @@ import java.security.PrivateKey;
 import java.security.cert.CertPathValidatorException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -540,6 +541,13 @@ public class XmppConnection implements Runnable {
         } catch (final SecurityException e) {
             this.changeState(Account.State.MISSING_INTERNET_PERMISSION);
         } catch (final StateChangingException e) {
+            if (Arrays.asList(Account.State.INCOMPATIBLE_SERVER, Account.State.INCOMPATIBLE_CLIENT)
+                    .contains(e.state)) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid() + ": incompatible implementations",
+                        e);
+            }
             this.changeState(e.state);
         } catch (final UnknownHostException
                 | ConnectException
@@ -660,7 +668,9 @@ public class XmppConnection implements Runnable {
                 processStreamFeatures(nextTag);
             } else if (nextTag.isStart("proceed", Namespace.TLS)) {
                 if (this.socket instanceof SSLSocket) {
-                    throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+                    throw new StateChangingException(
+                            Account.State.INCOMPATIBLE_SERVER,
+                            "received 'proceed' but socket was not SSL");
                 }
                 switchOverToTls(nextTag);
             } else if (nextTag.isStart("failure", Namespace.TLS)) {
@@ -671,7 +681,8 @@ public class XmppConnection implements Runnable {
                     && nextTag.isStart("iq", Namespace.JABBER_CLIENT)) {
                 processIq(nextTag);
             } else if (this.loginInfo == null) {
-                throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+                throw new StateChangingException(
+                        Account.State.INCOMPATIBLE_SERVER, "login has not been started");
             } else if (nextTag.isStart("success", Namespace.SASL)) {
                 processSuccess(tagReader.readElement(nextTag, Success.class));
                 break;
@@ -689,12 +700,15 @@ public class XmppConnection implements Runnable {
                 processFailure(failure);
             } else if (nextTag.isStart("continue", Namespace.SASL_2)) {
                 // two step sasl2 - we don’t support this yet
-                throw new StateChangingException(Account.State.INCOMPATIBLE_CLIENT);
+                throw new StateChangingException(
+                        Account.State.INCOMPATIBLE_CLIENT, "received 'continue'");
             } else if (nextTag.isStart("challenge")) {
                 final Element challenge = tagReader.readElement(nextTag);
                 processChallenge(challenge);
             } else if (!LoginInfo.isSuccess(this.loginInfo)) {
-                throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+                throw new StateChangingException(
+                        Account.State.INCOMPATIBLE_SERVER,
+                        "premature stanzas. login not yet successful");
             } else if (this.streamId != null
                     && nextTag.isStart("resumed", Namespace.STREAM_MANAGEMENT)) {
                 final Resumed resumed = tagReader.readElement(nextTag, Resumed.class);
@@ -705,12 +719,9 @@ public class XmppConnection implements Runnable {
             } else if (nextTag.isStart("iq", Namespace.JABBER_CLIENT)) {
                 processIq(nextTag);
             } else if (!isBound) {
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid()
-                                + ": server sent unexpected"
-                                + nextTag.identifier());
-                throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+                throw new StateChangingException(
+                        Account.State.INCOMPATIBLE_SERVER,
+                        "Received unexpected " + nextTag.identifier());
             } else if (nextTag.isStart("message", Namespace.JABBER_CLIENT)) {
                 processMessage(nextTag);
             } else if (nextTag.isStart("presence", Namespace.JABBER_CLIENT)) {
@@ -773,12 +784,9 @@ public class XmppConnection implements Runnable {
                     mXmppConnectionService.updateConversationUi();
                 }
             } else {
-                Log.e(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid()
-                                + ": Encountered unknown stream element"
-                                + nextTag.identifier());
-                throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+                throw new StateChangingException(
+                        Account.State.INCOMPATIBLE_SERVER,
+                        "encountered unknown stream element " + nextTag.identifier());
             }
             nextTag = tagReader.readTag();
         }
@@ -792,7 +800,8 @@ public class XmppConnection implements Runnable {
         try {
             version = SaslMechanism.Version.of(challenge);
         } catch (final IllegalArgumentException e) {
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            throw new StateChangingException(
+                    Account.State.INCOMPATIBLE_SERVER, "login challange of unknown type");
         }
         final StreamElement response;
         if (version == SaslMechanism.Version.SASL) {
@@ -804,7 +813,9 @@ public class XmppConnection implements Runnable {
         }
         final LoginInfo currentLoginInfo = this.loginInfo;
         if (currentLoginInfo == null || LoginInfo.isSuccess(currentLoginInfo)) {
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            throw new StateChangingException(
+                    Account.State.INCOMPATIBLE_SERVER,
+                    "server sent challenge even though login was not started or already complete");
         }
         try {
             response.setContent(
@@ -825,7 +836,9 @@ public class XmppConnection implements Runnable {
         if (currentLoginInfo == null
                 || LoginInfo.isSuccess(currentLoginInfo)
                 || currentSaslMechanism == null) {
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            throw new StateChangingException(
+                    Account.State.INCOMPATIBLE_SERVER,
+                    "received login success even though login was not started or already complete");
         }
         final SaslMechanism.Version version;
         final String challenge;
@@ -836,7 +849,9 @@ public class XmppConnection implements Runnable {
             challenge = success.findChildContent("additional-data");
             version = SaslMechanism.Version.SASL_2;
         } else {
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            throw new StateChangingException(
+                    Account.State.INCOMPATIBLE_SERVER,
+                    "received login success in unknown namespace");
         }
         try {
             currentLoginInfo.success(challenge, sslSocketOrNull(socket));
@@ -871,11 +886,9 @@ public class XmppConnection implements Runnable {
             final Element tokenWrapper = success.findChild("token", Namespace.FAST);
             final String token = tokenWrapper == null ? null : tokenWrapper.getAttribute("token");
             if (bound != null && resumed != null) {
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid()
-                                + ": server sent bound and resumed in SASL2 success");
-                throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+                throw new StateChangingException(
+                        Account.State.INCOMPATIBLE_SERVER,
+                        "server sent bound and resumed in SASL2 success");
             }
             if (resumed != null && streamId != null) {
                 if (this.boundStreamFeatures != null) {
@@ -1019,11 +1032,9 @@ public class XmppConnection implements Runnable {
                             + XmlHelper.printElementNames(this.streamFeatures));
         } else {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received " + tag);
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid()
-                            + ": server did not send stream features after SASL2 success");
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            throw new StateChangingException(
+                    Account.State.INCOMPATIBLE_SERVER,
+                    "server did not send stream features after SASL2 success");
         }
     }
 
@@ -1037,7 +1048,9 @@ public class XmppConnection implements Runnable {
 
         final LoginInfo currentLoginInfo = this.loginInfo;
         if (currentLoginInfo == null || LoginInfo.isSuccess(currentLoginInfo)) {
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            throw new StateChangingException(
+                    Account.State.INCOMPATIBLE_SERVER,
+                    "received login failure even though login was not started or already complete");
         }
 
         Log.d(Config.LOGTAG, failure.toString());
@@ -1057,7 +1070,9 @@ public class XmppConnection implements Runnable {
             if (account.setOption(Account.OPTION_QUICKSTART_AVAILABLE, false)) {
                 mXmppConnectionService.databaseBackend.updateAccount(account);
             }
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            throw new StateChangingException(
+                    Account.State.INCOMPATIBLE_SERVER,
+                    "server responded with invalid or too weak mechanism");
         } else if (errorCondition instanceof SaslError.TemporaryAuthFailure) {
             throw new StateChangingException(Account.State.TEMPORARY_AUTH_FAILURE);
         } else if (errorCondition instanceof SaslError.AccountDisabled) {
@@ -1136,13 +1151,10 @@ public class XmppConnection implements Runnable {
         final var pendingResumeId = this.pendingResumeId.pop();
         final var prevId = resumed.getPrevId();
         if (prevId == null || !prevId.equals(pendingResumeId)) {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid()
-                            + ": server tried resume with unknown id "
-                            + prevId);
             resetStreamId();
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            throw new StateChangingException(
+                    Account.State.INCOMPATIBLE_SERVER,
+                    "server tried resume with unknown id " + prevId);
         }
         this.inSmacksSession = true;
         this.isBound = true;
@@ -1154,7 +1166,8 @@ public class XmppConnection implements Runnable {
             serverCount = h.get();
         } else {
             resetStreamId();
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            throw new StateChangingException(
+                    Account.State.INCOMPATIBLE_SERVER, "no 'h' count on resumed");
         }
         final ArrayList<Stanza> failedStanzas = new ArrayList<>();
         final boolean acknowledgedMessages;
@@ -1346,7 +1359,8 @@ public class XmppConnection implements Runnable {
             if (isBound && LoginInfo.isSuccess(this.loginInfo)) {
                 return this.unregisteredIqListener;
             } else {
-                throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+                throw new StateChangingException(
+                        Account.State.INCOMPATIBLE_SERVER, "out of order IQ request");
             }
         } else {
             synchronized (this.packetCallbacks) {
@@ -1521,7 +1535,8 @@ public class XmppConnection implements Runnable {
                     account.getJid().asBareJid()
                             + ": STARTTLS not available "
                             + XmlHelper.printElementNames(streamFeatures));
-            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+            throw new StateChangingException(
+                    Account.State.INCOMPATIBLE_SERVER, "starttls not available");
         }
     }
 
@@ -2914,7 +2929,12 @@ public class XmppConnection implements Runnable {
     private static class StateChangingException extends IOException {
         private final Account.State state;
 
-        public StateChangingException(Account.State state) {
+        public StateChangingException(final Account.State state) {
+            this.state = state;
+        }
+
+        public StateChangingException(final Account.State state, final String message) {
+            super(message);
             this.state = state;
         }
     }
