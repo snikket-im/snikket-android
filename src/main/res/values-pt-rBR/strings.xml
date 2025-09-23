@@ -528,7 +528,7 @@
     <string name="pref_manually_change_presence_summary">Configure sua disponibilidade ao editar a sua mensagem de estado.</string>
     <string name="status_message">Mensagem de estado</string>
     <string name="presence_chat">Livre para conversar</string>
-    <string name="presence_online">Na linha</string>
+    <string name="presence_online">On-line</string>
     <string name="presence_away">Afastado</string>
     <string name="presence_xa">Não disponível</string>
     <string name="presence_dnd">Ocupado</string>
@@ -646,7 +646,7 @@
     <string name="received_message_from_stranger">Foi recebida uma mensagem de um desconhecido</string>
     <string name="block_stranger">Bloquear desconhecido</string>
     <string name="block_entire_domain">Bloquear domínio inteiro</string>
-    <string name="online_right_now">na linha agora</string>
+    <string name="online_right_now">on-line agora</string>
     <string name="retry_decryption">Tentar descriptografar novamente</string>
     <string name="session_failure">Falha na sessão</string>
     <string name="sasl_downgrade">O mecanismo SASL foi desatualizado</string>
