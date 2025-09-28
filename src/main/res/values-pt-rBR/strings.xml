@@ -916,7 +916,7 @@
         <item quantity="other">%d chamadas perdidas</item>
     </plurals>
     <plurals name="n_missed_calls_from_m_contacts">
-        <item quantity="one">%1$d chamadas perdidas de %2$d contato</item>
+        <item quantity="one">%1$d chamada perdida de %2$d contato</item>
         <item quantity="many">%1$d de chamadas perdidas de %2$d contatos</item>
         <item quantity="other">%1$d chamadas perdidas de %2$d contatos</item>
     </plurals>
