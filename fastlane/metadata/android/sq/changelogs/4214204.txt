@@ -1,0 +1,2 @@
+* Mbulim për “Gjendje Mosfunksionimi Shërbimi”
+* Ndreqje të vockla sigurie për analizim lëndësh, occupant-ids dhe stanza-id të shumta
