@@ -1100,4 +1100,8 @@
     <string name="show_in_contacts">連絡先内で表示</string>
     <string name="account_status_service_outage_known">機能停止（既知の問題）</string>
     <string name="sos_scheduled_return">%s に復帰するように予定されています</string>
+    <string name="account_status_tls_error_protocol">安全ではない接続（TLS 1.3 非対応）</string>
+    <string name="account_status_tls_error_untrusted">信頼できない証明書</string>
+    <string name="account_status_channel_binding">チャネルバインディング非対応</string>
+    <string name="delete_message">メッセージ削除</string>
 </resources>
