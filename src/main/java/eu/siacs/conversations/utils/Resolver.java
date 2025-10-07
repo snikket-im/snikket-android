@@ -31,12 +31,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import org.minidns.dnsmessage.Question;
 import org.minidns.dnsname.DnsName;
 import org.minidns.dnsname.InvalidDnsNameException;
-import org.minidns.dnsqueryresult.DnsQueryResult;
 import org.minidns.record.A;
 import org.minidns.record.AAAA;
 import org.minidns.record.CNAME;
@@ -70,8 +67,6 @@ public class Resolver {
                     return left.priority - right.priority;
                 }
             };
-
-    private static final ExecutorService DNS_QUERY_EXECUTOR = Executors.newFixedThreadPool(12);
 
     public static final int XMPP_PORT_STARTTLS = 5222;
     private static final int XMPP_PORT_DIRECT_TLS = 5223;
@@ -306,15 +301,14 @@ public class Resolver {
 
     private static <D extends Data> ListenableFuture<ResolverResult<D>> resolveAsFuture(
             final DnsName dnsName, final Class<D> type) {
-        return Futures.submit(
-                () -> {
-                    final Question question = new Question(dnsName, Record.TYPE.getType(type));
-                    final AndroidDNSClient androidDNSClient =
-                            new AndroidDNSClient(Conversations.getContext());
-                    final DnsQueryResult dnsQueryResult = androidDNSClient.query(question);
-                    return new ResolverResult<>(question, dnsQueryResult, null);
-                },
-                DNS_QUERY_EXECUTOR);
+
+        final Question question = new Question(dnsName, Record.TYPE.getType(type));
+        final AndroidDNSClient androidDNSClient = new AndroidDNSClient(Conversations.getContext());
+        final var future = androidDNSClient.queryAsFuture(question);
+        return Futures.transform(
+                future,
+                dnsQueryResult -> new ResolverResult<>(question, dnsQueryResult, null),
+                MoreExecutors.directExecutor());
     }
 
     public static class Result {

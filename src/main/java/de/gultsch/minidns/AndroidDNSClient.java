@@ -8,18 +8,24 @@ import android.os.Build;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.collection.LruCache;
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import eu.siacs.conversations.Config;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import org.minidns.AbstractDnsClient;
 import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.dnsmessage.Question;
 import org.minidns.dnsqueryresult.DnsQueryResult;
 import org.minidns.dnsqueryresult.StandardDnsQueryResult;
 import org.minidns.record.Data;
@@ -28,6 +34,10 @@ import org.minidns.record.Record;
 public class AndroidDNSClient extends AbstractDnsClient {
 
     private static final long DNS_MAX_TTL = 86_400L;
+
+    private static final ExecutorService DNS_QUERY_EXECUTOR = Executors.newFixedThreadPool(12);
+    private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE =
+            Executors.newSingleThreadScheduledExecutor();
 
     private static final LruCache<QuestionServerTuple, DnsMessage> QUERY_CACHE =
             new LruCache<>(1024);
@@ -92,6 +102,28 @@ public class AndroidDNSClient extends AbstractDnsClient {
                     dnsServer.inetAddress, dnsServer.port, result.queryMethod, question, response);
         }
         return null;
+    }
+
+    public ListenableFuture<DnsQueryResult> queryAsFuture(final Question q) {
+        final DnsMessage.Builder query = buildMessage(q);
+        return queryAsFuture(query);
+    }
+
+    protected ListenableFuture<DnsQueryResult> queryAsFuture(
+            final DnsMessage.Builder queryBuilder) {
+        final var rawFuture = Futures.submit(() -> query(queryBuilder), DNS_QUERY_EXECUTOR);
+        return Futures.withTimeout(
+                rawFuture,
+                Math.round(DNSSocket.QUERY_TIMEOUT * 1.2f),
+                TimeUnit.MILLISECONDS,
+                SCHEDULED_EXECUTOR_SERVICE);
+    }
+
+    final DnsMessage.Builder buildMessage(final Question question) {
+        final DnsMessage.Builder message = DnsMessage.builder();
+        message.setQuestion(question);
+        message.setId(random.nextInt());
+        return newQuestion(message);
     }
 
     public boolean isAskForDnssec() {
@@ -201,27 +233,10 @@ public class AndroidDNSClient extends AbstractDnsClient {
         return expiresAt(dnsMessage) - System.currentTimeMillis();
     }
 
-    private static class QuestionServerTuple {
-        private final DNSServer dnsServer;
-        private final DnsMessage question;
-
+    private record QuestionServerTuple(DNSServer dnsServer, DnsMessage question) {
         private QuestionServerTuple(final DNSServer dnsServer, final DnsMessage question) {
             this.dnsServer = dnsServer;
             this.question = question.asNormalizedVersion();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            QuestionServerTuple that = (QuestionServerTuple) o;
-            return Objects.equal(dnsServer, that.dnsServer)
-                    && Objects.equal(question, that.question);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(dnsServer, question);
         }
     }
 
