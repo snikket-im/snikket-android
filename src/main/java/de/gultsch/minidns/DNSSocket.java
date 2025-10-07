@@ -1,18 +1,12 @@
 package de.gultsch.minidns;
 
 import android.util.Log;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
-
-
 import eu.siacs.conversations.Config;
-
-import org.conscrypt.OkHostnameVerifier;
-import org.minidns.dnsmessage.DnsMessage;
-
 import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -30,11 +24,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import org.conscrypt.OkHostnameVerifier;
+import org.minidns.dnsmessage.DnsMessage;
 
 final class DNSSocket implements Closeable {
 
@@ -130,7 +125,8 @@ final class DNSSocket implements Closeable {
             sslSocket.startHandshake();
             final SSLSession session = sslSocket.getSession();
             final Certificate[] peerCertificates = session.getPeerCertificates();
-            if (peerCertificates.length == 0 || !(peerCertificates[0] instanceof X509Certificate certificate)) {
+            if (peerCertificates.length == 0
+                    || !(peerCertificates[0] instanceof X509Certificate certificate)) {
                 throw new IOException("Peer did not provide X509 certificates");
             }
             if (!OkHostnameVerifier.strictInstance().verify(dnsServer.hostname, certificate)) {
@@ -155,20 +151,25 @@ final class DNSSocket implements Closeable {
         }
     }
 
-    public ListenableFuture<DnsMessage> queryAsync(final DnsMessage query)
-            throws InterruptedException, IOException {
-        final SettableFuture<DnsMessage> responseFuture = SettableFuture.create();
-        synchronized (this.inFlightQueries) {
-            this.inFlightQueries.put(query.id, responseFuture);
-        }
-        this.semaphore.acquire();
+    public ListenableFuture<DnsMessage> queryAsync(final DnsMessage query) {
         try {
+            this.semaphore.acquire();
+        } catch (InterruptedException e) {
+            return Futures.immediateFailedFuture(e);
+        }
+        try {
+            final SettableFuture<DnsMessage> responseFuture = SettableFuture.create();
+            synchronized (this.inFlightQueries) {
+                this.inFlightQueries.put(query.id, responseFuture);
+            }
             query.writeTo(this.dataOutputStream);
             this.dataOutputStream.flush();
+            return responseFuture;
+        } catch (final IOException e) {
+            return Futures.immediateFailedFuture(e);
         } finally {
             this.semaphore.release();
         }
-        return responseFuture;
     }
 
     private DnsMessage readDNSMessage() throws IOException {

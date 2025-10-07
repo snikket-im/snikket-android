@@ -34,6 +34,7 @@ public class ResolverResult<D extends Data> {
             final Question question,
             final DnsQueryResult result,
             final Set<DnssecUnverifiedReason> unverifiedReasons) {
+
         this.result = result;
 
         DnsMessage answer = result.response;
