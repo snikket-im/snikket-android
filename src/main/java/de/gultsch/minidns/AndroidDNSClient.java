@@ -11,6 +11,7 @@ import androidx.collection.LruCache;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
+import com.google.common.net.InetAddresses;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -91,9 +92,10 @@ public class AndroidDNSClient extends AbstractDnsClient {
         final var dnsServers = getDNSServers();
         final DnsMessage question = newQuestion(queryBuilder).build();
         final var rawFuture = queryAsFuture(question, new LinkedList<>(dnsServers));
+        // allow for enough time to hit 2 servers over UDP and TCP one after another
         return Futures.withTimeout(
                 rawFuture,
-                Math.round(DNSSocket.QUERY_TIMEOUT * 1.2f),
+                Math.round(DNSSocket.QUERY_TIMEOUT * 4.2f),
                 TimeUnit.MILLISECONDS,
                 SCHEDULED_EXECUTOR_SERVICE);
     }
@@ -141,7 +143,6 @@ public class AndroidDNSClient extends AbstractDnsClient {
                         transformedFuture,
                         Throwable.class,
                         t -> {
-                            Log.d(Config.LOGTAG, "errors: ", t);
                             if (dnsServers.isEmpty()) {
                                 return Futures.immediateFailedFuture(t);
                             }

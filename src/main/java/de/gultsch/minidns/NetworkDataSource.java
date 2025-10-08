@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -73,7 +72,6 @@ public class NetworkDataSource {
 
     public ListenableFuture<StandardDnsQueryResult> query(
             final DnsMessage message, final DNSServer dnsServer) {
-        Log.d(Config.LOGTAG, "using " + dnsServer);
         return query(message, dnsServer, new LinkedList<>(dnsServer.transports));
     }
 
@@ -130,6 +128,7 @@ public class NetworkDataSource {
     private ListenableFuture<DnsMessage> queryWithUniqueTransport(
             final DnsMessage message, final DNSServer dnsServer) {
         final Transport transport = dnsServer.uniqueTransport();
+        Log.d(Config.LOGTAG, "using " + dnsServer);
         return switch (transport) {
             case UDP -> queryUdpFuture(message, dnsServer.inetAddress, dnsServer.port);
             case TCP, TLS -> queryDnsSocket(message, dnsServer);
@@ -168,23 +167,27 @@ public class NetworkDataSource {
             final DnsMessage message, final DNSServer dnsServer) {
         final DNSSocket cachedDnsSocket = socketCache.getIfPresent(dnsServer);
         if (cachedDnsSocket == null) {
-            final DNSSocket dnsSocket;
-            try {
-                dnsSocket = socketCache.get(dnsServer);
-            } catch (final ExecutionException e) {
-                return Futures.immediateFailedFuture(e);
-            }
-            return dnsSocket.queryAsync(message);
+            return Futures.transformAsync(
+                    getDnsSocket(dnsServer),
+                    socket -> socket.queryAsync(message),
+                    MoreExecutors.directExecutor());
         }
         final var futureOnCached = cachedDnsSocket.queryAsync(message);
         return Futures.catchingAsync(
                 futureOnCached,
                 IOException.class,
                 ex -> {
-                    cachedDnsSocket.queryAsync(message);
-                    return socketCache.get(dnsServer).queryAsync(message);
+                    socketCache.invalidate(dnsServer);
+                    return Futures.transformAsync(
+                            getDnsSocket(dnsServer),
+                            socket -> socket.queryAsync(message),
+                            MoreExecutors.directExecutor());
                 },
                 MoreExecutors.directExecutor());
+    }
+
+    private ListenableFuture<DNSSocket> getDnsSocket(final DNSServer dnsServer) {
+        return Futures.submit(() -> socketCache.get(dnsServer), DNS_QUERY_EXECUTOR);
     }
 
     public static DnsMessage readDNSMessage(final byte[] bytes) throws IOException {

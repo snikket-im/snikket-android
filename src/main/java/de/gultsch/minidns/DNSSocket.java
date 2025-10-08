@@ -7,6 +7,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.persistance.FileBackend;
 import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -68,6 +69,12 @@ final class DNSSocket implements Closeable {
             evictInFlightQueries(new EOFException());
         } catch (final IOException e) {
             evictInFlightQueries(e);
+        } finally {
+            FileBackend.close(this.dataOutputStream);
+            FileBackend.close(this.dataInputStream);
+            FileBackend.close(socket);
+            evictInFlightQueries(new IllegalStateException("Removed dangling queries"));
+            Log.d(Config.LOGTAG, "shut down connection to " + socket.getInetAddress());
         }
     }
 
