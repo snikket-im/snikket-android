@@ -19,12 +19,8 @@ import java.net.SocketAddress;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
@@ -80,13 +76,10 @@ final class DNSSocket implements Closeable {
 
     private void evictInFlightQueries(final Exception e) {
         synchronized (inFlightQueries) {
-            final Iterator<Map.Entry<Integer, SettableFuture<DnsMessage>>> iterator =
-                    inFlightQueries.entrySet().iterator();
-            while (iterator.hasNext()) {
-                final Map.Entry<Integer, SettableFuture<DnsMessage>> entry = iterator.next();
-                entry.getValue().setException(e);
-                iterator.remove();
+            for (var future : this.inFlightQueries.values()) {
+                future.setException(e);
             }
+            this.inFlightQueries.clear();
         }
     }
 
@@ -141,21 +134,6 @@ final class DNSSocket implements Closeable {
             }
         }
         return DNSSocket.of(sslSocket);
-    }
-
-    public DnsMessage query(final DnsMessage query) throws IOException, InterruptedException {
-        try {
-            return queryAsync(query).get(QUERY_TIMEOUT, TimeUnit.MILLISECONDS);
-        } catch (final ExecutionException e) {
-            final Throwable cause = e.getCause();
-            if (cause instanceof IOException) {
-                throw (IOException) cause;
-            } else {
-                throw new IOException(e);
-            }
-        } catch (final TimeoutException e) {
-            throw new IOException(e);
-        }
     }
 
     public ListenableFuture<DnsMessage> queryAsync(final DnsMessage query) {
