@@ -73,7 +73,6 @@ public final class Config {
     public static final int CONNECT_TIMEOUT = 90;
     public static final int POST_CONNECTIVITY_CHANGE_PING_INTERVAL = 30;
     public static final int CONNECT_DISCO_TIMEOUT = 20;
-    public static final int MINI_GRACE_PERIOD = 750;
 
     public static final int AVATAR_THUMBNAIL_SIZE = 192;
     public static final int AVATAR_THUMBNAIL_CHAR_LIMIT = 9400;
