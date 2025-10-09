@@ -1,0 +1,5 @@
+* Faqe e re 'fjalosje të zbrazëta', në vend se ridrejtim te skena 'fjalosje e re'
+* Përmirësim funksionimi për kanale të mëdhenj publikë
+* Mbulim për kthime të parashikueshme
+* Mbulim adresash IP në dëshmi
+* Kërko doemos TLS 1.3 për krejt lidhjet, me rregullimin për t’u lënë jashtë kësaj
