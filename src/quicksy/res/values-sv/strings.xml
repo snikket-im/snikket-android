@@ -3,7 +3,7 @@
     <string name="pref_broadcast_last_activity_summary">Låt alla dina kontakter veta när du använder Quicksy</string>
     <string name="not_available_in_your_country">Quicksy är inte tillgängligt i ditt land.</string>
     <string name="unknown_security_error">Okänt säkerhetsfel.</string>
-    <string name="set_profile_picture">Profilbild för Quicksy</string>
+    <string name="set_profile_picture">Profil-bild för Quicksy</string>
     <string name="unable_to_verify_server_identity">Serverns identitet kunde inte bekräftas.</string>
     <string name="timeout_while_connecting_to_server">Tidsgränsen nåddes i samband med anslutning mot servern.</string>
     <string name="pref_never_send_crash_summary">Genom att skicka in stack-spår så hjälper du den pågående utvecklingen av Quicksy</string>
