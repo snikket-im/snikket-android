@@ -31,9 +31,9 @@ A free and open-source Jabber/XMPP client for Android. Easy to use, reliable, an
 * Send voice messages
 * Emoji reactions
 * Indication when your contact has read your message
-* Intuitive UI that follows Android design guidelines (Material 3)
+* Intuitive UI that follows Android design guidelines (Material Design 3 with Dynamic Colors)
 * High-resolution contact photos (avatars)
-* Synchronizes with desktop clients (Gajim and Dino)
+* Synchronizes with desktop clients ([Gajim](https://gajim.org) and [Dino](https://dino.im))
 * Private group chats and public conferences (with support for bookmarks)
 * Message moderation for admins in public conferences
 * Address book integration
