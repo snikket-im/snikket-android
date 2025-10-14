@@ -40,13 +40,14 @@ A free and open-source Jabber/XMPP client for Android. Easy to use, reliable, an
 * Multiple accounts (unified inbox)
 * Very low impact on battery life
 
+
+***Note:** Some of these features require server support. Go to account details and select 'Server Info' from the overflow menu to see if your server has all necessary extensions.*
+
 ## Design principles
 * Be as beautiful and easy to use as possible without sacrificing security or privacy
 * Rely on existing, well-established protocols
 * Do not require a Google account or specifically Firebase Cloud Messaging (FCM)
 * Require as few permissions as possible
-
-***Note:** Some of these features require server support. Go to account details and select 'Server Info' from the overflow menu to see if your server has all necessary extensions.**
 
 ## FAQ
 
@@ -107,10 +108,6 @@ This can be fixed by creating a new account in Conversations that uses the Jabbe
 Note: This is kind of a weird quirk in OpenFire. Most other servers would just throw a 'Server not responsible for domain' error instead of attempting to reassign the Jabber ID.
 
 Maybe you attempted to use the Jabber ID `test@b.tld` because `a.tld` doesn’t point to the correct host. In that case you might have to enable the extended connection settings in the expert settings of Conversations and set a host name.
-
-#### I get 'Stream opening error'. What does that mean?
-
-In most cases this error is caused by ejabberd advertising support for TLSv1.3 but not properly supporting it. This can happen if the OpenSSL version on the server already supports TLSv1.3 but the fast\_tls wrapper library used by ejabberd not (properly) support it. Upgrading fast\_tls and ejabberd or - theoretically - downgrading OpenSSL should fix the issue. A work around is to explicitly disable TLSv1.3 support in the ejabberd configuration. More information can be found on [this issue on the ejabberd issue tracker](https://github.com/processone/ejabberd/issues/2614).
 
 #### Conversations is consuming a lot of battery, what can I do?
 
