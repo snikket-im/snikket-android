@@ -16,12 +16,13 @@ A free and open source Jabber/XMPP client for Android. Easy to use, reliable, ba
 • Message moderation for admins in public conferences
 • Address book integration
 • Multiple accounts (unified inbox)
+• Deliver push notifications to other compatible apps like Tusky, Ltt.rs, DAVx⁵ and Fennec via UnifiedPush
 • Very low impact on battery life
+
+<i><b>Note:</b></i> Some of these features require server support. Go to account details and select 'Server Info' from the overflow menu to see if your server has all necessary extensions.
 
 <b>Design principles</b>
 • Be as beautiful and easy to use as possible without sacrificing security or privacy
 • Rely on existing, well-established protocols
 • Do not require a Google account or specifically Firebase Cloud Messaging (FCM)
 • Require as few permissions as possible
-
-<i><b>Note:</b></i> Some of these features require server support. Go to account details and select 'Server Info' from the overflow menu to see if your server has all necessary extensions.

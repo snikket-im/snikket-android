@@ -38,6 +38,7 @@ A free and open-source Jabber/XMPP client for Android. Easy to use, reliable, an
 * Message moderation for admins in public conferences
 * Address book integration
 * Multiple accounts (unified inbox)
+* Deliver push notifications to other [compatible apps](https://unifiedpush.org/users/apps/) like Tusky, Ltt.rs, DAVx⁵ and Fennec via [UnifiedPush](https://unifiedpush.org/)
 * Very low impact on battery life
 
 
