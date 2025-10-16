@@ -120,20 +120,8 @@ Battery usage percentages can also be deceptive. On low-usage days, Conversation
 
 #### I’m getting this annoying permanent notification
 
-Starting with Conversations 2.3.6 Conversations releases distributed over the Google Play Store will display a permanent notification if you are running it on Android 8 and above. This is a rule that it is essentially enforced by the Google Play Store. (You won’t have the problem  of a *forced* foreground notification if you are getting your app from F-Droid.)
+On devices running Android 8 and later Conversations will display a permanent notification to indicate that the app maintains a connection to the XMPP server. This is a feature (or restriction, if you will) of the operating system. This notification can be hidden via settings in the operating system (not in Conversations itself). How to get to the relevant setting varies from Android version to Android version but can usually be reached by long-pressing the notification. Once in the notification control center the slider for 'Foreground Service' can be disabled. This doesn’t negatively impact other notifications.
 
-However you can disable the notification via settings of the operating system. (Not settings in Conversations.)
-
-**The battery consumption and the entire behavior of Conversations will remain the same (as good or as bad as it was before). Why is Google doing this to you? We have no idea.**
-
-##### Android &lt;= 7.1 or Conversations from F-Droid (all Android versions)
-The foreground notification is still controlled over the expert settings within Conversations as it always has been. Whether or not you need to enable it depends on how aggressive the non-standard 'power saving' features are that your phone vendor has built into the operating system.
-
-##### Android 8.x
-Long press the permanent notification and disable that particular type of notification by moving the slider to the left. This will make the notification disappear but create another notification (this time created by the operating system itself.) that will complain about Conversations (and other apps) using battery. Starting with Android 8.1 you can disable that notification again with the same method described above.
-
-##### Android 9.0+
-Long press the permanent notification and press the info `(i)` button to get into the App info screen. In that screen touch the 'Notification' entry. In the next screen remove the checkbox for the 'Foreground service' entry. 
 
 #### How do XEP-0357: Push Notifications work?
 You need to be running the Play Store version of Conversations and your server needs to support push notifications.¹ Because *Google’s Firebase Cloud Messaging (FCM)* are tied with an API key to a specific app your server can not initiate the push message directly. Instead your server will send the push notification to the [Conversations App server](https://codeberg.org/iNPUTmice/p2) (operated by us) which then acts as a proxy and initiates the push message for you. The push message sent from our App server through FCM doesn’t contain any personal information. It is just an empty message which will wake up your device and tell Conversations to reconnect to your server. The information sent from your server to our App server depends on the configuration of your server but can be limited to your account name. (In any case the Conversations App server won't redirect any information through FCM even if your server sends this information.)
@@ -235,7 +223,7 @@ There is a tool called [ceb2txt](https://codeberg.org/iNPUTmice/ceb2txt) that ca
 
 #### Conversations is missing a certain feature
 
-I'm open for new feature suggestions. You can use the [issue tracker][https://codeberg.org/iNPUTmice/Conversations/issues]
+I'm open for new feature suggestions. You can use the [issue tracker](https://codeberg.org/iNPUTmice/Conversations/issues)
 on Codeberg.  Please take some time to browse through the issues to see if someone
 else already suggested it. Be assured that I read each and every ticket. If I
 like it I will leave it open until it's implemented. If I don't like it I will
@@ -244,14 +232,6 @@ request that's probably a good sign because this means I agree with you.
 Commenting with +1 on either open or closed issues won't change my mind, nor
 will it accelerate the development.
 
-#### You closed my feature request but I want it really really badly
-
-Just write it yourself and send me a pull request. If I like it I will happily
-merge it if I don't at least you and like minded people get to enjoy it.
-
-#### I need a feature and I need it now!
-
-I am available for hire. Find contact information on [my website](https://gultsch.de).
 
 ### Security
 
