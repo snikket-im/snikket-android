@@ -389,7 +389,7 @@
     <string name="channel_options">Подешавања јавног канала</string>
     <string name="members_only">Приватно, само чланови</string>
     <string name="non_anonymous">Учини XMPP адресе видљиве свима</string>
-    <string name="moderated">Учини канал модерисаним</string>
+    <string name="moderated">Учини канал уређеним</string>
     <string name="you_are_not_participating">Не учествујеш</string>
     <string name="modified_conference_options">Опције групне преписке измењене!</string>
     <string name="could_not_modify_conference_options">Није могуће изменити опције групне преписке</string>
