@@ -60,7 +60,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuProvider;
 import androidx.core.view.inputmethod.InputConnectionCompat;
-import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -268,6 +267,74 @@ public class ConversationFragment extends XmppFragment
                                     });
                 }
             };
+
+    private final XmppConnectionService.OnMoreMessagesLoaded onMoreMessagesLoaded =
+            new XmppConnectionService.OnMoreMessagesLoaded() {
+                @Override
+                public void onMoreMessagesLoaded(final int c, final Conversation conversation) {
+                    if (ConversationFragment.this.conversation != conversation) {
+                        conversation.messagesLoaded.set(true);
+                        return;
+                    }
+                    runOnUiThreadQuiet(() -> onMoreMessagesLoaded(conversation));
+                }
+
+                private void onMoreMessagesLoaded(final Conversation conversation) {
+                    synchronized (messageList) {
+                        onMoreMessagesLoadedImpl(conversation);
+                    }
+                }
+
+                @Override
+                public void informUser(final int resId) {
+                    runOnUiThreadQuiet(() -> informUserImpl(resId));
+                }
+            };
+
+    private void runOnUiThreadQuiet(final Runnable runnable) {
+        try {
+            runOnUiThread(runnable);
+        } catch (final IllegalStateException e) {
+            Log.d(Config.LOGTAG, "skip execution on UI thread. activity is gone", e);
+        }
+    }
+
+    private void onMoreMessagesLoadedImpl(final Conversation conversation) {
+        final int oldPosition = binding.messagesView.getFirstVisiblePosition();
+        Message message = null;
+        int childPos;
+        for (childPos = 0; childPos + oldPosition < messageList.size(); ++childPos) {
+            message = messageList.get(oldPosition + childPos);
+            if (message.getType() != Message.TYPE_STATUS) {
+                break;
+            }
+        }
+        final String uuid = message != null ? message.getUuid() : null;
+        View v = binding.messagesView.getChildAt(childPos);
+        final int pxOffset = (v == null) ? 0 : v.getTop();
+        this.conversation.populateWithMessages(this.messageList);
+        try {
+            updateStatusMessages();
+        } catch (final IllegalStateException e) {
+            Log.d(Config.LOGTAG, "could not update status messages");
+        }
+        messageListAdapter.notifyDataSetChanged();
+        int pos = Math.max(getIndexOf(uuid, messageList), 0);
+        binding.messagesView.setSelectionFromTop(pos, pxOffset);
+        if (messageLoaderToast != null) {
+            messageLoaderToast.cancel();
+        }
+        conversation.messagesLoaded.set(true);
+    }
+
+    private void informUserImpl(final int resId) {
+        if (messageLoaderToast != null) {
+            messageLoaderToast.cancel();
+        }
+        messageLoaderToast = Toast.makeText(requireContext(), resId, Toast.LENGTH_LONG);
+        messageLoaderToast.show();
+    }
+
     private final OnScrollListener mOnScrollListener =
             new OnScrollListener() {
 
@@ -289,7 +356,7 @@ public class ConversationFragment extends XmppFragment
                         if (firstVisibleItem < 5
                                 && conversation != null
                                 && conversation.messagesLoaded.compareAndSet(true, false)
-                                && messageList.size() > 0) {
+                                && !messageList.isEmpty()) {
                             long timestamp;
                             if (messageList.get(0).getType() == Message.TYPE_STATUS
                                     && messageList.size() >= 2) {
@@ -300,160 +367,40 @@ public class ConversationFragment extends XmppFragment
                             requireXmppActivity()
                                     .xmppConnectionService
                                     .loadMoreMessages(
-                                            conversation,
-                                            timestamp,
-                                            new XmppConnectionService.OnMoreMessagesLoaded() {
-                                                @Override
-                                                public void onMoreMessagesLoaded(
-                                                        final int c,
-                                                        final Conversation conversation) {
-                                                    if (ConversationFragment.this.conversation
-                                                            != conversation) {
-                                                        conversation.messagesLoaded.set(true);
-                                                        return;
-                                                    }
-                                                    runOnUiThread(
-                                                            () -> {
-                                                                synchronized (messageList) {
-                                                                    final int oldPosition =
-                                                                            binding.messagesView
-                                                                                    .getFirstVisiblePosition();
-                                                                    Message message = null;
-                                                                    int childPos;
-                                                                    for (childPos = 0;
-                                                                            childPos + oldPosition
-                                                                                    < messageList
-                                                                                            .size();
-                                                                            ++childPos) {
-                                                                        message =
-                                                                                messageList.get(
-                                                                                        oldPosition
-                                                                                                + childPos);
-                                                                        if (message.getType()
-                                                                                != Message
-                                                                                        .TYPE_STATUS) {
-                                                                            break;
-                                                                        }
-                                                                    }
-                                                                    final String uuid =
-                                                                            message != null
-                                                                                    ? message
-                                                                                            .getUuid()
-                                                                                    : null;
-                                                                    View v =
-                                                                            binding.messagesView
-                                                                                    .getChildAt(
-                                                                                            childPos);
-                                                                    final int pxOffset =
-                                                                            (v == null)
-                                                                                    ? 0
-                                                                                    : v.getTop();
-                                                                    ConversationFragment.this
-                                                                            .conversation
-                                                                            .populateWithMessages(
-                                                                                    ConversationFragment
-                                                                                            .this
-                                                                                            .messageList);
-                                                                    try {
-                                                                        updateStatusMessages();
-                                                                    } catch (
-                                                                            IllegalStateException
-                                                                                    e) {
-                                                                        Log.d(
-                                                                                Config.LOGTAG,
-                                                                                "caught illegal"
-                                                                                    + " state"
-                                                                                    + " exception"
-                                                                                    + " while"
-                                                                                    + " updating"
-                                                                                    + " status"
-                                                                                    + " messages");
-                                                                    }
-                                                                    messageListAdapter
-                                                                            .notifyDataSetChanged();
-                                                                    int pos =
-                                                                            Math.max(
-                                                                                    getIndexOf(
-                                                                                            uuid,
-                                                                                            messageList),
-                                                                                    0);
-                                                                    binding.messagesView
-                                                                            .setSelectionFromTop(
-                                                                                    pos, pxOffset);
-                                                                    if (messageLoaderToast
-                                                                            != null) {
-                                                                        messageLoaderToast.cancel();
-                                                                    }
-                                                                    conversation.messagesLoaded.set(
-                                                                            true);
-                                                                }
-                                                            });
-                                                }
-
-                                                @Override
-                                                public void informUser(final int resId) {
-
-                                                    runOnUiThread(
-                                                            () -> {
-                                                                if (messageLoaderToast != null) {
-                                                                    messageLoaderToast.cancel();
-                                                                }
-                                                                if (ConversationFragment.this
-                                                                                .conversation
-                                                                        != conversation) {
-                                                                    return;
-                                                                }
-                                                                messageLoaderToast =
-                                                                        Toast.makeText(
-                                                                                view.getContext(),
-                                                                                resId,
-                                                                                Toast.LENGTH_LONG);
-                                                                messageLoaderToast.show();
-                                                            });
-                                                }
-                                            });
+                                            conversation, timestamp, onMoreMessagesLoaded);
                         }
                     }
                 }
             };
     private final EditMessage.OnCommitContentListener mEditorContentListener =
-            new EditMessage.OnCommitContentListener() {
-                @Override
-                public boolean onCommitContent(
-                        InputContentInfoCompat inputContentInfo,
-                        int flags,
-                        Bundle opts,
-                        String[] contentMimeTypes) {
-                    // try to get permission to read the image, if applicable
-                    if ((flags & InputConnectionCompat.INPUT_CONTENT_GRANT_READ_URI_PERMISSION)
-                            != 0) {
-                        try {
-                            inputContentInfo.requestPermission();
-                        } catch (Exception e) {
-                            Log.e(
-                                    Config.LOGTAG,
-                                    "InputContentInfoCompat#requestPermission() failed.",
-                                    e);
-                            Toast.makeText(
-                                            requireContext(),
-                                            requireContext()
-                                                    .getString(
-                                                            R.string.no_permission_to_access_x,
-                                                            inputContentInfo.getDescription()),
-                                            Toast.LENGTH_LONG)
-                                    .show();
-                            return false;
-                        }
+            (inputContentInfo, flags, opts, contentMimeTypes) -> {
+                // try to get permission to read the image, if applicable
+                if ((flags & InputConnectionCompat.INPUT_CONTENT_GRANT_READ_URI_PERMISSION) != 0) {
+                    try {
+                        inputContentInfo.requestPermission();
+                    } catch (Exception e) {
+                        Log.e(
+                                Config.LOGTAG,
+                                "InputContentInfoCompat#requestPermission() failed.",
+                                e);
+                        Toast.makeText(
+                                        requireContext(),
+                                        requireContext()
+                                                .getString(
+                                                        R.string.no_permission_to_access_x,
+                                                        inputContentInfo.getDescription()),
+                                        Toast.LENGTH_LONG)
+                                .show();
+                        return false;
                     }
-                    if (hasPermissions(
-                            REQUEST_ADD_EDITOR_CONTENT,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                        attachEditorContentToConversation(inputContentInfo.getContentUri());
-                    } else {
-                        mPendingEditorContent = inputContentInfo.getContentUri();
-                    }
-                    return true;
                 }
+                if (hasPermissions(
+                        REQUEST_ADD_EDITOR_CONTENT, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    attachEditorContentToConversation(inputContentInfo.getContentUri());
+                } else {
+                    mPendingEditorContent = inputContentInfo.getContentUri();
+                }
+                return true;
             };
     private Message selectedMessage;
     private final OnClickListener mEnableAccountListener =
