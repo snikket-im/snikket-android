@@ -96,6 +96,7 @@ public class MucOptions {
         this.conversation = conversation;
         final var affiliation = Item.affiliationOrNone(conversation.getAttribute("affiliation"));
         final var role = Item.roleOrNone(conversation.getAttribute("role"));
+        // TODO wrap createJoinJid into something reliable
         this.self =
                 new Self(
                         this,

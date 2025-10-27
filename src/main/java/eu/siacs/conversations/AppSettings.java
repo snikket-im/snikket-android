@@ -17,6 +17,7 @@ import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.xmpp.Jid;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -62,6 +63,7 @@ public class AppSettings {
     public static final String ALIGN_START = "align_start";
     public static final String BACKUP_LOCATION = "backup_location";
     public static final String AUTO_ACCEPT_FILE_SIZE = "auto_accept_file_size";
+    public static final String VIDEO_COMPRESSION = "video_compression";
 
     private static final String ACCEPT_INVITES_FROM_STRANGERS = "accept_invites_from_strangers";
     private static final String NOTIFICATIONS_FROM_STRANGERS = "notifications_from_strangers";
@@ -328,6 +330,16 @@ public class AppSettings {
         final long autoAcceptFileSize =
                 getLongPreference(AUTO_ACCEPT_FILE_SIZE, R.integer.auto_accept_filesize);
         return autoAcceptFileSize <= 0 ? Optional.empty() : Optional.of(autoAcceptFileSize);
+    }
+
+    public String getVideoCompression() {
+        final var sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(
+                VIDEO_COMPRESSION, context.getResources().getString(R.string.video_compression));
+    }
+
+    public boolean isCompressVideo() {
+        return Arrays.asList("720", "360").contains(getVideoCompression());
     }
 
     public synchronized void resetInstallationId() {

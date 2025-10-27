@@ -1,13 +1,14 @@
 package eu.siacs.conversations.services;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.SettableFuture;
 import com.otaliastudios.transcoder.Transcoder;
 import com.otaliastudios.transcoder.TranscoderListener;
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
@@ -24,9 +25,11 @@ import java.util.concurrent.Future;
 public class AttachFileToConversationRunnable implements Runnable, TranscoderListener {
 
     private final XmppConnectionService mXmppConnectionService;
+    private final AppSettings appSettings;
     private final Message message;
     private final Uri uri;
     private final String type;
+    private final SettableFuture<Void> callbackHandler = SettableFuture.create();
     private final boolean isVideoMessage;
     private final long originalFileSize;
     private int currentProgress = -1;
@@ -39,6 +42,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         this.uri = uri;
         this.type = type;
         this.mXmppConnectionService = xmppConnectionService;
+        this.appSettings = new AppSettings(xmppConnectionService.getApplicationContext());
         this.message = message;
         final String mimeType =
                 MimeUtils.guessMimeTypeFromUriAndMime(mXmppConnectionService, uri, type);
@@ -48,7 +52,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         this.isVideoMessage =
                 (mimeType != null && mimeType.startsWith("video/"))
                         && originalFileSize > autoAcceptFileSize
-                        && !"uncompressed".equals(getVideoCompression());
+                        && appSettings.isCompressVideo();
     }
 
     boolean isVideoMessage() {
@@ -66,12 +70,12 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         }
     }
 
-    private void fallbackToProcessAsFile() {
+    private ListenableFuture<Void> fallbackToProcessAsFile() {
         final var file = mXmppConnectionService.getFileBackend().getFile(message);
         if (file.exists() && file.delete()) {
             Log.d(Config.LOGTAG, "deleted preexisting file " + file.getAbsolutePath());
         }
-        XmppConnectionService.FILE_ATTACHMENT_EXECUTOR.execute(this::processAsFile);
+        return Futures.submit(this::processAsFile, XmppConnectionService.FILE_ATTACHMENT_EXECUTOR);
     }
 
     private void processAsVideo() throws FileNotFoundException {
@@ -85,11 +89,11 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
             Log.d(Config.LOGTAG, "created parent directory for video file");
         }
 
-        final boolean highQuality = "720".equals(getVideoCompression());
+        final boolean highQuality = "720".equals(appSettings.getVideoCompression());
 
-        final Future<Void> future;
+        final Future<Void> transcoderFuture;
         try {
-            future =
+            transcoderFuture =
                     Transcoder.into(file.getAbsolutePath())
                             .addDataSource(mXmppConnectionService, uri)
                             .setVideoTrackStrategy(
@@ -105,17 +109,17 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         } catch (final RuntimeException e) {
             // transcode can already throw if there is an invalid file format or a platform bug
             mXmppConnectionService.stopOngoingVideoTranscodingForegroundNotification();
-            fallbackToProcessAsFile();
+            this.callbackHandler.setFuture(fallbackToProcessAsFile());
             return;
         }
         try {
-            future.get();
+            transcoderFuture.get();
         } catch (final InterruptedException e) {
             throw new AssertionError(e);
         } catch (final ExecutionException e) {
             if (e.getCause() instanceof Error) {
                 mXmppConnectionService.stopOngoingVideoTranscodingForegroundNotification();
-                fallbackToProcessAsFile();
+                this.callbackHandler.setFuture(fallbackToProcessAsFile());
             } else {
                 Log.d(Config.LOGTAG, "ignoring execution exception. Handled by onTranscodeFiled()");
             }
@@ -146,26 +150,27 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
                 Log.d(
                         Config.LOGTAG,
                         "original file size was smaller. deleting and processing as file");
-                fallbackToProcessAsFile();
+                this.callbackHandler.setFuture(fallbackToProcessAsFile());
                 return;
             } else {
                 Log.d(Config.LOGTAG, "unable to delete converted file");
             }
         }
         mXmppConnectionService.getFileBackend().updateFileParams(message);
+        this.callbackHandler.set(null);
     }
 
     @Override
     public void onTranscodeCanceled() {
         mXmppConnectionService.stopOngoingVideoTranscodingForegroundNotification();
-        fallbackToProcessAsFile();
+        this.callbackHandler.setFuture(fallbackToProcessAsFile());
     }
 
     @Override
     public void onTranscodeFailed(@NonNull final Throwable exception) {
         mXmppConnectionService.stopOngoingVideoTranscodingForegroundNotification();
         Log.d(Config.LOGTAG, "video transcoding failed", exception);
-        fallbackToProcessAsFile();
+        this.callbackHandler.setFuture(fallbackToProcessAsFile());
     }
 
     @Override
@@ -173,6 +178,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         if (this.isVideoMessage()) {
             try {
                 processAsVideo();
+                awaitCallbackOrFallback();
             } catch (final FileNotFoundException e) {
                 processAsFile();
             }
@@ -181,14 +187,12 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         }
     }
 
-    private String getVideoCompression() {
-        return getVideoCompression(mXmppConnectionService);
-    }
-
-    public static String getVideoCompression(final Context context) {
-        final SharedPreferences preferences =
-                PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(
-                "video_compression", context.getResources().getString(R.string.video_compression));
+    private void awaitCallbackOrFallback() {
+        Log.d(Config.LOGTAG, "awaiting callback");
+        try {
+            callbackHandler.get();
+        } catch (final Exception e) {
+            Log.e(Config.LOGTAG, "awaiting callback or fallback failed", e);
+        }
     }
 }
