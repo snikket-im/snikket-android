@@ -1,0 +1,14 @@
+Quicksy, otomatik kişi bulma özelliğine sahip popüler Jabber/XMPP istemcisi Conversations'ın bir yan ürünüdür.
+
+Telefon numaranızla kaydolduğunuzda Quicksy, adres defterinizdeki telefon numaralarına göre size olası kişileri otomatik olarak önerir.
+
+Quicksy, herhangi bir kamuya açık federasyon sunucusundaki herhangi bir kullanıcıyla iletişim kurmanızı sağlayan tam donanımlı bir Jabber istemcisidir. Aynı şekilde, Quicksy kullanıcılarıyla, +phonenumber@quicksy.im adresini kişi listenize ekleyerek dışarıdan da iletişim kurabilirsiniz.
+
+Kişi senkronizasyonunun yanı sıra, kullanıcı arayüzü kasıtlı olarak Conversations'a olabildiğince yakın tutulmuştur. Bu, kullanıcıların uygulamanın nasıl çalıştığını yeniden öğrenmek zorunda kalmadan Quicksy'den Conversations'a geçmelerini sağlar.
+
+Önerilen kişiler, diğer Quicksy kullanıcıları ve Jabber kimliklerini Quicksy Dizini'ne (https://quicksy.im/#get-listed) girmiş olan normal Jabber/XMPP kullanıcılarından oluşur.
+
+NOT: Jabber kimliğinizi Quicksy
+Dizini'ne (https://quicksy.im/enter/) girmek için tek seferlik kayıt ücreti ödenmesi gerekir.
+
+Daha fazla bilgi için Gizlilik Politikası'nı (https://quicksy.im/#privacy) okuyun.
