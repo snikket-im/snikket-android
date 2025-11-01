@@ -1194,4 +1194,6 @@
     <string name="server_info_moderated_message_retraction">XEP-0425: Видалення повідомлень модератором</string>
     <string name="account_status_tls_error_protocol">Слабкий захист транспортів (немає TLS 1.3)</string>
     <string name="account_status_tls_error_untrusted">Недовірений сертифікат</string>
+    <string name="this_reaction_isnt_allowed">Ви не можете використовувати цю реакцію.</string>
+    <string name="number_reactions_are_restricted">Досягнуто обмеження кількості реакцій.</string>
 </resources>
