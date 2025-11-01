@@ -766,6 +766,10 @@ public class Message extends AbstractEntity
         return edits.get(edits.size() - 1).getEditedId();
     }
 
+    public Collection<String> getEditedServerMessageIds() {
+        return Collections2.transform(this.edits, Edit::getServerMsgId);
+    }
+
     public String getEditedIdWireFormat() {
         if (this.edits.isEmpty()) {
             throw new IllegalStateException("Attempting to access unedited message");

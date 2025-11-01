@@ -77,6 +77,10 @@ public class Edit {
         return editedId;
     }
 
+    public String getServerMsgId() {
+        return this.serverMsgId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

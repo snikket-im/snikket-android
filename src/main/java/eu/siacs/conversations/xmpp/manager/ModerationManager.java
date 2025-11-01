@@ -1,6 +1,8 @@
 package eu.siacs.conversations.xmpp.manager;
 
 import android.util.Log;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -13,6 +15,8 @@ import im.conversations.android.xmpp.model.moderation.Moderate;
 import im.conversations.android.xmpp.model.retraction.Retract;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Message;
+import java.util.Collection;
+import java.util.List;
 
 public class ModerationManager extends AbstractManager {
 
@@ -24,13 +28,20 @@ public class ModerationManager extends AbstractManager {
     }
 
     public ListenableFuture<Void> moderate(final eu.siacs.conversations.entities.Message message) {
+        final var serverMsgId = message.getServerMsgId();
+        final var previous = message.getEditedServerMessageIds();
+        if (!previous.isEmpty()) {
+            Log.d(
+                    Config.LOGTAG,
+                    getAccount().getJid()
+                            + ": requesting deletion of previous stanza-ids: "
+                            + previous);
+        }
+        final var serverMsgIds =
+                new ImmutableSet.Builder<String>().add(serverMsgId).addAll(previous).build();
         final var conversation = message.getConversation();
         final var address = conversation.getAddress().asBareJid();
-        final var iq = new Iq(Iq.Type.SET);
-        iq.setTo(address);
-        final var moderate = iq.addExtension(new Moderate(message.getServerMsgId()));
-        moderate.addExtension(new Retract());
-        final var future = this.connection.sendIqPacket(iq);
+        final var future = moderate(address, serverMsgIds);
         return Futures.transform(
                 future,
                 result -> {
@@ -46,6 +57,20 @@ public class ModerationManager extends AbstractManager {
                     }
                 },
                 MoreExecutors.directExecutor());
+    }
+
+    private ListenableFuture<List<Iq>> moderate(final Jid address, final Collection<String> ids) {
+        final var futures =
+                Collections2.transform(
+                        ids,
+                        id -> {
+                            final var iq = new Iq(Iq.Type.SET);
+                            iq.setTo(address);
+                            final var moderate = iq.addExtension(new Moderate(id));
+                            moderate.addExtension(new Retract());
+                            return this.connection.sendIqPacket(iq);
+                        });
+        return Futures.allAsList(futures);
     }
 
     public void handleRetraction(final Message message) {
