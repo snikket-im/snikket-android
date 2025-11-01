@@ -310,7 +310,7 @@ public class ConversationFragment extends XmppFragment
             }
         }
         final String uuid = message != null ? message.getUuid() : null;
-        View v = binding.messagesView.getChildAt(childPos);
+        final View v = binding.messagesView.getChildAt(childPos);
         final int pxOffset = (v == null) ? 0 : v.getTop();
         this.conversation.populateWithMessages(this.messageList);
         try {
@@ -1376,19 +1376,24 @@ public class ConversationFragment extends XmppFragment
                         c.getMode() == Conversational.MODE_SINGLE
                                 || (c.getMucOptions().occupantId()
                                         && c.getMucOptions().participating());
-                addReaction.setVisible(
+                final var reactionBaseConditions =
                         m.getStatus() != Message.STATUS_SEND_FAILED
                                 && !m.isDeleted()
-                                && singleOrOccupantId);
+                                && singleOrOccupantId;
                 if (m.getStatus() != Message.STATUS_SEND_FAILED
                         && c.getMode() == Conversational.MODE_MULTI) {
                     final var mucOptions = c.getMucOptions();
+                    final var restrictions = mucOptions.getReactionsRestrictions();
+                    final var reactionsRemaining =
+                            restrictions.reactionsPerUserRemaining(m.getReactions());
                     moderateMessage.setVisible(
                             !mucOptions.isPrivateAndNonAnonymous()
                                     && mucOptions.moderation()
                                     && mucOptions.getSelf().ranks(Role.MODERATOR)
                                     && m.getServerMsgId() != null);
+                    addReaction.setVisible(reactionBaseConditions && reactionsRemaining);
                 } else {
+                    addReaction.setVisible(reactionBaseConditions);
                     moderateMessage.setVisible(false);
                 }
                 moderateMessage.setTitle(

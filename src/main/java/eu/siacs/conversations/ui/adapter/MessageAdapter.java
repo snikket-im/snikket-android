@@ -88,6 +88,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
+import im.conversations.android.xmpp.model.reactions.Restrictions;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1017,12 +1018,21 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                             .setText(CryptoHelper.encryptionTypeToText(message.getEncryption()));
                 }
             }
-            BindingAdapters.setReactionsOnReceived(
-                    viewHolder.reactions(),
-                    message.getAggregatedReactions(),
-                    reactions -> sendReactions(message, reactions),
-                    emoji -> showDetailedReaction(message, emoji),
-                    () -> addReaction(message));
+            final boolean remaining = Restrictions.reactionsPerUserRemaining(message);
+            if (remaining) {
+                BindingAdapters.setReactionsOnReceived(
+                        viewHolder.reactions(),
+                        message.getAggregatedReactions(),
+                        reactions -> sendReactions(message, reactions),
+                        emoji -> showDetailedReaction(message, emoji),
+                        () -> addReaction(message));
+            } else {
+                BindingAdapters.setReactionsOnSent(
+                        viewHolder.reactions(),
+                        message.getAggregatedReactions(),
+                        reactions -> sendReactions(message, reactions),
+                        emoji -> showDetailedReaction(message, emoji));
+            }
         } else {
             if (viewHolder instanceof StartBubbleMessageItemViewHolder startViewHolder) {
                 startViewHolder.encryption().setVisibility(View.GONE);
@@ -1299,6 +1309,24 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     private void sendReactions(final Message message, final Collection<String> reactions) {
+        final Restrictions restrictions;
+        if (message.getConversation() instanceof Conversation c
+                && c.getMode() == Conversational.MODE_MULTI) {
+            restrictions = c.getMucOptions().getReactionsRestrictions();
+        } else {
+            restrictions = null;
+        }
+        final var max = restrictions == null ? null : restrictions.maxReactionsPerUser();
+        final var allowList = restrictions == null ? null : restrictions.allowList();
+        if (max != null && max < reactions.size()) {
+            Toast.makeText(activity, R.string.number_reactions_are_restricted, Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+        if (allowList != null && !allowList.containsAll(reactions)) {
+            Toast.makeText(activity, R.string.this_reaction_isnt_allowed, Toast.LENGTH_LONG).show();
+            return;
+        }
         if (activity.xmppConnectionService.sendReactions(message, reactions)) {
             return;
         }

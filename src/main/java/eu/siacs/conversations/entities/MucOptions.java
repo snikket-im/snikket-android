@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
+import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import de.gultsch.common.IntMap;
 import eu.siacs.conversations.Config;
@@ -30,6 +31,7 @@ import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import im.conversations.android.xmpp.model.muc.Affiliation;
 import im.conversations.android.xmpp.model.muc.Item;
 import im.conversations.android.xmpp.model.muc.Role;
+import im.conversations.android.xmpp.model.reactions.Restrictions;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Arrays;
 import java.util.Collection;
@@ -220,6 +222,25 @@ public class MucOptions {
         }
         final var roomConfigName = roomInfo.getFieldByName("muc#roomconfig_roomname");
         return roomConfigName == null ? null : roomConfigName.getValue();
+    }
+
+    public Restrictions getReactionsRestrictions() {
+        final var infoQuery = getServiceDiscoveryResult();
+        final var restrictions =
+                infoQuery == null
+                        ? null
+                        : infoQuery.getServiceDiscoveryExtension(Namespace.REACTIONS_RESTRICTIONS);
+        if (restrictions == null) {
+            return new Restrictions(null, null);
+        }
+        final var maxReactionsPerUser = restrictions.getValue("max_reactions_per_user");
+        final var allowListField = restrictions.getFieldByName("allowlist");
+        final var allowList = allowListField == null ? null : allowListField.getValues();
+        return new Restrictions(
+                Strings.isNullOrEmpty(maxReactionsPerUser)
+                        ? null
+                        : Ints.tryParse(maxReactionsPerUser),
+                allowList);
     }
 
     private Data getRoomInfoForm() {

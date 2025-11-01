@@ -69,6 +69,7 @@ import eu.siacs.conversations.databinding.DialogQuickeditBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Reaction;
 import eu.siacs.conversations.services.AvatarService;
@@ -86,8 +87,10 @@ import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import eu.siacs.conversations.xmpp.manager.RegistrationManager;
+import im.conversations.android.xmpp.model.reactions.Restrictions;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -350,13 +353,36 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     public void addReaction(final Message message, Consumer<Collection<String>> callback) {
+        final var account = message.getConversation().getAccount();
+        final var conversation = message.getConversation();
+        final Restrictions restrictions;
+        if (conversation.getMode() == Conversational.MODE_SINGLE) {
+            restrictions = null;
+        } else {
+            final var mucOptions =
+                    account.getXmppConnection()
+                            .getManager(MultiUserChatManager.class)
+                            .getState(conversation.getAddress().asBareJid());
+            restrictions = mucOptions == null ? null : mucOptions.getReactionsRestrictions();
+        }
         final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         final var layoutInflater = this.getLayoutInflater();
         final DialogAddReactionBinding viewBinding =
                 DataBindingUtil.inflate(layoutInflater, R.layout.dialog_add_reaction, null, false);
         builder.setView(viewBinding.getRoot());
         final var dialog = builder.create();
-        for (final String emoji : Reaction.SUGGESTIONS) {
+        final boolean emojiChoiceRestricted =
+                restrictions != null
+                        && restrictions.allowList() != null
+                        && !restrictions.allowList().isEmpty()
+                        && restrictions.allowList().size() <= 6;
+        final Collection<String> shortcutEmojis;
+        if (emojiChoiceRestricted) {
+            shortcutEmojis = restrictions.allowList();
+        } else {
+            shortcutEmojis = Reaction.SUGGESTIONS;
+        }
+        for (final String emoji : shortcutEmojis) {
             final Button button =
                     (Button)
                             layoutInflater.inflate(
@@ -378,14 +404,19 @@ public abstract class XmppActivity extends ActionBarActivity {
                         dialog.dismiss();
                     });
         }
-        viewBinding.more.setOnClickListener(
-                v -> {
-                    dialog.dismiss();
-                    final var intent = new Intent(this, AddReactionActivity.class);
-                    intent.putExtra("conversation", message.getConversation().getUuid());
-                    intent.putExtra("message", message.getUuid());
-                    startActivity(intent);
-                });
+        if (emojiChoiceRestricted) {
+            viewBinding.more.setVisibility(View.GONE);
+        } else {
+            viewBinding.more.setVisibility(View.VISIBLE);
+            viewBinding.more.setOnClickListener(
+                    v -> {
+                        dialog.dismiss();
+                        final var intent = new Intent(this, AddReactionActivity.class);
+                        intent.putExtra("conversation", message.getConversation().getUuid());
+                        intent.putExtra("message", message.getUuid());
+                        startActivity(intent);
+                    });
+        }
         dialog.show();
     }
 

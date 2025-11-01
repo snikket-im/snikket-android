@@ -749,6 +749,7 @@ public class MultiUserChatManager extends AbstractManager {
             final Conversation conversation,
             final InfoQuery rawinfoQuery,
             final MucConfigSummary previousMucConfig) {
+        Log.d(Config.LOGTAG, "disco info form: " + rawinfoQuery);
         final var infoQuery = clean(rawinfoQuery);
         final var caps = EntityCapabilities.hash(infoQuery);
         final var caps2 = EntityCapabilities2.hash(infoQuery);
@@ -801,6 +802,9 @@ public class MultiUserChatManager extends AbstractManager {
             }
         }
         this.service.updateConversationUi();
+
+        Log.d(Config.LOGTAG, "emoji restrictions: " + mucOptions.getReactionsRestrictions());
+
         return null;
     }
 
