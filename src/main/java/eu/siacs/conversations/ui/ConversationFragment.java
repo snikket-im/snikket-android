@@ -2201,16 +2201,7 @@ public class ConversationFragment extends XmppFragment
                 .addReaction(
                         message,
                         reactions -> {
-                            if (requireXmppActivity()
-                                    .xmppConnectionService
-                                    .sendReactions(message, reactions)) {
-                                return;
-                            }
-                            Toast.makeText(
-                                            requireContext(),
-                                            R.string.could_not_add_reaction,
-                                            Toast.LENGTH_LONG)
-                                    .show();
+                            requireXmppActivity().sendReactions(message, reactions);
                         });
     }
 

@@ -352,6 +352,31 @@ public abstract class XmppActivity extends ActionBarActivity {
         builder.create().show();
     }
 
+    public void sendReactions(final Message message, final Collection<String> reactions) {
+        final Restrictions restrictions;
+        if (message.getConversation() instanceof Conversation c
+                && c.getMode() == Conversational.MODE_MULTI) {
+            restrictions = c.getMucOptions().getReactionsRestrictions();
+        } else {
+            restrictions = null;
+        }
+        final var max = restrictions == null ? null : restrictions.maxReactionsPerUser();
+        final var allowList = restrictions == null ? null : restrictions.allowList();
+        if (max != null && max < reactions.size()) {
+            Toast.makeText(this, R.string.number_reactions_are_restricted, Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+        if (allowList != null && !allowList.containsAll(reactions)) {
+            Toast.makeText(this, R.string.this_reaction_isnt_allowed, Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (this.xmppConnectionService.sendReactions(message, reactions)) {
+            return;
+        }
+        Toast.makeText(this, R.string.could_not_add_reaction, Toast.LENGTH_LONG).show();
+    }
+
     public void addReaction(final Message message, Consumer<Collection<String>> callback) {
         final var account = message.getConversation().getAccount();
         final var conversation = message.getConversation();

@@ -1309,40 +1309,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     private void sendReactions(final Message message, final Collection<String> reactions) {
-        final Restrictions restrictions;
-        if (message.getConversation() instanceof Conversation c
-                && c.getMode() == Conversational.MODE_MULTI) {
-            restrictions = c.getMucOptions().getReactionsRestrictions();
-        } else {
-            restrictions = null;
-        }
-        final var max = restrictions == null ? null : restrictions.maxReactionsPerUser();
-        final var allowList = restrictions == null ? null : restrictions.allowList();
-        if (max != null && max < reactions.size()) {
-            Toast.makeText(activity, R.string.number_reactions_are_restricted, Toast.LENGTH_SHORT)
-                    .show();
-            return;
-        }
-        if (allowList != null && !allowList.containsAll(reactions)) {
-            Toast.makeText(activity, R.string.this_reaction_isnt_allowed, Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (activity.xmppConnectionService.sendReactions(message, reactions)) {
-            return;
-        }
-        Toast.makeText(activity, R.string.could_not_add_reaction, Toast.LENGTH_LONG).show();
+        activity.sendReactions(message, reactions);
     }
 
     private void addReaction(final Message message) {
-        activity.addReaction(
-                message,
-                reactions -> {
-                    if (activity.xmppConnectionService.sendReactions(message, reactions)) {
-                        return;
-                    }
-                    Toast.makeText(activity, R.string.could_not_add_reaction, Toast.LENGTH_LONG)
-                            .show();
-                });
+        activity.addReaction(message, reactions -> sendReactions(message, reactions));
     }
 
     private void promptOpenKeychainInstall(View view) {
