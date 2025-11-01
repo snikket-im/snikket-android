@@ -1193,4 +1193,6 @@
     <string name="server_info_occupant_id">XEP-0421: идентификаторы участников</string>
     <string name="account_status_tls_error_untrusted">Недоверенный сертификат</string>
     <string name="account_status_tls_error_protocol">Слабая транспортная безопасность (нет TLS 1.3)</string>
+    <string name="number_reactions_are_restricted">Достигнуто ограничение реакций.</string>
+    <string name="this_reaction_isnt_allowed">Это недопустимая реакция.</string>
 </resources>
