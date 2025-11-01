@@ -272,4 +272,21 @@
     <string name="title_activity_block_list">Sewḥel tabdart</string>
     <string name="minute_ago">1 tesdidt aya</string>
     <string name="minutes_ago">%d tesdidin aya</string>
+    <string name="pref_notification_settings">Alɣu</string>
+    <string name="pref_vibrate">Ahuzzu</string>
+    <string name="pref_presence_settings">Tiltin</string>
+    <string name="not_trusted">Ur yettwaman ara</string>
+    <string name="server_info_partial">d abruyan</string>
+    <string name="action_directions">Tinilwin</string>
+    <string name="notification_group_calls">Isawalen</string>
+    <string name="set_profile_picture">Avaṭar</string>
+    <string name="backup">Aḥraz</string>
+    <string name="rtp_state_reconnecting">Allus n tuqqna</string>
+    <string name="answer_call">Tiririt</string>
+    <string name="notifications">Ilɣa</string>
+    <string name="pref_category_receiving">Tuṭṭfa</string>
+    <string name="pref_account_avatar">Imiḍanen</string>
+    <string name="invalid_muc_nick">Isem n useqdac d arameɣtu</string>
+    <string name="contact_blocked">Anermis yettusewḥel</string>
+    <string name="pref_accept_files">Qbel ifuyla</string>
 </resources>
