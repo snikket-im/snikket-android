@@ -2,7 +2,6 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.os.SystemClock;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.common.base.Strings;
@@ -87,7 +86,6 @@ public class Account extends AbstractEntity implements AvatarService.Avatar {
     private String rosterVersion;
     private String displayName = null;
     private XmppConnection xmppConnection = null;
-    private long mEndGracePeriod = 0L;
     private im.conversations.android.xmpp.model.stanza.Presence.Availability presenceStatus;
     private String presenceStatusMessage;
     private String pinnedMechanism;
@@ -630,20 +628,6 @@ public class Account extends AbstractEntity implements AvatarService.Avatar {
 
     public String getAvatar() {
         return this.avatar;
-    }
-
-    public void activateGracePeriod(final long duration) {
-        if (duration > 0) {
-            this.mEndGracePeriod = SystemClock.elapsedRealtime() + duration;
-        }
-    }
-
-    public void deactivateGracePeriod() {
-        this.mEndGracePeriod = 0L;
-    }
-
-    public boolean inGracePeriod() {
-        return SystemClock.elapsedRealtime() < this.mEndGracePeriod;
     }
 
     public String getShareableUri() {

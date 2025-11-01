@@ -4,6 +4,7 @@ import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.manager.AbstractManager;
+import eu.siacs.conversations.xmpp.manager.ActivityManager;
 import eu.siacs.conversations.xmpp.manager.AvatarManager;
 import eu.siacs.conversations.xmpp.manager.AxolotlManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
@@ -44,6 +45,7 @@ public class Managers {
     public static ClassToInstanceMap<AbstractManager> get(
             final XmppConnectionService context, final XmppConnection connection) {
         return new ImmutableClassToInstanceMap.Builder<AbstractManager>()
+                .put(ActivityManager.class, new ActivityManager(context, connection))
                 .put(AvatarManager.class, new AvatarManager(context, connection))
                 .put(AxolotlManager.class, new AxolotlManager(context, connection))
                 .put(BlockingManager.class, new BlockingManager(context, connection))

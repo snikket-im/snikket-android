@@ -17,6 +17,7 @@ import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.xmpp.Jid;
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,6 +28,7 @@ public class AppSettings {
     public static final String KEEP_FOREGROUND_SERVICE = "enable_foreground_service";
     public static final String AWAY_WHEN_SCREEN_IS_OFF = "away_when_screen_off";
     public static final String TREAT_VIBRATE_AS_SILENT = "treat_vibrate_as_silent";
+    public static final String GRACE_PERIOD_LENGTH = "grace_period_length";
     public static final String DND_ON_SILENT_MODE = "dnd_on_silent_mode";
     public static final String MANUALLY_CHANGE_PRESENCE = "manually_change_presence";
     public static final String BLIND_TRUST_BEFORE_VERIFICATION = "btbv";
@@ -239,6 +241,11 @@ public class AppSettings {
         } catch (final NumberFormatException e) {
             return defaultValue;
         }
+    }
+
+    public Duration getGracePeriodLength() {
+        final var length = getLongPreference(GRACE_PERIOD_LENGTH, R.integer.grace_period);
+        return Duration.ofSeconds(Math.max(length, 0));
     }
 
     public String getOmemo() {

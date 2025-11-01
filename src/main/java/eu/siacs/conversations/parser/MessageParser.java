@@ -5,7 +5,6 @@ import android.util.Pair;
 import com.google.common.base.Strings;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.BrokenSessionException;
 import eu.siacs.conversations.crypto.axolotl.NotEncryptedForThisDeviceException;
@@ -32,6 +31,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
+import eu.siacs.conversations.xmpp.manager.ActivityManager;
 import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.ModerationManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
@@ -58,7 +58,6 @@ import im.conversations.android.xmpp.model.retraction.Retract;
 import im.conversations.android.xmpp.model.unique.StanzaId;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -119,7 +118,8 @@ public class MessageParser extends AbstractParser
                         return false;
                     }
                     mXmppConnectionService.markRead(c);
-                    activateGracePeriod(account);
+                    getManager(ActivityManager.class)
+                            .record(from, ActivityManager.ActivityType.CHAT_STATE);
                 }
                 return false;
             } else {
@@ -819,7 +819,8 @@ public class MessageParser extends AbstractParser
                 if (status == Message.STATUS_SEND || status == Message.STATUS_SEND_RECEIVED) {
                     mXmppConnectionService.markRead(conversation);
                     if (query == null) {
-                        activateGracePeriod(account);
+                        getManager(ActivityManager.class)
+                                .record(from, ActivityManager.ActivityType.MESSAGE);
                     }
                 } else {
                     message.markUnread();
@@ -1164,7 +1165,8 @@ public class MessageParser extends AbstractParser
                 mXmppConnectionService.markReadUpTo(c, message);
             }
             if (query == null) {
-                activateGracePeriod(account);
+                getManager(ActivityManager.class)
+                        .record(from, ActivityManager.ActivityType.DISPLAYED);
             }
         } else if (isTypeGroupChat) {
             final Message message;
@@ -1402,19 +1404,6 @@ public class MessageParser extends AbstractParser
                 query.addPendingReceiptRequest(new ReceiptRequest(packet.getFrom(), remoteMsgId));
             }
         }
-    }
-
-    private void activateGracePeriod(Account account) {
-        long duration =
-                mXmppConnectionService.getLongPreference(
-                                "grace_period_length", R.integer.grace_period)
-                        * 1000;
-        Log.d(
-                Config.LOGTAG,
-                account.getJid().asBareJid()
-                        + ": activating grace period till "
-                        + TIME_FORMAT.format(new Date(System.currentTimeMillis() + duration)));
-        account.activateGracePeriod(duration);
     }
 
     private class Invite {

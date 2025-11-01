@@ -69,6 +69,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
+import eu.siacs.conversations.xmpp.manager.ActivityManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -774,7 +775,9 @@ public class NotificationService {
                 Log.d(
                         Config.LOGTAG,
                         "silencing notification because chat overview is in foreground");
-            } else if (account.inGracePeriod()) {
+            } else if (account.getXmppConnection()
+                    .getManager(ActivityManager.class)
+                    .isInGracePeriod()) {
                 doNotify = false;
                 Log.d(
                         Config.LOGTAG,

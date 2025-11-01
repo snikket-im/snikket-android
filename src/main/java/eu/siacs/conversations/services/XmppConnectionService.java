@@ -121,6 +121,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
+import eu.siacs.conversations.xmpp.manager.ActivityManager;
 import eu.siacs.conversations.xmpp.manager.AvatarManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
@@ -1561,7 +1562,7 @@ public class XmppConnectionService extends Service {
             mNotificationService.updateErrorNotification();
         }
         final Conversation conversation = (Conversation) message.getConversation();
-        account.deactivateGracePeriod();
+        account.getXmppConnection().getManager(ActivityManager.class).reset();
 
         if (QuickConversationsService.isQuicksy()
                 && conversation.getMode() == Conversation.MODE_SINGLE) {
@@ -2767,8 +2768,8 @@ public class XmppConnectionService extends Service {
             if (account.getStatus() != Account.State.ONLINE) {
                 continue;
             }
-            account.deactivateGracePeriod();
             final XmppConnection connection = account.getXmppConnection();
+            connection.getManager(ActivityManager.class).reset();
             if (connection.getFeatures().csi()) {
                 connection.sendActive();
             }
@@ -3788,8 +3789,8 @@ public class XmppConnectionService extends Service {
     }
 
     private void deactivateGracePeriod() {
-        for (Account account : getAccounts()) {
-            account.deactivateGracePeriod();
+        for (final var account : getAccounts()) {
+            account.getXmppConnection().getManager(ActivityManager.class).reset();
         }
     }
 
