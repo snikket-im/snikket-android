@@ -311,12 +311,8 @@ public class AvatarService {
     public void clear(final Contact contact) {
         synchronized (this.sizes) {
             for (final Integer size : sizes) {
-                this.mXmppConnectionService
-                        .getBitmapCache()
-                        .remove(key(contact, Surface.REGULAR, size));
-                this.mXmppConnectionService
-                        .getBitmapCache()
-                        .remove(key(contact, Surface.ADAPTIVE, size));
+                this.cache.invalidate(key(contact, Surface.REGULAR, size));
+                this.cache.invalidate(key(contact, Surface.ADAPTIVE, size));
             }
         }
         final var connection = contact.getAccount().getXmppConnection();
@@ -579,13 +575,9 @@ public class AvatarService {
 
     public void clear(final Account account) {
         synchronized (this.sizes) {
-            for (Integer size : sizes) {
-                this.mXmppConnectionService
-                        .getBitmapCache()
-                        .remove(key(account, Surface.REGULAR, size));
-                this.mXmppConnectionService
-                        .getBitmapCache()
-                        .remove(key(account, Surface.ADAPTIVE, size));
+            for (final var size : sizes) {
+                this.cache.invalidate(key(account, Surface.REGULAR, size));
+                this.cache.invalidate(key(account, Surface.ADAPTIVE, size));
             }
         }
     }
@@ -599,9 +591,8 @@ public class AvatarService {
         final var uuid = user.getConversation().getUuid();
         synchronized (this.conversationDependentKeys) {
             final var keys = this.conversationDependentKeys.removeAll(uuid);
-            final var cache = this.mXmppConnectionService.getBitmapCache();
             for (final String key : keys) {
-                cache.remove(key);
+                this.cache.invalidate(key);
             }
         }
     }
