@@ -1144,4 +1144,6 @@
     <string name="empty_conversations_list_hint">Sobald du eine neue Unterhaltung startest, wird sie hier angezeigt</string>
     <string name="account_status_tls_error_protocol">Schwache Transportsicherheit (kein TLS 1.3)</string>
     <string name="account_status_tls_error_untrusted">Nicht vertrauenswürdiges Zertifikat</string>
+    <string name="this_reaction_isnt_allowed">Diese Reaktion ist nicht erlaubt.</string>
+    <string name="number_reactions_are_restricted">Reaktionslimit erreicht.</string>
 </resources>
