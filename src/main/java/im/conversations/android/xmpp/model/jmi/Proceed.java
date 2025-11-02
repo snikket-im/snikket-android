@@ -1,12 +1,11 @@
 package im.conversations.android.xmpp.model.jmi;
 
 import com.google.common.primitives.Ints;
-
 import eu.siacs.conversations.xml.Element;
 import im.conversations.android.annotation.XmlElement;
 
 @XmlElement
-public class Proceed extends JingleMessage {
+public final class Proceed extends JingleMessage {
 
     public Proceed() {
         super(Proceed.class);

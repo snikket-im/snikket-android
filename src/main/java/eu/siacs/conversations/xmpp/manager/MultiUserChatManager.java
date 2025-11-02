@@ -1244,8 +1244,9 @@ public class MultiUserChatManager extends AbstractManager {
     }
 
     public boolean isMuc(final Stanza stanza) {
-        final var from = stanza.getFrom();
-        return isMuc(from);
+        final var isTypeGroupChat =
+                stanza instanceof Message m && m.getType() == Message.Type.GROUPCHAT;
+        return isTypeGroupChat || isMuc(stanza.getFrom());
     }
 
     public boolean isMuc(final Jid address) {

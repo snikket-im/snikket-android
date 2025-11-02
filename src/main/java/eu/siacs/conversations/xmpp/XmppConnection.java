@@ -67,7 +67,6 @@ import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.TagWriter;
 import eu.siacs.conversations.xml.XmlReader;
 import eu.siacs.conversations.xmpp.bind.Bind2;
-import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.manager.AbstractManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
@@ -91,7 +90,6 @@ import im.conversations.android.xmpp.model.csi.Inactive;
 import im.conversations.android.xmpp.model.error.Condition;
 import im.conversations.android.xmpp.model.fast.Fast;
 import im.conversations.android.xmpp.model.fast.RequestToken;
-import im.conversations.android.xmpp.model.jingle.Jingle;
 import im.conversations.android.xmpp.model.sasl.Auth;
 import im.conversations.android.xmpp.model.sasl.Failure;
 import im.conversations.android.xmpp.model.sasl.Mechanisms;
@@ -200,8 +198,6 @@ public class XmppConnection implements Runnable {
     private final AtomicInteger mSmCatchupMessageCounter = new AtomicInteger(0);
     private boolean mInteractive = false;
     private int attempt = 0;
-    private OnJinglePacketReceived jingleListener = null;
-
     private final Consumer<Presence> presenceListener;
     private final Consumer<Iq> unregisteredIqListener;
     private final Consumer<im.conversations.android.xmpp.model.stanza.Message> messageListener;
@@ -226,9 +222,6 @@ public class XmppConnection implements Runnable {
         this.mXmppConnectionService = service;
         this.appSettings = mXmppConnectionService.getAppSettings();
         this.presenceListener = new PresenceParser(service, this);
-        // TODO rename this to Iq request handler (it handles only IQ get and set; throw assert
-        // error in handler just to be safe)
-        // TODO requires roster and blocking not to be handled by this
         this.unregisteredIqListener = new IqParser(service, this);
         this.messageListener = new MessageParser(service, this);
         this.bindProcessor = new BindProcessor(service, this);
@@ -1326,28 +1319,20 @@ public class XmppConnection implements Runnable {
                     account.getJid().asBareJid() + "Not processing iq. Thread was interrupted");
             return;
         }
-        if (packet.hasExtension(Jingle.class)
-                && packet.getType() == Iq.Type.SET
-                && isBound
-                && LoginInfo.isSuccess(this.loginInfo)) {
-            if (this.jingleListener != null) {
-                this.jingleListener.onJinglePacketReceived(account, packet);
-            }
-        } else {
-            final var callback = getIqPacketReceivedCallback(packet);
-            if (callback == null) {
-                Log.d(
-                        Config.LOGTAG,
-                        account.getJid().asBareJid().toString()
-                                + ": no callback registered for IQ from "
-                                + packet.getFrom());
-                return;
-            }
-            try {
-                callback.accept(packet);
-            } catch (final StateChangingError error) {
-                throw new StateChangingException(error.state);
-            }
+
+        final var callback = getIqPacketReceivedCallback(packet);
+        if (callback == null) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid().toString()
+                            + ": no callback registered for IQ from "
+                            + packet.getFrom());
+            return;
+        }
+        try {
+            callback.accept(packet);
+        } catch (final StateChangingError error) {
+            throw new StateChangingException(error.state);
         }
     }
 
@@ -2587,10 +2572,6 @@ public class XmppConnection implements Runnable {
     public void sendPing() {
         this.getManager(PingManager.class).ping();
         this.lastPingSent = SystemClock.elapsedRealtime();
-    }
-
-    public void setOnJinglePacketReceivedListener(final OnJinglePacketReceived listener) {
-        this.jingleListener = listener;
     }
 
     public void addOnAdvancedStreamFeaturesAvailableListener(

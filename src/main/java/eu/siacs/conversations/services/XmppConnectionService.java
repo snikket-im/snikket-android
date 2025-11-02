@@ -1112,7 +1112,7 @@ public class XmppConnectionService extends Service {
         Log.d(Config.LOGTAG, "restoring accounts...");
         this.accounts = databaseBackend.getAccounts();
         for (final var account : this.accounts) {
-            account.setXmppConnection(createConnection(account));
+            account.setXmppConnection(new XmppConnection(account, this));
         }
         final boolean hasEnabledAccounts = hasEnabledAccounts();
         toggleSetProfilePictureActivity(hasEnabledAccounts);
@@ -1507,12 +1507,6 @@ public class XmppConnectionService extends Service {
         } catch (RuntimeException e) {
             Log.d(Config.LOGTAG, "unable to schedule alarm for idle ping", e);
         }
-    }
-
-    public XmppConnection createConnection(final Account account) {
-        final XmppConnection connection = new XmppConnection(account, this);
-        connection.setOnJinglePacketReceivedListener((mJingleConnectionManager::deliverPacket));
-        return connection;
     }
 
     private void sendFileMessage(
@@ -2299,7 +2293,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void createAccount(final Account account) {
-        account.setXmppConnection(createConnection(account));
+        account.setXmppConnection(new XmppConnection(account, this));
         databaseBackend.createAccount(account);
         if (CallIntegration.hasSystemFeature(this)) {
             CallIntegrationConnectionService.togglePhoneAccountAsync(this, account);
