@@ -1153,4 +1153,6 @@
     <string name="strong_transport_security">Sigurie e fuqishme transporti</string>
     <string name="require_tls_v1_3">Kërko Doemos Protokoll “Transport Layer Security” (TLS) Version 1.3 për krejt lidhjet</string>
     <string name="empty_conversations_list_hint">Pasi filloni një bisedë të re, do ta shihni të shfaqet këtu</string>
+    <string name="number_reactions_are_restricted">U mbërrit në kufij reagimesh.</string>
+    <string name="this_reaction_isnt_allowed">Ky reagim s’lejohet.</string>
 </resources>
