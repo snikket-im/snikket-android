@@ -129,7 +129,6 @@ import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
@@ -137,6 +136,7 @@ import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
+import eu.siacs.conversations.xmpp.manager.ChatStateManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.ModerationManager;
@@ -144,6 +144,8 @@ import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import im.conversations.android.xmpp.model.muc.Role;
 import im.conversations.android.xmpp.model.stanza.Presence;
+import im.conversations.android.xmpp.model.state.Composing;
+import im.conversations.android.xmpp.model.state.Paused;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -2390,9 +2392,7 @@ public class ConversationFragment extends XmppFragment
     }
 
     public void privateMessageWith(final Jid counterpart) {
-        if (conversation.setOutgoingChatState(Config.DEFAULT_CHAT_STATE)) {
-            requireXmppActivity().xmppConnectionService.sendChatState(conversation);
-        }
+        ChatStateManager.send(conversation, Config.DEFAULT_CHAT_STATE);
         this.binding.textinput.setText("");
         this.conversation.setNextCounterpart(counterpart);
         updateChatMsgHint();
@@ -2533,11 +2533,8 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void updateChatState(final Conversation conversation, final String msg) {
-        ChatState state = msg.length() == 0 ? Config.DEFAULT_CHAT_STATE : ChatState.PAUSED;
-        Account.State status = conversation.getAccount().getStatus();
-        if (status == Account.State.ONLINE && conversation.setOutgoingChatState(state)) {
-            requireXmppActivity().xmppConnectionService.sendChatState(conversation);
-        }
+        final var state = msg.isEmpty() ? Config.DEFAULT_CHAT_STATE : Paused.class;
+        ChatStateManager.send(conversation, state);
     }
 
     private void saveMessageDraftStopAudioPlayer() {
@@ -3069,9 +3066,6 @@ public class ConversationFragment extends XmppFragment
         this.binding.textSendButton.setIconTint(
                 ColorStateList.valueOf(
                         SendButtonTool.getSendButtonColor(this.binding.textSendButton, status)));
-        // TODO send button color
-        final Activity activity = getActivity();
-        if (activity != null) {}
     }
 
     protected void updateStatusMessages() {
@@ -3080,13 +3074,17 @@ public class ConversationFragment extends XmppFragment
             this.messageList.add(0, Message.createLoadMoreMessage(conversation));
         }
         if (conversation.getMode() == Conversation.MODE_SINGLE) {
-            ChatState state = conversation.getIncomingChatState();
-            if (state == ChatState.COMPOSING) {
+            final var account = conversation.getAccount();
+            final var state =
+                    account.getXmppConnection()
+                            .getManager(ChatStateManager.class)
+                            .getIncoming(conversation.getAddress());
+            if (Objects.equals(state, Composing.class)) {
                 this.messageList.add(
                         Message.createStatusMessage(
                                 conversation,
                                 getString(R.string.contact_is_typing, conversation.getName())));
-            } else if (state == ChatState.PAUSED) {
+            } else if (Objects.equals(state, Paused.class)) {
                 this.messageList.add(
                         Message.createStatusMessage(
                                 conversation,
@@ -3118,13 +3116,7 @@ public class ConversationFragment extends XmppFragment
             final MucOptions mucOptions = conversation.getMucOptions();
             final List<MucOptions.User> allUsers = mucOptions.getUsers();
             final Set<ReadByMarker> addedMarkers = new HashSet<>();
-            ChatState state = ChatState.COMPOSING;
-            List<MucOptions.User> users =
-                    conversation.getMucOptions().getUsersWithChatState(state, 5);
-            if (users.isEmpty()) {
-                state = ChatState.PAUSED;
-                users = conversation.getMucOptions().getUsersWithChatState(state, 5);
-            }
+            final var usersChatState = mucOptions.getUsersWithChatState(5);
             if (mucOptions.isPrivateAndNonAnonymous()) {
                 for (int i = this.messageList.size() - 1; i >= 0; --i) {
                     final Set<ReadByMarker> markersForMessage =
@@ -3136,7 +3128,7 @@ public class ConversationFragment extends XmppFragment
                                     marker); // may be put outside this condition. set should do
                             // dedup anyway
                             MucOptions.User user = mucOptions.getUser(marker);
-                            if (user != null && !users.contains(user)) {
+                            if (user != null && !usersChatState.users().contains(user)) {
                                 shownMarkers.add(user);
                             }
                         }
@@ -3184,14 +3176,14 @@ public class ConversationFragment extends XmppFragment
                     }
                 }
             }
-            if (users.isEmpty()) {
+            if (usersChatState.users().isEmpty()) {
                 return;
             }
             Message statusMessage;
-            if (users.size() == 1) {
-                MucOptions.User user = users.get(0);
+            if (usersChatState.users().size() == 1) {
+                MucOptions.User user = Iterables.getOnlyElement(usersChatState.users());
                 int id =
-                        state == ChatState.COMPOSING
+                        Objects.equals(usersChatState.chatState(), Composing.class)
                                 ? R.string.contact_is_typing
                                 : R.string.contact_has_stopped_typing;
                 statusMessage =
@@ -3201,13 +3193,14 @@ public class ConversationFragment extends XmppFragment
                 statusMessage.setCounterpart(user.getFullJid());
             } else {
                 int id =
-                        state == ChatState.COMPOSING
+                        Objects.equals(usersChatState.chatState(), Composing.class)
                                 ? R.string.contacts_are_typing
                                 : R.string.contacts_have_stopped_typing;
                 statusMessage =
                         Message.createStatusMessage(
-                                conversation, getString(id, UIHelper.concatNames(users)));
-                statusMessage.setCounterparts(users);
+                                conversation,
+                                getString(id, UIHelper.concatNames(usersChatState.users())));
+                statusMessage.setCounterparts(usersChatState.users());
             }
             this.messageList.add(statusMessage);
         }
@@ -3458,11 +3451,7 @@ public class ConversationFragment extends XmppFragment
         if (service == null) {
             return;
         }
-        final Account.State status = conversation.getAccount().getStatus();
-        if (status == Account.State.ONLINE
-                && conversation.setOutgoingChatState(ChatState.COMPOSING)) {
-            service.sendChatState(conversation);
-        }
+        ChatStateManager.send(conversation, Composing.class);
         runOnUiThread(this::updateSendButton);
     }
 
@@ -3472,10 +3461,7 @@ public class ConversationFragment extends XmppFragment
         if (service == null) {
             return;
         }
-        final Account.State status = conversation.getAccount().getStatus();
-        if (status == Account.State.ONLINE && conversation.setOutgoingChatState(ChatState.PAUSED)) {
-            service.sendChatState(conversation);
-        }
+        ChatStateManager.send(conversation, Paused.class);
     }
 
     @Override
@@ -3484,11 +3470,7 @@ public class ConversationFragment extends XmppFragment
         if (service == null) {
             return;
         }
-        final Account.State status = conversation.getAccount().getStatus();
-        if (status == Account.State.ONLINE
-                && conversation.setOutgoingChatState(Config.DEFAULT_CHAT_STATE)) {
-            service.sendChatState(conversation);
-        }
+        ChatStateManager.send(conversation, Config.DEFAULT_CHAT_STATE);
         if (storeNextMessage()) {
             runOnUiThread(() -> requireConversationsActivity().onConversationsListItemUpdated());
         }

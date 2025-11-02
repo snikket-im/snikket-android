@@ -21,7 +21,6 @@ import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import im.conversations.android.xmpp.EntityCapabilities2;
 import im.conversations.android.xmpp.model.Hash;
@@ -33,6 +32,9 @@ import im.conversations.android.xmpp.model.muc.Item;
 import im.conversations.android.xmpp.model.muc.Role;
 import im.conversations.android.xmpp.model.reactions.Restrictions;
 import im.conversations.android.xmpp.model.stanza.Presence;
+import im.conversations.android.xmpp.model.state.ChatStateNotification;
+import im.conversations.android.xmpp.model.state.Composing;
+import im.conversations.android.xmpp.model.state.Paused;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -173,7 +175,7 @@ public class MucOptions {
     public void resetChatState() {
         synchronized (users) {
             for (final var user : users.values()) {
-                user.chatState = Config.DEFAULT_CHAT_STATE;
+                user.chatState = null;
             }
         }
     }
@@ -543,12 +545,23 @@ public class MucOptions {
         }
     }
 
-    public List<User> getUsersWithChatState(final ChatState state, final int max) {
+    public UsersChatState getUsersWithChatState(final int max) {
+        final var composing = getUsersWithChatState(Composing.class, max);
+        if (composing.isEmpty()) {
+            return new UsersChatState(getUsersWithChatState(Paused.class, max), Paused.class);
+        }
+        return new UsersChatState(composing, Composing.class);
+    }
+
+    private List<User> getUsersWithChatState(
+            final Class<? extends ChatStateNotification> state, final int max) {
         synchronized (this.users) {
             synchronized (this.users) {
                 return ImmutableList.copyOf(
                         Iterables.limit(
-                                Iterables.filter(this.users.values(), u -> u.chatState == state),
+                                Iterables.filter(
+                                        this.users.values(),
+                                        u -> Objects.equal(u.chatState, state)),
                                 max));
             }
         }
@@ -804,7 +817,7 @@ public class MucOptions {
         private final Affiliation affiliation;
         private Long pgpKeyId;
         private String avatar;
-        private ChatState chatState = Config.DEFAULT_CHAT_STATE;
+        private Class<? extends ChatStateNotification> chatState = null;
 
         public User(
                 final MucOptions options,
@@ -948,7 +961,7 @@ public class MucOptions {
             return realJid;
         }
 
-        public boolean setChatState(ChatState chatState) {
+        public boolean setChatState(Class<? extends ChatStateNotification> chatState) {
             if (this.chatState == chatState) {
                 return false;
             }
@@ -1097,6 +1110,9 @@ public class MucOptions {
             super(options, fullJid, realJid, occupantId, Role.NONE, Affiliation.NONE);
         }
     }
+
+    public record UsersChatState(
+            List<User> users, Class<? extends ChatStateNotification> chatState) {}
 
     public sealed interface Id permits AddressableId, OccupantId {
 

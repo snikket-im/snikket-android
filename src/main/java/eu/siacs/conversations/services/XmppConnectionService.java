@@ -114,7 +114,6 @@ import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
@@ -125,6 +124,7 @@ import eu.siacs.conversations.xmpp.manager.ActivityManager;
 import eu.siacs.conversations.xmpp.manager.AvatarManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
+import eu.siacs.conversations.xmpp.manager.ChatStateManager;
 import eu.siacs.conversations.xmpp.manager.DisplayedManager;
 import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
@@ -1515,13 +1515,6 @@ public class XmppConnectionService extends Service {
         return connection;
     }
 
-    public void sendChatState(final Conversation conversation) {
-        if (appSettings.isSendChatStates()) {
-            final var packet = mMessageGenerator.generateChatState(conversation);
-            sendMessagePacket(conversation.getAccount(), packet);
-        }
-    }
-
     private void sendFileMessage(
             final Message message, final boolean delay, final boolean forceP2P) {
         final var account = message.getConversation().getAccount();
@@ -1720,9 +1713,12 @@ public class XmppConnectionService extends Service {
             if (delay) {
                 mMessageGenerator.addDelay(packet, message.getTimeSent());
             }
-            if (conversation.setOutgoingChatState(Config.DEFAULT_CHAT_STATE)) {
+            final var chatStateManager =
+                    account.getXmppConnection().getManager(ChatStateManager.class);
+            if (chatStateManager.setOutgoingChatState(conversation, Config.DEFAULT_CHAT_STATE)) {
                 if (this.appSettings.isSendChatStates()) {
-                    packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));
+                    packet.addExtension(
+                            chatStateManager.getOutgoingChatStateExtension(conversation));
                 }
             }
             sendMessagePacket(account, packet);
@@ -2757,18 +2753,13 @@ public class XmppConnectionService extends Service {
     private void switchToForeground() {
         toggleSoftDisabled(false);
         final boolean broadcastLastActivity = appSettings.isBroadcastLastActivity();
-        for (Conversation conversation : getConversations()) {
-            if (conversation.getMode() == Conversation.MODE_MULTI) {
-                conversation.getMucOptions().resetChatState();
-            } else {
-                conversation.setIncomingChatState(Config.DEFAULT_CHAT_STATE);
-            }
-        }
         for (final var account : getAccounts()) {
+            final XmppConnection connection = account.getXmppConnection();
+            connection.getManager(MultiUserChatManager.class).resetChatStates();
+            connection.getManager(ChatStateManager.class).resetChatStates();
             if (account.getStatus() != Account.State.ONLINE) {
                 continue;
             }
-            final XmppConnection connection = account.getXmppConnection();
             connection.getManager(ActivityManager.class).reset();
             if (connection.getFeatures().csi()) {
                 connection.sendActive();

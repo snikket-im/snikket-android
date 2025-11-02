@@ -58,6 +58,7 @@ import im.conversations.android.xmpp.model.pgp.Signed;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Message;
 import im.conversations.android.xmpp.model.stanza.Presence;
+import im.conversations.android.xmpp.model.stanza.Stanza;
 import im.conversations.android.xmpp.model.vcard.update.VCardUpdate;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1242,6 +1243,11 @@ public class MultiUserChatManager extends AbstractManager {
         this.connection.sendMessagePacket(message);
     }
 
+    public boolean isMuc(final Stanza stanza) {
+        final var from = stanza.getFrom();
+        return isMuc(from);
+    }
+
     public boolean isMuc(final Jid address) {
         final var state = address == null ? null : getState(address.asBareJid());
         return state != null && state.getConversation().getMode() == Conversational.MODE_MULTI;
@@ -1378,6 +1384,14 @@ public class MultiUserChatManager extends AbstractManager {
         }
 
         return builder.buildOrThrow();
+    }
+
+    public void resetChatStates() {
+        synchronized (this.states) {
+            for (var state : this.states.values()) {
+                state.resetChatState();
+            }
+        }
     }
 
     private static final class MucConfigSummary {

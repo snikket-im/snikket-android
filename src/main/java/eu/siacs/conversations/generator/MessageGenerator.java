@@ -11,13 +11,11 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import im.conversations.android.xmpp.model.correction.Replace;
-import im.conversations.android.xmpp.model.hints.NoStore;
 import im.conversations.android.xmpp.model.hints.Store;
 import im.conversations.android.xmpp.model.markers.Markable;
 import im.conversations.android.xmpp.model.reactions.Reaction;
@@ -148,22 +146,6 @@ public class MessageGenerator extends AbstractGenerator {
             packet.addChild("encryption", "urn:xmpp:eme:0")
                     .setAttribute("namespace", "jabber:x:encrypted");
         }
-        return packet;
-    }
-
-    public im.conversations.android.xmpp.model.stanza.Message generateChatState(
-            Conversation conversation) {
-        final Account account = conversation.getAccount();
-        final im.conversations.android.xmpp.model.stanza.Message packet =
-                new im.conversations.android.xmpp.model.stanza.Message();
-        packet.setType(
-                conversation.getMode() == Conversation.MODE_MULTI
-                        ? im.conversations.android.xmpp.model.stanza.Message.Type.GROUPCHAT
-                        : im.conversations.android.xmpp.model.stanza.Message.Type.CHAT);
-        packet.setTo(conversation.getAddress().asBareJid());
-        packet.setFrom(account.getJid());
-        packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));
-        packet.addExtension(new NoStore());
         return packet;
     }
 

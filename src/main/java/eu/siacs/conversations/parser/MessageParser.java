@@ -28,10 +28,10 @@ import eu.siacs.conversations.xml.LocalizedContent;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.manager.ActivityManager;
+import eu.siacs.conversations.xmpp.manager.ChatStateManager;
 import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.ModerationManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
@@ -101,45 +101,6 @@ public class MessageParser extends AbstractParser
             final im.conversations.android.xmpp.model.stanza.Message packet) {
         final boolean safeToExtract = account.getXmppConnection().getFeatures().stanzaIds();
         return safeToExtract ? StanzaId.get(packet, account.getJid().asBareJid()) : null;
-    }
-
-    private boolean extractChatState(
-            Conversation c,
-            final boolean isTypeGroupChat,
-            final im.conversations.android.xmpp.model.stanza.Message packet) {
-        ChatState state = ChatState.parse(packet);
-        if (state != null && c != null) {
-            final Account account = c.getAccount();
-            final Jid from = packet.getFrom();
-            if (from.asBareJid().equals(account.getJid().asBareJid())) {
-                c.setOutgoingChatState(state);
-                if (state == ChatState.ACTIVE || state == ChatState.COMPOSING) {
-                    if (c.getContact().isSelf()) {
-                        return false;
-                    }
-                    mXmppConnectionService.markRead(c);
-                    getManager(ActivityManager.class)
-                            .record(from, ActivityManager.ActivityType.CHAT_STATE);
-                }
-                return false;
-            } else {
-                if (isTypeGroupChat) {
-                    // TODO we can use Manager.getUser; we don’t even need the conversation
-                    MucOptions.User user =
-                            getManager(MultiUserChatManager.class)
-                                    .getOrCreateState(c)
-                                    .getUser(from);
-                    if (user != null) {
-                        return user.setChatState(state);
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return c.setIncomingChatState(state);
-                }
-            }
-        }
-        return false;
     }
 
     private Message parseAxolotlChat(
@@ -599,12 +560,8 @@ public class MessageParser extends AbstractParser
                                 checkedForDuplicates,
                                 query != null);
                 if (message == null) {
-                    if (query == null
-                            && extractChatState(
-                                    mXmppConnectionService.find(account, counterpart.asBareJid()),
-                                    isTypeGroupChat,
-                                    packet)) {
-                        mXmppConnectionService.updateConversationUi();
+                    if (query != null) {
+                        getManager(ChatStateManager.class).process(packet);
                     }
                     if (query != null && status == Message.STATUS_SEND && remoteMsgId != null) {
                         Message previouslySent = conversation.findSentMessageWithUuid(remoteMsgId);
@@ -718,10 +675,7 @@ public class MessageParser extends AbstractParser
                             if (replacedMessage.getStatus() == Message.STATUS_RECEIVED) {
                                 replacedMessage.markUnread();
                             }
-                            extractChatState(
-                                    mXmppConnectionService.find(account, counterpart.asBareJid()),
-                                    isTypeGroupChat,
-                                    packet);
+                            getManager(ChatStateManager.class).process(packet);
                             mXmppConnectionService.updateMessage(replacedMessage, uuid);
                             if (mXmppConnectionService.confirmMessages()
                                     && replacedMessage.getStatus() == Message.STATUS_RECEIVED
@@ -840,11 +794,7 @@ public class MessageParser extends AbstractParser
             }
 
             if (query == null) {
-                extractChatState(
-                        mXmppConnectionService.find(account, counterpart.asBareJid()),
-                        isTypeGroupChat,
-                        packet);
-                mXmppConnectionService.updateConversationUi();
+                getManager(ChatStateManager.class).process(packet);
             }
 
             if (mXmppConnectionService.confirmMessages()
@@ -910,8 +860,8 @@ public class MessageParser extends AbstractParser
                 }
             }
 
-            if (query == null && extractChatState(conversation, isTypeGroupChat, packet)) {
-                mXmppConnectionService.updateConversationUi();
+            if (query == null) {
+                getManager(ChatStateManager.class).process(packet);
             }
 
             if (isTypeGroupChat) {

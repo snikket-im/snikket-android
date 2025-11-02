@@ -10,6 +10,7 @@ import eu.siacs.conversations.xmpp.manager.AxolotlManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
+import eu.siacs.conversations.xmpp.manager.ChatStateManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.manager.DisplayedManager;
 import eu.siacs.conversations.xmpp.manager.EasyOnboardingManager;
@@ -51,6 +52,7 @@ public class Managers {
                 .put(BlockingManager.class, new BlockingManager(context, connection))
                 .put(BookmarkManager.class, new BookmarkManager(context, connection))
                 .put(CarbonsManager.class, new CarbonsManager(context, connection))
+                .put(ChatStateManager.class, new ChatStateManager(context, connection))
                 .put(DiscoManager.class, new DiscoManager(context, connection))
                 .put(DisplayedManager.class, new DisplayedManager(context, connection))
                 .put(EasyOnboardingManager.class, new EasyOnboardingManager(context, connection))
