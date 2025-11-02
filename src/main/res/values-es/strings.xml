@@ -1157,4 +1157,6 @@
     <string name="empty_conversations_list_hint">Una vez que inicies un chat, lo verás listado aquí</string>
     <string name="server_info_occupant_id">XEP-0421: Identificadores de ocupantes</string>
     <string name="server_info_moderated_message_retraction">XEP-0425: Retractación de Mensajes Moderados</string>
+    <string name="number_reactions_are_restricted">Límite de reacciones alcanzado.</string>
+    <string name="this_reaction_isnt_allowed">Reacción no permitida.</string>
 </resources>
