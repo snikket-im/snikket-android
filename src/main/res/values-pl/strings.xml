@@ -1170,4 +1170,6 @@
     <string name="server_info_moderated_message_retraction">XEP-0425: wycofywanie wiadomości przez moderację</string>
     <string name="account_status_tls_error_protocol">Niskie bezpieczeństwo transportu (brak TLS 1.3)</string>
     <string name="account_status_tls_error_untrusted">Niezaufany certyfikat</string>
+    <string name="number_reactions_are_restricted">Osiągnięto limit reakcji.</string>
+    <string name="this_reaction_isnt_allowed">Ta reakcja jest niedozwolona.</string>
 </resources>
