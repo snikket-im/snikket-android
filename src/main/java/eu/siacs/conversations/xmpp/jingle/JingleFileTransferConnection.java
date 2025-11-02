@@ -14,6 +14,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Conversation;
@@ -476,7 +477,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
 
     private Transport setupTransport(final GenericTransportInfo transportInfo) {
         final XmppConnection xmppConnection = id.account.getXmppConnection();
-        final boolean useTor = id.account.isOnion() || xmppConnectionService.useTorToConnect();
+        final var appSettings = new AppSettings(xmppConnectionService.getApplicationContext());
+        final boolean useTor = id.account.isOnion() || appSettings.isUseTor();
+        final boolean useRelays = appSettings.isUseRelays();
         if (transportInfo instanceof IbbTransportInfo ibbTransportInfo) {
             final String streamId = ibbTransportInfo.getTransportId();
             final Long blockSize = ibbTransportInfo.getBlockSize();
@@ -497,7 +500,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
                     socksBytestreamsTransportInfo.getCandidates();
             Log.d(Config.LOGTAG, "received socks candidates " + candidates);
             return new SocksByteStreamsTransport(
-                    xmppConnection, id, isInitiator(), useTor, streamId, candidates);
+                    xmppConnection, id, isInitiator(), useTor, useRelays, streamId, candidates);
         } else if (!useTor && transportInfo instanceof WebRTCDataChannelTransportInfo) {
             return new WebRTCDataChannelTransport(
                     xmppConnectionService.getApplicationContext(),
@@ -511,7 +514,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
 
     private Transport setupTransport() {
         final XmppConnection xmppConnection = id.account.getXmppConnection();
-        final boolean useTor = id.account.isOnion() || xmppConnectionService.useTorToConnect();
+        final var appSettings = new AppSettings(xmppConnectionService.getApplicationContext());
+        final boolean useTor = id.account.isOnion() || appSettings.isUseTor();
+        final boolean useRelays = appSettings.isUseRelays();
         if (!useTor && remoteHasFeature(Namespace.JINGLE_TRANSPORT_WEBRTC_DATA_CHANNEL)) {
             return new WebRTCDataChannelTransport(
                     xmppConnectionService.getApplicationContext(),
@@ -519,8 +524,10 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
                     id.account,
                     isInitiator());
         }
-        if (remoteHasFeature(Namespace.JINGLE_TRANSPORTS_S5B)) {
-            return new SocksByteStreamsTransport(xmppConnection, id, isInitiator(), useTor);
+        // for connections we initialize we just don’t use S5B when 'use relays' is enabled
+        // for incoming connections we might as well try but stick to our proxy candidate
+        if (!useRelays && remoteHasFeature(Namespace.JINGLE_TRANSPORTS_S5B)) {
+            return new SocksByteStreamsTransport(xmppConnection, id, isInitiator(), useTor, true);
         }
         return setupLastResortTransport();
     }

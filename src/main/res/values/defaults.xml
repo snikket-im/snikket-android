@@ -27,6 +27,7 @@
     <bool name="accept_invites_from_strangers">true</bool>
     <bool name="use_tor">false</bool>
     <bool name="show_connection_options">false</bool>
+    <bool name="use_relays">false</bool>
     <bool name="display_enter_key">false</bool>
     <bool name="manually_change_presence">false</bool>
     <bool name="away_when_screen_off">false</bool>

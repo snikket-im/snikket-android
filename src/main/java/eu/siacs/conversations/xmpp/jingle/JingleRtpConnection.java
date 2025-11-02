@@ -22,6 +22,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -2329,7 +2330,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
             throws WebRTCWrapper.InitializationException {
         this.jingleConnectionManager.ensureConnectionIsRegistered(this);
         this.webRTCWrapper.setup(this.xmppConnectionService);
-        this.webRTCWrapper.initializePeerConnection(media, iceServers, trickle);
+        final var appSettings = new AppSettings(xmppConnectionService.getApplicationContext());
+        this.webRTCWrapper.initializePeerConnection(
+                media, iceServers, trickle, appSettings.isUseRelays());
         // this.webRTCWrapper.setMicrophoneEnabledOrThrow(callIntegration.isMicrophoneEnabled());
         this.webRTCWrapper.setMicrophoneEnabledOrThrow(true);
     }

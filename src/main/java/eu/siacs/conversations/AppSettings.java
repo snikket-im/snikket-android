@@ -55,6 +55,7 @@ public class AppSettings {
     public static final String NOTIFICATION_LED = "led";
     public static final String SHOW_CONNECTION_OPTIONS = "show_connection_options";
     public static final String USE_TOR = "use_tor";
+    public static final String USE_RELAYS = "use_relays";
     public static final String CHANNEL_DISCOVERY_METHOD = "channel_discovery_method";
     public static final String SEND_CRASH_REPORTS = "send_crash_reports";
     public static final String COLORFUL_CHAT_BUBBLES = "use_green_background";
@@ -199,6 +200,10 @@ public class AppSettings {
     public boolean isUseTor() {
         return QuickConversationsService.isConversations()
                 && getBooleanPreference(USE_TOR, R.bool.use_tor);
+    }
+
+    public boolean isUseRelays() {
+        return getBooleanPreference(USE_RELAYS, R.bool.use_relays);
     }
 
     public boolean isSendChatStates() {

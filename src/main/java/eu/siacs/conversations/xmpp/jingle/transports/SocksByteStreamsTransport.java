@@ -66,6 +66,7 @@ public class SocksByteStreamsTransport implements Transport {
 
     private final boolean initiator;
     private final boolean useTor;
+    private final boolean useRelays;
 
     private final String streamId;
 
@@ -88,12 +89,14 @@ public class SocksByteStreamsTransport implements Transport {
             final AbstractJingleConnection.Id id,
             final boolean initiator,
             final boolean useTor,
+            final boolean useRelays,
             final String streamId,
             final Collection<Candidate> theirCandidates) {
         this.xmppConnection = xmppConnection;
         this.id = id;
         this.initiator = initiator;
         this.useTor = useTor;
+        this.useRelays = useRelays;
         this.streamId = streamId;
         this.theirDestination =
                 Hashing.sha1()
@@ -119,7 +122,7 @@ public class SocksByteStreamsTransport implements Transport {
                         .toString();
 
         this.connectionProvider =
-                new ConnectionProvider(id.account.getJid(), ourDestination, useTor);
+                new ConnectionProvider(id.account.getJid(), ourDestination, useTor, useRelays);
         new Thread(connectionProvider).start();
         this.ourProxyConnection = getOurProxyConnection(ourDestination);
         setTheirCandidates(theirCandidates);
@@ -129,12 +132,14 @@ public class SocksByteStreamsTransport implements Transport {
             final XmppConnection xmppConnection,
             final AbstractJingleConnection.Id id,
             final boolean initiator,
-            final boolean useTor) {
+            final boolean useTor,
+            final boolean useRelays) {
         this(
                 xmppConnection,
                 id,
                 initiator,
                 useTor,
+                useRelays,
                 UUID.randomUUID().toString(),
                 Collections.emptyList());
     }
@@ -143,12 +148,21 @@ public class SocksByteStreamsTransport implements Transport {
         Preconditions.checkState(
                 this.transportCallback != null, "transport callback needs to be set");
         // TODO this needs to go into a variable so we can cancel it
-        final var connectionFinder =
-                new ConnectionFinder(
-                        theirCandidates, theirDestination, selectedByThemCandidate, useTor);
-        new Thread(connectionFinder).start();
+        final ListenableFuture<Connection> future;
+        if (useRelays) {
+            future =
+                    Futures.immediateFailedFuture(
+                            new IllegalStateException(
+                                    "Connecting to their candidates is disabled by setting"));
+        } else {
+            final var connectionFinder =
+                    new ConnectionFinder(
+                            theirCandidates, theirDestination, selectedByThemCandidate, useTor);
+            new Thread(connectionFinder).start();
+            future = connectionFinder.connectionFuture;
+        }
         Futures.addCallback(
-                connectionFinder.connectionFuture,
+                future,
                 new FutureCallback<>() {
                     @Override
                     public void onSuccess(final Connection connection) {
@@ -472,12 +486,15 @@ public class SocksByteStreamsTransport implements Transport {
         private final ArrayList<Connection> peerConnections = new ArrayList<>();
 
         private ConnectionProvider(
-                final Jid account, final String destination, final boolean useTor) {
+                final Jid account,
+                final String destination,
+                final boolean useTor,
+                final boolean useRelays) {
             final SecureRandom secureRandom = new SecureRandom();
             this.port = secureRandom.nextInt(60_000) + 1024;
             this.destination = destination;
             final InetAddress[] localAddresses;
-            if (Config.USE_DIRECT_JINGLE_CANDIDATES && !useTor) {
+            if (Config.USE_DIRECT_JINGLE_CANDIDATES && !useTor && !useRelays) {
                 localAddresses =
                         DirectConnectionUtils.getLocalAddresses().toArray(new InetAddress[0]);
             } else {

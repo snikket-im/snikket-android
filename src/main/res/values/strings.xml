@@ -1065,7 +1065,7 @@
     <string name="pref_category_operating_system">Operating System</string>
     <string name="pref_privacy_summary">Typing notifications, Last Seen, Availability</string>
     <string name="pref_connection_summary">Hostname &amp; Port, Tor</string>
-    <string name="pref_connection_summary_w_cd">Hostname &amp; Port, Tor, Channel Discovery</string>
+    <string name="pref_connection_summary_w_cd">Hostname &amp; Port, Tor, P2P, Channel Discovery</string>
     <string name="pref_keyboard_options">Keyboard</string>
     <string name="pref_category_engagement_notifications">Engagement notifications</string>
     <string name="pref_category_application">Application</string>
@@ -1139,4 +1139,7 @@
     <string name="empty_conversations_list_hint">Once you start a new conversation, you’ll see it listed here</string>
     <string name="number_reactions_are_restricted">Reaction limit reached.</string>
     <string name="this_reaction_isnt_allowed">This reaction isn’t allowed.</string>
+    <string name="peer_to_peer">Peer-to-peer</string>
+    <string name="pref_use_relays">Always use relays</string>
+    <string name="pref_use_relays_summary">Relay all P2P connections (calls and file transfers) through your server to avoid revealing your IP address.</string>
 </resources>
