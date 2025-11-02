@@ -658,7 +658,7 @@
     <string name="pref_headsup_notifications_summary">显示提醒式通知</string>
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
-    <string name="pref_validate_hostname">用 DNSSEC 验证主机名</string>
+    <string name="pref_validate_hostname">使用 DNSSEC 验证主机名‌</string>
     <string name="pref_validate_hostname_summary">包含已验证主机名的服务器证书视为已通过验证</string>
     <string name="certificate_does_not_contain_jid">证书不包含 XMPP 地址</string>
     <string name="server_info_partial">部分</string>
@@ -666,7 +666,7 @@
     <string name="copy_to_clipboard">复制到剪贴板</string>
     <string name="message_copied_to_clipboard">消息已复制到剪贴板</string>
     <string name="message">消息</string>
-    <string name="private_messages_are_disabled">已禁用私信</string>
+    <string name="private_messages_are_disabled">私信已被禁用</string>
     <string name="mtm_accept_cert">接受未知证书？</string>
     <string name="mtm_trust_anchor">服务器证书并非由已知的证书颁发机构签发。</string>
     <string name="mtm_accept_servername">接受不匹配的服务器名称？</string>
@@ -930,8 +930,8 @@
     <string name="search_this_conversation">此对话</string>
     <string name="your_avatar">您的头像</string>
     <string name="avatar_for_x">%s 的头像</string>
-    <string name="encrypted_with_omemo">用 OMEMO 加密</string>
-    <string name="encrypted_with_openpgp">用 OpenPGP 加密</string>
+    <string name="encrypted_with_omemo">使用 OMEMO 加密</string>
+    <string name="encrypted_with_openpgp">使用 OpenPGP 加密</string>
     <string name="not_encrypted">未加密</string>
     <string name="exit">退出</string>
     <string name="record_voice_mail">录制语音留言</string>
@@ -1138,4 +1138,6 @@
     <string name="server_info_occupant_id">XEP-0421：使用者标识符</string>
     <string name="account_status_tls_error_untrusted">不受信任的证书</string>
     <string name="account_status_tls_error_protocol">弱传输安全性（无 TLS 1.3）</string>
+    <string name="number_reactions_are_restricted">已达到回应上限。</string>
+    <string name="this_reaction_isnt_allowed">不允许使用此回应。</string>
 </resources>
