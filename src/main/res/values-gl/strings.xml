@@ -1144,4 +1144,6 @@
     <string name="server_info_occupant_id">XEP-0421: Identificadores de participantes</string>
     <string name="account_status_tls_error_protocol">Seguridade en tránsito feble (sen TLS 1.3)</string>
     <string name="account_status_tls_error_untrusted">Certificado sen verificar</string>
+    <string name="number_reactions_are_restricted">Acadouse o límite de reaccións.</string>
+    <string name="this_reaction_isnt_allowed">Esta reacción non está permitida.</string>
 </resources>
