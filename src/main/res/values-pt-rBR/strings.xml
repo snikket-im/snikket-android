@@ -1149,4 +1149,6 @@
     <string name="download_failed_could_not_establish_tls">Não foi possível estabelecer uma conexão TLS</string>
     <string name="account_status_tls_error_protocol">Segurança de transporte fraca (sem TLS 1.3)</string>
     <string name="account_status_tls_error_untrusted">Certificado não confiado</string>
+    <string name="number_reactions_are_restricted">Limite de reações atingido.</string>
+    <string name="this_reaction_isnt_allowed">Esta reação não é permitida.</string>
 </resources>
