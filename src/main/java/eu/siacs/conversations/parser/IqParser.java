@@ -14,6 +14,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.manager.EntityTimeManager;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.PingManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.manager.UnifiedPushManager;
@@ -320,6 +321,12 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
     }
 
     private void acceptPush(final Iq packet) {
+        // there is rarely a good reason to respond to IQs from MUCs
+        if (getManager(MultiUserChatManager.class).isMuc(packet)) {
+            this.connection.sendErrorFor(
+                    packet, Error.Type.CANCEL, new Condition.ServiceUnavailable());
+            return;
+        }
         final var jingleConnectionManager =
                 this.mXmppConnectionService.getJingleConnectionManager();
         if (packet.hasExtension(Jingle.class)) {
@@ -341,14 +348,23 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
     }
 
     private void acceptRequest(final Iq packet) {
-        if (packet.hasExtension(InfoQuery.class)) {
+        // responding to pings in MUCs is fine. this does not reveal more info than responding with
+        // service unavailable
+        if (packet.hasExtension(Ping.class)) {
+            this.getManager(PingManager.class).pong(packet);
+            return;
+        }
+
+        // there is rarely a good reason to respond to IQs from MUCs
+        if (getManager(MultiUserChatManager.class).isMuc(packet)) {
+            this.connection.sendErrorFor(
+                    packet, Error.Type.CANCEL, new Condition.ServiceUnavailable());
+        } else if (packet.hasExtension(InfoQuery.class)) {
             this.getManager(DiscoManager.class).handleInfoQuery(packet);
         } else if (packet.hasExtension(Version.class)) {
             this.getManager(DiscoManager.class).handleVersionRequest(packet);
         } else if (packet.hasExtension(Time.class)) {
             this.getManager(EntityTimeManager.class).request(packet);
-        } else if (packet.hasExtension(Ping.class)) {
-            this.getManager(PingManager.class).pong(packet);
         } else {
             this.connection.sendErrorFor(
                     packet, Error.Type.CANCEL, new Condition.FeatureNotImplemented());
