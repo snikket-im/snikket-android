@@ -1275,12 +1275,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private static int homogenizedEncryption(final int encryption) {
         return switch (encryption) {
             case Message.ENCRYPTION_AXOLOTL,
-                            Message.ENCRYPTION_AXOLOTL_FAILED,
-                            Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE ->
+                    Message.ENCRYPTION_AXOLOTL_FAILED,
+                    Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE ->
                     Message.ENCRYPTION_AXOLOTL;
             case Message.ENCRYPTION_PGP,
-                            Message.ENCRYPTION_DECRYPTED,
-                            Message.ENCRYPTION_DECRYPTION_FAILED ->
+                    Message.ENCRYPTION_DECRYPTED,
+                    Message.ENCRYPTION_DECRYPTION_FAILED ->
                     Message.ENCRYPTION_PGP;
             default -> encryption;
         };

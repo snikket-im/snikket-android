@@ -2134,8 +2134,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             case RETRACTED, RETRACTED_RACED, TERMINATED_CANCEL_OR_TIMEOUT ->
                     this.callIntegration.retracted();
             case TERMINATED_CONNECTIVITY_ERROR,
-                            TERMINATED_APPLICATION_FAILURE,
-                            TERMINATED_SECURITY_ERROR ->
+                    TERMINATED_APPLICATION_FAILURE,
+                    TERMINATED_SECURITY_ERROR ->
                     this.callIntegration.error();
             default ->
                     throw new IllegalStateException(String.format("%s is not handled", this.state));

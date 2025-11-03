@@ -508,8 +508,10 @@ public abstract class XmppActivity extends ActionBarActivity {
                             }
                         },
                         MoreExecutors.directExecutor());
-            } else {
+            } else if (account.isEnabled()) {
                 Toast.makeText(this, R.string.not_connected_try_again, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, R.string.enable_account_to_delete, Toast.LENGTH_SHORT).show();
             }
         } else {
             onAccountDeletedSuccess(account, dialog, postDelete);

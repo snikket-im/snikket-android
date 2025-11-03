@@ -1198,9 +1198,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
             case NULL, SESSION_INITIALIZED, SESSION_INITIALIZED_PRE_APPROVED ->
                     Transferable.STATUS_OFFER;
             case TERMINATED_APPLICATION_FAILURE,
-                            TERMINATED_CONNECTIVITY_ERROR,
-                            TERMINATED_DECLINED_OR_BUSY,
-                            TERMINATED_SECURITY_ERROR ->
+                    TERMINATED_CONNECTIVITY_ERROR,
+                    TERMINATED_DECLINED_OR_BUSY,
+                    TERMINATED_SECURITY_ERROR ->
                     Transferable.STATUS_FAILED;
             case TERMINATED_CANCEL_OR_TIMEOUT -> Transferable.STATUS_CANCELLED;
             case SESSION_ACCEPTED -> Transferable.STATUS_DOWNLOADING;

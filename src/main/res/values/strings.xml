@@ -919,6 +919,7 @@
     <string name="backup">Backup</string>
     <string name="category_about">About</string>
     <string name="please_enable_an_account">Please enable an account</string>
+    <string name="enable_account_to_delete">This account is disabled. Enable it to delete it from the server.</string>
     <string name="make_call">Make call</string>
     <string name="rtp_state_incoming_call">Incoming call</string>
     <string name="rtp_state_incoming_video_call">Incoming video call</string>
