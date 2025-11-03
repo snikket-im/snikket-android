@@ -1,4 +1,4 @@
-Avatud lähtekoodiga vaja ja tasuta Jabber/XMPP klient Androidile. Lihtsaltkasutatav, töökindel ja akusõbralik. Piltide, jututubade ja läbiva krüptimise tugi. Vaikimisi kasutab läbivat krüptimist. Toimib kõigi tänapäevaste Jabberi, XMPP ja Snikketi serveritega.
+Avatud lähtekoodiga vaba ja tasuta Jabber/XMPP-i klient Androidile. Lihtsaltkasutatav, töökindel ja akusõbralik. Piltide, jututubade ja läbiva krüptimise tugi. Vaikimisi kasutab läbivat krüptimist. Toimib kõigi tänapäevaste Jabberi, XMPP ja Snikketi serveritega.
 
 <b>Funktsionaalsus</b>
 • Läbiv krüptimine kas OMEMO või OpenPGP abil
