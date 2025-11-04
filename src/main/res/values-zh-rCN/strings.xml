@@ -1032,7 +1032,7 @@
     <string name="pref_category_sending">发送</string>
     <string name="pref_category_receiving">接收</string>
     <string name="pref_connection_summary">主机名和端口、Tor</string>
-    <string name="pref_connection_summary_w_cd">主机名和端口、Tor、频道发现</string>
+    <string name="pref_connection_summary_w_cd">主机名和端口、Tor、P2P、频道发现</string>
     <string name="pref_keyboard_options">键盘</string>
     <string name="pref_category_application">应用程序</string>
     <string name="pref_category_interaction">互动</string>
@@ -1140,4 +1140,8 @@
     <string name="account_status_tls_error_protocol">弱传输安全性（无 TLS 1.3）</string>
     <string name="number_reactions_are_restricted">已达到回应上限。</string>
     <string name="this_reaction_isnt_allowed">不允许使用此回应。</string>
+    <string name="enable_account_to_delete">此账号已禁用。启用后才能从服务器删除。</string>
+    <string name="peer_to_peer">P2P（点对点‌）</string>
+    <string name="pref_use_relays">始终使用中继‌</string>
+    <string name="pref_use_relays_summary">通过您的服务器中继所有 P2P 连接（通话和文件传输），以避免泄露您的 IP 地址。</string>
 </resources>
