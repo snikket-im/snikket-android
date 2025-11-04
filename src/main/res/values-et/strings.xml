@@ -1081,7 +1081,7 @@
     <string name="pref_category_operating_system">Operatsioonisüsteem</string>
     <string name="pref_privacy_summary">Kirjutamisteatised, viimati nähtud, kättesaadavus</string>
     <string name="pref_connection_summary">Hosti nimi ja port, ühendus Tori võrguga</string>
-    <string name="pref_connection_summary_w_cd">Hosti nimi ja port, ühendus Tori võrguga, kanalite tuvastamine</string>
+    <string name="pref_connection_summary_w_cd">Hosti nimi ja port, ühendus Tori võrguga, võrdõigusvõrk, kanalite tuvastamine</string>
     <string name="pref_keyboard_options">Klahvistik</string>
     <string name="unsupported_operation">Tegevus pole toetatud</string>
     <string name="pref_category_engagement_notifications">Osalusest teavitamine</string>
@@ -1166,4 +1166,8 @@
     <string name="account_status_tls_error_untrusted">Sertifikaat pole usaldusväärne</string>
     <string name="number_reactions_are_restricted">Reageerimiste arvu ülempiir on käes.</string>
     <string name="this_reaction_isnt_allowed">Selline reageerimine pole lubatud.</string>
+    <string name="enable_account_to_delete">See kasutajakonto on väljalülitatud olekus. Kui tahad ta serverist kustutada, siis pead ta esmalt sisse lülitama.</string>
+    <string name="peer_to_peer">Võrdõigusvõrk (P2P)</string>
+    <string name="pref_use_relays">Kasuta alati edastusservereid</string>
+    <string name="pref_use_relays_summary">Vältimaks sinu IP-aadressi avaldamist kasuta võrdõigusvõrgu ühenduste (kõned ja failiedastus) puhul oma serverit vaheapealse edastusserverina.</string>
 </resources>
