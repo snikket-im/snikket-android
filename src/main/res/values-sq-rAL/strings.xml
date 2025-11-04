@@ -1054,7 +1054,7 @@
     <string name="pref_category_operating_system">Sistem Operativ</string>
     <string name="pref_privacy_summary">Njoftime shtypjeje, Parë Së Fundi, I lirë/I zënë</string>
     <string name="pref_connection_summary">Strehëemër &amp; Portë, Tor</string>
-    <string name="pref_connection_summary_w_cd">Strehëemër &amp; Portë, Tor, Pikazje Kanalesh</string>
+    <string name="pref_connection_summary_w_cd">Strehëemër &amp; Portë, Tor, P2P, Pikasje Kanalesh</string>
     <string name="pref_keyboard_options">Tastierë</string>
     <string name="pref_category_engagement_notifications">Njoftime angazhimi</string>
     <string name="pref_category_application">Aplikacion</string>
@@ -1155,4 +1155,5 @@
     <string name="empty_conversations_list_hint">Pasi filloni një bisedë të re, do ta shihni të shfaqet këtu</string>
     <string name="number_reactions_are_restricted">U mbërrit në kufij reagimesh.</string>
     <string name="this_reaction_isnt_allowed">Ky reagim s’lejohet.</string>
+    <string name="enable_account_to_delete">Kjo llogari është çaktivizuar. Që ta fshihni nga shërbyesi, aktivizojeni.</string>
 </resources>
