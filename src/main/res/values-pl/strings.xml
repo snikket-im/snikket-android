@@ -1066,7 +1066,7 @@
     <string name="appearance">Wygląd</string>
     <string name="detect_mim">Wymagaj przywiązania kanału</string>
     <string name="detect_mim_summary">Przywiązanie kanału może wykryć niektóre ataki machine­‐in­‐the­‐middle</string>
-    <string name="pref_connection_summary_w_cd">Nazwa hosta i port, Tor, odkrywanie kanałów</string>
+    <string name="pref_connection_summary_w_cd">Nazwa hosta i port, Tor, odkrywanie kanałów</string>
     <string name="pref_keyboard_options">Klawiatura</string>
     <string name="pref_category_engagement_notifications">Powiadomienia o aktywności</string>
     <string name="pref_category_application">Aplikacja</string>
