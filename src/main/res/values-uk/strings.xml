@@ -314,7 +314,7 @@
     <string name="notification_backup_created_subtitle">Резервну копію збережено до %s</string>
     <string name="restoring_backup">Відновлення з резервної копії</string>
     <string name="notification_restored_backup_title">Відновлено з резервної копії</string>
-    <string name="notification_restored_backup_subtitle">Не забудьте увімкнути обліковий запис.</string>
+    <string name="notification_restored_backup_subtitle">Не забудьте ввімкнути обліковий запис.</string>
     <string name="choose_file">Файл</string>
     <string name="receiving_x_file">Отримання %1$s (%2$d%% завершено)</string>
     <string name="download_x_file">Завантажити %s</string>
@@ -946,7 +946,7 @@
     <string name="outgoing_call_timestamp">Вихідний виклик · %s</string>
     <string name="openkeychain_required_long"><![CDATA[%1$s використовує <b>OpenKeychain</b> для шифрування/дешифрування повідомлень і керування публічними ключами.<br><br>OpenKeychain поширюється на умовах ліцензії GPLv3+ і доступний для завантаження на F-Droid та Google Play.<br><br><small>(Після встановлення необхідно перезапустити %1$s.)</small>]]></string>
     <string name="more_options">Додатково</string>
-    <string name="unable_to_enable_video">Не вдалося увімкнути відео.</string>
+    <string name="unable_to_enable_video">Не вдалося ввімкнути відео.</string>
     <string name="no_active_accounts_support_this">Жоден з активних облікових записів не підтримує цієї функції</string>
     <string name="delete_from_server">Вилучити обліковий запис із сервера</string>
     <plurals name="some_messages_could_not_be_delivered">
@@ -1079,7 +1079,7 @@
     <string name="pref_title_trust_system_ca_store">Центри сертифікації</string>
     <string name="pref_category_operating_system">Операційна система</string>
     <string name="pref_connection_summary">Ім\'я вузла і порт, Tor</string>
-    <string name="pref_connection_summary_w_cd">Ім\'я вузла і порт, Tor, пошук каналів</string>
+    <string name="pref_connection_summary_w_cd">Ім\'я вузла і порт, Tor, P2P, пошук каналів</string>
     <string name="pref_keyboard_options">Клавіатура</string>
     <string name="pref_category_interaction">Взаємодія</string>
     <string name="pref_category_on_this_device">На пристрої</string>
@@ -1196,4 +1196,5 @@
     <string name="account_status_tls_error_untrusted">Недовірений сертифікат</string>
     <string name="this_reaction_isnt_allowed">Ви не можете використовувати цю реакцію.</string>
     <string name="number_reactions_are_restricted">Досягнуто обмеження кількості реакцій.</string>
+    <string name="enable_account_to_delete">Цей обліковий запис вимкнено. Ввімкніть його, щоб видалити з сервера.</string>
 </resources>
