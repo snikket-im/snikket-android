@@ -1081,7 +1081,7 @@
     <string name="detect_mim_summary">A vinculação de canal pode detectar alguns ataques de máquina-no-meio</string>
     <string name="pref_privacy_summary">Indicadores de digitação, visto por último, disponibilidade</string>
     <string name="pref_connection_summary">Nome do servidor e porta, Tor</string>
-    <string name="pref_connection_summary_w_cd">Nome do servidor e porta, Tor, descoberta de canais</string>
+    <string name="pref_connection_summary_w_cd">Nome do servidor e porta, Tor, conexões diretas, descoberta de canais</string>
     <string name="pref_keyboard_options">Teclado</string>
     <string name="pref_category_engagement_notifications">Notificações de engajamento</string>
     <string name="pref_category_application">Aplicativo</string>
@@ -1151,4 +1151,8 @@
     <string name="account_status_tls_error_untrusted">Certificado não confiado</string>
     <string name="number_reactions_are_restricted">Limite de reações atingido.</string>
     <string name="this_reaction_isnt_allowed">Esta reação não é permitida.</string>
+    <string name="enable_account_to_delete">Esta conta está desativada. Ative-a para apagá-la do servidor.</string>
+    <string name="peer_to_peer">Conexão direta</string>
+    <string name="pref_use_relays">Sempre usar relês</string>
+    <string name="pref_use_relays_summary">Passar todas as conexões \"diretas\" (chamadas e transferências de arquivo) pelo seu servidor para evitar revelar seu endereço de IP.</string>
 </resources>
