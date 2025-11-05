@@ -1197,4 +1197,7 @@
     <string name="this_reaction_isnt_allowed">Ви не можете використовувати цю реакцію.</string>
     <string name="number_reactions_are_restricted">Досягнуто обмеження кількості реакцій.</string>
     <string name="enable_account_to_delete">Цей обліковий запис вимкнено. Ввімкніть його, щоб видалити з сервера.</string>
+    <string name="peer_to_peer">Однорангові з’єднання (P2P)</string>
+    <string name="pref_use_relays_summary">Перенаправляти всі P2P-з’єднання (дзвінки та передачу файлів) через свій сервер, щоб уникнути розкриття Вашої IP-адреси.</string>
+    <string name="pref_use_relays">Використовувати ретранслятори</string>
 </resources>
