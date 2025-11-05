@@ -17,7 +17,6 @@ import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.xmpp.model.error.Condition;
-import im.conversations.android.xmpp.model.error.Error;
 import im.conversations.android.xmpp.model.roster.Item;
 import im.conversations.android.xmpp.model.roster.Query;
 import im.conversations.android.xmpp.model.stanza.Iq;
@@ -138,7 +137,7 @@ public class RosterManager extends AbstractManager implements Roster {
                     Config.LOGTAG,
                     getAccount().getJid() + ": received roster push (version=" + version + ")");
         } else {
-            connection.sendErrorFor(packet, Error.Type.AUTH, new Condition.Forbidden());
+            connection.sendErrorFor(packet, new Condition.Forbidden());
         }
     }
 

@@ -1,9 +1,9 @@
 package im.conversations.android.xmpp.model.error;
 
+import eu.siacs.conversations.xml.Namespace;
 import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
 import java.util.Locale;
-import eu.siacs.conversations.xml.Namespace;
 
 @XmlElement(namespace = Namespace.JABBER_CLIENT)
 public class Error extends Extension {
@@ -37,6 +37,10 @@ public class Error extends Extension {
         for (final Extension extension : extensions) {
             this.addExtension(extension);
         }
+    }
+
+    public void setCode(final int code) {
+        this.setAttribute("code", code);
     }
 
     public enum Type {

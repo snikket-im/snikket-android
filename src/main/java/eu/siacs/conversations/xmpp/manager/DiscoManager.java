@@ -33,7 +33,6 @@ import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import im.conversations.android.xmpp.model.disco.items.Item;
 import im.conversations.android.xmpp.model.disco.items.ItemsQuery;
 import im.conversations.android.xmpp.model.error.Condition;
-import im.conversations.android.xmpp.model.error.Error;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import im.conversations.android.xmpp.model.version.Version;
@@ -412,7 +411,7 @@ public class DiscoManager extends AbstractManager {
                                 + hash.getClass().getName());
                 serviceDescription = cachedServiceDescription;
             } else {
-                connection.sendErrorFor(request, Error.Type.CANCEL, new Condition.ItemNotFound());
+                connection.sendErrorFor(request, new Condition.ItemNotFound());
                 return;
             }
         }

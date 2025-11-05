@@ -19,7 +19,6 @@ import im.conversations.android.xmpp.model.blocking.Blocklist;
 import im.conversations.android.xmpp.model.blocking.Item;
 import im.conversations.android.xmpp.model.blocking.Unblock;
 import im.conversations.android.xmpp.model.error.Condition;
-import im.conversations.android.xmpp.model.error.Error;
 import im.conversations.android.xmpp.model.reporting.Report;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.unique.StanzaId;
@@ -89,7 +88,7 @@ public class BlockingManager extends AbstractManager {
             this.service.updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
             this.connection.sendResultFor(request);
         } else {
-            this.connection.sendErrorFor(request, Error.Type.AUTH, new Condition.Forbidden());
+            this.connection.sendErrorFor(request, new Condition.Forbidden());
         }
     }
 
@@ -103,7 +102,7 @@ public class BlockingManager extends AbstractManager {
             this.service.updateBlocklistUi(OnUpdateBlocklist.Status.UNBLOCKED);
             this.connection.sendResultFor(request);
         } else {
-            this.connection.sendErrorFor(request, Error.Type.AUTH, new Condition.Forbidden());
+            this.connection.sendErrorFor(request, new Condition.Forbidden());
         }
     }
 

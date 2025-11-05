@@ -22,7 +22,6 @@ import im.conversations.android.xmpp.model.blocking.Block;
 import im.conversations.android.xmpp.model.blocking.Unblock;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import im.conversations.android.xmpp.model.error.Condition;
-import im.conversations.android.xmpp.model.error.Error;
 import im.conversations.android.xmpp.model.ibb.InBandByteStream;
 import im.conversations.android.xmpp.model.jingle.Jingle;
 import im.conversations.android.xmpp.model.ping.Ping;
@@ -323,8 +322,7 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
     private void acceptPush(final Iq packet) {
         // there is rarely a good reason to respond to IQs from MUCs
         if (getManager(MultiUserChatManager.class).isMuc(packet)) {
-            this.connection.sendErrorFor(
-                    packet, Error.Type.CANCEL, new Condition.ServiceUnavailable());
+            this.connection.sendErrorFor(packet, new Condition.ServiceUnavailable());
             return;
         }
         final var jingleConnectionManager =
@@ -342,8 +340,7 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
         } else if (packet.hasExtension(Push.class)) {
             this.getManager(UnifiedPushManager.class).push(packet);
         } else {
-            this.connection.sendErrorFor(
-                    packet, Error.Type.CANCEL, new Condition.FeatureNotImplemented());
+            this.connection.sendErrorFor(packet, new Condition.FeatureNotImplemented());
         }
     }
 
@@ -357,8 +354,7 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
 
         // there is rarely a good reason to respond to IQs from MUCs
         if (getManager(MultiUserChatManager.class).isMuc(packet)) {
-            this.connection.sendErrorFor(
-                    packet, Error.Type.CANCEL, new Condition.ServiceUnavailable());
+            this.connection.sendErrorFor(packet, new Condition.ServiceUnavailable());
         } else if (packet.hasExtension(InfoQuery.class)) {
             this.getManager(DiscoManager.class).handleInfoQuery(packet);
         } else if (packet.hasExtension(Version.class)) {
@@ -366,8 +362,7 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
         } else if (packet.hasExtension(Time.class)) {
             this.getManager(EntityTimeManager.class).request(packet);
         } else {
-            this.connection.sendErrorFor(
-                    packet, Error.Type.CANCEL, new Condition.FeatureNotImplemented());
+            this.connection.sendErrorFor(packet, new Condition.FeatureNotImplemented());
         }
     }
 }

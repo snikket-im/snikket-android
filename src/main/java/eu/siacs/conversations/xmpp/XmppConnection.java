@@ -2489,7 +2489,6 @@ public class XmppConnection implements Runnable {
 
     public void sendErrorFor(
             final Iq request,
-            final im.conversations.android.xmpp.model.error.Error.Type type,
             final Condition condition,
             final im.conversations.android.xmpp.model.error.Error.Extension... extensions) {
         final var from = request.getFrom();
@@ -2497,9 +2496,13 @@ public class XmppConnection implements Runnable {
         final var response = new Iq(Iq.Type.ERROR);
         response.setTo(from);
         response.setId(id);
+        final var errorTypeCode = Condition.ERROR_CONDITION_MAPPING.get(condition.getClass());
         final var error =
                 response.addExtension(new im.conversations.android.xmpp.model.error.Error());
-        error.setType(type);
+        if (errorTypeCode != null) {
+            error.setType(errorTypeCode.errorType());
+            error.setCode(errorTypeCode.legacyErrorCode());
+        }
         error.setCondition(condition);
         error.addExtensions(extensions);
         this.sendPacket(response);
