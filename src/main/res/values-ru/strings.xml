@@ -1093,7 +1093,7 @@
     <string name="send_encrypted_message">Отправить зашифрованное сообщение</string>
     <string name="corresponding_chats_closed">Соответствующие беседы архивированы.</string>
     <string name="pref_title_trust_system_ca_store_summary">Доверять сертификатам системных УЦ</string>
-    <string name="pref_connection_summary_w_cd">Имя хоста и порт, Tor, обзор каналов</string>
+    <string name="pref_connection_summary_w_cd">Имя хоста и порт, Tor, P2P, обзор каналов</string>
     <string name="allow_private_messages">Разрешить личные сообщения</string>
     <string name="pref_accept_invites_from_strangers_summary">Принимать приглашения в конференции от неизвестных</string>
     <string name="unsupported_operation">Операция не поддерживается</string>
@@ -1195,4 +1195,8 @@
     <string name="account_status_tls_error_protocol">Слабая транспортная безопасность (нет TLS 1.3)</string>
     <string name="number_reactions_are_restricted">Достигнуто ограничение реакций.</string>
     <string name="this_reaction_isnt_allowed">Это недопустимая реакция.</string>
+    <string name="enable_account_to_delete">Аккаунт отключён. Включите его, чтобы удалить с сервера.</string>
+    <string name="pref_use_relays_summary">Перенаправлять все прямые (P2P) соединения (звонки и передачу файлов) через свой сервер, чтобы избежать раскрытия вашего IP-адреса.</string>
+    <string name="peer_to_peer">Прямые соединения</string>
+    <string name="pref_use_relays">Ретранслировать</string>
 </resources>
