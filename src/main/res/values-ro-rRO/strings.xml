@@ -1057,7 +1057,7 @@
     <string name="pref_category_server_connection">Conexiune server</string>
     <string name="pref_category_operating_system">Sistem de operare</string>
     <string name="pref_privacy_summary">Notificări de tastare, Văzut ultima dată, Disponibilitate</string>
-    <string name="pref_connection_summary_w_cd">Nume gazdă &amp; Port, Tor, Descoperire canale</string>
+    <string name="pref_connection_summary_w_cd">Nume gazdă &amp; Port, Tor, P2P, Descoperire canale</string>
     <string name="pref_category_e2ee">Criptare de la un capăt-la-altul (E2E)</string>
     <string name="pref_keyboard_options">Tastatură</string>
     <string name="pref_category_engagement_notifications">Notificări de implicare</string>
@@ -1166,4 +1166,8 @@
     <string name="account_status_tls_error_protocol">Securitate slabă a transportului (fără TLS 1.3)</string>
     <string name="number_reactions_are_restricted">Atinsă limita de reacții.</string>
     <string name="this_reaction_isnt_allowed">Această reacție nu este permisă.</string>
+    <string name="enable_account_to_delete">Acest cont este dezactivat. Activați-l ca să îl ștergeți de pe server.</string>
+    <string name="peer_to_peer">Peer-to-peer (P2P)</string>
+    <string name="pref_use_relays">Folosește mereu relee</string>
+    <string name="pref_use_relays_summary">Transmiteți toate conexiunile P2P (apeluri și transferuri de fișiere) prin intermediul serverului dvs. pentru a evita dezvăluirea adresei IP.</string>
 </resources>
