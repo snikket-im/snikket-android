@@ -1066,7 +1066,7 @@
     <string name="appearance">Wygląd</string>
     <string name="detect_mim">Wymagaj przywiązania kanału</string>
     <string name="detect_mim_summary">Przywiązanie kanału może wykryć niektóre ataki machine­‐in­‐the­‐middle</string>
-    <string name="pref_connection_summary_w_cd">Nazwa hosta i port, Tor, odkrywanie kanałów</string>
+    <string name="pref_connection_summary_w_cd">Nazwa hosta i port, Tor, P2P, odkrywanie kanałów</string>
     <string name="pref_keyboard_options">Klawiatura</string>
     <string name="pref_category_engagement_notifications">Powiadomienia o aktywności</string>
     <string name="pref_category_application">Aplikacja</string>
@@ -1172,4 +1172,8 @@
     <string name="account_status_tls_error_untrusted">Niezaufany certyfikat</string>
     <string name="number_reactions_are_restricted">Osiągnięto limit reakcji.</string>
     <string name="this_reaction_isnt_allowed">Ta reakcja jest niedozwolona.</string>
+    <string name="enable_account_to_delete">To konto jest wyłączone. Włącz je aby móc je usunąć z serwera.</string>
+    <string name="peer_to_peer">Peer­‑to­‑peer</string>
+    <string name="pref_use_relays">Zawsze używaj przekaźników</string>
+    <string name="pref_use_relays_summary">Przekazuj wszystkie połączenia P2P (rozmowy i przesyłanie plików) poprzez Twój serwer aby uniknąć ujawniania Twojego adresu IP.</string>
 </resources>
