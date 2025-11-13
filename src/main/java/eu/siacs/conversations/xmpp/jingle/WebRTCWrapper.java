@@ -691,11 +691,13 @@ public class WebRTCWrapper {
     }
 
     public boolean applyDtmfTone(String tone) {
-        if (toneManager == null || peerConnection == null || localAudioTrack == null) {
+        if (peerConnection == null || localAudioTrack == null) {
             return false;
         }
         localAudioTrack.rtpSender.dtmf().insertDtmf(tone, TONE_DURATION, 100);
-        toneManager.startTone(TONE_CODES.get(tone), TONE_DURATION);
+        // FIXME: ToneManager has been removed upstream. Need to fix this code
+        // to play the DTMF tone locally without ToneManager:
+        //toneManager.startTone(TONE_CODES.get(tone), TONE_DURATION);
         return true;
     }
 
