@@ -1,0 +1,14 @@
+Quicksy është një program me fillesë klientin popullor Jabber/XMPP, me zbulim të automatizuar kontaktesh.
+
+Regjistroheni me numrin tuaj të telefonit dhe Quicksy—baszuar në numrat e telefonave në librin tuaj të adresave—do t’ju sugjerojë automatikisht kontakte të mundshëm.
+
+Nën kapak, Quicksy është një klient i plotë Jabber, që ju lejon të komunikoni me cilindo përdorues në cilindo shërbyes federimi publik. Në mënyrë të ngjashme, me përdoruesit në Quicksy mund të lidhesh që nga jashtë thjesht duke shtuar +phonenumber@quicksy.im te lista juaj e kontakteve.
+
+Hiq njëkohësimin e kontakteve, ndërfaqja e përdoruesit është lënë qëllimisht sa më afër Conversations që të jetë e mundur. Kjo u lejon përdoruesve që të migrojnë, nëse duan, nga Quicksy në Conversations pa u dashur të rimësojnë se si funksionon aplikacioni.
+
+Kontaktet e sugjeruara përbëhen nga përdorues të tjerë të Quicksy-it dhe përdorues Jabber-i/XMPP-je të zakonshëm që kanë dhënë ID-në e tyre Jabber te Lista Quicksy (https://quicksy.im/#get-listed).
+
+SHËNIM: Që të jepni (https://quicksy.im/enter/) ID-në tuaj Jabber te Lista
+Quicksy, lypset një tarifë regjistrimi e aplikueshme një herë vetëm.
+
+Për më tepër hollësi, lexoni Rregulla Privatësie (https://quicksy.im/#privacy).

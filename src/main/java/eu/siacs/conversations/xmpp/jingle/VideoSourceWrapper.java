@@ -57,6 +57,9 @@ class VideoSourceWrapper {
             final EglBase.Context eglBaseContext) {
         final SurfaceTextureHelper surfaceTextureHelper =
                 SurfaceTextureHelper.create("webrtc", eglBaseContext);
+        if (surfaceTextureHelper == null) {
+            throw new IllegalStateException("Could not create SurfaceTextureHelper");
+        }
         this.videoSource = peerConnectionFactory.createVideoSource(false);
         this.cameraVideoCapturer.initialize(
                 surfaceTextureHelper, context, this.videoSource.getCapturerObserver());

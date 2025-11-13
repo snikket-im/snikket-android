@@ -282,10 +282,18 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
         if (conversation != null) {
             conversation.sort();
             conversation.setHasMessagesLeftOnServer(!done);
+            final var displayState = conversation.getDisplayState();
+            if (displayState != null) {
+                mXmppConnectionService.markReadUpToStanzaId(conversation, displayState);
+            }
         } else {
-            for (Conversation tmp : this.mXmppConnectionService.getConversations()) {
+            for (final Conversation tmp : this.mXmppConnectionService.getConversations()) {
                 if (tmp.getAccount() == query.getAccount()) {
                     tmp.sort();
+                    final var displayState = tmp.getDisplayState();
+                    if (displayState != null) {
+                        mXmppConnectionService.markReadUpToStanzaId(tmp, displayState);
+                    }
                 }
             }
         }

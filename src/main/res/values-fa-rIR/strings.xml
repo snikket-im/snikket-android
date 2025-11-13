@@ -582,7 +582,6 @@
     <string name="server_info_stream_management">XEP-0198: Stream Management</string>
     <string name="search_all_conversations">همهٔ گفتگوها</string>
     <string name="disable_notifications">قطع اعلان‌ها</string>
-    <string name="remove_bookmark_text">آیا می‌خواهید نشانک‌گذاری %s را بردارید؟ گفتگوها با این نشانک پاک نخواهند شد.</string>
     <string name="return_to_ongoing_call">بازگشت به تماس جاری</string>
     <string name="last_seen_min">آخرین بار یک دقیقه پیش</string>
     <string name="could_not_change_affiliation">تغییر نسبت %s ممکن نبود</string>
@@ -844,10 +843,9 @@
     <string name="please_enter_your_phone_number">لطفاً شمارهٔ تلفن خود را وارد کنید.</string>
     <string name="shared_text_with_x">نوشته با %s هم‌رسانی شد</string>
     <string name="try_again_in_x">لطفاً %s دیگر دوباره تلاش کنید</string>
-    <string name="sync_with_contacts_long">%1$s نیاز به دسترسی به فهرست مخاطبانتان دارد تا آن را با فهرست مخاطبان XMPP شما مقایسه کند.
-\nبا این کار نام کامل و تصویر نمایهٔ مخاطبانتان نشان داده خواهد شد.
+    <string name="sync_with_contacts_long">%1$s فهرست مخاطبان شما را به طور محلی، فقط روی همین دستگاه، بررسی می‌کند تا نام و تصویر نمایهٔ مخاطبان مشترک در XMPP را نشان دهد.
 \n
-\n%1$s فهرست مخاطبان شما را فقط به طور آفلاین مقایسه می‌کند، بی‌آن‌که چیزی را به سرور بفرستد.</string>
+\nهیچ اطلاعاتی دربارهٔ فهرست مخاطبان شما به جایی فرستاده نمی‌شود!</string>
     <string name="not_trusted">اعتمادنشده</string>
     <string name="hostname_example">‪xmpp.example.com‬</string>
     <string name="pref_treat_vibrate_as_silent">لرزش معادل بی‌صدا</string>
@@ -896,7 +894,7 @@
     <string name="registration_password_too_weak">ثبت نام شکست خورد: رمز زیادی ضعیف است</string>
     <string name="too_many_attempts">تلاش‌های بیش از حد</string>
     <string name="enter_country_code_and_phone_number">این برنامه به شما پیامکی می‌فرستد (ممکن است برایتان هزینه داشته باشد) تا شمارهٔ تلفن شما را تأیید کند. کد کشور و شمارهٔ تلفن خود را وارد کنید:</string>
-    <string name="sync_with_contacts">همگام‌سازی با مخاطبان</string>
+    <string name="sync_with_contacts">یکپارچه‌سازی فهرست مخاطبان</string>
     <string name="account_status_bind_failure">خطای اتصال</string>
     <string name="unable_to_parse_certificate">تأییدیهٔ امنیتی قابل خواندن نبود</string>
     <string name="draft">پیش‌نویس:</string>
@@ -984,7 +982,6 @@
     <string name="this_account_is_disabled">شما این حساب را غیرفعال کرده‌اید</string>
     <string name="pref_connection_options">اتصال</string>
     <string name="contact_asks_for_presence_subscription">مخاطب می‌خواهد وضعیت وصل‌بودن شما را بداند</string>
-    <string name="channel_discover_opt_in_message">کاوش کانال‌ها یک سرویس خارجی به نام &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; را به‌کار می‌برد.&lt;br&gt;&lt;br&gt;به‌کاربردن این ویژگی نشانی IP و کلمات مورد جستجوی شما را به این سرویس می‌فرستد. برای اطلاعات بیشتر &lt;a href=https://search.jabber.network/privacy&gt;سیاست محرمانگی&lt;/a&gt; آن‌ها را ببینید.</string>
     <string name="incorrect_pin">کدی که وارد کردید نادرست است.</string>
     <string name="phone_number">شماره تلفن</string>
     <string name="pref_theme_automatic">خودکار</string>
@@ -1048,4 +1045,11 @@
     <string name="account_settings_hostname">نام میزبان</string>
     <string name="copy_link">کپی نشانی وب</string>
     <string name="unable_to_update_account">به‌روزرسانی حساب ممکن نبود</string>
+    <string name="rtp_state_contact_offline">مخاطب در دسترس نیست</string>
+    <string name="welcome_header_quicksy">به Quicksy خوش آمدید!</string>
+    <string name="privacy_policy">سیاست محرمانگی</string>
+    <string name="contact_list_integration_not_available">یکپارچه‌سازی فهرست مخاطبان در دسترس نیست</string>
+    <string name="quicksy_wants_your_consent">این برنامه برای به‌کاربردن داده‌های شما نیازمند موافقت شماست</string>
+    <string name="call_integration_not_available">یکپارچه‌سازی تماس تلفنی در دسترس نیست!</string>
+    <string name="no_permission_to_place_call">اجازهٔ تماس تلفنی وجود ندارد</string>
 </resources>

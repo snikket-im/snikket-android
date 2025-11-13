@@ -31,10 +31,7 @@
     <string name="minutes_ago">%d perce</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d olvasatlan beszélgetés</item>
-
-    
         <item quantity="other">%d olvasatlan beszélgetés</item>
-
     </plurals>
     <string name="sending">küldés…</string>
     <string name="message_decrypting">Üzenet visszafejtése. Kérem várjon…</string>
@@ -53,7 +50,6 @@
     <string name="unblock_domain_text">%s összes partnerének tiltását feloldja?</string>
     <string name="contact_blocked">Partner tiltva</string>
     <string name="blocked">Tiltva</string>
-    <string name="remove_bookmark_text">Szeretné eltávolítani ezt a könyvjelzőkből: %s? Ezzel a könyvjelzővel megjelölt beszélgetései nem lesznek eltávolítva.</string>
     <string name="register_account">Új fiók regisztrálása a kiszolgálón</string>
     <string name="change_password_on_server">Jelszó megváltoztatása a kiszolgálón</string>
     <string name="share_with">Megosztás ezzel…</string>
@@ -890,4 +886,4 @@
         <item quantity="one">%1$d résztvevő megtekintése</item>
         <item quantity="other">%1$d résztvevő megtekintése</item>
     </plurals>
-    </resources>
+</resources>

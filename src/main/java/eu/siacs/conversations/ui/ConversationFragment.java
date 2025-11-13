@@ -86,6 +86,7 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.http.HttpDownloadConnection;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.CallIntegrationConnectionService;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -126,6 +127,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -1555,21 +1557,27 @@ public class ConversationFragment extends XmppFragment
         if (ongoingRtpSession.isPresent()) {
             final OngoingRtpSession id = ongoingRtpSession.get();
             final Intent intent = new Intent(getActivity(), RtpSessionActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
             intent.putExtra(
                     RtpSessionActivity.EXTRA_ACCOUNT,
                     id.getAccount().getJid().asBareJid().toEscapedString());
             intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.getWith().toEscapedString());
-            if (id instanceof AbstractJingleConnection.Id) {
-                intent.setAction(Intent.ACTION_VIEW);
+            if (id instanceof AbstractJingleConnection) {
                 intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.getSessionId());
-            } else if (id instanceof JingleConnectionManager.RtpSessionProposal) {
-                if (((JingleConnectionManager.RtpSessionProposal) id).media.contains(Media.VIDEO)) {
-                    intent.setAction(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
+                startActivity(intent);
+            } else if (id instanceof JingleConnectionManager.RtpSessionProposal proposal) {
+                if (Media.audioOnly(proposal.media)) {
+                    intent.putExtra(
+                            RtpSessionActivity.EXTRA_LAST_ACTION,
+                            RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
                 } else {
-                    intent.setAction(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+                    intent.putExtra(
+                            RtpSessionActivity.EXTRA_LAST_ACTION,
+                            RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
                 }
+                intent.putExtra(RtpSessionActivity.EXTRA_PROPOSED_SESSION_ID, proposal.sessionId);
+                startActivity(intent);
             }
-            startActivity(intent);
         }
     }
 
@@ -1632,7 +1640,7 @@ public class ConversationFragment extends XmppFragment
             activity.xmppConnectionService.updateAccount(account);
         }
         final Contact contact = conversation.getContact();
-        if (RtpCapability.jmiSupport(contact)) {
+        if (Config.USE_JINGLE_MESSAGE_INIT && RtpCapability.jmiSupport(contact)) {
             triggerRtpSession(contact.getAccount(), contact.getJid().asBareJid(), action);
         } else {
             final RtpCapability.Capability capability;
@@ -1652,13 +1660,7 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void triggerRtpSession(final Account account, final Jid with, final String action) {
-        final Intent intent = new Intent(activity, RtpSessionActivity.class);
-        intent.setAction(action);
-        intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, account.getJid().toEscapedString());
-        intent.putExtra(RtpSessionActivity.EXTRA_WITH, with.toEscapedString());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        CallIntegrationConnectionService.placeCall(activity.xmppConnectionService, account,with,RtpSessionActivity.actionToMedia(action));
     }
 
     private void handleAttachmentSelection(MenuItem item) {
@@ -1986,26 +1988,22 @@ public class ConversationFragment extends XmppFragment
     }
 
     private boolean hasPermissions(int requestCode, List<String> permissions) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            final List<String> missingPermissions = new ArrayList<>();
-            for (String permission : permissions) {
-                if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU || Config.ONLY_INTERNAL_STORAGE) && permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    continue;
-                }
-                if (activity.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                    missingPermissions.add(permission);
-                }
+        final List<String> missingPermissions = new ArrayList<>();
+        for (String permission : permissions) {
+            if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU || Config.ONLY_INTERNAL_STORAGE) && permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                continue;
             }
-            if (missingPermissions.size() == 0) {
-                return true;
-            } else {
-                requestPermissions(
-                        missingPermissions.toArray(new String[0]),
-                        requestCode);
-                return false;
+            if (activity.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                missingPermissions.add(permission);
             }
-        } else {
+        }
+        if (missingPermissions.size() == 0) {
             return true;
+        } else {
+            requestPermissions(
+                    missingPermissions.toArray(new String[0]),
+                    requestCode);
+            return false;
         }
     }
 
@@ -2628,10 +2626,10 @@ public class ConversationFragment extends XmppFragment
         final Iterator<Uri> iterator = uris.iterator();
         while (iterator.hasNext()) {
             final Uri uri = iterator.next();
-            if (FileBackend.weOwnFile(uri)) {
+            if (FileBackend.dangerousFile(uri)) {
                 iterator.remove();
                 Toast.makeText(
-                                getActivity(),
+                                requireActivity(),
                                 R.string.security_violation_not_attaching_file,
                                 Toast.LENGTH_SHORT)
                         .show();

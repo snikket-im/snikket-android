@@ -50,7 +50,6 @@
     <string name="unblock_domain_text">Alle Kontakte von %s entsperren?</string>
     <string name="contact_blocked">Kontakt gesperrt</string>
     <string name="blocked">Gesperrt</string>
-    <string name="remove_bookmark_text">Möchtest du %s als Lesezeichen entfernen? Unterhaltungen mit diesem Lesezeichen werden dabei nicht entfernt.</string>
     <string name="register_account">Neues Konto auf Server erstellen</string>
     <string name="change_password_on_server">Passwort ändern</string>
     <string name="share_with">Teilen mit…</string>
@@ -515,8 +514,10 @@
     <string name="shared_text_with_x">Text mit %s geteilt</string>
     <string name="no_storage_permission"> %1$s den Zugriff auf den externen Speicher gewähren</string>
     <string name="no_camera_permission">%1$s den Zugriff auf die Kamera gewähren</string>
-    <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
-    <string name="sync_with_contacts_long">%1$s möchte die Erlaubnis, auf deine Kontakte zuzugreifen, um sie mit deiner XMPP-Kontaktliste abzugleichen.\nDadurch werden die vollständigen Namen und Profilbilder deiner Kontakte angezeigt.\n\n%1$s liest nur dein Adressbuch und gleicht es lokal ab, ohne dass etwas auf deinen Server hochgeladen wird.</string>
+    <string name="sync_with_contacts">Kontaktlistenintegration</string>
+    <string name="sync_with_contacts_long">%1$s verarbeitet deine Kontaktliste lokal auf deinem Gerät, um dir die Namen und Profilbilder von passenden Kontakten auf XMPP zu zeigen.
+\n
+\nKeine Daten der Kontaktliste verlassen jemals dein Gerät!</string>
     <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
     <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich erwähnt werde</string>
     <string name="notify_never">Benachrichtigungen deaktiviert</string>
@@ -1008,7 +1009,6 @@
     <string name="group_chats">Gruppenchats</string>
     <string name="save_as_group_chat">Als Gruppenchat speichern</string>
     <string name="search_group_chats">Gruppenchats durchsuchen</string>
-    <string name="channel_discover_opt_in_message">Die Channelsuche verwendet einen Drittanbieterservice namens &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der &lt;a href=https://search.jabber.network/privacy&gt;Datenschutzerklärung&lt;/a&gt;.</string>
     <string name="restore_warning_continued">Versuche nicht, Backups wiederherzustellen, die du nicht selbst erstellt hast!</string>
     <string name="outdated_backup_file_format">Du versuchst, ein veraltetes Sicherungsdateiformat zu importieren</string>
     <string name="audiobook">Hörbuch</string>
@@ -1025,5 +1025,12 @@
     <string name="welcome_header_quicksy">Willkommen bei Quicksy!</string>
     <string name="privacy_policy">Datenschutzbestimmungen</string>
     <string name="quicksy_wants_your_consent">Quicksy bittet dich um deine Zustimmung zur Verwendung deiner Daten</string>
-    <string name="contact_list_integration_not_available">Adressbuchintegration ist nicht verfügbar</string>
+    <string name="contact_list_integration_not_available">Kontaktlistenintegration ist nicht verfügbar</string>
+    <string name="call_integration_not_available">Anrufintegration nicht verfügbar!</string>
+    <string name="no_permission_to_place_call">Keine Berechtigung für Telefonanrufe</string>
+    <string name="rtp_state_contact_offline">Kontakt ist nicht verfügbar</string>
+    <string name="remove_bookmark_and_close">Möchtest du das Lesezeichen für %s entfernen und die Unterhaltung schließen?</string>
+    <string name="delete_and_close">Löschen &amp; Schließen</string>
+    <string name="remove_bookmark">Willst du das Lesezeichen für %s entfernen?</string>
+    <string name="channel_discover_opt_in_message">Die Channelsuche verwendet einen Drittanbieterservice namens &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der &lt;a href=https://search.jabber.network/privacy&gt;Datenschutzerklärung&lt;/a&gt;.</string>
 </resources>

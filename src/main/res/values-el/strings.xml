@@ -31,10 +31,7 @@
     <string name="minutes_ago">πριν από %d λεπτά</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d μη αναγνωσμένη συζήτηση</item>
-
-    
         <item quantity="other">%d μη αναγνωσμένες συζητήσεις</item>
-
     </plurals>
     <string name="sending">αποστολή...</string>
     <string name="message_decrypting">Αποκρυπτογράφηση μηνύματος. Παρακαλώ περιμένετε...</string>
@@ -53,7 +50,6 @@
     <string name="unblock_domain_text">Άρση αποκλεισμού όλων των επαφών από το %s;</string>
     <string name="contact_blocked">Η επαφή αποκλείστηκε</string>
     <string name="blocked">Αποκλεισμένος</string>
-    <string name="remove_bookmark_text">Θέλετε να αφαιρέσετε το %s από σελιδοδείκτη; Οι συζητήσεις που σχετίζονται με αυτόν τον σελιδοδείκτη δεν θα αφαιρεθούν.</string>
     <string name="register_account">Εγγραφή νέου λογαριασμού στον διακομιστή</string>
     <string name="change_password_on_server">Αλλαγή συνθηματικού στον διακομιστή</string>
     <string name="share_with">Διαμοιρασμός με...</string>
@@ -509,7 +505,10 @@
     <string name="no_storage_permission">Απόδοση δικαιώματος στο %1$s για πρόσβαση στον εξωτερικό αποθηκευτικό χώρο</string>
     <string name="no_camera_permission">Απόδοση δικαιώματος στο %1$s για πρόσβαση στην φωτογραφική μηχανή</string>
     <string name="sync_with_contacts">Συγχρονισμός με επαφές</string>
-    <string name="sync_with_contacts_long">Το %1$s ζητάει το δικαίωμα να έχει πρόσβαση στο βιβλίο διευθύνσεων για να το ταιριάξει με την λίστα επαφών XMPP σας.\nΑυτή η ενέργεια θα εμφανίσει τα πλήρη ονόματα και τις εικόνες προφίλ των επαφών σας.\n\nΤο %1$s θα διαβάσει μόνο το βιβλίο διευθύνσεών σας και θα το ταιριάξει τοπικά χωρίς να μεταφορτώσει κανένα στοιχείο στον διακομιστή σας. </string>
+    <string name="sync_with_contacts_long">Το %1$s ζητάει το δικαίωμα να έχει πρόσβαση στο βιβλίο διευθύνσεων για να το ταιριάξει με την λίστα επαφών XMPP σας.
+\nΑυτή η ενέργεια θα εμφανίσει τα πλήρη ονόματα και τις εικόνες προφίλ των επαφών σας.
+\n
+\nΤο %1$s θα διαβάσει μόνο το βιβλίο διευθύνσεών σας και θα το ταιριάξει τοπικά χωρίς να μεταφορτώσει κανένα στοιχείο στον διακομιστή σας.</string>
     <string name="notify_on_all_messages">Ειδοποίηση για όλα τα μηνύματα</string>
     <string name="notify_only_when_highlighted">Ειδοποίηση μόνο όταν αναφέρεται το όνομά μου</string>
     <string name="notify_never">Οι ειδοποιήσεις απενεργοποιήθηκαν</string>
@@ -965,4 +964,4 @@
     <string name="plain_text_document">Έγγραφο απλού κειμένου</string>
     <string name="account_registrations_are_not_supported">Δεν υποστηρίζονται εγγραφές λογαριασμών</string>
     <string name="no_xmpp_adddress_found">Δεν βρέθηκε διεύθυνση XMPP</string>
-    </resources>
+</resources>

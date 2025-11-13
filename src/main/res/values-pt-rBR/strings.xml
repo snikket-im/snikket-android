@@ -31,13 +31,8 @@
     <string name="minutes_ago">%d minutos atrás</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d conversa não lida</item>
-
-    
         <item quantity="many">%d conversas não lidas</item>
-
-    
         <item quantity="other">%d conversas não lidas</item>
-
     </plurals>
     <string name="sending">enviando...</string>
     <string name="message_decrypting">Descriptografando a mensagem. Por favor, aguarde...</string>
@@ -56,7 +51,6 @@
     <string name="unblock_domain_text">Desbloquear todos os contatos de %s?</string>
     <string name="contact_blocked">Contato bloqueado</string>
     <string name="blocked">Bloqueado</string>
-    <string name="remove_bookmark_text">Você deseja remover %s dos favoritos? As conversas associadas a esse favorito não serão removidas.</string>
     <string name="register_account">Registrar uma nova conta no servidor</string>
     <string name="change_password_on_server">Alterar a senha no servidor</string>
     <string name="share_with">Compartilhar com...</string>
@@ -520,7 +514,9 @@
     <string name="no_storage_permission">Permita o acesso do %1$s ao armazenamento externo</string>
     <string name="no_camera_permission">Permita o acesso do %1$s à câmera</string>
     <string name="sync_with_contacts">Sincronizar com os contatos</string>
-    <string name="sync_with_contacts_long">%1$s gostaria de obter a permissão para acessar seu livro de endereços e fazer a correspondência entre ele e a sua lista de contatos do XMPP. Isso permitirá exibir os nomes completos e avatares dos seus contatos.\n\n%1$s fará a leitura e a correspondência do seu livro de endereços localmente, sem enviar os seus contatos para o servidor em uso.</string>
+    <string name="sync_with_contacts_long">%1$s gostaria de obter a permissão para acessar seu livro de endereços e fazer a correspondência entre ele e a sua lista de contatos do XMPP. Isso permitirá exibir os nomes completos e avatares dos seus contatos.
+\n
+\n%1$s fará a leitura e a correspondência do seu livro de endereços localmente, sem enviar os seus contatos para o servidor em uso.</string>
     <string name="notify_on_all_messages">Notificar em todas as mensagens</string>
     <string name="notify_only_when_highlighted">Notificar somente quando for mencionado</string>
     <string name="notify_never">Notificações desabilitadas</string>
@@ -1007,5 +1003,4 @@
     <string name="audio_video_disabled_tor">As chamadas estão desabilitadas ao usar Tor</string>
     <string name="switch_to_video">Mudar para vídeo</string>
     <string name="reject_switch_to_video">Recusar requisição de mudança para vídeo</string>
-
 </resources>

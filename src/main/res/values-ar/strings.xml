@@ -46,7 +46,6 @@
     <string name="unblock_domain_text">الغاء حجب جميع جهات الإتصال من %s?</string>
     <string name="contact_blocked">جهة الاتصال محجوبه</string>
     <string name="blocked">محجوب</string>
-    <string name="remove_bookmark_text">هل تريد حذف %sمن قائمة المفضلة؟ المحادثات مع هذا المفضل لن تحذف.</string>
     <string name="register_account">تسجيل حساب جديد في سيرفر</string>
     <string name="change_password_on_server">تغيير كلمة المرور في سيرفر</string>
     <string name="share_with">مشاركة مع</string>

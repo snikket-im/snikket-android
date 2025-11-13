@@ -1,0 +1,4 @@
+* Përdorim më i lehtë i “Shfaq kod QR”
+* Mbulim për Faqerojtës PEP të vetëm sistemit
+* Shtim mbulimi për Ofertë SDP / Model Përgjigjesh (Përdorur nga kanale SIP)
+* Ngritje e versioni të synuar API në Android 14

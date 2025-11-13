@@ -7,7 +7,7 @@
     <string name="action_end_conversation">会話を閉じる</string>
     <string name="action_contact_details">連絡先の詳細</string>
     <string name="action_muc_details">グループチャットの詳細</string>
-    <string name="channel_details">チャンネルの詳細</string>
+    <string name="channel_details">談話室の詳細</string>
     <string name="action_add_account">アカウントを追加</string>
     <string name="action_edit_contact">名前を編集</string>
     <string name="action_add_phone_book">アドレス帳に追加</string>
@@ -35,11 +35,11 @@
     <string name="sending">送信中…</string>
     <string name="message_decrypting">メッセージを復号しています。しばらくお待ちください…</string>
     <string name="pgp_message">OpenPGPで暗号化されたメッセージ</string>
-    <string name="nick_in_use">ニックネームは既に使用されています</string>
-    <string name="invalid_muc_nick">このニックネームは使えません</string>
+    <string name="nick_in_use">ニックネームはすでに使用されています</string>
+    <string name="invalid_muc_nick">ニックネームが正しくありません</string>
     <string name="admin">管理者</string>
     <string name="owner">所有者</string>
-    <string name="moderator">調停者</string>
+    <string name="moderator">司会者</string>
     <string name="participant">参加者</string>
     <string name="visitor">訪問者</string>
     <string name="remove_contact_text">連絡先リストから%sを削除しますか? この連絡先との会話は削除されません。</string>
@@ -49,7 +49,6 @@
     <string name="unblock_domain_text">%sのすべての連絡先のブロックを解除しますか？</string>
     <string name="contact_blocked">連絡先をブロックしました</string>
     <string name="blocked">ブロックしました</string>
-    <string name="remove_bookmark_text">%s のブックマークを削除しますか? このブックマークとの会話は削除されません。</string>
     <string name="register_account">サーバーに新規アカウントを登録</string>
     <string name="change_password_on_server">サーバーのパスワードを変更</string>
     <string name="share_with">…で共有</string>
@@ -160,10 +159,10 @@
     <string name="account_status_not_found">サーバーが見つかりません</string>
     <string name="account_status_no_internet">接続なし</string>
     <string name="account_status_regis_fail">登録に失敗しました</string>
-    <string name="account_status_regis_conflict">ユーザー名は既に使用されています</string>
+    <string name="account_status_regis_conflict">ユーザー名はすでに使用されています</string>
     <string name="account_status_regis_success">登録が完了しました</string>
     <string name="account_status_regis_not_sup">サーバーは登録をサポートしていません</string>
-    <string name="account_status_regis_invalid_token">登録トークンが無効です</string>
+    <string name="account_status_regis_invalid_token">登録トークンが正しくありません</string>
     <string name="account_status_tls_error">TLS ネゴシエーションに失敗しました</string>
     <string name="account_status_tls_error_domain">検証不可能なドメイン</string>
     <string name="account_status_policy_violation">ポリシー違反</string>
@@ -199,7 +198,7 @@
     <string name="server_info_blocking">XEP-0191: ブロッキング コマンド</string>
     <string name="server_info_roster_version">XEP-0237: 名簿バージョン管理</string>
     <string name="server_info_stream_management">XEP-0198: ストリーム管理</string>
-    <string name="server_info_external_service_discovery">XEP-0215: 外部サービスの発見</string>
+    <string name="server_info_external_service_discovery">XEP-0215: 外部サービス探索</string>
     <string name="server_info_pep">XEP-0163: PEP (アバター / OMEMO)</string>
     <string name="server_info_http_upload">XEP-0363: HTTP ファイルアップロード</string>
     <string name="server_info_push">XEP-0357: プッシュ</string>
@@ -216,12 +215,12 @@
     <string name="install_openkeychain">暗号化されたメッセージです。復号するには OpenKeychain をインストールしてください。</string>
     <string name="openpgp_messages_found">新規の OpenPGP で暗号化されたメッセージが見つかりました</string>
     <string name="openpgp_key_id">OpenPGP 鍵 ID</string>
-    <string name="omemo_fingerprint">OMEMO フィンガープリント</string>
-    <string name="omemo_fingerprint_x509">v\\OMEMO フィンガープリント</string>
-    <string name="omemo_fingerprint_selected_message">OMEMO フィンガープリント (メッセージ起源)</string>
-    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO フィンガープリント (メッセージ起源)</string>
+    <string name="omemo_fingerprint">OMEMO 指紋</string>
+    <string name="omemo_fingerprint_x509">v\\OMEMO 指紋</string>
+    <string name="omemo_fingerprint_selected_message">OMEMO 指紋 (メッセージ起源)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO 指紋 (メッセージ起源)</string>
     <string name="other_devices">他のデバイス</string>
-    <string name="trust_omemo_fingerprints">OMEMO フィンガープリントを信頼</string>
+    <string name="trust_omemo_fingerprints">OMEMO 指紋を信頼</string>
     <string name="fetching_keys">暗号鍵の取得中…</string>
     <string name="done">完了</string>
     <string name="decrypt">復号</string>
@@ -233,7 +232,7 @@
     <string name="unblock_contact">連絡先のブロックを解除</string>
     <string name="create">作成</string>
     <string name="select">選択</string>
-    <string name="contact_already_exists">連絡先は既に存在します</string>
+    <string name="contact_already_exists">連絡先はすでに存在しています</string>
     <string name="join">参加</string>
     <string name="channel_full_jid_example">channel@conference.example.com/nick</string>
     <string name="channel_bare_jid_example">channel@conference.example.com</string>
@@ -249,7 +248,7 @@
     <string name="topic">トピック</string>
     <string name="joining_conference">グループチャットに参加しています…</string>
     <string name="leave">退出</string>
-    <string name="contact_added_you">連絡先があなたを連絡先名簿に追加しました</string>
+    <string name="contact_added_you">連絡先があなたを連絡先リストに追加しました</string>
     <string name="add_back">戻りを追加</string>
     <string name="contact_has_read_up_to_this_point">%s はここまで読みました</string>
     <string name="contacts_have_read_up_to_this_point">%s はここまで読みました</string>
@@ -267,7 +266,7 @@
     <string name="private_message_to">%s へ</string>
     <string name="send_private_message_to">非公開メッセージを %s へ送信</string>
     <string name="connect">接続</string>
-    <string name="account_already_exists">このアカウントは既に存在します</string>
+    <string name="account_already_exists">このアカウントはすでに存在しています</string>
     <string name="next">次へ</string>
     <string name="server_info_session_established">セッションが確立</string>
     <string name="skip">スキップ</string>
@@ -292,7 +291,7 @@
     <string name="pref_quiet_hours_summary">消音時間の間、通知は無音になります</string>
     <string name="pref_expert_options_other">その他</string>
     <string name="pref_autojoin">ブックマーク同期</string>
-    <string name="toast_message_omemo_fingerprint">OMEMO フィンガープリントをクリップボードにコピーしました</string>
+    <string name="toast_message_omemo_fingerprint">OMEMO 指紋をクリップボードにコピーしました</string>
     <string name="conference_banned">このグループチャットへの参加はブロックされています</string>
     <string name="conference_members_only">このグループチャットはメンバー制です</string>
     <string name="conference_resource_constraint">リソース制限</string>
@@ -316,8 +315,8 @@
     <string name="jabber_id_copied_to_clipboard">XMPP アドレスをクリップボードにコピーしました</string>
     <string name="error_message_copied_to_clipboard">エラーメッセージをクリップボードにコピーしました</string>
     <string name="web_address">ウェブアドレス</string>
-    <string name="scan_qr_code">二次元バーコードをスキャン</string>
-    <string name="show_qr_code">二次元バーコードを表示</string>
+    <string name="scan_qr_code">QR コードをスキャン</string>
+    <string name="show_qr_code">QR コードを表示</string>
     <string name="show_block_list">ブロック一覧を表示</string>
     <string name="account_details">アカウントの詳細</string>
     <string name="confirm">確認</string>
@@ -354,7 +353,7 @@
     <string name="no_conference_server_found">グループチャットのサーバーが見つかりませんでした</string>
     <string name="conference_creation_failed">グループチャットを作成できません</string>
     <string name="account_image_description">アカウントのアバター</string>
-    <string name="copy_omemo_clipboard_description">クリップボードに OMEMO フィンガープリントをコピー</string>
+    <string name="copy_omemo_clipboard_description">クリップボードに OMEMO 指紋をコピー</string>
     <string name="regenerate_omemo_key">OMEMO 鍵を再生成</string>
     <string name="clear_other_devices">デバイスを消去</string>
     <string name="clear_other_devices_desc">OMEMO の告知から他のすべてのデバイスを消去してもよろしいですか? お使いのデバイスが次回接続したとき、それらのデバイスは自分自身を再告知しますが、その間に送信されたメッセージを受信できない場合があります。</string>
@@ -396,7 +395,7 @@
     <string name="channel_options">公開談話室の環境設定</string>
     <string name="members_only">非公開、メンバーのみ</string>
     <string name="non_anonymous">XMPPアドレスを誰でも見れるようにする</string>
-    <string name="moderated">談話室の調停をする</string>
+    <string name="moderated">談話室を司会ありにする</string>
     <string name="you_are_not_participating">あなたは参加していません</string>
     <string name="modified_conference_options">グループチャットの設定が変更されました!</string>
     <string name="could_not_modify_conference_options">グループチャットの設定を変更できませんでした</string>
@@ -509,8 +508,10 @@
     <string name="shared_text_with_x">%s でテキスト共有</string>
     <string name="no_storage_permission">%1$s に外部ストレージへのアクセス権を付与してください</string>
     <string name="no_camera_permission">%1$s にカメラへのアクセス権を付与</string>
-    <string name="sync_with_contacts">連絡先と同期</string>
-    <string name="sync_with_contacts_long">%1$s はあなたのアドレス帳にアクセスして、あなたのXMPP 連絡先名簿と照合する権限を求めています。\nこれにより、連絡先のフルネームとアバターが表示されます。\n\n%1$s は、あなたのサーバーに何かをアップロードすることなく、あなたのアドレス帳を読み込んで照合するだけです。</string>
+    <string name="sync_with_contacts">連絡先リストの統合</string>
+    <string name="sync_with_contacts_long">%1$s は、デバイス上で、連絡先リストをローカルに処理し、XMPP 上の一致する連絡先の名前とプロフィール写真を表示します。
+\n
+\n連絡先リストのデータがデバイスから流出することはありません。</string>
     <string name="notify_on_all_messages">すべてのメッセージで通知</string>
     <string name="notify_only_when_highlighted">メンションされたときにのみ通知</string>
     <string name="notify_never">通知は無効</string>
@@ -528,13 +529,14 @@
     <string name="this_field_is_required">このフィールドは必須項目です</string>
     <string name="correct_message">メッセージを修正</string>
     <string name="send_corrected_message">修正したメッセージを送信</string>
-    <string name="no_keys_just_confirm">あなたは信頼を確認するために、この人の指紋を安全に検証しました。“完了”を選択すると、 %s がこのグループチャットの一員であることを確認したことになります。</string>
+    <string name="no_keys_just_confirm">すでにこの人の指紋を信頼しています。“完了”を選択すると、 %s がこのグループチャットの一員であることを確認したことになります。</string>
     <string name="this_account_is_disabled">このアカウントを無効化しました</string>
     <string name="security_error_invalid_file_access">セキュリティエラー: 不正なファイルアクセス!</string>
     <string name="no_application_to_share_uri">URI を共有するアプリが見つかりません</string>
     <string name="share_uri_with">…で URI を共有</string>
     <string name="agree_and_continue">同意して続行</string>
-    <string name="magic_create_text">conversations.im 上にアカウントを作成する設定の指南です。¹\nconversations.im をプロバイダーとして選択した場合、あなたの完全な XMPP アドレスを他のプロバイダーのユーザーに示すことで、その人と連絡をとることができます。</string>
+    <string name="magic_create_text">conversations.im 上にアカウントを作成する設定の指南です。
+\nconversations.im をプロバイダーとして選択した場合、あなたの完全な XMPP アドレスを他のプロバイダーのユーザーに示すことで、その人と連絡をとることができます。</string>
     <string name="your_full_jid_will_be">あなたの完全なXMPPアドレスは: %s</string>
     <string name="create_account">アカウントを作成</string>
     <string name="use_own_provider">自分のプロバイダーを使用</string>
@@ -586,7 +588,7 @@
     <string name="unable_to_update_account">アカウントを更新できません</string>
     <string name="report_jid_as_spammer">この XMPP アドレスをスパムとして報告する。</string>
     <string name="pref_delete_omemo_identities">OMEMO ID を削除</string>
-    <string name="pref_delete_omemo_identities_summary">OMEMO 鍵を再生成します。すべての連絡先を再度確認する必要があります。使用するのは最後の手段のみとしてください。</string>
+    <string name="pref_delete_omemo_identities_summary">OMEMO 鍵を再生成します。すべての連絡先を再度検証する必要があります。使用するのは最後の手段のみとしてください。</string>
     <string name="delete_selected_keys">選択した鍵を削除</string>
     <string name="error_publish_avatar_offline">アバターを公開するには接続する必要があります。</string>
     <string name="show_error_message">エラーメッセージを表示</string>
@@ -596,20 +598,20 @@
     <string name="device_does_not_support_data_saver">お使いのデバイスは、%1$s のデータセーバーを無効にできません。</string>
     <string name="error_unable_to_create_temporary_file">一時ファイルを作成できません</string>
     <string name="this_device_has_been_verified">このデバイスは検証済です</string>
-    <string name="copy_fingerprint">フィンガープリントをコピー</string>
-    <string name="all_omemo_keys_have_been_verified">所有するすべての OMEMO 鍵を検証完了</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">バーコードに、この会話のフィンガープリントが含まれていません。</string>
-    <string name="verified_fingerprints">フィンガープリントを検証しました</string>
+    <string name="copy_fingerprint">指紋をコピー</string>
+    <string name="all_omemo_keys_have_been_verified">所有するすべての OMEMO 鍵を検証しました</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">バーコードに、この会話の指紋が含まれていません。</string>
+    <string name="verified_fingerprints">指紋を検証しました</string>
     <string name="use_camera_icon_to_scan_barcode">カメラを使用して連絡先のバーコードをスキャンします</string>
     <string name="please_wait_for_keys_to_be_fetched">鍵が取得されるのをお待ちください</string>
     <string name="share_as_barcode">バーコードで共有</string>
     <string name="share_as_uri">XMPP URI で共有</string>
     <string name="share_as_http">HTTP リンクで共有</string>
-    <string name="pref_blind_trust_before_verification">認証前で鍵を使用</string>
-    <string name="pref_blind_trust_before_verification_summary">認証されていない連絡先からの新規デバイスを信頼するが、認証されている連絡先からの新規デバイスについては手動での確認を求める。</string>
-    <string name="blindly_trusted_omemo_keys">認証せずOMEMO 鍵を信用しています。このままでは盗聴される危険性があります。</string>
+    <string name="pref_blind_trust_before_verification">検証前に無条件に信頼</string>
+    <string name="pref_blind_trust_before_verification_summary">検証されていない連絡先からの新しいデバイスは信頼しますが、検証済みの連絡先については新しいデバイスを手動で確認するよう求めます。</string>
+    <string name="blindly_trusted_omemo_keys">無条件に信頼されている OMEMO 鍵です。他の誰かである可能性や、誰かに盗聴される危険性があります。</string>
     <string name="not_trusted">信頼されていない</string>
-    <string name="invalid_barcode">不正な二次元バーコード</string>
+    <string name="invalid_barcode">QR コードが正しくありません</string>
     <string name="pref_clean_cache_summary">キャッシュフォルダを消去します (カメラアプリで使用)</string>
     <string name="pref_clean_cache">キャッシュを消去</string>
     <string name="pref_clean_private_storage">プライベートストレージを消去</string>
@@ -622,7 +624,8 @@
     <string name="show_inactive_devices">非アクティブを表示</string>
     <string name="hide_inactive_devices">非アクティブを非表示</string>
     <string name="distrust_omemo_key">信頼できないデバイス</string>
-    <string name="distrust_omemo_key_text">このデバイスの検証を削除してよろしいですか?\nこのデバイスとそのデバイスからのメッセージは、“信頼できない”とマークされます。</string>
+    <string name="distrust_omemo_key_text">このデバイスの検証を削除してよろしいですか?
+\nこのデバイスとそのデバイスからのメッセージは、“信頼されていない”とマークされます。</string>
     <plurals name="seconds">
         <item quantity="other">%d秒</item>
     </plurals>
@@ -641,7 +644,7 @@
     <plurals name="months">
         <item quantity="other">%dか月</item>
     </plurals>
-    <string name="pref_automatically_delete_messages">自動でメッセージを削除</string>
+    <string name="pref_automatically_delete_messages">メッセージの自動削除</string>
     <string name="pref_automatically_delete_messages_description">設定された期間よりも古いメッセージを、このデバイスから自動的に削除します。</string>
     <string name="encrypting_message">メッセージの暗号化中</string>
     <string name="not_fetching_history_retention_period">ローカル保存期間のためにメッセージを取得しません。</string>
@@ -691,7 +694,7 @@
     <string name="error_trustkey_general">%1$s は %2$s に暗号化メッセージを送れません。連絡先が利用しているサーバーが古すぎるか、クライアントが OMEMO を扱えません。</string>
     <string name="error_trustkey_device_list">デバイスの一覧を取得できません</string>
     <string name="error_trustkey_bundle">暗号化の鍵を取得できません</string>
-    <string name="error_trustkey_hint_mutual">ヒント: お互いが連絡先名簿に加えれば解決するでしょう。</string>
+    <string name="error_trustkey_hint_mutual">ヒント: お互いが連絡先リストに加えればこの問題は解決するでしょう。</string>
     <string name="disable_encryption_message">この会話で OMEMO の暗号化を無効化してもよろしいですか?\nこれにより、サーバー管理者がメッセージを読むことが可能になりますが、時代遅れのクライアントを使っている人と連絡をとるには、この方法しかないかもしれません。</string>
     <string name="disable_now">今すぐ無効化</string>
     <string name="draft">下書き:</string>
@@ -768,14 +771,14 @@
     <string name="video_360p">中 (360p)</string>
     <string name="video_720p">高 (720p)</string>
     <string name="cancelled">中止しました</string>
-    <string name="already_drafting_message">あなたは既にメッセージを作成中です。</string>
+    <string name="already_drafting_message">あなたはすでにメッセージを作成中です。</string>
     <string name="feature_not_implemented">実装されてない機能</string>
-    <string name="invalid_country_code">不正な国コード</string>
+    <string name="invalid_country_code">国コードが正しくありません</string>
     <string name="choose_a_country">国を選択</string>
     <string name="phone_number">電話番号</string>
     <string name="verify_your_phone_number">電話番号を検証</string>
-    <string name="enter_country_code_and_phone_number">Quicksy から電話番号を確認するための SMS メッセージ（キャリア料金がかかる場合があります）が送信されます。国番号と電話番号を入力してください:</string>
-    <string name="we_will_be_verifying"><![CDATA[電話番号の確認を行います<br/><br/><b>%s</b><br/><br/>これでよろしいでしょうか、それとも番号を編集しますか?]]></string>
+    <string name="enter_country_code_and_phone_number">Quicksy から電話番号を検証するための SMS メッセージ（キャリア料金がかかる場合があります）が送信されます。国番号と電話番号を入力してください:</string>
+    <string name="we_will_be_verifying">電話番号の検証を行います<br/><br/><b>%s</b><br/><br/>これでよろしいでしょうか、それとも番号を編集しますか?</string>
     <string name="not_a_valid_phone_number">%s は有効な電話番号ではありません。</string>
     <string name="please_enter_your_phone_number">電話番号を入力してください。</string>
     <string name="search_countries">国を検索</string>
@@ -802,7 +805,7 @@
     <string name="unable_to_establish_secure_connection">安全な接続を確立できませんでした。</string>
     <string name="unable_to_find_server">サーバーが見つかりません。</string>
     <string name="something_went_wrong_processing_your_request">要求の処理中に、何か問題が発生しました。</string>
-    <string name="invalid_user_input">無効なユーザーの入力</string>
+    <string name="invalid_user_input">ユーザーの入力が正しくありません</string>
     <string name="temporarily_unavailable">一時的に入手不可能です。後でもう一度お試しください。</string>
     <string name="no_network_connection">ネットワーク接続なし。</string>
     <string name="try_again_in_x">%s でもう一度お試しください。</string>
@@ -843,9 +846,9 @@
     <string name="please_enter_xmpp_address">XMPP アドレスをご記入ください</string>
     <string name="this_is_an_xmpp_address">これは XMPP アドレスです。名前をご記入ください。</string>
     <string name="creating_channel">公開談話室を作成中…</string>
-    <string name="channel_already_exists">この談話室は既に存在します</string>
+    <string name="channel_already_exists">この談話室はすでに存在しています</string>
     <string name="joined_an_existing_channel">存在している談話室に参加しています</string>
-    <string name="unable_to_set_channel_configuration">談話室の環境設定を保存できません</string>
+    <string name="unable_to_set_channel_configuration">談話室の環境設定を保存できませんでした</string>
     <string name="allow_participants_to_edit_subject">誰にでもトピックの編集を許可</string>
     <string name="allow_participants_to_invite_others">誰にでも他の人の招待を許可</string>
     <string name="anyone_can_edit_subject">誰でもトピックを編集できます。</string>
@@ -861,7 +864,7 @@
     <string name="search_participants">参加者を検索</string>
     <string name="file_too_large">ファイルが大きすぎます</string>
     <string name="attach">添付</string>
-    <string name="discover_channels">談話室を発見</string>
+    <string name="discover_channels">談話室を探索</string>
     <string name="search_channels">談話室を検索</string>
     <string name="channel_discovery_opt_in_title">プライバシー侵害の可能性あり!</string>
     <string name="i_already_have_an_account">既にアカウントを持っています</string>
@@ -883,8 +886,8 @@
     <string name="group_chats_and_channels"><![CDATA[グループチャットと談話室]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">ローカルサーバー</string>
-    <string name="pref_channel_discovery_summary">ほとんどのユーザーは、公開されている XMPP エコシステム全体からより良い提案を得るために、‘jabber.network’を選択するはずです。</string>
-    <string name="pref_channel_discovery">談話室の発見方法</string>
+    <string name="pref_channel_discovery_summary">ほとんどのユーザーは、公開 XMPP エコシステム全体からより適切な提案を得るために「jabber.network」を選択する必要があります。</string>
+    <string name="pref_channel_discovery">談話室の探索方法</string>
     <string name="backup">バックアップ</string>
     <string name="please_enable_an_account">アカウントを有効化してください</string>
     <string name="make_call">通話をする</string>
@@ -905,7 +908,7 @@
     <string name="rtp_state_connectivity_lost_error">接続切断</string>
     <string name="rtp_state_retracted">撤回された通話</string>
     <string name="rtp_state_application_failure">アプリの失敗</string>
-    <string name="rtp_state_security_error">検証に問題</string>
+    <string name="rtp_state_security_error">検証の問題</string>
     <string name="hang_up">通話を切る</string>
     <string name="ongoing_call">継続中の通話</string>
     <string name="ongoing_video_call">継続中のビデオ通話</string>
@@ -948,7 +951,7 @@
     <string name="record_voice_mail">音声メールを録音</string>
     <string name="play_audio">音声を再生</string>
     <string name="pause_audio">音声を一時停止</string>
-    <string name="add_contact_or_create_or_join_group_chat">連絡先を追加、作成またはグループチャットに参加、またはチャンネルを発見する</string>
+    <string name="add_contact_or_create_or_join_group_chat">連絡先を追加、作成またはグループチャットに参加、または談話室を探索する</string>
     <plurals name="view_users">
         <item quantity="other">%1$d人の参加者を表示</item>
     </plurals>
@@ -983,7 +986,6 @@
     <string name="account_state_logged_out">ログアウトしました</string>
     <string name="outgoing_call_timestamp">発信通話 · %s</string>
     <string name="audiobook">オーディオブック</string>
-    <string name="channel_discover_opt_in_message">談話室の発見は&lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;というサービスを利用します.&lt;br&gt;&lt;br&gt;利用するとIPアドレスと検索語はそのサービスに送信されます。詳細についてはそのサービスの&lt;a href=https://search.jabber.network/privacy&gt;個人情報保護方針&lt;/a&gt;を参照してください。</string>
     <string name="restore_warning_continued">自分で保存したバックアップしか復元しないでください！</string>
     <string name="pref_up_push_server_summary">XMPP経由でPushメッセージを端末に転送するユーザー指定のPushサーバー。</string>
     <string name="log_in">ログイン</string>
@@ -999,4 +1001,21 @@
     <string name="pref_up_push_account_summary">Pushメッセージを受信する際に経由するアカウント。</string>
     <string name="could_not_delete_account_from_server">サーバーからアカウントを削除できませんでした</string>
     <string name="category_about">概要</string>
+    <string name="rtp_state_content_add">トラックを追加しますか ?</string>
+    <string name="reconnect_on_other_host">他のホストで再接続</string>
+    <string name="contact_list_integration_not_available">連絡先リストの統合は利用できません</string>
+    <string name="privacy_policy">個人情報保護方針</string>
+    <string name="report_spam_and_block">スパムを報告し、スパマーをブロック</string>
+    <string name="pref_autojoin_summary">MUC に出入りするときに「自動参加」フラグを立て、他のクライアントによる変更に反応します。</string>
+    <string name="quicksy_wants_your_consent">Quicksy はあなたのデータを使用することについて同意を求めています</string>
+    <string name="welcome_header_quicksy">Quicksy へようこそ !</string>
+    <string name="contact_uses_unverified_keys">連絡先は未検証のデバイスを使用しています。 QR コードをスキャンして検証を実行し、アクティブな MITM 攻撃を阻止してください。</string>
+    <string name="unverified_devices">未検証のデバイスを使用しています。他のデバイスで QR コードをスキャンして検証を実行し、アクティブな MITM 攻撃を阻止してください。</string>
+    <string name="no_permission_to_place_call">電話をかける権限がありません</string>
+    <string name="remove_bookmark_and_close">%s のブックマークを削除して会話を閉じますか ?</string>
+    <string name="remove_bookmark">%s のブックマークを削除しますか ?</string>
+    <string name="channel_discover_opt_in_message">談話室の探索には &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; というサードパーティのサービスを利用します。&lt;br&gt;&lt;br&gt;この機能を使用すると、IP アドレスと検索語がこのサービスに送信されます。詳細は、&lt;a href=https://search.jabber.network/privacy&gt;プライバシーポリシー&lt;/a&gt;をご覧ください。</string>
+    <string name="call_integration_not_available">通話の統合は利用できません。</string>
+    <string name="rtp_state_contact_offline">連絡先は利用できません</string>
+    <string name="delete_and_close">削除して閉じる</string>
 </resources>

@@ -219,8 +219,7 @@ public abstract class AbstractJingleConnection {
         if (isTerminated()) {
             this.jingleConnectionManager.finishConnectionOrThrow(this);
         } else {
-            throw new AssertionError(
-                    String.format("Unable to call finish from %s", this.state));
+            throw new AssertionError(String.format("Unable to call finish from %s", this.state));
         }
     }
 
@@ -348,7 +347,7 @@ public abstract class AbstractJingleConnection {
         return features != null && features.contains(feature);
     }
 
-    public static class Id implements OngoingRtpSession {
+    public static class Id {
         public final Account account;
         public final Jid with;
         public final String sessionId;
@@ -400,17 +399,14 @@ public abstract class AbstractJingleConnection {
             return Objects.hashCode(account.getUuid(), with, sessionId);
         }
 
-        @Override
         public Account getAccount() {
             return account;
         }
 
-        @Override
         public Jid getWith() {
             return with;
         }
 
-        @Override
         public String getSessionId() {
             return sessionId;
         }

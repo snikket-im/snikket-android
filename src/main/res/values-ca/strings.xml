@@ -50,7 +50,6 @@
     <string name="unblock_domain_text">Voleu desbloquejar tots el contactes de %s?</string>
     <string name="contact_blocked">Contacte bloquejat</string>
     <string name="blocked">Bloquejats</string>
-    <string name="remove_bookmark_text">Vols esborrar %s com a marcador? Les converses amb aquest marcador no seran eliminades.</string>
     <string name="register_account">Registra un compte nou al servidor</string>
     <string name="change_password_on_server">Canvia la contrasenya al servidor</string>
     <string name="share_with">Comparteix amb…</string>

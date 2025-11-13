@@ -165,6 +165,7 @@ public class XmppConnection implements Runnable {
     private boolean inSmacksSession = false;
     private boolean quickStartInProgress = false;
     private boolean isBound = false;
+    private boolean offlineMessagesRetrieved = false;
     private Element streamFeatures;
     private Element boundStreamFeatures;
     private StreamId streamId = null;
@@ -1143,7 +1144,12 @@ public class XmppConnection implements Runnable {
                 mXmppConnectionService.updateConversationUi();
             }
         } else {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resumption failed");
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": resumption failed ("
+                            + XmlHelper.print(failed.getChildren())
+                            + ")");
         }
         resetStreamId();
         if (sendBindRequest) {
@@ -2202,6 +2208,7 @@ public class XmppConnection implements Runnable {
     }
 
     private void finalizeBind() {
+        this.offlineMessagesRetrieved = false;
         if (bindListener != null) {
             bindListener.onBind(account);
         }
@@ -2729,6 +2736,28 @@ public class XmppConnection implements Runnable {
         return mXmppConnectionService.getIqGenerator();
     }
 
+    public void trackOfflineMessageRetrieval(boolean trackOfflineMessageRetrieval) {
+        if (trackOfflineMessageRetrieval) {
+            final IqPacket iqPing = new IqPacket(IqPacket.TYPE.GET);
+            iqPing.addChild("ping", Namespace.PING);
+            this.sendIqPacket(
+                    iqPing,
+                    (a, response) -> {
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid()
+                                        + ": got ping response after sending initial presence");
+                        XmppConnection.this.offlineMessagesRetrieved = true;
+                    });
+        } else {
+            this.offlineMessagesRetrieved = true;
+        }
+    }
+
+    public boolean isOfflineMessagesRetrieved() {
+        return this.offlineMessagesRetrieved;
+    }
+
     private class MyKeyManager implements X509KeyManager {
         @Override
         public String chooseClientAlias(String[] strings, Principal[] principals, Socket socket) {
@@ -2939,6 +2968,10 @@ public class XmppConnection implements Runnable {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUBSUB_PUBLISH_OPTIONS);
         }
 
+        public boolean pepConfigNodeMax() {
+            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUBSUB_CONFIG_NODE_MAX);
+        }
+
         public boolean pepOmemoWhitelisted() {
             return hasDiscoFeature(
                     account.getJid().asBareJid(), AxolotlService.PEP_OMEMO_WHITELISTED);
@@ -3038,6 +3071,16 @@ public class XmppConnection implements Runnable {
 
         public boolean externalServiceDiscovery() {
             return hasDiscoFeature(account.getDomain(), Namespace.EXTERNAL_SERVICE_DISCOVERY);
+        }
+
+        public boolean mds() {
+            return pepPublishOptions()
+                    && pepConfigNodeMax()
+                    && Config.MESSAGE_DISPLAYED_SYNCHRONIZATION;
+        }
+
+        public boolean mdsServerAssist() {
+            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.MDS_DISPLAYED);
         }
     }
 }

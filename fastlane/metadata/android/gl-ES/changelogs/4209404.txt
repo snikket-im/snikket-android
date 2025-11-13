@@ -1,0 +1,1 @@
+* Arranxo de regresións menores introducidas en 2.13.1

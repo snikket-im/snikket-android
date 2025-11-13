@@ -1,12 +1,14 @@
 package eu.siacs.conversations.utils;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+import eu.siacs.conversations.xml.Element;
+
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import eu.siacs.conversations.xml.Element;
 
 public class XmlHelper {
     public static String encodeEntities(String content) {
@@ -27,5 +29,12 @@ public class XmlHelper {
                                 element.getChildren(),
                                 child -> child != null ? child.getName() : null);
         return Joiner.on(", ").join(features);
+    }
+
+    public static String print(final Collection<Element> children) {
+        if (children == null) {
+            return null;
+        }
+        return Joiner.on("").join(Iterables.transform(children, Element::toString));
     }
 }

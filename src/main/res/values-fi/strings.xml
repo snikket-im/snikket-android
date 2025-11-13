@@ -49,7 +49,6 @@
     <string name="unblock_domain_text">Perutaanko kaikkien verkkotunnuksen %s käyttäjien esto?</string>
     <string name="contact_blocked">Yhteystieto estetty</string>
     <string name="blocked">Estetty</string>
-    <string name="remove_bookmark_text">Poistetaanko %s kirjanmerkeistä? Mitään keskustelujasi sen kanssa ei poisteta.</string>
     <string name="register_account">Rekisteröi uusi tili palvelimella</string>
     <string name="change_password_on_server">Vaihda salasanaa palvelimelle</string>
     <string name="start_conversation">Aloita keskustelu</string>
@@ -493,7 +492,10 @@
     <string name="no_storage_permission">Salli %1$s:n käyttää ulkoista tallennustilaa</string>
     <string name="no_camera_permission">Salli %1$s:n käyttää kameraa </string>
     <string name="sync_with_contacts">Synkronoi yhteystietojen kanssa</string>
-    <string name="sync_with_contacts_long">%1$s haluaa pääsyn osoitekirjaasi yhdistääkseen sen XMPP-yhteystietojesi kanssa.\nTämä näyttää yhteystietojesi koko nimen ja kuvan.\n\n%1$s pelkästään lukee osoitekirjaasi ja vertailee niitä paikallisesti, lähettämättä mitään palvelimelle.</string>
+    <string name="sync_with_contacts_long">%1$s haluaa pääsyn osoitekirjaasi yhdistääkseen sen XMPP-yhteystietojesi kanssa.
+\nTämä näyttää yhteystietojesi koko nimen ja kuvan.
+\n
+\n%1$s pelkästään lukee osoitekirjaasi ja vertailee niitä paikallisesti, lähettämättä mitään palvelimelle.</string>
     <string name="notify_on_all_messages">Ilmoita kaikista uusista viesteistä</string>
     <string name="notify_only_when_highlighted">Ilmoita vain kun minut mainitaan</string>
     <string name="notify_never">Ilmoitukset pois käytöstä</string>
@@ -913,7 +915,6 @@
     <string name="group_chats">Ryhmäkeskustelut</string>
     <string name="search_group_chats">Etsi ryhmäkeskusteluista</string>
     <string name="pref_start_search">Suoraan hakuun</string>
-    <string name="channel_discover_opt_in_message">Kanavien löytö käyttää kolmannen osapuolen palvelua nimeltä &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Tämän ominaisuuden käyttö lähettää IP-osoitteesi ja hakusanasi palvelulle. Lue lisää heidän &lt;a href=https://search.jabber.network/privacy&gt;yksityisyyskäytännöstään&lt;/a&gt; (englanniksi).</string>
     <string name="search_messages">Hae viesteistä</string>
     <string name="this_account_is_logged_out">Olet kirjautunut ulos tältä tililtä</string>
     <string name="missed_calls_channel_name">Vastaamattomat puhelut</string>

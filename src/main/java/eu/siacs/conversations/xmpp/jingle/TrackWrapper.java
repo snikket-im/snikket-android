@@ -65,8 +65,14 @@ class TrackWrapper<T extends MediaStreamTrack> {
     public static <T extends MediaStreamTrack> RtpTransceiver getTransceiver(
             @Nonnull final PeerConnection peerConnection, final TrackWrapper<T> trackWrapper) {
         final RtpSender rtpSender = trackWrapper.rtpSender;
+        final String rtpSenderId;
+        try {
+            rtpSenderId = rtpSender.id();
+        } catch (final IllegalStateException e) {
+            return null;
+        }
         for (final RtpTransceiver transceiver : peerConnection.getTransceivers()) {
-            if (transceiver.getSender().id().equals(rtpSender.id())) {
+            if (transceiver.getSender().id().equals(rtpSenderId)) {
                 return transceiver;
             }
         }

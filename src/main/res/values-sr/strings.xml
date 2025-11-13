@@ -31,13 +31,8 @@
     <string name="minutes_ago">пре %d минута</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d непрочитана порука</item>
-
-    
         <item quantity="few">%d непрочитане поруке</item>
-
-    
         <item quantity="other">%d непрочитаних порука</item>
-
     </plurals>
     <string name="sending">шаљем…</string>
     <string name="message_decrypting">Дешифрујем поруку, сачекајте…</string>
@@ -56,7 +51,6 @@
     <string name="unblock_domain_text">Одблокирати све контакте од %s?</string>
     <string name="contact_blocked">Контакт блокиран</string>
     <string name="blocked">Блокиран</string>
-    <string name="remove_bookmark_text">Да ли желите да уклоните %s са обележивача? Преписке са овим контактом неће бити уклоњене.</string>
     <string name="register_account">Региструј нови налог на серверу</string>
     <string name="change_password_on_server">Промени лозинку на серверу</string>
     <string name="share_with">Подели помоћу…</string>
@@ -684,4 +678,4 @@
     <string name="silent_messages_channel_name">Тихе поруке</string>
     <string name="video_compression_channel_name">Видео компресија</string>
     <string name="rtp_state_declined_or_busy">Заузет</string>
-    </resources>
+</resources>

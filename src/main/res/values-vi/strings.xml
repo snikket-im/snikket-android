@@ -49,7 +49,6 @@
     <string name="unblock_domain_text">Bỏ chặn tất cả liên hệ từ %s?</string>
     <string name="contact_blocked">Đã chặn liên hệ</string>
     <string name="blocked">Đã chặn</string>
-    <string name="remove_bookmark_text">Bạn có muốn xoá dấu trang %s không? Các cuộc hội thoại với dấu trang này sẽ không bị xoá.</string>
     <string name="register_account">Đăng ký tài khoản mới trên máy chủ</string>
     <string name="change_password_on_server">Đổi mật k trên máy chủ</string>
     <string name="share_with">Chia sẻ với…</string>
@@ -507,7 +506,10 @@
     <string name="no_storage_permission">Cấp quyền truy cập bộ nhớ cho %1$s</string>
     <string name="no_camera_permission">Cấp quyền truy cập máy ảnh cho %1$s</string>
     <string name="sync_with_contacts">Đồng bộ với danh bạ</string>
-    <string name="sync_with_contacts_long">%1$s muốn quyền truy cập sổ địa chỉ của bạn để nối nó với danh sách liên hệ XMPP của bạn.\nViệc này sẽ hiển thị họ tên và ảnh đại diện của các liên hệ của bạn.\n\n%1$s sẽ chỉ đọc sổ địa chỉ của bạn và nối nó một cách cục bộ mà không tải gì cả lên máy chủ của bạn.</string>
+    <string name="sync_with_contacts_long">%1$s muốn quyền truy cập sổ địa chỉ của bạn để nối nó với danh sách liên hệ XMPP của bạn.
+\nViệc này sẽ hiển thị họ tên và ảnh đại diện của các liên hệ của bạn.
+\n
+\n%1$s sẽ chỉ đọc sổ địa chỉ của bạn và nối nó một cách cục bộ mà không tải gì cả lên máy chủ của bạn.</string>
     <string name="notify_on_all_messages">Thông báo tất cả tin nhắn</string>
     <string name="notify_only_when_highlighted">Chỉ thông báo khi được nhắc đến</string>
     <string name="notify_never">Đã tắt thông báo</string>
@@ -959,7 +961,6 @@
     <string name="search_group_chats">Tìm kiếm tin nhắn trong nhóm</string>
     <string name="download_failed_invalid_file">Tải về thất bại: Tệp tin không hợp lệ</string>
     <string name="missed_calls_channel_name">Cuộc gọi nhỡ</string>
-    <string name="channel_discover_opt_in_message">Khám phá kênh sử dụng một dịch vụ bên thứ ba gọi là &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;SỬ dụng chức năng này sẽ truyền địa chỉ IP của bạn và tìm kiếm điều khoản đến dịch vụ đó. Hãy đọc &lt;a href=https://search.jabber.network/privacy&gt;Chính sách quyền riêng tư&lt;/a&gt; của họ để có thêm thông tin.</string>
     <string name="rtp_state_content_add_video">Chuyển sang gọi video\?</string>
     <string name="reconnecting_call">Đang kết nối lại cuộc gọi</string>
     <string name="outgoing_call_timestamp">Cuộc gọi đi · %s</string>

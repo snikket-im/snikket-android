@@ -142,8 +142,15 @@ public class JinglePacket extends IqPacket {
         TRANSPORT_REPLACE;
 
         public static Action of(final String value) {
-            // TODO handle invalid
-            return Action.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE, value));
+            if (Strings.isNullOrEmpty(value)) {
+                return null;
+            }
+            try {
+                return Action.valueOf(
+                        CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE, value));
+            } catch (final IllegalArgumentException e) {
+                return null;
+            }
         }
 
         @Override

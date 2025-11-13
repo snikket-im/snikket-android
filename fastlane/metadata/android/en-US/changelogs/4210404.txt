@@ -1,0 +1,3 @@
+* Fix A/V calls on Android 8
+* Fix race conditions in new call integration
+* Fix video compression sticking around
