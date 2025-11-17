@@ -617,7 +617,7 @@
     <string name="show_inactive_devices">显示非活动设备</string>
     <string name="hide_inactive_devices">隐藏非活动设备</string>
     <string name="distrust_omemo_key">不信任设备</string>
-    <string name="distrust_omemo_key_text">是否确定要移除此设备的验证状态‌？\n此设备及其消息将被标记为“不受信任”。</string>
+    <string name="distrust_omemo_key_text">是否确定要移除此设备的验证状态？\n此设备及其消息将被标记为“不受信任”。</string>
     <plurals name="seconds">
         <item quantity="other">%d 秒</item>
     </plurals>
@@ -658,7 +658,7 @@
     <string name="pref_headsup_notifications_summary">显示提醒式通知</string>
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
-    <string name="pref_validate_hostname">使用 DNSSEC 验证主机名‌</string>
+    <string name="pref_validate_hostname">使用 DNSSEC 验证主机名</string>
     <string name="pref_validate_hostname_summary">包含已验证主机名的服务器证书视为已通过验证</string>
     <string name="certificate_does_not_contain_jid">证书不包含 XMPP 地址</string>
     <string name="server_info_partial">部分</string>
@@ -1110,7 +1110,7 @@
     <string name="copy_telephone_number">复制电话号码</string>
     <string name="account_status_service_outage_scheduled">计划停机时间</string>
     <string name="account_status_service_outage_known">服务中断（已知问题）</string>
-    <string name="sos_scheduled_return">‌服务预计将于 %s 恢复</string>
+    <string name="sos_scheduled_return">服务预计将于 %s 恢复</string>
     <string name="save_to_contact">保存到联系人</string>
     <string name="show_in_contacts">在联系人中显示</string>
     <string name="no_contacts_permission">%1$s 需要访问您的联系人</string>
@@ -1141,7 +1141,7 @@
     <string name="number_reactions_are_restricted">已达到回应上限。</string>
     <string name="this_reaction_isnt_allowed">不允许使用此回应。</string>
     <string name="enable_account_to_delete">此账号已禁用。启用后才能从服务器删除。</string>
-    <string name="peer_to_peer">P2P（点对点‌）</string>
-    <string name="pref_use_relays">始终使用中继‌</string>
+    <string name="peer_to_peer">P2P（点对点）</string>
+    <string name="pref_use_relays">始终使用中继</string>
     <string name="pref_use_relays_summary">通过您的服务器中继所有 P2P 连接（通话和文件传输），以避免泄露您的 IP 地址。</string>
 </resources>
