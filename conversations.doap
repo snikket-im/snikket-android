@@ -17,8 +17,8 @@
     <download-page rdf:resource="https://play.google.com/store/apps/details?id=eu.siacs.conversations"/>
     <bug-database rdf:resource="https://codeberg.org/iNPUTmice/Conversations/issues"/>
     <!-- See https://github.com/ewilderj/doap/issues/53 -->
-    <developer-forum rdf:resource="xmpp:conversations@siacs.conference.eu?join"/>
-    <support-forum rdf:resource="xmpp:conversations@siacs.conference.eu?join"/>
+    <developer-forum rdf:resource="xmpp:conversations@conference.siacs.eu?join"/>
+    <support-forum rdf:resource="xmpp:conversations@conference.siacs.eu?join"/>
 
     <license rdf:resource="https://codeberg.org/iNPUTmice/Conversations/src/branch/master/LICENSE"/>
 
