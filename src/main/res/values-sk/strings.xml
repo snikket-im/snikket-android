@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Nastavenia</string>
-    <string name="action_add">Nová konverzácia</string>
     <string name="action_accounts">Nastavenie účtov</string>
     <string name="action_account">Nastaviť účet</string>
-    <string name="action_end_conversation">Zavrieť rozhovor</string>
     <string name="action_contact_details">Detaily kontaktu</string>
     <string name="action_muc_details">Detaily skupinového rozhovoru</string>
     <string name="channel_details">Detaily kanála</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Odblokovať účastníka</string>
     <string name="title_activity_manage_accounts">Nastavenie účtov</string>
     <string name="title_activity_settings">Nastavenia</string>
-    <string name="title_activity_sharewith">Zdieľať s konverzáciou</string>
-    <string name="title_activity_start_conversation">Začať konverzáciu</string>
     <string name="title_activity_choose_contact">Vybrať Kontakt</string>
     <string name="title_activity_choose_contacts">Vyberte Kontakty</string>
     <string name="title_activity_share_via_account">Zdieľať cez účet</string>
@@ -31,16 +27,8 @@
     <string name="minutes_ago">pred %d minútami</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%dneprečítaný rozhovor</item>
-
-    
         <item quantity="few">%dneprečítaných rozhovorov</item>
-
-    
-        <item quantity="many">%dneprečítaných rozhovorov</item>
-
-    
         <item quantity="other">%dneprečítaných rozhovorov</item>
-
     </plurals>
     <string name="sending">posielam...</string>
     <string name="message_decrypting">Dešifrujem správu. Čakajte, prosím…</string>
@@ -62,7 +50,6 @@
     <string name="register_account">Registrovať nový účet na serveri</string>
     <string name="change_password_on_server">Zmeniť heslo na serveri</string>
     <string name="share_with">Zdieľať s</string>
-    <string name="start_conversation">Začať rozhovor</string>
     <string name="invite_contact">Pozvať kontakt</string>
     <string name="invite">Pozvať</string>
     <string name="contacts">Kontakty</string>
@@ -92,10 +79,11 @@
     <string name="sharing_files_please_wait">Zdieľam súbory. Prosím čakajte...</string>
     <string name="action_clear_history">Vymazať históriu</string>
     <string name="clear_conversation_history">Vymazať históriu konverzácií</string>
-    <string name="clear_histor_msg">Chcete vymazať všetky správy v tomto rozhovore?\n\n<b>Upozornenie:</b>Nebude to mať vplyv na správy uložené na ostatných zariadeniach alebo serveroch.</string>
+    <string name="clear_histor_msg">Chcete vymazať všetky správy v tomto rozhovore?
+\n
+\n<b>Upozornenie:</b>Nebude to mať vplyv na správy uložené na ostatných zariadeniach alebo serveroch.</string>
     <string name="delete_file_dialog">Zmazať súbor</string>
     <string name="delete_file_dialog_msg">Ste si istý, že chcete tento súbor zmazať?\n\n<b>Upozornenie:</b>Nevymažú sa kópie súborov, ktoré sú uložené na ostatných zariadeniach alebo serveroch.</string>
-    <string name="also_end_conversation">Potom zavrieť tento rozhovor</string>
     <string name="choose_presence">Zvoliť zariadenie</string>
     <string name="send_unencrypted_message">Poslať nezašifrovanú správu</string>
     <string name="send_message">Poslať správu</string>
@@ -132,7 +120,6 @@
     <string name="pref_notification_grace_period">Ochranná doba</string>
     <string name="pref_notification_grace_period_summary">Doba, počas ktorej budú oznámenia stíšené po detekcii aktivity na jednom z vašich ostatných zariadení.</string>
     <string name="pref_advanced_options">Pokročilé</string>
-    <string name="pref_never_send_crash">Neodosielať detaily o zlyhaní aplikácie</string>
     <string name="pref_never_send_crash_summary">Keď pošlete detaily o dôvode zlyhania, pomáhate vývoju</string>
     <string name="pref_confirm_messages">Potvrdzovať správy</string>
     <string name="pref_confirm_messages_summary">Dajte vedieť svojim kontaktom, keď prijmete a prečítate si správy</string>
@@ -392,7 +379,6 @@
     <string name="send_location">Poslať polohu</string>
     <string name="show_location">Zobraziť polohu</string>
     <string name="location">Poloha</string>
-    <string name="title_undo_swipe_out_conversation">Konverzácia zatvorená</string>
     <string name="pref_dont_trust_system_cas_title">Nedôverovať systému CAs</string>
     <string name="pref_dont_trust_system_cas_summary">Všetky certifikáty musia byť ručne schválené</string>
     <string name="pref_remove_trusted_certificates_title">Odstrániť certifikáty</string>
@@ -400,7 +386,6 @@
     <string name="toast_no_trusted_certs">Žiadne ručne schválené certifikáty</string>
     <string name="dialog_manage_certs_title">Odstrániť certifikáty</string>
     <string name="dialog_manage_certs_positivebutton">Vymazať výber</string>
-    <string name="dialog_manage_certs_negativebutton">Zrušiť</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certifikátu vymazaných</item>
         <item quantity="few">%d certifikátu vymazaných</item>
@@ -446,8 +431,6 @@
     <string name="pref_privacy">Súkromie</string>
     <string name="pref_theme_options">Téma</string>
     <string name="pref_theme_options_summary">Zvoľte si farebnú schému</string>
-    <string name="pref_use_green_background">Zelené pozadie</string>
-    <string name="pref_use_green_background_summary">Použiť zelené pozadie pre prijaté správy</string>
     <string name="pref_delete_omemo_identities">Vymazať OMEMO identifikátory</string>
     <string name="pref_delete_omemo_identities_summary">Re-generuje vaše kľúče OMEMO. Všetky vaše kontakty vás budú musieť znova overiť. Použite to ako poslednú možnosť.</string>
     <string name="delete_selected_keys">Odstrániť označené kľúče</string>
@@ -466,7 +449,6 @@
     <string name="pref_omemo_setting">OMEMO šifrovanie</string>
     <string name="pref_omemo_setting_summary_always">OMEMO bude vždy používané pre individuálne a súkromné skupinové rozhovory.</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO bude predvolene zapnuté pre všetky rozhovory.</string>
-    <string name="pref_font_size">Veľkosť písma</string>
     <string name="default_on">Predvolene zapnuté</string>
     <string name="default_off">Predvolene vypnuté</string>
     <string name="omemo_decryption_failed">Nepodarilo sa dešifrovať OMEMO správu.</string>
@@ -520,4 +502,4 @@
     <string name="encrypted_with_omemo">Zašifrované s OMEMO</string>
     <string name="failed_deliveries">Zlyhané doručenia</string>
     <string name="more_options">Viac možnosťí</string>
-    </resources>
+</resources>

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Ayarlar</string>
-    <string name="action_add">Yeni konuşma</string>
     <string name="action_accounts">Hesapları yönet</string>
     <string name="action_account">Hesabı yönet</string>
-    <string name="action_end_conversation">Konuşmayı kapat</string>
     <string name="action_contact_details">Kişi bilgileri</string>
     <string name="action_muc_details">Küme konuşması ayrıntıları</string>
     <string name="channel_details">Kanal ayrıntıları</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Katılımcının engelini kaldır</string>
     <string name="title_activity_manage_accounts">Hesapları yönet</string>
     <string name="title_activity_settings">Ayarlar</string>
-    <string name="title_activity_sharewith">Konuşmayla paylaş</string>
-    <string name="title_activity_start_conversation">Konuşma Başlat</string>
     <string name="title_activity_choose_contact">Kişi Seç</string>
     <string name="title_activity_choose_contacts">Kişi Seç</string>
     <string name="title_activity_share_via_account">Hesap aracılığıyla paylaş</string>
@@ -53,7 +49,6 @@
     <string name="register_account">Sunucuda yeni bir hesap oluştur</string>
     <string name="change_password_on_server">Sunucudaki şifreni değiştir</string>
     <string name="share_with">Paylaş…</string>
-    <string name="start_conversation">Konuşma başlat</string>
     <string name="invite_contact">Kişi davet et</string>
     <string name="invite">Davet et </string>
     <string name="contacts">Kişiler</string>
@@ -83,12 +78,11 @@
     <string name="sharing_files_please_wait">Dosyalar Paylaşılıyor. Lütfen bekleyin…</string>
     <string name="action_clear_history">Geçmişi sil</string>
     <string name="clear_conversation_history">Konuşma geçmişini sil</string>
-    <string name="clear_histor_msg">Bu konuşmadaki tüm mesajları silmek istiyor musunuz\?
-\n
+    <string name="clear_histor_msg">Bu konuşmadaki tüm mesajları silmek istiyor musunuz? 
+\n 
 \n<b>Uyarı:</b> Bu eylem, diğer aygıt ve sunucularda kayıtlı mesajları etkilemeyecektir.</string>
     <string name="delete_file_dialog">Dosyayı sil</string>
     <string name="delete_file_dialog_msg">Bu dosyayı silmek istediğinizden emin misiniz? \n\n<b>Uyarı:</b> Bu eylem, bu dosyanın diğer aygıt ve sunucularda kayıtlı kopyalarını silmeyecektir.</string>
-    <string name="also_end_conversation">Devamında bu konuşmayı kapat</string>
     <string name="choose_presence">Aygıt seç</string>
     <string name="send_unencrypted_message">Şifrelenmemiş ileti gönder</string>
     <string name="send_message">Mesajı gönder</string>
@@ -126,7 +120,6 @@
     <string name="pref_notification_grace_period">Mühlet</string>
     <string name="pref_notification_grace_period_summary">Cihazlarınızın birinde faaliyet tespit edilmesinden sonra  zaman hatırlatmalarının susturulma uzunluğu.</string>
     <string name="pref_advanced_options">Gelişmiş</string>
-    <string name="pref_never_send_crash">Asla çöküş raporu gönderme</string>
     <string name="pref_never_send_crash_summary">Yığın izi göndererek gelişime yardımcı oluyorsunuz</string>
     <string name="pref_confirm_messages">İletileri onayla</string>
     <string name="pref_confirm_messages_summary">Onların iletilerini aldığınızda ve okuduğunuzda, kişilerinizin bunu bilmesini sağlayın</string>
@@ -185,7 +178,7 @@
     <string name="unpublish_pgp_message">OpenPGP genel anahtarınız Çevrim içi durum anonsunuzdan kaldırmak istediğinizden emin misiniz?\nArtık kişileriniz size şifrelenmiş OpenPGP mesajları gönderemeyecek.</string>
     <string name="openpgp_has_been_published">OpenPGP genel anahtarı yayınlandı.</string>
     <string name="mgmt_account_enable">Hesabı etkinleştir</string>
-    <string name="mgmt_account_delete_confirm_text">Hesabınızı silmekten emin misiniz\? Hesabınızın silinmesi bütün konuşma geçmişinizi siler</string>
+    <string name="mgmt_account_delete_confirm_text">Hesabınızı silmekten emin misiniz? Hesabınızın silinmesi bütün konuşma geçmişinizi siler</string>
     <string name="attach_record_voice">Ses kaydet</string>
     <string name="account_settings_jabber_id">XMPP adresi</string>
     <string name="block_jabber_id">XMPP adresini engelle</string>
@@ -439,7 +432,6 @@
     <string name="show_location">Yer bildirimi göster</string>
     <string name="no_application_found_to_display_location">Konum göstermek için uygulama bulunamadı</string>
     <string name="location">Yer</string>
-    <string name="title_undo_swipe_out_conversation">Konuşma sonlandı</string>
     <string name="title_undo_swipe_out_group_chat">Özel grup konuşmasından ayrıldı</string>
     <string name="title_undo_swipe_out_channel">Ortak kanaldan ayrıldı</string>
     <string name="pref_dont_trust_system_cas_title">Sistem sertifikalarına güvenmeyin</string>
@@ -449,7 +441,6 @@
     <string name="toast_no_trusted_certs">Bizzat onaylanmış sertifika yok</string>
     <string name="dialog_manage_certs_title">Sertifikaları kaldır</string>
     <string name="dialog_manage_certs_positivebutton">Seçilenleri sil</string>
-    <string name="dialog_manage_certs_negativebutton">İptal</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d sertifikaları silindi</item>
         <item quantity="other">%d sertifikaları silindi</item>
@@ -578,8 +569,6 @@
     <string name="pref_theme_automatic">Otomatik</string>
     <string name="pref_theme_light">Aydınlık</string>
     <string name="pref_theme_dark">Karanlık</string>
-    <string name="pref_use_green_background">Yeşil arka plan</string>
-    <string name="pref_use_green_background_summary">Gelen iletiler için yeşil arka plan kullan</string>
     <string name="unable_to_connect_to_keychain">OpenKeychain\'e bağlanılamadı</string>
     <string name="this_device_is_no_longer_in_use">Bu aygıt artık kullanılmıyor</string>
     <string name="type_pc">Bilgisayar</string>
@@ -610,7 +599,6 @@
     <string name="this_device_has_been_verified">Bu aygıt doğrulandı</string>
     <string name="copy_fingerprint">Parmak izini kopyala</string>
     <string name="all_omemo_keys_have_been_verified">Sahip olduğunuz bütün OMEMO anahtarlarını doğruladınız</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Barkod bu konuşmanın parmak izlerlerini içermiyor</string>
     <string name="verified_fingerprints">Doğrulanmış parmak izleri</string>
     <string name="use_camera_icon_to_scan_barcode">Bir kişinin barkodunu taramak için kamerayı kullan</string>
     <string name="please_wait_for_keys_to_be_fetched">Anahtarların alınması için lütfen bekle</string>
@@ -665,7 +653,6 @@
     <string name="encrypting_message">İletiyi şifrelemek</string>
     <string name="not_fetching_history_retention_period">Yerel saklama süresi nedeniyle ileti getirilmiyor.</string>
     <string name="transcoding_video">Video sıkıştırılıyor</string>
-    <string name="corresponding_conversations_closed">Konuşma sonlandı.</string>
     <string name="contact_blocked_past_tense">Kişi engellendi.</string>
     <string name="pref_notifications_from_strangers">Yabancılardan bildirimler</string>
     <string name="pref_notifications_from_strangers_summary">Yabancılardan alınan ileti ve aramaları bildir.</string>
@@ -711,7 +698,8 @@
     <string name="error_trustkey_device_list">Aygıt listesi alınamadı</string>
     <string name="error_trustkey_bundle">Şifreleme anahtarları alınamadı</string>
     <string name="error_trustkey_hint_mutual">İpucu: Kimi durumlarda bu sorun, birbirinizi kişi listenize eklemenizle çözülebilir.</string>
-    <string name="disable_encryption_message">Bu konuşma için OMEMO şifrelemesini devre dışı bırakmak istediğinizden emin misiniz?\nBu, sunucu yöneticinizin mesajlarınızı okumasını mümkün kılsa da, tarihi geçmiş istemcileri kullanan insanlarla iletişim kurmanın tek yolu olabilir.</string>
+    <string name="disable_encryption_message">Bu konuşma için OMEMO şifrelemesini devre dışı bırakmak istediğinizden emin misiniz?
+\nBu, sunucu yöneticinizin mesajlarınızı okumasını mümkün kılsa da, tarihi geçmiş istemcileri kullanan insanlarla iletişim kurmanın tek yolu olabilir.</string>
     <string name="disable_now">Şimdi devre dışı bırak</string>
     <string name="draft">Taslak:</string>
     <string name="pref_omemo_setting">OMEMO Şifrelemesi</string>
@@ -719,13 +707,8 @@
     <string name="pref_omemo_setting_summary_default_on">Yeni konuşmalarda OMEMO varsayılan olarak kullanılacak.</string>
     <string name="pref_omemo_setting_summary_default_off">Özellikle yeni konuşmalarda OMEMO aktif hale getirilecek.</string>
     <string name="create_shortcut">Kısayol oluştur</string>
-    <string name="pref_font_size">Yazı tipi boyutu</string>
-    <string name="pref_font_size_summary">Uygulamaya kıyasla kullanılan yazı tipi boyutu.</string>
     <string name="default_on">Varsayılan olarak aktif</string>
     <string name="default_off">Varsayılan olarak devre dışı</string>
-    <string name="small">Küçük</string>
-    <string name="medium">Orta</string>
-    <string name="large">Büyük</string>
     <string name="not_encrypted_for_this_device">İleti bu cihaz için şifrelenmedi.</string>
     <string name="omemo_decryption_failed">OMEMO mesajı çözümlenemedi.</string>
     <string name="undo">geri al</string>
@@ -951,7 +934,6 @@
     <string name="audio_call">Sesli arama</string>
     <string name="video_call">Görüntülü arama</string>
     <string name="help">Yardım</string>
-    <string name="switch_to_conversation">Konuşmaya geç</string>
     <string name="microphone_unavailable">Mikrofonunuza erişilemiyor</string>
     <string name="only_one_call_at_a_time">Bir seferde yalnızca tek bir aramanız olabilir.</string>
     <string name="return_to_ongoing_call">Devam eden aramaya dön</string>

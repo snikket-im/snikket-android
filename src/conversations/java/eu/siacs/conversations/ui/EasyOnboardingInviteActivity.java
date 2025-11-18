@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -11,8 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.material.color.MaterialColors;
 import com.google.common.base.Strings;
 
 import eu.siacs.conversations.Config;
@@ -23,12 +26,12 @@ import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.utils.EasyOnboardingInvite;
 import eu.siacs.conversations.xmpp.Jid;
 
-public class EasyOnboardingInviteActivity extends XmppActivity implements EasyOnboardingInvite.OnInviteRequested {
+public class EasyOnboardingInviteActivity extends XmppActivity
+        implements EasyOnboardingInvite.OnInviteRequested {
 
     private ActivityEasyInviteBinding binding;
 
     private EasyOnboardingInvite easyOnboardingInvite;
-
 
     @Override
     public void onCreate(final Bundle bundle) {
@@ -36,6 +39,7 @@ public class EasyOnboardingInviteActivity extends XmppActivity implements EasyOn
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_easy_invite);
         setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar(), true);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         this.binding.shareButton.setOnClickListener(v -> share());
         if (bundle != null && bundle.containsKey("invite")) {
             this.easyOnboardingInvite = bundle.getParcelable("invite");
@@ -65,11 +69,11 @@ public class EasyOnboardingInviteActivity extends XmppActivity implements EasyOn
     }
 
     private void share() {
-        final String shareText = getString(
-                R.string.easy_invite_share_text,
-                easyOnboardingInvite.getDomain(),
-                easyOnboardingInvite.getShareableLink()
-        );
+        final String shareText =
+                getString(
+                        R.string.easy_invite_share_text,
+                        easyOnboardingInvite.getDomain(),
+                        easyOnboardingInvite.getShareableLink());
         final Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, shareText);
@@ -95,16 +99,47 @@ public class EasyOnboardingInviteActivity extends XmppActivity implements EasyOn
     private void showInvite(final EasyOnboardingInvite invite) {
         this.binding.inProgress.setVisibility(View.GONE);
         this.binding.invite.setVisibility(View.VISIBLE);
-        this.binding.tapToShare.setText(getString(R.string.tap_share_button_send_invite, invite.getDomain()));
+        this.binding.tapToShare.setText(
+                getString(R.string.tap_share_button_send_invite, invite.getDomain()));
         final Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
         final int width = Math.min(size.x, size.y);
-        final Bitmap bitmap = BarcodeProvider.create2dBarcodeBitmap(invite.getShareableLink(), width);
+        final boolean nightMode =
+                (this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                        == Configuration.UI_MODE_NIGHT_YES;
+        final int black;
+        final int white;
+        if (nightMode) {
+            black =
+                    MaterialColors.getColor(
+                            this,
+                            com.google.android.material.R.attr.colorSurface,
+                            "No surface color configured");
+            white =
+                    MaterialColors.getColor(
+                            this,
+                            com.google.android.material.R.attr.colorSurfaceInverse,
+                            "No inverse surface color configured");
+        } else {
+            black =
+                    MaterialColors.getColor(
+                            this,
+                            com.google.android.material.R.attr.colorSurfaceInverse,
+                            "No inverse surface color configured");
+            white =
+                    MaterialColors.getColor(
+                            this,
+                            com.google.android.material.R.attr.colorSurface,
+                            "No surface color configured");
+        }
+        final Bitmap bitmap =
+                BarcodeProvider.create2dBarcodeBitmap(
+                        invite.getShareableLink(), width, black, white);
         binding.qrCode.setImageBitmap(bitmap);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
+    public void onSaveInstanceState(@NonNull Bundle bundle) {
         super.onSaveInstanceState(bundle);
         if (easyOnboardingInvite != null) {
             bundle.putParcelable("invite", easyOnboardingInvite);
@@ -112,7 +147,7 @@ public class EasyOnboardingInviteActivity extends XmppActivity implements EasyOn
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         if (easyOnboardingInvite != null) {
             return;
         }
@@ -141,11 +176,12 @@ public class EasyOnboardingInviteActivity extends XmppActivity implements EasyOn
 
     @Override
     public void inviteRequestFailed(final String message) {
-        runOnUiThread(() -> {
-            if (!Strings.isNullOrEmpty(message)) {
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-            }
-            finish();
-        });
+        runOnUiThread(
+                () -> {
+                    if (!Strings.isNullOrEmpty(message)) {
+                        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                    }
+                    finish();
+                });
     }
 }

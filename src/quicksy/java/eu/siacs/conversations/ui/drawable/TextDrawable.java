@@ -24,9 +24,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.TextView;
 
+import com.google.android.material.color.MaterialColors;
+
 import java.lang.ref.WeakReference;
 
-import eu.siacs.conversations.ui.util.StyledAttributes;
+import eu.siacs.conversations.R;
+
 
 public class TextDrawable extends Drawable implements TextWatcher {
     private WeakReference<TextView> ref;
@@ -64,7 +67,7 @@ public class TextDrawable extends Drawable implements TextWatcher {
      */
     public TextDrawable(TextView tv, String initialText, boolean bindToViewsText, boolean bindToViewsPaint) {
         this(tv.getPaint(), initialText);
-        mPaint.setColor(StyledAttributes.getColor(tv.getContext(), android.R.attr.textColorPrimary));
+        mPaint.setColor(MaterialColors.getColor(tv, com.google.android.material.R.attr.colorOnSurface));
         ref = new WeakReference<>(tv);
         if (bindToViewsText || bindToViewsPaint) {
             if (bindToViewsText) {

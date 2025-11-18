@@ -1,0 +1,2 @@
+* Restablecer o acceso ao Descubrimento de Canles para Android 6+7
+* Mellorar o acceso para a integración de chamadas que fallou

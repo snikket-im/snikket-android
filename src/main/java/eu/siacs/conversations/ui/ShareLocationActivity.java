@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,11 +14,6 @@ import androidx.databinding.DataBindingUtil;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.math.DoubleMath;
 
-import org.osmdroid.api.IGeoPoint;
-import org.osmdroid.util.GeoPoint;
-
-import java.math.RoundingMode;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityShareLocationBinding;
@@ -27,7 +21,11 @@ import eu.siacs.conversations.ui.util.LocationHelper;
 import eu.siacs.conversations.ui.widget.Marker;
 import eu.siacs.conversations.ui.widget.MyLocation;
 import eu.siacs.conversations.utils.LocationProvider;
-import eu.siacs.conversations.utils.ThemeHelper;
+
+import org.osmdroid.api.IGeoPoint;
+import org.osmdroid.util.GeoPoint;
+
+import java.math.RoundingMode;
 
 public class ShareLocationActivity extends LocationActivity implements LocationListener {
 
@@ -58,6 +56,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
         super.onCreate(savedInstanceState);
 
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_share_location);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar());
         setupMapView(binding.map, LocationProvider.getGeoPoint(this));
@@ -71,13 +70,12 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
         this.snackBar.setAction(R.string.enable, view -> {
             if (isLocationEnabledAndAllowed()) {
                 updateUi();
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !hasLocationPermissions()) {
+            } else if (!hasLocationPermissions()) {
                 requestPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
             } else if (!isLocationEnabled()) {
                 startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
             }
         });
-        ThemeHelper.fix(this.snackBar);
 
         this.binding.shareButton.setOnClickListener(this::shareLocation);
 
@@ -87,7 +85,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
             if (!marker_fixed_to_loc) {
                 if (!isLocationEnabled()) {
                     startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                } else {
                     requestPermissions(REQUEST_CODE_FAB_PRESSED);
                 }
             }
@@ -117,16 +115,9 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
                                            @NonNull final int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (grantResults.length > 0 &&
-                grantResults[0] != PackageManager.PERMISSION_GRANTED &&
-                Build.VERSION.SDK_INT >= 23 &&
-                permissions.length > 0 &&
-                (
-                        Manifest.permission.LOCATION_HARDWARE.equals(permissions[0]) ||
-                                Manifest.permission.ACCESS_FINE_LOCATION.equals(permissions[0]) ||
-                                Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0])
-                ) &&
-                !shouldShowRequestPermissionRationale(permissions[0])) {
+        if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED && permissions.length > 0 && (
+                Manifest.permission.LOCATION_HARDWARE.equals(permissions[0]) || Manifest.permission.ACCESS_FINE_LOCATION.equals(permissions[0]) || Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0])
+        ) && !shouldShowRequestPermissionRationale(permissions[0])) {
             noAskAgain = true;
         }
 
@@ -172,7 +163,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
     }
 
     @Override
-    public void onLocationChanged(final Location location) {
+    public void onLocationChanged(@NonNull final Location location) {
         if (this.myLoc == null) {
             this.marker_fixed_to_loc = true;
         }
@@ -206,7 +197,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
     }
 
     private boolean isLocationEnabledAndAllowed() {
-        return this.hasLocationFeature && (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || this.hasLocationPermissions()) && this.isLocationEnabled();
+        return this.hasLocationFeature && this.hasLocationPermissions() && this.isLocationEnabled();
     }
 
     private void toggleFixedLocation() {
@@ -229,8 +220,8 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
         if (isLocationEnabledAndAllowed()) {
             this.binding.fab.setVisibility(View.VISIBLE);
             runOnUiThread(() -> {
-                this.binding.fab.setImageResource(marker_fixed_to_loc ? R.drawable.ic_gps_fixed_white_24dp :
-                        R.drawable.ic_gps_not_fixed_white_24dp);
+                this.binding.fab.setImageResource(marker_fixed_to_loc ? R.drawable.ic_gps_fixed_24dp :
+                        R.drawable.ic_gps_not_fixed_24dp);
                 this.binding.fab.setContentDescription(getResources().getString(
                         marker_fixed_to_loc ? R.string.action_unfix_from_location : R.string.action_fix_to_location
                 ));

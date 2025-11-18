@@ -49,6 +49,8 @@ import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.color.MaterialColors;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -94,10 +96,10 @@ public class StylingHelper {
 		format(editable, end, editable.length() - 1, textColor);
 	}
 
-	public static void highlight(final Context context, final Editable editable, List<String> needles, boolean dark) {
-		for (String needle : needles) {
+	public static void highlight(final TextView view, final Editable editable, final List<String> needles) {
+		for (final String needle : needles) {
 			if (!FtsUtils.isKeyword(needle)) {
-				highlight(context, editable, needle, dark);
+				highlight(view, editable, needle);
 			}
 		}
 	}
@@ -124,14 +126,14 @@ public class StylingHelper {
 		return words;
 	}
 
-	private static void highlight(final Context context, final Editable editable, String needle, boolean dark) {
+	private static void highlight(final TextView view, final Editable editable, final String needle) {
 		final int length = needle.length();
 		String string = editable.toString();
 		int start = indexOfIgnoreCase(string, needle, 0);
 		while (start != -1) {
 			int end = start + length;
-			editable.setSpan(new BackgroundColorSpan(ContextCompat.getColor(context, dark ? R.color.blue_a100 : R.color.blue_a400)), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-			editable.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, dark ? R.color.black87 : R.color.white)), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+			editable.setSpan(new BackgroundColorSpan(MaterialColors.getColor(view, com.google.android.material.R.attr.colorPrimaryFixedDim)), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+			editable.setSpan(new ForegroundColorSpan(MaterialColors.getColor(view, com.google.android.material.R.attr.colorOnPrimaryFixed)), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
 			start = indexOfIgnoreCase(string, needle, start + length);
 		}
 
@@ -141,8 +143,7 @@ public class StylingHelper {
 		if (start == 0 && charSequence.length() + 1 == end) {
 			return charSequence;
 		}
-		if (charSequence instanceof Spannable) {
-			Spannable spannable = (Spannable) charSequence;
+		if (charSequence instanceof Spannable spannable) {
 			Spannable sub = (Spannable) spannable.subSequence(start, end);
 			for (Class<? extends ParcelableSpan> clazz : SPAN_CLASSES) {
 				ParcelableSpan[] spannables = spannable.getSpans(start, end, clazz);
@@ -175,25 +176,14 @@ public class StylingHelper {
 		}
 	}
 
-	public static boolean isDarkText(TextView textView) {
-		int argb = textView.getCurrentTextColor();
-		return Color.red(argb) + Color.green(argb) + Color.blue(argb) == 0;
-	}
-
-	private static ParcelableSpan createSpanForStyle(ImStyleParser.Style style) {
-		switch (style.getKeyword()) {
-			case "*":
-				return new StyleSpan(Typeface.BOLD);
-			case "_":
-				return new StyleSpan(Typeface.ITALIC);
-			case "~":
-				return new StrikethroughSpan();
-			case "`":
-			case "```":
-				return new TypefaceSpan("monospace");
-			default:
-				throw new AssertionError("Unknown Style");
-		}
+	private static ParcelableSpan createSpanForStyle(final ImStyleParser.Style style) {
+        return switch (style.getKeyword()) {
+            case "*" -> new StyleSpan(Typeface.BOLD);
+            case "_" -> new StyleSpan(Typeface.ITALIC);
+            case "~" -> new StrikethroughSpan();
+            case "`", "```" -> new TypefaceSpan("monospace");
+            default -> throw new AssertionError("Unknown Style");
+        };
 	}
 
 	private static void makeKeywordOpaque(final Editable editable, int start, int end, @ColorInt int fallbackTextColor) {

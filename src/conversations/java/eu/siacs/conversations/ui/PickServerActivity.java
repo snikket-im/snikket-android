@@ -22,17 +22,8 @@ public class PickServerActivity extends XmppActivity {
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
 
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        final int theme = findTheme();
-        if (this.mTheme != theme) {
-            recreate();
-        }
     }
 
 
@@ -53,7 +44,8 @@ public class PickServerActivity extends XmppActivity {
     }
 
     @Override
-    public void onNewIntent(Intent intent) {
+    public void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
         if (intent != null) {
             setIntent(intent);
         }
@@ -66,6 +58,7 @@ public class PickServerActivity extends XmppActivity {
         }
         super.onCreate(savedInstanceState);
         ActivityPickServerBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_pick_server);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar());
         binding.useCim.setOnClickListener(v -> {
@@ -81,7 +74,7 @@ public class PickServerActivity extends XmppActivity {
             if (accounts.size() == 1) {
                 intent.putExtra("jid", accounts.get(0).getJid().asBareJid().toString());
                 intent.putExtra("init", true);
-            } else if (accounts.size() >= 1) {
+            } else if (!accounts.isEmpty()) {
                 intent = new Intent(this, ManageAccountActivity.class);
             }
             addInviteUri(intent);

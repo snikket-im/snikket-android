@@ -1,13 +1,19 @@
 package eu.siacs.conversations.utils;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.text.SpannableStringBuilder;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.util.Pair;
+import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.material.color.MaterialColors;
 import com.google.common.base.Strings;
 
 import java.math.BigInteger;
@@ -36,78 +42,6 @@ import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class UIHelper {
-
-    private static final int[] UNSAFE_COLORS = {
-            0xFFF44336, //red 500
-            0xFFE53935, //red 600
-            0xFFD32F2F, //red 700
-            0xFFC62828, //red 800
-
-            0xFFEF6C00, //orange 800
-
-            0xFFF4511E, //deep orange 600
-            0xFFE64A19, //deep orange 700
-            0xFFD84315, //deep orange 800,
-    };
-
-    private static final int[] SAFE_COLORS = {
-            0xFFE91E63, //pink 500
-            0xFFD81B60, //pink 600
-            0xFFC2185B, //pink 700
-            0xFFAD1457, //pink 800
-
-            0xFF9C27B0, //purple 500
-            0xFF8E24AA, //purple 600
-            0xFF7B1FA2, //purple 700
-            0xFF6A1B9A, //purple 800
-
-            0xFF673AB7, //deep purple 500,
-            0xFF5E35B1, //deep purple 600
-            0xFF512DA8, //deep purple 700
-            0xFF4527A0, //deep purple 800,
-
-            0xFF3F51B5, //indigo 500,
-            0xFF3949AB,//indigo 600
-            0xFF303F9F,//indigo 700
-            0xFF283593, //indigo 800
-
-            0xFF2196F3, //blue 500
-            0xFF1E88E5, //blue 600
-            0xFF1976D2, //blue 700
-            0xFF1565C0, //blue 800
-
-            0xFF03A9F4, //light blue 500
-            0xFF039BE5, //light blue 600
-            0xFF0288D1, //light blue 700
-            0xFF0277BD, //light blue 800
-
-            0xFF00BCD4, //cyan 500
-            0xFF00ACC1, //cyan 600
-            0xFF0097A7, //cyan 700
-            0xFF00838F, //cyan 800
-
-            0xFF009688, //teal 500,
-            0xFF00897B, //teal 600
-            0xFF00796B, //teal 700
-            0xFF00695C, //teal 800,
-
-            //0xFF558B2F, //light green 800
-
-            //0xFFC0CA33, //lime 600
-            0xFF9E9D24, //lime 800
-
-            0xFF795548, //brown 500,
-            //0xFF4E342E, //brown 800
-            0xFF607D8B, //blue grey 500,
-            //0xFF37474F //blue grey 800
-    };
-
-    private static final int[] COLORS;
-
-    static {
-        COLORS = Arrays.copyOf(SAFE_COLORS, SAFE_COLORS.length + UNSAFE_COLORS.length);
-        System.arraycopy(UNSAFE_COLORS, 0, COLORS, SAFE_COLORS.length, UNSAFE_COLORS.length);
-    }
 
     private static final List<String> LOCATION_QUESTIONS = Arrays.asList(
             "where are you", //en
@@ -226,32 +160,11 @@ public class UIHelper {
         }
     }
 
-    public static int getColorForName(String name) {
-        return getColorForName(name, false);
+
+    public static int getColorForName(final String name) {
+        return XEP0392Helper.rgbFromNick(name);
     }
 
-    public static int getColorForName(String name, boolean safe) {
-        if (Config.XEP_0392) {
-            return XEP0392Helper.rgbFromNick(name);
-        }
-        if (name == null || name.isEmpty()) {
-            return 0xFF202020;
-        }
-        if (safe) {
-            return SAFE_COLORS[(int) (getLongForName(name) % SAFE_COLORS.length)];
-        } else {
-            return COLORS[(int) (getLongForName(name) % COLORS.length)];
-        }
-    }
-
-    private static long getLongForName(String name) {
-        try {
-            final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            return Math.abs(new BigInteger(messageDigest.digest(name.getBytes())).longValue());
-        } catch (Exception e) {
-            return 0;
-        }
-    }
 
     public static Pair<CharSequence, Boolean> getMessagePreview(final Context context, final Message message) {
         return getMessagePreview(context, message, 0);
@@ -589,19 +502,38 @@ public class UIHelper {
         return LOCATION_QUESTIONS.contains(body);
     }
 
-    public static ListItem.Tag getTagForStatus(Context context, Presence.Status status) {
-        switch (status) {
-            case CHAT:
-                return new ListItem.Tag(context.getString(R.string.presence_chat), 0xff259b24);
-            case AWAY:
-                return new ListItem.Tag(context.getString(R.string.presence_away), 0xffff9800);
-            case XA:
-                return new ListItem.Tag(context.getString(R.string.presence_xa), 0xfff44336);
-            case DND:
-                return new ListItem.Tag(context.getString(R.string.presence_dnd), 0xfff44336);
-            default:
-                return new ListItem.Tag(context.getString(R.string.presence_online), 0xff259b24);
-        }
+    public static void setStatus(final TextView textView, Presence.Status status) {
+        final @StringRes int text;
+        final @ColorRes int color =
+                switch (status) {
+                    case CHAT -> {
+                        text = R.string.presence_chat;
+                        yield R.color.green_800;
+                    }
+                    case ONLINE -> {
+                        text = R.string.presence_online;
+                        yield R.color.green_800;
+                    }
+                    case AWAY -> {
+                        text = R.string.presence_away;
+                        yield R.color.amber_800;
+                    }
+                    case XA -> {
+                        text = R.string.presence_xa;
+                        yield R.color.orange_800;
+                    }
+                    case DND -> {
+                        text = R.string.presence_dnd;
+                        yield R.color.red_800;
+                    }
+                    default -> throw new IllegalStateException();
+                };
+        textView.setText(text);
+        textView.setBackgroundTintList(
+                ColorStateList.valueOf(
+                        MaterialColors.harmonizeWithPrimary(
+                                textView.getContext(),
+                                ContextCompat.getColor(textView.getContext(), color))));
     }
 
     public static String filesizeToString(long size) {

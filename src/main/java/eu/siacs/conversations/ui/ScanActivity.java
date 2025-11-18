@@ -182,7 +182,6 @@ public final class ScanActivity extends Activity implements SurfaceTextureListen
 	@Override
 	protected void onResume() {
 		super.onResume();
-		SettingsUtils.applyScreenshotPreventionSetting(this);
 		maybeOpenCamera();
 	}
 

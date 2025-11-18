@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Impostazioni</string>
-    <string name="action_add">Nuova conversazione</string>
     <string name="action_accounts">Gestisci profili</string>
     <string name="action_account">Gestisci profilo</string>
-    <string name="action_end_conversation">Chiudi conversazione</string>
     <string name="action_contact_details">Dettagli del contatto</string>
     <string name="action_muc_details">Dettagli chat di gruppo</string>
     <string name="channel_details">Dettagli canale</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Sblocca partecipante</string>
     <string name="title_activity_manage_accounts">Gestisci profili</string>
     <string name="title_activity_settings">Impostazioni</string>
-    <string name="title_activity_sharewith">Condividi con Conversation</string>
-    <string name="title_activity_start_conversation">Inizia una conversazione</string>
     <string name="title_activity_choose_contact">Scegli un contatto</string>
     <string name="title_activity_choose_contacts">Scegli i contatti</string>
     <string name="title_activity_share_via_account">Condividi via account</string>
@@ -30,9 +26,9 @@
     <string name="minute_ago">1 min fa</string>
     <string name="minutes_ago">%d min fa</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d conversazione non letta</item>
-        <item quantity="many">%d conversazioni non lette</item>
-        <item quantity="other">%d conversazioni non lette</item>
+        <item quantity="one">%d chat non letta</item>
+        <item quantity="many">%d chat non lette</item>
+        <item quantity="other">%d chat non lette</item>
     </plurals>
     <string name="sending">invio…</string>
     <string name="message_decrypting">Decifrazione messaggio. Attendere prego…</string>
@@ -44,7 +40,7 @@
     <string name="moderator">Moderatore</string>
     <string name="participant">Partecipante</string>
     <string name="visitor">Visitatore</string>
-    <string name="remove_contact_text">Vuoi rimuovere %s dalla lista dei contatti? Le conversazioni con questo contatto non verranno rimosse.</string>
+    <string name="remove_contact_text">Vuoi rimuovere %s dalla lista dei contatti? Le chat con questo contatto non verranno rimosse.</string>
     <string name="block_contact_text">Vorresti impedire a %s di inviarti messaggi?</string>
     <string name="unblock_contact_text">Vorresti permettere a %s di inviarti messaggi?</string>
     <string name="block_domain_text">Bloccare tutti i contatti da %s?</string>
@@ -54,7 +50,6 @@
     <string name="register_account">Registra un nuovo profilo sul server</string>
     <string name="change_password_on_server">Cambia la password sul server</string>
     <string name="share_with">Condividi con…</string>
-    <string name="start_conversation">Inizia conversazione</string>
     <string name="invite_contact">Invita contatto</string>
     <string name="invite">Invita</string>
     <string name="contacts">Contatti</string>
@@ -83,11 +78,12 @@
     <string name="preparing_images">Preparazione per l\'invio delle immagini</string>
     <string name="sharing_files_please_wait">Condivisione file. Attendere prego…</string>
     <string name="action_clear_history">Svuota la cronologia</string>
-    <string name="clear_conversation_history">Svuota la cronologia della conversazione</string>
-    <string name="clear_histor_msg">Vuoi eliminare tutti i messaggi in questa conversazione?\n\n<b>Attenzione:</b> ciò non influenzerà i messaggi salvati su altri dispositivi o server.</string>
+    <string name="clear_conversation_history">Svuota la cronologia della chat</string>
+    <string name="clear_histor_msg">Vuoi eliminare tutti i messaggi in questa conversazione?
+\n
+\n<b>Attenzione:</b> ciò non influenzerà i messaggi salvati su altri dispositivi o server.</string>
     <string name="delete_file_dialog">Elimina file</string>
     <string name="delete_file_dialog_msg">Sei sicuro di voler eliminare questo file?\n\n<b>Attenzione:</b> non verranno eliminate copie di questo file memorizzate in altri dispositivi o server. </string>
-    <string name="also_end_conversation">Chiudi questa conversazione successivamente</string>
     <string name="choose_presence">Scegli un dispositivo</string>
     <string name="send_unencrypted_message">Invia messaggio non cifrato</string>
     <string name="send_message">Invia messaggio</string>
@@ -125,7 +121,6 @@
     <string name="pref_notification_grace_period">Periodo di grazia</string>
     <string name="pref_notification_grace_period_summary">Il periodo di tempo in cui le notifiche vengono silenziate dopo aver rilevato attività su uno dei tuoi altri dispositivi.</string>
     <string name="pref_advanced_options">Avanzate</string>
-    <string name="pref_never_send_crash">Non inviare mai segnalazioni di errore</string>
     <string name="pref_never_send_crash_summary">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo</string>
     <string name="pref_confirm_messages">Conferma i messaggi</string>
     <string name="pref_confirm_messages_summary">Fai sapere ai tuoi contatti quando hai ricevuto e letto i loro messaggi</string>
@@ -184,7 +179,7 @@
     <string name="unpublish_pgp_message">Sei sicuro di volere rimuovere la tua chiave pubblica OpenPGP dalla dichiarazione di presenza?\nI tuoi contatti non potranno più inviarti messaggi cifrati con OpenPGP.</string>
     <string name="openpgp_has_been_published">Chiave pubblica OpenPGP pubblicata.</string>
     <string name="mgmt_account_enable">Attiva profilo</string>
-    <string name="mgmt_account_delete_confirm_text">Vuoi davvero eliminare il tuo profilo\? La sua eliminazione cancellerà tutta la cronologia delle conversazioni</string>
+    <string name="mgmt_account_delete_confirm_text">Vuoi davvero eliminare il tuo profilo? La sua eliminazione cancellerà tutta la cronologia delle chat</string>
     <string name="attach_record_voice">Registra la voce</string>
     <string name="account_settings_jabber_id">Indirizzo XMPP</string>
     <string name="block_jabber_id">Blocca indirizzo XMPP</string>
@@ -283,7 +278,7 @@
     <string name="ignore">Ignora</string>
     <string name="without_mutual_presence_updates"><b>Attenzione:</b> inviarlo senza aggiornamenti della presenza reciproci può causare problemi inaspettati.\n\n<small>Vai nei dettagli del contatto per verificare le tue sottoscrizioni alla presenza.</small></string>
     <string name="pref_security_settings">Sicurezza</string>
-    <string name="pref_allow_message_correction">Permetti correzione del messaggio</string>
+    <string name="pref_allow_message_correction">Correzione del messaggio</string>
     <string name="pref_allow_message_correction_summary">Consenti ai tuoi contatti di modificare retroattivamente i loro messaggi</string>
     <string name="pref_expert_options">Impostazioni per esperti</string>
     <string name="pref_expert_options_summary">Fai attenzione con queste impostazioni</string>
@@ -436,7 +431,6 @@
     <string name="show_location">Mostra la posizione</string>
     <string name="no_application_found_to_display_location">Nessuna app trovata per mostrare la posizione</string>
     <string name="location">Posizione</string>
-    <string name="title_undo_swipe_out_conversation">Conversazione interrotta</string>
     <string name="title_undo_swipe_out_group_chat">Chat di gruppo privata abbandonata</string>
     <string name="title_undo_swipe_out_channel">Canale pubblico abbandonato</string>
     <string name="pref_dont_trust_system_cas_title">Non ti fidare delle CA di sistema</string>
@@ -446,7 +440,6 @@
     <string name="toast_no_trusted_certs">Non sono presenti certificati accettati manualmente</string>
     <string name="dialog_manage_certs_title">Elimina i certificati</string>
     <string name="dialog_manage_certs_positivebutton">Cancella la selezione</string>
-    <string name="dialog_manage_certs_negativebutton">Annulla</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">Cancellato il %d certificato</item>
         <item quantity="many">Cancellati %d certificati</item>
@@ -479,8 +472,8 @@
     <string name="pref_dnd_on_silent_mode_summary">Imposta come occupato quando il dispositivo è in modalità silenziosa</string>
     <string name="pref_treat_vibrate_as_silent">Tratta vibrazione come modalità silenziosa</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Imposta come occupato quando il dispositivo è in modalità vibrazione</string>
-    <string name="pref_show_connection_options">Impostazioni estese di connessione</string>
-    <string name="pref_show_connection_options_summary">Mostra nome host e impostazioni della porta quando configuri un profilo</string>
+    <string name="pref_show_connection_options">Host e porta</string>
+    <string name="pref_show_connection_options_summary">Mostra le impostazioni di nome host e della porta quando configuri un profilo</string>
     <string name="hostname_example">xmpp.esempio.it</string>
     <string name="action_add_account_with_certificate">Accedi con certificato</string>
     <string name="unable_to_parse_certificate">Impossibile analizzare il certificato</string>
@@ -517,7 +510,7 @@
     <string name="shared_text_with_x">Testo condiviso con %s</string>
     <string name="no_storage_permission">Dai a %1$s l\'accesso all\'archiviazione esterna</string>
     <string name="no_camera_permission">Dai a %1$s l\'accesso alla fotocamera</string>
-    <string name="sync_with_contacts">Sincronizza con i contatti</string>
+    <string name="sync_with_contacts">Integrazione della lista contatti</string>
     <string name="sync_with_contacts_long">%1$s vuole l\'autorizzazione ad accedere alla tua rubrica per confrontarla con la lista di contatti in XMPP.
 \nCiò mostrerà i nomi ed avatar dei contatti.
 \n
@@ -578,8 +571,6 @@
     <string name="pref_theme_automatic">Automatico</string>
     <string name="pref_theme_light">Chiaro</string>
     <string name="pref_theme_dark">Scuro</string>
-    <string name="pref_use_green_background">Sfondo verde</string>
-    <string name="pref_use_green_background_summary">Usa uno sfondo verde per i messaggi ricevuti</string>
     <string name="unable_to_connect_to_keychain">Impossibile connettersi a OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Questo dispositivo non è più in uso</string>
     <string name="type_pc">Computer</string>
@@ -610,7 +601,6 @@
     <string name="this_device_has_been_verified">Questo dispositivo è stato verificato</string>
     <string name="copy_fingerprint">Copia impronta</string>
     <string name="all_omemo_keys_have_been_verified">Hai verificato tutte le chiavi OMEMO in tuo possesso</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Il codice a barre non contiene impronte per questa conversazione.</string>
     <string name="verified_fingerprints">Impronte verificate</string>
     <string name="use_camera_icon_to_scan_barcode">Usa la fotocamera per scansionare il codice a barre di un contatto</string>
     <string name="please_wait_for_keys_to_be_fetched">Attendi la ricezione delle chiavi</string>
@@ -670,7 +660,6 @@
     <string name="encrypting_message">Cifratura del messaggio</string>
     <string name="not_fetching_history_retention_period">Nessun recupero di messaggi a causa del periodo di conservazione locale.</string>
     <string name="transcoding_video">Compressione video in corso</string>
-    <string name="corresponding_conversations_closed">Chiuse le relative conversazioni.</string>
     <string name="contact_blocked_past_tense">Contatto bloccato.</string>
     <string name="pref_notifications_from_strangers">Notifiche da sconosciuti</string>
     <string name="pref_notifications_from_strangers_summary">Notifica messaggi e chiamate ricevuti da sconosciuti.</string>
@@ -716,7 +705,8 @@
     <string name="error_trustkey_device_list">Impossibile ricevere l\'elenco dispositivi</string>
     <string name="error_trustkey_bundle">Impossibile ricevere le chiavi di cifratura</string>
     <string name="error_trustkey_hint_mutual">Suggerimento: in alcuni casi può essere risolto aggiungendo a vicenda la vostra lista di contatti.</string>
-    <string name="disable_encryption_message">Sei sicuro di disattivare la cifratura OMEMO per questa conversazione?\nCiò permetterà all\'amministratore del server di leggere i tuoi messaggi, ma potrebbe essere il solo modo di comunicare con persone che usano client obsoleti.</string>
+    <string name="disable_encryption_message">Sei sicuro di disattivare la cifratura OMEMO per questa conversazione?
+\nCiò permetterà all\'amministratore del server di leggere i tuoi messaggi, ma potrebbe essere il solo modo di comunicare con persone che usano client obsoleti.</string>
     <string name="disable_now">Disattiva adesso</string>
     <string name="draft">Bozza:</string>
     <string name="pref_omemo_setting">Cifratura OMEMO</string>
@@ -724,13 +714,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO verrà usato in modo predefinito nelle nuove conversazioni.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO dovrà essere attivato a mano nelle nuove conversazioni.</string>
     <string name="create_shortcut">Crea scorciatoia</string>
-    <string name="pref_font_size">Dimensione dei caratteri</string>
-    <string name="pref_font_size_summary">La dimensione dei caratteri usata all\'interno dell\'app.</string>
     <string name="default_on">On in modo predefinito</string>
     <string name="default_off">Off in modo predefinito</string>
-    <string name="small">Piccolo</string>
-    <string name="medium">Medio</string>
-    <string name="large">Grande</string>
     <string name="not_encrypted_for_this_device">Il messaggio non è stato criptato per questo dispositivo.</string>
     <string name="omemo_decryption_failed">Decifrazione del messaggio OMEMO fallita.</string>
     <string name="undo">annulla</string>
@@ -961,7 +946,6 @@
     <string name="audio_call">Chiamata vocale</string>
     <string name="video_call">Chiamata video</string>
     <string name="help">Aiuto</string>
-    <string name="switch_to_conversation">Passa alla conversazione</string>
     <string name="microphone_unavailable">Il tuo microfono non è disponibile</string>
     <string name="only_one_call_at_a_time">Puoi fare solo una chiamata alla volta.</string>
     <string name="return_to_ongoing_call">Torna alla chiamata in corso</string>
@@ -1013,7 +997,6 @@
     <string name="pref_up_push_account_title">Profilo XMPP</string>
     <string name="pref_up_push_account_summary">Il profilo attraverso cui verranno ricevuti i messaggi push.</string>
     <string name="pref_up_push_server_title">Server push</string>
-    <string name="pref_up_push_server_summary">Un server scelto dall\'utente per inoltrare i messaggi push via XMPP al tuo dispositivo.</string>
     <string name="no_account_deactivated">Nessuno (disattivato)</string>
     <string name="decline">Rifiuta</string>
     <string name="incoming_call_duration_timestamp">Chiamata in arrivo (%s) · %s</string>
@@ -1039,4 +1022,12 @@
     <string name="report_spam">Segnala spam</string>
     <string name="welcome_header_quicksy">Benvenuti su Quicksy!</string>
     <string name="quicksy_wants_your_consent">Quicksy ti chiede il consenso per usare i tuoi dati</string>
+    <string name="pref_send_crash_reports">Invia rapporti sui blocchi</string>
+    <string name="remove_bookmark">Vuoi rimuovere il segnalibro per %s?</string>
+    <string name="remove_bookmark_and_close">Vuoi rimuovere il segnalibro per %s e archiviare la chat?</string>
+    <string name="title_activity_share_with">Condividi con …</string>
+    <string name="action_archive_chat">Archivia la chat</string>
+    <string name="title_activity_new_chat">Nuova chat</string>
+    <string name="archive_this_chat">Archivia questa chat</string>
+    <string name="title_undo_swipe_out_chat">Chat archiviata</string>
 </resources>

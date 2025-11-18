@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Cài đặt</string>
-    <string name="action_add">Cuộc hội thoại mới</string>
     <string name="action_accounts">Quản lý tài khoản</string>
     <string name="action_account">Quản lý tài khoản</string>
-    <string name="action_end_conversation">Đóng cuộc hội thoại</string>
     <string name="action_contact_details">Thông tin liên hệ</string>
     <string name="action_muc_details">Chi tiết cuộc trò chuyện nhóm</string>
     <string name="channel_details">Chi tiết kênh</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Bỏ chặn thành viên</string>
     <string name="title_activity_manage_accounts">Quản lý tài khoản</string>
     <string name="title_activity_settings">Cài đặt</string>
-    <string name="title_activity_sharewith">Chia sẻ qua Conversation</string>
-    <string name="title_activity_start_conversation">Khởi chạy Conversation</string>
     <string name="title_activity_choose_contact">Chọn liên hệ</string>
     <string name="title_activity_choose_contacts">Chọn liên hệ</string>
     <string name="title_activity_share_via_account">Chia sẻ qua tài khoản</string>
@@ -52,7 +48,6 @@
     <string name="register_account">Đăng ký tài khoản mới trên máy chủ</string>
     <string name="change_password_on_server">Đổi mật k trên máy chủ</string>
     <string name="share_with">Chia sẻ với…</string>
-    <string name="start_conversation">Bắt đầu cuộc hội thoại</string>
     <string name="invite_contact">Mời liên hệ</string>
     <string name="invite">Mời</string>
     <string name="contacts">Danh bạ</string>
@@ -82,12 +77,13 @@
     <string name="sharing_files_please_wait">Đang chia sẻ các tập tin. Vui lòng chờ…</string>
     <string name="action_clear_history">Xoá lịch sử</string>
     <string name="clear_conversation_history">Xoá lịch sử hội thoại</string>
-    <string name="clear_histor_msg">Bạn có muốn xoá tất cả tin nhắn trong cuộc hội thoại này không?\n\n<b>Cảnh báo:</b> Việc này sẽ không ảnh hưởng đến các tin nhắn được lưu trữ trên các thiết bị hoặc máy chủ khác.</string>
+    <string name="clear_histor_msg">Bạn có muốn xoá tất cả tin nhắn trong cuộc hội thoại này không?
+\n
+\n<b>Cảnh báo:</b> Việc này sẽ không ảnh hưởng đến các tin nhắn được lưu trữ trên các thiết bị hoặc máy chủ khác.</string>
     <string name="delete_file_dialog">Xoá tệp</string>
     <string name="delete_file_dialog_msg">Bạn có chắc bạn muốn xoá tệp này không\?
 \n
 \n<b>Cảnh báo:</b> Việc này sẽ không xoá các bản sao được lưu trữ trên các thiết bị hoặc máy chủ khác của tệp này. </string>
-    <string name="also_end_conversation">Đóng cuộc hội thoại này sau đó</string>
     <string name="choose_presence">Chọn thiết bị</string>
     <string name="send_unencrypted_message">Gửi tin nhắn không mã hoá</string>
     <string name="send_message">Gửi tin nhắn</string>
@@ -125,7 +121,6 @@
     <string name="pref_notification_grace_period">Thời gian gia hạn thông báo</string>
     <string name="pref_notification_grace_period_summary">Khoảng thời gian mà các thông báo được giữ im lặng sau khi phát hiện hoạt động trên một trong những thiết bị khác.</string>
     <string name="pref_advanced_options">Nâng cao</string>
-    <string name="pref_never_send_crash">Không bao giờ gửi báo cáo dừng chạy</string>
     <string name="pref_never_send_crash_summary">Bằng việc gửi báo cáo hoạt động, bạn đang hỗ trợ sự phát triển</string>
     <string name="pref_confirm_messages">Xác nhận tin nhắn</string>
     <string name="pref_confirm_messages_summary">Báo cho liên hệ của bạn biết khi bạn đã nhận và đọc tin nhắn</string>
@@ -183,7 +178,7 @@
     <string name="unpublish_pgp_message">Bạn có chắc bạn muốn xoá mã khoá OpenPGP công khai của bạn khỏi sự thông báo có mặt của bạn không?\nCác liên hệ của bạn sẽ không thể gửi các tin nhắn được mã hoá bằng OpenPGP cho bạn nữa.</string>
     <string name="openpgp_has_been_published">Đã xuất bản mã khoá OpenPGP công khai.</string>
     <string name="mgmt_account_enable">Bật tài khoản</string>
-    <string name="mgmt_account_delete_confirm_text">Bạn có chắc chắn muốn xóa tài khoản chứ\? Việc xoá tài khoản sẽ xoá toàn bộ lịch sử cuộc hội thoại của bạn</string>
+    <string name="mgmt_account_delete_confirm_text">Bạn có chắc chắn muốn xóa tài khoản chứ? Việc xoá tài khoản sẽ xoá toàn bộ lịch sử cuộc hội thoại của bạn</string>
     <string name="attach_record_voice">Ghi âm</string>
     <string name="account_settings_jabber_id">Địa chỉ XMPP</string>
     <string name="block_jabber_id">Chặn địa chỉ XMPP</string>
@@ -429,7 +424,6 @@
     <string name="show_location">Hiện vị trí</string>
     <string name="no_application_found_to_display_location">Không tìm thấy ứng dụng nào để hiển thị vị trí</string>
     <string name="location">Vị trí</string>
-    <string name="title_undo_swipe_out_conversation">Đã đóng cuộc hội thoại</string>
     <string name="title_undo_swipe_out_group_chat">Đã rời khỏi cuộc trò chuyện nhóm riêng tư</string>
     <string name="title_undo_swipe_out_channel">Đã rời khỏi kênh công khai</string>
     <string name="pref_dont_trust_system_cas_title">Đừng tin các CA hệ thống</string>
@@ -439,7 +433,6 @@
     <string name="toast_no_trusted_certs">Không có chứng nhận được phê duyệt thủ công</string>
     <string name="dialog_manage_certs_title">Xoá các chứng nhận</string>
     <string name="dialog_manage_certs_positivebutton">Xoá lựa chọn</string>
-    <string name="dialog_manage_certs_negativebutton">Huỷ</string>
     <plurals name="toast_delete_certificates">
         <item quantity="other">Đã xoá %d chứng nhận</item>
     </plurals>
@@ -568,8 +561,6 @@
     <string name="pref_theme_automatic">Tự động</string>
     <string name="pref_theme_light">Sáng</string>
     <string name="pref_theme_dark">Tối</string>
-    <string name="pref_use_green_background">Nền xanh lá cây</string>
-    <string name="pref_use_green_background_summary">Dùng nền xanh lá cây cho tin nhắn nhận được</string>
     <string name="unable_to_connect_to_keychain">Không thể kết nối với OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Thiết bị này không còn được dùng nữa</string>
     <string name="type_pc">Máy tính</string>
@@ -600,7 +591,6 @@
     <string name="this_device_has_been_verified">Thiết bị này đã được xác thực</string>
     <string name="copy_fingerprint">Sao chép mã vân tay</string>
     <string name="all_omemo_keys_have_been_verified">Bạn đã xác minh tất cả mã khoá OMEMO mà bạn đang sở hữu</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Mã vạch không chứa mã vân tay cho cuộc trò chuyện này.</string>
     <string name="verified_fingerprints">Mã vân tay đã xác minh</string>
     <string name="use_camera_icon_to_scan_barcode">Sử dụng máy ảnh để quét mã vạch của liên hệ</string>
     <string name="please_wait_for_keys_to_be_fetched">Vui lòng đợi để lấy các mã khoá</string>
@@ -646,7 +636,6 @@
     <string name="encrypting_message">Đang mã hoá tin nhắn</string>
     <string name="not_fetching_history_retention_period">Không lấy tin nhắn do khoảng thời gian giữ lại cục bộ.</string>
     <string name="transcoding_video">Đang nén video</string>
-    <string name="corresponding_conversations_closed">Đã đóng các cuộc hội thoại tương ứng.</string>
     <string name="contact_blocked_past_tense">Đã chặn liên hệ.</string>
     <string name="pref_notifications_from_strangers">Thông báo từ người lạ</string>
     <string name="pref_notifications_from_strangers_summary">Thông báo về các tin nhắn và cuộc gọi được nhận từ những người lạ.</string>
@@ -692,7 +681,8 @@
     <string name="error_trustkey_device_list">Không thể lấy danh sách thiết bị</string>
     <string name="error_trustkey_bundle">Không thể lấy mã khoá mã hoá</string>
     <string name="error_trustkey_hint_mutual">Gợi ý: Trong một số trường hợp, điều này có thể được sửa bằng cách thêm lẫn nhau vào danh sách liên hệ của bạn.</string>
-    <string name="disable_encryption_message">Bạn có chắc bạn muốn tắt mã hoá OMEMO cho cuộc hội thoại này không?\nViệc này sẽ cho phép quản trị viên máy chủ đọc các tin nhắn của bạn, nhưng việc này có thể là cách duy nhất để giao tiếp với những người sử dụng các ứng dụng khách lỗi thời.</string>
+    <string name="disable_encryption_message">Bạn có chắc bạn muốn tắt mã hoá OMEMO cho cuộc hội thoại này không?
+\nViệc này sẽ cho phép quản trị viên máy chủ đọc các tin nhắn của bạn, nhưng việc này có thể là cách duy nhất để giao tiếp với những người sử dụng các ứng dụng khách lỗi thời.</string>
     <string name="disable_now">Tắt ngay</string>
     <string name="draft">Bản nháp:</string>
     <string name="pref_omemo_setting">Mã hoá OMEMO</string>
@@ -700,13 +690,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO sẽ được sử dụng theo mặc định cho các cuộc hội thoại mới.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO sẽ phải được bật một cách rõ ràng cho các cuộc hội thoại mới.</string>
     <string name="create_shortcut">Tạo lối tắt</string>
-    <string name="pref_font_size">Cỡ chữ</string>
-    <string name="pref_font_size_summary">Cỡ chữ tương đối được sử dụng trong ứng dụng.</string>
     <string name="default_on">Bật theo mặc định</string>
     <string name="default_off">Tắt theo mặc định</string>
-    <string name="small">Nhỏ</string>
-    <string name="medium">Trung bình</string>
-    <string name="large">Lớn</string>
     <string name="not_encrypted_for_this_device">Tin nhắn đã không được mã hoá cho thiết bị này.</string>
     <string name="omemo_decryption_failed">Giải mã tin nhắn OMEMO thất bại.</string>
     <string name="undo">hoàn tác</string>
@@ -916,7 +901,6 @@
     <string name="audio_call">Cuộc gọi âm thanh</string>
     <string name="video_call">Cuộc gọi video</string>
     <string name="help">Trợ giúp</string>
-    <string name="switch_to_conversation">Chuyển sang cuộc hội thoại</string>
     <string name="microphone_unavailable">Micro của bạn không có sẵn</string>
     <string name="only_one_call_at_a_time">Bạn chỉ có thể có một cuộc gọi trong một lúc.</string>
     <string name="return_to_ongoing_call">Quay lại cuộc gọi đang diễn ra</string>
@@ -973,7 +957,6 @@
     <string name="pref_up_push_account_summary">Tài khoản sẽ nhận được tin nhắn đã đẩy đi.</string>
     <string name="pref_up_push_account_title">Tài khoản XMPP</string>
     <string name="pref_up_push_server_title">Máy chủ đẩy</string>
-    <string name="pref_up_push_server_summary">Một máy chủ đẩy do người dùng chọn để phát lại tin nhắn đẩy qua XMPP đến thiết bị của bạn.</string>
     <string name="no_account_deactivated">Không tồn tại (đã vô hiệu hóa)</string>
     <string name="decline">Từ chối</string>
     <string name="save_as_group_chat">Lưu thành nhóm trò chuyện</string>

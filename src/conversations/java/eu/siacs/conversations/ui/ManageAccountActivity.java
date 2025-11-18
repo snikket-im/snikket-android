@@ -1,10 +1,14 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
+import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
+
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -12,23 +16,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
 
-import org.openintents.openpgp.util.OpenPgpApi;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import com.google.common.base.Strings;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ActivityManageAccountsBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
@@ -37,10 +35,17 @@ import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 
-import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
-import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
+import org.openintents.openpgp.util.OpenPgpApi;
 
-public class ManageAccountActivity extends XmppActivity implements OnAccountUpdate, KeyChainAliasCallback, XmppConnectionService.OnAccountCreated, AccountAdapter.OnTglAccountState {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class ManageAccountActivity extends XmppActivity
+        implements OnAccountUpdate,
+                KeyChainAliasCallback,
+                XmppConnectionService.OnAccountCreated,
+                AccountAdapter.OnTglAccountState {
 
     private final String STATE_SELECTED_ACCOUNT = "selected_account";
 
@@ -50,7 +55,6 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
     protected Jid selectedAccountJid = null;
 
     protected final List<Account> accountList = new ArrayList<>();
-    protected ListView accountListView;
     protected AccountAdapter mAccountAdapter;
     protected AtomicBoolean mInvokedAddAccount = new AtomicBoolean(false);
 
@@ -67,7 +71,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
             accountList.clear();
             accountList.addAll(xmppConnectionService.getAccounts());
         }
-        ActionBar actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(this.accountList.size() > 0);
             actionBar.setDisplayHomeAsUpEnabled(this.accountList.size() > 0);
@@ -81,8 +85,11 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_manage_accounts);
-        setSupportActionBar(findViewById(R.id.toolbar));
+        ActivityManageAccountsBinding binding =
+                DataBindingUtil.setContentView(this, R.layout.activity_manage_accounts);
+
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
+        setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar());
         if (savedInstanceState != null) {
             String jid = savedInstanceState.getString(STATE_SELECTED_ACCOUNT);
@@ -95,26 +102,19 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
             }
         }
 
-        accountListView = findViewById(R.id.account_list);
         this.mAccountAdapter = new AccountAdapter(this, accountList);
-        accountListView.setAdapter(this.mAccountAdapter);
-        accountListView.setOnItemClickListener((arg0, view, position, arg3) -> switchToAccount(accountList.get(position)));
-        registerForContextMenu(accountListView);
+        binding.accountList.setAdapter(this.mAccountAdapter);
+        binding.accountList.setOnItemClickListener(
+                (arg0, view, position, arg3) -> switchToAccount(accountList.get(position)));
+        registerForContextMenu(binding.accountList);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        final int theme = findTheme();
-        if (this.mTheme != theme) {
-            recreate();
-        }
-    }
 
     @Override
-    public void onSaveInstanceState(final Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull final Bundle savedInstanceState) {
         if (selectedAccount != null) {
-            savedInstanceState.putString(STATE_SELECTED_ACCOUNT, selectedAccount.getJid().asBareJid().toEscapedString());
+            savedInstanceState.putString(
+                    STATE_SELECTED_ACCOUNT, selectedAccount.getJid().asBareJid().toEscapedString());
         }
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -122,8 +122,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        ManageAccountActivity.this.getMenuInflater().inflate(
-                R.menu.manageaccounts_context, menu);
+        ManageAccountActivity.this.getMenuInflater().inflate(R.menu.manageaccounts_context, menu);
         AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
         this.selectedAccount = accountList.get(acmi.position);
         if (this.selectedAccount.isEnabled()) {
@@ -138,15 +137,16 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         if (selectedAccountJid != null) {
             this.selectedAccount = xmppConnectionService.findAccountByJid(selectedAccountJid);
         }
         refreshUiReal();
         if (this.mPostponedActivityResult != null) {
-            this.onActivityResult(mPostponedActivityResult.first, RESULT_OK, mPostponedActivityResult.second);
+            this.onActivityResult(
+                    mPostponedActivityResult.first, RESULT_OK, mPostponedActivityResult.second);
         }
-        if (Config.X509_VERIFICATION && this.accountList.size() == 0) {
+        if (Config.X509_VERIFICATION && this.accountList.isEmpty()) {
             if (mInvokedAddAccount.compareAndSet(false, true)) {
                 addAccountFromKey();
             }
@@ -233,9 +233,9 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0) {
             if (allGranted(grantResults)) {
@@ -258,13 +258,14 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
     @Override
     public boolean onNavigateUp() {
         if (xmppConnectionService.getConversations().size() == 0) {
-            Intent contactsIntent = new Intent(this,
-                    StartConversationActivity.class);
+            Intent contactsIntent = new Intent(this, StartConversationActivity.class);
             contactsIntent.setFlags(
                     // if activity exists in stack, pop the stack and go back to it
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            |
                             // otherwise, make a new task for it
-                            Intent.FLAG_ACTIVITY_NEW_TASK |
+                            Intent.FLAG_ACTIVITY_NEW_TASK
+                            |
                             // don't use the new activity animation; finish
                             // animation runs instead
                             Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -286,16 +287,17 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
     }
 
     private void addAccountFromKey() {
+        Log.d(Config.LOGTAG, "add account from key");
         try {
             KeyChain.choosePrivateKeyAlias(this, this, null, null, null, -1, null);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, R.string.device_does_not_support_certificates, Toast.LENGTH_LONG).show();
+        } catch (final ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.device_does_not_support_certificates, Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
     private void publishAvatar(Account account) {
-        Intent intent = new Intent(getApplicationContext(),
-                PublishProfilePictureActivity.class);
+        Intent intent = new Intent(getApplicationContext(), PublishProfilePictureActivity.class);
         intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
         startActivity(intent);
     }
@@ -377,7 +379,6 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -385,7 +386,8 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
             if (xmppConnectionServiceBound) {
                 if (requestCode == REQUEST_CHOOSE_PGP_ID) {
                     if (data.getExtras().containsKey(OpenPgpApi.EXTRA_SIGN_KEY_ID)) {
-                        selectedAccount.setPgpSignId(data.getExtras().getLong(OpenPgpApi.EXTRA_SIGN_KEY_ID));
+                        selectedAccount.setPgpSignId(
+                                data.getExtras().getLong(OpenPgpApi.EXTRA_SIGN_KEY_ID));
                         announcePgp(selectedAccount, null, null, onOpenPGPKeyPublished);
                     } else {
                         choosePgpSignId(selectedAccount);
@@ -402,9 +404,17 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 
     @Override
     public void alias(final String alias) {
-        if (alias != null) {
-            xmppConnectionService.createAccountFromKey(alias, this);
+        if (Strings.isNullOrEmpty(alias)) {
+            runOnUiThread(
+                    () ->
+                            Toast.makeText(
+                                            this,
+                                            R.string.no_certificate_selected,
+                                            Toast.LENGTH_LONG)
+                                    .show());
+            return;
         }
+        xmppConnectionService.createAccountFromKey(alias, this);
     }
 
     @Override
@@ -417,6 +427,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 
     @Override
     public void informUser(final int r) {
-        runOnUiThread(() -> Toast.makeText(ManageAccountActivity.this, r, Toast.LENGTH_LONG).show());
+        runOnUiThread(
+                () -> Toast.makeText(ManageAccountActivity.this, r, Toast.LENGTH_LONG).show());
     }
 }

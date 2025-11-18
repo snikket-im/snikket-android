@@ -22,11 +22,6 @@ import android.widget.TextView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.lang.ref.WeakReference;
-import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Message;
@@ -36,7 +31,17 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.WeakReferenceSet;
 
-public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompletionListener, SeekBar.OnSeekBarChangeListener, Runnable, SensorEventListener {
+import java.lang.ref.WeakReference;
+import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class AudioPlayer
+        implements View.OnClickListener,
+                MediaPlayer.OnCompletionListener,
+                SeekBar.OnSeekBarChangeListener,
+                Runnable,
+                SensorEventListener {
 
     private static final int REFRESH_INTERVAL = 250;
     private static final Object LOCK = new Object();
@@ -57,33 +62,43 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         final Context context = adapter.getContext();
         this.messageAdapter = adapter;
         this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        this.proximitySensor = this.sensorManager == null ? null : this.sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        this.proximitySensor =
+                this.sensorManager == null
+                        ? null
+                        : this.sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         initializeProximityWakeLock(context);
         synchronized (AudioPlayer.LOCK) {
             if (AudioPlayer.player != null) {
                 AudioPlayer.player.setOnCompletionListener(this);
                 if (AudioPlayer.player.isPlaying() && sensorManager != null) {
-                    sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+                    sensorManager.registerListener(
+                            this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
                 }
             }
         }
     }
 
     private static String formatTime(int ms) {
-        return String.format(Locale.ENGLISH, "%d:%02d", ms / 60000, Math.min(Math.round((ms % 60000) / 1000f), 59));
+        return String.format(
+                Locale.ENGLISH,
+                "%d:%02d",
+                ms / 60000,
+                Math.min(Math.round((ms % 60000) / 1000f), 59));
     }
 
     private void initializeProximityWakeLock(Context context) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            synchronized (AudioPlayer.LOCK) {
-                if (AudioPlayer.wakeLock == null) {
-                    final PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-                    AudioPlayer.wakeLock = powerManager == null ? null : powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, AudioPlayer.class.getSimpleName());
-                    AudioPlayer.wakeLock.setReferenceCounted(false);
-                }
+        synchronized (AudioPlayer.LOCK) {
+            if (AudioPlayer.wakeLock == null) {
+                final PowerManager powerManager =
+                        (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+                AudioPlayer.wakeLock =
+                        powerManager == null
+                                ? null
+                                : powerManager.newWakeLock(
+                                        PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
+                                        AudioPlayer.class.getSimpleName());
+                AudioPlayer.wakeLock.setReferenceCounted(false);
             }
-        } else {
-            AudioPlayer.wakeLock = null;
         }
     }
 
@@ -92,41 +107,39 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             audioPlayer.setTag(message);
             if (init(ViewHolder.get(audioPlayer), message)) {
                 this.audioPlayerLayouts.addWeakReferenceTo(audioPlayer);
-                executor.execute(()-> this.stopRefresher(true));
+                executor.execute(() -> this.stopRefresher(true));
             } else {
                 this.audioPlayerLayouts.removeWeakReferenceTo(audioPlayer);
             }
         }
     }
 
-    private boolean init(ViewHolder viewHolder, Message message) {
-        if (viewHolder.darkBackground) {
-            viewHolder.runtime.setTextAppearance(this.messageAdapter.getContext(), R.style.TextAppearance_Conversations_Caption_OnDark);
-        } else {
-            viewHolder.runtime.setTextAppearance(this.messageAdapter.getContext(), R.style.TextAppearance_Conversations_Caption);
-        }
+    private boolean init(final ViewHolder viewHolder, final Message message) {
+        MessageAdapter.setTextColor(viewHolder.runtime, viewHolder.bubbleColor);
         viewHolder.progress.setOnSeekBarChangeListener(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ColorStateList color = ContextCompat.getColorStateList(messageAdapter.getContext(), viewHolder.darkBackground ? R.color.white70 : R.color.green700_desaturated);
-            viewHolder.progress.setThumbTintList(color);
-            viewHolder.progress.setProgressTintList(color);
-        }
-        viewHolder.playPause.setAlpha(viewHolder.darkBackground ? 0.7f : 0.57f);
+        final ColorStateList color =
+                MessageAdapter.bubbleToOnSurfaceColorStateList(
+                        viewHolder.progress, viewHolder.bubbleColor);
+        viewHolder.progress.setThumbTintList(color);
+        viewHolder.progress.setProgressTintList(color);
         viewHolder.playPause.setOnClickListener(this);
         final Context context = viewHolder.playPause.getContext();
         if (message == currentlyPlayingMessage) {
             if (AudioPlayer.player != null && AudioPlayer.player.isPlaying()) {
-                viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
+                viewHolder.playPause.setImageResource(R.drawable.ic_pause_24dp);
+                MessageAdapter.setImageTint(viewHolder.playPause, viewHolder.bubbleColor);
                 viewHolder.playPause.setContentDescription(context.getString(R.string.pause_audio));
                 viewHolder.progress.setEnabled(true);
             } else {
                 viewHolder.playPause.setContentDescription(context.getString(R.string.play_audio));
-                viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
+                viewHolder.playPause.setImageResource(R.drawable.ic_play_arrow_24dp);
+                MessageAdapter.setImageTint(viewHolder.playPause, viewHolder.bubbleColor);
                 viewHolder.progress.setEnabled(false);
             }
             return true;
         } else {
-            viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
+            viewHolder.playPause.setImageResource(R.drawable.ic_play_arrow_24dp);
+            MessageAdapter.setImageTint(viewHolder.playPause, viewHolder.bubbleColor);
             viewHolder.playPause.setContentDescription(context.getString(R.string.play_audio));
             viewHolder.runtime.setText(formatTime(message.getFileParams().runtime));
             viewHolder.progress.setProgress(0);
@@ -145,9 +158,16 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
     }
 
     private void startStop(ImageButton playPause) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(messageAdapter.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+                && ContextCompat.checkSelfPermission(
+                                messageAdapter.getActivity(),
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
             pendingOnClickView.push(new WeakReference<>(playPause));
-            ActivityCompat.requestPermissions(messageAdapter.getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, ConversationsActivity.REQUEST_PLAY_PAUSE);
+            ActivityCompat.requestPermissions(
+                    messageAdapter.getActivity(),
+                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    ConversationsActivity.REQUEST_PLAY_PAUSE);
             return;
         }
         initializeProximityWakeLock(playPause.getContext());
@@ -163,13 +183,13 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 
     private boolean playPauseCurrent(final ViewHolder viewHolder) {
         final Context context = viewHolder.playPause.getContext();
-        viewHolder.playPause.setAlpha(viewHolder.darkBackground ? 0.7f : 0.57f);
         if (player.isPlaying()) {
             viewHolder.progress.setEnabled(false);
             player.pause();
             messageAdapter.flagScreenOff();
             releaseProximityWakeLock();
-            viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
+            viewHolder.playPause.setImageResource(R.drawable.ic_play_arrow_24dp);
+            MessageAdapter.setImageTint(viewHolder.playPause,viewHolder.bubbleColor);
             viewHolder.playPause.setContentDescription(context.getString(R.string.play_audio));
         } else {
             viewHolder.progress.setEnabled(true);
@@ -177,7 +197,8 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             messageAdapter.flagScreenOn();
             acquireProximityWakeLock();
             this.stopRefresher(true);
-            viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
+            viewHolder.playPause.setImageResource(R.drawable.ic_pause_24dp);
+            MessageAdapter.setImageTint(viewHolder.playPause,viewHolder.bubbleColor);
             viewHolder.playPause.setContentDescription(context.getString(R.string.pause_audio));
         }
         return false;
@@ -193,19 +214,24 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         AudioPlayer.player = new MediaPlayer();
         try {
             AudioPlayer.currentlyPlayingMessage = message;
-            AudioPlayer.player.setAudioStreamType(earpiece ? AudioManager.STREAM_VOICE_CALL : AudioManager.STREAM_MUSIC);
-            AudioPlayer.player.setDataSource(messageAdapter.getFileBackend().getFile(message).getAbsolutePath());
+            AudioPlayer.player.setAudioStreamType(
+                    earpiece ? AudioManager.STREAM_VOICE_CALL : AudioManager.STREAM_MUSIC);
+            AudioPlayer.player.setDataSource(
+                    messageAdapter.getFileBackend().getFile(message).getAbsolutePath());
             AudioPlayer.player.setOnCompletionListener(this);
             AudioPlayer.player.prepare();
             AudioPlayer.player.start();
             messageAdapter.flagScreenOn();
             acquireProximityWakeLock();
             viewHolder.progress.setEnabled(true);
-            viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
-            viewHolder.playPause.setContentDescription(viewHolder.playPause.getContext().getString(R.string.pause_audio));
-            sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+            viewHolder.playPause.setImageResource(R.drawable.ic_pause_24dp);
+            MessageAdapter.setImageTint(viewHolder.playPause,viewHolder.bubbleColor);
+            viewHolder.playPause.setContentDescription(
+                    viewHolder.playPause.getContext().getString(R.string.pause_audio));
+            sensorManager.registerListener(
+                    this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
             return true;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             messageAdapter.flagScreenOff();
             releaseProximityWakeLock();
             AudioPlayer.currentlyPlayingMessage = null;
@@ -251,14 +277,16 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         }
     }
 
-    private void resetPlayerUi(RelativeLayout audioPlayer) {
+    private void resetPlayerUi(final RelativeLayout audioPlayer) {
         if (audioPlayer == null) {
             return;
         }
         final ViewHolder viewHolder = ViewHolder.get(audioPlayer);
         final Message message = (Message) audioPlayer.getTag();
-        viewHolder.playPause.setContentDescription(viewHolder.playPause.getContext().getString(R.string.play_audio));
-        viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
+        viewHolder.playPause.setContentDescription(
+                viewHolder.playPause.getContext().getString(R.string.play_audio));
+        viewHolder.playPause.setImageResource(R.drawable.ic_play_arrow_24dp);
+        MessageAdapter.setImageTint(viewHolder.playPause,viewHolder.bubbleColor);
         if (message != null) {
             viewHolder.runtime.setText(formatTime(message.getFileParams().runtime));
         }
@@ -297,14 +325,10 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
+    public void onStartTrackingTouch(SeekBar seekBar) {}
 
     @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
-    }
+    public void onStopTrackingTouch(SeekBar seekBar) {}
 
     public void stop() {
         synchronized (AudioPlayer.LOCK) {
@@ -361,7 +385,8 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         } else {
             viewHolder.progress.setProgress(current * 100 / duration);
         }
-        viewHolder.runtime.setText(String.format("%s / %s", formatTime(current), formatTime(duration)));
+        viewHolder.runtime.setText(
+                String.format("%s / %s", formatTime(current), formatTime(duration)));
         return true;
     }
 
@@ -391,7 +416,11 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
                 try {
                     ViewHolder currentViewHolder = getCurrentViewHolder();
                     if (currentViewHolder != null) {
-                        play(currentViewHolder, currentlyPlayingMessage, streamType == AudioManager.STREAM_VOICE_CALL, progress);
+                        play(
+                                currentViewHolder,
+                                currentlyPlayingMessage,
+                                streamType == AudioManager.STREAM_VOICE_CALL,
+                                progress);
                     }
                 } catch (Exception e) {
                     Log.w(Config.LOGTAG, e);
@@ -401,8 +430,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-    }
+    public void onAccuracyChanged(Sensor sensor, int i) {}
 
     private void acquireProximityWakeLock() {
         synchronized (AudioPlayer.LOCK) {
@@ -435,22 +463,24 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         private TextView runtime;
         private SeekBar progress;
         private ImageButton playPause;
-        private boolean darkBackground = false;
+        private MessageAdapter.BubbleColor bubbleColor = MessageAdapter.BubbleColor.SURFACE;
 
-        public static ViewHolder get(RelativeLayout audioPlayer) {
-            ViewHolder viewHolder = (ViewHolder) audioPlayer.getTag(R.id.TAG_AUDIO_PLAYER_VIEW_HOLDER);
-            if (viewHolder == null) {
-                viewHolder = new ViewHolder();
-                viewHolder.runtime = audioPlayer.findViewById(R.id.runtime);
-                viewHolder.progress = audioPlayer.findViewById(R.id.progress);
-                viewHolder.playPause = audioPlayer.findViewById(R.id.play_pause);
-                audioPlayer.setTag(R.id.TAG_AUDIO_PLAYER_VIEW_HOLDER, viewHolder);
+        public static ViewHolder get(final RelativeLayout audioPlayer) {
+            final var existingViewHolder =
+                    (ViewHolder) audioPlayer.getTag(R.id.TAG_AUDIO_PLAYER_VIEW_HOLDER);
+            if (existingViewHolder != null) {
+                return existingViewHolder;
             }
+            final ViewHolder viewHolder = new ViewHolder();
+            viewHolder.runtime = audioPlayer.findViewById(R.id.runtime);
+            viewHolder.progress = audioPlayer.findViewById(R.id.progress);
+            viewHolder.playPause = audioPlayer.findViewById(R.id.play_pause);
+            audioPlayer.setTag(R.id.TAG_AUDIO_PLAYER_VIEW_HOLDER, viewHolder);
             return viewHolder;
         }
 
-        public void setDarkBackground(boolean darkBackground) {
-            this.darkBackground = darkBackground;
+        public void setBubbleColor(final MessageAdapter.BubbleColor bubbleColor) {
+            this.bubbleColor = bubbleColor;
         }
     }
 }

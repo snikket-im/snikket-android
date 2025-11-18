@@ -23,7 +23,7 @@ public class AboutPreference extends Preference {
     }
 
     private void setSummaryAndTitle(final Context context) {
-        setSummary(String.format("%s%s %s (%s)", BuildConfig.APP_NAME, BuildConfig.VERSION_NAME, im.conversations.webrtc.BuildConfig.WEBRTC_VERSION, Strings.nullToEmpty(Build.DEVICE)));
+        setSummary(String.format("%s %s %s (%s)", BuildConfig.APP_NAME, BuildConfig.VERSION_NAME, im.conversations.webrtc.BuildConfig.WEBRTC_VERSION, Strings.nullToEmpty(Build.DEVICE)));
         setTitle(context.getString(R.string.title_activity_about_x, BuildConfig.APP_NAME));
     }
 

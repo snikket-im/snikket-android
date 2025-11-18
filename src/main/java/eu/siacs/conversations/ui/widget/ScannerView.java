@@ -29,6 +29,8 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
+
 import com.google.zxing.ResultPoint;
 
 import java.util.HashMap;
@@ -58,25 +60,24 @@ public class ScannerView extends View {
 
     public ScannerView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
-
-        final Resources res = getResources();
-        maskColor = res.getColor(R.color.black54);
-        maskResultColor = res.getColor(R.color.black87);
-        laserColor = res.getColor(R.color.red500);
-        dotColor = res.getColor(R.color.orange500);
-        dotResultColor = res.getColor(R.color.scan_result_dots);
+        final Resources resources = context.getResources();
+        maskColor = ContextCompat.getColor(context, R.color.black54);
+        maskResultColor = ContextCompat.getColor(context, R.color.black87);
+        laserColor = ContextCompat.getColor(context, R.color.red_500);
+        dotColor = ContextCompat.getColor(context, R.color.orange_500);
+        dotResultColor = ContextCompat.getColor(context, R.color.green_500);
 
         maskPaint = new Paint();
         maskPaint.setStyle(Style.FILL);
 
         laserPaint = new Paint();
-        laserPaint.setStrokeWidth(res.getDimensionPixelSize(R.dimen.scan_laser_width));
+        laserPaint.setStrokeWidth(resources.getDimensionPixelSize(R.dimen.scan_laser_width));
         laserPaint.setStyle(Style.STROKE);
 
         dotPaint = new Paint();
         dotPaint.setAlpha(DOT_OPACITY);
         dotPaint.setStyle(Style.STROKE);
-        dotPaint.setStrokeWidth(res.getDimension(R.dimen.scan_dot_size));
+        dotPaint.setStrokeWidth(resources.getDimension(R.dimen.scan_dot_size));
         dotPaint.setAntiAlias(true);
     }
 

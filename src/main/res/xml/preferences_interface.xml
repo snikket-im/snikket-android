@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="@string/appearance">
+        <SwitchPreferenceCompat
+            android:icon="@drawable/ic_palette_24dp"
+            android:key="dynamic_colors"
+            android:summary="@string/pref_dynamic_colors_summary"
+            android:title="@string/pref_dynamic_colors" />
+        <ListPreference
+            android:defaultValue="@string/theme"
+            android:entries="@array/themes"
+            android:entryValues="@array/themes_values"
+            android:icon="@drawable/ic_dark_mode_24dp"
+            android:key="theme"
+            android:title="@string/pref_light_dark_mode"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/use_green_background"
+            android:icon="@drawable/ic_forum_24dp"
+            android:key="use_green_background"
+            android:summary="@string/pref_use_colorful_bubbles_summary"
+            android:title="@string/pref_use_colorful_bubbles" />
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/show_dynamic_tags"
+            android:icon="@drawable/ic_label_24dp"
+            android:key="show_dynamic_tags"
+            android:summary="@string/pref_show_dynamic_tags_summary"
+            android:title="@string/pref_show_dynamic_tags" />
+
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_operating_system">
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/allow_screenshots"
+            android:icon="@drawable/ic_screenshot_24dp"
+            android:key="allow_screenshots"
+            android:summary="@string/pref_allow_screenshots_summary"
+            android:title="@string/pref_allow_screenshots" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_input_options">
+        <ListPreference
+            android:defaultValue="@string/quick_action"
+            android:dialogTitle="@string/choose_quick_action"
+            android:entries="@array/quick_actions"
+            android:entryValues="@array/quick_action_values"
+            android:icon="@drawable/ic_send_time_extension_24dp"
+            android:key="quick_action"
+            android:summary="@string/pref_quick_action_summary"
+            android:title="@string/pref_quick_action" />
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/scroll_to_bottom"
+            android:icon="@drawable/ic_vertical_align_bottom_24dp"
+            android:key="scroll_to_bottom"
+            android:summary="@string/pref_scroll_to_bottom_summary"
+            android:title="@string/pref_scroll_to_bottom" />
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/start_searching"
+            android:icon="@drawable/ic_search_24dp"
+            android:key="start_searching"
+            android:summary="@string/pref_start_search_summary"
+            android:title="@string/pref_start_search" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_keyboard_options">
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/display_enter_key"
+            android:icon="@drawable/ic_keyboard_return_24dp"
+            android:key="display_enter_key"
+            android:summary="@string/pref_display_enter_key_summary"
+            android:title="@string/pref_display_enter_key" />
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/enter_is_send"
+            android:icon="@drawable/ic_send_24dp"
+            android:key="enter_is_send"
+            android:summary="@string/pref_enter_is_send_summary"
+            android:title="@string/pref_enter_is_send" />
+    </PreferenceCategory>
+</PreferenceScreen>

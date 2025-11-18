@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">設定</string>
-    <string name="action_add">新會話</string>
     <string name="action_accounts">管理帳戶</string>
     <string name="action_account">管理帳戶</string>
-    <string name="action_end_conversation">關閉會話</string>
     <string name="action_contact_details">聯絡人詳細資料</string>
     <string name="action_muc_details">群組聊天詳細資料</string>
     <string name="channel_details">頻道詳細資料</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">解除封鎖參與者</string>
     <string name="title_activity_manage_accounts">管理帳戶</string>
     <string name="title_activity_settings">設定</string>
-    <string name="title_activity_sharewith">分享至會話</string>
-    <string name="title_activity_start_conversation">開始會話</string>
     <string name="title_activity_choose_contact">選擇聯絡人</string>
     <string name="title_activity_choose_contacts">選擇聯絡人</string>
     <string name="title_activity_share_via_account">透過帳戶分享</string>
@@ -52,7 +48,6 @@
     <string name="register_account">在伺服器上註冊新帳戶</string>
     <string name="change_password_on_server">在伺服器上變更密碼</string>
     <string name="share_with">分享至…</string>
-    <string name="start_conversation">開始會話</string>
     <string name="invite_contact">邀請聯絡人</string>
     <string name="invite">邀請</string>
     <string name="contacts">聯絡人</string>
@@ -82,7 +77,6 @@
     <string name="action_clear_history">清除歷史記錄</string>
     <string name="clear_conversation_history">清除會話記錄</string>
     <string name="delete_file_dialog">刪除檔案</string>
-    <string name="also_end_conversation">之後關閉此會話</string>
     <string name="choose_presence">選擇裝置</string>
     <string name="send_unencrypted_message">傳送未加密的訊息</string>
     <string name="send_message">傳送訊息</string>
@@ -116,7 +110,6 @@
     <string name="pref_call_ringtone_summary">來電時響鈴</string>
     <string name="pref_notification_grace_period">寬限期</string>
     <string name="pref_advanced_options">進階</string>
-    <string name="pref_never_send_crash">永不傳送當機報告</string>
     <string name="pref_confirm_messages">確認訊息</string>
     <string name="pref_confirm_messages_summary">讓您的聯絡人知道您已經收到並閱讀了他們的訊息</string>
     <string name="pref_prevent_screenshots">防止截圖</string>
@@ -411,7 +404,6 @@
     <string name="show_location">顯示位置</string>
     <string name="no_application_found_to_display_location">找不到可以顯示位置的應用程式</string>
     <string name="location">位置</string>
-    <string name="title_undo_swipe_out_conversation">會話已關閉</string>
     <string name="title_undo_swipe_out_group_chat">離開私人群組聊天</string>
     <string name="title_undo_swipe_out_channel">離開了公用頻道</string>
     <string name="pref_dont_trust_system_cas_title">不要信任系統 CA</string>
@@ -421,7 +413,6 @@
     <string name="toast_no_trusted_certs">沒有手動核准的憑證</string>
     <string name="dialog_manage_certs_title">移除憑證</string>
     <string name="dialog_manage_certs_positivebutton">刪除選取項目</string>
-    <string name="dialog_manage_certs_negativebutton">取消</string>
     <plurals name="toast_delete_certificates">
         <item quantity="other">%d 個憑證已刪除</item>
     </plurals>
@@ -539,8 +530,6 @@
     <string name="pref_theme_automatic">自動</string>
     <string name="pref_theme_light">淺色</string>
     <string name="pref_theme_dark">深色</string>
-    <string name="pref_use_green_background">綠色背景</string>
-    <string name="pref_use_green_background_summary">為接收的訊息使用綠色背景</string>
     <string name="unable_to_connect_to_keychain">無法連線至 OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">此裝置已不再使用</string>
     <string name="type_pc">電腦</string>
@@ -569,7 +558,6 @@
     <string name="this_device_has_been_verified">此裝置已驗證</string>
     <string name="copy_fingerprint">複製指紋</string>
     <string name="all_omemo_keys_have_been_verified">您已驗證您持有的所有 OMEMO 金鑰</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">條碼中沒有此會話的指紋。</string>
     <string name="verified_fingerprints">已驗證的指紋</string>
     <string name="use_camera_icon_to_scan_barcode">使用相機掃描聯絡人的條碼</string>
     <string name="please_wait_for_keys_to_be_fetched">請等候金鑰擷取</string>
@@ -610,7 +598,6 @@
     <string name="encrypting_message">正在加密訊息</string>
     <string name="not_fetching_history_retention_period">因本機保留期間設定，未擷取訊息。</string>
     <string name="transcoding_video">正在壓縮影片</string>
-    <string name="corresponding_conversations_closed">對應會話已關閉。</string>
     <string name="contact_blocked_past_tense">聯絡人已封鎖。</string>
     <string name="pref_notifications_from_strangers">陌生人訊息通知</string>
     <string name="received_message_from_stranger">已接收來自陌生人的訊息</string>
@@ -658,13 +645,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO 將預設用於新會話。</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO 將明確用於新會話。</string>
     <string name="create_shortcut">建立捷徑</string>
-    <string name="pref_font_size">字型大小</string>
-    <string name="pref_font_size_summary">應用程式中使用的相對字型大小。</string>
     <string name="default_on">預設開啟</string>
     <string name="default_off">預設關閉</string>
-    <string name="small">小</string>
-    <string name="medium">中</string>
-    <string name="large">大</string>
     <string name="not_encrypted_for_this_device">訊息未對此裝置加密。</string>
     <string name="omemo_decryption_failed">無法解密 OMEMO 訊息。</string>
     <string name="undo">復原</string>
@@ -884,7 +866,6 @@
     <string name="audio_call">語音通話</string>
     <string name="video_call">視訊通話</string>
     <string name="help">說明</string>
-    <string name="switch_to_conversation">切換至會話</string>
     <string name="microphone_unavailable">您的麥克風無法使用</string>
     <string name="only_one_call_at_a_time">同時間只能進行一通電話。</string>
     <string name="return_to_ongoing_call">返回正在進行的通話</string>
@@ -927,8 +908,8 @@
     <string name="delete_avatar">刪除頭像</string>
     <string name="audio_video_disabled_tor">使用 Tor 時通話已停用</string>
     <string name="pref_broadcast_last_activity_summary">在您使用 Conversations 時讓您的聯絡人知道</string>
-    <string name="clear_histor_msg">您確定要刪除此會話中的所有訊息嗎？
-\n
+    <string name="clear_histor_msg">您確定要刪除此會話中的所有訊息嗎？ 
+\n 
 \n<b>警告：</b>這將不會影響儲存在其他裝置或伺服器上的訊息。</string>
     <string name="crash_report_message">使用您的 XMPP 帳戶傳送堆疊追蹤以協助 %1$s 的持續開發。</string>
     <string name="error_security_exception_during_image_copy">您用來選取此圖像的應用程式沒有足夠的權限以讀取此檔案。
@@ -981,7 +962,6 @@
     <string name="unified_push_distributor">UnifiedPush 散發者</string>
     <string name="pref_up_push_account_title">XMPP 帳戶</string>
     <string name="pref_up_push_server_title">推送伺服器</string>
-    <string name="pref_up_push_server_summary">使用者選擇的推送伺服器，透過 XMPP 將訊息推送至您的裝置。</string>
     <string name="no_account_deactivated">無 (已停用)</string>
     <string name="pref_up_push_account_summary">接收推送訊息的帳戶。</string>
     <string name="decline">拒絕</string>

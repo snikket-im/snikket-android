@@ -3,18 +3,20 @@ package eu.siacs.conversations.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.widget.Spinner;
+import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.databinding.CreateConferenceDialogBinding;
+import eu.siacs.conversations.databinding.DialogCreateConferenceBinding;
 import eu.siacs.conversations.ui.util.DelayedHintHelper;
 
 public class CreatePrivateGroupChatDialog extends DialogFragment {
@@ -39,9 +41,9 @@ public class CreatePrivateGroupChatDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
         builder.setTitle(R.string.create_private_group_chat);
-        CreateConferenceDialogBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.create_conference_dialog, null, false);
+        final DialogCreateConferenceBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.dialog_create_conference, null, false);
         ArrayList<String> mActivatedAccounts = getArguments().getStringArrayList(ACCOUNTS_LIST_KEY);
         StartConversationActivity.populateAccountSpinner(getActivity(), mActivatedAccounts, binding.account);
         builder.setView(binding.getRoot());
@@ -57,7 +59,7 @@ public class CreatePrivateGroupChatDialog extends DialogFragment {
 
 
     public interface CreateConferenceDialogListener {
-        void onCreateDialogPositiveClick(Spinner spinner, String subject);
+        void onCreateDialogPositiveClick(AutoCompleteTextView spinner, String subject);
     }
 
     @Override

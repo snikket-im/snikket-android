@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_add">Bisedë e re</string>
     <string name="action_accounts">Administroni llogari</string>
     <string name="action_account">Administroni llogari</string>
-    <string name="action_end_conversation">Mbylle bisedën</string>
     <string name="action_contact_details">Hollësi kontakti</string>
     <string name="action_muc_details">Hollësi fjalosjeje grupi</string>
     <string name="channel_details">Hollësi kanali</string>
@@ -18,8 +16,6 @@
     <string name="action_unblock_participant">Zhbllokoje pjesëmarrësin</string>
     <string name="title_activity_manage_accounts">Administroni Llogari</string>
     <string name="title_activity_settings">Formësime</string>
-    <string name="title_activity_sharewith">Jepe përmes Conversation</string>
-    <string name="title_activity_start_conversation">Nisni Bisedë</string>
     <string name="title_activity_choose_contact">Zgjidhni Kontakt</string>
     <string name="title_activity_choose_contacts">Zgjidhni Kontakte</string>
     <string name="title_activity_share_via_account">Jepe përmes llogarie</string>
@@ -43,7 +39,6 @@
     <string name="register_account">Regjistroni llogari të re në shërbyes</string>
     <string name="change_password_on_server">Ndryshoni fjalëkalim te shërbyesi</string>
     <string name="share_with">Ndajeni me…</string>
-    <string name="start_conversation">Nisni bisedë</string>
     <string name="invite_contact">Ftoni kontakt</string>
     <string name="invite">Ftoni</string>
     <string name="contacts">Kontakte</string>
@@ -70,9 +65,8 @@
     <string name="preparing_images">Po bëhet gati për dërgim figurash</string>
     <string name="sharing_files_please_wait">Po jepen kartela. Ju lutemi, prisni…</string>
     <string name="action_clear_history">Spastro historikun</string>
-    <string name="clear_conversation_history">Spastoni Historik Bisedash</string>
+    <string name="clear_conversation_history">Spastroje historikun e fjalosjes</string>
     <string name="delete_file_dialog">Fshije kartelën</string>
-    <string name="also_end_conversation">Mbylle këtë bisedë më pas</string>
     <string name="choose_presence">Zgjidhni pajisje</string>
     <string name="send_unencrypted_message">Dërgoni mesazh të pafshehtëzuar</string>
     <string name="send_message">Dërgoni mesazh</string>
@@ -100,7 +94,6 @@
     <string name="pref_notification_sound_summary">Tingull njoftimi për mesazhe të rinj</string>
     <string name="pref_call_ringtone_summary">Zile për thirrje ardhëse</string>
     <string name="pref_advanced_options">Të mëtejshme</string>
-    <string name="pref_never_send_crash">Mos dërgo kurrë njoftime vithisjesh</string>
     <string name="pref_confirm_messages">Ripohoni Mesazhe</string>
     <string name="pref_prevent_screenshots">Pengo Foto Ekrani</string>
     <string name="pref_ui_options">UI</string>
@@ -222,7 +215,7 @@
     <string name="request_now">Kërkoje tani</string>
     <string name="ignore">Shpërfille</string>
     <string name="pref_security_settings">Siguri</string>
-    <string name="pref_allow_message_correction">Lejo ndreqje mesazhi</string>
+    <string name="pref_allow_message_correction">Ndreqje mesazhesh</string>
     <string name="pref_expert_options">Rregullime ekspertësh</string>
     <string name="pref_expert_options_summary">Ju lutemi, hapni sytë me këto</string>
     <string name="title_activity_about_x">Mbi %s</string>
@@ -352,7 +345,6 @@
     <string name="show_location">Shfaq vendndodhje</string>
     <string name="no_application_found_to_display_location">S’u gjet aplikacion për shfaqje të vendndodhjes</string>
     <string name="location">Vendndodhje</string>
-    <string name="title_undo_swipe_out_conversation">Biseda u mbyll</string>
     <string name="title_undo_swipe_out_group_chat">Braktisi fjalosje private në grup</string>
     <string name="title_undo_swipe_out_channel">Braktisi kanal majtas</string>
     <string name="pref_dont_trust_system_cas_summary">Krejt dëshmitë duhet të miratohen dorazi</string>
@@ -361,7 +353,6 @@
     <string name="toast_no_trusted_certs">S’u dhanë dëshmi dorazi</string>
     <string name="dialog_manage_certs_title">Hiqi dëshmitë</string>
     <string name="dialog_manage_certs_positivebutton">Fshije përzgjedhjen</string>
-    <string name="dialog_manage_certs_negativebutton">Anuloje</string>
     <string name="pref_quick_action">Veprim i Shpejtë</string>
     <string name="none">Asnjë</string>
     <string name="recently_used">Më të përdorur së fundi</string>
@@ -384,7 +375,7 @@
     <string name="pref_away_when_screen_off">“I larguar”, kur pajisja është e kyçur</string>
     <string name="pref_away_when_screen_off_summary">Shfaqmë si “I lraguar”, kur pajisja është e kyçur</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Shfaqmë si “I zënë”, kur pajisja është në dridhje</string>
-    <string name="pref_show_connection_options">Rregullime të zgjeruara lidhjeje</string>
+    <string name="pref_show_connection_options">Strehëemër &amp; Portë</string>
     <string name="action_add_account_with_certificate">Hyni me dëshmi</string>
     <string name="unable_to_parse_certificate">S’u analizua dot dëshmi</string>
     <string name="mam_prefs">Parapëlqime arkivimi</string>
@@ -443,14 +434,13 @@
     <string name="gp_short">E shkurtër</string>
     <string name="gp_medium">Mesatare</string>
     <string name="gp_long">E gjatë</string>
-    <string name="pref_broadcast_last_activity">Përdorim transmetimi</string>
+    <string name="pref_broadcast_last_activity">Parë së fundi</string>
     <string name="pref_privacy">Privatësi</string>
     <string name="pref_theme_options">Temë</string>
     <string name="pref_theme_options_summary">Përzgjidhni paletën e ngjyrave</string>
     <string name="pref_theme_automatic">Automatike</string>
     <string name="pref_theme_light">E çelët</string>
     <string name="pref_theme_dark">E errët</string>
-    <string name="pref_use_green_background">Sfond i gjelbër</string>
     <string name="unable_to_connect_to_keychain">S’u lidh dot te OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Kjo pajisje s’është më në përdorim</string>
     <string name="type_pc">Kompjuter</string>
@@ -471,7 +461,6 @@
     <string name="pref_delete_omemo_identities">Fshini identitete OMEMO</string>
     <string name="delete_selected_keys">Fshi kyçet e përzgjedhur</string>
     <string name="copy_fingerprint">Kopjo shenja gishtash</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Kodi me vija nuk përmban shenja gishtash për këtë bisedë.</string>
     <string name="verified_fingerprints">Shenja gishtash të verifikuar</string>
     <string name="use_camera_icon_to_scan_barcode">Përdorni kamerën e telefonit tuaj që të skanoni një kod me vija</string>
     <string name="please_wait_for_keys_to_be_fetched">Ju lutemi, pritni të sillen kyçet</string>
@@ -506,7 +495,6 @@
     <string name="pref_automatically_delete_messages">Fshirje e automatizuar mesazhesh</string>
     <string name="encrypting_message">Po fshehtëzohet meszhi</string>
     <string name="transcoding_video">Po ngjishet video</string>
-    <string name="corresponding_conversations_closed">Biseda përkatëse u mbyll.</string>
     <string name="contact_blocked_past_tense">Kontakti u bllokua.</string>
     <string name="pref_notifications_from_strangers">Njoftime prej të panjohurish</string>
     <string name="received_message_from_stranger">U mor mesazh prej të panjohuri</string>
@@ -545,11 +533,8 @@
     <string name="draft">Skicë:</string>
     <string name="pref_omemo_setting">Fshehtëzim OMEMO</string>
     <string name="create_shortcut">Krijoni Shkurtore</string>
-    <string name="pref_font_size">Madhësi Shkronjash</string>
     <string name="default_on">On, si parazgjedhje</string>
     <string name="default_off">Off, si parazgjedhje</string>
-    <string name="medium">Mesatare</string>
-    <string name="large">E madhe</string>
     <string name="not_encrypted_for_this_device">Mesazhi s’qe fshehtëzuar për këtë pajisje.</string>
     <string name="omemo_decryption_failed">S’’u arrit të shfshehtëzohet mesazh fshehtëzuar me OMEMO.</string>
     <string name="undo">zhbëje</string>
@@ -567,7 +552,7 @@
     <string name="no_microphone_permission">Akordoni hyrje %1$s për mikrofonin</string>
     <string name="search_messages">Kërko te mesazhet</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Shihni bisedë</string>
+    <string name="view_conversation">Shihni fjalosje</string>
     <string name="pref_use_share_location_plugin">Shtojcë Tregimi Vendndodhjeje</string>
     <string name="copy_link">Kopjo adresë web</string>
     <string name="copy_jabber_id">Kopjo adresë XMPP</string>
@@ -616,7 +601,7 @@
     <string name="resend_sms">Ridërgo SMS</string>
     <string name="resend_sms_in">Ridërgo SMS (%s)</string>
     <string name="wait_x">Ju lutemi, pritni (%s)</string>
-    <string name="back">mbrapsht</string>
+    <string name="back">Mbrapsht</string>
     <string name="abort_registration_procedure">Jeni i sigurt se doni të ndëpritet procedura e regjistrimit\?</string>
     <string name="yes">Po</string>
     <string name="verifying">Po verifikohet…</string>
@@ -742,8 +727,8 @@
     <string name="remove_from_favorites">Shfiksoje prej kreut</string>
     <string name="gpx_track">Gjurmë GPX</string>
     <string name="could_not_correct_message">S’u ndreq dot mesazhi</string>
-    <string name="search_all_conversations">Krejt bisedat</string>
-    <string name="search_this_conversation">Këtë bisedë</string>
+    <string name="search_all_conversations">Krejt fjalosjet</string>
+    <string name="search_this_conversation">Këtë fjalosje</string>
     <string name="your_avatar">Avatari juaj</string>
     <string name="avatar_for_x">Avatar për %s</string>
     <string name="encrypted_with_omemo">Fshehtëzuar me OMEMO</string>
@@ -778,8 +763,8 @@
     <string name="reject_switch_to_video">Hidh poshtë kalim në thirrje video</string>
     <string name="open_join_dialog">Hyni në kanal publik…</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d bisedë e palexuar</item>
-        <item quantity="other">%d biseda të palexuara</item>
+        <item quantity="one">%d fjalosje e palexuar</item>
+        <item quantity="other">%d fjalosje të palexuara</item>
     </plurals>
     <plurals name="toast_delete_certificates">
         <item quantity="one">U fshi %d dëshmi</item>
@@ -807,7 +792,6 @@
     <string name="audio_call">Thirrje audio</string>
     <string name="video_call">Thirrje video</string>
     <string name="help">Ndihmë</string>
-    <string name="switch_to_conversation">Kalo te bisedë</string>
     <string name="return_to_ongoing_call">Rikthehu te thirrja që po bëhej</string>
     <plurals name="x_messages">
         <item quantity="one">%d mesazh</item>
@@ -837,11 +821,11 @@
     <string name="pref_automatically_delete_messages_description">Fshi vetvetiu nga kjo pajisje mesazhe që janë më të vjetër se intervali kohor i formësuar.</string>
     <string name="not_fetching_history_retention_period">S’po sillen mesazhe, për shkak të një periudhe lokale mbajtjeje.</string>
     <string name="action_delete_contact">Fshije prej liste</string>
-    <string name="remove_contact_text">Do të donit të hiqet %s prej listës tuaj të kontakteve\? Bisedat me këtë kontakt s’do të hiqen.</string>
+    <string name="remove_contact_text">Do të donit të hiqet %s prej listës tuaj të kontakteve? Fjalosja me këtë kontakt s’do të hiqet.</string>
     <string name="block_contact_text">Do të donit t’i bllokohet %s dërgimi i mesazheve për ju\?</string>
     <string name="unblock_contact_text">Do të donit të zhbllokohet %s dhe të lejohet t’ju dërgojë mesazhe\?</string>
     <string name="crash_report_message">Përdorimi i llogarisë tuaj XMPP për të dërguar “stack traces” ndihmon zhvillimin e pandërprerë të %1$s.</string>
-    <string name="clear_histor_msg">Doni të fshihen krejt mesazhet te kjo bisedë\?
+    <string name="clear_histor_msg">Doni të fshihen krejt mesazhet te kjo fjalosje?
 \n
 \n<b>Kujdes:</b> Kjo s’do të ndikojë mesazhet e depozituar në pajisje apo shërbyes të tjerë.</string>
     <string name="delete_file_dialog_msg">Jeni i sigurt se doni të fshihet kjo kartelë\?
@@ -868,7 +852,7 @@
     <string name="error_security_exception">Aplikacioni që përdorët për të dhënë këtë kartelë, nuk jep leje të mjaftueshme.</string>
     <string name="unpublish_pgp_message">Jeni i sigurt se doni të hiqet kyçi juaj publik OpenPGP nga njoftimi juaj për prani\?
 \nKontaktet tuaj s’do të jenë më në gjendje t’ju dërgojnë mesazhe të fshehtëzuar me OpenPGP.</string>
-    <string name="mgmt_account_delete_confirm_text">Jeni i sigurt se doni të fshihet llogaria juaj? Fshirja e saj shkakton fshirjen e krejt historikut të bisedave tuaja</string>
+    <string name="mgmt_account_delete_confirm_text">Jeni i sigurt se doni të fshihet llogaria juaj? Fshirja e saj shkakton fshirjen e krejt historikut të fjalosjeve tuaja</string>
     <string name="install_openkeychain">Mesazh i fshehtëzuar. Që ta shfshehtëzoni, ju lutemi, instaloni OpenKeychain.</string>
     <string name="omemo_fingerprint_selected_message">Shenja gishtash OMEMO (origjinë mesazhi)</string>
     <string name="omemo_fingerprint_x509_selected_message">Shenja gishtash v\\OMEMO (origjinë mesazhi)</string>
@@ -914,7 +898,7 @@
     <string name="pref_dnd_on_silent_mode">“I zënë” nën mënyrën e heshtur</string>
     <string name="pref_dnd_on_silent_mode_summary">Shfaqe si “I zënë”, kur pajisja gjendet nën mënyrën e heshtur</string>
     <string name="pref_treat_vibrate_as_silent">Trajtoje dridhjen si mënyrë heshturazi</string>
-    <string name="pref_show_connection_options_summary">Kur ujdiset një llogari, shfaq rregullime strehëemri dhe porte</string>
+    <string name="pref_show_connection_options_summary">Kur ujdiset një llogari, shfaq rregullime të zgjeruara lidhjeje</string>
     <string name="hostname_example">xmpp.example.com</string>
     <string name="fetching_mam_prefs">Po sillen parapëlqime arkivimi. Ju lutemi, pritni…</string>
     <string name="device_does_not_support_certificates">Pajisja juaj nuk mbulon përzgjedhjen e dëshmive të klientëve!</string>
@@ -931,8 +915,7 @@
     <string name="battery_optimizations_enabled_explained">Pajisja juaj përdor optimizime shumë të thella baterie për %1$s, çka mund të shpjerë në vonesa njoftimesh, ose madje edhe humbje mesazhesh.
 \nRekomandohet të çaktivizohen ato.</string>
     <string name="device_does_not_support_battery_op">Pajisja juaj nuk mbulon zgjedhjen e lënies jashtë nga optimizim baterie</string>
-    <string name="pref_broadcast_last_activity_summary">Bëjuni të ditur kontakteve tuaj, kur përdorni Conversations</string>
-    <string name="pref_use_green_background_summary">Për mesazhe të marrë përdor sfond të gjelbër</string>
+    <string name="pref_broadcast_last_activity_summary">Lërini kontaktet tuaj të shohin se kur e përdorët aplikacionin herën e fundit</string>
     <string name="pref_delete_omemo_identities_summary">Riprodhoni kyçet tuaj OMEMO. Krejt kontakteve tuaj do t’ju duhet t’ju verifikojnë sërish. Këtë përdoreni si zgjidhjen e fundit.</string>
     <string name="error_publish_avatar_offline">Që të bëni publik avatarin tuaj, duhet të jeni i lidhur.</string>
     <string name="data_saver_enabled">Kursyesi i të dhënave u aktivizua</string>
@@ -953,13 +936,12 @@
     <string name="pref_scroll_to_bottom_summary">Pas dërgimit të një mesazhi, rrëshqit poshtë</string>
     <string name="error_trustkey_general">%1$s s’është në gjendje të fshehtëzojë mesazhe te %2$s. Kjo mund të vijë për shkak se kontakti juaj përdor një shërbyes, ose klient të vjetruar, që s’mund të përdorë OMEMO.</string>
     <string name="error_trustkey_hint_mutual">Ndihmëz: Në disa raste, kjo mund të ndreqet duke shtuar listat e kontakteve të njëri-tjetrit.</string>
-    <string name="disable_encryption_message">Jeni i sigurt se doni të çaktivizohet fshehtëzimi OMEMO për këtë bisedë\?
+    <string name="disable_encryption_message">Jeni i sigurt se doni të çaktivizohet fshehtëzimi OMEMO për këtë fjalosje?
 \nKjo do t’i lejojë përgjegjësit të shërbyesit tuaj të lexojë mesazhet tuaj, por mund të jetë e vetmja rrugë për të komunikuar me persona që përdorin klientë të vjetruar.</string>
     <string name="pref_omemo_setting_summary_always">OMEMO do të përdoret përherë për fjalosje tek-për-tek dhe në grup.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO do të përdoret për biseda të reja, si parazgjedhje.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO do të duhet të aktivizohet shprehimisht për biseda të reja.</string>
-    <string name="pref_font_size_summary">Madhësia relative e shkronjave të përdorura brenda aplikacionit.</string>
-    <string name="pref_start_search_summary">Te skena “Nisni Bisedë” hapni tastierën dhe vendoseni kursorin te fusha e kërkimeve</string>
+    <string name="pref_omemo_setting_summary_default_on">Si parazgjedhje, për fjalosje të reja do të përdoret OMEMO.</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO do të duhet të aktivizohet shprehimisht për fjalosje të reja.</string>
+    <string name="pref_start_search_summary">Te skena “Fjalosje e re” hapni tastierën dhe vendoseni kursorin te fusha e kërkimeve</string>
     <string name="host_does_not_support_group_chat_avatars">Streha nuk mbulon avatarë fjalosjeje në grup</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Vetëm i zoti mund të ndryshyjë avatarin e një fjalosje në grup</string>
     <string name="pref_use_share_location_plugin_summary">Përdor Shtojcën Për Tregim Vendndodhjeje, në vend se hartën e brendshme</string>
@@ -984,7 +966,6 @@
     <string name="audio_video_disabled_tor">Thirrjet janë të çaktivizuara, kur përdoret Tor-i</string>
     <string name="pref_up_push_account_summary">Llogaria përmes së cilës do të merren mesazhet push.</string>
     <string name="pref_up_push_server_title">Shërbyes Push</string>
-    <string name="pref_up_push_server_summary">Një shërbyes push i zgjedhur nga përdoruesi, përmes të cilit të kalohen te pajisja juaj mesazhet push përmes XMPP-je.</string>
     <string name="magic_create_text">Ka të hartuar një udhërrëfyes mbi krijim llogarish te conversations.im.
 \nKu zgjidhet conversations.im si shërbim, do të jeni në gjendje të komunikoni me përdorues prej shërbimesh të tjera duke u dhënë atyre adresën tuaj të plotë XMPP.</string>
     <plurals name="n_missed_calls_from_m_contacts">
@@ -1040,8 +1021,58 @@
     <string name="call_integration_not_available">S’ka integrim thirrjesh!</string>
     <string name="no_permission_to_place_call">Pa leje për bërje thirrjesh</string>
     <string name="sasl_downgrade">U kalua në version të mëparshëm SASL-i</string>
-    <string name="channel_discover_opt_in_message">Pikasja e kanaleve përdor një shërbim palë të tretë të quajtur &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Përdorim i kësaj veçorie do t’i transmetojë atij shërbimi adresën tuaj IP dhe terma kërkimesh. Për më tepër hollësi, shihni &lt;a href=https://search.jabber.network/privacy&gt;Rregullat e tyre mbi Privatësinë&lt;/a&gt;.</string>
-    <string name="remove_bookmark_and_close">Doni të hiqet faqerojtësi për %s dhe të mbyllet biseda?</string>
-    <string name="delete_and_close">Fshije &amp; Mbylle</string>
+    <string name="remove_bookmark_and_close">Doni të hiqet faqerojtësi për %s dhe arkivohet fjalosja?</string>
+    <string name="delete_and_close">Fshije &amp; Arkivoje fjalosjen</string>
     <string name="remove_bookmark">Doni të hiqet faqerojtësi për %s?</string>
+    <string name="pref_use_colorful_bubbles_summary">Flluska të ngjyrosura fjalosjeje ndihmojnë të dalloni mesazhe të dërguar dhe të marrë</string>
+    <string name="pref_dynamic_colors">Ngjyra dinamike</string>
+    <string name="pref_dynamic_colors_summary">Ngjyra Sistemi (Material You)</string>
+    <string name="possible_pin">U ngjit automatikisht nga e papastra PIN i mundshëm.</string>
+    <string name="no_certificate_selected">S’u përzgjodh dëshmi klienti!</string>
+    <string name="pref_use_colorful_bubbles">Flluska fjalosjeje të ngjyrosura</string>
+    <string name="title_activity_share_with">Ndajeni me të tjerë me…</string>
+    <string name="start_chat">Nisni fjalosje</string>
+    <string name="action_archive_chat">Arkivoje fjalosjen</string>
+    <string name="title_activity_new_chat">Fjalosje e re</string>
+    <string name="archive_this_chat">Arkivoje këtë fjalosje</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">Kodi me vija s’përmban shenja gishtash për këtë fjalosje.</string>
+    <string name="switch_to_chat">Kaloni te fjalosja</string>
+    <string name="title_undo_swipe_out_chat">Fjalosje e arkivuar</string>
+    <string name="welcome_header">Ejani në Conversation</string>
+    <string name="corresponding_chats_closed">Fjalosjet përkatëse u arkivuan.</string>
+    <string name="pref_send_crash_reports">Dërgoni njoftime vithisjesh</string>
+    <string name="presence_xa">Jo i Passhëm</string>
+    <string name="pref_category_sending">Dërgim</string>
+    <string name="channel_discover_opt_in_message">Pikasje kanalesh përdor një shërbim palë të tretë të quajtur &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Përdorimi i kësaj veçorie do t’i transmetojë atij shërbimi adresën tuaj IP dhe terma kërkimesh. Për më tepër hollësi, shihni &lt;a href=https://search.jabber.network/privacy&gt;Rregullat e tyre mbi Privatësinë&lt;/a&gt;.</string>
+    <string name="pref_title_interface">Ndërfaqe</string>
+    <string name="pref_summary_appearance">Temë, Ngjyra, Foto Ekrani, Input</string>
+    <string name="pref_title_security">Siguri</string>
+    <string name="pref_summary_security">Fshehtëzim E2E, Besim Qorrazi Para Verifikimi, Pikasje MITM</string>
+    <string name="unified_push_summary">Rele njoftimesh për aplikacione palësh të treta të përputhshme me UnifiedPush</string>
+    <string name="notifications">Njoftime</string>
+    <string name="pref_attachments_summary">Madhësi kartele, Ngjeshje figurash, Cilësi videosh</string>
+    <string name="pref_notifications_summary">“Grace period”, Zile, Dridhje, Të panjohur</string>
+    <string name="pref_category_receiving">Marrje</string>
+    <string name="pref_automatic_download">Shkarkim i vetvetishëm</string>
+    <string name="appearance">Dukje</string>
+    <string name="pref_light_dark_mode">Mënyrë e çelët/e errët</string>
+    <string name="pref_allow_screenshots">Lejo foto ekrani</string>
+    <string name="pref_allow_screenshots_summary">Shfaq lëndë aplikacioni te këmbyes aplikacioni dhe lejo të bëhen foto ekrani</string>
+    <string name="pref_category_e2ee">Fshehtëzim skaj-më-skaj</string>
+    <string name="pref_title_trust_system_ca_store">Autoritete dëshmish</string>
+    <string name="pref_title_trust_system_ca_store_summary">Beso dëshmi AD të sistemit</string>
+    <string name="detect_mim">Lyp “channel binding”</string>
+    <string name="detect_mim_summary">“Channel binding” mund të pikasë disa sulme “machine-in-the-middle”</string>
+    <string name="pref_category_server_connection">Lidhje shërbyesi</string>
+    <string name="pref_category_operating_system">Sistem Operativ</string>
+    <string name="pref_privacy_summary">Njoftime shtypjeje, Parë Së Fundi, I lirë/I zënë</string>
+    <string name="pref_connection_summary">Strehëemër &amp; Portë, Tor</string>
+    <string name="pref_connection_summary_w_cd">Strehëemër &amp; Portë, Tor, Pikazje Kanalesh</string>
+    <string name="pref_keyboard_options">Tastierë</string>
+    <string name="pref_category_engagement_notifications">Njoftime angazhimi</string>
+    <string name="pref_category_application">Aplikacion</string>
+    <string name="pref_category_interaction">Ndërveprim</string>
+    <string name="pref_category_on_this_device">Në pajisje</string>
+    <string name="pref_up_long_summary">Kur veprohet si një Distributor UnifiedPush, për të zgjuar aplikacion tjetër të përputhshëm me UnifiedPush , fjala vjen, Tusky, Ltt.rs, FluffyChat, etj, do të përdoret lidhja XMPP, e vazhdueshme, e qëndrueshme dhe miqësore ndaj baterisë.</string>
+    <string name="unified_push_distributor">Distributor UnifiedPush</string>
 </resources>

@@ -42,8 +42,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.material.color.MaterialColors;
 import com.google.common.base.Strings;
 
 import java.lang.ref.WeakReference;
@@ -64,7 +66,6 @@ import eu.siacs.conversations.ui.util.DateSeparator;
 import eu.siacs.conversations.ui.util.ListViewUtils;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ShareUtil;
-import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.FtsUtils;
 import eu.siacs.conversations.utils.MessageUtils;
 
@@ -95,6 +96,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 		}
 		super.onCreate(bundle);
 		this.binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
+		Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
 		setSupportActionBar(this.binding.toolbar);
 		configureActionBar(getSupportActionBar());
 		this.messageListAdapter = new MessageAdapter(this, this.messages, uuid == null);
@@ -213,7 +215,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 	}
 
 	@Override
-	void onBackendConnected() {
+    protected void onBackendConnected() {
 		final List<String> searchTerm = pendingSearch.pop();
 		if (searchTerm != null && currentSearch.watch(searchTerm)) {
 			xmppConnectionService.search(searchTerm, uuid,this);
@@ -223,12 +225,12 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 	private void changeBackground(boolean hasSearch, boolean hasResults) {
 		if (hasSearch) {
 			if (hasResults) {
-				binding.searchResults.setBackgroundColor(StyledAttributes.getColor(this, R.attr.color_background_secondary));
+				binding.searchResults.setBackgroundColor(MaterialColors.getColor(binding.searchResults, com.google.android.material.R.attr.colorSurface));
 			} else {
-				binding.searchResults.setBackground(StyledAttributes.getDrawable(this, R.attr.activity_background_no_results));
+				binding.searchResults.setBackgroundResource(R.drawable.background_no_results);
 			}
 		} else {
-			binding.searchResults.setBackground(StyledAttributes.getDrawable(this, R.attr.activity_background_search));
+			binding.searchResults.setBackgroundResource(R.drawable.background_search);
 		}
 	}
 
@@ -248,14 +250,14 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 		if (!currentSearch.watch(term)) {
 			return;
 		}
-		if (term.size() > 0) {
-			xmppConnectionService.search(term, uuid,this);
-		} else {
+		if (term.isEmpty()) {
 			MessageSearchTask.cancelRunningTasks();
 			this.messages.clear();
 			messageListAdapter.setHighlightedTerm(null);
 			messageListAdapter.notifyDataSetChanged();
 			changeBackground(false, false);
+		} else {
+			xmppConnectionService.search(term, uuid,this);
 		}
 	}
 
@@ -267,7 +269,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 			DateSeparator.addAll(messages);
 			this.messages.addAll(messages);
 			messageListAdapter.notifyDataSetChanged();
-			changeBackground(true, messages.size() > 0);
+			changeBackground(true, !messages.isEmpty());
 			ListViewUtils.scrollToBottom(this.binding.searchResults);
 		});
 	}

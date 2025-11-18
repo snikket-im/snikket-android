@@ -1,51 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingBottom="8dp"
         android:paddingLeft="24dp"
+        android:paddingTop="16dp"
         android:paddingRight="24dp"
-        android:paddingTop="16dp">
+        android:paddingBottom="8dp">
 
-        <TextView
-            style="@style/InputLabel"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/your_account"/>
+            android:hint="@string/your_account">
 
-        <Spinner
-            android:id="@+id/account"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/account_jid_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/xmpp_address"
-            app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
-            app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
+            android:hint="@string/xmpp_address">
 
-            <AutoCompleteTextView
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:padding="16dp"
                 android:id="@+id/jid"
-                style="@style/Widget.Conversations.EditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:imeOptions="actionDone|flagNoExtractUi"/>
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <CheckBox
             android:id="@+id/bookmark"
-            style="@style/Widget.Conversations.CheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:checked="true"
-            android:text="@string/save_as_group_chat"/>
+            android:text="@string/save_as_group_chat" />
     </LinearLayout>
 </layout>

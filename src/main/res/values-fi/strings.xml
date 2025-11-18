@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Asetukset</string>
-    <string name="action_add">Uusi keskustelu</string>
     <string name="action_accounts">Hallitse tilejä</string>
     <string name="action_account">Hallinnoi tiliä</string>
-    <string name="action_end_conversation">Päätä keskustelu</string>
     <string name="action_contact_details">Yhteystiedot</string>
     <string name="action_muc_details">Ryhmäkeskustelun tiedot</string>
     <string name="channel_details">Kanavan tiedot</string>
@@ -20,7 +18,6 @@
     <string name="action_unblock_participant">Peru osallistujan esto</string>
     <string name="title_activity_manage_accounts">Hallitse tilejä</string>
     <string name="title_activity_settings">Asetukset</string>
-    <string name="title_activity_start_conversation">Aloita keskustelu</string>
     <string name="title_activity_choose_contact">Valitse yhteystieto</string>
     <string name="title_activity_choose_contacts">Valitse yhteystiedot</string>
     <string name="title_activity_share_via_account">Jaa tilillä</string>
@@ -51,7 +48,6 @@
     <string name="blocked">Estetty</string>
     <string name="register_account">Rekisteröi uusi tili palvelimella</string>
     <string name="change_password_on_server">Vaihda salasanaa palvelimelle</string>
-    <string name="start_conversation">Aloita keskustelu</string>
     <string name="invite_contact">Kutsu yhteystieto</string>
     <string name="invite">Kutsu</string>
     <string name="contacts">Yhteystiedot</string>
@@ -81,12 +77,13 @@
     <string name="sharing_files_please_wait">Jaetaan tiedostoja. Odota hetki…</string>
     <string name="action_clear_history">Pyyhi historia</string>
     <string name="clear_conversation_history">Pyyhi keskusteluhistoria</string>
-    <string name="clear_histor_msg">Poistetaanko kaikki keskustelun viestit?\n\n<b>Varoitus:</b> Muilla laitteilla tai palvelimilla säilytettyjä kopioita ei poisteta.</string>
+    <string name="clear_histor_msg">Poistetaanko kaikki keskustelun viestit?
+\n
+\n<b>Varoitus:</b> Muilla laitteilla tai palvelimilla säilytettyjä kopioita ei poisteta.</string>
     <string name="delete_file_dialog">Poista tiedosto</string>
     <string name="delete_file_dialog_msg">Haluatko varmasti poistaa tämän tiedoston\?
 \n
 \n<b>Varoitus:</b> Muilla laitteilla tai palvelimilla olevia kopioita ei poisteta. </string>
-    <string name="also_end_conversation">Päätä keskustelu myös</string>
     <string name="choose_presence">Valitse laite</string>
     <string name="send_unencrypted_message">Lähetä salaamaton viesti</string>
     <string name="send_message">Lähetä viesti</string>
@@ -124,7 +121,6 @@
     <string name="pref_notification_grace_period">Rauhanaika</string>
     <string name="pref_notification_grace_period_summary">Kuinka pitkäksi aikaa ilmoitukset hiljennetään kun jollain toisella laitteillasi tehdään jotain.</string>
     <string name="pref_advanced_options">Edistyneet</string>
-    <string name="pref_never_send_crash">Älä koskaan lähetä vikailmoituksia</string>
     <string name="pref_never_send_crash_summary">Vikailmoituksia lähettämällä autat kehitystyötä</string>
     <string name="pref_confirm_messages">Lukukuittaus</string>
     <string name="pref_confirm_messages_summary">Ilmoita lähettäjälle kun olet vastaanottanut ja lukenut viestin</string>
@@ -177,7 +173,7 @@
     <string name="unpublish_pgp_message">Haluatko varmasti poistaa OpenPGP-avaimesi tilamainostuksistasi?\nYhteystietosi eivät voi enää lähettää sinulle OpenPGP-salattuja viestejä.</string>
     <string name="openpgp_has_been_published">OpenPGP julkinen avain julkaistu.</string>
     <string name="mgmt_account_enable">Ota tunnus käyttöön</string>
-    <string name="mgmt_account_delete_confirm_text">Haluatko varmasti poistaa tilisi\? Tilin poistaminen pyyhkii koko keskusteluhistoriasi</string>
+    <string name="mgmt_account_delete_confirm_text">Haluatko varmasti poistaa tilisi? Tilin poistaminen pyyhkii koko keskusteluhistoriasi</string>
     <string name="attach_record_voice">Nauhoita ääntä</string>
     <string name="account_settings_jabber_id">XMPP-osoite</string>
     <string name="block_jabber_id">Estä XMPP-osoite</string>
@@ -418,7 +414,6 @@
     <string name="show_location">Näytä sijainti</string>
     <string name="no_application_found_to_display_location">Sijainnin näyttämiseen sopivaa sovellusta ei löytynyt</string>
     <string name="location">Sijainti</string>
-    <string name="title_undo_swipe_out_conversation">Keskustelu suljettu</string>
     <string name="title_undo_swipe_out_group_chat">Poistuit yksityisestä ryhmäkeskustelusta</string>
     <string name="title_undo_swipe_out_channel">Poistuit julkisesta kanavasta</string>
     <string name="pref_dont_trust_system_cas_title">Älä luota varmenteiden myöntäjiin</string>
@@ -427,7 +422,6 @@
     <string name="pref_remove_trusted_certificates_summary">Poista käsin hyväksytyt varmenteet</string>
     <string name="toast_no_trusted_certs">Ei käsin hyväksyttyjä varmenteita</string>
     <string name="dialog_manage_certs_title">Poista varmenteet</string>
-    <string name="dialog_manage_certs_negativebutton">Peruuta</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d varmenne poistettiin</item>
         <item quantity="other">%d varmennetta poistettiin</item>
@@ -546,8 +540,6 @@
     <string name="pref_theme_automatic">Automaattinen</string>
     <string name="pref_theme_light">Vaalea</string>
     <string name="pref_theme_dark">Tumma</string>
-    <string name="pref_use_green_background">Vihreä tausta</string>
-    <string name="pref_use_green_background_summary">Näytä vastaanotetut viestit vihreällä taustalla</string>
     <string name="unable_to_connect_to_keychain">OpenKeychainiin ei saatu yhteyttä</string>
     <string name="this_device_is_no_longer_in_use">Laite ei ole enää käytössä</string>
     <string name="type_pc">Tietokone</string>
@@ -578,7 +570,6 @@
     <string name="this_device_has_been_verified">Laite on varmennettu</string>
     <string name="copy_fingerprint">Kopioi sormenjälki</string>
     <string name="all_omemo_keys_have_been_verified">Olet varmentanut kaikki hallussasi olevat OMEMO-avaimet</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Viivakoodi ei sisällä tähän keskusteluun liittyviä sormenjälkiä.</string>
     <string name="verified_fingerprints">Varmennetut sormenjäljet</string>
     <string name="use_camera_icon_to_scan_barcode">Käytä kameraa yhteystietosi viivakoodin lukemiseen</string>
     <string name="please_wait_for_keys_to_be_fetched">Odota hetki, avaimia ladataan</string>
@@ -668,19 +659,15 @@
     <string name="error_trustkey_device_list">Laiteluettelon lataus epäonnistui</string>
     <string name="error_trustkey_bundle">Salausavainten lataus epäonnistui</string>
     <string name="error_trustkey_hint_mutual">Vinkki: Jossain tapauksissa tämä ratkeaa kun molemmat osapuolet lisäävät toisena yhteystietoihinsa.</string>
-    <string name="disable_encryption_message">Haluatko varmasti poistaa OMEMO-salauksen käytöstä tässä keskustelussa?\nPalvelimen ylläpitäjä voi tällöin lukea viestinne, mutta se voi olla ainoa mahdollinen tapa keskustella vanhentunutta sovellusta käyttävän henkilön kanssa.</string>
+    <string name="disable_encryption_message">Haluatko varmasti poistaa OMEMO-salauksen käytöstä tässä keskustelussa?
+\nPalvelimen ylläpitäjä voi tällöin lukea viestinne, mutta se voi olla ainoa mahdollinen tapa keskustella vanhentunutta sovellusta käyttävän henkilön kanssa.</string>
     <string name="disable_now">Poista käytöstä nyt</string>
     <string name="draft">Luonnos:</string>
     <string name="pref_omemo_setting">OMEMO-salaus</string>
     <string name="pref_omemo_setting_summary_default_on">Uusissa keskusteluissa OMEMO otetaan oletuksena käyttöön.</string>
     <string name="create_shortcut">Luo pikakuvake</string>
-    <string name="pref_font_size">Kirjasinkoko</string>
-    <string name="pref_font_size_summary">Kirjasimen suhteellinen koko sovelluksen sisällä.</string>
     <string name="default_on">Käytössä oletuksena</string>
     <string name="default_off">Oletuksena pois käytöstä</string>
-    <string name="small">Pieni</string>
-    <string name="medium">Keksikokoinen</string>
-    <string name="large">Suuri</string>
     <string name="not_encrypted_for_this_device">Viestiä ei salattu tälle laitteelle.</string>
     <string name="omemo_decryption_failed">OMEMO-salatun viestin purku epäonnistui.</string>
     <string name="undo">peru</string>
@@ -870,7 +857,6 @@
     <string name="audio_call">Äänipuhelu</string>
     <string name="video_call">Videopuhelu</string>
     <string name="help">Apua</string>
-    <string name="switch_to_conversation">Vaihda keskusteluun</string>
     <string name="microphone_unavailable">Mikrofoni ei käytettävissä</string>
     <string name="only_one_call_at_a_time">Voit osallistua vain yhteen puheluun kerrallaan.</string>
     <string name="return_to_ongoing_call">Takaisin keskeneräiseen puheluun</string>

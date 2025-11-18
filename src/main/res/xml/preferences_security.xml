@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_category_e2ee">
+        <ListPreference
+            android:defaultValue="@string/omemo_setting_default"
+            android:entries="@array/omemo_setting_entries"
+            android:entryValues="@array/omemo_setting_entry_values"
+            android:icon="@drawable/ic_lock_24dp"
+            android:key="omemo"
+            android:summary="@string/pref_omemo_setting_summary_default_on"
+            android:title="@string/pref_omemo_setting" />
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/btbv"
+            android:icon="@drawable/ic_verified_user_24dp"
+            android:key="btbv"
+            android:summary="@string/pref_blind_trust_before_verification_summary"
+            android:title="@string/pref_blind_trust_before_verification" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_server_connection">
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/trust_system_ca_store"
+            android:icon="@drawable/ic_assured_workload_24dp"
+            android:key="trust_system_ca_store"
+            android:summary="@string/pref_title_trust_system_ca_store_summary"
+            android:title="@string/pref_title_trust_system_ca_store" />
+        <Preference
+            android:key="remove_trusted_certificates"
+            android:summary="@string/pref_remove_trusted_certificates_summary"
+            android:title="@string/pref_remove_trusted_certificates_title" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/require_channel_binding"
+            android:icon="@drawable/ic_private_connectivity_24dp"
+            android:key="channel_binding_required"
+            android:summary="@string/detect_mim_summary"
+            android:title="@string/detect_mim" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_on_this_device">
+        <ListPreference
+            android:defaultValue="@integer/automatic_message_deletion"
+            android:icon="@drawable/ic_auto_delete_24dp"
+            android:key="automatic_message_deletion"
+            android:summary="@string/pref_automatically_delete_messages_description"
+            android:title="@string/pref_automatically_delete_messages" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

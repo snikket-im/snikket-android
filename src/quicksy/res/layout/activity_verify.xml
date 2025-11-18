@@ -4,12 +4,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/color_background_primary"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize" />
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator"
@@ -40,13 +46,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/we_have_sent_you_an_sms_to_x"
-                            android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+                            android:textAppearance="?textAppearanceBodyLarge" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/please_enter_pin_below"
-                            android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+                            android:textAppearance="?textAppearanceBodyMedium" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -150,34 +156,32 @@
 
                     <Button
                         android:id="@+id/next"
-                        style="@style/Widget.Conversations.Button.Borderless.Primary"
+                        style="@style/Widget.Material3.Button.ElevatedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentBottom="true"
+                        android:layout_margin="16dp"
                         android:text="@string/next" />
 
                     <Button
                         android:id="@+id/back"
-                        style="@style/Widget.Conversations.Button.Borderless"
+                        style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
                         android:layout_alignParentBottom="true"
-                        android:text="@string/back"
-                        android:textColor="?android:textColorSecondary" />
+                        android:layout_margin="16dp"
+                        android:text="@string/back" />
 
                     <Button
                         android:id="@+id/resend_sms"
-                        style="@style/Widget.Conversations.Button.Borderless"
+                        style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/pin_box"
                         android:layout_centerHorizontal="true"
-                        android:text="@string/resend_sms"
-                        android:textColor="?android:textColorSecondary" />
+                        android:text="@string/resend_sms" />
 
                     <ProgressBar
                         android:id="@+id/progressBar"

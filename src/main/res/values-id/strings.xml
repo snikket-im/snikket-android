@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Pengaturan</string>
-    <string name="action_add">Percakapan Baru</string>
     <string name="action_accounts">Pengaturan Akun</string>
     <string name="action_account">Pengaturan akun</string>
-    <string name="action_end_conversation">Tutup percakapan</string>
     <string name="action_contact_details">Detil Kontak</string>
     <string name="action_muc_details">Detil percakapan grup</string>
     <string name="channel_details">Detil channel </string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Buka blok partisipan</string>
     <string name="title_activity_manage_accounts">Pengaturan Akun</string>
     <string name="title_activity_settings">Pengaturan</string>
-    <string name="title_activity_sharewith">Bagikan dengan Conversation</string>
-    <string name="title_activity_start_conversation">Mulai Percakapan</string>
     <string name="title_activity_choose_contact">Pilih kontak</string>
     <string name="title_activity_choose_contacts">Pilih beberapa kontak</string>
     <string name="title_activity_share_via_account">Bagikan melalui akun</string>
@@ -52,7 +48,6 @@
     <string name="register_account">Daftarkan akun baru di server</string>
     <string name="change_password_on_server">Ganti password di server</string>
     <string name="share_with">Bagikan dengan...</string>
-    <string name="start_conversation">Mulai percakapan</string>
     <string name="invite_contact">Undang kontak</string>
     <string name="invite">Undang</string>
     <string name="contacts">Kontak</string>
@@ -80,10 +75,11 @@
     <string name="sharing_files_please_wait">Membagikan berkas. Mohon tunggu…</string>
     <string name="action_clear_history">Bersihkan riwayat</string>
     <string name="clear_conversation_history">Hapus Riwayat Percakapan</string>
-    <string name="clear_histor_msg">Apakah Anda ingin menghapus semua pesan dalam percakapan ini?\n\n<b>Peringatan:</b> Ini tidak akan mempengaruhi pesan yang tersimpan di perangkat atau server lain.</string>
+    <string name="clear_histor_msg">Apakah Anda ingin menghapus semua pesan dalam percakapan ini?
+\n
+\n<b>Peringatan:</b> Ini tidak akan mempengaruhi pesan yang tersimpan di perangkat atau server lain.</string>
     <string name="delete_file_dialog">Hapus file</string>
     <string name="delete_file_dialog_msg">Anda yakin ingin menghapus file ini?\n\n<b>Peringatan:</b> Ini tidak akan menghapus salinan dari file ini yang disimpan di perangkat atau server lain.</string>
-    <string name="also_end_conversation">Lanjutkan dengan menutup percakapan</string>
     <string name="choose_presence">Pilih perangkat</string>
     <string name="send_unencrypted_message">Kirim pesan tak-terenkripsi</string>
     <string name="send_message">Kirim pesan</string>
@@ -119,7 +115,6 @@
     <string name="pref_notification_grace_period">Masa tenggang</string>
     <string name="pref_notification_grace_period_summary">Lamanya waktu notifikasi diredam setelah mendeteksi aktivitas di salah satu perangkat Anda yang lain.</string>
     <string name="pref_advanced_options">Lanjutan</string>
-    <string name="pref_never_send_crash">Jangan kirim laporan kerusakan</string>
     <string name="pref_never_send_crash_summary">Dengan mengirimkan pelacakan stack, Anda membantu pengembangan</string>
     <string name="pref_confirm_messages">Konfirmasi Pesan</string>
     <string name="pref_confirm_messages_summary">Beri tahu kontak jika Anda telah menerima dan membaca pesan mereka</string>
@@ -354,7 +349,6 @@
     <string name="send_location">Kirim lokasi</string>
     <string name="show_location">Tampilkan lokasi</string>
     <string name="location">Lokasi</string>
-    <string name="title_undo_swipe_out_conversation">Percakapan tertutup</string>
     <string name="pref_dont_trust_system_cas_title">Jangan percaya sistem CA</string>
     <string name="pref_dont_trust_system_cas_summary">Semua sertifikat harus disetujui secara manual</string>
     <string name="pref_remove_trusted_certificates_title">Hapus sertifikat</string>
@@ -362,7 +356,6 @@
     <string name="toast_no_trusted_certs">Tidak ada sertifikat yang disahkan secara manual</string>
     <string name="dialog_manage_certs_title">Hapus sertifikat</string>
     <string name="dialog_manage_certs_positivebutton">Hapus seleksi</string>
-    <string name="dialog_manage_certs_negativebutton">Batal</string>
     <plurals name="toast_delete_certificates">
         <item quantity="other">%d sertifikat dihapus</item>
     </plurals>
@@ -420,8 +413,6 @@
     <string name="pref_privacy">Privasi</string>
     <string name="pref_theme_options">Tema</string>
     <string name="pref_theme_automatic">Otomatis</string>
-    <string name="pref_use_green_background">Latar Hijau</string>
-    <string name="pref_use_green_background_summary">Gunakan latar hijau untuk pesan masuk</string>
     <string name="this_device_is_no_longer_in_use">Perangkat ini tidak dipergunakan lagi</string>
     <string name="type_pc">Komputer</string>
     <string name="type_phone">Ponsel</string>
@@ -452,9 +443,6 @@
     <string name="contact_blocked_past_tense">Kontak diblokir</string>
     <string name="server_info_partial">sebagian</string>
     <string name="message_copied_to_clipboard">Pesan disalin ke clipboard</string>
-    <string name="small">Kecil</string>
-    <string name="medium">Sedang</string>
-    <string name="large">Besar</string>
     <string name="action_share_location">Bagikan Lokasi</string>
     <string name="title_activity_share_location">Bagikan lokasi</string>
     <string name="title_activity_show_location">Tampilkan lokasi</string>

@@ -6,30 +6,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:background="?attr/colorPrimary"
-            android:elevation="@dimen/toolbar_elevation"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="@color/white87"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="@color/white70" />
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/app_bar_layout"
+                app:tabGravity="fill"
+                app:tabMode="fixed" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/start_conversation_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/tab_layout"
-            android:background="?attr/color_background_primary">
+            android:layout_below="@id/app_bar_layout">
 
 
         </androidx.viewpager.widget.ViewPager>
@@ -38,8 +41,7 @@
             android:id="@+id/overlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/tab_layout"
-            android:background="?color_background_overlay" />
+            android:layout_below="@id/app_bar_layout" />
 
 
         <com.leinardi.android.speeddial.SpeedDialView
@@ -49,10 +51,11 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:contentDescription="@string/add_contact_or_create_or_join_group_chat"
-            app:backgroundTint="?colorPrimary"
-            app:sdMainFabClosedBackgroundColor="?colorPrimary"
-            app:sdMainFabClosedSrc="@drawable/ic_add_white_24dp"
-            app:sdMainFabOpenedBackgroundColor="?colorPrimaryDark"
+            app:sdMainFabClosedSrc="@drawable/ic_add_24dp"
+            app:sdMainFabClosedBackgroundColor="?colorPrimaryContainer"
+            app:sdMainFabClosedIconColor="?colorOnPrimaryContainer"
+            app:sdMainFabOpenedBackgroundColor="?colorPrimaryContainer"
+            app:sdMainFabOpenedIconColor="?colorOnPrimaryContainer"
             app:sdOverlayLayout="@id/overlay"
             app:sdUseReverseAnimationOnClose="true" />
     </RelativeLayout>

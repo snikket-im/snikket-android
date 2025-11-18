@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Beállítások</string>
-    <string name="action_add">Új beszélgetés</string>
     <string name="action_accounts">Fiókok kezelése</string>
     <string name="action_account">Fiók kezelése</string>
-    <string name="action_end_conversation">Beszélgetés bezárása</string>
     <string name="action_contact_details">Partner részletei</string>
     <string name="action_muc_details">Csoportos csevegés részletei</string>
     <string name="channel_details">Csatorna részletei</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Résztvevő tiltásának feloldása</string>
     <string name="title_activity_manage_accounts">Fiókok kezelése</string>
     <string name="title_activity_settings">Beállítások</string>
-    <string name="title_activity_sharewith">Megosztás a Snikket alkalmazással</string>
-    <string name="title_activity_start_conversation">Beszélgetés indítása</string>
     <string name="title_activity_choose_contact">Partner kiválasztása</string>
     <string name="title_activity_choose_contacts">Partnerek kiválasztása</string>
     <string name="title_activity_share_via_account">Megosztás fiókon keresztül</string>
@@ -53,7 +49,6 @@
     <string name="register_account">Új fiók regisztrálása a kiszolgálón</string>
     <string name="change_password_on_server">Jelszó megváltoztatása a kiszolgálón</string>
     <string name="share_with">Megosztás ezzel…</string>
-    <string name="start_conversation">Beszélgetés indítása</string>
     <string name="invite_contact">Partner meghívása</string>
     <string name="invite">Meghívás</string>
     <string name="contacts">Partnerek</string>
@@ -83,10 +78,11 @@
     <string name="sharing_files_please_wait">Fájlok megosztása. Kérem várjon…</string>
     <string name="action_clear_history">Előzmények törlése</string>
     <string name="clear_conversation_history">Beszélgetés előzményeinek törlése</string>
-    <string name="clear_histor_msg">Biztosan törölni szeretné az összes üzenetet a beszélgetésen belül?\n\n<b>Figyelmeztetés:</b> Ez nem fogja érinteni a más eszközökön vagy kiszolgálókon tárolt üzeneteket.</string>
+    <string name="clear_histor_msg">Biztosan törölni szeretné az összes üzenetet a beszélgetésen belül?
+\n
+\n<b>Figyelmeztetés:</b> Ez nem fogja érinteni a más eszközökön vagy kiszolgálókon tárolt üzeneteket.</string>
     <string name="delete_file_dialog">Fájl törlése</string>
     <string name="delete_file_dialog_msg">Biztosan törölni szeretné ezt a fájlt?\n\n<b>Figyelmeztetés:</b> Ez nem fogja törölni a fájlnak azon másolatait, amelyek más eszközökön vagy kiszolgálókon vannak tárolva.</string>
-    <string name="also_end_conversation">A beszélgetés bezárása azután</string>
     <string name="choose_presence">Eszköz kiválasztása</string>
     <string name="send_unencrypted_message">Titkosítatlan üzenet küldése</string>
     <string name="send_message">Üzenet küldése</string>
@@ -124,7 +120,6 @@
     <string name="pref_notification_grace_period">Türelmi idő</string>
     <string name="pref_notification_grace_period_summary">Az időtartam, amíg az értesítések némítva vannak az egyéb eszközei egyikén történt tevékenység észlelése után.</string>
     <string name="pref_advanced_options">Speciális</string>
-    <string name="pref_never_send_crash">Sose küldjön összeomlási jelentéseket</string>
     <string name="pref_never_send_crash_summary">A veremkiíratások elküldésével segíti a fejlesztést</string>
     <string name="pref_confirm_messages">Üzenetek megerősítése</string>
     <string name="pref_confirm_messages_summary">Tudassa a partnereivel, hogy megkapta és elolvasta az üzeneteiket</string>
@@ -417,7 +412,6 @@
     <string name="show_location">Hely megjelenítése</string>
     <string name="no_application_found_to_display_location">Nem található alkalmazás a hely megjelenítéséhez</string>
     <string name="location">Hely</string>
-    <string name="title_undo_swipe_out_conversation">A beszélgetés bezárva</string>
     <string name="title_undo_swipe_out_group_chat">Kilépett a személyes csoportos csevegésből</string>
     <string name="title_undo_swipe_out_channel">Kilépett a nyilvános csatornából</string>
     <string name="pref_dont_trust_system_cas_title">Ne bízzon meg a rendszer hitelesítésszolgáltatóiban</string>
@@ -427,7 +421,6 @@
     <string name="toast_no_trusted_certs">Nincsenek kézzel jóváhagyott tanúsítványok</string>
     <string name="dialog_manage_certs_title">Tanúsítványok eltávolítása</string>
     <string name="dialog_manage_certs_positivebutton">Kijelölés törlése</string>
-    <string name="dialog_manage_certs_negativebutton">Mégse</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d tanúsítvány törölve</item>
         <item quantity="other">%d tanúsítvány törölve</item>
@@ -541,8 +534,6 @@
     <string name="pref_theme_automatic">Automatikus</string>
     <string name="pref_theme_light">Világos</string>
     <string name="pref_theme_dark">Sötét</string>
-    <string name="pref_use_green_background">Zöld háttér</string>
-    <string name="pref_use_green_background_summary">Zöld háttér használata a fogadott üzenetekhez</string>
     <string name="this_device_is_no_longer_in_use">Ez az eszköz többé nincs használatban</string>
     <string name="type_pc">Számítógép</string>
     <string name="type_phone">Mobiltelefon</string>
@@ -616,7 +607,6 @@
     <string name="encrypting_message">Üzenet titkosítása</string>
     <string name="not_fetching_history_retention_period">Nincs üzenetletöltés a helyi megőrzési időszak miatt.</string>
     <string name="transcoding_video">Videó tömörítése</string>
-    <string name="corresponding_conversations_closed">A megfelelő beszélgetések lezárultak.</string>
     <string name="contact_blocked_past_tense">Partner tiltva.</string>
     <string name="pref_notifications_from_strangers">Értesítések idegenektől</string>
     <string name="pref_notifications_from_strangers_summary">Értesítés az idegenektől fogadott üzenetekről és hívásokról.</string>
@@ -661,7 +651,8 @@
     <string name="error_trustkey_device_list">Nem sikerült lekérni az eszközlistát</string>
     <string name="error_trustkey_bundle">Nem sikerült lekérni a titkosítási kulcsokat</string>
     <string name="error_trustkey_hint_mutual">Tipp: bizonyos esetekben ez megoldható azzal, hogy hozzáadják egymást a partnerlistákhoz.</string>
-    <string name="disable_encryption_message">Biztosan le szeretné tiltani az OMEMO titkosítást ennél a beszélgetésnél?\nEz lehetővé fogja tenni a kiszolgáló rendszergazdájának, hogy elolvassa az üzeneteket, de ez lehet az egyetlen módja annak, hogy kommunikáljon az elavult programokat használó emberekkel.</string>
+    <string name="disable_encryption_message">Biztosan le szeretné tiltani az OMEMO titkosítást ennél a beszélgetésnél?
+\nEz lehetővé fogja tenni a kiszolgáló rendszergazdájának, hogy elolvassa az üzeneteket, de ez lehet az egyetlen módja annak, hogy kommunikáljon az elavult programokat használó emberekkel.</string>
     <string name="disable_now">Letiltás most</string>
     <string name="draft">Vázlat:</string>
     <string name="pref_omemo_setting">OMEMO titkosítás</string>
@@ -669,13 +660,8 @@
     <string name="pref_omemo_setting_summary_default_on">Az OMEMO lesz alapértelmezetten használva az új beszélgetésekhez.</string>
     <string name="pref_omemo_setting_summary_default_off">Az OMEMO-t kifejezetten be kell majd kapcsolni az új beszélgetésekhez.</string>
     <string name="create_shortcut">Gyorsbillentyű létrehozása</string>
-    <string name="pref_font_size">Betűméret</string>
-    <string name="pref_font_size_summary">Az alkalmazáson belül használt relatív betűméret.</string>
     <string name="default_on">Alapértelmezetten be</string>
     <string name="default_off">Alapértelmezetten ki</string>
-    <string name="small">Kicsi</string>
-    <string name="medium">Közepes</string>
-    <string name="large">Nagy</string>
     <string name="not_encrypted_for_this_device">Az üzenet nem volt titkosított ehhez az eszközhöz.</string>
     <string name="omemo_decryption_failed">Nem sikerült az OMEMO üzenet visszafejtése.</string>
     <string name="undo">visszavonás</string>

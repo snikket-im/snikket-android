@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- This preference links to the OS notification settings and only shows up on API >= 26 (Android 8) -->
+    <PreferenceScreen
+        android:icon="@drawable/ic_chat_24dp"
+        android:key="message_notification_settings"
+        android:summary="@string/pref_more_notification_settings_summary"
+        android:title="@string/pref_message_notification_settings">
+        <intent android:action="android.settings.CHANNEL_NOTIFICATION_SETTINGS">
+            <extra
+                android:name="android.provider.extra.APP_PACKAGE"
+                android:value="@string/applicationId" />
+            <extra
+                android:name="android.provider.extra.CHANNEL_ID"
+                android:value="messages" />
+        </intent>
+    </PreferenceScreen>
+
+    <!-- The following settings show up on API < 26 ( Android 7.1 and below) -->
+    <Preference
+        android:defaultValue="@string/notification_ringtone"
+        android:key="notification_ringtone"
+        android:ringtoneType="notification"
+        android:summary="@string/pref_notification_sound_summary"
+        android:title="@string/pref_notification_sound" />
+    <SwitchPreferenceCompat
+        android:defaultValue="@bool/headsup_notifications"
+        android:key="notification_headsup"
+        android:summary="@string/pref_headsup_notifications_summary"
+        android:title="@string/pref_headsup_notifications" />
+    <SwitchPreferenceCompat
+        android:defaultValue="@bool/vibrate_on_notification"
+        android:key="vibrate_on_notification"
+        android:summary="@string/pref_vibrate_summary"
+        android:title="@string/pref_vibrate" />
+    <SwitchPreferenceCompat
+        android:defaultValue="@bool/led"
+        android:key="led"
+        android:summary="@string/pref_led_summary"
+        android:title="@string/pref_led" />
+
+
+    <Preference
+        android:icon="@drawable/ic_phone_24dp"
+        android:key="call_ringtone"
+        android:ringtoneType="ringtone"
+        android:summary="@string/pref_call_ringtone_summary"
+        android:title="@string/pref_ringtone" />
+    <ListPreference
+        android:defaultValue="@integer/grace_period"
+        android:entries="@array/grace_periods"
+        android:entryValues="@array/grace_periods_values"
+        android:icon="@drawable/ic_notifications_paused_24dp"
+        android:key="grace_period_length"
+        android:summary="@string/pref_notification_grace_period_summary"
+        android:title="@string/pref_notification_grace_period" />
+    <SwitchPreferenceCompat
+        android:defaultValue="@bool/notifications_from_strangers"
+        android:icon="@drawable/ic_domino_mask_24dp"
+        android:key="notifications_from_strangers"
+        android:summary="@string/pref_notifications_from_strangers_summary"
+        android:title="@string/pref_notifications_from_strangers" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="@bool/enable_foreground_service"
+        android:icon="@drawable/ic_link_24dp"
+        android:key="enable_foreground_service"
+        android:summary="@string/pref_keep_foreground_service_summary"
+        android:title="@string/pref_keep_foreground_service" />
+
+</PreferenceScreen>

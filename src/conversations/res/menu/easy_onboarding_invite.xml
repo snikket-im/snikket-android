@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_share"
-        android:icon="?attr/icon_share"
+        android:icon="@drawable/ic_share_24dp"
         android:title="@string/invite"
         app:showAsAction="always" />
 </menu>

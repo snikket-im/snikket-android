@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Indstillinger</string>
-    <string name="action_add">Ny samtale</string>
     <string name="action_accounts">Håndter konti</string>
     <string name="action_account">Håndter konto</string>
-    <string name="action_end_conversation">Afslut samtale</string>
     <string name="action_contact_details">Kontaktdeltaljer</string>
     <string name="action_muc_details">Gruppechat detaljer</string>
     <string name="channel_details">Kanaldetaljer  </string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Frigiv deltager</string>
     <string name="title_activity_manage_accounts">Håndter konti</string>
     <string name="title_activity_settings">Indstillinger</string>
-    <string name="title_activity_sharewith">Del med Conversation</string>
-    <string name="title_activity_start_conversation">Start Conversation</string>
     <string name="title_activity_choose_contact">Vælg kontakt</string>
     <string name="title_activity_choose_contacts">Vælg kontakter</string>
     <string name="title_activity_share_via_account">Del via konto</string>
@@ -53,7 +49,6 @@
     <string name="register_account">Register ny konto på server</string>
     <string name="change_password_on_server">Ændr adgangskode på server</string>
     <string name="share_with">Del med…</string>
-    <string name="start_conversation">Start samtale</string>
     <string name="invite_contact">Inviter kontakt</string>
     <string name="invite">Inviter</string>
     <string name="contacts">Kontakter</string>
@@ -83,12 +78,13 @@
     <string name="sharing_files_please_wait">Deler filer. Vent venligst…</string>
     <string name="action_clear_history">Ryd historik</string>
     <string name="clear_conversation_history">Ryd samtalehistorik</string>
-    <string name="clear_histor_msg">Vil du slette alle beskeder i denne samtale?\n\n<b>Advarsel:</b> Dette vil ikke påvirke beskeder gemt på andre enheder eller servere.</string>
+    <string name="clear_histor_msg">Vil du slette alle beskeder i denne samtale?
+\n
+\n<b>Advarsel:</b> Dette vil ikke påvirke beskeder gemt på andre enheder eller servere.</string>
     <string name="delete_file_dialog">Slet fil</string>
     <string name="delete_file_dialog_msg">Er du sikker på, at du vil slette denne fil\?
 \n
 \n<b>Advarsel:</b> Dette sletter ikke kopier af denne fil, der er gemt på andre enheder eller servere. </string>
-    <string name="also_end_conversation">Luk efterfølgende denne samtale</string>
     <string name="choose_presence">Vælg enhed</string>
     <string name="send_unencrypted_message">Send ukrypteret besked</string>
     <string name="send_message">Send besked</string>
@@ -126,7 +122,6 @@
     <string name="pref_notification_grace_period">Fredningsperiode</string>
     <string name="pref_notification_grace_period_summary">Tidsintervallet hvor notifikationer er lydløs efter at have registreret aktivitet på en af dine andre enheder.</string>
     <string name="pref_advanced_options">Advanceret</string>
-    <string name="pref_never_send_crash">Send aldrig fejlrapporter</string>
     <string name="pref_never_send_crash_summary">Ved at indsende stakspor hjælper du udviklingen</string>
     <string name="pref_confirm_messages">Bekræft beskeder</string>
     <string name="pref_confirm_messages_summary">Lad dine kontakter vide når du har modtaget og læst deres beskeder</string>
@@ -183,7 +178,7 @@
     <string name="unpublish_pgp_message">Er du sikker på, at du vil fjerne din OpenPGP-nøgle fra din nærværsmeddelelse?\nDine kontakter kan ikke længere sende dig OpenPGP-krypterede meddelelser.</string>
     <string name="openpgp_has_been_published">OpenPGP offentlig nøgle er offentliggjort.</string>
     <string name="mgmt_account_enable">Aktiver konto</string>
-    <string name="mgmt_account_delete_confirm_text">Er du sikker på, at du vil slette din konto\? Sletning af din konto sletter hele din samtalehistorik</string>
+    <string name="mgmt_account_delete_confirm_text">Er du sikker på, at du vil slette din konto? Sletning af din konto sletter hele din samtalehistorik</string>
     <string name="attach_record_voice">Optag lyd</string>
     <string name="account_settings_jabber_id">XMPP-adresse</string>
     <string name="block_jabber_id">Bloker XMPP-adresse</string>
@@ -433,7 +428,6 @@
     <string name="show_location">Vis placering</string>
     <string name="no_application_found_to_display_location">Ingen app fundet der kan vise placering</string>
     <string name="location">Placering</string>
-    <string name="title_undo_swipe_out_conversation">Samtale afsluttet</string>
     <string name="title_undo_swipe_out_group_chat">Forlod privat gruppechat</string>
     <string name="title_undo_swipe_out_channel">Forlod offentlig kanal</string>
     <string name="pref_dont_trust_system_cas_title">Stol ikke på system-CA\'er</string>
@@ -443,7 +437,6 @@
     <string name="toast_no_trusted_certs">Ingen manuelt godkendt certifikater</string>
     <string name="dialog_manage_certs_title">Fjern certifikater</string>
     <string name="dialog_manage_certs_positivebutton">Slet valgt</string>
-    <string name="dialog_manage_certs_negativebutton">Annuller</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certifikat slettet</item>
         <item quantity="other">%d certifikater slettet</item>
@@ -573,8 +566,6 @@
     <string name="pref_theme_automatic">Automatisk</string>
     <string name="pref_theme_light">Lys</string>
     <string name="pref_theme_dark">Mørk</string>
-    <string name="pref_use_green_background">Grøn baggrund</string>
-    <string name="pref_use_green_background_summary">Brug grøn baggrund til modtaget beskeder</string>
     <string name="unable_to_connect_to_keychain">Kunne ikke forbinde til OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Denne enhed er ikke længere i brug</string>
     <string name="type_pc">Computer</string>
@@ -605,7 +596,6 @@
     <string name="this_device_has_been_verified">Den enhed er blevet bekræftet</string>
     <string name="copy_fingerprint">Kopier fingeraftryk</string>
     <string name="all_omemo_keys_have_been_verified">Du har bekræftet alle OMEMO-nøglerne i din besiddelse</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Stregkoden indeholder ingen fingeraftryk for denne samtale.</string>
     <string name="verified_fingerprints">Bekræft fingeraftryk</string>
     <string name="use_camera_icon_to_scan_barcode">Brug kameraet til at skanne en kontakt’s stregkode</string>
     <string name="please_wait_for_keys_to_be_fetched">Vent til nøglerne hentes</string>
@@ -659,7 +649,6 @@
     <string name="encrypting_message">Krypter beskeden</string>
     <string name="not_fetching_history_retention_period">Henter ikke meddelelser på grund af lokal opbevaringsperiode.</string>
     <string name="transcoding_video">Komprimerer video</string>
-    <string name="corresponding_conversations_closed">Tilsvarende samtaler lukket.</string>
     <string name="contact_blocked_past_tense">Kontakt blokeret.</string>
     <string name="pref_notifications_from_strangers">Notifikationer fra fremmede</string>
     <string name="pref_notifications_from_strangers_summary">Underret ved beskeder og opkald modtaget fra fremmede.</string>
@@ -705,7 +694,8 @@
     <string name="error_trustkey_device_list">Kunne ikke hente enhedsliste</string>
     <string name="error_trustkey_bundle">Kunne ikke hente krypteringsnøgler</string>
     <string name="error_trustkey_hint_mutual">Tip: I nogle tilfælde kan dette løses ved at tilføje hinanden dine kontaktlister.</string>
-    <string name="disable_encryption_message">Er du sikker på, at du vil deaktivere OMEMO-kryptering til denne samtale?\nDette giver din serveradministrator mulighed for at læse dine meddelelser, men det er muligvis den eneste måde at kommunikere med folk, der bruger forældede klienter.</string>
+    <string name="disable_encryption_message">Er du sikker på, at du vil deaktivere OMEMO-kryptering til denne samtale?
+\nDette giver din serveradministrator mulighed for at læse dine meddelelser, men det er muligvis den eneste måde at kommunikere med folk, der bruger forældede klienter.</string>
     <string name="disable_now">Deaktiver nu</string>
     <string name="draft">Udkast:</string>
     <string name="pref_omemo_setting">OMEMO-kryptering</string>
@@ -713,13 +703,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO vil blive brugt som standard for nye samtaler.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO skal være tændt udtrykkeligt for nye samtaler.</string>
     <string name="create_shortcut">Opret genvej</string>
-    <string name="pref_font_size">Skriftstørrelse</string>
-    <string name="pref_font_size_summary">Den relative skriftstørrelse brugt inde i appen.</string>
     <string name="default_on">Til som standard</string>
     <string name="default_off">Fra som standard</string>
-    <string name="small">Lille</string>
-    <string name="medium">Mellem</string>
-    <string name="large">Stor</string>
     <string name="not_encrypted_for_this_device">Besked var ikke krypteret på denne enhed.</string>
     <string name="omemo_decryption_failed">Dekryptering af OMEMO-besked mislykkes.</string>
     <string name="undo">fortryd</string>
@@ -802,7 +787,7 @@
     <string name="wait_x">Vent venligst (%s)</string>
     <string name="back">Tilbage</string>
     <string name="possible_pin">Indsat automatisk mulig pinkode fra udklipsholder.</string>
-    <string name="please_enter_pin">Indtast venligst din 6 cifret pinkode. </string>
+    <string name="please_enter_pin">Indtast venligst din 6 cifret pinkode.</string>
     <string name="abort_registration_procedure">Er du sikker på at du afbryde registreringsproceduren?</string>
     <string name="yes">Ja</string>
     <string name="no">Nej</string>
@@ -947,7 +932,6 @@
     <string name="audio_call">Lydopkald</string>
     <string name="video_call">Videoopkald</string>
     <string name="help">Hjælp</string>
-    <string name="switch_to_conversation">Skift til samtale</string>
     <string name="microphone_unavailable">Din mikrofon er utilgængelig</string>
     <string name="only_one_call_at_a_time">Du kan kun have et opkald af gangen.</string>
     <string name="return_to_ongoing_call">Returner til igangværende opkald</string>
@@ -1004,5 +988,4 @@
     <string name="outgoing_call_duration_timestamp">Udgående opkald (%s) · %s</string>
     <string name="incoming_call_duration_timestamp">Indkommende opkald (%s) · %s</string>
     <string name="delete_from_server">Fjern konto fra server</string>
-    <string name="pref_up_push_server_summary">En brugervalgt push-server til at videresende push-meddelelser via XMPP til din enhed.</string>
 </resources>

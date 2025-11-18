@@ -328,6 +328,8 @@ public final class MimeUtils {
         add("image/x-xbitmap", "xbm");
         add("image/x-xpixmap", "xpm");
         add("image/x-xwindowdump", "xwd");
+        add("message/rfc822","eml");
+        add("message/rfc822","mime");
         add("model/iges", "igs");
         add("model/iges", "iges");
         add("model/mesh", "msh");

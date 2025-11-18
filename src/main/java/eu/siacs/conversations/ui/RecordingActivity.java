@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.common.collect.ImmutableSet;
@@ -33,10 +34,9 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityRecordingBinding;
 import eu.siacs.conversations.ui.util.SettingsUtils;
-import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 
-public class RecordingActivity extends Activity implements View.OnClickListener {
+public class RecordingActivity extends BaseActivity implements View.OnClickListener {
 
     private ActivityRecordingBinding binding;
 
@@ -61,7 +61,6 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(ThemeHelper.findDialog(this));
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_recording);
         this.binding.cancelButton.setOnClickListener(this);
@@ -69,19 +68,13 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         this.setFinishOnTouchOutside(false);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
-
     @Override
-    protected void onResume() {
-        super.onResume();
-        SettingsUtils.applyScreenshotPreventionSetting(this);
-    }
-
-    @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         if (!startRecording()) {
             this.binding.shareButton.setEnabled(false);
-            this.binding.timer.setTextAppearance(this, R.style.TextAppearance_Conversations_Title);
+            this.binding.timer.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyMedium);
+            // TODO reset font family. make red?
             this.binding.timer.setText(R.string.unable_to_start_recording);
         }
     }

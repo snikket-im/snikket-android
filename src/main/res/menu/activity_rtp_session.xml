@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
         android:id="@+id/action_help"
-        android:icon="?attr/icon_help"
+        android:icon="@drawable/ic_help_24dp"
         android:title="@string/help"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_dialpad"
         android:icon="@drawable/ic_dialpad_white_24dp"
@@ -15,12 +13,11 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/action_goto_chat"
-        android:icon="?attr/icon_goto_chat"
-        android:title="@string/switch_to_conversation"
+        android:icon="@drawable/ic_forum_24dp"
+        android:title="@string/switch_to_chat"
         app:showAsAction="ifRoom" />
-
-
-    <item android:id="@+id/action_switch_to_video"
+    <item
+        android:id="@+id/action_switch_to_video"
         android:title="@string/switch_to_video"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 </menu>

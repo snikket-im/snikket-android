@@ -1,0 +1,3 @@
+* Uso do decorado Material 3
+* Reorganización dos Axustes
+* Sincronización entre dispositivos do estado de lectura

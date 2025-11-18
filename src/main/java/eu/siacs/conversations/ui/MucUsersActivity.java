@@ -49,7 +49,7 @@ public class MucUsersActivity extends XmppActivity implements XmppConnectionServ
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         final Intent intent = getIntent();
         final String uuid = intent == null ? null : intent.getStringExtra("uuid");
         if (uuid != null) {
@@ -102,8 +102,9 @@ public class MucUsersActivity extends XmppActivity implements XmppConnectionServ
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityMucUsersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_muc_users);
+        final ActivityMucUsersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_muc_users);
         setSupportActionBar(binding.toolbar);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         configureActionBar(getSupportActionBar(), true);
         this.userAdapter = new UserAdapter(getPreferences().getBoolean("advanced_muc_mode", false));
         binding.list.setAdapter(this.userAdapter);

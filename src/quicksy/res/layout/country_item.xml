@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,19 +13,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="Germany"
-            android:textAppearance="@style/TextAppearance.Conversations.Subhead.Bold" />
+            android:textAppearance="?textAppearanceTitleLarge"
+            tools:text="Germany" />
 
         <TextView
             android:id="@+id/country_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="+49"
-            android:textAppearance="@style/TextAppearance.Conversations.Subhead.Bold.Secondary" />
+            android:textAppearance="?textAppearanceBodyLarge"
+            tools:text="+49" />
     </RelativeLayout>
 </layout>

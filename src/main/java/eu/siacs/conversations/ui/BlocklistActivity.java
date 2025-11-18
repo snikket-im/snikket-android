@@ -88,7 +88,7 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 		dialog.setOnEnterJidDialogPositiveListener((accountJid, contactJid) -> {
 			Blockable blockable = new RawBlockable(account, contactJid);
 			if (xmppConnectionService.sendBlockRequest(blockable, false, null)) {
-				Toast.makeText(BlocklistActivity.this, R.string.corresponding_conversations_closed, Toast.LENGTH_SHORT).show();
+				Toast.makeText(BlocklistActivity.this, R.string.corresponding_chats_closed, Toast.LENGTH_SHORT).show();
 			}
 			return true;
 		});

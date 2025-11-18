@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -63,6 +64,7 @@ import androidx.core.view.inputmethod.InputConnectionCompat;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
@@ -1062,7 +1064,7 @@ public class ConversationFragment extends XmppFragment
                 };
         if (conversation == null
                 || conversation.getMode() == Conversation.MODE_MULTI
-                || Attachment.canBeSendInband(attachments)
+                || Attachment.canBeSendInBand(attachments)
                 || (conversation.getAccount().httpUploadAvailable()
                         && FileBackend.allFilesUnderSize(
                                 getActivity(), attachments, getMaxHttpUploadSize(conversation)))) {
@@ -1934,8 +1936,8 @@ public class ConversationFragment extends XmppFragment
 
     @SuppressLint("InflateParams")
     protected void clearHistoryDialog(final Conversation conversation) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-        builder.setTitle(getString(R.string.clear_conversation_history));
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
+        builder.setTitle(R.string.clear_conversation_history);
         final View dialogView =
                 requireActivity().getLayoutInflater().inflate(R.layout.dialog_clear_history, null);
         final CheckBox endConversationCheckBox =
@@ -1958,7 +1960,7 @@ public class ConversationFragment extends XmppFragment
     }
 
     protected void muteConversationDialog(final Conversation conversation) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
         builder.setTitle(R.string.disable_notifications);
         final int[] durations = getResources().getIntArray(R.array.mute_options_durations);
         final CharSequence[] labels = new CharSequence[durations.length];
@@ -2132,7 +2134,7 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void showErrorMessage(final Message message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
         builder.setTitle(R.string.error_message);
         final String errorMessage = message.getErrorMessage();
         final String[] errorMessageParts =
@@ -2159,7 +2161,7 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void deleteFile(final Message message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
         builder.setNegativeButton(R.string.cancel, null);
         builder.setTitle(R.string.delete_file_dialog);
         builder.setMessage(R.string.delete_file_dialog_msg);
@@ -2921,10 +2923,11 @@ public class ConversationFragment extends XmppFragment
             status = Presence.Status.OFFLINE;
         }
         this.binding.textSendButton.setTag(action);
+        this.binding.textSendButton.setIconResource(SendButtonTool.getSendButtonImageResource(action));
+        this.binding.textSendButton.setIconTint(ColorStateList.valueOf(SendButtonTool.getSendButtonColor(this.binding.textSendButton, status)));
+        // TODO send button color
         final Activity activity = getActivity();
         if (activity != null) {
-            this.binding.textSendButton.setImageResource(
-                    SendButtonTool.getSendButtonImageResource(activity, action, status));
         }
     }
 
@@ -3247,9 +3250,8 @@ public class ConversationFragment extends XmppFragment
                         });
     }
 
-    public void showNoPGPKeyDialog(boolean plural, DialogInterface.OnClickListener listener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setIconAttribute(android.R.attr.alertDialogIcon);
+    public void showNoPGPKeyDialog(final boolean plural, final DialogInterface.OnClickListener listener) {
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
         if (plural) {
             builder.setTitle(getString(R.string.no_pgp_keys));
             builder.setMessage(getText(R.string.contacts_have_no_pgp_keys));

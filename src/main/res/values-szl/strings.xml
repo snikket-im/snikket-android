@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Sztelōnki</string>
-    <string name="action_add">Nowo godka</string>
     <string name="action_accounts">Sztelōnki kōnt</string>
     <string name="action_account">Sztelōnki kōnta</string>
-    <string name="action_end_conversation">Zawrzij godka</string>
     <string name="action_contact_details">Informacyje kōntaktu</string>
     <string name="action_muc_details">Informacyje kōnferyncyje</string>
     <string name="channel_details">Informacyje kanału</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Ôdblokuj kōntakt</string>
     <string name="title_activity_manage_accounts">Sztelōnki kōnt</string>
     <string name="title_activity_settings">Sztelōnki</string>
-    <string name="title_activity_sharewith">Udostympnij we godce</string>
-    <string name="title_activity_start_conversation">Zacznij godka</string>
     <string name="title_activity_choose_contact">Ôbier kōntakt</string>
     <string name="title_activity_choose_contacts">Ôbier kōntakty</string>
     <string name="title_activity_share_via_account">Udostympnij bez</string>
@@ -44,7 +40,7 @@
     <string name="moderator">Moderatōr</string>
     <string name="participant">Uczestnik</string>
     <string name="visitor">Gość</string>
-    <string name="remove_contact_text">Chcesz wymazać kōntakt %s ze listy\? Godki ze tym kōntaktym niy bydōm wymazane.</string>
+    <string name="remove_contact_text">Chcesz wymazać kōntakt %s ze listy? Godki ze tym kōntaktym niy bydōm wymazane.</string>
     <string name="block_contact_text">Na zicher chcesz zablokować wiadōmości ôd kōntaktu %s\?</string>
     <string name="unblock_contact_text">Na zicher chcesz ôdblokować wiadōmości ôd kōntaktu %s\?</string>
     <string name="block_domain_text">Zablokować wszyjske kōntakty ze %s\?</string>
@@ -54,7 +50,6 @@
     <string name="register_account">Zaregistruj nowe kōnto na serwerze</string>
     <string name="change_password_on_server">Umiyń hasło na serwerze</string>
     <string name="share_with">Udostympnij…</string>
-    <string name="start_conversation">Zacznij godka</string>
     <string name="invite_contact">Zaproś kōntakt</string>
     <string name="invite">Zaproś</string>
     <string name="contacts">Kōntakty</string>
@@ -84,14 +79,13 @@
     <string name="sharing_files_please_wait">Udostympnianie zbiorōw. Czekej…</string>
     <string name="action_clear_history">Wymaż historyjo</string>
     <string name="clear_conversation_history">Wymaż historyjo kōnwersacyje</string>
-    <string name="clear_histor_msg">Chcesz wymazać wszyjske wiadōmości we tyj godce\?
-\n
+    <string name="clear_histor_msg">Chcesz wymazać wszyjske wiadōmości we tyj godce? 
+\n 
 \n<b>Pozōr:</b> To niy wpływo na wiadōmości trzimane na inkszych maszinach abo serwerach.</string>
     <string name="delete_file_dialog">Wymaż zbiōr</string>
     <string name="delete_file_dialog_msg">Na zicher wymazać tyn zbiōr\?
 \n
 \n<b>Pozōr:</b> To niy wpływo na kopije zbioru trzimane na inkszych maszinach abo serwerach. </string>
-    <string name="also_end_conversation">Zawrzij potym tyż kōnwersacyjo</string>
     <string name="choose_presence">Ôbier maszina</string>
     <string name="send_unencrypted_message">Wyślij wiadōmość bez szyfrowanio</string>
     <string name="send_message">Wyślij wiadōmość</string>
@@ -133,7 +127,6 @@
     <string name="pref_notification_grace_period">Czas bez powiadōmiyń</string>
     <string name="pref_notification_grace_period_summary">Dugość czasu, kej powiadōmiynia sōm wyciszōne po wykryciu aktywności na jednyj z twojich inkszych maszin.</string>
     <string name="pref_advanced_options">Rozszyrzōne</string>
-    <string name="pref_never_send_crash">Niy wysyłej reportōw awaryje</string>
     <string name="pref_never_send_crash_summary">Jak wysyłosz sztreki sztapla, to pōmogosz przi budowaniu</string>
     <string name="pref_confirm_messages">Potwierdzynia wiadōmości</string>
     <string name="pref_confirm_messages_summary">Przizwōl na wysyłanie do ôsōb ze listy kōntaktōw informacyje ô twojim dostaniu i przeczytaniu wiadōmości ôd nich</string>
@@ -448,7 +441,6 @@
     <string name="show_location">Pokoż lokalizacyjo</string>
     <string name="no_application_found_to_display_location">Niy szło znojś aplikacyje do pokazowanio lokalizacyje</string>
     <string name="location">Lokalizacyjo</string>
-    <string name="title_undo_swipe_out_conversation">Kōnwersacyjo zawarto</string>
     <string name="title_undo_swipe_out_group_chat">Ôpuś prywatno kōnferyncyjo</string>
     <string name="title_undo_swipe_out_channel">Ôpuś publiczny kanał</string>
     <string name="pref_dont_trust_system_cas_title">Niy dufej certyfikatōm systymowym</string>
@@ -458,7 +450,6 @@
     <string name="toast_no_trusted_certs">Brak ryncznie zadufanych certyfikatōw</string>
     <string name="dialog_manage_certs_title">Wymaż certyfikaty</string>
     <string name="dialog_manage_certs_positivebutton">Wymaż zaznaczōne</string>
-    <string name="dialog_manage_certs_negativebutton">Pociep</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">Wymazany %d certyfikat</item>
         <item quantity="few">Wymazane %d certyfikaty</item>
@@ -593,8 +584,6 @@
     <string name="pref_theme_automatic">Autōmatycznie</string>
     <string name="pref_theme_light">Jasny</string>
     <string name="pref_theme_dark">Ciymny</string>
-    <string name="pref_use_green_background">Zielōny zadek</string>
-    <string name="pref_use_green_background_summary">Używej zielōnego zadku dlo dostanych wiadōmości</string>
     <string name="unable_to_connect_to_keychain">Niy idzie sie połōnczyć z OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Ta maszina juz niy je używano</string>
     <string name="type_pc">Kōmputer</string>
@@ -626,7 +615,6 @@
     <string name="this_device_has_been_verified">Maszina je zweryfikowano</string>
     <string name="copy_fingerprint">Skopiyruj ôdcisk</string>
     <string name="all_omemo_keys_have_been_verified">Wszyske twoje klucze OMEMO sōm zweryfikowane</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Kod kryskowy niy zawiyro ôdciskōw dlo tyj godki.</string>
     <string name="verified_fingerprints">Zaufane ôdciski</string>
     <string name="use_camera_icon_to_scan_barcode">Użyj fotoaparatu, coby zeskanować kod kryskowy kōntaktu</string>
     <string name="please_wait_for_keys_to_be_fetched">Czekej na ściōngniyńcie kluczy</string>
@@ -687,7 +675,6 @@
     <string name="encrypting_message">Szyfrowanie wiadōmości</string>
     <string name="not_fetching_history_retention_period">Bez pobiyranio wiadōmości bez lokalny ôkres retyncyje.</string>
     <string name="transcoding_video">Kōmpresowanie filmu</string>
-    <string name="corresponding_conversations_closed">Powiōnzane godki zawarte.</string>
     <string name="contact_blocked_past_tense">Kōntakt zablokowany.</string>
     <string name="pref_notifications_from_strangers">Powiadōmiynia ôd cudzych ludzi</string>
     <string name="pref_notifications_from_strangers_summary">Powiadōmiej przi wiadōmościach i połōnczyniach ôd cudzych ludzi.</string>
@@ -733,7 +720,7 @@
     <string name="error_trustkey_device_list">Niy podarziło sie pobranie listy maszin</string>
     <string name="error_trustkey_bundle">Niy podarziło sie pobranie kluczy szyfrowanio</string>
     <string name="error_trustkey_hint_mutual">Podpowiydź: W niykerych przipodkach może pōmōc wzajymne przidanie sie do listy kōntaktōw.</string>
-    <string name="disable_encryption_message">Na zicher chcesz zastawić szyfrowanie OMEMO dlo tyj kōnwersacyje\?
+    <string name="disable_encryption_message">Na zicher chcesz zastawić szyfrowanie OMEMO dlo tyj kōnwersacyje?
 \nAdministratōr twojigo serwera bydzie mōg czytać twoje wiadōmości, ale może to być jedyny spōsōb, coby kōmunikować sie z ludźmi, co używajōm starych klijyntōw.</string>
     <string name="disable_now">Zastow teroz</string>
     <string name="draft">Cychōnek:</string>
@@ -742,13 +729,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO bydzie używane wychodnie przi nowych godkach.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO bydzie musiało być włōnczōne ryncznie przi nowych godkach.</string>
     <string name="create_shortcut">Stwōrz Skrōt</string>
-    <string name="pref_font_size">Srogość czciōnki</string>
-    <string name="pref_font_size_summary">Relatywno srogość czciōnki używanyj we aplikacyji.</string>
     <string name="default_on">Włōnczōne wychodnie</string>
     <string name="default_off">Zastawiōne wychodnie</string>
-    <string name="small">Mało</string>
-    <string name="medium">Strzednio</string>
-    <string name="large">Srogo</string>
     <string name="not_encrypted_for_this_device">Wiadōmość niy była zaszyfrowano dlo tyj masziny.</string>
     <string name="omemo_decryption_failed">Niy szło ôdszyfrować wiadōmości OMEMO.</string>
     <string name="undo">cofnij</string>
@@ -961,7 +943,6 @@
     <string name="audio_call">Połōnczynie audio</string>
     <string name="video_call">Połōnczynie wideo</string>
     <string name="help">Pōmoc</string>
-    <string name="switch_to_conversation">Przejdź do kōnwersacyje</string>
     <string name="microphone_unavailable">Twōj mikrofōn je niydostympny</string>
     <string name="only_one_call_at_a_time">Możesz mieć ino jedno połōnczynie w jednyj chwili.</string>
     <string name="return_to_ongoing_call">Wrōć do trwajōncego połōnczynio</string>

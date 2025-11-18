@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Настройки</string>
-    <string name="action_add">Нов разговор</string>
     <string name="action_accounts">Управление на профилите</string>
     <string name="action_account">Управление на профила</string>
-    <string name="action_end_conversation">Затваряне на разговора</string>
     <string name="action_contact_details">Подробности за контакта</string>
     <string name="action_muc_details">Подробности за груповия разговор</string>
     <string name="channel_details">Подробности за канала</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Деблокиране на участника</string>
     <string name="title_activity_manage_accounts">Управление на профилите</string>
     <string name="title_activity_settings">Настройки</string>
-    <string name="title_activity_sharewith">Споделяне в разговора</string>
-    <string name="title_activity_start_conversation">Започване на разговор</string>
     <string name="title_activity_choose_contact">Изберете контакт</string>
     <string name="title_activity_choose_contacts">Изберете контакти</string>
     <string name="title_activity_share_via_account">Споделяне чрез профил</string>
@@ -53,7 +49,6 @@
     <string name="register_account">Регистриране на нов профил на сървъра</string>
     <string name="change_password_on_server">Промяна на паролата в сървъра</string>
     <string name="share_with">Споделяне с…</string>
-    <string name="start_conversation">Започване на разговор</string>
     <string name="invite_contact">Поканете контакт</string>
     <string name="invite">Поканете</string>
     <string name="contacts">Контакти</string>
@@ -83,10 +78,11 @@
     <string name="sharing_files_please_wait">Споделяне на файлове. Моля, изчакайте…</string>
     <string name="action_clear_history">Изчистване на историята</string>
     <string name="clear_conversation_history">Изчистване на историята на разговорите</string>
-    <string name="clear_histor_msg">Наистина ли искате да изтриете всички съобщения в този разговор?\n\n<b>Внимание:</b> Това няма да изтрие съобщенията, които се съхраняват на други устройства или сървъри.</string>
+    <string name="clear_histor_msg">Наистина ли искате да изтриете всички съобщения в този разговор?
+\n
+\n<b>Внимание:</b> Това няма да изтрие съобщенията, които се съхраняват на други устройства или сървъри.</string>
     <string name="delete_file_dialog">Изтриване на файла</string>
     <string name="delete_file_dialog_msg">Наистина ли искате да изтриете този файл?\n\n<b>Внимание:</b> Това няма да изтрие копията на файла, които се съхраняват на други устройства или сървъри.</string>
-    <string name="also_end_conversation">Затваряне на този разговор след това</string>
     <string name="choose_presence">Изберете устройство</string>
     <string name="send_unencrypted_message">Изпр. на нешифр. съобщение</string>
     <string name="send_message">Изпращане на съобщение</string>
@@ -124,7 +120,6 @@
     <string name="pref_notification_grace_period">Период на пренебрегване</string>
     <string name="pref_notification_grace_period_summary">Продължителност на времето, през което известията се заглушават, след като бъде забележена дейност на някое от другите Ви устройства.</string>
     <string name="pref_advanced_options">Разширени</string>
-    <string name="pref_never_send_crash">Никога да не се изпращат доклади за сривове</string>
     <string name="pref_never_send_crash_summary">Изпращайки проследявания на стека, Вие помагате на разработката</string>
     <string name="pref_confirm_messages">Потвърждаване на съобщенията</string>
     <string name="pref_confirm_messages_summary">Така контактите Ви ще разбират, че сте получили и прочели съобщенията им</string>
@@ -425,7 +420,6 @@
     <string name="show_location">Показване на местоположението</string>
     <string name="no_application_found_to_display_location">Няма намерено приложение за показване на местоположението</string>
     <string name="location">Местоположение</string>
-    <string name="title_undo_swipe_out_conversation">Conversation се затвори</string>
     <string name="title_undo_swipe_out_group_chat">Напуснахте частния групов разговор</string>
     <string name="title_undo_swipe_out_channel">Напуснахте публичния канал</string>
     <string name="pref_dont_trust_system_cas_title">Да не се вярва на системните сертификати</string>
@@ -435,7 +429,6 @@
     <string name="toast_no_trusted_certs">Няма сертификати, одобрени на ръка</string>
     <string name="dialog_manage_certs_title">Премахване на сертификатите</string>
     <string name="dialog_manage_certs_positivebutton">Изтриване на избраните</string>
-    <string name="dialog_manage_certs_negativebutton">Отказ</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d сертификат е изтрит</item>
         <item quantity="other">%d сертификата са изтрити</item>
@@ -565,8 +558,6 @@
     <string name="pref_theme_automatic">Автоматично</string>
     <string name="pref_theme_light">Светла</string>
     <string name="pref_theme_dark">Тъмна</string>
-    <string name="pref_use_green_background">Зелен фон</string>
-    <string name="pref_use_green_background_summary">Получените съобщения ще бъдат на зелен фон</string>
     <string name="unable_to_connect_to_keychain">Свързването с OpenKeychain е невъзможно</string>
     <string name="this_device_is_no_longer_in_use">Това устройство вече не се използва</string>
     <string name="type_pc">Компютър</string>
@@ -597,7 +588,6 @@
     <string name="this_device_has_been_verified">Това устройство е потвърдено</string>
     <string name="copy_fingerprint">Копиране на отпечатъка</string>
     <string name="all_omemo_keys_have_been_verified">Потвърдили сте всички ключове OMEMO, които притежавате</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Баркодът не съдържа отпечатъци за този разговор.</string>
     <string name="verified_fingerprints">Потвърдени отпечатъци</string>
     <string name="use_camera_icon_to_scan_barcode">Използвайте камерата, за да сканирате баркода на контакт</string>
     <string name="please_wait_for_keys_to_be_fetched">Моля, изчакайте получаването на ключовете</string>
@@ -649,7 +639,6 @@
     <string name="encrypting_message">Шифроване на съобщението</string>
     <string name="not_fetching_history_retention_period">Съобщенията не се изтеглят поради местния период на задържане.</string>
     <string name="transcoding_video">Компресиране на видеото</string>
-    <string name="corresponding_conversations_closed">Съответстващите разговори са затворени.</string>
     <string name="contact_blocked_past_tense">Контактът е блокиран.</string>
     <string name="pref_notifications_from_strangers">Известия от непознати</string>
     <string name="pref_notifications_from_strangers_summary">Известяване за съобщения и обаждания от непознати.</string>
@@ -695,7 +684,8 @@
     <string name="error_trustkey_device_list">Неуспешно получаване на списъка с устройства</string>
     <string name="error_trustkey_bundle">Неуспешно получаване на ключове за шифроване</string>
     <string name="error_trustkey_hint_mutual">Съвет: В някои случаи това може да се оправи, ако се добавите един друг в списъците си с контакти.</string>
-    <string name="disable_encryption_message">Наистина ли искате да изключите шифроването чрез OMEMO за този разговор?\nТова ще позволи на администратора Ви да чете съобщенията Ви, но пък най-вероятно е единственият начин за общуване с хората, използващи стари клиенти.</string>
+    <string name="disable_encryption_message">Наистина ли искате да изключите шифроването чрез OMEMO за този разговор?
+\nТова ще позволи на администратора Ви да чете съобщенията Ви, но пък най-вероятно е единственият начин за общуване с хората, използващи стари клиенти.</string>
     <string name="disable_now">Изключване сега</string>
     <string name="draft">Чернова:</string>
     <string name="pref_omemo_setting">Шифроване OMEMO</string>
@@ -703,13 +693,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO ще се използва по подразбиране за новите разговори.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO ще трябва да се включва изрично за новите разговори.</string>
     <string name="create_shortcut">Създаване на пряк път</string>
-    <string name="pref_font_size">Размер на шрифта</string>
-    <string name="pref_font_size_summary">Относителен размер на шрифта в приложението.</string>
     <string name="default_on">ВКЛ по подразбиране</string>
     <string name="default_off">ИЗКЛ по подразбиране</string>
-    <string name="small">Малък</string>
-    <string name="medium">Среден</string>
-    <string name="large">Голям</string>
     <string name="not_encrypted_for_this_device">Съобщението не е било шифровано за това устройство.</string>
     <string name="omemo_decryption_failed">Съобщението OMEMO не може да бъде дешифровано.</string>
     <string name="undo">отмяна</string>
@@ -919,7 +904,6 @@
     <string name="audio_call">Гласово обаждане</string>
     <string name="video_call">Видео обаждане</string>
     <string name="help">Помо</string>
-    <string name="switch_to_conversation">Превключване към разговор</string>
     <string name="microphone_unavailable">Микрофонът не е наличен</string>
     <string name="only_one_call_at_a_time">Не може да има повече от едно обаждане едновременно.</string>
     <string name="return_to_ongoing_call">Обратно към текущия разговор</string>

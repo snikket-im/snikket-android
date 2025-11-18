@@ -34,7 +34,10 @@ import eu.siacs.conversations.xmpp.Jid;
 import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
 
-public class WelcomeActivity extends XmppActivity implements XmppConnectionService.OnAccountCreated, KeyChainAliasCallback {
+import com.google.common.base.Strings;
+
+public class WelcomeActivity extends XmppActivity
+        implements XmppConnectionService.OnAccountCreated, KeyChainAliasCallback {
 
     private static final int REQUEST_IMPORT_BACKUP = 0x63fb;
 
@@ -66,7 +69,8 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
         final Intent intent;
         if (xmppUri.isAction(XmppUri.ACTION_REGISTER)) {
             intent = SignupUtils.getTokenRegistrationIntent(this, jid, preAuth);
-        } else if (xmppUri.isAction(XmppUri.ACTION_ROSTER) && "y".equals(xmppUri.getParameter(XmppUri.PARAMETER_IBR))) {
+        } else if (xmppUri.isAction(XmppUri.ACTION_ROSTER)
+                && "y".equals(xmppUri.getParameter(XmppUri.PARAMETER_IBR))) {
             intent = SignupUtils.getTokenRegistrationIntent(this, jid.getDomain(), preAuth);
             intent.putExtra(StartConversationActivity.EXTRA_INVITE_URI, xmppUri.toString());
         } else {
@@ -81,22 +85,14 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
     }
 
     @Override
-    protected void refreshUiReal() {
-
-    }
+    protected void refreshUiReal() {}
 
     @Override
-    void onBackendConnected() {
-
-    }
+    protected void onBackendConnected() {}
 
     @Override
     public void onStart() {
         super.onStart();
-        final int theme = findTheme();
-        if (this.mTheme != theme) {
-            recreate();
-        }
         new InstallReferrerUtils(this);
     }
 
@@ -119,7 +115,9 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
-        ActivityWelcomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_welcome);
+        ActivityWelcomeBinding binding =
+                DataBindingUtil.setContentView(this, R.layout.activity_welcome);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar(), false);
         binding.learnMore.setOnClickListener(v -> {
@@ -130,35 +128,33 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(this,R.string.no_application_found_to_open_link, Toast.LENGTH_LONG).show();
             }
-        });
-        binding.useExisting.setOnClickListener(v -> {
-            final List<Account> accounts = xmppConnectionService.getAccounts();
-            Intent intent = new Intent(WelcomeActivity.this, EditAccountActivity.class);
-            intent.putExtra(EditAccountActivity.EXTRA_FORCE_REGISTER, false);
-            if (accounts.size() == 1) {
-                intent.putExtra("jid", accounts.get(0).getJid().asBareJid().toString());
-                intent.putExtra("init", true);
-            } else if (accounts.size() >= 1) {
-                intent = new Intent(WelcomeActivity.this, ManageAccountActivity.class);
-            }
-            addInviteUri(intent);
-            startActivity(intent);
-        });
-
+                });
+        binding.useExisting.setOnClickListener(
+                v -> {
+                    final List<Account> accounts = xmppConnectionService.getAccounts();
+                    Intent intent = new Intent(this, EditAccountActivity.class);
+                    intent.putExtra(EditAccountActivity.EXTRA_FORCE_REGISTER, false);
+                    if (accounts.size() == 1) {
+                        intent.putExtra("jid", accounts.get(0).getJid().asBareJid().toString());
+                        intent.putExtra("init", true);
+                    } else if (!accounts.isEmpty()) {
+                        intent = new Intent(this, ManageAccountActivity.class);
+                    }
+                    addInviteUri(intent);
+                    startActivity(intent);
+                });
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.welcome_menu, menu);
         final MenuItem scan = menu.findItem(R.id.action_scan_qr_code);
         scan.setVisible(Compatibility.hasFeatureCamera(this));
         return super.onCreateOptionsMenu(menu);
     }
 
-
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_import_backup:
                 if (hasStoragePermission(REQUEST_IMPORT_BACKUP)) {
@@ -178,16 +174,25 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
     private void addAccountFromKey() {
         try {
             KeyChain.choosePrivateKeyAlias(this, this, null, null, null, -1, null);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, R.string.device_does_not_support_certificates, Toast.LENGTH_LONG).show();
+        } catch (final ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.device_does_not_support_certificates, Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
     @Override
     public void alias(final String alias) {
-        if (alias != null) {
-            xmppConnectionService.createAccountFromKey(alias, this);
+        if (Strings.isNullOrEmpty(alias)) {
+            runOnUiThread(
+                    () ->
+                            Toast.makeText(
+                                            this,
+                                            R.string.no_certificate_selected,
+                                            Toast.LENGTH_LONG)
+                                    .show());
+            return;
         }
+        xmppConnectionService.createAccountFromKey(alias, this);
     }
 
     @Override
@@ -205,7 +210,8 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         UriHandlerActivity.onRequestPermissionResult(this, requestCode, grantResults);
         if (grantResults.length > 0) {
@@ -215,7 +221,8 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
                         startActivity(new Intent(this, ImportBackupActivity.class));
                         break;
                 }
-            } else if (Arrays.asList(permissions).contains(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            } else if (Arrays.asList(permissions)
+                    .contains(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 Toast.makeText(this, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
             }
         }
@@ -236,5 +243,4 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
             to.putExtra(StartConversationActivity.EXTRA_INVITE_URI, this.inviteUri.toString());
         }
     }
-
 }

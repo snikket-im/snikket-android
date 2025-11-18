@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Inställningar</string>
-    <string name="action_add">Ny konversation</string>
     <string name="action_accounts">Hantera konton</string>
     <string name="action_account">Hantera konto</string>
-    <string name="action_end_conversation">Stäng konversation</string>
     <string name="action_contact_details">Kontaktdetaljer</string>
     <string name="action_muc_details">Gruppchattdetaljer</string>
     <string name="channel_details">Gruppdetaljer</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Avblockera deltagare</string>
     <string name="title_activity_manage_accounts">Hantera konton</string>
     <string name="title_activity_settings">Inställningar</string>
-    <string name="title_activity_sharewith">Dela med konversation</string>
-    <string name="title_activity_start_conversation">Starta konversation</string>
     <string name="title_activity_choose_contact">Välj kontakt</string>
     <string name="title_activity_choose_contacts">Välj kontakter</string>
     <string name="title_activity_share_via_account">Dela via konto</string>
@@ -43,7 +39,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Deltagare</string>
     <string name="visitor">Besökare</string>
-    <string name="remove_contact_text">Vill du ta bort %s från din kontaktlista\? Konversationer med denna kontakt kommer inte att tas bort.</string>
+    <string name="remove_contact_text">Vill du ta bort %s från din kontaktlista? Konversationer med denna kontakt kommer inte att tas bort.</string>
     <string name="block_contact_text">Vill du blockera %s från att skicka dig meddelanden?</string>
     <string name="unblock_contact_text">Vill du avblockera %s och tillåta användaren att skicka dig meddelanden\?</string>
     <string name="block_domain_text">Blockera alla kontakter från %s?</string>
@@ -53,7 +49,6 @@
     <string name="register_account">Registrera ett nytt konto på servern</string>
     <string name="change_password_on_server">Byt lösenord på servern</string>
     <string name="share_with">Dela med…</string>
-    <string name="start_conversation">Börja konversation</string>
     <string name="invite_contact">Bjud in kontakt</string>
     <string name="invite">Bjud in</string>
     <string name="contacts">Kontakter</string>
@@ -83,14 +78,13 @@
     <string name="sharing_files_please_wait">Delar filer. Var god vänta…</string>
     <string name="action_clear_history">Rensa historik</string>
     <string name="clear_conversation_history">Rensa konversationshistorik</string>
-    <string name="clear_histor_msg">Vill du ta bort alla meddelanden i den här konversationen\?
-\n
+    <string name="clear_histor_msg">Vill du ta bort alla meddelanden i den här konversationen? 
+\n 
 \n<b>Varning:</b> Det här påverkar inte meddelanden som finns lagrade på andra enheter eller servrar.</string>
     <string name="delete_file_dialog">Ta bort fil</string>
     <string name="delete_file_dialog_msg">Är du säker på att du vill ta bort den här filen\?
 \n
 \n<b>Varning:</b> Den här åtgärden kommer inte att ta bort kopior av den här filen som finns lagrad på andra enheter eller servrar. </string>
-    <string name="also_end_conversation">Stäng den här konversation efteråt</string>
     <string name="choose_presence">Välj enhet</string>
     <string name="send_unencrypted_message">Skicka okrypterat meddelande</string>
     <string name="send_message">Skicka meddelande</string>
@@ -132,7 +126,6 @@
     <string name="pref_notification_grace_period">Tidsfrist</string>
     <string name="pref_notification_grace_period_summary">Tidsfrist för hur länge aviseringar ska vara tysta efter att aktivitet har upptäckts på en av dina andra enheter.</string>
     <string name="pref_advanced_options">Avancerat</string>
-    <string name="pref_never_send_crash">Skicka aldrig kraschrapporter</string>
     <string name="pref_never_send_crash_summary">Genom att skicka in kraschrapporter hjälper du till med utvecklingen av appen</string>
     <string name="pref_confirm_messages">Bekräfta meddelanden</string>
     <string name="pref_confirm_messages_summary">Låt dina kontakter veta när du har mottagit och läst deras meddelanden</string>
@@ -191,7 +184,7 @@
 \nDina kontakter kommer inte längre att kunna skicka OpenPGP-krypterade meddelande till dig.</string>
     <string name="openpgp_has_been_published">OpenPGP-nyckel har publicerats.</string>
     <string name="mgmt_account_enable">Aktivera konto</string>
-    <string name="mgmt_account_delete_confirm_text">Är du säker på att du vill ta bort ditt konto\? Om du tar bort ditt konto, tas hela din konversationshistorik bort</string>
+    <string name="mgmt_account_delete_confirm_text">Är du säker på att du vill ta bort ditt konto? Om du tar bort ditt konto, tas hela din konversationshistorik bort</string>
     <string name="attach_record_voice">Spela in röst</string>
     <string name="account_settings_jabber_id">XMPP-adress</string>
     <string name="block_jabber_id">Blockera XMPP-adress</string>
@@ -444,7 +437,6 @@
     <string name="show_location">Visa position</string>
     <string name="no_application_found_to_display_location">Ingen app hittades för att kunna visa platsen</string>
     <string name="location">Position</string>
-    <string name="title_undo_swipe_out_conversation">Konversation stängd</string>
     <string name="title_undo_swipe_out_group_chat">Lämnade privat gruppchatt</string>
     <string name="title_undo_swipe_out_channel">Lämnade publik kanal</string>
     <string name="pref_dont_trust_system_cas_title">Lita inte på systemets certifikatutfärdare</string>
@@ -454,7 +446,6 @@
     <string name="toast_no_trusted_certs">Inga manuellt godkända certifikat</string>
     <string name="dialog_manage_certs_title">Ta bort certifikaten</string>
     <string name="dialog_manage_certs_positivebutton">Ta bort val</string>
-    <string name="dialog_manage_certs_negativebutton">Avbryt</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certifikat borttaget</item>
         <item quantity="other">%d certifikat borttagna</item>
@@ -587,8 +578,6 @@
     <string name="pref_theme_automatic">Automatisk</string>
     <string name="pref_theme_light">Ljus</string>
     <string name="pref_theme_dark">Mörk</string>
-    <string name="pref_use_green_background">Grön bakgrund</string>
-    <string name="pref_use_green_background_summary">Använd grön bakgrund för mottagna meddelanden</string>
     <string name="unable_to_connect_to_keychain">Det gick inte att ansluta till OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Den här enheten används inte längre</string>
     <string name="type_pc">Dator</string>
@@ -620,7 +609,6 @@
     <string name="this_device_has_been_verified">Den här enheten har verifierats</string>
     <string name="copy_fingerprint">Kopiera fingeravtryck</string>
     <string name="all_omemo_keys_have_been_verified">Du har verifierat alla OMEMO-nycklar i din ägo</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Streckkoden innehåller inga fingeravtryck för den här konversationen.</string>
     <string name="verified_fingerprints">Verifierade fingeravtryck</string>
     <string name="use_camera_icon_to_scan_barcode">Använd kameran för att skanna en kontakts streckkod</string>
     <string name="please_wait_for_keys_to_be_fetched">Var god vänta på att nycklarna ska hämtas</string>
@@ -675,7 +663,6 @@
     <string name="encrypting_message">Krypterar meddelande</string>
     <string name="not_fetching_history_retention_period">Hämtar inte meddelanden på grund av lokal lagringsperiod.</string>
     <string name="transcoding_video">Komprimerar video</string>
-    <string name="corresponding_conversations_closed">Motsvarande konversationer avslutades.</string>
     <string name="contact_blocked_past_tense">Kontakt blockerad.</string>
     <string name="pref_notifications_from_strangers">Aviseringar från främlingar</string>
     <string name="pref_notifications_from_strangers_summary">Motta aviseringar för meddelanden och samtal från främlingar.</string>
@@ -721,7 +708,7 @@
     <string name="error_trustkey_device_list">Det gick inte att hämta enhetslistan</string>
     <string name="error_trustkey_bundle">Det gick inte att hämta krypteringsnycklar</string>
     <string name="error_trustkey_hint_mutual">Tips: I vissa fall kan det här åtgärdas genom att lägga till varandra i era respektive kontaktlistor.</string>
-    <string name="disable_encryption_message">Är du säker på att du vill inaktivera OMEMO-kryptering för den här konversationen\?
+    <string name="disable_encryption_message">Är du säker på att du vill inaktivera OMEMO-kryptering för den här konversationen?
 \nDet innebär att din serveradministratör kan läsa dina meddelanden, men det kan också vara det enda sättet att kommunicera med personer som använder föråldrade klienter.</string>
     <string name="disable_now">Inaktivera nu</string>
     <string name="draft">Utkast:</string>
@@ -730,13 +717,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO kommer att användas som standard för nya konversationer.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO måste manuellt aktiveras för varje ny konversation.</string>
     <string name="create_shortcut">Skapa genväg</string>
-    <string name="pref_font_size">Textstorlek</string>
-    <string name="pref_font_size_summary">Den relativa teckenstorleken som används i appen.</string>
     <string name="default_on">På som standard</string>
     <string name="default_off">Av som standard</string>
-    <string name="small">Liten</string>
-    <string name="medium">Medium</string>
-    <string name="large">Stor</string>
     <string name="not_encrypted_for_this_device">Meddelandet krypterades inte för den här enheten.</string>
     <string name="omemo_decryption_failed">Det gick inte att dekryptera OMEMO-meddelandet.</string>
     <string name="undo">ångra</string>
@@ -900,7 +882,6 @@
     <string name="audio_call">Röstsamtal</string>
     <string name="video_call">Videosamtal</string>
     <string name="help">Hjälp</string>
-    <string name="switch_to_conversation">Växla till konversation</string>
     <string name="microphone_unavailable">Din mikrofon är inte tillgänglig</string>
     <string name="only_one_call_at_a_time">Du kan bara ha ett samtal åt gången.</string>
     <string name="return_to_ongoing_call">Återgå till pågående samtal</string>
@@ -991,7 +972,6 @@
     <string name="pref_up_push_account_title">XMPP-konto</string>
     <string name="pref_up_push_account_summary">Kontot genom vilket push-meddelanden tas emot.</string>
     <string name="pref_up_push_server_title">Push-server</string>
-    <string name="pref_up_push_server_summary">En användarvald push-server för att vidarebefordra push-meddelanden via XMPP till din enhet.</string>
     <string name="no_account_deactivated">Ingen (inaktiverad)</string>
     <string name="logged_in_with_another_device">Det här telefonnumret är för närvarande inloggat med en annan enhet.</string>
     <string name="enter_your_name_instructions">Var god ange ditt namn för att låta personer som inte har dig i sina adressböcker, veta vem du är.</string>

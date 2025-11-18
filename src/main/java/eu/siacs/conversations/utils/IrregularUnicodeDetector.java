@@ -40,6 +40,8 @@ import android.util.LruCache;
 
 import androidx.annotation.ColorInt;
 
+import com.google.android.material.color.MaterialColors;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -53,7 +55,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class IrregularUnicodeDetector {
@@ -76,8 +77,8 @@ public class IrregularUnicodeDetector {
 		}
 	}
 
-	public static Spannable style(Context context, Jid jid) {
-		return style(jid, StyledAttributes.getColor(context, R.attr.color_warning));
+	public static Spannable style(final Context context, Jid jid) {
+		return style(jid, MaterialColors.getColor(context, com.google.android.material.R.attr.colorError,"colorError not found"));
 	}
 
 	private static Spannable style(Jid jid, @ColorInt int color) {

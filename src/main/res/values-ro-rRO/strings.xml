@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Setări</string>
-    <string name="action_add">Conversație nouă</string>
     <string name="action_accounts">Configurează conturile</string>
     <string name="action_account">Configurează contul</string>
-    <string name="action_end_conversation">Închide conversația</string>
     <string name="action_contact_details">Detalii contact</string>
     <string name="action_muc_details">Detalii discuție de grup</string>
     <string name="channel_details">Detalii canal</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Deblochează participant</string>
     <string name="title_activity_manage_accounts">Configurează conturile</string>
     <string name="title_activity_settings">Setări</string>
-    <string name="title_activity_sharewith">Partajează într-o conversație</string>
-    <string name="title_activity_start_conversation">Pornește o conversație</string>
     <string name="title_activity_choose_contact">Alegeți contactul</string>
     <string name="title_activity_choose_contacts">Alegeți contactele</string>
     <string name="title_activity_share_via_account">Partajează cu cont</string>
@@ -30,9 +26,9 @@
     <string name="minute_ago">acum un minut</string>
     <string name="minutes_ago">acum %d minute</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d conversație necitită</item>
-        <item quantity="few">%d conversații necitite</item>
-        <item quantity="other">%d de conversații necitite</item>
+        <item quantity="one">%d discuție necitită</item>
+        <item quantity="few">%d discuții necitite</item>
+        <item quantity="other">%d de discuții necitite</item>
     </plurals>
     <string name="sending">trimitere…</string>
     <string name="message_decrypting">Decriptare mesaj. Vă rugăm să așteptați…</string>
@@ -44,7 +40,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Participant</string>
     <string name="visitor">Vizitator</string>
-    <string name="remove_contact_text">Ați dori să ștergeți pe %s din lista de contacte? Conversațiile asociate cu acest contact nu vor fi șterse.</string>
+    <string name="remove_contact_text">Ați dori să ștergeți pe %s din lista de contacte? Discuția cu acest contact nu va fi ștersă.</string>
     <string name="block_contact_text">Ați dori să blocați pe %s ca să nu vă mai trimită mesaje?</string>
     <string name="unblock_contact_text">Ați dori să deblocați pe %s și să îi permiteți să vă trimită mesaje?</string>
     <string name="block_domain_text">Blochează toate contactele de la %s?</string>
@@ -54,7 +50,6 @@
     <string name="register_account">Înregistrează un cont nou pe server</string>
     <string name="change_password_on_server">Schimbă parola pe server</string>
     <string name="share_with">Partajează cu…</string>
-    <string name="start_conversation">Pornește o conversație</string>
     <string name="invite_contact">Invită contact</string>
     <string name="invite">Invită</string>
     <string name="contacts">Contacte</string>
@@ -83,13 +78,14 @@
     <string name="preparing_images">Se pregătește trimiterea imaginilor</string>
     <string name="sharing_files_please_wait">Trimitere fișiere. Vă rugăm să așteptați…</string>
     <string name="action_clear_history">Șterge istoric</string>
-    <string name="clear_conversation_history">Șterge istoricul conversației</string>
-    <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această conversație?\n\n<b>Atenție:</b> Această acțiune nu va afecta mesajele aflate pe alte dispozitive sau servere.</string>
+    <string name="clear_conversation_history">Șterge istoric discuție</string>
+    <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această discuție?
+\n
+\n<b>Atenție:</b> Această acțiune nu va afecta mesajele aflate pe alte dispozitive sau servere.</string>
     <string name="delete_file_dialog">Șterge fișierul</string>
     <string name="delete_file_dialog_msg">Sigur doriți să ștergeți acest fișier\?
 \n
 \n<b>Atenție:</b> Această acțiune nu va șterge copiile acestui fișier care sunt stocate pe alte dispozitive sau servere. </string>
-    <string name="also_end_conversation">Închide conversația după ștergere</string>
     <string name="choose_presence">Alege dispozitiv</string>
     <string name="send_unencrypted_message">Trimite mesaje necriptate</string>
     <string name="send_message">Trimite mesaj</string>
@@ -127,7 +123,6 @@
     <string name="pref_notification_grace_period">Perioadă de grație</string>
     <string name="pref_notification_grace_period_summary">Durata de timp cât notificările sunt ascunse după ce s-a observat activitate pe un alt dispozitiv de al dumneavoastră.</string>
     <string name="pref_advanced_options">Opțiuni avansate</string>
-    <string name="pref_never_send_crash">Nu trimite rapoarte de erori</string>
     <string name="pref_never_send_crash_summary">Trimițând date despre erori ajutați la continuarea dezvoltării aplicației</string>
     <string name="pref_confirm_messages">Confirmă mesajele</string>
     <string name="pref_confirm_messages_summary">Contactele sunt notificate atunci când ați primit un mesaj și l-ați citit</string>
@@ -143,7 +138,7 @@
     <string name="send_presence_updates">Trimite actualizări de prezență</string>
     <string name="receive_presence_updates">Primește actualizări de prezență</string>
     <string name="ask_for_presence_updates">Cere actualizări de prezență</string>
-    <string name="attach_choose_picture">Alege o imagine</string>
+    <string name="attach_choose_picture">Alege imagine</string>
     <string name="attach_take_picture">Fă o poză</string>
     <string name="preemptively_grant">Acordă anticipat cererea de abonare</string>
     <string name="error_not_an_image_file">Fișierul selectat nu este o imagine</string>
@@ -186,7 +181,7 @@
     <string name="unpublish_pgp_message">Sigur doriți să vă ștergeți cheia publică OpenPGP din mesajele de prezență?\nContactele dumneavoastră nu vor mai putea să vă trimită mesaje criptate cu OpenPGP.</string>
     <string name="openpgp_has_been_published">Cheia publică OpenPGP a fost publicată.</string>
     <string name="mgmt_account_enable">Activează cont</string>
-    <string name="mgmt_account_delete_confirm_text">Sigur doriți să vă ștergeți contul\? Dacă vă ștergeți contul, întregul istoric de conversații va fi pierdut</string>
+    <string name="mgmt_account_delete_confirm_text">Sigur doriți să vă ștergeți contul? Dacă vă ștergeți contul, întregul istoric de discuții va fi pierdut</string>
     <string name="attach_record_voice">Înregistrare voce</string>
     <string name="account_settings_jabber_id">Adresă XMPP</string>
     <string name="block_jabber_id">Blochează adresă XMPP</string>
@@ -248,7 +243,7 @@
     <string name="destroy_channel_dialog">Sigur doriți distrugerea acestui canal public?\n\n<b>Atenție:</b> Canalul public v-a fi complet șters de pe server.</string>
     <string name="could_not_destroy_room">Nu s-a putut distruge discuția de grup</string>
     <string name="could_not_destroy_channel">Nu s-a putut distruge canalul</string>
-    <string name="action_edit_subject">Editează subiectul discuției de grup</string>
+    <string name="action_edit_subject">Editează subiect discuție de grup</string>
     <string name="topic">Subiect discuție</string>
     <string name="joining_conference">Vă alăturați discuției de grup…</string>
     <string name="leave">Paraseste</string>
@@ -285,7 +280,7 @@
     <string name="ignore">Ignora</string>
     <string name="without_mutual_presence_updates"><b>Atenție:</b> Trimițând aceasta fără actualizări de prezență reciproce ar putea produce probleme neprevazute.\n\n<small>Mergeți la \"Detalii contact\" pentru a verifica abonările la actualizările de prezență.</small></string>
     <string name="pref_security_settings">Siguranță</string>
-    <string name="pref_allow_message_correction">Permite corecția mesajelor</string>
+    <string name="pref_allow_message_correction">Corecția mesajelor</string>
     <string name="pref_allow_message_correction_summary">Contactele pot să își editeze mesajele scrise în trecut</string>
     <string name="pref_expert_options">Opțiuni expert</string>
     <string name="pref_expert_options_summary">Vă rugăm să aveți grijă cu acestea</string>
@@ -308,10 +303,10 @@
     <string name="conference_technical_problems">Ați părăsit această discuție de grup din motive tehnice</string>
     <string name="using_account">folosind cont %s</string>
     <string name="hosted_on">găzduit pe %s</string>
-    <string name="checking_x">Verifica %s pe gazda HTTP</string>
+    <string name="checking_x">Verifică %s pe gazda HTTP</string>
     <string name="not_connected_try_again">Nu sunteți conectat(ă). Încercați din nou mai târziu</string>
-    <string name="check_x_filesize">Verifica marimea %s</string>
-    <string name="check_x_filesize_on_host">Verifica marimea %1$s pe %2$s</string>
+    <string name="check_x_filesize">Verifică mărimea %s</string>
+    <string name="check_x_filesize_on_host">Verifică mărime %1$s pe %2$s</string>
     <string name="message_options">Opțiuni mesaje</string>
     <string name="quote">Citează</string>
     <string name="paste_as_quote">Lipește citat</string>
@@ -355,7 +350,7 @@
     <string name="no_application_found_to_open_link">Nu s-a găsit nici o aplicație care să deschidă adresa</string>
     <string name="no_application_found_to_view_contact">Nu s-a găsit nici o aplicație care să deschidă contactul</string>
     <string name="pref_show_dynamic_tags">Etichete dinamice</string>
-    <string name="pref_show_dynamic_tags_summary">Arată sub contacte etichete dinamice informative</string>
+    <string name="pref_show_dynamic_tags_summary">Arată sub contacte etichete informative</string>
     <string name="enable_notifications">Activează notificările</string>
     <string name="no_conference_server_found">Nu s-a găsit serverul pentru discuția de grup</string>
     <string name="conference_creation_failed">Nu s-a putut crea discuția de grup</string>
@@ -438,7 +433,6 @@
     <string name="show_location">Arată locația</string>
     <string name="no_application_found_to_display_location">Nu s-a găsit nici o aplicație care să afișeze locația</string>
     <string name="location">Locatie</string>
-    <string name="title_undo_swipe_out_conversation">Conversație închisă</string>
     <string name="title_undo_swipe_out_group_chat">A părăsit discuția de grup privată</string>
     <string name="title_undo_swipe_out_channel">A părăsit canalul public</string>
     <string name="pref_dont_trust_system_cas_title">Nu ai încredere în CA din sistem</string>
@@ -448,7 +442,6 @@
     <string name="toast_no_trusted_certs">Nici un certificat aprobat manual</string>
     <string name="dialog_manage_certs_title">Înlătură certificatele</string>
     <string name="dialog_manage_certs_positivebutton">Șterge selecția</string>
-    <string name="dialog_manage_certs_negativebutton">Anuleaza</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificat sters</item>
         <item quantity="few">%d certificate sterse</item>
@@ -481,8 +474,8 @@
     <string name="pref_dnd_on_silent_mode_summary">Prezintă clientul drept \"Ocupat\" atunci când dispozitivul este în mod silențios</string>
     <string name="pref_treat_vibrate_as_silent">Tratează modul vibrație ca silențios</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Prezintă clientul drept \"Ocupat\" atunci când dispozitivul este în mod vibrație</string>
-    <string name="pref_show_connection_options">Opțiuni avansate conexiune</string>
-    <string name="pref_show_connection_options_summary">Arată opțiunea de setare a numelui de gazdă și a portului, atunci când se configurează un cont</string>
+    <string name="pref_show_connection_options">Nume gazdă &amp; port</string>
+    <string name="pref_show_connection_options_summary">Arată opțiuni extinse de conectare atunci când se configurează un cont</string>
     <string name="hostname_example">xmpp.exemplu.ro</string>
     <string name="action_add_account_with_certificate">Autentificare cu certificat</string>
     <string name="unable_to_parse_certificate">Nu s-a putut analiza certificatul</string>
@@ -574,16 +567,14 @@
     <string name="gp_short">Scurtă</string>
     <string name="gp_medium">Medie</string>
     <string name="gp_long">Lungă</string>
-    <string name="pref_broadcast_last_activity">Publică utilizarea</string>
-    <string name="pref_broadcast_last_activity_summary">Contactele sunt anunțate atunci când folosiți Snikket</string>
+    <string name="pref_broadcast_last_activity">Văzut ultima dată</string>
+C    <string name="pref_broadcast_last_activity_summary">Permiteți contactelor voastre să vadă când ați folosit ultima dată aplicația</string>
     <string name="pref_privacy">Intimitate</string>
     <string name="pref_theme_options">Temă</string>
     <string name="pref_theme_options_summary">Selecție paletă de culori interfață</string>
-    <string name="pref_theme_automatic">Automată</string>
-    <string name="pref_theme_light">Luminoasă</string>
-    <string name="pref_theme_dark">Întunecată</string>
-    <string name="pref_use_green_background">Fundal verde</string>
-    <string name="pref_use_green_background_summary">Pentru mesajele primite</string>
+    <string name="pref_theme_automatic">Automat</string>
+    <string name="pref_theme_light">Luminos</string>
+    <string name="pref_theme_dark">Întunecat</string>
     <string name="unable_to_connect_to_keychain">Nu s-a putut face conectarea la OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Acest dispozitiv nu mai este în uz</string>
     <string name="type_pc">PC</string>
@@ -614,7 +605,6 @@
     <string name="this_device_has_been_verified">Acest dispozitiv a fost verificat</string>
     <string name="copy_fingerprint">Copiază amprenta</string>
     <string name="all_omemo_keys_have_been_verified">Ați verificat toate cheile OMEMO pe care le aveți</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Codul de bare nu conține amprente pentru această conversație.</string>
     <string name="verified_fingerprints">Amprente verificate</string>
     <string name="use_camera_icon_to_scan_barcode">Folosește camera pentru a scana codul de bare al contactului</string>
     <string name="please_wait_for_keys_to_be_fetched">Vă rugăm să așteptați până se preiau cheile</string>
@@ -674,7 +664,6 @@
     <string name="encrypting_message">Mesajul se criptează</string>
     <string name="not_fetching_history_retention_period">Politica de retenție locală împiedică descărcarea altor mesaje.</string>
     <string name="transcoding_video">Se comprimă clipul video</string>
-    <string name="corresponding_conversations_closed">Conversațiile corespunzătoare au fost închise.</string>
     <string name="contact_blocked_past_tense">Contact blocat.</string>
     <string name="pref_notifications_from_strangers">Notificări de la persoane necunoscute</string>
     <string name="pref_notifications_from_strangers_summary">Permite notificări pentru mesaje și apeluri de la persoane care nu sunt în lista de contacte.</string>
@@ -712,7 +701,7 @@
     <string name="once">Doar o dată</string>
     <string name="qr_code_scanner_needs_access_to_camera">Scanerul de coduri QR are nevoie de acces la camera foto</string>
     <string name="pref_scroll_to_bottom">Derulează până jos</string>
-    <string name="pref_scroll_to_bottom_summary">După trimiterea unui mesaj derulează până la sfârșit</string>
+    <string name="pref_scroll_to_bottom_summary">După trimiterea unui mesaj derulează până jos</string>
     <string name="edit_status_message_title">Editare mesaj de stare</string>
     <string name="edit_status_message">Editare mesaj de stare</string>
     <string name="disable_encryption">Dezactivează criptarea</string>
@@ -720,7 +709,8 @@
     <string name="error_trustkey_device_list">Nu s-a putut descărca lista dispozitivelor</string>
     <string name="error_trustkey_bundle">Nu s-au putut descărca cheile de criptare</string>
     <string name="error_trustkey_hint_mutual">Sugestie: În unele cazuri se poate rezolva dacă vă adăugați reciproc în lista de contacte.</string>
-    <string name="disable_encryption_message">Sigur doriți să dezactivați criptarea OMEMO pentru această conversație?\nAstfel veți permite administratorilor serverului să vă citească mesajele, dar se poate ca ăsta să fie singurul mod în care puteți să comunicați cu persoanele care folosesc clienți învechiți.</string>
+    <string name="disable_encryption_message">Sigur doriți să dezactivați criptarea OMEMO pentru această discuție?
+\nAstfel veți permite administratorilor serverului să vă citească mesajele, dar se poate ca ăsta să fie singurul mod în care puteți să comunicați cu persoanele care folosesc clienți învechiți.</string>
     <string name="disable_now">Dezactivează acum</string>
     <string name="draft">Ciornă:</string>
     <string name="pref_omemo_setting">Criptare OMEMO</string>
@@ -728,13 +718,8 @@
     <string name="pref_omemo_setting_summary_default_on">Va fi folosită în mod implicit pentru discuțiile noi.</string>
     <string name="pref_omemo_setting_summary_default_off">Va trebui să fie pornită în mod explicit pentru discuțiile noi.</string>
     <string name="create_shortcut">Creează scurtătură</string>
-    <string name="pref_font_size">Mărime text</string>
-    <string name="pref_font_size_summary">Dimensiunea relativă a fontului folosită în aplicație.</string>
     <string name="default_on">Activată implicit</string>
     <string name="default_off">Dezactivată implicit</string>
-    <string name="small">Mică</string>
-    <string name="medium">Medie</string>
-    <string name="large">Mare</string>
     <string name="not_encrypted_for_this_device">Mesajul nu a fost criptat pentru acest dispozitiv.</string>
     <string name="omemo_decryption_failed">Nu s-a reușit decriptarea mesajului OMEMO.</string>
     <string name="undo">anulează</string>
@@ -747,27 +732,27 @@
     <string name="title_activity_share_location">Partajare locație</string>
     <string name="title_activity_show_location">Arată locația</string>
     <string name="share">Partajare</string>
-    <string name="unable_to_start_recording">Nu s-a putut pornii înregistrarea</string>
+    <string name="unable_to_start_recording">Nu s-a putut porni înregistrarea</string>
     <string name="please_wait">Vă rugăm să așteptați…</string>
     <string name="no_microphone_permission">Permiteți %1$s acces la microfon</string>
     <string name="search_messages">Caută mesaje</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">Arată conversația</string>
+    <string name="view_conversation">Arată discuția</string>
     <string name="pref_use_share_location_plugin">Extensia Share Location</string>
     <string name="pref_use_share_location_plugin_summary">Folosește extensia Share Location în loc de harta inclusă</string>
     <string name="copy_link">Copiază adresa web</string>
     <string name="copy_jabber_id">Copiază adresa XMPP</string>
     <string name="p1_s3_filetransfer">Partajare fișiere prin HTTP pentru S3</string>
     <string name="pref_start_search">Activează direct căutarea</string>
-    <string name="pref_start_search_summary">În ecranul \"Pornește o conversație\" focalizează câmpul de căutare și arată tastatura</string>
+    <string name="pref_start_search_summary">În ecranul \"Discuție nouă\" focalizează câmpul de căutare și arată tastatura</string>
     <string name="group_chat_avatar">Avatar discuție de grup</string>
     <string name="host_does_not_support_group_chat_avatars">Serverul gazdă nu suporta avatare pentru grupuri</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Doar proprietarul grupului poate schimba avatarul</string>
     <string name="contact_name">Nume contact</string>
     <string name="nickname">Numele dumneavoastră</string>
-    <string name="group_chat_name">Titlul discuției de grup</string>
+    <string name="group_chat_name">Titlu discuție de grup</string>
     <string name="providing_a_name_is_optional">Setarea numelui este opțională</string>
-    <string name="create_dialog_group_chat_name">Titlul discuției de grup</string>
+    <string name="create_dialog_group_chat_name">Titlu discuție de grup</string>
     <string name="conference_destroyed">Această discuție de grup a fost distrusă</string>
     <string name="unable_to_save_recording">Nu s-a putut salva înregistrarea</string>
     <string name="foreground_service_channel_name">Serviciul activ în prim-plan</string>
@@ -815,7 +800,7 @@
     <string name="resend_sms">Retrimitere SMS</string>
     <string name="resend_sms_in">Retrimite SMS (%s)</string>
     <string name="wait_x">Vă rugăm să așteptați (%s)</string>
-    <string name="back">înapoi</string>
+    <string name="back">Înapoi</string>
     <string name="possible_pin">S-a copiat automat un posibil cod din memorie.</string>
     <string name="please_enter_pin">Vă rugăm să vă introduceți codul de 6 cifre.</string>
     <string name="abort_registration_procedure">Sigur doriți să anulați procedura de înregistrare?</string>
@@ -965,7 +950,6 @@
     <string name="audio_call">Apel audio</string>
     <string name="video_call">Apel video</string>
     <string name="help">Ajutor</string>
-    <string name="switch_to_conversation">Comutare la discuție</string>
     <string name="microphone_unavailable">Microfonul nu este disponibil</string>
     <string name="only_one_call_at_a_time">Puteți avea un singur apel simultan.</string>
     <string name="return_to_ongoing_call">Reveniți la apelul în curs</string>
@@ -974,8 +958,8 @@
     <string name="remove_from_favorites">Anulează fixarea</string>
     <string name="gpx_track">Traseu GPX</string>
     <string name="could_not_correct_message">Nu s-a putut corecta mesajul</string>
-    <string name="search_all_conversations">Toate conversațiile</string>
-    <string name="search_this_conversation">Această conversație</string>
+    <string name="search_all_conversations">Toate discuțiile</string>
+    <string name="search_this_conversation">Această discuție</string>
     <string name="your_avatar">Avatarul dumneavoastră</string>
     <string name="avatar_for_x">Avatar pentru %s</string>
     <string name="encrypted_with_omemo">Criptare OMEMO</string>
@@ -1015,7 +999,6 @@
     <string name="reject_switch_to_video">Respinge solicitarea de comutare la video</string>
     <string name="pref_up_push_account_title">Cont XMPP</string>
     <string name="pref_up_push_server_title">Server Push</string>
-    <string name="pref_up_push_server_summary">Un server ales de utilizator pentru a intermedia mesajele push către dispozitivul vostru prin XMPP.</string>
     <string name="no_account_deactivated">Nici unul (dezactivat)</string>
     <string name="unified_push_distributor">Distribuitor UnifiedPush</string>
     <string name="pref_up_push_account_summary">Contul prin care vor fi primite notificările push.</string>
@@ -1048,8 +1031,55 @@
     <string name="no_permission_to_place_call">Nu este permisă efectuarea de apeluri</string>
     <string name="call_integration_not_available">Integrarea apelurilor nu este disponibilă!</string>
     <string name="rtp_state_contact_offline">Contactul nu este disponibil</string>
-    <string name="remove_bookmark_and_close">Ați dori să ștergeți semnul de carte pentru %s și să închideți conversația?</string>
+    <string name="remove_bookmark_and_close">Ați dori să ștergeți semnul de carte pentru %s și să arhivați discuția?</string>
     <string name="remove_bookmark">Ați dori să ștergeți semnul de carte pentru %s?</string>
-    <string name="delete_and_close">Șterge și închide</string>
+    <string name="delete_and_close">Șterge și închide discuția</string>
+    <string name="pref_use_colorful_bubbles_summary">Ajută la distingerea mesajelor trimise și primite</string>
+    <string name="title_activity_share_with">Partajează cu…</string>
+    <string name="pref_use_colorful_bubbles">Bule de chat colorate</string>
+    <string name="pref_dynamic_colors">Culori dinamice</string>
+    <string name="pref_dynamic_colors_summary">Culori de sistem (Material You)</string>
+    <string name="action_archive_chat">Arhivează discuția</string>
+    <string name="archive_this_chat">Arhivează această discuție</string>
+    <string name="title_undo_swipe_out_chat">Discuție arhivată</string>
     <string name="channel_discover_opt_in_message">Descoperirea de canale publice folosește un serviciu terț numit &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți &lt;a href=https://search.jabber.network/privacy&gt;Politica de confidențialitate&lt;/a&gt; a serviciului.</string>
+    <string name="switch_to_chat">Treci la discuție</string>
+    <string name="no_certificate_selected">Nu a fost selectat un certificat client!</string>
+    <string name="start_chat">Începe discuție</string>
+    <string name="corresponding_chats_closed">Discuțiile aferente au fost arhivate.</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">Codul de bare nu conține o amprentă pentru această discuție.</string>
+    <string name="welcome_header">Alăturați-vă conversației</string>
+    <string name="title_activity_new_chat">Discuție nouă</string>
+    <string name="pref_title_interface">Interfață</string>
+    <string name="pref_send_crash_reports">Trimite rapoarte de erori</string>
+    <string name="pref_title_security">Securitate</string>
+    <string name="pref_summary_appearance">Temă, Culori, Captură ecran, Tastatură</string>
+    <string name="unified_push_summary">Releu de notificări pentru aplicații terțe compatibile cu UnifiedPush</string>
+    <string name="notifications">Notificări</string>
+    <string name="pref_attachments_summary">Dimensiunea fișierului, Comprimare imaginii, Calitatea video</string>
+    <string name="pref_notifications_summary">Perioada de grație, Ton de apel, Vibrație, Străini</string>
+    <string name="pref_category_sending">Trimitere</string>
+    <string name="pref_category_receiving">Primire</string>
+    <string name="pref_automatic_download">Descărcare automată</string>
+    <string name="appearance">Aspect</string>
+    <string name="pref_allow_screenshots">Permite capturi de ecran</string>
+    <string name="pref_title_trust_system_ca_store">Autoritățile de certificare</string>
+    <string name="pref_title_trust_system_ca_store_summary">Aveți încredere în certificatele CA ale sistemului</string>
+    <string name="detect_mim">Necesită channel binding</string>
+    <string name="detect_mim_summary">Channel binding poate detecta unele atacuri de tip machine-in-the-middle</string>
+    <string name="pref_category_server_connection">Conexiune server</string>
+    <string name="pref_category_operating_system">Sistem de operare</string>
+    <string name="pref_privacy_summary">Notificări de tastare, Văzut ultima dată, Disponibilitate</string>
+    <string name="pref_connection_summary_w_cd">Nume gazdă &amp; Port, Tor, Descoperire canale</string>
+    <string name="pref_category_e2ee">Criptare de la un capăt-la-altul (E2E)</string>
+    <string name="pref_keyboard_options">Tastatură</string>
+    <string name="pref_category_engagement_notifications">Notificări de implicare</string>
+    <string name="pref_category_application">Aplicație</string>
+    <string name="pref_category_interaction">Interacțiune</string>
+    <string name="pref_category_on_this_device">Pe dispozitiv</string>
+    <string name="pref_allow_screenshots_summary">Afișați conținutul aplicației în comutatorul de aplicații și permiteți realizarea de capturi de ecran</string>
+    <string name="pref_light_dark_mode">Mod luminos/întunecat</string>
+    <string name="pref_summary_security">Criptare E2E, Încredere oarbă înainte de verificare, detectare MITM</string>
+    <string name="pref_connection_summary">Nume gazdă &amp; Port, Tor</string>
+    <string name="pref_up_long_summary">Atunci când acționezi ca distribuitor UnifiedPush, conexiunea XMPP persistentă, fiabilă și prietenoasă cu bateria va fi utilizată pentru a trezi alte aplicații compatibile cu UnifiedPush, cum ar fi Tusky, Ltt.rs, FluffyChat și altele.</string>
 </resources>

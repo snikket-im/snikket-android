@@ -46,8 +46,6 @@ public final class Config {
     public static final Jid BUG_REPORTS = Jid.of("bugs@snikket.org");
     public static final Uri HELP = Uri.parse("https://snikket.org/faq/?ref=app");
 
-
-    public static final String DOMAIN_LOCK = null; // only allow account creation for this domain
     public static final String MAGIC_CREATE_DOMAIN = "snikket.im";
 
     public static final Jid QUICKSY_DOMAIN = Jid.of("quicksy.im");
@@ -58,7 +56,7 @@ public final class Config {
 
     public static final boolean USE_RANDOM_RESOURCE_ON_EVERY_BIND = false;
 
-    public static final boolean MESSAGE_DISPLAYED_SYNCHRONIZATION = false;
+    public static final boolean MESSAGE_DISPLAYED_SYNCHRONIZATION = true;
 
     public static final boolean ALLOW_NON_TLS_CONNECTIONS =
             false; // very dangerous. you should have a good reason to set this to true
@@ -90,7 +88,6 @@ public final class Config {
     public static final int CONNECT_DISCO_TIMEOUT = 20;
     public static final int MINI_GRACE_PERIOD = 750;
 
-    public static final boolean XEP_0392 = true; // enables XEP-0392 v0.6.0
 
     // media file formats. Homogenous Android or Conversations only deployments can switch to opus
     // and webp

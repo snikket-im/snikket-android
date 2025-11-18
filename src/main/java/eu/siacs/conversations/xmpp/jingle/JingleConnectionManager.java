@@ -4,6 +4,8 @@ import android.telecom.VideoProfile;
 import android.util.Base64;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -727,7 +729,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         return rtpConnection;
     }
 
-    public RtpSessionProposal proposeJingleRtpSession(
+    public @Nullable RtpSessionProposal proposeJingleRtpSession(
             final Account account, final Jid with, final Set<Media> media) {
         synchronized (this.rtpSessionProposals) {
             for (final Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry :

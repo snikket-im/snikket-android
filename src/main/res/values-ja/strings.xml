@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">設定</string>
-    <string name="action_add">新しい会話</string>
     <string name="action_accounts">アカウントを管理</string>
     <string name="action_account">アカウントを管理</string>
-    <string name="action_end_conversation">会話を閉じる</string>
     <string name="action_contact_details">連絡先の詳細</string>
     <string name="action_muc_details">グループチャットの詳細</string>
     <string name="channel_details">談話室の詳細</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">参加者のブロックを解除</string>
     <string name="title_activity_manage_accounts">アカウントを管理</string>
     <string name="title_activity_settings">設定</string>
-    <string name="title_activity_sharewith">会話で共有</string>
-    <string name="title_activity_start_conversation">会話を開始</string>
     <string name="title_activity_choose_contact">連絡先を選択</string>
     <string name="title_activity_choose_contacts">連絡先を選択</string>
     <string name="title_activity_share_via_account">アカウントで共有</string>
@@ -52,7 +48,6 @@
     <string name="register_account">サーバーに新規アカウントを登録</string>
     <string name="change_password_on_server">サーバーのパスワードを変更</string>
     <string name="share_with">…で共有</string>
-    <string name="start_conversation">会話を始める</string>
     <string name="invite_contact">連絡先を招待</string>
     <string name="invite">招待</string>
     <string name="contacts">連絡先</string>
@@ -82,10 +77,11 @@
     <string name="sharing_files_please_wait">ファイル共有中。しばらくお待ちください…</string>
     <string name="action_clear_history">履歴を消去</string>
     <string name="clear_conversation_history">会話履歴を消去</string>
-    <string name="clear_histor_msg">この会話のすべてのメッセージを削除してもよろしいですか?\n\n<b>警告:</b> 他のデバイスやサーバーに保存されているメッセージのコピーには影響しません。</string>
+    <string name="clear_histor_msg">この会話のすべてのメッセージを削除してもよろしいですか?
+\n
+\n<b>警告:</b> 他のデバイスやサーバーに保存されているメッセージのコピーには影響しません。</string>
     <string name="delete_file_dialog">ファイルを削除</string>
     <string name="delete_file_dialog_msg">このファイルを削除してもよろしいですか?\n\n<b>警告:</b> これは、他のデバイスやサーバーに保存されているファイルのコピーは削除しません。</string>
-    <string name="also_end_conversation">この後、この会話を閉じる</string>
     <string name="choose_presence">デバイスを選択</string>
     <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>
     <string name="send_message">メッセージを送信</string>
@@ -125,7 +121,6 @@
     <string name="pref_notification_grace_period">猶予期間</string>
     <string name="pref_notification_grace_period_summary">別のデバイスでの操作を検知した際に、通知を止める時間の長さ。</string>
     <string name="pref_advanced_options">詳細</string>
-    <string name="pref_never_send_crash">クラッシュレポートを送信しない</string>
     <string name="pref_never_send_crash_summary">スタックトレースを送信すると、 開発の助けとなります</string>
     <string name="pref_confirm_messages">メッセージを確認</string>
     <string name="pref_confirm_messages_summary">あなたがメッセージを受信して読んだときに、連絡先に知らせる</string>
@@ -431,7 +426,6 @@
     <string name="show_location">位置を表示</string>
     <string name="no_application_found_to_display_location">位置を表示するアプリケーションが見つかりません</string>
     <string name="location">位置</string>
-    <string name="title_undo_swipe_out_conversation">会話が閉じられました</string>
     <string name="title_undo_swipe_out_group_chat">非公開グループチャットを退出しました</string>
     <string name="title_undo_swipe_out_channel">公開談話室を退出しました</string>
     <string name="pref_dont_trust_system_cas_title">システムの CA を信頼しない</string>
@@ -441,7 +435,6 @@
     <string name="toast_no_trusted_certs">手動で承認した証明書がありません</string>
     <string name="dialog_manage_certs_title">証明書を削除</string>
     <string name="dialog_manage_certs_positivebutton">選択したものを削除</string>
-    <string name="dialog_manage_certs_negativebutton">中止</string>
     <plurals name="toast_delete_certificates">
         <item quantity="other">%d個の証明書を削除しました</item>
     </plurals>
@@ -568,8 +561,6 @@
     <string name="pref_theme_automatic">自動</string>
     <string name="pref_theme_light">明</string>
     <string name="pref_theme_dark">暗</string>
-    <string name="pref_use_green_background">緑の背景</string>
-    <string name="pref_use_green_background_summary">受信したメッセージに緑の背景を使用します</string>
     <string name="unable_to_connect_to_keychain">OpenKeychain に接続できません</string>
     <string name="this_device_is_no_longer_in_use">このデバイスは、現在使用されていません</string>
     <string name="type_pc">コンピューター</string>
@@ -600,7 +591,6 @@
     <string name="this_device_has_been_verified">このデバイスは検証済です</string>
     <string name="copy_fingerprint">指紋をコピー</string>
     <string name="all_omemo_keys_have_been_verified">所有するすべての OMEMO 鍵を検証しました</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">バーコードに、この会話の指紋が含まれていません。</string>
     <string name="verified_fingerprints">指紋を検証しました</string>
     <string name="use_camera_icon_to_scan_barcode">カメラを使用して連絡先のバーコードをスキャンします</string>
     <string name="please_wait_for_keys_to_be_fetched">鍵が取得されるのをお待ちください</string>
@@ -649,7 +639,6 @@
     <string name="encrypting_message">メッセージの暗号化中</string>
     <string name="not_fetching_history_retention_period">ローカル保存期間のためにメッセージを取得しません。</string>
     <string name="transcoding_video">ビデオを圧縮中</string>
-    <string name="corresponding_conversations_closed">対応する会話が閉じられました。</string>
     <string name="contact_blocked_past_tense">連絡先をブロックしました</string>
     <string name="pref_notifications_from_strangers">見知らぬ人からの通知</string>
     <string name="pref_notifications_from_strangers_summary">見知らぬ人から受信したメッセージと通話を通知します。</string>
@@ -695,7 +684,8 @@
     <string name="error_trustkey_device_list">デバイスの一覧を取得できません</string>
     <string name="error_trustkey_bundle">暗号化の鍵を取得できません</string>
     <string name="error_trustkey_hint_mutual">ヒント: お互いが連絡先リストに加えればこの問題は解決するでしょう。</string>
-    <string name="disable_encryption_message">この会話で OMEMO の暗号化を無効化してもよろしいですか?\nこれにより、サーバー管理者がメッセージを読むことが可能になりますが、時代遅れのクライアントを使っている人と連絡をとるには、この方法しかないかもしれません。</string>
+    <string name="disable_encryption_message">この会話で OMEMO の暗号化を無効化してもよろしいですか?
+\nこれにより、サーバー管理者がメッセージを読むことが可能になりますが、時代遅れのクライアントを使っている人と連絡をとるには、この方法しかないかもしれません。</string>
     <string name="disable_now">今すぐ無効化</string>
     <string name="draft">下書き:</string>
     <string name="pref_omemo_setting">OMEMO 暗号化</string>
@@ -703,13 +693,8 @@
     <string name="pref_omemo_setting_summary_default_on">デフォルトで新しい会話で OMEMO を使用します。</string>
     <string name="pref_omemo_setting_summary_default_off">新しい会話をするためには、OMEMOを明示的にオンにする必要があります。</string>
     <string name="create_shortcut">ショートカットを作成</string>
-    <string name="pref_font_size">フォントの大きさ</string>
-    <string name="pref_font_size_summary">このアプリで使用される相対的なフォントの大きさ</string>
     <string name="default_on">デフォルトでオン</string>
     <string name="default_off">デフォルトでオフ</string>
-    <string name="small">小</string>
-    <string name="medium">中</string>
-    <string name="large">大</string>
     <string name="not_encrypted_for_this_device">このデバイス向けにメッセージは暗号化されませんでした。</string>
     <string name="omemo_decryption_failed">OMEMO メッセージの復号に失敗しました。</string>
     <string name="undo">元に戻す</string>
@@ -931,7 +916,6 @@
     <string name="audio_call">音声通話</string>
     <string name="video_call">映像通話</string>
     <string name="help">ヘルプ</string>
-    <string name="switch_to_conversation">会話に切り替え</string>
     <string name="microphone_unavailable">マイクが利用できません</string>
     <string name="only_one_call_at_a_time">1度に1回線の通話のみ。</string>
     <string name="return_to_ongoing_call">継続中の通話に戻る</string>
@@ -987,7 +971,6 @@
     <string name="outgoing_call_timestamp">発信通話 · %s</string>
     <string name="audiobook">オーディオブック</string>
     <string name="restore_warning_continued">自分で保存したバックアップしか復元しないでください！</string>
-    <string name="pref_up_push_server_summary">XMPP経由でPushメッセージを端末に転送するユーザー指定のPushサーバー。</string>
     <string name="log_in">ログイン</string>
     <string name="hide_notification">通知を表示しない</string>
     <string name="delete_from_server">アカウントをサーバーから削除</string>
@@ -1014,7 +997,6 @@
     <string name="no_permission_to_place_call">電話をかける権限がありません</string>
     <string name="remove_bookmark_and_close">%s のブックマークを削除して会話を閉じますか ?</string>
     <string name="remove_bookmark">%s のブックマークを削除しますか ?</string>
-    <string name="channel_discover_opt_in_message">談話室の探索には &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; というサードパーティのサービスを利用します。&lt;br&gt;&lt;br&gt;この機能を使用すると、IP アドレスと検索語がこのサービスに送信されます。詳細は、&lt;a href=https://search.jabber.network/privacy&gt;プライバシーポリシー&lt;/a&gt;をご覧ください。</string>
     <string name="call_integration_not_available">通話の統合は利用できません。</string>
     <string name="rtp_state_contact_offline">連絡先は利用できません</string>
     <string name="delete_and_close">削除して閉じる</string>

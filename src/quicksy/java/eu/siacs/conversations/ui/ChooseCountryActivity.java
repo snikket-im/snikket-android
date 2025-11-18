@@ -26,7 +26,6 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityChooseCountryBinding;
 import eu.siacs.conversations.ui.adapter.CountryAdapter;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
-import eu.siacs.conversations.utils.ThemeHelper;
 
 public class ChooseCountryActivity extends ActionBarActivity implements CountryAdapter.OnCountryClicked {
 
@@ -82,10 +81,10 @@ public class ChooseCountryActivity extends ActionBarActivity implements CountryA
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(ThemeHelper.find(this));
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_country);
-        setSupportActionBar((Toolbar) this.binding.toolbar);
+        setSupportActionBar(this.binding.toolbar);
         configureActionBar(getSupportActionBar());
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         this.countries.addAll(PhoneNumberUtilWrapper.getCountries(this));
         Collections.sort(this.countries);
         this.binding.countries.setAdapter(countryAdapter);
@@ -104,7 +103,7 @@ public class ChooseCountryActivity extends ActionBarActivity implements CountryA
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.choose_country, menu);
+        getMenuInflater().inflate(R.menu.item_choose_country, menu);
         final MenuItem menuSearchView = menu.findItem(R.id.action_search);
         final View mSearchView = menuSearchView.getActionView();
         mSearchEditText = mSearchView.findViewById(R.id.search_field);

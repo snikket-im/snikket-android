@@ -6,12 +6,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/color_background_secondary"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar"/>
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize" />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <ScrollView
             android:layout_width="fill_parent"
@@ -23,13 +30,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin">
+                    android:layout_marginBottom="@dimen/activity_vertical_margin">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -47,18 +54,15 @@
                                 android:layout_width="@dimen/avatar_on_details_screen_size"
                                 android:layout_height="@dimen/avatar_on_details_screen_size"
                                 android:layout_alignParentStart="true"
-                                app:riv_corner_radius="8dp"
                                 android:layout_marginEnd="@dimen/avatar_item_distance"
-                                android:layout_alignParentLeft="true"
-                                android:layout_marginRight="@dimen/avatar_item_distance" />
+                                app:riv_corner_radius="8dp" />
 
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:layout_toEndOf="@+id/your_photo"
-                                android:orientation="vertical"
-                                android:layout_toRightOf="@+id/your_photo">
+                                android:orientation="vertical">
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
@@ -70,22 +74,20 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentStart="true"
                                         android:layout_toStartOf="@+id/edit_muc_name_button"
-                                        android:orientation="vertical"
-                                        android:layout_alignParentLeft="true"
-                                        android:layout_toLeftOf="@+id/edit_muc_name_button">
+                                        android:orientation="vertical">
 
                                         <TextView
                                             android:id="@+id/muc_title"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:textAppearance="@style/TextAppearance.Conversations.Title"/>
+                                            android:textAppearance="?textAppearanceTitleLarge" />
 
                                         <TextView
                                             android:id="@+id/muc_subject"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:autoLink="web"
-                                            android:textAppearance="@style/TextAppearance.Conversations.Subhead"/>
+                                            android:textAppearance="?textAppearanceTitleMedium" />
                                     </LinearLayout>
 
 
@@ -96,36 +98,28 @@
                                         android:layout_alignParentStart="true"
                                         android:layout_toStartOf="@+id/edit_muc_name_button"
                                         android:orientation="vertical"
-                                        android:visibility="gone"
-                                        android:layout_alignParentLeft="true"
-                                        android:layout_toLeftOf="@+id/edit_muc_name_button">
+                                        android:visibility="gone">
 
                                         <com.google.android.material.textfield.TextInputLayout
                                             android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
-                                            app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
+                                            android:layout_height="wrap_content">
 
                                             <EditText
                                                 android:id="@+id/muc_edit_title"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
-                                                android:hint="@string/group_chat_name"
-                                                android:textAppearance="@style/Widget.Conversations.EditText"/>
+                                                android:hint="@string/group_chat_name" />
                                         </com.google.android.material.textfield.TextInputLayout>
 
                                         <com.google.android.material.textfield.TextInputLayout
                                             android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
-                                            app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
+                                            android:layout_height="wrap_content">
 
                                             <EditText
                                                 android:id="@+id/muc_edit_subject"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
-                                                android:hint="@string/topic"
-                                                android:textAppearance="@style/Widget.Conversations.EditText"/>
+                                                android:hint="@string/topic" />
                                         </com.google.android.material.textfield.TextInputLayout>
 
                                     </LinearLayout>
@@ -134,13 +128,11 @@
                                         android:id="@+id/edit_muc_name_button"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
                                         android:layout_alignParentTop="true"
-                                        android:alpha="?attr/icon_alpha"
+                                        android:layout_alignParentEnd="true"
                                         android:background="?attr/selectableItemBackgroundBorderless"
                                         android:padding="@dimen/image_button_padding"
-                                        android:src="?attr/icon_edit_body"
-                                        android:layout_alignParentRight="true" />
+                                        android:src="@drawable/ic_edit_24dp" />
                                 </RelativeLayout>
                             </LinearLayout>
                         </RelativeLayout>
@@ -157,9 +149,7 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_centerVertical="true"
                                 android:layout_toStartOf="@+id/change_conference_button"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1"
-                                android:layout_alignParentLeft="true"
-                                android:layout_toLeftOf="@+id/change_conference_button" />
+                                android:textAppearance="?textAppearanceBodyMedium" />
 
                             <ImageButton
                                 android:id="@+id/change_conference_button"
@@ -169,11 +159,9 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_gravity="center_horizontal"
-                                android:alpha="?attr/icon_alpha"
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="@dimen/image_button_padding"
-                                android:src="?attr/icon_settings"
-                                android:layout_alignParentRight="true" />
+                                android:src="@drawable/ic_settings_24dp" />
                         </RelativeLayout>
 
                         <TableLayout
@@ -194,7 +182,7 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="@string/server_info_mam"
-                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+                                    android:textAppearance="?textAppearanceBodyMedium" />
 
                                 <TextView
                                     android:id="@+id/muc_info_mam"
@@ -202,8 +190,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="end"
                                     android:paddingStart="4dp"
-                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"
-                                    android:paddingLeft="4dp" />
+                                    android:paddingLeft="4dp"
+                                    android:textAppearance="?textAppearanceBodyMedium" />
                             </TableRow>
 
                         </TableLayout>
@@ -214,84 +202,72 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
                             android:layout_marginTop="32dp"
-                            android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
+                            android:textAppearance="?textAppearanceLabelMedium"
+                            tools:text="foo@bar.tld" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/users_wrapper"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin">
+                    android:layout_marginBottom="@dimen/activity_vertical_margin">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding_regular">
 
                         <TextView
                             android:id="@+id/no_users_hints"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/card_padding_regular"
-                            android:paddingEnd="@dimen/card_padding_regular"
-                            android:paddingStart="@dimen/card_padding_regular"
                             android:text="@string/no_users_hint_channel"
-                            android:textAppearance="@style/TextAppearance.Conversations.Body2"/>
+                            android:textAppearance="?textAppearanceBodyMedium"
+                            android:textColor="?colorOnSurfaceVariant" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/users"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingEnd="@dimen/card_padding_regular"
-                            android:paddingStart="@dimen/card_padding_regular"
-                            android:paddingTop="@dimen/card_padding_regular"
-                            android:paddingBottom="@dimen/card_padding_list"
-                            android:layout_marginStart="-2dp"
-                            android:layout_marginEnd="-2dp"/>
+                            android:layout_margin="-2dp"
+                            android:orientation="horizontal" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:layout_gravity="end">
+                            android:layout_gravity="end"
+                            android:layout_marginTop="16dp"
+                            android:orientation="horizontal">
 
                             <Button
                                 android:id="@+id/invite"
-                                style="@style/Widget.Conversations.Button.Borderless"
+                                style="@style/Widget.Material3.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:minWidth="0dp"
-                                android:paddingLeft="16dp"
-                                android:paddingRight="16dp"
-                                android:text="@string/invite"
-                                android:textColor="?attr/colorAccent" />
+                                android:text="@string/invite" />
 
                             <Button
                                 android:id="@+id/show_users"
-                                style="@style/Widget.Conversations.Button.Borderless"
+                                style="@style/Widget.Material3.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:minWidth="0dp"
-                                android:paddingLeft="16dp"
-                                android:paddingRight="16dp"
-                                tools:text="View n Participants"
-                                android:textColor="?attr/colorAccent" />
+                                tools:text="View n Participants" />
                         </LinearLayout>
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin">
+                    android:layout_marginBottom="@dimen/activity_vertical_margin">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -314,14 +290,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:singleLine="true"
-                                    android:textAppearance="@style/TextAppearance.Conversations.Subhead"/>
+                                    android:textAppearance="?textAppearanceBodyMedium" />
 
                                 <TextView
                                     android:id="@+id/muc_role"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:singleLine="true"
-                                    android:textAppearance="@style/TextAppearance.Conversations.Body1.Secondary"/>
+                                    android:textAppearance="?textAppearanceBodyMedium" />
                             </LinearLayout>
 
                             <ImageButton
@@ -330,11 +306,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
-                                android:alpha="?attr/icon_alpha"
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="@dimen/image_button_padding"
-                                android:src="?attr/icon_edit_body"
-                                android:layout_alignParentRight="true" />
+                                android:src="@drawable/ic_edit_24dp" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -349,9 +323,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_toStartOf="@+id/notification_status_button"
                                 android:text="@string/notify_on_all_messages"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1"
-                                android:layout_alignParentLeft="true"
-                                android:layout_toLeftOf="@+id/notification_status_button" />
+                                android:textAppearance="?textAppearanceBodyMedium" />
 
                             <ImageButton
                                 android:id="@+id/notification_status_button"
@@ -361,11 +333,9 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_gravity="center_horizontal"
-                                android:alpha="?attr/icon_alpha"
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="@dimen/image_button_padding"
-                                android:src="?attr/icon_notifications"
-                                android:layout_alignParentRight="true" />
+                                android:src="@drawable/ic_notifications_24dp" />
                         </RelativeLayout>
 
                         <TextView
@@ -375,54 +345,48 @@
                             android:layout_gravity="end"
                             android:layout_marginTop="32dp"
                             android:text="@string/using_account"
-                            android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
+                            android:textAppearance="?textAppearanceLabelMedium" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/media_wrapper"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin">
+                    android:layout_marginBottom="@dimen/activity_vertical_margin">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding_regular">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/media"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingEnd="@dimen/card_padding_regular"
-                            android:paddingStart="@dimen/card_padding_regular"
-                            android:paddingTop="@dimen/card_padding_regular"
-                            android:paddingBottom="@dimen/card_padding_list"
-                            android:layout_marginStart="-2dp"
-                            android:layout_marginEnd="-2dp"/>
+                            android:layout_margin="-2dp"
+                            android:orientation="horizontal" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:layout_gravity="end">
+                            android:layout_gravity="end"
+                            android:layout_marginTop="16dp"
+                            android:orientation="horizontal">
 
                             <Button
                                 android:id="@+id/show_media"
-                                style="@style/Widget.Conversations.Button.Borderless"
+                                style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:minWidth="0dp"
-                                android:paddingLeft="16dp"
-                                android:paddingRight="16dp"
-                                android:text="@string/view_media"
-                                android:textColor="?attr/colorAccent" />
+                                android:text="@string/view_media" />
                         </LinearLayout>
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
         </ScrollView>

@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
@@ -31,7 +32,6 @@ import eu.siacs.conversations.services.ImportBackupService;
 import eu.siacs.conversations.ui.adapter.BackupFileAdapter;
 import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.utils.BackupFileHeader;
-import eu.siacs.conversations.utils.ThemeHelper;
 
 public class ImportBackupActivity extends ActionBarActivity implements ServiceConnection, ImportBackupService.OnBackupFilesLoaded, BackupFileAdapter.OnItemClickedListener, ImportBackupService.OnBackupProcessed {
 
@@ -46,21 +46,14 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        this.mTheme = ThemeHelper.find(this);
-        setTheme(this.mTheme);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_import_backup);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         setSupportActionBar(binding.toolbar);
         setLoadingState(savedInstanceState != null && savedInstanceState.getBoolean("loading_state", false));
         this.backupFileAdapter = new BackupFileAdapter();
         this.binding.list.setAdapter(this.backupFileAdapter);
         this.backupFileAdapter.setOnItemClickedListener(this);
-    }
-    
-    @Override
-    protected void onResume(){
-        super.onResume();
-        SettingsUtils.applyScreenshotPreventionSetting(this);
     }
 
     @Override
@@ -80,12 +73,7 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
     @Override
     public void onStart() {
         super.onStart();
-        final int theme = ThemeHelper.find(this);
-        if (this.mTheme != theme) {
-            recreate();
-        } else {
-            bindService(new Intent(this, ImportBackupService.class), this, Context.BIND_AUTO_CREATE);
-        }
+        bindService(new Intent(this, ImportBackupService.class), this, Context.BIND_AUTO_CREATE);
         final Intent intent = getIntent();
         if (intent != null && Intent.ACTION_VIEW.equals(intent.getAction()) && !this.mLoadingState) {
             Uri uri = intent.getData();
@@ -146,7 +134,7 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
         final DialogEnterPasswordBinding enterPasswordBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_enter_password, null, false);
         Log.d(Config.LOGTAG, "attempting to import " + backupFile.getUri());
         enterPasswordBinding.explain.setText(getString(R.string.enter_password_to_restore, backupFile.getHeader().getJid().toString()));
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setView(enterPasswordBinding.getRoot());
         builder.setTitle(R.string.enter_password);
         builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
@@ -186,6 +174,7 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
         binding.coordinator.setVisibility(loadingState ? View.GONE : View.VISIBLE);
         binding.inProgress.setVisibility(loadingState ? View.VISIBLE : View.GONE);
         setTitle(loadingState ? R.string.restoring_backup : R.string.restore_backup);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         configureActionBar(getSupportActionBar(), !loadingState);
         this.mLoadingState = loadingState;
         invalidateOptionsMenu();

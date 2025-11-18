@@ -4,9 +4,9 @@
 
     <item
         android:id="@+id/action_add"
-        android:icon="?attr/icon_new"
+        android:icon="@drawable/ic_add_24dp"
         android:orderInCategory="10"
         app:showAsAction="always"
-        android:title="@string/action_add"/>
+        android:title="@string/start_chat"/>
 
 </menu>

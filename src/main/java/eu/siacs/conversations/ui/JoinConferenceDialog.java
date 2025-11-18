@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -50,11 +51,11 @@ public class JoinConferenceDialog extends DialogFragment implements OnBackendCon
 	@NonNull
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
 		builder.setTitle(R.string.join_public_channel);
-		DialogJoinConferenceBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.dialog_join_conference, null, false);
+		final DialogJoinConferenceBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.dialog_join_conference, null, false);
 		DelayedHintHelper.setHint(R.string.channel_full_jid_example, binding.jid);
-		this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.simple_list_item);
+		this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.item_autocomplete);
 		binding.jid.setAdapter(knownHostsAdapter);
 		String prefilledJid = getArguments().getString(PREFILLED_JID_KEY);
 		if (prefilledJid != null) {
@@ -117,6 +118,6 @@ public class JoinConferenceDialog extends DialogFragment implements OnBackendCon
 	}
 
 	public interface JoinConferenceDialogListener {
-		void onJoinDialogPositiveClick(Dialog dialog, Spinner spinner, TextInputLayout jidLayout, AutoCompleteTextView jid, boolean isBookmarkChecked);
+		void onJoinDialogPositiveClick(Dialog dialog, AutoCompleteTextView spinner, TextInputLayout jidLayout, AutoCompleteTextView jid, boolean isBookmarkChecked);
 	}
 }

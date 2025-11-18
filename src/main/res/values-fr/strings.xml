@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Paramètres</string>
-    <string name="action_add">Nouvelle conversation</string>
     <string name="action_accounts">Gérer les comptes</string>
     <string name="action_account">Gérer le compte</string>
-    <string name="action_end_conversation">Fermer la conversation</string>
     <string name="action_contact_details">Détails du contact</string>
     <string name="action_muc_details">Détails du groupe</string>
     <string name="channel_details">Détails du canal</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Débloquer le participant</string>
     <string name="title_activity_manage_accounts">Gestion des comptes</string>
     <string name="title_activity_settings">Paramètres</string>
-    <string name="title_activity_sharewith">Partager avec Snikket</string>
-    <string name="title_activity_start_conversation">Démarrer une conversation</string>
     <string name="title_activity_choose_contact">Choisir un contact</string>
     <string name="title_activity_choose_contacts">Choisir les contacts</string>
     <string name="title_activity_share_via_account">Partager via le compte</string>
@@ -54,7 +50,6 @@
     <string name="register_account">Créer un nouveau compte sur le serveur</string>
     <string name="change_password_on_server">Changer de mot de passe sur le serveur</string>
     <string name="share_with">Partager avec…</string>
-    <string name="start_conversation">Démarrer une conversation</string>
     <string name="invite_contact">Inviter un contact</string>
     <string name="invite">Inviter</string>
     <string name="contacts">Contacts</string>
@@ -84,12 +79,13 @@
     <string name="sharing_files_please_wait">Partage des fichiers. Veuillez patienter…</string>
     <string name="action_clear_history">Vider l\'historique</string>
     <string name="clear_conversation_history">Vider l\'historique de la conversation</string>
-    <string name="clear_histor_msg">Êtes-vous sûr de vouloir supprimer tous les messages de cette conversation ?\n\n <b>Avertissement :</b> Cela ne supprimera pas les copies des messages qui sont stockés sur d\'autres appareils ou serveurs.</string>
+    <string name="clear_histor_msg">Êtes-vous sûr de vouloir supprimer tous les messages de cette conversation ?
+\n
+\n <b>Avertissement :</b> Cela ne supprimera pas les copies des messages qui sont stockés sur d\'autres appareils ou serveurs.</string>
     <string name="delete_file_dialog">Supprimer le fichier</string>
     <string name="delete_file_dialog_msg">Êtes-vous sûr de vouloir supprimer ce fichier \?
 \n
 \n<b>Avertissement :</b> Cela ne supprimera pas les copies de ce fichier qui sont stockées sur d\'autres appareils ou serveurs. </string>
-    <string name="also_end_conversation">Fermez cette conversation après</string>
     <string name="choose_presence">Choisir l\'appareil</string>
     <string name="send_unencrypted_message">Envoyer un message en clair</string>
     <string name="send_message">Envoyer le message</string>
@@ -127,7 +123,6 @@
     <string name="pref_notification_grace_period">Période sans notification</string>
     <string name="pref_notification_grace_period_summary">La durée pendant laquelle les notifications sont désactivées après la détection d\'une activité sur l\'un de vos autres appareils.</string>
     <string name="pref_advanced_options">Avancé</string>
-    <string name="pref_never_send_crash">Ne pas envoyer de rapports d\'erreurs</string>
     <string name="pref_never_send_crash_summary">En envoyant des rapports de crash vous aidez le développement</string>
     <string name="pref_confirm_messages">Confirmation de lecture</string>
     <string name="pref_confirm_messages_summary">Informer vos contacts quand vous avez reçu et lu leurs messages</string>
@@ -184,7 +179,7 @@
     <string name="unpublish_pgp_message">Êtes-vous sûr de vouloir supprimer votre clé publique OpenPGP de votre annonce de présence ?\nVos contacts ne pourront plus vous envoyer de message chiffrés avec OpenPGP.</string>
     <string name="openpgp_has_been_published">Clé publique OpenPGP publiée.</string>
     <string name="mgmt_account_enable">Activer le compter</string>
-    <string name="mgmt_account_delete_confirm_text">Êtes-vous sûr de vouloir supprimer votre compte \? Supprimer votre compte effacera l\'historique de vos conversations</string>
+    <string name="mgmt_account_delete_confirm_text">Êtes-vous sûr de vouloir supprimer votre compte ? Supprimer votre compte effacera l\'historique de vos conversations</string>
     <string name="attach_record_voice">Enregistrer un son</string>
     <string name="account_settings_jabber_id">Adresse XMPP</string>
     <string name="block_jabber_id">Bloquer l\'adresse XMPP</string>
@@ -432,7 +427,6 @@
     <string name="show_location">Afficher la position</string>
     <string name="no_application_found_to_display_location">Aucune application trouvée pour afficher le lieu</string>
     <string name="location">Position</string>
-    <string name="title_undo_swipe_out_conversation">Conversation fermée</string>
     <string name="title_undo_swipe_out_group_chat">Quitter le groupe privé</string>
     <string name="title_undo_swipe_out_channel">Quitte le canal public</string>
     <string name="pref_dont_trust_system_cas_title">Ne pas utiliser les CAs système</string>
@@ -442,7 +436,6 @@
     <string name="toast_no_trusted_certs">Aucun certificat approuvé manuellement</string>
     <string name="dialog_manage_certs_title">Retirer les certificats</string>
     <string name="dialog_manage_certs_positivebutton">Supprimer la sélection</string>
-    <string name="dialog_manage_certs_negativebutton">Annuler</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificat supprimé</item>
         <item quantity="many">%d certificats supprimés</item>
@@ -572,8 +565,6 @@
     <string name="pref_theme_automatic">Automatique</string>
     <string name="pref_theme_light">Clair</string>
     <string name="pref_theme_dark">Sombre</string>
-    <string name="pref_use_green_background">Fond vert</string>
-    <string name="pref_use_green_background_summary">Utiliser un fond vert pour les messages reçus</string>
     <string name="unable_to_connect_to_keychain">Impossible de se connecter à OpenKeyChain</string>
     <string name="this_device_is_no_longer_in_use">Cet appareil n\'est plus utilisé</string>
     <string name="type_pc">Ordinateur</string>
@@ -603,7 +594,6 @@
     <string name="this_device_has_been_verified">Cet appareil a été vérifié</string>
     <string name="copy_fingerprint">Copier l\'empreinte</string>
     <string name="all_omemo_keys_have_been_verified">Vous avez vérifié toutes les clés OMEMO en votre possession</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Le code-barres ne contient pas d\'empreintes pour cette conversation.</string>
     <string name="verified_fingerprints">Empreintes vérifiées</string>
     <string name="use_camera_icon_to_scan_barcode">Utilisez l\'appareil photo pour scanner le code-barres d\'un contact</string>
     <string name="please_wait_for_keys_to_be_fetched">Veuillez attendre que les clés soient récupérées</string>
@@ -662,7 +652,6 @@
     <string name="encrypting_message">Chiffrement du message en cours</string>
     <string name="not_fetching_history_retention_period">Aucun message récupéré, en raison de la configuration de rétention de l\'appareil.</string>
     <string name="transcoding_video">Compression de la vidéo en cours</string>
-    <string name="corresponding_conversations_closed">Conversations correspondantes fermées.</string>
     <string name="contact_blocked_past_tense">Contact bloqué.</string>
     <string name="pref_notifications_from_strangers">Notifications d\'inconnus</string>
     <string name="pref_notifications_from_strangers_summary">Notifier les messages et appels reçus d\'inconnus.</string>
@@ -708,7 +697,8 @@
     <string name="error_trustkey_device_list">Impossible de récupérer la liste des appareils</string>
     <string name="error_trustkey_bundle">Impossible de récupérer les clés de chiffrement</string>
     <string name="error_trustkey_hint_mutual">Indication : Dans certains cas, cela peut être résolu en vous ajoutant respectivement dans votre liste de contacts.</string>
-    <string name="disable_encryption_message">Êtes-vous sûr de vouloir désactiver le chiffrement OMEMO pour cette discussion ?\nCeci permettra à l\'administrateur de votre serveur de lire vos messages, mais cela peut être le seul moyen de communiquer avec des personnes utilisant un vieux client.</string>
+    <string name="disable_encryption_message">Êtes-vous sûr de vouloir désactiver le chiffrement OMEMO pour cette discussion ?
+\nCeci permettra à l\'administrateur de votre serveur de lire vos messages, mais cela peut être le seul moyen de communiquer avec des personnes utilisant un vieux client.</string>
     <string name="disable_now">Désactiver maintenant</string>
     <string name="draft">Brouillon :</string>
     <string name="pref_omemo_setting">Chiffrement OMEMO</string>
@@ -716,13 +706,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO sera utilisé par défaut pour les nouvelles discussions.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO devra être activé manuellement pour chaque nouvelle discussion.</string>
     <string name="create_shortcut">Créer un raccourci</string>
-    <string name="pref_font_size">Taille de police</string>
-    <string name="pref_font_size_summary">La taille de police relative utilisée dans l\'application.</string>
     <string name="default_on">Activé par défaut</string>
     <string name="default_off">Désactivé par défaut</string>
-    <string name="small">Petite</string>
-    <string name="medium">Moyenne</string>
-    <string name="large">Grande</string>
     <string name="not_encrypted_for_this_device">Le message n\'était pas chiffré pour cet appareil.</string>
     <string name="omemo_decryption_failed">Échec de déchiffrement du message OMEMO.</string>
     <string name="undo">annuler</string>
@@ -935,7 +920,6 @@
     <string name="audio_call">Appel audio</string>
     <string name="video_call">Appel vidéo</string>
     <string name="help">Aide</string>
-    <string name="switch_to_conversation">Basculer vers la conversation</string>
     <string name="microphone_unavailable">Votre micro n\'est pas disponible</string>
     <string name="only_one_call_at_a_time">Vous ne pouvez prendre qu\'un appel à la fois.</string>
     <string name="return_to_ongoing_call">Reprendre l\'appel en cours</string>
@@ -1004,7 +988,6 @@
     <string name="pref_up_push_account_title">Compte XMPP</string>
     <string name="pref_up_push_account_summary">Le compte par lequel les messages push seront reçus.</string>
     <string name="pref_up_push_server_title">Serveur Push</string>
-    <string name="pref_up_push_server_summary">Un serveur push choisi par l\'utilisateur pour relayer les messages push via XMPP vers votre appareil.</string>
     <string name="no_account_deactivated">Aucun (désactivé)</string>
     <plurals name="n_missed_calls_from_m_contacts">
         <item quantity="one">%1$d appels manqués de %2$d contact</item>

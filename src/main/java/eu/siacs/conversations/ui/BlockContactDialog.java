@@ -7,6 +7,8 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.DialogBlockContactBinding;
 import eu.siacs.conversations.entities.Blockable;
@@ -19,7 +21,7 @@ public final class BlockContactDialog {
 		show(xmppActivity, blockable, null);
 	}
 	public static void show(final XmppActivity xmppActivity, final Blockable blockable, final String serverMsgId) {
-		final AlertDialog.Builder builder = new AlertDialog.Builder(xmppActivity);
+		final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(xmppActivity);
 		final boolean isBlocked = blockable.isBlocked();
 		builder.setNegativeButton(R.string.cancel, null);
 		DialogBlockContactBinding binding = DataBindingUtil.inflate(xmppActivity.getLayoutInflater(), R.layout.dialog_block_contact, null, false);
@@ -70,7 +72,7 @@ public final class BlockContactDialog {
 			} else {
 				boolean toastShown = false;
 				if (xmppActivity.xmppConnectionService.sendBlockRequest(blockable, binding.reportSpam.isChecked(), serverMsgId)) {
-					Toast.makeText(xmppActivity, R.string.corresponding_conversations_closed, Toast.LENGTH_SHORT).show();
+					Toast.makeText(xmppActivity, R.string.corresponding_chats_closed, Toast.LENGTH_SHORT).show();
 					toastShown = true;
 				}
 				if (xmppActivity instanceof ContactDetailsActivity) {

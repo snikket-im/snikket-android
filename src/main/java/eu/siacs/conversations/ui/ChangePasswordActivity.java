@@ -3,86 +3,84 @@ package eu.siacs.conversations.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.textfield.TextInputLayout;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ActivityChangePasswordBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.widget.DisabledActionModeCallback;
 
 public class ChangePasswordActivity extends XmppActivity implements XmppConnectionService.OnAccountPasswordChanged {
 
-	private Button mChangePasswordButton;
+	private ActivityChangePasswordBinding binding;
+
 	private final View.OnClickListener mOnChangePasswordButtonClicked = new View.OnClickListener() {
 		@Override
-		public void onClick(View view) {
-			if (mAccount != null) {
-				final String currentPassword = mCurrentPassword.getText().toString();
-				final String newPassword = mNewPassword.getText().toString();
-				if (!mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) && !currentPassword.equals(mAccount.getPassword())) {
-					mCurrentPassword.requestFocus();
-					mCurrentPasswordLayout.setError(getString(R.string.account_status_unauthorized));
-					removeErrorsOnAllBut(mCurrentPasswordLayout);
-				} else if (newPassword.trim().isEmpty()) {
-					mNewPassword.requestFocus();
-					mNewPasswordLayout.setError(getString(R.string.password_should_not_be_empty));
-					removeErrorsOnAllBut(mNewPasswordLayout);
-				} else {
-					mCurrentPasswordLayout.setError(null);
-					mNewPasswordLayout.setError(null);
-					xmppConnectionService.updateAccountPasswordOnServer(mAccount, newPassword, ChangePasswordActivity.this);
-					mChangePasswordButton.setEnabled(false);
-					mChangePasswordButton.setText(R.string.updating);
-				}
+		public void onClick(final View view) {
+			final var account = mAccount;
+			if (account == null) {
+				return;
 			}
+				final String currentPassword = binding.currentPassword.getText().toString();
+				final String newPassword = binding.newPassword.getText().toString();
+				if (!account.isOptionSet(Account.OPTION_MAGIC_CREATE) && !currentPassword.equals(account.getPassword())) {
+					binding.currentPassword.requestFocus();
+					binding.currentPasswordLayout.setError(getString(R.string.account_status_unauthorized));
+					removeErrorsOnAllBut(binding.currentPasswordLayout);
+				} else if (newPassword.trim().isEmpty()) {
+					binding.newPassword.requestFocus();
+					binding.newPasswordLayout.setError(getString(R.string.password_should_not_be_empty));
+					removeErrorsOnAllBut(binding.newPasswordLayout);
+				} else {
+					binding.currentPasswordLayout.setError(null);
+					binding.newPasswordLayout.setError(null);
+					xmppConnectionService.updateAccountPasswordOnServer(account, newPassword, ChangePasswordActivity.this);
+					binding.changePasswordButton.setEnabled(false);
+					binding.changePasswordButton.setText(R.string.updating);
+				}
 		}
 	};
-	private EditText mCurrentPassword;
-	private EditText mNewPassword;
-	private TextInputLayout mNewPasswordLayout;
-	private TextInputLayout mCurrentPasswordLayout;
+
+
+
 	private Account mAccount;
 
 	@Override
-	void onBackendConnected() {
+    protected void onBackendConnected() {
 		this.mAccount = extractAccount(getIntent());
 		if (this.mAccount != null && this.mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE)) {
-			this.mCurrentPasswordLayout.setVisibility(View.GONE);
+			this.binding.currentPasswordLayout.setVisibility(View.GONE);
 		} else {
-			this.mCurrentPassword.setVisibility(View.VISIBLE);
+			this.binding.currentPasswordLayout.setVisibility(View.VISIBLE);
 		}
 	}
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_change_password);
-		setSupportActionBar(findViewById(R.id.toolbar));
+		this.binding = DataBindingUtil.setContentView(this, R.layout.activity_change_password);
+		Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
+		setSupportActionBar(binding.toolbar);
 		configureActionBar(getSupportActionBar());
-		Button mCancelButton = findViewById(R.id.left_button);
-		mCancelButton.setOnClickListener(view -> finish());
-		this.mChangePasswordButton = findViewById(R.id.right_button);
-		this.mChangePasswordButton.setOnClickListener(this.mOnChangePasswordButtonClicked);
-		this.mCurrentPassword = findViewById(R.id.current_password);
-		this.mCurrentPassword.setCustomSelectionActionModeCallback(new DisabledActionModeCallback());
-		this.mNewPassword = findViewById(R.id.new_password);
-		this.mNewPassword.setCustomSelectionActionModeCallback(new DisabledActionModeCallback());
-		this.mCurrentPasswordLayout = findViewById(R.id.current_password_layout);
-		this.mNewPasswordLayout = findViewById(R.id.new_password_layout);
+		binding.cancelButton.setOnClickListener(view -> finish());
+		binding.changePasswordButton.setOnClickListener(this.mOnChangePasswordButtonClicked);
+		binding.currentPassword.setCustomSelectionActionModeCallback(new DisabledActionModeCallback());
+		binding.newPassword.setCustomSelectionActionModeCallback(new DisabledActionModeCallback());
 	}
 
 	@Override
-	protected void onStart() {
+	public void onStart() {
 		super.onStart();
 		Intent intent = getIntent();
 		String password = intent != null ? intent.getStringExtra("password") : null;
 		if (password != null) {
-			this.mNewPassword.getEditableText().clear();
-			this.mNewPassword.getEditableText().append(password);
+			binding.newPassword.getEditableText().clear();
+			binding.newPassword.getEditableText().append(password);
 		}
 	}
 
@@ -97,21 +95,21 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 	@Override
 	public void onPasswordChangeFailed() {
 		runOnUiThread(() -> {
-			mNewPasswordLayout.setError(getString(R.string.could_not_change_password));
-			mChangePasswordButton.setEnabled(true);
-			mChangePasswordButton.setText(R.string.change_password);
+			binding.newPasswordLayout.setError(getString(R.string.could_not_change_password));
+			binding.changePasswordButton.setEnabled(true);
+			binding.changePasswordButton.setText(R.string.change_password);
 		});
 
 	}
 
 	private void removeErrorsOnAllBut(TextInputLayout exception) {
-		if (this.mCurrentPasswordLayout != exception) {
-			this.mCurrentPasswordLayout.setErrorEnabled(false);
-			this.mCurrentPasswordLayout.setError(null);
+		if (this.binding.currentPasswordLayout != exception) {
+			this.binding.currentPasswordLayout.setErrorEnabled(false);
+			this.binding.currentPasswordLayout.setError(null);
 		}
-		if (this.mNewPasswordLayout != exception) {
-			this.mNewPasswordLayout.setErrorEnabled(false);
-			this.mNewPasswordLayout.setError(null);
+		if (this.binding.newPasswordLayout != exception) {
+			this.binding.newPasswordLayout.setErrorEnabled(false);
+			this.binding.newPasswordLayout.setError(null);
 		}
 
 	}

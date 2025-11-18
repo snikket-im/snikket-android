@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Ustawienia</string>
-    <string name="action_add">Nowa konwersacja</string>
     <string name="action_accounts">Zarządzaj kontami</string>
     <string name="action_account">Zarządzaj kontem</string>
-    <string name="action_end_conversation">Zamknij rozmowę</string>
     <string name="action_contact_details">Szczegóły kontaktu</string>
     <string name="action_muc_details">Szczegóły konferencji</string>
     <string name="channel_details">Szczegóły kanału</string>
@@ -20,8 +18,6 @@
     <string name="action_unblock_participant">Odblokuj użytkownika</string>
     <string name="title_activity_manage_accounts">Zarządzaj kontami</string>
     <string name="title_activity_settings">Ustawienia</string>
-    <string name="title_activity_sharewith">Udostępnij w konwersacji</string>
-    <string name="title_activity_start_conversation">Rozpocznij konwersację</string>
     <string name="title_activity_choose_contact">Wybierz kontakt</string>
     <string name="title_activity_choose_contacts">Wybierz kontakty</string>
     <string name="title_activity_share_via_account">Udostępnij za pomocą</string>
@@ -55,7 +51,6 @@
     <string name="register_account">Zarejestruj nowe konto na serwerze</string>
     <string name="change_password_on_server">Zmień hasło na serwerze</string>
     <string name="share_with">Udostępnij…</string>
-    <string name="start_conversation">Rozpocznij rozmowę</string>
     <string name="invite_contact">Zaproś kontakt</string>
     <string name="invite">Zaproś</string>
     <string name="contacts">Kontakty</string>
@@ -85,12 +80,13 @@
     <string name="sharing_files_please_wait">Udostępnianie plików. Proszę czekać…</string>
     <string name="action_clear_history">Wyczyść historię</string>
     <string name="clear_conversation_history">Wyczyść historię konwersacji</string>
-    <string name="clear_histor_msg">Czy chcesz usunąć wszystkie wiadomości w tej rozmowie?\n\n<b>Ostrzeżenie:</b> To nie ma wpływu na wiadomości składowane na innych urządzeniach lub serwerach.</string>
+    <string name="clear_histor_msg">Czy chcesz usunąć wszystkie wiadomości w tej rozmowie?
+\n
+\n<b>Ostrzeżenie:</b> To nie ma wpływu na wiadomości składowane na innych urządzeniach lub serwerach.</string>
     <string name="delete_file_dialog">Usuń plik</string>
     <string name="delete_file_dialog_msg">Czy na pewno usunąć ten plik\?
 \n
 \n<b>Uwaga:</b> Działanie nie wpływa na kopie pliku przechowywane na innych urządzeniach lub serwerach. </string>
-    <string name="also_end_conversation">Zamknij konwersację po zakończeniu</string>
     <string name="choose_presence">Wybierz urządzenie</string>
     <string name="send_unencrypted_message">Wyślij wiadomość bez szyfrowania</string>
     <string name="send_message">Wyślij wiadomość</string>
@@ -128,7 +124,6 @@
     <string name="pref_notification_grace_period">Czas bez powiadomień</string>
     <string name="pref_notification_grace_period_summary">Długość czasu kiedy powiadomienia są uśpione po wykryciu aktywności na jednym z twoich innych urządzeń.</string>
     <string name="pref_advanced_options">Zaawansowane</string>
-    <string name="pref_never_send_crash">Nie wysyłaj raportów awarii</string>
     <string name="pref_never_send_crash_summary">Wysyłając nam ślady stosu pomagasz w rozwoju</string>
     <string name="pref_confirm_messages">Potwierdzenia wiadomości</string>
     <string name="pref_confirm_messages_summary">Zezwól na wysyłanie do osób z twojej listy kontaktów informacji o tym, kiedy otrzymałeś i przeczytałeś wiadomość od nich</string>
@@ -187,7 +182,7 @@
     <string name="unpublish_pgp_message">Czy na pewno chcesz usunąć klucz publiczny OpenPGP ze swojej propagacji obecności?\nTwoje kontakty nie będą już mogły wysyłać Ci wiadomości zaszyfrowanych OpenPGP.</string>
     <string name="openpgp_has_been_published">Klucz publiczny OpenPGP został opublikowany.</string>
     <string name="mgmt_account_enable">Włącz konto</string>
-    <string name="mgmt_account_delete_confirm_text">Czy na pewno chcesz usunąć swoje konto\? Usunięcie konta usuwa całą historię rozmów</string>
+    <string name="mgmt_account_delete_confirm_text">Czy na pewno chcesz usunąć swoje konto? Usunięcie konta usuwa całą historię rozmów</string>
     <string name="attach_record_voice">Nagraj głos</string>
     <string name="account_settings_jabber_id">Adres XMPP</string>
     <string name="block_jabber_id">Zablokuj adres XMPP</string>
@@ -439,7 +434,6 @@
     <string name="show_location">Pokaż lokalizację</string>
     <string name="no_application_found_to_display_location">Nie odnaleziono aplikacji do wyświetlenia lokalizacji</string>
     <string name="location">Lokalizacja</string>
-    <string name="title_undo_swipe_out_conversation">Zamknięto konwersację</string>
     <string name="title_undo_swipe_out_group_chat">Opuszczono prywatną rozmowę grupową</string>
     <string name="title_undo_swipe_out_channel">Opuszczono publiczny kanał</string>
     <string name="pref_dont_trust_system_cas_title">Nie ufaj certyfikatom systemowym</string>
@@ -449,7 +443,6 @@
     <string name="toast_no_trusted_certs">Brak ręcznie zaufanych certyfikatów</string>
     <string name="dialog_manage_certs_title">Usuń certyfikaty</string>
     <string name="dialog_manage_certs_positivebutton">Usuń zaznaczone</string>
-    <string name="dialog_manage_certs_negativebutton">Anuluj</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">Usunięto %d certyfikat</item>
         <item quantity="few">Usunięto %d certyfikaty</item>
@@ -584,8 +577,6 @@
     <string name="pref_theme_automatic">Automatycznie</string>
     <string name="pref_theme_light">Jasny</string>
     <string name="pref_theme_dark">Ciemny</string>
-    <string name="pref_use_green_background">Zielone tło</string>
-    <string name="pref_use_green_background_summary">Używaj zielonego tła dla otrzymanych wiadomości</string>
     <string name="unable_to_connect_to_keychain">Nie można połączyć się z OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Urządzenie to nie jest już używane</string>
     <string name="type_pc">Komputer</string>
@@ -616,7 +607,6 @@
     <string name="this_device_has_been_verified">To urządzenie zostało zweryfikowane</string>
     <string name="copy_fingerprint">Skopiuj odcisk</string>
     <string name="all_omemo_keys_have_been_verified">Zweryfikowałeś wszystkie klucze OMEMO które posiadasz</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Kod kreskowy nie zawiera odcisków dla tej rozmowy.</string>
     <string name="verified_fingerprints">Zaufane odciski</string>
     <string name="use_camera_icon_to_scan_barcode">Użyj aparatu, aby zeskanować kod kreskowy kontaktu</string>
     <string name="please_wait_for_keys_to_be_fetched">Proszę czekać na ściągnięcie kluczy</string>
@@ -682,7 +672,6 @@
     <string name="encrypting_message">Szyfrowanie wiadomości</string>
     <string name="not_fetching_history_retention_period">Nie pobieram wiadomości przez lokalny okres retencji.</string>
     <string name="transcoding_video">Kompresuję film</string>
-    <string name="corresponding_conversations_closed">Odpowiadające rozmowy zostały zamknięte.</string>
     <string name="contact_blocked_past_tense">Kontakt zablokowany.</string>
     <string name="pref_notifications_from_strangers">Powiadomienia od nieznajomych</string>
     <string name="pref_notifications_from_strangers_summary">Powiadamiaj przy wiadomościach i połączeniach od nieznajomych.</string>
@@ -728,7 +717,7 @@
     <string name="error_trustkey_device_list">Nie powiodło się pobranie listy urządzeń</string>
     <string name="error_trustkey_bundle">Nie powiodło się pobranie kluczy szyfrowania</string>
     <string name="error_trustkey_hint_mutual">Podpowiedź: W niektórych przypadkach może pomóc wzajemne dodanie się do listy kontaktów.</string>
-    <string name="disable_encryption_message">Czy na pewno chcesz wyłączyć szyfrowanie OMEMO dla tej konwersacji\?
+    <string name="disable_encryption_message">Czy na pewno chcesz wyłączyć szyfrowanie OMEMO dla tej konwersacji?
 \nAdministrator twojego serwera będzie mógł czytać twoje wiadomości, ale może to być jedyny sposób aby komunikować się z ludźmi korzystającymi z przestarzałych klientów.</string>
     <string name="disable_now">Wyłącz teraz</string>
     <string name="draft">Szkic:</string>
@@ -737,13 +726,8 @@
     <string name="pref_omemo_setting_summary_default_on">OMEMO będzie używane domyślnie dla nowych rozmów.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO będzie musiało być włączone ręcznie dla nowych rozmów.</string>
     <string name="create_shortcut">Utwórz Skrót</string>
-    <string name="pref_font_size">Rozmiar Czcionki</string>
-    <string name="pref_font_size_summary">Relatywny rozmiar czcionki używany wewnątrz aplikacji.</string>
     <string name="default_on">Włączone domyślnie</string>
     <string name="default_off">Wyłączone domyślnie</string>
-    <string name="small">Mała</string>
-    <string name="medium">Średnia</string>
-    <string name="large">Duża</string>
     <string name="not_encrypted_for_this_device">Wiadomość nie była zaszyfrowana dla tego urządzenia.</string>
     <string name="omemo_decryption_failed">Błąd odszyfrowywania wiadomości OMEMO.</string>
     <string name="undo">cofnij</string>
@@ -977,7 +961,6 @@
     <string name="audio_call">Połączenie audio</string>
     <string name="video_call">Połączenie wideo</string>
     <string name="help">Pomoc</string>
-    <string name="switch_to_conversation">Przełącz do rozmowy</string>
     <string name="microphone_unavailable">Twój mikrofon jest niedostępny</string>
     <string name="only_one_call_at_a_time">Możesz mieć tylko jedno połączenie na raz.</string>
     <string name="return_to_ongoing_call">Powróć do trwającego połączenia</string>
@@ -1031,7 +1014,6 @@
     <string name="pref_up_push_account_title">Konto XMPP</string>
     <string name="pref_up_push_account_summary">Konto, poprzez które będą odbierane powiadomienia push.</string>
     <string name="pref_up_push_server_title">Serwer push</string>
-    <string name="pref_up_push_server_summary">Dowolnie wybrany serwer push do przekazywania wiadomości push przez XMPP na Twoje urządzenie.</string>
     <string name="no_account_deactivated">Brak (nieaktywne)</string>
     <string name="decline">Odrzuć</string>
     <string name="incoming_call_duration_timestamp">Połączenie przychodzące (%s) · %s</string>
@@ -1062,7 +1044,6 @@
     <string name="quicksy_wants_your_consent">Quicksy pyta o pozwolenie na użycie twoich danych</string>
     <string name="no_permission_to_place_call">Brak pozwolenia na wypisanie numeru telefonu</string>
     <string name="call_integration_not_available">Integracja połączeń nie jest dostępna!</string>
-    <string name="channel_discover_opt_in_message">Odkrywanie kanałów używa usługi firmy trzeciej &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Używanie tej funkcji spowoduje transmisję twojego adresu IP oraz kryteriów wyszukiwania. Sprawdź ich &lt;a href=https://search.jabber.network/privacy&gt;politykę prywatności&lt;/a&gt; aby uzyskać więcej informacji.</string>
     <string name="remove_bookmark">Czy chcesz usunąć zakładkę dla %s?</string>
     <string name="delete_and_close">Usuń i zamknij</string>
     <string name="remove_bookmark_and_close">Czy chcesz usunąć zakładkę dla %s i zamknąć rozmowę?</string>

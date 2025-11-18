@@ -8,10 +8,10 @@
 
     <EditText
         android:id="@+id/search_field"
-        style="@style/Widget.Conversations.SearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
+        android:layout_marginHorizontal="12dp"
         android:imeOptions="flagNoExtractUi|actionSearch"
         android:inputType="textEmailAddress|textNoSuggestions"/>
 

@@ -3,20 +3,21 @@ package eu.siacs.conversations.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.databinding.DataBindingUtil;
+
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ActivityManageAccountsBinding;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.ui.adapter.AccountAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.ui.adapter.AccountAdapter;
-
 public class ChooseAccountForProfilePictureActivity extends XmppActivity {
 
     protected final List<Account> accountList = new ArrayList<>();
-    protected ListView accountListView;
     protected AccountAdapter mAccountAdapter;
 
     @Override
@@ -28,29 +29,25 @@ public class ChooseAccountForProfilePictureActivity extends XmppActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_accounts);
-        setSupportActionBar(findViewById(R.id.toolbar));
+        final ActivityManageAccountsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_accounts);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
+        setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar(), false);
-        accountListView = findViewById(R.id.account_list);
         this.mAccountAdapter = new AccountAdapter(this, accountList, false);
-        accountListView.setAdapter(this.mAccountAdapter);
-        accountListView.setOnItemClickListener((arg0, view, position, arg3) -> {
+        binding.accountList.setAdapter(this.mAccountAdapter);
+        binding.accountList.setOnItemClickListener((arg0, view, position, arg3) -> {
             final Account account = accountList.get(position);
             goToProfilePictureActivity(account);
         });
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
-        final int theme = findTheme();
-        if (this.mTheme != theme) {
-            recreate();
-        }
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         loadEnabledAccounts();
         if (accountList.size() == 1) {
             goToProfilePictureActivity(accountList.get(0));

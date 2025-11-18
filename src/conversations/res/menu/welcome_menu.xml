@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/action_scan_qr_code"
-        android:icon="?attr/icon_scan_qr_code"
+        android:icon="@drawable/ic_qr_code_scanner_24dp"
         android:orderInCategory="10"
         android:title="@string/scan_qr_code"
         android:visible="@bool/show_qr_code_scan"

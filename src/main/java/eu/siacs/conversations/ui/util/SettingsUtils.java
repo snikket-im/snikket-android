@@ -1,20 +1,19 @@
 package eu.siacs.conversations.ui.util;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.Window;
 import android.view.WindowManager;
 
+import eu.siacs.conversations.AppSettings;
+
 public class SettingsUtils {
-    public static void applyScreenshotPreventionSetting(Activity activity){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        boolean preventScreenshots = preferences.getBoolean("prevent_screenshots", false);
-        Window activityWindow = activity.getWindow();
-        if(preventScreenshots){
-            activityWindow.addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-        } else {
+    public static void applyScreenshotSetting(final Activity activity) {
+        final var appSettings = new AppSettings(activity);
+        final Window activityWindow = activity.getWindow();
+        if (appSettings.isAllowScreenshots()) {
             activityWindow.clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        } else {
+            activityWindow.addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
     }
 }

@@ -1,5 +1,4 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
 
@@ -8,9 +7,18 @@
         android:layout_height="match_parent"
         tools:context=".ui.ShareLocationActivity">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize" />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
 
@@ -18,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/button_bar"
-            android:layout_below="@id/toolbar">
+            android:layout_below="@id/app_bar_layout">
 
 
             <org.osmdroid.views.MapView
@@ -32,49 +40,40 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/button_bar"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="end|bottom"
                 android:layout_margin="16dp"
-                app:elevation="4dp"
                 android:contentDescription="@string/action_unfix_from_location"
-                android:src="?attr/icon_gps_fixed"
-                app:backgroundTint="?colorPrimary" />
+                android:src="@drawable/ic_gps_fixed_24dp" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/button_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            tools:ignore="RtlHardcoded">
-
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
 
             <Button
                 android:id="@+id/cancel_button"
-                style="@style/Widget.Conversations.Button.Borderless"
-                android:layout_width="0dp"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
                 android:text="@string/cancel" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="7dp"
-                android:layout_marginBottom="7dp"
-                android:background="?attr/divider" />
 
             <Button
                 android:id="@+id/share_button"
-                style="@style/Widget.Conversations.Button.Borderless"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
                 android:text="@string/share" />
-        </LinearLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 </layout>

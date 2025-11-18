@@ -266,7 +266,7 @@ public class ExportBackupService extends Service {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(getBaseContext(), "backup");
         mBuilder.setContentTitle(getString(R.string.notification_create_backup_title))
-                .setSmallIcon(R.drawable.ic_archive_white_24dp)
+                .setSmallIcon(R.drawable.ic_archive_24dp)
                 .setProgress(1, 0, false);
         startForeground(NOTIFICATION_ID, mBuilder.build());
         int count = 0;
@@ -420,11 +420,11 @@ public class ExportBackupService extends Service {
                                                         .getAbsolutePath())))
                 .setAutoCancel(true)
                 .setContentIntent(openFolderIntent)
-                .setSmallIcon(R.drawable.ic_archive_white_24dp);
+                .setSmallIcon(R.drawable.ic_archive_24dp);
 
         if (shareFilesIntent != null) {
             mBuilder.addAction(
-                    R.drawable.ic_share_white_24dp,
+                    R.drawable.ic_share_24dp,
                     getString(R.string.share_backup_files),
                     shareFilesIntent);
         }

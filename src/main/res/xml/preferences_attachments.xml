@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="@string/pref_category_sending">
+        <ListPreference
+            android:defaultValue="@string/picture_compression"
+            android:entries="@array/picture_compression_entries"
+            android:entryValues="@array/picture_compression_values"
+            android:icon="@drawable/ic_photo_24dp"
+            android:key="picture_compression"
+            android:title="@string/pref_picture_compression"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            android:defaultValue="@string/video_compression"
+            android:entries="@array/video_compression_entries"
+            android:entryValues="@array/video_compression_values"
+            android:icon="@drawable/ic_movie_24dp"
+            android:key="video_compression"
+            android:title="@string/pref_video_compression"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_receiving">
+        <ListPreference
+            android:defaultValue="@integer/auto_accept_filesize"
+            android:entries="@array/filesizes"
+            android:entryValues="@array/filesizes_values"
+            android:icon="@drawable/ic_download_24dp"
+            android:key="auto_accept_file_size"
+            android:title="@string/pref_automatic_download"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+</PreferenceScreen>

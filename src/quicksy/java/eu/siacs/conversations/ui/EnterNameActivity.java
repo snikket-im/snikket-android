@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
 import eu.siacs.conversations.R;
@@ -29,7 +28,8 @@ public class EnterNameActivity extends XmppActivity
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_enter_name);
-        setSupportActionBar((Toolbar) this.binding.toolbar);
+        setSupportActionBar(this.binding.toolbar);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         this.binding.next.setOnClickListener(this::next);
         this.setNick.set(
                 savedInstanceState != null && savedInstanceState.getBoolean("set_nick", false));
@@ -68,7 +68,7 @@ public class EnterNameActivity extends XmppActivity
     }
 
     @Override
-    void onBackendConnected() {
+    public void onBackendConnected() {
         this.account = AccountUtils.getFirst(xmppConnectionService);
         checkSuggestPreviousNick();
     }

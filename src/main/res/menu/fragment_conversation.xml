@@ -3,30 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_ongoing_call"
-        android:icon="?attr/icon_ongoing_call"
+        android:icon="@drawable/ic_phone_in_talk_24dp"
         android:orderInCategory="9"
         android:title="@string/return_to_ongoing_call"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_call"
-        android:icon="?attr/icon_call"
+        android:icon="@drawable/ic_call_24dp"
         android:orderInCategory="10"
         android:title="@string/make_call"
         app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/action_audio_call"
-                android:icon="?attr/ic_make_audio_call"
+                android:icon="@drawable/ic_call_24dp"
                 android:title="@string/audio_call" />
             <item
                 android:id="@+id/action_video_call"
-                android:icon="?attr/ic_make_video_call"
+                android:icon="@drawable/ic_videocam_24dp"
                 android:title="@string/video_call" />
         </menu>
     </item>
     <item
         android:id="@+id/action_security"
-        android:icon="?attr/icon_not_secure"
+        android:icon="@drawable/ic_lock_open_outline_24dp"
         android:orderInCategory="20"
         android:title="@string/encrypted_with_omemo"
         app:showAsAction="always">
@@ -46,7 +46,7 @@
     </item>
     <item
         android:id="@+id/action_attach_file"
-        android:icon="?attr/icon_new_attachment"
+        android:icon="@drawable/ic_attach_file_24dp"
         android:orderInCategory="30"
         android:title="@string/attach_file"
         app:showAsAction="always">
@@ -54,32 +54,32 @@
 
             <item
                 android:id="@+id/attach_choose_file"
-                android:icon="?attr/ic_attach_document"
+                android:icon="@drawable/ic_description_24dp"
                 android:title="@string/choose_file" />
 
             <item
                 android:id="@+id/attach_choose_picture"
-                android:icon="?attr/ic_attach_photo"
+                android:icon="@drawable/ic_image_24dp"
                 android:title="@string/attach_choose_picture" />
 
             <item
                 android:id="@+id/attach_take_picture"
-                android:icon="?attr/ic_attach_camera"
+                android:icon="@drawable/ic_camera_alt_24dp"
                 android:title="@string/attach_take_picture" />
 
             <item
                 android:id="@+id/attach_record_video"
-                android:icon="?attr/ic_attach_videocam"
+                android:icon="@drawable/ic_videocam_24dp"
                 android:title="@string/attach_record_video" />
 
             <item
                 android:id="@+id/attach_record_voice"
-                android:icon="?attr/ic_attach_record"
+                android:icon="@drawable/ic_mic_24dp"
                 android:title="@string/attach_record_voice" />
 
             <item
                 android:id="@+id/attach_location"
-                android:icon="?attr/ic_attach_location"
+                android:icon="@drawable/ic_location_pin_24dp"
                 android:title="@string/send_location" />
         </menu>
     </item>
@@ -90,7 +90,7 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/action_muc_details"
-        android:icon="?attr/icon_group"
+        android:icon="@drawable/ic_group_24dp"
         android:orderInCategory="40"
         android:title="@string/action_muc_details"
         app:showAsAction="never" />
@@ -113,7 +113,7 @@
     <item
         android:id="@+id/action_archive"
         android:orderInCategory="60"
-        android:title="@string/action_end_conversation"
+        android:title="@string/action_archive_chat"
         app:showAsAction="never" />
     <item
         android:orderInCategory="70"

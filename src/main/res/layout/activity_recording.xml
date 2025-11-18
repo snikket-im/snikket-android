@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/color_background_primary">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/button_bar"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/timer">
+            android:layout_below="@+id/timer"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
 
             <Button
                 android:id="@+id/cancel_button"
-                style="@style/Widget.Conversations.Button.Borderless"
-                android:layout_width="0dp"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/cancel"/>
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:text="@string/cancel" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:layout_marginBottom="7dp"
-                android:layout_marginTop="7dp"
-                android:background="?attr/divider"/>
 
             <Button
                 android:id="@+id/share_button"
-                style="@style/Widget.Conversations.Button.Borderless"
-                android:layout_width="0dp"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/attach"/>
-        </LinearLayout>
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:text="@string/attach"
+                app:icon="@drawable/ic_check_24dp" />
+        </RelativeLayout>
+
 
         <TextView
             android:id="@+id/timer"
@@ -43,6 +45,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="8dp"
-            android:textAppearance="@style/TextAppearance.Conversations.Display2.Monospace"/>
+            android:fontFamily="monospace"
+            android:textAppearance="?textAppearanceDisplayLarge" />
     </RelativeLayout>
 </layout>

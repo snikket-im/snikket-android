@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Налаштування</string>
-    <string name="action_add">Нова розмова</string>
     <string name="action_accounts">Мої облікові записи</string>
     <string name="action_account">Мій обліковий запис</string>
     <string name="action_contact_details">Деталі контакту</string>
@@ -19,8 +18,6 @@
     <string name="action_unblock_participant">Розблокувати учасника</string>
     <string name="title_activity_manage_accounts">Мої облікові записи</string>
     <string name="title_activity_settings">Налаштування</string>
-    <string name="title_activity_sharewith">Поділитися розмовою</string>
-    <string name="title_activity_start_conversation">Почати розмову</string>
     <string name="title_activity_choose_contact">Вибрати контакт</string>
     <string name="title_activity_choose_contacts">Вибрати контакти</string>
     <string name="title_activity_share_via_account">Поділитися через обліковий запис</string>
@@ -38,7 +35,7 @@
     <string name="moderator">Модератор</string>
     <string name="participant">Учасник</string>
     <string name="visitor">Гість</string>
-    <string name="remove_contact_text">Бажаєте вилучити %s зі свого списку контактів\? Розмови з цим контактом не буде вилучено.</string>
+    <string name="remove_contact_text">Бажаєте вилучити %s зі свого списку контактів? Розмову з цим контактом не буде вилучено.</string>
     <string name="block_contact_text">Бажаєте заборонити %s надсилати Вам повідомлення\?</string>
     <string name="unblock_contact_text">Бажаєте розблокувати %s та дозволити цій особі надсилати Вам повідомлення\?</string>
     <string name="block_domain_text">Заблокувати всі контакти з %s\?</string>
@@ -48,7 +45,6 @@
     <string name="register_account">Зареєструвати новий обліковий запис на сервері</string>
     <string name="change_password_on_server">Змінити пароль</string>
     <string name="share_with">Поділитися…</string>
-    <string name="start_conversation">Почати розмову</string>
     <string name="invite_contact">Запросити до групи</string>
     <string name="invite">Запросити</string>
     <string name="contacts">Контакти</string>
@@ -76,14 +72,13 @@
     <string name="sharing_files_please_wait">Файли надсилаються. Зачекайте, будь ласка…</string>
     <string name="action_clear_history">Стерти історію</string>
     <string name="clear_conversation_history">Стерти історію розмов</string>
-    <string name="clear_histor_msg">Дійсно вилучити всі повідомлення цієї розмови\?
+    <string name="clear_histor_msg">Дійсно вилучити всі повідомлення цієї розмови?
 \n
 \n<b>Увага:</b> Повідомлення, збережені на інших пристроях або серверах, і надалі залишаться там.</string>
     <string name="delete_file_dialog">Вилучити файл</string>
     <string name="delete_file_dialog_msg">Ви впевнені, що хочете вилучити цей файл\?
 \n
 \n<b>Увага:</b> Це не вилучить копії цього файлу, які зберігаються на інших пристроях чи серверах. </string>
-    <string name="also_end_conversation">Завершити цю розмову пізніше</string>
     <string name="choose_presence">Вибрати пристрій</string>
     <string name="send_unencrypted_message">Незашифроване повідомлення</string>
     <string name="send_message">Надіслати повідомлення</string>
@@ -120,10 +115,9 @@
     <string name="pref_ringtone">Мелодія</string>
     <string name="pref_notification_sound">Звук сповіщень</string>
     <string name="pref_notification_sound_summary">Звук сповіщень для нових повідомлень</string>
-    <string name="pref_notification_grace_period">Час до блокування</string>
+    <string name="pref_notification_grace_period">Період очікування</string>
     <string name="pref_notification_grace_period_summary">Час, протягом якого сповіщення вимкнені після виявлення активності на іншому пристрої.</string>
     <string name="pref_advanced_options">Розширені</string>
-    <string name="pref_never_send_crash">Не надсилати звіти про збої</string>
     <string name="pref_never_send_crash_summary">Надсилаючи звіти про збої, Ви допомагаєте розвивати застосунок</string>
     <string name="pref_confirm_messages">Підтвердження отримання повідомлень</string>
     <string name="pref_confirm_messages_summary">Повідомляти співрозмовників, що Ви отримали й прочитали їхні повідомлення</string>
@@ -178,7 +172,7 @@
 \nВаші контакти більше не зможуть надсилати Вам повідомлення, зашифровані OpenPGP.</string>
     <string name="openpgp_has_been_published">Публічний ключ OpenPGP опубліковано.</string>
     <string name="mgmt_account_enable">Увімкнути обліковий запис</string>
-    <string name="mgmt_account_delete_confirm_text">Ви впевнені, що хочете видалити свій обліковий запис\? Видалення облікового запису знищить усю Вашу історію спілкування</string>
+    <string name="mgmt_account_delete_confirm_text">Ви впевнені, що хочете видалити свій обліковий запис? Видалення облікового запису знищить усю Вашу історію спілкування</string>
     <string name="attach_record_voice">Записати голос</string>
     <string name="account_settings_jabber_id">Адреса XMPP</string>
     <string name="block_jabber_id">Заблокувати адресу XMPP</string>
@@ -281,7 +275,7 @@
 \n
 \n<small>Перегляньте деталі контакту та перевірте отримання стану присутності.</small></string>
     <string name="pref_security_settings">Безпека</string>
-    <string name="pref_allow_message_correction">Дозволити редагування повідомлень</string>
+    <string name="pref_allow_message_correction">Редагування повідомлень</string>
     <string name="pref_allow_message_correction_summary">Дозволити контактам редагувати свої повідомлення після надсилання</string>
     <string name="pref_expert_options">Експертні налаштування</string>
     <string name="pref_expert_options_summary">Будь ласка, будьте обережними з цим</string>
@@ -431,7 +425,6 @@
     <string name="show_location">Показати місцезнаходження</string>
     <string name="no_application_found_to_display_location">Не знайдено застосунку, щоб показати місцезнаходження</string>
     <string name="location">Місцезнаходження</string>
-    <string name="title_undo_swipe_out_conversation">Розмову закрито</string>
     <string name="title_undo_swipe_out_group_chat">Залишити приватну групу</string>
     <string name="title_undo_swipe_out_channel">Залишити публічний канал</string>
     <string name="pref_dont_trust_system_cas_title">Не довіряти системним центрам сертифікації</string>
@@ -441,7 +434,6 @@
     <string name="toast_no_trusted_certs">Немає сертифікатів, підтверджених вручну</string>
     <string name="dialog_manage_certs_title">Вилучити сертифікати</string>
     <string name="dialog_manage_certs_positivebutton">Вилучити вибране</string>
-    <string name="dialog_manage_certs_negativebutton">Скасувати</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d сертифікат вилучено</item>
         <item quantity="few">%d сертифікати вилучено</item>
@@ -469,8 +461,8 @@
     <string name="server_info_broken">Поламано</string>
     <string name="pref_presence_settings">Доступність</string>
     <string name="pref_treat_vibrate_as_silent">Вважати вібро за безшумний режим</string>
-    <string name="pref_show_connection_options">Розширені налаштування з\'єднання</string>
-    <string name="pref_show_connection_options_summary">Показати налаштування імені вузла та порту при налаштуванні облікового запису</string>
+    <string name="pref_show_connection_options">Ім\'я вузла і порт</string>
+    <string name="pref_show_connection_options_summary">Показати розширені налаштування з\'єднання при налаштуванні облікового запису</string>
     <string name="hostname_example">xmpp.example.com</string>
     <string name="action_add_account_with_certificate">Вхід із сертифікатом</string>
     <string name="unable_to_parse_certificate">Не вдалося розпізнати сертифікат</string>
@@ -553,16 +545,14 @@
     <string name="gp_short">Короткий</string>
     <string name="gp_medium">Середній</string>
     <string name="gp_long">Довгий</string>
-    <string name="pref_broadcast_last_activity">Показувати останню активність користувача</string>
-    <string name="pref_broadcast_last_activity_summary">Повідомляти співрозмовникам, що Ви користуєтеся Conversations</string>
+    <string name="pref_broadcast_last_activity">Остання активність</string>
+    <string name="pref_broadcast_last_activity_summary">Дозволити контактам бачити, коли Ви востаннє користувалися додатком</string>
     <string name="pref_privacy">Приватність</string>
     <string name="pref_theme_options">Тема</string>
     <string name="pref_theme_options_summary">Виберіть колір теми</string>
     <string name="pref_theme_automatic">Автоматично</string>
     <string name="pref_theme_light">Світла</string>
     <string name="pref_theme_dark">Темна</string>
-    <string name="pref_use_green_background">Зелене тло</string>
-    <string name="pref_use_green_background_summary">Використовувати зелене тло для отриманих повідомлень</string>
     <string name="unable_to_connect_to_keychain">Не вдалося зв\'язатися з OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Цей пристрій більше не використовується</string>
     <string name="type_pc">Комп\'ютер</string>
@@ -590,7 +580,6 @@
     <string name="error_unable_to_create_temporary_file">Не вдалося створити тимчасовий файл</string>
     <string name="this_device_has_been_verified">Цей пристрій перевірено</string>
     <string name="copy_fingerprint">Копіювати цифровий підпис</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_conversation">QR-код не містить цифрових підписів для цієї розмови.</string>
     <string name="verified_fingerprints">Перевірені цифрові підписи</string>
     <string name="use_camera_icon_to_scan_barcode">Використайте камеру для сканування QR-коду контакту</string>
     <string name="please_wait_for_keys_to_be_fetched">Зачекайте поки ключі отримуються</string>
@@ -655,7 +644,6 @@
     <string name="encrypting_message">Зашифровую повідомлення</string>
     <string name="not_fetching_history_retention_period">Повідомлення не завантажуються з огляду на локально встановлений строк зберігання.</string>
     <string name="transcoding_video">Стиснення відео</string>
-    <string name="corresponding_conversations_closed">Відповідні розмови завершено.</string>
     <string name="contact_blocked_past_tense">Контакт заблоковано.</string>
     <string name="pref_notifications_from_strangers">Сповіщення від незнайомців</string>
     <string name="pref_notifications_from_strangers_summary">Сповіщати про повідомлення і виклики від незнайомців.</string>
@@ -700,7 +688,7 @@
     <string name="error_trustkey_device_list">Неможливо отримати перелік пристроїв</string>
     <string name="error_trustkey_bundle">Неможливо отримати пакети пристроїв</string>
     <string name="error_trustkey_hint_mutual">Підказка: В деяких випадках це можна виправити, якщо додати один одного у свої списки контактів.</string>
-    <string name="disable_encryption_message">Дійсно вимкнути шифрування OMEMO\?
+    <string name="disable_encryption_message">Дійсно вимкнути шифрування OMEMO для цієї розмови?
 \nПісля цього в адміністратора Вашого сервера буде можливість мати доступ до Ваших повідомлень. Проте, це може бути єдиним способом спілкуватися з людьми, які використовують застарілі застосунки.</string>
     <string name="disable_now">Вимкнути зараз</string>
     <string name="draft">Чернетка:</string>
@@ -709,13 +697,8 @@
     <string name="pref_omemo_setting_summary_default_on">Типово для нових розмов використовуватиметься OMEMO.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO потрібно буде вмикати окремо для кожної нової розмови.</string>
     <string name="create_shortcut">Створити ярлик</string>
-    <string name="pref_font_size">Розмір шрифту</string>
-    <string name="pref_font_size_summary">Розмір шрифту в застосунку.</string>
     <string name="default_on">Типово ввімкнено</string>
     <string name="default_off">Типово вимкнено</string>
-    <string name="small">Малий</string>
-    <string name="medium">Середній</string>
-    <string name="large">Великий</string>
     <string name="not_encrypted_for_this_device">Повідомлення не було зашифровано для цього пристрою.</string>
     <string name="omemo_decryption_failed">Не вдалося розшифрувати повідомлення OMEMO.</string>
     <string name="undo">скасувати</string>
@@ -739,7 +722,7 @@
     <string name="copy_jabber_id">Копіювати адресу XMPP</string>
     <string name="p1_s3_filetransfer">Доступ до файлів через HTTP для S3</string>
     <string name="pref_start_search">Безпосередній пошук</string>
-    <string name="pref_start_search_summary">На екрані початку розмови показувати клавіатуру та розміщувати курсор у полі пошуку</string>
+    <string name="pref_start_search_summary">На екрані «Нова розмова» показувати клавіатуру та розміщувати курсор у полі пошуку</string>
     <string name="group_chat_avatar">Піктограма групи</string>
     <string name="host_does_not_support_group_chat_avatars">Сервер не підтримує піктограми груп</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Лише власник може змінити піктограму групи</string>
@@ -763,7 +746,7 @@
     <string name="silent_messages_channel_description">Ця група сповіщень показує сповіщення, які не повинні супроводжуватися звуком. Наприклад, у разі активності на іншому пристрої (період очікування).</string>
     <string name="pref_message_notification_settings">Налаштування сповіщень про повідомлення</string>
     <string name="pref_incoming_call_notification_settings">Налаштування сповіщень про вхідні виклики</string>
-    <string name="pref_more_notification_settings_summary">Налаштування пріоритетів, звуку та режиму вібрації для сповіщень</string>
+    <string name="pref_more_notification_settings_summary">Налаштування пріоритетів, звуку та режиму вібрації</string>
     <string name="video_compression_channel_name">Стиснення відео</string>
     <string name="view_media">Перегляд медіа</string>
     <string name="group_chat_members">Учасники</string>
@@ -792,7 +775,7 @@
     <string name="resend_sms">Надіслати нове SMS</string>
     <string name="resend_sms_in">Надіслати нове SMS (%s)</string>
     <string name="wait_x">Будь ласка, зачекайте (%s)</string>
-    <string name="back">повернутися</string>
+    <string name="back">Повернутися</string>
     <string name="possible_pin">Код автоматично вставлений з буфера обміну.</string>
     <string name="please_enter_pin">Будь ласка, введіть нижче код із 6 цифр.</string>
     <string name="abort_registration_procedure">Ви впевнені, що хочете припинити процедуру реєстрації\?</string>
@@ -801,7 +784,7 @@
     <string name="verifying">Перевірка…</string>
     <string name="requesting_sms">Запит SMS…</string>
     <string name="incorrect_pin">Код, який Ви ввели, неправильний.</string>
-    <string name="pin_expired">Код, який Ви ввели, застарів.</string>
+    <string name="pin_expired">Код, який ми Вам надіслали, застарів.</string>
     <string name="unknown_api_error_network">Невідома помилка мережі.</string>
     <string name="unknown_api_error_response">Сервер дав незрозумілу відповідь.</string>
     <string name="unable_to_connect_to_server">Неможливо приєднатися до сервера.</string>
@@ -920,7 +903,6 @@
     <string name="audio_call">Голосовий виклик</string>
     <string name="video_call">Відеовиклик</string>
     <string name="help">Допомога</string>
-    <string name="switch_to_conversation">Перейти до розмови</string>
     <string name="microphone_unavailable">Недоступний мікрофон</string>
     <string name="only_one_call_at_a_time">Водночас можливо здійснювати лише один виклик.</string>
     <string name="return_to_ongoing_call">Назад до активного виклику</string>
@@ -937,7 +919,6 @@
         <item quantity="many">%1$d пропущених викликів від %2$d контактів</item>
         <item quantity="other">%1$d пропущених викликів від %2$d контактів</item>
     </plurals>
-    <string name="action_end_conversation">Закрити розмову</string>
     <string name="crash_report_title">Збій %1$s</string>
     <string name="crash_report_message">Надсилаючи зі свого облікового запису XMPP звіти про збої, Ви допомагаєте розвивати %1$s.</string>
     <string name="pref_call_ringtone_summary">Мелодія для вхідних викликів</string>
@@ -986,7 +967,6 @@
         <item quantity="many">Деякі повідомлення не вдалося надіслати</item>
         <item quantity="other">Деякі повідомлення не вдалося надіслати</item>
     </plurals>
-    <string name="pref_up_push_server_summary">Оберіть сервер для доставки push-повідомлень через XMPP на Ваш пристрій.</string>
     <string name="error_security_exception">Застосунок для передачі зображення не надав достатніх дозволів.</string>
     <string name="audio_video_disabled_tor">Виклики вимкнені при використанні Tor</string>
     <string name="sync_with_contacts_long">%1$s обробляє Ваш список контактів локально, на Вашому пристрої, щоб показати імена та зображення профілю для відповідних контактів у XMPP.
@@ -1080,8 +1060,55 @@
     <string name="no_permission_to_place_call">Немає дозволу на телефонні дзвінки</string>
     <string name="rtp_state_contact_offline">Контакт недоступний</string>
     <string name="call_integration_not_available">Інтеграція викликів недоступна!</string>
-    <string name="delete_and_close">Видалити і закрити</string>
-    <string name="channel_discover_opt_in_message">Пошук каналів використовує сторонній сервіс &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Використання цієї функції передає Вашу IP-адресу та пошукові запити цьому сервісу. Перегляньте їхню &lt;a href=https://search.jabber.network/privacy&gt;Політику конфіденційності&lt;/a&gt;, щоб отримати більше інформації.</string>
-    <string name="remove_bookmark_and_close">Бажаєте видалити закладку %s і закрити розмову?</string>
+    <string name="delete_and_close">Видалити й архівувати</string>
+    <string name="remove_bookmark_and_close">Бажаєте видалити закладку %s й архівувати розмову?</string>
     <string name="remove_bookmark">Бажаєте видалити закладку %s?</string>
+    <string name="welcome_header">Приєднуйтеся до розмови</string>
+    <string name="no_certificate_selected">Сертифікат клієнта не вибрано!</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">QR-код не містить цифрового підпису для цієї розмови.</string>
+    <string name="corresponding_chats_closed">Відповідні розмови заархівовано.</string>
+    <string name="channel_discover_opt_in_message">Пошук каналів використовує сторонній сервіс &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Використання цієї функції передає Вашу IP-адресу та пошукові запити цьому сервісу. Перегляньте їхню &lt;a href=https://search.jabber.network/privacy&gt;Політику конфіденційності&lt;/a&gt;, щоб отримати більше інформації.</string>
+    <string name="title_activity_share_with">Поділитися…</string>
+    <string name="pref_dynamic_colors">Динамічні кольори</string>
+    <string name="pref_dynamic_colors_summary">Системні кольори (Material You)</string>
+    <string name="pref_use_colorful_bubbles_summary">Барвисті бульбашки допомагають розрізняти надіслані та отримані повідомлення</string>
+    <string name="pref_use_colorful_bubbles">Кольорові бульбашки в розмовах</string>
+    <string name="title_activity_new_chat">Нова розмова</string>
+    <string name="action_archive_chat">Архівувати розмову</string>
+    <string name="archive_this_chat">Архівувати цю розмову</string>
+    <string name="title_undo_swipe_out_chat">Розмову заархівовано</string>
+    <string name="switch_to_chat">Перемкнути на чат</string>
+    <string name="start_chat">Почати розмову</string>
+    <string name="pref_send_crash_reports">Надсилати звіти про збої</string>
+    <string name="pref_title_interface">Інтерфейс</string>
+    <string name="pref_title_security">Безпека</string>
+    <string name="notifications">Сповіщення</string>
+    <string name="pref_category_sending">Надсилання</string>
+    <string name="pref_category_receiving">Отримання</string>
+    <string name="pref_automatic_download">Автоматичне завантаження</string>
+    <string name="appearance">Зовнішній вигляд</string>
+    <string name="pref_allow_screenshots">Дозволити знімки екрана</string>
+    <string name="pref_category_e2ee">Наскрізне шифрування</string>
+    <string name="pref_title_trust_system_ca_store">Центри сертифікації</string>
+    <string name="pref_category_operating_system">Операційна система</string>
+    <string name="pref_connection_summary">Ім\'я вузла і порт, Tor</string>
+    <string name="pref_connection_summary_w_cd">Ім\'я вузла і порт, Tor, пошук каналів</string>
+    <string name="pref_keyboard_options">Клавіатура</string>
+    <string name="pref_category_interaction">Взаємодія</string>
+    <string name="pref_category_on_this_device">На пристрої</string>
+    <string name="pref_summary_appearance">Тема, кольори, скріншоти, введення</string>
+    <string name="unified_push_summary">Ретрансляція сповіщень для сторонніх програм, сумісних з UnifiedPush</string>
+    <string name="pref_attachments_summary">Розмір файлу, стиснення зображень, якість відео</string>
+    <string name="pref_notifications_summary">Період очікування, мелодія, вібрація, незнайомці</string>
+    <string name="pref_light_dark_mode">Світлий/темний режим</string>
+    <string name="pref_title_trust_system_ca_store_summary">Довіряти сертифікатам системних ЦС</string>
+    <string name="detect_mim">Вимагати прив\'язки каналу</string>
+    <string name="detect_mim_summary">Прив\'язка каналу може виявити деякі атаки типу «машина посередині»</string>
+    <string name="pref_category_server_connection">З\'єднання з сервером</string>
+    <string name="pref_category_application">Застосунок</string>
+    <string name="pref_category_engagement_notifications">Сповіщення про активність</string>
+    <string name="pref_summary_security">Шифрування E2E, довіра наосліп перед перевіркою, виявлення MITM</string>
+    <string name="pref_up_long_summary">При дії в ролі дистриб\'ютора UnifiedPush використовується постійне, надійне та енергоефективне з\'єднання XMPP для активації інших додатків, сумісних з UnifiedPush, таких як Tusky, Ltt.rs, FluffyChat та інші.</string>
+    <string name="pref_allow_screenshots_summary">Показувати вміст застосунку при перемиканні програм і дозволити знімки екрана</string>
+    <string name="pref_privacy_summary">Сповіщення про набір, остання активність, доступність</string>
 </resources>

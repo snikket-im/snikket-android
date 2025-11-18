@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">설정</string>
-    <string name="action_add">새 대화</string>
     <string name="action_accounts">계정 </string>
     <string name="action_contact_details">연락처 정보</string>
     <string name="action_add_account">계정 추가 </string>
@@ -14,8 +13,6 @@
     <string name="action_unblock_domain">도메인 차단 해제 </string>
     <string name="title_activity_manage_accounts">계정 관리 </string>
     <string name="title_activity_settings">설정 </string>
-    <string name="title_activity_sharewith">대화 공유 </string>
-    <string name="title_activity_start_conversation">대화 시작 </string>
     <string name="title_activity_block_list">목록 차단 </string>
     <string name="just_now">방금 </string>
     <string name="minute_ago">1분 전 </string>
@@ -55,7 +52,7 @@
     <string name="send_failed">전송 실패 </string>
     <string name="sharing_files_please_wait">파일을 공유중입니다. 기다리세요...</string>
     <string name="action_clear_history">기록 삭제 </string>
-    <string name="clear_conversation_history">대화 기록 삭제 </string>
+    <string name="clear_conversation_history">대화 기록 삭제</string>
     <string name="choose_presence">기기 선택</string>
     <string name="send_unencrypted_message">암호화하지 않은 메세지 전송</string>
     <string name="send_message_to_x">%s 에게 매세지 보내기 </string>
@@ -84,7 +81,6 @@
     <string name="pref_ringtone">알림음</string>
     <string name="pref_notification_grace_period">유예기간</string>
     <string name="pref_advanced_options">고급</string>
-    <string name="pref_never_send_crash">충돌 보고서 보내지 않음 </string>
     <string name="pref_confirm_messages">메세지 확인 </string>
     <string name="pref_confirm_messages_summary">당신이 메시지를 수신하고 읽을 때 친구에게 그 사실을 알려줍니다</string>
     <string name="pref_ui_options">UI</string>
@@ -275,7 +271,6 @@
     <string name="send_location">위치 전송 </string>
     <string name="show_location">위치 표시 </string>
     <string name="location">위치 </string>
-    <string name="title_undo_swipe_out_conversation">대화 끝남 </string>
     <string name="pref_dont_trust_system_cas_title">시스템 CA를 신뢰하지 않음 </string>
     <string name="pref_dont_trust_system_cas_summary">모든 인증서는 수동으로 승인되어야 함 </string>
     <string name="pref_remove_trusted_certificates_title">인증서 삭제 </string>
@@ -283,7 +278,6 @@
     <string name="toast_no_trusted_certs">수동으로 승인된 인증서 없음 </string>
     <string name="dialog_manage_certs_title">인증서 삭제 </string>
     <string name="dialog_manage_certs_positivebutton">선택 삭제 </string>
-    <string name="dialog_manage_certs_negativebutton">취소 </string>
     <plurals name="toast_delete_certificates">
         <item quantity="other">%d 인증서 삭제됨 </item>
     </plurals>
@@ -362,8 +356,6 @@
     <string name="pref_privacy">프라이버시</string>
     <string name="pref_theme_options">테마</string>
     <string name="pref_theme_options_summary">색상 팔레트를 선택</string>
-    <string name="pref_use_green_background">초록색 배경</string>
-    <string name="pref_use_green_background_summary">받은 메시지에 녹색 배경을 사용합니다</string>
     <string name="this_device_is_no_longer_in_use">이 장치는 현재 사용되고 있지 않습니다</string>
     <string name="type_pc">컴퓨터</string>
     <string name="type_phone">휴대폰</string>
@@ -395,7 +387,6 @@
     <string name="verify_omemo_keys">OMEMO 키를 검증</string>
     <string name="pref_automatically_delete_messages_description">설정된 기간보다 오래된 메시지를 장치에서 자동으로 삭제합니다.</string>
     <string name="message_copied_to_clipboard">메세지가 클립보드에 복사되었습니다 </string>
-    <string name="medium">중간</string>
     <string name="title_activity_show_location">위치 표시 </string>
     <string name="rtp_state_declined_or_busy">바쁨</string>
 </resources>

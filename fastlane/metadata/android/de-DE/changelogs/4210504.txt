@@ -1,0 +1,2 @@
+* Wiederherstellung des Zugangs zu Channel Discovery für Android 6+7
+* Verbesserte Protokollierung bei fehlgeschlagener Anrufintegration

@@ -41,18 +41,18 @@ public class RtpSessionStatus {
         return new RtpSessionStatus(made, duration);
     }
 
-    public static @DrawableRes int getDrawable(final boolean received, final boolean successful, final boolean darkTheme) {
+    public static @DrawableRes int getDrawable(final boolean received, final boolean successful) {
         if (received) {
             if (successful) {
-                return darkTheme ? R.drawable.ic_call_received_white_18dp : R.drawable.ic_call_received_black_18dp;
+                return R.drawable.ic_call_received_24dp;
             } else {
-                return darkTheme ? R.drawable.ic_call_missed_white_18dp : R.drawable.ic_call_missed_black_18dp;
+                return R.drawable.ic_call_missed_24db;
             }
         } else {
             if (successful) {
-                return darkTheme ? R.drawable.ic_call_made_white_18dp : R.drawable.ic_call_made_black_18dp;
+                return R.drawable.ic_call_made_24dp;
             } else {
-                return darkTheme ? R.drawable.ic_call_missed_outgoing_white_18dp : R.drawable.ic_call_missed_outgoing_black_18dp;
+                return R.drawable.ic_call_missed_outgoing_24dp;
             }
         }
     }

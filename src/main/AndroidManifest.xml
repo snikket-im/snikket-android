@@ -47,7 +47,7 @@
     <!-- this foreground service type permission is exclusively used for import and export backup -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
-    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"/>
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -84,6 +84,7 @@
 
 
     <application
+        android:name=".Conversations"
         android:allowBackup="true"
         android:appCategory="social"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -96,7 +97,7 @@
         android:networkSecurityConfig="@xml/network_security_configuration"
         android:preserveLegacyExternalStorage="true"
         android:requestLegacyExternalStorage="true"
-        android:theme="@style/ConversationsTheme"
+        android:theme="@style/Theme.Conversations3"
         tools:targetApi="tiramisu">
 
         <meta-data
@@ -132,9 +133,10 @@
             </intent-filter>
         </service>
 
-        <service android:name=".services.CallIntegrationConnectionService"
-            android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
-            android:exported="true">
+        <service
+            android:name=".services.CallIntegrationConnectionService"
+            android:exported="true"
+            android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE">
             <intent-filter>
                 <action android:name="android.telecom.ConnectionService" />
             </intent-filter>
@@ -180,14 +182,14 @@
         <activity
             android:name=".ui.RecordingActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/ConversationsTheme.Dialog" />
+            android:theme="@style/Theme.Conversations3.Dialog" />
         <activity
             android:name=".ui.ShowLocationActivity"
             android:label="@string/title_activity_show_location" />
         <activity
             android:name=".ui.ConversationActivity"
             android:exported="true"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/Theme.Conversations3.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -202,7 +204,7 @@
         <activity
             android:name=".ui.ScanActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ConversationsTheme.FullScreen"
+            android:theme="@style/Theme.Conversations3.FullScreen"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ui.UriHandlerActivity"
@@ -246,14 +248,14 @@
         <activity
             android:name=".ui.StartConversationActivity"
             android:exported="true"
-            android:label="@string/title_activity_start_conversation"
+            android:label="@string/title_activity_new_chat"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name=".ui.activity.SettingsActivity"
             android:exported="true"
             android:label="@string/title_activity_settings">
             <intent-filter>

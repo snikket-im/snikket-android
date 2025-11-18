@@ -6,16 +6,16 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 
-import java.util.Collection;
-import java.util.Collections;
-
-import javax.net.ssl.SSLSocket;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.SSLSockets;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+
+import java.util.Collection;
+import java.util.Collections;
+
+import javax.net.ssl.SSLSocket;
 
 public abstract class SaslMechanism {
 
@@ -170,7 +170,9 @@ public abstract class SaslMechanism {
     }
 
     public static SaslMechanism ensureAvailable(
-            final SaslMechanism mechanism, final SSLSockets.Version sslVersion) {
+            final SaslMechanism mechanism,
+            final SSLSockets.Version sslVersion,
+            final boolean requireChannelBinding) {
         if (mechanism instanceof ChannelBindingMechanism) {
             final ChannelBinding cb = ((ChannelBindingMechanism) mechanism).getChannelBinding();
             if (ChannelBinding.isAvailable(cb, sslVersion)) {
@@ -181,6 +183,9 @@ public abstract class SaslMechanism {
                         "pinned channel binding method " + cb + " no longer available");
                 return null;
             }
+        } else if (requireChannelBinding) {
+            Log.d(Config.LOGTAG, "pinned mechanism did not provide channel binding");
+            return null;
         } else {
             return mechanism;
         }

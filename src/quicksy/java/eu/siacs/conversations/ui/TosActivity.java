@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.databinding.DataBindingUtil;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ActivityTosBinding;
 
 public class TosActivity extends XmppActivity {
 
@@ -22,17 +22,8 @@ public class TosActivity extends XmppActivity {
     }
 
     @Override
-    void onBackendConnected() {
+    public void onBackendConnected() {
 
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        final int theme = findTheme();
-        if (this.mTheme != theme) {
-            recreate();
-        }
     }
 
     @Override
@@ -49,16 +40,15 @@ public class TosActivity extends XmppActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tos);
-        setSupportActionBar(findViewById(R.id.toolbar));
+        final ActivityTosBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_tos);
+        setSupportActionBar(binding.toolbar);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayShowHomeEnabled(false);
             ab.setDisplayHomeAsUpEnabled(false);
         }
-        final Button agreeButton = findViewById(R.id.agree);
-        final TextView welcomeText = findViewById(R.id.welcome_text);
-        agreeButton.setOnClickListener(v -> {
+        binding.agree.setOnClickListener(v -> {
             final Intent intent = new Intent(this, EnterPhoneNumberActivity.class);
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             preferences.edit().putBoolean("tos", true).apply();
@@ -66,8 +56,8 @@ public class TosActivity extends XmppActivity {
             startActivity(intent);
             finish();
         });
-        welcomeText.setText(Html.fromHtml(getString(R.string.welcome_text_quicksy_static)));
-        welcomeText.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.welcomeText.setText(Html.fromHtml(getString(R.string.welcome_text_quicksy_static)));
+        binding.welcomeText.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 

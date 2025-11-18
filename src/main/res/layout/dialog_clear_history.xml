@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:paddingBottom="?attr/dialog_vertical_padding"
-              android:paddingLeft="?attr/dialog_horizontal_padding"
-              android:paddingRight="?attr/dialog_horizontal_padding"
-              android:paddingTop="?attr/dialog_vertical_padding">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="?dialogPreferredPadding">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/clear_histor_msg"
-        android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+        android:textAppearance="?textAppearanceBodyMedium" />
 
     <CheckBox
         android:id="@+id/end_conversation_checkbox"
-        style="@style/Widget.Conversations.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="true"
-        android:text="@string/also_end_conversation"/>
+        android:text="@string/archive_this_chat" />
 
 </LinearLayout>

@@ -1,0 +1,3 @@
+* Use Material 3 theme
+* Reorganize settings
+* Synchronize read state across devices

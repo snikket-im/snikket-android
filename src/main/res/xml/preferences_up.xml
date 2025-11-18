@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ListPreference
+        android:defaultValue="@string/default_push_account"
+        android:icon="@drawable/ic_person_24dp"
+        android:key="up_push_account"
+        android:summary="@string/pref_up_push_account_summary"
+        android:title="@string/pref_up_push_account_title" />
+    <EditTextPreference
+        android:defaultValue="@string/default_push_server"
+        android:icon="@drawable/ic_mediation_24dp"
+        android:key="up_push_server"
+        android:title="@string/pref_up_push_server_title"
+        app:useSimpleSummaryProvider="true" />
+    <Preference android:summary="@string/pref_up_long_summary"/>
+</PreferenceScreen>
