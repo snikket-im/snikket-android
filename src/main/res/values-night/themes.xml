@@ -30,6 +30,10 @@
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
     </style>
 
+    <style name="Theme.Snikket" parent="Theme.Conversations3">
+    </style>
+
+
     <style name="Theme.Conversations3.SplashScreen" parent="@style/Theme.Conversations3">
         <item name="android:windowBackground">@drawable/background_splash_screen</item>
         <item name="android:windowLightStatusBar">false</item>

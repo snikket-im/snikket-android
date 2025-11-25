@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.text.Spannable;
@@ -656,12 +657,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final BubbleColor bubbleColor;
         if (type == RECEIVED) {
             if (isInValidSession) {
-                bubbleColor = colorfulBackground ? BubbleColor.SECONDARY : BubbleColor.SURFACE;
+                bubbleColor = BubbleColor.SURFACE;
             } else {
                 bubbleColor = BubbleColor.WARNING;
             }
         } else {
-            bubbleColor = colorfulBackground ? BubbleColor.TERTIARY : BubbleColor.SURFACE;
+            bubbleColor = BubbleColor.PRIMARY;
         }
 
         if (type == DATE_SEPARATOR) {
@@ -672,13 +673,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else {
                 viewHolder.status_message.setText(DateUtils.formatDateTime(activity, message.getTimeSent(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
             }
-            if (colorfulBackground) {
-                setBackgroundTint(viewHolder.message_box,BubbleColor.PRIMARY);
-                setTextColor(viewHolder.status_message, BubbleColor.PRIMARY);
-            } else {
-                setBackgroundTint(viewHolder.message_box,BubbleColor.SURFACE);
-                setTextColor(viewHolder.status_message, BubbleColor.SURFACE);
-            }
+            setBackgroundTint(viewHolder.message_box,BubbleColor.TRANSPARENT);
+            setTextColor(viewHolder.status_message, BubbleColor.TRANSPARENT);
             return view;
         } else if (type == RTP_SESSION) {
             final boolean received = message.getStatus() <= Message.STATUS_RECEIVED;
@@ -908,12 +904,18 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     private static ColorStateList bubbleToColorStateList(final View view, final BubbleColor bubbleColor) {
+	if(bubbleColor == BubbleColor.TRANSPARENT) {
+		return ColorStateList.valueOf(Color.TRANSPARENT);
+	}
+
         final @AttrRes int colorAttributeResId = switch (bubbleColor) {
-            case SURFACE ->  com.google.android.material.R.attr.colorSurfaceContainerHigh;
+            case SURFACE ->  com.google.android.material.R.attr.colorSurfaceContainer;
+            case SURFACEHIGH ->  com.google.android.material.R.attr.colorSurfaceContainerHighest;
             case PRIMARY -> com.google.android.material.R.attr.colorPrimaryContainer;
             case SECONDARY -> com.google.android.material.R.attr.colorSecondaryContainer;
             case TERTIARY -> com.google.android.material.R.attr.colorTertiaryContainer;
             case WARNING -> com.google.android.material.R.attr.colorErrorContainer;
+            default -> com.google.android.material.R.attr.colorSurfaceContainer;
         };
         return ColorStateList.valueOf(MaterialColors.getColor(view,colorAttributeResId));
     }
@@ -946,7 +948,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     private static @AttrRes int bubbleToOnSurface(final BubbleColor bubbleColor) {
         return switch (bubbleColor) {
+            case TRANSPARENT ->  com.google.android.material.R.attr.colorOnBackground;
             case SURFACE ->  com.google.android.material.R.attr.colorOnSurface;
+            case SURFACEHIGH ->  com.google.android.material.R.attr.colorOnSurface;
             case PRIMARY -> com.google.android.material.R.attr.colorOnPrimaryContainer;
             case SECONDARY -> com.google.android.material.R.attr.colorOnSecondaryContainer;
             case TERTIARY -> com.google.android.material.R.attr.colorOnTertiaryContainer;
@@ -955,7 +959,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     public  enum BubbleColor {
-        SURFACE, PRIMARY, SECONDARY, TERTIARY, WARNING
+        TRANSPARENT, SURFACE, SURFACEHIGH, PRIMARY, SECONDARY, TERTIARY, WARNING
     }
 
     private static class ViewHolder {

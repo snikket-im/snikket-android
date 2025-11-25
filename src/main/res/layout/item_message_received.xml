@@ -26,7 +26,7 @@
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/message_photo"
             android:background="@drawable/background_message_bubble"
-            android:backgroundTint="?colorTertiaryContainer"
+            android:backgroundTint="?colorSurface"
             android:longClickable="true"
             android:minHeight="53dp"
             android:paddingHorizontal="8dp"
@@ -57,7 +57,7 @@
                         android:layout_marginEnd="4sp"
                         android:gravity="center_vertical"
                         android:textAppearance="?textAppearanceBodySmall"
-                        android:textColor="?colorOnTertiaryContainer" />
+                        android:textColor="?colorOnSurface" />
 
                     <ImageView
                         android:id="@+id/security_indicator"
@@ -67,7 +67,7 @@
                         android:layout_marginEnd="4sp"
                         android:gravity="center_vertical"
                         android:src="@drawable/ic_lock_24dp"
-                        app:tint="?colorOnTertiaryContainer" />
+                        app:tint="?colorOnSurface" />
 
                     <ImageView
                         android:id="@+id/edit_indicator"
@@ -77,7 +77,7 @@
                         android:layout_marginEnd="4sp"
                         android:gravity="center_vertical"
                         android:src="@drawable/ic_edit_24dp"
-                        app:tint="?colorOnTertiaryContainer" />
+                        app:tint="?colorOnSurface" />
 
                     <TextView
                         android:id="@+id/message_time"
@@ -89,7 +89,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/sending"
                         android:textAppearance="?textAppearanceBodySmall"
-                        android:textColor="?colorOnTertiaryContainer" />
+                        android:textColor="?colorOnSurface" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

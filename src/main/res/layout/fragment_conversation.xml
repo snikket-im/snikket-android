@@ -41,8 +41,8 @@
             android:layout_marginEnd="8dp"
             android:elevation="8dp"
             android:visibility="gone"
-            app:backgroundColor="?colorTertiaryContainer"
-            app:textColor="?colorOnTertiaryContainer"
+            app:backgroundColor="?colorPrimaryContainer"
+            app:textColor="?colorOnPrimaryContainer"
             tools:ignore="RtlCompat" />
 
         <RelativeLayout
@@ -62,7 +62,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/textSendButton"
                 android:background="@drawable/background_message_bubble"
-                android:backgroundTint="?colorTertiaryContainer"
+                android:backgroundTint="?colorSurfaceContainer"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp">
@@ -74,7 +74,7 @@
                     android:layout_marginBottom="8sp"
                     android:maxLines="1"
                     android:textAppearance="?textAppearanceBodySmall"
-                    android:textColor="?colorOnTertiaryContainer"
+                    android:textColor="?colorOnSurface"
                     android:visibility="visible"
                     tools:text="@string/private_message_to" />
 
@@ -100,7 +100,7 @@
                     android:inputType="textShortMessage|textMultiLine|textCapSentences"
                     android:maxLines="8"
                     android:minHeight="32dp"
-                    android:textColor="?colorOnTertiaryContainer"
+                    android:textColor="?colorOnSurface"
                     android:textColorHint="@color/hint_on_tertiary_container"
                     android:minLines="1">
 

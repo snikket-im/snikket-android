@@ -51,4 +51,7 @@
         <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
     </style>
+
+    <style name="Theme.Snikket" parent="Theme.Conversations3">
+    </style>
 </resources>
