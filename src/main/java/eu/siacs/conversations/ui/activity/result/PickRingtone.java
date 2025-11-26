@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +27,7 @@ public class PickRingtone extends ActivityResultContract<Uri, Uri> {
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, ringToneType);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
-        if (existing != null) {
+        if (noneToNull(existing) != null) {
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, existing);
         }
         return intent;
@@ -37,11 +38,14 @@ public class PickRingtone extends ActivityResultContract<Uri, Uri> {
         if (resultCode != Activity.RESULT_OK || data == null) {
             return null;
         }
-        final Uri pickedUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-        return pickedUri == null ? NONE : pickedUri;
+        return nullToNone(data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI));
     }
 
     public static Uri noneToNull(final Uri uri) {
         return uri == null || NONE.equals(uri) ? null : uri;
+    }
+
+    public static @NonNull Uri nullToNone(final Uri uri) {
+        return uri == null ? NONE : uri;
     }
 }

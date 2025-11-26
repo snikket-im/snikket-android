@@ -59,8 +59,8 @@ public class Data extends Element {
 		field.setValues(values);
 	}
 
-	public void submit(Bundle options) {
-		for (Field field : getFields()) {
+	public void submit(final Bundle options) {
+		for (final Field field : getFields()) {
 			if (options.containsKey(field.getFieldName())) {
 				field.setValue(options.getString(field.getFieldName()));
 			}

@@ -1,0 +1,3 @@
+* Schedule regular backups
+* Exclude all realme devices up to Android 11 from call integration
+* Minor UI (message bubble) improvements

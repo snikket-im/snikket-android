@@ -34,9 +34,10 @@
         app:title="@string/pref_connection_options" />
     <Preference
         android:icon="@drawable/ic_archive_24dp"
-        android:key="create_backup"
-        android:summary="@string/pref_create_backup_summary"
-        android:title="@string/pref_create_backup" />
+        android:key="backup"
+        app:fragment="eu.siacs.conversations.ui.fragment.settings.BackupSettingsFragment"
+        android:summary="@string/pref_backup_summary"
+        android:title="@string/backup" />
     <Preference
         android:icon="@drawable/ic_cloud_sync_24dp"
         app:fragment="eu.siacs.conversations.ui.fragment.settings.UpSettingsFragment"

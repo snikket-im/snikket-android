@@ -78,7 +78,7 @@
     <string name="preparing_images">Préparation pour l\'envoi des images</string>
     <string name="sharing_files_please_wait">Partage des fichiers. Veuillez patienter…</string>
     <string name="action_clear_history">Vider l\'historique</string>
-    <string name="clear_conversation_history">Vider l\'historique de la conversation</string>
+    <string name="clear_conversation_history">Effacer l\'historique de la conversation</string>
     <string name="clear_histor_msg">Êtes-vous sûr de vouloir supprimer tous les messages de cette conversation ?
 \n
 \n <b>Avertissement :</b> Cela ne supprimera pas les copies des messages qui sont stockés sur d\'autres appareils ou serveurs.</string>
@@ -165,7 +165,7 @@
     <string name="account_status_incompatible_server">Serveur incompatible</string>
     <string name="account_status_stream_error">Erreur de flux</string>
     <string name="account_status_stream_opening_error">Erreur d\'ouverture du flux</string>
-    <string name="encryption_choice_unencrypted">Non chiffré</string>
+    <string name="encryption_choice_unencrypted">En clair</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -277,7 +277,7 @@
     <string name="ignore">Ignorer</string>
     <string name="without_mutual_presence_updates"><b>Attention :</b> peut poser problème si l\'un des deux correspondants n\'a pas activé les mises à jour de disponibilité.\n\n<small>Vérifiez dans « Détails du contact » que vous y avez bien souscrit.</small></string>
     <string name="pref_security_settings">Sécurité</string>
-    <string name="pref_allow_message_correction">Autoriser la correction</string>
+    <string name="pref_allow_message_correction">Correction des messages</string>
     <string name="pref_allow_message_correction_summary">Permet à vos contacts d\'éditer leurs messages rétroactivement</string>
     <string name="pref_expert_options">Paramètres avancés</string>
     <string name="pref_expert_options_summary">À utiliser avec précaution.</string>
@@ -466,8 +466,8 @@
     <string name="pref_dnd_on_silent_mode_summary">Occupé lorsque l\'appareil est en mode silencieux</string>
     <string name="pref_treat_vibrate_as_silent">Indisponible en mode vibreur</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Occupé lorsque l\'appareil est en mode vibreur</string>
-    <string name="pref_show_connection_options">Paramètres de connexion avancés</string>
-    <string name="pref_show_connection_options_summary">Montrer le nom d\'hôte et le port lors du paramétrage d\'un compte</string>
+    <string name="pref_show_connection_options">Nom d\'hôte et port</string>
+    <string name="pref_show_connection_options_summary">Montrer les paramètres étendus de connexion lors du paramétrage d\'un compte</string>
     <string name="hostname_example">xmpp.example.com</string>
     <string name="action_add_account_with_certificate">Se connecter avec certificat</string>
     <string name="unable_to_parse_certificate">Impossible d\'analyser le certificat</string>
@@ -555,8 +555,8 @@
     <string name="gp_short">Courte</string>
     <string name="gp_medium">Moyenne</string>
     <string name="gp_long">Longue</string>
-    <string name="pref_broadcast_last_activity">Partage de l\'utilisation</string>
-    <string name="pref_broadcast_last_activity_summary">Informer vos contacts lorsque vous utilisez Snikket</string>
+    <string name="pref_broadcast_last_activity">Dernière connexion</string>
+    <string name="pref_broadcast_last_activity_summary">Informer vos contacts de la dernière fois que vous avez utilisé l\'application</string>
     <string name="pref_privacy">Confidentialité</string>
     <string name="pref_theme_options">Thème</string>
     <string name="pref_theme_options_summary">Choisir la palette de couleurs</string>
@@ -695,14 +695,14 @@
     <string name="error_trustkey_device_list">Impossible de récupérer la liste des appareils</string>
     <string name="error_trustkey_bundle">Impossible de récupérer les clés de chiffrement</string>
     <string name="error_trustkey_hint_mutual">Indication : Dans certains cas, cela peut être résolu en vous ajoutant respectivement dans votre liste de contacts.</string>
-    <string name="disable_encryption_message">Êtes-vous sûr de vouloir désactiver le chiffrement OMEMO pour cette discussion ?
+    <string name="disable_encryption_message">Êtes-vous sûr de vouloir désactiver le chiffrement OMEMO pour cette conversation ?
 \nCeci permettra à l\'administrateur de votre serveur de lire vos messages, mais cela peut être le seul moyen de communiquer avec des personnes utilisant un vieux client.</string>
     <string name="disable_now">Désactiver maintenant</string>
     <string name="draft">Brouillon :</string>
     <string name="pref_omemo_setting">Chiffrement OMEMO</string>
     <string name="pref_omemo_setting_summary_always">OMEMO sera toujours utilisé pour des discussions à deux ou les groupes privés.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO sera utilisé par défaut pour les nouvelles discussions.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO devra être activé manuellement pour chaque nouvelle discussion.</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO sera utilisé par défaut pour les nouvelles conversations.</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO devra être activé manuellement pour chaque nouvelle conversation.</string>
     <string name="create_shortcut">Créer un raccourci</string>
     <string name="default_on">Activé par défaut</string>
     <string name="default_off">Désactivé par défaut</string>
@@ -730,7 +730,7 @@
     <string name="copy_jabber_id">Copier l\'adresse XMPP</string>
     <string name="p1_s3_filetransfer">Partage de fichier HTTP pour S3</string>
     <string name="pref_start_search">Recherche directe</string>
-    <string name="pref_start_search_summary">Sur l\'écran de démarrage de Conversation, afficher le clavier et placer le curseur sur le champ recherche</string>
+    <string name="pref_start_search_summary">Lors de l\'ajout de conversations, afficher le clavier et placer le curseur sur le champ de recherche</string>
     <string name="group_chat_avatar">Avatar du groupe</string>
     <string name="host_does_not_support_group_chat_avatars">Le serveur ne prend pas en charge les avatars pour les groupes</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Seul le propriétaire peut changer l\'avatar d\'un groupe</string>
@@ -785,8 +785,8 @@
     <string name="resend_sms">Renvoyer un SMS</string>
     <string name="resend_sms_in">Renvoyer SMS (%s)</string>
     <string name="wait_x">S\'il vous plaît, attendez (%s)</string>
-    <string name="back">retour</string>
-    <string name="possible_pin">Collage possible des broches possibles du presse-papiers.</string>
+    <string name="back">Retour</string>
+    <string name="possible_pin">Le code PIN du presse-papier a été automatiquement copié.</string>
     <string name="please_enter_pin">Veuillez entrer votre code PIN à 6 chiffres.</string>
     <string name="abort_registration_procedure">Êtes-vous sûr de vouloir quitter la procédure d\'inscription ?</string>
     <string name="yes">Oui</string>
@@ -970,10 +970,9 @@
     <string name="backup_started_message">La sauvegarde a débuté. Vous serez notifié une fois terminé.</string>
     <string name="conference_technical_problems">Vous avez quitté ce groupe pour des raisons techniques</string>
     <string name="delete_from_server">Supprimer le compte du serveur</string>
-    <string name="sync_with_contacts_long">%1$s souhaite obtenir la permission d\'accéder à votre carnet d\'adresses pour le faire correspondre à votre liste de contacts XMPP.
-\nCela affichera les noms complets et les avatars de vos contacts.
+    <string name="sync_with_contacts_long">%1$s traite votre liste de contacts sur votre appareil pour afficher les noms et les photo de profil des contacts correspondants sur XMPP.
 \n
-\n%1$s ne lira que votre carnet d\'adresses et le comparera localement sans rien télécharger sur votre serveur.</string>
+\nVotre liste de contacts ne quitte jamais votre appareil !</string>
     <string name="multimedia_file">ficher multimédia</string>
     <string name="search_group_chats">Rechercher des groupes</string>
     <string name="outgoing_call_duration_timestamp">Appel sortant (%s) · %s</string>
@@ -993,7 +992,6 @@
         <item quantity="other">%1$d appels manqués de %2$d contacts</item>
     </plurals>
     <string name="group_chats">Discussions de groupe</string>
-    <string name="save_as_group_chat">Enregistrer comme groupe</string>
     <string name="pref_autojoin">Synchroniser les favoris</string>
     <string name="pref_autojoin_summary">Activer \"Rejoindre automatiquement\" en entrant ou sortant d\'un groupe et réagir aux modifications apportées par d\'autres clients.</string>
     <string name="vector_graphic">graphique vectoriel</string>
@@ -1029,5 +1027,69 @@
     <string name="hide_notification">Cacher la notification</string>
     <string name="log_out">Se déconnecter</string>
     <string name="contact_list_integration_not_available">L\'intégration de la liste de contacts n\'est pas disponible</string>
-    <string name="delete_and_close">Supprimer &amp; Fermer</string>
+    <string name="delete_and_close">Supprimer et archiver la conversation</string>
+    <string name="unverified_devices">Vous utilisez un appareil qui n\'est pas encore vérifié. Scannez le QR code sur votre autre appareil pour effectuer une vérification et éviter une attaque de l\'homme du milieu.</string>
+    <string name="call_integration_not_available">L\'intégration d\'appels n\'est pas diponible !</string>
+    <string name="pref_title_interface">Interface</string>
+    <string name="pref_light_dark_mode">Thème clair/sombre</string>
+    <string name="pref_allow_screenshots">Autoriser les captures d\'écran</string>
+    <string name="pref_category_e2ee">Chiffrement de bout en bout</string>
+    <string name="pref_allow_screenshots_summary">Afficher le contenu de l\'application dans le sélecteur d\'applications et autorise les captures d\'écran</string>
+    <string name="pref_title_trust_system_ca_store">Autorités de certification</string>
+    <string name="pref_title_trust_system_ca_store_summary">Faire confiance aux certificats de l\'autorité de certification du système</string>
+    <string name="detect_mim">Oblige la liaison du canal</string>
+    <string name="detect_mim_summary">La liaison du canal peut permettre de détecter les attaques de l\'homme du milieu</string>
+    <string name="pref_keyboard_options">Clavier</string>
+    <string name="pref_create_backup_one_off_summary">Créer une sauvegarde ponctuelle</string>
+    <string name="pref_backup_recurring">Créer une sauvegarde récurrente</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">Le code-barre ne contient pas les empreintes pour cette conversation.</string>
+    <string name="corresponding_chats_closed">Les conversations correspondantes ont été archivés.</string>
+    <string name="title_activity_new_chat">Nouvelle conversation</string>
+    <string name="remove_bookmark_and_close">Voulez-vous supprimer le favori %s et archiver la conversation ?</string>
+    <string name="remove_bookmark">Voulez-vous supprimer le favori %s ?</string>
+    <string name="pref_send_crash_reports">Envoyer des rapports d\'incident</string>
+    <string name="welcome_header">Rejoignez la Conversation</string>
+    <string name="pref_summary_security">Chiffrement de bout en bout, confiance aveugle avant vérification, détection des attaques de l\'homme du milieu</string>
+    <string name="pref_category_operating_system">Système d\'exploitation</string>
+    <string name="unsupported_operation">Opération pas encore supportée</string>
+    <string name="pref_category_engagement_notifications">Notifications d\'utilisation</string>
+    <string name="pref_up_long_summary">En agissant en tant que distributeur UnifiedPush, la connexion XMPP persistante, fiable et économique en batterie sera utilisée pour communiquer avec d\'autres applications compatibles comme Tusky, Ltt.rs, FluffyChat et d\'autres encore.</string>
+    <string name="pref_fullscreen_notification">Notifications en plein écran</string>
+    <string name="pref_fullscreen_notification_summary">Autoriser cette application à afficher une notification en plein écran lors d\'un appel entrant lorsque l\'appareil est verrouillé.</string>
+    <string name="pref_backup_summary">Créer des sauvegardes ponctuelles ou récurrentes</string>
+    <string name="title_activity_share_with">Partager avec…</string>
+    <string name="pref_use_colorful_bubbles">Bulles de conversation colorées</string>
+    <string name="pref_use_colorful_bubbles_summary">Afficher un fond différent pour distinguer les messages envoyés et reçus</string>
+    <string name="pref_dynamic_colors">Couleurs dynamiques</string>
+    <string name="pref_dynamic_colors_summary">Couleurs systèmes (Material You)</string>
+    <string name="channel_discover_opt_in_message">La découverte de canaux utilise un service de tierce partie appelé &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt; Utiliser cette fonctionnalité va transmettre votre adresse IP et votre recherche à ce service. Voir leur &lt;a href=https://search.jabber.network/privacy&gt;Politique de confidentialité&lt;/a&gt; pour plus d\'informations.</string>
+    <string name="action_archive_chat">Archiver la conversation</string>
+    <string name="archive_this_chat">Archiver cette conversation</string>
+    <string name="send_encrypted_message">Envoyer un message chiffré</string>
+    <string name="title_undo_swipe_out_chat">Conversation archivée</string>
+    <string name="switch_to_chat">Se rendre à la conversation</string>
+    <string name="contact_uses_unverified_keys">Votre contact utilise un appareil qui n\'est pas encore vérifié. Scannez son QR code pour effectuer une vérification et éviter une attaque de l\'homme du milieu.</string>
+    <string name="start_chat">Discuter</string>
+    <string name="no_certificate_selected">Aucun certificat client sélectionné !</string>
+    <string name="pref_summary_appearance">Thème, couleurs, captures d\'écran, saisie</string>
+    <string name="pref_title_security">Sécurité</string>
+    <string name="unified_push_summary">Relai de notifications pour les applications de tierce partie compatibles avec UnifiedPush</string>
+    <string name="notifications">Notifications</string>
+    <string name="pref_attachments_summary">Taille de fichier, compression des images, qualité des vidéos</string>
+    <string name="pref_notifications_summary">Période sans notifications, sonnerie, vibration, inconnus</string>
+    <string name="pref_category_sending">Envoi</string>
+    <string name="pref_category_receiving">Réception</string>
+    <string name="pref_automatic_download">Téléchargement automatique</string>
+    <string name="appearance">Apparence</string>
+    <string name="pref_category_server_connection">Connection au serveur</string>
+    <string name="pref_privacy_summary">Notifications d\'écriture, dernière connexion, disponibilité</string>
+    <string name="pref_connection_summary">Nom d\'hôte et port, Tor</string>
+    <string name="pref_connection_summary_w_cd">Nom d\'hôte et port, Tor et découverte des canaux</string>
+    <string name="pref_category_application">Application</string>
+    <string name="pref_category_interaction">Interaction</string>
+    <string name="pref_category_on_this_device">Sur l\'appareil</string>
+    <string name="pref_accept_invites_from_strangers">Invitations d\'inconnus</string>
+    <string name="pref_accept_invites_from_strangers_summary">Accepter les invitations aux conversations de groupes provenant d\'inconnus</string>
+    <string name="pref_large_font">Grande police</string>
+    <string name="pref_large_font_summary">Augmenter la taille de la police dans les bulles de message</string>
 </resources>

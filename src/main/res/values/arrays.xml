@@ -84,6 +84,13 @@
 		<item>2592000</item>
 		<item>15811200</item>
 	</integer-array>
+	<integer-array name="recurring_backup_values">
+		<item>0</item>
+		<item>86400</item>
+		<item>172800</item>
+		<item>604800</item>
+		<item>2592000</item>
+	</integer-array>
 	<string-array name="omemo_setting_entry_values">
 		<item>always</item>
 		<item>default_on</item>

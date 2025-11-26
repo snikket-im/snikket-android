@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.16.0
+
+* Schedule regular backups
+* Exclude all realme devices up to Android 11 from call integration
+* Minor UI (message bubble) improvements
+
 ### Version 2.15.3
 
 * fix call integration on some Android 14 devices

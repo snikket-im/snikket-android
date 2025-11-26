@@ -78,12 +78,12 @@
     <string name="clear_conversation_history">清除會話記錄</string>
     <string name="delete_file_dialog">刪除檔案</string>
     <string name="choose_presence">選擇裝置</string>
-    <string name="send_unencrypted_message">傳送未加密的訊息</string>
+    <string name="send_unencrypted_message">傳送明文訊息</string>
     <string name="send_message">傳送訊息</string>
     <string name="send_message_to_x">傳送訊息至 %s</string>
     <string name="send_omemo_x509_message">傳送 v\\OMEMO 加密訊息</string>
     <string name="your_nick_has_been_changed">新暱稱已被使用</string>
-    <string name="send_unencrypted">不加密傳送</string>
+    <string name="send_unencrypted">傳送明文</string>
     <string name="decryption_failed">解密失敗，可能是私密金鑰不正確。</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="restart">重新啟動</string>
@@ -149,7 +149,7 @@
     <string name="account_status_incompatible_client">不相容的用戶端</string>
     <string name="account_status_stream_error">串流錯誤</string>
     <string name="account_status_stream_opening_error">串流開啟錯誤</string>
-    <string name="encryption_choice_unencrypted">未加密</string>
+    <string name="encryption_choice_unencrypted">明文</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -254,7 +254,7 @@
     <string name="request_now">立即要求</string>
     <string name="ignore">忽略</string>
     <string name="pref_security_settings">安全性</string>
-    <string name="pref_allow_message_correction">允許訊息修正</string>
+    <string name="pref_allow_message_correction">訊息修正</string>
     <string name="pref_allow_message_correction_summary">允許您的聯絡人追溯編輯他們的訊息</string>
     <string name="pref_expert_options">專家設定</string>
     <string name="pref_expert_options_summary">請謹慎使用</string>
@@ -290,8 +290,8 @@
     <string name="jabber_id_copied_to_clipboard">已複製 XMPP 位址到剪貼簿</string>
     <string name="error_message_copied_to_clipboard">已複製錯誤訊息到剪貼簿</string>
     <string name="web_address">網頁位址</string>
-    <string name="scan_qr_code">掃描二維條碼</string>
-    <string name="show_qr_code">顯示二維條碼</string>
+    <string name="scan_qr_code">掃描 QR 碼</string>
+    <string name="show_qr_code">顯示 QR 碼</string>
     <string name="show_block_list">顯示封鎖清單</string>
     <string name="account_details">帳戶詳細資料</string>
     <string name="confirm">確認</string>
@@ -441,8 +441,8 @@
     <string name="pref_dnd_on_silent_mode_summary">靜音模式時顯示為忙碌</string>
     <string name="pref_treat_vibrate_as_silent">靜音模式開啟震動</string>
     <string name="pref_treat_vibrate_as_dnd_summary">裝置震動時顯示為忙碌</string>
-    <string name="pref_show_connection_options">進階連線設定</string>
-    <string name="pref_show_connection_options_summary">註冊帳戶時顯示主機名稱和連接埠設定</string>
+    <string name="pref_show_connection_options">主機名和端口</string>
+    <string name="pref_show_connection_options_summary">註冊帳戶時顯示進階連線設定</string>
     <string name="hostname_example">xmpp.example.com</string>
     <string name="action_add_account_with_certificate">以憑證登入</string>
     <string name="unable_to_parse_certificate">無法解析憑證</string>
@@ -477,7 +477,7 @@
     <string name="shared_text_with_x">與 %s 分享的文字</string>
     <string name="no_storage_permission">授予 %1$s 外部儲存空間存取權</string>
     <string name="no_camera_permission">授予 %1$s 相機存取權</string>
-    <string name="sync_with_contacts">同步處理聯絡人</string>
+    <string name="sync_with_contacts">整合通訊錄</string>
     <string name="notify_on_all_messages">通知所有訊息</string>
     <string name="notify_only_when_highlighted">僅在被提及時通知</string>
     <string name="notify_never">通知已停用</string>
@@ -564,7 +564,7 @@
     <string name="share_as_http">分享為 HTTP 連結</string>
     <string name="pref_blind_trust_before_verification">驗證前盲目信任</string>
     <string name="not_trusted">未受信任</string>
-    <string name="invalid_barcode">無效的二維條碼</string>
+    <string name="invalid_barcode">無效的 QR 碼</string>
     <string name="pref_clean_cache">清理快取</string>
     <string name="pref_clean_private_storage">清理私人儲存空間</string>
     <string name="pref_clean_private_storage_summary">清理儲存檔案的私人空間 (檔案可從伺服器重新下載)</string>
@@ -641,7 +641,7 @@
     <string name="pref_omemo_setting">OMEMO 加密</string>
     <string name="pref_omemo_setting_summary_always">OMEMO 將一律用於一對一和私人群組聊天。</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO 將預設用於新會話。</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO 將明確用於新會話。</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO 將需要明確地用於新會話。</string>
     <string name="create_shortcut">建立捷徑</string>
     <string name="default_on">預設開啟</string>
     <string name="default_off">預設關閉</string>
@@ -669,7 +669,7 @@
     <string name="copy_jabber_id">複製 XMPP 位址</string>
     <string name="p1_s3_filetransfer">用於 S3 的 HTTP 檔案分享</string>
     <string name="pref_start_search">直接搜尋</string>
-    <string name="pref_start_search_summary">在「開始對話」畫面上開啟鍵盤並將遊標放在搜尋欄位</string>
+    <string name="pref_start_search_summary">在「開始會話」畫面上開啟鍵盤並將遊標放在搜尋欄位</string>
     <string name="group_chat_avatar">群組聊天頭像</string>
     <string name="host_does_not_support_group_chat_avatars">主機不支援群組聊天頭像</string>
     <string name="only_the_owner_can_change_group_chat_avatar">只有擁有者才能變更群組聊天頭像</string>
@@ -800,7 +800,7 @@
     <string name="attach">附加</string>
     <string name="discover_channels">探索頻道</string>
     <string name="search_channels">搜尋頻道</string>
-    <string name="channel_discovery_opt_in_title">可能違反隱私權！</string>
+    <string name="channel_discovery_opt_in_title">可能會侵犯隱私！</string>
     <string name="i_already_have_an_account">我已經有一個帳戶</string>
     <string name="add_existing_account">新增現有帳戶</string>
     <string name="register_new_account">註冊新帳戶</string>
@@ -905,7 +905,7 @@
     <string name="account_status_temporary_auth_failure">暫時驗證失敗</string>
     <string name="delete_avatar">刪除頭像</string>
     <string name="audio_video_disabled_tor">使用 Tor 時通話已停用</string>
-    <string name="pref_broadcast_last_activity_summary">在您使用 Conversations 時讓您的聯絡人知道</string>
+    <string name="pref_broadcast_last_activity_summary">讓您的聯絡人知道您最後使用此應用的時間</string>
     <string name="clear_histor_msg">您確定要刪除此會話中的所有訊息嗎？ 
 \n 
 \n<b>警告：</b>這將不會影響儲存在其他裝置或伺服器上的訊息。</string>
@@ -935,16 +935,15 @@
 \n<small>前往「聯絡人詳細資料」以驗證您的線上狀態訂閱。</small></string>
     <string name="pref_autojoin_summary">加入或離開多使用者聊天時設定「自動加入」旗標，並回應其他用戶端所做的修改。</string>
     <string name="clear_other_devices_desc">您確定要從 OMEMO 宣告中清除所有裝置嗎？您的裝置在下次連線時將會重新宣告，但可能不會收到您傳送的訊息。</string>
-    <string name="sync_with_contacts_long">%1$s想要您通訊錄的存取權以將其與您的 XMPP 聯絡人清單相符。
-\n這將顯示您聯絡人的完整名稱和頭像。
+    <string name="sync_with_contacts_long">%1$s 在您的設備上本地處理您的通訊錄，以向您顯示 XMPP 上相符的聯絡人名稱和個人資料頭像。
 \n
-\n%1$s僅會讀取您的通訊錄並在本機進行相符處理，不會上傳任何內容至您的伺服器。</string>
+\n任何通訊錄數據都不會離開您的設備！</string>
     <string name="battery_optimizations_enabled_dialog">您的裝置正在為 %1$s 採用強力電池效能最佳化，這可能會導致通知延遲甚至訊息遺失。
 \n
 \n您將被要求將其停用。</string>
     <string name="data_saver_enabled_explained">您的作業系統正在限制 %1$s 在背景存取網際網路。若要接收新訊息的通知，您應該允許 %1$s 在「數據節省」開啟時無限制地存取。
 \n在可能的狀況下，%1$s 仍會努力地節省數據。</string>
-    <string name="pref_broadcast_last_activity">廣播使用</string>
+    <string name="pref_broadcast_last_activity">最後在線</string>
     <string name="delete_file_dialog_msg">您確定要刪除此檔案嗎？
 \n
 \n<b>警告：</b>這將不會影響儲存在其他裝置或伺服器上的檔案複本。 </string>
@@ -957,7 +956,7 @@
     <string name="pref_notification_grace_period_summary">在您的其他裝置上偵測到活動後，通知被靜音的時間長度。</string>
     <string name="pref_never_send_crash_summary">透過傳送堆疊追蹤，您可以協助開發</string>
     <string name="error_security_exception">您用來選取此圖像的應用程式沒有足夠的權限以讀取此檔案。</string>
-    <string name="unified_push_distributor">UnifiedPush 散發者</string>
+    <string name="unified_push_distributor">UnifiedPush 散發程序</string>
     <string name="pref_up_push_account_title">XMPP 帳戶</string>
     <string name="pref_up_push_server_title">推送伺服器</string>
     <string name="no_account_deactivated">無 (已停用)</string>
@@ -995,16 +994,80 @@
     <string name="could_not_delete_account_from_server">無法從伺服器刪除帳戶</string>
     <string name="search_group_chats">搜尋群組聊天</string>
     <string name="group_chats">群組聊天</string>
-    <string name="save_as_group_chat">儲存為群組聊天</string>
     <string name="this_account_is_logged_out">您已登出此帳戶</string>
     <string name="log_in">登入</string>
     <string name="hide_notification">隱藏通知</string>
     <string name="reconnect_on_other_host">在其他主機上重新連接</string>
-    <string name="contact_uses_unverified_keys">您的聯絡人使用未驗證的設備。掃描他們的二維條碼進行驗證，以防止主動中間人攻擊。</string>
+    <string name="contact_uses_unverified_keys">您的聯絡人使用未驗證的設備。請掃描他們的 QR 碼進行驗證，以防止主動中間人攻擊。</string>
     <string name="log_out">登出</string>
     <string name="outdated_backup_file_format">您正在嘗試匯入一個過時的備份檔案格式</string>
     <string name="account_state_logged_out">已登出</string>
-    <string name="unverified_devices">您正在使用未驗證的設備。掃描您其他設備上的二維條碼進行驗證，以防止主動中間人攻擊。</string>
+    <string name="unverified_devices">您正在使用未驗證的設備。請掃描您其他設備上的 QR 碼進行驗證，以防止主動中間人攻擊。</string>
     <string name="audiobook">有聲書</string>
     <string name="restore_warning_continued">請勿嘗試還原非您自己建立的備份！</string>
+    <string name="report_spam">報告垃圾訊息</string>
+    <string name="pref_send_crash_reports">發送崩潰報告</string>
+    <string name="corresponding_chats_closed">相應的會話已存檔。</string>
+    <string name="contact_list_integration_not_available">聯絡人整合不可用</string>
+    <string name="privacy_policy">隱私權政策</string>
+    <string name="report_spam_and_block">報告垃圾訊息並封鎖垃圾訊息發送者</string>
+    <string name="delete_and_close">刪除並存檔會話</string>
+    <string name="pref_title_interface">用戶界面</string>
+    <string name="no_certificate_selected">未選擇用戶端證書！</string>
+    <string name="pref_title_security">安全性</string>
+    <string name="pref_attachments_summary">文件大小、圖片壓縮、影片質量</string>
+    <string name="unified_push_summary">兼容 UnifiedPush 的第三方應用的通知轉發器</string>
+    <string name="notifications">通知</string>
+    <string name="pref_title_trust_system_ca_store">證書頒發機構</string>
+    <string name="pref_title_trust_system_ca_store_summary">信任系統的 CA 證書</string>
+    <string name="detect_mim">需要通道綁定</string>
+    <string name="detect_mim_summary">通道綁定可以檢測某些中間人攻擊</string>
+    <string name="pref_category_server_connection">伺服器連接</string>
+    <string name="pref_category_operating_system">作業系統</string>
+    <string name="pref_privacy_summary">輸入通知、最後在線、在線狀態</string>
+    <string name="pref_connection_summary">主機名和端口、Tor</string>
+    <string name="pref_connection_summary_w_cd">主機名和端口、Tor、頻道探索</string>
+    <string name="pref_keyboard_options">鍵盤</string>
+    <string name="pref_category_engagement_notifications">參與通知</string>
+    <string name="pref_category_application">應用程序</string>
+    <string name="pref_category_interaction">互動</string>
+    <string name="pref_summary_security">端對端加密、驗證前盲目信任、中間人攻擊檢測</string>
+    <string name="title_activity_share_with">分享至…</string>
+    <string name="title_activity_new_chat">新會話</string>
+    <string name="action_archive_chat">存檔會話</string>
+    <string name="archive_this_chat">存檔此會話</string>
+    <string name="switch_to_chat">切換到會話</string>
+    <string name="send_encrypted_message">傳送加密消息</string>
+    <string name="quicksy_wants_your_consent">Quicksy 請求您同意使用您的數據</string>
+    <string name="welcome_header">參與會話</string>
+    <string name="welcome_header_quicksy">歡迎使用 Quicksy！</string>
+    <string name="pref_use_colorful_bubbles">彩色聊天氣泡</string>
+    <string name="no_permission_to_place_call">沒有撥打電話的權限</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">二維碼並不包含此會話的指紋。</string>
+    <string name="pref_dynamic_colors_summary">系統色彩 (Material You)</string>
+    <string name="rtp_state_contact_offline">聯絡人不可用</string>
+    <string name="call_integration_not_available">通話整合不可用！</string>
+    <string name="start_chat">開始會話</string>
+    <string name="pref_summary_appearance">主題、配色、截屏、輸入</string>
+    <string name="pref_notifications_summary">靜默期、鈴聲、震動、陌生人</string>
+    <string name="pref_category_sending">發送</string>
+    <string name="pref_category_receiving">接收</string>
+    <string name="pref_automatic_download">自動下載</string>
+    <string name="appearance">外觀</string>
+    <string name="pref_light_dark_mode">淺色／深色模式</string>
+    <string name="pref_allow_screenshots">允許截屏</string>
+    <string name="pref_allow_screenshots_summary">在切換應用時顯示應用內容並允許截屏</string>
+    <string name="pref_category_e2ee">端對端加密</string>
+    <string name="pref_category_on_this_device">在設備上</string>
+    <string name="pref_up_long_summary">在充當 UnifiedPush 散發者時，將利用持久、可靠且省電的 XMPP 連接來喚醒其他兼容 UnifiedPush 的應用，如 Tusky、Ltt.rs、FluffyChat 等。</string>
+    <string name="title_undo_swipe_out_chat">會話已存檔</string>
+    <string name="pref_use_colorful_bubbles_summary">為已發送和已接收訊息使用個別的背景顏色</string>
+    <string name="pref_large_font">大字體</string>
+    <string name="pref_large_font_summary">增加訊息氣泡中的字體大小</string>
+    <string name="remove_bookmark">是否移除 %s 的書籤？</string>
+    <string name="remove_bookmark_and_close">是否移除 %s 的書籤並存檔會話？</string>
+    <string name="pref_dynamic_colors">自動配色</string>
+    <string name="channel_discover_opt_in_message">頻道探索使用一個名為 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; 的第三方服務，&lt;br&gt;&lt;br&gt;使用此功能會將您的 IP 位址和搜尋詞彙傳送至此服務。更多資訊請參見他們的 &lt;a href=https://search.jabber.network/privacy&gt;隱私權政策&lt;/a&gt;。</string>
+    <string name="pref_accept_invites_from_strangers">來自陌生人的邀請</string>
+    <string name="pref_accept_invites_from_strangers_summary">接受來自陌生人的群聊邀請</string>
 </resources>

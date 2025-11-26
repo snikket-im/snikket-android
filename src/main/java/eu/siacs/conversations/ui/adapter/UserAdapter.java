@@ -6,12 +6,15 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.common.base.Strings;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
@@ -71,9 +74,20 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
         AvatarWorkerTask.loadAvatar(user, viewHolder.binding.contactPhoto, R.dimen.avatar);
         viewHolder.binding.getRoot().setOnClickListener(v -> {
             final XmppActivity activity = XmppActivity.find(v);
-            if (activity != null) {
-                activity.highlightInMuc(user.getConversation(), user.getName());
+            if (activity == null) {
+                return;
             }
+            final var contact = user.getContact();
+            if (user.getRole() == MucOptions.Role.NONE && contact != null) {
+                Toast.makeText(
+                                activity,
+                                activity.getString(
+                                        R.string.user_has_left_conference,
+                                        contact.getDisplayName()),
+                                Toast.LENGTH_SHORT)
+                        .show();
+            }
+            activity.highlightInMuc(user.getConversation(), user.getName());
         });
         viewHolder.binding.getRoot().setTag(user);
         viewHolder.binding.getRoot().setOnCreateContextMenuListener(this);
@@ -92,7 +106,7 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
                 viewHolder.binding.contactJid.setText(ConferenceDetailsActivity.getStatus(viewHolder.binding.getRoot().getContext(), user, advancedMode));
             }
         } else {
-            viewHolder.binding.contactDisplayName.setText(name == null ? "" : name);
+            viewHolder.binding.contactDisplayName.setText(Strings.nullToEmpty(name));
             viewHolder.binding.contactJid.setText(ConferenceDetailsActivity.getStatus(viewHolder.binding.getRoot().getContext(), user, advancedMode));
         }
         if (advancedMode && user.getPgpKeyId() != 0) {

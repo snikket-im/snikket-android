@@ -50,6 +50,7 @@ dependencies {
     implementation "androidx.preference:preference:1.2.1"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.work:work-runtime:2.9.0'
 
     implementation "androidx.emoji2:emoji2:1.4.0"
     freeImplementation "androidx.emoji2:emoji2-bundled:1.4.0"
@@ -58,7 +59,8 @@ dependencies {
     //zxing stopped supporting Java 7 so we have to stick with 3.3.3
     //https://github.com/zxing/zxing/issues/1170
     implementation 'com.google.zxing:core:3.3.3'
-    implementation 'de.measite.minidns:minidns-hla:0.2.4'
+    implementation 'org.minidns:minidns-client:1.0.4'
+    implementation 'org.minidns:minidns-dnssec:1.0.4'
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
     implementation 'org.whispersystems:signal-protocol-java:2.6.2'
     implementation 'com.makeramen:roundedimageview:2.3.0'
@@ -98,8 +100,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 34
-        versionCode 42110
-        versionName "2.15.3"
+        versionCode 42111
+        versionName "2.16.0"
         archivesBaseName += "-$versionName"
         applicationId "org.snikket.android"
         resValue "string", "applicationId", applicationId

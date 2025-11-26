@@ -12,6 +12,6 @@
     <string name="improperly_formatted_provisioning">Code de provisionnement mal formaté</string>
     <string name="tap_share_button_send_invite">Appuyez sur le bouton partager pour envoyer à votre contact une invitation pour %1$s.</string>
     <string name="if_contact_is_nearby_use_qr">Si vos contacts sont à proximité, ils peuvent aussi scanner le code ci-dessous pour accepter votre invitation.</string>
-    <string name="easy_invite_share_text">Rejoignez %1$set discutez avec moi : %2$s</string>
+    <string name="easy_invite_share_text">Rejoignez %1$s et discutez avec moi : %2$s</string>
     <string name="share_invite_with">Partager une invitation avec …</string>
 </resources>

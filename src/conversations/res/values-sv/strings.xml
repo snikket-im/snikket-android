@@ -12,8 +12,8 @@
     <string name="share_invite_with">Dela inbjudan med…</string>
     <string name="magic_create_text_fixed">Du har blivit inbjuden till %1$s. Ett användarnamn har redan valts åt dig. Vi guidar dig genom processen för att skapa ett konto.
 \nDu kommer att kunna kommunicera med användare av andra leverantörer genom att ge dem din fullständiga XMPP-adress.</string>
-    <string name="server_select_text">XMPP är ett leverantörsoberoende snabbmeddelandenätverk. Du kan använda den här klienten med vilken XMPP-server du än väljer.
-\nMen för din bekvämlighet har vi gjort det enkelt att skapa ett konto på conversations.im; en leverantör som är speciellt lämpad för användning med Conversations.</string>
+    <string name="server_select_text">XMPP är ett leverantörsoberoende snabbmeddelandenätverk. Du kan använda den här appen med en valfri XMPP-server som du själv väljer.
+\nMen för din bekvämlighet har vi gjort det enkelt att skapa ett konto på conversations.im; en leverantör som är speciellt lämpad för appen Conversations.</string>
     <string name="magic_create_text_on_x">Du har blivit inbjuden till %1$s. Vi guidar dig genom processen för att skapa ett konto.
 \nNär du väljer %1$s som leverantör kommer du att kunna kommunicera med användare av andra leverantörer genom att ge dem din fullständiga XMPP-adress.</string>
 </resources>

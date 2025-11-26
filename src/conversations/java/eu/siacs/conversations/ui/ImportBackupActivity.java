@@ -19,6 +19,7 @@ import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -27,6 +28,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -34,6 +37,7 @@ import eu.siacs.conversations.databinding.ActivityImportBackupBinding;
 import eu.siacs.conversations.databinding.DialogEnterPasswordBinding;
 import eu.siacs.conversations.services.ImportBackupService;
 import eu.siacs.conversations.ui.adapter.BackupFileAdapter;
+import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.utils.BackupFileHeader;
 
 import java.io.IOException;
@@ -182,21 +186,36 @@ public class ImportBackupActivity extends ActionBarActivity
     }
 
     private void openBackupFileFromUri(final Uri uri, final boolean finishOnCancel) {
-        try {
-            final ImportBackupService.BackupFile backupFile =
-                    ImportBackupService.BackupFile.read(this, uri);
-            showEnterPasswordDialog(backupFile, finishOnCancel);
-        } catch (final BackupFileHeader.OutdatedBackupFileVersion e) {
+        final var backupFileFuture = ImportBackupService.read(this, uri);
+        Futures.addCallback(
+                backupFileFuture,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(final ImportBackupService.BackupFile backupFile) {
+                        showEnterPasswordDialog(backupFile, finishOnCancel);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull final Throwable throwable) {
+                        Log.d(Config.LOGTAG, "could not open backup file " + uri, throwable);
+                        showBackupThrowable(throwable);
+                    }
+                },
+                MainThreadExecutor.getInstance());
+    }
+
+    private void showBackupThrowable(final Throwable throwable) {
+        if (throwable instanceof BackupFileHeader.OutdatedBackupFileVersion) {
             Snackbar.make(
                             binding.coordinator,
                             R.string.outdated_backup_file_format,
                             Snackbar.LENGTH_LONG)
                     .show();
-        } catch (final IOException | IllegalArgumentException e) {
-            Log.d(Config.LOGTAG, "unable to open backup file " + uri, e);
+        } else if (throwable instanceof IOException
+                || throwable instanceof IllegalArgumentException) {
             Snackbar.make(binding.coordinator, R.string.not_a_backup_file, Snackbar.LENGTH_LONG)
                     .show();
-        } catch (final SecurityException e) {
+        } else if (throwable instanceof SecurityException e) {
             Snackbar.make(
                             binding.coordinator,
                             R.string.sharing_application_not_grant_permission,
@@ -243,22 +262,28 @@ public class ImportBackupActivity extends ActionBarActivity
                                                     getString(R.string.please_enter_password));
                                             return;
                                         }
-                                        final Uri uri = backupFile.getUri();
-                                        Intent intent = new Intent(this, ImportBackupService.class);
-                                        intent.setAction(Intent.ACTION_SEND);
-                                        intent.putExtra("password", password);
-                                        if ("file".equals(uri.getScheme())) {
-                                            intent.putExtra("file", uri.getPath());
-                                        } else {
-                                            intent.setData(uri);
-                                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                        }
+                                        final Intent intent = getIntent(backupFile, password);
                                         setLoadingState(true);
                                         ContextCompat.startForegroundService(this, intent);
                                         d.dismiss();
                                     });
                 });
         dialog.show();
+    }
+
+    @NonNull
+    private Intent getIntent(ImportBackupService.BackupFile backupFile, String password) {
+        final Uri uri = backupFile.getUri();
+        Intent intent = new Intent(this, ImportBackupService.class);
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra("password", password);
+        if ("file".equals(uri.getScheme())) {
+            intent.putExtra("file", uri.getPath());
+        } else {
+            intent.setData(uri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+        return intent;
     }
 
     private void setLoadingState(final boolean loadingState) {

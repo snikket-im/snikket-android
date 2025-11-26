@@ -978,7 +978,6 @@
     <string name="jabber_network">jabber.network</string>
     <string name="search_group_chats">kërkoni në fjalosje grupesh</string>
     <string name="group_chats">Fjalosje në grup</string>
-    <string name="save_as_group_chat">Ruaje si fjalosjeje grupi</string>
     <string name="unverified_devices">Po përdorni pajisje të paverifikuara. Që të kryhet verifikimi dhe të pengohen sulme MITM, skanoni Kodin QR në pajisjet tuaja të tjera.</string>
     <string name="title_activity_block_list">Listë bllokimesh</string>
     <string name="account_state_logged_out">I dalë</string>
@@ -1022,7 +1021,7 @@
     <string name="remove_bookmark_and_close">Doni të hiqet faqerojtësi për %s dhe arkivohet fjalosja?</string>
     <string name="delete_and_close">Fshije &amp; Arkivoje fjalosjen</string>
     <string name="remove_bookmark">Doni të hiqet faqerojtësi për %s?</string>
-    <string name="pref_use_colorful_bubbles_summary">Flluska të ngjyrosura fjalosjeje ndihmojnë të dalloni mesazhe të dërguar dhe të marrë</string>
+    <string name="pref_use_colorful_bubbles_summary">Ngjyra të dallueshme sfondi për mesazhe të dërguar dhe të marrë</string>
     <string name="pref_dynamic_colors">Ngjyra dinamike</string>
     <string name="pref_dynamic_colors_summary">Ngjyra Sistemi (Material You)</string>
     <string name="possible_pin">U ngjit automatikisht nga e papastra PIN i mundshëm.</string>
@@ -1032,7 +1031,7 @@
     <string name="start_chat">Nisni fjalosje</string>
     <string name="action_archive_chat">Arkivoje fjalosjen</string>
     <string name="title_activity_new_chat">Fjalosje e re</string>
-    <string name="archive_this_chat">Arkivoje këtë fjalosje</string>
+    <string name="archive_this_chat">Fshije fjalosjen më pas</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_chat">Kodi me vija s’përmban shenja gishtash për këtë fjalosje.</string>
     <string name="switch_to_chat">Kaloni te fjalosja</string>
     <string name="title_undo_swipe_out_chat">Fjalosje e arkivuar</string>
@@ -1074,4 +1073,14 @@
     <string name="pref_up_long_summary">Kur veprohet si një Distributor UnifiedPush, për të zgjuar aplikacion tjetër të përputhshëm me UnifiedPush , fjala vjen, Tusky, Ltt.rs, FluffyChat, etj, do të përdoret lidhja XMPP, e vazhdueshme, e qëndrueshme dhe miqësore ndaj baterisë.</string>
     <string name="unified_push_distributor">Distributor UnifiedPush</string>
     <string name="send_encrypted_message">Dërgo mesazh të fshehtëzuar</string>
+    <string name="pref_accept_invites_from_strangers">Ftesa nga të panjohur</string>
+    <string name="pref_accept_invites_from_strangers_summary">Prano ftesa për fjalosje në grup nga të panjohur</string>
+    <string name="pref_large_font">Shkronja të mëdha</string>
+    <string name="pref_large_font_summary">Rrit madhësi shkronja në flluska mesazhesh</string>
+    <string name="pref_fullscreen_notification">Njoftime sa krejt ekrani</string>
+    <string name="pref_fullscreen_notification_summary">Lejojeni këtë aplikacion të shfaqë njoftime për thirrje ardhëse që zënë krejt ekranin, kur pajisja është e kyçur.</string>
+    <string name="unsupported_operation">Veprim i pambuluar</string>
+    <string name="pref_backup_recurring">Kopjeruajtje ripërsëritëse</string>
+    <string name="pref_create_backup_one_off_summary">Krijoni një kopjeruajtje një here të vetme</string>
+    <string name="allow_private_messages">Lejoni mesazhe private</string>
 </resources>

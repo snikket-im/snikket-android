@@ -16,8 +16,6 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.color.MaterialColors;
 import com.google.common.base.Strings;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,14 +29,13 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
-import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.entities.Transferable;
-import eu.siacs.conversations.services.ExportBackupService;
 import eu.siacs.conversations.ui.util.QuoteHelper;
+import eu.siacs.conversations.worker.ExportBackupWorker;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class UIHelper {
@@ -410,7 +407,7 @@ public class UIHelper {
             return context.getString(R.string.pdf_document);
         } else if (mime.equals("application/vnd.android.package-archive")) {
             return context.getString(R.string.apk);
-        } else if (mime.equals(ExportBackupService.MIME_TYPE)) {
+        } else if (mime.equals(ExportBackupWorker.MIME_TYPE)) {
             return context.getString(R.string.conversations_backup);
         } else if (mime.contains("vcard")) {
             return context.getString(R.string.vcard);

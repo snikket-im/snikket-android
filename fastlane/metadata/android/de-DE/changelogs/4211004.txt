@@ -1,0 +1,2 @@
+* Anrufintegration auf einigen Android 14-Geräten behoben
+* Neue Einstellung "Einladungen von Unbekannten"

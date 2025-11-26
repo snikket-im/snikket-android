@@ -994,7 +994,6 @@
     <string name="decline">Отклонить</string>
     <string name="could_not_delete_account_from_server">Невозможно удалить учётную запись на сервере</string>
     <string name="delete_from_server">Удалить учётную запись на сервере</string>
-    <string name="save_as_group_chat">Сохранить как групповую беседу</string>
     <string name="pref_autojoin">Синхронизировать закладки</string>
     <string name="pref_autojoin_summary">Устанавливать флаг \"автоприсоединение\" при входе в- и выходе из MUC, и реагировать на изменения от других клиентов.</string>
     <string name="search_group_chats">Поиск по групповым беседам</string>

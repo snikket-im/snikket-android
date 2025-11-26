@@ -46,6 +46,11 @@
         android:ringtoneType="ringtone"
         android:summary="@string/pref_call_ringtone_summary"
         android:title="@string/pref_ringtone" />
+    <Preference
+        android:icon="@drawable/ic_smartphone_24dp"
+        android:key="fullscreen_notification"
+        android:summary="@string/pref_fullscreen_notification_summary"
+        android:title="@string/pref_fullscreen_notification" />
     <ListPreference
         android:defaultValue="@integer/grace_period"
         android:entries="@array/grace_periods"

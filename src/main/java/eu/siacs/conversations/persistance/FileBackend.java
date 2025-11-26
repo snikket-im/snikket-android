@@ -36,6 +36,20 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteStreams;
 
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.DownloadableFile;
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.AttachFileToConversationRunnable;
+import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.adapter.MediaAdapter;
+import eu.siacs.conversations.ui.util.Attachment;
+import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.FileUtils;
+import eu.siacs.conversations.utils.FileWriterException;
+import eu.siacs.conversations.utils.MimeUtils;
+import eu.siacs.conversations.xmpp.pep.Avatar;
+
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
@@ -57,20 +71,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.DownloadableFile;
-import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.services.AttachFileToConversationRunnable;
-import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.ui.adapter.MediaAdapter;
-import eu.siacs.conversations.ui.util.Attachment;
-import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.FileUtils;
-import eu.siacs.conversations.utils.FileWriterException;
-import eu.siacs.conversations.utils.MimeUtils;
-import eu.siacs.conversations.xmpp.pep.Avatar;
 
 public class FileBackend {
 
@@ -664,13 +664,17 @@ public class FileBackend {
     }
 
     private void copyFileToPrivateStorage(File file, Uri uri) throws FileCopyException {
-        Log.d(
-                Config.LOGTAG,
-                "copy file (" + uri.toString() + ") to private storage " + file.getAbsolutePath());
-        file.getParentFile().mkdirs();
+        final var parentDirectory = file.getParentFile();
+        if (parentDirectory != null && parentDirectory.mkdirs()) {
+            Log.d(Config.LOGTAG,"created directory "+parentDirectory.getAbsolutePath());
+        }
         try {
-            file.createNewFile();
-        } catch (IOException e) {
+            if (file.createNewFile()) {
+                Log.d(
+                        Config.LOGTAG,
+                        "copy file (" + uri.toString() + ") to private storage " + file.getAbsolutePath());
+            }
+        } catch (final IOException e) {
             throw new FileCopyException(R.string.error_unable_to_create_temporary_file);
         }
         try (final OutputStream os = new FileOutputStream(file);
@@ -681,12 +685,12 @@ public class FileBackend {
             }
             try {
                 ByteStreams.copy(is, os);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new FileWriterException(file);
             }
             try {
                 os.flush();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new FileWriterException(file);
             }
         } catch (final FileNotFoundException e) {
@@ -695,7 +699,7 @@ public class FileBackend {
         } catch (final FileWriterException e) {
             cleanup(file);
             throw new FileCopyException(R.string.error_unable_to_create_temporary_file);
-        } catch (final SecurityException | IllegalStateException e) {
+        } catch (final SecurityException | IllegalStateException | IllegalArgumentException e) {
             cleanup(file);
             throw new FileCopyException(R.string.error_security_exception);
         } catch (final IOException e) {
@@ -706,7 +710,7 @@ public class FileBackend {
 
     public void copyFileToPrivateStorage(Message message, Uri uri, String type)
             throws FileCopyException {
-        String mime = MimeUtils.guessMimeTypeFromUriAndMime(mXmppConnectionService, uri, type);
+        final String mime = MimeUtils.guessMimeTypeFromUriAndMime(mXmppConnectionService, uri, type);
         Log.d(Config.LOGTAG, "copy " + uri.toString() + " to private storage (mime=" + mime + ")");
         String extension = MimeUtils.guessExtensionFromMimeType(mime);
         if (extension == null) {

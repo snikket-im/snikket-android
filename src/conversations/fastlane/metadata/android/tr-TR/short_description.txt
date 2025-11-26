@@ -1,0 +1,1 @@
+Mobil cihazınız için şifrelenmiş, kullanımı kolay bir XMPP mesajlaşma uygulaması

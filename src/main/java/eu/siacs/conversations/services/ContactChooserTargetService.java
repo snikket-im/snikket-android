@@ -21,6 +21,7 @@ import java.util.List;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.receiver.SystemEventReceiver;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.utils.Compatibility;
 
@@ -44,7 +45,7 @@ public class ContactChooserTargetService extends ChooserTargetService implements
     @Override
     public List<ChooserTarget> onGetChooserTargets(
             final ComponentName targetActivityName, final IntentFilter matchedFilter) {
-        if (!EventReceiver.hasEnabledAccounts(this)) {
+        if (!SystemEventReceiver.hasEnabledAccounts(this)) {
             return Collections.emptyList();
         }
         final Intent intent = new Intent(this, XmppConnectionService.class);

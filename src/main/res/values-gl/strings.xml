@@ -989,7 +989,6 @@
     <string name="outgoing_call_timestamp">Chamada saínte · %s</string>
     <string name="delete_from_server">Eliminar a conta no servidor</string>
     <string name="could_not_delete_account_from_server">Non se puido eliminar a conta no servidor</string>
-    <string name="save_as_group_chat">Gardar como chat en grupo</string>
     <string name="search_group_chats">Buscar chats en grupo</string>
     <string name="group_chats">Chats en grupo</string>
     <string name="restore_warning_continued">Non intentes restablecer unha copia de apoio que non tiveses creado ti!</string>
@@ -1023,7 +1022,7 @@
     <string name="action_archive_chat">Arquivar conversa</string>
     <string name="title_activity_new_chat">Novo chat</string>
     <string name="start_chat">Inciar chat</string>
-    <string name="archive_this_chat">Arquivar este chat</string>
+    <string name="archive_this_chat">Eliminar o chat</string>
     <string name="welcome_header">Únete á Conversa</string>
     <string name="switch_to_chat">Cambiar ao chat</string>
     <string name="no_certificate_selected">Sen certificado cliente seleccionado!</string>
@@ -1066,4 +1065,13 @@
     <string name="send_encrypted_message">Enviar mensaxe cifrada</string>
     <string name="pref_large_font">Letra grande</string>
     <string name="pref_large_font_summary">Aumentar o tamaño da letra das mensaxes</string>
+    <string name="pref_accept_invites_from_strangers">Convites de descoñecidas</string>
+    <string name="pref_accept_invites_from_strangers_summary">Aceptar convites de persoas descoñecidas para grupos</string>
+    <string name="pref_backup_recurring">Copia de apoio regular</string>
+    <string name="unsupported_operation">Operación sen soporte</string>
+    <string name="pref_fullscreen_notification">Notificacións en pantalla completa</string>
+    <string name="pref_fullscreen_notification_summary">Permitir que a app mostre a notificación de chamada entrante a pantalla completa cando o dispositivo está bloqueado.</string>
+    <string name="pref_backup_summary">Crear única, Programar recurrentes</string>
+    <string name="pref_create_backup_one_off_summary">Crear unha copia de apoio</string>
+    <string name="allow_private_messages">Permitir mensaxes privadas</string>
 </resources>

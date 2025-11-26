@@ -214,6 +214,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             if (openBatteryOptimizationDialogIfNeeded()) {
                 return;
             }
+            requestNotificationPermissionIfNeeded();
         }
     }
 
@@ -237,7 +238,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 intent.setData(uri);
                 try {
                     startActivityForResult(intent, REQUEST_BATTERY_OP);
-                } catch (ActivityNotFoundException e) {
+                } catch (final ActivityNotFoundException e) {
                     Toast.makeText(this, R.string.device_does_not_support_battery_op, Toast.LENGTH_SHORT).show();
                 }
             });
@@ -258,15 +259,15 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     private void notifyFragmentOfBackendConnected(@IdRes int id) {
         final Fragment fragment = getFragmentManager().findFragmentById(id);
-        if (fragment instanceof OnBackendConnected) {
-            ((OnBackendConnected) fragment).onBackendConnected();
+        if (fragment instanceof OnBackendConnected callback) {
+            callback.onBackendConnected();
         }
     }
 
     private void refreshFragment(@IdRes int id) {
         final Fragment fragment = getFragmentManager().findFragmentById(id);
-        if (fragment instanceof XmppFragment) {
-            ((XmppFragment) fragment).refresh();
+        if (fragment instanceof XmppFragment xmppFragment) {
+            xmppFragment.refresh();
         }
     }
 

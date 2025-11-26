@@ -45,6 +45,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -90,42 +91,36 @@ public class ConversationsOverviewFragment extends XmppFragment {
 	private FragmentConversationsOverviewBinding binding;
 	private ConversationAdapter conversationsAdapter;
 	private XmppActivity activity;
-	private float mSwipeEscapeVelocity = 0f;
 	private final PendingActionHelper pendingActionHelper = new PendingActionHelper();
 
 	private final ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0,LEFT|RIGHT) {
 		@Override
-		public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-			//todo maybe we can manually changing the position of the conversation
+		public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 			return false;
 		}
 
 		@Override
-		public float getSwipeEscapeVelocity (float defaultValue) {
-			return mSwipeEscapeVelocity;
-		}
-
-		@Override
-		public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-									float dX, float dY, int actionState, boolean isCurrentlyActive) {
-			super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-			if(actionState != ItemTouchHelper.ACTION_STATE_IDLE){
-				Paint paint = new Paint();
-				paint.setColor(MaterialColors.getColor(viewHolder.itemView, com.google.android.material.R.attr.colorSecondaryFixedDim));
-				paint.setStyle(Paint.Style.FILL);
-				c.drawRect(viewHolder.itemView.getLeft(),viewHolder.itemView.getTop()
-						,viewHolder.itemView.getRight(),viewHolder.itemView.getBottom(), paint);
+		public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+								float dX, float dY, int actionState, boolean isCurrentlyActive) {
+			if (viewHolder instanceof ConversationAdapter.ConversationViewHolder conversationViewHolder) {
+				getDefaultUIUtil().onDraw(c,recyclerView,conversationViewHolder.binding.frame,dX,dY,actionState,isCurrentlyActive);
 			}
 		}
 
 		@Override
-		public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-			super.clearView(recyclerView, viewHolder);
-			viewHolder.itemView.setAlpha(1f);
+		public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+			if (viewHolder instanceof ConversationAdapter.ConversationViewHolder conversationViewHolder) {
+				getDefaultUIUtil().clearView(conversationViewHolder.binding.frame);
+			}
 		}
 
 		@Override
-		public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+		public float getSwipeEscapeVelocity(final float defaultEscapeVelocity) {
+			return 32 * defaultEscapeVelocity;
+		}
+
+		@Override
+		public void onSwiped(final RecyclerView.ViewHolder viewHolder, final int direction) {
 			pendingActionHelper.execute();
 			int position = viewHolder.getLayoutPosition();
 			try {
@@ -285,7 +280,6 @@ public class ConversationsOverviewFragment extends XmppFragment {
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		this.mSwipeEscapeVelocity = getResources().getDimension(R.dimen.swipe_escape_velocity);
 		this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversations_overview, container, false);
 		this.binding.fab.setOnClickListener((view) -> StartConversationActivity.launch(getActivity()));
 

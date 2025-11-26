@@ -1,0 +1,2 @@
+* corretta l'integrazione delle chiamate su alcuni dispositivi con Android 14
+* Introdotta l'impostazione 'Inviti da estranei'

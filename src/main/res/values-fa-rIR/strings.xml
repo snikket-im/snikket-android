@@ -481,7 +481,6 @@
     <string name="rtp_state_application_failure">خطای برنامه</string>
     <string name="send_private_message">فرستادن پیام خصوصی</string>
     <string name="notification_restored_backup_subtitle">فعال‌سازی حساب را فراموش نکنید.</string>
-    <string name="save_as_group_chat">ذخیره به عنوان گفتگوی گروهی</string>
     <string name="audiobook">کتاب صوتی</string>
     <string name="non_anonymous">نشانی‌های XMPP را برای همه نمایان کن</string>
     <string name="account_status_connecting">وصل می‌شود…</string>

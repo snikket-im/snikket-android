@@ -28,6 +28,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.persistance.UnifiedPushDatabase;
+import eu.siacs.conversations.receiver.UnifiedPushDistributor;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;

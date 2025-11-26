@@ -1,5 +1,6 @@
 package eu.siacs.conversations;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,9 +15,17 @@ import eu.siacs.conversations.utils.ExceptionHelper;
 
 public class Conversations extends Application {
 
+    @SuppressLint("StaticFieldLeak")
+    private static Context CONTEXT;
+
+    public static Context getContext() {
+        return Conversations.CONTEXT;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        CONTEXT = this.getApplicationContext();
         ExceptionHelper.init(getApplicationContext());
         applyThemeSettings();
     }

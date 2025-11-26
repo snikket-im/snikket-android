@@ -1,0 +1,4 @@
+* 更容易訪問「顯示二維碼」
+* 支持 PEP Native Bookmarks
+* 添加對 SDP 請求/響應模型的支持（由 SIP 網關使用）
+* 將目標 API 提升到 Android 14

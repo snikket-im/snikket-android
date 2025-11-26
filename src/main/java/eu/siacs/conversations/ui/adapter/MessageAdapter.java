@@ -80,6 +80,8 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 
 import java.net.URI;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -566,10 +568,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
 
             StylingHelper.format(body, viewHolder.messageBody.getCurrentTextColor());
+            MyLinkify.addLinks(body, true);
             if (highlightedTerm != null) {
                 StylingHelper.highlight(viewHolder.messageBody, body, highlightedTerm);
             }
-            MyLinkify.addLinks(body, true);
             viewHolder.messageBody.setAutoLinkMask(0);
             viewHolder.messageBody.setText(body);
             viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
@@ -661,7 +663,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
         final LinearLayout.LayoutParams layoutParams =
                 new LinearLayout.LayoutParams(scaledW, scaledH);
-        layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
         viewHolder.image.setLayoutParams(layoutParams);
         activity.loadBitmap(message, viewHolder.image);
         viewHolder.image.setOnClickListener(v -> openDownloadable(message));
@@ -914,6 +915,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
             return view;
         } else {
+            viewHolder.message_box.setClipToOutline(true);
             AvatarWorkerTask.loadAvatar(message, viewHolder.contact_picture, R.dimen.avatar);
         }
 
@@ -1170,7 +1172,15 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     public static void setTextColor(final TextView textView, final BubbleColor bubbleColor) {
-        textView.setTextColor(bubbleToOnSurfaceColor(textView, bubbleColor));
+        final var color = bubbleToOnSurfaceColor(textView, bubbleColor);
+        textView.setTextColor(color);
+        if (BubbleColor.SURFACES.contains(bubbleColor)) {
+            textView.setLinkTextColor(
+                    MaterialColors.getColor(
+                            textView, com.google.android.material.R.attr.colorPrimary));
+        } else {
+            textView.setLinkTextColor(color);
+        }
     }
 
     private static void setTextSize(final TextView textView, final boolean largeFont) {
@@ -1186,7 +1196,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private static @ColorInt int bubbleToOnSurfaceVariant(
             final View view, final BubbleColor bubbleColor) {
         final @AttrRes int colorAttributeResId;
-        if (bubbleColor == BubbleColor.SURFACE_HIGH || bubbleColor == BubbleColor.SURFACE) {
+        if (BubbleColor.SURFACES.contains(bubbleColor)) {
             colorAttributeResId = com.google.android.material.R.attr.colorOnSurfaceVariant;
         } else {
             colorAttributeResId = bubbleToOnSurface(bubbleColor);
@@ -1222,7 +1232,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         PRIMARY,
         SECONDARY,
         TERTIARY,
-        WARNING
+        WARNING;
+
+        private static final Collection<BubbleColor> SURFACES =
+                Arrays.asList(BubbleColor.SURFACE, BubbleColor.SURFACE_HIGH);
     }
 
     private static class BubbleDesign {

@@ -105,7 +105,7 @@ public abstract class AbstractGenerator {
         return Base64.encodeToString(sha1, Base64.NO_WRAP);
     }
 
-    public List<String> getFeatures(Account account) {
+    public List<String> getFeatures(final Account account) {
         final XmppConnection connection = account.getXmppConnection();
         final ArrayList<String> features = new ArrayList<>(Arrays.asList(STATIC_FEATURES));
         if (Config.MESSAGE_DISPLAYED_SYNCHRONIZATION) {

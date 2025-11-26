@@ -123,7 +123,7 @@
     <string name="pref_notification_grace_period">静默期</string>
     <string name="pref_notification_grace_period_summary">在其他设备上检测到活动之后，通知在此期间静音。</string>
     <string name="pref_advanced_options">高级</string>
-    <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您可以为开发提供帮助</string>
+    <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您可以帮助进一步的开发</string>
     <string name="pref_confirm_messages">确认消息</string>
     <string name="pref_confirm_messages_summary">让您的联系人知道您已收到并阅读了其消息</string>
     <string name="pref_prevent_screenshots">防止截屏</string>
@@ -186,7 +186,7 @@
     <string name="attach_record_voice">录制语音</string>
     <string name="account_settings_jabber_id">XMPP 地址</string>
     <string name="block_jabber_id">屏蔽 XMPP 地址</string>
-    <string name="account_settings_example_jabber_id">username@example.com</string>
+    <string name="account_settings_example_jabber_id">用户名@example.com</string>
     <string name="password">密码</string>
     <string name="invalid_jid">此 XMPP 地址无效</string>
     <string name="error_out_of_memory">空间不足。图片太大</string>
@@ -234,7 +234,7 @@
     <string name="select">选择</string>
     <string name="contact_already_exists">此联系人已存在</string>
     <string name="join">加入</string>
-    <string name="channel_full_jid_example">channel@conference.example.com/nick</string>
+    <string name="channel_full_jid_example">channel@conference.example.com/昵称</string>
     <string name="channel_bare_jid_example">channel@conference.example.com</string>
     <string name="save_as_bookmark">保存为书签</string>
     <string name="delete_bookmark">删除书签</string>
@@ -357,7 +357,7 @@
     <string name="no_application_found_to_open_link">未找到可以打开链接的应用</string>
     <string name="no_application_found_to_view_contact">未找到可以查看联系人的应用</string>
     <string name="pref_show_dynamic_tags">动态标签</string>
-    <string name="pref_show_dynamic_tags_summary">在联系人下方显示只读标签</string>
+    <string name="pref_show_dynamic_tags_summary">在联系人下方显示动态标签汇总</string>
     <string name="enable_notifications">启用通知</string>
     <string name="no_conference_server_found">群聊服务器未找到</string>
     <string name="conference_creation_failed">无法创建群聊</string>
@@ -530,9 +530,9 @@
     <string name="always">始终</string>
     <string name="large_images_only">仅限大图片</string>
     <string name="battery_optimizations_enabled">电池优化已启用</string>
-    <string name="battery_optimizations_enabled_explained">您的设备正在为 %1$s 使用重度电池优化，可能会导致通知延迟甚至消息丢失。
+    <string name="battery_optimizations_enabled_explained">您的设备正在对 %1$s 使用重度电池优化，可能会导致通知延迟甚至消息丢失。
 \n建议禁用此设置。</string>
-    <string name="battery_optimizations_enabled_dialog">您的设备正在为 %1$s 使用重度电池优化，可能会导致通知延迟甚至消息丢失。
+    <string name="battery_optimizations_enabled_dialog">您的设备正在对 %1$s 使用重度电池优化，可能会导致通知延迟甚至消息丢失。
 \n
 \n现在将要求您禁用此设置。</string>
     <string name="disable">禁用</string>
@@ -562,7 +562,7 @@
     <string name="presence_xa">没空</string>
     <string name="presence_dnd">忙碌</string>
     <string name="secure_password_generated">已生成安全密码</string>
-    <string name="device_does_not_support_battery_op">设备不支持退出电池优化</string>
+    <string name="device_does_not_support_battery_op">您的设备不支持选择退出电池优化</string>
     <string name="registration_please_wait">注册失败：稍后再试</string>
     <string name="registration_password_too_weak">注册失败：密码太弱</string>
     <string name="choose_participants">选择参与者</string>
@@ -686,7 +686,7 @@
     <string name="message">消息</string>
     <string name="private_messages_are_disabled">已禁用私信</string>
     <string name="huawei_protected_apps">受保护的应用</string>
-    <string name="huawei_protected_apps_summary">为了在屏幕关闭时也能收到消息提醒，您需要将 Snikket 加入受保护的应用列表。</string>
+    <string name="huawei_protected_apps_summary">为了在屏幕关闭时也可收到消息提醒，您需要将 Snikket 加入受保护的应用列表。</string>
     <string name="mtm_accept_cert">接受未知证书？</string>
     <string name="mtm_trust_anchor">此服务器证书不是由已知的证书颁发机构签发的。</string>
     <string name="mtm_accept_servername">接受不匹配的服务器名称？</string>
@@ -784,7 +784,7 @@
     <string name="phone_number">电话号码</string>
     <string name="verify_your_phone_number">验证您的电话号码</string>
     <string name="enter_country_code_and_phone_number">Quicksy 将发送短信（运营商可能收费）来验证电话号码。请输入您的国家/地区代码和电话号码：</string>
-    <string name="we_will_be_verifying">我们将验证这个电话号码<br/><br/><b>%s</b><br/><br/>可以吗？是否编辑号码？</string>
+    <string name="we_will_be_verifying">我们将验证这个电话号码 <br/><br/><b>%s</b><br/><br/> 可以吗？是否编辑号码？</string>
     <string name="not_a_valid_phone_number">%s 不是有效的电话号码。</string>
     <string name="please_enter_your_phone_number">请输入您的电话号码。</string>
     <string name="search_countries">搜索国家/地区</string>
@@ -993,7 +993,6 @@
     <string name="outgoing_call_timestamp">去电 · %s</string>
     <string name="could_not_delete_account_from_server">无法从服务器删除账号</string>
     <string name="group_chats">群聊</string>
-    <string name="save_as_group_chat">保存为群聊</string>
     <string name="search_group_chats">搜索群聊</string>
     <string name="delete_from_server">从服务器移除账号</string>
     <string name="restore_warning_continued">请勿尝试恢复您尚未自行创建的备份！</string>
@@ -1022,13 +1021,13 @@
     <string name="channel_discover_opt_in_message">频道发现使用称为 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; 的第三方服务。&lt;br&gt;&lt;br&gt;使用此功能会将您的 IP 地址和搜索词传输到此服务。请参阅其 &lt;a href=https://search.jabber.network/privacy&gt;隐私政策&lt;/a&gt; 以获取更多信息。</string>
     <string name="start_chat">开始聊天</string>
     <string name="title_activity_share_with">分享至…</string>
-    <string name="pref_use_colorful_bubbles_summary">已发送和已接收消息的背景颜色各不相同</string>
+    <string name="pref_use_colorful_bubbles_summary">为已发送和已接收消息使用不同的背景颜色</string>
     <string name="no_certificate_selected">未选择客户端证书！</string>
     <string name="pref_use_colorful_bubbles">彩色聊天气泡</string>
     <string name="pref_dynamic_colors">动态色彩</string>
     <string name="pref_dynamic_colors_summary">系统色彩 (Material You)</string>
     <string name="title_activity_new_chat">新聊天</string>
-    <string name="archive_this_chat">存档此聊天</string>
+    <string name="archive_this_chat">之后删除聊天</string>
     <string name="title_undo_swipe_out_chat">聊天已存档</string>
     <string name="switch_to_chat">切换到聊天</string>
     <string name="action_archive_chat">存档聊天</string>
@@ -1070,4 +1069,13 @@
     <string name="send_encrypted_message">发送加密消息</string>
     <string name="pref_large_font">大字体</string>
     <string name="pref_large_font_summary">增加消息气泡中的字体大小</string>
+    <string name="pref_accept_invites_from_strangers">来自陌生人的邀请</string>
+    <string name="pref_accept_invites_from_strangers_summary">接受来自陌生人的群聊邀请</string>
+    <string name="pref_create_backup_one_off_summary">创建一次性备份</string>
+    <string name="pref_backup_recurring">定期备份</string>
+    <string name="pref_fullscreen_notification">全屏通知</string>
+    <string name="pref_fullscreen_notification_summary">当设备锁定时，允许此应用显示占据全屏的来电通知。</string>
+    <string name="unsupported_operation">不支持的操作</string>
+    <string name="pref_backup_summary">创建一次性、计划定期备份</string>
+    <string name="allow_private_messages">允许私信</string>
 </resources>

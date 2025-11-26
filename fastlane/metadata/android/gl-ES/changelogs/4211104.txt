@@ -1,0 +1,3 @@
+* Programar copia de apoio
+* Excluír a integración de chamadas en todos os dispositivos realme ata a versión Android 11
+* Pequenas melloras na interface (burbulla das mensaxes)

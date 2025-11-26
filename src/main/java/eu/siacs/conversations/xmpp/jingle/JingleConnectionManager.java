@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import android.telecom.TelecomManager;
 import android.telecom.VideoProfile;
 import android.util.Base64;
 import android.util.Log;
@@ -649,7 +650,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public JingleRtpConnection getOngoingRtpConnection() {
-        for(final AbstractJingleConnection jingleConnection : this.connections.values()) {
+        for (final AbstractJingleConnection jingleConnection : this.connections.values()) {
             if (jingleConnection instanceof JingleRtpConnection jingleRtpConnection) {
                 if (jingleRtpConnection.isTerminated()) {
                     continue;
@@ -776,6 +777,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     Media.audioOnly(media)
                             ? VideoProfile.STATE_AUDIO_ONLY
                             : VideoProfile.STATE_BIDIRECTIONAL);
+            callIntegration.setAddress(
+                    CallIntegration.address(with.asBareJid()), TelecomManager.PRESENTATION_ALLOWED);
+            final var contact = account.getRoster().getContact(with);
+            callIntegration.setCallerDisplayName(
+                    contact.getDisplayName(), TelecomManager.PRESENTATION_ALLOWED);
             callIntegration.setInitialAudioDevice(CallIntegration.initialAudioDevice(media));
             callIntegration.startAudioRouting();
             final RtpSessionProposal proposal =
@@ -986,10 +992,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 this.rtpSessionProposals.remove(sessionProposal);
                 sessionProposal.getCallIntegration().error();
                 mXmppConnectionService.notifyJingleRtpConnectionUpdate(
-                        account,
-                        sessionProposal.with,
-                        sessionProposal.sessionId,
-                        endUserState);
+                        account, sessionProposal.with, sessionProposal.sessionId, endUserState);
                 return;
             }
 
@@ -1226,5 +1229,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
         @Override
         public void onCallIntegrationSilence() {}
+
+        @Override
+        public void onCallIntegrationMicrophoneEnabled(boolean enabled) {}
     }
 }

@@ -1,0 +1,39 @@
+Kullanımı kolay, güvenilir, pil ömrü dostu. Resimler, gruplar ve uçtan uca şifreleme için yerleşik destek.
+
+Tasarım ilkeleri:
+
+* Gizlilik ve güvenlikten tasarruf etmeden olabildiğince iyi görünümlü ve kolay kullanımlı olmak
+* Halihazırda var olan, köklü protokollere dayanmak
+* Bir Google hesabına, özellikle Google Bulut Mesajlaşması (GCM)'e, gerek duymamak
+* Olabildiğince az izine gerek duymak
+
+Özellikler:
+
+* <a href="http://conversations.im/omemo/">OMEMO</a> veya <a href="http://openpgp.org/about/">OpenPGP</a> ile uçtan uca şifreleme
+* Fotoğraf gönderme ve alma
+* Şifrelenmiş görüntülü ve sesli aramalar (DTLS-SRTP)
+* Android tasarım standartlarına uyan öğrenmesi kolay arayüz
+* Kişileriniz için profil fotoğrafları / Avatarlar
+* Masaüstü uygulamasıyla senkronizasyon
+* Konferanslar (yer imi desteği ile)
+* Kişiler listesiyle entegrasyon
+* Birden fazla hesap / Birleşik gelen kutusu
+* Pil ömrüne çok düşük etki
+
+Conversations, kolayca ve ücretsiz olarak conversations.im sunucusunda hesap oluşturmanıza olanak tanır. Conversations başka herhangi bir XMPP sunucusuyla da çalışır. Çoğu XMPP sunucusu gönüllüler tarafından işletilir ve ücretsizdir.
+
+XMPP Özellikleri:
+
+Conversations var olan bütün XMPP sunucularıyla kullanılabilir. Ancak XMPP, eklentiler ile genişletilebilen bir protokoldür. Bu eklentiler XEP'ler olarak standardize edilmiştir. Conversations kullanıcı deneyimini iyileştirmek için bu eklentilerden birkaçını destekler. Kullandığınız XMPP sunucusu bu eklentileri desteklemiyor olabilir. Bu yüzden Conversations'tan en iyi şekilde faydalanmak için bu eklentileri destekleyen bir sunucuya geçmeli veya, daha da iyisi, siz ve arkadaşlarınız için kendi XMPP sunucunuzu kurmalısınız.
+
+Şimdilik bu XEP'ler:
+
+* XEP-0065: SOCKS5 Bytestreams (mod_proxy65). İki taraf da bir güvenlik duvarı (NAT) arkasında ise dosya aktarımı için kullanılacaktır.
+* XEP-0163: Avatarlar için Kişisel Olay Protokolü (Personal Eventing Protocol)
+* XEP-0191: Engelleme komutu - Spam atanları ve kişilerinizi listenizden kaldırmadan engellemenizi sağlar.
+* XEP-0198: Akış Kontrolü (Stream Management) - XMPP'yi ve altındaki TCP bağlantısını küçük çaplı bağlantı kopmalarına karşı korur.
+* XEP-0280: Mesaj Karbonları - Mesajlarınızı masaüstü uygulamasıyla senkronize ederek cihazlarınız arasında kesintisiz geçiş yapmanızı sağlar.
+* XEP-0237: Roster Versioning (Liste Sürüm Takibi) - Zayıf mobil ağlarda bant aralığından tasarruf etmek amacıyla.
+* XEP-0313: Mesaj Arşivi Yönetimi - Çevrimdışı olduğunuzda bile mesaj almaya devam edebilmeniz için mesajlarınızı sunucuyla senkronize eder.
+* XEP-0352: İstemci Durum Bildirimi - Conversations'un arkaplanda çalıştığını sunucuya bildir. Sunucunun önemsiz paketleri saklayarak veriden tasarruf etmesini sağlar.
+* XEP-0363: HTTP Dosya Yükleme - Konferanslarla ve çevrimdışı kişilerle dosya paylaşabilmenizi sağlar. Sunucunuzda ek bileşen gerektirir.

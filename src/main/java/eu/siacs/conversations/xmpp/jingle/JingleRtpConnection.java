@@ -72,6 +72,7 @@ import java.util.concurrent.TimeUnit;
 public class JingleRtpConnection extends AbstractJingleConnection
         implements WebRTCWrapper.EventCallback, CallIntegration.Callback, OngoingRtpSession {
 
+    // TODO consider adding State.SESSION_INITIALIZED to ongoing call states for direct init mode
     public static final List<State> STATES_SHOWING_ONGOING_CALL =
             Arrays.asList(
                     State.PROPOSED,
@@ -112,6 +113,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
                                 .getApplicationContext()));
         this.callIntegration.setAddress(
                 CallIntegration.address(id.with.asBareJid()), TelecomManager.PRESENTATION_ALLOWED);
+        final var contact = id.getContact();
+        this.callIntegration.setCallerDisplayName(
+                contact.getDisplayName(), TelecomManager.PRESENTATION_ALLOWED);
         this.callIntegration.setInitialized();
     }
 
@@ -2331,6 +2335,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         this.jingleConnectionManager.ensureConnectionIsRegistered(this);
         this.webRTCWrapper.setup(this.xmppConnectionService);
         this.webRTCWrapper.initializePeerConnection(media, iceServers, trickle);
+        this.webRTCWrapper.setMicrophoneEnabledOrThrow(callIntegration.isMicrophoneEnabled());
     }
 
     private void acceptCallFromProposed() {
@@ -2488,7 +2493,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         this.webRTCWrapper.execute(this::renegotiate);
     }
 
-    private void renegotiate() {
+    private synchronized void renegotiate() {
         final SessionDescription sessionDescription;
         try {
             sessionDescription = setLocalSessionDescription();
@@ -2537,10 +2542,11 @@ public class JingleRtpConnection extends AbstractJingleConnection
                             + this.webRTCWrapper.getSignalingState());
         }
 
-        if (diff.added.size() > 0) {
-            modifyLocalContentMap(rtpContentMap);
-            sendContentAdd(rtpContentMap, diff.added);
+        if (diff.added.isEmpty()) {
+            return;
         }
+        modifyLocalContentMap(rtpContentMap);
+        sendContentAdd(rtpContentMap, diff.added);
     }
 
     private void initiateIceRestart(final RtpContentMap rtpContentMap) {
@@ -2693,7 +2699,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     public boolean setMicrophoneEnabled(final boolean enabled) {
-        return webRTCWrapper.setMicrophoneEnabled(enabled);
+        return webRTCWrapper.setMicrophoneEnabledOrThrow(enabled);
     }
 
     public boolean isVideoEnabled() {
@@ -2770,6 +2776,11 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     @Override
+    public void onCallIntegrationMicrophoneEnabled(final boolean enabled) {
+        this.webRTCWrapper.setMicrophoneEnabled(enabled);
+    }
+
+    @Override
     public void onAudioDeviceChanged(
             final CallIntegration.AudioDevice selectedAudioDevice,
             final Set<CallIntegration.AudioDevice> availableAudioDevices) {
@@ -2790,6 +2801,12 @@ public class JingleRtpConnection extends AbstractJingleConnection
     private void updateOngoingCallNotification() {
         final State state = this.state;
         if (STATES_SHOWING_ONGOING_CALL.contains(state)) {
+            if (Arrays.asList(State.PROPOSED, State.SESSION_INITIALIZED).contains(state)
+                    && isResponder()) {
+                Log.d(Config.LOGTAG, "do not set ongoing call during incoming call notification");
+                xmppConnectionService.removeOngoingCall();
+                return;
+            }
             final boolean reconnecting;
             if (state == State.SESSION_ACCEPTED) {
                 reconnecting =
