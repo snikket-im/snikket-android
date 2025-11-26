@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
@@ -14,9 +15,6 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -254,7 +252,7 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
             this.instance = instance;
         }
 
-        @NotNull
+        @NonNull
         @Override
         public String toString() {
             return MoreObjects.toStringHelper(this)

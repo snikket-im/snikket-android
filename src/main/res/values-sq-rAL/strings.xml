@@ -68,14 +68,12 @@
     <string name="clear_conversation_history">Spastroje historikun e fjalosjes</string>
     <string name="delete_file_dialog">Fshije kartelën</string>
     <string name="choose_presence">Zgjidhni pajisje</string>
-    <string name="send_unencrypted_message">Dërgoni mesazh të pafshehtëzuar</string>
+    <string name="send_unencrypted_message">Dërgoni mesazh tekst të lexueshëm</string>
     <string name="send_message">Dërgoni mesazh</string>
     <string name="send_message_to_x">Dërgoje mesazhin për %s</string>
-    <string name="send_omemo_message">Dërgoni një mesazh të fshehtëzuar me OMEMO</string>
     <string name="send_omemo_x509_message">Dërgoni një mesazh të fshehtëzuar me v\\OMEMO</string>
-    <string name="send_pgp_message">Dërgoni një mesazh të fshehtëzuar me OpenPGP</string>
     <string name="your_nick_has_been_changed">Nofkë e re në përdorim</string>
-    <string name="send_unencrypted">Dërgoje të pafshehtëzuar</string>
+    <string name="send_unencrypted">Dërgo tekst të lexueshëm</string>
     <string name="install">Instaloje</string>
     <string name="openkeychain_not_installed">Ju lutemi, instaloni OpenKeychain</string>
     <string name="offering">po ofrohet…</string>
@@ -130,7 +128,7 @@
     <string name="account_status_incompatible_client">Klient jo i përputhshëm</string>
     <string name="account_status_stream_error">Gabim rrjedhe</string>
     <string name="account_status_stream_opening_error">Gabim në hapjen e rrjedhës</string>
-    <string name="encryption_choice_unencrypted">Të pafshehtëzuara</string>
+    <string name="encryption_choice_unencrypted">Tekst i lexueshëm</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -1075,4 +1073,5 @@
     <string name="pref_category_on_this_device">Në pajisje</string>
     <string name="pref_up_long_summary">Kur veprohet si një Distributor UnifiedPush, për të zgjuar aplikacion tjetër të përputhshëm me UnifiedPush , fjala vjen, Tusky, Ltt.rs, FluffyChat, etj, do të përdoret lidhja XMPP, e vazhdueshme, e qëndrueshme dhe miqësore ndaj baterisë.</string>
     <string name="unified_push_distributor">Distributor UnifiedPush</string>
+    <string name="send_encrypted_message">Dërgo mesazh të fshehtëzuar</string>
 </resources>

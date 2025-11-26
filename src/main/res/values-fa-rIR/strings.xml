@@ -59,9 +59,7 @@
     <string name="send_unencrypted_message">پیام رمز نشده ارسال کن</string>
     <string name="send_message">ارسال پیام</string>
     <string name="send_message_to_x">ارسال پیام به  %s</string>
-    <string name="send_omemo_message">ارسال پیام رمز شده با OMEMO</string>
     <string name="send_omemo_x509_message">ارسال پیام رمز شده با OMEMO</string>
-    <string name="send_pgp_message">ارسال پیام رمز شده با OpenPGP</string>
     <string name="send_unencrypted">ارسال رمز نشده</string>
     <string name="decryption_failed">رمزگشایی موفق نبود. شاید شما کلید محرمانه صحیح را در اختیار ندارید.</string>
     <string name="openkeychain_required">OpenKeychain</string>

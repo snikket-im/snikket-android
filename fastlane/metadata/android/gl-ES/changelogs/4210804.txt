@@ -1,0 +1,2 @@
+* Mostrar estado das mensaxes como iconas
+* Novo axuste para 'Tamaño de letra grande' nas mensaxes

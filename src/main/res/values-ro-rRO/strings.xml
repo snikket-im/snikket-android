@@ -87,12 +87,10 @@
 \n
 \n<b>Atenție:</b> Această acțiune nu va șterge copiile acestui fișier care sunt stocate pe alte dispozitive sau servere. </string>
     <string name="choose_presence">Alege dispozitiv</string>
-    <string name="send_unencrypted_message">Trimite mesaje necriptate</string>
+    <string name="send_unencrypted_message">Trimite mesaj necriptat</string>
     <string name="send_message">Trimite mesaj</string>
     <string name="send_message_to_x">Trimite mesaj către %s</string>
-    <string name="send_omemo_message">Trimite mesaj criptat cu OMEMO</string>
     <string name="send_omemo_x509_message">Trimite mesaj criptat cu v\\OMEMO</string>
-    <string name="send_pgp_message">Trimite mesaj criptat cu OpenPGP</string>
     <string name="your_nick_has_been_changed">Numele de utilizator este deja alocat</string>
     <string name="send_unencrypted">Trimite necriptat</string>
     <string name="decryption_failed">Decriptarea a eșuat. Poate nu aveți cheia privată corectă.</string>
@@ -1034,7 +1032,7 @@ C    <string name="pref_broadcast_last_activity_summary">Permiteți contactelor 
     <string name="remove_bookmark_and_close">Ați dori să ștergeți semnul de carte pentru %s și să arhivați discuția?</string>
     <string name="remove_bookmark">Ați dori să ștergeți semnul de carte pentru %s?</string>
     <string name="delete_and_close">Șterge și închide discuția</string>
-    <string name="pref_use_colorful_bubbles_summary">Ajută la distingerea mesajelor trimise și primite</string>
+    <string name="pref_use_colorful_bubbles_summary">Fundal distinct de culoare pentru mesajele primite și trimise</string>
     <string name="title_activity_share_with">Partajează cu…</string>
     <string name="pref_use_colorful_bubbles">Bule de chat colorate</string>
     <string name="pref_dynamic_colors">Culori dinamice</string>
@@ -1082,4 +1080,7 @@ C    <string name="pref_broadcast_last_activity_summary">Permiteți contactelor 
     <string name="pref_summary_security">Criptare E2E, Încredere oarbă înainte de verificare, detectare MITM</string>
     <string name="pref_connection_summary">Nume gazdă &amp; Port, Tor</string>
     <string name="pref_up_long_summary">Atunci când acționezi ca distribuitor UnifiedPush, conexiunea XMPP persistentă, fiabilă și prietenoasă cu bateria va fi utilizată pentru a trezi alte aplicații compatibile cu UnifiedPush, cum ar fi Tusky, Ltt.rs, FluffyChat și altele.</string>
+    <string name="send_encrypted_message">Trimite mesaj criptat</string>
+    <string name="pref_large_font">Font mare</string>
+    <string name="pref_large_font_summary">Mărește fontul pentru textul din mesaje</string>
 </resources>

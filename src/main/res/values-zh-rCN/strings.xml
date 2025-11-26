@@ -85,14 +85,12 @@
 \n
 \n<b>警告：</b>存储在其他设备或服务器上此文件的副本将不会删除。 </string>
     <string name="choose_presence">选择设备</string>
-    <string name="send_unencrypted_message">发送未加密消息</string>
+    <string name="send_unencrypted_message">发送明文消息</string>
     <string name="send_message">发送消息</string>
     <string name="send_message_to_x">发送消息至 %s</string>
-    <string name="send_omemo_message">发送 OMEMO 加密消息</string>
     <string name="send_omemo_x509_message">发送 v\\OMEMO 加密消息</string>
-    <string name="send_pgp_message">发送 OpenPGP 加密消息</string>
     <string name="your_nick_has_been_changed">正在使用新昵称</string>
-    <string name="send_unencrypted">发送未加密的</string>
+    <string name="send_unencrypted">发送明文</string>
     <string name="decryption_failed">解密失败。也许您没有正确的私钥。</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="openkeychain_required_long">%1$s 使用 &lt;b&gt;OpenKeychain&lt;/b&gt; 来加密和解密消息并管理公钥。&lt;br&gt;&lt;br&gt;它在 GPLv3+ 许可证下授权并可在 F-Droid 和 Google Play 上获得。&lt;br&gt;&lt;br&gt;&lt;small&gt;（请之后重启 %1$s。）&lt;/small&gt;</string>
@@ -171,7 +169,7 @@
     <string name="account_status_incompatible_client">客户端不兼容</string>
     <string name="account_status_stream_error">流错误</string>
     <string name="account_status_stream_opening_error">流打开错误</string>
-    <string name="encryption_choice_unencrypted">未加密的</string>
+    <string name="encryption_choice_unencrypted">明文</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -478,11 +476,11 @@
     <string name="server_info_broken">损坏</string>
     <string name="pref_presence_settings">在线状态</string>
     <string name="pref_away_when_screen_off">设备锁定时离开</string>
-    <string name="pref_away_when_screen_off_summary">当设备锁定时显示为“离开”</string>
+    <string name="pref_away_when_screen_off_summary">当设备锁定时显示为离开</string>
     <string name="pref_dnd_on_silent_mode">静音模式时忙碌</string>
-    <string name="pref_dnd_on_silent_mode_summary">当设备处于静音模式时显示为“忙碌”</string>
+    <string name="pref_dnd_on_silent_mode_summary">当设备处于静音模式时显示为忙碌</string>
     <string name="pref_treat_vibrate_as_silent">将振动模式视为静音模式</string>
-    <string name="pref_treat_vibrate_as_dnd_summary">当设备处于振动模式时显示为“忙碌”</string>
+    <string name="pref_treat_vibrate_as_dnd_summary">当设备处于振动模式时显示为忙碌</string>
     <string name="pref_show_connection_options">主机名和端口</string>
     <string name="pref_show_connection_options_summary">设置账号时显示扩展连接设置</string>
     <string name="hostname_example">xmpp.example.com</string>
@@ -736,7 +734,7 @@
     <string name="gif">GIF</string>
     <string name="view_conversation">查看聊天</string>
     <string name="pref_use_share_location_plugin">位置共享插件</string>
-    <string name="pref_use_share_location_plugin_summary">使用“位置共享插件”代替内置地图</string>
+    <string name="pref_use_share_location_plugin_summary">使用位置共享插件代替内置地图</string>
     <string name="copy_link">复制 web 地址</string>
     <string name="copy_jabber_id">复制 XMPP 地址</string>
     <string name="p1_s3_filetransfer">用于 S3 的 HTTP 文件共享</string>
@@ -1024,7 +1022,7 @@
     <string name="channel_discover_opt_in_message">频道发现使用称为 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; 的第三方服务。&lt;br&gt;&lt;br&gt;使用此功能会将您的 IP 地址和搜索词传输到此服务。请参阅其 &lt;a href=https://search.jabber.network/privacy&gt;隐私政策&lt;/a&gt; 以获取更多信息。</string>
     <string name="start_chat">开始聊天</string>
     <string name="title_activity_share_with">分享至…</string>
-    <string name="pref_use_colorful_bubbles_summary">彩色聊天气泡有助于区分发送和接收的消息</string>
+    <string name="pref_use_colorful_bubbles_summary">已发送和已接收消息的背景颜色各不相同</string>
     <string name="no_certificate_selected">未选择客户端证书！</string>
     <string name="pref_use_colorful_bubbles">彩色聊天气泡</string>
     <string name="pref_dynamic_colors">动态色彩</string>
@@ -1069,4 +1067,7 @@
     <string name="pref_up_long_summary">在充当 UnifiedPush 分发程序时，将利用持久、可靠且省电的 XMPP 连接来唤醒其他兼容 UnifiedPush 的应用，如 Tusky、Ltt.rs、FluffyChat 等。</string>
     <string name="pref_allow_screenshots_summary">在切换应用时显示应用内容并允许截屏</string>
     <string name="unified_push_summary">兼容 UnifiedPush 的第三方应用的通知转发器</string>
+    <string name="send_encrypted_message">发送加密消息</string>
+    <string name="pref_large_font">大字体</string>
+    <string name="pref_large_font_summary">增加消息气泡中的字体大小</string>
 </resources>

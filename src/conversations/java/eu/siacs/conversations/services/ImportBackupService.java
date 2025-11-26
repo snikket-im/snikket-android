@@ -58,6 +58,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -188,12 +189,7 @@ public class ImportBackupService extends Service {
                         }
                     }
                     Collections.sort(
-                            backupFiles,
-                            (a, b) ->
-                                    a.header
-                                            .getJid()
-                                            .toString()
-                                            .compareTo(b.header.getJid().toString()));
+                            backupFiles, Comparator.comparing(a -> a.header.getJid().toString()));
                     onBackupFilesLoaded.onBackupFilesLoaded(backupFiles);
                 });
     }

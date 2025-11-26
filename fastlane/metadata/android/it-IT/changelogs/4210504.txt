@@ -1,0 +1,2 @@
+* Ripristinato l'accesso alla scoperta dei canali su Android 6+7
+* Migliorati i log per integrazione fallita di chiamate

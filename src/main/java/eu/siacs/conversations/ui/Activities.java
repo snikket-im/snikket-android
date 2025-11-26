@@ -44,4 +44,9 @@ public final class Activities {
                 context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         return nightModeFlags != Configuration.UI_MODE_NIGHT_YES;
     }
+
+    public static boolean isNightMode(final Context context) {
+        return (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                == Configuration.UI_MODE_NIGHT_YES;
+    }
 }

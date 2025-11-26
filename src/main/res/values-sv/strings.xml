@@ -89,9 +89,7 @@
     <string name="send_unencrypted_message">Skicka okrypterat meddelande</string>
     <string name="send_message">Skicka meddelande</string>
     <string name="send_message_to_x">Skicka meddelande till %s</string>
-    <string name="send_omemo_message">Skicka OMEMO-krypterat meddelande</string>
     <string name="send_omemo_x509_message">Skicka v\\OMEMO-krypterat meddelande</string>
-    <string name="send_pgp_message">Skicka OpenPGP-krypterat meddelande</string>
     <string name="your_nick_has_been_changed">Nytt smeknamn är nu i bruk</string>
     <string name="send_unencrypted">Skicka okrypterat</string>
     <string name="decryption_failed">Dekrypteringen misslyckades. Du har kanske inte rätt privat nyckel.</string>

@@ -83,9 +83,7 @@
     <string name="send_unencrypted_message">Незашифроване повідомлення</string>
     <string name="send_message">Надіслати повідомлення</string>
     <string name="send_message_to_x">Повідомлення %s</string>
-    <string name="send_omemo_message">Повідомлення, зашифроване OMEMO</string>
     <string name="send_omemo_x509_message">Повідомлення, зашифроване v\\OMEMO</string>
-    <string name="send_pgp_message">Повідомлення зашифроване OpenPGP</string>
     <string name="your_nick_has_been_changed">Ваше прізвисько змінено</string>
     <string name="send_unencrypted">Надіслати без шифрування</string>
     <string name="decryption_failed">Не вдалося розшифрувати. Можливо, у Вас відсутній потрібний приватний ключ.</string>
@@ -527,7 +525,7 @@
     <string name="use_own_provider">Застосувати дані мого власного постачальника</string>
     <string name="pick_your_username">Придумайте ім\'я користувача</string>
     <string name="pref_manually_change_presence">Керувати станом вручну</string>
-    <string name="pref_manually_change_presence_summary">Показувати доступність під час редагування повідомлення зі статусом.</string>
+    <string name="pref_manually_change_presence_summary">Показувати доступність під час редагування повідомлення стану.</string>
     <string name="status_message">Повідомлення стану</string>
     <string name="presence_chat">Вільний для розмови</string>
     <string name="presence_online">У мережі</string>
@@ -1071,7 +1069,7 @@
     <string name="title_activity_share_with">Поділитися…</string>
     <string name="pref_dynamic_colors">Динамічні кольори</string>
     <string name="pref_dynamic_colors_summary">Системні кольори (Material You)</string>
-    <string name="pref_use_colorful_bubbles_summary">Барвисті бульбашки допомагають розрізняти надіслані та отримані повідомлення</string>
+    <string name="pref_use_colorful_bubbles_summary">Різні кольори фону для надісланих та отриманих повідомлень</string>
     <string name="pref_use_colorful_bubbles">Кольорові бульбашки в розмовах</string>
     <string name="title_activity_new_chat">Нова розмова</string>
     <string name="action_archive_chat">Архівувати розмову</string>
@@ -1111,4 +1109,7 @@
     <string name="pref_up_long_summary">При дії в ролі дистриб\'ютора UnifiedPush використовується постійне, надійне та енергоефективне з\'єднання XMPP для активації інших додатків, сумісних з UnifiedPush, таких як Tusky, Ltt.rs, FluffyChat та інші.</string>
     <string name="pref_allow_screenshots_summary">Показувати вміст застосунку при перемиканні програм і дозволити знімки екрана</string>
     <string name="pref_privacy_summary">Сповіщення про набір, остання активність, доступність</string>
+    <string name="send_encrypted_message">Зашифроване повідомлення</string>
+    <string name="pref_large_font">Великий шрифт</string>
+    <string name="pref_large_font_summary">Збільшити розмір шрифту повідомлень</string>
 </resources>

@@ -34,18 +34,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Lifecycle;
 
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.CharMatcher;
-
-import org.openintents.openpgp.util.OpenPgpUtils;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
@@ -84,7 +78,15 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+
 import okhttp3.HttpUrl;
+
+import org.openintents.openpgp.util.OpenPgpUtils;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class EditAccountActivity extends OmemoActivity implements OnAccountUpdate, OnUpdateBlocklist,
         OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnMamPreferencesFetched {
@@ -1323,6 +1325,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         runOnUiThread(() -> {
             if (mCaptchaDialog != null && mCaptchaDialog.isShowing()) {
                 mCaptchaDialog.dismiss();
+            }
+            if (!getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                Log.d(Config.LOGTAG,"activity not running when captcha was requested");
+                return;
             }
             final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(EditAccountActivity.this);
             final View view = getLayoutInflater().inflate(R.layout.captcha, null);

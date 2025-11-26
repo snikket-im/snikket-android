@@ -62,7 +62,7 @@ dependencies {
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
     implementation 'org.whispersystems:signal-protocol-java:2.6.2'
     implementation 'com.makeramen:roundedimageview:2.3.0'
-    implementation "com.wefika:flowlayout:0.4.1"
+
     //noinspection GradleDependency
     implementation('com.github.natario1:Transcoder:v0.9.1') {
         exclude group: 'com.otaliastudios.opengl', module: 'egloo'
@@ -98,8 +98,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 34
-        versionCode 42107
-        versionName "2.15.0"
+        versionCode 42110
+        versionName "2.15.3"
         archivesBaseName += "-$versionName"
         applicationId "org.snikket.android"
         resValue "string", "applicationId", applicationId

@@ -769,8 +769,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     }
 
     private void askForContactsPermissions() {
-        if (QuickConversationsService.isContactListIntegration(this)
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (QuickConversationsService.isContactListIntegration(this)) {
             if (checkSelfPermission(Manifest.permission.READ_CONTACTS)
                     != PackageManager.PERMISSION_GRANTED) {
                 if (mRequestedContactsPermission.compareAndSet(false, true)) {

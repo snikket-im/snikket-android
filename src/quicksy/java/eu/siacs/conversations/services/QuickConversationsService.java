@@ -1,9 +1,13 @@
 package eu.siacs.conversations.services;
 
 
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -21,6 +25,9 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
@@ -38,12 +45,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.android.PhoneNumberContact;
+import eu.siacs.conversations.crypto.TrustManagers;
 import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -54,6 +65,7 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.utils.SmsRetrieverWrapper;
+import eu.siacs.conversations.utils.TLSSocketFactory;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
@@ -133,7 +145,8 @@ public class QuickConversationsService extends AbstractQuickConversationsService
             new Thread(() -> {
                 try {
                     final URL url = new URL(BASE_URL + "/authentication/" + e164);
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    setBundledLetsEncrypt(service, connection);
                     connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
                     connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
                     setHeader(connection);
@@ -161,8 +174,35 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                 }
             }).start();
         }
+    }
 
-
+    private static void setBundledLetsEncrypt(
+            final Context context, final HttpURLConnection connection) {
+        if (connection instanceof HttpsURLConnection httpsURLConnection) {
+            final X509TrustManager trustManager;
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+                try {
+                    trustManager = TrustManagers.defaultWithBundledLetsEncrypt(context);
+                } catch (final NoSuchAlgorithmException
+                        | KeyStoreException
+                        | CertificateException
+                        | IOException e) {
+                    Log.e(Config.LOGTAG, "could not configured bundled LetsEncrypt", e);
+                    return;
+                }
+            } else {
+                return;
+            }
+            final SSLSocketFactory socketFactory;
+            try {
+                socketFactory =
+                        new TLSSocketFactory(new X509TrustManager[] {trustManager}, SECURE_RANDOM);
+            } catch (final KeyManagementException | NoSuchAlgorithmException e) {
+                Log.e(Config.LOGTAG, "could not configured bundled LetsEncrypt", e);
+                return;
+            }
+            httpsURLConnection.setSSLSocketFactory(socketFactory);
+        }
     }
 
     public void signalAccountStateChange() {
@@ -204,6 +244,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                 try {
                     final URL url = new URL(BASE_URL + "/password");
                     final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    setBundledLetsEncrypt(service, connection);
                     connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
                     connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
                     connection.setRequestMethod("POST");

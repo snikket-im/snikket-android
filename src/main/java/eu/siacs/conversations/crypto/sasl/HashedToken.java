@@ -3,14 +3,14 @@ package eu.siacs.conversations.crypto.sasl;
 import android.util.Base64;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.hash.HashFunction;
 import com.google.common.primitives.Bytes;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -168,7 +168,7 @@ public abstract class HashedToken extends SaslMechanism implements ChannelBindin
             return null;
         }
 
-        @NotNull
+        @NonNull
         @Override
         public String toString() {
             return MoreObjects.toStringHelper(this)

@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,12 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
-import org.jetbrains.annotations.NotNull;
-import org.osmdroid.util.GeoPoint;
-
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.google.common.base.Strings;
+import com.google.common.primitives.Doubles;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -31,7 +28,12 @@ import eu.siacs.conversations.ui.util.LocationHelper;
 import eu.siacs.conversations.ui.util.UriHelper;
 import eu.siacs.conversations.ui.widget.Marker;
 import eu.siacs.conversations.ui.widget.MyLocation;
+import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.LocationProvider;
+
+import org.osmdroid.util.GeoPoint;
+
+import java.util.Map;
 
 public class ShowLocationActivity extends LocationActivity implements LocationListener {
 
@@ -57,73 +59,41 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
         this.binding.fab.setOnClickListener(view -> startNavigation());
 
         final Intent intent = getIntent();
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (action == null) {
-                return;
-            }
-            switch (action) {
-                case "eu.siacs.conversations.location.show":
-                    if (intent.hasExtra("longitude") && intent.hasExtra("latitude")) {
-                        final double longitude = intent.getDoubleExtra("longitude", 0);
-                        final double latitude = intent.getDoubleExtra("latitude", 0);
-                        this.loc = new GeoPoint(latitude, longitude);
-                    }
-                    break;
-                case Intent.ACTION_VIEW:
-                    final Uri geoUri = intent.getData();
-
-                    // Attempt to set zoom level if the geo URI specifies it
-                    if (geoUri != null) {
-                        final HashMap<String, String> query =
-                                UriHelper.parseQueryString(geoUri.getQuery());
-
-                        // Check for zoom level.
-                        final String z = query.get("z");
-                        if (z != null) {
-                            try {
-                                mapController.setZoom(Double.valueOf(z));
-                            } catch (final Exception ignored) {
-                            }
-                        }
-
-                        // Check for the actual geo query.
-                        boolean posInQuery = false;
-                        final String q = query.get("q");
-                        if (q != null) {
-                            final Pattern latlng =
-                                    Pattern.compile(
-                                            "/^([-+]?[0-9]+(\\.[0-9]+)?),([-+]?[0-9]+(\\.[0-9]+)?)(\\(.*\\))?/");
-                            final Matcher m = latlng.matcher(q);
-                            if (m.matches()) {
-                                try {
-                                    this.loc =
-                                            new GeoPoint(
-                                                    Double.valueOf(m.group(1)),
-                                                    Double.valueOf(m.group(3)));
-                                    posInQuery = true;
-                                } catch (final Exception ignored) {
-                                }
-                            }
-                        }
-
-                        final String schemeSpecificPart = geoUri.getSchemeSpecificPart();
-                        if (schemeSpecificPart != null && !schemeSpecificPart.isEmpty()) {
-                            try {
-                                final GeoPoint latlong =
-                                        LocationHelper.parseLatLong(schemeSpecificPart);
-                                if (latlong != null && !posInQuery) {
-                                    this.loc = latlong;
-                                }
-                            } catch (final NumberFormatException ignored) {
-                            }
-                        }
-                    }
-
-                    break;
-            }
-            updateLocationMarkers();
+        if (intent == null) {
+            return;
         }
+        final String action = intent.getAction();
+        switch (Strings.nullToEmpty(action)) {
+            case "eu.siacs.conversations.location.show":
+                if (intent.hasExtra("longitude") && intent.hasExtra("latitude")) {
+                    final double longitude = intent.getDoubleExtra("longitude", 0);
+                    final double latitude = intent.getDoubleExtra("latitude", 0);
+                    this.loc = new GeoPoint(latitude, longitude);
+                }
+                break;
+            case Intent.ACTION_VIEW:
+                final Uri uri = intent.getData();
+                if (uri == null) {
+                    break;
+                }
+                final GeoPoint point;
+                try {
+                    point = GeoHelper.parseGeoPoint(uri);
+                } catch (final Exception e) {
+                    break;
+                }
+                this.loc = point;
+                final Map<String, String> query = UriHelper.parseQueryString(uri.getQuery());
+                final String z = query.get("z");
+                final Double zoom = Strings.isNullOrEmpty(z) ? null : Doubles.tryParse(z);
+                if (zoom != null) {
+                    Log.d(Config.LOGTAG, "inferring zoom level " + zoom + " from geo uri");
+                    mapController.setZoom(zoom);
+                    gotoLoc(false);
+                }
+                break;
+        }
+        updateLocationMarkers();
     }
 
     @Override
@@ -151,7 +121,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
     }
 
     @Override
-    public boolean onCreateOptionsMenu(@NotNull final Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_show_location, menu);
         updateUi();
@@ -174,37 +144,43 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_copy_location:
-                final ClipboardManager clipboard =
-                        (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                if (clipboard != null) {
-                    final ClipData clip =
-                            ClipData.newPlainText("location", createGeoUri().toString());
-                    clipboard.setPrimaryClip(clip);
-                    Toast.makeText(this, R.string.url_copied_to_clipboard, Toast.LENGTH_SHORT)
-                            .show();
-                }
-                return true;
-            case R.id.action_share_location:
-                final Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, createGeoUri().toString());
-                shareIntent.setType("text/plain");
-                try {
-                    startActivity(Intent.createChooser(shareIntent, getText(R.string.share_with)));
-                } catch (final ActivityNotFoundException e) {
-                    // This should happen only on faulty androids because normally chooser is always
-                    // available
-                    Toast.makeText(
-                                    this,
-                                    R.string.no_application_found_to_open_file,
-                                    Toast.LENGTH_SHORT)
-                            .show();
-                }
-                return true;
+        final var itemId = item.getItemId();
+        if (itemId == R.id.action_copy_location) {
+            final ClipboardManager clipboard = getSystemService(ClipboardManager.class);
+            final ClipData clip = ClipData.newPlainText("location", createGeoUri().toString());
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(this, R.string.url_copied_to_clipboard, Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (itemId == R.id.action_share_location) {
+            final Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, createGeoUri().toString());
+            shareIntent.setType("text/plain");
+            try {
+                startActivity(Intent.createChooser(shareIntent, getText(R.string.share_with)));
+            } catch (final ActivityNotFoundException e) {
+                // This should happen only on faulty androids because normally chooser is always
+                // available
+                Toast.makeText(this, R.string.no_application_found_to_open_file, Toast.LENGTH_SHORT)
+                        .show();
+            }
+            return true;
+        } else if (itemId == R.id.action_open_with) {
+            final Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(createGeoUri());
+            try {
+                startActivity(Intent.createChooser(intent, getText(R.string.open_with)));
+            } catch (final ActivityNotFoundException e) {
+                // This should happen only on faulty androids because normally chooser is always
+                // available
+                Toast.makeText(this, R.string.no_application_found_to_open_file, Toast.LENGTH_SHORT)
+                        .show();
+            }
+            return true;
+
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private void startNavigation() {
@@ -230,7 +206,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
     }
 
     @Override
-    public void onLocationChanged(@NotNull final Location location) {
+    public void onLocationChanged(@NonNull final Location location) {
         if (LocationHelper.isBetterLocation(location, this.myLoc)) {
             this.myLoc = location;
             updateLocationMarkers();
@@ -241,8 +217,8 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
     public void onStatusChanged(final String provider, final int status, final Bundle extras) {}
 
     @Override
-    public void onProviderEnabled(@NotNull final String provider) {}
+    public void onProviderEnabled(@NonNull final String provider) {}
 
     @Override
-    public void onProviderDisabled(@NotNull final String provider) {}
+    public void onProviderDisabled(@NonNull final String provider) {}
 }

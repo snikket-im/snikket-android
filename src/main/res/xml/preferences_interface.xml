@@ -22,6 +22,12 @@
             android:summary="@string/pref_use_colorful_bubbles_summary"
             android:title="@string/pref_use_colorful_bubbles" />
         <SwitchPreferenceCompat
+            android:defaultValue="@bool/large_font"
+            android:icon="@drawable/ic_format_size_24dp"
+            android:key="large_font"
+            android:summary="@string/pref_large_font_summary"
+            android:title="@string/pref_large_font" />
+        <SwitchPreferenceCompat
             android:defaultValue="@bool/show_dynamic_tags"
             android:icon="@drawable/ic_label_24dp"
             android:key="show_dynamic_tags"

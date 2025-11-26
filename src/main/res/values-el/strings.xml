@@ -87,9 +87,7 @@
     <string name="send_unencrypted_message">Αποστολή μη κρυπτογραφημένου μηνύματος</string>
     <string name="send_message">Αποστολή μηνύματος</string>
     <string name="send_message_to_x">Αποστολή μηνύματος στον/στην %s</string>
-    <string name="send_omemo_message">Αποστολή κρυπτογραφημένου μηνύματος OMEMO</string>
     <string name="send_omemo_x509_message">Αποστολή v\\κρυπτογραφημένου μηνύματος OMEMO</string>
-    <string name="send_pgp_message">Αποστολή κρυπτογραφημένου μηνύματος OpenPGP</string>
     <string name="your_nick_has_been_changed">Χρήση νέου ψευδωνύμου</string>
     <string name="send_unencrypted">Αποστολή χωρίς κρυπτογράφηση</string>
     <string name="decryption_failed">Η αποκρυπτογράφηση απέτυχε. Ίσως δεν κατέχετε το σωστό ιδιωτικό κλειδί.</string>

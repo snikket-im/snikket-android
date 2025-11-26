@@ -89,9 +89,7 @@
     <string name="send_unencrypted_message">Send ukrypteret besked</string>
     <string name="send_message">Send besked</string>
     <string name="send_message_to_x">Send besked til %s</string>
-    <string name="send_omemo_message">Send OMEMO-krypteret besked</string>
     <string name="send_omemo_x509_message">Send v\\OMEMO-krypteret besked</string>
-    <string name="send_pgp_message">Send OpenPGP krypteret besked</string>
     <string name="your_nick_has_been_changed">Nyt kaldenavn i brug</string>
     <string name="send_unencrypted">Send ukrypteret</string>
     <string name="decryption_failed">Dekryptering mislykkes. Måske du ikke har den rette private nøgle.</string>

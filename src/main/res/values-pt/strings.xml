@@ -62,9 +62,7 @@
     <string name="send_unencrypted_message">Enviar mensagem não cifrada</string>
     <string name="send_message">Enviar mensagem</string>
     <string name="send_message_to_x">Enviar mensagem para %s</string>
-    <string name="send_omemo_message">Enviar mensagem cifrada com OMEMO</string>
     <string name="send_omemo_x509_message">Enviar mensagem cifrada com v\\OMEMO</string>
-    <string name="send_pgp_message">Enviar mensagem cifrada com OpenPGP</string>
     <string name="send_unencrypted">Enviar não cifrada</string>
     <string name="decryption_failed">A decifragem falhou. Talvez  não tenha a chave privada correta.</string>
     <string name="openkeychain_required">OpenKeychain</string>

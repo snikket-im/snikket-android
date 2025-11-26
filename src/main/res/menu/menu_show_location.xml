@@ -6,9 +6,13 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_share_location"
         android:icon="@drawable/ic_share_24dp"/>
+    <item android:id="@+id/action_open_with"
+        app:showAsAction="ifRoom"
+        android:showAsAction="ifRoom"
+        android:title="@string/open_with"
+        android:icon="@drawable/ic_open_with_24dp"/>
     <item android:id="@+id/action_copy_location"
         android:title="@string/action_copy_location"
-        android:icon="@drawable/ic_content_copy_24dp"
-        app:showAsAction="ifRoom"
+        app:showAsAction="never"
         android:showAsAction="ifRoom"/>
 </menu>

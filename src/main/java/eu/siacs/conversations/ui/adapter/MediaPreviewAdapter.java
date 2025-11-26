@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,16 +21,19 @@ import androidx.core.widget.ImageViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ItemMediaPreviewBinding;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ConversationFragment;
+import eu.siacs.conversations.ui.ShowLocationActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.Attachment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.RejectedExecutionException;
 
 public class MediaPreviewAdapter
@@ -73,11 +77,16 @@ public class MediaPreviewAdapter
         holder.binding.mediaPreview.setOnClickListener(v -> view(context, attachment));
     }
 
-    private static void view(final Context context, Attachment attachment) {
+    private static void view(final Context context, final Attachment attachment) {
         final Intent view = new Intent(Intent.ACTION_VIEW);
-        final Uri uri = FileBackend.getUriForUri(context, attachment.getUri());
-        view.setDataAndType(uri, attachment.getMime());
-        view.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (attachment.getType() == Attachment.Type.LOCATION) {
+            view.setClass(context, ShowLocationActivity.class);
+            view.setData(attachment.getUri());
+        } else {
+            final Uri uri = FileBackend.getUriForUri(context, attachment.getUri());
+            view.setDataAndType(uri, attachment.getMime());
+            view.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
         try {
             context.startActivity(view);
         } catch (final ActivityNotFoundException e) {

@@ -52,8 +52,6 @@
     <string name="action_clear_history">נקה היסטוריה</string>
     <string name="clear_conversation_history">נקה היסטוריית שיחה</string>
     <string name="send_unencrypted_message">שלח הודעה בלתי מוצפנת</string>
-    <string name="send_omemo_message">של הודעה בהצפנת OMEMO</string>
-    <string name="send_pgp_message">שלח הודעה בהצפנת OpenPGP</string>
     <string name="send_unencrypted">שלח ללא הצפנה</string>
     <string name="decryption_failed">פענוח נכשל. אולי אין לך את המפתח הפרטי המתאים.</string>
     <string name="openkeychain_required">OpenKeychain</string>

@@ -89,9 +89,7 @@
     <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>
     <string name="send_message">Nachricht senden</string>
     <string name="send_message_to_x">Nachricht an %s senden</string>
-    <string name="send_omemo_message">OMEMO-verschlüsselt schreiben…</string>
     <string name="send_omemo_x509_message">v\\OMEMO-verschlüsselte Nachricht senden</string>
-    <string name="send_pgp_message">OpenPGP-verschlüsselt schreiben…</string>
     <string name="your_nick_has_been_changed">Neuer Nickname wird jetzt verwendet</string>
     <string name="send_unencrypted">Unverschlüsselt senden</string>
     <string name="decryption_failed">Entschlüsselung fehlgeschlagen. Vielleicht hast du nicht den richtigen privaten Schlüssel.</string>
@@ -302,8 +300,8 @@
     <string name="hosted_on">gehostet bei %s</string>
     <string name="checking_x">%s auf HTTP-Host wird überprüft</string>
     <string name="not_connected_try_again">Du bist nicht verbunden. Bitte versuche es später noch einmal</string>
-    <string name="check_x_filesize">%s-Größe prüfen</string>
-    <string name="check_x_filesize_on_host">%1$s-Größe auf %2$s prüfen</string>
+    <string name="check_x_filesize">%sgröße prüfen</string>
+    <string name="check_x_filesize_on_host">%1$sgröße auf %2$s prüfen</string>
     <string name="message_options">Nachrichtenoptionen</string>
     <string name="quote">Zitat</string>
     <string name="paste_as_quote">Als Zitat einfügen</string>
@@ -1016,7 +1014,7 @@
     <string name="delete_and_close">Chat löschen &amp; archivieren</string>
     <string name="remove_bookmark">Willst du das Lesezeichen für %s entfernen?</string>
     <string name="title_activity_share_with">Teilen mit…</string>
-    <string name="pref_use_colorful_bubbles_summary">Farbige Chatblasen helfen, gesendete und empfangene Nachrichten zu unterscheiden</string>
+    <string name="pref_use_colorful_bubbles_summary">Unterschiedliche Hintergrundfarben für gesendete und empfangene Nachrichten</string>
     <string name="pref_use_colorful_bubbles">Farbige Chatblasen</string>
     <string name="pref_dynamic_colors">Dynamische Farben</string>
     <string name="pref_dynamic_colors_summary">Systemfarben (Material You)</string>
@@ -1063,4 +1061,7 @@
     <string name="pref_category_application">Anwendung</string>
     <string name="pref_category_interaction">Interaktion</string>
     <string name="pref_up_long_summary">Beim Einsatz als UnifiedPush-Verteiler wird die dauerhafte, zuverlässige und akkuschonende XMPP-Verbindung genutzt, um andere UnifiedPush-kompatible Apps wie Tusky, Ltt.rs, FluffyChat und andere aufzuwecken.</string>
+    <string name="send_encrypted_message">Verschlüsselt schreiben…</string>
+    <string name="pref_large_font_summary">Schriftgröße der Nachrichten erhöhen</string>
+    <string name="pref_large_font">Große Schrift</string>
 </resources>

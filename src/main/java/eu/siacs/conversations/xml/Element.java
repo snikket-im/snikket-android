@@ -1,9 +1,9 @@
 package eu.siacs.conversations.xml;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.base.Optional;
 import com.google.common.primitives.Ints;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -177,7 +177,7 @@ public class Element {
         return this.attributes;
     }
 
-    @NotNull
+    @NonNull
     public String toString() {
         final StringBuilder elementOutput = new StringBuilder();
         if ((content == null) && (children.size() == 0)) {

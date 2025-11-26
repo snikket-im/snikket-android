@@ -21,6 +21,7 @@ public class AppSettings {
     public static final String AUTOMATIC_MESSAGE_DELETION = "automatic_message_deletion";
     public static final String BROADCAST_LAST_ACTIVITY = "last_activity";
     public static final String THEME = "theme";
+    public static final String DYNAMIC_COLORS = "dynamic_colors";
     public static final String SHOW_DYNAMIC_TAGS = "show_dynamic_tags";
     public static final String OMEMO = "omemo";
     public static final String ALLOW_SCREENSHOTS = "allow_screenshots";
@@ -41,6 +42,9 @@ public class AppSettings {
     public static final String CHANNEL_DISCOVERY_METHOD = "channel_discovery_method";
     public static final String SEND_CRASH_REPORTS = "send_crash_reports";
     public static final String COLORFUL_CHAT_BUBBLES = "use_green_background";
+    public static final String LARGE_FONT = "large_font";
+
+    private static final String ACCEPT_INVITES_FROM_STRANGERS = "accept_invites_from_strangers";
 
     private final Context context;
 
@@ -97,8 +101,17 @@ public class AppSettings {
         return getBooleanPreference(COLORFUL_CHAT_BUBBLES, R.bool.use_green_background);
     }
 
+    public boolean isLargeFont() {
+        return getBooleanPreference(LARGE_FONT, R.bool.large_font);
+    }
+
     public boolean isUseTor() {
         return getBooleanPreference(USE_TOR, R.bool.use_tor);
+    }
+
+    public boolean isAcceptInvitesFromStrangers() {
+        return getBooleanPreference(
+                ACCEPT_INVITES_FROM_STRANGERS, R.bool.accept_invites_from_strangers);
     }
 
     private boolean getBooleanPreference(@NonNull final String name, @BoolRes int res) {

@@ -1,7 +1,9 @@
 package eu.siacs.conversations.ui.fragment.settings;
 
+import android.app.NotificationChannel;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -10,9 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
+import com.google.common.base.Optional;
+
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.ui.activity.result.PickRingtone;
 import eu.siacs.conversations.utils.Compatibility;
 
@@ -41,6 +46,9 @@ public class NotificationsSettingsFragment extends XmppPreferenceFragment {
                         final Uri uri = PickRingtone.noneToNull(result);
                         appSettings().setRingtone(uri);
                         Log.i(Config.LOGTAG, "User set ringtone to " + uri);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            NotificationService.recreateIncomingCallChannel(requireContext(), uri);
+                        }
                     });
 
     @Override
@@ -107,11 +115,24 @@ public class NotificationsSettingsFragment extends XmppPreferenceFragment {
     }
 
     private void pickRingtone() {
-        final Uri uri = appSettings().getRingtone();
+        final Optional<Uri> channelRingtone;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            channelRingtone =
+                    NotificationService.getCurrentIncomingCallChannel(requireContext())
+                            .transform(NotificationChannel::getSound);
+        } else {
+            channelRingtone = Optional.absent();
+        }
+        final Uri uri;
+        if (channelRingtone.isPresent()) {
+            uri = channelRingtone.get();
+            Log.d(Config.LOGTAG, "ringtone came from channel");
+        } else {
+            uri = appSettings().getRingtone();
+        }
         Log.i(Config.LOGTAG, "current ringtone: " + uri);
         this.pickRingtoneLauncher.launch(uri);
     }
-
 
     private AppSettings appSettings() {
         return new AppSettings(requireContext());

@@ -1,0 +1,3 @@
+* Corrette chiamate A/V su Android 8
+* Corretta race conditions nella nuova integrazione chiamate
+* Correzioni sulla compressione video

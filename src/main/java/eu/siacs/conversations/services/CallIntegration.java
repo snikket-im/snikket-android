@@ -15,7 +15,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -28,6 +27,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.Media;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +36,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CallIntegration extends Connection {
 
+    private static final List<String> BROKEN_DEVICE_MODELS =
+            Arrays.asList(
+                    "OnePlus6", // OnePlus 6 (Android 8.1-11) Device is buggy and always starts the
+                                // operating system call screen even though we want to be self
+                                // managed
+                    "RMX1921", // Realme XT (Android 9-10) shows "Call not sent" dialog
+                    "RMX1971", // Realme 5 Pro (Android 9-11), show "Call not sent" dialog
+                    "RMX1973", // Realme 5 Pro (see above),
+                    "RMX2071", // Realme X50 Pro 5G (Call not sent)
+                    "RMX2075L1", // Realme X50 Pro 5G
+                    "RMX2076" // Realme X50 Pro 5G
+                    );
+
     public static final int DEFAULT_TONE_VOLUME = 60;
     private static final int DEFAULT_MEDIA_PLAYER_VOLUME = 90;
 
@@ -43,6 +56,8 @@ public class CallIntegration extends Connection {
 
     private final AppRTCAudioManager appRTCAudioManager;
     private AudioDevice initialAudioDevice = null;
+
+    private boolean isAudioRoutingRequested = false;
     private final AtomicBoolean initialAudioDeviceConfigured = new AtomicBoolean(false);
     private final AtomicBoolean delayedDestructionInitiated = new AtomicBoolean(false);
     private final AtomicBoolean isDestroyed = new AtomicBoolean(false);
@@ -63,8 +78,7 @@ public class CallIntegration extends Connection {
             this.appRTCAudioManager = null;
         } else {
             this.appRTCAudioManager = new AppRTCAudioManager(context);
-            ContextCompat.getMainExecutor(context)
-                    .execute(() -> this.appRTCAudioManager.start(this::onAudioDeviceChanged));
+            this.appRTCAudioManager.setAudioManagerEvents(this::onAudioDeviceChanged);
         }
         setRingbackRequested(true);
     }
@@ -128,7 +142,7 @@ public class CallIntegration extends Connection {
 
     @Override
     public void onCallAudioStateChanged(final CallAudioState state) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        if (selfManaged() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             Log.d(Config.LOGTAG, "ignoring onCallAudioStateChange() on Upside Down Cake");
             return;
         }
@@ -137,36 +151,38 @@ public class CallIntegration extends Connection {
     }
 
     public Set<AudioDevice> getAudioDevices() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        if (notSelfManaged(context)) {
+            return getAudioDevicesFallback();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             return getAudioDevicesUpsideDownCake();
-        } else if (selfManaged()) {
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return getAudioDevicesOreo();
         } else {
-            return getAudioDevicesFallback();
+            throw new AssertionError("Trying to get audio devices on unsupported version");
         }
     }
 
     public AudioDevice getSelectedAudioDevice() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        if (notSelfManaged(context)) {
+            return getAudioDeviceFallback();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             return getAudioDeviceUpsideDownCake();
-        } else if (selfManaged()) {
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return getAudioDeviceOreo();
         } else {
-            return getAudioDeviceFallback();
+            throw new AssertionError("Trying to get selected audio device on unsupported version");
         }
     }
 
     public void setAudioDevice(final AudioDevice audioDevice) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            setAudioDeviceUpsideDownCake(audioDevice);
-        } else if (selfManaged()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                setAudioDeviceOreo(audioDevice);
-            } else {
-                throw new AssertionError("Trying to set audio devices on unsupported version");
-            }
-        } else {
+        if (notSelfManaged(context)) {
             setAudioDeviceFallback(audioDevice);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            setAudioDeviceUpsideDownCake(audioDevice);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setAudioDeviceOreo(audioDevice);
+        } else {
+            throw new AssertionError("Trying to set audio devices on unsupported version");
         }
     }
 
@@ -437,18 +453,8 @@ public class CallIntegration extends Connection {
     private void onAudioDeviceChanged(
             final CallIntegration.AudioDevice selectedAudioDevice,
             final Set<CallIntegration.AudioDevice> availableAudioDevices) {
-        if (this.initialAudioDevice != null
-                && this.initialAudioDeviceConfigured.compareAndSet(false, true)) {
-            if (availableAudioDevices.contains(this.initialAudioDevice)
-                    && !availableAudioDevices.contains(AudioDevice.BLUETOOTH)) {
-                setAudioDevice(this.initialAudioDevice);
-                Log.d(Config.LOGTAG, "configured initial audio device");
-            } else {
-                Log.d(
-                        Config.LOGTAG,
-                        "not setting initial audio device. available devices: "
-                                + availableAudioDevices);
-            }
+        if (isAudioRoutingRequested) {
+            configureInitialAudioDevice(availableAudioDevices);
         }
         final var callback = this.callback;
         if (callback == null) {
@@ -457,12 +463,35 @@ public class CallIntegration extends Connection {
         callback.onAudioDeviceChanged(selectedAudioDevice, availableAudioDevices);
     }
 
+    private void configureInitialAudioDevice(final Set<AudioDevice> availableAudioDevices) {
+        final var initialAudioDevice = this.initialAudioDevice;
+        if (initialAudioDevice == null) {
+            Log.d(Config.LOGTAG, "skipping configureInitialAudioDevice()");
+            return;
+        }
+        final var target = this.initialAudioDevice;
+        if (this.initialAudioDeviceConfigured.compareAndSet(false, true)) {
+            if (availableAudioDevices.contains(target)
+                    && !availableAudioDevices.contains(AudioDevice.BLUETOOTH)) {
+                setAudioDevice(target);
+                Log.d(Config.LOGTAG, "configured initial audio device: " + target);
+            } else {
+                Log.d(
+                        Config.LOGTAG,
+                        "not setting initial audio device. available devices: "
+                                + availableAudioDevices);
+            }
+        }
+    }
+
     private boolean selfManaged() {
         return selfManaged(context);
     }
 
     public static boolean selfManaged(final Context context) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasSystemFeature(context);
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                && hasSystemFeature(context)
+                && !BROKEN_DEVICE_MODELS.contains(Build.DEVICE);
     }
 
     public static boolean hasSystemFeature(final Context context) {
@@ -470,6 +499,7 @@ public class CallIntegration extends Connection {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return packageManager.hasSystemFeature(PackageManager.FEATURE_TELECOM);
         } else {
+            //noinspection deprecation
             return packageManager.hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE);
         }
     }
@@ -481,17 +511,25 @@ public class CallIntegration extends Connection {
     public void setInitialAudioDevice(final AudioDevice audioDevice) {
         Log.d(Config.LOGTAG, "setInitialAudioDevice(" + audioDevice + ")");
         this.initialAudioDevice = audioDevice;
+    }
+
+    public void startAudioRouting() {
+        this.isAudioRoutingRequested = true;
         if (selfManaged()) {
-            // once the 'CallIntegration' gets added to the system we receive calls to update audio
-            // state
+            final var devices = getAudioDevices();
+            if (devices.isEmpty()) {
+                return;
+            }
+            configureInitialAudioDevice(devices);
             return;
         }
         final var audioManager = requireAppRtcAudioManager();
         audioManager.executeOnMain(
-                () ->
-                        this.onAudioDeviceChanged(
-                                audioManager.getSelectedAudioDevice(),
-                                audioManager.getAudioDevices()));
+                () -> {
+                    audioManager.start();
+                    this.onAudioDeviceChanged(
+                            audioManager.getSelectedAudioDevice(), audioManager.getAudioDevices());
+                });
     }
 
     private void destroyCallIntegration() {

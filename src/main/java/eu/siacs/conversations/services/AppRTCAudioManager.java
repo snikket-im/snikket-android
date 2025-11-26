@@ -88,15 +88,18 @@ public class AppRTCAudioManager {
         AppRTCUtils.logDeviceInfo(Config.LOGTAG);
     }
 
+    public void setAudioManagerEvents(final AudioManagerEvents audioManagerEvents) {
+        this.audioManagerEvents = audioManagerEvents;
+    }
+
     @SuppressWarnings("deprecation")
-    public void start(final AudioManagerEvents audioManagerEvents) {
+    public void start() {
         Log.d(Config.LOGTAG, AppRTCAudioManager.class.getName() + ".start()");
         ThreadUtils.checkIsOnMainThread();
         if (amState == AudioManagerState.RUNNING) {
             Log.e(Config.LOGTAG, "AudioManager is already active");
             return;
         }
-        this.audioManagerEvents = audioManagerEvents;
         amState = AudioManagerState.RUNNING;
         // Store current audio state so we can restore it when stop() is called.
         savedIsSpeakerPhoneOn = audioManager.isSpeakerphoneOn();

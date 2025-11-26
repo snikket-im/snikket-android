@@ -22,6 +22,8 @@ import android.widget.TextView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.common.primitives.Ints;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Message;
@@ -29,10 +31,10 @@ import eu.siacs.conversations.services.MediaPlayer;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.util.PendingItem;
+import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.utils.WeakReferenceSet;
 
 import java.lang.ref.WeakReference;
-import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -78,12 +80,8 @@ public class AudioPlayer
         }
     }
 
-    private static String formatTime(int ms) {
-        return String.format(
-                Locale.ENGLISH,
-                "%d:%02d",
-                ms / 60000,
-                Math.min(Math.round((ms % 60000) / 1000f), 59));
+    private static String formatTime(final int ms) {
+        return TimeFrameUtils.formatElapsedTime(ms,false);
     }
 
     private void initializeProximityWakeLock(Context context) {
@@ -189,7 +187,7 @@ public class AudioPlayer
             messageAdapter.flagScreenOff();
             releaseProximityWakeLock();
             viewHolder.playPause.setImageResource(R.drawable.ic_play_arrow_24dp);
-            MessageAdapter.setImageTint(viewHolder.playPause,viewHolder.bubbleColor);
+            MessageAdapter.setImageTint(viewHolder.playPause, viewHolder.bubbleColor);
             viewHolder.playPause.setContentDescription(context.getString(R.string.play_audio));
         } else {
             viewHolder.progress.setEnabled(true);
@@ -198,7 +196,7 @@ public class AudioPlayer
             acquireProximityWakeLock();
             this.stopRefresher(true);
             viewHolder.playPause.setImageResource(R.drawable.ic_pause_24dp);
-            MessageAdapter.setImageTint(viewHolder.playPause,viewHolder.bubbleColor);
+            MessageAdapter.setImageTint(viewHolder.playPause, viewHolder.bubbleColor);
             viewHolder.playPause.setContentDescription(context.getString(R.string.pause_audio));
         }
         return false;
@@ -225,7 +223,7 @@ public class AudioPlayer
             acquireProximityWakeLock();
             viewHolder.progress.setEnabled(true);
             viewHolder.playPause.setImageResource(R.drawable.ic_pause_24dp);
-            MessageAdapter.setImageTint(viewHolder.playPause,viewHolder.bubbleColor);
+            MessageAdapter.setImageTint(viewHolder.playPause, viewHolder.bubbleColor);
             viewHolder.playPause.setContentDescription(
                     viewHolder.playPause.getContext().getString(R.string.pause_audio));
             sensorManager.registerListener(
@@ -286,7 +284,7 @@ public class AudioPlayer
         viewHolder.playPause.setContentDescription(
                 viewHolder.playPause.getContext().getString(R.string.play_audio));
         viewHolder.playPause.setImageResource(R.drawable.ic_play_arrow_24dp);
-        MessageAdapter.setImageTint(viewHolder.playPause,viewHolder.bubbleColor);
+        MessageAdapter.setImageTint(viewHolder.playPause, viewHolder.bubbleColor);
         if (message != null) {
             viewHolder.runtime.setText(formatTime(message.getFileParams().runtime));
         }
@@ -383,7 +381,8 @@ public class AudioPlayer
         if (duration <= 0) {
             viewHolder.progress.setProgress(100);
         } else {
-            viewHolder.progress.setProgress(current * 100 / duration);
+            final var progress = current * 100L / duration;
+            viewHolder.progress.setProgress(Math.min(Ints.saturatedCast(progress), 100));
         }
         viewHolder.runtime.setText(
                 String.format("%s / %s", formatTime(current), formatTime(duration)));

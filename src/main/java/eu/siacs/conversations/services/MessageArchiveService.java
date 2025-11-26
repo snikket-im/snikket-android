@@ -4,7 +4,7 @@ import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 
 import android.util.Log;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -640,7 +640,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
             }
         }
 
-        @NotNull
+        @NonNull
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();

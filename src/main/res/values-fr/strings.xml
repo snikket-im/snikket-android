@@ -90,9 +90,7 @@
     <string name="send_unencrypted_message">Envoyer un message en clair</string>
     <string name="send_message">Envoyer le message</string>
     <string name="send_message_to_x">Envoyer un message à %s</string>
-    <string name="send_omemo_message">Envoyer un message chiffré avec OMEMO</string>
     <string name="send_omemo_x509_message">Envoyer un message chiffré avec \\OMEMO</string>
-    <string name="send_pgp_message">Envoyer un message chiffré avec OpenPGP</string>
     <string name="your_nick_has_been_changed">Votre identifiant a été changé</string>
     <string name="send_unencrypted">Envoyer en clair</string>
     <string name="decryption_failed">Échec du déchiffrement. Avez-vous la bonne clé privée ?</string>

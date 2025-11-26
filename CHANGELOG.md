@@ -1,5 +1,20 @@
 # Changelog
 
+### Version 2.15.3
+
+* fix call integration on some Android 14 devices
+* Introduce 'Invites from Strangers' setting
+
+### Version 2.15.2
+
+* Fix Quicksy registration on Android 6/7
+* Play incoming call ringtone on notification channel
+
+### Version 2.15.1
+
+* Show message status as icons
+* Introduce 'Large font' setting for message bubbles
+
 ### Version 2.15.0
 
 * Use Material 3 theme

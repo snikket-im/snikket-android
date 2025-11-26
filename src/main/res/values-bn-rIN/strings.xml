@@ -83,9 +83,7 @@
     <string name="send_unencrypted_message">অসাঙ্কেতিক বার্তাই পাঠানো হোক</string>
     <string name="send_message">বার্তা পাঠানো হোক</string>
     <string name="send_message_to_x">%s-কে বার্তা পাঠানো হোক</string>
-    <string name="send_omemo_message">OMEMO সাঙ্কেতিক বার্তা পাঠানো হোক</string>
     <string name="send_omemo_x509_message">v\\OMEMO সাঙ্কেতিক বার্তা পাঠানো হোক</string>
-    <string name="send_pgp_message">OpenPGP সাঙ্কেতিক বার্তা পাঠানো হোক</string>
     <string name="your_nick_has_been_changed">নতুন নাম ব্যবহার করা হচ্ছে</string>
     <string name="send_unencrypted">এনক্রিপ্ট না করেই পাঠানো হোক</string>
     <string name="decryption_failed">ডিক্রিপ্ট করা যায়নি। হয়তো আপনার কাছে সঠিক Private Key নেই।</string>

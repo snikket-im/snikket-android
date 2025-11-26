@@ -76,9 +76,7 @@
     <string name="send_unencrypted_message">إرسال رسالة غير مشفرة</string>
     <string name="send_message">إبعث رسالة</string>
     <string name="send_message_to_x">إبعث رسالة إلى %s</string>
-    <string name="send_omemo_message">إرسال رسالة مشفرة عبر OMEMO</string>
     <string name="send_omemo_x509_message">إبعث رسالة مشفَّرة بـ أومي مو OMEMO</string>
-    <string name="send_pgp_message">إرسال رسالة مشفرة عبر OpenPGP</string>
     <string name="your_nick_has_been_changed">إسم مستخدم جديد تحت الإستعمال</string>
     <string name="send_unencrypted">إرسال بدون تشفير</string>
     <string name="decryption_failed">فشل فك التشفير. ربما ليس لديك المفتاح الخاص الصحيح.</string>

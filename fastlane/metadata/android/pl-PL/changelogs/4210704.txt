@@ -1,0 +1,3 @@
+* Używanie motywu Material 3
+* Reorganizacja ustawień
+* Synchronizacja stanu przeczytania pomiędzy urządzeniami

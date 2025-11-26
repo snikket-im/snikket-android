@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Pair;
 
+import androidx.annotation.StringRes;
+
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x500.style.IETFUtils;
@@ -262,19 +264,15 @@ public final class CryptoHelper {
         }
     }
 
-    public static int encryptionTypeToText(int encryption) {
-        switch (encryption) {
-            case Message.ENCRYPTION_OTR:
-                return R.string.encryption_choice_otr;
-            case Message.ENCRYPTION_AXOLOTL:
-            case Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE:
-            case Message.ENCRYPTION_AXOLOTL_FAILED:
-                return R.string.encryption_choice_omemo;
-            case Message.ENCRYPTION_NONE:
-                return R.string.encryption_choice_unencrypted;
-            default:
-                return R.string.encryption_choice_pgp;
-        }
+    public static @StringRes int encryptionTypeToText(final int encryption) {
+        return switch (encryption) {
+            case Message.ENCRYPTION_OTR -> R.string.encryption_choice_otr;
+            case Message.ENCRYPTION_AXOLOTL,
+                    Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE,
+                    Message.ENCRYPTION_AXOLOTL_FAILED -> R.string.encryption_choice_omemo;
+            case Message.ENCRYPTION_PGP -> R.string.encryption_choice_pgp;
+            default -> R.string.encryption_choice_unencrypted;
+        };
     }
 
     public static boolean isPgpEncryptedUrl(String url) {

@@ -88,9 +88,7 @@
     <string name="send_unencrypted_message">Lähetä salaamaton viesti</string>
     <string name="send_message">Lähetä viesti</string>
     <string name="send_message_to_x">Lähetä viesti henkilölle %s</string>
-    <string name="send_omemo_message">Lähetä OMEMO-salattu viesti</string>
     <string name="send_omemo_x509_message">Lähetä v\\OMEMO-salattu viesti</string>
-    <string name="send_pgp_message">Lähetä OpenPGP-salattu viesti</string>
     <string name="your_nick_has_been_changed">Uusi nimimerkki on jo varattu</string>
     <string name="send_unencrypted">Lähetä salaamaton</string>
     <string name="decryption_failed">Salauksen purku epäonnistui. Sinulle ei varmaan ole oikeaa salaista avainta.</string>
