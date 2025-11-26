@@ -21,6 +21,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
+import de.gultsch.common.Patterns;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
@@ -49,7 +50,6 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SSLSockets;
@@ -97,7 +97,6 @@ import im.conversations.android.xmpp.model.sm.StreamManagement;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Presence;
 import im.conversations.android.xmpp.model.stanza.Stanza;
-import im.conversations.android.xmpp.model.streams.Features;
 import im.conversations.android.xmpp.model.streams.StreamError;
 import im.conversations.android.xmpp.model.tls.Proceed;
 import im.conversations.android.xmpp.model.tls.StartTls;
@@ -1034,7 +1033,7 @@ public class XmppConnection implements Runnable {
             if (Strings.isNullOrEmpty(text)) {
                 throw new StateChangingException(Account.State.UNAUTHORIZED);
             }
-            final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(text);
+            final Matcher matcher = Patterns.URI_HTTP.matcher(text);
             if (matcher.find()) {
                 final HttpUrl url;
                 try {
@@ -1925,7 +1924,7 @@ public class XmppConnection implements Runnable {
                         if (url != null) {
                             setAccountCreationFailed(url);
                         } else if (instructions != null) {
-                            final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(instructions);
+                            final Matcher matcher = Patterns.URI_HTTP.matcher(instructions);
                             if (matcher.find()) {
                                 setAccountCreationFailed(
                                         instructions.substring(matcher.start(), matcher.end()));
@@ -3137,6 +3136,20 @@ public class XmppConnection implements Runnable {
 
         public void setBlockListRequested(boolean value) {
             this.blockListRequested = value;
+        }
+
+        public HttpUrl getServiceOutageStatus() {
+            final var disco = connection.disco.get(account.getDomain());
+            if (disco == null) {
+                return null;
+            }
+            final var address =
+                    disco.getExtendedDiscoInformation(
+                            Namespace.SERVICE_OUTAGE_STATUS, "external-status-addresses");
+            if (Strings.isNullOrEmpty(address)) {
+                return null;
+            }
+            return HttpUrl.parse(address);
         }
 
         public boolean httpUpload(long filesize) {

@@ -49,16 +49,30 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
+        if (account == null) {
+            return view;
+        }
         viewHolder.binding.accountJid.setText(account.getJid().asBareJid().toString());
         AvatarWorkerTask.loadAvatar(account, viewHolder.binding.accountImage, R.dimen.avatar);
-        viewHolder.binding.accountStatus.setText(
-                getContext().getString(account.getStatus().getReadableId()));
-        switch (account.getStatus()) {
+        final var status = account.getStatus();
+        if (account.isServiceOutage()) {
+            final var sos = account.getServiceOutageStatus();
+            if (sos != null && sos.isPlanned()) {
+                viewHolder.binding.accountStatus.setText(
+                        R.string.account_status_service_outage_scheduled);
+            } else {
+                viewHolder.binding.accountStatus.setText(
+                        R.string.account_status_service_outage_known);
+            }
+        } else {
+            viewHolder.binding.accountStatus.setText(status.getReadableId());
+        }
+        switch (status) {
             case ONLINE:
                 viewHolder.binding.accountStatus.setTextColor(
                         MaterialColors.getColor(
                                 viewHolder.binding.accountStatus,
-                                com.google.android.material.R.attr.colorPrimary));
+                                androidx.appcompat.R.attr.colorPrimary));
                 break;
             case DISABLED:
             case LOGGED_OUT:
@@ -72,7 +86,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
                 viewHolder.binding.accountStatus.setTextColor(
                         MaterialColors.getColor(
                                 viewHolder.binding.accountStatus,
-                                com.google.android.material.R.attr.colorError));
+                                androidx.appcompat.R.attr.colorError));
                 break;
         }
         final boolean isDisabled = (account.getStatus() == Account.State.DISABLED);

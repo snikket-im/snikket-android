@@ -325,7 +325,7 @@
     <string name="pref_keep_foreground_service">Usługa na pierwszym planie</string>
     <string name="pref_keep_foreground_service_summary">Uniemożliwia systemowi przerwanie połączenia</string>
     <string name="pref_create_backup">Utwórz kopię zapasową</string>
-    <string name="pref_create_backup_summary">Kopia zapasowa będzie zapisana w %s</string>
+    <string name="pref_create_backup_summary">Kopie zapasowe będą przechowywane w %s</string>
     <string name="notification_create_backup_title">Tworzenie kopii zapasowej</string>
     <string name="notification_backup_created_title">Kopia zapasowa została utworzona</string>
     <string name="notification_backup_created_subtitle">Kopia zapasowa zapisana w %s</string>
@@ -415,7 +415,7 @@
     <string name="image">obraz</string>
     <string name="vector_graphic">grafika wektorowa</string>
     <string name="multimedia_file">plik multimediów</string>
-    <string name="pdf_document">Dokument PDF</string>
+    <string name="pdf_document">dokument PDF</string>
     <string name="apk">Aplikacja Androida</string>
     <string name="vcard">Kontakt</string>
     <string name="avatar_has_been_published">Avatar został pomyślnie opublikowany!</string>
@@ -464,7 +464,7 @@
     <string name="download_failed_could_not_write_file">Pobieranie niepowiodło się: brak możliwości zapisu pliku</string>
     <string name="download_failed_invalid_file">Pobieranie nieudane: Nieprawidłowy plik</string>
     <string name="account_status_tor_unavailable">Sieć TOR jest niedostepna</string>
-    <string name="account_status_bind_failure">Błąd połączenia (zasób)</string>
+    <string name="account_status_bind_failure">Błąd przywiązania kanału (zasobu)</string>
     <string name="account_status_host_unknown">Nie odpowiada za domenę</string>
     <string name="server_info_broken">Zepsute</string>
     <string name="pref_presence_settings">Dostępność</string>
@@ -846,7 +846,7 @@
     <string name="restore_backup">Przywróć kopię zapasową</string>
     <string name="restore">Przywróć</string>
     <string name="enter_password_to_restore">Wpisz swoje hasło do konta %s aby przywrócić kopię zapasową.</string>
-    <string name="restore_warning">Nie używaj kopii zapasowej aby klonować (uruchamiać równolegle) instalację. Przywracanie kopii jest przeznaczone tylko do migracji albo kiedy urządzenie zostało zgubione.</string>
+    <string name="restore_warning">Nie przywracaj kluczy OMEMO aby klonować (uruchamiać równocześnie) instalację. Przywracanie kluczy OMEMO jest przeznaczone tylko do migracji albo kiedy urządzenie zostało zgubione.</string>
     <string name="unable_to_restore_backup">Nie można przywrócić kopii zapasowej.</string>
     <string name="unable_to_decrypt_backup">Nie można odszyfrować kopii zapasowej. Czy hasło jest poprawne?</string>
     <string name="backup_channel_name">Kopia i Przywracanie</string>
@@ -1019,7 +1019,7 @@
     <string name="could_not_delete_account_from_server">Nie można usunąć konta z serwera</string>
     <string name="search_group_chats">Przeszukaj rozmowy grupowe</string>
     <string name="group_chats">Rozmowy grupowe</string>
-    <string name="restore_warning_continued">Nie próbuj przywracać kopii zapasowych, których nie utworzono samodzielnie!</string>
+    <string name="restore_warning_continued">Przywracaj jedynie kopie zapasowe, które samodzielnie utworzyłeś.</string>
     <string name="outdated_backup_file_format">Próbujesz zaimportować plik kopii zapasowej o przestarzałym formacie</string>
     <string name="audiobook">Audiobook</string>
     <string name="reconnect_on_other_host">Połącz się ponownie na innym hoście</string>
@@ -1142,4 +1142,20 @@
     <string name="show_to_contacts_only">Pokazuj wyłącznie kontaktom</string>
     <string name="account_status_connection_timeout">Limit czasu połączenia</string>
     <string name="retry_with_p2p">Spróbuj ponownie używając P2P</string>
+    <string name="word_document">dokument Microsoft Word</string>
+    <string name="account_status_channel_binding">Przywiązywanie kanału niedostępne</string>
+    <string name="restore_omemo_key">Przywróć klucze OMEMO</string>
+    <string name="non_quicksy_backup">Quicksy potrafi przywracać kopie zapasowe jedynie dla kont quicksy.im</string>
+    <string name="pref_backup_location">Lokalizacja kopii zapasowej</string>
+    <string name="uri">URI</string>
+    <string name="copy_telephone_number">Kopiuj numer telefonu</string>
+    <string name="copy_geo_uri">Kopiuj lokalizację geograficzną</string>
+    <string name="copy_email_address">Kopiuj adres e‑mail</string>
+    <string name="copied_phone_number">Skopiowano numer telefonu do schowka</string>
+    <string name="copy_URI">Kopiuj URI</string>
+    <string name="copied_email_address">Skopiowano adres e‑mail do schowka</string>
+    <string name="uri_copied_to_clipboard">Skopiowano URI do schowka</string>
+    <string name="account_status_service_outage_scheduled">Planowana niedostępność</string>
+    <string name="sos_scheduled_return">Przywrócenie usługi planowane na %s</string>
+    <string name="account_status_service_outage_known">Usługa niedostępna (znany problem)</string>
 </resources>

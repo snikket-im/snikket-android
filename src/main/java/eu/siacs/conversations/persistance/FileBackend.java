@@ -1395,34 +1395,36 @@ public class FileBackend {
         return Uri.fromFile(getAvatarFile(avatar));
     }
 
-    public Bitmap cropCenterSquare(Uri image, int size) {
+    public Bitmap cropCenterSquare(final Uri image, final int size) {
         if (image == null) {
             return null;
         }
-        InputStream is = null;
+        final BitmapFactory.Options options = new BitmapFactory.Options();
         try {
-            BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = calcSampleSize(image, size);
-            is = mXmppConnectionService.getContentResolver().openInputStream(image);
+        } catch (final IOException | SecurityException e) {
+            Log.d(Config.LOGTAG, "unable to calculate sample size for " + image, e);
+            return null;
+        }
+        try (final InputStream is =
+                mXmppConnectionService.getContentResolver().openInputStream(image)) {
             if (is == null) {
                 return null;
             }
-            Bitmap input = BitmapFactory.decodeStream(is, null, options);
-            if (input == null) {
+            final var originalBitmap = BitmapFactory.decodeStream(is, null, options);
+            if (originalBitmap == null) {
                 return null;
             } else {
-                input = rotate(input, getRotation(image));
-                return cropCenterSquare(input, size);
+                final var bitmap = rotate(originalBitmap, getRotation(image));
+                return cropCenterSquare(bitmap, size);
             }
-        } catch (FileNotFoundException | SecurityException e) {
-            Log.d(Config.LOGTAG, "unable to open file " + image.toString(), e);
+        } catch (final SecurityException | IOException e) {
+            Log.d(Config.LOGTAG, "unable to open file " + image, e);
             return null;
-        } finally {
-            close(is);
         }
     }
 
-    public Bitmap cropCenter(Uri image, int newHeight, int newWidth) {
+    public Bitmap cropCenter(final Uri image, final int newHeight, final int newWidth) {
         if (image == null) {
             return null;
         }
@@ -1458,7 +1460,7 @@ public class FileBackend {
             return dest;
         } catch (SecurityException e) {
             return null; // android 6.0 with revoked permissions for example
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             return null;
         } finally {
             close(is);
@@ -1486,15 +1488,14 @@ public class FileBackend {
         return output;
     }
 
-    private int calcSampleSize(Uri image, int size)
-            throws FileNotFoundException, SecurityException {
+    private int calcSampleSize(final Uri image, int size) throws IOException, SecurityException {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        final InputStream inputStream =
-                mXmppConnectionService.getContentResolver().openInputStream(image);
-        BitmapFactory.decodeStream(inputStream, null, options);
-        close(inputStream);
-        return calcSampleSize(options, size);
+        try (final InputStream inputStream =
+                mXmppConnectionService.getContentResolver().openInputStream(image)) {
+            BitmapFactory.decodeStream(inputStream, null, options);
+            return calcSampleSize(options, size);
+        }
     }
 
     public void updateFileParams(final Message message) {

@@ -12,23 +12,15 @@ public class Event extends Extension {
         super(Event.class);
     }
 
-    public Items getItems() {
-        return this.getExtension(ItemsWrapper.class);
-    }
-
-    public Purge getPurge() {
-        return this.getExtension(Purge.class);
+    public Action getAction() {
+        return this.getOnlyExtension(Action.class);
     }
 
     @XmlElement(name = "items")
-    public static class ItemsWrapper extends Extension implements Items {
+    public static class ItemsWrapper extends Action implements Items {
 
         public ItemsWrapper() {
             super(ItemsWrapper.class);
-        }
-
-        public String getNode() {
-            return this.getAttribute("node");
         }
 
         public Collection<? extends im.conversations.android.xmpp.model.pubsub.Item> getItems() {

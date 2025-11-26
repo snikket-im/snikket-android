@@ -77,14 +77,12 @@ public class IrregularUnicodeDetector {
         return style(
                 jid,
                 MaterialColors.getColor(
-                        context,
-                        com.google.android.material.R.attr.colorError,
-                        "colorError not found"));
+                        context, androidx.appcompat.R.attr.colorError, "colorError not found"));
     }
 
-    private static Spannable style(Jid jid, @ColorInt int color) {
-        PatternTuple patternTuple = find(jid);
-        SpannableStringBuilder builder = new SpannableStringBuilder();
+    private static Spannable style(final Jid jid, final @ColorInt int color) {
+        final var patternTuple = find(jid);
+        final var builder = new SpannableStringBuilder();
         if (jid.getLocal() != null && patternTuple.local != null) {
             SpannableString local = new SpannableString(jid.getLocal());
             colorize(local, patternTuple.local, color);
@@ -92,7 +90,7 @@ public class IrregularUnicodeDetector {
             builder.append('@');
         }
         if (jid.getDomain() != null) {
-            String[] labels = jid.getDomain().toString().split("\\.");
+            final var labels = jid.getDomain().toString().split("\\.");
             for (int i = 0; i < labels.length; ++i) {
                 SpannableString spannableString = new SpannableString(labels[i]);
                 colorize(spannableString, patternTuple.domain.get(i), color);

@@ -1,24 +1,21 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import android.util.Pair;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-
+import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.jingle.Media;
+import eu.siacs.conversations.xmpp.jingle.SessionDescription;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.jingle.Media;
-import eu.siacs.conversations.xmpp.jingle.SessionDescription;
 
 public class RtpDescription extends GenericDescription {
 
@@ -291,7 +288,7 @@ public class RtpDescription extends GenericDescription {
             final String channels = this.getAttribute("channels");
             if (channels == null) {
                 return 1; // The number of channels; if omitted, it MUST be assumed to contain one
-                          // channel
+                // channel
             }
             try {
                 return Integer.parseInt(channels);
@@ -544,13 +541,17 @@ public class RtpDescription extends GenericDescription {
         }
 
         public List<String> getSsrcs() {
-            ImmutableList.Builder<String> builder = new ImmutableList.Builder<>();
-            for (Element child : this.children) {
+            final ImmutableList.Builder<String> builder = new ImmutableList.Builder<>();
+            for (final Element child : this.children) {
                 if ("source".equals(child.getName())) {
                     final String ssrc = child.getAttribute("ssrc");
-                    if (ssrc != null) {
-                        builder.add(ssrc);
+                    if (Strings.isNullOrEmpty(ssrc)) {
+                        continue;
                     }
+                    builder.add(
+                            SessionDescription.checkNoNewline(
+                                    ssrc,
+                                    "Source Specific media attributes can not contain newline"));
                 }
             }
             return builder.build();

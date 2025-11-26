@@ -17,11 +17,12 @@ import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import im.conversations.android.xmpp.model.correction.Replace;
+import im.conversations.android.xmpp.model.hints.Store;
 import im.conversations.android.xmpp.model.reactions.Reaction;
 import im.conversations.android.xmpp.model.reactions.Reactions;
+import im.conversations.android.xmpp.model.receipts.Received;
 import im.conversations.android.xmpp.model.unique.OriginId;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
@@ -258,19 +259,14 @@ public class MessageGenerator extends AbstractGenerator {
     }
 
     public im.conversations.android.xmpp.model.stanza.Message received(
-            Account account,
             final Jid from,
             final String id,
-            ArrayList<String> namespaces,
-            im.conversations.android.xmpp.model.stanza.Message.Type type) {
+            final im.conversations.android.xmpp.model.stanza.Message.Type type) {
         final var receivedPacket = new im.conversations.android.xmpp.model.stanza.Message();
         receivedPacket.setType(type);
         receivedPacket.setTo(from);
-        receivedPacket.setFrom(account.getJid());
-        for (final String namespace : namespaces) {
-            receivedPacket.addChild("received", namespace).setAttribute("id", id);
-        }
-        receivedPacket.addChild("store", "urn:xmpp:hints");
+        receivedPacket.addExtension(new Received(id));
+        receivedPacket.addExtension(new Store());
         return receivedPacket;
     }
 

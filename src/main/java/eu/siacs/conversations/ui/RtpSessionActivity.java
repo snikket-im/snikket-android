@@ -1253,6 +1253,7 @@ public class RtpSessionActivity extends XmppActivity
                     }
                 },
                 MainThreadExecutor.getInstance());
+        // TODO ^ replace with ContextCompat.getMainExecutor(getApplication())
     }
 
     private void enableVideo(final View view) {

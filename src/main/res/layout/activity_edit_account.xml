@@ -5,7 +5,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"
@@ -145,6 +146,56 @@
                         </LinearLayout>
                     </RelativeLayout>
                 </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/service_outage"
+                    style="?attr/materialCardViewElevatedStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="?colorErrorContainer"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding_regular">
+
+
+                        <TextView
+                            android:id="@+id/sos_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/account_status_service_outage_known"
+                            android:textAppearance="?textAppearanceTitleLarge"
+                            android:textColor="?colorOnErrorContainer" />
+
+                        <TextView
+                            android:id="@+id/sos_message"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textAppearance="?textAppearanceBodyMedium"
+                            android:textColor="?colorOnErrorContainer"
+                            android:textColorLink="?colorOnErrorContainer"
+                            tools:text="Our service is currently performing server updates" />
+
+                        <TextView
+                            android:id="@+id/sos_scheduled_end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16sp"
+                            android:textAppearance="?textAppearanceBodyLarge"
+                            android:textColor="?colorOnErrorContainer"
+                            tools:text="@string/sos_scheduled_return" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/os_optimization"

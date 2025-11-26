@@ -70,7 +70,7 @@ public class StylingHelper {
     }
 
     public static void format(
-            final Editable editable, int start, int end, @ColorInt int textColor) {
+            final Spannable editable, int start, int end, @ColorInt int textColor) {
         for (ImStyleParser.Style style : ImStyleParser.parse(editable, start, end)) {
             final int keywordLength = style.getKeyword().length();
             editable.setSpan(
@@ -85,7 +85,7 @@ public class StylingHelper {
         }
     }
 
-    public static void format(final Editable editable, @ColorInt final int textColor) {
+    public static void format(final Spannable editable, @ColorInt final int textColor) {
         format(editable, 0, editable.length() - 1, textColor);
     }
 
@@ -121,7 +121,7 @@ public class StylingHelper {
     }
 
     private static void highlight(
-            final TextView view, final Editable editable, final String needle) {
+            final TextView view, final Spannable editable, final String needle) {
         final int length = needle.length();
         String string = editable.toString();
         int start = indexOfIgnoreCase(string, needle, 0);
@@ -197,7 +197,7 @@ public class StylingHelper {
     }
 
     private static void makeKeywordOpaque(
-            final Editable editable, int start, int end, @ColorInt int fallbackTextColor) {
+            final Spannable editable, int start, int end, @ColorInt int fallbackTextColor) {
         QuoteSpan[] quoteSpans = editable.getSpans(start, end, QuoteSpan.class);
         @ColorInt
         int textColor = quoteSpans.length > 0 ? quoteSpans[0].getColor() : fallbackTextColor;

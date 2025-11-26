@@ -2,22 +2,10 @@ package eu.siacs.conversations.crypto;
 
 import android.util.Log;
 import android.util.Pair;
-
+import androidx.annotation.NonNull;
+import com.google.common.base.CharMatcher;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
-
-import org.bouncycastle.asn1.ASN1Object;
-import org.bouncycastle.asn1.ASN1Primitive;
-import org.bouncycastle.asn1.ASN1TaggedObject;
-import org.bouncycastle.asn1.DERIA5String;
-import org.bouncycastle.asn1.DERUTF8String;
-import org.bouncycastle.asn1.DLSequence;
-import org.bouncycastle.asn1.x500.RDN;
-import org.bouncycastle.asn1.x500.X500Name;
-import org.bouncycastle.asn1.x500.style.BCStyle;
-import org.bouncycastle.asn1.x500.style.IETFUtils;
-import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
-
 import java.io.IOException;
 import java.net.IDN;
 import java.security.cert.Certificate;
@@ -26,11 +14,21 @@ import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
+import org.bouncycastle.asn1.ASN1Object;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.ASN1TaggedObject;
+import org.bouncycastle.asn1.DERIA5String;
+import org.bouncycastle.asn1.DERUTF8String;
+import org.bouncycastle.asn1.DLSequence;
+import org.bouncycastle.asn1.x500.RDN;
+import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.asn1.x500.style.IETFUtils;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
 public class XmppDomainVerifier {
 
@@ -40,18 +38,18 @@ public class XmppDomainVerifier {
     private static final String XMPP_ADDR = "1.3.6.1.5.5.7.8.5";
 
     private static List<String> getCommonNames(final X509Certificate certificate) {
-        List<String> domains = new ArrayList<>();
+        final var domains = new ImmutableList.Builder<String>();
         try {
-            X500Name x500name = new JcaX509CertificateHolder(certificate).getSubject();
-            RDN[] rdns = x500name.getRDNs(BCStyle.CN);
-            for (int i = 0; i < rdns.length; ++i) {
+            final var x500name = new JcaX509CertificateHolder(certificate).getSubject();
+            final RDN[] nameRDNs = x500name.getRDNs(BCStyle.CN);
+            for (int i = 0; i < nameRDNs.length; ++i) {
                 domains.add(
                         IETFUtils.valueToString(
                                 x500name.getRDNs(BCStyle.CN)[i].getFirst().getValue()));
             }
-            return domains;
-        } catch (CertificateEncodingException e) {
-            return domains;
+            return domains.build();
+        } catch (final CertificateEncodingException e) {
+            return Collections.emptyList();
         }
     }
 
@@ -79,22 +77,24 @@ public class XmppDomainVerifier {
         }
     }
 
-    public static boolean matchDomain(final String needle, final List<String> haystack) {
-        for (final String entry : haystack) {
-            if (entry.startsWith("*.")) {
-                int offset = 0;
-                while (offset < needle.length()) {
-                    int i = needle.indexOf('.', offset);
-                    if (i < 0) {
-                        break;
-                    }
-                    if (needle.substring(i).equalsIgnoreCase(entry.substring(1))) {
-                        return true;
-                    }
-                    offset = i + 1;
+    public static boolean matchDomain(final String domain, final List<String> certificateDomains) {
+        for (final String certificateDomain : certificateDomains) {
+            if (certificateDomain.startsWith("*.")) {
+                // https://www.rfc-editor.org/rfc/rfc6125#section-6.4.3
+                // wild cards can only be in the left most label and don’t match '.'
+                final var wildcardEntry = certificateDomain.substring(1);
+                if (CharMatcher.is('.').countIn(wildcardEntry) < 2) {
+                    Log.w(LOGTAG, "not enough labels in wildcard certificate");
+                    break;
+                }
+                final int position = domain.indexOf('.');
+                if (position != -1 && domain.substring(position).equalsIgnoreCase(wildcardEntry)) {
+                    Log.d(LOGTAG, "domain " + domain + " matched " + certificateDomain);
+                    return true;
                 }
             } else {
-                if (entry.equalsIgnoreCase(needle)) {
+                if (certificateDomain.equalsIgnoreCase(domain)) {
+                    Log.d(LOGTAG, "domain " + domain + " matched " + certificateDomain);
                     return true;
                 }
             }
@@ -193,6 +193,7 @@ public class XmppDomainVerifier {
             return all.build();
         }
 
+        @NonNull
         @Override
         public String toString() {
             return MoreObjects.toStringHelper(this)

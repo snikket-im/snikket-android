@@ -44,6 +44,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
+import de.gultsch.common.Linkify;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -71,10 +72,10 @@ import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.service.AudioPlayer;
 import eu.siacs.conversations.ui.text.DividerSpan;
+import eu.siacs.conversations.ui.text.FixedURLSpan;
 import eu.siacs.conversations.ui.text.QuoteSpan;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
-import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
@@ -237,8 +238,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     .time()
                     .setTextColor(
                             MaterialColors.getColor(
-                                    viewHolder.time(),
-                                    com.google.android.material.R.attr.colorError));
+                                    viewHolder.time(), androidx.appcompat.R.attr.colorError));
         } else {
             setTextColor(viewHolder.time(), bubbleColor);
         }
@@ -578,7 +578,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
 
         StylingHelper.format(body, viewHolder.messageBody().getCurrentTextColor());
-        MyLinkify.addLinks(body, true);
+        Linkify.addLinks(body);
+        FixedURLSpan.fix(body);
         if (highlightedTerm != null) {
             StylingHelper.highlight(viewHolder.messageBody(), body, highlightedTerm);
         }
@@ -1398,8 +1399,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         ImageViewCompat.setImageTintList(
                 imageView,
                 ColorStateList.valueOf(
-                        MaterialColors.getColor(
-                                imageView, com.google.android.material.R.attr.colorError)));
+                        MaterialColors.getColor(imageView, androidx.appcompat.R.attr.colorError)));
     }
 
     public static void setTextColor(final TextView textView, final BubbleColor bubbleColor) {
@@ -1407,8 +1407,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         textView.setTextColor(color);
         if (BubbleColor.SURFACES.contains(bubbleColor)) {
             textView.setLinkTextColor(
-                    MaterialColors.getColor(
-                            textView, com.google.android.material.R.attr.colorPrimary));
+                    MaterialColors.getColor(textView, androidx.appcompat.R.attr.colorPrimary));
         } else {
             textView.setLinkTextColor(color);
         }

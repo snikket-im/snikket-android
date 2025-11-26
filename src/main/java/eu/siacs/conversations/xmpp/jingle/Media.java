@@ -1,18 +1,17 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import androidx.annotation.NonNull;
 import com.google.common.collect.ImmutableSet;
-
 import java.util.Locale;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-
 public enum Media {
-
-    VIDEO, AUDIO, UNKNOWN;
+    VIDEO,
+    AUDIO,
+    UNKNOWN;
 
     @Override
-    @Nonnull
+    @NonNull
     public String toString() {
         return super.toString().toLowerCase(Locale.ROOT);
     }

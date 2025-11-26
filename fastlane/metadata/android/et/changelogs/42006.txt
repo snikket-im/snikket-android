@@ -1,0 +1,2 @@
+* Hääl- ja videokõnede verifitserimine olemasoleva OMEMO sessiooni kontekstis
+* Parem ühilduvus muude, kui libwebrtc teekidega loodud WebRTC-ühendustega

@@ -1,0 +1,2 @@
+* Naprawienie pętli wysyłania na serwerach, które obsługują jedynie sm:2
+* Pokazywanie „Przełącz na wideo” tylko gdy druga strona obsługuje wideo

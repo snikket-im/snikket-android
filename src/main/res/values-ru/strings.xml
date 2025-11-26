@@ -91,7 +91,7 @@
     <string name="send_unencrypted_message">Отправить сообщение без шифрования</string>
     <string name="send_message">Сообщение</string>
     <string name="send_message_to_x">Сообщение для %s</string>
-    <string name="send_omemo_x509_message">Зашифрованное vOMEMO сообщение</string>
+    <string name="send_omemo_x509_message">Зашифрованное v\\OMEMO сообщение</string>
     <string name="your_nick_has_been_changed">Используется новое имя</string>
     <string name="send_unencrypted">Отправить в незашифрованном виде</string>
     <string name="decryption_failed">Расшифровка невозможна. Вероятно, у вас нет надлежащего ключа.</string>
@@ -218,9 +218,9 @@
     <string name="openpgp_messages_found">Найдены новые зашифрованные OpenPGP сообщения</string>
     <string name="openpgp_key_id">ID ключа OpenPGP</string>
     <string name="omemo_fingerprint">Отпечаток OMEMO</string>
-    <string name="omemo_fingerprint_x509">Отпечаток vOMEMO</string>
+    <string name="omemo_fingerprint_x509">Отпечаток v\\OMEMO</string>
     <string name="omemo_fingerprint_selected_message">Отпечаток OMEMO (выбранного сообщения)</string>
-    <string name="omemo_fingerprint_x509_selected_message">Отпечаток vOMEMO (выбранного сообщения)</string>
+    <string name="omemo_fingerprint_x509_selected_message">Отпечаток v\\OMEMO (выбранного сообщения)</string>
     <string name="other_devices">Другие устройства</string>
     <string name="trust_omemo_fingerprints">Доверенные отпечатки OMEMO</string>
     <string name="fetching_keys">Получение ключей…</string>
@@ -332,7 +332,7 @@
     <string name="pref_keep_foreground_service">Процесс переднего плана</string>
     <string name="pref_keep_foreground_service_summary">Не позволять операционной системе закрывать ваше соединение</string>
     <string name="pref_create_backup">Создать резервную копию</string>
-    <string name="pref_create_backup_summary">Файлы резервной копии будут сохранены в %s</string>
+    <string name="pref_create_backup_summary">Резервные копии будут сохранены в %s</string>
     <string name="notification_create_backup_title">Создание резервной копии</string>
     <string name="notification_backup_created_title">Ваша резервная копия создана</string>
     <string name="notification_backup_created_subtitle">Файлы резервной копии сохранены в %s</string>
@@ -422,7 +422,7 @@
     <string name="video">видео</string>
     <string name="image">изображение</string>
     <string name="vector_graphic">векторная графика</string>
-    <string name="pdf_document">PDF-документ</string>
+    <string name="pdf_document">Документ PDF</string>
     <string name="apk">Приложение Android</string>
     <string name="vcard">Контакт</string>
     <string name="avatar_has_been_published">Аватар загружен!</string>
@@ -852,7 +852,7 @@
     <string name="restore_backup">Восстановить из резервной копии</string>
     <string name="restore">Восстановить</string>
     <string name="enter_password_to_restore">Введите пароль аккаунта %s для восстановления резервной копии.</string>
-    <string name="restore_warning">Не используйте восстановление резервной копии для дублирования установленного приложения (одновременного исполнения). Восстановление резервной копии нужно лишь для того, чтобы перенести данные на другое устройство или на случай потери своего устройства.</string>
+    <string name="restore_warning">Не используйте восстановление ключей OMEMO для дублирования установленного приложения (одновременного использования). Восстановление ключей OMEMO нужно только для переноса данных на другое устройство или на случай потери своего устройства.</string>
     <string name="unable_to_restore_backup">Невозможно восстановить резервную копию.</string>
     <string name="unable_to_decrypt_backup">Невозможно расшифровать резервную копию. Вы ввели верный пароль?</string>
     <string name="backup_channel_name">Резервное копирование и восстановление</string>
@@ -1022,7 +1022,7 @@
     <string name="pref_up_push_account_summary">Аккаунт для получения push-уведомлений</string>
     <string name="no_account_deactivated">Нет (неактивно)</string>
     <string name="verifying_omemo_keys_trusted_source_account">Вы собираетесь проверить ключи OMEMO своего аккаунта. Это безопасно только в том случае, если вы перешли по этой ссылке из надёжного источника, где только вы могли опубликовать эту ссылку.</string>
-    <string name="restore_warning_continued">Не пытайтесь восстановить резервные копии, которые не были созданы вами!</string>
+    <string name="restore_warning_continued">Восстанавливайте только те резервные копии, которые были созданы лично вами!</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d пропущенный вызов от %2$s</item>
         <item quantity="few">%1$d пропущенных вызова от %2$s</item>
@@ -1158,4 +1158,19 @@
     <string name="account_status_connection_timeout">Истекло время ожидания подключения</string>
     <string name="retry_with_p2p">Повторить через P2P</string>
     <string name="account_status_channel_binding">Привязка канала недоступна</string>
+    <string name="word_document">Документ Word</string>
+    <string name="restore_omemo_key">Восстановить ключи OMEMO</string>
+    <string name="non_quicksy_backup">Quicksy может восстанавливать резервные копии только для аккаунтов quicksy.im</string>
+    <string name="pref_backup_location">Расположение резервной копии</string>
+    <string name="uri_copied_to_clipboard">URI скопирован в буфер обмена</string>
+    <string name="uri">URI</string>
+    <string name="copy_telephone_number">Копировать номер телефона</string>
+    <string name="copied_phone_number">Номер телефона скопирован в буфер обмена</string>
+    <string name="copy_geo_uri">Копировать местоположение</string>
+    <string name="copy_email_address">Копировать адрес почты</string>
+    <string name="copy_URI">Копировать URI</string>
+    <string name="copied_email_address">Адрес электронной почты скопирован в буфер обмена</string>
+    <string name="account_status_service_outage_known">Сервис не работает (известная проблема)</string>
+    <string name="account_status_service_outage_scheduled">Запланированный простой</string>
+    <string name="sos_scheduled_return">Сервис должен заработать %s</string>
 </resources>

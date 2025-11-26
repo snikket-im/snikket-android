@@ -314,7 +314,7 @@
     <string name="copy_original_url">Копирај оригинални линк</string>
     <string name="send_again">Пошаљи поново</string>
     <string name="file_url">Линк ка фајлу</string>
-    <string name="url_copied_to_clipboard">Линк је копиран у клипборд</string>
+    <string name="url_copied_to_clipboard">Линк копиран у клипборд</string>
     <string name="jabber_id_copied_to_clipboard">XMPP адреса копирана у клипборд</string>
     <string name="error_message_copied_to_clipboard">Текст грешке копиран у клипборд</string>
     <string name="web_address">веб адреса</string>
@@ -720,9 +720,9 @@
     <string name="view_media">Прикажи садржај</string>
     <string name="group_chat_members">Учесници</string>
     <string name="media_browser">Прегледач садржаја</string>
-    <string name="set_profile_picture">Conversations профилна слика</string>
+    <string name="set_profile_picture">Аватар</string>
     <string name="open_with">Отвори користећи…</string>
-    <string name="restore_warning_continued">Не покушавај да вратиш резервну копију коју ниси направио/ла сам!</string>
+    <string name="restore_warning_continued">Враћај само оне резервне копије које си сам/а направио/ла.</string>
     <string name="create_public_channel">Направи јавни канал</string>
     <string name="allow_participants_to_edit_subject">Дозволи било коме да измени тему</string>
     <string name="share_backup_files">Подели резервне копије</string>
@@ -1005,7 +1005,7 @@
     <string name="install_orbot">Инсталирај Orbot</string>
     <string name="restore">Врати</string>
     <string name="enter_password_to_restore">Унеси своју лозинку за налог %s да вратиш резервну копију.</string>
-    <string name="restore_warning">Не употребљавај функцију враћања резервне копије ради клонирања инсталације (за рад у паралели). Враћање резервне копије је предвиђено само за миграције или у случају да си изгубио/ла оригинални уређај.</string>
+    <string name="restore_warning">Не враћај резервну копију OMEMO кључева ради клонирања инсталације (за рад у паралели). Враћање резервне копије OMEMO кључева је предвиђено само за миграције или у случају да си изгубио/ла оригинални уређај.</string>
     <string name="unable_to_restore_backup">Није могуће вратити резервну копију.</string>
     <string name="unable_to_decrypt_backup">Није могуће дешифровати резервну копију. Да ли је лозинка исправна?</string>
     <string name="backup_channel_name">Резервна копија и Враћање</string>
@@ -1145,4 +1145,16 @@
     <string name="account_status_connection_timeout">Истекла веза</string>
     <string name="retry_with_p2p">Покушај поново са P2P</string>
     <string name="account_status_channel_binding">Везивање канала недоступно</string>
+    <string name="word_document">Word документ</string>
+    <string name="non_quicksy_backup">Quicksy може да врати резервне копије само за quicksy.im налоге</string>
+    <string name="pref_backup_location">Локација резервних копија</string>
+    <string name="restore_omemo_key">Врати OMEMO кључеве</string>
+    <string name="uri_copied_to_clipboard">URI копиран у клипборд</string>
+    <string name="uri">URI</string>
+    <string name="copy_geo_uri">Копирај геолокацију</string>
+    <string name="copy_email_address">Копирај имејл адресу</string>
+    <string name="copied_email_address">Копирана имејл адреса у клипборд</string>
+    <string name="copy_telephone_number">Копирај број телефона</string>
+    <string name="copied_phone_number">Копиран број телефона у клипборд</string>
+    <string name="copy_URI">Копирај URI</string>
 </resources>

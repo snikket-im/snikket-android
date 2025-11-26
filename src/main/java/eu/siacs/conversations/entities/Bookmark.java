@@ -10,6 +10,9 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
+import im.conversations.android.xmpp.model.bookmark.Storage;
+import im.conversations.android.xmpp.model.bookmark2.Conference;
+import im.conversations.android.xmpp.model.pubsub.PubSub;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,7 +39,8 @@ public class Bookmark extends Element implements ListItem {
         this.account = account;
     }
 
-    public static Map<Jid, Bookmark> parseFromStorage(Element storage, Account account) {
+    public static Map<Jid, Bookmark> parseFromStorage(
+            final Storage storage, final Account account) {
         if (storage == null) {
             return Collections.emptyMap();
         }
@@ -57,24 +61,24 @@ public class Bookmark extends Element implements ListItem {
         return bookmarks;
     }
 
-    public static Map<Jid, Bookmark> parseFromPubSub(final Element pubSub, final Account account) {
+    public static Map<Jid, Bookmark> parseFromPubSub(final PubSub pubSub, final Account account) {
         if (pubSub == null) {
             return Collections.emptyMap();
         }
-        final Element items = pubSub.findChild("items");
-        if (items != null && Namespace.BOOKMARKS2.equals(items.getAttribute("node"))) {
-            final Map<Jid, Bookmark> bookmarks = new HashMap<>();
-            for (Element item : items.getChildren()) {
-                if (item.getName().equals("item")) {
-                    final Bookmark bookmark = Bookmark.parseFromItem(item, account);
-                    if (bookmark != null) {
-                        bookmarks.put(bookmark.jid, bookmark);
-                    }
-                }
-            }
-            return bookmarks;
+        final var items = pubSub.getItems();
+        if (items == null || !Namespace.BOOKMARKS2.equals(items.getNode())) {
+            return Collections.emptyMap();
         }
-        return Collections.emptyMap();
+        final Map<Jid, Bookmark> bookmarks = new HashMap<>();
+        for (final var item : items.getItemMap(Conference.class).entrySet()) {
+            final Bookmark bookmark =
+                    Bookmark.parseFromItem(item.getKey(), item.getValue(), account);
+            if (bookmark == null) {
+                continue;
+            }
+            bookmarks.put(bookmark.jid, bookmark);
+        }
+        return bookmarks;
     }
 
     public static Bookmark parse(Element element, Account account) {
@@ -88,13 +92,13 @@ public class Bookmark extends Element implements ListItem {
         return bookmark;
     }
 
-    public static Bookmark parseFromItem(Element item, Account account) {
-        final Element conference = item.findChild("conference", Namespace.BOOKMARKS2);
-        if (conference == null) {
+    public static Bookmark parseFromItem(
+            final String id, final Conference conference, final Account account) {
+        if (id == null || conference == null) {
             return null;
         }
         final Bookmark bookmark = new Bookmark(account);
-        bookmark.jid = Jid.Invalid.getNullForInvalid(item.getAttributeAsJid("id"));
+        bookmark.jid = Jid.Invalid.getNullForInvalid(Jid.ofOrInvalid(id));
         // TODO verify that we only use bare jids and ignore full jids
         if (bookmark.jid == null) {
             return null;

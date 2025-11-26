@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="?colorSurfaceContainerHighest" />
-    <corners
-        android:bottomRightRadius="12dp"
-        android:topRightRadius="12dp" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="?colorSurface" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="?colorSurfaceContainerHighest" />
+            <corners
+                android:bottomRightRadius="12dp"
+                android:topRightRadius="12dp" />
+        </shape>
+    </item>
+</layer-list>

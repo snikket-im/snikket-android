@@ -2,9 +2,7 @@ package eu.siacs.conversations.xmpp.jingle;
 
 import android.util.Log;
 import android.util.Pair;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
@@ -12,7 +10,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
@@ -21,7 +18,6 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.WebRTCDataChannelTransportInfo;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -206,6 +202,10 @@ public class SessionDescription {
                 entry : contentMap.contents.entrySet()) {
             final String name = entry.getKey();
             checkNoWhitespace(name, "content name must not contain any whitespace");
+            // https://groups.google.com/g/discuss-webrtc/c/VG406JMTBI4/m/MrSex_q7AgAJ
+            if (name.length() > 16) {
+                throw new IllegalArgumentException("mid should not be longer than 16 chars");
+            }
             final DescriptionTransport<RtpDescription, IceUdpTransportInfo> descriptionTransport =
                     entry.getValue();
             final RtpDescription description = descriptionTransport.description;
@@ -226,7 +226,7 @@ public class SessionDescription {
                 if (parameters.size() == 1) {
                     mediaAttributes.put(
                             "fmtp", RtpDescription.Parameter.toSdpString(id, parameters.get(0)));
-                } else if (parameters.size() > 0) {
+                } else if (!parameters.isEmpty()) {
                     mediaAttributes.put(
                             "fmtp", RtpDescription.Parameter.toSdpString(id, parameters));
                 }
@@ -306,7 +306,7 @@ public class SessionDescription {
                             "A SSRC group is missing semantics attribute");
                 }
                 checkNoWhitespace(semantics, "source group semantics must not contain whitespace");
-                if (groups.size() == 0) {
+                if (groups.isEmpty()) {
                     throw new IllegalArgumentException("A SSRC group is missing SSRC ids");
                 }
                 for (final String source : groups) {

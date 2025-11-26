@@ -1,0 +1,2 @@
+* Parandasime võrdõigusvõrgust laaditud failidele reageerimist
+* Parandasime URI-de klapitamist

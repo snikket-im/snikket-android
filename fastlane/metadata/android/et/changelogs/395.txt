@@ -1,0 +1,3 @@
+* Lisasime kõne vaatesse nupu „Tagasi vestluse juurde“
+* Parandasime kiirklahvide toimimist
+* Muud veaparandused

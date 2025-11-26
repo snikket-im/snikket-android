@@ -378,15 +378,17 @@ public class ConversationsOverviewFragment extends XmppFragment {
         if (this.binding == null) {
             return null;
         }
-        LinearLayoutManager layoutManager =
-                (LinearLayoutManager) this.binding.list.getLayoutManager();
-        int position = layoutManager.findFirstVisibleItemPosition();
-        final View view = this.binding.list.getChildAt(0);
-        if (view != null) {
-            return new ScrollState(position, view.getTop());
-        } else {
-            return new ScrollState(position, 0);
+        if (this.binding.list.getLayoutManager()
+                instanceof LinearLayoutManager linearLayoutManager) {
+            final int position = linearLayoutManager.findFirstVisibleItemPosition();
+            final View view = this.binding.list.getChildAt(0);
+            if (view != null) {
+                return new ScrollState(position, view.getTop());
+            } else {
+                return new ScrollState(position, 0);
+            }
         }
+        return null;
     }
 
     @Override
@@ -473,18 +475,22 @@ public class ConversationsOverviewFragment extends XmppFragment {
             }
         }
         this.conversationsAdapter.notifyDataSetChanged();
-        ScrollState scrollState = pendingScrollState.pop();
+        final var scrollState = pendingScrollState.pop();
         if (scrollState != null) {
             setScrollPosition(scrollState);
         }
     }
 
-    private void setScrollPosition(ScrollState scrollPosition) {
-        if (scrollPosition != null) {
-            LinearLayoutManager layoutManager =
-                    (LinearLayoutManager) binding.list.getLayoutManager();
-            layoutManager.scrollToPositionWithOffset(
+    private void setScrollPosition(@NonNull final ScrollState scrollPosition) {
+        if (binding.list.getLayoutManager() instanceof LinearLayoutManager linearLayoutManager) {
+            linearLayoutManager.scrollToPositionWithOffset(
                     scrollPosition.position, scrollPosition.offset);
+            if (scrollPosition.position > 0) {
+                binding.fab.shrink();
+            } else {
+                binding.fab.extend();
+            }
+            binding.fab.clearAnimation();
         }
     }
 }

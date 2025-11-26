@@ -8,7 +8,6 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -16,8 +15,11 @@ import android.provider.Settings;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.format.DateUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +41,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
+import de.gultsch.common.Linkify;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -57,6 +60,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.PresenceTemplateAdapter;
+import eu.siacs.conversations.ui.text.FixedURLSpan;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
@@ -503,7 +507,7 @@ public class EditAccountActivity extends OmemoActivity
 
         final List<Account> accounts =
                 xmppConnectionService == null ? null : xmppConnectionService.getAccounts();
-        if (accounts != null && accounts.size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
+        if (accounts != null && accounts.isEmpty() && Config.MAGIC_CREATE_DOMAIN != null) {
             Intent intent =
                     SignupUtils.getSignUpIntent(this, mForceRegister != null && mForceRegister);
             StartConversationActivity.addInviteUri(intent, getIntent());
@@ -905,9 +909,9 @@ public class EditAccountActivity extends OmemoActivity
     }
 
     @Override
-    public void onNewIntent(final Intent intent) {
+    public void onNewIntent(@NonNull final Intent intent) {
         super.onNewIntent(intent);
-        if (intent != null && intent.getData() != null) {
+        if (intent.getData() != null) {
             final XmppUri uri = new XmppUri(intent.getData());
             if (xmppConnectionServiceBound) {
                 processFingerprintVerification(uri, false);
@@ -1172,10 +1176,6 @@ public class EditAccountActivity extends OmemoActivity
             this.binding.namePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
         }
 
-        if (!mInitMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.binding.accountPassword.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
-        }
-
         final boolean editable =
                 !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY)
                         && !mAccount.isOptionSet(Account.OPTION_FIXED_USERNAME)
@@ -1336,6 +1336,13 @@ public class EditAccountActivity extends OmemoActivity
                     this.mAccount.getAxolotlService().getOwnFingerprint();
             if (ownAxolotlFingerprint != null && Config.supportOmemo()) {
                 this.binding.axolotlFingerprintBox.setVisibility(View.VISIBLE);
+                this.binding.axolotlFingerprintBox.setOnCreateContextMenuListener(
+                        (menu, v, menuInfo) -> {
+                            getMenuInflater().inflate(R.menu.omemo_key_context, menu);
+                            menu.findItem(R.id.verify_scan).setVisible(false);
+                            menu.findItem(R.id.distrust_key).setVisible(false);
+                            this.mSelectedFingerprint = ownAxolotlFingerprint;
+                        });
                 if (ownAxolotlFingerprint.equals(messageFingerprint)) {
                     this.binding.ownFingerprintDesc.setTextColor(
                             MaterialColors.getColor(
@@ -1389,6 +1396,7 @@ public class EditAccountActivity extends OmemoActivity
             } else {
                 this.binding.otherDeviceKeysCard.setVisibility(View.GONE);
             }
+            this.binding.serviceOutage.setVisibility(View.GONE);
         } else {
             final TextInputLayout errorLayout;
             final var status = this.mAccount.getStatus();
@@ -1417,6 +1425,44 @@ public class EditAccountActivity extends OmemoActivity
             removeErrorsOnAllBut(errorLayout);
             this.binding.stats.setVisibility(View.GONE);
             this.binding.otherDeviceKeysCard.setVisibility(View.GONE);
+            final var sos = mAccount.getServiceOutageStatus();
+            if (mAccount.isServiceOutage() && sos != null) {
+                this.binding.serviceOutage.setVisibility(View.VISIBLE);
+                if (sos.isPlanned()) {
+                    this.binding.sosTitle.setText(R.string.account_status_service_outage_scheduled);
+                } else {
+                    this.binding.sosTitle.setText(R.string.account_status_service_outage_known);
+                }
+                final var sosMessage = sos.getMessage();
+                if (Strings.isNullOrEmpty(sosMessage)) {
+                    this.binding.sosMessage.setVisibility(View.GONE);
+                } else {
+                    final var sosMessageSpannable = new SpannableString(sosMessage);
+                    Linkify.addLinks(sosMessageSpannable);
+                    FixedURLSpan.fix(sosMessageSpannable);
+                    this.binding.sosMessage.setText(sosMessageSpannable);
+                    this.binding.sosMessage.setVisibility(View.VISIBLE);
+                    this.binding.sosMessage.setMovementMethod(LinkMovementMethod.getInstance());
+                }
+                final var expectedEnd = sos.getExpectedEnd();
+                if (expectedEnd <= 0) {
+                    this.binding.sosScheduledEnd.setVisibility(View.GONE);
+                } else {
+                    this.binding.sosScheduledEnd.setVisibility(View.VISIBLE);
+                    this.binding.sosScheduledEnd.setText(
+                            getString(
+                                    R.string.sos_scheduled_return,
+                                    DateUtils.formatDateTime(
+                                            this,
+                                            expectedEnd,
+                                            DateUtils.FORMAT_SHOW_TIME
+                                                    | DateUtils.FORMAT_NUMERIC_DATE
+                                                    | DateUtils.FORMAT_SHOW_YEAR
+                                                    | DateUtils.FORMAT_SHOW_DATE)));
+                }
+            } else {
+                this.binding.serviceOutage.setVisibility(View.GONE);
+            }
         }
     }
 

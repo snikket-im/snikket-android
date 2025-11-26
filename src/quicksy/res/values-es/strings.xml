@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_notification_grace_period_summary">El tiempo que Quicksy silencia las notificaciones tras detectar actividad en otro de tus dispositivos</string>
+    <string name="pref_notification_grace_period_summary">El tiempo que Quicksy silencia las notificaciones tras detectar actividad en otro dispositivo</string>
     <string name="pref_never_send_crash_summary">Al enviar informes de fallos, ayudará a desarrollar Quicksy aún más</string>
-    <string name="pref_broadcast_last_activity_summary">Informar a tus contactos cuando usas Quicksy</string>
+    <string name="pref_broadcast_last_activity_summary">Informar a sus contactos cuando usa Quicksy</string>
     <string name="huawei_protected_apps_summary">Para continuar recibiendo notificaciones incluso cuando la pantalla está apagada, debe agregar Quicksy a la lista de aplicaciones protegidas.</string>
     <string name="set_profile_picture">Foto de perfil de Quicksy</string>
-    <string name="not_available_in_your_country">Quicksy no está disponible en tu país.</string>
+    <string name="not_available_in_your_country">Quicksy no está disponible en su país.</string>
     <string name="unable_to_verify_server_identity">No se ha podido verificar la identidad del servidor.</string>
     <string name="unknown_security_error">Error de seguridad desconocido.</string>
     <string name="timeout_while_connecting_to_server">Se ha superado el tiempo máximo de espera conectando al servidor.</string>

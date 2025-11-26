@@ -1,10 +1,8 @@
 package eu.siacs.conversations.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,10 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.databinding.DataBindingUtil;
-import com.canhub.cropper.CropImage;
+import com.canhub.cropper.CropImageContract;
+import com.canhub.cropper.CropImageContractOptions;
+import com.canhub.cropper.CropImageOptions;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -24,7 +25,6 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
 import eu.siacs.conversations.utils.PhoneHelper;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PublishProfilePictureActivity extends XmppActivity
         implements XmppConnectionService.OnAccountUpdate, OnAvatarPublication {
@@ -37,7 +37,6 @@ public class PublishProfilePictureActivity extends XmppActivity
     private Account account;
     private boolean support = false;
     private boolean publishing = false;
-    private final AtomicBoolean handledExternalUri = new AtomicBoolean(false);
     private final OnLongClickListener backToDefaultListener =
             new OnLongClickListener() {
 
@@ -49,6 +48,15 @@ public class PublishProfilePictureActivity extends XmppActivity
                 }
             };
     private boolean mInitialAccountSetup;
+
+    final ActivityResultLauncher<CropImageContractOptions> cropImage =
+            registerForActivityResult(
+                    new CropImageContract(),
+                    cropResult -> {
+                        if (cropResult.isSuccessful()) {
+                            onAvatarPicked(cropResult.getUriContent());
+                        }
+                    });
 
     @Override
     public void onAvatarPublicationSucceeded() {
@@ -85,6 +93,7 @@ public class PublishProfilePictureActivity extends XmppActivity
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         this.binding =
@@ -123,12 +132,10 @@ public class PublishProfilePictureActivity extends XmppActivity
                     }
                     finish();
                 });
-        this.binding.accountImage.setOnClickListener(v -> chooseAvatar(this));
+        this.binding.accountImage.setOnClickListener(v -> pickAvatar(null));
         this.defaultUri = PhoneHelper.getProfilePictureUri(getApplicationContext());
         if (savedInstanceState != null) {
             this.avatarUri = savedInstanceState.getParcelable("uri");
-            this.handledExternalUri.set(
-                    savedInstanceState.getBoolean("handle_external_uri", false));
         }
     }
 
@@ -171,47 +178,32 @@ public class PublishProfilePictureActivity extends XmppActivity
         if (this.avatarUri != null) {
             outState.putParcelable("uri", this.avatarUri);
         }
-        outState.putBoolean("handle_external_uri", handledExternalUri.get());
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                this.avatarUri = result.getUri();
-                if (xmppConnectionServiceBound) {
-                    loadImageIntoPreview(this.avatarUri);
-                }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-                if (error != null) {
-                    Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        } else if (requestCode == REQUEST_CHOOSE_PICTURE) {
-            if (resultCode == RESULT_OK) {
-                cropUri(this, data.getData());
-            }
-        }
+    public void pickAvatar(final Uri image) {
+        this.cropImage.launch(new CropImageContractOptions(image, getCropImageOptions()));
     }
 
-    public static void chooseAvatar(final Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            activity.startActivityForResult(
-                    Intent.createChooser(
-                            intent, activity.getString(R.string.attach_choose_picture)),
-                    REQUEST_CHOOSE_PICTURE);
+    public static CropImageOptions getCropImageOptions() {
+        final var cropImageOptions = new CropImageOptions();
+        cropImageOptions.aspectRatioX = 1;
+        cropImageOptions.aspectRatioY = 1;
+        cropImageOptions.fixAspectRatio = true;
+        cropImageOptions.outputCompressFormat = Bitmap.CompressFormat.PNG;
+        cropImageOptions.imageSourceIncludeCamera = false;
+        cropImageOptions.minCropResultHeight = Config.AVATAR_SIZE;
+        cropImageOptions.minCropResultWidth = Config.AVATAR_SIZE;
+        return cropImageOptions;
+    }
+
+    private void onAvatarPicked(final Uri uri) {
+        Log.d(Config.LOGTAG, "onAvatarPicked(" + uri + ")");
+        this.avatarUri = uri;
+        if (xmppConnectionServiceBound) {
+            loadImageIntoPreview(uri);
         } else {
-            CropImage.activity()
-                    .setOutputCompressFormat(Bitmap.CompressFormat.PNG)
-                    .setAspectRatio(1, 1)
-                    .setMinCropResultSize(Config.AVATAR_SIZE, Config.AVATAR_SIZE)
-                    .start(activity);
+            Log.d(Config.LOGTAG, "not ready during avatarPick");
         }
     }
 
@@ -243,61 +235,54 @@ public class PublishProfilePictureActivity extends XmppActivity
     public void onStart() {
         super.onStart();
         final Intent intent = getIntent();
-        this.mInitialAccountSetup = intent != null && intent.getBooleanExtra("setup", false);
+        if (intent == null) {
+            return;
+        }
+        this.mInitialAccountSetup = intent.getBooleanExtra("setup", false);
 
-        final Uri uri = intent != null ? intent.getData() : null;
-
-        if (uri != null && handledExternalUri.compareAndSet(false, true)) {
-            cropUri(this, uri);
+        final var data = intent.getData();
+        final var account = intent.getStringExtra(EXTRA_ACCOUNT);
+        if (Intent.ACTION_ATTACH_DATA.equals(intent.getAction())
+                && data != null
+                && account != null) {
+            pickAvatar(data);
+            final var replacement = new Intent(Intent.ACTION_MAIN);
+            replacement.putExtra(EXTRA_ACCOUNT, account);
+            setIntent(replacement);
             return;
         }
 
         if (this.mInitialAccountSetup) {
             this.binding.cancelButton.setText(R.string.skip);
         }
-        configureActionBar(
-                getSupportActionBar(), !this.mInitialAccountSetup && !handledExternalUri.get());
-    }
-
-    public static void cropUri(final Activity activity, final Uri uri) {
-        CropImage.activity(uri)
-                .setOutputCompressFormat(Bitmap.CompressFormat.PNG)
-                .setAspectRatio(1, 1)
-                .setMinCropResultSize(Config.AVATAR_SIZE, Config.AVATAR_SIZE)
-                .start(activity);
+        configureActionBar(getSupportActionBar(), !this.mInitialAccountSetup);
     }
 
     protected void loadImageIntoPreview(final Uri uri) {
-
-        Bitmap bm = null;
+        Log.d(Config.LOGTAG, "loadImageIntoPreview(" + uri + ")");
+        final Bitmap bitmap;
         if (uri == null) {
-            bm =
+            bitmap =
                     avatarService()
                             .get(
                                     account,
                                     (int) getResources().getDimension(R.dimen.publish_avatar_size));
         } else {
-            try {
-                bm =
-                        xmppConnectionService
-                                .getFileBackend()
-                                .cropCenterSquare(
-                                        uri,
-                                        (int)
-                                                getResources()
-                                                        .getDimension(R.dimen.publish_avatar_size));
-            } catch (final Exception e) {
-                Log.d(Config.LOGTAG, "unable to load bitmap into image view", e);
-            }
+            bitmap =
+                    xmppConnectionService
+                            .getFileBackend()
+                            .cropCenterSquare(
+                                    uri,
+                                    (int) getResources().getDimension(R.dimen.publish_avatar_size));
         }
 
-        if (bm == null) {
+        if (bitmap == null) {
             togglePublishButton(false, R.string.publish);
             this.binding.hintOrWarning.setVisibility(View.VISIBLE);
             this.binding.hintOrWarning.setText(R.string.error_publish_avatar_converting);
             return;
         }
-        this.binding.accountImage.setImageBitmap(bm);
+        this.binding.accountImage.setImageBitmap(bitmap);
         if (support) {
             togglePublishButton(uri != null, R.string.publish);
             this.binding.hintOrWarning.setVisibility(View.INVISIBLE);

@@ -322,7 +322,7 @@
     <string name="pref_keep_foreground_service">Servizio in primo piano</string>
     <string name="pref_keep_foreground_service_summary">Evita che il sistema operativo chiuda la connessione</string>
     <string name="pref_create_backup">Crea un backup</string>
-    <string name="pref_create_backup_summary">I file di backup verranno salvati in %s</string>
+    <string name="pref_create_backup_summary">I backup verranno salvati in %s</string>
     <string name="notification_create_backup_title">Creazione dei file di backup</string>
     <string name="notification_backup_created_title">Il tuo backup è stato creato</string>
     <string name="notification_backup_created_subtitle">I file di backup sono stati salvati in %s</string>
@@ -833,7 +833,7 @@
     <string name="restore_backup">Ripristina backup</string>
     <string name="restore">Ripristina</string>
     <string name="enter_password_to_restore">Inserisci la tua password per il profilo %s per ripristinare il backup.</string>
-    <string name="restore_warning">Non usare la funzione di ripristino del backup tentando di clonare (eseguire simultaneamente) un\'installazione. Il ripristino di un backup è inteso solo per migrazioni o in caso di smarrimento del dispositivo.</string>
+    <string name="restore_warning">Non ripristinare le chiavi OMEMO nel tentativo di clonare (eseguire simultaneamente) un\'installazione. Il ripristino delle chiavi OMEMO è inteso solo per migrazioni o in caso di smarrimento del dispositivo.</string>
     <string name="unable_to_restore_backup">Impossibile ripristinare il backup.</string>
     <string name="unable_to_decrypt_backup">Impossibile decifrare il backup. La password è giusta?</string>
     <string name="backup_channel_name">Backup e ripristino</string>
@@ -1001,7 +1001,7 @@
     <string name="could_not_delete_account_from_server">Impossibile eliminare il profilo dal server</string>
     <string name="group_chats">Chat di gruppo</string>
     <string name="search_group_chats">Cerca chat di gruppo</string>
-    <string name="restore_warning_continued">Non tentare di ripristinare dei backup che non hai creato te stesso!</string>
+    <string name="restore_warning_continued">Ripristina solo i backup che hai creato personalmente.</string>
     <string name="outdated_backup_file_format">Stai tentando di importare un formato di file di backup obsoleto</string>
     <string name="audiobook">Audiolibro</string>
     <string name="reconnect_on_other_host">Riconnetti su altro host</string>
@@ -1125,4 +1125,16 @@
     <string name="pref_chat_bubbles_summary">Colore di sfondo, dimensione caratteri, avatar</string>
     <string name="pref_title_bubbles">Messaggi di chat</string>
     <string name="account_status_channel_binding">Associazione dei canali non disponibile</string>
+    <string name="word_document">Documento Word</string>
+    <string name="restore_omemo_key">Ripristina chiavi OMEMO</string>
+    <string name="non_quicksy_backup">Quicksy può ripristinare backup solo per profili quicksy.im</string>
+    <string name="pref_backup_location">Percorso backup</string>
+    <string name="uri">URI</string>
+    <string name="copy_geo_uri">Copia posizione geografica</string>
+    <string name="copy_email_address">Copia indirizzo email</string>
+    <string name="copied_email_address">Indirizzo email copiato negli appunti</string>
+    <string name="copied_phone_number">Numero di telefono copiato negli appunti</string>
+    <string name="copy_telephone_number">Copia numero di telefono</string>
+    <string name="copy_URI">Copia URI</string>
+    <string name="uri_copied_to_clipboard">URI copiato negli appunti</string>
 </resources>

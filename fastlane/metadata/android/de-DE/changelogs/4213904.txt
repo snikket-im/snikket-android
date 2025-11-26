@@ -1,0 +1,2 @@
+* Möglichkeit, den Speicherort für die Datensicherung zu wählen
+* Mehr URIs (tel:, mailto:) anklickbar

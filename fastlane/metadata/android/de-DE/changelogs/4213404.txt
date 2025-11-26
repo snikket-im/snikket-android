@@ -1,0 +1,1 @@
+* Behebung eines Absturzes bei der Dateiübertragung in der finnischen Übersetzung

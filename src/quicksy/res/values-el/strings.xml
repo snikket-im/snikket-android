@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_notification_grace_period_summary">Ο χρόνος σίγασης ειδοποιήσεων του Quicksy αφότου ανιχνευθεί δραστηριότητα σε μια από τις άλλες συσκευές σας.</string>
+    <string name="pref_notification_grace_period_summary">Ο χρόνος σίγασης ειδοποιήσεων του Quicksy αφότου ανιχνευθεί δραστηριότητα σε μια από τις άλλες συσκευές σας</string>
     <string name="pref_never_send_crash_summary">Στέλνοντας ίχνη στοίβας προωθείτε την συνεχόμενη ανάπτυξη του Quicksy</string>
     <string name="pref_broadcast_last_activity_summary">Επιτρέψτε στις επαφές σας να γνωρίζουν πότε χρησιμοποιείτε το Quicksy</string>
-    <string name="huawei_protected_apps_summary">Για να συνεχίσετε να λαμβάνετε ειδοποιήσεις, ακόμα κι όταν η οθόνη είναι σβηστή, χρειάζεται να προσθέσετε το Quicksy στον κατάλογο με τις προστατευμένες εφαρμογές.</string>
+    <string name="huawei_protected_apps_summary">Για να συνεχίσετε να λαμβάνετε ειδοποιήσεις, ακόμα κι όταν η οθόνη είναι κλειστή, χρειάζεται να προσθέσετε το Quicksy στον κατάλογο με τις προστατευμένες εφαρμογές.</string>
     <string name="set_profile_picture">Φωτογραφία προφίλ του Quicksy</string>
     <string name="not_available_in_your_country">Το Quicksy δεν είναι διαθέσιμο στην χώρα σας.</string>
     <string name="unable_to_verify_server_identity">Αδυναμία επαλήθευσης της ταυτότητας του διακομιστή.</string>

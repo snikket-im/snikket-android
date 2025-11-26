@@ -1,0 +1,3 @@
+* Pakume lihtkutse (Easy Invite) loomist, kui server seda toetab
+* Kuvame Movimist saadetud GIF-faile
+* Salvestame tunnuspildid puhverdatud andmetena

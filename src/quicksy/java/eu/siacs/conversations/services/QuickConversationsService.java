@@ -1,21 +1,17 @@
 package eu.siacs.conversations.services;
 
-
 import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
-
 import com.google.common.collect.ImmutableMap;
-
+import de.gultsch.common.TrustManagers;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.android.PhoneNumberContact;
-import eu.siacs.conversations.crypto.TrustManagers;
 import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -30,11 +26,8 @@ import eu.siacs.conversations.utils.TLSSocketFactory;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
-
 import im.conversations.android.xmpp.model.stanza.Iq;
-
 import io.michaelrocks.libphonenumber.android.Phonenumber;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -63,7 +56,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
@@ -72,7 +64,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
 public class QuickConversationsService extends AbstractQuickConversationsService {
-
 
     public static final int API_ERROR_OTHER = -1;
     public static final int API_ERROR_UNKNOWN_HOST = -2;
@@ -87,8 +78,10 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
     private static final String BASE_URL = "https://" + API_DOMAIN;
 
-    private final Set<OnVerificationRequested> mOnVerificationRequested = Collections.newSetFromMap(new WeakHashMap<>());
-    private final Set<OnVerification> mOnVerification = Collections.newSetFromMap(new WeakHashMap<>());
+    private final Set<OnVerificationRequested> mOnVerificationRequested =
+            Collections.newSetFromMap(new WeakHashMap<>());
+    private final Set<OnVerification> mOnVerification =
+            Collections.newSetFromMap(new WeakHashMap<>());
 
     private final AtomicBoolean mVerificationInProgress = new AtomicBoolean(false);
     private final AtomicBoolean mVerificationRequestInProgress = new AtomicBoolean(false);
@@ -97,7 +90,8 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
     private Attempt mLastSyncAttempt = Attempt.NULL;
 
-    private final SerialSingleThreadExecutor mSerialSingleThreadExecutor = new SerialSingleThreadExecutor(QuickConversationsService.class.getSimpleName());
+    private final SerialSingleThreadExecutor mSerialSingleThreadExecutor =
+            new SerialSingleThreadExecutor(QuickConversationsService.class.getSimpleName());
 
     QuickConversationsService(XmppConnectionService xmppConnectionService) {
         super(xmppConnectionService);
@@ -105,19 +99,22 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
     private static long retryAfter(HttpURLConnection connection) {
         try {
-            return SystemClock.elapsedRealtime() + (Long.parseLong(connection.getHeaderField("Retry-After")) * 1000L);
+            return SystemClock.elapsedRealtime()
+                    + (Long.parseLong(connection.getHeaderField("Retry-After")) * 1000L);
         } catch (Exception e) {
             return 0;
         }
     }
 
-    public void addOnVerificationRequestedListener(OnVerificationRequested onVerificationRequested) {
+    public void addOnVerificationRequestedListener(
+            OnVerificationRequested onVerificationRequested) {
         synchronized (mOnVerificationRequested) {
             mOnVerificationRequested.add(onVerificationRequested);
         }
     }
 
-    public void removeOnVerificationRequestedListener(OnVerificationRequested onVerificationRequested) {
+    public void removeOnVerificationRequestedListener(
+            OnVerificationRequested onVerificationRequested) {
         synchronized (mOnVerificationRequested) {
             mOnVerificationRequested.remove(onVerificationRequested);
         }
@@ -139,62 +136,63 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         final String e164 = PhoneNumberUtilWrapper.normalize(service, phoneNumber);
         if (mVerificationRequestInProgress.compareAndSet(false, true)) {
             SmsRetrieverWrapper.start(service);
-            new Thread(() -> {
-                try {
-                    final URL url = new URL(BASE_URL + "/authentication/" + e164);
-                    final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    setBundledLetsEncrypt(service, connection);
-                    connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
-                    connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
-                    setHeader(connection);
-                    final int code = connection.getResponseCode();
-                    if (code == 200) {
-                        createAccountAndWait(phoneNumber, 0L);
-                    } else if (code == 429) {
-                        createAccountAndWait(phoneNumber, retryAfter(connection));
-                    } else {
-                        synchronized (mOnVerificationRequested) {
-                            for (OnVerificationRequested onVerificationRequested : mOnVerificationRequested) {
-                                onVerificationRequested.onVerificationRequestFailed(code);
-                            }
-                        }
-                    }
-                } catch (IOException e) {
-                    final int code = getApiErrorCode(e);
-                    synchronized (mOnVerificationRequested) {
-                        for (OnVerificationRequested onVerificationRequested : mOnVerificationRequested) {
-                            onVerificationRequested.onVerificationRequestFailed(code);
-                        }
-                    }
-                } finally {
-                    mVerificationRequestInProgress.set(false);
-                }
-            }).start();
+            new Thread(
+                            () -> {
+                                try {
+                                    final URL url = new URL(BASE_URL + "/authentication/" + e164);
+                                    final HttpURLConnection connection =
+                                            (HttpURLConnection) url.openConnection();
+                                    setBundledLetsEncrypt(service, connection);
+                                    connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
+                                    connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
+                                    setHeader(connection);
+                                    final int code = connection.getResponseCode();
+                                    if (code == 200) {
+                                        createAccountAndWait(phoneNumber, 0L);
+                                    } else if (code == 429) {
+                                        createAccountAndWait(phoneNumber, retryAfter(connection));
+                                    } else {
+                                        synchronized (mOnVerificationRequested) {
+                                            for (OnVerificationRequested onVerificationRequested :
+                                                    mOnVerificationRequested) {
+                                                onVerificationRequested.onVerificationRequestFailed(
+                                                        code);
+                                            }
+                                        }
+                                    }
+                                } catch (IOException e) {
+                                    final int code = getApiErrorCode(e);
+                                    synchronized (mOnVerificationRequested) {
+                                        for (OnVerificationRequested onVerificationRequested :
+                                                mOnVerificationRequested) {
+                                            onVerificationRequested.onVerificationRequestFailed(
+                                                    code);
+                                        }
+                                    }
+                                } finally {
+                                    mVerificationRequestInProgress.set(false);
+                                }
+                            })
+                    .start();
         }
     }
 
     private static void setBundledLetsEncrypt(
             final Context context, final HttpURLConnection connection) {
         if (connection instanceof HttpsURLConnection httpsURLConnection) {
-            final X509TrustManager trustManager;
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
-                try {
-                    trustManager = TrustManagers.defaultWithBundledLetsEncrypt(context);
-                } catch (final NoSuchAlgorithmException
-                        | KeyStoreException
-                        | CertificateException
-                        | IOException e) {
-                    Log.e(Config.LOGTAG, "could not configured bundled LetsEncrypt", e);
-                    return;
-                }
-            } else {
-                return;
-            }
             final SSLSocketFactory socketFactory;
             try {
                 socketFactory =
-                        new TLSSocketFactory(new X509TrustManager[] {trustManager}, SECURE_RANDOM);
-            } catch (final KeyManagementException | NoSuchAlgorithmException e) {
+                        new TLSSocketFactory(
+                                new X509TrustManager[] {
+                                    TrustManagers.createForAndroidVersion(context)
+                                },
+                                SECURE_RANDOM);
+            } catch (final KeyManagementException
+                    | NoSuchAlgorithmException
+                    | KeyStoreException
+                    | CertificateException
+                    | IOException e) {
                 Log.e(Config.LOGTAG, "could not configured bundled LetsEncrypt", e);
                 return;
             }
@@ -211,7 +209,10 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
     private void createAccountAndWait(Phonenumber.PhoneNumber phoneNumber, final long timestamp) {
         String local = PhoneNumberUtilWrapper.normalize(service, phoneNumber);
-        Log.d(Config.LOGTAG, "requesting verification for " + PhoneNumberUtilWrapper.normalize(service, phoneNumber));
+        Log.d(
+                Config.LOGTAG,
+                "requesting verification for "
+                        + PhoneNumberUtilWrapper.normalize(service, phoneNumber));
         Jid jid = Jid.of(local, Config.QUICKSY_DOMAIN, null);
         Account account = AccountUtils.getFirst(service);
         if (account == null || !account.getJid().asBareJid().equals(jid.asBareJid())) {
@@ -237,64 +238,74 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
     public void verify(final Account account, String pin) {
         if (mVerificationInProgress.compareAndSet(false, true)) {
-            new Thread(() -> {
-                try {
-                    final URL url = new URL(BASE_URL + "/password");
-                    final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    setBundledLetsEncrypt(service, connection);
-                    connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
-                    connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
-                    connection.setRequestMethod("POST");
-                    connection.setRequestProperty("Authorization", Plain.getMessage(account.getUsername(), pin));
-                    setHeader(connection);
-                    final OutputStream os = connection.getOutputStream();
-                    final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                    writer.write(account.getPassword());
-                    writer.flush();
-                    writer.close();
-                    os.close();
-                    connection.connect();
-                    final int code = connection.getResponseCode();
-                    if (code == 200 || code == 201) {
-                        account.setOption(Account.OPTION_UNVERIFIED, false);
-                        account.setOption(Account.OPTION_DISABLED, false);
-                        awaitingAccountStateChange = new CountDownLatch(1);
-                        service.updateAccount(account);
-                        try {
-                            awaitingAccountStateChange.await(5, TimeUnit.SECONDS);
-                        } catch (InterruptedException e) {
-                            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": timer expired while waiting for account to connect");
-                        }
-                        synchronized (mOnVerification) {
-                            for (OnVerification onVerification : mOnVerification) {
-                                onVerification.onVerificationSucceeded();
-                            }
-                        }
-                    } else if (code == 429) {
-                        final long retryAfter = retryAfter(connection);
-                        synchronized (mOnVerification) {
-                            for (OnVerification onVerification : mOnVerification) {
-                                onVerification.onVerificationRetryAt(retryAfter);
-                            }
-                        }
-                    } else {
-                        synchronized (mOnVerification) {
-                            for (OnVerification onVerification : mOnVerification) {
-                                onVerification.onVerificationFailed(code);
-                            }
-                        }
-                    }
-                } catch (IOException e) {
-                    final int code = getApiErrorCode(e);
-                    synchronized (mOnVerification) {
-                        for (OnVerification onVerification : mOnVerification) {
-                            onVerification.onVerificationFailed(code);
-                        }
-                    }
-                } finally {
-                    mVerificationInProgress.set(false);
-                }
-            }).start();
+            new Thread(
+                            () -> {
+                                try {
+                                    final URL url = new URL(BASE_URL + "/password");
+                                    final HttpURLConnection connection =
+                                            (HttpURLConnection) url.openConnection();
+                                    setBundledLetsEncrypt(service, connection);
+                                    connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
+                                    connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
+                                    connection.setRequestMethod("POST");
+                                    connection.setRequestProperty(
+                                            "Authorization",
+                                            Plain.getMessage(account.getUsername(), pin));
+                                    setHeader(connection);
+                                    final OutputStream os = connection.getOutputStream();
+                                    final BufferedWriter writer =
+                                            new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                                    writer.write(account.getPassword());
+                                    writer.flush();
+                                    writer.close();
+                                    os.close();
+                                    connection.connect();
+                                    final int code = connection.getResponseCode();
+                                    if (code == 200 || code == 201) {
+                                        account.setOption(Account.OPTION_UNVERIFIED, false);
+                                        account.setOption(Account.OPTION_DISABLED, false);
+                                        awaitingAccountStateChange = new CountDownLatch(1);
+                                        service.updateAccount(account);
+                                        try {
+                                            awaitingAccountStateChange.await(5, TimeUnit.SECONDS);
+                                        } catch (InterruptedException e) {
+                                            Log.d(
+                                                    Config.LOGTAG,
+                                                    account.getJid().asBareJid()
+                                                            + ": timer expired while waiting for"
+                                                            + " account to connect");
+                                        }
+                                        synchronized (mOnVerification) {
+                                            for (OnVerification onVerification : mOnVerification) {
+                                                onVerification.onVerificationSucceeded();
+                                            }
+                                        }
+                                    } else if (code == 429) {
+                                        final long retryAfter = retryAfter(connection);
+                                        synchronized (mOnVerification) {
+                                            for (OnVerification onVerification : mOnVerification) {
+                                                onVerification.onVerificationRetryAt(retryAfter);
+                                            }
+                                        }
+                                    } else {
+                                        synchronized (mOnVerification) {
+                                            for (OnVerification onVerification : mOnVerification) {
+                                                onVerification.onVerificationFailed(code);
+                                            }
+                                        }
+                                    }
+                                } catch (IOException e) {
+                                    final int code = getApiErrorCode(e);
+                                    synchronized (mOnVerification) {
+                                        for (OnVerification onVerification : mOnVerification) {
+                                            onVerification.onVerificationFailed(code);
+                                        }
+                                    }
+                                } finally {
+                                    mVerificationInProgress.set(false);
+                                }
+                            })
+                    .start();
         }
     }
 
@@ -339,7 +350,6 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         return mVerificationRequestInProgress.get();
     }
 
-
     @Override
     public boolean isSynchronizing() {
         return mRunningSyncJobs.get() > 0;
@@ -353,12 +363,13 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     @Override
     public void considerSyncBackground(final boolean forced) {
         mRunningSyncJobs.incrementAndGet();
-        mSerialSingleThreadExecutor.execute(() -> {
-            considerSync(forced);
-            if (mRunningSyncJobs.decrementAndGet() == 0) {
-                service.updateRosterUi();
-            }
-        });
+        mSerialSingleThreadExecutor.execute(
+                () -> {
+                    considerSync(forced);
+                    if (mRunningSyncJobs.decrementAndGet() == 0) {
+                        service.updateRosterUi();
+                    }
+                });
     }
 
     @Override
@@ -380,16 +391,19 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                 onVerification.startBackgroundVerification(pin);
             }
         }
-
     }
 
-
     private void considerSync(boolean forced) {
-        final ImmutableMap<String, PhoneNumberContact> allContacts = PhoneNumberContact.load(service);
+        final ImmutableMap<String, PhoneNumberContact> allContacts =
+                PhoneNumberContact.load(service);
         for (final Account account : service.getAccounts()) {
-            final Map<String, PhoneNumberContact> contacts = filtered(allContacts, account.getJid().getLocal());
+            final Map<String, PhoneNumberContact> contacts =
+                    filtered(allContacts, account.getJid().getLocal());
             if (contacts.size() < allContacts.size()) {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": found own phone number in address book. ignoring...");
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": found own phone number in address book. ignoring...");
             }
             refresh(account, contacts.values());
             if (!considerSync(account, contacts, forced)) {
@@ -408,17 +422,24 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     }
 
     private void refresh(Account account, Collection<PhoneNumberContact> contacts) {
-        for (Contact contact : account.getRoster().getWithSystemAccounts(PhoneNumberContact.class)) {
+        for (Contact contact :
+                account.getRoster().getWithSystemAccounts(PhoneNumberContact.class)) {
             final Uri uri = contact.getSystemAccount();
             if (uri == null) {
                 continue;
             }
             final String number = getNumber(contact);
-            final PhoneNumberContact phoneNumberContact = PhoneNumberContact.findByUriOrNumber(contacts, uri, number);
+            final PhoneNumberContact phoneNumberContact =
+                    PhoneNumberContact.findByUriOrNumber(contacts, uri, number);
             final boolean needsCacheClean;
             if (phoneNumberContact != null) {
                 if (!uri.equals(phoneNumberContact.getLookupUri())) {
-                    Log.d(Config.LOGTAG, "lookupUri has changed from " + uri + " to " + phoneNumberContact.getLookupUri());
+                    Log.d(
+                            Config.LOGTAG,
+                            "lookupUri has changed from "
+                                    + uri
+                                    + " to "
+                                    + phoneNumberContact.getLookupUri());
                 }
                 needsCacheClean = contact.setPhoneContact(phoneNumberContact);
             } else {
@@ -439,7 +460,10 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         return null;
     }
 
-    private boolean considerSync(final Account account, final Map<String, PhoneNumberContact> contacts, final boolean forced) {
+    private boolean considerSync(
+            final Account account,
+            final Map<String, PhoneNumberContact> contacts,
+            final boolean forced) {
         final int hash = contacts.keySet().hashCode();
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": consider sync of " + hash);
         if (!mLastSyncAttempt.retry(hash) && !forced) {
@@ -448,58 +472,78 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         }
         mRunningSyncJobs.incrementAndGet();
         final Jid syncServer = Jid.of(API_DOMAIN);
-        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": sending phone list to " + syncServer);
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid() + ": sending phone list to " + syncServer);
         final List<Element> entries = new ArrayList<>();
         for (final PhoneNumberContact c : contacts.values()) {
             entries.add(new Element("entry").setAttribute("number", c.getPhoneNumber()));
         }
         final Iq query = new Iq(Iq.Type.GET);
         query.setTo(syncServer);
-        final Element book = new Element("phone-book", Namespace.SYNCHRONIZATION).setChildren(entries);
-        final String statusQuo = Entry.statusQuo(contacts.values(), account.getRoster().getWithSystemAccounts(PhoneNumberContact.class));
+        final Element book =
+                new Element("phone-book", Namespace.SYNCHRONIZATION).setChildren(entries);
+        final String statusQuo =
+                Entry.statusQuo(
+                        contacts.values(),
+                        account.getRoster().getWithSystemAccounts(PhoneNumberContact.class));
         book.setAttribute("ver", statusQuo);
         query.addChild(book);
         mLastSyncAttempt = Attempt.create(hash);
-        service.sendIqPacket(account, query, (response) -> {
-            if (response.getType() == Iq.Type.RESULT) {
-                final Element phoneBook = response.findChild("phone-book", Namespace.SYNCHRONIZATION);
-                if (phoneBook != null) {
-                    final List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(PhoneNumberContact.class);
-                    for (Entry entry : Entry.ofPhoneBook(phoneBook)) {
-                        final PhoneNumberContact phoneContact = contacts.get(entry.getNumber());
-                        if (phoneContact == null) {
-                            continue;
-                        }
-                        for (final Jid jid : entry.getJids()) {
-                            final Contact contact = account.getRoster().getContact(jid);
-                            final boolean needsCacheClean = contact.setPhoneContact(phoneContact);
-                            if (needsCacheClean) {
-                                service.getAvatarService().clear(contact);
+        service.sendIqPacket(
+                account,
+                query,
+                (response) -> {
+                    if (response.getType() == Iq.Type.RESULT) {
+                        final Element phoneBook =
+                                response.findChild("phone-book", Namespace.SYNCHRONIZATION);
+                        if (phoneBook != null) {
+                            final List<Contact> withSystemAccounts =
+                                    account.getRoster()
+                                            .getWithSystemAccounts(PhoneNumberContact.class);
+                            for (Entry entry : Entry.ofPhoneBook(phoneBook)) {
+                                final PhoneNumberContact phoneContact =
+                                        contacts.get(entry.getNumber());
+                                if (phoneContact == null) {
+                                    continue;
+                                }
+                                for (final Jid jid : entry.getJids()) {
+                                    final Contact contact = account.getRoster().getContact(jid);
+                                    final boolean needsCacheClean =
+                                            contact.setPhoneContact(phoneContact);
+                                    if (needsCacheClean) {
+                                        service.getAvatarService().clear(contact);
+                                    }
+                                    withSystemAccounts.remove(contact);
+                                }
                             }
-                            withSystemAccounts.remove(contact);
+                            for (final Contact contact : withSystemAccounts) {
+                                final boolean needsCacheClean =
+                                        contact.unsetPhoneContact(PhoneNumberContact.class);
+                                if (needsCacheClean) {
+                                    service.getAvatarService().clear(contact);
+                                }
+                            }
+                        } else {
+                            Log.d(
+                                    Config.LOGTAG,
+                                    account.getJid().asBareJid()
+                                            + ": phone number contact list remains unchanged");
                         }
+                    } else if (response.getType() == Iq.Type.TIMEOUT) {
+                        mLastSyncAttempt = Attempt.NULL;
+                    } else {
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid()
+                                        + ": failed to sync contact list with api server");
                     }
-                    for (final Contact contact : withSystemAccounts) {
-                        final boolean needsCacheClean = contact.unsetPhoneContact(PhoneNumberContact.class);
-                        if (needsCacheClean) {
-                            service.getAvatarService().clear(contact);
-                        }
-                    }
-                } else {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": phone number contact list remains unchanged");
-                }
-            } else if (response.getType() == Iq.Type.TIMEOUT) {
-                mLastSyncAttempt = Attempt.NULL;
-            } else {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": failed to sync contact list with api server");
-            }
-            mRunningSyncJobs.decrementAndGet();
-            service.syncRoster(account);
-            service.updateRosterUi();
-        });
+                    mRunningSyncJobs.decrementAndGet();
+                    service.syncRoster(account);
+                    service.updateRosterUi();
+                });
         return true;
     }
-
 
     public interface OnVerificationRequested {
         void onVerificationRequestFailed(int code);
@@ -535,7 +579,9 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         }
 
         public boolean retry(int hash) {
-            return hash != this.hash || SystemClock.elapsedRealtime() - timestamp >= Config.CONTACT_SYNC_RETRY_INTERVAL;
+            return hash != this.hash
+                    || SystemClock.elapsedRealtime() - timestamp
+                            >= Config.CONTACT_SYNC_RETRY_INTERVAL;
         }
     }
 }

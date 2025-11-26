@@ -1,0 +1,2 @@
+* Naprawienie reakcji na pliki otrzymane przez P2P
+* Ulepszenie dopasowywania URI

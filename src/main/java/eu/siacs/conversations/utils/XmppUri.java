@@ -45,19 +45,19 @@ public class XmppUri {
         }
     }
 
-    public XmppUri(Uri uri) {
+    public XmppUri(final Uri uri) {
         parse(uri);
     }
 
-    public XmppUri(Uri uri, boolean safeSource) {
+    public XmppUri(final Uri uri, final boolean safeSource) {
         this.safeSource = safeSource;
         parse(uri);
     }
 
-    private static Map<String, String> parseParameters(final String query, final char seperator) {
+    private static Map<String, String> parseParameters(final String query, final char separator) {
         final ImmutableMap.Builder<String, String> builder = new ImmutableMap.Builder<>();
         final String[] pairs =
-                query == null ? new String[0] : query.split(String.valueOf(seperator));
+                query == null ? new String[0] : query.split(String.valueOf(separator));
         for (String pair : pairs) {
             final String[] parts = pair.split("=", 2);
             if (parts.length == 0) {
@@ -251,7 +251,8 @@ public class XmppUri {
         public final String fingerprint;
         final int deviceId;
 
-        public Fingerprint(FingerprintType type, String fingerprint, int deviceId) {
+        public Fingerprint(
+                final FingerprintType type, final String fingerprint, final int deviceId) {
             this.type = type;
             this.fingerprint = fingerprint;
             this.deviceId = deviceId;

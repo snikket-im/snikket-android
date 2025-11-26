@@ -101,6 +101,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
                 this.xmppConnectionService.findOrCreateConversation(
                         id.account, id.with.asBareJid(), false, false);
         this.message = new Message(conversation, "", Message.ENCRYPTION_NONE);
+        this.message.setRemoteMsgId(id.sessionId);
         this.message.setStatus(Message.STATUS_RECEIVED);
         this.message.setErrorMessage(null);
         this.message.setTransferable(this);
@@ -355,6 +356,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
             Log.d(
                     Config.LOGTAG,
                     "got file offer " + file + " jet=" + Objects.nonNull(keyTransportMessage));
+            // TODO store hashes if there are any
             setFileOffer(file);
             if (keyTransportMessage != null) {
                 this.transportSecurity =
@@ -548,10 +550,13 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
 
     private void receiveSessionInfoChecksum(final FileTransferDescription.Checksum checksum) {
         Log.d(Config.LOGTAG, "received checksum " + checksum);
+        // TODO check that we are receiver
+        // TODO store hashes
     }
 
     private void receiveSessionInfoReceived(final FileTransferDescription.Received received) {
         Log.d(Config.LOGTAG, "peer confirmed received " + received);
+        // TODO check that we are sender
     }
 
     private synchronized void receiveSessionTerminate(final Iq jinglePacket, final Jingle jingle) {
@@ -902,6 +907,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
             sendSessionInfoChecksum(hashes);
         } else {
             Log.d(Config.LOGTAG, "file transfer complete " + hashes);
+            // TODO compare with stored file hashes
             sendFileSessionInfoReceived();
             terminateTransport();
             messageReceivedSuccess();

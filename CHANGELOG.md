@@ -1,5 +1,21 @@
 # Changelog
 
+### Version 2.18.2
+
+* Support 'Service Outage Status'
+* Fix Backup Import
+* Minor security fixes for parsing multiple bodies, occupant-ids and stanza-id
+
+### Version 2.18.1
+
+* Fix reactions on files received via P2P
+* Improve URI matching
+
+### Version 2.18.0
+
+* Add ability to pick backup location
+* Make more URIs (tel:, mailto:) clickable
+
 ### Version 2.17.12
 
 * Fix crash on file transfer in fi translation

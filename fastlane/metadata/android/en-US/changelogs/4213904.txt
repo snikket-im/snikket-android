@@ -1,0 +1,2 @@
+* Add ability to pick backup location
+* More more URIs (tel:, mailto:) clickable

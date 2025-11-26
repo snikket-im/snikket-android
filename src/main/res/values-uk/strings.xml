@@ -305,7 +305,7 @@
     <string name="file_url">URL файлу</string>
     <string name="url_copied_to_clipboard">URL скопійовано</string>
     <string name="jabber_id_copied_to_clipboard">Адресу XMPP скопійовано</string>
-    <string name="error_message_copied_to_clipboard">Текст повідомлення про помилку скопійовано</string>
+    <string name="error_message_copied_to_clipboard">Повідомлення про помилку скопійовано</string>
     <string name="web_address">вебадреса</string>
     <string name="scan_qr_code">Розпізнати QR-код</string>
     <string name="show_qr_code">Показати QR-код</string>
@@ -701,7 +701,7 @@
     <string name="location_disabled">Доступ до місцезнаходження вимкнено</string>
     <string name="action_fix_to_location">Закріпити розташування</string>
     <string name="action_unfix_from_location">Відкріпити розташування</string>
-    <string name="action_copy_location">Скопіювати місцезнаходження</string>
+    <string name="action_copy_location">Копіювати місцезнаходження</string>
     <string name="action_share_location">Поділитися місцезнаходженням</string>
     <string name="action_directions">Напрямки</string>
     <string name="title_activity_share_location">Поділитися місцезнаходженням</string>
@@ -808,12 +808,12 @@
     <string name="ebook">Електронна книга</string>
     <string name="video_original">Оригінал (нестиснений)</string>
     <string name="open_with">Відкрити…</string>
-    <string name="set_profile_picture">Зображення профілю для Conversations</string>
+    <string name="set_profile_picture">Аватар</string>
     <string name="choose_account">Виберіть обліковий запис</string>
     <string name="restore_backup">Відновити з резервної копії</string>
     <string name="restore">Відновити</string>
     <string name="enter_password_to_restore">Введіть пароль до облікового запису %s, щоб відновити з резервної копії.</string>
-    <string name="restore_warning">Не використовуйте відновлення з резервної копії з метою клонування застосунку (запускати одночасно ще один примірник). Відновлення з резервної копії призначене виключно для перенесення даних або на випадок втрати оригінального пристрою.</string>
+    <string name="restore_warning">Не відновлюйте ключі OMEMO з метою клонування застосунку (запускати одночасно ще один примірник). Відновлення ключів OMEMO призначене виключно для перенесення даних або на випадок втрати оригінального пристрою.</string>
     <string name="unable_to_restore_backup">Неможливо відновити з резервної копії.</string>
     <string name="unable_to_decrypt_backup">Не вдалося розшифрувати резервну копію. Чи правильний пароль?</string>
     <string name="backup_channel_name">Створити або відновити резервну копію</string>
@@ -1035,7 +1035,7 @@
     <string name="no_application_found">Не знайдено застосунку</string>
     <string name="unified_push_distributor">Дистриб\'ютор UnifiedPush</string>
     <string name="rtp_state_content_add">Додати ще пісні\?</string>
-    <string name="restore_warning_continued">Не намагайтеся відновити резервні копії, які створили не Ви!</string>
+    <string name="restore_warning_continued">Відновлюйте лише ті резервні копії, які Ви створили особисто.</string>
     <string name="outdated_backup_file_format">Ви намагаєтеся імпортувати файл резервної копії у застарілому форматі</string>
     <string name="audiobook">аудіокнига</string>
     <string name="reconnect_on_other_host">Відновити з\'єднання на іншому вузлі</string>
@@ -1159,4 +1159,19 @@
     <string name="account_status_connection_timeout">Час очікування з\'єднання вичерпано</string>
     <string name="retry_with_p2p">Повторити спробу з P2P</string>
     <string name="account_status_channel_binding">Прив\'язка каналу недоступна</string>
+    <string name="word_document">документ Word</string>
+    <string name="restore_omemo_key">Відновити ключі OMEMO</string>
+    <string name="non_quicksy_backup">Quicksy може відновлювати резервні копії лише для облікових записів quicksy.im</string>
+    <string name="pref_backup_location">Розташування резервних копій</string>
+    <string name="uri">URI</string>
+    <string name="copied_email_address">Адресу Email скопійовано</string>
+    <string name="copy_URI">Копіювати URI</string>
+    <string name="copy_telephone_number">Копіювати номер телефону</string>
+    <string name="copy_geo_uri">Копіювати місцезнаходження</string>
+    <string name="copied_phone_number">Номер телефону скопійовано</string>
+    <string name="copy_email_address">Копіювати адресу Email</string>
+    <string name="uri_copied_to_clipboard">URI скопійовано</string>
+    <string name="account_status_service_outage_scheduled">Запланований простій</string>
+    <string name="account_status_service_outage_known">Сервіс не працює (відома проблема)</string>
+    <string name="sos_scheduled_return">Відновлення роботи заплановано на %s</string>
 </resources>

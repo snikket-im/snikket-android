@@ -6,16 +6,13 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.core.widget.ImageViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.color.MaterialColors;
 import com.google.common.base.Optional;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ItemConversationBinding;
 import eu.siacs.conversations.entities.Conversation;
@@ -29,7 +26,6 @@ import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
-
 import java.util.List;
 
 public class ConversationAdapter
@@ -103,14 +99,14 @@ public class ConversationAdapter
                         ColorStateList.valueOf(
                                 MaterialColors.getColor(
                                         viewHolder.binding.messageStatus,
-                                        com.google.android.material.R.attr.colorPrimary)));
+                                        androidx.appcompat.R.attr.colorPrimary)));
             } else {
                 ImageViewCompat.setImageTintList(
                         viewHolder.binding.messageStatus,
                         ColorStateList.valueOf(
                                 MaterialColors.getColor(
                                         viewHolder.binding.messageStatus,
-                                        com.google.android.material.R.attr.colorControlNormal)));
+                                        androidx.appcompat.R.attr.colorControlNormal)));
             }
             viewHolder.binding.messageStatus.setVisibility(View.VISIBLE);
         }

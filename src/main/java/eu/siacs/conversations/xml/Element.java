@@ -68,10 +68,6 @@ public class Element {
         return element == null ? null : element.getContent();
     }
 
-    public LocalizedContent findInternationalizedChildContentInDefaultNamespace(String name) {
-        return LocalizedContent.get(this, name);
-    }
-
     public Element findChild(String name, String xmlns) {
         for (Element child : this.children) {
             if (name.equals(child.getName()) && xmlns.equals(child.getAttribute("xmlns"))) {

@@ -18,6 +18,7 @@ import eu.siacs.conversations.crypto.sasl.HashedToken;
 import eu.siacs.conversations.crypto.sasl.HashedTokenSha256;
 import eu.siacs.conversations.crypto.sasl.HashedTokenSha512;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
+import eu.siacs.conversations.http.ServiceOutageStatus;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Resolver;
@@ -73,6 +74,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private static final String KEY_PGP_SIGNATURE = "pgp_signature";
     private static final String KEY_PGP_ID = "pgp_id";
     private static final String KEY_PINNED_MECHANISM = "pinned_mechanism";
+    public static final String KEY_SOS_URL = "sos_url";
     public static final String KEY_PRE_AUTH_REGISTRATION_TOKEN = "pre_auth_registration";
 
     protected final JSONObject keys;
@@ -105,6 +107,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private String pinnedChannelBinding;
     private String fastMechanism;
     private String fastToken;
+    private ServiceOutageStatus serviceOutageStatus;
 
     public Account(final Jid jid, final String password) {
         this(
@@ -148,13 +151,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         this.password = password;
         this.options = options;
         this.rosterVersion = rosterVersion;
-        JSONObject tmp;
-        try {
-            tmp = new JSONObject(keys);
-        } catch (JSONException e) {
-            tmp = new JSONObject();
-        }
-        this.keys = tmp;
+        this.keys = parseKeys(keys);
         this.avatar = avatar;
         this.displayName = displayName;
         this.hostname = hostname;
@@ -165,6 +162,17 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         this.pinnedChannelBinding = pinnedChannelBinding;
         this.fastMechanism = fastMechanism;
         this.fastToken = fastToken;
+    }
+
+    public static JSONObject parseKeys(final String keys) {
+        if (Strings.isNullOrEmpty(keys)) {
+            return new JSONObject();
+        }
+        try {
+            return new JSONObject(keys);
+        } catch (final JSONException e) {
+            return new JSONObject();
+        }
     }
 
     public static Account fromCursor(final Cursor cursor) {
@@ -778,6 +786,24 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         throw new IllegalStateException("This method should not be called");
     }
 
+    public void setServiceOutageStatus(final ServiceOutageStatus sos) {
+        this.serviceOutageStatus = sos;
+    }
+
+    public ServiceOutageStatus getServiceOutageStatus() {
+        return this.serviceOutageStatus;
+    }
+
+    public boolean isServiceOutage() {
+        final var sos = this.serviceOutageStatus;
+        if (sos != null
+                && isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY)
+                && ServiceOutageStatus.isPossibleOutage(this.status)) {
+            return sos.isNow();
+        }
+        return false;
+    }
+
     public enum State {
         DISABLED(false, false),
         LOGGED_OUT(false, false),
@@ -839,78 +865,43 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         }
 
         public int getReadableId() {
-            switch (this) {
-                case DISABLED:
-                    return R.string.account_status_disabled;
-                case LOGGED_OUT:
-                    return R.string.account_state_logged_out;
-                case ONLINE:
-                    return R.string.account_status_online;
-                case CONNECTING:
-                    return R.string.account_status_connecting;
-                case OFFLINE:
-                    return R.string.account_status_offline;
-                case UNAUTHORIZED:
-                    return R.string.account_status_unauthorized;
-                case SERVER_NOT_FOUND:
-                    return R.string.account_status_not_found;
-                case NO_INTERNET:
-                    return R.string.account_status_no_internet;
-                case CONNECTION_TIMEOUT:
-                    return R.string.account_status_connection_timeout;
-                case REGISTRATION_FAILED:
-                    return R.string.account_status_regis_fail;
-                case REGISTRATION_WEB:
-                    return R.string.account_status_regis_web;
-                case REGISTRATION_CONFLICT:
-                    return R.string.account_status_regis_conflict;
-                case REGISTRATION_SUCCESSFUL:
-                    return R.string.account_status_regis_success;
-                case REGISTRATION_NOT_SUPPORTED:
-                    return R.string.account_status_regis_not_sup;
-                case REGISTRATION_INVALID_TOKEN:
-                    return R.string.account_status_regis_invalid_token;
-                case TLS_ERROR:
-                    return R.string.account_status_tls_error;
-                case TLS_ERROR_DOMAIN:
-                    return R.string.account_status_tls_error_domain;
-                case INCOMPATIBLE_SERVER:
-                    return R.string.account_status_incompatible_server;
-                case INCOMPATIBLE_CLIENT:
-                    return R.string.account_status_incompatible_client;
-                case CHANNEL_BINDING:
-                    return R.string.account_status_channel_binding;
-                case TOR_NOT_AVAILABLE:
-                    return R.string.account_status_tor_unavailable;
-                case BIND_FAILURE:
-                    return R.string.account_status_bind_failure;
-                case SESSION_FAILURE:
-                    return R.string.session_failure;
-                case DOWNGRADE_ATTACK:
-                    return R.string.sasl_downgrade;
-                case HOST_UNKNOWN:
-                    return R.string.account_status_host_unknown;
-                case POLICY_VIOLATION:
-                    return R.string.account_status_policy_violation;
-                case REGISTRATION_PLEASE_WAIT:
-                    return R.string.registration_please_wait;
-                case REGISTRATION_PASSWORD_TOO_WEAK:
-                    return R.string.registration_password_too_weak;
-                case STREAM_ERROR:
-                    return R.string.account_status_stream_error;
-                case STREAM_OPENING_ERROR:
-                    return R.string.account_status_stream_opening_error;
-                case PAYMENT_REQUIRED:
-                    return R.string.payment_required;
-                case SEE_OTHER_HOST:
-                    return R.string.reconnect_on_other_host;
-                case MISSING_INTERNET_PERMISSION:
-                    return R.string.missing_internet_permission;
-                case TEMPORARY_AUTH_FAILURE:
-                    return R.string.account_status_temporary_auth_failure;
-                default:
-                    return R.string.account_status_unknown;
-            }
+            return switch (this) {
+                case DISABLED -> R.string.account_status_disabled;
+                case LOGGED_OUT -> R.string.account_state_logged_out;
+                case ONLINE -> R.string.account_status_online;
+                case CONNECTING -> R.string.account_status_connecting;
+                case OFFLINE -> R.string.account_status_offline;
+                case UNAUTHORIZED -> R.string.account_status_unauthorized;
+                case SERVER_NOT_FOUND -> R.string.account_status_not_found;
+                case NO_INTERNET -> R.string.account_status_no_internet;
+                case CONNECTION_TIMEOUT -> R.string.account_status_connection_timeout;
+                case REGISTRATION_FAILED -> R.string.account_status_regis_fail;
+                case REGISTRATION_WEB -> R.string.account_status_regis_web;
+                case REGISTRATION_CONFLICT -> R.string.account_status_regis_conflict;
+                case REGISTRATION_SUCCESSFUL -> R.string.account_status_regis_success;
+                case REGISTRATION_NOT_SUPPORTED -> R.string.account_status_regis_not_sup;
+                case REGISTRATION_INVALID_TOKEN -> R.string.account_status_regis_invalid_token;
+                case TLS_ERROR -> R.string.account_status_tls_error;
+                case TLS_ERROR_DOMAIN -> R.string.account_status_tls_error_domain;
+                case INCOMPATIBLE_SERVER -> R.string.account_status_incompatible_server;
+                case INCOMPATIBLE_CLIENT -> R.string.account_status_incompatible_client;
+                case CHANNEL_BINDING -> R.string.account_status_channel_binding;
+                case TOR_NOT_AVAILABLE -> R.string.account_status_tor_unavailable;
+                case BIND_FAILURE -> R.string.account_status_bind_failure;
+                case SESSION_FAILURE -> R.string.session_failure;
+                case DOWNGRADE_ATTACK -> R.string.sasl_downgrade;
+                case HOST_UNKNOWN -> R.string.account_status_host_unknown;
+                case POLICY_VIOLATION -> R.string.account_status_policy_violation;
+                case REGISTRATION_PLEASE_WAIT -> R.string.registration_please_wait;
+                case REGISTRATION_PASSWORD_TOO_WEAK -> R.string.registration_password_too_weak;
+                case STREAM_ERROR -> R.string.account_status_stream_error;
+                case STREAM_OPENING_ERROR -> R.string.account_status_stream_opening_error;
+                case PAYMENT_REQUIRED -> R.string.payment_required;
+                case SEE_OTHER_HOST -> R.string.reconnect_on_other_host;
+                case MISSING_INTERNET_PERMISSION -> R.string.missing_internet_permission;
+                case TEMPORARY_AUTH_FAILURE -> R.string.account_status_temporary_auth_failure;
+                default -> R.string.account_status_unknown;
+            };
         }
     }
 }

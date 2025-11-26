@@ -77,7 +77,7 @@ public class PresenceParser extends AbstractParser
                     if (item != null && !from.isBareJid()) {
                         mucOptions.setError(MucOptions.Error.NONE);
                         final MucOptions.User user = parseItem(conversation, item, from);
-                        final var occupant = packet.getExtension(OccupantId.class);
+                        final var occupant = packet.getOnlyExtension(OccupantId.class);
                         final String occupantId =
                                 mucOptions.occupantId() && occupant != null
                                         ? occupant.getId()
@@ -88,6 +88,13 @@ public class PresenceParser extends AbstractParser
                                         && jid.equals(
                                                 Jid.Invalid.getNullForInvalid(
                                                         item.getAttributeAsJid("jid"))))) {
+                            Log.d(
+                                    Config.LOGTAG,
+                                    account.getJid().asBareJid()
+                                            + ": got self-presence from "
+                                            + user.getFullJid()
+                                            + ". occupant-id="
+                                            + occupantId);
                             if (mucOptions.setOnline()) {
                                 mXmppConnectionService.getAvatarService().clear(mucOptions);
                             }

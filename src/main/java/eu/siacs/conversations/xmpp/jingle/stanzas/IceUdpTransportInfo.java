@@ -1,28 +1,23 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.SessionDescription;
 import eu.siacs.conversations.xmpp.jingle.transports.Transport;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -101,7 +96,9 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         for (final Element child : this.children) {
             if (Namespace.JINGLE_TRANSPORT_ICE_OPTION.equals(child.getNamespace())
                     && IceOption.WELL_KNOWN.contains(child.getName())) {
-                optionBuilder.add(child.getName());
+                optionBuilder.add(
+                        SessionDescription.checkNoWhitespace(
+                                child.getName(), "Ice options should not contain whitespace"));
             }
         }
         return optionBuilder.build();
@@ -159,7 +156,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         final IceUdpTransportInfo transportInfo = new IceUdpTransportInfo();
         transportInfo.setAttributes(new Hashtable<>(getAttributes()));
         transportInfo.setChildren(this.getChildren());
-        for(final Candidate candidate : candidates) {
+        for (final Candidate candidate : candidates) {
             transportInfo.addChild(candidate);
         }
         return transportInfo;
@@ -220,7 +217,8 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             return null;
         }
 
-        public static Candidate fromSdpAttributeValue(final String value, final String currentUfrag) {
+        public static Candidate fromSdpAttributeValue(
+                final String value, final String currentUfrag) {
             final String[] segments = value.split(" ");
             if (segments.length < 6) {
                 return null;

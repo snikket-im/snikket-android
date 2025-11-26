@@ -5,7 +5,7 @@ import static eu.siacs.conversations.xmpp.jingle.WebRTCWrapper.logDescription;
 
 import android.content.Context;
 import android.util.Log;
-
+import androidx.annotation.NonNull;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Closeables;
@@ -13,26 +13,15 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.IceServers;
 import eu.siacs.conversations.xmpp.jingle.WebRTCWrapper;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.WebRTCDataChannelTransportInfo;
-
+import im.conversations.android.xmpp.model.disco.external.Services;
 import im.conversations.android.xmpp.model.stanza.Iq;
-
-import org.webrtc.CandidatePairChangeEvent;
-import org.webrtc.DataChannel;
-import org.webrtc.IceCandidate;
-import org.webrtc.MediaStream;
-import org.webrtc.PeerConnection;
-import org.webrtc.PeerConnectionFactory;
-import org.webrtc.SessionDescription;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -42,6 +31,7 @@ import java.io.PipedOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,8 +42,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.annotation.Nonnull;
+import org.webrtc.CandidatePairChangeEvent;
+import org.webrtc.DataChannel;
+import org.webrtc.IceCandidate;
+import org.webrtc.MediaStream;
+import org.webrtc.PeerConnection;
+import org.webrtc.PeerConnectionFactory;
+import org.webrtc.SessionDescription;
 
 public class WebRTCDataChannelTransport implements Transport {
 
@@ -229,16 +224,16 @@ public class WebRTCDataChannelTransport implements Transport {
         }
     }
 
-    private ListenableFuture<List<PeerConnection.IceServer>> getIceServers() {
+    private ListenableFuture<Collection<PeerConnection.IceServer>> getIceServers() {
         if (Config.DISABLE_PROXY_LOOKUP) {
-            return Futures.immediateFuture(Collections.emptyList());
+            return Futures.immediateFuture(Collections.emptySet());
         }
         if (xmppConnection.getFeatures().externalServiceDiscovery()) {
-            final SettableFuture<List<PeerConnection.IceServer>> iceServerFuture =
+            final SettableFuture<Collection<PeerConnection.IceServer>> iceServerFuture =
                     SettableFuture.create();
             final Iq request = new Iq(Iq.Type.GET);
             request.setTo(this.account.getDomain());
-            request.addChild("services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
+            request.addExtension(new Services());
             xmppConnection.sendIqPacket(
                     request,
                     (response) -> {
@@ -254,12 +249,12 @@ public class WebRTCDataChannelTransport implements Transport {
                     });
             return iceServerFuture;
         } else {
-            return Futures.immediateFuture(Collections.emptyList());
+            return Futures.immediateFuture(Collections.emptySet());
         }
     }
 
     private PeerConnection createPeerConnection(
-            final List<PeerConnection.IceServer> iceServers, final boolean trickle) {
+            final Collection<PeerConnection.IceServer> iceServers, final boolean trickle) {
         final PeerConnection.RTCConfiguration rtcConfig = buildConfiguration(iceServers, trickle);
         final PeerConnection peerConnection =
                 requirePeerConnectionFactory()
@@ -442,7 +437,7 @@ public class WebRTCDataChannelTransport implements Transport {
                 localDescriptionExecutorService);
     }
 
-    @Nonnull
+    @NonNull
     private PeerConnectionFactory requirePeerConnectionFactory() {
         final PeerConnectionFactory peerConnectionFactory = this.peerConnectionFactory;
         if (peerConnectionFactory == null) {
@@ -451,7 +446,7 @@ public class WebRTCDataChannelTransport implements Transport {
         return peerConnectionFactory;
     }
 
-    @Nonnull
+    @NonNull
     private PeerConnection requirePeerConnection() {
         final var future = this.peerConnectionFuture;
         if (future != null && future.isDone()) {

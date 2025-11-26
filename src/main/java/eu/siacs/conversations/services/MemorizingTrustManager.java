@@ -33,36 +33,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
 import android.util.SparseArray;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
-
+import de.gultsch.common.TrustManagers;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.BundledTrustManager;
-import eu.siacs.conversations.crypto.CombiningTrustManager;
-import eu.siacs.conversations.crypto.TrustManagers;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.entities.MTMDecision;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.MemorizingActivity;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -86,10 +75,12 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A X509 trust manager implementation which asks the user about invalid certificates and memorizes
@@ -115,7 +106,8 @@ public class MemorizingTrustManager {
                     "\\A(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
     private static final Pattern PATTERN_IPV6_HEX4DECCOMPRESSED =
             Pattern.compile(
-                    "\\A((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?) ::((?:[0-9A-Fa-f]{1,4}:)*)(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
+                    "\\A((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)"
+                        + " ::((?:[0-9A-Fa-f]{1,4}:)*)(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
     private static final Pattern PATTERN_IPV6_6HEX4DEC =
             Pattern.compile(
                     "\\A((?:[0-9A-Fa-f]{1,4}:){6,6})(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
@@ -175,11 +167,7 @@ public class MemorizingTrustManager {
         init(context);
         this.appTrustManager = getTrustManager(appKeyStore);
         try {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
-                this.defaultTrustManager = TrustManagers.defaultWithBundledLetsEncrypt(context);
-            } else {
-                this.defaultTrustManager = TrustManagers.createDefaultTrustManager();
-            }
+            this.defaultTrustManager = TrustManagers.createForAndroidVersion(context);
         } catch (final NoSuchAlgorithmException
                 | KeyStoreException
                 | CertificateException

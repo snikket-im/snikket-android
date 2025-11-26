@@ -1,0 +1,4 @@
+* Permitir pausar la grabación de audio tocando el temporizador
+* Corregir las reacciones en mensajes privados de salas de chat (MUC PMs)
+* Dejar de aceptar 'mensajes de respaldo' para reacciones, confirmaciones de lectura y marcadores de visualización
+* Agregar más íconos de vista previa de medios

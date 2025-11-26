@@ -1,0 +1,1 @@
+* Failide üles- ja allalaadimise vea parandus, kui kasutaja ei usalda operatsioonisüsteemis näidatud sertifiktseerimiskeskusi

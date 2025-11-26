@@ -15,14 +15,15 @@ import android.os.SystemClock;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.work.ForegroundInfo;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.stream.JsonWriter;
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.SQLiteAxolotlStore;
@@ -31,12 +32,14 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.Compatibility;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
@@ -65,9 +68,9 @@ public class ExportBackupWorker extends Worker {
     private static final SimpleDateFormat DATE_FORMAT =
             new SimpleDateFormat("yyyy-MM-dd-HH-mm", Locale.US);
 
-    public static final String KEYTYPE = "AES";
-    public static final String CIPHERMODE = "AES/GCM/NoPadding";
-    public static final String PROVIDER = "BC";
+    private static final String KEY_TYPE = "AES";
+    private static final String CIPHER_MODE = "AES/GCM/NoPadding";
+    private static final String PROVIDER = "BC";
 
     public static final String MIME_TYPE = "application/vnd.conversations.backup";
 
@@ -91,7 +94,7 @@ public class ExportBackupWorker extends Worker {
     @Override
     public Result doWork() {
         setForegroundAsync(getForegroundInfo());
-        final List<File> files;
+        final List<Uri> files;
         try {
             files = export();
         } catch (final IOException
@@ -131,7 +134,7 @@ public class ExportBackupWorker extends Worker {
         }
     }
 
-    private List<File> export()
+    private List<Uri> export()
             throws IOException,
                     InvalidKeySpecException,
                     InvalidAlgorithmParameterException,
@@ -140,17 +143,19 @@ public class ExportBackupWorker extends Worker {
                     NoSuchAlgorithmException,
                     NoSuchProviderException {
         final Context context = getApplicationContext();
+        final var appSettings = new AppSettings(context);
+        final var backupLocation = appSettings.getBackupLocation();
         final var database = DatabaseBackend.getInstance(context);
         final var accounts = database.getAccounts();
 
         int count = 0;
         final int max = accounts.size();
-        final ImmutableList.Builder<File> files = new ImmutableList.Builder<>();
+        final ImmutableList.Builder<Uri> locations = new ImmutableList.Builder<>();
         Log.d(Config.LOGTAG, "starting backup for " + max + " accounts");
         for (final Account account : accounts) {
             if (isStopped()) {
                 Log.d(Config.LOGTAG, "ExportBackupWorker has stopped. Returning what we have");
-                return files.build();
+                return locations.build();
             }
             final String password = account.getPassword();
             if (Strings.nullToEmpty(password).trim().isEmpty()) {
@@ -163,34 +168,24 @@ public class ExportBackupWorker extends Worker {
                 count++;
                 continue;
             }
-            final String filename =
-                    String.format(
-                            "%s.%s.ceb",
-                            account.getJid().asBareJid().toString(),
-                            DATE_FORMAT.format(new Date()));
-            final File file = new File(FileBackend.getBackupDirectory(context), filename);
+            final Uri uri;
             try {
-                export(database, account, password, file, max, count);
+                uri = export(database, account, password, backupLocation, max, count);
             } catch (final WorkStoppedException e) {
-                if (file.delete()) {
-                    Log.d(
-                            Config.LOGTAG,
-                            "deleted in progress backup file " + file.getAbsolutePath());
-                }
                 Log.d(Config.LOGTAG, "ExportBackupWorker has stopped. Returning what we have");
-                return files.build();
+                return locations.build();
             }
-            files.add(file);
+            locations.add(uri);
             count++;
         }
-        return files.build();
+        return locations.build();
     }
 
-    private void export(
+    private Uri export(
             final DatabaseBackend database,
             final Account account,
             final String password,
-            final File file,
+            final Uri backupLocation,
             final int max,
             final int count)
             throws IOException,
@@ -229,24 +224,48 @@ public class ExportBackupWorker extends Worker {
                                 cancelPendingIntent)
                         .build());
         final Progress progress = new Progress(notification, max, count);
-        final File directory = file.getParentFile();
-        if (directory != null && directory.mkdirs()) {
-            Log.d(Config.LOGTAG, "created backup directory " + directory.getAbsolutePath());
+        final String filename =
+                String.format(
+                        "%s.%s.ceb",
+                        account.getJid().asBareJid().toString(), DATE_FORMAT.format(new Date()));
+        final OutputStream outputStream;
+        final Uri location;
+        if ("file".equalsIgnoreCase(backupLocation.getScheme())) {
+            final File file = new File(backupLocation.getPath(), filename);
+            final File directory = file.getParentFile();
+            if (directory != null && directory.mkdirs()) {
+                Log.d(Config.LOGTAG, "created backup directory " + directory.getAbsolutePath());
+            }
+            outputStream = new FileOutputStream(file);
+            location = Uri.fromFile(file);
+        } else {
+            final var tree = DocumentFile.fromTreeUri(context, backupLocation);
+            if (tree == null) {
+                throw new IOException(
+                        String.format(
+                                "DocumentFile.fromTreeUri returned null for %s", backupLocation));
+            }
+            final var file = tree.createFile(MIME_TYPE, filename);
+            if (file == null) {
+                throw new IOException(
+                        String.format("Could not create %s in %s", filename, backupLocation));
+            }
+            location = file.getUri();
+            outputStream = context.getContentResolver().openOutputStream(location);
         }
-        final FileOutputStream fileOutputStream = new FileOutputStream(file);
-        final DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
+        final DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
         backupFileHeader.write(dataOutputStream);
         dataOutputStream.flush();
 
         final Cipher cipher =
                 Compatibility.twentyEight()
-                        ? Cipher.getInstance(CIPHERMODE)
-                        : Cipher.getInstance(CIPHERMODE, PROVIDER);
+                        ? Cipher.getInstance(CIPHER_MODE)
+                        : Cipher.getInstance(CIPHER_MODE, PROVIDER);
         final byte[] key = getKey(password, salt);
-        SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
+        SecretKeySpec keySpec = new SecretKeySpec(key, KEY_TYPE);
         IvParameterSpec ivSpec = new IvParameterSpec(IV);
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-        CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
+        CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, cipher);
 
         final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(cipherOutputStream);
         final JsonWriter jsonWriter =
@@ -256,21 +275,24 @@ public class ExportBackupWorker extends Worker {
         final String uuid = account.getUuid();
         accountExport(db, uuid, jsonWriter);
         simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, jsonWriter);
-        messageExport(db, uuid, jsonWriter, progress);
+        messageExport(db, uuid, location, jsonWriter, progress);
         for (final String table :
                 Arrays.asList(
                         SQLiteAxolotlStore.PREKEY_TABLENAME,
                         SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME,
                         SQLiteAxolotlStore.SESSION_TABLENAME,
                         SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
-            throwIfWorkStopped();
+            throwIfWorkStopped(location);
             simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, jsonWriter);
         }
         jsonWriter.endArray();
         jsonWriter.flush();
         jsonWriter.close();
-        mediaScannerScanFile(file);
-        Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
+        if ("file".equalsIgnoreCase(location.getScheme())) {
+            mediaScannerScanFile(new File(location.getPath()));
+        }
+        Log.d(Config.LOGTAG, "written backup to " + location);
+        return location;
     }
 
     private NotificationCompat.Builder getNotification() {
@@ -286,8 +308,20 @@ public class ExportBackupWorker extends Worker {
         return notification;
     }
 
-    private void throwIfWorkStopped() throws WorkStoppedException {
+    private void throwIfWorkStopped(final Uri location) throws WorkStoppedException {
         if (isStopped()) {
+            if ("file".equalsIgnoreCase(location.getScheme())) {
+                final var file = new File(location.getPath());
+                if (file.delete()) {
+                    Log.d(Config.LOGTAG, "deleted " + file.getAbsolutePath());
+                }
+            } else {
+                final var documentFile =
+                        DocumentFile.fromSingleUri(getApplicationContext(), location);
+                if (documentFile != null && documentFile.delete()) {
+                    Log.d(Config.LOGTAG, "deleted " + location);
+                }
+            }
             throw new WorkStoppedException();
         }
     }
@@ -326,7 +360,9 @@ public class ExportBackupWorker extends Worker {
                     } else if (Account.OPTIONS.equals(accountCursor.getColumnName(i))
                             && value.matches("\\d+")) {
                         int intValue = Integer.parseInt(value);
-                        intValue |= 1 << Account.OPTION_DISABLED;
+                        if (QuickConversationsService.isConversations()) {
+                            intValue |= 1 << Account.OPTION_DISABLED;
+                        }
                         writer.value(intValue);
                     } else {
                         writer.value(value);
@@ -368,6 +404,7 @@ public class ExportBackupWorker extends Worker {
     private void messageExport(
             final SQLiteDatabase db,
             final String uuid,
+            final Uri location,
             final JsonWriter writer,
             final Progress progress)
             throws IOException, WorkStoppedException {
@@ -385,7 +422,7 @@ public class ExportBackupWorker extends Worker {
             int i = 0;
             int p = Integer.MIN_VALUE;
             while (cursor != null && cursor.moveToNext()) {
-                throwIfWorkStopped();
+                throwIfWorkStopped(location);
                 writer.beginObject();
                 writer.name("table");
                 writer.value(Message.TABLENAME);
@@ -422,16 +459,18 @@ public class ExportBackupWorker extends Worker {
                 .getEncoded();
     }
 
-    private void notifySuccess(final List<File> files) {
+    private void notifySuccess(final List<Uri> locations) {
         final var context = getApplicationContext();
-        final String path = FileBackend.getBackupDirectory(context).getAbsolutePath();
-
-        final var openFolderIntent = getOpenFolderIntent(path);
-
+        final var appSettings = new AppSettings(context);
+        final String path = appSettings.getBackupLocationAsPath();
         final Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         final ArrayList<Uri> uris = new ArrayList<>();
-        for (final File file : files) {
-            uris.add(FileBackend.getUriForFile(context, file));
+        for (final Uri uri : locations) {
+            if ("file".equalsIgnoreCase(uri.getScheme())) {
+                uris.add(FileBackend.getUriForFile(context, new File(uri.getPath())));
+            } else {
+                uris.add(uri);
+            }
         }
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -441,8 +480,8 @@ public class ExportBackupWorker extends Worker {
         final var shareFilesIntent =
                 PendingIntent.getActivity(context, 190, chooser, PENDING_INTENT_FLAGS);
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "backup");
-        mBuilder.setContentTitle(context.getString(R.string.notification_backup_created_title))
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "backup");
+        builder.setContentTitle(context.getString(R.string.notification_backup_created_title))
                 .setContentText(
                         context.getString(R.string.notification_backup_created_subtitle, path))
                 .setStyle(
@@ -450,60 +489,17 @@ public class ExportBackupWorker extends Worker {
                                 .bigText(
                                         context.getString(
                                                 R.string.notification_backup_created_subtitle,
-                                                FileBackend.getBackupDirectory(context)
-                                                        .getAbsolutePath())))
+                                                path)))
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_archive_24dp);
 
-        if (openFolderIntent.isPresent()) {
-            mBuilder.setContentIntent(openFolderIntent.get());
-        } else {
-            Log.w(Config.LOGTAG, "no app can display folders");
-        }
-
-        mBuilder.addAction(
+        builder.addAction(
                 R.drawable.ic_share_24dp,
                 context.getString(R.string.share_backup_files),
                 shareFilesIntent);
+        builder.setLocalOnly(true);
         final var notificationManager = context.getSystemService(NotificationManager.class);
-        notificationManager.notify(BACKUP_CREATED_NOTIFICATION_ID, mBuilder.build());
-    }
-
-    private Optional<PendingIntent> getOpenFolderIntent(final String path) {
-        final var context = getApplicationContext();
-        for (final Intent intent : getPossibleFileOpenIntents(context, path)) {
-            if (intent.resolveActivityInfo(context.getPackageManager(), 0) != null) {
-                return Optional.of(
-                        PendingIntent.getActivity(context, 189, intent, PENDING_INTENT_FLAGS));
-            }
-        }
-        return Optional.absent();
-    }
-
-    private static List<Intent> getPossibleFileOpenIntents(
-            final Context context, final String path) {
-
-        // http://www.openintents.org/action/android-intent-action-view/file-directory
-        // do not use 'vnd.android.document/directory' since this will trigger system file manager
-        final Intent openIntent = new Intent(Intent.ACTION_VIEW);
-        openIntent.addCategory(Intent.CATEGORY_DEFAULT);
-        if (Compatibility.runsAndTargetsTwentyFour(context)) {
-            openIntent.setType("resource/folder");
-        } else {
-            openIntent.setDataAndType(Uri.parse("file://" + path), "resource/folder");
-        }
-        openIntent.putExtra("org.openintents.extra.ABSOLUTE_PATH", path);
-
-        final Intent amazeIntent = new Intent(Intent.ACTION_VIEW);
-        amazeIntent.setDataAndType(Uri.parse("com.amaze.filemanager:" + path), "resource/folder");
-
-        // will open a file manager at root and user can navigate themselves
-        final Intent systemFallBack = new Intent(Intent.ACTION_VIEW);
-        systemFallBack.addCategory(Intent.CATEGORY_DEFAULT);
-        systemFallBack.setData(
-                Uri.parse("content://com.android.externalstorage.documents/root/primary"));
-
-        return Arrays.asList(openIntent, amazeIntent, systemFallBack);
+        notificationManager.notify(BACKUP_CREATED_NOTIFICATION_ID, builder.build());
     }
 
     private static class Progress {

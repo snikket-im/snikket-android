@@ -1,10 +1,9 @@
 package im.conversations.android.xmpp.model.pubsub.event;
 
 import im.conversations.android.annotation.XmlElement;
-import im.conversations.android.xmpp.model.Extension;
 
 @XmlElement
-public class Retract extends Extension {
+public class Retract extends Action {
 
     public Retract() {
         super(Retract.class);

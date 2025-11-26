@@ -253,7 +253,7 @@
     <string name="try_again">Riprovoni</string>
     <string name="pref_keep_foreground_service">Shërbim në prapaskenë</string>
     <string name="pref_create_backup">Krijo kopjeruajtje</string>
-    <string name="pref_create_backup_summary">Kartelat kopjeruajtje do të depozitohen në %s</string>
+    <string name="pref_create_backup_summary">Kopjeruajtjet do të depozitohen në %s</string>
     <string name="notification_create_backup_title">Po krijohen kartela kopjeruajtje</string>
     <string name="notification_backup_created_title">Kopjeruajtja juaj u krijua</string>
     <string name="restoring_backup">Po rikthehet kopjeruajtje</string>
@@ -623,7 +623,7 @@
     <string name="ebook">e-libër</string>
     <string name="video_original">Origjinalja (e pangjeshur)</string>
     <string name="open_with">Hape me…</string>
-    <string name="set_profile_picture">Foto profili Conversations</string>
+    <string name="set_profile_picture">Avatar</string>
     <string name="choose_account">Zgjidhni llogari</string>
     <string name="restore_backup">Riktheje kopjeruajtjen</string>
     <string name="restore">Riktheje</string>
@@ -953,7 +953,7 @@
     <string name="we_will_be_verifying"><![CDATA[Do të verifikojmë numrin e telefonit<br/><br/><b>%s</b><br/><br/>Dakord, apo do të donit të përpunonit numrin??]]></string>
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Ju kemi dërguar një SMS te <b>%s</b>.]]></string>
     <string name="enter_password_to_restore">Që të rikthehet kopjeruajtja, jepni fjalëkalimin tuaj për llogarinë %s.</string>
-    <string name="restore_warning">Mos përdorni veçorinë e rikthimit të një kopjeruajtje në një përpjekje për të klonuar (xhiruar në të njëjtën kohë) një instalim. Rikthimi i një kopjeruajtje është menduar vetëm për migrime, ose në rast se humbët pajisjen origjinale.</string>
+    <string name="restore_warning">Mos riktheni kyçe OMEMO, në një përpjekje për të klonuar (xhiruar në të njëjtën kohë) një instalim. Rikthimi i kyçeve OMEMO është menduar vetëm për migrime, ose në rast se humbët pajisjen origjinale.</string>
     <string name="no_users_hint_channel">Ky kanal publik s’ka pjesëmarrës. Ftoni kontaktet tuaj, ose përdorni butonin e ndarjes me të tjerët për të dhënë adresën XMPP të tij.</string>
     <string name="sharing_application_not_grant_permission">Aplikacioni dhënës nuk akordoi leje për hyrje në këtë kartelë.</string>
     <string name="pref_channel_discovery_summary">Shumica e përdoruesve duhet të zgjedhin ‘jabber.network’ për sugjerime më të mira nga krejt ekosistemi publik XMPP.</string>
@@ -968,7 +968,7 @@
         <item quantity="one">%1$d thirrje të humbur prej %2$d kontakti</item>
         <item quantity="other">%1$d thirrje të humbur prej %2$d kontaktesh</item>
     </plurals>
-    <string name="restore_warning_continued">Mos u rrekni të riktheni kopjeruajtje që s’i keni krijuar ju vetë!</string>
+    <string name="restore_warning_continued">Riktheni vetëm kopjeruajtje që ’i keni krijuar ju vetë.</string>
     <string name="rtp_state_content_add">Të shtohen pjesë shtesë?</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
     <string name="reconnect_on_other_host">Rilidhu te një tjetër strehë</string>
@@ -1121,4 +1121,19 @@
     <string name="delete_avatar_message">Doni të fshihet avatari jua? Disa klientë mund të vazhdojnë të shfaqin një kopje të ruajtur në fshehtinat e tyre të avatarit tuaj.</string>
     <string name="account_status_connection_timeout">Mbarim kohe për lidhjen</string>
     <string name="retry_with_p2p">Riprovo me P2P</string>
+    <string name="word_document">Dokument Word</string>
+    <string name="restore_omemo_key">Rikthe kyçe OMEMO</string>
+    <string name="non_quicksy_backup">Quicksy mund të rikthejë vetëm kopjeruajtje për llogari quicksy.im</string>
+    <string name="pref_backup_location">Vendndodhje kopjeruajtjesh</string>
+    <string name="uri">URI</string>
+    <string name="copy_telephone_number">Kopjo numër telefoni</string>
+    <string name="copy_geo_uri">Kopjo vendndodhje gjeografike</string>
+    <string name="copy_email_address">Kopjo adresë email</string>
+    <string name="copied_phone_number">Numri i telefonit u kopjua në të papastër</string>
+    <string name="uri_copied_to_clipboard">URI u kopjua në të papastër</string>
+    <string name="copied_email_address">Adresa email u kopjua në të papastër</string>
+    <string name="copy_URI">Kopjo URI-n</string>
+    <string name="sos_scheduled_return">Shërbimi është vënë në plan të rikthehet në funksionim më %s</string>
+    <string name="account_status_service_outage_known">Shërbim Jashtë Funksionimi (Problem i Ditur)</string>
+    <string name="account_status_service_outage_scheduled">Kohë Mosfunksionimi e Planifikuar</string>
 </resources>

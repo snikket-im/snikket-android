@@ -1,0 +1,1 @@
+* Corretto crash su trasferimento file in traduzione fi

@@ -58,6 +58,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -87,6 +90,7 @@ import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.http.HttpConnectionManager;
+import eu.siacs.conversations.http.ServiceOutageStatus;
 import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.persistance.DatabaseBackend;
@@ -137,7 +141,12 @@ import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.pep.PublishOptions;
+import im.conversations.android.xmpp.model.avatar.Metadata;
+import im.conversations.android.xmpp.model.bookmark.Storage;
+import im.conversations.android.xmpp.model.mds.Displayed;
+import im.conversations.android.xmpp.model.pubsub.PubSub;
 import im.conversations.android.xmpp.model.stanza.Iq;
+import im.conversations.android.xmpp.model.storage.PrivateStorage;
 import java.io.File;
 import java.security.Security;
 import java.security.cert.CertificateException;
@@ -165,6 +174,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import me.leolin.shortcutbadger.ShortcutBadger;
+import okhttp3.HttpUrl;
 import org.conscrypt.Conscrypt;
 import org.jxmpp.stringprep.libidn.LibIdnXmppStringprep;
 import org.openintents.openpgp.IOpenPgpService2;
@@ -353,6 +363,10 @@ public class XmppConnectionService extends Service {
 
                 @Override
                 public void onStatusChanged(final Account account) {
+                    final var status = account.getStatus();
+                    if (ServiceOutageStatus.isPossibleOutage(status)) {
+                        fetchServiceOutageStatus(account);
+                    }
                     XmppConnection connection = account.getXmppConnection();
                     updateAccountUi();
 
@@ -484,6 +498,7 @@ public class XmppConnectionService extends Service {
                     getNotificationService().updateErrorNotification();
                 }
             };
+
     private OpenPgpServiceConnection pgpServiceConnection;
     private PgpEngine mPgpEngine = null;
     private WakeLock wakeLock;
@@ -1128,6 +1143,34 @@ public class XmppConnectionService extends Service {
         }
     }
 
+    private void fetchServiceOutageStatus(final Account account) {
+        final var sosUrl = account.getKey(Account.KEY_SOS_URL);
+        if (Strings.isNullOrEmpty(sosUrl)) {
+            return;
+        }
+        final var url = HttpUrl.parse(sosUrl);
+        if (url == null) {
+            return;
+        }
+        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": fetching service outage " + url);
+        Futures.addCallback(
+                ServiceOutageStatus.fetch(getApplicationContext(), url),
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(final ServiceOutageStatus sos) {
+                        Log.d(Config.LOGTAG, "fetched " + sos);
+                        account.setServiceOutageStatus(sos);
+                        updateAccountUi();
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.d(Config.LOGTAG, "error fetching sos", throwable);
+                    }
+                },
+                MoreExecutors.directExecutor());
+    }
+
     public boolean processUnifiedPushMessage(
             final Account account, final Jid transport, final Element push) {
         return unifiedPushBroker.processPushMessage(account, transport, push);
@@ -1358,11 +1401,11 @@ public class XmppConnectionService extends Service {
     @Override
     public void onCreate() {
         LibIdnXmppStringprep.setup();
-        if (Compatibility.runsTwentySix()) {
+        if (Compatibility.twentySix()) {
             mNotificationService.initializeChannels();
         }
         mChannelDiscoveryService.initializeMuclumbusService();
-        mForceDuringOnCreate.set(Compatibility.runsAndTargetsTwentySix(this));
+        mForceDuringOnCreate.set(Compatibility.twentySix());
         toggleForegroundService();
         this.destroyed = false;
         OmemoSetting.load(this);
@@ -1614,7 +1657,7 @@ public class XmppConnectionService extends Service {
                 || mForceDuringOnCreate.get()
                 || ongoingVideoTranscoding
                 || ongoing != null
-                || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
+                || (appSettings.isKeepForegroundService() && hasEnabledAccounts())) {
             final Notification notification;
             if (ongoing != null) {
                 notification = this.mNotificationService.getOngoingCallNotification(ongoing);
@@ -1686,14 +1729,14 @@ public class XmppConnectionService extends Service {
     public boolean foregroundNotificationNeedsUpdatingWhenErrorStateChanges() {
         return !mOngoingVideoTranscoding.get()
                 && ongoingCall.get() == null
-                && Compatibility.keepForegroundService(this)
+                && appSettings.isKeepForegroundService()
                 && hasEnabledAccounts();
     }
 
     @Override
     public void onTaskRemoved(final Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-        if ((Compatibility.keepForegroundService(this) && hasEnabledAccounts())
+        if ((appSettings.isKeepForegroundService() && hasEnabledAccounts())
                 || mOngoingVideoTranscoding.get()
                 || ongoingCall.get() != null) {
             Log.d(Config.LOGTAG, "ignoring onTaskRemoved because foreground service is activated");
@@ -2093,14 +2136,17 @@ public class XmppConnectionService extends Service {
 
     public void fetchBookmarks(final Account account) {
         final Iq iqPacket = new Iq(Iq.Type.GET);
-        final Element query = iqPacket.query("jabber:iq:private");
-        query.addChild("storage", Namespace.BOOKMARKS);
+        iqPacket.addExtension(new PrivateStorage()).addExtension(new Storage());
         final Consumer<Iq> callback =
                 (response) -> {
                     if (response.getType() == Iq.Type.RESULT) {
-                        final Element query1 = response.query();
-                        final Element storage = query1.findChild("storage", "storage:bookmarks");
-                        Map<Jid, Bookmark> bookmarks = Bookmark.parseFromStorage(storage, account);
+                        final var privateStorage = response.getExtension(PrivateStorage.class);
+                        if (privateStorage == null) {
+                            return;
+                        }
+                        final var bookmarkStorage = privateStorage.getExtension(Storage.class);
+                        Map<Jid, Bookmark> bookmarks =
+                                Bookmark.parseFromStorage(bookmarkStorage, account);
                         processBookmarksInitial(account, bookmarks, false);
                     } else {
                         Log.d(
@@ -2118,7 +2164,7 @@ public class XmppConnectionService extends Service {
                 retrieve,
                 (response) -> {
                     if (response.getType() == Iq.Type.RESULT) {
-                        final Element pubsub = response.findChild("pubsub", Namespace.PUBSUB);
+                        final var pubsub = response.getExtension(PubSub.class);
                         final Map<Jid, Bookmark> bookmarks =
                                 Bookmark.parseFromPubSub(pubsub, account);
                         processBookmarksInitial(account, bookmarks, true);
@@ -2136,30 +2182,34 @@ public class XmppConnectionService extends Service {
                     if (response.getType() != Iq.Type.RESULT) {
                         return;
                     }
-                    final var pubSub = response.findChild("pubsub", Namespace.PUBSUB);
-                    final Element items = pubSub == null ? null : pubSub.findChild("items");
-                    if (items == null
-                            || !Namespace.MDS_DISPLAYED.equals(items.getAttribute("node"))) {
+                    final var pubsub = response.getExtension(PubSub.class);
+                    if (pubsub == null) {
                         return;
                     }
-                    for (final Element child : items.getChildren()) {
-                        if ("item".equals(child.getName())) {
-                            processMdsItem(account, child);
+                    final var items = pubsub.getItems();
+                    if (items == null) {
+                        return;
+                    }
+                    if (Namespace.MDS_DISPLAYED.equals(items.getNode())) {
+                        for (final var item :
+                                items.getItemMap(
+                                                im.conversations.android.xmpp.model.mds.Displayed
+                                                        .class)
+                                        .entrySet()) {
+                            processMdsItem(account, item);
                         }
                     }
                 });
     }
 
-    public void processMdsItem(final Account account, final Element item) {
-        final Jid jid =
-                item == null ? null : Jid.Invalid.getNullForInvalid(item.getAttributeAsJid("id"));
+    public void processMdsItem(final Account account, final Map.Entry<String, Displayed> item) {
+        final Jid jid = Jid.Invalid.getNullForInvalid(Jid.ofOrInvalid(item.getKey()));
         if (jid == null) {
             return;
         }
-        final Element displayed = item.findChild("displayed", Namespace.MDS_DISPLAYED);
-        final Element stanzaId =
-                displayed == null ? null : displayed.findChild("stanza-id", Namespace.STANZA_IDS);
-        final String id = stanzaId == null ? null : stanzaId.getAttribute("id");
+        final var displayed = item.getValue();
+        final var stanzaId = displayed.getStanzaId();
+        final String id = stanzaId == null ? null : stanzaId.getId();
         final Conversation conversation = find(account, jid);
         if (id != null && conversation != null) {
             conversation.setDisplayState(id);
@@ -3615,7 +3665,7 @@ public class XmppConnectionService extends Service {
     }
 
     private void joinMuc(
-            Conversation conversation,
+            final Conversation conversation,
             final OnConferenceJoined onConferenceJoined,
             final boolean followedInvite) {
         final Account account = conversation.getAccount();
@@ -4327,6 +4377,7 @@ public class XmppConnectionService extends Service {
                                         bookmark == null ? null : bookmark.getBookmarkName(),
                                         mucOptions.getName());
 
+                        final var hadOccupantId = mucOptions.occupantId();
                         if (mucOptions.updateConfiguration(new ServiceDiscoveryResult(response))) {
                             Log.d(
                                     Config.LOGTAG,
@@ -4334,6 +4385,25 @@ public class XmppConnectionService extends Service {
                                             + ": muc configuration changed for "
                                             + conversation.getJid().asBareJid());
                             updateConversation(conversation);
+                        }
+
+                        final var hasOccupantId = mucOptions.occupantId();
+
+                        if (!hadOccupantId && hasOccupantId && mucOptions.online()) {
+                            final var me = mucOptions.getSelf().getFullJid();
+                            Log.d(
+                                    Config.LOGTAG,
+                                    account.getJid().asBareJid()
+                                            + ": gained support for occupant-id in "
+                                            + me
+                                            + ". resending presence");
+                            final var packet =
+                                    mPresenceGenerator.selfPresence(
+                                            account,
+                                            Presence.Status.ONLINE,
+                                            mucOptions.nonanonymous());
+                            packet.setTo(me);
+                            sendPresencePacket(account, packet);
                         }
 
                         if (bookmark != null
@@ -4900,16 +4970,20 @@ public class XmppConnectionService extends Service {
                 packet,
                 new Consumer<Iq>() {
 
-                    private Avatar parseAvatar(Iq packet) {
-                        Element pubsub =
-                                packet.findChild("pubsub", "http://jabber.org/protocol/pubsub");
-                        if (pubsub != null) {
-                            Element items = pubsub.findChild("items");
-                            if (items != null) {
-                                return Avatar.parseMetadata(items);
-                            }
+                    private Avatar parseAvatar(final Iq packet) {
+                        final var pubsub = packet.getExtension(PubSub.class);
+                        if (pubsub == null) {
+                            return null;
                         }
-                        return null;
+                        final var items = pubsub.getItems();
+                        if (items == null) {
+                            return null;
+                        }
+                        final var item = items.getFirstItemWithId(Metadata.class);
+                        if (item == null) {
+                            return null;
+                        }
+                        return Avatar.parseMetadata(item.getKey(), item.getValue());
                     }
 
                     private boolean errorIsItemNotFound(Iq packet) {
@@ -5144,30 +5218,39 @@ public class XmppConnectionService extends Service {
                 account,
                 packet,
                 response -> {
-                    if (response.getType() == Iq.Type.RESULT) {
-                        Element pubsub =
-                                response.findChild("pubsub", "http://jabber.org/protocol/pubsub");
-                        if (pubsub != null) {
-                            Element items = pubsub.findChild("items");
-                            if (items != null) {
-                                Avatar avatar = Avatar.parseMetadata(items);
-                                if (avatar != null) {
-                                    avatar.owner = account.getJid().asBareJid();
-                                    if (fileBackend.isAvatarCached(avatar)) {
-                                        if (account.setAvatar(avatar.getFilename())) {
-                                            databaseBackend.updateAccount(account);
-                                        }
-                                        getAvatarService().clear(account);
-                                        callback.success(avatar);
-                                    } else {
-                                        fetchAvatarPep(account, avatar, callback);
-                                    }
-                                    return;
-                                }
-                            }
-                        }
+                    if (response.getType() != Iq.Type.RESULT) {
+                        callback.error(0, null);
                     }
-                    callback.error(0, null);
+                    final var pubsub = packet.getExtension(PubSub.class);
+                    if (pubsub == null) {
+                        callback.error(0, null);
+                        return;
+                    }
+                    final var items = pubsub.getItems();
+                    if (items == null) {
+                        callback.error(0, null);
+                        return;
+                    }
+                    final var item = items.getFirstItemWithId(Metadata.class);
+                    if (item == null) {
+                        callback.error(0, null);
+                        return;
+                    }
+                    final var avatar = Avatar.parseMetadata(item.getKey(), item.getValue());
+                    if (avatar == null) {
+                        callback.error(0, null);
+                        return;
+                    }
+                    avatar.owner = account.getJid().asBareJid();
+                    if (fileBackend.isAvatarCached(avatar)) {
+                        if (account.setAvatar(avatar.getFilename())) {
+                            databaseBackend.updateAccount(account);
+                        }
+                        getAvatarService().clear(account);
+                        callback.success(avatar);
+                    } else {
+                        fetchAvatarPep(account, avatar, callback);
+                    }
                 });
     }
 
@@ -5721,13 +5804,13 @@ public class XmppConnectionService extends Service {
             if (conversation.getMode() == Conversational.MODE_MULTI && !isPrivateMessage) {
                 final var mucOptions = conversation.getMucOptions();
                 if (!mucOptions.participating()) {
-                    Log.d(Config.LOGTAG, "not participating in MUC");
+                    Log.e(Config.LOGTAG, "not participating in MUC");
                     return false;
                 }
                 final var self = mucOptions.getSelf();
                 final String occupantId = self.getOccupantId();
                 if (Strings.isNullOrEmpty(occupantId)) {
-                    Log.d(Config.LOGTAG, "occupant id not found for reaction in MUC");
+                    Log.e(Config.LOGTAG, "occupant id not found for reaction in MUC");
                     return false;
                 }
                 final var existingRaw =
@@ -5771,6 +5854,7 @@ public class XmppConnectionService extends Service {
                                 conversation.getAccount().getJid());
             }
             if (reactTo == null || Strings.isNullOrEmpty(reactToId)) {
+                Log.e(Config.LOGTAG, "could not find id to react to");
                 return false;
             }
             final var reactionMessage =
@@ -6318,10 +6402,6 @@ public class XmppConnectionService extends Service {
             }
         }
         return verifiedSomething;
-    }
-
-    public boolean blindTrustBeforeVerification() {
-        return getBooleanPreference(AppSettings.BLIND_TRUST_BEFORE_VERIFICATION, R.bool.btbv);
     }
 
     public ShortcutService getShortcutService() {

@@ -1,0 +1,2 @@
+* Shfrytëzim i SASL SCRAM Downgrade Protection (XEP-0474)
+* Dërgim reagimesh ndaj MP MUC te JID i saktë

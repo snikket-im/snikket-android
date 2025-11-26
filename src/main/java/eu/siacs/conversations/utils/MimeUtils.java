@@ -48,6 +48,12 @@ public final class MimeUtils {
                     "video/3gpp", // .3gp files can contain audio, video or both
                     "video/3gpp2");
 
+    public static final List<String> WORD_DOCUMENT_MIMES =
+            Arrays.asList(
+                    "application/vnd.oasis.opendocument.text",
+                    "application/msword",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+
     private static final Map<String, String> mimeTypeToExtensionMap = new HashMap<>();
     private static final Map<String, String> extensionToMimeTypeMap = new HashMap<>();
 

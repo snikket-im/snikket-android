@@ -16,11 +16,15 @@ public class ExtendedFabSizeChanger extends RecyclerView.OnScrollListener {
     @Override
     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
-        if (RecyclerViews.findFirstVisibleItemPosition(recyclerView) > 0) {
-            extendedFloatingActionButton.shrink();
-        } else {
-            extendedFloatingActionButton.extend();
-        }
+        final var firstVisibleItem = RecyclerViews.findFirstVisibleItemPosition(recyclerView);
+        recyclerView.post(
+                () -> {
+                    if (firstVisibleItem > 0) {
+                        extendedFloatingActionButton.shrink();
+                    } else {
+                        extendedFloatingActionButton.extend();
+                    }
+                });
     }
 
     public static RecyclerView.OnScrollListener of(final ExtendedFloatingActionButton fab) {

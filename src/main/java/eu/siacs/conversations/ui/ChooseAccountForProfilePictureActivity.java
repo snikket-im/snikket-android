@@ -24,7 +24,7 @@ public class ChooseAccountForProfilePictureActivity extends XmppActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final ActivityManageAccountsBinding binding =
                 DataBindingUtil.setContentView(this, R.layout.activity_manage_accounts);
@@ -64,11 +64,12 @@ public class ChooseAccountForProfilePictureActivity extends XmppActivity {
         }
     }
 
-    private void goToProfilePictureActivity(Account account) {
+    private void goToProfilePictureActivity(final Account account) {
         final Intent startIntent = getIntent();
         final Uri uri = startIntent == null ? null : startIntent.getData();
         if (uri != null) {
             Intent intent = new Intent(this, PublishProfilePictureActivity.class);
+            intent.setAction(Intent.ACTION_ATTACH_DATA);
             intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
             intent.setData(uri);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

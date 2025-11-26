@@ -72,16 +72,11 @@
         </intent>
         <intent>
             <action android:name="android.intent.action.VIEW" />
-            <data android:mimeType="resource/folder" />
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
         </intent>
         <intent>
             <action android:name="org.unifiedpush.android.connector.MESSAGE" />
         </intent>
     </queries>
-
 
     <application
         android:name=".Conversations"
@@ -119,11 +114,6 @@
             android:name="androidx.work.impl.foreground.SystemForegroundService"
             android:foregroundServiceType="dataSync"
             tools:node="merge" />
-
-        <service
-            android:name=".services.ImportBackupService"
-            android:exported="false"
-            android:foregroundServiceType="dataSync" />
 
         <service
             android:name=".services.CallIntegrationConnectionService"
@@ -335,10 +325,10 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ui.AboutActivity"
-            android:parentActivityName=".ui.SettingsActivity">
+            android:parentActivityName=".ui.activity.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="eu.siacs.conversations.ui.SettingsActivity" />
+                android:value="eu.siacs.conversations.ui.activity.SettingsActivity" />
         </activity>
         <activity
             android:name="com.canhub.cropper.CropImageActivity"
@@ -384,6 +374,60 @@
             android:autoRemoveFromRecents="true"
             android:launchMode="singleInstance"
             android:supportsPictureInPicture="true" />
+        <activity
+            android:name=".ui.ImportBackupActivity"
+            android:exported="true"
+            android:label="@string/restore_backup"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/vnd.conversations.backup" />
+                <data android:scheme="content" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/vnd.conversations.backup" />
+                <data android:scheme="file" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="content" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern=".*\\.ceb" />
+                <data android:pathPattern=".*\\..*\\.ceb" />
+                <data android:pathPattern=".*\\..*\\..*\\.ceb" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.ceb" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.ceb" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.ceb" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.ceb" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern=".*\\.ceb" />
+                <data android:pathPattern=".*\\..*\\.ceb" />
+                <data android:pathPattern=".*\\..*\\..*\\.ceb" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.ceb" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.ceb" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.ceb" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.ceb" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

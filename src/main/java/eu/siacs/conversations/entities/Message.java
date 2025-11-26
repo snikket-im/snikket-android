@@ -8,6 +8,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Longs;
+import de.gultsch.common.Patterns;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
@@ -16,7 +17,6 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Emoticons;
-import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.UIHelper;
@@ -796,7 +796,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public synchronized boolean isGeoUri() {
         if (isGeoUri == null) {
-            isGeoUri = GeoHelper.GEO_URI.matcher(body).matches();
+            isGeoUri = Patterns.URI_GEO.matcher(body).matches();
         }
         return isGeoUri;
     }
