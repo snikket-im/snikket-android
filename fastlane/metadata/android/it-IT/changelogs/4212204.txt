@@ -1,0 +1,1 @@
+* Corretto errore di interfaccia che mostrava reazioni multiple

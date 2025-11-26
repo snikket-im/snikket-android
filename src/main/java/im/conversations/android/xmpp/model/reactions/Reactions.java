@@ -2,8 +2,10 @@ package im.conversations.android.xmpp.model.reactions;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
+
 import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
+
 import java.util.Collection;
 import java.util.Objects;
 
@@ -21,7 +23,7 @@ public class Reactions extends Extension {
     }
 
     public String getId() {
-        return this.getAttribute("id");
+        return Strings.emptyToNull(this.getAttribute("id"));
     }
 
     public void setId(String id) {

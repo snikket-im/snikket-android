@@ -941,7 +941,7 @@
     <string name="resend_sms">Skicka SMS igen</string>
     <string name="resend_sms_in">Skicka SMS igen (%s)</string>
     <string name="wait_x">Var god vänta (%s)</string>
-    <string name="we_will_be_verifying">Vi kommer att verifiera telefonnumret<br/><br/><b>%s</b><br/><br/>Är det här okej, eller vill du ändra telefonnumret\?</string>
+    <string name="we_will_be_verifying">Vi kommer att verifiera telefonnumret<br/><br/><b>%s</b><br/><br/>Är det här okej, eller vill du ändra telefonnumret?</string>
     <string name="not_a_valid_phone_number">%s är inte ett giltigt telefonnummer.</string>
     <string name="security_violation_not_attaching_file">Filen har utelämnats på grund av säkerhetsöverträdelse.</string>
     <string name="pref_video_compression_summary">Lägre kvalitet resulterar i mindre filer</string>

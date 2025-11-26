@@ -1,0 +1,2 @@
+* Використання SASL SCRAM Downgrade Protection (XEP-0474)
+* Надсилання реакцій у приватні повідомлення MUC на правильний JID

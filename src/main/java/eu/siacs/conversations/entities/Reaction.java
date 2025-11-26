@@ -1,9 +1,7 @@
 package eu.siacs.conversations.entities;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
@@ -20,10 +18,9 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.xmpp.Jid;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -69,6 +66,10 @@ public class Reaction {
         this.occupantId = occupantId;
     }
 
+    public String normalizedReaction() {
+        return Emoticons.normalizeToVS16(this.reaction);
+    }
+
     public static String toString(final Collection<Reaction> reactions) {
         return (reactions == null || reactions.isEmpty()) ? null : GSON.toJson(reactions);
     }
@@ -80,7 +81,7 @@ public class Reaction {
         try {
             return GSON.fromJson(asString, new TypeToken<List<Reaction>>() {}.getType());
         } catch (final IllegalArgumentException | JsonSyntaxException e) {
-            Log.e(Config.LOGTAG,"could not restore reactions", e);
+            Log.e(Config.LOGTAG, "could not restore reactions", e);
             return Collections.emptyList();
         }
     }
@@ -132,7 +133,7 @@ public class Reaction {
             if (value == null) {
                 out.nullValue();
             } else {
-                out.value(value.toEscapedString());
+                out.value(value.toString());
             }
         }
 
@@ -143,7 +144,7 @@ public class Reaction {
                 return null;
             } else if (in.peek() == JsonToken.STRING) {
                 final String value = in.nextString();
-                return Jid.ofEscaped(value);
+                return Jid.of(value);
             }
             throw new IOException("Unexpected token");
         }
@@ -152,7 +153,8 @@ public class Reaction {
     public static Aggregated aggregated(final Collection<Reaction> reactions) {
         final Map<String, Integer> aggregatedReactions =
                 Maps.transformValues(
-                        Multimaps.index(reactions, r -> r.reaction).asMap(), Collection::size);
+                        Multimaps.index(reactions, Reaction::normalizedReaction).asMap(),
+                        Collection::size);
         final List<Map.Entry<String, Integer>> sortedList =
                 Ordering.from(
                                 Comparator.comparingInt(
@@ -164,7 +166,7 @@ public class Reaction {
                 ImmutableSet.copyOf(
                         Collections2.transform(
                                 Collections2.filter(reactions, r -> !r.received),
-                                r -> r.reaction)));
+                                Reaction::normalizedReaction)));
     }
 
     public static final class Aggregated {

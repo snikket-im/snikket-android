@@ -1,0 +1,2 @@
+* Nachrichten näher zusammengerückt, anstatt sie zu verschmelzen
+* Möglichkeit hinzugefügt, Profilbilder in Chat-Ansichten auszublenden, wenn sie nicht zwingend erforderlich sind (Einstellungen > Benutzeroberfläche > Sprechblasen > Profilbilder anzeigen)

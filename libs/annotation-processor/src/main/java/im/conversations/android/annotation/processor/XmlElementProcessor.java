@@ -4,17 +4,17 @@ import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableMap;
-
+import com.google.common.collect.ImmutableSortedMap;
 import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.annotation.XmlPackage;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import javax.annotation.Nonnull;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -38,7 +38,7 @@ public class XmlElementProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
         final Set<? extends Element> elements =
                 roundEnvironment.getElementsAnnotatedWith(XmlElement.class);
-        final ImmutableMap.Builder<Id, String> builder = ImmutableMap.builder();
+        final ImmutableSortedMap.Builder<Id, String> builder = ImmutableSortedMap.naturalOrder();
         for (final Element element : elements) {
             if (element instanceof final TypeElement typeElement) {
                 final Id id = of(typeElement);
@@ -160,7 +160,7 @@ public class XmlElementProcessor extends AbstractProcessor {
         return false;
     }
 
-    public static class Id {
+    public static class Id implements Comparable<Id> {
         public final String name;
         public final String namespace;
 
@@ -180,6 +180,14 @@ public class XmlElementProcessor extends AbstractProcessor {
         @Override
         public int hashCode() {
             return Objects.hashCode(name, namespace);
+        }
+
+        @Override
+        public int compareTo(@Nonnull Id id) {
+            return ComparisonChain.start()
+                    .compare(namespace, id.namespace)
+                    .compare(name, id.name)
+                    .result();
         }
     }
 }

@@ -1,9 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
@@ -16,7 +14,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Conversation;
@@ -38,19 +35,8 @@ import eu.siacs.conversations.xmpp.jingle.transports.InbandBytestreamsTransport;
 import eu.siacs.conversations.xmpp.jingle.transports.SocksByteStreamsTransport;
 import eu.siacs.conversations.xmpp.jingle.transports.Transport;
 import eu.siacs.conversations.xmpp.jingle.transports.WebRTCDataChannelTransport;
-
 import im.conversations.android.xmpp.model.jingle.Jingle;
 import im.conversations.android.xmpp.model.stanza.Iq;
-
-import org.bouncycastle.crypto.engines.AESEngine;
-import org.bouncycastle.crypto.io.CipherInputStream;
-import org.bouncycastle.crypto.io.CipherOutputStream;
-import org.bouncycastle.crypto.modes.AEADBlockCipher;
-import org.bouncycastle.crypto.modes.GCMBlockCipher;
-import org.bouncycastle.crypto.params.AEADParameters;
-import org.bouncycastle.crypto.params.KeyParameter;
-import org.webrtc.IceCandidate;
-
 import java.io.Closeable;
 import java.io.EOFException;
 import java.io.File;
@@ -68,6 +54,14 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
+import org.bouncycastle.crypto.engines.AESEngine;
+import org.bouncycastle.crypto.io.CipherInputStream;
+import org.bouncycastle.crypto.io.CipherOutputStream;
+import org.bouncycastle.crypto.modes.AEADBlockCipher;
+import org.bouncycastle.crypto.modes.GCMBlockCipher;
+import org.bouncycastle.crypto.params.AEADParameters;
+import org.bouncycastle.crypto.params.KeyParameter;
+import org.webrtc.IceCandidate;
 
 public class JingleFileTransferConnection extends AbstractJingleConnection
         implements Transport.Callback, Transferable {
@@ -205,8 +199,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
         if (transition(
                 State.SESSION_INITIALIZED,
                 () -> this.initiatorFileTransferContentMap = contentMap)) {
-            final var iq =
-                    contentMap.toJinglePacket(Jingle.Action.SESSION_INITIATE, id.sessionId);
+            final var iq = contentMap.toJinglePacket(Jingle.Action.SESSION_INITIATE, id.sessionId);
             final var jingle = iq.getExtension(Jingle.class);
             if (xmppAxolotlMessage != null) {
                 this.transportSecurity =
@@ -456,8 +449,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
 
     private void sendSessionAccept(final FileTransferContentMap contentMap) {
         setLocalContentMap(contentMap);
-        final var iq =
-                contentMap.toJinglePacket(Jingle.Action.SESSION_ACCEPT, id.sessionId);
+        final var iq = contentMap.toJinglePacket(Jingle.Action.SESSION_ACCEPT, id.sessionId);
         send(iq);
         // this needs to come after session-accept or else our candidate-error might arrive first
         this.transport.connect();
@@ -562,7 +554,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
         Log.d(Config.LOGTAG, "peer confirmed received " + received);
     }
 
-    private void receiveSessionTerminate(final Iq jinglePacket, final Jingle jingle) {
+    private synchronized void receiveSessionTerminate(final Iq jinglePacket, final Jingle jingle) {
         respondOk(jinglePacket);
         final Jingle.ReasonWrapper wrapper = jingle.getReason();
         final State previous = this.state;
@@ -589,7 +581,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
         }
         terminateTransport();
         final State target = reasonToState(wrapper.reason);
-        // TODO check if we were already terminated
         transitionOrThrow(target);
         finish();
     }
@@ -865,13 +856,21 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
 
     @Override
     public void onTransportEstablished() {
-        Log.d(Config.LOGTAG, "on transport established");
+        Log.d(Config.LOGTAG, "transport established");
         final AbstractFileTransceiver fileTransceiver;
         try {
             fileTransceiver = setupTransceiver(isResponder());
         } catch (final Exception e) {
-            Log.d(Config.LOGTAG, "failed to set up file transceiver", e);
-            sendSessionTerminate(Reason.ofThrowable(e), e.getMessage());
+            terminateTransport();
+            if (isTerminated()) {
+                Log.d(
+                        Config.LOGTAG,
+                        "failed to set up file transceiver but session has already been"
+                                + " terminated");
+            } else {
+                Log.d(Config.LOGTAG, "failed to set up file transceiver", e);
+                sendSessionTerminate(Reason.ofThrowable(e), e.getMessage());
+            }
             return;
         }
         this.fileTransceiver = fileTransceiver;
@@ -951,6 +950,10 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
     }
 
     private AbstractFileTransceiver setupTransceiver(final boolean receiving) throws IOException {
+        final var transport = this.transport;
+        if (transport == null) {
+            throw new IOException("No transport configured");
+        }
         final var fileDescription = getLocalContentMap().requireOnlyFile();
         final File file = xmppConnectionService.getFileBackend().getFile(message);
         final Runnable updateRunnable = () -> jingleConnectionManager.updateConversationUi(false);
@@ -987,7 +990,8 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
 
     private void sendSessionInfo(final FileTransferDescription.SessionInfo sessionInfo) {
         final var iq = new Iq(Iq.Type.SET);
-        final var jinglePacket = iq.addExtension(new Jingle(Jingle.Action.SESSION_INFO, this.id.sessionId));
+        final var jinglePacket =
+                iq.addExtension(new Jingle(Jingle.Action.SESSION_INFO, this.id.sessionId));
         jinglePacket.addChild(sessionInfo.asElement());
         send(iq);
     }
@@ -996,11 +1000,13 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
     public void onTransportSetupFailed() {
         final var transport = this.transport;
         if (transport == null) {
-            // this can happen on IQ timeouts
-            if (isTerminated()) {
-                return;
+            synchronized (this) {
+                // this can happen on IQ timeouts
+                if (isTerminated()) {
+                    return;
+                }
+                sendSessionTerminate(Reason.FAILED_APPLICATION, null);
             }
-            sendSessionTerminate(Reason.FAILED_APPLICATION, null);
             return;
         }
         Log.d(Config.LOGTAG, "onTransportSetupFailed");
@@ -1071,8 +1077,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
                             + contentName);
             return;
         }
-        final Iq iq =
-                transportInfo.toJinglePacket(Jingle.Action.TRANSPORT_INFO, id.sessionId);
+        final Iq iq = transportInfo.toJinglePacket(Jingle.Action.TRANSPORT_INFO, id.sessionId);
         send(iq);
     }
 
@@ -1175,12 +1180,13 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
         }
         final var state = getState();
         return switch (state) {
-            case NULL, SESSION_INITIALIZED, SESSION_INITIALIZED_PRE_APPROVED -> Transferable
-                    .STATUS_OFFER;
+            case NULL, SESSION_INITIALIZED, SESSION_INITIALIZED_PRE_APPROVED ->
+                    Transferable.STATUS_OFFER;
             case TERMINATED_APPLICATION_FAILURE,
-                    TERMINATED_CONNECTIVITY_ERROR,
-                    TERMINATED_DECLINED_OR_BUSY,
-                    TERMINATED_SECURITY_ERROR -> Transferable.STATUS_FAILED;
+                            TERMINATED_CONNECTIVITY_ERROR,
+                            TERMINATED_DECLINED_OR_BUSY,
+                            TERMINATED_SECURITY_ERROR ->
+                    Transferable.STATUS_FAILED;
             case TERMINATED_CANCEL_OR_TIMEOUT -> Transferable.STATUS_CANCELLED;
             case SESSION_ACCEPTED -> Transferable.STATUS_DOWNLOADING;
             default -> Transferable.STATUS_UNKNOWN;
@@ -1255,7 +1261,8 @@ public class JingleFileTransferConnection extends AbstractJingleConnection
             }
             terminateTransport();
             final Iq iq = new Iq(Iq.Type.SET);
-            final var jingle = iq.addExtension(new Jingle(Jingle.Action.SESSION_TERMINATE, id.sessionId));
+            final var jingle =
+                    iq.addExtension(new Jingle(Jingle.Action.SESSION_TERMINATE, id.sessionId));
             jingle.setReason(reason, "User requested to stop file transfer");
             send(iq);
             finish();

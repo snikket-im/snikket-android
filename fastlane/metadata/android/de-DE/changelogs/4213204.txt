@@ -1,0 +1,4 @@
+* Audioaufnahme kann durch Antippen des Timers angehalten werden
+* Reaktionen in MUC PMs korrigiert
+* Annahme von 'Fallback-Nachrichten' für Reaktionen, Bestätigungen und Anzeigemarkierungen beendet
+* Weitere Medienvorschau-Symbole hinzugefügt

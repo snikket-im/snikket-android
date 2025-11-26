@@ -1,0 +1,2 @@
+* Naprawienie rozmów w Androidzie 15
+* Naprawienie rzadkiej awarii (regresji) wprowadzonej w 2.17.0

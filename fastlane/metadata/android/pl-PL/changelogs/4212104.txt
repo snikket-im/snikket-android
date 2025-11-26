@@ -1,0 +1,1 @@
+* Obsługa reakcji na wiadomości

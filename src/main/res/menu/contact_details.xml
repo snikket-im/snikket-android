@@ -1,64 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_edit_contact"
         android:icon="@drawable/ic_edit_24dp"
         android:orderInCategory="10"
-        app:showAsAction="always"
-        android:title="@string/action_edit_contact"/>
+        android:title="@string/action_edit_contact"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_share_24dp"
         android:orderInCategory="15"
-        app:showAsAction="always"
-        android:title="@string/share_uri_with">
+        android:title="@string/share_uri_with"
+        app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/action_share_uri"
-                android:title="@string/share_as_uri"/>
+                android:title="@string/share_as_uri" />
             <item
                 android:id="@+id/action_share_http"
-                android:title="@string/share_as_http"/>
+                android:title="@string/share_as_http" />
             <item
                 android:id="@+id/action_show_qr_code"
-                android:title="@string/show_qr_code"/>
+                android:title="@string/show_qr_code" />
         </menu>
     </item>
     <item
         android:id="@+id/action_delete_contact"
         android:orderInCategory="10"
-        app:showAsAction="never"
-        android:title="@string/action_delete_contact"/>
+        android:title="@string/action_delete_contact"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_block"
         android:orderInCategory="72"
-        app:showAsAction="never"
-        android:title="@string/action_block_contact"/>
+        android:title="@string/action_block_contact"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_unblock"
         android:orderInCategory="73"
-        app:showAsAction="never"
-        android:title="@string/action_unblock_contact"/>
+        android:title="@string/action_unblock_contact"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_custom_notifications"
+        android:orderInCategory="75"
+        android:title="@string/custom_notifications"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_accounts"
         android:orderInCategory="90"
-        app:showAsAction="never"
-        android:title="@string/action_accounts"/>
+        android:title="@string/action_accounts"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_account"
         android:orderInCategory="90"
         android:title="@string/action_account"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        app:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
 
 </menu>

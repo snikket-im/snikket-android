@@ -29,19 +29,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Lifecycle;
-
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
-
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -79,15 +76,12 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
-
-import okhttp3.HttpUrl;
-
-import org.openintents.openpgp.util.OpenPgpUtils;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import okhttp3.HttpUrl;
+import org.openintents.openpgp.util.OpenPgpUtils;
 
 public class EditAccountActivity extends OmemoActivity
         implements OnAccountUpdate,
@@ -144,8 +138,7 @@ public class EditAccountActivity extends OmemoActivity
                                 new Intent(
                                         getApplicationContext(),
                                         PublishProfilePictureActivity.class);
-                        intent.putExtra(
-                                EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toEscapedString());
+                        intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toString());
                         startActivity(intent);
                     }
                 }
@@ -259,12 +252,12 @@ public class EditAccountActivity extends OmemoActivity
                     try {
                         if (mUsernameMode) {
                             jid =
-                                    Jid.ofEscaped(
+                                    Jid.of(
                                             binding.accountJid.getText().toString(),
                                             getUserModeDomain(),
                                             null);
                         } else {
-                            jid = Jid.ofEscaped(binding.accountJid.getText().toString());
+                            jid = Jid.ofUserInput(binding.accountJid.getText().toString());
                             Resolver.checkDomain(jid);
                         }
                     } catch (final NullPointerException | IllegalArgumentException e) {
@@ -539,15 +532,13 @@ public class EditAccountActivity extends OmemoActivity
                         if (wasFirstAccount) {
                             intent.putExtra("init", true);
                         }
-                        intent.putExtra(
-                                EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toEscapedString());
+                        intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toString());
                     } else {
                         intent =
                                 new Intent(
                                         getApplicationContext(),
                                         PublishProfilePictureActivity.class);
-                        intent.putExtra(
-                                EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toEscapedString());
+                        intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toString());
                         intent.putExtra("setup", true);
                     }
                     if (wasFirstAccount) {
@@ -562,6 +553,7 @@ public class EditAccountActivity extends OmemoActivity
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO check for Camera / Scan permission
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_BATTERY_OP || requestCode == REQUEST_DATA_SAVER) {
             updateAccountInformation(mAccount == null);
@@ -699,9 +691,9 @@ public class EditAccountActivity extends OmemoActivity
     protected boolean jidEdited() {
         final String unmodified;
         if (mUsernameMode) {
-            unmodified = this.mAccount.getJid().getEscapedLocal();
+            unmodified = this.mAccount.getJid().getLocal();
         } else {
-            unmodified = this.mAccount.getJid().asBareJid().toEscapedString();
+            unmodified = this.mAccount.getJid().asBareJid().toString();
         }
         return !unmodified.equals(this.binding.accountJid.getText().toString());
     }
@@ -733,7 +725,7 @@ public class EditAccountActivity extends OmemoActivity
         this.binding.hostname.addTextChangedListener(mTextWatcher);
         this.binding.hostname.setOnFocusChangeListener(mEditTextFocusListener);
         this.binding.clearDevices.setOnClickListener(v -> showWipePepDialog());
-        this.binding.port.setText(String.valueOf(Resolver.DEFAULT_PORT_XMPP));
+        this.binding.port.setText(String.valueOf(Resolver.XMPP_PORT_STARTTLS));
         this.binding.port.addTextChangedListener(mTextWatcher);
         this.binding.saveButton.setOnClickListener(this.mSaveButtonClickListener);
         this.binding.cancelButton.setOnClickListener(this.mCancelButtonClickListener);
@@ -823,7 +815,7 @@ public class EditAccountActivity extends OmemoActivity
         final Intent intent = getIntent();
         if (intent != null) {
             try {
-                this.jidToEdit = Jid.ofEscaped(intent.getStringExtra("jid"));
+                this.jidToEdit = Jid.of(intent.getStringExtra("jid"));
             } catch (final IllegalArgumentException | NullPointerException ignored) {
                 this.jidToEdit = null;
             }
@@ -928,8 +920,7 @@ public class EditAccountActivity extends OmemoActivity
     @Override
     public void onSaveInstanceState(@NonNull final Bundle savedInstanceState) {
         if (mAccount != null) {
-            savedInstanceState.putString(
-                    "account", mAccount.getJid().asBareJid().toEscapedString());
+            savedInstanceState.putString("account", mAccount.getJid().asBareJid().toString());
             savedInstanceState.putBoolean("initMode", mInitMode);
             savedInstanceState.putBoolean(
                     "showMoreTable", binding.serverInfoMore.getVisibility() == View.VISIBLE);
@@ -942,8 +933,7 @@ public class EditAccountActivity extends OmemoActivity
         if (mSavedInstanceAccount != null) {
             try {
                 this.mAccount =
-                        xmppConnectionService.findAccountByJid(
-                                Jid.ofEscaped(mSavedInstanceAccount));
+                        xmppConnectionService.findAccountByJid(Jid.of(mSavedInstanceAccount));
                 this.mInitMode = mSavedInstanceInit;
                 init = false;
             } catch (IllegalArgumentException e) {
@@ -1009,7 +999,7 @@ public class EditAccountActivity extends OmemoActivity
                 break;
             case R.id.action_show_block_list:
                 final Intent showBlocklistIntent = new Intent(this, BlocklistActivity.class);
-                showBlocklistIntent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toEscapedString());
+                showBlocklistIntent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toString());
                 startActivity(showBlocklistIntent);
                 break;
             case R.id.action_server_info_show_more:
@@ -1044,11 +1034,7 @@ public class EditAccountActivity extends OmemoActivity
     }
 
     private void deleteAccount() {
-        this.deleteAccount(
-                mAccount,
-                () -> {
-                    finish();
-                });
+        this.deleteAccount(mAccount, () -> finish());
     }
 
     private boolean inNeedOfSaslAccept() {
@@ -1073,7 +1059,7 @@ public class EditAccountActivity extends OmemoActivity
 
     private void gotoChangePassword() {
         final Intent changePasswordIntent = new Intent(this, ChangePasswordActivity.class);
-        changePasswordIntent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toEscapedString());
+        changePasswordIntent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toString());
         startActivity(changePasswordIntent);
     }
 
@@ -1170,15 +1156,12 @@ public class EditAccountActivity extends OmemoActivity
         if (init) {
             this.binding.accountJid.getEditableText().clear();
             if (mUsernameMode) {
-                this.binding
-                        .accountJid
-                        .getEditableText()
-                        .append(this.mAccount.getJid().getEscapedLocal());
+                this.binding.accountJid.getEditableText().append(this.mAccount.getJid().getLocal());
             } else {
                 this.binding
                         .accountJid
                         .getEditableText()
-                        .append(this.mAccount.getJid().asBareJid().toEscapedString());
+                        .append(this.mAccount.getJid().asBareJid().toString());
             }
             this.binding.accountPassword.getEditableText().clear();
             this.binding.accountPassword.getEditableText().append(this.mAccount.getPassword());
@@ -1392,7 +1375,7 @@ public class EditAccountActivity extends OmemoActivity
             if (hasKeys
                     && Config.supportOmemo()) { // TODO: either the button should be visible if we
                 // print an active device or the device list should
-                // be fed with reactived devices
+                // be fed with reactivated devices
                 this.binding.otherDeviceKeysCard.setVisibility(View.VISIBLE);
                 Set<Integer> otherDevices = mAccount.getAxolotlService().getOwnDeviceIds();
                 if (otherDevices == null || otherDevices.isEmpty()) {
@@ -1408,12 +1391,17 @@ public class EditAccountActivity extends OmemoActivity
             }
         } else {
             final TextInputLayout errorLayout;
-            if (this.mAccount.errorStatus()) {
-                if (this.mAccount.getStatus() == Account.State.UNAUTHORIZED
-                        || this.mAccount.getStatus() == Account.State.DOWNGRADE_ATTACK) {
+            final var status = this.mAccount.getStatus();
+            if (status.isError()
+                    || Arrays.asList(
+                                    Account.State.NO_INTERNET,
+                                    Account.State.MISSING_INTERNET_PERMISSION)
+                            .contains(status)) {
+                if (status == Account.State.UNAUTHORIZED
+                        || status == Account.State.DOWNGRADE_ATTACK) {
                     errorLayout = this.binding.accountPasswordLayout;
                 } else if (mShowOptions
-                        && this.mAccount.getStatus() == Account.State.SERVER_NOT_FOUND
+                        && status == Account.State.SERVER_NOT_FOUND
                         && this.binding.hostname.getText().length() > 0) {
                     errorLayout = this.binding.hostnameLayout;
                 } else {

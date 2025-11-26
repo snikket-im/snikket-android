@@ -1,0 +1,2 @@
+* Kuuldav tagasiside (helistame, kõne algas, kõne lõppes) häälkõnede puhul.
+* Parandsime vea, mis tekkis ebaõnnestunud videokõne kordamisel

@@ -1,0 +1,3 @@
+* parandused failide edastamisel Jingle IBB abil
+* parandused, kus korduvad sõnumite muutmised ummistasid andmebaasi
+* võtsime kasutusele „Last Message Correction“ versiooni 1.1

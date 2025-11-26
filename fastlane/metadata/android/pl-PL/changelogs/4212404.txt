@@ -1,0 +1,2 @@
+* Pokazywanie przycisku rozmowy zawsze
+* Różne poprawki błędów

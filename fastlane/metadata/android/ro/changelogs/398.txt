@@ -1,0 +1,4 @@
+* Căutare în conversații individuale
+* Notifică utilizatorul dacă livrarea mesajului eșuează
+* Ține minte numele afișate (poreclele) de la utilizatorii Quicksy între reporniri
+* Adăugat buton pentru a porni Orbot (Tor) din notificare dacă este necesar

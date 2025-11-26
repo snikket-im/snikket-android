@@ -2,14 +2,8 @@ package eu.siacs.conversations;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-
-import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 public final class Config {
@@ -88,7 +82,6 @@ public final class Config {
     public static final int CONNECT_DISCO_TIMEOUT = 20;
     public static final int MINI_GRACE_PERIOD = 750;
 
-
     // media file formats. Homogenous Android or Conversations only deployments can switch to opus
     // and webp
     public static final int AVATAR_SIZE = 192;
@@ -101,7 +94,7 @@ public final class Config {
 
     public static final boolean USE_OPUS_VOICE_MESSAGES = false;
 
-    public static final int MESSAGE_MERGE_WINDOW = 20;
+    public static final int MESSAGE_MERGE_WINDOW = 90_000;
 
     public static final int PAGE_SIZE = 50;
     public static final int MAX_NUM_PAGES = 3;
@@ -151,8 +144,6 @@ public final class Config {
     public static final boolean IGNORE_ID_REWRITE_IN_MUC = true;
     public static final boolean MUC_LEAVE_BEFORE_JOIN = false;
 
-    public static final boolean USE_LMC_VERSION_1_1 = true;
-
     public static final long MAM_MAX_CATCHUP = MILLISECONDS_IN_DAY * 5;
     public static final int MAM_MAX_MESSAGES = 750;
 
@@ -190,22 +181,6 @@ public final class Config {
     public static final String[] WEAK_CIPHER_PATTERNS = {
         "_NULL_", "_EXPORT_", "_anon_", "_RC4_", "_DES_", "_MD5",
     };
-
-    public static class OMEMO_EXCEPTIONS {
-        // if the own account matches one of the following domains OMEMO won’t be turned on
-        // automatically
-        public static final List<String> ACCOUNT_DOMAINS = Collections.singletonList("s.ms");
-
-        // if the contacts domain matches one of the following domains OMEMO won’t be turned on
-        // automatically
-        // can be used for well known, widely used gateways
-        private static final List<String> CONTACT_DOMAINS =
-                Arrays.asList("cheogram.com", "*.covid.monal.im");
-
-        public static boolean matchesContactDomain(final String domain) {
-            return XmppDomainVerifier.matchDomain(domain, CONTACT_DOMAINS);
-        }
-    }
 
     private Config() {}
 

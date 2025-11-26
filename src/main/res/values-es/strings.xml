@@ -461,7 +461,7 @@
     <string name="download_failed_invalid_file">Error al descargar: Archivo no válido</string>
     <string name="account_status_tor_unavailable">La red Tor no está disponible</string>
     <string name="account_status_bind_failure">Fallo de enlace</string>
-    <string name="account_status_host_unknown">El servidor no es responsable de este dominio</string>
+    <string name="account_status_host_unknown">No responsable del dominio</string>
     <string name="server_info_broken">Error</string>
     <string name="pref_presence_settings">Disponibilidad</string>
     <string name="pref_away_when_screen_off">Ausente cuando el dispositivo esté bloqueado</string>
@@ -529,7 +529,7 @@
     <string name="this_field_is_required">Este campo es requerido</string>
     <string name="correct_message">Corregir mensaje</string>
     <string name="send_corrected_message">Enviar mensaje corregido</string>
-    <string name="no_keys_just_confirm">Ya has confiado la huella digital de esta persona. Al seleccionar “Listo” solo estás confirmando que %s es parte de este chat grupal.</string>
+    <string name="no_keys_just_confirm">Ya has confiado en la huella digital de esta persona. Al seleccionar “Hecho” solo estás confirmando que %s es parte de este chat grupal.</string>
     <string name="this_account_is_disabled">Has deshabilitado esta cuenta</string>
     <string name="security_error_invalid_file_access">Error de seguridad: ¡Acceso a archivo inválido!</string>
     <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
@@ -853,7 +853,7 @@
     <string name="unable_to_set_channel_configuration">No se ha podido guardar la configuración del canal</string>
     <string name="allow_participants_to_edit_subject">Permitir a cualquiera editar el asunto</string>
     <string name="allow_participants_to_invite_others">Permitir a cualquiera invitar a otros contactos</string>
-    <string name="anyone_can_edit_subject">Cualquiera puede editar el tema.</string>
+    <string name="anyone_can_edit_subject">Cualquiera puede editar el asunto.</string>
     <string name="owners_can_edit_subject">Los propietarios pueden editar el asunto.</string>
     <string name="admins_can_edit_subject">Los administradores pueden editar el asunto.</string>
     <string name="owners_can_invite_others">Los propietarios pueden invitar a otros contactos.</string>
@@ -993,6 +993,7 @@
     <string name="pref_up_push_account_summary">La cuenta a través de la cual se recibirán los mensajes push.</string>
     <string name="pref_up_push_server_title">Servidor push</string>
     <string name="no_account_deactivated">Ninguno (desactivado)</string>
+    <string name="unverified_devices">Estás utilizando dispositivos no verificados. Escanea el código QR de tus otros dispositivos para realizar la verificación e impedir ataques MITM activos.</string>
     <string name="contact_list_integration_not_available">La lista de contactos no está disponible</string>
     <string name="no_permission_to_place_call">Sin permiso para llamar por teléfono</string>
     <string name="rtp_state_contact_offline">Contacto no disponible</string>
@@ -1035,7 +1036,7 @@
     <string name="pref_title_trust_system_ca_store">Organismos de certificación</string>
     <string name="pref_title_trust_system_ca_store_summary">Confiar en los certificados CA del sistema</string>
     <string name="detect_mim">Requerir enlace al canal</string>
-    <string name="detect_mim_summary">La vinculación de canales puede detectar algunos ataques al intermediario</string>
+    <string name="detect_mim_summary">La vinculación de canales puede detectar algunos ataques de intermediario</string>
     <string name="pref_category_server_connection">Conexión al servidor</string>
     <string name="pref_category_operating_system">Sistema operativo</string>
     <string name="pref_category_on_this_device">En el dispositivo</string>
@@ -1079,8 +1080,25 @@
     <string name="call_is_using_speaker">La llamada está usando el altavoz.</string>
     <string name="call_is_using_bluetooth">La llamada está usando bluetooth.</string>
     <string name="video_is_disabled_tap_to_enable">Video desactivado. Toca para activar.</string>
-    <string name="server_info_login_mechanism">Apartado de inicio de sesión</string>
+    <string name="server_info_login_mechanism">Método de acceso</string>
     <string name="could_not_add_reaction">No se pudo agregar la reacción</string>
     <string name="add_reaction">Agregar reacción…</string>
     <string name="add_reaction_title">Agregar reacción</string>
+    <string name="clients_may_not_support_av">El cliente XMPP de tu contacto puede que no soporte llamadas de audio/video.</string>
+    <string name="could_not_modify_call">No se pudo modificar la llamada</string>
+    <string name="pref_chat_bubbles">Burbujas de chat</string>
+    <string name="pref_chat_bubbles_summary">Color, Tamaño de fuente, Imágenes de perfil</string>
+    <string name="pref_title_bubbles">Burbujas de Chat</string>
+    <string name="pref_call_integration">Integración de llamadas</string>
+    <string name="pref_show_avatars">Ver imágenes de perfil</string>
+    <string name="pref_show_avatars_summary">Mostrar imágenes de perfil para tus mensajes y conversaciones 1:1, aparte de las conversaciones en grupo.</string>
+    <string name="pref_call_integration_summary">Las llamadas desde esta app interactúan con las llamadas telefónicas regulares, como ser finalizar una llamada cuando recibimos otra.</string>
+    <string name="pref_align_start">Mensajes alineados a la izquierda</string>
+    <string name="pref_align_start_summary">Mostrar todos los mensajes, incluso los propios, sobre el margen izquierdo para una distribución uniforme del chat.</string>
+    <string name="custom_notifications">Notificaciones personalizadas</string>
+    <string name="custom_notifications_enable">¿Habilitar los ajustes de notificaciones personalizadas (importancia, sonido, vibración) para esta conversación?</string>
+    <string name="delete_avatar_message">¿Quieres eliminar tu imagen de perfil? Algunos clientes podrían seguir mostrando una copia en caché de tu avatar.</string>
+    <string name="show_to_contacts_only">Mostrar sólo a contactos</string>
+    <string name="account_status_connection_timeout">Se agotó el tiempo de espera de la conexión</string>
+    <string name="retry_with_p2p">Reintentar con P2P</string>
 </resources>

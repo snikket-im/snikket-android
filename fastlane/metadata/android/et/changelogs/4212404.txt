@@ -1,0 +1,2 @@
+* näitame alati kõne alustamise ikooni
+* erinevad veaparandused

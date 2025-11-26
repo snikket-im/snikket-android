@@ -1,0 +1,1 @@
+* Parandasime regressiooni, mis tekkis failide teisaldamisel P2P-ühenduse kaudu

@@ -27,7 +27,7 @@
     <string name="minutes_ago">%d minutos atrás</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d conversa não lida</item>
-        <item quantity="many">%d conversas não lidas</item>
+        <item quantity="many">%d de conversas não lidas</item>
         <item quantity="other">%d conversas não lidas</item>
     </plurals>
     <string name="sending">enviando…</string>
@@ -119,7 +119,7 @@
     <string name="pref_notification_sound_summary">Som de notificação para novas mensagens</string>
     <string name="pref_call_ringtone_summary">Toque para chamadas recebidas</string>
     <string name="pref_notification_grace_period">Período de espera</string>
-    <string name="pref_notification_grace_period_summary">Espaço de tempo em que as notificações serão silenciadas, após detectar atividade em algum dos seus outros dispositivos.</string>
+    <string name="pref_notification_grace_period_summary">Por quanto tempo os avisos serão silenciados, após detectar atividade em algum dos seus outros dispositivos.</string>
     <string name="pref_advanced_options">Avançado</string>
     <string name="pref_never_send_crash_summary">Ao enviar os stack traces você está colaborando com o desenvolvimento</string>
     <string name="pref_confirm_messages">Confirmação de mensagens</string>
@@ -269,7 +269,7 @@
     <string name="next">Próximo</string>
     <string name="server_info_session_established">Sessão estabelecida</string>
     <string name="skip">Pular</string>
-    <string name="disable_notifications">Desabilitar notificações</string>
+    <string name="disable_notifications">Desativar avisos</string>
     <string name="enable">Habilitar</string>
     <string name="conference_requires_password">Esta conversa em grupo exige uma senha</string>
     <string name="enter_password">Digite a senha</string>
@@ -289,7 +289,7 @@
     <string name="title_pref_quiet_hours_start_time">Início</string>
     <string name="title_pref_quiet_hours_end_time">Fim</string>
     <string name="title_pref_enable_quiet_hours">Habilitar horário de sossego</string>
-    <string name="pref_quiet_hours_summary">As notificações serão silenciadas no horário de sossego</string>
+    <string name="pref_quiet_hours_summary">Avisos serão silenciadas no horário de sossego</string>
     <string name="pref_expert_options_other">Outras</string>
     <string name="pref_autojoin">Sincronizar favoritos</string>
     <string name="pref_autojoin_summary">Define a flag \"autojoin\" ao entrar ou sair de uma sala e reage a modificações feitas por outros clientes.</string>
@@ -351,7 +351,7 @@
     <string name="no_application_found_to_view_contact">Não foi encontrado nenhum aplicativo para visualizar contatos</string>
     <string name="pref_show_dynamic_tags">Rótulos dinâmicos</string>
     <string name="pref_show_dynamic_tags_summary">Exibe rótulos de somente-leitura abaixo dos contatos</string>
-    <string name="enable_notifications">Habilitar notificações</string>
+    <string name="enable_notifications">Ativar avisos</string>
     <string name="no_conference_server_found">Nenhum servidor de conversas em grupo encontrado</string>
     <string name="conference_creation_failed">Não foi possível criar a conversa em grupo</string>
     <string name="account_image_description">Avatar da conta</string>
@@ -427,14 +427,14 @@
     <string name="contact_has_stopped_typing">%s parou de digitar</string>
     <string name="contacts_are_typing">%s estão digitando…</string>
     <string name="contacts_have_stopped_typing">%s pararam de digitar</string>
-    <string name="pref_chat_states">Notificações de digitação</string>
+    <string name="pref_chat_states">Aviso de digitação</string>
     <string name="pref_chat_states_summary">Permita que os seus contatos saibam quando você está escrevendo mensagens para eles</string>
     <string name="send_location">Enviar localização</string>
     <string name="show_location">Exibir localização</string>
     <string name="no_application_found_to_display_location">Não foi encontrado nenhum aplicativo para exibir a localização</string>
     <string name="location">Localização</string>
     <string name="title_undo_swipe_out_group_chat">Sair da conversa em grupo privada</string>
-    <string name="title_undo_swipe_out_channel">Deixar o canal público</string>
+    <string name="title_undo_swipe_out_channel">Saiu do canal público</string>
     <string name="pref_dont_trust_system_cas_title">Não confiar nas CAs do sistema</string>
     <string name="pref_dont_trust_system_cas_summary">Todos os certificados devem ser aprovados manualmente</string>
     <string name="pref_remove_trusted_certificates_title">Remover certificados</string>
@@ -444,7 +444,7 @@
     <string name="dialog_manage_certs_positivebutton">Excluir a seleção</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificado cancelado</item>
-        <item quantity="many">%d certificados cancelados</item>
+        <item quantity="many">%d de certificados cancelados</item>
         <item quantity="other">%d certificados cancelados</item>
     </plurals>
     <string name="pref_quick_action_summary">Troca o botão \"Enviar\" pelo de ação rápida</string>
@@ -465,7 +465,7 @@
     <string name="download_failed_invalid_file">Falha no download: arquivo inválido</string>
     <string name="account_status_tor_unavailable">Rede Tor não disponível</string>
     <string name="account_status_bind_failure">Falha na associação</string>
-    <string name="account_status_host_unknown">O servidor não responde por esse domínio</string>
+    <string name="account_status_host_unknown">Não é responsável por este domínio</string>
     <string name="server_info_broken">Quebrado</string>
     <string name="pref_presence_settings">Disponibilidade</string>
     <string name="pref_away_when_screen_off">\"Afastado\" quando o dispositivo estiver travado</string>
@@ -502,7 +502,7 @@
     <string name="connected_accounts">%1$d de %2$d contas conectadas</string>
     <plurals name="x_messages">
         <item quantity="one">%d mensagem</item>
-        <item quantity="many">%d mensagens</item>
+        <item quantity="many">%d de mensagens</item>
         <item quantity="other">%d mensagens</item>
     </plurals>
     <string name="load_more_messages">Carregar mais mensagens</string>
@@ -518,17 +518,15 @@
 \nNenhum dado da sua lista de contato sai do seu dispositivo!</string>
     <string name="notify_on_all_messages">Notificar em todas as mensagens</string>
     <string name="notify_only_when_highlighted">Notificar somente quando for mencionado</string>
-    <string name="notify_never">Notificações desabilitadas</string>
-    <string name="notify_paused">Notificações pausadas</string>
+    <string name="notify_never">Avisos desativados</string>
+    <string name="notify_paused">Avisos pausados</string>
     <string name="pref_picture_compression">Compressão de imagem</string>
     <string name="pref_picture_compression_summary">Dica: Use \'Selecionar o arquivo\' ao invés de \'Selecionar a imagem\' para enviar uma cópia da imagem original, sem redução de qualidade.</string>
     <string name="always">Sempre</string>
     <string name="large_images_only">Apenas imagens grandes</string>
     <string name="battery_optimizations_enabled">Otimizações de bateria habilitadas</string>
-    <string name="battery_optimizations_enabled_explained">O seu dispositivo está empregando uma otimização intensa de bateria para o %1$s, o que pode levar a atrasos nas notificações ou mesmo perda de mensagens.\nÉ recomendável desabilitar essa otimização.</string>
-    <string name="battery_optimizations_enabled_dialog">O seu dispositivo está empregando uma otimização intensa de bateria para o %1$s, o que pode levar a atrasos nas notificações ou mesmo perda de mensagens.
-\n
-\nVocê será pedido agora para desabilitar essa otimização.</string>
+    <string name="battery_optimizations_enabled_explained">O seu dispositivo está usando uma otimização intensa de bateria para o %1$s, o que pode atrasar avisos ou mesmo perder de mensagens.\nÉ recomendável desativar essa otimização.</string>
+    <string name="battery_optimizations_enabled_dialog">O seu dispositivo está usando uma otimização intensa de bateria para o %1$s, o que pode levar a atrasos nos avisos ou mesmo perda de mensagens.\n\nVocê será pedido agora para desativar essa otimização.</string>
     <string name="disable">Desabilitar</string>
     <string name="selection_too_large">A área selecionada é muito grande</string>
     <string name="no_accounts">(Nenhuma conta ativa)</string>
@@ -598,7 +596,7 @@
     <string name="show_error_message">Exibir a mensagem de erro</string>
     <string name="error_message">Mensagem de erro</string>
     <string name="data_saver_enabled">Economia de dados habilitada</string>
-    <string name="data_saver_enabled_explained">O seu sistema operacional está restringindo o acesso à internet ao %1$s, quando ele está em segundo plano. Para receber notificações de novas mensagens você deve permitir que o %1$s tenha acesso irrestrito quando a economia de dados estiver ativada.\nO %1$s fará um esforço para economizar dados sempre que possível.</string>
+    <string name="data_saver_enabled_explained">O seu sistema operacional está limitando o acesso à internet ao %1$s, quando ele está em segundo plano. Para receber avisos de novas mensagens você deve permitir que o %1$s tenha acesso irrestrito quando a economia de dados estiver ativada.\nO %1$s se um esforçará para economizar dados sempre que possível.</string>
     <string name="device_does_not_support_data_saver">O seu dispositivo não permite que a economia de dados seja desativada para o %1$s.</string>
     <string name="error_unable_to_create_temporary_file">Não foi possível criar o arquivo temporário</string>
     <string name="this_device_has_been_verified">Este dispositivo foi verificado</string>
@@ -608,8 +606,8 @@
     <string name="use_camera_icon_to_scan_barcode">Use a câmera para capturar o código de barras de um contato</string>
     <string name="please_wait_for_keys_to_be_fetched">Por favor, aguarde a obtenção das chaves</string>
     <string name="share_as_barcode">Compartilhar como código de barras</string>
-    <string name="share_as_uri">Compartilhar como uma URI XMPP</string>
-    <string name="share_as_http">Compartilhar como um link HTTP</string>
+    <string name="share_as_uri">Compartilhar como URI XMPP</string>
+    <string name="share_as_http">Compartilhar como link HTTP</string>
     <string name="pref_blind_trust_before_verification">Confiar cegamente antes de verificar</string>
     <string name="pref_blind_trust_before_verification_summary">Confiar em novos dispositivos de contatos não verificados, mas solicitar confirmação manual de novos dispositivos para contatos verificados.</string>
     <string name="blindly_trusted_omemo_keys">Chaves OMEMO confiadas cegamente, o que significa que poderiam ser outras pessoas ou alguém poderia tê-las aproveitado.</string>
@@ -630,32 +628,32 @@
     <string name="distrust_omemo_key_text">Tem certeza que deseja remover a verificação para este dispositivo?\nEste dispositivo e as mensagens oriundas dele serão marcadas como \"não confiáveis\".</string>
     <plurals name="seconds">
         <item quantity="one">%d segundo</item>
-        <item quantity="many">%d segundos</item>
+        <item quantity="many">%d de segundos</item>
         <item quantity="other">%d segundos</item>
     </plurals>
     <plurals name="minutes">
         <item quantity="one">%d minuto</item>
-        <item quantity="many">%d minutos</item>
+        <item quantity="many">%d de minutos</item>
         <item quantity="other">%d minutos</item>
     </plurals>
     <plurals name="hours">
         <item quantity="one">%d hora</item>
-        <item quantity="many">%d horas</item>
+        <item quantity="many">%d de horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
     <plurals name="days">
         <item quantity="one">%d dia</item>
-        <item quantity="many">%d dias</item>
+        <item quantity="many">%d de dias</item>
         <item quantity="other">%d dias</item>
     </plurals>
     <plurals name="weeks">
         <item quantity="one">%d semana</item>
-        <item quantity="many">%d semanas</item>
+        <item quantity="many">%d de semanas</item>
         <item quantity="other">%d semanas</item>
     </plurals>
     <plurals name="months">
         <item quantity="one">%d mês</item>
-        <item quantity="many">%d meses</item>
+        <item quantity="many">%d de meses</item>
         <item quantity="other">%d meses</item>
     </plurals>
     <string name="pref_automatically_delete_messages">Exclusão automática de mensagens</string>
@@ -664,7 +662,7 @@
     <string name="not_fetching_history_retention_period">As mensagens não estão sendo obtidas devido ao período de retenção local.</string>
     <string name="transcoding_video">Comprimindo vídeo</string>
     <string name="contact_blocked_past_tense">O contato foi bloqueado.</string>
-    <string name="pref_notifications_from_strangers">Notificações de desconhecidos</string>
+    <string name="pref_notifications_from_strangers">Avisos de desconhecidos</string>
     <string name="pref_notifications_from_strangers_summary">Notificar ao receber mensagens e chamadas de desconhecidos.</string>
     <string name="received_message_from_stranger">Foi recebida uma mensagem de um desconhecido</string>
     <string name="block_stranger">Bloquear os desconhecidos</string>
@@ -676,8 +674,8 @@
     <string name="account_status_regis_web">O servidor exige um registro no site web</string>
     <string name="open_website">Abrir site web</string>
     <string name="application_found_to_open_website">Não foi encontrado nenhum aplicativo para abrir o site web</string>
-    <string name="pref_headsup_notifications">Notificações Heads-up</string>
-    <string name="pref_headsup_notifications_summary">Exibe as notificações Heads-up</string>
+    <string name="pref_headsup_notifications">Avisos emergentes</string>
+    <string name="pref_headsup_notifications_summary">Exibir avisos emergentes</string>
     <string name="today">Hoje</string>
     <string name="yesterday">Ontem</string>
     <string name="pref_validate_hostname">Validar o nome do host com o DNSSEC</string>
@@ -764,10 +762,10 @@
     <string name="ongoing_calls_channel_name">Chamadas em andamento</string>
     <string name="missed_calls_channel_name">Chamadas perdidas</string>
     <string name="silent_messages_channel_name">Silenciar mensagens</string>
-    <string name="silent_messages_channel_description">Essa categoria de notificação é utilizada para exibir notificações que não deveriam gerar nenhum som. Por exemplo, quando estiver ativo em outro dispositivo (Período de Espera).</string>
+    <string name="silent_messages_channel_description">Essa categoria de aviso é utilizada para exibir avisos que não deveriam gerar nenhum som. Por exemplo, quando estiver ativo em outro dispositivo (Período de Espera).</string>
     <string name="delivery_failed_channel_name">Entregas não efetuadas</string>
-    <string name="pref_message_notification_settings">Configurações das notificações de mensagens</string>
-    <string name="pref_incoming_call_notification_settings">configurações das notificações de chamadas recebidas</string>
+    <string name="pref_message_notification_settings">Configurações dos avisos de mensagens</string>
+    <string name="pref_incoming_call_notification_settings">configurações dos avisos de chamadas recebidas</string>
     <string name="pref_more_notification_settings_summary">Importância, Som, Vibrar</string>
     <string name="video_compression_channel_name">Compressão de vídeo</string>
     <string name="view_media">Ver mídia</string>
@@ -930,18 +928,18 @@
     <string name="outgoing_call">Chamada realizada</string>
     <string name="missed_call">Chamada perdida</string>
     <plurals name="n_missed_calls_from_x">
-        <item quantity="one">%1$d chamada perdida para %2$s</item>
-        <item quantity="many">%1$d chamadas perdidas para %2$s</item>
-        <item quantity="other">%1$d chamadas perdidas para %2$s</item>
+        <item quantity="one">%1$d chamada perdida de %2$s</item>
+        <item quantity="many">%1$d de chamadas perdidas de %2$s</item>
+        <item quantity="other">%1$d chamadas perdidas de %2$s</item>
     </plurals>
     <plurals name="n_missed_calls">
         <item quantity="one">%d chamada perdida</item>
-        <item quantity="many">%d chamadas perdidas</item>
+        <item quantity="many">%d de chamadas perdidas</item>
         <item quantity="other">%d chamadas perdidas</item>
     </plurals>
     <plurals name="n_missed_calls_from_m_contacts">
         <item quantity="one">%1$d chamadas perdidas de %2$d contato</item>
-        <item quantity="many">%1$d chamadas perdidas de %2$d contatos</item>
+        <item quantity="many">%1$d de chamadas perdidas de %2$d contatos</item>
         <item quantity="other">%1$d chamadas perdidas de %2$d contatos</item>
     </plurals>
     <string name="audio_call">Chamada de áudio</string>
@@ -969,7 +967,7 @@
     <string name="add_contact_or_create_or_join_group_chat">Adicionar contato, criar ou associar-se a uma conversa em grupo ou descobrir canais</string>
     <plurals name="view_users">
         <item quantity="one">Ver %1$d participante</item>
-        <item quantity="many">Ver %1$d participantes</item>
+        <item quantity="many">Ver %1$d de participantes</item>
         <item quantity="other">Ver %1$d participantes</item>
     </plurals>
     <plurals name="some_messages_could_not_be_delivered">
@@ -1013,7 +1011,7 @@
     <string name="pref_summary_appearance">Tema, Cores, Capturas de tela, Entrada</string>
     <string name="pref_title_security">Segurança</string>
     <string name="pref_summary_security">Criptografia de ponta-a-ponta, confiança cega antes da verificação, detecção de MITM</string>
-    <string name="notifications">Notificações</string>
+    <string name="notifications">Avisos</string>
     <string name="pref_attachments_summary">Tamanho do arquivo, Compressão de imagem, Qualidade de vídeo</string>
     <string name="pref_title_trust_system_ca_store_summary">Confiar nos certificados CA do sistema</string>
     <string name="privacy_policy">Política de privacidade</string>
@@ -1038,7 +1036,7 @@
     <string name="decline">Rejeitar</string>
     <string name="delete_from_server">Remover conta do servidor</string>
     <string name="could_not_delete_account_from_server">Não pôde excluir conta do servidor</string>
-    <string name="unified_push_summary">Transmissor de notificações para apps de terceiros compatíveis com o UnifiedPush</string>
+    <string name="unified_push_summary">Transmissor de aviso para apps de terceiros compatíveis com o UnifiedPush</string>
     <string name="pref_category_e2ee">Criptografia de ponta-a-ponta</string>
     <string name="pref_title_trust_system_ca_store">Autoridades de certificação</string>
     <string name="hide_notification">Esconder notificação</string>
@@ -1088,7 +1086,7 @@
     <string name="pref_category_on_this_device">No dispositivo</string>
     <string name="pref_backup_recurring">Backup recorrente</string>
     <string name="pref_fullscreen_notification">Notificações em tela cheia</string>
-    <string name="pref_fullscreen_notification_summary">Permitir que este app mostre notificações para chamadas recebidas que utilizam a tela inteira quando o dispositivo está bloqueado.</string>
+    <string name="pref_fullscreen_notification_summary">Permitir que este app mostre avisos para chamadas recebidas que utilizam a tela cheia quando o dispositivo está bloqueado.</string>
     <string name="edit_nick">Editar nome de usuário</string>
     <string name="delete_pgp_key">Excluir chave OpenPGP</string>
     <string name="edit_name_and_topic">Editar nome e tópico</string>
@@ -1103,14 +1101,32 @@
     <string name="pref_allow_screenshots_summary">Mostrar o conteúdo do app no alternador de apps e permitir que a tela seja capturada</string>
     <string name="detect_mim">Exigir vínculo do canal</string>
     <string name="detect_mim_summary">A vinculação de canal pode detectar alguns ataques de máquina-no-meio</string>
-    <string name="pref_privacy_summary">Notificações de digitação, Visto por Último, Disponibilidade</string>
+    <string name="pref_privacy_summary">Avisos de digitação, Visto por Último, Disponibilidade</string>
     <string name="pref_connection_summary">Nome do host e porta, Tor</string>
     <string name="pref_connection_summary_w_cd">Nome do host e porta, Tor, Descoberta de Canais</string>
     <string name="pref_keyboard_options">Teclado</string>
-    <string name="pref_category_engagement_notifications">Notificações de engajamento</string>
+    <string name="pref_category_engagement_notifications">Avisos de engajamento</string>
     <string name="pref_category_application">Aplicação</string>
     <string name="could_not_add_reaction">Não pôde adicionar reação</string>
     <string name="add_reaction">Adicionar reação…</string>
     <string name="add_reaction_title">Adicionar reação</string>
     <string name="more_reactions">Mais reações</string>
+    <string name="could_not_modify_call">Não foi possível modificar a chamada</string>
+    <string name="clients_may_not_support_av">O cliente XMPP do seu contato não suporta chamadas de áudio ou vídeo.</string>
+    <string name="pref_show_avatars">Mostrar avatares</string>
+    <string name="pref_show_avatars_summary">Mostrar avatares para suas mensagens e em chats 1:1, em adição à chats em grupo.</string>
+    <string name="pref_chat_bubbles">Bolhas de conversa</string>
+    <string name="pref_chat_bubbles_summary">Cor do fundo, Tamanho da fonte, Avatares</string>
+    <string name="pref_title_bubbles">Bolhas de Conversa</string>
+    <string name="pref_align_start">Mensagens alinhadas à esquerda</string>
+    <string name="custom_notifications">Notificações customizadas</string>
+    <string name="pref_align_start_summary">Mostrar todas as mensagens, incluindo as enviadas por você, no lado esquerdo, para um layout de conversa uniforme.</string>
+    <string name="custom_notifications_enable">Ativar as configurações de notificações customizadas (importância, som, vibração) para esta conversa?</string>
+    <string name="pref_call_integration">Integração de chamadas</string>
+    <string name="pref_call_integration_summary">Chamadas deste app interagem com as chamadas comuns do sistema, como quando uma chamada é terminada quando outra começa.</string>
+    <string name="show_to_contacts_only">Mostrar somente para contatos</string>
+    <string name="delete_avatar_message">Você gostaria de excluir seu avatar? Alguns clientes podem continuar mostrando uma cópia em cache do seu avatar.</string>
+    <string name="account_status_connection_timeout">Conexão demorou muito</string>
+    <string name="retry_with_p2p">Tentar novamente com P2P</string>
+    <string name="account_status_channel_binding">Vínculo de canal indisponível</string>
 </resources>

@@ -1,10 +1,8 @@
 package eu.siacs.conversations.xmpp.jingle.transports;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
@@ -22,7 +20,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.SocksSocketFactory;
 import eu.siacs.conversations.xml.Element;
@@ -33,7 +30,6 @@ import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.DirectConnectionUtils;
 import eu.siacs.conversations.xmpp.jingle.stanzas.SocksByteStreamsTransportInfo;
 import im.conversations.android.xmpp.model.stanza.Iq;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -104,8 +100,8 @@ public class SocksByteStreamsTransport implements Transport {
                                         .join(
                                                 Arrays.asList(
                                                         streamId,
-                                                        id.with.toEscapedString(),
-                                                        id.account.getJid().toEscapedString())),
+                                                        id.with.toString(),
+                                                        id.account.getJid().toString())),
                                 StandardCharsets.UTF_8)
                         .toString();
         final var ourDestination =
@@ -115,8 +111,8 @@ public class SocksByteStreamsTransport implements Transport {
                                         .join(
                                                 Arrays.asList(
                                                         streamId,
-                                                        id.account.getJid().toEscapedString(),
-                                                        id.with.toEscapedString())),
+                                                        id.account.getJid().toString(),
+                                                        id.with.toString())),
                                 StandardCharsets.UTF_8)
                         .toString();
 
@@ -255,7 +251,7 @@ public class SocksByteStreamsTransport implements Transport {
         final Element query = proxyActivation.addChild("query", Namespace.BYTE_STREAMS);
         query.setAttribute("sid", this.streamId);
         final Element activate = query.addChild("activate");
-        activate.setContent(id.with.toEscapedString());
+        activate.setContent(id.with.toString());
         xmppConnection.sendIqPacket(
                 proxyActivation,
                 (response) -> {
@@ -731,10 +727,12 @@ public class SocksByteStreamsTransport implements Transport {
                         && selectedByThemCandidatePriority > candidate.priority) {
                     Log.d(
                             Config.LOGTAG,
-                            "The candidate selected by peer had a higher priority then anything we could try");
+                            "The candidate selected by peer had a higher priority then anything we"
+                                    + " could try");
                     connectionFuture.setException(
                             new CandidateErrorException(
-                                    "The candidate selected by peer had a higher priority then anything we could try"));
+                                    "The candidate selected by peer had a higher priority then"
+                                            + " anything we could try"));
                     return;
                 }
                 try {
@@ -864,7 +862,7 @@ public class SocksByteStreamsTransport implements Transport {
             return new Candidate(
                     cid,
                     host,
-                    Jid.ofEscaped(jid),
+                    Jid.of(jid),
                     Integer.parseInt(port),
                     Integer.parseInt(priority),
                     CandidateType.valueOf(type.toUpperCase(Locale.ROOT)));

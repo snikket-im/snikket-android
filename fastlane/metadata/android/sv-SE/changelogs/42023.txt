@@ -1,0 +1,2 @@
+* Fixade krasch vid rendering av några citat
+* Fixade krasch i välkomstskärmen

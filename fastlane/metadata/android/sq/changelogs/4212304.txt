@@ -1,0 +1,2 @@
+* Ndreqje thirrjesh në Android 15
+* Ndreqje vithisjeje / prapakthimi të rrallë, sjellë me 2.17.0

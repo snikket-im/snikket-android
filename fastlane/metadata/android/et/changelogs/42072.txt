@@ -1,0 +1,3 @@
+* libwebrtc teek sõltub nüüd versioonist M117 ja uuendasime libvpx teeki
+* Häälsõnumid kasutavad jälle AAC koodekit
+* Rakendustekohaste keeleeelistuste tugi

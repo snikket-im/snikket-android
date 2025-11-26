@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <bool name="show_avatar_incoming_call">false</bool>
+    <bool name="is_portrait_mode">false</bool>
 </resources>

@@ -11,13 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-
 import com.google.android.material.color.MaterialColors;
 import com.google.common.base.Strings;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityEasyInviteBinding;
@@ -153,7 +150,7 @@ public class EasyOnboardingInviteActivity extends XmppActivity
         }
         final Intent launchIntent = getIntent();
         final String accountExtra = launchIntent.getStringExtra(EXTRA_ACCOUNT);
-        final Jid jid = accountExtra == null ? null : Jid.ofEscaped(accountExtra);
+        final Jid jid = accountExtra == null ? null : Jid.of(accountExtra);
         if (jid == null) {
             return;
         }
@@ -163,7 +160,7 @@ public class EasyOnboardingInviteActivity extends XmppActivity
 
     public static void launch(final Account account, final Activity context) {
         final Intent intent = new Intent(context, EasyOnboardingInviteActivity.class);
-        intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
+        intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
         context.startActivity(intent);
     }
 

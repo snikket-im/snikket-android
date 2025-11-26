@@ -1,0 +1,3 @@
+* Leichterer Zugang zu benutzerdefinierten Benachrichtigungstönen über Kontaktdetails > weiteres Menü > Benutzerdefinierte Benachrichtigungen
+* Direkte Freigabeziele auf neuen Android-Versionen korrigiert
+* Möglichkeit, die Sichtbarkeit von Profilbildern auf Kontakte zu beschränken

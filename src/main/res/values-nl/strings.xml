@@ -63,7 +63,7 @@
     <string name="save">Opslaan</string>
     <string name="ok">Oké</string>
     <string name="crash_report_title">%1$s is gecrasht</string>
-    <string name="crash_report_message">Door crashrapportages via uw XMPP account te sturen help je de ontwikkeling van %1$s.</string>
+    <string name="crash_report_message">Door crashrapportages via jouw XMPP-account te sturen help je de ontwikkeling van %1$s.</string>
     <string name="send_now">Nu versturen</string>
     <string name="send_never">Niet opnieuw vragen</string>
     <string name="problem_connecting_to_account">Verbinding met account mislukt</string>
@@ -822,7 +822,7 @@
     <string name="title_activity_share_with">Delen met…</string>
     <string name="archive_this_chat">Chat daarna verwijderen</string>
     <string name="remove_bookmark">Wil je de bladwijzer voor %s verwijderen?</string>
-    <string name="openkeychain_required_long">%1$s gebruikt &lt;b&gt;OpenKeychain&lt;/b&gt; om berichten te versleutelen en te decoderen en het beheer van je openbare sleutels. &lt;br&gt;&lt; br&gt;Het is gelicentieerd onder GPLv3+ en beschikbaar op F-Droid en Google Play&lt;br&gt;&lt;br&gt;&lt;small&gt;(Start %1$s hierna opnieuw.)&lt;/small&gt;</string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s gebruikt <b>OpenKeychain</b> om berichten te versleutelen en te decoderen en het beheer van je openbare sleutels. <br>< br>Het is gelicentieerd onder GPLv3+ en beschikbaar op F-Droid en Google Play<br><br><small>(Start %1$s hierna opnieuw.)</small>]]></string>
     <string name="contact_has_no_pgp_key">Kan het bericht niet versleutelen omdat de contactpersoon hun openbare sleutel niet aankondigt.
 \n
 \n<small>Vraag de contactpersoon om OpenPGP in te stellen. </small></string>
@@ -893,7 +893,7 @@
     <string name="pref_enter_is_send_summary">Gebruik de Enter-toets om een bericht te verzenden. Je kunt altijd Ctrl + Enter gebruiken om een bericht te verzenden, zelfs als deze optie is uitgeschakeld.</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Bezet melden als het apparaat op trillen staat</string>
     <string name="clear_other_devices_desc">Weet je zeker dat je alle andere apparaten uit de OMEMO-aankondiging wilt verwijderen? De volgende keer dat je apparaten verbinding maken, zullen ze zichzelf opnieuw aankondigen, maar ontvangen ze mogelijk geen berichten die ondertussen zijn verzonden.</string>
-    <string name="account_status_host_unknown">De server is niet verantwoordelijk voor dit domein</string>
+    <string name="account_status_host_unknown">Niet verantwoordelijk voor domein</string>
     <string name="title_undo_swipe_out_chat">Chat gearchiveerd</string>
     <string name="no_permission_to_place_call">Geen toestemming om te bellen</string>
     <string name="no_keys_just_confirm">Je hebt de vingerafdruk van deze persoon al vertrouwd. Door \"Gereed\" te selecteren, bevestig je alleen dat %s deel uitmaakt van deze groepschat.</string>
@@ -1022,7 +1022,7 @@
     <string name="server_does_not_support_easy_onboarding_invites">Server biedt geen ondersteuning voor het aanmaken van uitnodigingen</string>
     <string name="outdated_backup_file_format">Je probeert een verouderd back-upbestandsformaat te importeren</string>
     <string name="sharing_application_not_grant_permission">De app voor delen heeft geen toestemming gegeven voor toegang tot dit bestand.</string>
-    <string name="group_chats_and_channels">Groepschats en kanalen</string>
+    <string name="group_chats_and_channels"><![CDATA[Groepschats en kanalen]]></string>
     <string name="jabber_network">jabber.network</string>
     <string name="pref_channel_discovery">Channel discovery-methode</string>
     <string name="rtp_state_incoming_call">Inkomende oproep</string>
@@ -1109,4 +1109,22 @@
     <string name="could_not_add_reaction">Kan reactie niet toevoegen</string>
     <string name="add_reaction_title">Reactie toevoegen</string>
     <string name="more_reactions">Meer reacties</string>
+    <string name="could_not_modify_call">Kan de aanroep niet wijzigen</string>
+    <string name="clients_may_not_support_av">De XMPP-client van je contactpersoon ondersteunt mogelijk geen audio-/videogesprekken.</string>
+    <string name="pref_chat_bubbles">Chat-bubbels</string>
+    <string name="pref_chat_bubbles_summary">Achtergrondkleur, Lettergrootte, Avatars</string>
+    <string name="pref_title_bubbles">Chat-bubbels</string>
+    <string name="pref_show_avatars_summary">Avatars weergeven in jouw berichten en in 1:1-chats, naast groepschats.</string>
+    <string name="pref_show_avatars">Avatars weergeven</string>
+    <string name="pref_call_integration">Integratie van gesprekken</string>
+    <string name="pref_align_start">Links uitgelijnde berichten</string>
+    <string name="pref_align_start_summary">Toon alle berichten, inclusief verzonden berichten, aan de linkerkant voor een uniforme chatlay-out.</string>
+    <string name="custom_notifications">Aangepaste meldingen</string>
+    <string name="custom_notifications_enable">Aangepaste meldingsinstellingen (belangrijkheid, geluid, trillingen) inschakelen voor dit gesprek?</string>
+    <string name="pref_call_integration_summary">Oproepen van deze app werken samen met gewone telefoongesprekken, zoals het beëindigen van een gesprek wanneer een ander begint.</string>
+    <string name="show_to_contacts_only">Alleen weergeven aan contacten</string>
+    <string name="delete_avatar_message">Wil je je avatar verwijderen? Sommige clients kunnen nog steeds een kopie van jouw avatar in de cache weergeven.</string>
+    <string name="account_status_connection_timeout">Time-out voor verbinding</string>
+    <string name="retry_with_p2p">Opnieuw proberen met P2P</string>
+    <string name="account_status_channel_binding">Kanaalbinding onbeschikbaar</string>
 </resources>

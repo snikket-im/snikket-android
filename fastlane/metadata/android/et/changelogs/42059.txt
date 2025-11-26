@@ -1,0 +1,2 @@
+* Kompileerime jälle arvestades Androidi SDK versiooni 33
+* Parandasime vead serveritega, mis ilmnesid SASL2 kasutamisel ilma lõimitud meediavoo halduseta (inline Stream Management)

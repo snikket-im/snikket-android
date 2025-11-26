@@ -8,8 +8,8 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:paddingStart="8dp"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/account_image"
@@ -23,19 +23,19 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/account_image"
-            android:orientation="vertical"
             android:layout_marginStart="@dimen/avatar_item_distance"
-            android:layout_toStartOf="@+id/tgl_account_status">
+            android:layout_toStartOf="@+id/tgl_account_status"
+            android:layout_toEndOf="@+id/account_image"
+            android:orientation="vertical">
 
             <TextView
-                tools:text="juliet@example.com"
                 android:id="@+id/account_jid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scrollHorizontally="false"
                 android:singleLine="true"
-                android:textAppearance="?textAppearanceBodyLarge" />
+                android:textAppearance="?textAppearanceBodyLarge"
+                tools:text="juliet@example.com" />
 
             <TextView
                 android:id="@+id/account_status"
@@ -45,14 +45,14 @@
                 android:textAppearance="?textAppearanceBodyMedium" />
         </LinearLayout>
 
-        <androidx.appcompat.widget.SwitchCompat
+        <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/tgl_account_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:padding="16dp"
-            android:focusable="false" />
+            android:focusable="false"
+            android:padding="16dp" />
 
     </RelativeLayout>
 </layout>

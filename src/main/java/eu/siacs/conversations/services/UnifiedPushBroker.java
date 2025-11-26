@@ -10,10 +10,8 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
@@ -22,7 +20,6 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -34,7 +31,6 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Presence;
-
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
@@ -92,7 +88,8 @@ public class UnifiedPushBroker {
         renewUnifiedPushEndpoints(null);
     }
 
-    public Optional<Transport> renewUnifiedPushEndpoints(@Nullable final PushTargetMessenger pushTargetMessenger) {
+    public Optional<Transport> renewUnifiedPushEndpoints(
+            @Nullable final PushTargetMessenger pushTargetMessenger) {
         final Optional<Transport> transportOptional = getTransport();
         if (transportOptional.isPresent()) {
             final Transport transport = transportOptional.get();
@@ -100,13 +97,13 @@ public class UnifiedPushBroker {
                 renewUnifiedEndpoint(transportOptional.get(), pushTargetMessenger);
             } else {
                 if (pushTargetMessenger != null && pushTargetMessenger.messenger != null) {
-                    sendRegistrationDelayed(pushTargetMessenger.messenger,"account is disabled");
+                    sendRegistrationDelayed(pushTargetMessenger.messenger, "account is disabled");
                 }
                 Log.d(Config.LOGTAG, "skipping UnifiedPush endpoint renewal. Account is disabled");
             }
         } else {
             if (pushTargetMessenger != null && pushTargetMessenger.messenger != null) {
-                sendRegistrationDelayed(pushTargetMessenger.messenger,"no transport selected");
+                sendRegistrationDelayed(pushTargetMessenger.messenger, "no transport selected");
             }
             Log.d(Config.LOGTAG, "skipping UnifiedPush endpoint renewal. No transport selected");
         }
@@ -121,16 +118,16 @@ public class UnifiedPushBroker {
         try {
             messenger.send(message);
         } catch (final RemoteException e) {
-            Log.d(Config.LOGTAG,"unable to tell messenger of delayed registration",e);
+            Log.d(Config.LOGTAG, "unable to tell messenger of delayed registration", e);
         }
     }
 
-    private void renewUnifiedEndpoint(final Transport transport, final PushTargetMessenger pushTargetMessenger) {
+    private void renewUnifiedEndpoint(
+            final Transport transport, final PushTargetMessenger pushTargetMessenger) {
         final Account account = transport.account;
         final UnifiedPushDatabase unifiedPushDatabase = UnifiedPushDatabase.getInstance(service);
         final List<UnifiedPushDatabase.PushTarget> renewals =
-                unifiedPushDatabase.getRenewals(
-                        account.getUuid(), transport.transport.toEscapedString());
+                unifiedPushDatabase.getRenewals(account.getUuid(), transport.transport.toString());
         Log.d(
                 Config.LOGTAG,
                 account.getJid().asBareJid()
@@ -142,7 +139,11 @@ public class UnifiedPushBroker {
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid() + ": try to renew UnifiedPush " + renewal);
-            UnifiedPushDistributor.quickLog(service,String.format("%s: try to renew UnifiedPush %s", account.getJid(), renewal.toString()));
+            UnifiedPushDistributor.quickLog(
+                    service,
+                    String.format(
+                            "%s: try to renew UnifiedPush %s",
+                            account.getJid(), renewal.toString()));
             final String hashedApplication =
                     UnifiedPushDistributor.hash(account.getUuid(), renewal.application);
             final String hashedInstance =
@@ -205,7 +206,7 @@ public class UnifiedPushBroker {
                 unifiedPushDatabase.updateEndpoint(
                         renewal.instance,
                         transport.account.getUuid(),
-                        transport.transport.toEscapedString(),
+                        transport.transport.toString(),
                         endpoint,
                         expiration);
         if (modified) {
@@ -231,15 +232,21 @@ public class UnifiedPushBroker {
         }
     }
 
-    private void sendEndpoint(final Messenger messenger, String instance, final UnifiedPushDatabase.ApplicationEndpoint applicationEndpoint) {
+    private void sendEndpoint(
+            final Messenger messenger,
+            String instance,
+            final UnifiedPushDatabase.ApplicationEndpoint applicationEndpoint) {
         if (messenger != null) {
-            Log.d(Config.LOGTAG,"using messenger instead of broadcast to communicate endpoint to "+applicationEndpoint.application);
+            Log.d(
+                    Config.LOGTAG,
+                    "using messenger instead of broadcast to communicate endpoint to "
+                            + applicationEndpoint.application);
             final Message message = new Message();
             message.obj = endpointIntent(instance, applicationEndpoint);
             try {
                 messenger.send(message);
             } catch (final RemoteException e) {
-                Log.d(Config.LOGTAG,"messenger failed. falling back to broadcast");
+                Log.d(Config.LOGTAG, "messenger failed. falling back to broadcast");
                 broadcastEndpoint(instance, applicationEndpoint);
             }
         } else {
@@ -281,8 +288,7 @@ public class UnifiedPushBroker {
                 future,
                 new FutureCallback<>() {
                     @Override
-                    public void onSuccess(
-                            final List<UnifiedPushDatabase.PushTarget> pushTargets) {
+                    public void onSuccess(final List<UnifiedPushDatabase.PushTarget> pushTargets) {
                         broadcastUnregistered(pushTargets);
                     }
 
@@ -290,19 +296,21 @@ public class UnifiedPushBroker {
                     public void onFailure(@NonNull Throwable throwable) {
                         Log.d(
                                 Config.LOGTAG,
-                                "could not delete endpoints after UnifiedPushDistributor was disabled");
+                                "could not delete endpoints after UnifiedPushDistributor was"
+                                        + " disabled");
                     }
                 },
                 MoreExecutors.directExecutor());
     }
 
     private ListenableFuture<List<UnifiedPushDatabase.PushTarget>> deletePushTargets() {
-        return Futures.submit(() -> UnifiedPushDatabase.getInstance(service).deletePushTargets(),SCHEDULER);
+        return Futures.submit(
+                () -> UnifiedPushDatabase.getInstance(service).deletePushTargets(), SCHEDULER);
     }
 
     private void broadcastUnregistered(final List<UnifiedPushDatabase.PushTarget> pushTargets) {
-        for(final UnifiedPushDatabase.PushTarget pushTarget : pushTargets) {
-            Log.d(Config.LOGTAG,"sending unregistered to "+pushTarget);
+        for (final UnifiedPushDatabase.PushTarget pushTarget : pushTargets) {
+            Log.d(Config.LOGTAG, "sending unregistered to " + pushTarget);
             broadcastUnregistered(pushTarget);
         }
     }
@@ -368,8 +376,8 @@ public class UnifiedPushBroker {
         final Jid transport;
         final Jid jid;
         try {
-            transport = Jid.ofEscaped(Strings.nullToEmpty(pushServerPreference).trim());
-            jid = Jid.ofEscaped(Strings.nullToEmpty(accountPreference).trim());
+            transport = Jid.of(Strings.nullToEmpty(pushServerPreference).trim());
+            jid = Jid.of(Strings.nullToEmpty(accountPreference).trim());
         } catch (final IllegalArgumentException e) {
             return Optional.absent();
         }
@@ -390,8 +398,7 @@ public class UnifiedPushBroker {
         }
         final String uuid = account.getUuid();
         final List<UnifiedPushDatabase.PushTarget> pushTargets =
-                UnifiedPushDatabase.getInstance(service)
-                        .getPushTargets(uuid, transport.toEscapedString());
+                UnifiedPushDatabase.getInstance(service).getPushTargets(uuid, transport.toString());
         return Iterables.tryFind(
                 pushTargets,
                 pt ->
@@ -422,7 +429,8 @@ public class UnifiedPushBroker {
         service.sendBroadcast(updateIntent);
     }
 
-    private Intent endpointIntent(final String instance, final UnifiedPushDatabase.ApplicationEndpoint endpoint) {
+    private Intent endpointIntent(
+            final String instance, final UnifiedPushDatabase.ApplicationEndpoint endpoint) {
         final Intent intent = new Intent(UnifiedPushDistributor.ACTION_NEW_ENDPOINT);
         intent.setPackage(endpoint.application);
         intent.putExtra("token", instance);
@@ -449,13 +457,12 @@ public class UnifiedPushBroker {
         return intent;
     }
 
-    public void rebroadcastEndpoint(final Messenger messenger, final String instance, final Transport transport) {
+    public void rebroadcastEndpoint(
+            final Messenger messenger, final String instance, final Transport transport) {
         final UnifiedPushDatabase unifiedPushDatabase = UnifiedPushDatabase.getInstance(service);
         final UnifiedPushDatabase.ApplicationEndpoint endpoint =
                 unifiedPushDatabase.getEndpoint(
-                        transport.account.getUuid(),
-                        transport.transport.toEscapedString(),
-                        instance);
+                        transport.account.getUuid(), transport.transport.toString(), instance);
         if (endpoint != null) {
             sendEndpoint(messenger, instance, endpoint);
         }

@@ -159,6 +159,7 @@
     <string name="account_status_unauthorized">Unauthorized</string>
     <string name="account_status_not_found">Server not found</string>
     <string name="account_status_no_internet">No connectivity</string>
+    <string name="account_status_connection_timeout">Connection timeout</string>
     <string name="account_status_regis_fail">Registration failed</string>
     <string name="account_status_regis_conflict">Username already in use</string>
     <string name="account_status_regis_success">Registration completed</string>
@@ -171,6 +172,7 @@
     <string name="account_status_incompatible_client">Incompatible client</string>
     <string name="account_status_stream_error">Stream error</string>
     <string name="account_status_stream_opening_error">Stream opening error</string>
+    <string name="account_status_channel_binding">Channel binding unavailable</string>
     <string name="encryption_choice_unencrypted">Clear text</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
@@ -315,6 +317,7 @@
     <string name="paste_as_quote">Paste as quote</string>
     <string name="copy_original_url">Copy original URL</string>
     <string name="send_again">Send again</string>
+    <string name="retry_with_p2p">Retry with P2P</string>
     <string name="file_url">File URL</string>
     <string name="url_copied_to_clipboard">Copied URL to clipboard</string>
     <string name="jabber_id_copied_to_clipboard">Copied XMPP address to clipboard</string>
@@ -470,7 +473,7 @@
     <string name="download_failed_invalid_file">Download failed: Invalid file</string>
     <string name="account_status_tor_unavailable">Tor network unavailable</string>
     <string name="account_status_bind_failure">Bind failure</string>
-    <string name="account_status_host_unknown">The server is not responsible for this domain</string>
+    <string name="account_status_host_unknown">Not responsible for domain</string>
     <string name="server_info_broken">Broken</string>
     <string name="pref_presence_settings">Availability</string>
     <string name="pref_away_when_screen_off">Away when device is locked</string>
@@ -1087,4 +1090,19 @@
     <string name="add_reaction">Add reaction…</string>
     <string name="add_reaction_title">Add reaction</string>
     <string name="more_reactions">More reactions</string>
+    <string name="could_not_modify_call">Could not modify call</string>
+    <string name="clients_may_not_support_av">Your contact’s XMPP client might not support audio/video calls.</string>
+    <string name="pref_show_avatars">Show avatars</string>
+    <string name="pref_show_avatars_summary">Display avatars for your messages and in 1:1 chats, in addition to group chats.</string>
+    <string name="pref_chat_bubbles">Chat bubbles</string>
+    <string name="pref_chat_bubbles_summary">Background color, Font size, Avatars</string>
+    <string name="pref_title_bubbles">Chat Bubbles</string>
+    <string name="pref_call_integration">Call integration</string>
+    <string name="pref_call_integration_summary">Calls from this app interact with regular phone calls, such as ending one call when another starts.</string>
+    <string name="pref_align_start">Left-aligned messages</string>
+    <string name="pref_align_start_summary">Display all messages, including sent ones, on the left side for a uniform chat layout.</string>
+    <string name="custom_notifications">Custom notifications</string>
+    <string name="custom_notifications_enable">Enable customized notification settings (importance, sound, vibration) settings for this conversation?</string>
+    <string name="delete_avatar_message">Would you like to delete your avatar? Some clients might continue to display a cached copy of your avatar.</string>
+    <string name="show_to_contacts_only">Show to contacts only</string>
 </resources>

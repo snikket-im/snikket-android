@@ -1,0 +1,2 @@
+* pdf-failide eelvaade Androidi versioonis 5 ja uuemas
+* kasutame OMEMO puhul 12-baidiseid IV-sid

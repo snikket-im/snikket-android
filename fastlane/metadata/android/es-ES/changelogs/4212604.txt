@@ -1,0 +1,2 @@
+* Acercar burbujas de chat en vez de combinarlas en una sola
+* Posibilidad de ocultar imágenes de perfil cuando no es estrictamente necesario (Ajustes -> Interfaz -> Burbujas de chat -> Ver imágenes de perfil)

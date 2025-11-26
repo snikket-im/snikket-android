@@ -7,9 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.databinding.DataBindingUtil;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityMagicCreateBinding;
@@ -17,7 +15,6 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.InstallReferrerUtils;
 import eu.siacs.conversations.xmpp.Jid;
-
 import java.security.SecureRandom;
 
 public class MagicCreateActivity extends XmppActivity implements TextWatcher {
@@ -68,15 +65,15 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
                         final boolean fixedUsername;
                         if (this.domain != null && this.username != null) {
                             fixedUsername = true;
-                            jid = Jid.ofLocalAndDomainEscaped(this.username, this.domain);
+                            jid = Jid.ofLocalAndDomain(this.username, this.domain);
                         } else if (this.domain != null) {
                             fixedUsername = false;
-                            jid = Jid.ofLocalAndDomainEscaped(username, this.domain);
+                            jid = Jid.ofLocalAndDomain(username, this.domain);
                         } else {
                             fixedUsername = false;
-                            jid = Jid.ofLocalAndDomainEscaped(username, Config.MAGIC_CREATE_DOMAIN);
+                            jid = Jid.ofLocalAndDomain(username, Config.MAGIC_CREATE_DOMAIN);
                         }
-                        if (!jid.getEscapedLocal().equals(jid.getLocal())
+                        if (!jid.getLocal().equals(jid.getLocal())
                                 || (this.username == null && username.length() < 3)) {
                             binding.usernameLayout.setError(getString(R.string.invalid_username));
                             binding.username.requestFocus();
@@ -146,12 +143,11 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
                 binding.fullJid.setVisibility(View.VISIBLE);
                 final Jid jid;
                 if (this.domain == null) {
-                    jid = Jid.ofLocalAndDomainEscaped(username, Config.MAGIC_CREATE_DOMAIN);
+                    jid = Jid.ofLocalAndDomain(username, Config.MAGIC_CREATE_DOMAIN);
                 } else {
-                    jid = Jid.ofLocalAndDomainEscaped(username, this.domain);
+                    jid = Jid.ofLocalAndDomain(username, this.domain);
                 }
-                binding.fullJid.setText(
-                        getString(R.string.your_full_jid_will_be, jid.toEscapedString()));
+                binding.fullJid.setText(getString(R.string.your_full_jid_will_be, jid.toString()));
                 binding.usernameLayout.setError(null);
             } catch (final IllegalArgumentException e) {
                 binding.fullJid.setVisibility(View.INVISIBLE);

@@ -1,0 +1,3 @@
+* adăugat 'Întoarcere la discuție' pe ecranul de apel audio
+* îmbunătățit scurtăturile de tastatură
+* corecturi de erori

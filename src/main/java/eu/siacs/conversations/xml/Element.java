@@ -1,20 +1,16 @@
 package eu.siacs.conversations.xml;
 
 import androidx.annotation.NonNull;
-
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
-
+import eu.siacs.conversations.utils.XmlHelper;
+import eu.siacs.conversations.xmpp.Jid;
+import im.conversations.android.xmpp.model.stanza.Message;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
-import eu.siacs.conversations.utils.XmlHelper;
-import eu.siacs.conversations.xmpp.InvalidJid;
-import eu.siacs.conversations.xmpp.Jid;
-import im.conversations.android.xmpp.model.stanza.Message;
 
 public class Element {
     private final String name;
@@ -133,7 +129,7 @@ public class Element {
 
     public Element setAttribute(String name, Jid value) {
         if (name != null && value != null) {
-            this.attributes.put(name, value.toEscapedString());
+            this.attributes.put(name, value.toString());
         }
         return this;
     }
@@ -172,16 +168,12 @@ public class Element {
         return Optional.fromNullable(Ints.tryParse(value));
     }
 
-    public Jid getAttributeAsJid(String name) {
+    public Jid getAttributeAsJid(final String name) {
         final String jid = this.getAttribute(name);
-        if (jid != null && !jid.isEmpty()) {
-            try {
-                return Jid.ofEscaped(jid);
-            } catch (final IllegalArgumentException e) {
-                return InvalidJid.of(jid, this instanceof Message);
-            }
+        if (Strings.isNullOrEmpty(jid)) {
+            return null;
         }
-        return null;
+        return Jid.ofOrInvalid(jid, this instanceof Message);
     }
 
     public Hashtable<String, String> getAttributes() {

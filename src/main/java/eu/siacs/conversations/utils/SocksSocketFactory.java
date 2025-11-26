@@ -1,37 +1,56 @@
 package eu.siacs.conversations.utils;
 
 import com.google.common.io.ByteStreams;
-
+import com.google.common.net.InetAddresses;
+import eu.siacs.conversations.Config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 
-import eu.siacs.conversations.Config;
-
 public class SocksSocketFactory {
 
-    private static final byte[] LOCALHOST = new byte[]{127, 0, 0, 1};
+    private static final byte[] LOCALHOST = new byte[] {127, 0, 0, 1};
 
-    public static void createSocksConnection(final Socket socket, final String destination, final int port) throws IOException {
-        //TODO use different Socks Addr Type if destination is IP or IPv6
+    public static void createSocksConnection(
+            final Socket socket, final String destination, final int port) throws IOException {
         final InputStream proxyIs = socket.getInputStream();
         final OutputStream proxyOs = socket.getOutputStream();
-        proxyOs.write(new byte[]{0x05, 0x01, 0x00});
+        proxyOs.write(new byte[] {0x05, 0x01, 0x00});
         proxyOs.flush();
         final byte[] handshake = new byte[2];
         ByteStreams.readFully(proxyIs, handshake);
         if (handshake[0] != 0x05 || handshake[1] != 0x00) {
             throw new SocksConnectionException("Socks 5 handshake failed");
         }
-        final byte[] dest = destination.getBytes();
-        final ByteBuffer request = ByteBuffer.allocate(7 + dest.length);
-        request.put(new byte[]{0x05, 0x01, 0x00, 0x03});
-        request.put((byte) dest.length);
-        request.put(dest);
+        final byte type;
+        final ByteBuffer request;
+        if (InetAddresses.isInetAddress(destination)) {
+            final var ip = InetAddresses.forString(destination);
+            final var dest = ip.getAddress();
+            request = ByteBuffer.allocate(6 + dest.length);
+            if (ip instanceof Inet4Address) {
+                type = 0x01;
+            } else if (ip instanceof Inet6Address) {
+                type = 0x04;
+            } else {
+                throw new IOException("IP address is of unknown subtype");
+            }
+            request.put(new byte[] {0x05, 0x01, 0x00, type});
+            request.put(dest);
+        } else {
+            final byte[] dest = destination.getBytes();
+            type = 0x03;
+            request = ByteBuffer.allocate(7 + dest.length);
+            request.put(new byte[] {0x05, 0x01, 0x00, type});
+            request.put((byte) dest.length);
+            request.put(dest);
+        }
         request.putShort((short) port);
         proxyOs.write(request.array());
         proxyOs.flush();
@@ -42,13 +61,16 @@ public class SocksSocketFactory {
             throw new IOException(String.format("Unknown Socks version %02X ", ver));
         }
         final byte status = response[1];
-        final byte bndAddrType = response[3];
-        final byte[] bndDestination = readDestination(bndAddrType, proxyIs);
+        final byte bndAddressType = response[3];
+        final byte[] bndDestination = readDestination(bndAddressType, proxyIs);
         final byte[] bndPort = new byte[2];
-        if (bndAddrType == 0x03) {
+        if (bndAddressType == 0x03) {
             final String receivedDestination = new String(bndDestination);
             if (!receivedDestination.equalsIgnoreCase(destination)) {
-                throw new IOException(String.format("Destination mismatch. Received %s Expected %s", receivedDestination, destination));
+                throw new IOException(
+                        String.format(
+                                "Destination mismatch. Received %s Expected %s",
+                                receivedDestination, destination));
             }
         }
         ByteStreams.readFully(proxyIs, bndPort);
@@ -63,7 +85,8 @@ public class SocksSocketFactory {
         }
     }
 
-    private static byte[] readDestination(final byte type, final InputStream inputStream) throws IOException {
+    private static byte[] readDestination(final byte type, final InputStream inputStream)
+            throws IOException {
         final byte[] bndDestination;
         if (type == 0x01) {
             bndDestination = new byte[4];
@@ -88,7 +111,8 @@ public class SocksSocketFactory {
         return false;
     }
 
-    private static Socket createSocket(InetSocketAddress address, String destination, int port) throws IOException {
+    private static Socket createSocket(InetSocketAddress address, String destination, int port)
+            throws IOException {
         Socket socket = new Socket();
         try {
             socket.connect(address, Config.CONNECT_TIMEOUT * 1000);
@@ -100,7 +124,10 @@ public class SocksSocketFactory {
     }
 
     public static Socket createSocketOverTor(String destination, int port) throws IOException {
-        return createSocket(new InetSocketAddress(InetAddress.getByAddress(LOCALHOST), 9050), destination, port);
+        return createSocket(
+                new InetSocketAddress(InetAddress.getByAddress(LOCALHOST), 9050),
+                destination,
+                port);
     }
 
     private static class SocksConnectionException extends IOException {
@@ -109,9 +136,7 @@ public class SocksSocketFactory {
         }
     }
 
-    public static class SocksProxyNotFoundException extends IOException {
-
-    }
+    public static class SocksProxyNotFoundException extends IOException {}
 
     public static class HostNotFoundException extends SocksConnectionException {
         HostNotFoundException(String message) {

@@ -1,0 +1,2 @@
+* Przywrócenie dostępu do odkrywania kanałów w Androidzie 6 i 7
+* Ulepszenie logowania nieudanej integracji rozmów

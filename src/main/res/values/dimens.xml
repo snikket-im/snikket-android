@@ -8,8 +8,6 @@
     <dimen name="card_padding_list">8dp</dimen> <!-- card_padding_regular minus list_padding -->
     <dimen name="list_padding">8dp</dimen>
     <dimen name="image_button_padding">12dp</dimen>
-    <dimen name="key_action_width">48dp
-    </dimen>  <!-- icon width (24dp) + 2 * image button padding -->
     <dimen name="fineprint_size">11sp</dimen>
     <dimen name="audio_player_width">224dp</dimen>
     <dimen name="image_preview_width">224dp</dimen>
@@ -43,6 +41,11 @@
     <dimen name="local_video_preview_width">96dp</dimen>
     <dimen name="rtp_session_duration_top_margin">24dp</dimen>
 
+    <dimen name="bubble_horizontal_padding">8dp</dimen>
+    <dimen name="bubble_vertical_padding">4dp</dimen>
+    <dimen name="bubble_vertical_padding_minimum">1dp</dimen>
+    <dimen name="bubble_avatar_size">48dp</dimen>
+    <dimen name="bubble_avatar_distance">6dp</dimen>
 
     <dimen name="dialpad_text_size">30sp</dimen>
     <dimen name="smaller_text_size">12sp</dimen>

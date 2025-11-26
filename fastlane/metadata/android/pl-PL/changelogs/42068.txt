@@ -1,0 +1,2 @@
+* Obsługa ustawień powiadomień dla danej rozmowy
+* Używanie Opus dla wiadomości głosowych w Androidzie 10

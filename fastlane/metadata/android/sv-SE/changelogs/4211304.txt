@@ -1,0 +1,1 @@
+* Kör säkerhetskopiering som en förgrundstjänst för att förhindra processer stoppas efter 10 minuter

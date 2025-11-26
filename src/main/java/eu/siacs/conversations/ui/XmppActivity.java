@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
@@ -15,7 +16,6 @@ import android.content.IntentSender.SendIntentException;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -31,6 +31,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.InputType;
 import android.util.DisplayMetrics;
@@ -42,19 +43,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.BoolRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.databinding.DataBindingUtil;
-
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
-
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
@@ -70,6 +71,7 @@ import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.entities.Reaction;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.BarcodeProvider;
+import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
@@ -79,16 +81,13 @@ import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
-import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
-
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
@@ -112,50 +111,58 @@ public abstract class XmppActivity extends ActionBarActivity {
     protected boolean mUsingEnterKey = false;
     protected boolean mUseTor = false;
     protected Toast mToast;
-    public Runnable onOpenPGPKeyPublished = () -> Toast.makeText(XmppActivity.this, R.string.openpgp_has_been_published, Toast.LENGTH_SHORT).show();
+    public Runnable onOpenPGPKeyPublished =
+            () ->
+                    Toast.makeText(
+                                    XmppActivity.this,
+                                    R.string.openpgp_has_been_published,
+                                    Toast.LENGTH_SHORT)
+                            .show();
     protected ConferenceInvite mPendingConferenceInvite = null;
-    protected ServiceConnection mConnection = new ServiceConnection() {
+    protected ServiceConnection mConnection =
+            new ServiceConnection() {
 
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            XmppConnectionBinder binder = (XmppConnectionBinder) service;
-            xmppConnectionService = binder.getService();
-            xmppConnectionServiceBound = true;
-            registerListeners();
-            onBackendConnected();
-        }
+                @Override
+                public void onServiceConnected(ComponentName className, IBinder service) {
+                    XmppConnectionBinder binder = (XmppConnectionBinder) service;
+                    xmppConnectionService = binder.getService();
+                    xmppConnectionServiceBound = true;
+                    registerListeners();
+                    onBackendConnected();
+                }
 
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            xmppConnectionServiceBound = false;
-        }
-    };
+                @Override
+                public void onServiceDisconnected(ComponentName arg0) {
+                    xmppConnectionServiceBound = false;
+                }
+            };
     private DisplayMetrics metrics;
     private long mLastUiRefresh = 0;
     private final Handler mRefreshUiHandler = new Handler();
-    private final Runnable mRefreshUiRunnable = () -> {
-        mLastUiRefresh = SystemClock.elapsedRealtime();
-        refreshUiReal();
-    };
-    private final UiCallback<Conversation> adhocCallback = new UiCallback<Conversation>() {
-        @Override
-        public void success(final Conversation conversation) {
-            runOnUiThread(() -> {
-                switchToConversation(conversation);
-                hideToast();
-            });
-        }
+    private final Runnable mRefreshUiRunnable =
+            () -> {
+                mLastUiRefresh = SystemClock.elapsedRealtime();
+                refreshUiReal();
+            };
+    private final UiCallback<Conversation> adhocCallback =
+            new UiCallback<Conversation>() {
+                @Override
+                public void success(final Conversation conversation) {
+                    runOnUiThread(
+                            () -> {
+                                switchToConversation(conversation);
+                                hideToast();
+                            });
+                }
 
-        @Override
-        public void error(final int errorCode, Conversation object) {
-            runOnUiThread(() -> replaceToast(getString(errorCode)));
-        }
+                @Override
+                public void error(final int errorCode, Conversation object) {
+                    runOnUiThread(() -> replaceToast(getString(errorCode)));
+                }
 
-        @Override
-        public void userInputRequired(PendingIntent pi, Conversation object) {
-
-        }
-    };
+                @Override
+                public void userInputRequired(PendingIntent pi, Conversation object) {}
+            };
 
     public static boolean cancelPotentialWork(Message message, ImageView imageView) {
         final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
@@ -212,7 +219,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         }
     }
 
-    abstract protected void refreshUiReal();
+    protected abstract void refreshUiReal();
 
     @Override
     public void onStart() {
@@ -248,6 +255,41 @@ public abstract class XmppActivity extends ActionBarActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    protected void configureCustomNotification(final ShortcutInfoCompat shortcut) {
+        final var notificationManager = getSystemService(NotificationManager.class);
+        final var channel =
+                notificationManager.getNotificationChannel(
+                        NotificationService.MESSAGES_NOTIFICATION_CHANNEL, shortcut.getId());
+        if (channel != null && channel.getConversationId() != null) {
+            ShortcutManagerCompat.pushDynamicShortcut(this, shortcut);
+            openNotificationSettings(shortcut);
+        } else {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.custom_notifications)
+                    .setMessage(R.string.custom_notifications_enable)
+                    .setPositiveButton(
+                            R.string.continue_btn,
+                            (d, w) -> {
+                                NotificationService.createConversationChannel(this, shortcut);
+                                ShortcutManagerCompat.pushDynamicShortcut(this, shortcut);
+                                openNotificationSettings(shortcut);
+                            })
+                    .setNegativeButton(R.string.cancel, null)
+                    .create()
+                    .show();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    protected void openNotificationSettings(final ShortcutInfoCompat shortcut) {
+        final var intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+        intent.putExtra(
+                Settings.EXTRA_CHANNEL_ID, NotificationService.MESSAGES_NOTIFICATION_CHANNEL);
+        intent.putExtra(Settings.EXTRA_CONVERSATION_ID, shortcut.getId());
+        startActivity(intent);
+    }
 
     public boolean hasPgp() {
         return xmppConnectionService.getPgpEngine() != null;
@@ -257,16 +299,20 @@ public abstract class XmppActivity extends ActionBarActivity {
         final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(getString(R.string.openkeychain_required));
         builder.setIconAttribute(android.R.attr.alertDialogIcon);
-        builder.setMessage(Html.fromHtml(getString(R.string.openkeychain_required_long, getString(R.string.app_name))));
+        builder.setMessage(
+                Html.fromHtml(
+                        getString(
+                                R.string.openkeychain_required_long,
+                                getString(R.string.app_name))));
         builder.setNegativeButton(getString(R.string.cancel), null);
-        builder.setNeutralButton(getString(R.string.restart),
+        builder.setNeutralButton(
+                getString(R.string.restart),
                 (dialog, which) -> {
                     if (xmppConnectionServiceBound) {
                         unbindService(mConnection);
                         xmppConnectionServiceBound = false;
                     }
-                    stopService(new Intent(XmppActivity.this,
-                            XmppConnectionService.class));
+                    stopService(new Intent(XmppActivity.this, XmppConnectionService.class));
                     finish();
                 });
         builder.setPositiveButton(
@@ -344,58 +390,89 @@ public abstract class XmppActivity extends ActionBarActivity {
     protected void deleteAccount(final Account account, final Runnable postDelete) {
         final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         final View dialogView = getLayoutInflater().inflate(R.layout.dialog_delete_account, null);
-        final CheckBox deleteFromServer =
-                dialogView.findViewById(R.id.delete_from_server);
+        final CheckBox deleteFromServer = dialogView.findViewById(R.id.delete_from_server);
         builder.setView(dialogView);
         builder.setTitle(R.string.mgmt_account_delete);
-        builder.setPositiveButton(getString(R.string.delete),null);
+        builder.setPositiveButton(getString(R.string.delete), null);
         builder.setNegativeButton(getString(R.string.cancel), null);
         final AlertDialog dialog = builder.create();
-        dialog.setOnShowListener(dialogInterface->{
-            final Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            button.setOnClickListener(v -> {
-                final boolean unregister = deleteFromServer.isChecked();
-                if (unregister) {
-                    if (account.isOnlineAndConnected()) {
-                        deleteFromServer.setEnabled(false);
-                        button.setText(R.string.please_wait);
-                        button.setEnabled(false);
-                        xmppConnectionService.unregisterAccount(account, result -> {
-                            runOnUiThread(()->{
-                                if (result) {
-                                    dialog.dismiss();
-                                    if (postDelete != null) {
-                                        postDelete.run();
-                                    }
-                                    if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
-                                        final Intent intent = SignupUtils.getSignUpIntent(this);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
+        dialog.setOnShowListener(
+                dialogInterface -> {
+                    final Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    button.setOnClickListener(
+                            v -> {
+                                final boolean unregister = deleteFromServer.isChecked();
+                                if (unregister) {
+                                    if (account.isOnlineAndConnected()) {
+                                        deleteFromServer.setEnabled(false);
+                                        button.setText(R.string.please_wait);
+                                        button.setEnabled(false);
+                                        xmppConnectionService.unregisterAccount(
+                                                account,
+                                                result -> {
+                                                    runOnUiThread(
+                                                            () -> {
+                                                                if (result) {
+                                                                    dialog.dismiss();
+                                                                    if (postDelete != null) {
+                                                                        postDelete.run();
+                                                                    }
+                                                                    if (xmppConnectionService
+                                                                                            .getAccounts()
+                                                                                            .size()
+                                                                                    == 0
+                                                                            && Config
+                                                                                            .MAGIC_CREATE_DOMAIN
+                                                                                    != null) {
+                                                                        final Intent intent =
+                                                                                SignupUtils
+                                                                                        .getSignUpIntent(
+                                                                                                this);
+                                                                        intent.setFlags(
+                                                                                Intent
+                                                                                                .FLAG_ACTIVITY_NEW_TASK
+                                                                                        | Intent
+                                                                                                .FLAG_ACTIVITY_CLEAR_TASK);
+                                                                        startActivity(intent);
+                                                                    }
+                                                                } else {
+                                                                    deleteFromServer.setEnabled(
+                                                                            true);
+                                                                    button.setText(R.string.delete);
+                                                                    button.setEnabled(true);
+                                                                    Toast.makeText(
+                                                                                    this,
+                                                                                    R.string
+                                                                                            .could_not_delete_account_from_server,
+                                                                                    Toast
+                                                                                            .LENGTH_LONG)
+                                                                            .show();
+                                                                }
+                                                            });
+                                                });
+                                    } else {
+                                        Toast.makeText(
+                                                        this,
+                                                        R.string.not_connected_try_again,
+                                                        Toast.LENGTH_LONG)
+                                                .show();
                                     }
                                 } else {
-                                    deleteFromServer.setEnabled(true);
-                                    button.setText(R.string.delete);
-                                    button.setEnabled(true);
-                                    Toast.makeText(this,R.string.could_not_delete_account_from_server,Toast.LENGTH_LONG).show();
+                                    xmppConnectionService.deleteAccount(account);
+                                    dialog.dismiss();
+                                    if (xmppConnectionService.getAccounts().size() == 0
+                                            && Config.MAGIC_CREATE_DOMAIN != null) {
+                                        final Intent intent = SignupUtils.getSignUpIntent(this);
+                                        intent.setFlags(
+                                                Intent.FLAG_ACTIVITY_NEW_TASK
+                                                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                    } else if (postDelete != null) {
+                                        postDelete.run();
+                                    }
                                 }
                             });
-                        });
-                    } else {
-                        Toast.makeText(this,R.string.not_connected_try_again,Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    xmppConnectionService.deleteAccount(account);
-                    dialog.dismiss();
-                    if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
-                        final Intent intent = SignupUtils.getSignUpIntent(this);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    } else if (postDelete != null) {
-                        postDelete.run();
-                    }
-                }
-            });
-        });
+                });
         dialog.show();
     }
 
@@ -403,61 +480,75 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     protected void registerListeners() {
         if (this instanceof XmppConnectionService.OnConversationUpdate) {
-            this.xmppConnectionService.setOnConversationListChangedListener((XmppConnectionService.OnConversationUpdate) this);
+            this.xmppConnectionService.setOnConversationListChangedListener(
+                    (XmppConnectionService.OnConversationUpdate) this);
         }
         if (this instanceof XmppConnectionService.OnAccountUpdate) {
-            this.xmppConnectionService.setOnAccountListChangedListener((XmppConnectionService.OnAccountUpdate) this);
+            this.xmppConnectionService.setOnAccountListChangedListener(
+                    (XmppConnectionService.OnAccountUpdate) this);
         }
         if (this instanceof XmppConnectionService.OnCaptchaRequested) {
-            this.xmppConnectionService.setOnCaptchaRequestedListener((XmppConnectionService.OnCaptchaRequested) this);
+            this.xmppConnectionService.setOnCaptchaRequestedListener(
+                    (XmppConnectionService.OnCaptchaRequested) this);
         }
         if (this instanceof XmppConnectionService.OnRosterUpdate) {
-            this.xmppConnectionService.setOnRosterUpdateListener((XmppConnectionService.OnRosterUpdate) this);
+            this.xmppConnectionService.setOnRosterUpdateListener(
+                    (XmppConnectionService.OnRosterUpdate) this);
         }
         if (this instanceof XmppConnectionService.OnMucRosterUpdate) {
-            this.xmppConnectionService.setOnMucRosterUpdateListener((XmppConnectionService.OnMucRosterUpdate) this);
+            this.xmppConnectionService.setOnMucRosterUpdateListener(
+                    (XmppConnectionService.OnMucRosterUpdate) this);
         }
         if (this instanceof OnUpdateBlocklist) {
             this.xmppConnectionService.setOnUpdateBlocklistListener((OnUpdateBlocklist) this);
         }
         if (this instanceof XmppConnectionService.OnShowErrorToast) {
-            this.xmppConnectionService.setOnShowErrorToastListener((XmppConnectionService.OnShowErrorToast) this);
+            this.xmppConnectionService.setOnShowErrorToastListener(
+                    (XmppConnectionService.OnShowErrorToast) this);
         }
         if (this instanceof OnKeyStatusUpdated) {
             this.xmppConnectionService.setOnKeyStatusUpdatedListener((OnKeyStatusUpdated) this);
         }
         if (this instanceof XmppConnectionService.OnJingleRtpConnectionUpdate) {
-            this.xmppConnectionService.setOnRtpConnectionUpdateListener((XmppConnectionService.OnJingleRtpConnectionUpdate) this);
+            this.xmppConnectionService.setOnRtpConnectionUpdateListener(
+                    (XmppConnectionService.OnJingleRtpConnectionUpdate) this);
         }
     }
 
     protected void unregisterListeners() {
         if (this instanceof XmppConnectionService.OnConversationUpdate) {
-            this.xmppConnectionService.removeOnConversationListChangedListener((XmppConnectionService.OnConversationUpdate) this);
+            this.xmppConnectionService.removeOnConversationListChangedListener(
+                    (XmppConnectionService.OnConversationUpdate) this);
         }
         if (this instanceof XmppConnectionService.OnAccountUpdate) {
-            this.xmppConnectionService.removeOnAccountListChangedListener((XmppConnectionService.OnAccountUpdate) this);
+            this.xmppConnectionService.removeOnAccountListChangedListener(
+                    (XmppConnectionService.OnAccountUpdate) this);
         }
         if (this instanceof XmppConnectionService.OnCaptchaRequested) {
-            this.xmppConnectionService.removeOnCaptchaRequestedListener((XmppConnectionService.OnCaptchaRequested) this);
+            this.xmppConnectionService.removeOnCaptchaRequestedListener(
+                    (XmppConnectionService.OnCaptchaRequested) this);
         }
         if (this instanceof XmppConnectionService.OnRosterUpdate) {
-            this.xmppConnectionService.removeOnRosterUpdateListener((XmppConnectionService.OnRosterUpdate) this);
+            this.xmppConnectionService.removeOnRosterUpdateListener(
+                    (XmppConnectionService.OnRosterUpdate) this);
         }
         if (this instanceof XmppConnectionService.OnMucRosterUpdate) {
-            this.xmppConnectionService.removeOnMucRosterUpdateListener((XmppConnectionService.OnMucRosterUpdate) this);
+            this.xmppConnectionService.removeOnMucRosterUpdateListener(
+                    (XmppConnectionService.OnMucRosterUpdate) this);
         }
         if (this instanceof OnUpdateBlocklist) {
             this.xmppConnectionService.removeOnUpdateBlocklistListener((OnUpdateBlocklist) this);
         }
         if (this instanceof XmppConnectionService.OnShowErrorToast) {
-            this.xmppConnectionService.removeOnShowErrorToastListener((XmppConnectionService.OnShowErrorToast) this);
+            this.xmppConnectionService.removeOnShowErrorToastListener(
+                    (XmppConnectionService.OnShowErrorToast) this);
         }
         if (this instanceof OnKeyStatusUpdated) {
             this.xmppConnectionService.removeOnNewKeysAvailableListener((OnKeyStatusUpdated) this);
         }
         if (this instanceof XmppConnectionService.OnJingleRtpConnectionUpdate) {
-            this.xmppConnectionService.removeRtpConnectionUpdateListener((XmppConnectionService.OnJingleRtpConnectionUpdate) this);
+            this.xmppConnectionService.removeRtpConnectionUpdateListener(
+                    (XmppConnectionService.OnJingleRtpConnectionUpdate) this);
         }
     }
 
@@ -465,7 +556,9 @@ public abstract class XmppActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                startActivity(new Intent(this, eu.siacs.conversations.ui.activity.SettingsActivity.class));
+                startActivity(
+                        new Intent(
+                                this, eu.siacs.conversations.ui.activity.SettingsActivity.class));
                 break;
             case R.id.action_privacy_policy:
                 openPrivacyPolicy();
@@ -500,7 +593,8 @@ public abstract class XmppActivity extends ActionBarActivity {
         }
     }
 
-    public void selectPresence(final Conversation conversation, final PresenceSelector.OnPresenceSelected listener) {
+    public void selectPresence(
+            final Conversation conversation, final PresenceSelector.OnPresenceSelected listener) {
         final Contact contact = conversation.getContact();
         if (contact.showInRoster() || contact.isSelf()) {
             final Presences presences = contact.getPresences();
@@ -521,7 +615,8 @@ public abstract class XmppActivity extends ActionBarActivity {
                 }
             } else if (presences.size() == 1) {
                 final String presence = presences.toResourceArray()[0];
-                conversation.setNextCounterpart(PresenceSelector.getNextCounterpart(contact, presence));
+                conversation.setNextCounterpart(
+                        PresenceSelector.getNextCounterpart(contact, presence));
                 listener.onPresenceSelected();
             } else {
                 PresenceSelector.showPresenceSelectionDialog(this, conversation, listener);
@@ -536,7 +631,8 @@ public abstract class XmppActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         metrics = getResources().getDisplayMetrics();
-        this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+        this.isCameraFeatureAvailable =
+                getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
 
     protected boolean isCameraFeatureAvailable() {
@@ -546,14 +642,16 @@ public abstract class XmppActivity extends ActionBarActivity {
     protected boolean isOptimizingBattery() {
         final PowerManager pm = getSystemService(PowerManager.class);
         return !pm.isIgnoringBatteryOptimizations(getPackageName());
-}
+    }
 
     protected boolean isAffectedByDataSaver() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            final ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            final ConnectivityManager cm =
+                    (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             return cm != null
                     && cm.isActiveNetworkMetered()
-                    && Compatibility.getRestrictBackgroundStatus(cm) == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED;
+                    && Compatibility.getRestrictBackgroundStatus(cm)
+                            == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED;
         } else {
             return false;
         }
@@ -564,7 +662,8 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     private boolean useTor() {
-        return QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
+        return QuickConversationsService.isConversations()
+                && getBooleanPreference("use_tor", R.bool.use_tor);
     }
 
     protected SharedPreferences getPreferences() {
@@ -599,7 +698,13 @@ public abstract class XmppActivity extends ActionBarActivity {
         switchToConversation(conversation, null, false, nick, true, false);
     }
 
-    private void switchToConversation(Conversation conversation, String text, boolean asQuote, String nick, boolean pm, boolean doNotAppend) {
+    private void switchToConversation(
+            Conversation conversation,
+            String text,
+            boolean asQuote,
+            String nick,
+            boolean pm,
+            boolean doNotAppend) {
         Intent intent = new Intent(this, ConversationsActivity.class);
         intent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
         intent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, conversation.getUuid());
@@ -628,8 +733,8 @@ public abstract class XmppActivity extends ActionBarActivity {
     public void switchToContactDetails(Contact contact, String messageFingerprint) {
         Intent intent = new Intent(this, ContactDetailsActivity.class);
         intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
-        intent.putExtra(EXTRA_ACCOUNT, contact.getAccount().getJid().asBareJid().toEscapedString());
-        intent.putExtra("contact", contact.getJid().toEscapedString());
+        intent.putExtra(EXTRA_ACCOUNT, contact.getAccount().getJid().asBareJid().toString());
+        intent.putExtra("contact", contact.getJid().toString());
         intent.putExtra("fingerprint", messageFingerprint);
         startActivity(intent);
     }
@@ -644,10 +749,13 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     public void switchToAccount(Account account, boolean init, String fingerprint) {
         Intent intent = new Intent(this, EditAccountActivity.class);
-        intent.putExtra("jid", account.getJid().asBareJid().toEscapedString());
+        intent.putExtra("jid", account.getJid().asBareJid().toString());
         intent.putExtra("init", init);
         if (init) {
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            intent.setFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         }
         if (fingerprint != null) {
             intent.putExtra("fingerprint", fingerprint);
@@ -671,85 +779,113 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     protected void inviteToConversation(Conversation conversation) {
-        startActivityForResult(ChooseContactActivity.create(this, conversation), REQUEST_INVITE_TO_CONVERSATION);
+        startActivityForResult(
+                ChooseContactActivity.create(this, conversation), REQUEST_INVITE_TO_CONVERSATION);
     }
 
-    protected void announcePgp(final Account account, final Conversation conversation, Intent intent, final Runnable onSuccess) {
+    protected void announcePgp(
+            final Account account,
+            final Conversation conversation,
+            Intent intent,
+            final Runnable onSuccess) {
         if (account.getPgpId() == 0) {
             choosePgpSignId(account);
         } else {
             final String status = Strings.nullToEmpty(account.getPresenceStatusMessage());
-            xmppConnectionService.getPgpEngine().generateSignature(intent, account, status, new UiCallback<String>() {
+            xmppConnectionService
+                    .getPgpEngine()
+                    .generateSignature(
+                            intent,
+                            account,
+                            status,
+                            new UiCallback<String>() {
 
-                @Override
-                public void userInputRequired(final PendingIntent pi, final String signature) {
-                    try {
-                        startIntentSenderForResult(pi.getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0,Compatibility.pgpStartIntentSenderOptions());
-                    } catch (final SendIntentException ignored) {
-                    }
-                }
+                                @Override
+                                public void userInputRequired(
+                                        final PendingIntent pi, final String signature) {
+                                    try {
+                                        startIntentSenderForResult(
+                                                pi.getIntentSender(),
+                                                REQUEST_ANNOUNCE_PGP,
+                                                null,
+                                                0,
+                                                0,
+                                                0,
+                                                Compatibility.pgpStartIntentSenderOptions());
+                                    } catch (final SendIntentException ignored) {
+                                    }
+                                }
 
-                @Override
-                public void success(String signature) {
-                    account.setPgpSignature(signature);
-                    xmppConnectionService.databaseBackend.updateAccount(account);
-                    xmppConnectionService.sendPresence(account);
-                    if (conversation != null) {
-                        conversation.setNextEncryption(Message.ENCRYPTION_PGP);
-                        xmppConnectionService.updateConversation(conversation);
-                        refreshUi();
-                    }
-                    if (onSuccess != null) {
-                        runOnUiThread(onSuccess);
-                    }
-                }
+                                @Override
+                                public void success(String signature) {
+                                    account.setPgpSignature(signature);
+                                    xmppConnectionService.databaseBackend.updateAccount(account);
+                                    xmppConnectionService.sendPresence(account);
+                                    if (conversation != null) {
+                                        conversation.setNextEncryption(Message.ENCRYPTION_PGP);
+                                        xmppConnectionService.updateConversation(conversation);
+                                        refreshUi();
+                                    }
+                                    if (onSuccess != null) {
+                                        runOnUiThread(onSuccess);
+                                    }
+                                }
 
-                @Override
-                public void error(int error, String signature) {
-                    if (error == 0) {
-                        account.setPgpSignId(0);
-                        account.unsetPgpSignature();
-                        xmppConnectionService.databaseBackend.updateAccount(account);
-                        choosePgpSignId(account);
-                    } else {
-                        displayErrorDialog(error);
-                    }
-                }
-            });
+                                @Override
+                                public void error(int error, String signature) {
+                                    if (error == 0) {
+                                        account.setPgpSignId(0);
+                                        account.unsetPgpSignature();
+                                        xmppConnectionService.databaseBackend.updateAccount(
+                                                account);
+                                        choosePgpSignId(account);
+                                    } else {
+                                        displayErrorDialog(error);
+                                    }
+                                }
+                            });
         }
     }
 
     protected void choosePgpSignId(final Account account) {
-        xmppConnectionService.getPgpEngine().chooseKey(account, new UiCallback<>() {
-            @Override
-            public void success(final Account a) {
-            }
+        xmppConnectionService
+                .getPgpEngine()
+                .chooseKey(
+                        account,
+                        new UiCallback<>() {
+                            @Override
+                            public void success(final Account a) {}
 
-            @Override
-            public void error(int errorCode, Account object) {
+                            @Override
+                            public void error(int errorCode, Account object) {}
 
-            }
-
-            @Override
-            public void userInputRequired(PendingIntent pi, Account object) {
-                try {
-                    startIntentSenderForResult(pi.getIntentSender(),
-                            REQUEST_CHOOSE_PGP_ID, null, 0, 0, 0, Compatibility.pgpStartIntentSenderOptions());
-                } catch (final SendIntentException ignored) {
-                }
-            }
-        });
+                            @Override
+                            public void userInputRequired(PendingIntent pi, Account object) {
+                                try {
+                                    startIntentSenderForResult(
+                                            pi.getIntentSender(),
+                                            REQUEST_CHOOSE_PGP_ID,
+                                            null,
+                                            0,
+                                            0,
+                                            0,
+                                            Compatibility.pgpStartIntentSenderOptions());
+                                } catch (final SendIntentException ignored) {
+                                }
+                            }
+                        });
     }
 
     protected void displayErrorDialog(final int errorCode) {
-        runOnUiThread(() -> {
-            final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(XmppActivity.this);
-            builder.setTitle(getString(R.string.error));
-            builder.setMessage(errorCode);
-            builder.setNeutralButton(R.string.accept, null);
-            builder.create().show();
-        });
-
+        runOnUiThread(
+                () -> {
+                    final MaterialAlertDialogBuilder builder =
+                            new MaterialAlertDialogBuilder(XmppActivity.this);
+                    builder.setTitle(getString(R.string.error));
+                    builder.setMessage(errorCode);
+                    builder.setNeutralButton(R.string.accept, null);
+                    builder.create().show();
+                });
     }
 
     protected void showAddToRosterDialog(final Contact contact) {
@@ -757,7 +893,9 @@ public abstract class XmppActivity extends ActionBarActivity {
         builder.setTitle(contact.getJid().toString());
         builder.setMessage(getString(R.string.not_in_roster));
         builder.setNegativeButton(getString(R.string.cancel), null);
-        builder.setPositiveButton(getString(R.string.add_contact), (dialog, which) -> xmppConnectionService.createContact(contact, true));
+        builder.setPositiveButton(
+                getString(R.string.add_contact),
+                (dialog, which) -> xmppConnectionService.createContact(contact, true));
         builder.create().show();
     }
 
@@ -766,13 +904,15 @@ public abstract class XmppActivity extends ActionBarActivity {
         builder.setTitle(contact.getJid().toString());
         builder.setMessage(R.string.request_presence_updates);
         builder.setNegativeButton(R.string.cancel, null);
-        builder.setPositiveButton(R.string.request_now,
+        builder.setPositiveButton(
+                R.string.request_now,
                 (dialog, which) -> {
                     if (xmppConnectionServiceBound) {
-                        xmppConnectionService.sendPresencePacket(contact
-                                .getAccount(), xmppConnectionService
-                                .getPresenceGenerator()
-                                .requestPresenceUpdatesFrom(contact));
+                        xmppConnectionService.sendPresencePacket(
+                                contact.getAccount(),
+                                xmppConnectionService
+                                        .getPresenceGenerator()
+                                        .requestPresenceUpdatesFrom(contact));
                     }
                 });
         builder.create().show();
@@ -782,7 +922,11 @@ public abstract class XmppActivity extends ActionBarActivity {
         quickEdit(previousValue, callback, hint, false, false);
     }
 
-    protected void quickEdit(String previousValue, @StringRes int hint, OnValueEdited callback, boolean permitEmpty) {
+    protected void quickEdit(
+            String previousValue,
+            @StringRes int hint,
+            OnValueEdited callback,
+            boolean permitEmpty) {
         quickEdit(previousValue, callback, hint, false, permitEmpty);
     }
 
@@ -791,15 +935,19 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     @SuppressLint("InflateParams")
-    private void quickEdit(final String previousValue,
-                           final OnValueEdited callback,
-                           final @StringRes int hint,
-                           boolean password,
-                           boolean permitEmpty) {
+    private void quickEdit(
+            final String previousValue,
+            final OnValueEdited callback,
+            final @StringRes int hint,
+            boolean password,
+            boolean permitEmpty) {
         final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        final DialogQuickeditBinding binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.dialog_quickedit, null, false);
+        final DialogQuickeditBinding binding =
+                DataBindingUtil.inflate(
+                        getLayoutInflater(), R.layout.dialog_quickedit, null, false);
         if (password) {
-            binding.inputEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            binding.inputEditText.setInputType(
+                    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         }
         builder.setPositiveButton(R.string.accept, null);
         if (hint != 0) {
@@ -814,33 +962,39 @@ public abstract class XmppActivity extends ActionBarActivity {
         final AlertDialog dialog = builder.create();
         dialog.setOnShowListener(d -> SoftKeyboardUtils.showKeyboard(binding.inputEditText));
         dialog.show();
-        View.OnClickListener clickListener = v -> {
-            String value = binding.inputEditText.getText().toString();
-            if (!value.equals(previousValue) && (!value.trim().isEmpty() || permitEmpty)) {
-                String error = callback.onValueEdited(value);
-                if (error != null) {
-                    binding.inputLayout.setError(error);
-                    return;
-                }
-            }
-            SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
-            dialog.dismiss();
-        };
+        View.OnClickListener clickListener =
+                v -> {
+                    String value = binding.inputEditText.getText().toString();
+                    if (!value.equals(previousValue) && (!value.trim().isEmpty() || permitEmpty)) {
+                        String error = callback.onValueEdited(value);
+                        if (error != null) {
+                            binding.inputLayout.setError(error);
+                            return;
+                        }
+                    }
+                    SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
+                    dialog.dismiss();
+                };
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(clickListener);
-        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener((v -> {
-            SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
-            dialog.dismiss();
-        }));
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                .setOnClickListener(
+                        (v -> {
+                            SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
+                            dialog.dismiss();
+                        }));
         dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnDismissListener(dialog1 -> {
-            SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
-        });
+        dialog.setOnDismissListener(
+                dialog1 -> {
+                    SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
+                });
     }
 
     protected boolean hasStoragePermission(int requestCode) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                        new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
                 return false;
             } else {
                 return true;
@@ -876,7 +1030,8 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     protected boolean manuallyChangePresence() {
-        return getBooleanPreference(AppSettings.MANUALLY_CHANGE_PRESENCE, R.bool.manually_change_presence);
+        return getBooleanPreference(
+                AppSettings.MANUALLY_CHANGE_PRESENCE, R.bool.manually_change_presence);
     }
 
     protected String getShareableUri() {
@@ -906,16 +1061,21 @@ public abstract class XmppActivity extends ActionBarActivity {
         PgpEngine pgp = XmppActivity.this.xmppConnectionService.getPgpEngine();
         try {
             startIntentSenderForResult(
-                    pgp.getIntentForKey(keyId).getIntentSender(), 0, null, 0,
-                    0, 0, Compatibility.pgpStartIntentSenderOptions());
+                    pgp.getIntentForKey(keyId).getIntentSender(),
+                    0,
+                    null,
+                    0,
+                    0,
+                    0,
+                    Compatibility.pgpStartIntentSenderOptions());
         } catch (final Throwable e) {
-            Log.d(Config.LOGTAG,"could not launch OpenKeyChain", e);
+            Log.d(Config.LOGTAG, "could not launch OpenKeyChain", e);
             Toast.makeText(XmppActivity.this, R.string.openpgp_error, Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         SettingsUtils.applyScreenshotSetting(this);
     }
@@ -947,11 +1107,27 @@ public abstract class XmppActivity extends ActionBarActivity {
         final int black;
         final int white;
         if (Activities.isNightMode(this)) {
-            black = MaterialColors.getColor(this, com.google.android.material.R.attr.colorSurfaceContainerHighest,"No surface color configured");
-            white = MaterialColors.getColor(this, com.google.android.material.R.attr.colorSurfaceInverse,"No inverse surface color configured");
+            black =
+                    MaterialColors.getColor(
+                            this,
+                            com.google.android.material.R.attr.colorSurfaceContainerHighest,
+                            "No surface color configured");
+            white =
+                    MaterialColors.getColor(
+                            this,
+                            com.google.android.material.R.attr.colorSurfaceInverse,
+                            "No inverse surface color configured");
         } else {
-            black = MaterialColors.getColor(this, com.google.android.material.R.attr.colorSurfaceInverse,"No inverse surface color configured");
-            white = MaterialColors.getColor(this, com.google.android.material.R.attr.colorSurfaceContainerHighest,"No surface color configured");
+            black =
+                    MaterialColors.getColor(
+                            this,
+                            com.google.android.material.R.attr.colorSurfaceInverse,
+                            "No inverse surface color configured");
+            white =
+                    MaterialColors.getColor(
+                            this,
+                            com.google.android.material.R.attr.colorSurfaceContainerHighest,
+                            "No surface color configured");
         }
         final var bitmap = BarcodeProvider.create2dBarcodeBitmap(uri, width, black, white);
         final ImageView view = new ImageView(this);
@@ -965,7 +1141,7 @@ public abstract class XmppActivity extends ActionBarActivity {
     protected Account extractAccount(Intent intent) {
         final String jid = intent != null ? intent.getStringExtra(EXTRA_ACCOUNT) : null;
         try {
-            return jid != null ? xmppConnectionService.findAccountByJid(Jid.ofEscaped(jid)) : null;
+            return jid != null ? xmppConnectionService.findAccountByJid(Jid.of(jid)) : null;
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -978,7 +1154,10 @@ public abstract class XmppActivity extends ActionBarActivity {
     public void loadBitmap(Message message, ImageView imageView) {
         Bitmap bm;
         try {
-            bm = xmppConnectionService.getFileBackend().getThumbnail(message, (int) (metrics.density * 288), true);
+            bm =
+                    xmppConnectionService
+                            .getFileBackend()
+                            .getThumbnail(message, (int) (metrics.density * 288), true);
         } catch (IOException e) {
             bm = null;
         }
@@ -991,8 +1170,7 @@ public abstract class XmppActivity extends ActionBarActivity {
                 imageView.setBackgroundColor(0xff333333);
                 imageView.setImageDrawable(null);
                 final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-                final AsyncDrawable asyncDrawable = new AsyncDrawable(
-                        getResources(), null, task);
+                final AsyncDrawable asyncDrawable = new AsyncDrawable(getResources(), null, task);
                 imageView.setImageDrawable(asyncDrawable);
                 try {
                     task.execute(message);
@@ -1035,7 +1213,8 @@ public abstract class XmppActivity extends ActionBarActivity {
                 return false;
             } else {
                 jids.add(conversation.getJid().asBareJid());
-                return service.createAdhocConference(conversation.getAccount(), null, jids, activity.adhocCallback);
+                return service.createAdhocConference(
+                        conversation.getAccount(), null, jids, activity.adhocCallback);
             }
         }
     }
@@ -1057,7 +1236,9 @@ public abstract class XmppActivity extends ActionBarActivity {
             try {
                 final XmppActivity activity = find(imageViewReference);
                 if (activity != null && activity.xmppConnectionService != null) {
-                    return activity.xmppConnectionService.getFileBackend().getThumbnail(message, (int) (activity.metrics.density * 288), false);
+                    return activity.xmppConnectionService
+                            .getFileBackend()
+                            .getThumbnail(message, (int) (activity.metrics.density * 288), false);
                 } else {
                     return null;
                 }

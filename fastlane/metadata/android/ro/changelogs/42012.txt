@@ -1,0 +1,1 @@
+* Corectat up/download HTTP pentru utilizatorii care nu au încredere în CA din sistem

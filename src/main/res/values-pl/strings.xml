@@ -465,7 +465,7 @@
     <string name="download_failed_invalid_file">Pobieranie nieudane: Nieprawidłowy plik</string>
     <string name="account_status_tor_unavailable">Sieć TOR jest niedostepna</string>
     <string name="account_status_bind_failure">Błąd połączenia (zasób)</string>
-    <string name="account_status_host_unknown">Serwer nie odpowiada domenie</string>
+    <string name="account_status_host_unknown">Nie odpowiada za domenę</string>
     <string name="server_info_broken">Zepsute</string>
     <string name="pref_presence_settings">Dostępność</string>
     <string name="pref_away_when_screen_off">Niedostępny kiedy urządzenie jest zablokowane</string>
@@ -1125,4 +1125,21 @@
     <string name="add_reaction">Dodaj reakcję…</string>
     <string name="add_reaction_title">Dodaj reakcję</string>
     <string name="more_reactions">Więcej reakcji</string>
+    <string name="could_not_modify_call">Nie można zmodyfikować rozmowy</string>
+    <string name="clients_may_not_support_av">Klient XMPP Twojego kontaktu może nie obsługiwać rozmów/wideorozmów.</string>
+    <string name="pref_show_avatars">Pokaż awatary</string>
+    <string name="pref_show_avatars_summary">Pokazuj awatary dla Twoich wiadomości i w rozmowach 1:1, a nie tylko w rozmowach grupowych.</string>
+    <string name="pref_chat_bubbles">Dymki rozmowy</string>
+    <string name="pref_chat_bubbles_summary">Kolor tła, rozmiar czcionki, awatary</string>
+    <string name="pref_title_bubbles">Dymki rozmowy</string>
+    <string name="pref_call_integration">Integracja rozmów</string>
+    <string name="pref_call_integration_summary">Rozmowy w tej aplikacji wchodzą w interakcję ze zwykłymi rozmowami telefonicznymi, np. kończenie jednej rozmowy gdy zaczyna się inna.</string>
+    <string name="pref_align_start">Wiadomości wyrównane do lewej</string>
+    <string name="pref_align_start_summary">Wyświetlaj wszystkie wiadomości, również wysłane, po lewej stronie, dla jednolitego układu rozmowy.</string>
+    <string name="custom_notifications">Własne powiadomienia</string>
+    <string name="custom_notifications_enable">Włączyć dedykowane ustawienia powiadomień (ważność, dźwięk, wibracje) dla tej rozmowy?</string>
+    <string name="delete_avatar_message">Czy chcesz usunąć swój awatar? Niektórzy klienci mogą nadal pokazywać zachowaną kopię.</string>
+    <string name="show_to_contacts_only">Pokazuj wyłącznie kontaktom</string>
+    <string name="account_status_connection_timeout">Limit czasu połączenia</string>
+    <string name="retry_with_p2p">Spróbuj ponownie używając P2P</string>
 </resources>

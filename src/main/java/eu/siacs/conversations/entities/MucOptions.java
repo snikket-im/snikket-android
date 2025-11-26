@@ -1,14 +1,10 @@
 package eu.siacs.conversations.entities;
 
-import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.services.AvatarService;
@@ -21,7 +17,6 @@ import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.pep.Avatar;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -53,9 +48,7 @@ public class MucOptions {
     private User self;
     private String password = null;
 
-    private boolean tookProposedNickFromBookmark = false;
-
-    public MucOptions(Conversation conversation) {
+    public MucOptions(final Conversation conversation) {
         this.account = conversation.getAccount();
         this.conversation = conversation;
         this.self = new User(this, createJoinJid(getProposedNick()));
@@ -67,15 +60,16 @@ public class MucOptions {
         return this.conversation.getAccount();
     }
 
-    public boolean setSelf(User user) {
+    public boolean setSelf(final User user) {
         this.self = user;
         final boolean roleChanged = this.conversation.setAttribute("role", user.role.toString());
-        final boolean affiliationChanged = this.conversation.setAttribute("affiliation", user.affiliation.toString());
+        final boolean affiliationChanged =
+                this.conversation.setAttribute("affiliation", user.affiliation.toString());
         return roleChanged || affiliationChanged;
     }
 
-    public void changeAffiliation(Jid jid, Affiliation affiliation) {
-        User user = findUserByRealJid(jid);
+    public void changeAffiliation(final Jid jid, final Affiliation affiliation) {
+        final User user = findUserByRealJid(jid);
         synchronized (users) {
             if (user != null && user.getRole() == Role.NONE) {
                 users.remove(user);
@@ -111,17 +105,6 @@ public class MucOptions {
         }
     }
 
-    public boolean isTookProposedNickFromBookmark() {
-        return tookProposedNickFromBookmark;
-    }
-
-    void notifyOfBookmarkNick(final String nick) {
-        final String normalized = normalize(account.getJid(),nick);
-        if (normalized != null && normalized.equals(getSelf().getFullJid().getResource())) {
-            this.tookProposedNickFromBookmark = true;
-        }
-    }
-
     public boolean mamSupport() {
         return MessageArchiveService.Version.has(getFeatures());
     }
@@ -133,25 +116,34 @@ public class MucOptions {
         if (roomConfigName != null) {
             name = roomConfigName.getValue();
         } else {
-            List<ServiceDiscoveryResult.Identity> identities = serviceDiscoveryResult.getIdentities();
-            String identityName = identities.size() > 0 ? identities.get(0).getName() : null;
+            final var identities = serviceDiscoveryResult.getIdentities();
+            final String identityName = !identities.isEmpty() ? identities.get(0).getName() : null;
             final Jid jid = conversation.getJid();
-            if (identityName != null && !identityName.equals(jid == null ? null : jid.getEscapedLocal())) {
+            if (identityName != null && !identityName.equals(jid == null ? null : jid.getLocal())) {
                 name = identityName;
             } else {
                 name = null;
             }
         }
         boolean changed = conversation.setAttribute("muc_name", name);
-        changed |= conversation.setAttribute(Conversation.ATTRIBUTE_MEMBERS_ONLY, this.hasFeature("muc_membersonly"));
-        changed |= conversation.setAttribute(Conversation.ATTRIBUTE_MODERATED, this.hasFeature("muc_moderated"));
-        changed |= conversation.setAttribute(Conversation.ATTRIBUTE_NON_ANONYMOUS, this.hasFeature("muc_nonanonymous"));
+        changed |=
+                conversation.setAttribute(
+                        Conversation.ATTRIBUTE_MEMBERS_ONLY, this.hasFeature("muc_membersonly"));
+        changed |=
+                conversation.setAttribute(
+                        Conversation.ATTRIBUTE_MODERATED, this.hasFeature("muc_moderated"));
+        changed |=
+                conversation.setAttribute(
+                        Conversation.ATTRIBUTE_NON_ANONYMOUS, this.hasFeature("muc_nonanonymous"));
         return changed;
     }
 
     private Data getRoomInfoForm() {
-        final List<Data> forms = serviceDiscoveryResult == null ? Collections.emptyList() : serviceDiscoveryResult.forms;
-        return forms.size() == 0 ? new Data() : forms.get(0);
+        final List<Data> forms =
+                serviceDiscoveryResult == null
+                        ? Collections.emptyList()
+                        : serviceDiscoveryResult.forms;
+        return forms.isEmpty() ? new Data() : forms.get(0);
     }
 
     public String getAvatar() {
@@ -159,7 +151,8 @@ public class MucOptions {
     }
 
     public boolean hasFeature(String feature) {
-        return this.serviceDiscoveryResult != null && this.serviceDiscoveryResult.features.contains(feature);
+        return this.serviceDiscoveryResult != null
+                && this.serviceDiscoveryResult.features.contains(feature);
     }
 
     public boolean hasVCards() {
@@ -167,7 +160,8 @@ public class MucOptions {
     }
 
     public boolean canInvite() {
-        final boolean hasPermission = !membersOnly() || self.getRole().ranks(Role.MODERATOR) || allowInvites();
+        final boolean hasPermission =
+                !membersOnly() || self.getRole().ranks(Role.MODERATOR) || allowInvites();
         return hasPermission && online();
     }
 
@@ -190,7 +184,7 @@ public class MucOptions {
     public boolean allowPm() {
         final Field field = getRoomInfoForm().getFieldByName("muc#roomconfig_allowpm");
         if (field == null) {
-            return true; //fall back if field does not exists
+            return true; // fall back if field does not exists
         }
         if ("anyone".equals(field.getValue())) {
             return true;
@@ -205,7 +199,7 @@ public class MucOptions {
 
     public boolean allowPmRaw() {
         final Field field = getRoomInfoForm().getFieldByName("muc#roomconfig_allowpm");
-        return  field == null || Arrays.asList("anyone","participants").contains(field.getValue());
+        return field == null || Arrays.asList("anyone", "participants").contains(field.getValue());
     }
 
     public boolean participating() {
@@ -217,7 +211,9 @@ public class MucOptions {
     }
 
     public List<String> getFeatures() {
-        return this.serviceDiscoveryResult != null ? this.serviceDiscoveryResult.features : Collections.emptyList();
+        return this.serviceDiscoveryResult != null
+                ? this.serviceDiscoveryResult.features
+                : Collections.emptyList();
     }
 
     public boolean nonanonymous() {
@@ -253,7 +249,8 @@ public class MucOptions {
                         break;
                     }
                 }
-                boolean self = user.realJid != null && user.realJid.equals(account.getJid().asBareJid());
+                boolean self =
+                        user.realJid != null && user.realJid.equals(account.getJid().asBareJid());
                 if (membersOnly()
                         && nonanonymous()
                         && user.affiliation.ranks(Affiliation.MEMBER)
@@ -270,7 +267,7 @@ public class MucOptions {
         return user;
     }
 
-    //returns true if real jid was new;
+    // returns true if real jid was new;
     public boolean updateUser(User user) {
         User old;
         boolean realJidFound = false;
@@ -279,7 +276,7 @@ public class MucOptions {
             realJidFound = old != null;
             if (old != null) {
                 if (old.fullJid != null) {
-                    return false; //don't add. user already exists
+                    return false; // don't add. user already exists
                 } else {
                     synchronized (users) {
                         users.remove(old);
@@ -301,7 +298,10 @@ public class MucOptions {
             if (old != null) {
                 users.remove(old);
             }
-            boolean fullJidIsSelf = isOnline && user.getFullJid() != null && user.getFullJid().equals(self.getFullJid());
+            boolean fullJidIsSelf =
+                    isOnline
+                            && user.getFullJid() != null
+                            && user.getFullJid().equals(self.getFullJid());
             if ((!membersOnly() || user.getAffiliation().ranks(Affiliation.MEMBER))
                     && user.getAffiliation().outranks(Affiliation.OUTCAST)
                     && !fullJidIsSelf) {
@@ -342,7 +342,9 @@ public class MucOptions {
 
     public User findUserByOccupantId(final String occupantId) {
         synchronized (this.users) {
-            return Strings.isNullOrEmpty(occupantId) ? null : Iterables.find(this.users, u -> occupantId.equals(u.occupantId),null);
+            return Strings.isNullOrEmpty(occupantId)
+                    ? null
+                    : Iterables.find(this.users, u -> occupantId.equals(u.occupantId), null);
         }
     }
 
@@ -358,7 +360,8 @@ public class MucOptions {
 
     public User findUser(ReadByMarker readByMarker) {
         if (readByMarker.getRealJid() != null) {
-            return findOrCreateUserByRealJid(readByMarker.getRealJid().asBareJid(), readByMarker.getFullJid());
+            return findOrCreateUserByRealJid(
+                    readByMarker.getRealJid().asBareJid(), readByMarker.getFullJid());
         } else if (readByMarker.getFullJid() != null) {
             return findUserByFullJid(readByMarker.getFullJid());
         } else {
@@ -374,7 +377,7 @@ public class MucOptions {
         if (existing != null) {
             return existing;
         } else if (reaction.from != null) {
-            return new User(this,reaction.from);
+            return new User(this, reaction.from);
         } else {
             return null;
         }
@@ -382,7 +385,7 @@ public class MucOptions {
 
     public List<User> findUsers(final Collection<Reaction> reactions) {
         final ImmutableList.Builder<User> builder = new ImmutableList.Builder<>();
-        for(final Reaction reaction : reactions) {
+        for (final Reaction reaction : reactions) {
             final var user = findUser(reaction);
             if (user != null) {
                 builder.add(user);
@@ -413,7 +416,8 @@ public class MucOptions {
         synchronized (users) {
             ArrayList<User> users = new ArrayList<>();
             for (User user : this.users) {
-                if (!user.isDomain() && (includeOffline || user.getRole().ranks(Role.PARTICIPANT))) {
+                if (!user.isDomain()
+                        && (includeOffline || user.getRole().ranks(Role.PARTICIPANT))) {
                     users.add(user);
                 }
             }
@@ -436,13 +440,15 @@ public class MucOptions {
         }
     }
 
-    public List<User> getUsers(int max) {
-        ArrayList<User> subset = new ArrayList<>();
-        HashSet<Jid> jids = new HashSet<>();
-        jids.add(account.getJid().asBareJid());
+    public List<User> getUsers(final int max) {
+        final ArrayList<User> subset = new ArrayList<>();
+        final HashSet<Jid> addresses = new HashSet<>();
+        addresses.add(account.getJid().asBareJid());
         synchronized (users) {
             for (User user : users) {
-                if (user.getRealJid() == null || (user.getRealJid().getLocal() != null && jids.add(user.getRealJid()))) {
+                if (user.getRealJid() == null
+                        || (user.getRealJid().getLocal() != null
+                                && addresses.add(user.getRealJid()))) {
                     subset.add(user);
                 }
                 if (subset.size() >= max) {
@@ -458,7 +464,8 @@ public class MucOptions {
         HashSet<Jid> jids = new HashSet<>();
         for (User user : users) {
             jids.add(user.getAccount().getJid().asBareJid());
-            if (user.getRealJid() == null || (user.getRealJid().getLocal() != null && jids.add(user.getRealJid()))) {
+            if (user.getRealJid() == null
+                    || (user.getRealJid().getLocal() != null && jids.add(user.getRealJid()))) {
                 subset.add(user);
             }
             if (subset.size() >= max) {
@@ -474,14 +481,26 @@ public class MucOptions {
         }
     }
 
-    public String getProposedNick() {
+    private String getProposedNick() {
         final Bookmark bookmark = this.conversation.getBookmark();
-        final String bookmarkedNick = normalize(account.getJid(), bookmark == null ? null : bookmark.getNick());
+        if (bookmark != null) {
+            // if we already have a bookmark we consider this the source of truth
+            return getProposedNickPure();
+        }
+        final var storedJid = conversation.getJid();
+        if (storedJid.isBareJid()) {
+            return defaultNick(account);
+        } else {
+            return storedJid.getResource();
+        }
+    }
+
+    public String getProposedNickPure() {
+        final Bookmark bookmark = this.conversation.getBookmark();
+        final String bookmarkedNick =
+                normalize(account.getJid(), bookmark == null ? null : bookmark.getNick());
         if (bookmarkedNick != null) {
-            this.tookProposedNickFromBookmark = true;
             return bookmarkedNick;
-        } else if (!conversation.getJid().isBareJid()) {
-            return conversation.getJid().getResource();
         } else {
             return defaultNick(account);
         }
@@ -496,16 +515,15 @@ public class MucOptions {
         }
     }
 
-    private static String normalize(Jid account, String nick) {
-        if (account == null || TextUtils.isEmpty(nick)) {
+    private static String normalize(final Jid account, final String nick) {
+        if (account == null || Strings.isNullOrEmpty(nick)) {
             return null;
         }
         try {
             return account.withResource(nick).getResource();
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             return null;
         }
-
     }
 
     public String getActualNick() {
@@ -651,7 +669,8 @@ public class MucOptions {
 
     public String getPassword() {
         this.password = conversation.getAttribute(Conversation.ATTRIBUTE_MUC_PASSWORD);
-        if (this.password == null && conversation.getBookmark() != null
+        if (this.password == null
+                && conversation.getBookmark() != null
                 && conversation.getBookmark().getPassword() != null) {
             return conversation.getBookmark().getPassword();
         } else {
@@ -676,7 +695,12 @@ public class MucOptions {
         ArrayList<Jid> members = new ArrayList<>();
         synchronized (users) {
             for (User user : users) {
-                if (user.affiliation.ranks(Affiliation.MEMBER) && user.realJid != null && !user.realJid.asBareJid().equals(conversation.account.getJid().asBareJid()) && (!user.isDomain() || includeDomains)) {
+                if (user.affiliation.ranks(Affiliation.MEMBER)
+                        && user.realJid != null
+                        && !user.realJid
+                                .asBareJid()
+                                .equals(conversation.account.getJid().asBareJid())
+                        && (!user.isDomain() || includeDomains)) {
                     members.add(user.realJid);
                 }
             }
@@ -792,9 +816,7 @@ public class MucOptions {
         void onFailure();
     }
 
-    public interface OnRenameListener extends OnEventListener {
-
-    }
+    public interface OnRenameListener extends OnEventListener {}
 
     public static class User implements Comparable<User>, AvatarService.Avatarable {
         private Role role = Role.NONE;
@@ -856,7 +878,7 @@ public class MucOptions {
             }
         }
 
-        public boolean setAvatar(Avatar avatar) {
+        public boolean setAvatar(final Avatar avatar) {
             if (this.avatar != null && this.avatar.equals(avatar)) {
                 return false;
             } else {
@@ -869,7 +891,10 @@ public class MucOptions {
             if (avatar != null) {
                 return avatar.getFilename();
             }
-            Avatar avatar = realJid != null ? getAccount().getRoster().getContact(realJid).getAvatar() : null;
+            Avatar avatar =
+                    realJid != null
+                            ? getAccount().getRoster().getContact(realJid).getAvatar()
+                            : null;
             return avatar == null ? null : avatar.getFilename();
         }
 
@@ -897,7 +922,6 @@ public class MucOptions {
             if (realJid != null ? !realJid.equals(user.realJid) : user.realJid != null)
                 return false;
             return fullJid != null ? fullJid.equals(user.fullJid) : user.fullJid == null;
-
         }
 
         public boolean isDomain() {
@@ -915,7 +939,13 @@ public class MucOptions {
 
         @Override
         public String toString() {
-            return "[fulljid:" + fullJid + ",realjid:" + realJid + ",affiliation" + affiliation.toString() + "]";
+            return "[fulljid:"
+                    + fullJid
+                    + ",realjid:"
+                    + realJid
+                    + ",affiliation"
+                    + affiliation.toString()
+                    + "]";
         }
 
         public boolean realJidMatchesAccount() {

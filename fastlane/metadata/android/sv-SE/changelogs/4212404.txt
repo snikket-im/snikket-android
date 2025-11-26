@@ -1,0 +1,2 @@
+* Visa alltid samtalsknapp
+* Diverse bugg-fixar

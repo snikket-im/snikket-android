@@ -4,19 +4,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-
 import com.google.android.material.color.MaterialColors;
-
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ItemAccountBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
-
 import java.util.List;
 
 public class AccountAdapter extends ArrayAdapter<Account> {
@@ -42,27 +37,42 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         final Account account = getItem(position);
         final ViewHolder viewHolder;
         if (view == null) {
-            ItemAccountBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_account, parent, false);
+            ItemAccountBinding binding =
+                    DataBindingUtil.inflate(
+                            LayoutInflater.from(parent.getContext()),
+                            R.layout.item_account,
+                            parent,
+                            false);
             view = binding.getRoot();
             viewHolder = new ViewHolder(binding);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.binding.accountJid.setText(account.getJid().asBareJid().toEscapedString());
+        viewHolder.binding.accountJid.setText(account.getJid().asBareJid().toString());
         AvatarWorkerTask.loadAvatar(account, viewHolder.binding.accountImage, R.dimen.avatar);
-        viewHolder.binding.accountStatus.setText(getContext().getString(account.getStatus().getReadableId()));
+        viewHolder.binding.accountStatus.setText(
+                getContext().getString(account.getStatus().getReadableId()));
         switch (account.getStatus()) {
             case ONLINE:
-                viewHolder.binding.accountStatus.setTextColor(MaterialColors.getColor(viewHolder.binding.accountStatus, com.google.android.material.R.attr.colorPrimary));
+                viewHolder.binding.accountStatus.setTextColor(
+                        MaterialColors.getColor(
+                                viewHolder.binding.accountStatus,
+                                com.google.android.material.R.attr.colorPrimary));
                 break;
             case DISABLED:
             case LOGGED_OUT:
             case CONNECTING:
-                viewHolder.binding.accountStatus.setTextColor(MaterialColors.getColor(viewHolder.binding.accountStatus, com.google.android.material.R.attr.colorOnSurfaceVariant));
+                viewHolder.binding.accountStatus.setTextColor(
+                        MaterialColors.getColor(
+                                viewHolder.binding.accountStatus,
+                                com.google.android.material.R.attr.colorOnSurfaceVariant));
                 break;
             default:
-                viewHolder.binding.accountStatus.setTextColor(MaterialColors.getColor(viewHolder.binding.accountStatus, com.google.android.material.R.attr.colorError));
+                viewHolder.binding.accountStatus.setTextColor(
+                        MaterialColors.getColor(
+                                viewHolder.binding.accountStatus,
+                                com.google.android.material.R.attr.colorError));
                 break;
         }
         final boolean isDisabled = (account.getStatus() == Account.State.DISABLED);
@@ -73,11 +83,12 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         } else {
             viewHolder.binding.tglAccountStatus.setVisibility(View.GONE);
         }
-        viewHolder.binding.tglAccountStatus.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b == isDisabled && activity instanceof OnTglAccountState) {
-                ((OnTglAccountState) activity).onClickTglAccountState(account, b);
-            }
-        });
+        viewHolder.binding.tglAccountStatus.setOnCheckedChangeListener(
+                (compoundButton, b) -> {
+                    if (b == isDisabled && activity instanceof OnTglAccountState tglAccountState) {
+                        tglAccountState.onClickTglAccountState(account, b);
+                    }
+                });
         return view;
     }
 
@@ -89,10 +100,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         }
     }
 
-
-
     public interface OnTglAccountState {
         void onClickTglAccountState(Account account, boolean state);
     }
-
 }

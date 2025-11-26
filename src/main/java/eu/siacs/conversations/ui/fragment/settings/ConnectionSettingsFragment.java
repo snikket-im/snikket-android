@@ -1,17 +1,18 @@
 package eu.siacs.conversations.ui.fragment.settings;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.common.base.Strings;
-
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.QuickConversationsService;
+import eu.siacs.conversations.utils.Resolver;
+import java.util.Arrays;
 
 public class ConnectionSettingsFragment extends XmppPreferenceFragment {
 
@@ -59,9 +60,26 @@ public class ConnectionSettingsFragment extends XmppPreferenceFragment {
                 reconnectAccounts();
                 requireService().reinitializeMuclumbusService();
             }
-            case AppSettings.SHOW_CONNECTION_OPTIONS -> {
-                reconnectAccounts();
+            case AppSettings.SHOW_CONNECTION_OPTIONS -> reconnectAccounts();
+        }
+        if (Arrays.asList(AppSettings.USE_TOR, AppSettings.SHOW_CONNECTION_OPTIONS).contains(key)) {
+            final var appSettings = new AppSettings(requireContext());
+            if (appSettings.isUseTor() || appSettings.isExtendedConnectionOptions()) {
+                return;
             }
+            resetUserDefinedHostname();
+        }
+    }
+
+    private void resetUserDefinedHostname() {
+        final var service = requireService();
+        for (final Account account : service.getAccounts()) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid() + ": resetting hostname and port to defaults");
+            account.setHostname(null);
+            account.setPort(Resolver.XMPP_PORT_STARTTLS);
+            service.databaseBackend.updateAccount(account);
         }
     }
 

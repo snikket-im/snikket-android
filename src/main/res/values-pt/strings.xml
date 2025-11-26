@@ -37,7 +37,7 @@
     <string name="blocked">Bloqueado</string>
     <string name="register_account">Registe uma nova conta no servidor</string>
     <string name="change_password_on_server">Altere a senha no servidor</string>
-    <string name="share_with">Compartilhar com...</string>
+    <string name="share_with">Mostrar a…</string>
     <string name="invite_contact">Convidar contacto</string>
     <string name="contacts">Contactos</string>
     <string name="contact">Contacto</string>
@@ -90,8 +90,8 @@
     <string name="error">Ocorreu um erro</string>
     <string name="recording_error">Erro</string>
     <string name="your_account">A sua conta</string>
-    <string name="send_presence_updates">Enviar atualizações de presença</string>
-    <string name="receive_presence_updates">Receber atualizações de presença</string>
+    <string name="send_presence_updates">Enviar presença</string>
+    <string name="receive_presence_updates">Receber presença</string>
     <string name="ask_for_presence_updates">Pedir atualizações de presença</string>
     <string name="attach_choose_picture">Escolher imagem</string>
     <string name="attach_take_picture">Tirar foto</string>
@@ -400,4 +400,21 @@
     <string name="message_copied_to_clipboard">Mensagem copiada para a área de transferência</string>
     <string name="title_activity_show_location">Exibir localização</string>
     <string name="rtp_state_declined_or_busy">Ocupado</string>
+    <string name="action_account">Gerir conta</string>
+    <string name="action_muc_details">Detalhes do grupo</string>
+    <string name="channel_details">Detalhes do canal</string>
+    <string name="title_activity_share_with">Mostrar a…</string>
+    <string name="action_unblock_participant">Perdoar membro</string>
+    <string name="title_activity_share_via_account">Mostrar via conta</string>
+    <string name="title_activity_new_chat">Nova conversa</string>
+    <string name="action_archive_chat">Arquivar conversa</string>
+    <string name="action_block_participant">Ignorar membro</string>
+    <plurals name="x_unread_conversations">
+        <item quantity="one">%d conversa não lida</item>
+        <item quantity="many">%d muitas conversas não lidas</item>
+        <item quantity="other">%d conversas não lidas</item>
+    </plurals>
+    <string name="remove_bookmark">Gostaria de remover %s como favorito?</string>
+    <string name="remove_bookmark_and_close">Gostaria de remover o favorito de %s e arquivar a conversa?</string>
+    <string name="remove_contact_text">Gostaria de remover %s da sua lista de contatos? A conversa não será removida.</string>
 </resources>

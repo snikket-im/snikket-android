@@ -1,0 +1,3 @@
+* Använd temat Material 3
+* Omorganisera inställningar
+* Synkronisera läs-status mellan enheter

@@ -33,58 +33,125 @@ import android.util.LruCache;
 
 import androidx.annotation.NonNull;
 
+import com.google.common.collect.ImmutableSet;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class Emoticons {
 
-    private static final UnicodeRange MISC_SYMBOLS_AND_PICTOGRAPHS = new UnicodeRange(0x1F300, 0x1F5FF);
+    private static final UnicodeRange MISC_SYMBOLS_AND_PICTOGRAPHS =
+            new UnicodeRange(0x1F300, 0x1F5FF);
     private static final UnicodeRange SUPPLEMENTAL_SYMBOLS = new UnicodeRange(0x1F900, 0x1F9FF);
     private static final UnicodeRange EMOTICONS = new UnicodeRange(0x1F600, 0x1FAF6);
-    //private static final UnicodeRange TRANSPORT_SYMBOLS = new UnicodeRange(0x1F680, 0x1F6FF);
+    // private static final UnicodeRange TRANSPORT_SYMBOLS = new UnicodeRange(0x1F680, 0x1F6FF);
     private static final UnicodeRange MISC_SYMBOLS = new UnicodeRange(0x2600, 0x26FF);
     private static final UnicodeRange DINGBATS = new UnicodeRange(0x2700, 0x27BF);
-    private static final UnicodeRange ENCLOSED_ALPHANUMERIC_SUPPLEMENT = new UnicodeRange(0x1F100, 0x1F1FF);
-    private static final UnicodeRange ENCLOSED_IDEOGRAPHIC_SUPPLEMENT = new UnicodeRange(0x1F200, 0x1F2FF);
+    private static final UnicodeRange ENCLOSED_ALPHANUMERIC_SUPPLEMENT =
+            new UnicodeRange(0x1F100, 0x1F1FF);
+    private static final UnicodeRange ENCLOSED_IDEOGRAPHIC_SUPPLEMENT =
+            new UnicodeRange(0x1F200, 0x1F2FF);
     private static final UnicodeRange REGIONAL_INDICATORS = new UnicodeRange(0x1F1E6, 0x1F1FF);
     private static final UnicodeRange GEOMETRIC_SHAPES = new UnicodeRange(0x25A0, 0x25FF);
     private static final UnicodeRange LATIN_SUPPLEMENT = new UnicodeRange(0x80, 0xFF);
     private static final UnicodeRange MISC_TECHNICAL = new UnicodeRange(0x2300, 0x23FF);
     private static final UnicodeRange TAGS = new UnicodeRange(0xE0020, 0xE007F);
     private static final UnicodeList CYK_SYMBOLS_AND_PUNCTUATION = new UnicodeList(0x3030, 0x303D);
-    private static final UnicodeList LETTERLIKE_SYMBOLS = new UnicodeList(0x2122, 0x2139);
+    private static final UnicodeList LETTER_LIKE_SYMBOLS = new UnicodeList(0x2122, 0x2139);
 
-    private static final UnicodeBlocks KEYCAP_COMBINEABLE = new UnicodeBlocks(new UnicodeList(0x23), new UnicodeList(0x2A), new UnicodeRange(0x30, 0x39));
+    private static final UnicodeBlocks KEY_CAP_COMBINABLE =
+            new UnicodeBlocks(
+                    new UnicodeList(0x23), new UnicodeList(0x2A), new UnicodeRange(0x30, 0x39));
 
-    private static final UnicodeBlocks SYMBOLIZE = new UnicodeBlocks(
-            GEOMETRIC_SHAPES,
-            LATIN_SUPPLEMENT,
-            CYK_SYMBOLS_AND_PUNCTUATION,
-            LETTERLIKE_SYMBOLS,
-            KEYCAP_COMBINEABLE);
-    private static final UnicodeBlocks EMOJIS = new UnicodeBlocks(
-            MISC_SYMBOLS_AND_PICTOGRAPHS,
-            SUPPLEMENTAL_SYMBOLS,
-            EMOTICONS,
-            //TRANSPORT_SYMBOLS,
-            MISC_SYMBOLS,
-            DINGBATS,
-            ENCLOSED_ALPHANUMERIC_SUPPLEMENT,
-            ENCLOSED_IDEOGRAPHIC_SUPPLEMENT,
-            MISC_TECHNICAL);
+    private static final UnicodeBlocks SYMBOLIZE =
+            new UnicodeBlocks(
+                    GEOMETRIC_SHAPES,
+                    LATIN_SUPPLEMENT,
+                    CYK_SYMBOLS_AND_PUNCTUATION,
+                    LETTER_LIKE_SYMBOLS,
+                    KEY_CAP_COMBINABLE);
+    private static final UnicodeBlocks EMOJIS =
+            new UnicodeBlocks(
+                    MISC_SYMBOLS_AND_PICTOGRAPHS,
+                    SUPPLEMENTAL_SYMBOLS,
+                    EMOTICONS,
+                    // TRANSPORT_SYMBOLS,
+                    MISC_SYMBOLS,
+                    DINGBATS,
+                    ENCLOSED_ALPHANUMERIC_SUPPLEMENT,
+                    ENCLOSED_IDEOGRAPHIC_SUPPLEMENT,
+                    MISC_TECHNICAL);
 
-    private static final int MAX_EMOIJS = 42;
+    private static final int MAX_EMOJIS = 42;
 
     private static final int ZWJ = 0x200D;
     private static final int VARIATION_16 = 0xFE0F;
-    private static final int COMBINING_ENCLOSING_KEYCAP = 0x20E3;
+    private static final int VARIATION_15 = 0xFE0E;
+    private static final String VARIATION_16_STRING = new String(new char[] {VARIATION_16});
+    private static final String VARIATION_15_STRING = new String(new char[] {VARIATION_15});
+    private static final int COMBINING_ENCLOSING_KEY_CAP = 0x20E3;
     private static final int BLACK_FLAG = 0x1F3F4;
     private static final UnicodeRange FITZPATRICK = new UnicodeRange(0x1F3FB, 0x1F3FF);
 
+    private static final Set<String> TEXT_DEFAULT_TO_VS16 =
+            ImmutableSet.of(
+                    "❤",
+                    "✔",
+                    "✖",
+                    "➕",
+                    "➖",
+                    "➗",
+                    "⭐",
+                    "⚡",
+                    "\uD83C\uDF96",
+                    "\uD83C\uDFC6",
+                    "\uD83E\uDD47",
+                    "\uD83E\uDD48",
+                    "\uD83E\uDD49",
+                    "\uD83D\uDC51",
+                    "⚓",
+                    "⛵",
+                    "✈",
+                    "⚖",
+                    "⛑",
+                    "⚒",
+                    "⛏",
+                    "☎",
+                    "⛄",
+                    "⛅",
+                    "⚠",
+                    "⚛",
+                    "✡",
+                    "☮",
+                    "☯",
+                    "☀",
+                    "⬅",
+                    "➡",
+                    "⬆",
+                    "⬇");
+
     private static final LruCache<CharSequence, Pattern> CACHE = new LruCache<>(256);
+
+    public static String normalizeToVS16(final String input) {
+        return TEXT_DEFAULT_TO_VS16.contains(input) && !input.endsWith(VARIATION_15_STRING)
+                ? input + VARIATION_16_STRING
+                : input;
+    }
+
+    public static String existingVariant(final String original, final Set<String> existing) {
+        if (existing.contains(original) || original.endsWith(VARIATION_15_STRING)) {
+            return original;
+        }
+        final var variant =
+                original.endsWith(VARIATION_16_STRING)
+                        ? original.substring(0, original.length() - 1)
+                        : original + VARIATION_16_STRING;
+        return existing.contains(variant) ? variant : original;
+    }
 
     private static List<Symbol> parse(String input) {
         List<Symbol> symbols = new ArrayList<>();
@@ -123,7 +190,7 @@ public class Emoticons {
         for (final Symbol symbol : parse(input.toString())) {
             if (symbol instanceof Emoji) {
                 emojis.add(symbol.toString());
-                if (++i >= MAX_EMOIJS) {
+                if (++i >= MAX_EMOJIS) {
                     return Pattern.compile("");
                 }
             }
@@ -150,10 +217,10 @@ public class Emoticons {
                 return false;
             }
         }
-        return symbols.size() > 0;
+        return !symbols.isEmpty();
     }
 
-    private static abstract class Symbol {
+    private abstract static class Symbol {
 
         private final String value;
 
@@ -201,26 +268,28 @@ public class Emoticons {
     private static class Builder {
         private final List<Integer> codepoints = new ArrayList<>();
 
-
         public boolean offer(int codepoint) {
             boolean add = false;
-            if (this.codepoints.size() == 0) {
+            if (this.codepoints.isEmpty()) {
                 if (SYMBOLIZE.contains(codepoint)) {
                     add = true;
                 } else if (REGIONAL_INDICATORS.contains(codepoint)) {
                     add = true;
-                } else if (EMOJIS.contains(codepoint) && !FITZPATRICK.contains(codepoint) && codepoint != ZWJ) {
+                } else if (EMOJIS.contains(codepoint)
+                        && !FITZPATRICK.contains(codepoint)
+                        && codepoint != ZWJ) {
                     add = true;
                 }
             } else {
                 int previous = codepoints.get(codepoints.size() - 1);
                 if (codepoints.get(0) == BLACK_FLAG) {
                     add = TAGS.contains(codepoint);
-                } else if (COMBINING_ENCLOSING_KEYCAP == codepoint) {
-                    add = KEYCAP_COMBINEABLE.contains(previous) || previous == VARIATION_16;
+                } else if (COMBINING_ENCLOSING_KEY_CAP == codepoint) {
+                    add = KEY_CAP_COMBINABLE.contains(previous) || previous == VARIATION_16;
                 } else if (SYMBOLIZE.contains(previous)) {
                     add = codepoint == VARIATION_16;
-                } else if (REGIONAL_INDICATORS.contains(previous) && REGIONAL_INDICATORS.contains(codepoint)) {
+                } else if (REGIONAL_INDICATORS.contains(previous)
+                        && REGIONAL_INDICATORS.contains(codepoint)) {
                     add = codepoints.size() == 1;
                 } else if (previous == VARIATION_16) {
                     add = isMerger(codepoint) || codepoint == VARIATION_16;
@@ -247,12 +316,15 @@ public class Emoticons {
         }
 
         public Symbol build() {
-            if (codepoints.size() > 0 && SYMBOLIZE.contains(codepoints.get(codepoints.size() - 1))) {
+            if (!codepoints.isEmpty()
+                    && SYMBOLIZE.contains(codepoints.get(codepoints.size() - 1))) {
                 return new Other(codepoints);
-            } else if (codepoints.size() > 1 && KEYCAP_COMBINEABLE.contains(codepoints.get(0)) && codepoints.get(codepoints.size() - 1) != COMBINING_ENCLOSING_KEYCAP) {
+            } else if (codepoints.size() > 1
+                    && KEY_CAP_COMBINABLE.contains(codepoints.get(0))
+                    && codepoints.get(codepoints.size() - 1) != COMBINING_ENCLOSING_KEY_CAP) {
                 return new Other(codepoints);
             }
-            return codepoints.size() == 0 ? new Other(codepoints) : new Emoji(codepoints);
+            return codepoints.isEmpty() ? new Other(codepoints) : new Emoji(codepoints);
         }
     }
 
@@ -291,7 +363,6 @@ public class Emoticons {
             return this.list.contains(codepoint);
         }
     }
-
 
     public static class UnicodeRange implements UnicodeSet {
 

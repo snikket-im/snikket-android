@@ -2,13 +2,11 @@ package eu.siacs.conversations.entities;
 
 import android.content.Context;
 import android.text.TextUtils;
-
+import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.Jid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-
-import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class RawBlockable implements ListItem, Blockable {
 
@@ -40,7 +38,7 @@ public class RawBlockable implements ListItem, Blockable {
         if (jid.isFullJid()) {
             return jid.getResource();
         } else {
-            return jid.toEscapedString();
+            return jid.toString();
         }
     }
 
@@ -62,7 +60,7 @@ public class RawBlockable implements ListItem, Blockable {
         needle = needle.toLowerCase(Locale.US).trim();
         String[] parts = needle.split("\\s+");
         for (String part : parts) {
-            if (!jid.toEscapedString().contains(part)) {
+            if (!jid.toString().contains(part)) {
                 return false;
             }
         }
@@ -76,7 +74,7 @@ public class RawBlockable implements ListItem, Blockable {
 
     @Override
     public int getAvatarBackgroundColor() {
-        return  UIHelper.getColorForName(jid.toEscapedString());
+        return UIHelper.getColorForName(jid.toString());
     }
 
     @Override
@@ -86,7 +84,6 @@ public class RawBlockable implements ListItem, Blockable {
 
     @Override
     public int compareTo(ListItem o) {
-        return this.getDisplayName().compareToIgnoreCase(
-				o.getDisplayName());
+        return this.getDisplayName().compareToIgnoreCase(o.getDisplayName());
     }
 }

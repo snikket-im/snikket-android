@@ -1,7 +1,6 @@
 package im.conversations.android.xmpp.model.bind;
 
 import com.google.common.base.Strings;
-
 import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
 
@@ -26,7 +25,7 @@ public class Bind extends Extension {
             return null;
         }
         try {
-            return eu.siacs.conversations.xmpp.Jid.ofEscaped(content);
+            return eu.siacs.conversations.xmpp.Jid.of(content);
         } catch (final IllegalArgumentException e) {
             return null;
         }

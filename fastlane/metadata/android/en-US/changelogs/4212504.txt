@@ -1,0 +1,1 @@
+* improve handling of some emoji reactions

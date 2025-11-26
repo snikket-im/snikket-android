@@ -1,0 +1,3 @@
+* Arată butonul de apel pentru contacte deconectate dacă au anuțat anterior suportul
+* Butonul de revenire nu mai termină apelul când apelul este conectat
+* corecturi de erori

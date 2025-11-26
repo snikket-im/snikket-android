@@ -1,0 +1,3 @@
+* Naprawiono rozmowy głosowe i wideo w Androidzie 8
+* Naprawiono problemy typu race condition w nowej integracji rozmów
+* Naprawiono nieznikającą kompresję wideo

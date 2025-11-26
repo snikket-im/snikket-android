@@ -1,0 +1,2 @@
+* Väikesed veaparandused
+* Taastasime võimaluse helistada välja JMP ja muude teenuste abil (Playstore'i versioonis)

@@ -3,12 +3,11 @@ package eu.siacs.conversations.utils;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
@@ -17,14 +16,22 @@ import com.google.common.primitives.Ints;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
-
 import de.gultsch.minidns.AndroidDNSClient;
 import de.gultsch.minidns.ResolverResult;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.Conversations;
 import eu.siacs.conversations.xmpp.Jid;
-
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.minidns.dnsmessage.Question;
 import org.minidns.dnsname.DnsName;
 import org.minidns.dnsname.InvalidDnsNameException;
@@ -36,17 +43,6 @@ import org.minidns.record.Data;
 import org.minidns.record.InternetAddressRR;
 import org.minidns.record.Record;
 import org.minidns.record.SRV;
-
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Resolver {
 
@@ -76,7 +72,8 @@ public class Resolver {
 
     private static final ExecutorService DNS_QUERY_EXECUTOR = Executors.newFixedThreadPool(12);
 
-    public static final int DEFAULT_PORT_XMPP = 5222;
+    public static final int XMPP_PORT_STARTTLS = 5222;
+    private static final int XMPP_PORT_DIRECT_TLS = 5223;
 
     private static final String DIRECT_TLS_SERVICE = "_xmpps-client";
     private static final String STARTTLS_SERVICE = "_xmpp-client";
@@ -106,7 +103,7 @@ public class Resolver {
     public static void clearCache() {}
 
     public static boolean useDirectTls(final int port) {
-        return port == 443 || port == 5223;
+        return port == 443 || port == XMPP_PORT_DIRECT_TLS;
     }
 
     public static List<Result> resolve(final String domain) {
@@ -153,14 +150,11 @@ public class Resolver {
         if (IP.matches(domain)) {
             final InetAddress inetAddress;
             try {
-                inetAddress = InetAddress.getByName(domain);
-            } catch (final UnknownHostException e) {
+                inetAddress = InetAddresses.forString(domain);
+            } catch (final IllegalArgumentException e) {
                 return Collections.emptyList();
             }
-            final Result result = new Result();
-            result.ip = inetAddress;
-            result.port = DEFAULT_PORT_XMPP;
-            return Collections.singletonList(result);
+            return Result.createWithDefaultPorts(null, inetAddress);
         } else {
             return Collections.emptyList();
         }
@@ -263,20 +257,22 @@ public class Resolver {
                 Futures.transform(
                         resolveAsFuture(dnsName, A.class),
                         result ->
-                                Lists.transform(
-                                        ImmutableList.copyOf(result.getAnswersOrEmptySet()),
-                                        a -> Result.createDefault(dnsName, a.getInetAddress())),
+                                Result.createDefaults(
+                                        dnsName,
+                                        Collections2.transform(
+                                                result.getAnswersOrEmptySet(),
+                                                InternetAddressRR::getInetAddress)),
                         MoreExecutors.directExecutor());
         futuresBuilder.add(aRecordResults);
         ListenableFuture<List<Result>> aaaaRecordResults =
                 Futures.transform(
                         resolveAsFuture(dnsName, AAAA.class),
                         result ->
-                                Lists.transform(
-                                        ImmutableList.copyOf(result.getAnswersOrEmptySet()),
-                                        aaaa ->
-                                                Result.createDefault(
-                                                        dnsName, aaaa.getInetAddress())),
+                                Result.createDefaults(
+                                        dnsName,
+                                        Collections2.transform(
+                                                result.getAnswersOrEmptySet(),
+                                                InternetAddressRR::getInetAddress)),
                         MoreExecutors.directExecutor());
         futuresBuilder.add(aaaaRecordResults);
         if (cName) {
@@ -299,7 +295,7 @@ public class Resolver {
                 noSrvFallbacks,
                 results -> {
                     if (results.isEmpty()) {
-                        return Collections.singletonList(Result.createDefault(dnsName));
+                        return Result.createDefaults(dnsName);
                     } else {
                         return results;
                     }
@@ -330,7 +326,7 @@ public class Resolver {
         public static final String AUTHENTICATED = "authenticated";
         private InetAddress ip;
         private DnsName hostname;
-        private int port = DEFAULT_PORT_XMPP;
+        private int port = XMPP_PORT_STARTTLS;
         private boolean directTls = false;
         private boolean authenticated = false;
         private int priority;
@@ -344,16 +340,32 @@ public class Resolver {
             return result;
         }
 
-        static Result createDefault(final DnsName hostname, final InetAddress ip) {
+        static List<Result> createWithDefaultPorts(final DnsName hostname, final InetAddress ip) {
+            return Lists.transform(
+                    Arrays.asList(XMPP_PORT_STARTTLS, XMPP_PORT_DIRECT_TLS),
+                    p -> createDefault(hostname, ip, p));
+        }
+
+        static Result createDefault(final DnsName hostname, final InetAddress ip, final int port) {
             Result result = new Result();
-            result.port = DEFAULT_PORT_XMPP;
+            result.port = port;
             result.hostname = hostname;
             result.ip = ip;
+            result.directTls = useDirectTls(port);
             return result;
         }
 
-        static Result createDefault(final DnsName hostname) {
-            return createDefault(hostname, null);
+        static List<Result> createDefaults(
+                final DnsName hostname, final Collection<InetAddress> inetAddresses) {
+            final ImmutableList.Builder<Result> builder = new ImmutableList.Builder<>();
+            for (final InetAddress inetAddress : inetAddresses) {
+                builder.addAll(createWithDefaultPorts(hostname, inetAddress));
+            }
+            return builder.build();
+        }
+
+        static List<Result> createDefaults(final DnsName hostname) {
+            return createWithDefaultPorts(hostname, null);
         }
 
         public static Result fromCursor(final Cursor cursor) {
@@ -422,6 +434,10 @@ public class Resolver {
                     .add("authenticated", authenticated)
                     .add("priority", priority)
                     .toString();
+        }
+
+        public String asDestination() {
+            return ip != null ? InetAddresses.toAddrString(ip) : hostname.toString();
         }
 
         public ContentValues toContentValues() {

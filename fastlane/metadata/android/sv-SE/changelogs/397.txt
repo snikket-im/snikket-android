@@ -1,0 +1,3 @@
+* Hantera GPX-filer
+* Förbättra prestanda för återställning av säkerhetskopia
+* bugg-fixar

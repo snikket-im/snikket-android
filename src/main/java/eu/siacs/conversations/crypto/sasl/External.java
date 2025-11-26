@@ -1,10 +1,9 @@
 package eu.siacs.conversations.crypto.sasl;
 
-import android.util.Base64;
-
-import javax.net.ssl.SSLSocket;
-
+import com.google.common.base.Preconditions;
+import com.google.common.io.BaseEncoding;
 import eu.siacs.conversations.entities.Account;
+import javax.net.ssl.SSLSocket;
 
 public class External extends SaslMechanism {
 
@@ -26,7 +25,17 @@ public class External extends SaslMechanism {
 
     @Override
     public String getClientFirstMessage(final SSLSocket sslSocket) {
-        return Base64.encodeToString(
-                account.getJid().asBareJid().toEscapedString().getBytes(), Base64.NO_WRAP);
+        Preconditions.checkState(
+                this.state == State.INITIAL, "Calling getClientFirstMessage from invalid state");
+        this.state = State.AUTH_TEXT_SENT;
+        final String message = account.getJid().asBareJid().toString();
+        return BaseEncoding.base64().encode(message.getBytes());
+    }
+
+    @Override
+    public String getResponse(String challenge, SSLSocket sslSocket)
+            throws AuthenticationException {
+        // TODO check that state is in auth text sent and move to finished
+        return "";
     }
 }

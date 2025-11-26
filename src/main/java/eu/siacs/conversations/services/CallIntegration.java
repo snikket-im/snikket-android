@@ -2,7 +2,6 @@ package eu.siacs.conversations.services;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.net.Uri;
@@ -12,22 +11,18 @@ import android.telecom.CallEndpoint;
 import android.telecom.Connection;
 import android.telecom.DisconnectCause;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.Media;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +41,7 @@ public class CallIntegration extends Connection {
      * SecurityException
      */
     private static final List<String> BROKEN_DEVICE_MODELS =
-            Arrays.asList("gtaxlwifi", "a5y17lte", "YT-X705F");
+            Arrays.asList("gtaxlwifi", "a5y17lte", "YT-X705F", "HWAGS2");
 
     /**
      * all Realme devices at least up to and including Android 11 are broken
@@ -63,7 +58,6 @@ public class CallIntegration extends Connection {
             Arrays.asList("realme", "oppo", "oneplus");
 
     public static final int DEFAULT_TONE_VOLUME = 60;
-    private static final int DEFAULT_MEDIA_PLAYER_VOLUME = 90;
 
     private final Context context;
 
@@ -378,7 +372,7 @@ public class CallIntegration extends Connection {
             }
         }
         if (state == STATE_ACTIVE) {
-            playConnectedSound();
+            startTone(DEFAULT_TONE_VOLUME, ToneGenerator.TONE_CDMA_ANSWER, 100);
         } else if (state == STATE_DISCONNECTED) {
             final var audioManager = this.appRTCAudioManager;
             if (audioManager != null) {
@@ -387,26 +381,10 @@ public class CallIntegration extends Connection {
         }
     }
 
-    private void playConnectedSound() {
-        final var audioAttributes =
-                new AudioAttributes.Builder()
-                        .setLegacyStreamType(AudioManager.STREAM_VOICE_CALL)
-                        .build();
-        final var mediaPlayer =
-                MediaPlayer.create(
-                        context,
-                        R.raw.connected,
-                        audioAttributes,
-                        AudioManager.AUDIO_SESSION_ID_GENERATE);
-        mediaPlayer.setVolume(
-                DEFAULT_MEDIA_PLAYER_VOLUME / 100f, DEFAULT_MEDIA_PLAYER_VOLUME / 100f);
-        mediaPlayer.start();
-    }
-
     public void success() {
         Log.d(Config.LOGTAG, "CallIntegration.success()");
-        startTone(DEFAULT_TONE_VOLUME, ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
-        this.destroyWithDelay(new DisconnectCause(DisconnectCause.LOCAL, null), 375);
+        startTone(DEFAULT_TONE_VOLUME, ToneGenerator.TONE_CDMA_CONFIRM, 600);
+        this.destroyWithDelay(new DisconnectCause(DisconnectCause.LOCAL, null), 600);
     }
 
     public void accepted() {
@@ -420,8 +398,8 @@ public class CallIntegration extends Connection {
 
     public void error() {
         Log.d(Config.LOGTAG, "CallIntegration.error()");
-        startTone(DEFAULT_TONE_VOLUME, ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
-        this.destroyWithDelay(new DisconnectCause(DisconnectCause.ERROR, null), 375);
+        startTone(DEFAULT_TONE_VOLUME, ToneGenerator.TONE_CDMA_CONFIRM, 600);
+        this.destroyWithDelay(new DisconnectCause(DisconnectCause.ERROR, null), 600);
     }
 
     public void retracted() {
@@ -477,7 +455,7 @@ public class CallIntegration extends Connection {
     }
 
     public static Uri address(final Jid contact) {
-        return Uri.parse(String.format("xmpp:%s", contact.toEscapedString()));
+        return Uri.parse(String.format("xmpp:%s", contact.toString()));
     }
 
     public void verifyDisconnected() {
@@ -525,10 +503,15 @@ public class CallIntegration extends Connection {
         return selfManaged(context);
     }
 
-    public static boolean selfManaged(final Context context) {
+    public static boolean selfManagedAvailable(final Context context) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                && Build.VERSION.SDK_INT < 35
                 && hasSystemFeature(context)
                 && isDeviceModelSupported();
+    }
+
+    public static boolean selfManaged(final Context context) {
+        return selfManagedAvailable(context) && new AppSettings(context).isCallIntegration();
     }
 
     public static boolean hasSystemFeature(final Context context) {
@@ -554,6 +537,10 @@ public class CallIntegration extends Connection {
         // routed properly) However with those devices being extremely rare it's impossible to gauge
         // how many might be effected and no Naomi Wu around to clarify with the company directly
         if ("umidigi".equals(manufacturer) && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+            return false;
+        }
+        // SailfishOS's AppSupport do not support Call Integration
+        if (Build.MODEL.endsWith("(AppSupport)")) {
             return false;
         }
         return true;

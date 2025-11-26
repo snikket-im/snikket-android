@@ -1,0 +1,2 @@
+* Tõstsime jutumullid üksteisele lähemale vältides nende meldimist
+* Lisasime võimaluse peita vestlustes tunnuspilte, kui seda tõesti vaja pole (Seadistused -> Kasutajaliides -> Jutumullid -> Näita tunnuspilte)

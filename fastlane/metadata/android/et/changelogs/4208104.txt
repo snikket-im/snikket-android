@@ -1,0 +1,4 @@
+* Lihtsam ligipääs valikule „Näita QR-koodi“
+* PEP-järjehoidjate tugi
+* Lisasime SDP pakkumine/vastus mudeli toe (seda kasutavad SIPi lüüsid)
+* Üldine API arvestab nüüd Android 14'ga

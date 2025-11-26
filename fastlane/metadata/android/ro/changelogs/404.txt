@@ -1,0 +1,1 @@
+* mici îmbunătățiri de stabilitate pentru apeluri A/V

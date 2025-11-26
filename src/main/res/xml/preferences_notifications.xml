@@ -38,8 +38,6 @@
         android:key="led"
         android:summary="@string/pref_led_summary"
         android:title="@string/pref_led" />
-
-
     <Preference
         android:icon="@drawable/ic_phone_24dp"
         android:key="call_ringtone"
@@ -51,6 +49,12 @@
         android:key="fullscreen_notification"
         android:summary="@string/pref_fullscreen_notification_summary"
         android:title="@string/pref_fullscreen_notification" />
+    <SwitchPreferenceCompat
+        android:defaultValue="@bool/call_integration"
+        android:icon="@drawable/ic_mobile_friendly_24dp"
+        android:key="call_integration"
+        android:summary="@string/pref_call_integration_summary"
+        android:title="@string/pref_call_integration" />
     <ListPreference
         android:defaultValue="@integer/grace_period"
         android:entries="@array/grace_periods"

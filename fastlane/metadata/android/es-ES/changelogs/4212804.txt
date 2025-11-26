@@ -1,0 +1,3 @@
+* Acceso más fácil a sonidos de notificación personalizados desde Detalles del contacto -> Menú emergente -> Notificaciones personalizadas
+* Corrección de compartición directa en nuevas versiones de Android
+* Posibilidad de limitar visibilidad de imagen de perfil sólo a contactos

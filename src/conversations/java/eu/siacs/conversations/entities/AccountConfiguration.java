@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
-
 import eu.siacs.conversations.xmpp.Jid;
 
 public class AccountConfiguration {
@@ -17,7 +16,7 @@ public class AccountConfiguration {
     public String password;
 
     public Jid getJid() {
-        return Jid.ofEscaped(address);
+        return Jid.of(address);
     }
 
     public static AccountConfiguration parse(final String input) {
@@ -27,24 +26,17 @@ public class AccountConfiguration {
         } catch (JsonSyntaxException e) {
             throw new IllegalArgumentException("Not a valid JSON string", e);
         }
-        Preconditions.checkArgument(
-                c.protocol == Protocol.XMPP,
-                "Protocol must be XMPP"
-        );
+        Preconditions.checkArgument(c.protocol == Protocol.XMPP, "Protocol must be XMPP");
         Preconditions.checkArgument(
                 c.address != null && c.getJid().isBareJid() && !c.getJid().isDomainJid(),
-                "Invalid XMPP address"
-        );
+                "Invalid XMPP address");
         Preconditions.checkArgument(
-                c.password != null && c.password.length() > 0,
-                "No password specified"
-        );
+                c.password != null && !c.password.isEmpty(), "No password specified");
         return c;
     }
 
     public enum Protocol {
-        @SerializedName("xmpp") XMPP,
+        @SerializedName("xmpp")
+        XMPP,
     }
-
 }
-

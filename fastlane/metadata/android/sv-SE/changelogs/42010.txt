@@ -1,0 +1,2 @@
+* Diverse bugg-fixar runt stöd för Tor
+* Förbättra samtalskompabilitet med Dino

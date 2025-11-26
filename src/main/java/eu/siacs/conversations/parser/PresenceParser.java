@@ -1,7 +1,7 @@
 package eu.siacs.conversations.parser;
 
 import android.util.Log;
-
+import com.google.common.base.Strings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -17,48 +17,51 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import im.conversations.android.xmpp.model.occupant.OccupantId;
-
-import org.openintents.openpgp.util.OpenPgpUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import org.openintents.openpgp.util.OpenPgpUtils;
 
-public class PresenceParser extends AbstractParser implements Consumer<im.conversations.android.xmpp.model.stanza.Presence> {
+public class PresenceParser extends AbstractParser
+        implements Consumer<im.conversations.android.xmpp.model.stanza.Presence> {
 
     public PresenceParser(final XmppConnectionService service, final Account account) {
         super(service, account);
     }
 
-    public void parseConferencePresence(final im.conversations.android.xmpp.model.stanza.Presence packet, Account account) {
+    public void parseConferencePresence(
+            final im.conversations.android.xmpp.model.stanza.Presence packet, Account account) {
         final Conversation conversation =
                 packet.getFrom() == null
                         ? null
                         : mXmppConnectionService.find(account, packet.getFrom().asBareJid());
-        if (conversation != null) {
-            final MucOptions mucOptions = conversation.getMucOptions();
-            boolean before = mucOptions.online();
-            int count = mucOptions.getUserCount();
-            final List<MucOptions.User> tileUserBefore = mucOptions.getUsers(5);
-            processConferencePresence(packet, conversation);
-            final List<MucOptions.User> tileUserAfter = mucOptions.getUsers(5);
-            if (!tileUserAfter.equals(tileUserBefore)) {
-                mXmppConnectionService.getAvatarService().clear(mucOptions);
-            }
-            if (before != mucOptions.online()
-                    || (mucOptions.online() && count != mucOptions.getUserCount())) {
-                mXmppConnectionService.updateConversationUi();
-            } else if (mucOptions.online()) {
-                mXmppConnectionService.updateMucRosterUi();
-            }
+        if (conversation == null) {
+            return;
+        }
+        final MucOptions mucOptions = conversation.getMucOptions();
+        boolean before = mucOptions.online();
+        int count = mucOptions.getUserCount();
+        final List<MucOptions.User> tileUserBefore = mucOptions.getUsers(5);
+        processConferencePresence(packet, conversation);
+        final List<MucOptions.User> tileUserAfter = mucOptions.getUsers(5);
+        if (Strings.isNullOrEmpty(mucOptions.getAvatar())
+                && !tileUserAfter.equals(tileUserBefore)) {
+            mXmppConnectionService.getAvatarService().clear(mucOptions);
+        }
+        if (before != mucOptions.online()
+                || (mucOptions.online() && count != mucOptions.getUserCount())) {
+            mXmppConnectionService.updateConversationUi();
+        } else if (mucOptions.online()) {
+            mXmppConnectionService.updateMucRosterUi();
         }
     }
 
-    private void processConferencePresence(final im.conversations.android.xmpp.model.stanza.Presence packet, Conversation conversation) {
+    private void processConferencePresence(
+            final im.conversations.android.xmpp.model.stanza.Presence packet,
+            Conversation conversation) {
         final Account account = conversation.getAccount();
         final MucOptions mucOptions = conversation.getMucOptions();
         final Jid jid = conversation.getAccount().getJid();
@@ -75,23 +78,28 @@ public class PresenceParser extends AbstractParser implements Consumer<im.conver
                         mucOptions.setError(MucOptions.Error.NONE);
                         final MucOptions.User user = parseItem(conversation, item, from);
                         final var occupant = packet.getExtension(OccupantId.class);
-                        final String occupantId = mucOptions.occupantId() && occupant != null ? occupant.getId() : null;
+                        final String occupantId =
+                                mucOptions.occupantId() && occupant != null
+                                        ? occupant.getId()
+                                        : null;
                         user.setOccupantId(occupantId);
                         if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE)
                                 || (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED)
                                         && jid.equals(
-                                                InvalidJid.getNullForInvalid(
+                                                Jid.Invalid.getNullForInvalid(
                                                         item.getAttributeAsJid("jid"))))) {
                             if (mucOptions.setOnline()) {
                                 mXmppConnectionService.getAvatarService().clear(mucOptions);
                             }
+                            final var current = mucOptions.getSelf().getFullJid();
                             if (mucOptions.setSelf(user)) {
                                 Log.d(Config.LOGTAG, "role or affiliation changed");
                                 mXmppConnectionService.databaseBackend.updateConversation(
                                         conversation);
                             }
-
-                            mXmppConnectionService.persistSelfNick(user);
+                            final var modified =
+                                    current == null || !current.equals(user.getFullJid());
+                            mXmppConnectionService.persistSelfNick(user, modified);
                             invokeRenameListener(mucOptions, true);
                         }
                         boolean isNew = mucOptions.updateUser(user);
@@ -147,9 +155,11 @@ public class PresenceParser extends AbstractParser implements Consumer<im.conver
                                                     .getAccount()
                                                     .getRoster()
                                                     .getContact(user.getRealJid());
-                                    c.setAvatar(avatar);
-                                    mXmppConnectionService.syncRoster(conversation.getAccount());
-                                    mXmppConnectionService.getAvatarService().clear(c);
+                                    if (c.setAvatar(avatar)) {
+                                        mXmppConnectionService.syncRoster(
+                                                conversation.getAccount());
+                                        mXmppConnectionService.getAvatarService().clear(c);
+                                    }
                                     mXmppConnectionService.updateRosterUi();
                                 }
                             } else if (mXmppConnectionService.isDataSaverDisabled()) {
@@ -165,7 +175,7 @@ public class PresenceParser extends AbstractParser implements Consumer<im.conver
                     final Jid alternate =
                             destroy == null
                                     ? null
-                                    : InvalidJid.getNullForInvalid(
+                                    : Jid.Invalid.getNullForInvalid(
                                             destroy.getAttributeAsJid("jid"));
                     mucOptions.setError(MucOptions.Error.DESTROYED);
                     if (alternate != null) {
@@ -300,7 +310,9 @@ public class PresenceParser extends AbstractParser implements Consumer<im.conver
         return codes;
     }
 
-    private void parseContactPresence(final im.conversations.android.xmpp.model.stanza.Presence packet, final Account account) {
+    private void parseContactPresence(
+            final im.conversations.android.xmpp.model.stanza.Presence packet,
+            final Account account) {
         final PresenceGenerator mPresenceGenerator = mXmppConnectionService.getPresenceGenerator();
         final Jid from = packet.getFrom();
         if (from == null || from.equals(account.getJid())) {
@@ -322,11 +334,12 @@ public class PresenceParser extends AbstractParser implements Consumer<im.conver
                         mXmppConnectionService.updateConversationUi();
                         mXmppConnectionService.updateAccountUi();
                     } else {
-                        contact.setAvatar(avatar);
-                        mXmppConnectionService.syncRoster(account);
-                        mXmppConnectionService.getAvatarService().clear(contact);
-                        mXmppConnectionService.updateConversationUi();
-                        mXmppConnectionService.updateRosterUi();
+                        if (contact.setAvatar(avatar)) {
+                            mXmppConnectionService.syncRoster(account);
+                            mXmppConnectionService.getAvatarService().clear(contact);
+                            mXmppConnectionService.updateConversationUi();
+                            mXmppConnectionService.updateRosterUi();
+                        }
                     }
                 } else if (mXmppConnectionService.isDataSaverDisabled()) {
                     mXmppConnectionService.fetchAvatar(account, avatar);

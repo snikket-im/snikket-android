@@ -1,27 +1,16 @@
 package eu.siacs.conversations.entities;
 
+import static eu.siacs.conversations.entities.Bookmark.printableValue;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
+import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
@@ -34,11 +23,17 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.atomic.AtomicBoolean;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import static eu.siacs.conversations.entities.Bookmark.printableValue;
-
-
-public class Conversation extends AbstractEntity implements Blockable, Comparable<Conversation>, Conversational, AvatarService.Avatarable {
+public class Conversation extends AbstractEntity
+        implements Blockable, Comparable<Conversation>, Conversational, AvatarService.Avatarable {
     public static final String TABLENAME = "conversations";
 
     public static final int STATUS_AVAILABLE = 0;
@@ -56,7 +51,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public static final String ATTRIBUTE_MUTED_TILL = "muted_till";
     public static final String ATTRIBUTE_ALWAYS_NOTIFY = "always_notify";
     public static final String ATTRIBUTE_LAST_CLEAR_HISTORY = "last_clear_history";
-    public static final String ATTRIBUTE_FORMERLY_PRIVATE_NON_ANONYMOUS = "formerly_private_non_anonymous";
+    public static final String ATTRIBUTE_FORMERLY_PRIVATE_NON_ANONYMOUS =
+            "formerly_private_non_anonymous";
     public static final String ATTRIBUTE_PINNED_ON_TOP = "pinned_on_top";
     static final String ATTRIBUTE_MUC_PASSWORD = "muc_password";
     static final String ATTRIBUTE_MEMBERS_ONLY = "members_only";
@@ -78,7 +74,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     private int status;
     private final long created;
     private int mode;
-    private JSONObject attributes;
+    private final JSONObject attributes;
     private Jid nextCounterpart;
     private transient MucOptions mucOptions = null;
     private boolean messagesLeftOnServer = true;
@@ -87,17 +83,31 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     private String mFirstMamReference = null;
     private String displayState = null;
 
-    public Conversation(final String name, final Account account, final Jid contactJid,
-                        final int mode) {
-        this(java.util.UUID.randomUUID().toString(), name, null, account
-                        .getUuid(), contactJid, System.currentTimeMillis(),
-                STATUS_AVAILABLE, mode, "");
+    public Conversation(
+            final String name, final Account account, final Jid contactJid, final int mode) {
+        this(
+                java.util.UUID.randomUUID().toString(),
+                name,
+                null,
+                account.getUuid(),
+                contactJid,
+                System.currentTimeMillis(),
+                STATUS_AVAILABLE,
+                mode,
+                "");
         this.account = account;
     }
 
-    public Conversation(final String uuid, final String name, final String contactUuid,
-                        final String accountUuid, final Jid contactJid, final long created, final int status,
-                        final int mode, final String attributes) {
+    public Conversation(
+            final String uuid,
+            final String name,
+            final String contactUuid,
+            final String accountUuid,
+            final Jid contactJid,
+            final long created,
+            final int status,
+            final int mode,
+            final String attributes) {
         this.uuid = uuid;
         this.name = name;
         this.contactUuid = contactUuid;
@@ -106,26 +116,36 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         this.created = created;
         this.status = status;
         this.mode = mode;
-        try {
-            this.attributes = new JSONObject(attributes == null ? "" : attributes);
-        } catch (JSONException e) {
-            this.attributes = new JSONObject();
+        this.attributes = parseAttributes(attributes);
+    }
+
+    private static JSONObject parseAttributes(final String attributes) {
+        if (Strings.isNullOrEmpty(attributes)) {
+            return new JSONObject();
+        } else {
+            try {
+                return new JSONObject(attributes);
+            } catch (final JSONException e) {
+                return new JSONObject();
+            }
         }
     }
 
-    public static Conversation fromCursor(Cursor cursor) {
-        return new Conversation(cursor.getString(cursor.getColumnIndex(UUID)),
-                cursor.getString(cursor.getColumnIndex(NAME)),
-                cursor.getString(cursor.getColumnIndex(CONTACT)),
-                cursor.getString(cursor.getColumnIndex(ACCOUNT)),
-                JidHelper.parseOrFallbackToInvalid(cursor.getString(cursor.getColumnIndex(CONTACTJID))),
-                cursor.getLong(cursor.getColumnIndex(CREATED)),
-                cursor.getInt(cursor.getColumnIndex(STATUS)),
-                cursor.getInt(cursor.getColumnIndex(MODE)),
-                cursor.getString(cursor.getColumnIndex(ATTRIBUTES)));
+    public static Conversation fromCursor(final Cursor cursor) {
+        return new Conversation(
+                cursor.getString(cursor.getColumnIndexOrThrow(UUID)),
+                cursor.getString(cursor.getColumnIndexOrThrow(NAME)),
+                cursor.getString(cursor.getColumnIndexOrThrow(CONTACT)),
+                cursor.getString(cursor.getColumnIndexOrThrow(ACCOUNT)),
+                Jid.ofOrInvalid(cursor.getString(cursor.getColumnIndexOrThrow(CONTACTJID))),
+                cursor.getLong(cursor.getColumnIndexOrThrow(CREATED)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(STATUS)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(MODE)),
+                cursor.getString(cursor.getColumnIndexOrThrow(ATTRIBUTES)));
     }
 
-    public static Message getLatestMarkableMessage(final List<Message> messages, boolean isPrivateAndNonAnonymousMuc) {
+    public static Message getLatestMarkableMessage(
+            final List<Message> messages, boolean isPrivateAndNonAnonymousMuc) {
         for (int i = messages.size() - 1; i >= 0; --i) {
             final Message message = messages.get(i);
             if (message.getStatus() <= Message.STATUS_RECEIVED
@@ -144,12 +164,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         if (conversation.getContact().isOwnServer()) {
             return false;
         }
-        final String contact = conversation.getJid().getDomain().toEscapedString();
-        final String account = conversation.getAccount().getServer();
-        if (Config.OMEMO_EXCEPTIONS.matchesContactDomain(contact) || Config.OMEMO_EXCEPTIONS.ACCOUNT_DOMAINS.contains(account)) {
-            return false;
-        }
-        return conversation.isSingleOrPrivateAndNonAnonymous() || conversation.getBooleanAttribute(ATTRIBUTE_FORMERLY_PRIVATE_NON_ANONYMOUS, false);
+        return conversation.isSingleOrPrivateAndNonAnonymous()
+                || conversation.getBooleanAttribute(
+                        ATTRIBUTE_FORMERLY_PRIVATE_NON_ANONYMOUS, false);
     }
 
     public boolean hasMessagesLeftOnServer() {
@@ -193,7 +210,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public int countFailedDeliveries() {
         int count = 0;
         synchronized (this.messages) {
-            for(final Message message : this.messages) {
+            for (final Message message : this.messages) {
                 if (message.getStatus() == Message.STATUS_SEND_FAILED) {
                     ++count;
                 }
@@ -216,12 +233,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         return null;
     }
 
-
     public Message findUnsentMessageWithUuid(String uuid) {
         synchronized (this.messages) {
             for (final Message message : this.messages) {
                 final int s = message.getStatus();
-                if ((s == Message.STATUS_UNSEND || s == Message.STATUS_WAITING) && message.getUuid().equals(uuid)) {
+                if ((s == Message.STATUS_UNSEND || s == Message.STATUS_WAITING)
+                        && message.getUuid().equals(uuid)) {
                     return message;
                 }
             }
@@ -262,10 +279,16 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         synchronized (this.messages) {
             for (final Message message : this.messages) {
                 final Transferable transferable = message.getTransferable();
-                final boolean unInitiatedButKnownSize = MessageUtils.unInitiatedButKnownSize(message);
+                final boolean unInitiatedButKnownSize =
+                        MessageUtils.unInitiatedButKnownSize(message);
                 if (message.getUuid().equals(uuid)
                         && message.getEncryption() != Message.ENCRYPTION_PGP
-                        && (message.isFileOrImage() || message.treatAsDownloadable() || unInitiatedButKnownSize || (transferable != null && transferable.getStatus() != Transferable.STATUS_UPLOADING))) {
+                        && (message.isFileOrImage()
+                                || message.treatAsDownloadable()
+                                || unInitiatedButKnownSize
+                                || (transferable != null
+                                        && transferable.getStatus()
+                                                != Transferable.STATUS_UPLOADING))) {
                     return message;
                 }
             }
@@ -292,7 +315,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 if (uuids.contains(message.getUuid())) {
                     message.setDeleted(true);
                     deleted = true;
-                    if (message.getEncryption() == Message.ENCRYPTION_PGP && pgpDecryptionService != null) {
+                    if (message.getEncryption() == Message.ENCRYPTION_PGP
+                            && pgpDecryptionService != null) {
                         pgpDecryptionService.discard(message);
                     }
                 }
@@ -310,7 +334,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     if (file.uuid.toString().equals(message.getUuid())) {
                         message.setDeleted(file.deleted);
                         changed = true;
-                        if (file.deleted && message.getEncryption() == Message.ENCRYPTION_PGP && pgpDecryptionService != null) {
+                        if (file.deleted
+                                && message.getEncryption() == Message.ENCRYPTION_PGP
+                                && pgpDecryptionService != null) {
                             pgpDecryptionService.discard(message);
                         }
                     }
@@ -338,7 +364,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     }
 
     public boolean setOutgoingChatState(ChatState state) {
-        if (mode == MODE_SINGLE && !getContact().isSelf() || (isPrivateAndNonAnonymous() && getNextCounterpart() == null)) {
+        if (mode == MODE_SINGLE && !getContact().isSelf()
+                || (isPrivateAndNonAnonymous() && getNextCounterpart() == null)) {
             if (this.mOutgoingChatState != state) {
                 this.mOutgoingChatState = state;
                 return true;
@@ -371,7 +398,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         final ArrayList<Message> results = new ArrayList<>();
         synchronized (this.messages) {
             for (Message message : this.messages) {
-                if ((message.getType() == Message.TYPE_TEXT || message.hasFileOnRemoteHost()) && message.getStatus() == Message.STATUS_UNSEND) {
+                if ((message.getType() == Message.TYPE_TEXT || message.hasFileOnRemoteHost())
+                        && message.getStatus() == Message.STATUS_UNSEND) {
                     results.add(message);
                 }
             }
@@ -386,7 +414,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             for (Message message : this.messages) {
                 if (id.equals(message.getUuid())
                         || (message.getStatus() >= Message.STATUS_SEND
-                        && id.equals(message.getRemoteMsgId()))) {
+                                && id.equals(message.getRemoteMsgId()))) {
                     return message;
                 }
             }
@@ -405,7 +433,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         return null;
     }
 
-    public Message findMessageWithRemoteIdAndCounterpart(String id, Jid counterpart, boolean received, boolean carbon) {
+    public Message findMessageWithRemoteIdAndCounterpart(
+            String id, Jid counterpart, boolean received, boolean carbon) {
         synchronized (this.messages) {
             for (int i = this.messages.size() - 1; i >= 0; --i) {
                 final Message message = messages.get(i);
@@ -413,10 +442,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 if (mcp == null) {
                     continue;
                 }
-                if (mcp.equals(counterpart) && ((message.getStatus() == Message.STATUS_RECEIVED) == received)
+                if (mcp.equals(counterpart)
+                        && ((message.getStatus() == Message.STATUS_RECEIVED) == received)
                         && (carbon == message.isCarbon() || received)) {
-                    final boolean idMatch = id.equals(message.getRemoteMsgId()) || message.remoteMsgIdMatchInEdit(id);
-                    if (idMatch && !message.isFileOrImage() && !message.treatAsDownloadable()) {
+                    if (id.equals(message.getRemoteMsgId())
+                            && !message.isFileOrImage()
+                            && !message.treatAsDownloadable()) {
                         return message;
                     } else {
                         return null;
@@ -453,7 +484,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public Message findReceivedWithRemoteId(final String id) {
         synchronized (this.messages) {
             for (final Message message : this.messages) {
-                if (message.getStatus() == Message.STATUS_RECEIVED && id.equals(message.getRemoteMsgId())) {
+                if (message.getStatus() == Message.STATUS_RECEIVED
+                        && id.equals(message.getRemoteMsgId())) {
                     return message;
                 }
             }
@@ -487,11 +519,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         synchronized (this.messages) {
             messages.clear();
             messages.addAll(this.messages);
-        }
-        for (Iterator<Message> iterator = messages.iterator(); iterator.hasNext(); ) {
-            if (iterator.next().wasMergedIntoPrevious()) {
-                iterator.remove();
-            }
         }
     }
 
@@ -549,7 +576,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     }
 
     public boolean setCorrectingMessage(Message correctingMessage) {
-        setAttribute(ATTRIBUTE_CORRECTING_MESSAGE, correctingMessage == null ? null : correctingMessage.getUuid());
+        setAttribute(
+                ATTRIBUTE_CORRECTING_MESSAGE,
+                correctingMessage == null ? null : correctingMessage.getUuid());
         return correctingMessage == null && draftMessage != null;
     }
 
@@ -565,7 +594,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     @Override
     public int compareTo(@NonNull Conversation another) {
         return ComparisonChain.start()
-                .compareFalseFirst(another.getBooleanAttribute(ATTRIBUTE_PINNED_ON_TOP, false), getBooleanAttribute(ATTRIBUTE_PINNED_ON_TOP, false))
+                .compareFalseFirst(
+                        another.getBooleanAttribute(ATTRIBUTE_PINNED_ON_TOP, false),
+                        getBooleanAttribute(ATTRIBUTE_PINNED_ON_TOP, false))
                 .compare(another.getSortableTime(), getSortableTime())
                 .result();
     }
@@ -590,7 +621,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
     public boolean isRead() {
         synchronized (this.messages) {
-            for(final Message message : Lists.reverse(this.messages)) {
+            for (final Message message : Lists.reverse(this.messages)) {
                 if (message.isRead() && message.getType() == Message.TYPE_RTP_SESSION) {
                     continue;
                 }
@@ -629,8 +660,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         }
     }
 
-    public @NonNull
-    CharSequence getName() {
+    public @NonNull CharSequence getName() {
         if (getMode() == MODE_MULTI) {
             final String roomName = getMucOptions().getName();
             final String subject = getMucOptions().getSubject();
@@ -650,7 +680,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     return contactJid.getLocal() != null ? contactJid.getLocal() : contactJid;
                 }
             }
-        } else if ((QuickConversationsService.isConversations() || !Config.QUICKSY_DOMAIN.equals(contactJid.getDomain())) && isWithStranger()) {
+        } else if ((QuickConversationsService.isConversations()
+                        || !Config.QUICKSY_DOMAIN.equals(contactJid.getDomain()))
+                && isWithStranger()) {
             return contactJid;
         } else {
             return this.getContact().getDisplayName();
@@ -714,9 +746,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         this.mode = mode;
     }
 
-    /**
-     * short for is Private and Non-anonymous
-     */
+    /** short for is Private and Non-anonymous */
     public boolean isSingleOrPrivateAndNonAnonymous() {
         return mode == MODE_SINGLE || isPrivateAndNonAnonymous();
     }
@@ -753,7 +783,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             return Message.ENCRYPTION_NONE;
         }
         if (OmemoSetting.isAlways()) {
-            return suitableForOmemoByDefault(this) ? Message.ENCRYPTION_AXOLOTL : Message.ENCRYPTION_NONE;
+            return suitableForOmemoByDefault(this)
+                    ? Message.ENCRYPTION_AXOLOTL
+                    : Message.ENCRYPTION_NONE;
         }
         final int defaultEncryption;
         if (suitableForOmemoByDefault(this)) {
@@ -778,8 +810,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         return nextMessage == null ? "" : nextMessage;
     }
 
-    public @Nullable
-    Draft getDraft() {
+    public @Nullable Draft getDraft() {
         long timestamp = getLongAttribute(ATTRIBUTE_NEXT_MESSAGE_TIMESTAMP, 0);
         if (timestamp > getLatestMessage().getTimeSent()) {
             String message = getAttribute(ATTRIBUTE_NEXT_MESSAGE);
@@ -795,7 +826,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         boolean changed = !getNextMessage().equals(message);
         this.setAttribute(ATTRIBUTE_NEXT_MESSAGE, message);
         if (changed) {
-            this.setAttribute(ATTRIBUTE_NEXT_MESSAGE_TIMESTAMP, message == null ? 0 : System.currentTimeMillis());
+            this.setAttribute(
+                    ATTRIBUTE_NEXT_MESSAGE_TIMESTAMP,
+                    message == null ? 0 : System.currentTimeMillis());
         }
         return changed;
     }
@@ -823,7 +856,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         synchronized (this.messages) {
             for (int i = this.messages.size() - 1; i >= 0; --i) {
                 Message message = this.messages.get(i);
-                if (message.getStatus() == Message.STATUS_UNSEND || message.getStatus() == Message.STATUS_SEND) {
+                if (message.getStatus() == Message.STATUS_UNSEND
+                        || message.getStatus() == Message.STATUS_SEND) {
                     String otherBody;
                     if (message.hasFileOnRemoteHost()) {
                         otherBody = message.getFileParams().url;
@@ -843,7 +877,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         synchronized (this.messages) {
             for (int i = this.messages.size() - 1; i >= 0; --i) {
                 final Message message = this.messages.get(i);
-                if ((message.getStatus() == s) && (message.getType() == Message.TYPE_RTP_SESSION) && sessionId.equals(message.getRemoteMsgId())) {
+                if ((message.getStatus() == s)
+                        && (message.getType() == Message.TYPE_RTP_SESSION)
+                        && sessionId.equals(message.getRemoteMsgId())) {
                     return message;
                 }
             }
@@ -857,7 +893,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         }
         synchronized (this.messages) {
             for (Message message : this.messages) {
-                if (serverMsgId.equals(message.getServerMsgId()) || remoteMsgId.equals(message.getRemoteMsgId())) {
+                if (serverMsgId.equals(message.getServerMsgId())
+                        || remoteMsgId.equals(message.getRemoteMsgId())) {
                     return true;
                 }
             }
@@ -872,10 +909,14 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             for (int i = this.messages.size() - 1; i >= 0; --i) {
                 final Message message = this.messages.get(i);
                 if (message.isPrivateMessage()) {
-                    continue; //it's unsafe to use private messages as anchor. They could be coming from user archive
+                    continue; // it's unsafe to use private messages as anchor. They could be coming
+                    // from user archive
                 }
-                if (message.getStatus() == Message.STATUS_RECEIVED || message.isCarbon() || message.getServerMsgId() != null) {
-                    lastReceived = new MamReference(message.getTimeSent(), message.getServerMsgId());
+                if (message.getStatus() == Message.STATUS_RECEIVED
+                        || message.isCarbon()
+                        || message.getServerMsgId() != null) {
+                    lastReceived =
+                            new MamReference(message.getTimeSent(), message.getServerMsgId());
                     break;
                 }
             }
@@ -892,7 +933,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     }
 
     public boolean alwaysNotify() {
-        return mode == MODE_SINGLE || getBooleanAttribute(ATTRIBUTE_ALWAYS_NOTIFY, Config.ALWAYS_NOTIFY_BY_DEFAULT || isPrivateAndNonAnonymous());
+        return mode == MODE_SINGLE
+                || getBooleanAttribute(
+                        ATTRIBUTE_ALWAYS_NOTIFY,
+                        Config.ALWAYS_NOTIFY_BY_DEFAULT || isPrivateAndNonAnonymous());
     }
 
     public boolean setAttribute(String key, boolean value) {
@@ -958,11 +1002,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     try {
                         list.add(Jid.of(array.getString(i)));
                     } catch (IllegalArgumentException e) {
-                        //ignored
+                        // ignored
                     }
                 }
             } catch (JSONException e) {
-                //ignored
+                // ignored
             }
         }
         return list;
@@ -1024,7 +1068,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
     public void expireOldMessages(long timestamp) {
         synchronized (this.messages) {
-            for (ListIterator<Message> iterator = this.messages.listIterator(); iterator.hasNext(); ) {
+            for (ListIterator<Message> iterator = this.messages.listIterator();
+                    iterator.hasNext(); ) {
                 if (iterator.next().getTimeSent() < timestamp) {
                     iterator.remove();
                 }
@@ -1035,15 +1080,17 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
     public void sort() {
         synchronized (this.messages) {
-            Collections.sort(this.messages, (left, right) -> {
-                if (left.getTimeSent() < right.getTimeSent()) {
-                    return -1;
-                } else if (left.getTimeSent() > right.getTimeSent()) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
+            Collections.sort(
+                    this.messages,
+                    (left, right) -> {
+                        if (left.getTimeSent() < right.getTimeSent()) {
+                            return -1;
+                        } else if (left.getTimeSent() > right.getTimeSent()) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    });
             untieMessages();
         }
     }
@@ -1057,7 +1104,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public int unreadCount() {
         synchronized (this.messages) {
             int count = 0;
-            for(final Message message : Lists.reverse(this.messages)) {
+            for (final Message message : Lists.reverse(this.messages)) {
                 if (message.isRead()) {
                     if (message.getType() == Message.TYPE_RTP_SESSION) {
                         continue;

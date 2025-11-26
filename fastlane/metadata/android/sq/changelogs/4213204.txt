@@ -1,0 +1,4 @@
+* Lejim ndaljeje regjistrimi audio duke shtypur matësin e kohës
+* Ndreqje reagimesh në MP-ra MUC 
+* Reshtje pranimi 'fallback messages' për reagime, dëftesa dhe shenja në ekrani
+* Shtim i disa ikonash paraparjeje media më tepër

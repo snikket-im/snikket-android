@@ -1,0 +1,3 @@
+* Ofrecer valores más grandes para la recepción automática de archivo 
+* Proporcionar más información en 'Información del servidor'
+* Varias correcciones de errores

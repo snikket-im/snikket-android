@@ -1,0 +1,2 @@
+* Parandasime tunnuspiltide valimise mõnedes Android 10 seadmetes
+* Parandasime suuremate failide edastamise vead

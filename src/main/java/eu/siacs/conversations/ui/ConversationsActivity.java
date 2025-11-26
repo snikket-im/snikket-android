@@ -29,7 +29,6 @@
 
 package eu.siacs.conversations.ui;
 
-
 import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
 
 import android.Manifest;
@@ -51,22 +50,13 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import org.openintents.openpgp.util.OpenPgpApi;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
@@ -90,8 +80,22 @@ import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import org.openintents.openpgp.util.OpenPgpApi;
 
-public class ConversationsActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead, XmppConnectionService.OnAccountUpdate, XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnAffiliationChanged {
+public class ConversationsActivity extends XmppActivity
+        implements OnConversationSelected,
+                OnConversationArchived,
+                OnConversationsListItemUpdated,
+                OnConversationRead,
+                XmppConnectionService.OnAccountUpdate,
+                XmppConnectionService.OnConversationUpdate,
+                XmppConnectionService.OnRosterUpdate,
+                OnUpdateBlocklist,
+                XmppConnectionService.OnShowErrorToast,
+                XmppConnectionService.OnAffiliationChanged {
 
     public static final String ACTION_VIEW_CONVERSATION = "eu.siacs.conversations.action.VIEW";
     public static final String EXTRA_CONVERSATION = "conversationUuid";
@@ -104,19 +108,18 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     public static final String POST_ACTION_RECORD_VOICE = "record_voice";
     public static final String EXTRA_TYPE = "type";
 
-    private static final List<String> VIEW_AND_SHARE_ACTIONS = Arrays.asList(
-            ACTION_VIEW_CONVERSATION,
-            Intent.ACTION_SEND,
-            Intent.ACTION_SEND_MULTIPLE
-    );
+    private static final List<String> VIEW_AND_SHARE_ACTIONS =
+            Arrays.asList(
+                    ACTION_VIEW_CONVERSATION, Intent.ACTION_SEND, Intent.ACTION_SEND_MULTIPLE);
 
     public static final int REQUEST_OPEN_MESSAGE = 0x9876;
     public static final int REQUEST_PLAY_PAUSE = 0x5432;
 
-
-    //secondary fragment (when holding the conversation, must be initialized before refreshing the overview fragment
-    private static final @IdRes
-    int[] FRAGMENT_ID_NOTIFICATION_ORDER = {R.id.secondary_fragment, R.id.main_fragment};
+    // secondary fragment (when holding the conversation, must be initialized before refreshing the
+    // overview fragment
+    private static final @IdRes int[] FRAGMENT_ID_NOTIFICATION_ORDER = {
+        R.id.secondary_fragment, R.id.main_fragment
+    };
     private final PendingItem<Intent> pendingViewIntent = new PendingItem<>();
     private final PendingItem<ActivityResult> postponedActivityResult = new PendingItem<>();
     private ActivityConversationsBinding binding;
@@ -125,7 +128,9 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     private static boolean isViewOrShareIntent(Intent i) {
         Log.d(Config.LOGTAG, "action: " + (i == null ? null : i.getAction()));
-        return i != null && VIEW_AND_SHARE_ACTIONS.contains(i.getAction()) && i.hasExtra(EXTRA_CONVERSATION);
+        return i != null
+                && VIEW_AND_SHARE_ACTIONS.contains(i.getAction())
+                && i.hasExtra(EXTRA_CONVERSATION);
     }
 
     private static Intent createLauncherIntent(Context context) {
@@ -169,7 +174,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         }
 
         invalidateActionBarTitle();
-        if (binding.secondaryFragment != null && ConversationFragment.getConversation(this) == null) {
+        if (binding.secondaryFragment != null
+                && ConversationFragment.getConversation(this) == null) {
             Conversation conversation = ConversationsOverviewFragment.getSuggestion(this);
             if (conversation != null) {
                 openConversation(conversation, null);
@@ -182,7 +188,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         return performRedirectIfNecessary(null, noAnimation);
     }
 
-    private boolean performRedirectIfNecessary(final Conversation ignore, final boolean noAnimation) {
+    private boolean performRedirectIfNecessary(
+            final Conversation ignore, final boolean noAnimation) {
         if (xmppConnectionService == null) {
             return false;
         }
@@ -192,12 +199,13 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             if (noAnimation) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             }
-            runOnUiThread(() -> {
-                startActivity(intent);
-                if (noAnimation) {
-                    overridePendingTransition(0, 0);
-                }
-            });
+            runOnUiThread(
+                    () -> {
+                        startActivity(intent);
+                        if (noAnimation) {
+                            overridePendingTransition(0, 0);
+                        }
+                    });
         }
         return mRedirectInProcess.get();
     }
@@ -219,7 +227,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private String getBatteryOptimizationPreferenceKey() {
-        @SuppressLint("HardwareIds") String device = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        @SuppressLint("HardwareIds")
+        String device = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         return "show_battery_optimization" + (device == null ? "" : device);
     }
 
@@ -228,20 +237,31 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private boolean openBatteryOptimizationDialogIfNeeded() {
-        if (isOptimizingBattery() && getPreferences().getBoolean(getBatteryOptimizationPreferenceKey(), true)) {
+        if (isOptimizingBattery()
+                && getPreferences().getBoolean(getBatteryOptimizationPreferenceKey(), true)) {
             final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
             builder.setTitle(R.string.battery_optimizations_enabled);
-            builder.setMessage(getString(R.string.battery_optimizations_enabled_dialog, getString(R.string.app_name)));
-            builder.setPositiveButton(R.string.next, (dialog, which) -> {
-                final Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                final Uri uri = Uri.parse("package:" + getPackageName());
-                intent.setData(uri);
-                try {
-                    startActivityForResult(intent, REQUEST_BATTERY_OP);
-                } catch (final ActivityNotFoundException e) {
-                    Toast.makeText(this, R.string.device_does_not_support_battery_op, Toast.LENGTH_SHORT).show();
-                }
-            });
+            builder.setMessage(
+                    getString(
+                            R.string.battery_optimizations_enabled_dialog,
+                            getString(R.string.app_name)));
+            builder.setPositiveButton(
+                    R.string.next,
+                    (dialog, which) -> {
+                        final Intent intent =
+                                new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                        final Uri uri = Uri.parse("package:" + getPackageName());
+                        intent.setData(uri);
+                        try {
+                            startActivityForResult(intent, REQUEST_BATTERY_OP);
+                        } catch (final ActivityNotFoundException e) {
+                            Toast.makeText(
+                                            this,
+                                            R.string.device_does_not_support_battery_op,
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
             builder.setOnDismissListener(dialog -> setNeverAskForBatteryOptimizationsAgain());
             final AlertDialog dialog = builder.create();
             dialog.setCanceledOnTouchOutside(false);
@@ -252,8 +272,12 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private void requestNotificationPermissionIfNeeded() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_POST_NOTIFICATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(
+                    new String[] {Manifest.permission.POST_NOTIFICATIONS},
+                    REQUEST_POST_NOTIFICATION);
         }
     }
 
@@ -271,9 +295,10 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         }
     }
 
-    private boolean processViewIntent(Intent intent) {
+    private boolean processViewIntent(final Intent intent) {
         final String uuid = intent.getStringExtra(EXTRA_CONVERSATION);
-        final Conversation conversation = uuid != null ? xmppConnectionService.findConversationByUuid(uuid) : null;
+        final Conversation conversation =
+                uuid != null ? xmppConnectionService.findConversationByUuidReliable(uuid) : null;
         if (conversation == null) {
             Log.d(Config.LOGTAG, "unable to view conversation with uuid:" + uuid);
             return false;
@@ -283,7 +308,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         UriHandlerActivity.onRequestPermissionResult(this, requestCode, grantResults);
         if (grantResults.length > 0) {
@@ -397,8 +423,9 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         if (qrCodeScanMenuItem != null) {
             if (isCameraFeatureAvailable()) {
                 Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
-                boolean visible = getResources().getBoolean(R.bool.show_qr_code_scan)
-                        && fragment instanceof ConversationsOverviewFragment;
+                boolean visible =
+                        getResources().getBoolean(R.bool.show_qr_code_scan)
+                                && fragment instanceof ConversationsOverviewFragment;
                 qrCodeScanMenuItem.setVisible(visible);
             } else {
                 qrCodeScanMenuItem.setVisible(false);
@@ -411,7 +438,9 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     public void onConversationSelected(Conversation conversation) {
         clearPendingViewIntent();
         if (ConversationFragment.getConversation(this) == conversation) {
-            Log.d(Config.LOGTAG, "ignore onConversationSelected() because conversation is already open");
+            Log.d(
+                    Config.LOGTAG,
+                    "ignore onConversationSelected() because conversation is already open");
             return;
         }
         openConversation(conversation, null);
@@ -424,13 +453,12 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private void displayToast(final String msg) {
-        runOnUiThread(() -> Toast.makeText(ConversationsActivity.this, msg, Toast.LENGTH_SHORT).show());
+        runOnUiThread(
+                () -> Toast.makeText(ConversationsActivity.this, msg, Toast.LENGTH_SHORT).show());
     }
 
     @Override
-    public void onAffiliationChangedSuccessful(Jid jid) {
-
-    }
+    public void onAffiliationChangedSuccessful(Jid jid) {}
 
     @Override
     public void onAffiliationChangeFailed(Jid jid, int resId) {
@@ -440,7 +468,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     private void openConversation(Conversation conversation, Bundle extras) {
         final FragmentManager fragmentManager = getFragmentManager();
         executePendingTransactions(fragmentManager);
-        ConversationFragment conversationFragment = (ConversationFragment) fragmentManager.findFragmentById(R.id.secondary_fragment);
+        ConversationFragment conversationFragment =
+                (ConversationFragment) fragmentManager.findFragmentById(R.id.secondary_fragment);
         final boolean mainNeedsRefresh;
         if (conversationFragment == null) {
             mainNeedsRefresh = false;
@@ -456,7 +485,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                     fragmentTransaction.commit();
                 } catch (IllegalStateException e) {
                     Log.w(Config.LOGTAG, "sate loss while opening conversation", e);
-                    //allowing state loss is probably fine since view intents et all are already stored and a click can probably be 'ignored'
+                    // allowing state loss is probably fine since view intents et all are already
+                    // stored and a click can probably be 'ignored'
                     return;
                 }
             }
@@ -474,14 +504,15 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         try {
             fragmentManager.executePendingTransactions();
         } catch (final Exception e) {
-            Log.e(Config.LOGTAG,"unable to execute pending fragment transactions");
+            Log.e(Config.LOGTAG, "unable to execute pending fragment transactions");
         }
     }
 
     public boolean onXmppUriClicked(Uri uri) {
         XmppUri xmppUri = new XmppUri(uri);
         if (xmppUri.isValidJid() && !xmppUri.hasFingerprints()) {
-            final Conversation conversation = xmppConnectionService.findUniqueConversationByJid(xmppUri);
+            final Conversation conversation =
+                    xmppConnectionService.findUniqueConversationByJid(xmppUri);
             if (conversation != null) {
                 openConversation(conversation, null);
                 return true;
@@ -540,7 +571,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     @Override
     public void onSaveInstanceState(final Bundle savedInstanceState) {
         final Intent pendingIntent = pendingViewIntent.peek();
-        savedInstanceState.putParcelable("intent", pendingIntent != null ? pendingIntent : getIntent());
+        savedInstanceState.putParcelable(
+                "intent", pendingIntent != null ? pendingIntent : getIntent());
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -580,7 +612,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         final FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         final Fragment mainFragment = fragmentManager.findFragmentById(R.id.main_fragment);
-        final Fragment secondaryFragment = fragmentManager.findFragmentById(R.id.secondary_fragment);
+        final Fragment secondaryFragment =
+                fragmentManager.findFragmentById(R.id.secondary_fragment);
         if (mainFragment != null) {
             if (binding.secondaryFragment != null) {
                 if (mainFragment instanceof ConversationFragment) {
@@ -628,13 +661,12 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 actionBar.setTitle(conversation.getName());
                 actionBar.setDisplayHomeAsUpEnabled(true);
                 ToolbarUtils.setActionBarOnClickListener(
-                        binding.toolbar,
-                        (v) -> openConversationDetails(conversation)
-                );
+                        binding.toolbar, (v) -> openConversationDetails(conversation));
                 return;
             }
         }
-        final Fragment secondaryFragment = fragmentManager.findFragmentById(R.id.secondary_fragment);
+        final Fragment secondaryFragment =
+                fragmentManager.findFragmentById(R.id.secondary_fragment);
         if (secondaryFragment instanceof ConversationFragment conversationFragment) {
             final Conversation conversation = conversationFragment.getConversation();
             if (conversation != null) {
@@ -673,15 +705,21 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             try {
                 fragmentManager.popBackStack();
             } catch (final IllegalStateException e) {
-                Log.w(Config.LOGTAG, "state loss while popping back state after archiving conversation", e);
-                //this usually means activity is no longer active; meaning on the next open we will run through this again
+                Log.w(
+                        Config.LOGTAG,
+                        "state loss while popping back state after archiving conversation",
+                        e);
+                // this usually means activity is no longer active; meaning on the next open we will
+                // run through this again
             }
             return;
         }
-        final Fragment secondaryFragment = fragmentManager.findFragmentById(R.id.secondary_fragment);
+        final Fragment secondaryFragment =
+                fragmentManager.findFragmentById(R.id.secondary_fragment);
         if (secondaryFragment instanceof ConversationFragment) {
             if (((ConversationFragment) secondaryFragment).getConversation() == conversation) {
-                Conversation suggestion = ConversationsOverviewFragment.getSuggestion(this, conversation);
+                Conversation suggestion =
+                        ConversationsOverviewFragment.getSuggestion(this, conversation);
                 if (suggestion != null) {
                     openConversation(suggestion, null);
                 }

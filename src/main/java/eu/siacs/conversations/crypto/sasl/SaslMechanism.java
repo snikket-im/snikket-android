@@ -1,25 +1,22 @@
 package eu.siacs.conversations.crypto.sasl;
 
 import android.util.Log;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.google.common.collect.Collections2;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.SSLSockets;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-
 import java.util.Collection;
 import java.util.Collections;
-
 import javax.net.ssl.SSLSocket;
 
 public abstract class SaslMechanism {
 
     protected final Account account;
+
+    protected State state = State.INITIAL;
 
     protected SaslMechanism(final Account account) {
         this.account = account;
@@ -44,31 +41,27 @@ public abstract class SaslMechanism {
 
     public abstract String getMechanism();
 
-    public String getClientFirstMessage(final SSLSocket sslSocket) {
-        return "";
-    }
+    public abstract String getClientFirstMessage(final SSLSocket sslSocket);
 
-    public String getResponse(final String challenge, final SSLSocket sslSocket)
-            throws AuthenticationException {
-        return "";
-    }
+    public abstract String getResponse(final String challenge, final SSLSocket sslSocket)
+            throws AuthenticationException;
 
-    public static Collection<String> mechanisms(final Element authElement) {
-        if (authElement == null) {
-            return Collections.emptyList();
-        }
-        return Collections2.transform(
-                Collections2.filter(
-                        authElement.getChildren(),
-                        c -> c != null && "mechanism".equals(c.getName())),
-                c -> c == null ? null : c.getContent());
-    }
-
-    protected enum State {
+    public enum State {
         INITIAL,
         AUTH_TEXT_SENT,
         RESPONSE_SENT,
         VALID_SERVER_RESPONSE,
+    }
+
+    protected void checkState(final State expected) throws InvalidStateException {
+        final var current = this.state;
+        if (current == null) {
+            throw new InvalidStateException("Current state is null. Implementation problem");
+        }
+        if (current != expected) {
+            throw new InvalidStateException(
+                    String.format("State was %s. Expected %s", current, expected));
+        }
     }
 
     public enum Version {
@@ -76,14 +69,11 @@ public abstract class SaslMechanism {
         SASL_2;
 
         public static Version of(final Element element) {
-            switch (Strings.nullToEmpty(element.getNamespace())) {
-                case Namespace.SASL:
-                    return SASL;
-                case Namespace.SASL_2:
-                    return SASL_2;
-                default:
-                    throw new IllegalArgumentException("Unrecognized SASL namespace");
-            }
+            return switch (Strings.nullToEmpty(element.getNamespace())) {
+                case Namespace.SASL -> SASL;
+                case Namespace.SASL_2 -> SASL_2;
+                default -> throw new IllegalArgumentException("Unrecognized SASL namespace");
+            };
         }
     }
 
@@ -139,8 +129,7 @@ public abstract class SaslMechanism {
                 return new ScramSha256(account);
             } else if (mechanisms.contains(ScramSha1.MECHANISM)) {
                 return new ScramSha1(account);
-            } else if (mechanisms.contains(Plain.MECHANISM)
-                    && !account.getServer().equals("nimbuzz.com")) {
+            } else if (mechanisms.contains(Plain.MECHANISM)) {
                 return new Plain(account);
             } else if (mechanisms.contains(DigestMd5.MECHANISM)) {
                 return new DigestMd5(account);

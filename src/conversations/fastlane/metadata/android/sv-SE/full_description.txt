@@ -28,7 +28,7 @@ Conversations fungerar med alla XMPP-servrar. Men XMPP är ett utbyggbart protok
 
 De XEP-tillägg som stöds är:
 
-* XEP-0065: SOCKS5 Bytestreams (or mod_proxy65). Används för filöverföring om båda parter är bakom en brandvägg (NAT).
+* XEP-0065: SOCKS5 Bytestreams (or mod_proxy65). Används för filöverföring om båda parter är bakom en brandvägg eller NAT.
 * XEP-0163: Personal Eventing Protocol för avatarer
 * XEP-0191: Blocking command låter dig svartlista spammare eller blocka kontakter utan att ta bort dem
 * XEP-0198: Stream Management låter XMPP att klara av mindre nätverksavbrott och förändringar i den underliggande TCP-anslutningen

@@ -1,0 +1,2 @@
+* Łatwiejszy dostęp do polityki prywatności w wersji dla Sklepu Play (Quicksy i Conversations)
+* Usunięcie integracji z książką adresową w wersji Conversations dla Sklepu Play

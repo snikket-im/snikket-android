@@ -1,5 +1,63 @@
 # Changelog
 
+### Version 2.17.12
+
+* Fix crash on file transfer in fi translation
+
+### Version 2.17.11
+
+* minor bug fixes
+
+### Version 2.17.10
+
+* Allow audio recording to be pause by tapping the timer
+* Fix reactions in MUC PMs 
+* Stop accepting 'fallback messages' for reactions, receipts and display markers
+* Add some more media preview icons
+
+### Version 2.17.9
+
+* Make use of SASL SCRAM Downgrade Protection (XEP-0474)
+* Send reactions to MUC PMs to correct JID
+
+### Version 2.17.8
+
+* Fix some minor UI bugs
+* Fix connection issues with .onion domains on non-default ports
+
+### Version 2.17.7
+
+* Easier access to custom notification sounds via Contact details -> Overflow menu -> Custom notifications)
+* Fix direct share targets on new Android versions
+* Ability to restrict avatar visibility to contacts
+
+### Version 2.17.6
+
+* Add ability to show message bubbles left-aligned
+
+### Version 2.17.5
+
+* Move message bubbles closer together instead of merging them
+* Add ability to hide avatars in chat view when not strictly necessary (Settings -> Interface -> Chat Bubbles -> Show avatars)
+
+### Version 2.17.4
+
+* improve handling of some emoji reactions
+
+### Version 2.17.3
+
+* Always show call button
+* Various bug fixes
+
+### Version 2.17.2
+
+* Fix calls on Android 15
+* Fix rare crash / regression introduced with 2.17.0
+
+### Version 2.17.1
+
+* Fix UI glitch when showing multiple reactions
+
 ### Version 2.17.0
 
 * Support Message Reactions

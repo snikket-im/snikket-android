@@ -1,0 +1,1 @@
+* Inaktivera öppnandet av säkerhetskopieringsfiler (.ceb) från filhanteraren

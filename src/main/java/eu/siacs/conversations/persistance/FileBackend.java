@@ -26,16 +26,13 @@ import android.util.Base64OutputStream;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
-
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteStreams;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
@@ -49,7 +46,6 @@ import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.FileWriterException;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.xmpp.pep.Avatar;
-
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
@@ -140,7 +136,8 @@ public class FileBackend {
                     if (dimensions.getMin() > 720) {
                         Log.d(
                                 Config.LOGTAG,
-                                "do not consider video file with min width larger than 720 for size check");
+                                "do not consider video file with min width larger than 720 for size"
+                                        + " check");
                         continue;
                     }
                 } catch (final IOException | NotAVideoFile e) {
@@ -268,7 +265,8 @@ public class FileBackend {
         return inSampleSize;
     }
 
-    private static Dimensions getVideoDimensions(Context context, Uri uri) throws NotAVideoFile, IOException {
+    private static Dimensions getVideoDimensions(Context context, Uri uri)
+            throws NotAVideoFile, IOException {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
             mediaMetadataRetriever.setDataSource(context, uri);
@@ -663,16 +661,14 @@ public class FileBackend {
         }
     }
 
-    private void copyFileToPrivateStorage(File file, Uri uri) throws FileCopyException {
+    private void copyFileToPrivateStorage(final File file, final Uri uri) throws FileCopyException {
         final var parentDirectory = file.getParentFile();
         if (parentDirectory != null && parentDirectory.mkdirs()) {
-            Log.d(Config.LOGTAG,"created directory "+parentDirectory.getAbsolutePath());
+            Log.d(Config.LOGTAG, "created directory " + parentDirectory.getAbsolutePath());
         }
         try {
             if (file.createNewFile()) {
-                Log.d(
-                        Config.LOGTAG,
-                        "copy file (" + uri.toString() + ") to private storage " + file.getAbsolutePath());
+                Log.d(Config.LOGTAG, "created empty file " + file.getAbsolutePath());
             }
         } catch (final IOException e) {
             throw new FileCopyException(R.string.error_unable_to_create_temporary_file);
@@ -708,9 +704,10 @@ public class FileBackend {
         }
     }
 
-    public void copyFileToPrivateStorage(Message message, Uri uri, String type)
+    public void copyFileToPrivateStorage(final Message message, final Uri uri, final String type)
             throws FileCopyException {
-        final String mime = MimeUtils.guessMimeTypeFromUriAndMime(mXmppConnectionService, uri, type);
+        final String mime =
+                MimeUtils.guessMimeTypeFromUriAndMime(mXmppConnectionService, uri, type);
         Log.d(Config.LOGTAG, "copy " + uri.toString() + " to private storage (mime=" + mime + ")");
         String extension = MimeUtils.guessExtensionFromMimeType(mime);
         if (extension == null) {
@@ -1500,7 +1497,7 @@ public class FileBackend {
         return calcSampleSize(options, size);
     }
 
-    public void updateFileParams(Message message) {
+    public void updateFileParams(final Message message) {
         updateFileParams(message, null);
     }
 

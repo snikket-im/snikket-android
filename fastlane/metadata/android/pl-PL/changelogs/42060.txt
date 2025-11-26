@@ -1,0 +1,1 @@
+* Naprawienie litery ‚q’ nieprawidłowo rozpoznawanej jako cyrylica

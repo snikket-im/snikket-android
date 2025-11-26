@@ -1,0 +1,4 @@
+* Consenti di mettere in pausa registrazioni audio toccando il timer
+* Corrette reazioni in messaggi privati dei gruppi
+* Non accettare più 'messaggi di ripiego' per le reazioni, ricevute e display markers
+* Aggiunte ulteriori icone di anteprime media

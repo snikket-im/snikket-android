@@ -1,0 +1,3 @@
+* Privaatsete nimeserverite tugi (DNS üle TLSi)
+* Võimalus valida käivitusikooni kujundust
+* Parandasime harvaesineva failide jagamise vea, mis esines Android 11+ puhul

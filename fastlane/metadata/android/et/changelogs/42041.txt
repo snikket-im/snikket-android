@@ -1,0 +1,5 @@
+* Ühenduste kiirema taastamise nimel võtsime kasutusele Extensible SASL Profile, Bind 2.0 ja Fast protokollid
+* Võtsime kasutusele ühenduskanalite sidumise
+* Lisasime võimaluse lülituda häälkõnel ümber videokõnele
+* Lisasime võimaluse oma tunnuspildi kustutamiseks
+* Lisasime märkamata jäänud kõnede teavituse

@@ -1,0 +1,1 @@
+* Usunięcie funkcjonalności odkrywania kanałów z wersji dla Google Play

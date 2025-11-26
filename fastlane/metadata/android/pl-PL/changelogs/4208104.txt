@@ -1,0 +1,4 @@
+* Łatwiejszy dostęp do „Pokaż kod QR”
+* Obsługa natywnych zakładek PEP
+* Obsługa modelu SDP Offer/Answer (używanego przez bramki SIP)
+* Podwyższenie docelowego API do Androida 14

@@ -1063,4 +1063,9 @@
     <string name="pref_summary_security">Uçtan Uca Şifreleme, Doğrulamadan Körü Körüne Güven, MITM Algılama</string>
     <string name="pref_category_engagement_notifications">Etkileşim bildirimleri</string>
     <string name="pref_up_long_summary">UnifiedPush Dağıtıcısı olarak davranılırken devamlı, güvenli ve pil ömrü dostu olan XMPP bağlantısı diğer UnifiedPush ile uyumlu olan Tusky, Ltt.rs, FluffyChat ve benzeri uygulamaları uyandırmak için kullanılacaktır.</string>
+    <string name="reconnect_on_other_host">Diğer sunucuda yeniden bağlan</string>
+    <string name="allow_private_messages">Özel mesajlara izin ver</string>
+    <string name="pref_accept_invites_from_strangers">Yabancılardan gelen davetler</string>
+    <string name="pref_accept_invites_from_strangers_summary">Yabancılardan gelen grup davetlerini kabul et</string>
+    <string name="edit_configuration">Yapılandırmayı değiştir</string>
 </resources>

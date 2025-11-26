@@ -17,13 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.databinding.DataBindingUtil;
-
 import com.google.common.base.Strings;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityManageAccountsBinding;
@@ -34,12 +31,10 @@ import eu.siacs.conversations.ui.adapter.AccountAdapter;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
-
-import org.openintents.openpgp.util.OpenPgpApi;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.openintents.openpgp.util.OpenPgpApi;
 
 public class ManageAccountActivity extends XmppActivity
         implements OnAccountUpdate,
@@ -95,7 +90,7 @@ public class ManageAccountActivity extends XmppActivity
             String jid = savedInstanceState.getString(STATE_SELECTED_ACCOUNT);
             if (jid != null) {
                 try {
-                    this.selectedAccountJid = Jid.ofEscaped(jid);
+                    this.selectedAccountJid = Jid.of(jid);
                 } catch (IllegalArgumentException e) {
                     this.selectedAccountJid = null;
                 }
@@ -113,7 +108,7 @@ public class ManageAccountActivity extends XmppActivity
     public void onSaveInstanceState(@NonNull final Bundle savedInstanceState) {
         if (selectedAccount != null) {
             savedInstanceState.putString(
-                    STATE_SELECTED_ACCOUNT, selectedAccount.getJid().asBareJid().toEscapedString());
+                    STATE_SELECTED_ACCOUNT, selectedAccount.getJid().asBareJid().toString());
         }
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -132,7 +127,7 @@ public class ManageAccountActivity extends XmppActivity
             menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(false);
             menu.findItem(R.id.mgmt_account_publish_avatar).setVisible(false);
         }
-        menu.setHeaderTitle(this.selectedAccount.getJid().asBareJid().toEscapedString());
+        menu.setHeaderTitle(this.selectedAccount.getJid().asBareJid().toString());
     }
 
     @Override
@@ -297,7 +292,7 @@ public class ManageAccountActivity extends XmppActivity
 
     private void publishAvatar(Account account) {
         Intent intent = new Intent(getApplicationContext(), PublishProfilePictureActivity.class);
-        intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
+        intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
         startActivity(intent);
     }
 
@@ -357,7 +352,8 @@ public class ManageAccountActivity extends XmppActivity
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid()
-                            + ": quick start disabled. account will regain this capability on the next connect");
+                            + ": quick start disabled. account will regain this capability on the"
+                            + " next connect");
         }
         if (!xmppConnectionService.updateAccount(account)) {
             Toast.makeText(this, R.string.unable_to_update_account, Toast.LENGTH_SHORT).show();

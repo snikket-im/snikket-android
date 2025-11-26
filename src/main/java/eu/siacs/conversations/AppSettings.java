@@ -3,13 +3,11 @@ package eu.siacs.conversations;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
-
 import androidx.annotation.BoolRes;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
-
 import com.google.common.base.Strings;
-
+import eu.siacs.conversations.services.QuickConversationsService;
 import java.security.SecureRandom;
 
 public class AppSettings {
@@ -45,6 +43,9 @@ public class AppSettings {
     public static final String SEND_CRASH_REPORTS = "send_crash_reports";
     public static final String COLORFUL_CHAT_BUBBLES = "use_green_background";
     public static final String LARGE_FONT = "large_font";
+    public static final String SHOW_AVATARS = "show_avatars";
+    public static final String CALL_INTEGRATION = "call_integration";
+    public static final String ALIGN_START = "align_start";
 
     private static final String ACCEPT_INVITES_FROM_STRANGERS = "accept_invites_from_strangers";
     private static final String INSTALLATION_ID = "im.conversations.android.install_id";
@@ -108,8 +109,27 @@ public class AppSettings {
         return getBooleanPreference(LARGE_FONT, R.bool.large_font);
     }
 
+    public boolean isShowAvatars() {
+        return getBooleanPreference(SHOW_AVATARS, R.bool.show_avatars);
+    }
+
+    public boolean isCallIntegration() {
+        return getBooleanPreference(CALL_INTEGRATION, R.bool.call_integration);
+    }
+
+    public boolean isAlignStart() {
+        return getBooleanPreference(ALIGN_START, R.bool.align_start);
+    }
+
     public boolean isUseTor() {
-        return getBooleanPreference(USE_TOR, R.bool.use_tor);
+        return QuickConversationsService.isConversations()
+                && getBooleanPreference(USE_TOR, R.bool.use_tor);
+    }
+
+    public boolean isExtendedConnectionOptions() {
+        return QuickConversationsService.isConversations()
+                && getBooleanPreference(
+                        AppSettings.SHOW_CONNECTION_OPTIONS, R.bool.show_connection_options);
     }
 
     public boolean isAcceptInvitesFromStrangers() {

@@ -1,0 +1,4 @@
+* Nüüd saab heliklipi salvestust peatada taimeril klõpsides
+* Parandasime reageerimise jututubade otsesõnumitele
+* Enam me ei võta vastu reageerimiste, lugemisteatiste ja lugemismarkerite asendussõnumeid
+* Lisasime veel mõned meedia eelvaate ikoonid

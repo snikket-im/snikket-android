@@ -1,0 +1,1 @@
+* Uute XMPP uri parameetrite tugi: ?register ja ?register;preauth
