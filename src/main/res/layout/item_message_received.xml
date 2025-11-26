@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:paddingHorizontal="8dp"
         android:paddingVertical="4dp">
 
@@ -14,22 +13,26 @@
             android:id="@+id/message_photo"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="6dp"
             android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/message_box"
             app:riv_corner_radius="8dp" />
 
+        <!-- TODO port app:layout_constraintWidth_max="@dimen/message_bubble_max_width" from c3 -->
         <LinearLayout
             android:id="@+id/message_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@+id/message_photo"
+            android:layout_marginStart="6dp"
             android:background="@drawable/background_message_bubble"
             android:backgroundTint="?colorSurface"
             android:longClickable="true"
-            android:minHeight="48dp">
+            android:minHeight="48dp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/message_photo"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -94,5 +97,25 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
+
+        <Space
+            android:id="@+id/reactions_anchor"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/message_box"
+            app:layout_constraintStart_toStartOf="@+id/message_box" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/reactions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:chipSpacingHorizontal="4dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/message_box"
+            app:layout_constraintTop_toBottomOf="@+id/reactions_anchor" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

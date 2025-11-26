@@ -1,0 +1,2 @@
+* exclude older Oppo devices from call integration
+* various bug fixes

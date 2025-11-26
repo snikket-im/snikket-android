@@ -677,8 +677,6 @@
     <string name="message_copied_to_clipboard">İleti panoya kopyalandı</string>
     <string name="message">İleti</string>
     <string name="private_messages_are_disabled">Özel iletiler devre dışı bırakıldı</string>
-    <string name="huawei_protected_apps">Korunan uygulamalar</string>
-    <string name="huawei_protected_apps_summary">Ekranınız kapalıyken bile bildirim almak için Snikket\'ı korunan uygulamalara eklemelisiniz.</string>
     <string name="mtm_accept_cert">Bilinmeyen sertifikayı kabul et?</string>
     <string name="mtm_trust_anchor">Sunucu sertifikası bilinen bir Sertifika Yetkilisi tarafından imzalanmamış.</string>
     <string name="mtm_accept_servername">Uyuşmayan Sunucu isimlerini kabul et?</string>

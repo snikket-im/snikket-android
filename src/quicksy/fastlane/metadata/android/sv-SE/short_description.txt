@@ -1,0 +1,1 @@
+Jabber/XMPP med Enkel inloggning och Lätt igenkänning

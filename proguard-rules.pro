@@ -1,6 +1,7 @@
 -dontobfuscate
 
 -keep class eu.siacs.conversations.**
+-keep class im.conversations.**
 
 -keep class org.whispersystems.**
 
@@ -39,6 +40,11 @@
 -keepclassmembers class eu.siacs.conversations.http.services.** {
   !transient <fields>;
 }
+
+# Needed for proper GSON deserialization
+-keep class com.google.gson.reflect.TypeToken
+-keep class * extends com.google.gson.reflect.TypeToken
+-keep public class * implements java.lang.reflect.Type
 
 # Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
 # EnclosingMethod is required to use InnerClasses.

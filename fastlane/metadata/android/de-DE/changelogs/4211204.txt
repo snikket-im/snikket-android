@@ -1,0 +1,2 @@
+* Anruf wird nicht mehr stummgeschaltet, wenn das Ausgabegerät gewechselt wird
+* Umidigi-Geräte von der Anrufintegration ausgenommen

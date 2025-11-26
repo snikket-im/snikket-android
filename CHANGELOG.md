@@ -1,5 +1,41 @@
 # Changelog
 
+### Version 2.17.0
+
+* Support Message Reactions
+
+### Version 2.16.7
+
+* Add timeout to call initiation
+
+### Version 2.16.6
+
+* Offer higher automatic file accept values
+* Provide more information in 'Server info'
+* Various bug fixes
+
+### Version 2.16.5
+
+* Minor bug fixes
+
+### Version 2.16.4
+
+* Fix minor regression introduced in 2.16.3
+
+### Version 2.16.3
+
+* exclude older Oppo devices from call integration
+* various bug fixes
+
+### Version 2.16.2
+
+* Run Backup as foreground service to prevent process being stopped after 10 minutes
+
+### Version 2.16.1
+
+* Fix call getting un-muted when switching output devices
+* Exclude all Umidigi devices from call integration
+
 ### Version 2.16.0
 
 * Schedule regular backups

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Vali oma XMPP-teenusepakkuja</string>
+    <string name="create_new_account">Loo uus kasutajakonto</string>
+    <string name="do_you_have_an_account">Kas sul juba on XMPP-konto olemas? Kui sa oled varem kasutanud Conversationsit või mõnda muud XMPP-klienti, siis see tõesti võib nii olla. Kui aga mitte, siis võid XMPP-konto kohe luua.
+\nVihje: Ka mitmed e-postiteenuse pakkujad pakuvad ka XMPP-teenuseid.</string>
+    <string name="server_select_text">XMPP on teenusepakkujast sõltumatu sõnumivõrk. Sa võid kasutada seda rakendust ükspuha missuguse XMPP-serveriga.
+\nAga mugavuse nimel oleme teinud lihtsaks kasutajakonto loomise conversations.im serverisse, mis on Conversationsiga hästi sobituv teenusepakkuja.</string>
+    <string name="magic_create_text_on_x">Sa oled saanud kutse kasutama serverit %1$s. Järgnevaga aitame sind kasutajakonto loomise kõikides sammudes.
+\nKui valid serveriks %1$s, siis jagades oma XMPP-aadressi saad suhelda kõikide teiste XMPP kasutajatega.</string>
+    <string name="magic_create_text_fixed">Sa oled saanud kutse kasutama serverit %1$s. Kasutajanimi on juba sulle valitud. Järgnevaga aitame sind kasutajakonto loomise kõikides sammudes.
+\nJagades oma XMPP-aadressi saad suhelda kõikide teiste XMPP kasutajatega kõikides teistes serverites.</string>
+    <string name="use_conversations.im">Kasuta conversations.im teenust</string>
+    <string name="your_server_invitation">Sinu kutse serveri kasutajaks</string>
+    <string name="improperly_formatted_provisioning">Vigaselt vormindatud eeltäidetud kutse kood</string>
+    <string name="tap_share_button_send_invite">Klõpsi „Jaga“ nuppu ja saada oma kontaktile kutse kasutamaks serverit %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Kui teine osapool on lähedal, siis ta saab kutse vastuvõtmiseks skaneerida järgnevat koodi.</string>
+    <string name="easy_invite_share_text">Liitu serveriga %1$s ja vestle minuga: %2$s</string>
+    <string name="share_invite_with">Jaga kutset…</string>
+</resources>

@@ -37,7 +37,7 @@ public class LocalizedContent {
                 }
             }
         }
-        if (contents.size() == 0) {
+        if (contents.isEmpty()) {
             return null;
         }
         final String userLanguage = Locale.getDefault().getLanguage();

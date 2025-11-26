@@ -93,7 +93,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 			final ImmutableList.Builder<Integer> viewIdBuilder = new ImmutableList.Builder<>();
 			for (final ListItem.Tag tag : tags) {
 				final String name = tag.getName();
-				final TextView tv = (TextView) inflater.inflate(R.layout.list_item_tag, viewHolder.tags, false);
+				final TextView tv = (TextView) inflater.inflate(R.layout.item_tag, viewHolder.tags, false);
 				tv.setText(name);
 				tv.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.harmonizeWithPrimary(getContext(),XEP0392Helper.rgbFromNick(name))));
 				tv.setOnClickListener(this.onTagTvClick);
@@ -107,7 +107,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 					final TextView tv =
 							(TextView)
 									inflater.inflate(
-											R.layout.list_item_tag, viewHolder.tags, false);
+											R.layout.item_tag, viewHolder.tags, false);
 					tv.setText(R.string.blocked);
 					tv.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.harmonizeWithPrimary(tv.getContext(),ContextCompat.getColor(tv.getContext(),R.color.gray_800))));
 					final int id = ViewCompat.generateViewId();
@@ -120,7 +120,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
                         final TextView tv =
                                 (TextView)
                                         inflater.inflate(
-                                                R.layout.list_item_tag, viewHolder.tags, false);
+                                                R.layout.item_tag, viewHolder.tags, false);
 						UIHelper.setStatus(tv, status);
 						final int id = ViewCompat.generateViewId();
 						tv.setId(id);

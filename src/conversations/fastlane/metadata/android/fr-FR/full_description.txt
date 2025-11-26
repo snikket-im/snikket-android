@@ -1,4 +1,4 @@
-Facile à utiliser, fiable, respectueux de votre batterie. Prend en charge les images, les conversations de groupe et le chiffrement de bout-en-bout.
+Facile à utiliser, fiable, respectueux de votre batterie. Prend en charge les images, les conversations de groupe et le chiffrement de bout en bout.
 
 Principes de conception :
 
@@ -8,6 +8,7 @@ Principes de conception :
 * Nécessiter le moins de permissions possible
 
 Fonctionnalités :
+
 * Chiffrement de bout-en-bout avec au choix, <a href="http://conversations.im/omemo/">OMEMO</a> ou <a href="http://openpgp.org/about/">OpenPGP</a>
 * Envoi et réception d'images
 * Appels audio et vidéo chiffrés (DTLS-SRTP)
@@ -27,12 +28,12 @@ Conversations fonctionne avec n'importe quel serveur XMPP. Cependant XMPP est un
 
 Ces XEP sont actuellement :
 
-* XEP-0065: SOCKS5 Bytestreams (ou mod_proxy65). Sera utilisé pour transférer des fichiers si les deux correspondants sont derrière un pare-feu (NAT).
-* XEP-0163: Personal Eventing Protocol pour les avatars
-* XEP-0191: Blocking Command vous permet de mettre des spammeurs sur liste noire ou bloquer des contacts sans les retirer de vos contacts.
-* XEP-0198: Stream Management permet à XMPP de survivre à des petites pannes de réseau et aux changements de la connexion TCP sous-jacente.
-* XEP-0280: Message Carbons qui synchronise automatiquement les messages que vous envoyez à votre client de bureau et vous permet ainsi de passer sans heurt de votre client mobile à votre client de bureau et inversement dans une conversation.
-* XEP-0237: Roster Versioning principalement pour économiser de la bande passante sur les connexions mobiles de mauvaise qualité.
-* XEP-0313: Message Archive Management synchronise l'historique des messages avec le serveur. Retrouvez des messages qui ont été envoyés pendant que Conversations était hors ligne.
-* XEP-0352: Client State Indication fait savoir au serveur si Conversations est ou n'est pas en arrière-plan. Permet au serveur d'économiser de la bande passante en différant des paquets non importants.
-* XEP-0363: HTTP File Upload vous permet de partager des fichiers dans les conférences et avec des contacts hors-ligne. Nécessite un composant supplémentaire sur votre serveur.
+* XEP-0065 : SOCKS5 Bytestreams (ou mod_proxy65). Sera utilisé pour transférer des fichiers si les deux correspondants sont derrière un pare-feu (NAT).
+* XEP-0163 : Personal Eventing Protocol pour les avatars
+* XEP-0191 : Blocking Command vous permet de mettre des spammeurs sur liste noire ou bloquer des contacts sans les retirer de vos contacts.
+* XEP-0198 : Stream Management permet à XMPP de survivre à des petites pannes de réseau et aux changements de la connexion TCP sous-jacente.
+* XEP-0280 : Message Carbons qui synchronise automatiquement les messages que vous envoyez à votre client de bureau et vous permet ainsi de passer sans heurt de votre client mobile à votre client de bureau et inversement dans une conversation.
+* XEP-0237 : Roster Versioning principalement pour économiser de la bande passante sur les connexions mobiles de mauvaise qualité.
+* XEP-0313 : Message Archive Management synchronise l'historique des messages avec le serveur. Retrouvez des messages qui ont été envoyés pendant que Conversations était hors ligne.
+* XEP-0352 : Client State Indication fait savoir au serveur si Conversations est ou n'est pas en arrière-plan. Permet au serveur d'économiser de la bande passante en différant des paquets non importants.
+* XEP-0363 : HTTP File Upload vous permet de partager des fichiers dans les conférences et avec des contacts hors-ligne. Nécessite un composant supplémentaire sur votre serveur.

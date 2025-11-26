@@ -15,6 +15,7 @@ import com.google.common.primitives.Longs;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import im.conversations.android.xmpp.model.jingle.Jingle;
 
 import java.util.List;
 
@@ -55,15 +56,11 @@ public class FileTransferDescription extends GenericDescription {
         return new File(size, name, mediaType, hashes);
     }
 
-    public static SessionInfo getSessionInfo(@NonNull final JinglePacket jinglePacket) {
-        Preconditions.checkNotNull(jinglePacket);
+    public static SessionInfo getSessionInfo(@NonNull final Jingle jingle) {
+        Preconditions.checkNotNull(jingle);
         Preconditions.checkArgument(
-                jinglePacket.getAction() == JinglePacket.Action.SESSION_INFO,
+                jingle.getAction() == Jingle.Action.SESSION_INFO,
                 "jingle packet is not a session-info");
-        final Element jingle = jinglePacket.findChild("jingle", Namespace.JINGLE);
-        if (jingle == null) {
-            return null;
-        }
         final Element checksum = jingle.findChild("checksum", Namespace.JINGLE_APPS_FILE_TRANSFER);
         if (checksum != null) {
             final Element file = checksum.findChild("file", Namespace.JINGLE_APPS_FILE_TRANSFER);

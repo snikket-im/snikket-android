@@ -107,8 +107,8 @@
                                     android:id="@+id/hostname_layout"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="0.7"
                                     android:layout_marginEnd="4sp"
+                                    android:layout_weight="0.7"
                                     android:hint="@string/account_settings_hostname">
 
                                     <EditText
@@ -123,8 +123,8 @@
                                     android:id="@+id/port_layout"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="0.3"
                                     android:layout_marginStart="4sp"
+                                    android:layout_weight="0.3"
                                     android:hint="@string/account_settings_port">
 
                                     <EditText
@@ -154,7 +154,8 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -210,7 +211,8 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -242,7 +244,36 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="end"
-                                    android:paddingLeft="4dp"
+                                    android:textAppearance="?textAppearanceBodyMedium" />
+                            </TableRow>
+
+                        </TableLayout>
+
+                        <TableLayout
+                            android:id="@+id/server_info_login_mechanism"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:shrinkColumns="0"
+                            android:stretchColumns="1"
+                            android:visibility="gone">
+
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
+                                    android:text="@string/server_info_login_mechanism"
+                                    android:textAppearance="?textAppearanceBodyMedium" />
+
+                                <TextView
+                                    android:id="@+id/login_mechanism"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
                                     android:textAppearance="?textAppearanceBodyMedium" />
                             </TableRow>
 
@@ -272,8 +303,7 @@
                                     android:id="@+id/server_info_pep"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:paddingLeft="4dp"
+                                    android:layout_gravity="end"
                                     android:textAppearance="?textAppearanceBodyMedium"
                                     tools:ignore="RtlHardcoded" />
                             </TableRow>
@@ -294,8 +324,7 @@
                                     android:id="@+id/server_info_blocking"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:paddingLeft="4dp"
+                                    android:layout_gravity="end"
                                     android:textAppearance="?textAppearanceBodyMedium"
                                     tools:ignore="RtlHardcoded" />
                             </TableRow>
@@ -316,8 +345,7 @@
                                     android:id="@+id/server_info_sm"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:paddingLeft="4dp"
+                                    android:layout_gravity="end"
                                     android:textAppearance="?textAppearanceBodyMedium"
                                     tools:ignore="RtlHardcoded" />
                             </TableRow>
@@ -338,8 +366,7 @@
                                     android:id="@+id/server_info_external_service"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:paddingLeft="4dp"
+                                    android:layout_gravity="end"
                                     android:textAppearance="?textAppearanceBodyMedium"
                                     tools:ignore="RtlHardcoded" />
                             </TableRow>
@@ -360,8 +387,7 @@
                                     android:id="@+id/server_info_roster_version"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:paddingLeft="4dp"
+                                    android:layout_gravity="end"
                                     android:textAppearance="?textAppearanceBodyMedium"
                                     tools:ignore="RtlHardcoded" />
                             </TableRow>
@@ -382,8 +408,7 @@
                                     android:id="@+id/server_info_carbons"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:paddingLeft="4dp"
+                                    android:layout_gravity="end"
                                     android:textAppearance="?textAppearanceBodyMedium"
                                     tools:ignore="RtlHardcoded" />
                             </TableRow>
@@ -404,8 +429,7 @@
                                     android:id="@+id/server_info_mam"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:paddingLeft="4dp"
+                                    android:layout_gravity="end"
                                     android:textAppearance="?textAppearanceBodyMedium"
                                     tools:ignore="RtlHardcoded" />
                             </TableRow>
@@ -426,8 +450,7 @@
                                     android:id="@+id/server_info_csi"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:paddingLeft="4dp"
+                                    android:layout_gravity="end"
                                     android:textAppearance="?textAppearanceBodyMedium"
                                     tools:ignore="RtlHardcoded" />
                             </TableRow>
@@ -449,8 +472,7 @@
                                     android:id="@+id/server_info_push"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:paddingLeft="4dp"
+                                    android:layout_gravity="end"
                                     android:textAppearance="?textAppearanceBodyMedium" />
                             </TableRow>
 
@@ -459,7 +481,6 @@
                                 android:layout_height="wrap_content">
 
                                 <TextView
-                                    android:id="@+id/server_info_http_upload_description"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:ellipsize="end"
@@ -471,10 +492,50 @@
                                     android:id="@+id/server_info_http_upload"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:paddingLeft="4dp"
+                                    android:layout_gravity="end"
                                     android:textAppearance="?textAppearanceBodyMedium" />
                             </TableRow>
+
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
+                                    android:text="@string/server_info_bind2"
+                                    android:textAppearance="?textAppearanceBodyMedium" />
+
+                                <TextView
+                                    android:id="@+id/server_info_bind2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:textAppearance="?textAppearanceBodyMedium" />
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
+                                    android:text="@string/server_info_sasl2"
+                                    android:textAppearance="?textAppearanceBodyMedium" />
+
+                                <TextView
+                                    android:id="@+id/server_info_sasl2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:textAppearance="?textAppearanceBodyMedium" />
+                            </TableRow>
+
                         </TableLayout>
 
                         <RelativeLayout
@@ -513,6 +574,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:background="?attr/selectableItemBackgroundBorderless"
+                                android:contentDescription="@string/edit_nick"
                                 android:padding="@dimen/image_button_padding"
                                 android:src="@drawable/ic_edit_24dp"
                                 android:visibility="visible" />
@@ -554,6 +616,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:background="?attr/selectableItemBackgroundBorderless"
+                                android:contentDescription="@string/delete_pgp_key"
                                 android:padding="@dimen/image_button_padding"
                                 android:src="@drawable/ic_delete_24dp"
                                 android:visibility="visible" />
@@ -600,7 +663,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="?attr/selectableItemBackgroundBorderless"
-                                    android:contentDescription="@string/copy_omemo_clipboard_description"
+                                    android:contentDescription="@string/show_qr_code"
                                     android:padding="@dimen/image_button_padding"
                                     android:src="@drawable/ic_qr_code_24dp"
                                     android:visibility="visible" />
@@ -628,7 +691,8 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"

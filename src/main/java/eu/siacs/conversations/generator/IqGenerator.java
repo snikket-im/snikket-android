@@ -34,7 +34,7 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
 public class IqGenerator extends AbstractGenerator {
 
@@ -42,8 +42,8 @@ public class IqGenerator extends AbstractGenerator {
         super(service);
     }
 
-    public IqPacket discoResponse(final Account account, final IqPacket request) {
-        final IqPacket packet = new IqPacket(IqPacket.TYPE.RESULT);
+    public Iq discoResponse(final Account account, final Iq request) {
+        final var packet = new Iq(Iq.Type.RESULT);
         packet.setId(request.getId());
         packet.setTo(request.getFrom());
         final Element query = packet.addChild("query", "http://jabber.org/protocol/disco#info");
@@ -58,8 +58,8 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket versionResponse(final IqPacket request) {
-        final IqPacket packet = request.generateResponse(IqPacket.TYPE.RESULT);
+    public Iq versionResponse(final Iq request) {
+        final var packet = request.generateResponse(Iq.Type.RESULT);
         Element query = packet.query("jabber:iq:version");
         query.addChild("name").setContent(mXmppConnectionService.getString(R.string.app_name));
         query.addChild("version").setContent(getIdentityVersion());
@@ -71,8 +71,8 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket entityTimeResponse(IqPacket request) {
-        final IqPacket packet = request.generateResponse(IqPacket.TYPE.RESULT);
+    public Iq entityTimeResponse(final Iq request) {
+        final Iq packet = request.generateResponse(Iq.Type.RESULT);
         Element time = packet.addChild("time", "urn:xmpp:time");
         final long now = System.currentTimeMillis();
         time.addChild("utc").setContent(getTimestamp(now));
@@ -91,14 +91,14 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket purgeOfflineMessages() {
-        final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public static Iq purgeOfflineMessages() {
+        final Iq packet = new Iq(Iq.Type.SET);
         packet.addChild("offline", Namespace.FLEXIBLE_OFFLINE_MESSAGE_RETRIEVAL).addChild("purge");
         return packet;
     }
 
-    protected IqPacket publish(final String node, final Element item, final Bundle options) {
-        final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    protected Iq publish(final String node, final Element item, final Bundle options) {
+        final var packet = new Iq(Iq.Type.SET);
         final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB);
         final Element publish = pubsub.addChild("publish");
         publish.setAttribute("node", node);
@@ -110,12 +110,12 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    protected IqPacket publish(final String node, final Element item) {
+    protected Iq publish(final String node, final Element item) {
         return publish(node, item, null);
     }
 
-    private IqPacket retrieve(String node, Element item) {
-        final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+    private Iq retrieve(String node, Element item) {
+        final var packet = new Iq(Iq.Type.GET);
         final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB);
         final Element items = pubsub.addChild("items");
         items.setAttribute("node", node);
@@ -125,30 +125,30 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket retrieveBookmarks() {
+    public Iq retrieveBookmarks() {
         return retrieve(Namespace.BOOKMARKS2, null);
     }
 
-    public IqPacket retrieveMds() {
+    public Iq retrieveMds() {
         return retrieve(Namespace.MDS_DISPLAYED, null);
     }
 
-    public IqPacket publishNick(String nick) {
+    public Iq publishNick(String nick) {
         final Element item = new Element("item");
         item.setAttribute("id", "current");
         item.addChild("nick", Namespace.NICK).setContent(nick);
         return publish(Namespace.NICK, item);
     }
 
-    public IqPacket deleteNode(final String node) {
-        final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public Iq deleteNode(final String node) {
+        final var packet = new Iq(Iq.Type.SET);
         final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB_OWNER);
         pubsub.addChild("delete").setAttribute("node", node);
         return packet;
     }
 
-    public IqPacket deleteItem(final String node, final String id) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public Iq deleteItem(final String node, final String id) {
+        final var packet = new Iq(Iq.Type.SET);
         final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB);
         final Element retract = pubsub.addChild("retract");
         retract.setAttribute("node", node);
@@ -157,7 +157,7 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket publishAvatar(Avatar avatar, Bundle options) {
+    public Iq publishAvatar(Avatar avatar, Bundle options) {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
         final Element data = item.addChild("data", Namespace.AVATAR_DATA);
@@ -165,14 +165,14 @@ public class IqGenerator extends AbstractGenerator {
         return publish(Namespace.AVATAR_DATA, item, options);
     }
 
-    public IqPacket publishElement(final String namespace, final Element element, String id, final Bundle options) {
+    public Iq publishElement(final String namespace, final Element element, String id, final Bundle options) {
         final Element item = new Element("item");
         item.setAttribute("id", id);
         item.addChild(element);
         return publish(namespace, item, options);
     }
 
-    public IqPacket publishAvatarMetadata(final Avatar avatar, final Bundle options) {
+    public Iq publishAvatarMetadata(final Avatar avatar, final Bundle options) {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
         final Element metadata = item
@@ -186,57 +186,57 @@ public class IqGenerator extends AbstractGenerator {
         return publish(Namespace.AVATAR_METADATA, item, options);
     }
 
-    public IqPacket retrievePepAvatar(final Avatar avatar) {
+    public Iq retrievePepAvatar(final Avatar avatar) {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
-        final IqPacket packet = retrieve(Namespace.AVATAR_DATA, item);
+        final var packet = retrieve(Namespace.AVATAR_DATA, item);
         packet.setTo(avatar.owner);
         return packet;
     }
 
-    public IqPacket retrieveVcardAvatar(final Avatar avatar) {
-        final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+    public Iq retrieveVcardAvatar(final Avatar avatar) {
+        final Iq packet = new Iq(Iq.Type.GET);
         packet.setTo(avatar.owner);
         packet.addChild("vCard", "vcard-temp");
         return packet;
     }
 
-    public IqPacket retrieveVcardAvatar(final Jid to) {
-        final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+    public Iq retrieveVcardAvatar(final Jid to) {
+        final Iq packet = new Iq(Iq.Type.GET);
         packet.setTo(to);
         packet.addChild("vCard", "vcard-temp");
         return packet;
     }
 
-    public IqPacket retrieveAvatarMetaData(final Jid to) {
-        final IqPacket packet = retrieve("urn:xmpp:avatar:metadata", null);
+    public Iq retrieveAvatarMetaData(final Jid to) {
+        final Iq packet = retrieve("urn:xmpp:avatar:metadata", null);
         if (to != null) {
             packet.setTo(to);
         }
         return packet;
     }
 
-    public IqPacket retrieveDeviceIds(final Jid to) {
-        final IqPacket packet = retrieve(AxolotlService.PEP_DEVICE_LIST, null);
+    public Iq retrieveDeviceIds(final Jid to) {
+        final var packet = retrieve(AxolotlService.PEP_DEVICE_LIST, null);
         if (to != null) {
             packet.setTo(to);
         }
         return packet;
     }
 
-    public IqPacket retrieveBundlesForDevice(final Jid to, final int deviceid) {
-        final IqPacket packet = retrieve(AxolotlService.PEP_BUNDLES + ":" + deviceid, null);
+    public Iq retrieveBundlesForDevice(final Jid to, final int deviceid) {
+        final var packet = retrieve(AxolotlService.PEP_BUNDLES + ":" + deviceid, null);
         packet.setTo(to);
         return packet;
     }
 
-    public IqPacket retrieveVerificationForDevice(final Jid to, final int deviceid) {
-        final IqPacket packet = retrieve(AxolotlService.PEP_VERIFICATION + ":" + deviceid, null);
+    public Iq retrieveVerificationForDevice(final Jid to, final int deviceid) {
+        final var packet = retrieve(AxolotlService.PEP_VERIFICATION + ":" + deviceid, null);
         packet.setTo(to);
         return packet;
     }
 
-    public IqPacket publishDeviceIds(final Set<Integer> ids, final Bundle publishOptions) {
+    public Iq publishDeviceIds(final Set<Integer> ids, final Bundle publishOptions) {
         final Element item = new Element("item");
         item.setAttribute("id", "current");
         final Element list = item.addChild("list", AxolotlService.PEP_PREFIX);
@@ -286,7 +286,7 @@ public class IqGenerator extends AbstractGenerator {
         return displayed;
     }
 
-    public IqPacket publishBundles(final SignedPreKeyRecord signedPreKeyRecord, final IdentityKey identityKey,
+    public Iq publishBundles(final SignedPreKeyRecord signedPreKeyRecord, final IdentityKey identityKey,
                                    final Set<PreKeyRecord> preKeyRecords, final int deviceId, Bundle publishOptions) {
         final Element item = new Element("item");
         item.setAttribute("id", "current");
@@ -310,7 +310,7 @@ public class IqGenerator extends AbstractGenerator {
         return publish(AxolotlService.PEP_BUNDLES + ":" + deviceId, item, publishOptions);
     }
 
-    public IqPacket publishVerification(byte[] signature, X509Certificate[] certificates, final int deviceId) {
+    public Iq publishVerification(byte[] signature, X509Certificate[] certificates, final int deviceId) {
         final Element item = new Element("item");
         item.setAttribute("id", "current");
         final Element verification = item.addChild("verification", AxolotlService.PEP_PREFIX);
@@ -328,8 +328,8 @@ public class IqGenerator extends AbstractGenerator {
         return publish(AxolotlService.PEP_VERIFICATION + ":" + deviceId, item);
     }
 
-    public IqPacket queryMessageArchiveManagement(final MessageArchiveService.Query mam) {
-        final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public Iq queryMessageArchiveManagement(final MessageArchiveService.Query mam) {
+        final Iq packet = new Iq(Iq.Type.SET);
         final Element query = packet.query(mam.version.namespace);
         query.setAttribute("queryid", mam.getQueryId());
         final Data data = new Data();
@@ -359,15 +359,15 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket generateGetBlockList() {
-        final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
+    public Iq generateGetBlockList() {
+        final Iq iq = new Iq(Iq.Type.GET);
         iq.addChild("blocklist", Namespace.BLOCKING);
 
         return iq;
     }
 
-    public IqPacket generateSetBlockRequest(final Jid jid, final boolean reportSpam, final String serverMsgId) {
-        final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
+    public Iq generateSetBlockRequest(final Jid jid, final boolean reportSpam, final String serverMsgId) {
+        final Iq iq = new Iq(Iq.Type.SET);
         final Element block = iq.addChild("block", Namespace.BLOCKING);
         final Element item = block.addChild("item").setAttribute("jid", jid);
         if (reportSpam) {
@@ -383,15 +383,15 @@ public class IqGenerator extends AbstractGenerator {
         return iq;
     }
 
-    public IqPacket generateSetUnblockRequest(final Jid jid) {
-        final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
+    public Iq generateSetUnblockRequest(final Jid jid) {
+        final Iq iq = new Iq(Iq.Type.SET);
         final Element block = iq.addChild("unblock", Namespace.BLOCKING);
         block.addChild("item").setAttribute("jid", jid);
         return iq;
     }
 
-    public IqPacket generateSetPassword(final Account account, final String newPassword) {
-        final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public Iq generateSetPassword(final Account account, final String newPassword) {
+        final Iq packet = new Iq(Iq.Type.SET);
         packet.setTo(account.getDomain());
         final Element query = packet.addChild("query", Namespace.REGISTER);
         final Jid jid = account.getJid();
@@ -400,14 +400,14 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket changeAffiliation(Conversation conference, Jid jid, String affiliation) {
+    public Iq changeAffiliation(Conversation conference, Jid jid, String affiliation) {
         List<Jid> jids = new ArrayList<>();
         jids.add(jid);
         return changeAffiliation(conference, jids, affiliation);
     }
 
-    public IqPacket changeAffiliation(Conversation conference, List<Jid> jids, String affiliation) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public Iq changeAffiliation(Conversation conference, List<Jid> jids, String affiliation) {
+        final Iq packet = new Iq(Iq.Type.SET);
         packet.setTo(conference.getJid().asBareJid());
         packet.setFrom(conference.getAccount().getJid());
         Element query = packet.query("http://jabber.org/protocol/muc#admin");
@@ -419,8 +419,8 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket changeRole(Conversation conference, String nick, String role) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public Iq changeRole(Conversation conference, String nick, String role) {
+        final Iq packet = new Iq(Iq.Type.SET);
         packet.setTo(conference.getJid().asBareJid());
         packet.setFrom(conference.getAccount().getJid());
         Element item = packet.query("http://jabber.org/protocol/muc#admin").addChild("item");
@@ -429,8 +429,8 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket requestHttpUploadSlot(Jid host, DownloadableFile file, String mime) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+    public Iq requestHttpUploadSlot(Jid host, DownloadableFile file, String mime) {
+        final Iq packet = new Iq(Iq.Type.GET);
         packet.setTo(host);
         Element request = packet.addChild("request", Namespace.HTTP_UPLOAD);
         request.setAttribute("filename", convertFilename(file.getName()));
@@ -439,8 +439,8 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket requestHttpUploadLegacySlot(Jid host, DownloadableFile file, String mime) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+    public Iq requestHttpUploadLegacySlot(Jid host, DownloadableFile file, String mime) {
+        final Iq packet = new Iq(Iq.Type.GET);
         packet.setTo(host);
         Element request = packet.addChild("request", Namespace.HTTP_UPLOAD_LEGACY);
         request.addChild("filename").setContent(convertFilename(file.getName()));
@@ -466,8 +466,8 @@ public class IqGenerator extends AbstractGenerator {
         }
     }
 
-    public IqPacket generateCreateAccountWithCaptcha(Account account, String id, Data data) {
-        final IqPacket register = new IqPacket(IqPacket.TYPE.SET);
+    public static Iq generateCreateAccountWithCaptcha(final Account account, final String id, final Data data) {
+        final Iq register = new Iq(Iq.Type.SET);
         register.setFrom(account.getJid().asBareJid());
         register.setTo(account.getDomain());
         register.setId(id);
@@ -478,12 +478,12 @@ public class IqGenerator extends AbstractGenerator {
         return register;
     }
 
-    public IqPacket pushTokenToAppServer(Jid appServer, String token, String deviceId) {
+    public Iq pushTokenToAppServer(Jid appServer, String token, String deviceId) {
         return pushTokenToAppServer(appServer, token, deviceId, null);
     }
 
-    public IqPacket pushTokenToAppServer(Jid appServer, String token, String deviceId, Jid muc) {
-        final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public Iq pushTokenToAppServer(Jid appServer, String token, String deviceId, Jid muc) {
+        final Iq packet = new Iq(Iq.Type.SET);
         packet.setTo(appServer);
         final Element command = packet.addChild("command", Namespace.COMMANDS);
         command.setAttribute("node", "register-push-fcm");
@@ -499,8 +499,8 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket unregisterChannelOnAppServer(Jid appServer, String deviceId, String channel) {
-        final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public Iq unregisterChannelOnAppServer(Jid appServer, String deviceId, String channel) {
+        final Iq packet = new Iq(Iq.Type.SET);
         packet.setTo(appServer);
         final Element command = packet.addChild("command", Namespace.COMMANDS);
         command.setAttribute("node", "unregister-push-fcm");
@@ -513,8 +513,8 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket enablePush(final Jid jid, final String node, final String secret) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public Iq enablePush(final Jid jid, final String node, final String secret) {
+        final Iq packet = new Iq(Iq.Type.SET);
         Element enable = packet.addChild("enable", Namespace.PUSH);
         enable.setAttribute("jid", jid);
         enable.setAttribute("node", node);
@@ -528,16 +528,16 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket disablePush(final Jid jid, final String node) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public Iq disablePush(final Jid jid, final String node) {
+        Iq packet = new Iq(Iq.Type.SET);
         Element disable = packet.addChild("disable", Namespace.PUSH);
         disable.setAttribute("jid", jid);
         disable.setAttribute("node", node);
         return packet;
     }
 
-    public IqPacket queryAffiliation(Conversation conversation, String affiliation) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+    public Iq queryAffiliation(Conversation conversation, String affiliation) {
+        final Iq packet = new Iq(Iq.Type.GET);
         packet.setTo(conversation.getJid().asBareJid());
         packet.query("http://jabber.org/protocol/muc#admin").addChild("item").setAttribute("affiliation", affiliation);
         return packet;
@@ -570,16 +570,16 @@ public class IqGenerator extends AbstractGenerator {
         return options;
     }
 
-    public IqPacket requestPubsubConfiguration(Jid jid, String node) {
+    public Iq requestPubsubConfiguration(Jid jid, String node) {
         return pubsubConfiguration(jid, node, null);
     }
 
-    public IqPacket publishPubsubConfiguration(Jid jid, String node, Data data) {
+    public Iq publishPubsubConfiguration(Jid jid, String node, Data data) {
         return pubsubConfiguration(jid, node, data);
     }
 
-    private IqPacket pubsubConfiguration(Jid jid, String node, Data data) {
-        IqPacket packet = new IqPacket(data == null ? IqPacket.TYPE.GET : IqPacket.TYPE.SET);
+    private Iq pubsubConfiguration(Jid jid, String node, Data data) {
+        final Iq packet = new Iq(data == null ? Iq.Type.GET : Iq.Type.SET);
         packet.setTo(jid);
         Element pubsub = packet.addChild("pubsub", "http://jabber.org/protocol/pubsub#owner");
         Element configure = pubsub.addChild("configure").setAttribute("node", node);
@@ -589,15 +589,15 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket queryDiscoItems(Jid jid) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+    public Iq queryDiscoItems(final Jid jid) {
+        final Iq packet = new Iq(Iq.Type.GET);
         packet.setTo(jid);
         packet.addChild("query",Namespace.DISCO_ITEMS);
         return packet;
     }
 
-    public IqPacket queryDiscoInfo(Jid jid) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+    public Iq queryDiscoInfo(final Jid jid) {
+        final Iq packet = new Iq(Iq.Type.GET);
         packet.setTo(jid);
         packet.addChild("query",Namespace.DISCO_INFO);
         return packet;

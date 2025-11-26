@@ -26,7 +26,7 @@
     <string name="minute_ago">1 分钟前</string>
     <string name="minutes_ago">%d 分钟前</string>
     <plurals name="x_unread_conversations">
-        <item quantity="other">%d 个未读聊天</item>
+        <item quantity="other">%d 个未读对话</item>
     </plurals>
     <string name="sending">正在发送…</string>
     <string name="message_decrypting">解密消息中。请稍候…</string>
@@ -38,7 +38,7 @@
     <string name="moderator">主持人</string>
     <string name="participant">参与者</string>
     <string name="visitor">访客</string>
-    <string name="remove_contact_text">是否从联系人列表中移除 %s？将不会移除与对方的聊天。</string>
+    <string name="remove_contact_text">是否从联系人列表中移除 %s？将不会移除与对方的对话。</string>
     <string name="block_contact_text">是否屏蔽 %s 向您发送消息？</string>
     <string name="unblock_contact_text">是否解除屏蔽 %s 并允许对方向您发送消息？</string>
     <string name="block_domain_text">屏蔽来自 %s 的所有联系人？</string>
@@ -62,12 +62,12 @@
     <string name="save">保存</string>
     <string name="ok">完成</string>
     <string name="crash_report_title">%1$s 已崩溃</string>
-    <string name="crash_report_message">使用 XMPP 账号发送堆栈跟踪有助于 %1$s 的持续开发。</string>
+    <string name="crash_report_message">使用您的 XMPP 账号发送崩溃报告有助于 %1$s 的持续开发。</string>
     <string name="send_now">立即发送</string>
     <string name="send_never">不再询问</string>
     <string name="problem_connecting_to_account">无法连接到账号</string>
     <string name="problem_connecting_to_accounts">无法连接到多个账号</string>
-    <string name="touch_to_fix">轻击即可管理账号</string>
+    <string name="touch_to_fix">点击以管理您的账号</string>
     <string name="attach_file">附加文件</string>
     <string name="not_in_roster">对方不在您的联系人列表中，是否添加？</string>
     <string name="add_contact">添加联系人</string>
@@ -75,9 +75,9 @@
     <string name="preparing_image">正在准备发送图片</string>
     <string name="preparing_images">正在准备发送图片</string>
     <string name="sharing_files_please_wait">分享文件中。请稍候…</string>
-    <string name="action_clear_history">清空历史记录</string>
+    <string name="action_clear_history">清空聊天记录</string>
     <string name="clear_conversation_history">清空聊天记录</string>
-    <string name="clear_histor_msg">是否要删除此聊天中的所有消息？
+    <string name="clear_histor_msg">是否要删除此对话中的所有消息？
 \n
 \n<b>警告：</b>存储在其他设备或服务器上的消息将不受影响。</string>
     <string name="delete_file_dialog">删除文件</string>
@@ -85,12 +85,12 @@
 \n
 \n<b>警告：</b>存储在其他设备或服务器上此文件的副本将不会删除。 </string>
     <string name="choose_presence">选择设备</string>
-    <string name="send_unencrypted_message">发送明文消息</string>
+    <string name="send_unencrypted_message">发送未加密消息</string>
     <string name="send_message">发送消息</string>
     <string name="send_message_to_x">发送消息至 %s</string>
     <string name="send_omemo_x509_message">发送 v\\OMEMO 加密消息</string>
     <string name="your_nick_has_been_changed">正在使用新昵称</string>
-    <string name="send_unencrypted">发送明文</string>
+    <string name="send_unencrypted">发送未加密</string>
     <string name="decryption_failed">解密失败。也许您没有正确的私钥。</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="openkeychain_required_long">%1$s 使用 &lt;b&gt;OpenKeychain&lt;/b&gt; 来加密和解密消息并管理公钥。&lt;br&gt;&lt;br&gt;它在 GPLv3+ 许可证下授权并可在 F-Droid 和 Google Play 上获得。&lt;br&gt;&lt;br&gt;&lt;small&gt;（请之后重启 %1$s。）&lt;/small&gt;</string>
@@ -123,7 +123,7 @@
     <string name="pref_notification_grace_period">静默期</string>
     <string name="pref_notification_grace_period_summary">在其他设备上检测到活动之后，通知在此期间静音。</string>
     <string name="pref_advanced_options">高级</string>
-    <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您可以帮助进一步的开发</string>
+    <string name="pref_never_send_crash_summary">通过发送崩溃报告，您可以帮助此应用的进一步开发</string>
     <string name="pref_confirm_messages">确认消息</string>
     <string name="pref_confirm_messages_summary">让您的联系人知道您已收到并阅读了其消息</string>
     <string name="pref_prevent_screenshots">防止截屏</string>
@@ -169,7 +169,7 @@
     <string name="account_status_incompatible_client">客户端不兼容</string>
     <string name="account_status_stream_error">流错误</string>
     <string name="account_status_stream_opening_error">流打开错误</string>
-    <string name="encryption_choice_unencrypted">明文</string>
+    <string name="encryption_choice_unencrypted">未加密</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
@@ -259,7 +259,7 @@
     <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s 和其他 %2$d 人已阅读至此</string>
     <string name="everyone_has_read_up_to_this_point">每个人都已阅读至此</string>
     <string name="publish">发布</string>
-    <string name="touch_to_choose_picture">轻击头像即可从图库中选择图片</string>
+    <string name="touch_to_choose_picture">点击头像从图库中选择图片</string>
     <string name="publishing">正在发布…</string>
     <string name="error_publish_avatar_server_reject">服务器拒绝了您的发布</string>
     <string name="error_publish_avatar_converting">无法转换图片</string>
@@ -276,7 +276,7 @@
     <string name="skip">跳过</string>
     <string name="disable_notifications">禁用通知</string>
     <string name="enable">启用</string>
-    <string name="conference_requires_password">需要密码才能进入此群聊</string>
+    <string name="conference_requires_password">进入群聊需要输入密码</string>
     <string name="enter_password">输入密码</string>
     <string name="request_presence_updates">请先向您的联系人请求在线状态更新。
 \n
@@ -299,12 +299,12 @@
     <string name="pref_quiet_hours_summary">通知将在免打扰时间内静音</string>
     <string name="pref_expert_options_other">其他</string>
     <string name="pref_autojoin">同步书签</string>
-    <string name="pref_autojoin_summary">在进入或离开多用户聊天时设置“自动加入”标志，并回应其他客户端所做的改变。</string>
+    <string name="pref_autojoin_summary">在进入或离开群聊时设置“自动加入”标志，并回应其他客户端所做的改变。</string>
     <string name="toast_message_omemo_fingerprint">OMEMO 指纹已复制到剪贴板</string>
-    <string name="conference_banned">此群聊已将您封禁了</string>
+    <string name="conference_banned">禁止您进入此群聊</string>
     <string name="conference_members_only">此群聊仅成员进入</string>
     <string name="conference_resource_constraint">资源限制</string>
-    <string name="conference_kicked">此群聊已将您踢出了</string>
+    <string name="conference_kicked">已从群聊中踢出了您</string>
     <string name="conference_shutdown">此群聊已关闭</string>
     <string name="conference_unknown_error">您已不在群聊中</string>
     <string name="conference_technical_problems">由于技术原因，您离开了群聊</string>
@@ -371,8 +371,8 @@
     <string name="error_no_keys_to_trust_presence">此联系人没有可用的密钥。
 \n请确保双方都有在线状态订阅。</string>
     <string name="error_trustkeys_title">出了点问题</string>
-    <string name="fetching_history_from_server">正在从服务器获取历史记录</string>
-    <string name="no_more_history_on_server">服务器上没有更多历史记录</string>
+    <string name="fetching_history_from_server">正在从服务器获取聊天记录</string>
+    <string name="no_more_history_on_server">服务器上没有更多聊天记录</string>
     <string name="updating">正在更新…</string>
     <string name="password_changed">密码已修改！</string>
     <string name="could_not_change_password">无法修改密码</string>
@@ -399,17 +399,17 @@
     <string name="could_not_change_affiliation">无法更改 %s 的从属关系</string>
     <string name="ban_from_conference">从群聊中封禁</string>
     <string name="ban_from_channel">从频道中封禁</string>
-    <string name="removing_from_public_conference">您正试图从公开频道中移除 %s。唯一的办法就是永远封禁此用户。</string>
+    <string name="removing_from_public_conference">您正试图从公开频道中移除 %s。唯一的办法就是永远封禁该用户。</string>
     <string name="ban_now">立即封禁</string>
     <string name="could_not_change_role">无法更改 %s 的角色</string>
     <string name="conference_options">私人群聊配置</string>
     <string name="channel_options">公开频道配置</string>
     <string name="members_only">私人，仅成员进入</string>
-    <string name="non_anonymous">使 XMPP 地址对任何人可见</string>
-    <string name="moderated">对频道进行审核</string>
+    <string name="non_anonymous">公开用户的 XMPP 地址</string>
+    <string name="moderated">开启频道发言审核</string>
     <string name="you_are_not_participating">您未参与</string>
-    <string name="modified_conference_options">群聊选项修改成功！</string>
-    <string name="could_not_modify_conference_options">无法修改群聊选项</string>
+    <string name="modified_conference_options">群聊配置修改成功！</string>
+    <string name="could_not_modify_conference_options">无法修改群聊配置</string>
     <string name="never">从不</string>
     <string name="until_further_notice">直至另行通知</string>
     <string name="snooze">稍后提醒</string>
@@ -685,8 +685,6 @@
     <string name="message_copied_to_clipboard">消息已复制到剪贴板</string>
     <string name="message">消息</string>
     <string name="private_messages_are_disabled">已禁用私信</string>
-    <string name="huawei_protected_apps">受保护的应用</string>
-    <string name="huawei_protected_apps_summary">为了在屏幕关闭时也可收到消息提醒，您需要将 Snikket 加入受保护的应用列表。</string>
     <string name="mtm_accept_cert">接受未知证书？</string>
     <string name="mtm_trust_anchor">此服务器证书不是由已知的证书颁发机构签发的。</string>
     <string name="mtm_accept_servername">接受不匹配的服务器名称？</string>
@@ -704,14 +702,14 @@
     <string name="error_trustkey_device_list">无法获取设备列表</string>
     <string name="error_trustkey_bundle">无法获取密钥</string>
     <string name="error_trustkey_hint_mutual">提示：某些情况下，双方可以添加到联系人列表解决此问题。</string>
-    <string name="disable_encryption_message">是否确定要禁用此聊天的 OMEMO 加密？
+    <string name="disable_encryption_message">是否确定要禁用此对话的 OMEMO 加密？
 \n将允许服务器管理员读取您的消息，但可能是与使用过时客户端的用户交流的唯一方法。</string>
     <string name="disable_now">立即禁用</string>
     <string name="draft">草稿：</string>
     <string name="pref_omemo_setting">OMEMO 加密</string>
     <string name="pref_omemo_setting_summary_always">OMEMO 将始终用于一对一和私人群聊。</string>
-    <string name="pref_omemo_setting_summary_default_on">新聊天将默认使用 OMEMO。</string>
-    <string name="pref_omemo_setting_summary_default_off">新聊天必须明确开启 OMEMO。</string>
+    <string name="pref_omemo_setting_summary_default_on">新对话将默认使用 OMEMO。</string>
+    <string name="pref_omemo_setting_summary_default_off">新对话必须明确开启 OMEMO。</string>
     <string name="create_shortcut">创建快捷方式</string>
     <string name="default_on">默认开启</string>
     <string name="default_off">默认关闭</string>
@@ -732,14 +730,14 @@
     <string name="no_microphone_permission">授予 %1$s 访问麦克风的权限</string>
     <string name="search_messages">搜索消息</string>
     <string name="gif">GIF</string>
-    <string name="view_conversation">查看聊天</string>
+    <string name="view_conversation">查看对话</string>
     <string name="pref_use_share_location_plugin">位置共享插件</string>
     <string name="pref_use_share_location_plugin_summary">使用位置共享插件代替内置地图</string>
     <string name="copy_link">复制 web 地址</string>
     <string name="copy_jabber_id">复制 XMPP 地址</string>
     <string name="p1_s3_filetransfer">用于 S3 的 HTTP 文件共享</string>
     <string name="pref_start_search">直接搜索</string>
-    <string name="pref_start_search_summary">在“新聊天”屏幕上打开键盘并将光标放在搜索栏中</string>
+    <string name="pref_start_search_summary">在“新对话”屏幕上打开键盘并将光标放在搜索栏中</string>
     <string name="group_chat_avatar">群聊头像</string>
     <string name="host_does_not_support_group_chat_avatars">主机不支持群聊头像</string>
     <string name="only_the_owner_can_change_group_chat_avatar">只有所有者才能更改群聊头像</string>
@@ -748,7 +746,7 @@
     <string name="group_chat_name">名称</string>
     <string name="providing_a_name_is_optional">提供名称是可选的</string>
     <string name="create_dialog_group_chat_name">群聊名</string>
-    <string name="conference_destroyed">已解散此群聊</string>
+    <string name="conference_destroyed">此群聊已经解散了</string>
     <string name="unable_to_save_recording">无法保存录制</string>
     <string name="foreground_service_channel_name">前台服务</string>
     <string name="foreground_service_channel_description">此通知类别用于显示永久通知，表明 %1$s 正在运行。</string>
@@ -855,16 +853,16 @@
     <string name="channel_already_exists">此频道已存在</string>
     <string name="joined_an_existing_channel">您已加入现有的频道</string>
     <string name="unable_to_set_channel_configuration">无法保存频道配置</string>
-    <string name="allow_participants_to_edit_subject">允许任何人编辑话题</string>
-    <string name="allow_participants_to_invite_others">允许任何人邀请别人</string>
-    <string name="anyone_can_edit_subject">任何人可以编辑话题。</string>
+    <string name="allow_participants_to_edit_subject">允许参与者（非访客）编辑话题</string>
+    <string name="allow_participants_to_invite_others">允许任何参与者邀请其他用户</string>
+    <string name="anyone_can_edit_subject">参与者（非访客）可以编辑话题。</string>
     <string name="owners_can_edit_subject">所有者可以编辑话题。</string>
     <string name="admins_can_edit_subject">管理员可以编辑话题。</string>
-    <string name="owners_can_invite_others">所有者可以邀请别人。</string>
-    <string name="anyone_can_invite_others">任何人可以邀请别人。</string>
-    <string name="jabber_ids_are_visible_to_admins">XMPP 地址对管理员可见。</string>
-    <string name="jabber_ids_are_visible_to_anyone">XMPP 地址对任何人可见。</string>
-    <string name="no_users_hint_channel">此公开频道无参与者。邀请联系人或使用分享按钮分发其 XMPP 地址。</string>
+    <string name="owners_can_invite_others">所有者可以邀请其他用户。</string>
+    <string name="anyone_can_invite_others">任何参与者可以邀请其他用户。</string>
+    <string name="jabber_ids_are_visible_to_admins">用户的 XMPP 地址仅管理员可见。</string>
+    <string name="jabber_ids_are_visible_to_anyone">用户的 XMPP 地址对任何人可见。</string>
+    <string name="no_users_hint_channel">此公开频道无参与者。邀请联系人或使用分享按钮分发频道的 XMPP 地址。</string>
     <string name="no_users_hint_group_chat">此私人群聊无参与者。</string>
     <string name="manage_permission">管理权限</string>
     <string name="search_participants">搜索参与者</string>
@@ -904,11 +902,11 @@
     <string name="rtp_state_content_add">添加额外轨道？</string>
     <string name="rtp_state_connecting">正在连接</string>
     <string name="rtp_state_connected">已连接</string>
-    <string name="rtp_state_reconnecting">正在重连</string>
+    <string name="rtp_state_reconnecting">正在重新连接</string>
     <string name="rtp_state_accepting_call">正在接受通话</string>
     <string name="rtp_state_ending_call">正在结束通话</string>
-    <string name="answer_call">应答</string>
-    <string name="dismiss_call">忽略</string>
+    <string name="answer_call">接听</string>
+    <string name="dismiss_call">拒接</string>
     <string name="rtp_state_finding_device">正在发现设备</string>
     <string name="rtp_state_ringing">正在响铃</string>
     <string name="rtp_state_declined_or_busy">占线</string>
@@ -920,8 +918,8 @@
     <string name="hang_up">挂断</string>
     <string name="ongoing_call">正在进行的通话</string>
     <string name="ongoing_video_call">正在进行的视频通话</string>
-    <string name="reconnecting_call">正在重连通话</string>
-    <string name="reconnecting_video_call">正在重连视频通话</string>
+    <string name="reconnecting_call">正在重新连接通话</string>
+    <string name="reconnecting_video_call">正在重新连接视频通话</string>
     <string name="disable_tor_to_make_call">禁用 Tor 以进行通话</string>
     <string name="incoming_call">来电</string>
     <string name="missed_call_timestamp">未接来电 · %s</string>
@@ -947,8 +945,8 @@
     <string name="remove_from_favorites">取消置顶</string>
     <string name="gpx_track">GPX 轨迹</string>
     <string name="could_not_correct_message">无法更正消息</string>
-    <string name="search_all_conversations">所有聊天</string>
-    <string name="search_this_conversation">此聊天</string>
+    <string name="search_all_conversations">所有对话</string>
+    <string name="search_this_conversation">此对话</string>
     <string name="your_avatar">您的头像</string>
     <string name="avatar_for_x">%s 的头像</string>
     <string name="encrypted_with_omemo">用 OMEMO 加密</string>
@@ -1015,25 +1013,25 @@
     <string name="rtp_state_contact_offline">联系人不可用</string>
     <string name="no_permission_to_place_call">没有拨打电话的权限</string>
     <string name="call_integration_not_available">呼叫集成不可用！</string>
-    <string name="remove_bookmark_and_close">是否移除 %s 的书签并存档聊天？</string>
+    <string name="remove_bookmark_and_close">是否移除 %s 的书签并存档对话？</string>
     <string name="remove_bookmark">是否移除 %s 的书签？</string>
-    <string name="delete_and_close">删除并存档聊天</string>
+    <string name="delete_and_close">删除并存档对话</string>
     <string name="channel_discover_opt_in_message">频道发现使用称为 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; 的第三方服务。&lt;br&gt;&lt;br&gt;使用此功能会将您的 IP 地址和搜索词传输到此服务。请参阅其 &lt;a href=https://search.jabber.network/privacy&gt;隐私政策&lt;/a&gt; 以获取更多信息。</string>
-    <string name="start_chat">开始聊天</string>
+    <string name="start_chat">开始对话</string>
     <string name="title_activity_share_with">分享至…</string>
     <string name="pref_use_colorful_bubbles_summary">为已发送和已接收消息使用不同的背景颜色</string>
     <string name="no_certificate_selected">未选择客户端证书！</string>
     <string name="pref_use_colorful_bubbles">彩色聊天气泡</string>
     <string name="pref_dynamic_colors">动态色彩</string>
     <string name="pref_dynamic_colors_summary">系统色彩 (Material You)</string>
-    <string name="title_activity_new_chat">新聊天</string>
-    <string name="archive_this_chat">之后删除聊天</string>
-    <string name="title_undo_swipe_out_chat">聊天已存档</string>
-    <string name="switch_to_chat">切换到聊天</string>
-    <string name="action_archive_chat">存档聊天</string>
-    <string name="barcode_does_not_contain_fingerprints_for_this_chat">二维码不包含此聊天的指纹。</string>
+    <string name="title_activity_new_chat">新对话</string>
+    <string name="archive_this_chat">之后删除对话</string>
+    <string name="title_undo_swipe_out_chat">对话已存档</string>
+    <string name="switch_to_chat">切换到对话</string>
+    <string name="action_archive_chat">存档对话</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">二维码不包含此对话的指纹。</string>
     <string name="welcome_header">加入对话</string>
-    <string name="corresponding_chats_closed">相应的聊天已存档。</string>
+    <string name="corresponding_chats_closed">相应的对话已存档。</string>
     <string name="pref_send_crash_reports">发送崩溃报告</string>
     <string name="pref_title_security">安全</string>
     <string name="notifications">通知</string>
@@ -1076,6 +1074,29 @@
     <string name="pref_fullscreen_notification">全屏通知</string>
     <string name="pref_fullscreen_notification_summary">当设备锁定时，允许此应用显示占据全屏的来电通知。</string>
     <string name="unsupported_operation">不支持的操作</string>
-    <string name="pref_backup_summary">创建一次性、计划定期备份</string>
+    <string name="pref_backup_summary">创建一次性备份、计划定期备份</string>
     <string name="allow_private_messages">允许私信</string>
+    <string name="edit_nick">编辑昵称</string>
+    <string name="your_avatar_tap_to_select_new_avatar">您的头像。点击从图库中选择新头像。</string>
+    <string name="could_not_disable_video">无法禁用视频。</string>
+    <string name="delete_pgp_key">删除 OpenPGP 密钥</string>
+    <string name="edit_name_and_topic">编辑名称和话题</string>
+    <string name="edit_configuration">更改配置</string>
+    <string name="change_notification_settings">更改通知设置</string>
+    <string name="call_is_using_earpiece">正在使用听筒进行通话。</string>
+    <string name="call_is_using_wired_headset">正在使用有线耳机进行通话</string>
+    <string name="call_is_using_speaker">正在使用扬声器进行通话。</string>
+    <string name="call_is_using_bluetooth">正在使用蓝牙进行通话。</string>
+    <string name="flip_camera">翻转摄像头</string>
+    <string name="video_is_disabled_tap_to_enable">视频已禁用，点击以启用。</string>
+    <string name="video_is_enabled_tap_to_disable">视频已启用，点击以禁用。</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">正在使用扬声器进行通话，点击切换到听筒。</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">正在使用听筒进行通话，点击切换到扬声器。</string>
+    <string name="server_info_login_mechanism">登录机制</string>
+    <string name="server_info_bind2">XEP-0386：绑定 2</string>
+    <string name="server_info_sasl2">XEP-0388：可扩展 SASL 配置文件</string>
+    <string name="could_not_add_reaction">无法添加回应</string>
+    <string name="add_reaction">添加回应…</string>
+    <string name="more_reactions">更多回应</string>
+    <string name="add_reaction_title">添加回应</string>
 </resources>

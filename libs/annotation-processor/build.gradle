@@ -1,0 +1,20 @@
+apply plugin: "java-library"
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+dependencies {
+
+    implementation project(':libs:annotation')
+
+    annotationProcessor 'com.google.auto.service:auto-service:1.0.1'
+    api 'com.google.auto.service:auto-service-annotations:1.0.1'
+    implementation 'com.google.guava:guava:31.1-jre'
+
+}

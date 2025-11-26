@@ -10,13 +10,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
+import im.conversations.android.xmpp.model.StreamElement;
 
 public class TagWriter {
 
     private OutputStreamWriter outputStream;
     private boolean finished = false;
-    private final LinkedBlockingQueue<AbstractStanza> writeQueue = new LinkedBlockingQueue<AbstractStanza>();
+
+    private final LinkedBlockingQueue<StreamElement> writeQueue = new LinkedBlockingQueue<>();
     private CountDownLatch stanzaWriterCountDownLatch = null;
 
     private final Thread asyncStanzaWriter = new Thread() {
@@ -25,13 +26,13 @@ public class TagWriter {
         public void run() {
             stanzaWriterCountDownLatch = new CountDownLatch(1);
             while (!isInterrupted()) {
-                if (finished && writeQueue.size() == 0) {
+                if (finished && writeQueue.isEmpty()) {
                     break;
                 }
                 try {
-                    AbstractStanza output = writeQueue.take();
+                    final var output = writeQueue.take();
                     outputStream.write(output.toString());
-                    if (writeQueue.size() == 0) {
+                    if (writeQueue.isEmpty()) {
                         outputStream.flush();
                     }
                 } catch (Exception e) {
@@ -74,7 +75,7 @@ public class TagWriter {
         }
     }
 
-    public synchronized void writeElement(Element element) throws IOException {
+    public synchronized void writeElement(final StreamElement element) throws IOException {
         if (outputStream == null) {
             throw new IOException("output stream was null");
         }
@@ -82,7 +83,7 @@ public class TagWriter {
         outputStream.flush();
     }
 
-    public void writeStanzaAsync(AbstractStanza stanza) {
+    public void writeStanzaAsync(StreamElement stanza) {
         if (finished) {
             Log.d(Config.LOGTAG, "attempting to write stanza to finished TagWriter");
         } else {

@@ -620,7 +620,6 @@
     <string name="message_copied_to_clipboard">訊息已複製到剪貼簿</string>
     <string name="message">訊息</string>
     <string name="private_messages_are_disabled">私密訊息已停用</string>
-    <string name="huawei_protected_apps">受保護的應用程式</string>
     <string name="mtm_accept_cert">接受未知憑證？</string>
     <string name="mtm_trust_anchor">伺服器憑證是由不明的憑證簽發單位所簽署。</string>
     <string name="mtm_accept_servername">接受不相符的伺服器名稱？</string>
@@ -918,7 +917,6 @@
     <string name="we_will_be_verifying">我們將驗證 <br/><br/><b>%s</b><br/><br/> 電話號碼是否正確，或者您想編輯這個號碼嗎？</string>
     <string name="distrust_omemo_key_text">您確定要移除此裝置的驗證嗎？
 \n此裝置和來自此裝置的訊息將被標示為「未受信任」。</string>
-    <string name="huawei_protected_apps_summary">若要在螢幕關閉時保持接收通知，您需要將 Conversations 加入受保護的應用程式清單。</string>
     <string name="mtm_hostname_mismatch">由於「%s」，伺服器無法驗證，憑證僅對此有效：</string>
     <string name="verifying_omemo_keys_trusted_source_account">您將要驗證您自己帳戶的 OMEMO 金鑰。僅有從可信來源 (僅有您能夠發布此連結) 跟隨此連結時才是安全的。</string>
     <string name="silent_messages_channel_description">此通知群組用於顯示不應觸發任何音效的通知，例如在另一個裝置上啟用時 (寬限期)。</string>

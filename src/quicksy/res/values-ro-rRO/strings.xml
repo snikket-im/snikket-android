@@ -4,7 +4,7 @@
     <string name="pref_never_send_crash_summary">Trimițând datele despre erori ajutați la continuarea dezvoltării aplicației Quicksy</string>
     <string name="pref_broadcast_last_activity_summary">Contactele vă sunt anunțate atunci când folosiți Quicksy</string>
     <string name="huawei_protected_apps_summary">Pentru a continua să primiți notificări, chiar și când ecranul este oprit, trebuie să adăugați Quicksy în lista de aplicații protejate.</string>
-    <string name="set_profile_picture">Poză profil Quicksy</string>
+    <string name="set_profile_picture">Poză de profil Quicksy</string>
     <string name="not_available_in_your_country">Quicksy nu este disponibilă în țara dumneavoastră.</string>
     <string name="unable_to_verify_server_identity">Nu s-a putut verifica identitatea serverului.</string>
     <string name="unknown_security_error">Eroare de securitate necunoscută.</string>

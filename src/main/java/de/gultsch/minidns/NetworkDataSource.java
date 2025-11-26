@@ -15,6 +15,7 @@ import eu.siacs.conversations.Config;
 
 import org.minidns.MiniDnsException;
 import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.dnsname.InvalidDnsNameException;
 import org.minidns.dnsqueryresult.DnsQueryResult;
 import org.minidns.dnsqueryresult.StandardDnsQueryResult;
 import org.minidns.util.MultipleIoException;
@@ -172,7 +173,7 @@ public class NetworkDataSource extends org.minidns.source.NetworkDataSource {
     public static DnsMessage readDNSMessage(final byte[] bytes) throws IOException {
         try {
             return new DnsMessage(bytes);
-        } catch (final IllegalArgumentException e) {
+        } catch (final InvalidDnsNameException | IllegalArgumentException e) {
             throw new IOException(Throwables.getRootCause(e));
         }
     }

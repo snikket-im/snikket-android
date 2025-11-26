@@ -1,0 +1,3 @@
+* Planowanie regularnej kopii zapasowej
+* Wyłączenie wszystkich urządzeń Realme do Androida 11 z integracji rozmów
+* Drobne poprawki interfejsu użytkownika (dymków wiadomości)

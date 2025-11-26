@@ -27,7 +27,7 @@ Caracteristici XMPP:
 Conversations funcționează cu orice server XMPP existent. Cu toate acestea, XMPP este un protocol extensibil. Aceste extensii sunt, de asemenea, standardizate în așa-numitele XEP-uri. Conversations suportă câteva dintre acestea pentru a îmbunătăți experiența generală a utilizatorului. Există o șansă ca serverul XMPP actual să nu suporte aceste extensii. Prin urmare, pentru a profita la maximum de Conversations, ar trebui să luați în considerare fie trecerea la un server XMPP care să suporte aceste extensii, fie - și mai bine - să rulați propriul server XMPP pentru dumneavoastră și prietenii dumneavoastră.
 
 Aceste XEP-uri sunt - deocamdată:
-* XEP-0065: SOCKS5 Bytestreams (sau mod_proxy65). Va fi utilizat pentru a transfera fișiere dacă ambele părți se află în spatele unui firewall (NAT).
+* XEP-0065: SOCKS5 Bytestreams (sau mod_proxy65). Va fi utilizat pentru a transfera fișiere dacă ambele părți se află în spatele unui firewall sau NAT.
 * XEP-0163: Protocol de evenimente personale pentru avatare.
 * XEP-0191: Comanda de blocare vă permite să puneți pe lista neagră spamerii sau să blocați contactele fără a le elimina din listă.
 * XEP-0198: Stream Management permite XMPP să supraviețuiască unor mici întreruperi de rețea și schimbărilor conexiunii TCP de bază.

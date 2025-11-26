@@ -1,0 +1,14 @@
+Quicksy on variatsioon populaarsest Jabber/XMPP kliendist Conversationsist, kuhu on lisandunud kontaktide automaatne tuvastus.
+
+Sa lisad liitumisel oma telefoninumbri ja Quicksyautomaatselt telefoniraamatus leiduvate numbrite alusel pakub sulle välja võimalikke suhtluspartnereid.
+
+Olemuselt on Quicksy tavaline täisfunktsionaalne Jabberi klient, mis lubab sul suhelda kasutajatega ükspuha missuguses muus avalikus XMPP/Jabberi serveris. Samamoodi saad ükspuha missuguse Quicksy kasutajaga suhelda lisades +telefoninumber@quicksy.im oma kontaktide loendisse.
+
+Kui kontaktide sünkroniseerimine välja arvata, siis kasutajaliides on teadlikult võimalikult sarnane Conversationsiga. See võimaldab soovi korral hiljem Quicksy asemel asuda kasutama Conversationsit ning olulist ümberõppimist pole vaja ette võtta.
+
+Suhtlusparterite soovitused leitakse teiste Quicksy kasutajate hulgast ja tavaliste Jabber/XMPP kasutajate seast, kes on oma Jabberi kasutajatunnuse lisanud Quicksy kataloogi (https://quicksy.im/#get-listed).
+
+MÄRKUS: Oma Jabberi kasutajatunnuse lisamine (https://quicksy.im/enter/) Quicksy kataloogi
+eeldab ühekordse registreerimistasu maksmist.
+
+Lisateavet leiad meie privaatsuspoliitkast (https://quicksy.im/#privacy).

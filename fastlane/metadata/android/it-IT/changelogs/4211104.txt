@@ -1,0 +1,3 @@
+* Programmazione di backup regolari
+* Esclusione di tutti i dispositivi realme fino ad Android 11 dall'integrazione delle chiamate
+* Piccoli miglioramenti dell'interfaccia (messaggi)

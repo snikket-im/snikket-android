@@ -39,7 +39,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Deelnemer</string>
     <string name="visitor">Bezoeker</string>
-    <string name="remove_contact_text">Wil je %s uit je contactenlijst verwijderen? De gesprekken met deze contactpersoon zullen niet worden verwijderd.</string>
+    <string name="remove_contact_text">Wil je %s uit je contactenlijst verwijderen? De gesprekken met deze contactpersoon worden niet verwijderd.</string>
     <string name="block_contact_text">Wil je alle berichten van %s blokkeren?</string>
     <string name="unblock_contact_text">Wil je %s deblokkeren en er weer berichten van kunnen ontvangen?</string>
     <string name="block_domain_text">Alle contacten van %s blokkeren?</string>
@@ -66,8 +66,8 @@
     <string name="crash_report_message">Door crashrapportages via uw XMPP account te sturen help je de ontwikkeling van %1$s.</string>
     <string name="send_now">Nu versturen</string>
     <string name="send_never">Niet opnieuw vragen</string>
-    <string name="problem_connecting_to_account">Verbinding maken met account mislukt</string>
-    <string name="problem_connecting_to_accounts">Verbinden met meerdere accounts mislukt</string>
+    <string name="problem_connecting_to_account">Verbinding met account mislukt</string>
+    <string name="problem_connecting_to_accounts">Verbinding met meerdere accounts mislukt</string>
     <string name="touch_to_fix">Tik hier op om accounts te beheren</string>
     <string name="attach_file">Bestand bijvoegen</string>
     <string name="not_in_roster">Wil je dit ontbrekende contact toevoegen aan je contactenlijst?</string>
@@ -79,7 +79,9 @@
     <string name="action_clear_history">Geschiedenis wissen</string>
     <string name="clear_conversation_history">Gespreksgeschiedenis wissen</string>
     <string name="delete_file_dialog">Bestand verwijderen</string>
-    <string name="delete_file_dialog_msg">Weet je zeker dat je dit bestand wil verwijderen?\n\n<b>Waarschuwing:</b> Dit zal kopieën van dit bericht die opgeslagen zijn op andere apparaten of servers niet verwijderen.</string>
+    <string name="delete_file_dialog_msg">Weet je zeker dat je dit bestand wil verwijderen?
+\n
+\n<b>Waarschuwing:</b> Dit zal kopieën van dit bericht die opgeslagen zijn op andere apparaten of servers niet verwijderen. </string>
     <string name="choose_presence">Apparaat kiezen</string>
     <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
     <string name="send_message">Verstuur bericht</string>
@@ -92,7 +94,7 @@
     <string name="restart">Herstarten</string>
     <string name="install">Installeren</string>
     <string name="openkeychain_not_installed">Gelieve OpenKeychain te installeren</string>
-    <string name="offering">bezig met aanbieden…</string>
+    <string name="offering">Aanbieden…</string>
     <string name="waiting">wachten…</string>
     <string name="no_pgp_key">Geen OpenPGP-sleutel gevonden</string>
     <string name="no_pgp_keys">Geen OpenPGP-sleutels gevonden</string>
@@ -125,7 +127,7 @@
     <string name="attach_take_picture">Foto nemen</string>
     <string name="preemptively_grant">Op voorhand toestemming verlenen voor abonneren</string>
     <string name="error_not_an_image_file">Het bestand dat je gekozen hebt is geen afbeelding</string>
-    <string name="error_compressing_image">Kon de afbeelding niet converteren</string>
+    <string name="error_compressing_image">Kan afbeeldingsbestand niet converteren</string>
     <string name="error_file_not_found">Bestand niet gevonden</string>
     <string name="error_io_exception">Algemene I/O-fout. Misschien is er geen opslagruimte meer beschikbaar?</string>
     <string name="account_status_unknown">Onbekend</string>
@@ -155,8 +157,8 @@
     <string name="mgmt_account_publish_avatar">Avatar publiceren</string>
     <string name="mgmt_account_publish_pgp">OpenPGP-publieke sleutel publiceren</string>
     <string name="unpublish_pgp">OpenPGP-publieke sleutel verwijderen</string>
-    <string name="unpublish_pgp_message">Weet je zeker dat je je publieke OpenPGP-sleutel uit je aankondiging van aanwezigheid wilt verwijderen\?
-\nJe contacten zullen je geen versleutelde OpenPGP-berichten meer kunnen sturen.</string>
+    <string name="unpublish_pgp_message">Weet je zeker dat je jouw publieke OpenPGP-sleutel uit je aankondiging van aanwezigheid wilt verwijderen?
+\nJouw contacten zullen je geen versleutelde OpenPGP-berichten meer kunnen sturen.</string>
     <string name="openpgp_has_been_published">OpenPGP-publieke sleutel gepubliceerd.</string>
     <string name="mgmt_account_enable">Account inschakelen</string>
     <string name="attach_record_voice">Stem opnemen</string>
@@ -232,8 +234,8 @@
     <string name="touch_to_choose_picture">Tik op avatar om een foto uit de galerij te kiezen</string>
     <string name="publishing">Publiceren…</string>
     <string name="error_publish_avatar_server_reject">De server weigerde de publicatie van je afbeelding</string>
-    <string name="error_publish_avatar_converting">Kon de afbeelding niet converteren</string>
-    <string name="error_saving_avatar">Fout bij opslaan van avatar</string>
+    <string name="error_publish_avatar_converting">Kan de afbeelding niet converteren</string>
+    <string name="error_saving_avatar">Kan avatar niet op schijf opslaan</string>
     <string name="or_long_press_for_default">(Of hou lang ingedrukt om de oorspronkelijke terug te zetten)</string>
     <string name="error_publish_avatar_no_server_support">Je server ondersteunt de publicatie van avatars niet</string>
     <string name="private_message">gefluisterd</string>
@@ -251,7 +253,7 @@
     <string name="request_now">Nu aanvragen</string>
     <string name="ignore">Negeren</string>
     <string name="pref_security_settings">Beveiliging</string>
-    <string name="pref_allow_message_correction">Berichtcorrectie toestaan</string>
+    <string name="pref_allow_message_correction">Berichtcorrectie</string>
     <string name="pref_allow_message_correction_summary">Sta je contacten toe hun berichten na het versturen te verbeteren</string>
     <string name="pref_expert_options">Instellingen voor experts</string>
     <string name="pref_expert_options_summary">Wees voorzichtig met deze instellingen</string>
@@ -284,8 +286,8 @@
     <string name="jabber_id_copied_to_clipboard">XMPP-adres gekopieerd naar klembord</string>
     <string name="error_message_copied_to_clipboard">Foutmelding gekopieerd naar klembord</string>
     <string name="web_address">webadres</string>
-    <string name="scan_qr_code">2D-streepjescode scannen</string>
-    <string name="show_qr_code">2D-streepjescode tonen</string>
+    <string name="scan_qr_code">QR-code scannen</string>
+    <string name="show_qr_code">QR-code weergeven</string>
     <string name="show_block_list">Geblokkeerde contacten weergeven</string>
     <string name="account_details">Accountgegevens</string>
     <string name="confirm">Bevestigen</string>
@@ -294,10 +296,10 @@
     <string name="pref_keep_foreground_service_summary">Belet het besturingssysteem je verbinding te onderbreken</string>
     <string name="pref_create_backup">Back-up creëren</string>
     <string name="pref_create_backup_summary">Back-upbestanden worden opgeslagen in %s</string>
-    <string name="notification_create_backup_title">Bezig met creëren van back-upbestanden...</string>
+    <string name="notification_create_backup_title">Back-upbestanden aanmaken</string>
     <string name="notification_backup_created_title">Je back-up is opgeslagen</string>
     <string name="notification_backup_created_subtitle">De back-upbestanden zijn opgeslagen in %s</string>
-    <string name="restoring_backup">Bezig met herstellen van back-up...</string>
+    <string name="restoring_backup">Back-up terugzetten</string>
     <string name="notification_restored_backup_title">Je back-up is hersteld</string>
     <string name="notification_restored_backup_subtitle">Vergeet niet om de account in te schakelen.</string>
     <string name="choose_file">Bestand kiezen</string>
@@ -324,7 +326,7 @@
     <string name="no_more_history_on_server">Geen verdere geschiedenis op server</string>
     <string name="updating">Bijwerken…</string>
     <string name="password_changed">Wachtwoord gewijzigd!</string>
-    <string name="could_not_change_password">Kon wachtwoord niet wijzigen</string>
+    <string name="could_not_change_password">Kan wachtwoord niet wijzigen</string>
     <string name="change_password">Wachtwoord wijzigen</string>
     <string name="current_password">Huidig wachtwoord</string>
     <string name="new_password">Nieuw wachtwoord</string>
@@ -345,11 +347,11 @@
     <string name="remove_owner_privileges">Eigenaarsprivileges intrekken</string>
     <string name="remove_from_room">Verwijderen uit groepsgesprek</string>
     <string name="remove_from_channel">Verwijderen uit kanaal</string>
-    <string name="could_not_change_affiliation">Kon aansluiting niet wijzigen</string>
+    <string name="could_not_change_affiliation">Kan de aansluiting van %s niet wijzigen</string>
     <string name="ban_from_conference">Verbannen uit groepsgesprek</string>
     <string name="ban_from_channel">Verbannen uit kanaal</string>
     <string name="ban_now">Nu verbannen</string>
-    <string name="could_not_change_role">Kon rol van %s niet wijzigen</string>
+    <string name="could_not_change_role">Kan rol van %s niet wijzigen</string>
     <string name="conference_options">Instellingen voor privégroep</string>
     <string name="channel_options">Instellingen voor openbaar kanaal</string>
     <string name="members_only">Privé, enkel leden</string>
@@ -357,7 +359,7 @@
     <string name="moderated">Kanaal modereren</string>
     <string name="you_are_not_participating">Je neemt geen deel</string>
     <string name="modified_conference_options">Gespreksopties aangepast!</string>
-    <string name="could_not_modify_conference_options">Kon gespreksopties niet aanpassen</string>
+    <string name="could_not_modify_conference_options">Kan groepschatopties niet wijzigen</string>
     <string name="never">Nooit</string>
     <string name="until_further_notice">Voor onbepaalde duur</string>
     <string name="snooze">Sluimeren</string>
@@ -374,8 +376,8 @@
     <string name="apk">Android-applicatie</string>
     <string name="vcard">Contact</string>
     <string name="avatar_has_been_published">Avatar is gepubliceerd!</string>
-    <string name="sending_x_file">Bezig met versturen van %s</string>
-    <string name="offering_x_file">Bezig met aanbieden van %s</string>
+    <string name="sending_x_file">Versturen %s</string>
+    <string name="offering_x_file">Aanbieden %s</string>
     <string name="hide_offline">Offline contacten verbergen</string>
     <string name="contact_is_typing">%s is aan het typen…</string>
     <string name="contact_has_stopped_typing">%s is gestopt met typen</string>
@@ -411,15 +413,15 @@
     <string name="invalid_username">Dit is geen geldige gebruikersnaam</string>
     <string name="download_failed_server_not_found">Downloaden mislukt: server niet gevonden</string>
     <string name="download_failed_file_not_found">Downloaden mislukt: bestand niet gevonden</string>
-    <string name="download_failed_could_not_connect">Downloaden mislukt: kon geen verbinding maken met host</string>
-    <string name="download_failed_could_not_write_file">Download mislukt: kon bestand niet schrijven</string>
+    <string name="download_failed_could_not_connect">Downloaden mislukt: kan geen verbinding maken met host</string>
+    <string name="download_failed_could_not_write_file">Download mislukt: kan bestand niet schrijven</string>
     <string name="account_status_tor_unavailable">Tor-netwerk niet beschikbaar</string>
     <string name="account_status_bind_failure">Bindingsfout</string>
     <string name="server_info_broken">Gebroken</string>
     <string name="pref_presence_settings">Aanwezigheid</string>
     <string name="pref_treat_vibrate_as_silent">Trillen behandelen als stille modus</string>
-    <string name="pref_show_connection_options">Uitgebreide verbindingsinstellingen</string>
-    <string name="pref_show_connection_options_summary">Toon hostnaam- en poortinstellingen bij instellen van een account</string>
+    <string name="pref_show_connection_options">Hostname &amp; poort</string>
+    <string name="pref_show_connection_options_summary">Uitgebreide verbindingsinstellingen weergeven bij het instellen van een account</string>
     <string name="hostname_example">xmpp.voorbeeld.be</string>
     <string name="mam_prefs">Archiefvoorkeuren</string>
     <string name="server_side_mam_prefs">Voorkeuren voor archief aan serverzijde</string>
@@ -443,7 +445,7 @@
         <item quantity="other">%d berichten</item>
     </plurals>
     <string name="load_more_messages">Laad meer berichten</string>
-    <string name="sync_with_contacts">Synchroniseer met contacten</string>
+    <string name="sync_with_contacts">Integratie met contactenlijst</string>
     <string name="notify_on_all_messages">Melding bij alle berichten</string>
     <string name="notify_only_when_highlighted">Melding enkel wanneer aangesproken</string>
     <string name="notify_never">Meldingen uitgeschakeld</string>
@@ -510,13 +512,13 @@
     <string name="copy_fingerprint">Vingerafdruk kopiëren</string>
     <string name="verified_fingerprints">Geverifieerde vingerafdrukken</string>
     <string name="use_camera_icon_to_scan_barcode">Gebruik de camera om de streepjescode van een contact te scannen</string>
-    <string name="please_wait_for_keys_to_be_fetched">De sleutels worden opgehaald. Even geduld.</string>
+    <string name="please_wait_for_keys_to_be_fetched">Wacht tot de sleutels zijn opgehaald</string>
     <string name="share_as_barcode">Delen als streepjescode</string>
     <string name="share_as_uri">Delen als XMPP-URI</string>
     <string name="share_as_http">Delen als HTTP-link</string>
     <string name="pref_blind_trust_before_verification">Blindelings vertrouwen vóór verificatie</string>
     <string name="not_trusted">Onvertrouwd</string>
-    <string name="invalid_barcode">Ongeldige 2D-streepjescode</string>
+    <string name="invalid_barcode">Ongeldige QR-code</string>
     <string name="pref_clean_cache">Cache wissen</string>
     <string name="pref_clean_private_storage">Privéopslag wissen</string>
     <string name="pref_clean_private_storage_summary">Privéopslag waar bestanden worden bijgehouden wissen (de bestanden kunnen opnieuw gedownload worden van de server)</string>
@@ -548,7 +550,7 @@
     </plurals>
     <plurals name="months">
         <item quantity="one">%d maand</item>
-        <item quantity="other">%d maand</item>
+        <item quantity="other">%d maanden</item>
     </plurals>
     <string name="pref_automatically_delete_messages">Automatisch berichten verwijderen</string>
     <string name="pref_automatically_delete_messages_description">Verwijder automatisch berichten van dit apparaat ouder dan de ingestelde tijdsperiode.</string>
@@ -578,12 +580,10 @@
     <string name="message_copied_to_clipboard">Bericht gekopieerd naar klembord</string>
     <string name="message">Bericht</string>
     <string name="private_messages_are_disabled">Privéberichten zijn uitgeschakeld</string>
-    <string name="huawei_protected_apps">Beschermde apps</string>
-    <string name="huawei_protected_apps_summary">Om meldingen te blijven ontvangen, zelfs wanneer het scherm uit staat, moet je Snikket toevoegen aan de lijst met beschermde apps.</string>
     <string name="mtm_accept_cert">Onbekend certificaat aanvaarden?</string>
     <string name="mtm_trust_anchor">Het servercertificaat is niet ondertekend door een gekende certificaatautoriteit.</string>
     <string name="mtm_accept_servername">Verkeerde servernaam aanvaarden?</string>
-    <string name="mtm_hostname_mismatch">De server kon niet authenticeren als ‘%s’. Het certificaat is enkel geldig voor:</string>
+    <string name="mtm_hostname_mismatch">Kan de server niet verifiëren als ‘%s’. Het certificaat is alleen geldig voor:</string>
     <string name="mtm_connect_anyway">Wil je toch verbinding maken?</string>
     <string name="mtm_cert_details">Certificaatgegevens:</string>
     <string name="once">Eenmalig</string>
@@ -600,7 +600,7 @@
     <string name="draft">Ontwerp:</string>
     <string name="pref_omemo_setting">OMEMO-versleuteling</string>
     <string name="pref_omemo_setting_summary_always">OMEMO zal altijd gebruikt worden voor één-op-één- privégroepsgesprekken.</string>
-    <string name="pref_omemo_setting_summary_default_on">OMEMO zal standaard gebruikt worden voor nieuwe gesprekken.</string>
+    <string name="pref_omemo_setting_summary_default_on">OMEMO wordt standaard gebruikt voor nieuwe gesprekken.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO zal uitdrukkelijk ingeschakeld moeten worden voor nieuwe gesprekken.</string>
     <string name="create_shortcut">Snelkoppeling aanmaken</string>
     <string name="default_on">Standaard aan</string>
@@ -627,7 +627,7 @@
     <string name="copy_jabber_id">XMPP-adres kopiëren</string>
     <string name="p1_s3_filetransfer">Bestanden delen via HTTP voor S3</string>
     <string name="pref_start_search">Rechtstreeks zoeken</string>
-    <string name="pref_start_search_summary">Open het toetsenbord op het scherm ‘Gesprek starten’ en plaats de cursor in het zoekveld</string>
+    <string name="pref_start_search_summary">Open op het scherm \'Nieuwe chat\' het toetsenbord en plaats de cursor in het zoekveld</string>
     <string name="group_chat_avatar">Gespreksafbeelding</string>
     <string name="host_does_not_support_group_chat_avatars">Host ondersteunt geen gespreksafbeeldingen</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Enkel de eigenaar kan de gespreksafbeelding wijzigen</string>
@@ -670,18 +670,18 @@
     <string name="verify_x">%s verifiëren</string>
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[We hebben een sms gestuurd naar <b>%s</b>.]]></string>
     <string name="we_have_sent_you_another_sms">We hebben je nóg een sms gestuurd met 6-cijferige code.</string>
-    <string name="please_enter_pin_below">Voer de 6-cijferige code hieronder in.</string>
+    <string name="please_enter_pin_below">Voer hieronder de 6-cijferige code in.</string>
     <string name="resend_sms">Sms opnieuw versturen</string>
     <string name="resend_sms_in">Sms opnieuw versturen (%s)</string>
     <string name="wait_x">Even geduld (%s)</string>
-    <string name="back">terug</string>
+    <string name="back">Terug</string>
     <string name="possible_pin">Mogelijke pincode is automatisch van het klembord geplakt.</string>
     <string name="please_enter_pin">Voer je 6-cijferige code in.</string>
     <string name="abort_registration_procedure">Weet je zeker dat je de registratieprocedure wilt stopzetten?</string>
     <string name="yes">Ja</string>
     <string name="no">Nee</string>
-    <string name="verifying">Bezig met verifiëren…</string>
-    <string name="requesting_sms">Bezig met aanvragen van sms…</string>
+    <string name="verifying">Verifiëren…</string>
+    <string name="requesting_sms">SMS aanvragen…</string>
     <string name="incorrect_pin">De ingevoerde code is onjuist.</string>
     <string name="pin_expired">De toegestuurde code is verlopen.</string>
     <string name="unknown_api_error_network">Onbekende netwerkfout.</string>
@@ -708,7 +708,7 @@
     <string name="ebook">e-boek</string>
     <string name="video_original">Origineel (zonder compressie)</string>
     <string name="open_with">Openen met…</string>
-    <string name="set_profile_picture">Snikket-profielafbeelding</string>
+    <string name="set_profile_picture">Snikket profielafbeelding</string>
     <string name="choose_account">Kies een account</string>
     <string name="restore_backup">Back-up herstellen</string>
     <string name="restore">Herstellen</string>
@@ -725,7 +725,7 @@
     <string name="please_enter_name">Voer een naam in voor het kanaal</string>
     <string name="please_enter_xmpp_address">Voer een XMPP-adres in</string>
     <string name="this_is_an_xmpp_address">Dit is een XMPP-adres. Voer een naam in.</string>
-    <string name="creating_channel">Bezig met creëren van openbaar kanaal...</string>
+    <string name="creating_channel">Openbaar kanaal aanmaken…</string>
     <string name="channel_already_exists">Dit kanaal bestaat al</string>
     <string name="joined_an_existing_channel">Je hebt deelgenomen aan een bestaand kanaal</string>
     <string name="allow_participants_to_edit_subject">Iedereen mag het onderwerp aanpassen</string>
@@ -767,7 +767,7 @@
     <string name="microphone_unavailable">Je microfoon is niet beschikbaar</string>
     <string name="only_one_call_at_a_time">Je kunt slechts één gesprek tegelijk voeren.</string>
     <string name="return_to_ongoing_call">Terug naar lopend gesprek</string>
-    <string name="could_not_switch_camera">Kon camera niet wisselen</string>
+    <string name="could_not_switch_camera">Kan camera niet wisselen</string>
     <string name="add_to_favorites">Bovenaan vastzetten</string>
     <string name="remove_from_favorites">Bovenaan losmaken</string>
     <string name="could_not_correct_message">Kon bericht niet corrigeren</string>
@@ -784,8 +784,8 @@
         <item quantity="other">Bekijk %1$d deelnemers</item>
     </plurals>
     <plurals name="some_messages_could_not_be_delivered">
-        <item quantity="one">Een bericht kon niet worden afgeleverd</item>
-        <item quantity="other">Sommige berichten konden niet worden afgeleverd</item>
+        <item quantity="one">Een bericht kan niet worden afgeleverd</item>
+        <item quantity="other">Sommige berichten kunnen niet worden afgeleverd</item>
     </plurals>
     <string name="failed_deliveries">Mislukte afleveringen</string>
     <string name="more_options">Meer opties</string>
@@ -797,9 +797,316 @@
     <string name="unable_to_enable_video">Kan video niet schakelen.</string>
     <string name="plain_text_document">Onversleuteld document</string>
     <string name="account_registrations_are_not_supported">Accountregistraties zijn niet ondersteund</string>
-    <string name="pref_never_send_crash_summary">Door crashrapportages te versturen help je de ontwikkeling</string>
+    <string name="pref_never_send_crash_summary">Door foutrapportages te versturen help je de ontwikkeling</string>
     <string name="action_add_account_with_certificate">Inloggen met certificaat</string>
     <string name="action_archive_chat">Chat archiveren</string>
     <string name="unable_to_connect_to_keychain">Kan niet verbinden met OpenKeychain</string>
     <string name="start_chat">Chat starten</string>
+    <string name="unable_to_restore_backup">Kan back-up niet herstellen.</string>
+    <string name="unable_to_decrypt_backup">Kan back-up niet decoderen. Is het wachtwoord correct?</string>
+    <string name="account_status_incompatible_client">Incompatibele client</string>
+    <string name="account_state_logged_out">Uitgelogd</string>
+    <string name="pref_send_crash_reports">Stuur crashrapporten</string>
+    <string name="unable_to_parse_certificate">Kan certificaat niet verwerken</string>
+    <string name="unable_to_fetch_mam_prefs">Kan archiveringsvoorkeuren niet ophalen</string>
+    <string name="rtp_state_connectivity_error">Kan oproep niet verbinden</string>
+    <string name="remove_bookmark_and_close">Wil je de bladwijzer voor %s verwijderen en de gesprekken archiveren?</string>
+    <string name="without_mutual_presence_updates"><b>Waarschuwing:</b> Dit verzenden zonder updates van wederzijdse aanwezigheid kan onverwachte problemen veroorzaken.
+\n
+\n<small>Ga naar “Contactgegevens ” om je aanwezigheidsabonnementen te verifiëren.</small></string>
+    <string name="pref_autojoin">Bladwijzers synchroniseren</string>
+    <string name="pref_autojoin_summary">Stel de vlag “autojoin ” in bij het invoeren of verlaten van een MUC en reageer op wijzigingen die door andere clients zijn aangebracht.</string>
+    <string name="preparing_file">Klaar om bestand te delen</string>
+    <string name="file_deleted">Bestand verwijderd</string>
+    <string name="error_unable_to_create_temporary_file">Kan geen tijdelijk bestand aanmaken</string>
+    <string name="title_activity_share_with">Delen met…</string>
+    <string name="archive_this_chat">Chat daarna verwijderen</string>
+    <string name="remove_bookmark">Wil je de bladwijzer voor %s verwijderen?</string>
+    <string name="openkeychain_required_long">%1$s gebruikt &lt;b&gt;OpenKeychain&lt;/b&gt; om berichten te versleutelen en te decoderen en het beheer van je openbare sleutels. &lt;br&gt;&lt; br&gt;Het is gelicentieerd onder GPLv3+ en beschikbaar op F-Droid en Google Play&lt;br&gt;&lt;br&gt;&lt;small&gt;(Start %1$s hierna opnieuw.)&lt;/small&gt;</string>
+    <string name="contact_has_no_pgp_key">Kan het bericht niet versleutelen omdat de contactpersoon hun openbare sleutel niet aankondigt.
+\n
+\n<small>Vraag de contactpersoon om OpenPGP in te stellen. </small></string>
+    <string name="title_activity_new_chat">Nieuwe chat</string>
+    <string name="conference_creation_failed">Kan geen groepschat aanmaken</string>
+    <string name="error_trustkey_bundle">Kan coderingssleutels niet ophalen</string>
+    <string name="mgmt_account_delete_confirm_text">Weet je zeker dat je je account wilt verwijderen? Als je je account verwijdert, wordt je hele chatgeschiedenis gewist</string>
+    <string name="unable_to_perform_this_action">Kan deze actie niet uitvoeren</string>
+    <string name="clear_histor_msg">Wil je alle berichten in deze chat verwijderen?
+\n
+\n<b>Waarschuwing:</b> Dit heeft geen invloed op berichten die zijn opgeslagen op andere apparaten of servers.</string>
+    <string name="unable_to_start_recording">Kan opname niet starten</string>
+    <string name="unable_to_save_recording">Kan opname niet opslaan</string>
+    <string name="unable_to_set_channel_configuration">Kan kanaalconfiguratie niet opslaan</string>
+    <string name="contacts_have_no_pgp_keys">Kan het bericht niet versleutelen omdat de contactpersonen hun openbare sleutel niet aankondigen.
+\n
+\n<small>Vraag de hen om OpenPGP in te stellen. </small></string>
+    <string name="unable_to_update_account">Kan account niet bijwerken</string>
+    <string name="error_trustkey_device_list">Kan apparaatlijst niet ophalen</string>
+    <string name="unable_to_connect_to_server">Kan geen verbinding maken met de server.</string>
+    <string name="could_not_delete_account_from_server">Kan account niet van server verwijderen</string>
+    <string name="file_transmission_failed">kan het bestand niet delen</string>
+    <string name="error_no_keys_to_trust_server_error">Er zijn geen bruikbare sleutels beschikbaar voor deze contactpersoon.
+\nKan geen nieuwe sleutels van de server halen. Misschien is er iets mis met de server van de contactpersoon?</string>
+    <string name="error_security_exception_during_image_copy">De app die je gebruikte om deze afbeelding te selecteren, bood niet genoeg rechten om het bestand te lezen.
+\n
+\n<small>Gebruik een andere bestandsbeheerder om een afbeelding te kiezen</small>.</string>
+    <string name="request_presence_updates">Vraag eerst aanwezigheidsupdates aan bij je contactpersoon.
+\n
+\n<small>Dit wordt gebruikt om te bepalen welke chat-app jouw contactpersoon gebruikt</small>.</string>
+    <string name="send_encrypted_message">Verstuur versleuteld bericht</string>
+    <string name="pref_notification_sound">Kennisgevingsgeluid</string>
+    <string name="pref_notification_sound_summary">Kennisgevingsgeluid voor nieuwe berichten</string>
+    <string name="pref_call_ringtone_summary">Ringtone voor inkomende oproepen</string>
+    <string name="pref_notification_grace_period_summary">De tijdsduurmeldingen worden gedempt na het detecteren van activiteit op een van je andere apparaten.</string>
+    <string name="pref_prevent_screenshots_summary">App-inhoud verbergen in de app-schakelaar en schermopnames blokkeren</string>
+    <string name="error_security_exception">De app die je gebruikte om dit bestand te delen, bood onvoldoende rechten.</string>
+    <string name="account_status_regis_not_sup">Aanmelding wordt niet ondersteund door server</string>
+    <string name="server_info_external_service_discovery">XEP-0215: External Service Discovery</string>
+    <string name="install_openkeychain">Versleuteld bericht. Installeer OpenKeychain om het te decoderen.</string>
+    <string name="group_chats">Groepsberichten</string>
+    <string name="conference_technical_problems">Je hebt deze groepschat verlaten om technische redenen</string>
+    <string name="hosted_on">gehost op %s</string>
+    <string name="unable_to_find_server">Kan server niet vinden.</string>
+    <string name="unable_to_establish_secure_connection">Kan geen veilige verbinding tot stand brengen.</string>
+    <string name="pref_quick_action_summary">Knop “Verzenden” vervangen door snelle actie</string>
+    <string name="user_has_left_conference">%1$s heeft de groepschat verlaten</string>
+    <string name="search_group_chats">Groepschats doorzoeken</string>
+    <string name="captcha_required">CAPTCHA vereist</string>
+    <string name="certificate_chain_is_not_trusted">Onvertrouwde certificaatketen</string>
+    <string name="no_application_found_to_open_link">Geen app om koppeling te openen</string>
+    <string name="no_application_found_to_view_contact">Geen app om contact te bekijken</string>
+    <string name="vector_graphic">vector-afbeelding</string>
+    <string name="multimedia_file">multimediabestand</string>
+    <string name="audiobook">Audioboek</string>
+    <string name="download_failed_invalid_file">Download mislukt: Ongeldig bestand</string>
+    <string name="pref_away_when_screen_off">Afwezig wanneer het apparaat is vergrendeld</string>
+    <string name="pref_away_when_screen_off_summary">Afwezig melden als het apparaat vergrendeld is</string>
+    <string name="pref_dnd_on_silent_mode_summary">Bezet melden als het apparaat in stille modus is</string>
+    <string name="shared_text_with_x">Tekst gedeeld met %s</string>
+    <string name="error_no_keys_to_trust_presence">Er zijn geen bruikbare sleutels beschikbaar voor dit contact.
+\nZorg ervoor dat jullie allebei een aanwezigheidsabonnement hebben.</string>
+    <string name="removing_from_public_conference">Je probeert %s te verwijderen van een publiek kanaal. De enige manier om dat te doen, is door die gebruiker voor altijd te verbannen.</string>
+    <string name="shared_file_with_x">Bestand gedeeld met %s</string>
+    <string name="shared_image_with_x">Afbeelding gedeeld met %s</string>
+    <string name="shared_images_with_x">Afbeeldingen gedeeld met %s</string>
+    <string name="hostname_or_onion">Server- of .onion-adres</string>
+    <string name="pref_enter_is_send_summary">Gebruik de Enter-toets om een bericht te verzenden. Je kunt altijd Ctrl + Enter gebruiken om een bericht te verzenden, zelfs als deze optie is uitgeschakeld.</string>
+    <string name="pref_treat_vibrate_as_dnd_summary">Bezet melden als het apparaat op trillen staat</string>
+    <string name="clear_other_devices_desc">Weet je zeker dat je alle andere apparaten uit de OMEMO-aankondiging wilt verwijderen? De volgende keer dat je apparaten verbinding maken, zullen ze zichzelf opnieuw aankondigen, maar ontvangen ze mogelijk geen berichten die ondertussen zijn verzonden.</string>
+    <string name="account_status_host_unknown">De server is niet verantwoordelijk voor dit domein</string>
+    <string name="title_undo_swipe_out_chat">Chat gearchiveerd</string>
+    <string name="no_permission_to_place_call">Geen toestemming om te bellen</string>
+    <string name="no_keys_just_confirm">Je hebt de vingerafdruk van deze persoon al vertrouwd. Door \"Gereed\" te selecteren, bevestig je alleen dat %s deel uitmaakt van deze groepschat.</string>
+    <string name="welcome_header">Doe mee aan het gesprek</string>
+    <string name="welcome_header_quicksy">Welkom bij Quicksy!</string>
+    <string name="agree_and_continue">Akkoord en doorgaan</string>
+    <string name="quicksy_wants_your_consent">Quicksy vraagt toestemming om je gegevens te gebruiken</string>
+    <string name="pref_dnd_on_silent_mode">Bezet in stille modus</string>
+    <string name="no_storage_permission">Verleen %1$s toegang tot externe opslag</string>
+    <string name="no_camera_permission">Verleen %1$s toegang tot de camera</string>
+    <string name="pref_picture_compression_summary">Tip: Gebruik \'Bestand kiezen\' in plaats van \'Afbeelding kiezen\' om afzonderlijke afbeeldingen ongecomprimeerd te verzenden, ongeacht deze instelling.</string>
+    <string name="battery_optimizations_enabled_explained">Jouw apparaat maakt gebruik van zware batterij-optimalisaties voor %1$s, wat kan leiden tot vertraagde meldingen of zelfs berichtverlies.
+\nHet wordt aanbevolen om deze uit te schakelen.</string>
+    <string name="battery_optimizations_enabled_dialog">Jouw apparaat maakt gebruik van zware batterij-optimalisaties voor %1$s, wat kan leiden tot vertraagde meldingen of zelfs berichtverlies.
+\n
+\nJe wordt nu gevraagd om deze uit te schakelen.</string>
+    <string name="this_account_is_logged_out">Je bent afgemeld bij dit account</string>
+    <string name="security_error_invalid_file_access">Beveiligingsfout: Ongeldige bestandstoegang!</string>
+    <string name="no_application_to_share_uri">Er is geen app om URI te delen</string>
+    <string name="pref_broadcast_last_activity_summary">Laat je contacten zien wanneer je de app voor het laatst hebt gebruikt</string>
+    <string name="pref_theme_light">Licht</string>
+    <string name="pref_theme_dark">Donker</string>
+    <string name="missing_internet_permission">Toestemming verlenen om internet te gebruiken</string>
+    <string name="report_jid_as_spammer">Meld dit XMPP-adres voor spammen.</string>
+    <string name="pref_delete_omemo_identities_summary">Je OMEMO-sleutels opnieuw genereren. Al je contacten zullen je opnieuw moeten verifiëren. Gebruik dit alleen als laatste redmiddel.</string>
+    <string name="data_saver_enabled_explained">Jouw besturingssysteem verhindert %1$s om toegang te krijgen tot internet op de achtergrond. Om meldingen van nieuwe berichten te ontvangen, moet je %1$s onbeperkte toegang toestaan wanneer \"Databesparing\" is ingeschakeld.
+\n%1$s zal zich nog steeds inspannen om gegevens op te slaan waar mogelijk.</string>
+    <string name="device_does_not_support_data_saver">Jouw apparaat biedt geen ondersteuning voor het uitschakelen van gegevensbesparing voor %1$s.</string>
+    <string name="all_omemo_keys_have_been_verified">Je hebt alle OMEMO-sleutels die je bezit geverifieerd</string>
+    <string name="pref_blind_trust_before_verification_summary">Vertrouw nieuwe apparaten van niet-geverifieerde contacten, maar bevestig nieuwe apparaten onmiddellijk handmatig voor geverifieerde contacten.</string>
+    <string name="pref_clean_cache_summary">Cachemap opschonen (gebruikt door camera-app)</string>
+    <string name="corresponding_chats_closed">Bijbehorende chats gearchiveerd.</string>
+    <string name="pref_notifications_from_strangers_summary">Meldingen van berichten en oproepen van vreemden.</string>
+    <string name="pref_use_colorful_bubbles">Kleurrijke chatbubbels</string>
+    <string name="pref_use_colorful_bubbles_summary">Duidelijke achtergrondkleuren voor verzonden en ontvangen berichten</string>
+    <string name="pref_dynamic_colors">Dynamische kleuren</string>
+    <string name="pref_dynamic_colors_summary">Systeemkleuren (Material You)</string>
+    <string name="ongoing_calls_channel_name">Lopende oproepen</string>
+    <string name="missed_calls_channel_name">Gemiste oproepen</string>
+    <string name="continue_btn">Doorgaan</string>
+    <string name="application_found_to_open_website">Geen app om website te openen</string>
+    <string name="pref_headsup_notifications_summary">Let op-meldingen weergeven</string>
+    <string name="magic_create_text">Er is een handleiding opgezet voor het aanmaken van een account op conversations.im.
+\nWanneer je conversations.im als provider kiest, kun je communiceren met gebruikers van andere providers door hen jouw volledige XMPP-adres te geven.</string>
+    <string name="sync_with_contacts_long">%1$s verwerkt jouw contactenlijst lokaal, op jouw apparaat, om u de namen en profielfoto\'s te tonen voor overeenkomende contacten op XMPP.
+\n
+\nGegevens uit de contacten lijst blijven te allen tijde op jouw apparaat!</string>
+    <string name="barcode_does_not_contain_fingerprints_for_this_chat">De barcode bevat geen vingerafdrukken voor deze chat.</string>
+    <string name="distrust_omemo_key_text">Weet je zeker dat je de verificatie van dit apparaat wilt verwijderen?
+\nDit apparaat en berichten ervan worden gemarkeerd als \'Niet vertrouwd\'.</string>
+    <string name="error_trustkey_general">%1$s kan geen versleutelde berichten verzenden naar %2$s. Dit kan te wijten zijn aan het feit dat jouw contact een verouderde server of client gebruikt die OMEMO niet aankan.</string>
+    <string name="pref_broadcast_last_activity">Laatst gezien</string>
+    <string name="reconnect_on_other_host">Opnieuw verbinding maken op een andere host</string>
+    <string name="blindly_trusted_omemo_keys">Blindelings vertrouwde OMEMO-sleutels, wat betekent dat ze iemand anders kunnen zijn of dat iemand kan hebben ingetikt.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Je staat op het punt om de OMEMO-sleutels van je eigen account te verifiëren. Dit is alleen veilig als je deze link hebt gevolgd van een betrouwbare bron waar alleen jij deze link had kunnen publiceren.</string>
+    <string name="incoming_calls_channel_name">Inkomende oproepen</string>
+    <string name="restore_warning_continued">Probeer geen back-ups terug te zetten die je niet zelf hebt aangemaakt!</string>
+    <string name="no_microphone_permission">Verleen %1$s toegang tot de microfoon</string>
+    <string name="foreground_service_channel_description">Deze meldingscategorie wordt gebruikt om een permanente melding weer te geven die aangeeft dat %1$s actief is.</string>
+    <string name="notification_group_calls">Oproepen</string>
+    <string name="delivery_failed_channel_name">Mislukte leveringen</string>
+    <string name="pref_message_notification_settings">Instellingen voor berichtmeldingen</string>
+    <string name="pref_incoming_call_notification_settings">Meldingsinstellingen voor inkomende oproepen</string>
+    <string name="no_account_deactivated">Geen (gedeactiveerd)</string>
+    <string name="delete_from_server">Account van server verwijderen</string>
+    <string name="hide_notification">Melding verbergen</string>
+    <string name="ongoing_video_call">Lopend videogesprek</string>
+    <string name="reconnecting_call">Oproep opnieuw verbinden</string>
+    <string name="incoming_call_duration_timestamp">Inkomende oproep (%s) · %s</string>
+    <string name="outgoing_call">Uitgaande oproep</string>
+    <string name="outgoing_call_timestamp">Uitgaande oproep · %s</string>
+    <string name="backup">Back-up</string>
+    <string name="rtp_state_finding_device">Apparaten ontdekken</string>
+    <string name="rtp_state_ringing">Gaat over</string>
+    <string name="rtp_state_application_failure">Storing met app</string>
+    <string name="rtp_state_security_error">Probleem met verificatie</string>
+    <string name="hang_up">Ophangen</string>
+    <string name="ongoing_call">Lopend gesprek</string>
+    <string name="rtp_state_contact_offline">Persoon is niet beschikbaar</string>
+    <string name="rtp_state_connectivity_lost_error">Verbinding verbroken</string>
+    <string name="rtp_state_retracted">Ingetrokken oproep</string>
+    <string name="outgoing_call_duration_timestamp">Uitgaande oproep (%s) · %s</string>
+    <string name="missed_call_timestamp">Gemiste oproep · %s</string>
+    <string name="missed_call">Gemiste oproep</string>
+    <string name="audio_call">Audiogesprek</string>
+    <string name="help">Hulp</string>
+    <string name="account_status_temporary_auth_failure">Tijdelijke authenticatiefout</string>
+    <string name="no_xmpp_adddress_found">Geen XMPP-adres gevonden</string>
+    <string name="delete_avatar">Avatar verwijderen</string>
+    <string name="audio_video_disabled_tor">Oproepen zijn uitgeschakeld bij gebruik van Tor</string>
+    <string name="switch_to_video">Overschakelen naar video</string>
+    <string name="reject_switch_to_video">Verzoek om overschakeling naar video afwijzen</string>
+    <string name="unified_push_distributor">UnifiedPush Distributor</string>
+    <string name="pref_up_push_account_title">XMPP-account</string>
+    <string name="pref_up_push_account_summary">Het account waarmee pushberichten worden ontvangen.</string>
+    <string name="pref_up_push_server_title">Push-server</string>
+    <string name="decline">Weigeren</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d gemiste oproep van %2$s</item>
+        <item quantity="other">%1$d gemiste oproepen van %2$s</item>
+    </plurals>
+    <string name="make_call">Oproepen</string>
+    <string name="please_enable_an_account">Schakel een account in</string>
+    <string name="rtp_state_incoming_video_call">Inkomende video-oproep</string>
+    <string name="rtp_state_content_add_video">Overschakelen naar videogesprek?</string>
+    <string name="rtp_state_content_add">Extra sporen toevoegen?</string>
+    <string name="rtp_state_connecting">Verbinden</string>
+    <string name="rtp_state_connected">Verbonden</string>
+    <string name="rtp_state_reconnecting">Opnieuw verbinden</string>
+    <string name="switch_to_chat">Overschakelen naar chat</string>
+    <string name="exit">Afsluiten</string>
+    <string name="rtp_state_accepting_call">Oproep aannemen</string>
+    <string name="rtp_state_ending_call">Oproep beëindigen</string>
+    <string name="answer_call">Antwoorden</string>
+    <string name="dismiss_call">Afwijzen</string>
+    <string name="gpx_track">GPX-route</string>
+    <string name="log_in">Inloggen</string>
+    <string name="log_out">Uitloggen</string>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d gemiste oproep van %2$d contactpersoon</item>
+        <item quantity="other">%1$d gemiste oproepen van %2$d contactpersonen</item>
+    </plurals>
+    <string name="pref_channel_discovery_summary">De meeste gebruikers moeten ‘jabber.network’ kiezen voor betere suggesties uit het hele openbare XMPP-ecosysteem.</string>
+    <string name="disable_tor_to_make_call">Tor uitschakelen voor oproepen</string>
+    <string name="reconnecting_video_call">Video-oproep opnieuw verbinden</string>
+    <string name="server_does_not_support_easy_onboarding_invites">Server biedt geen ondersteuning voor het aanmaken van uitnodigingen</string>
+    <string name="outdated_backup_file_format">Je probeert een verouderd back-upbestandsformaat te importeren</string>
+    <string name="sharing_application_not_grant_permission">De app voor delen heeft geen toestemming gegeven voor toegang tot dit bestand.</string>
+    <string name="group_chats_and_channels">Groepschats en kanalen</string>
+    <string name="jabber_network">jabber.network</string>
+    <string name="pref_channel_discovery">Channel discovery-methode</string>
+    <string name="rtp_state_incoming_call">Inkomende oproep</string>
+    <string name="incoming_call">Inkomende oproep</string>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d gemiste oproep</item>
+        <item quantity="other">%d gemiste oproepen</item>
+    </plurals>
+    <string name="encrypted_with_openpgp">Versleuteld met OpenPGP</string>
+    <string name="record_voice_mail">Antwoordbericht opnemen</string>
+    <string name="add_contact_or_create_or_join_group_chat">Contactpersoon toevoegen, groepschat aanmaken of erbij aansluiten, of kanalen ontdekken</string>
+    <string name="pref_notifications_summary">Uitstelperiode, Beltoon, Trilling, Vreemden</string>
+    <string name="pref_category_sending">Verzenden</string>
+    <string name="pref_category_receiving">Ontvangen</string>
+    <string name="pref_automatic_download">Automatisch downloaden</string>
+    <string name="appearance">Uiterlijk</string>
+    <string name="pref_light_dark_mode">Licht/donker thema</string>
+    <string name="pref_allow_screenshots">Schermopnames toestaan</string>
+    <string name="pref_allow_screenshots_summary">App-inhoud weergeven in app-schakelaar en schermopnames toestaan</string>
+    <string name="pref_category_e2ee">End-to-end-versleuteling</string>
+    <string name="pref_title_trust_system_ca_store">Certificaatautoriteiten</string>
+    <string name="pref_title_trust_system_ca_store_summary">CA-certificaten van het systeem vertrouwen</string>
+    <string name="pref_summary_security">E2E-versleuteling, Blind vertrouwen voor verificatie, MITM-detectie</string>
+    <string name="pref_create_backup_one_off_summary">Eenmalige back-up aanmaken</string>
+    <string name="pref_backup_recurring">Herhaalde back-up</string>
+    <string name="pref_backup_summary">Eenmalig aanmaken, Herhaald inplannen</string>
+    <string name="pref_fullscreen_notification">Meldingen op volledig scherm</string>
+    <string name="contact_list_integration_not_available">Contactlijstintegratie is niet beschikbaar</string>
+    <string name="unified_push_summary">Notification relay for UnifiedPush compatible third party apps</string>
+    <string name="report_spam">Spam rapporteren</string>
+    <string name="allow_private_messages">Privéberichten toestaan</string>
+    <string name="pref_accept_invites_from_strangers_summary">Accepteer uitnodigingen om chats van vreemden te groeperen</string>
+    <string name="pref_accept_invites_from_strangers">Uitnodigingen van vreemden</string>
+    <string name="pref_large_font">Groot lettertype</string>
+    <string name="pref_large_font_summary">Vergroot de lettergrootte in berichtbubbels</string>
+    <string name="unverified_devices">Je gebruikt niet-geverifieerde apparaten. Scan de QR-code op jouw andere apparaten om verificatie uit te voeren en actieve MITM-aanvallen te belemmeren.</string>
+    <string name="pref_fullscreen_notification_summary">Toestaan dat deze app inkomende oproepmeldingen weergeeft op het volledige scherm wanneer het apparaat is vergrendeld.</string>
+    <string name="contact_uses_unverified_keys">Jouw contactpersoon maakt gebruik van niet-geverifieerde apparaten. Scan hun QR-code om verificatie uit te voeren en actieve MITM-aanvallen te belemmeren.</string>
+    <string name="call_integration_not_available">Oproepintegratie niet beschikbaar!</string>
+    <string name="pref_up_long_summary">In de rol van een UnifiedPush Distributor wordt de permanente, betrouwbare en batterijvriendelijke XMPP-verbinding gebruikt om andere UnifiedPush-compatibele apps als Tusky, Ltt.rs, FluffyChat etc. uit de slaapstand te halen.</string>
+    <string name="pref_attachments_summary">Bestandsgrootte, Beeldcompressie, Videokwaliteit</string>
+    <string name="pref_connection_summary_w_cd">Hostnaam &amp; poort, Tor, Channel Discovery</string>
+    <string name="channel_discover_opt_in_message">Channel Discovery gebruikt een externe dienst &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Bij het gebruik van deze functie, worden jouw IP-adres en zoektermen naar deze dienst verzonden. Lees de &lt;a href=https://search.jabber.network/privacy&gt;Privacy Policy&lt;/a&gt; voor meer informatie.</string>
+    <string name="report_spam_and_block">Spam rapporteren en spammer blokkeren</string>
+    <string name="privacy_policy">Privacybeleid</string>
+    <string name="no_certificate_selected">Geen clientcertificaat geselecteerd!</string>
+    <string name="pref_title_interface">Interface</string>
+    <string name="pref_title_security">Beveiliging</string>
+    <string name="notifications">Meldingen</string>
+    <string name="pref_summary_appearance">Thema, Kleuren, Schermopnames, Invoer</string>
+    <string name="delete_and_close">Chat archiveren &amp; verwijderen</string>
+    <string name="detect_mim">Kanaalbinding vereisen</string>
+    <string name="detect_mim_summary">Kanaalbinding kan sommige machine-in-the-middle-aanvallen detecteren</string>
+    <string name="pref_category_server_connection">Server-verbinding</string>
+    <string name="pref_category_operating_system">Besturingssysteem</string>
+    <string name="pref_privacy_summary">Typemeldingen, Laatst gezien, Beschikbaarheid</string>
+    <string name="pref_connection_summary">Hostnaam &amp; poort, Tor</string>
+    <string name="pref_keyboard_options">Toetsenbord</string>
+    <string name="pref_category_engagement_notifications">Meldingen van betrokkenheid</string>
+    <string name="pref_category_application">Toepassing</string>
+    <string name="pref_category_interaction">Interactie</string>
+    <string name="pref_category_on_this_device">Op apparaat</string>
+    <string name="unsupported_operation">Niet-ondersteunde actie</string>
+    <string name="your_avatar_tap_to_select_new_avatar">Jouw avatar. Tik om een nieuwe avatar uit de galerij te selecteren.</string>
+    <string name="could_not_disable_video">Video kan niet worden uitgeschakeld.</string>
+    <string name="edit_nick">Bijnaam bewerken</string>
+    <string name="delete_pgp_key">OpenPGP-sleutel verwijderen</string>
+    <string name="edit_name_and_topic">Naam en onderwerp bewerken</string>
+    <string name="edit_configuration">Configuratie wijzigen</string>
+    <string name="change_notification_settings">Meldingsinstellingen wijzigen</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Oproep maakt gebruik van luidspreker. Tik om over te schakelen naar de oortelefoon.</string>
+    <string name="call_is_using_earpiece">Oproep maakt gebruik van een oortelefoon.</string>
+    <string name="call_is_using_wired_headset">Oproep maakt gebruik van bedrade headset</string>
+    <string name="call_is_using_speaker">Oproep maakt gebruik van luidspreker.</string>
+    <string name="call_is_using_bluetooth">Oproep maakt gebruik van bluetooth.</string>
+    <string name="flip_camera">Camera omdraaien</string>
+    <string name="video_is_enabled_tap_to_disable">Video is ingeschakeld. Tik om uit te schakelen.</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Oproep maakt gebruik van een oortelefoon. Tik om over te schakelen naar de luidspreker.</string>
+    <string name="video_is_disabled_tap_to_enable">Video is uitgeschakeld. Tik om in te schakelen.</string>
+    <string name="server_info_sasl2">XEP-0388: Extensible SASL Profile</string>
+    <string name="server_info_login_mechanism">Inlogmethode</string>
+    <string name="server_info_bind2">XEP-0386: Bind 2</string>
+    <string name="add_reaction">Reactie toevoegen…</string>
+    <string name="could_not_add_reaction">Kan reactie niet toevoegen</string>
+    <string name="add_reaction_title">Reactie toevoegen</string>
+    <string name="more_reactions">Meer reacties</string>
 </resources>

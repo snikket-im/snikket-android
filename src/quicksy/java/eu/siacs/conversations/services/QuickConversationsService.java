@@ -5,15 +5,35 @@ import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.common.collect.ImmutableMap;
+
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.android.PhoneNumberContact;
+import eu.siacs.conversations.crypto.TrustManagers;
+import eu.siacs.conversations.crypto.sasl.Plain;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Entry;
+import eu.siacs.conversations.http.HttpConnectionManager;
+import eu.siacs.conversations.utils.AccountUtils;
+import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
+import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
+import eu.siacs.conversations.utils.SmsRetrieverWrapper;
+import eu.siacs.conversations.utils.TLSSocketFactory;
+import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
+
+import im.conversations.android.xmpp.model.stanza.Iq;
+
+import io.michaelrocks.libphonenumber.android.Phonenumber;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -38,7 +58,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -51,26 +70,6 @@ import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
-
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.android.PhoneNumberContact;
-import eu.siacs.conversations.crypto.TrustManagers;
-import eu.siacs.conversations.crypto.sasl.Plain;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Entry;
-import eu.siacs.conversations.http.HttpConnectionManager;
-import eu.siacs.conversations.utils.AccountUtils;
-import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
-import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
-import eu.siacs.conversations.utils.SmsRetrieverWrapper;
-import eu.siacs.conversations.utils.TLSSocketFactory;
-import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import io.michaelrocks.libphonenumber.android.Phonenumber;
 
 public class QuickConversationsService extends AbstractQuickConversationsService {
 
@@ -87,8 +86,6 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     private static final String API_DOMAIN = "api." + Config.QUICKSY_DOMAIN;
 
     private static final String BASE_URL = "https://" + API_DOMAIN;
-
-    private static final String INSTALLATION_ID = "eu.siacs.conversations.installation-id";
 
     private final Set<OnVerificationRequested> mOnVerificationRequested = Collections.newSetFromMap(new WeakHashMap<>());
     private final Set<OnVerification> mOnVerification = Collections.newSetFromMap(new WeakHashMap<>());
@@ -308,16 +305,9 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     }
 
     private String getInstallationId() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(service);
-        String id = preferences.getString(INSTALLATION_ID, null);
-        if (id != null) {
-            return id;
-        } else {
-            id = UUID.randomUUID().toString();
-            preferences.edit().putString(INSTALLATION_ID, id).apply();
-            return id;
-        }
-
+        final var appSettings = service.getAppSettings();
+        final long installationId = appSettings.getInstallationId();
+        return AccountUtils.createUuid4(installationId, installationId).toString();
     }
 
     private int getApiErrorCode(final Exception e) {
@@ -463,15 +453,15 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         for (final PhoneNumberContact c : contacts.values()) {
             entries.add(new Element("entry").setAttribute("number", c.getPhoneNumber()));
         }
-        final IqPacket query = new IqPacket(IqPacket.TYPE.GET);
+        final Iq query = new Iq(Iq.Type.GET);
         query.setTo(syncServer);
         final Element book = new Element("phone-book", Namespace.SYNCHRONIZATION).setChildren(entries);
         final String statusQuo = Entry.statusQuo(contacts.values(), account.getRoster().getWithSystemAccounts(PhoneNumberContact.class));
         book.setAttribute("ver", statusQuo);
         query.addChild(book);
         mLastSyncAttempt = Attempt.create(hash);
-        service.sendIqPacket(account, query, (a, response) -> {
-            if (response.getType() == IqPacket.TYPE.RESULT) {
+        service.sendIqPacket(account, query, (response) -> {
+            if (response.getType() == Iq.Type.RESULT) {
                 final Element phoneBook = response.findChild("phone-book", Namespace.SYNCHRONIZATION);
                 if (phoneBook != null) {
                     final List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(PhoneNumberContact.class);
@@ -498,7 +488,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                 } else {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": phone number contact list remains unchanged");
                 }
-            } else if (response.getType() == IqPacket.TYPE.TIMEOUT) {
+            } else if (response.getType() == Iq.Type.TIMEOUT) {
                 mLastSyncAttempt = Attempt.NULL;
             } else {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": failed to sync contact list with api server");

@@ -1,0 +1,1 @@
+* Sicherung als Vordergrunddienst ausführen, damit der Prozess nicht nach 10 Minuten gestoppt wird

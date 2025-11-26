@@ -699,8 +699,6 @@
     <string name="message_copied_to_clipboard">Wiadōmość skopiyrowano do skrytki</string>
     <string name="message">Wiadōmość</string>
     <string name="private_messages_are_disabled">Prywatne wiadōmości sōm zastawiōne</string>
-    <string name="huawei_protected_apps">Aplikacyje chrōniōne</string>
-    <string name="huawei_protected_apps_summary">Coby dostować wiadōmości, kedy ekran je zastawiōny, musisz przidać Conversations do listy chrōniōnych aplikacyji.</string>
     <string name="mtm_accept_cert">Zaakceptować niyznōmy certyfikat\?</string>
     <string name="mtm_trust_anchor">Certyfikat ôd serwera niy ma podpisany ôd znōmego Amtu Certyfikacyje.</string>
     <string name="mtm_accept_servername">Zaakceptować niypasujōnce miano ôd serwera\?</string>

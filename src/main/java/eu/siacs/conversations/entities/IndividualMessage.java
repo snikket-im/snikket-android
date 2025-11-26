@@ -31,6 +31,7 @@ package eu.siacs.conversations.entities;
 
 import android.database.Cursor;
 
+import java.util.Collection;
 import java.util.Set;
 
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
@@ -43,8 +44,8 @@ public class IndividualMessage extends Message {
 		super(conversation);
 	}
 
-	private IndividualMessage(Conversational conversation, String uuid, String conversationUUid, Jid counterpart, Jid trueCounterpart, String body, long timeSent, int encryption, int status, int type, boolean carbon, String remoteMsgId, String relativeFilePath, String serverMsgId, String fingerprint, boolean read, String edited, boolean oob, String errorMessage, Set<ReadByMarker> readByMarkers, boolean markable, boolean deleted, String bodyLanguage) {
-		super(conversation, uuid, conversationUUid, counterpart, trueCounterpart, body, timeSent, encryption, status, type, carbon, remoteMsgId, relativeFilePath, serverMsgId, fingerprint, read, edited, oob, errorMessage, readByMarkers, markable, deleted, bodyLanguage);
+	private IndividualMessage(Conversational conversation, String uuid, String conversationUUid, Jid counterpart, Jid trueCounterpart, String body, long timeSent, int encryption, int status, int type, boolean carbon, String remoteMsgId, String relativeFilePath, String serverMsgId, String fingerprint, boolean read, String edited, boolean oob, String errorMessage, Set<ReadByMarker> readByMarkers, boolean markable, boolean deleted, String bodyLanguage, String occupantId, Collection<Reaction> reactions) {
+		super(conversation, uuid, conversationUUid, counterpart, trueCounterpart, body, timeSent, encryption, status, type, carbon, remoteMsgId, relativeFilePath, serverMsgId, fingerprint, read, edited, oob, errorMessage, readByMarkers, markable, deleted, bodyLanguage, occupantId, reactions);
 	}
 
 	@Override
@@ -73,7 +74,7 @@ public class IndividualMessage extends Message {
 	public static Message fromCursor(Cursor cursor, Conversational conversation) {
 		Jid jid;
 		try {
-			String value = cursor.getString(cursor.getColumnIndex(COUNTERPART));
+			String value = cursor.getString(cursor.getColumnIndexOrThrow(COUNTERPART));
 			if (value != null) {
 				jid = Jid.of(value);
 			} else {
@@ -86,7 +87,7 @@ public class IndividualMessage extends Message {
 		}
 		Jid trueCounterpart;
 		try {
-			String value = cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART));
+			String value = cursor.getString(cursor.getColumnIndexOrThrow(TRUE_COUNTERPART));
 			if (value != null) {
 				trueCounterpart = Jid.of(value);
 			} else {
@@ -96,28 +97,30 @@ public class IndividualMessage extends Message {
 			trueCounterpart = null;
 		}
 		return new IndividualMessage(conversation,
-				cursor.getString(cursor.getColumnIndex(UUID)),
-				cursor.getString(cursor.getColumnIndex(CONVERSATION)),
+				cursor.getString(cursor.getColumnIndexOrThrow(UUID)),
+				cursor.getString(cursor.getColumnIndexOrThrow(CONVERSATION)),
 				jid,
 				trueCounterpart,
-				cursor.getString(cursor.getColumnIndex(BODY)),
-				cursor.getLong(cursor.getColumnIndex(TIME_SENT)),
-				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
-				cursor.getInt(cursor.getColumnIndex(STATUS)),
-				cursor.getInt(cursor.getColumnIndex(TYPE)),
-				cursor.getInt(cursor.getColumnIndex(CARBON)) > 0,
-				cursor.getString(cursor.getColumnIndex(REMOTE_MSG_ID)),
-				cursor.getString(cursor.getColumnIndex(RELATIVE_FILE_PATH)),
-				cursor.getString(cursor.getColumnIndex(SERVER_MSG_ID)),
-				cursor.getString(cursor.getColumnIndex(FINGERPRINT)),
-				cursor.getInt(cursor.getColumnIndex(READ)) > 0,
-				cursor.getString(cursor.getColumnIndex(EDITED)),
-				cursor.getInt(cursor.getColumnIndex(OOB)) > 0,
-				cursor.getString(cursor.getColumnIndex(ERROR_MESSAGE)),
-				ReadByMarker.fromJsonString(cursor.getString(cursor.getColumnIndex(READ_BY_MARKERS))),
-				cursor.getInt(cursor.getColumnIndex(MARKABLE)) > 0,
-				cursor.getInt(cursor.getColumnIndex(DELETED)) > 0,
-				cursor.getString(cursor.getColumnIndex(BODY_LANGUAGE))
+				cursor.getString(cursor.getColumnIndexOrThrow(BODY)),
+				cursor.getLong(cursor.getColumnIndexOrThrow(TIME_SENT)),
+				cursor.getInt(cursor.getColumnIndexOrThrow(ENCRYPTION)),
+				cursor.getInt(cursor.getColumnIndexOrThrow(STATUS)),
+				cursor.getInt(cursor.getColumnIndexOrThrow(TYPE)),
+				cursor.getInt(cursor.getColumnIndexOrThrow(CARBON)) > 0,
+				cursor.getString(cursor.getColumnIndexOrThrow(REMOTE_MSG_ID)),
+				cursor.getString(cursor.getColumnIndexOrThrow(RELATIVE_FILE_PATH)),
+				cursor.getString(cursor.getColumnIndexOrThrow(SERVER_MSG_ID)),
+				cursor.getString(cursor.getColumnIndexOrThrow(FINGERPRINT)),
+				cursor.getInt(cursor.getColumnIndexOrThrow(READ)) > 0,
+				cursor.getString(cursor.getColumnIndexOrThrow(EDITED)),
+				cursor.getInt(cursor.getColumnIndexOrThrow(OOB)) > 0,
+				cursor.getString(cursor.getColumnIndexOrThrow(ERROR_MESSAGE)),
+				ReadByMarker.fromJsonString(cursor.getString(cursor.getColumnIndexOrThrow(READ_BY_MARKERS))),
+				cursor.getInt(cursor.getColumnIndexOrThrow(MARKABLE)) > 0,
+				cursor.getInt(cursor.getColumnIndexOrThrow(DELETED)) > 0,
+				cursor.getString(cursor.getColumnIndexOrThrow(BODY_LANGUAGE)),
+				cursor.getString(cursor.getColumnIndexOrThrow(OCCUPANT_ID)),
+				Reaction.fromString(cursor.getString(cursor.getColumnIndexOrThrow(REACTIONS)))
 		);
 	}
 }

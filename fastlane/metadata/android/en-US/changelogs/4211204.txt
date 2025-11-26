@@ -1,0 +1,2 @@
+* Fix call getting un-muted when switching output devices
+* Exclude all Umidigi devices from call integration

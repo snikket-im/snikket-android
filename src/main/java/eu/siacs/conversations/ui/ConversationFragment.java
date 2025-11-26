@@ -1310,20 +1310,21 @@ public class ConversationFragment extends XmppFragment
                                     || t instanceof HttpDownloadConnection);
             activity.getMenuInflater().inflate(R.menu.message_context, menu);
             menu.setHeaderTitle(R.string.message_options);
+            final MenuItem addReaction = menu.findItem(R.id.action_add_reaction);
             final MenuItem reportAndBlock = menu.findItem(R.id.action_report_and_block);
-            MenuItem openWith = menu.findItem(R.id.open_with);
-            MenuItem copyMessage = menu.findItem(R.id.copy_message);
-            MenuItem copyLink = menu.findItem(R.id.copy_link);
-            MenuItem quoteMessage = menu.findItem(R.id.quote_message);
-            MenuItem retryDecryption = menu.findItem(R.id.retry_decryption);
-            MenuItem correctMessage = menu.findItem(R.id.correct_message);
-            MenuItem shareWith = menu.findItem(R.id.share_with);
-            MenuItem sendAgain = menu.findItem(R.id.send_again);
-            MenuItem copyUrl = menu.findItem(R.id.copy_url);
-            MenuItem downloadFile = menu.findItem(R.id.download_file);
-            MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
-            MenuItem deleteFile = menu.findItem(R.id.delete_file);
-            MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
+            final MenuItem openWith = menu.findItem(R.id.open_with);
+            final MenuItem copyMessage = menu.findItem(R.id.copy_message);
+            final MenuItem copyLink = menu.findItem(R.id.copy_link);
+            final MenuItem quoteMessage = menu.findItem(R.id.quote_message);
+            final MenuItem retryDecryption = menu.findItem(R.id.retry_decryption);
+            final MenuItem correctMessage = menu.findItem(R.id.correct_message);
+            final MenuItem shareWith = menu.findItem(R.id.share_with);
+            final MenuItem sendAgain = menu.findItem(R.id.send_again);
+            final MenuItem copyUrl = menu.findItem(R.id.copy_url);
+            final MenuItem downloadFile = menu.findItem(R.id.download_file);
+            final MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
+            final MenuItem deleteFile = menu.findItem(R.id.delete_file);
+            final MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
             final boolean unInitiatedButKnownSize = MessageUtils.unInitiatedButKnownSize(m);
             final boolean showError =
                     m.getStatus() == Message.STATUS_SEND_FAILED
@@ -1339,6 +1340,15 @@ public class ConversationFragment extends XmppFragment
                         && connection.getFeatures().spamReporting()) {
                     reportAndBlock.setVisible(true);
                 }
+            }
+            if (conversational instanceof Conversation c) {
+                addReaction.setVisible(
+                        !showError
+                                && !m.isDeleted()
+                                && (c.getMode() == Conversational.MODE_SINGLE
+                                        || c.getMucOptions().occupantId()));
+            } else {
+                addReaction.setVisible(false);
             }
             if (!m.isFileOrImage()
                     && !encrypted
@@ -1465,6 +1475,9 @@ public class ConversationFragment extends XmppFragment
                 return true;
             case R.id.action_report_and_block:
                 reportMessage(selectedMessage);
+                return true;
+            case R.id.action_add_reaction:
+                addReaction(selectedMessage);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -2125,6 +2138,10 @@ public class ConversationFragment extends XmppFragment
                     activity.xmppConnectionService.getFileBackend().getFile(message);
             ViewUtil.view(activity, file);
         }
+    }
+
+    private void addReaction(final Message message) {
+        activity.addReaction(message, reactions -> activity.xmppConnectionService.sendReactions(message, reactions));
     }
 
     private void reportMessage(final Message message) {

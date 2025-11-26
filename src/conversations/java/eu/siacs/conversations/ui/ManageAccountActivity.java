@@ -109,7 +109,6 @@ public class ManageAccountActivity extends XmppActivity
         registerForContextMenu(binding.accountList);
     }
 
-
     @Override
     public void onSaveInstanceState(@NonNull final Bundle savedInstanceState) {
         if (selectedAccount != null) {
@@ -352,8 +351,14 @@ public class ManageAccountActivity extends XmppActivity
         }
     }
 
-    private void disableAccount(Account account) {
+    private void disableAccount(final Account account) {
         account.setOption(Account.OPTION_DISABLED, true);
+        if (account.setOption(Account.OPTION_QUICKSTART_AVAILABLE, false)) {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": quick start disabled. account will regain this capability on the next connect");
+        }
         if (!xmppConnectionService.updateAccount(account)) {
             Toast.makeText(this, R.string.unable_to_update_account, Toast.LENGTH_SHORT).show();
         }

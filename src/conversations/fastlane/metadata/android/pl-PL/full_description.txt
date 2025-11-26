@@ -28,7 +28,7 @@ Conversations działa z każdym dostępnym serwerem XMPP, jednak XMPP to rozsze
 
 Obecnie są obsługiwane następujące rozszerzenia:
 
-* XEP-0065: SOCKS5 Bytestreams (lub mod_proxy65). Będzie używany do przesyłania plików jeżeli obie strony znajdują się za zaporą (NAT);
+* XEP-0065: SOCKS5 Bytestreams (lub mod_proxy65). Będzie używany do przesyłania plików jeżeli obie strony znajdują się za zaporą lub NAT;
 * XEP-0163: Personal Eventing Protocol dla awatarów;
 * XEP-0191: Blocking Command umożliwia ochronę przed spamerami lub blokowanie bez usuwanie ich z rostera;
 * XEP-0198: Stream Management pozwala na przetrwanie krótkich braków połączenia z siecią oraz zmian używanego połączenia TCP;

@@ -1,0 +1,3 @@
+* Planifikim kopjeruajtjesh periodike
+* Përjashtim i krejt pajisjeve “realme”, deri te Android 11, nga integrim thirrjesh
+* Përmirësime të vockla UI (flluskë mesazhi)

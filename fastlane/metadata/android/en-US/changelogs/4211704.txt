@@ -1,0 +1,3 @@
+* Offer higher automatic file accept values
+* Provide more information in 'Server info'
+* Various bug fixes

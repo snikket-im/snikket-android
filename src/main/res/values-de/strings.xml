@@ -674,8 +674,6 @@
     <string name="message_copied_to_clipboard">Nachricht in die Zwischenablage kopiert</string>
     <string name="message">Nachricht</string>
     <string name="private_messages_are_disabled">Private Nachrichten sind deaktiviert</string>
-    <string name="huawei_protected_apps">Geschützte Apps</string>
-    <string name="huawei_protected_apps_summary">Um weiterhin Benachrichtigungen zu erhalten, auch wenn der Bildschirm ausgeschaltet ist, musst du Snikket zur Liste der geschützten Apps hinzufügen.</string>
     <string name="mtm_accept_cert">Unbekanntes Zertifikat akzeptieren?</string>
     <string name="mtm_trust_anchor">Das Serverzertifikat wurde nicht von einer bekannten Zertifizierungsstelle signiert.</string>
     <string name="mtm_accept_servername">Nicht übereinstimmenden Servernamen akzeptieren?</string>
@@ -1072,4 +1070,27 @@
     <string name="pref_fullscreen_notification_summary">Erlaube dieser App, Benachrichtigungen über eingehende Anrufe anzuzeigen, die den gesamten Bildschirm einnehmen, wenn das Gerät gesperrt ist.</string>
     <string name="pref_create_backup_one_off_summary">Einmalige Sicherung erstellen</string>
     <string name="allow_private_messages">Private Nachrichten erlauben</string>
+    <string name="could_not_disable_video">Video konnte nicht deaktiviert werden.</string>
+    <string name="delete_pgp_key">OpenPGP-Schlüssel löschen</string>
+    <string name="change_notification_settings">Benachrichtigungseinstellungen ändern</string>
+    <string name="call_is_using_wired_headset">Anruf erfolgt über ein kabelgebundenes Headset.</string>
+    <string name="call_is_using_bluetooth">Anruf erfolgt über Bluetooth.</string>
+    <string name="flip_camera">Kamera wechseln</string>
+    <string name="video_is_enabled_tap_to_disable">Video ist aktiviert. Zum Deaktivieren antippen.</string>
+    <string name="edit_nick">Nickname bearbeiten</string>
+    <string name="call_is_using_earpiece">Anruf erfolgt über den oberen Lautsprecher.</string>
+    <string name="call_is_using_speaker">Aufruf erfolgt über den unteren Lautsprecher.</string>
+    <string name="your_avatar_tap_to_select_new_avatar">Dein Profilbild. Antippen, um ein neues Profilbild aus der Galerie auszuwählen.</string>
+    <string name="video_is_disabled_tap_to_enable">Video ist deaktiviert. Zum Aktivieren antippen.</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Anruf erfolgt über den oberen Lautsprecher. Antippen, um zum unteren Lautsprecher zu wechseln.</string>
+    <string name="edit_configuration">Konfiguration ändern</string>
+    <string name="edit_name_and_topic">Name und Thema bearbeiten</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Anruf erfolgt über den unteren Lautsprecher. Antippen, um zum oberen Lautsprecher zu wechseln.</string>
+    <string name="server_info_bind2">XEP-0386: Bind 2</string>
+    <string name="server_info_sasl2">XEP-0388: Extensible SASL Profile</string>
+    <string name="server_info_login_mechanism">Anmeldeverfahren</string>
+    <string name="could_not_add_reaction">Reaktion konnte nicht hinzugefügt werden</string>
+    <string name="add_reaction">Reaktion hinzufügen…</string>
+    <string name="add_reaction_title">Reaktion hinzufügen</string>
+    <string name="more_reactions">Weitere Reaktionen</string>
 </resources>

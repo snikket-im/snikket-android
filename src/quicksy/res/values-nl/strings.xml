@@ -4,7 +4,7 @@
     <string name="pref_never_send_crash_summary">Door crashrapportages te versturen help je de ontwikkeling van Quicksy</string>
     <string name="pref_broadcast_last_activity_summary">Laat al je contactpersonen weten wanneer je Quicksy gebruikt</string>
     <string name="huawei_protected_apps_summary">Om meldingen te blijven ontvangen, zelfs wanneer het scherm uit staat, moet je Quicksy toevoegen aan de lijst met beschermde apps.</string>
-    <string name="set_profile_picture">Quicksy-profielafbeelding</string>
+    <string name="set_profile_picture">Quicksy profielafbeelding</string>
     <string name="not_available_in_your_country">Quicksy is niet beschikbaar in je land.</string>
     <string name="unable_to_verify_server_identity">Kan serveridentiteit niet verifiëren.</string>
     <string name="unknown_security_error">Onbekende beveiligingsfout.</string>

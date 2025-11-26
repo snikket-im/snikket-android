@@ -1,0 +1,1 @@
+* Run Backup as foreground service to prevent process being stopped after 10 minutes

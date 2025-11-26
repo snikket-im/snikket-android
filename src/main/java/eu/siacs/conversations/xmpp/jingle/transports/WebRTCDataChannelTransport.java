@@ -22,7 +22,7 @@ import eu.siacs.conversations.xmpp.jingle.IceServers;
 import eu.siacs.conversations.xmpp.jingle.WebRTCWrapper;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.WebRTCDataChannelTransportInfo;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
 import org.webrtc.CandidatePairChangeEvent;
 import org.webrtc.DataChannel;
@@ -234,14 +234,14 @@ public class WebRTCDataChannelTransport implements Transport {
         if (xmppConnection.getFeatures().externalServiceDiscovery()) {
             final SettableFuture<List<PeerConnection.IceServer>> iceServerFuture =
                     SettableFuture.create();
-            final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+            final Iq request = new Iq(Iq.Type.GET);
             request.setTo(this.account.getDomain());
             request.addChild("services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
             xmppConnection.sendIqPacket(
                     request,
-                    (account, response) -> {
+                    (response) -> {
                         final var iceServers = IceServers.parse(response);
-                        if (iceServers.size() == 0) {
+                        if (iceServers.isEmpty()) {
                             Log.w(
                                     Config.LOGTAG,
                                     account.getJid().asBareJid()

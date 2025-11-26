@@ -1,9 +1,8 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.xmpp.PacketReceived;
-import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
-public interface OnJinglePacketReceived extends PacketReceived {
-	void onJinglePacketReceived(Account account, JinglePacket packet);
+public interface OnJinglePacketReceived {
+	void onJinglePacketReceived(Account account, Iq packet);
 }

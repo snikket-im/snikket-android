@@ -513,7 +513,6 @@
     <string name="message_copied_to_clipboard">Mesazhi u kopjua në të papastër</string>
     <string name="message">Mesazh</string>
     <string name="private_messages_are_disabled">Mesazhet private janë të çaktivizuara</string>
-    <string name="huawei_protected_apps">Aplikacione të Mbrojtur</string>
     <string name="mtm_accept_cert">Të pranohet Dëshmi e Panjohur\?</string>
     <string name="mtm_trust_anchor">Dëshmia e shërbyesit s’është nënshkruar prej një Autoriteti të njohur Dëshmish.</string>
     <string name="mtm_accept_servername">Të Pranohet Emër Shërbyesi i Ngatërruar\?</string>
@@ -785,7 +784,6 @@
     <string name="error_message">Mesazh Gabimi</string>
     <string name="error_unable_to_create_temporary_file">S’u krijua dot kartelë e përkohshme</string>
     <string name="this_device_has_been_verified">Kjo pajisje u verifikua</string>
-    <string name="huawei_protected_apps_summary">Që të vazhdoni të merrni njoftime, edhe kur ekrani juaj është i fikur, duhet të shtoni Conversations te lista e aplikacioneve të mbrojtur.</string>
     <string name="this_looks_like_channel">Kjo duket si adresë kanali</string>
     <string name="audio_call">Thirrje audio</string>
     <string name="video_call">Thirrje video</string>
@@ -1083,4 +1081,27 @@
     <string name="pref_backup_recurring">Kopjeruajtje ripërsëritëse</string>
     <string name="pref_create_backup_one_off_summary">Krijoni një kopjeruajtje një here të vetme</string>
     <string name="allow_private_messages">Lejoni mesazhe private</string>
+    <string name="edit_nick">Përpunoni nofkë</string>
+    <string name="edit_name_and_topic">Përpunoni emër dhe temë</string>
+    <string name="edit_configuration">Ndryshoni formësim</string>
+    <string name="change_notification_settings">Ndryshoni rregullime njoftimesh</string>
+    <string name="call_is_using_earpiece">Thirrja po përdor kufje.</string>
+    <string name="call_is_using_wired_headset">Thirrja po përdor kufje me fill</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Thirrja po përdor altoparlant. Prekeni, që të kalohet në kufje.</string>
+    <string name="call_is_using_speaker">Thirrja po përdor altoparlant.</string>
+    <string name="call_is_using_bluetooth">Thirrja po përdor Bluetooth.</string>
+    <string name="delete_pgp_key">Fshini kyç OpenPGP</string>
+    <string name="could_not_disable_video">S’u çaktivizua dot videoja.</string>
+    <string name="your_avatar_tap_to_select_new_avatar">Avatari juaj. Prekeni, që të përzgjidhni prej galerisë avatar të ri.</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Thirrja po përdor kufje. Prekeni, që të kalohet në altoparlant.</string>
+    <string name="video_is_enabled_tap_to_disable">Videoja është e aktivizuar. Prekeni, që të çaktivizohet.</string>
+    <string name="flip_camera">Ktheni kamerën më anë tjetër</string>
+    <string name="video_is_disabled_tap_to_enable">Videoja është e çaktivizuar. Prekeni, që të aktivizohet.</string>
+    <string name="server_info_bind2">XEP-0386: Bind 2</string>
+    <string name="server_info_sasl2">XEP-0388: Profil SASL i Zgjerueshëm</string>
+    <string name="server_info_login_mechanism">Mekanizëm hyrjesh</string>
+    <string name="could_not_add_reaction">S’u shtua dot reagim</string>
+    <string name="add_reaction">Shtoni reagim…</string>
+    <string name="add_reaction_title">Shtoni reagim</string>
+    <string name="more_reactions">Më tepër reagime</string>
 </resources>

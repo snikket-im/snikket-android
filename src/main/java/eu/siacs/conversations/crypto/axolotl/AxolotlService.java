@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -61,7 +62,6 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
-import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.DescriptionTransport;
 import eu.siacs.conversations.xmpp.jingle.OmemoVerification;
 import eu.siacs.conversations.xmpp.jingle.OmemoVerifiedRtpContentMap;
@@ -70,8 +70,7 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.OmemoVerifiedIceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 import eu.siacs.conversations.xmpp.pep.PublishOptions;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
 public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
@@ -316,7 +315,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         if (me) {
             deviceIds.remove(getOwnDeviceId());
         }
-        Set<Integer> expiredDevices = new HashSet<>(axolotlStore.getSubDeviceSessions(jid.asBareJid().toString()));
+        final Set<Integer> expiredDevices = new HashSet<>(axolotlStore.getSubDeviceSessions(jid.asBareJid().toString()));
         expiredDevices.removeAll(deviceIds);
         for (Integer deviceId : expiredDevices) {
             SignalProtocolAddress address = new SignalProtocolAddress(jid.asBareJid().toString(), deviceId);
@@ -327,8 +326,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                 }
             }
         }
-        Set<Integer> newDevices = new HashSet<>(deviceIds);
-        for (Integer deviceId : newDevices) {
+        final Set<Integer> newDevices = ImmutableSet.copyOf(deviceIds);
+        for (final Integer deviceId : newDevices) {
             SignalProtocolAddress address = new SignalProtocolAddress(jid.asBareJid().toString(), deviceId);
             XmppAxolotlSession session = sessions.get(address);
             if (session != null && session.getFingerprint() != null) {
@@ -343,7 +342,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                 needsPublishing |= deviceIds.removeAll(getExpiredDevices());
             }
             needsPublishing |= this.changeAccessMode.get();
-            for (Integer deviceId : deviceIds) {
+            for (final Integer deviceId : deviceIds) {
                 SignalProtocolAddress ownDeviceAddress = new SignalProtocolAddress(jid.asBareJid().toString(), deviceId);
                 if (sessions.get(ownDeviceAddress) == null) {
                     FetchStatus status = fetchStatusMap.get(ownDeviceAddress);
@@ -354,6 +353,9 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                 }
             }
             if (needsPublishing) {
+                // do not run next device list update notification through de-duplication (might get
+                // skipped by CSI)
+                this.lastDeviceListNotificationHash = 0;
                 publishOwnDeviceId(deviceIds);
             }
         }
@@ -392,20 +394,18 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             Log.d(Config.LOGTAG, getLogprefix(account) + "publishOwnDeviceIdIfNeeded called, but PEP is broken. Ignoring... ");
             return;
         }
-        IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveDeviceIds(account.getJid().asBareJid());
-        mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
-            @Override
-            public void onIqPacketReceived(Account account, IqPacket packet) {
-                if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
-                    Log.d(Config.LOGTAG, getLogprefix(account) + "Timeout received while retrieving own Device Ids.");
-                } else {
-                    //TODO consider calling registerDevices only after item-not-found to account for broken PEPs
-                    Element item = mXmppConnectionService.getIqParser().getItem(packet);
-                    Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved own device list: " + deviceIds);
-                    registerDevices(account.getJid().asBareJid(), deviceIds);
-                }
+        Iq packet = mXmppConnectionService.getIqGenerator().retrieveDeviceIds(account.getJid().asBareJid());
+        mXmppConnectionService.sendIqPacket(account, packet, response -> {
+            if (response.getType() == Iq.Type.TIMEOUT) {
+                Log.d(Config.LOGTAG, getLogprefix(account) + "Timeout received while retrieving own Device Ids.");
+            } else {
+                //TODO consider calling registerDevices only after item-not-found to account for broken PEPs
+                final Element item = IqParser.getItem(response);
+                final Set<Integer> deviceIds = IqParser.deviceIds(item);
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved own device list: " + deviceIds);
+                registerDevices(account.getJid().asBareJid(), deviceIds);
             }
+
         });
     }
 
@@ -430,8 +430,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         return devices;
     }
 
-    private void publishOwnDeviceId(Set<Integer> deviceIds) {
-        Set<Integer> deviceIdsCopy = new HashSet<>(deviceIds);
+    private void publishOwnDeviceId(final Set<Integer> deviceIds) {
+        final Set<Integer> deviceIdsCopy = new HashSet<>(deviceIds);
         Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "publishing own device ids");
         if (deviceIdsCopy.isEmpty()) {
             if (numPublishTriesOnEmptyPep >= publishTriesThreshold) {
@@ -455,40 +455,37 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
     private void publishDeviceIdsAndRefineAccessModel(final Set<Integer> ids, final boolean firstAttempt) {
         final Bundle publishOptions = account.getXmppConnection().getFeatures().pepPublishOptions() ? PublishOptions.openAccess() : null;
-        IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(ids, publishOptions);
-        mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
-            @Override
-            public void onIqPacketReceived(Account account, IqPacket packet) {
-                final Element error = packet.getType() == IqPacket.TYPE.ERROR ? packet.findChild("error") : null;
-                final boolean preConditionNotMet = PublishOptions.preconditionNotMet(packet);
-                if (firstAttempt && preConditionNotMet) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": precondition wasn't met for device list. pushing node configuration");
-                    mXmppConnectionService.pushNodeConfiguration(account, AxolotlService.PEP_DEVICE_LIST, publishOptions, new XmppConnectionService.OnConfigurationPushed() {
-                        @Override
-                        public void onPushSucceeded() {
-                            publishDeviceIdsAndRefineAccessModel(ids, false);
-                        }
-
-                        @Override
-                        public void onPushFailed() {
-                            publishDeviceIdsAndRefineAccessModel(ids, false);
-                        }
-                    });
-                } else {
-                    if (AxolotlService.this.changeAccessMode.compareAndSet(true, false)) {
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": done changing access mode");
-                        account.setOption(Account.OPTION_REQUIRES_ACCESS_MODE_CHANGE, false);
-                        mXmppConnectionService.databaseBackend.updateAccount(account);
+        final var publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(ids, publishOptions);
+        mXmppConnectionService.sendIqPacket(account, publish, response -> {
+            final Element error = response.getType() == Iq.Type.ERROR ? response.findChild("error") : null;
+            final boolean preConditionNotMet = PublishOptions.preconditionNotMet(response);
+            if (firstAttempt && preConditionNotMet) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": precondition wasn't met for device list. pushing node configuration");
+                mXmppConnectionService.pushNodeConfiguration(account, AxolotlService.PEP_DEVICE_LIST, publishOptions, new XmppConnectionService.OnConfigurationPushed() {
+                    @Override
+                    public void onPushSucceeded() {
+                        publishDeviceIdsAndRefineAccessModel(ids, false);
                     }
-                    if (packet.getType() == IqPacket.TYPE.ERROR) {
-                        if (preConditionNotMet) {
-                            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": device list pre condition still not met on second attempt");
-                        } else if (error != null) {
-                            pepBroken = true;
-                            Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + packet.findChild("error"));
-                        }
 
+                    @Override
+                    public void onPushFailed() {
+                        publishDeviceIdsAndRefineAccessModel(ids, false);
                     }
+                });
+            } else {
+                if (AxolotlService.this.changeAccessMode.compareAndSet(true, false)) {
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": done changing access mode");
+                    account.setOption(Account.OPTION_REQUIRES_ACCESS_MODE_CHANGE, false);
+                    mXmppConnectionService.databaseBackend.updateAccount(account);
+                }
+                if (response.getType() == Iq.Type.ERROR) {
+                    if (preConditionNotMet) {
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": device list pre condition still not met on second attempt");
+                    } else if (error != null) {
+                        pepBroken = true;
+                        Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + response.findChild("error"));
+                    }
+
                 }
             }
         });
@@ -506,26 +503,23 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             verifier.initSign(x509PrivateKey, SECURE_RANDOM);
             verifier.update(axolotlPublicKey.serialize());
             byte[] signature = verifier.sign();
-            IqPacket packet = mXmppConnectionService.getIqGenerator().publishVerification(signature, chain, getOwnDeviceId());
+            final Iq packet = mXmppConnectionService.getIqGenerator().publishVerification(signature, chain, getOwnDeviceId());
             Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + ": publish verification for device " + getOwnDeviceId());
-            mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
-                @Override
-                public void onIqPacketReceived(final Account account, IqPacket packet) {
-                    String node = AxolotlService.PEP_VERIFICATION + ":" + getOwnDeviceId();
-                    mXmppConnectionService.pushNodeConfiguration(account, node, PublishOptions.openAccess(), new XmppConnectionService.OnConfigurationPushed() {
-                        @Override
-                        public void onPushSucceeded() {
-                            Log.d(Config.LOGTAG, getLogprefix(account) + "configured verification node to be world readable");
-                            publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announceAfter, wipe);
-                        }
+            mXmppConnectionService.sendIqPacket(account, packet, response -> {
+                String node = AxolotlService.PEP_VERIFICATION + ":" + getOwnDeviceId();
+                mXmppConnectionService.pushNodeConfiguration(account, node, PublishOptions.openAccess(), new XmppConnectionService.OnConfigurationPushed() {
+                    @Override
+                    public void onPushSucceeded() {
+                        Log.d(Config.LOGTAG, getLogprefix(account) + "configured verification node to be world readable");
+                        publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announceAfter, wipe);
+                    }
 
-                        @Override
-                        public void onPushFailed() {
-                            Log.d(Config.LOGTAG, getLogprefix(account) + "unable to set access model on verification node");
-                            publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announceAfter, wipe);
-                        }
-                    });
-                }
+                    @Override
+                    public void onPushFailed() {
+                        Log.d(Config.LOGTAG, getLogprefix(account) + "unable to set access model on verification node");
+                        publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announceAfter, wipe);
+                    }
+                });
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -549,109 +543,106 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         if (this.changeAccessMode.get()) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server gained publish-options capabilities. changing access model");
         }
-        IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(account.getJid().asBareJid(), getOwnDeviceId());
-        mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
-            @Override
-            public void onIqPacketReceived(Account account, IqPacket packet) {
+        final Iq packet = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(account.getJid().asBareJid(), getOwnDeviceId());
+        mXmppConnectionService.sendIqPacket(account, packet, response -> {
 
-                if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
-                    return; //ignore timeout. do nothing
+            if (response.getType() == Iq.Type.TIMEOUT) {
+                return; //ignore timeout. do nothing
+            }
+
+            if (response.getType() == Iq.Type.ERROR) {
+                Element error = response.findChild("error");
+                if (error == null || !error.hasChild("item-not-found")) {
+                    pepBroken = true;
+                    Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "request for device bundles came back with something other than item-not-found" + response);
+                    return;
+                }
+            }
+
+            PreKeyBundle bundle = IqParser.bundle(response);
+            final Map<Integer, ECPublicKey> keys = IqParser.preKeyPublics(response);
+            boolean flush = false;
+            if (bundle == null) {
+                Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received invalid bundle:" + response);
+                bundle = new PreKeyBundle(-1, -1, -1, null, -1, null, null, null);
+                flush = true;
+            }
+            if (keys == null) {
+                Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received invalid prekeys:" + response);
+            }
+            try {
+                boolean changed = false;
+                // Validate IdentityKey
+                IdentityKeyPair identityKeyPair = axolotlStore.getIdentityKeyPair();
+                if (flush || !identityKeyPair.getPublicKey().equals(bundle.getIdentityKey())) {
+                    Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Adding own IdentityKey " + identityKeyPair.getPublicKey() + " to PEP.");
+                    changed = true;
                 }
 
-                if (packet.getType() == IqPacket.TYPE.ERROR) {
-                    Element error = packet.findChild("error");
-                    if (error == null || !error.hasChild("item-not-found")) {
-                        pepBroken = true;
-                        Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "request for device bundles came back with something other than item-not-found" + packet);
-                        return;
-                    }
-                }
-
-                PreKeyBundle bundle = mXmppConnectionService.getIqParser().bundle(packet);
-                Map<Integer, ECPublicKey> keys = mXmppConnectionService.getIqParser().preKeyPublics(packet);
-                boolean flush = false;
-                if (bundle == null) {
-                    Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received invalid bundle:" + packet);
-                    bundle = new PreKeyBundle(-1, -1, -1, null, -1, null, null, null);
-                    flush = true;
-                }
-                if (keys == null) {
-                    Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received invalid prekeys:" + packet);
-                }
+                // Validate signedPreKeyRecord + ID
+                SignedPreKeyRecord signedPreKeyRecord;
+                int numSignedPreKeys = axolotlStore.getSignedPreKeysCount();
                 try {
-                    boolean changed = false;
-                    // Validate IdentityKey
-                    IdentityKeyPair identityKeyPair = axolotlStore.getIdentityKeyPair();
-                    if (flush || !identityKeyPair.getPublicKey().equals(bundle.getIdentityKey())) {
-                        Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Adding own IdentityKey " + identityKeyPair.getPublicKey() + " to PEP.");
-                        changed = true;
-                    }
-
-                    // Validate signedPreKeyRecord + ID
-                    SignedPreKeyRecord signedPreKeyRecord;
-                    int numSignedPreKeys = axolotlStore.getSignedPreKeysCount();
-                    try {
-                        signedPreKeyRecord = axolotlStore.loadSignedPreKey(bundle.getSignedPreKeyId());
-                        if (flush
-                                || !bundle.getSignedPreKey().equals(signedPreKeyRecord.getKeyPair().getPublicKey())
-                                || !Arrays.equals(bundle.getSignedPreKeySignature(), signedPreKeyRecord.getSignature())) {
-                            Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Adding new signedPreKey with ID " + (numSignedPreKeys + 1) + " to PEP.");
-                            signedPreKeyRecord = KeyHelper.generateSignedPreKey(identityKeyPair, numSignedPreKeys + 1);
-                            axolotlStore.storeSignedPreKey(signedPreKeyRecord.getId(), signedPreKeyRecord);
-                            changed = true;
-                        }
-                    } catch (InvalidKeyIdException e) {
+                    signedPreKeyRecord = axolotlStore.loadSignedPreKey(bundle.getSignedPreKeyId());
+                    if (flush
+                            || !bundle.getSignedPreKey().equals(signedPreKeyRecord.getKeyPair().getPublicKey())
+                            || !Arrays.equals(bundle.getSignedPreKeySignature(), signedPreKeyRecord.getSignature())) {
                         Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Adding new signedPreKey with ID " + (numSignedPreKeys + 1) + " to PEP.");
                         signedPreKeyRecord = KeyHelper.generateSignedPreKey(identityKeyPair, numSignedPreKeys + 1);
                         axolotlStore.storeSignedPreKey(signedPreKeyRecord.getId(), signedPreKeyRecord);
                         changed = true;
                     }
-
-                    // Validate PreKeys
-                    Set<PreKeyRecord> preKeyRecords = new HashSet<>();
-                    if (keys != null) {
-                        for (Integer id : keys.keySet()) {
-                            try {
-                                PreKeyRecord preKeyRecord = axolotlStore.loadPreKey(id);
-                                if (preKeyRecord.getKeyPair().getPublicKey().equals(keys.get(id))) {
-                                    preKeyRecords.add(preKeyRecord);
-                                }
-                            } catch (InvalidKeyIdException ignored) {
-                            }
-                        }
-                    }
-                    int newKeys = NUM_KEYS_TO_PUBLISH - preKeyRecords.size();
-                    if (newKeys > 0) {
-                        List<PreKeyRecord> newRecords = KeyHelper.generatePreKeys(
-                                axolotlStore.getCurrentPreKeyId() + 1, newKeys);
-                        preKeyRecords.addAll(newRecords);
-                        for (PreKeyRecord record : newRecords) {
-                            axolotlStore.storePreKey(record.getId(), record);
-                        }
-                        changed = true;
-                        Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Adding " + newKeys + " new preKeys to PEP.");
-                    }
-
-
-                    if (changed || changeAccessMode.get()) {
-                        if (account.getPrivateKeyAlias() != null && Config.X509_VERIFICATION) {
-                            mXmppConnectionService.publishDisplayName(account);
-                            publishDeviceVerificationAndBundle(signedPreKeyRecord, preKeyRecords, announce, wipe);
-                        } else {
-                            publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announce, wipe);
-                        }
-                    } else {
-                        Log.d(Config.LOGTAG, getLogprefix(account) + "Bundle " + getOwnDeviceId() + " in PEP was current");
-                        if (wipe) {
-                            wipeOtherPepDevices();
-                        } else if (announce) {
-                            Log.d(Config.LOGTAG, getLogprefix(account) + "Announcing device " + getOwnDeviceId());
-                            publishOwnDeviceIdIfNeeded();
-                        }
-                    }
-                } catch (InvalidKeyException e) {
-                    Log.e(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Failed to publish bundle " + getOwnDeviceId() + ", reason: " + e.getMessage());
+                } catch (InvalidKeyIdException e) {
+                    Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Adding new signedPreKey with ID " + (numSignedPreKeys + 1) + " to PEP.");
+                    signedPreKeyRecord = KeyHelper.generateSignedPreKey(identityKeyPair, numSignedPreKeys + 1);
+                    axolotlStore.storeSignedPreKey(signedPreKeyRecord.getId(), signedPreKeyRecord);
+                    changed = true;
                 }
+
+                // Validate PreKeys
+                Set<PreKeyRecord> preKeyRecords = new HashSet<>();
+                if (keys != null) {
+                    for (Integer id : keys.keySet()) {
+                        try {
+                            PreKeyRecord preKeyRecord = axolotlStore.loadPreKey(id);
+                            if (preKeyRecord.getKeyPair().getPublicKey().equals(keys.get(id))) {
+                                preKeyRecords.add(preKeyRecord);
+                            }
+                        } catch (InvalidKeyIdException ignored) {
+                        }
+                    }
+                }
+                int newKeys = NUM_KEYS_TO_PUBLISH - preKeyRecords.size();
+                if (newKeys > 0) {
+                    List<PreKeyRecord> newRecords = KeyHelper.generatePreKeys(
+                            axolotlStore.getCurrentPreKeyId() + 1, newKeys);
+                    preKeyRecords.addAll(newRecords);
+                    for (PreKeyRecord record : newRecords) {
+                        axolotlStore.storePreKey(record.getId(), record);
+                    }
+                    changed = true;
+                    Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Adding " + newKeys + " new preKeys to PEP.");
+                }
+
+
+                if (changed || changeAccessMode.get()) {
+                    if (account.getPrivateKeyAlias() != null && Config.X509_VERIFICATION) {
+                        mXmppConnectionService.publishDisplayName(account);
+                        publishDeviceVerificationAndBundle(signedPreKeyRecord, preKeyRecords, announce, wipe);
+                    } else {
+                        publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announce, wipe);
+                    }
+                } else {
+                    Log.d(Config.LOGTAG, getLogprefix(account) + "Bundle " + getOwnDeviceId() + " in PEP was current");
+                    if (wipe) {
+                        wipeOtherPepDevices();
+                    } else if (announce) {
+                        Log.d(Config.LOGTAG, getLogprefix(account) + "Announcing device " + getOwnDeviceId());
+                        publishOwnDeviceIdIfNeeded();
+                    }
+                }
+            } catch (InvalidKeyException e) {
+                Log.e(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Failed to publish bundle " + getOwnDeviceId() + ", reason: " + e.getMessage());
             }
         });
     }
@@ -669,44 +660,41 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                                      final boolean wipe,
                                      final boolean firstAttempt) {
         final Bundle publishOptions = account.getXmppConnection().getFeatures().pepPublishOptions() ? PublishOptions.openAccess() : null;
-        final IqPacket publish = mXmppConnectionService.getIqGenerator().publishBundles(
+        final Iq publish = mXmppConnectionService.getIqGenerator().publishBundles(
                 signedPreKeyRecord, axolotlStore.getIdentityKeyPair().getPublicKey(),
                 preKeyRecords, getOwnDeviceId(), publishOptions);
         Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + ": Bundle " + getOwnDeviceId() + " in PEP not current. Publishing...");
-        mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
-            @Override
-            public void onIqPacketReceived(final Account account, IqPacket packet) {
-                final boolean preconditionNotMet = PublishOptions.preconditionNotMet(packet);
-                if (firstAttempt && preconditionNotMet) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": precondition wasn't met for bundle. pushing node configuration");
-                    final String node = AxolotlService.PEP_BUNDLES + ":" + getOwnDeviceId();
-                    mXmppConnectionService.pushNodeConfiguration(account, node, publishOptions, new XmppConnectionService.OnConfigurationPushed() {
-                        @Override
-                        public void onPushSucceeded() {
-                            publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announceAfter, wipe, false);
-                        }
+        mXmppConnectionService.sendIqPacket(account, publish, response -> {
+            final boolean preconditionNotMet = PublishOptions.preconditionNotMet(response);
+            if (firstAttempt && preconditionNotMet) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": precondition wasn't met for bundle. pushing node configuration");
+                final String node = AxolotlService.PEP_BUNDLES + ":" + getOwnDeviceId();
+                mXmppConnectionService.pushNodeConfiguration(account, node, publishOptions, new XmppConnectionService.OnConfigurationPushed() {
+                    @Override
+                    public void onPushSucceeded() {
+                        publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announceAfter, wipe, false);
+                    }
 
-                        @Override
-                        public void onPushFailed() {
-                            publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announceAfter, wipe, false);
-                        }
-                    });
-                } else if (packet.getType() == IqPacket.TYPE.RESULT) {
-                    Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Successfully published bundle. ");
-                    if (wipe) {
-                        wipeOtherPepDevices();
-                    } else if (announceAfter) {
-                        Log.d(Config.LOGTAG, getLogprefix(account) + "Announcing device " + getOwnDeviceId());
-                        publishOwnDeviceIdIfNeeded();
+                    @Override
+                    public void onPushFailed() {
+                        publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announceAfter, wipe, false);
                     }
-                } else if (packet.getType() == IqPacket.TYPE.ERROR) {
-                    if (preconditionNotMet) {
-                        Log.d(Config.LOGTAG, getLogprefix(account) + "bundle precondition still not met after second attempt");
-                    } else {
-                        Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing bundle: " + packet.toString());
-                    }
-                    pepBroken = true;
+                });
+            } else if (response.getType() == Iq.Type.RESULT) {
+                Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Successfully published bundle. ");
+                if (wipe) {
+                    wipeOtherPepDevices();
+                } else if (announceAfter) {
+                    Log.d(Config.LOGTAG, getLogprefix(account) + "Announcing device " + getOwnDeviceId());
+                    publishOwnDeviceIdIfNeeded();
                 }
+            } else if (response.getType() == Iq.Type.ERROR) {
+                if (preconditionNotMet) {
+                    Log.d(Config.LOGTAG, getLogprefix(account) + "bundle precondition still not met after second attempt");
+                } else {
+                    Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing bundle: " + response.toString());
+                }
+                pepBroken = true;
             }
         });
     }
@@ -759,9 +747,9 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             return Futures.immediateFuture(session);
         }
         final SettableFuture<XmppAxolotlSession> future = SettableFuture.create();
-        final IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveVerificationForDevice(jid, address.getDeviceId());
-        mXmppConnectionService.sendIqPacket(account, packet, (account, response) -> {
-            Pair<X509Certificate[], byte[]> verification = mXmppConnectionService.getIqParser().verification(response);
+        final Iq packet = mXmppConnectionService.getIqGenerator().retrieveVerificationForDevice(jid, address.getDeviceId());
+        mXmppConnectionService.sendIqPacket(account, packet, response -> {
+            Pair<X509Certificate[], byte[]> verification = IqParser.verification(response);
             if (verification != null) {
                 try {
                     Signature verifier = Signature.getInstance("sha256WithRSA");
@@ -846,7 +834,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     }
 
     private void fetchDeviceIds(final Jid jid, OnDeviceIdsFetched callback) {
-        IqPacket packet;
+        final Iq packet;
         synchronized (this.fetchDeviceIdsMap) {
             List<OnDeviceIdsFetched> callbacks = this.fetchDeviceIdsMap.get(jid);
             if (callbacks != null) {
@@ -866,11 +854,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             }
         }
         if (packet != null) {
-            mXmppConnectionService.sendIqPacket(account, packet, (account, response) -> {
-                if (response.getType() == IqPacket.TYPE.RESULT) {
+            mXmppConnectionService.sendIqPacket(account, packet, response -> {
+                if (response.getType() == Iq.Type.RESULT) {
                     fetchDeviceListStatus.put(jid, true);
-                    Element item = mXmppConnectionService.getIqParser().getItem(response);
-                    Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
+                    final Element item = IqParser.getItem(response);
+                    final Set<Integer> deviceIds = IqParser.deviceIds(item);
                     registerDevices(jid, deviceIds);
                     final List<OnDeviceIdsFetched> callbacks;
                     synchronized (fetchDeviceIdsMap) {
@@ -882,7 +870,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                         }
                     }
                 } else {
-                    if (response.getType() == IqPacket.TYPE.TIMEOUT) {
+                    if (response.getType() == Iq.Type.TIMEOUT) {
                         fetchDeviceListStatus.remove(jid);
                     } else {
                         fetchDeviceListStatus.put(jid, false);
@@ -929,16 +917,15 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         }
         final Jid jid = Jid.of(address.getName());
         final boolean oneOfOurs = jid.asBareJid().equals(account.getJid().asBareJid());
-        IqPacket bundlesPacket = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(jid, address.getDeviceId());
-        mXmppConnectionService.sendIqPacket(account, bundlesPacket, (account, packet) -> {
-            if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
+        final Iq bundlesPacket = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(jid, address.getDeviceId());
+        mXmppConnectionService.sendIqPacket(account, bundlesPacket, packet -> {
+            if (packet.getType() == Iq.Type.TIMEOUT) {
                 fetchStatusMap.put(address, FetchStatus.TIMEOUT);
                 sessionSettableFuture.setException(new CryptoFailedException("Unable to build session. Timeout"));
-            } else if (packet.getType() == IqPacket.TYPE.RESULT) {
+            } else if (packet.getType() == Iq.Type.RESULT) {
                 Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received preKey IQ packet, processing...");
-                final IqParser parser = mXmppConnectionService.getIqParser();
-                final List<PreKeyBundle> preKeyBundleList = parser.preKeys(packet);
-                final PreKeyBundle bundle = parser.bundle(packet);
+                final List<PreKeyBundle> preKeyBundleList = IqParser.preKeys(packet);
+                final PreKeyBundle bundle = IqParser.bundle(packet);
                 if (preKeyBundleList.isEmpty() || bundle == null) {
                     Log.e(Config.LOGTAG, AxolotlService.getLogprefix(account) + "preKey IQ packet invalid: " + packet);
                     fetchStatusMap.put(address, FetchStatus.ERROR);
@@ -1544,7 +1531,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         axolotlMessage.addDevice(session, true);
         try {
             final Jid jid = Jid.of(session.getRemoteAddress().getName());
-            MessagePacket packet = mXmppConnectionService.getMessageGenerator().generateKeyTransportMessage(jid, axolotlMessage);
+            final var packet = mXmppConnectionService.getMessageGenerator().generateKeyTransportMessage(jid, axolotlMessage);
             mXmppConnectionService.sendMessagePacket(account, packet);
         } catch (IllegalArgumentException e) {
             throw new Error("Remote addresses are created from jid and should convert back to jid", e);

@@ -28,7 +28,7 @@ Conversations funktioniert mit jedem XMPP-Server. XMPP ist jedoch ein erweiterba
 
 Diese XEPs sind es derzeit:
 
-* XEP-0065: SOCKS5 Bytestreams (oder mod_proxy65). Wird für die Übertragung von Dateien verwendet, wenn sich beide Parteien hinter einer Firewall (NAT) befinden.
+* XEP-0065: SOCKS5 Bytestreams (oder mod_proxy65). Wird für die Übertragung von Dateien verwendet, wenn sich beide Parteien hinter einer Firewall oder NAT befinden.
 * XEP-0163: Personal Eventing Protocol für Profilbilder
 * XEP-0191: Mit dem Blockierungsbefehl kannst du Spammer auf eine schwarze Liste setzen oder Kontakte blockieren, ohne sie aus deiner Liste zu entfernen.
 * XEP-0198: Stream Management ermöglicht es XMPP, kleinere Netzwerkausfälle und Änderungen der zugrunde liegenden TCP-Verbindung zu überstehen.

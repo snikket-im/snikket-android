@@ -418,6 +418,7 @@ public class StartConversationActivity extends XmppActivity
                             .create();
             speedDialView.addActionItem(actionItem);
         }
+        speedDialView.setContentDescription(getString(R.string.add_contact_or_create_or_join_group_chat));
     }
 
     public static boolean isValidJid(String input) {

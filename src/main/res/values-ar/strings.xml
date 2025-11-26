@@ -528,7 +528,6 @@
     <string name="message_copied_to_clipboard">تم نسخ الرسالة إلى الحافظة</string>
     <string name="message">رسالة</string>
     <string name="private_messages_are_disabled">الرسائل الخاصة معطلة</string>
-    <string name="huawei_protected_apps">التطبيقات المُؤمَّنَة</string>
     <string name="mtm_accept_cert">تقبُّل الشهادات المجهولة ؟</string>
     <string name="mtm_trust_anchor">إنّ شهادة الخادوم غير مُوقَّعَة مِن طرف هيئة شهادات معروفة.</string>
     <string name="mtm_connect_anyway">بالرغم مِن ذلك هل تريد مواصلة الإتصال ؟</string>
@@ -635,7 +634,6 @@
     <string name="please_enter_password">يرجى إدخال الكلمة السرية للحساب</string>
     <string name="rtp_state_declined_or_busy">مشغول</string>
     <string name="more_options">خيارات أخرى</string>
-    <string name="huawei_protected_apps_summary">للمواصلة في إستقبال التنبيهات، حتى والشاشة مغلقة، يجب عليك أن تضيف تطبيق Conversations إلى قائمة التطبيقات المحميّة.</string>
     <string name="account_status_regis_not_sup">إنشاء الحسابات غير مدعومة مِن طرف الخادم</string>
     <string name="error_publish_avatar_no_server_support">خادمك لا يدعم نشر الصور الرمزية</string>
     <string name="server_info_external_service_discovery">XEP-0215: استكشاف خدمة خارجية</string>

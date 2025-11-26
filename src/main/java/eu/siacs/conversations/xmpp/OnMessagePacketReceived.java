@@ -1,8 +1,7 @@
 package eu.siacs.conversations.xmpp;
 
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
+import im.conversations.android.xmpp.model.stanza.Message;
 
-public interface OnMessagePacketReceived extends PacketReceived {
-	void onMessagePacketReceived(Account account, MessagePacket packet);
+public interface OnMessagePacketReceived {
+	void onMessagePacketReceived(Message packet);
 }

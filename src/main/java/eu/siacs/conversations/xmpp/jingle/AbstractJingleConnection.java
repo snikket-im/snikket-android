@@ -19,9 +19,9 @@ import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import im.conversations.android.xmpp.model.jingle.Jingle;
+import im.conversations.android.xmpp.model.stanza.Iq;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -184,10 +184,10 @@ public abstract class AbstractJingleConnection {
         return TERMINATED.contains(this.state);
     }
 
-    abstract void deliverPacket(JinglePacket jinglePacket);
+    abstract void deliverPacket(Iq jinglePacket);
 
     protected void receiveOutOfOrderAction(
-            final JinglePacket jinglePacket, final JinglePacket.Action action) {
+            final Iq jinglePacket, final Jingle.Action action) {
         Log.d(
                 Config.LOGTAG,
                 String.format(
@@ -205,7 +205,7 @@ public abstract class AbstractJingleConnection {
         }
     }
 
-    protected void terminateWithOutOfOrder(final JinglePacket jinglePacket) {
+    protected void terminateWithOutOfOrder(final Iq jinglePacket) {
         Log.d(
                 Config.LOGTAG,
                 id.account.getJid().asBareJid() + ": terminating session with out-of-order");
@@ -235,37 +235,38 @@ public abstract class AbstractJingleConnection {
         if (previous != State.NULL && trigger != null) {
             trigger.accept(target);
         }
-        final JinglePacket jinglePacket =
-                new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
+        final var iq = new Iq(Iq.Type.SET);
+        final var jinglePacket =
+                iq.addExtension(new Jingle(Jingle.Action.SESSION_TERMINATE, id.sessionId));
         jinglePacket.setReason(reason, text);
-        send(jinglePacket);
+        send(iq);
         finish();
     }
 
-    protected void send(final JinglePacket jinglePacket) {
+    protected void send(final Iq jinglePacket) {
         jinglePacket.setTo(id.with);
         xmppConnectionService.sendIqPacket(id.account, jinglePacket, this::handleIqResponse);
     }
 
-    protected void respondOk(final JinglePacket jinglePacket) {
+    protected void respondOk(final Iq jinglePacket) {
         xmppConnectionService.sendIqPacket(
-                id.account, jinglePacket.generateResponse(IqPacket.TYPE.RESULT), null);
+                id.account, jinglePacket.generateResponse(Iq.Type.RESULT), null);
     }
 
-    protected void respondWithTieBreak(final JinglePacket jinglePacket) {
+    protected void respondWithTieBreak(final Iq jinglePacket) {
         respondWithJingleError(jinglePacket, "tie-break", "conflict", "cancel");
     }
 
-    protected void respondWithOutOfOrder(final JinglePacket jinglePacket) {
+    protected void respondWithOutOfOrder(final Iq jinglePacket) {
         respondWithJingleError(jinglePacket, "out-of-order", "unexpected-request", "wait");
     }
 
-    protected void respondWithItemNotFound(final JinglePacket jinglePacket) {
+    protected void respondWithItemNotFound(final Iq jinglePacket) {
         respondWithJingleError(jinglePacket, null, "item-not-found", "cancel");
     }
 
     private void respondWithJingleError(
-            final IqPacket original,
+            final Iq original,
             String jingleCondition,
             String condition,
             String conditionType) {
@@ -273,18 +274,18 @@ public abstract class AbstractJingleConnection {
                 id.account, original, jingleCondition, condition, conditionType);
     }
 
-    private synchronized void handleIqResponse(final Account account, final IqPacket response) {
-        if (response.getType() == IqPacket.TYPE.ERROR) {
+    private synchronized void handleIqResponse(final Iq response) {
+        if (response.getType() == Iq.Type.ERROR) {
             handleIqErrorResponse(response);
             return;
         }
-        if (response.getType() == IqPacket.TYPE.TIMEOUT) {
+        if (response.getType() == Iq.Type.TIMEOUT) {
             handleIqTimeoutResponse(response);
         }
     }
 
-    protected void handleIqErrorResponse(final IqPacket response) {
-        Preconditions.checkArgument(response.getType() == IqPacket.TYPE.ERROR);
+    protected void handleIqErrorResponse(final Iq response) {
+        Preconditions.checkArgument(response.getType() == Iq.Type.ERROR);
         final String errorCondition = response.getErrorCondition();
         Log.d(
                 Config.LOGTAG,
@@ -316,8 +317,8 @@ public abstract class AbstractJingleConnection {
         this.finish();
     }
 
-    protected void handleIqTimeoutResponse(final IqPacket response) {
-        Preconditions.checkArgument(response.getType() == IqPacket.TYPE.TIMEOUT);
+    protected void handleIqTimeoutResponse(final Iq response) {
+        Preconditions.checkArgument(response.getType() == Iq.Type.TIMEOUT);
         Log.d(
                 Config.LOGTAG,
                 id.account.getJid().asBareJid()
@@ -361,8 +362,8 @@ public abstract class AbstractJingleConnection {
             this.sessionId = sessionId;
         }
 
-        public static Id of(Account account, JinglePacket jinglePacket) {
-            return new Id(account, jinglePacket.getFrom(), jinglePacket.getSessionId());
+        public static Id of(Account account, Iq iq, final Jingle jingle) {
+            return new Id(account, iq.getFrom(), jingle.getSessionId());
         }
 
         public static Id of(Account account, Jid with, final String sessionId) {

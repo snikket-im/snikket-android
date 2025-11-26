@@ -32,8 +32,9 @@ import eu.siacs.conversations.receiver.UnifiedPushDistributor;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
+import im.conversations.android.xmpp.model.stanza.Iq;
+import im.conversations.android.xmpp.model.stanza.Presence;
+
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
@@ -82,7 +83,7 @@ public class UnifiedPushBroker {
     }
 
     private void sendDirectedPresence(final Account account, Jid to) {
-        final PresencePacket presence = new PresencePacket();
+        final var presence = new Presence();
         presence.setTo(to);
         service.sendPresencePacket(account, presence);
     }
@@ -146,7 +147,7 @@ public class UnifiedPushBroker {
                     UnifiedPushDistributor.hash(account.getUuid(), renewal.application);
             final String hashedInstance =
                     UnifiedPushDistributor.hash(account.getUuid(), renewal.instance);
-            final IqPacket registration = new IqPacket(IqPacket.TYPE.SET);
+            final Iq registration = new Iq(Iq.Type.SET);
             registration.setTo(transport.transport);
             final Element register = registration.addChild("register", Namespace.UNIFIED_PUSH);
             register.setAttribute("application", hashedApplication);
@@ -160,7 +161,7 @@ public class UnifiedPushBroker {
             this.service.sendIqPacket(
                     account,
                     registration,
-                    (a, response) -> processRegistration(transport, renewal, messenger, response));
+                    (response) -> processRegistration(transport, renewal, messenger, response));
         }
     }
 
@@ -168,8 +169,8 @@ public class UnifiedPushBroker {
             final Transport transport,
             final UnifiedPushDatabase.PushTarget renewal,
             final Messenger messenger,
-            final IqPacket response) {
-        if (response.getType() == IqPacket.TYPE.RESULT) {
+            final Iq response) {
+        if (response.getType() == Iq.Type.RESULT) {
             final Element registered = response.findChild("registered", Namespace.UNIFIED_PUSH);
             if (registered == null) {
                 return;

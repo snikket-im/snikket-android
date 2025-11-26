@@ -202,6 +202,8 @@
     <string name="server_info_external_service_discovery">XEP-0215: External Service Discovery</string>
     <string name="server_info_pep">XEP-0163: PEP (Avatars / OMEMO)</string>
     <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
+    <string name="server_info_bind2">XEP-0386: Bind 2</string>
+    <string name="server_info_sasl2">XEP-0388: Extensible SASL Profile</string>
     <string name="server_info_push">XEP-0357: Push</string>
     <string name="server_info_available">available</string>
     <string name="server_info_unavailable">unavailable</string>
@@ -692,8 +694,6 @@
     <string name="message_copied_to_clipboard">Message copied to clipboard</string>
     <string name="message">Message</string>
     <string name="private_messages_are_disabled">Private messages are disabled</string>
-    <string name="huawei_protected_apps">Protected Apps</string>
-    <string name="huawei_protected_apps_summary">To keep receiving notifications, even when the screen is turned off, you need to add Snikket to the list of protected apps.</string>
     <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
     <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
     <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
@@ -969,6 +969,7 @@
     <string name="search_all_conversations">All chats</string>
     <string name="search_this_conversation">This chat</string>
     <string name="your_avatar">Your avatar</string>
+    <string name="your_avatar_tap_to_select_new_avatar">Your avatar. Tap to select new avatar from gallery.</string>
     <string name="avatar_for_x">Avatar for %s</string>
     <string name="encrypted_with_omemo">Encrypted with OMEMO</string>
     <string name="encrypted_with_openpgp">Encrypted with OpenPGP</string>
@@ -995,6 +996,7 @@
     <string name="no_active_accounts_support_this">No active accounts support this feature</string>
     <string name="backup_started_message">The backup has been started. You’ll get a notification once it has been completed.</string>
     <string name="unable_to_enable_video">Unable to enable video.</string>
+    <string name="could_not_disable_video">Could not disable video.</string>
     <string name="plain_text_document">Plain text document</string>
     <string name="account_registrations_are_not_supported">Account registrations are not supported</string>
     <string name="no_xmpp_adddress_found">No XMPP address found</string>
@@ -1066,4 +1068,23 @@
     <string name="pref_fullscreen_notification_summary">Allow this app to show incoming call notifications that take up the full screen when the device is locked.</string>
     <string name="unsupported_operation">Unsupported operation</string>
     <string name="allow_private_messages">Allow private messages</string>
+    <string name="edit_nick">Edit nick</string>
+    <string name="delete_pgp_key">Delete OpenPGP key</string>
+    <string name="edit_name_and_topic">Edit name and topic</string>
+    <string name="edit_configuration">Change configuration</string>
+    <string name="change_notification_settings">Change notification settings</string>
+    <string name="call_is_using_earpiece_tap_to_switch_to_speaker">Call is using earpiece. Tap to switch to speaker.</string>
+    <string name="call_is_using_earpiece">Call is using earpiece.</string>
+    <string name="call_is_using_wired_headset">Call is using wired headset</string>
+    <string name="call_is_using_speaker_tap_to_switch_to_earpiece">Call is using speaker. Tap to switch to earpiece.</string>
+    <string name="call_is_using_speaker">Call is using speaker.</string>
+    <string name="call_is_using_bluetooth">Call is using bluetooth.</string>
+    <string name="flip_camera">Flip camera</string>
+    <string name="video_is_enabled_tap_to_disable">Video is enabled. Tap to disable.</string>
+    <string name="video_is_disabled_tap_to_enable">Video is disabled. Tap to enable.</string>
+    <string name="server_info_login_mechanism">Login mechanism</string>
+    <string name="could_not_add_reaction">Could not add reaction</string>
+    <string name="add_reaction">Add reaction…</string>
+    <string name="add_reaction_title">Add reaction</string>
+    <string name="more_reactions">More reactions</string>
 </resources>

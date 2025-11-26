@@ -7,6 +7,7 @@
 </p>
 
 This is the source code for the Snikket Android client.
+longer necessary.
 
 # License
 

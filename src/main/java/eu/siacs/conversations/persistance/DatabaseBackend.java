@@ -64,7 +64,7 @@ import eu.siacs.conversations.xmpp.mam.MamReference;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "history";
-    private static final int DATABASE_VERSION = 51;
+    private static final int DATABASE_VERSION = 52;
 
     private static boolean requiresMessageIndexRebuild = false;
     private static DatabaseBackend instance = null;
@@ -262,6 +262,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 + Message.MARKABLE + " NUMBER DEFAULT 0,"
                 + Message.DELETED + " NUMBER DEFAULT 0,"
                 + Message.BODY_LANGUAGE + " TEXT,"
+                + Message.OCCUPANT_ID + " TEXT,"
+                + Message.REACTIONS + " TEXT,"
                 + Message.REMOTE_MSG_ID + " TEXT, FOREIGN KEY("
                 + Message.CONVERSATION + ") REFERENCES "
                 + Conversation.TABLENAME + "(" + Conversation.UUID
@@ -601,6 +603,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.FAST_MECHANISM + " TEXT");
             db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.FAST_TOKEN + " TEXT");
         }
+        if (oldVersion < 52 && newVersion >= 52) {
+            db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN " + Message.OCCUPANT_ID + " TEXT");
+            db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN " + Message.REACTIONS + " TEXT");
+        }
     }
 
     private void canonicalizeJids(SQLiteDatabase db) {
@@ -814,8 +820,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         while (cursor.moveToNext()) {
             try {
                 list.add(0, Message.fromCursor(cursor, conversation));
-            } catch (Exception e) {
-                Log.e(Config.LOGTAG, "unable to restore message");
+            } catch (final Exception e) {
+                Log.e(Config.LOGTAG, "unable to restore message", e);
             }
         }
         cursor.close();
@@ -919,6 +925,46 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return filesPaths;
     }
 
+    public Message getMessageWithServerMsgId(
+            final Conversation conversation, final String messageId) {
+        final var db = this.getReadableDatabase();
+        final String sql =
+                "select * from messages where conversationUuid=? and serverMsgId=? LIMIT 1";
+        final String[] args = {conversation.getUuid(), messageId};
+        final Cursor cursor = db.rawQuery(sql, args);
+        if (cursor == null) {
+            return null;
+        }
+        final Message message;
+        if (cursor.moveToFirst()) {
+            message = Message.fromCursor(cursor, conversation);
+        } else {
+            message = null;
+        }
+        cursor.close();
+        return message;
+    }
+
+    public Message getMessageWithUuidOrRemoteId(
+            final Conversation conversation, final String messageId) {
+        final var db = this.getReadableDatabase();
+        final String sql =
+                "select * from messages where conversationUuid=? and (uuid=? OR remoteMsgId=?) LIMIT 1";
+        final String[] args = {conversation.getUuid(), messageId, messageId};
+        final Cursor cursor = db.rawQuery(sql, args);
+        if (cursor == null) {
+            return null;
+        }
+        final Message message;
+        if (cursor.moveToFirst()) {
+            message = Message.fromCursor(cursor, conversation);
+        } else {
+            message = null;
+        }
+        cursor.close();
+        return message;
+    }
+
     public static class FilePath {
         public final UUID uuid;
         public final String path;
@@ -1004,34 +1050,38 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     }
 
     public boolean updateAccount(Account account) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String[] args = {account.getUuid()};
-        final int rows = db.update(Account.TABLENAME, account.getContentValues(), Account.UUID + "=?", args);
+        final var db = this.getWritableDatabase();
+        final String[] args = {account.getUuid()};
+        final int rows =
+                db.update(Account.TABLENAME, account.getContentValues(), Account.UUID + "=?", args);
         return rows == 1;
     }
 
-    public boolean deleteAccount(Account account) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String[] args = {account.getUuid()};
+    public boolean deleteAccount(final Account account) {
+        final var db = this.getWritableDatabase();
+        final String[] args = {account.getUuid()};
         final int rows = db.delete(Account.TABLENAME, Account.UUID + "=?", args);
         return rows == 1;
     }
 
-    public boolean updateMessage(Message message, boolean includeBody) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String[] args = {message.getUuid()};
-        ContentValues contentValues = message.getContentValues();
+    public boolean updateMessage(final Message message, final boolean includeBody) {
+        final var db = this.getWritableDatabase();
+        final String[] args = {message.getUuid()};
+        final var contentValues = message.getContentValues();
         contentValues.remove(Message.UUID);
         if (!includeBody) {
             contentValues.remove(Message.BODY);
         }
-        return db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args) == 1;
+        final int rows = db.update(Message.TABLENAME, contentValues, Message.UUID + "=?", args);
+        return rows == 1;
     }
 
-    public boolean updateMessage(Message message, String uuid) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String[] args = {uuid};
-        return db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args) == 1;
+    public boolean updateMessage(final Message message, final String uuid) {
+        final var db = this.getWritableDatabase();
+        final String[] args = {uuid};
+        final int rows =
+                db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args);
+        return rows == 1;
     }
 
     public void readRoster(Roster roster) {

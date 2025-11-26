@@ -44,6 +44,14 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                     "text/x-tex",
                     "text/plain");
+
+    private static final List<String> ARCHIVE_MIMES =
+            Arrays.asList(
+                    "application/x-7z-compressed",
+                    "application/zip",
+                    "application/rar",
+                    "application/x-gtar",
+                    "application/x-tar");
     public static final List<String> CODE_MIMES = Arrays.asList("text/html", "text/xml");
 
     private final ArrayList<Attachment> attachments = new ArrayList<>();
@@ -94,7 +102,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
             return R.drawable.ic_person_48dp;
         } else if (mime.equals("application/vnd.android.package-archive")) {
             return R.drawable.ic_adb_48dp;
-        } else if (mime.equals("application/zip") || mime.equals("application/rar")) {
+        } else if (ARCHIVE_MIMES.contains(mime)) {
             return R.drawable.ic_archive_48dp;
         } else if (mime.equals("application/epub+zip")
                 || mime.equals("application/vnd.amazon.mobi8-ebook")) {

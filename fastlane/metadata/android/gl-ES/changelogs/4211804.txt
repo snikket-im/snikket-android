@@ -1,0 +1,1 @@
+* Engadido límite para iniciar unha chamada
