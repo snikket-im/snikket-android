@@ -91,11 +91,6 @@ public class HttpDownloadConnection implements Transferable {
             }
             final AbstractConnectionManager.Extension extension =
                     AbstractConnectionManager.Extension.of(mUrl.encodedPath());
-            if (VALID_CRYPTO_EXTENSIONS.contains(extension.main)) {
-                this.message.setEncryption(Message.ENCRYPTION_PGP);
-            } else if (message.getEncryption() != Message.ENCRYPTION_AXOLOTL) {
-                this.message.setEncryption(Message.ENCRYPTION_NONE);
-            }
             final String ext = extension.getExtension();
             final String filename =
                     Strings.isNullOrEmpty(ext)
@@ -230,7 +225,7 @@ public class HttpDownloadConnection implements Transferable {
         }
     }
 
-    private void changeStatus(int status) {
+    private void changeStatus(final int status) {
         this.mStatus = status;
         mHttpConnectionManager.updateConversationUi(true);
     }
@@ -245,6 +240,9 @@ public class HttpDownloadConnection implements Transferable {
             mXmppConnectionService.showErrorToastInUi(R.string.download_failed_server_not_found);
         } else if (e instanceof java.net.ConnectException) {
             mXmppConnectionService.showErrorToastInUi(R.string.download_failed_could_not_connect);
+        } else if (e instanceof SSLHandshakeException) {
+            mXmppConnectionService.showErrorToastInUi(
+                    R.string.download_failed_could_not_establish_tls);
         } else if (e instanceof FileWriterException) {
             mXmppConnectionService.showErrorToastInUi(
                     R.string.download_failed_could_not_write_file);
@@ -411,6 +409,9 @@ public class HttpDownloadConnection implements Transferable {
                 changeStatus(STATUS_DOWNLOADING);
                 download();
                 decryptIfNeeded();
+                if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+                    message.setEncryption(Message.ENCRYPTION_PGP);
+                }
                 updateImageBounds();
                 finish();
             } catch (final SSLHandshakeException e) {

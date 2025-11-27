@@ -1,0 +1,5 @@
+* Nuova pagina 'chat vuote' al posto di reindirizzare alla schermata 'nuova chat'
+* Prestazioni migliorate per canali pubblici grandi
+* Supporto a ritorno predittivo
+* Supporto a indirizzi IP nei certificati
+* Richiesto TLS 1.3 per tutte le connessioni con possibilità di rinuncia

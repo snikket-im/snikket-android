@@ -1,7 +1,5 @@
 package eu.siacs.conversations.services;
 
-import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -188,7 +186,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                                 new X509TrustManager[] {
                                     TrustManagers.createForAndroidVersion(context)
                                 },
-                                SECURE_RANDOM);
+                                context);
             } catch (final KeyManagementException
                     | NoSuchAlgorithmException
                     | KeyStoreException

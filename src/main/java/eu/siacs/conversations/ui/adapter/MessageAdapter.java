@@ -41,6 +41,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Joiner;
+import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
@@ -1235,6 +1236,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         if (receivedA != receivedB) {
             return false;
         }
+        if (homogenizedEncryption(a.getEncryption()) != homogenizedEncryption(b.getEncryption())
+                || !Objects.equal(a.getFingerprint(), b.getFingerprint())) {
+            return false;
+        }
         if (a.getConversation().getMode() == Conversation.MODE_MULTI
                 && a.getStatus() == Message.STATUS_RECEIVED) {
             final var occupantIdA = a.getOccupantId();
@@ -1251,6 +1256,20 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
         }
         return b.getTimeSent() - a.getTimeSent() <= Config.MESSAGE_MERGE_WINDOW;
+    }
+
+    private static int homogenizedEncryption(final int encryption) {
+        return switch (encryption) {
+            case Message.ENCRYPTION_AXOLOTL,
+                            Message.ENCRYPTION_AXOLOTL_FAILED,
+                            Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE ->
+                    Message.ENCRYPTION_AXOLOTL;
+            case Message.ENCRYPTION_PGP,
+                            Message.ENCRYPTION_DECRYPTED,
+                            Message.ENCRYPTION_DECRYPTION_FAILED ->
+                    Message.ENCRYPTION_PGP;
+            default -> encryption;
+        };
     }
 
     private boolean showDetailedReaction(final Message message, final String emoji) {

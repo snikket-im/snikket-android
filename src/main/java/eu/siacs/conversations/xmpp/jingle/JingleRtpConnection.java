@@ -44,7 +44,7 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.Proceed;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Propose;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
-import im.conversations.android.xmpp.model.disco.external.Services;
+import eu.siacs.conversations.xmpp.manager.ExternalServiceDiscoveryManager;
 import im.conversations.android.xmpp.model.jingle.Jingle;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import org.webrtc.DtmfSender;
@@ -2832,30 +2832,26 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void discoverIceServers(final OnIceServersDiscovered onIceServersDiscovered) {
-        if (id.account.getXmppConnection().getFeatures().externalServiceDiscovery()) {
-            final Iq request = new Iq(Iq.Type.GET);
-            request.setTo(id.account.getDomain());
-            request.addExtension(new Services());
-            xmppConnectionService.sendIqPacket(
-                    id.account,
-                    request,
-                    (response) -> {
-                        final var iceServers = IceServers.parse(response);
-                        if (iceServers.isEmpty()) {
-                            Log.w(
-                                    Config.LOGTAG,
-                                    id.account.getJid().asBareJid()
-                                            + ": no ICE server found "
-                                            + response);
-                        }
-                        onIceServersDiscovered.onIceServersDiscovered(iceServers);
-                    });
-        } else {
-            Log.w(
-                    Config.LOGTAG,
-                    id.account.getJid().asBareJid() + ": has no external service discovery");
-            onIceServersDiscovered.onIceServersDiscovered(Collections.emptySet());
-        }
+        final var future =
+                id.account
+                        .getXmppConnection()
+                        .getManager(ExternalServiceDiscoveryManager.class)
+                        .getIceServers();
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(Collection<PeerConnection.IceServer> result) {
+                        onIceServersDiscovered.onIceServersDiscovered(result);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.d(Config.LOGTAG, "could not discover ice servers", t);
+                        onIceServersDiscovered.onIceServersDiscovered(Collections.emptySet());
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
     @Override

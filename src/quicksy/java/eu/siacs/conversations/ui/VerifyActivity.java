@@ -312,6 +312,7 @@ public class VerifyActivity extends XmppActivity
     private void performPostVerificationRedirect() {
         if (redirectInProgress.compareAndSet(false, true)) {
             Intent intent = new Intent(this, EnterNameActivity.class);
+            StartConversationActivity.addInviteUri(intent, getIntent());
             startActivity(intent);
             finish();
         }

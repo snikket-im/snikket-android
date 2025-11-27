@@ -761,6 +761,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatar {
         REGISTRATION_PASSWORD_TOO_WEAK(true, false),
         TLS_ERROR,
         TLS_ERROR_DOMAIN,
+        TLS_ERROR_UNTRUSTED,
+        TLS_ERROR_PROTOCOL,
         CHANNEL_BINDING,
         INCOMPATIBLE_SERVER,
         INCOMPATIBLE_CLIENT,
@@ -819,6 +821,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatar {
                 case REGISTRATION_INVALID_TOKEN -> R.string.account_status_regis_invalid_token;
                 case TLS_ERROR -> R.string.account_status_tls_error;
                 case TLS_ERROR_DOMAIN -> R.string.account_status_tls_error_domain;
+                case TLS_ERROR_PROTOCOL -> R.string.account_status_tls_error_protocol;
+                case TLS_ERROR_UNTRUSTED -> R.string.account_status_tls_error_untrusted;
                 case INCOMPATIBLE_SERVER -> R.string.account_status_incompatible_server;
                 case INCOMPATIBLE_CLIENT -> R.string.account_status_incompatible_client;
                 case CHANNEL_BINDING -> R.string.account_status_channel_binding;

@@ -1,10 +1,15 @@
 package eu.siacs.conversations.xmpp;
 
 import androidx.annotation.NonNull;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.IP;
 import im.conversations.android.xmpp.model.stanza.Stanza;
 import java.io.Serializable;
 import java.net.IDN;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.regex.Pattern;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.jid.parts.Domainpart;
@@ -17,6 +22,9 @@ public abstract class Jid implements Comparable<Jid>, Serializable, CharSequence
     private static final Pattern HOSTNAME_PATTERN =
             Pattern.compile(
                     "^(?=.{1,253}$)(?!-)[\\p{L}\\p{N}](?:[\\p{L}\\p{N}-]{0,61}[\\p{L}\\p{N}])?(?:\\.(?!-)[\\p{L}\\p{N}](?:[\\p{L}\\p{N}-]{0,61}[\\p{L}\\p{N}])?)*\\.?$");
+
+    private static final Collection<Jid> PS_DISABLED_DOMAINS =
+            Arrays.asList(Jid.ofDomain("gmail.com"), Jid.ofDomain("googlemail.com"));
 
     public static Jid of(
             final CharSequence local, final CharSequence domain, final CharSequence resource) {
@@ -93,6 +101,12 @@ public abstract class Jid implements Comparable<Jid>, Serializable, CharSequence
                 bare = Jid.ofDomain(IDN.toUnicode(domain));
             } else {
                 bare = Jid.ofLocalAndDomain(jid.getLocal(), IDN.toUnicode(domain));
+            }
+            if (QuickConversationsService.isPlayStoreFlavor()) {
+                if (PS_DISABLED_DOMAINS.contains(bare.getDomain())) {
+                    throw new IllegalArgumentException(
+                            "PlayStore users can not enter gmail addresses");
+                }
             }
             return jid.isBareJid() ? bare : bare.withResource(jid.getResource());
         } else if (IP.matches(domain)) {
@@ -282,7 +296,15 @@ public abstract class Jid implements Comparable<Jid>, Serializable, CharSequence
 
         @Override
         public Jid asBareJid() {
-            throw new AssertionError("Not implemented");
+            final var bare = Iterables.getFirst(Splitter.on('/').split(value), null);
+            if (bare == null) {
+                return null;
+            }
+            try {
+                return Jid.of(bare).asBareJid();
+            } catch (final IllegalArgumentException e) {
+                return this;
+            }
         }
 
         @Override

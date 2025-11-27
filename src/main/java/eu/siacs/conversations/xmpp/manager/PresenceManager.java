@@ -276,7 +276,7 @@ public class PresenceManager extends AbstractManager {
     }
 
     public void available(final boolean withIdle) {
-        final var account = connection.getAccount();
+        final var account = this.getAccount();
         final var serviceDiscoveryFeatures = getManager(DiscoManager.class).getServiceDescription();
         final var infoQuery = serviceDiscoveryFeatures.asInfoQuery();
         final var capsHash = EntityCapabilities.hash(infoQuery);

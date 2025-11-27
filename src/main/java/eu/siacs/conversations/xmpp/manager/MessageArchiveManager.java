@@ -48,19 +48,19 @@ public class MessageArchiveManager extends AbstractManager {
         this.mXmppConnectionService = service;
     }
 
-    public void catchup(final Account account) {
+    public void catchup() {
         synchronized (this.queries) {
             // TODO there was no 'kill' before but maybe we need one?
             this.queries.clear();
         }
         MamReference mamReference =
                 MamReference.max(
-                        mXmppConnectionService.databaseBackend.getLastMessageReceived(account),
-                        mXmppConnectionService.databaseBackend.getLastClearDate(account));
+                        mXmppConnectionService.databaseBackend.getLastMessageReceived(getAccount()),
+                        mXmppConnectionService.databaseBackend.getLastClearDate(getAccount()));
         mamReference =
                 MamReference.max(
                         mamReference, mXmppConnectionService.getAutomaticMessageDeletionDate());
-        long endCatchup = account.getXmppConnection().getLastSessionEstablished();
+        long endCatchup = connection.getLastSessionEstablished();
         final Query query;
         if (mamReference.getTimestamp() == 0) {
             return;
@@ -69,7 +69,7 @@ public class MessageArchiveManager extends AbstractManager {
             List<Conversation> conversations = mXmppConnectionService.getConversations();
             for (Conversation conversation : conversations) {
                 if (conversation.getMode() == Conversation.MODE_SINGLE
-                        && conversation.getAccount() == account
+                        && conversation.getAccount() == getAccount()
                         && startCatchup > conversation.getLastMessageTransmitted().getTimestamp()) {
                     this.query(conversation, startCatchup, true);
                 }

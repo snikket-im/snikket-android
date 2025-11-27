@@ -1185,4 +1185,12 @@
         <item quantity="many">%1$d участников</item>
         <item quantity="other">%1$d участников</item>
     </plurals>
+    <string name="strong_transport_security">Строгая транспортная безопасность</string>
+    <string name="require_tls_v1_3">Требовать протокол безопасности транспортного уровня (TLS) версии 1.3 для всех соединений</string>
+    <string name="download_failed_could_not_establish_tls">Невозможно установить TLS-соединение</string>
+    <string name="empty_conversations_list_hint">После начала новой беседы она появится в этом списке</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425: удаление сообщения модератором</string>
+    <string name="server_info_occupant_id">XEP-0421: идентификаторы участников</string>
+    <string name="account_status_tls_error_untrusted">Недоверенный сертификат</string>
+    <string name="account_status_tls_error_protocol">Слабая транспортная безопасность (нет TLS 1.3)</string>
 </resources>

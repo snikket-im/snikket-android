@@ -136,8 +136,7 @@ public final class Config {
             false; // require a/v calls to be verified with OMEMO
     public static final boolean JINGLE_MESSAGE_INIT_STRICT_OFFLINE_CHECK = false;
     public static final boolean JINGLE_MESSAGE_INIT_STRICT_DEVICE_TIMEOUT = false;
-    // TODO extend this to 12s
-    public static final long DEVICE_DISCOVERY_TIMEOUT = 6000; // in milliseconds
+    public static final long DEVICE_DISCOVERY_TIMEOUT = 12_000; // in milliseconds
 
     public static final boolean ONLY_INTERNAL_STORAGE =
             false; // use internal storage instead of sdcard to save attachments
@@ -154,36 +153,6 @@ public final class Config {
     public static final int TYPING_TIMEOUT = 8;
 
     public static final int EXPIRY_INTERVAL = 30 * 60 * 1000; // 30 minutes
-
-    public static final String[] ENABLED_CIPHERS = {
-        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
-        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA384",
-        "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA256",
-        "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
-        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
-        "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
-        "TLS_DHE_RSA_WITH_AES_128_GCM_SHA384",
-        "TLS_DHE_RSA_WITH_AES_256_GCM_SHA256",
-        "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
-        "TLS_DHE_RSA_WITH_CAMELLIA_256_SHA",
-
-        // Fallback.
-        "TLS_RSA_WITH_AES_128_GCM_SHA256",
-        "TLS_RSA_WITH_AES_128_GCM_SHA384",
-        "TLS_RSA_WITH_AES_256_GCM_SHA256",
-        "TLS_RSA_WITH_AES_256_GCM_SHA384",
-        "TLS_RSA_WITH_AES_128_CBC_SHA256",
-        "TLS_RSA_WITH_AES_128_CBC_SHA384",
-        "TLS_RSA_WITH_AES_256_CBC_SHA256",
-        "TLS_RSA_WITH_AES_256_CBC_SHA384",
-        "TLS_RSA_WITH_AES_128_CBC_SHA",
-        "TLS_RSA_WITH_AES_256_CBC_SHA",
-    };
-
-    public static final String[] WEAK_CIPHER_PATTERNS = {
-        "_NULL_", "_EXPORT_", "_anon_", "_RC4_", "_DES_", "_MD5",
-    };
 
     private Config() {}
 

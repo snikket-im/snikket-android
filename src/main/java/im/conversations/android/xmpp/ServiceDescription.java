@@ -1,31 +1,15 @@
 package im.conversations.android.xmpp;
 
-import com.google.common.collect.Collections2;
 import im.conversations.android.xmpp.model.disco.info.Feature;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
-import java.util.Collection;
 import java.util.List;
 
-public class ServiceDescription {
-    public final List<String> features;
-    public final Identity identity;
-
-    public ServiceDescription(List<String> features, Identity identity) {
-        this.features = features;
-        this.identity = identity;
-    }
+public record ServiceDescription(
+        List<String> features, im.conversations.android.xmpp.ServiceDescription.Identity identity) {
 
     public InfoQuery asInfoQuery() {
         final var infoQuery = new InfoQuery();
-        final Collection<Feature> features =
-                Collections2.transform(
-                        this.features,
-                        sf -> {
-                            final var feature = new Feature();
-                            feature.setVar(sf);
-                            return feature;
-                        });
-        infoQuery.addExtensions(features);
+        infoQuery.addExtensions(Feature.of(this.features));
         final var identity =
                 infoQuery.addExtension(
                         new im.conversations.android.xmpp.model.disco.info.Identity());

@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +35,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,6 +55,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.FutureCallback;
@@ -84,6 +85,7 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import im.conversations.android.model.Bookmark;
@@ -187,27 +189,14 @@ public class StartConversationActivity extends XmppActivity
                     }
                 }
             };
-    private Pair<Integer, Intent> mPostponedActivityResult;
-    private Toast mToast;
-    private final UiCallback<Conversation> mAdhocConferenceCallback =
-            new UiCallback<>() {
+    private final OnBackPressedCallback fabBackPressedCallback =
+            new OnBackPressedCallback(false) {
                 @Override
-                public void success(final Conversation conversation) {
-                    runOnUiThread(
-                            () -> {
-                                hideToast();
-                                switchToConversation(conversation);
-                            });
+                public void handleOnBackPressed() {
+                    binding.speedDial.close();
                 }
-
-                @Override
-                public void error(final int errorCode, Conversation object) {
-                    runOnUiThread(() -> replaceToast(getString(errorCode)));
-                }
-
-                @Override
-                public void userInputRequired(PendingIntent pi, Conversation object) {}
             };
+    private Pair<Integer, Intent> mPostponedActivityResult;
     private ActivityStartConversationBinding binding;
     private final TextView.OnEditorActionListener mSearchDone =
             new TextView.OnEditorActionListener() {
@@ -354,6 +343,19 @@ public class StartConversationActivity extends XmppActivity
                         && savedInstanceState.getBoolean("requested_contacts_permission", false));
         mOpenedFab.set(
                 savedInstanceState != null && savedInstanceState.getBoolean("opened_fab", false));
+        binding.speedDial.setOnChangeListener(
+                new SpeedDialView.OnChangeListener() {
+                    @Override
+                    public boolean onMainActionSelected() {
+                        return false;
+                    }
+
+                    @Override
+                    public void onToggleChanged(boolean isOpen) {
+                        Log.d(Config.LOGTAG, "onToggleChanged(" + isOpen + ")");
+                        fabBackPressedCallback.setEnabled(isOpen);
+                    }
+                });
         binding.speedDial.setOnActionSelectedListener(
                 actionItem -> {
                     final String searchString =
@@ -388,6 +390,8 @@ public class StartConversationActivity extends XmppActivity
                     }
                     return false;
                 });
+        final var backDispatcher = this.getOnBackPressedDispatcher();
+        backDispatcher.addCallback(this, this.fabBackPressedCallback);
     }
 
     private void inflateFab(final SpeedDialView speedDialView, final @MenuRes int menuRes) {
@@ -803,7 +807,7 @@ public class StartConversationActivity extends XmppActivity
         }
         switch (item.getItemId()) {
             case android.R.id.home:
-                navigateBack();
+                finish();
                 return true;
             case R.id.action_scan_qr_code:
                 UriHandlerActivity.scan(this);
@@ -851,16 +855,13 @@ public class StartConversationActivity extends XmppActivity
                     Account account = extractAccount(intent);
                     final String name =
                             intent.getStringExtra(ChooseContactActivity.EXTRA_GROUP_CHAT_NAME);
-                    final List<Jid> jids = ChooseContactActivity.extractJabberIds(intent);
-                    if (account != null && jids.size() > 0) {
-                        if (xmppConnectionService.createAdhocConference(
-                                account, name, jids, mAdhocConferenceCallback)) {
-                            mToast =
-                                    Toast.makeText(
-                                            this, R.string.creating_conference, Toast.LENGTH_LONG);
-                            mToast.show();
-                        }
+                    final List<Jid> addresses = ChooseContactActivity.extractJabberIds(intent);
+                    if (account == null || addresses.isEmpty()) {
+                        return;
                     }
+                    final var future =
+                            xmppConnectionService.createAdhocConference(account, name, addresses);
+                    Futures.addCallback(future, adhocCallback, ContextCompat.getMainExecutor(this));
                 }
             } else {
                 this.mPostponedActivityResult = new Pair<>(requestCode, intent);
@@ -991,10 +992,8 @@ public class StartConversationActivity extends XmppActivity
         if (actionBar == null) {
             return;
         }
-        boolean openConversations =
-                !createdByViewIntent && !xmppConnectionService.isConversationsListEmpty(null);
-        actionBar.setDisplayHomeAsUpEnabled(openConversations);
-        actionBar.setDisplayHomeAsUpEnabled(openConversations);
+        boolean openConversations = !createdByViewIntent;
+        actionBar.setDisplayHomeAsUpEnabled(!isTaskRoot());
     }
 
     @Override
@@ -1023,18 +1022,18 @@ public class StartConversationActivity extends XmppActivity
                 filter(null);
             }
         }
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_DIALOG);
-        if (fragment instanceof OnBackendConnected) {
+        final var fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_DIALOG);
+        if (fragment instanceof OnBackendConnected callback) {
             Log.d(Config.LOGTAG, "calling on backend connected on dialog");
-            ((OnBackendConnected) fragment).onBackendConnected();
+            callback.onBackendConnected();
         }
         if (QuickConversationsService.isQuicksy()) {
             setRefreshing(xmppConnectionService.getQuickConversationsService().isSynchronizing());
         }
         if (QuickConversationsService.isConversations()
                 && AccountUtils.hasEnabledAccounts(xmppConnectionService)
-                && this.contacts.size() == 0
-                && this.conferences.size() == 0
+                && this.contacts.isEmpty()
+                && this.conferences.isEmpty()
                 && mOpenedFab.compareAndSet(false, true)) {
             binding.speedDial.open();
         }
@@ -1152,18 +1151,17 @@ public class StartConversationActivity extends XmppActivity
         }
     }
 
-    protected void filterContacts(String needle) {
+    protected void filterContacts(final String needle) {
         this.contacts.clear();
         final List<Account> accounts = xmppConnectionService.getAccounts();
+        final var showOffline = !this.mHideOfflineContacts;
         for (final Account account : accounts) {
             if (account.isEnabled()) {
                 for (Contact contact : account.getRoster().getContacts()) {
                     Presence.Availability s = contact.getShownStatus();
                     if (contact.showInContactList()
                             && contact.match(needle)
-                            && (!this.mHideOfflineContacts
-                                    || (needle != null && !needle.trim().isEmpty())
-                                    || s.compareTo(Presence.Availability.OFFLINE) < 0)) {
+                            && (showOffline || s.compareTo(Presence.Availability.OFFLINE) < 0)) {
                         this.contacts.add(contact);
                     }
                 }
@@ -1173,7 +1171,7 @@ public class StartConversationActivity extends XmppActivity
         mContactsAdapter.notifyDataSetChanged();
     }
 
-    protected void filterConferences(String needle) {
+    protected void filterConferences(final String needle) {
         this.conferences.clear();
         for (final Account account : xmppConnectionService.getAccounts()) {
             if (account.isEnabled()) {
@@ -1205,26 +1203,6 @@ public class StartConversationActivity extends XmppActivity
         if (QuickConversationsService.isQuicksy()) {
             setRefreshing(xmppConnectionService.getQuickConversationsService().isSynchronizing());
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (binding.speedDial.isOpen()) {
-            binding.speedDial.close();
-            return;
-        }
-        navigateBack();
-    }
-
-    private void navigateBack() {
-        if (!createdByViewIntent
-                && xmppConnectionService != null
-                && !xmppConnectionService.isConversationsListEmpty(null)) {
-            Intent intent = new Intent(this, ConversationsActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(intent);
-        }
-        finish();
     }
 
     @Override
@@ -1418,7 +1396,9 @@ public class StartConversationActivity extends XmppActivity
                         contact.showInRoster()
                                 && !contact.getOption(Contact.Options.SYNCED_VIA_OTHER));
                 final XmppConnection xmpp = contact.getAccount().getXmppConnection();
-                if (xmpp != null && xmpp.getFeatures().blocking() && !contact.isSelf()) {
+                if (xmpp != null
+                        && xmpp.getManager(BlockingManager.class).hasFeature()
+                        && !contact.isSelf()) {
                     if (contact.isBlocked()) {
                         blockUnblockItem.setTitle(R.string.unblock_contact);
                     } else {
@@ -1543,11 +1523,29 @@ public class StartConversationActivity extends XmppActivity
         }
     }
 
-    public static void addInviteUri(Intent to, Intent from) {
+    public static void addInviteUri(final Intent to, final Intent from) {
         if (from != null && from.hasExtra(EXTRA_INVITE_URI)) {
             final String invite = from.getStringExtra(EXTRA_INVITE_URI);
+            Log.d(Config.LOGTAG, "dragging on invite uri: " + invite);
             to.putExtra(EXTRA_INVITE_URI, invite);
         }
+    }
+
+    public static Intent startOrConversationsActivity(
+            final BaseActivity baseActivity, @Nullable final Account account) {
+        final var currentIntent = baseActivity.getIntent();
+        final var invite =
+                currentIntent == null ? null : currentIntent.getStringExtra(EXTRA_INVITE_URI);
+        final Intent intent;
+        if (Strings.isNullOrEmpty(invite) || account == null) {
+            intent = new Intent(baseActivity, ConversationsActivity.class);
+        } else {
+            intent = new Intent(baseActivity, StartConversationActivity.class);
+            intent.putExtra(EXTRA_INVITE_URI, invite);
+            intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return intent;
     }
 
     private class Invite extends XmppUri {

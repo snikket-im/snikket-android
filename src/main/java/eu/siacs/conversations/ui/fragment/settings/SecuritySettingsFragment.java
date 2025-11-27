@@ -3,32 +3,26 @@ package eu.siacs.conversations.ui.fragment.settings;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Toast;
-
-import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.primitives.Ints;
-
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.services.MemorizingTrustManager;
-
+import eu.siacs.conversations.services.QuickConversationsService;
 import java.security.KeyStoreException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.Callable;
 
 public class SecuritySettingsFragment extends XmppPreferenceFragment {
 
     private static final String REMOVE_TRUSTED_CERTIFICATES = "remove_trusted_certificates";
+    private static final String SERVER_CONNECTION = "server_connection";
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
@@ -36,7 +30,8 @@ public class SecuritySettingsFragment extends XmppPreferenceFragment {
         final ListPreference omemo = findPreference(AppSettings.OMEMO);
         final ListPreference automaticMessageDeletion =
                 findPreference(AppSettings.AUTOMATIC_MESSAGE_DELETION);
-        if (omemo == null || automaticMessageDeletion == null) {
+        final Preference serverConnection = findPreference(SERVER_CONNECTION);
+        if (omemo == null || automaticMessageDeletion == null || serverConnection == null) {
             throw new IllegalStateException("The preference resource file is missing preferences");
         }
         omemo.setSummaryProvider(new OmemoSummaryProvider());
@@ -44,6 +39,9 @@ public class SecuritySettingsFragment extends XmppPreferenceFragment {
                 automaticMessageDeletion,
                 R.array.automatic_message_deletion_values,
                 value -> timeframeValueToName(requireContext(), value));
+        if (QuickConversationsService.isQuicksy()) {
+            serverConnection.setVisible(false);
+        }
     }
 
     @Override
@@ -57,7 +55,7 @@ public class SecuritySettingsFragment extends XmppPreferenceFragment {
                 requireService().updateMemorizingTrustManager();
                 reconnectAccounts();
             }
-            case AppSettings.REQUIRE_CHANNEL_BINDING -> {
+            case AppSettings.REQUIRE_CHANNEL_BINDING, AppSettings.REQUIRE_TLS_V1_3 -> {
                 reconnectAccounts();
             }
             case AppSettings.AUTOMATIC_MESSAGE_DELETION -> {
@@ -167,8 +165,8 @@ public class SecuritySettingsFragment extends XmppPreferenceFragment {
             }
             return switch (Strings.nullToEmpty(value)) {
                 case "always" -> context.getString(R.string.pref_omemo_setting_summary_always);
-                case "default_off" -> context.getString(
-                        R.string.pref_omemo_setting_summary_default_off);
+                case "default_off" ->
+                        context.getString(R.string.pref_omemo_setting_summary_default_off);
                 default -> context.getString(R.string.pref_omemo_setting_summary_default_on);
             };
         }

@@ -15,6 +15,18 @@ public class InfoQuery extends Extension {
         super(InfoQuery.class);
     }
 
+    public InfoQuery(
+            final Collection<Identity> identities,
+            final Collection<String> features,
+            final Data... extensions) {
+        this();
+        this.addExtensions(identities);
+        this.addExtensions(Feature.of(features));
+        for (final var extension : extensions) {
+            this.addExtension(extension);
+        }
+    }
+
     public void setNode(final String node) {
         this.setAttribute("node", node);
     }

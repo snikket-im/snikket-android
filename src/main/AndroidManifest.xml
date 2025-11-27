@@ -85,6 +85,7 @@
         android:allowBackup="true"
         android:appCategory="social"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_content"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/new_launcher"
@@ -185,12 +186,10 @@
         <activity
             android:name=".ui.ConversationsActivity"
             android:launchMode="singleTask"
-            android:minWidth="300dp"
-            android:minHeight="300dp"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateUnchanged" />
         <activity
             android:name=".ui.ScanActivity"
-            android:screenOrientation="portrait"
+            android:enableOnBackInvokedCallback="false"
             android:theme="@style/Theme.Conversations3.FullScreen"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
@@ -277,20 +276,21 @@
             android:launchMode="singleTop" />
         <activity
             android:name=".ui.EditAccountActivity"
+            android:enableOnBackInvokedCallback="false"
             android:exported="false"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:launchMode="singleTop" />
         <activity
             android:name=".ui.ConferenceDetailsActivity"
-            android:label="@string/action_muc_details"
-            android:windowSoftInputMode="stateHidden" />
+            android:enableOnBackInvokedCallback="false"
+            android:label="@string/action_muc_details" />
+        <!-- ContactDetails technically works with onBackInvokeCallback
+             but we disable that to be consistent with conference details -->
         <activity
             android:name=".ui.ContactDetailsActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:enableOnBackInvokedCallback="false" />
         <activity
             android:name=".ui.PublishProfilePictureActivity"
-            android:label="@string/mgmt_account_publish_avatar"
-            android:windowSoftInputMode="stateHidden" />
+            android:label="@string/mgmt_account_publish_avatar" />
         <activity
             android:name=".ui.PublishGroupChatProfilePictureActivity"
             android:label="@string/group_chat_avatar" />
@@ -323,8 +323,7 @@
         </activity>
         <activity
             android:name=".ui.TrustKeysActivity"
-            android:label="@string/trust_omemo_fingerprints"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:label="@string/trust_omemo_fingerprints" />
         <activity
             android:name=".ui.AboutActivity"
             android:parentActivityName=".ui.activity.SettingsActivity">
@@ -365,8 +364,9 @@
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.ViewProfilePictureActivity"
-            android:theme="@style/Theme.Conversations3.Dark"/>
+        <activity
+            android:name=".ui.ViewProfilePictureActivity"
+            android:theme="@style/Theme.Conversations3.Dark" />
         <activity
             android:name=".ui.MucUsersActivity"
             android:label="@string/group_chat_members" />
@@ -376,6 +376,7 @@
         <activity
             android:name=".ui.RtpSessionActivity"
             android:autoRemoveFromRecents="true"
+            android:enableOnBackInvokedCallback="false"
             android:launchMode="singleInstance"
             android:supportsPictureInPicture="true" />
         <activity

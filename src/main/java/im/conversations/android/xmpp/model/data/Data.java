@@ -3,6 +3,7 @@ package im.conversations.android.xmpp.model.data;
 import android.util.Log;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import eu.siacs.conversations.Config;
 import im.conversations.android.annotation.XmlElement;
@@ -24,8 +25,13 @@ public class Data extends Extension {
 
     public String getFormType() {
         final var fields = this.getExtensions(Field.class);
-        final var formTypeField = Iterables.find(fields, f -> FORM_TYPE.equals(f.getFieldName()));
-        return Iterables.getFirst(formTypeField.getValues(), null);
+        final var formTypeField =
+                Iterables.tryFind(fields, f -> FORM_TYPE.equals(f.getFieldName()));
+        if (formTypeField.isPresent()) {
+            return formTypeField.get().getValue();
+        } else {
+            return null;
+        }
     }
 
     public Collection<Field> getFields() {
@@ -130,5 +136,22 @@ public class Data extends Extension {
 
     private void setType(final String type) {
         this.setAttribute("type", type);
+    }
+
+    public Map<String, Object> asMap() {
+        final var builder = new ImmutableMap.Builder<String, Object>();
+        for (final var field : getFields()) {
+            final var name = field.getFieldName();
+            if (name == null) {
+                continue;
+            }
+            final var values = field.getValues();
+            if (values.size() == 1) {
+                builder.put(name, Iterables.getOnlyElement(values));
+            } else {
+                builder.put(name, values);
+            }
+        }
+        return builder.build();
     }
 }

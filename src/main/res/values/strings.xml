@@ -166,6 +166,8 @@
     <string name="account_status_regis_invalid_token">Invalid registration token</string>
     <string name="account_status_tls_error">TLS negotiation failed</string>
     <string name="account_status_tls_error_domain">Domain not verifiable</string>
+    <string name="account_status_tls_error_protocol">Weak transport security (No TLS 1.3)</string>
+    <string name="account_status_tls_error_untrusted">Untrusted certificate</string>
     <string name="account_status_policy_violation">Policy violation</string>
     <string name="account_status_incompatible_server">Incompatible server</string>
     <string name="account_status_incompatible_client">Incompatible client</string>
@@ -195,6 +197,8 @@
     <string name="add_phone_book_text">Do you want to add %s to your address book?</string>
     <string name="server_info_show_more">Server info</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
+    <string name="server_info_occupant_id">XEP-0421: Occupant identifiers</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425: Moderated Message Retraction</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
     <string name="server_info_csi">XEP-0352: Client State Indication</string>
     <string name="server_info_blocking">XEP-0191: Blocking Command</string>
@@ -464,6 +468,7 @@
     <string name="download_failed_server_not_found">Download failed: Server not found</string>
     <string name="download_failed_file_not_found">Download failed: File not found</string>
     <string name="download_failed_could_not_connect">Download failed: Could not connect to host</string>
+    <string name="download_failed_could_not_establish_tls">Could not establish TLS connection</string>
     <string name="download_failed_could_not_write_file">Download failed: Could not write file</string>
     <string name="download_failed_invalid_file">Download failed: Invalid file</string>
     <string name="account_status_tor_unavailable">Tor network unavailable</string>
@@ -1130,4 +1135,7 @@
     <string name="moderation_explained">This message will be deleted for you and every participant of this public channel.</string>
     <string name="do_not_show_this_warning_again">Don’t show this warning again.</string>
     <string name="last_seen">last seen %s</string>
+    <string name="strong_transport_security">Strong transport security</string>
+    <string name="require_tls_v1_3">Require Transport Layer Security (TLS) Protocol Version 1.3 for all connections</string>
+    <string name="empty_conversations_list_hint">Once you start a new conversation, you’ll see it listed here</string>
 </resources>

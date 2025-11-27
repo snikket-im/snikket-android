@@ -29,7 +29,7 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
         implements View.OnCreateContextMenuListener {
 
     static final DiffUtil.ItemCallback<MucOptions.User> DIFF =
-            new DiffUtil.ItemCallback<MucOptions.User>() {
+            new DiffUtil.ItemCallback<>() {
                 @Override
                 public boolean areItemsTheSame(
                         @NonNull MucOptions.User a, @NonNull MucOptions.User b) {
@@ -164,7 +164,7 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
         MucDetailsContextMenuHelper.onCreateContextMenu(menu, v);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static final class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemContactBinding binding;
 

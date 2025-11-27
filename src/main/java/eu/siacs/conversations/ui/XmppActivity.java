@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -48,6 +47,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.databinding.DataBindingUtil;
@@ -148,24 +148,25 @@ public abstract class XmppActivity extends ActionBarActivity {
                 mLastUiRefresh = SystemClock.elapsedRealtime();
                 refreshUiReal();
             };
-    private final UiCallback<Conversation> adhocCallback =
-            new UiCallback<>() {
+    protected final FutureCallback<Conversation> adhocCallback =
+            new FutureCallback<Conversation>() {
                 @Override
-                public void success(final Conversation conversation) {
-                    runOnUiThread(
-                            () -> {
-                                switchToConversation(conversation);
-                                hideToast();
-                            });
+                public void onSuccess(final Conversation conversation) {
+                    switchToConversation(conversation);
+                    hideToast();
                 }
 
                 @Override
-                public void error(final int errorCode, Conversation object) {
-                    runOnUiThread(() -> replaceToast(getString(errorCode)));
+                public void onFailure(@NonNull Throwable throwable) {
+                    Log.d(Config.LOGTAG, "could not create adhoc conference", throwable);
+                    hideToast();
+                    mToast =
+                            Toast.makeText(
+                                    XmppActivity.this,
+                                    R.string.conference_creation_failed,
+                                    Toast.LENGTH_LONG);
+                    mToast.show();
                 }
-
-                @Override
-                public void userInputRequired(PendingIntent pi, Conversation object) {}
             };
 
     public static boolean cancelPotentialWork(Message message, ImageView imageView) {
@@ -786,81 +787,36 @@ public abstract class XmppActivity extends ActionBarActivity {
             choosePgpSignId(account);
         } else {
             final String status = Strings.nullToEmpty(account.getPresenceStatusMessage());
-            xmppConnectionService
-                    .getPgpEngine()
-                    .generateSignature(
-                            intent,
-                            account,
-                            status,
-                            new UiCallback<String>() {
+            final var future =
+                    xmppConnectionService.getPgpEngine().generateSignature(intent, account, status);
+            Futures.addCallback(
+                    future,
+                    new FutureCallback<String>() {
+                        @Override
+                        public void onSuccess(String signature) {
+                            account.setPgpSignature(signature);
+                            xmppConnectionService.databaseBackend.updateAccount(account);
+                            account.getXmppConnection()
+                                    .getManager(PresenceManager.class)
+                                    .available();
+                            if (conversation != null) {
+                                conversation.setNextEncryption(Message.ENCRYPTION_PGP);
+                                xmppConnectionService.updateConversation(conversation);
+                                refreshUi();
+                            }
+                            if (onSuccess == null) {
+                                return;
+                            }
+                            onSuccess.run();
+                        }
 
-                                @Override
-                                public void userInputRequired(
-                                        final PendingIntent pi, final String signature) {
-                                    try {
-                                        startIntentSenderForResult(
-                                                pi.getIntentSender(),
-                                                REQUEST_ANNOUNCE_PGP,
-                                                null,
-                                                0,
-                                                0,
-                                                0,
-                                                Compatibility.pgpStartIntentSenderOptions());
-                                    } catch (final SendIntentException ignored) {
-                                    }
-                                }
-
-                                @Override
-                                public void success(String signature) {
-                                    account.setPgpSignature(signature);
-                                    xmppConnectionService.databaseBackend.updateAccount(account);
-                                    account.getXmppConnection()
-                                            .getManager(PresenceManager.class)
-                                            .available();
-                                    if (conversation != null) {
-                                        conversation.setNextEncryption(Message.ENCRYPTION_PGP);
-                                        xmppConnectionService.updateConversation(conversation);
-                                        refreshUi();
-                                    }
-                                    if (onSuccess != null) {
-                                        runOnUiThread(onSuccess);
-                                    }
-                                }
-
-                                @Override
-                                public void error(int error, String signature) {
-                                    if (error == 0) {
-                                        account.setPgpSignId(0);
-                                        account.unsetPgpSignature();
-                                        xmppConnectionService.databaseBackend.updateAccount(
-                                                account);
-                                        choosePgpSignId(account);
-                                    } else {
-                                        displayErrorDialog(error);
-                                    }
-                                }
-                            });
-        }
-    }
-
-    protected void choosePgpSignId(final Account account) {
-        xmppConnectionService
-                .getPgpEngine()
-                .chooseKey(
-                        account,
-                        new UiCallback<>() {
-                            @Override
-                            public void success(final Account a) {}
-
-                            @Override
-                            public void error(int errorCode, Account object) {}
-
-                            @Override
-                            public void userInputRequired(PendingIntent pi, Account object) {
+                        @Override
+                        public void onFailure(@NonNull final Throwable t) {
+                            if (t instanceof PgpEngine.UserInputRequiredException e) {
                                 try {
                                     startIntentSenderForResult(
-                                            pi.getIntentSender(),
-                                            REQUEST_CHOOSE_PGP_ID,
+                                            e.getPendingIntent().getIntentSender(),
+                                            REQUEST_ANNOUNCE_PGP,
                                             null,
                                             0,
                                             0,
@@ -868,20 +824,44 @@ public abstract class XmppActivity extends ActionBarActivity {
                                             Compatibility.pgpStartIntentSenderOptions());
                                 } catch (final SendIntentException ignored) {
                                 }
+                            } else {
+                                account.setPgpSignId(0);
+                                account.unsetPgpSignature();
+                                xmppConnectionService.databaseBackend.updateAccount(account);
+                                choosePgpSignId(account);
                             }
-                        });
+                        }
+                    },
+                    ContextCompat.getMainExecutor(this));
+        }
     }
 
-    protected void displayErrorDialog(final int errorCode) {
-        runOnUiThread(
-                () -> {
-                    final MaterialAlertDialogBuilder builder =
-                            new MaterialAlertDialogBuilder(XmppActivity.this);
-                    builder.setTitle(getString(R.string.error));
-                    builder.setMessage(errorCode);
-                    builder.setNeutralButton(R.string.accept, null);
-                    builder.create().show();
-                });
+    protected void choosePgpSignId(final Account account) {
+        final var future = xmppConnectionService.getPgpEngine().chooseKey(account);
+        Futures.addCallback(
+                future,
+                new FutureCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {}
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        if (t instanceof PgpEngine.UserInputRequiredException e) {
+                            try {
+                                startIntentSenderForResult(
+                                        e.getPendingIntent().getIntentSender(),
+                                        REQUEST_CHOOSE_PGP_ID,
+                                        null,
+                                        0,
+                                        0,
+                                        0,
+                                        Compatibility.pgpStartIntentSenderOptions());
+                            } catch (final SendIntentException ignored) {
+                            }
+                        }
+                    }
+                },
+                ContextCompat.getMainExecutor(this));
     }
 
     protected void showAddToRosterDialog(final Contact contact) {
@@ -1200,9 +1180,13 @@ public abstract class XmppActivity extends ActionBarActivity {
                 }
                 return false;
             } else {
+                final var account = conversation.getAccount();
                 jids.add(conversation.getAddress().asBareJid());
-                return service.createAdhocConference(
-                        conversation.getAccount(), null, jids, activity.adhocCallback);
+                final var future = service.createAdhocConference(account, null, jids);
+                Futures.addCallback(
+                        future, activity.adhocCallback, ContextCompat.getMainExecutor(activity));
+                // when it's an immediate failure do not display 'creating group chat'
+                return !future.isDone();
             }
         }
     }

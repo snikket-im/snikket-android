@@ -82,6 +82,6 @@ public class PepManager extends AbstractManager {
     }
 
     private Jid pepService() {
-        return connection.getAccount().getJid().asBareJid();
+        return this.getAccount().getJid().asBareJid();
     }
 }

@@ -1,0 +1,2 @@
+* Prévisualisation des PDF sur Android 5+
+* Utilisation de 12 octets IVs pour OMEMO

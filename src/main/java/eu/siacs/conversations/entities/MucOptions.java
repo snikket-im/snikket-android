@@ -115,7 +115,13 @@ public class MucOptions {
         Log.d(Config.LOGTAG, "setSelf(" + user + ")");
         synchronized (this.users) {
             // on same nick merges we need to remove the other device
-            this.users.remove(Id.resource(user.getFullJid()));
+            if (java.util.Objects.nonNull(this.users.remove(Id.resource(user.getFullJid())))) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": remove preexisting same-nick merge "
+                                + user.getFullJid());
+            }
             // this should not be happening but attempting to remove it does not hurt
             this.users.remove(Id.realAddress(user.getRealJid()));
             this.self = user.asConnectedSelf();
@@ -186,8 +192,7 @@ public class MucOptions {
             return null;
         }
         final var roomInfo =
-                serviceDiscoveryResult.getServiceDiscoveryExtension(
-                        "http://jabber.org/protocol/muc#roominfo");
+                serviceDiscoveryResult.getServiceDiscoveryExtension(Namespace.MUC_ROOM_INFO);
         final Field roomConfigName =
                 roomInfo == null ? null : roomInfo.getFieldByName("muc#roomconfig_roomname");
         if (roomConfigName != null) {
@@ -208,15 +213,11 @@ public class MucOptions {
     }
 
     public String getRoomConfigName() {
-        final var serviceDiscoveryResult = getServiceDiscoveryResult();
-        if (serviceDiscoveryResult == null) {
+        final var roomInfo = getRoomInfoForm();
+        if (roomInfo == null) {
             return null;
         }
-        final var roomInfo =
-                serviceDiscoveryResult.getServiceDiscoveryExtension(
-                        "http://jabber.org/protocol/muc#roominfo");
-        final var roomConfigName =
-                roomInfo == null ? null : roomInfo.getFieldByName("muc#roomconfig_roomname");
+        final var roomConfigName = roomInfo.getFieldByName("muc#roomconfig_roomname");
         return roomConfigName == null ? null : roomConfigName.getValue();
     }
 
@@ -372,7 +373,16 @@ public class MucOptions {
 
             // if type null add normal; if type == unavailable add as real jid
             if (type == null) {
-                this.users.put(user.asId(), user);
+                final var self = getSelf();
+                if (self != null && self.connected && self.getFullJid().equals(user.getFullJid())) {
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid()
+                                    + ": ignore same-nick merge "
+                                    + user.getFullJid());
+                } else {
+                    this.users.put(user.asId(), user);
+                }
             } else if (type == Presence.Type.UNAVAILABLE
                     && real != null
                     && membersOnly()
@@ -484,14 +494,6 @@ public class MucOptions {
         if (existing != null) {
             return existing;
         }
-        Log.d(
-                Config.LOGTAG,
-                "creating stub for getUser("
-                        + identifiableUser.getClass()
-                        + ") "
-                        + identifiableUser.mucUserAddress()
-                        + ","
-                        + identifiableUser.mucUserRealAddress());
         return new Stub(
                 this,
                 identifiableUser.mucUserAddress(),
@@ -533,10 +535,10 @@ public class MucOptions {
     public List<User> getUsersPreview(final int max) {
         synchronized (this.users) {
             final Collection<User> users;
-            if (this.usersByOccupantId.isEmpty()) {
-                users = this.users.values();
-            } else {
+            if (Iterables.any(this.usersByOccupantId.keySet(), id -> id instanceof OccupantId)) {
                 users = this.usersByOccupantId.values();
+            } else {
+                users = this.users.values();
             }
             return ImmutableList.copyOf(Iterables.limit(VISUAL_ORDERING.sortedCopy(users), max));
         }

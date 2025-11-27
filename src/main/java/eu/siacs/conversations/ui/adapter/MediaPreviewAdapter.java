@@ -9,19 +9,15 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ItemMediaPreviewBinding;
 import eu.siacs.conversations.persistance.FileBackend;
@@ -29,11 +25,9 @@ import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.ShowLocationActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.Attachment;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.RejectedExecutionException;
 
 public class MediaPreviewAdapter
@@ -43,7 +37,7 @@ public class MediaPreviewAdapter
 
     private final ConversationFragment conversationFragment;
 
-    public MediaPreviewAdapter(ConversationFragment fragment) {
+    public MediaPreviewAdapter(final ConversationFragment fragment) {
         this.conversationFragment = fragment;
     }
 
@@ -180,7 +174,7 @@ public class MediaPreviewAdapter
         this.mediaPreviews.clear();
     }
 
-    static class MediaPreviewViewHolder extends RecyclerView.ViewHolder {
+    public static final class MediaPreviewViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemMediaPreviewBinding binding;
 

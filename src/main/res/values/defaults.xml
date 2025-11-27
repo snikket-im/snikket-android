@@ -46,6 +46,7 @@
     <string name="default_push_server">up.conversations.im</string>
     <string name="default_push_account">none</string>
     <bool name="require_channel_binding">false</bool>
+    <bool name="require_tls_v1_3">true</bool>
     <bool name="call_integration">true</bool>
     <bool name="align_start">false</bool>
 </resources>

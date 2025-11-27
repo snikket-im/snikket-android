@@ -1,7 +1,5 @@
 package eu.siacs.conversations.http;
 
-import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
-
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
@@ -159,7 +157,8 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         }
         try {
             final SSLSocketFactory sf =
-                    new TLSSocketFactory(new X509TrustManager[] {trustManager}, SECURE_RANDOM);
+                    new TLSSocketFactory(
+                            new X509TrustManager[] {trustManager}, mXmppConnectionService);
             builder.sslSocketFactory(sf, trustManager);
             builder.hostnameVerifier(new StrictHostnameVerifier());
         } catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
@@ -189,7 +188,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         try {
             final X509TrustManager trustManager = TrustManagers.createForAndroidVersion(context);
             final SSLSocketFactory socketFactory =
-                    new TLSSocketFactory(new X509TrustManager[] {trustManager}, SECURE_RANDOM);
+                    new TLSSocketFactory(new X509TrustManager[] {trustManager}, context);
             builder.sslSocketFactory(socketFactory, trustManager);
         } catch (final IOException
                 | KeyManagementException

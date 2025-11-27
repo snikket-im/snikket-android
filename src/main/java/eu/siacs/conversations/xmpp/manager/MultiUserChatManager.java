@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -71,6 +72,9 @@ import java.util.concurrent.TimeoutException;
 import org.jspecify.annotations.NonNull;
 
 public class MultiUserChatManager extends AbstractManager {
+
+    private static final Collection<String> VOLATILE_ROOM_INFO =
+            Collections.singleton("muc#roominfo_occupants");
 
     private final XmppConnectionService service;
 
@@ -743,8 +747,9 @@ public class MultiUserChatManager extends AbstractManager {
 
     private Void setDiscoInfo(
             final Conversation conversation,
-            final InfoQuery infoQuery,
+            final InfoQuery rawinfoQuery,
             final MucConfigSummary previousMucConfig) {
+        final var infoQuery = clean(rawinfoQuery);
         final var caps = EntityCapabilities.hash(infoQuery);
         final var caps2 = EntityCapabilities2.hash(infoQuery);
         final var account = conversation.getAccount();
@@ -797,6 +802,23 @@ public class MultiUserChatManager extends AbstractManager {
         }
         this.service.updateConversationUi();
         return null;
+    }
+
+    private static InfoQuery clean(final InfoQuery input) {
+        final var identities = input.getIdentities();
+        final var features = input.getFeatureStrings();
+        final var extension = input.getServiceDiscoveryExtension(Namespace.MUC_ROOM_INFO);
+        if (extension == null) {
+            return new InfoQuery(identities, features);
+        } else {
+            return new InfoQuery(
+                    identities,
+                    features,
+                    Data.of(
+                            Maps.filterKeys(
+                                    extension.asMap(), k -> !VOLATILE_ROOM_INFO.contains(k)),
+                            Namespace.MUC_ROOM_INFO));
+        }
     }
 
     public void resendPresence(final Conversation conversation) {
@@ -1268,6 +1290,7 @@ public class MultiUserChatManager extends AbstractManager {
     @Nullable
     public MucOptions.User getMucUser(
             @NonNull final Message message, @Nullable final MessageArchiveManager.Query query) {
+
         final var from = message.getFrom();
         if (from == null) {
             return null;
@@ -1308,14 +1331,13 @@ public class MultiUserChatManager extends AbstractManager {
             final String occupantId) {
         final var affiliation = item.getAffiliation();
         final var role = item.getRole();
-        final var nick = item.getNick();
         final Jid fullAddress;
         if (from != null && from.isFullJid()) {
             fullAddress = from;
-        } else if (Strings.isNullOrEmpty(nick)) {
-            fullAddress = null;
         } else {
-            fullAddress = ofNick(conference, nick);
+            // we used to look at item.getNick() to construct a full address
+            // however this could push 'available' users w/ occupant ids out of the user list
+            fullAddress = null;
         }
         final Jid realJid = Jid.Invalid.getNullForInvalid(item.getAttributeAsJid("jid"));
         return new MucOptions.User(

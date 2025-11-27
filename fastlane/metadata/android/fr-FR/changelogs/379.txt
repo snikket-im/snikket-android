@@ -1,0 +1,1 @@
+* Appels Audio/Vidéo (Nécessite un support serveur sous la forme de serveur STUN et TURN trouvable via XEP-0215)

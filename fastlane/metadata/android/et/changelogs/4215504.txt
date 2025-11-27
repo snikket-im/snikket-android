@@ -1,0 +1,5 @@
+* Uus vaade „Tühjad vestlused“ senise suunamise asemel lehele „Uus vestlus“
+* Parem jõudlus mahukate avalike kanalite kuvamisel
+* Ennustatava tagasiviipe tugi
+* IP-aaddresside tugi sertifikaatides
+* TLS 1.3 vaikimisi nõutavus kõikide ühenduste jaoks, võimalusega sellest loobuda

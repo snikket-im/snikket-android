@@ -12,6 +12,32 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
 
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/empty_chat_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="48dp">
+
+            <ImageView
+                android:id="@+id/empty_chat_hint_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_forum_thin_48dp"
+                app:tint="?colorPrimaryFixedDim" />
+
+            <TextView
+                android:id="@+id/empty_chat_hint_text"
+                style="?textAppearanceBodyMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/empty_chat_hint_image"
+                android:gravity="center"
+                android:text="@string/empty_conversations_list_hint" />
+        </RelativeLayout>
+
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"

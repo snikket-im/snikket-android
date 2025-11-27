@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.12.0'
+        classpath 'com.android.tools.build:gradle:8.12.2'
         classpath 'com.diffplug.spotless:spotless-plugin-gradle:7.2.1'
     }
 }
@@ -56,21 +56,21 @@ dependencies {
     freeImplementation 'androidx.emoji2:emoji2-bundled:1.5.0'
     implementation 'androidx.emoji2:emoji2-emojipicker:1.5.0'
     implementation 'androidx.exifinterface:exifinterface:1.4.1'
-    implementation 'androidx.heifwriter:heifwriter:1.1.0-beta01'
+    implementation 'androidx.heifwriter:heifwriter:1.1.0-rc01'
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'androidx.sharetarget:sharetarget:1.2.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.viewpager:viewpager:1.1.0'
     implementation 'androidx.work:work-runtime:2.10.3'
     implementation 'com.github.open-keychain.open-keychain:openpgp-api:v5.7.1'
-    implementation 'com.google.android.material:material:1.13.0-rc01'
+    implementation 'com.google.android.material:material:1.13.0'
     implementation 'com.google.guava:guava:33.4.8-android'
     implementation 'com.google.zxing:core:3.5.3'
     implementation 'com.leinardi.android:speed-dial:3.3.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
+    implementation 'com.squareup.okhttp3:okhttp:5.1.0'
+    implementation 'com.squareup.retrofit2:converter-gson:3.0.0'
+    implementation 'com.squareup.retrofit2:retrofit:3.0.0'
     implementation 'com.vanniktech:android-image-cropper:4.6.0'
     implementation 'im.conversations.webrtc:webrtc-android:129.0.0'
     implementation 'io.deepmedia.community:transcoder-android:0.11.2'
@@ -92,11 +92,11 @@ dependencies {
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
 
     }
-    quicksyImplementation 'io.michaelrocks:libphonenumber-android:9.0.11'
+    quicksyImplementation 'io.michaelrocks:libphonenumber-android:9.0.12'
     quicksyPlaystoreImplementation 'com.google.android.gms:play-services-auth-api-phone:18.2.0'
 
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.robolectric:robolectric:4.15.1'
+    testImplementation 'org.robolectric:robolectric:4.16'
     androidTestImplementation 'androidx.test.ext:junit:1.3.0'
 
 }
@@ -108,13 +108,13 @@ ext {
 
 android {
     namespace 'eu.siacs.conversations'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 35
-        versionCode 42152
-        versionName "2.19.2"
+        targetSdkVersion 36
+        versionCode 42159
+        versionName "2.19.5"
         archivesBaseName += "-$versionName"
         applicationId "org.snikket.android"
         resValue "string", "applicationId", applicationId

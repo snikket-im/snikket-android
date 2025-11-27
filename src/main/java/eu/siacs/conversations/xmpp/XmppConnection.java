@@ -130,6 +130,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.security.PrivateKey;
+import java.security.cert.CertPathValidatorException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -151,7 +152,9 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLProtocolException;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509KeyManager;
@@ -1459,6 +1462,7 @@ public class XmppConnection implements Runnable {
         try {
             sslSocketFactory = getSSLSocketFactory();
         } catch (final NoSuchAlgorithmException | KeyManagementException e) {
+            Log.d(Config.LOGTAG, "could not create TLS Socket Factory", e);
             throw new StateChangingException(Account.State.TLS_ERROR);
         }
         final InetAddress address = socket.getInetAddress();
@@ -1466,11 +1470,12 @@ public class XmppConnection implements Runnable {
                 (SSLSocket)
                         sslSocketFactory.createSocket(
                                 socket, address.getHostAddress(), socket.getPort(), true);
-        SSLSockets.setSecurity(sslSocket);
+        SSLSockets.setSecurity(sslSocket, isRequireTlsV13());
         SSLSockets.setHostname(sslSocket, IDN.toASCII(account.getServer()));
         SSLSockets.setApplicationProtocol(sslSocket, "xmpp-client");
         final XmppDomainVerifier xmppDomainVerifier = new XmppDomainVerifier();
         try {
+            sslSocket.startHandshake();
             if (!xmppDomainVerifier.verify(
                     account.getServer(), this.verifiedHostname, sslSocket.getSession())) {
                 Log.d(
@@ -1480,8 +1485,20 @@ public class XmppConnection implements Runnable {
                 FileBackend.close(sslSocket);
                 throw new StateChangingException(Account.State.TLS_ERROR_DOMAIN);
             }
+        } catch (final SSLHandshakeException e) {
+            FileBackend.close(sslSocket);
+            final var root = Throwables.getRootCause(e);
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS handshake failed", root);
+            if (root instanceof SSLProtocolException) {
+                throw new StateChangingException(Account.State.TLS_ERROR_PROTOCOL);
+            } else if (root instanceof CertPathValidatorException) {
+                throw new StateChangingException(Account.State.TLS_ERROR_UNTRUSTED);
+            }
+            throw new StateChangingException(Account.State.TLS_ERROR);
+
         } catch (final SSLPeerUnverifiedException e) {
             FileBackend.close(sslSocket);
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": peer unverified", e);
             throw new StateChangingException(Account.State.TLS_ERROR);
         }
         return sslSocket;
@@ -1755,7 +1772,7 @@ public class XmppConnection implements Runnable {
 
     private void checkRequireChannelBinding(@NonNull final SaslMechanism mechanism)
             throws StateChangingException {
-        if (appSettings.isRequireChannelBinding()) {
+        if (isRequireChannelBinding()) {
             if (mechanism instanceof ChannelBindingMechanism) {
                 return;
             }
@@ -2267,9 +2284,10 @@ public class XmppConnection implements Runnable {
             discoManager.fetchServerCommands();
         }
 
-        // TODO check if MamManager has feature and
         final var messageArchiveManager = getManager(MessageArchiveManager.class);
-        messageArchiveManager.catchup(account);
+        if (messageArchiveManager.hasFeature()) {
+            messageArchiveManager.catchup();
+        }
     }
 
     private void processStreamError(final StreamError streamError) throws IOException {
@@ -2349,7 +2367,7 @@ public class XmppConnection implements Runnable {
                     SaslMechanism.ensureAvailable(
                             account.getQuickStartMechanism(),
                             sslVersion,
-                            appSettings.isRequireChannelBinding());
+                            isRequireChannelBinding());
         } else {
             quickStartMechanism = null;
         }
@@ -2384,6 +2402,16 @@ public class XmppConnection implements Runnable {
             sendStartStream(secureConnection, true);
             return false;
         }
+    }
+
+    private boolean isRequireChannelBinding() {
+        return AppSettings.SECURE_DOMAINS.contains(account.getDomain())
+                || appSettings.isRequireChannelBinding();
+    }
+
+    private boolean isRequireTlsV13() {
+        return AppSettings.SECURE_DOMAINS.contains(account.getDomain())
+                || appSettings.isRequireTlsV13();
     }
 
     private void sendStartStream(final boolean from, final boolean flush) throws IOException {
@@ -2727,16 +2755,12 @@ public class XmppConnection implements Runnable {
         this.changeStateTerminal(Account.State.CONNECTION_TIMEOUT);
     }
 
-    public Account getAccount() {
-        return this.account;
-    }
-
     public Features getStreamFeatures() {
         return this.features;
     }
 
     public boolean fromServer(final Stanza stanza) {
-        final var account = getAccount().getJid();
+        final var account = this.account.getJid();
         final Jid from = stanza.getFrom();
         return from == null
                 || from.equals(account.getDomain())
@@ -2745,7 +2769,7 @@ public class XmppConnection implements Runnable {
     }
 
     public boolean fromAccount(final Stanza stanza) {
-        final var account = getAccount().getJid();
+        final var account = this.account.getJid();
         final Jid from = stanza.getFrom();
         return from == null || from.asBareJid().equals(account.asBareJid());
     }
@@ -2933,14 +2957,6 @@ public class XmppConnection implements Runnable {
             return infoQuery != null && infoQuery.getFeatureStrings().contains(feature);
         }
 
-        public boolean blocking() {
-            return connection.getManager(BlockingManager.class).hasFeature();
-        }
-
-        public boolean spamReporting() {
-            return hasDiscoFeature(account.getDomain(), Namespace.REPORTING);
-        }
-
         public boolean sm() {
             return streamId != null
                     || (connection.streamFeatures != null
@@ -2971,15 +2987,6 @@ public class XmppConnection implements Runnable {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUB_SUB_PUBLISH_OPTIONS);
         }
 
-        public boolean pepConfigNodeMax() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUB_SUB_CONFIG_NODE_MAX);
-        }
-
-        public boolean pepOmemoWhitelisted() {
-            return hasDiscoFeature(
-                    account.getJid().asBareJid(), AxolotlService.PEP_OMEMO_WHITELISTED);
-        }
-
         public boolean rosterVersioning() {
             return connection.streamFeatures != null && connection.streamFeatures.hasChild("ver");
         }
@@ -3000,20 +3007,6 @@ public class XmppConnection implements Runnable {
 
         public boolean stanzaIds() {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.STANZA_IDS);
-        }
-
-        public boolean externalServiceDiscovery() {
-            return hasDiscoFeature(account.getDomain(), Namespace.EXTERNAL_SERVICE_DISCOVERY);
-        }
-
-        public boolean mds() {
-            return pepPublishOptions()
-                    && pepConfigNodeMax()
-                    && Config.MESSAGE_DISPLAYED_SYNCHRONIZATION;
-        }
-
-        public boolean mdsServerAssist() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.MDS_DISPLAYED);
         }
     }
 }

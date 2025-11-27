@@ -187,12 +187,12 @@
     <string name="server_info_show_more">Server-Info</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
-    <string name="server_info_csi">XEP-0352: CSI</string>
+    <string name="server_info_csi">XEP-0352: Client State Indication</string>
     <string name="server_info_blocking">XEP-0191: Blocking Command</string>
     <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
     <string name="server_info_stream_management">XEP-0198: Stream Management</string>
     <string name="server_info_external_service_discovery">XEP-0215: External Service Discovery</string>
-    <string name="server_info_pep">XEP-0163: PEP (Avatare/OMEMO)</string>
+    <string name="server_info_pep">XEP-0163: PEP (Avatars / OMEMO)</string>
     <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
     <string name="server_info_push">XEP-0357: Push</string>
     <string name="server_info_available">ja</string>
@@ -1136,4 +1136,12 @@
         <item quantity="one">%1$d Teilnehmer</item>
         <item quantity="other">%1$d Teilnehmer</item>
     </plurals>
+    <string name="strong_transport_security">Hohe Transportsicherheit</string>
+    <string name="require_tls_v1_3">Erfordert für alle Verbindungen das TLS-Protokoll (Transport Layer Security) Version 1.3</string>
+    <string name="download_failed_could_not_establish_tls">TLS-Verbindung konnte nicht hergestellt werden</string>
+    <string name="server_info_occupant_id">XEP-0421: Occupant identifiers</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425: Moderated Message Retraction</string>
+    <string name="empty_conversations_list_hint">Sobald du eine neue Unterhaltung startest, wird sie hier angezeigt</string>
+    <string name="account_status_tls_error_protocol">Schwache Transportsicherheit (kein TLS 1.3)</string>
+    <string name="account_status_tls_error_untrusted">Nicht vertrauenswürdiges Zertifikat</string>
 </resources>

@@ -82,6 +82,53 @@ public class EntityCapabilitiesTest {
     }
 
     @Test
+    public void entityCapsNullValueField() throws IOException {
+        final String xml =
+                """
+                <query xmlns='http://jabber.org/protocol/disco#info'>
+                    <identity xml:lang='en' category='client' name='Test' type='pc'/>
+                    <x xmlns='jabber:x:data' type='result'>
+                      <field var='FORM_TYPE' type='hidden'>
+                        <value>https://conversations.im/something/made-up</value>
+                      </field>
+                      <field var='nothing' type='text-multi' >
+                        <value/>
+                      </field>
+                      <field var='really'>
+                        <value>Something</value>
+                      </field>
+                    </x>
+                  </query>""";
+        final Element element = XmlElementReader.read(xml.getBytes(StandardCharsets.UTF_8));
+        assertThat(element, instanceOf(InfoQuery.class));
+        final InfoQuery info = (InfoQuery) element;
+        final String var = EntityCapabilities.hash(info).encoded();
+        Assert.assertEquals("pKcpiYvQvaDlM/R7CTxhk3Ov8zM=", var);
+    }
+
+    @Test
+    public void entityCapsNoFormType() throws IOException {
+        final String xml =
+                """
+                <query xmlns='http://jabber.org/protocol/disco#info'>
+                    <identity xml:lang='en' category='client' name='Test' type='pc'/>
+                    <x xmlns='jabber:x:data' type='result'>
+                      <field var='a'>
+                        <value>b</value>
+                      </field>
+                    </x>
+                  </query>""";
+        final Element element = XmlElementReader.read(xml.getBytes(StandardCharsets.UTF_8));
+        assertThat(element, instanceOf(InfoQuery.class));
+        final InfoQuery info = (InfoQuery) element;
+        final String var = EntityCapabilities.hash(info).encoded();
+        Assert.assertEquals("Dv7vvt+gvcNRjmLruGKBfqLTwPw=", var);
+        final String entityCaps2 = EntityCapabilities2.hash(info).encoded();
+        // TODO this needs to abort with an error because it has no form type
+        // TODO test this and make code that calls `EntityCapabilities2.hash()` deal with that
+    }
+
+    @Test
     public void entityCapsOpenFireTestServer() throws IOException {
         final String xml =
                 """

@@ -282,6 +282,7 @@ public class EnterPhoneNumberActivity extends XmppActivity
         if (redirectInProgress.compareAndSet(false, true)) {
             Intent intent = new Intent(this, VerifyActivity.class);
             intent.putExtra(VerifyActivity.EXTRA_RETRY_SMS_AFTER, timestamp);
+            StartConversationActivity.addInviteUri(intent, getIntent());
             startActivity(intent);
             finish();
         }
@@ -289,7 +290,9 @@ public class EnterPhoneNumberActivity extends XmppActivity
 
     private void performRedirectToVerificationActivity() {
         if (redirectInProgress.compareAndSet(false, true)) {
-            startActivity(new Intent(this, VerifyActivity.class));
+            final var intent = new Intent(this, VerifyActivity.class);
+            StartConversationActivity.addInviteUri(intent, getIntent());
+            startActivity(intent);
             finish();
         }
     }

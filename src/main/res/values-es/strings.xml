@@ -519,7 +519,7 @@
     <string name="this_field_is_required">Este campo es requerido</string>
     <string name="correct_message">Corregir mensaje</string>
     <string name="send_corrected_message">Enviar mensaje corregido</string>
-    <string name="no_keys_just_confirm">Ya ha confiado en la huella digital de esta persona. Al seleccionar «Hecho» solo está confirmando que %s es parte de este chat grupal.</string>
+    <string name="no_keys_just_confirm">Ya has confiado en la huella digital de esta persona. Al seleccionar «Hecho» solo estás confirmando que %s es parte de este chat grupal.</string>
     <string name="this_account_is_disabled">Ha desactivado esta cuenta</string>
     <string name="security_error_invalid_file_access">Error de seguridad: ¡Acceso a archivo inválido!</string>
     <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
@@ -725,7 +725,7 @@
     <string name="copy_jabber_id">Copiar dirección XMPP</string>
     <string name="p1_s3_filetransfer">Compartición de archivos HTTP con S3</string>
     <string name="pref_start_search">Búsqueda directa</string>
-    <string name="pref_start_search_summary">En la pantalla «Chat nuevo», abra el teclado y coloque el cursor en el campo de búsqueda</string>
+    <string name="pref_start_search_summary">En la pantalla «Iniciar un chat», abrir el teclado y colocar el cursor en el campo de búsqueda</string>
     <string name="group_chat_avatar">Avatar de la conversación grupal</string>
     <string name="host_does_not_support_group_chat_avatars">El anfitrión no admite avatares en conversaciones grupales</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Solo el propietario de la conversación puede cambiar el avatar</string>
@@ -986,7 +986,7 @@
     <string name="group_chats">Conversaciones grupales</string>
     <string name="restore_warning_continued">Restaura solo las copias de seguridad que hayas creado personalmente.</string>
     <string name="reconnect_on_other_host">Reconectarse a otro host</string>
-    <string name="unverified_devices">Está utilizando dispositivos no verificados. Escanee el código QR en sus otros dispositivos para verificarlos e impedir ataques MITM activos.</string>
+    <string name="unverified_devices">Estás utilizando dispositivos no verificados. Escanea el código QR en tus otros dispositivos para verificarlos e impedir ataques MITM activos.</string>
     <string name="privacy_policy">Normativa de privacidad</string>
     <string name="contact_list_integration_not_available">La lista de contactos no está disponible</string>
     <string name="no_permission_to_place_call">Sin permiso para llamar por teléfono</string>
@@ -1088,7 +1088,7 @@
     <string name="pref_align_start">Mensajes alineados a la izquierda</string>
     <string name="pref_align_start_summary">Mostrar todos los mensajes, incluso los propios, sobre el margen izquierdo para una distribución uniforme del chat.</string>
     <string name="custom_notifications">Notificaciones personalizadas</string>
-    <string name="custom_notifications_enable">¿Quiere activar la configuración de notificaciones personalizadas (importancia, sonido, vibración) para esta conversación?</string>
+    <string name="custom_notifications_enable">¿Quieres activar la configuración de notificaciones personalizadas (importancia, sonido, vibración) para esta conversación?</string>
     <string name="delete_avatar_message">¿Quieres eliminar tu imagen de perfil? Algunos clientes podrían seguir mostrando una copia en caché de tu avatar.</string>
     <string name="show_to_contacts_only">Mostrar sólo a contactos</string>
     <string name="account_status_connection_timeout">Se agotó el tiempo de espera de la conexión</string>
@@ -1130,4 +1130,12 @@
         <item quantity="other">%1$d Participante(s)</item>
     </plurals>
     <string name="last_seen">Última vez en línea %s</string>
+    <string name="download_failed_could_not_establish_tls">No se pudo establecer la conexión TLS</string>
+    <string name="require_tls_v1_3">Requerir la versión 1.3 de Seguridad en la Capa de Transporte (TLS) para todas las conexiones</string>
+    <string name="account_status_tls_error_untrusted">Certificado no confiable</string>
+    <string name="account_status_tls_error_protocol">Seguridad de transporte débil (sin TLS 1.3)</string>
+    <string name="strong_transport_security">Seguridad de transporte fuerte</string>
+    <string name="empty_conversations_list_hint">Una vez que inicies un chat, lo verás listado aquí</string>
+    <string name="server_info_occupant_id">XEP-0421: Identificadores de ocupantes</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425: Retractación de Mensajes Moderados</string>
 </resources>

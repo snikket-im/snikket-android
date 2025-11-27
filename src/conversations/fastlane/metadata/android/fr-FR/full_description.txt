@@ -22,7 +22,7 @@ Fonctionnalités :
 
 Conversations facilite la création de compte sur le serveur gratuit conversations.im. Cependant Conversations fonctionne également avec n'importe quel autre serveur XMPP. De nombreux serveurs XMPP sont gérés par des bénévoles et gratuits.
 
-Fonctionnalités de XMPP :
+Fonctionnalités XMPP :
 
 Conversations fonctionne avec n'importe quel serveur XMPP. Cependant XMPP est un protocole extensible. Ces extensions sont aussi standardisées dans ce que l'on appelle les XEP. Conversations en prend en charge quelques-unes pour rendre l'expérience utilisateur meilleure dans l'ensemble. Il y a des chances que votre serveur XMPP actuel ne les prenne pas en charge. Ainsi, pour tirer le meilleur parti de Conversations, vous devriez envisager soit de passer à un serveur XMPP qui le fait, ou encore mieux, gérer votre propre serveur XMPP pour vous et vos amis.
 

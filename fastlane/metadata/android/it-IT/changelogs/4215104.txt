@@ -1,0 +1,2 @@
+* Mostra 'Ultimo accesso' in modo evidente nel titolo della chat (quando attivo)
+* Varie correzioni di errori

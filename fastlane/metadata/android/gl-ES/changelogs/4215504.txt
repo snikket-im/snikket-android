@@ -1,0 +1,5 @@
+* Nova páxina 'conversas baleiras' no lugar da redirección á pantalla 'nova conversa'
+* Melloras no rendemento de canles públicas moi grandes
+* Compatibilidade con retroceso predictivo
+* Compatibilidade con enderezos IP nos certificados
+* Requerir TLS 1.3 para todas as conexións, cun axuste para desactivalo

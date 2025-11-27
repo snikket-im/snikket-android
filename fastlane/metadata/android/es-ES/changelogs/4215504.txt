@@ -1,0 +1,5 @@
+* Nueva pantalla de chat "vacía" en vez de redirigir a la pantalla "Iniciar un chat"
+* Mejora del desempeño para canales públicos grandes
+* Admitir atrás predictivo
+* Admitir direcciones IP en certificados
+* Requerir TLS 1.3 para todas las conexiones, más una nueva configuración para deshabilitarlo

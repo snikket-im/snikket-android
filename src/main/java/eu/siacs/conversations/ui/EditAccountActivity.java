@@ -1,7 +1,6 @@
 package eu.siacs.conversations.ui;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -49,6 +48,7 @@ import de.gultsch.common.Linkify;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
@@ -81,7 +81,9 @@ import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
+import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
+import eu.siacs.conversations.xmpp.manager.ExternalServiceDiscoveryManager;
 import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
 import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.PepManager;
@@ -452,8 +454,8 @@ public class EditAccountActivity extends OmemoActivity
     public void refreshUiReal() {
         invalidateOptionsMenu();
         if (mAccount != null && mAccount.getStatus() != Account.State.ONLINE && mFetchingAvatar) {
-            Intent intent = new Intent(this, StartConversationActivity.class);
-            StartConversationActivity.addInviteUri(intent, getIntent());
+            final Intent intent =
+                    StartConversationActivity.startOrConversationsActivity(this, mAccount);
             startActivity(intent);
             finish();
         } else if (mInitMode && mAccount != null && mAccount.getStatus() == Account.State.ONLINE) {
@@ -497,7 +499,7 @@ public class EditAccountActivity extends OmemoActivity
         if (SignupUtils.isSupportTokenRegistry()
                 && jid != null
                 && magicCreate
-                && !jid.getDomain().equals(Config.MAGIC_CREATE_DOMAIN)) {
+                && !jid.getDomain().equals(Jid.ofDomain(Config.MAGIC_CREATE_DOMAIN))) {
             final Jid preset;
             if (mAccount.isOptionSet(Account.OPTION_FIXED_USERNAME)) {
                 preset = jid.asBareJid();
@@ -538,12 +540,11 @@ public class EditAccountActivity extends OmemoActivity
                                     && xmppConnectionService.getAccounts().size() == 1;
                     if (avatar || !connection.getManager(PepManager.class).isAvailable()) {
                         intent =
-                                new Intent(
-                                        getApplicationContext(), StartConversationActivity.class);
+                                StartConversationActivity.startOrConversationsActivity(
+                                        this, mAccount);
                         if (wasFirstAccount) {
                             intent.putExtra("init", true);
                         }
-                        intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toString());
                     } else {
                         intent =
                                 new Intent(
@@ -551,12 +552,12 @@ public class EditAccountActivity extends OmemoActivity
                                         PublishProfilePictureActivity.class);
                         intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toString());
                         intent.putExtra("setup", true);
+                        StartConversationActivity.addInviteUri(intent, getIntent());
                     }
                     if (wasFirstAccount) {
                         intent.setFlags(
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     }
-                    StartConversationActivity.addInviteUri(intent, getIntent());
                     startActivity(intent);
                     finish();
                 });
@@ -790,7 +791,7 @@ public class EditAccountActivity extends OmemoActivity
         share.setVisible(mAccount != null && !mInitMode);
 
         if (mAccount != null && mAccount.isOnlineAndConnected()) {
-            if (!mAccount.getXmppConnection().getFeatures().blocking()) {
+            if (!mAccount.getXmppConnection().getManager(BlockingManager.class).hasFeature()) {
                 showBlocklist.setVisible(false);
             }
 
@@ -1125,38 +1126,38 @@ public class EditAccountActivity extends OmemoActivity
         builder.create().show();
     }
 
-    private void generateSignature(Intent intent, PresenceTemplate template) {
-        xmppConnectionService
-                .getPgpEngine()
-                .generateSignature(
-                        intent,
-                        mAccount,
-                        template.getStatusMessage(),
-                        new UiCallback<String>() {
-                            @Override
-                            public void success(String signature) {
-                                xmppConnectionService.changeStatus(mAccount, template, signature);
-                            }
+    private void generateSignature(final Intent intent, final PresenceTemplate template) {
+        final var future =
+                xmppConnectionService
+                        .getPgpEngine()
+                        .generateSignature(intent, mAccount, template.getStatusMessage());
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(final String signature) {
+                        xmppConnectionService.changeStatus(mAccount, template, signature);
+                    }
 
-                            @Override
-                            public void error(int errorCode, String object) {}
-
-                            @Override
-                            public void userInputRequired(PendingIntent pi, String object) {
-                                mPendingPresenceTemplate.push(template);
-                                try {
-                                    startIntentSenderForResult(
-                                            pi.getIntentSender(),
-                                            REQUEST_CHANGE_STATUS,
-                                            null,
-                                            0,
-                                            0,
-                                            0,
-                                            Compatibility.pgpStartIntentSenderOptions());
-                                } catch (final IntentSender.SendIntentException ignored) {
-                                }
+                    @Override
+                    public void onFailure(@NonNull final Throwable throwable) {
+                        if (throwable instanceof PgpEngine.UserInputRequiredException e) {
+                            mPendingPresenceTemplate.push(template);
+                            try {
+                                startIntentSenderForResult(
+                                        e.getPendingIntent().getIntentSender(),
+                                        REQUEST_CHANGE_STATUS,
+                                        null,
+                                        0,
+                                        0,
+                                        0,
+                                        Compatibility.pgpStartIntentSenderOptions());
+                            } catch (final IntentSender.SendIntentException ignored) {
                             }
-                        });
+                        }
+                    }
+                },
+                ContextCompat.getMainExecutor(this));
     }
 
     @Override
@@ -1265,7 +1266,7 @@ public class EditAccountActivity extends OmemoActivity
             } else {
                 this.binding.serverInfoCsi.setText(R.string.server_info_unavailable);
             }
-            if (features.blocking()) {
+            if (connection.getManager(BlockingManager.class).hasFeature()) {
                 this.binding.serverInfoBlocking.setText(R.string.server_info_available);
             } else {
                 this.binding.serverInfoBlocking.setText(R.string.server_info_unavailable);
@@ -1275,7 +1276,7 @@ public class EditAccountActivity extends OmemoActivity
             } else {
                 this.binding.serverInfoSm.setText(R.string.server_info_unavailable);
             }
-            if (features.externalServiceDiscovery()) {
+            if (connection.getManager(ExternalServiceDiscoveryManager.class).hasFeature()) {
                 this.binding.serverInfoExternalService.setText(R.string.server_info_available);
             } else {
                 this.binding.serverInfoExternalService.setText(R.string.server_info_unavailable);
@@ -1295,7 +1296,7 @@ public class EditAccountActivity extends OmemoActivity
                 AxolotlService axolotlService = this.mAccount.getAxolotlService();
                 if (axolotlService != null && axolotlService.isPepBroken()) {
                     this.binding.serverInfoPep.setText(R.string.server_info_broken);
-                } else if (features.pepPublishOptions() || features.pepOmemoWhitelisted()) {
+                } else if (connection.getManager(PepManager.class).hasPublishOptions()) {
                     this.binding.serverInfoPep.setText(R.string.server_info_available);
                 } else {
                     this.binding.serverInfoPep.setText(R.string.server_info_partial);

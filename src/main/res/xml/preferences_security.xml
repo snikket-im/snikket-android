@@ -17,7 +17,9 @@
             android:title="@string/pref_blind_trust_before_verification" />
 
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_category_server_connection">
+    <PreferenceCategory
+        android:key="server_connection"
+        android:title="@string/pref_category_server_connection">
         <SwitchPreferenceCompat
             android:defaultValue="@bool/trust_system_ca_store"
             android:icon="@drawable/ic_assured_workload_24dp"
@@ -28,6 +30,13 @@
             android:key="remove_trusted_certificates"
             android:summary="@string/pref_remove_trusted_certificates_summary"
             android:title="@string/pref_remove_trusted_certificates_title" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/require_tls_v1_3"
+            android:icon="@drawable/ic_enhanced_encryption_24dp"
+            android:key="require_tls_v1_3"
+            android:summary="@string/require_tls_v1_3"
+            android:title="@string/strong_transport_security" />
 
         <SwitchPreferenceCompat
             android:defaultValue="@bool/require_channel_binding"

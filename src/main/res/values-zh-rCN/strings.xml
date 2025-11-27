@@ -1130,4 +1130,12 @@
     <plurals name="x_participants">
         <item quantity="other">%1$d 位参与者</item>
     </plurals>
+    <string name="strong_transport_security">强传输安全性</string>
+    <string name="require_tls_v1_3">所有连接均需使用传输层安全性（TLS）协议版本 1.3</string>
+    <string name="download_failed_could_not_establish_tls">无法建立 TLS 连接</string>
+    <string name="empty_conversations_list_hint">开始新对话后，您将看到对话在此处列出</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425：消息审核撤回</string>
+    <string name="server_info_occupant_id">XEP-0421：使用者标识符</string>
+    <string name="account_status_tls_error_untrusted">不受信任的证书</string>
+    <string name="account_status_tls_error_protocol">弱传输安全性（无 TLS 1.3）</string>
 </resources>

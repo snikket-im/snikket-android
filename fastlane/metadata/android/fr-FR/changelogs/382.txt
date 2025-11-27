@@ -1,0 +1,2 @@
+* Ajout d'un bouton pour changer de caméra durant un appel vidéo
+* Correction des appels audio sur tablette

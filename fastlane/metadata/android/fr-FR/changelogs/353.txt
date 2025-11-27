@@ -1,0 +1,4 @@
+* laisser l'utilisateur·ice changer son pseudo
+* reprendre le téléchargement des fichiers chiffrés avec OMEMO
+* Les salons utilisent à présent '#' comme symbole dans les images de profil
+* Quicksy utilise 'toujours' comme chiffrement OMEMO par défaut (cache l'icône de cadena)

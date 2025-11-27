@@ -123,15 +123,19 @@ public class Message extends AbstractEntity
     private FileParams fileParams = null;
     private List<MucOptions.User> counterparts;
 
-    protected Message(Conversational conversation) {
+    protected Message(final Conversational conversation) {
         this.conversation = conversation;
     }
 
-    public Message(Conversational conversation, String body, int encryption) {
+    public Message(final Conversational conversation, final String body, final int encryption) {
         this(conversation, body, encryption, STATUS_UNSEND);
     }
 
-    public Message(Conversational conversation, String body, int encryption, int status) {
+    public Message(
+            final Conversational conversation,
+            final String body,
+            final int encryption,
+            final int status) {
         this(
                 conversation,
                 java.util.UUID.randomUUID().toString(),
@@ -419,7 +423,18 @@ public class Message extends AbstractEntity
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(final int status) {
+        final var current = this.status;
+        if (current == Message.STATUS_RECEIVED) {
+            if (status != Message.STATUS_RECEIVED) {
+                throw new AssertionError(
+                        "A received message can not be converted to status=" + status);
+            }
+        } else {
+            if (status == Message.STATUS_RECEIVED) {
+                throw new AssertionError("A sent message can not be converted to received");
+            }
+        }
         this.status = status;
     }
 
