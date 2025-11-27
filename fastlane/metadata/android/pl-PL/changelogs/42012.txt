@@ -1,0 +1,1 @@
+* Naprawienie wysyłania/odbierania przez HTTP dla użytkowników nieufających systemowym urzędom certyfikacji

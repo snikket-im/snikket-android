@@ -1,0 +1,2 @@
+* Weryfikowanie nazwy domeny zawsze, bez możliwości zmiany przez użytkownika
+* Obsługa wczesnego uwierzytelnienia rostera

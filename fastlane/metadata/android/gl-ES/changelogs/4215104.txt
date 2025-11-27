@@ -1,0 +1,2 @@
+* Mostra 'Último uso' de xeito destacado no título da conversa (se se activa) 
+* Solucionamos algunhas incidencias

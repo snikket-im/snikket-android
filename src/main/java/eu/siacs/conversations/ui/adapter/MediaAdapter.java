@@ -77,10 +77,8 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         this.mediaSize = Math.round(activity.getResources().getDimension(mediaSize));
     }
 
-    @SuppressWarnings("rawtypes")
-    public static void setMediaSize(final RecyclerView recyclerView, int mediaSize) {
-        final RecyclerView.Adapter adapter = recyclerView.getAdapter();
-        if (adapter instanceof MediaAdapter mediaAdapter) {
+    public static void setMediaSize(final RecyclerView recyclerView, final int mediaSize) {
+        if (recyclerView.getAdapter() instanceof MediaAdapter mediaAdapter) {
             mediaAdapter.setMediaSize(mediaSize);
         }
     }
@@ -137,6 +135,9 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
             return R.drawable.ic_code_48dp;
         } else if (mime.equals("message/rfc822")) {
             return R.drawable.ic_email_48dp;
+        } else if (Arrays.asList("application/x-pcapng", "application/vnd.tcpdump.pcap")
+                .contains(mime)) {
+            return R.drawable.ic_lan_24dp;
         } else {
             return R.drawable.ic_help_center_48dp;
         }
@@ -254,7 +255,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         }
     }
 
-    static class MediaViewHolder extends RecyclerView.ViewHolder {
+    public static class MediaViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemMediaBinding binding;
 

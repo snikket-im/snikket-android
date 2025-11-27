@@ -10,6 +10,14 @@ import java.util.Objects;
 public class MucUser extends Extension {
 
     public static final int STATUS_CODE_SELF_PRESENCE = 110;
+    public static final int STATUS_CODE_ROOM_CREATED = 201;
+    public static final int STATUS_CODE_BANNED = 301;
+    public static final int STATUS_CODE_CHANGED_NICK = 303;
+    public static final int STATUS_CODE_KICKED = 307;
+    public static final int STATUS_CODE_AFFILIATION_CHANGE = 321;
+    public static final int STATUS_CODE_LOST_MEMBERSHIP = 322;
+    public static final int STATUS_CODE_SHUTDOWN = 332;
+    public static final int STATUS_CODE_TECHNICAL_REASONS = 333;
 
     public MucUser() {
         super(MucUser.class);

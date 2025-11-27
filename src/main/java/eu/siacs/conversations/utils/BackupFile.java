@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -178,6 +179,9 @@ public class BackupFile implements Comparable<BackupFile> {
     @Override
     public int compareTo(final BackupFile o) {
         return ComparisonChain.start()
+                .compare(
+                        o.header.getInstant().truncatedTo(ChronoUnit.DAYS),
+                        header.getInstant().truncatedTo(ChronoUnit.DAYS))
                 .compare(header.getJid(), o.header.getJid())
                 .compare(o.header.getTimestamp(), header.getTimestamp())
                 .result();

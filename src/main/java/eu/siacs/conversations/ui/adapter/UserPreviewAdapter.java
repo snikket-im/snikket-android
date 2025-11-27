@@ -5,12 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ItemUserPreviewBinding;
 import eu.siacs.conversations.entities.MucOptions;
@@ -51,17 +49,16 @@ public class UserPreviewAdapter extends ListAdapter<MucOptions.User, UserPreview
                             if (activity == null) {
                                 return;
                             }
-                            final var contact = user.getContact();
-                            if (user.getRole() == MucOptions.Role.NONE && contact != null) {
+                            if (user.resource() == null) {
                                 Toast.makeText(
                                                 activity,
                                                 activity.getString(
                                                         R.string.user_has_left_conference,
-                                                        contact.getDisplayName()),
+                                                        user.getDisplayName()),
                                                 Toast.LENGTH_SHORT)
                                         .show();
                             }
-                            activity.highlightInMuc(user.getConversation(), user.getName());
+                            activity.highlightInMuc(user.getConversation(), user.resource());
                         });
         viewHolder.binding.getRoot().setOnCreateContextMenuListener(this);
         viewHolder.binding.getRoot().setTag(user);

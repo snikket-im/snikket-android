@@ -1,0 +1,2 @@
+* Suure resolutsiooniga tunnuspiltide (profiilipiltide) üleslaadimine ja kuvamine, kui server seda võimalust toetab
+* „XEP-0425: Moderated Message Retraction“ spetsifikatsiooni tugi avalikes kanalites (sõnumi kustutamine moderaatori poolt)

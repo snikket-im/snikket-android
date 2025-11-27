@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_resource">Phone</string>
     <bool name="portrait_only">true</bool>
     <bool name="enter_is_send">false</bool>
     <bool name="notifications_from_strangers">true</bool>
@@ -9,7 +8,6 @@
     <bool name="treat_vibrate_as_silent">false</bool>
     <bool name="confirm_messages">true</bool>
     <bool name="chat_states">true</bool>
-    <bool name="last_activity">false</bool>
     <bool name="vibrate_on_notification">true</bool>
     <bool name="led">true</bool>
     <string name="notification_ringtone">content://settings/system/notification_sound</string>

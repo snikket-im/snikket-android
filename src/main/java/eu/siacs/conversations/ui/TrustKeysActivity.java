@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.databinding.DataBindingUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.common.collect.ImmutableSet;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
@@ -29,6 +30,7 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -345,9 +347,9 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
     }
 
     private boolean reloadFingerprints() {
-        List<Jid> acceptedTargets =
+        final Set<Jid> acceptedTargets =
                 mConversation == null
-                        ? new ArrayList<>()
+                        ? Collections.emptySet()
                         : mConversation.getAcceptedCryptoTargets();
         ownKeysToTrust.clear();
         if (this.mAccount == null) {
@@ -485,17 +487,15 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
                             fingerprint,
                             FingerprintStatus.createActive(ownKeysToTrust.get(fingerprint)));
         }
-        List<Jid> acceptedTargets =
-                mConversation == null
-                        ? new ArrayList<>()
-                        : mConversation.getAcceptedCryptoTargets();
+        final var acceptedTargetsBuilder = new ImmutableSet.Builder<Jid>();
+        if (mConversation != null) {
+            acceptedTargetsBuilder.addAll(mConversation.getAcceptedCryptoTargets());
+        }
         synchronized (this.foreignKeysToTrust) {
-            for (Map.Entry<Jid, Map<String, Boolean>> entry : foreignKeysToTrust.entrySet()) {
-                Jid jid = entry.getKey();
+            for (final var entry : foreignKeysToTrust.entrySet()) {
+                final Jid jid = entry.getKey();
                 Map<String, Boolean> value = entry.getValue();
-                if (!acceptedTargets.contains(jid)) {
-                    acceptedTargets.add(jid);
-                }
+                acceptedTargetsBuilder.add(jid);
                 for (final String fingerprint : value.keySet()) {
                     mAccount.getAxolotlService()
                             .setFingerprintTrust(
@@ -505,7 +505,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
             }
         }
         if (mConversation != null && mConversation.getMode() == Conversation.MODE_MULTI) {
-            mConversation.setAcceptedCryptoTargets(acceptedTargets);
+            mConversation.setAcceptedCryptoTargets(acceptedTargetsBuilder.build());
             xmppConnectionService.updateConversation(mConversation);
         }
     }

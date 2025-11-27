@@ -13,6 +13,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -249,7 +250,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
     private boolean isWithStrangerAndStrangerNotificationsAreOff(final Account account, Jid with) {
         final boolean notifyForStrangers =
-                mXmppConnectionService.getNotificationService().notificationsFromStrangers();
+                new AppSettings(mXmppConnectionService.getApplicationContext())
+                        .isNotificationsFromStrangers();
         if (notifyForStrangers) {
             return false;
         }
@@ -632,7 +634,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             if (entry.getValue() instanceof JingleRtpConnection jingleRtpConnection) {
                 final AbstractJingleConnection.Id id = entry.getKey();
                 if (id.account == contact.getAccount()
-                        && id.with.asBareJid().equals(contact.getJid().asBareJid())) {
+                        && id.with.asBareJid().equals(contact.getAddress().asBareJid())) {
                     return Optional.of(jingleRtpConnection);
                 }
             }
@@ -642,7 +644,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     this.rtpSessionProposals.entrySet()) {
                 final RtpSessionProposal proposal = entry.getKey();
                 if (proposal.account == contact.getAccount()
-                        && contact.getJid().asBareJid().equals(proposal.with)) {
+                        && contact.getAddress().asBareJid().equals(proposal.with)) {
                     final DeviceDiscoveryState preexistingState = entry.getValue();
                     if (preexistingState != null
                             && preexistingState != DeviceDiscoveryState.FAILED) {
@@ -858,7 +860,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         final var messagePacket =
                 mXmppConnectionService
                         .getMessageGenerator()
-                        .sessionFinish(contact.getJid(), sessionId, reason);
+                        .sessionFinish(contact.getAddress(), sessionId, reason);
         mXmppConnectionService.sendMessagePacket(account, messagePacket);
     }
 
@@ -898,6 +900,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public void deliverIbbPacket(final Account account, final Iq packet) {
+        // TODO use extensions
         final String sid;
         final Element payload;
         final InbandBytestreamsTransport.PacketType packetType;

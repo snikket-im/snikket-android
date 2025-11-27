@@ -28,22 +28,18 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
-
 import androidx.core.content.ContextCompat;
-
 import com.google.zxing.ResultPoint;
-
+import eu.siacs.conversations.R;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import eu.siacs.conversations.R;
 
 /**
  * @author Andreas Schildbach
  */
 public class ScannerView extends View {
-    private static final long LASER_ANIMATION_DELAY_MS = 100l;
+    private static final long LASER_ANIMATION_DELAY_MS = 100L;
     private static final int DOT_OPACITY = 0xa0;
     private static final int DOT_TTL_MS = 500;
 
@@ -81,8 +77,12 @@ public class ScannerView extends View {
         dotPaint.setAntiAlias(true);
     }
 
-    public void setFraming(final Rect frame, final RectF framePreview, final int displayRotation,
-            final int cameraRotation, final boolean cameraFlip) {
+    public void setFraming(
+            final Rect frame,
+            final RectF framePreview,
+            final int displayRotation,
+            final int cameraRotation,
+            final boolean cameraFlip) {
         this.frame = frame;
         matrix.setRectToRect(framePreview, new RectF(frame), ScaleToFit.FILL);
         matrix.postRotate(-displayRotation, frame.exactCenterX(), frame.exactCenterY());
@@ -99,15 +99,14 @@ public class ScannerView extends View {
     }
 
     public void addDot(final ResultPoint dot) {
-        dots.put(new float[] { dot.getX(), dot.getY() }, System.currentTimeMillis());
+        dots.put(new float[] {dot.getX(), dot.getY()}, System.currentTimeMillis());
 
         invalidate();
     }
 
     @Override
     public void onDraw(final Canvas canvas) {
-        if (frame == null)
-            return;
+        if (frame == null) return;
 
         final long now = System.currentTimeMillis();
 
@@ -142,7 +141,8 @@ public class ScannerView extends View {
         canvas.drawRect(frame, laserPaint);
 
         // draw points
-        for (final Iterator<Map.Entry<float[], Long>> i = dots.entrySet().iterator(); i.hasNext();) {
+        for (final Iterator<Map.Entry<float[], Long>> i = dots.entrySet().iterator();
+                i.hasNext(); ) {
             final Map.Entry<float[], Long> entry = i.next();
             final long age = now - entry.getValue();
             if (age < DOT_TTL_MS) {

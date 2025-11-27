@@ -1,0 +1,5 @@
+* Obsługa Extensible SASL Profile, Bind 2.0 i Fast dla szybszego ponownego łączenia
+* Obsługa Channel Binding
+* Możliwość przełączania z rozmowy audio na wideo
+* Możliwość usunięcia własnego awatara
+* Dodanie powiadomienia o nieodebranych połączeniach

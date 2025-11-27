@@ -1,0 +1,2 @@
+* mostra o número de participantes no subtítulo para canles públicas 
+* arranxo do proceso para unirse a MUCs en servidores Prosody moi antigos

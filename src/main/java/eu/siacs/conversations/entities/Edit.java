@@ -1,11 +1,11 @@
 package eu.siacs.conversations.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Edit {
 
@@ -45,7 +45,8 @@ public class Edit {
 
     private static Edit fromJson(JSONObject jsonObject) throws JSONException {
         String edited = jsonObject.has("edited_id") ? jsonObject.getString("edited_id") : null;
-        String serverMsgId = jsonObject.has("server_msg_id") ? jsonObject.getString("server_msg_id") : null;
+        String serverMsgId =
+                jsonObject.has("server_msg_id") ? jsonObject.getString("server_msg_id") : null;
         return new Edit(edited, serverMsgId);
     }
 
@@ -83,9 +84,8 @@ public class Edit {
 
         Edit edit = (Edit) o;
 
-        if (editedId != null ? !editedId.equals(edit.editedId) : edit.editedId != null)
-            return false;
-        return serverMsgId != null ? serverMsgId.equals(edit.serverMsgId) : edit.serverMsgId == null;
+        if (!Objects.equals(editedId, edit.editedId)) return false;
+        return Objects.equals(serverMsgId, edit.serverMsgId);
     }
 
     @Override

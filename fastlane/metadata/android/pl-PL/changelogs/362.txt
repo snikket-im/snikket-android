@@ -1,0 +1,1 @@
+* Obsługa automatycznego przełączania motywu na Androidzie 10

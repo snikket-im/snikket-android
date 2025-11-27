@@ -8,7 +8,6 @@
     <string name="channel_details">Detalls del canal</string>
     <string name="action_add_account">Afegeix un compte</string>
     <string name="action_edit_contact">Edita el nom</string>
-    <string name="action_add_phone_book">Afegeix a la llibreta d\'adreces</string>
     <string name="action_delete_contact">Elimina de la llista de contactes</string>
     <string name="action_block_contact">Bloqueja el contacte</string>
     <string name="action_unblock_contact">Desbloqueja el contacte</string>
@@ -195,13 +194,6 @@
     <string name="server_info_available">Disponible</string>
     <string name="server_info_unavailable">No disponible</string>
     <string name="missing_public_keys">No es troben anuncis de clau pública</string>
-    <string name="last_seen_now">darrera connexió: ara mateix</string>
-    <string name="last_seen_min">vist per última vegada fa un minut</string>
-    <string name="last_seen_mins">darrera connexió: fa %d minuts</string>
-    <string name="last_seen_hour">vist per última vegada fa una hora</string>
-    <string name="last_seen_hours">darrera connexió: fa %d hores</string>
-    <string name="last_seen_day">vist per última vegada fa un dia</string>
-    <string name="last_seen_days">darrera connexió: fa %d dies</string>
     <string name="install_openkeychain">Missatge encriptat. Si us plau, instal·la OpenKeychain per a desencriptar-ho.</string>
     <string name="openpgp_messages_found">S\'han trobat nous missatges xifrats OpenPGP</string>
     <string name="openpgp_key_id">Identificador de la clau d\'OpenPGP</string>

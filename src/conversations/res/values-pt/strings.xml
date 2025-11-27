@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pick_a_server">Selecione o provedor XMPP</string>
+    <string name="use_conversations.im">Usar conversations.im</string>
+    <string name="create_new_account">Criar nova conta</string>
+    <string name="do_you_have_an_account">Já tem uma conta XMPP? Esse pode ser o caso se já usou um cliente de XMPP diferente ou tenha usado o Conversations antes. Caso contrário, pode criar uma agora. \nDica: Alguns provedores de e-mail também fornecem contas XMPP.</string>
+    <string name="your_server_invitation">O teu convite do servidor</string>
+    <string name="improperly_formatted_provisioning">Código de provisionamento formatado incorretamente</string>
+    <string name="tap_share_button_send_invite">Toque no botão de partilha para enviar ao seu contacto um convite para %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Se o seu contacto está por perto, também podem scanerizar o código abaixo para aceitar o convite.</string>
+    <string name="easy_invite_share_text">Junte-se a %1$s e fale comigo: %2$s</string>
+    <string name="share_invite_with">Partilhar convite com…</string>
+    <string name="server_select_text">XMPP é um provedor independente de rede de mensagens instantânea. Pode usar esta aplicação com qualquer servidor XMPP que escolha.\nNo entanto, para a sua conveniência, facilitamos criar uma conta em conversations.im, um provedor especificamente adaptado para o uso com Conversations.</string>
+    <string name="magic_create_text_on_x">Foi convidado para %1$s. Iremos guiá-lo ao longo do processo de criar uma conta.\nQuando selecionando %1$s como um provedor irá conseguir comunicar com utilizadores de outros provedores ao dar o seu endereço completo XMPP.</string>
+    <string name="magic_create_text_fixed">Foi convidado para %1$s. Um nome de utilizador já foi escolhido para si. Iremos guiá-lo ao longo do processo de criar uma conta.\nIrá conseguir comunicar com utilizadores de outros provedores ao dar o seu endereço completo de XMPP.</string>
+</resources>

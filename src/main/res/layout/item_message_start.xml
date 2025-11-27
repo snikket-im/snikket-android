@@ -7,7 +7,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/bubble_horizontal_padding"
-        android:paddingVertical="@dimen/bubble_vertical_padding">
+        android:paddingVertical="@dimen/bubble_vertical_padding"
+        android:paddingStart="2dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="2dp"
+        android:paddingBottom="2dp">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/message_photo"

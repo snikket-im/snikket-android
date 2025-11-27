@@ -92,13 +92,10 @@ public class GeoHelper {
                 locationPluginIntent.putExtra(
                         "name", conversation.getAccount().getJid().getLocal());
             } else {
-                Contact contact = message.getContact();
+                locationPluginIntent.putExtra("name", UIHelper.getMessageDisplayName(message));
+                final Contact contact = message.getContact();
                 if (contact != null) {
-                    locationPluginIntent.putExtra("name", contact.getDisplayName());
-                    locationPluginIntent.putExtra("jid", contact.getJid().toString());
-                } else {
-                    locationPluginIntent.putExtra(
-                            "name", UIHelper.getDisplayedMucCounterpart(message.getCounterpart()));
+                    locationPluginIntent.putExtra("jid", contact.getAddress().toString());
                 }
             }
             intents.add(locationPluginIntent);
@@ -162,7 +159,7 @@ public class GeoHelper {
         if (message.getStatus() == Message.STATUS_RECEIVED) {
             try {
                 return URLEncoder.encode(UIHelper.getMessageDisplayName(message), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
+            } catch (final UnsupportedEncodingException e) {
                 throw new AssertionError(e);
             }
         } else {

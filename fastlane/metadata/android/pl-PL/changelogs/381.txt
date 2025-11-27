@@ -1,0 +1,2 @@
+* Sygnalizacja dźwiękowa (dzwonienie, rozpoczęcie rozmowy, zakończenie) dla rozmów głosowych
+* Naprawienie problemu z ponawianiem błędnie zakończonej rozmowy wideo

@@ -3,6 +3,7 @@ package eu.siacs.conversations.xml;
 public final class Namespace {
     public static final String ADDRESSING = "http://jabber.org/protocol/address";
     public static final String AXOLOTL = "eu.siacs.conversations.axolotl";
+    public static final String BOB = "urn:xmpp:bob";
     public static final String PGP_SIGNED = "jabber:x:signed";
     public static final String PGP_ENCRYPTED = "jabber:x:encrypted";
     public static final String AXOLOTL_BUNDLES = AXOLOTL + ".bundles";
@@ -14,10 +15,12 @@ public final class Namespace {
     public static final String RESULT_SET_MANAGEMENT = "http://jabber.org/protocol/rsm";
     public static final String CHAT_MARKERS = "urn:xmpp:chat-markers:0";
     public static final String CHAT_STATES = "http://jabber.org/protocol/chatstates";
+    public static final String CAPTCHA = "urn:xmpp:captcha";
     public static final String DELIVERY_RECEIPTS = "urn:xmpp:receipts";
     public static final String REACTIONS = "urn:xmpp:reactions:0";
     public static final String VCARD_TEMP = "vcard-temp";
     public static final String VCARD_TEMP_UPDATE = "vcard-temp:x:update";
+    public static final String DIRECT_MUC_INVITATIONS = "jabber:x:conference";
     public static final String DELAY = "urn:xmpp:delay";
     public static final String OCCUPANT_ID = "urn:xmpp:occupant-id:0";
     public static final String STREAMS = "http://etherx.jabber.org/streams";
@@ -33,7 +36,7 @@ public final class Namespace {
     public static final String REGISTER_STREAM_FEATURE = "http://jabber.org/features/iq-register";
     public static final String BYTE_STREAMS = "http://jabber.org/protocol/bytestreams";
     public static final String HTTP_UPLOAD = "urn:xmpp:http:upload:0";
-    public static final String HTTP_UPLOAD_LEGACY = "urn:xmpp:http:upload";
+    public static final String HTTP_UPLOAD_PURPOSE = "urn:xmpp:http:upload:purpose:0";
     public static final String STANZA_IDS = "urn:xmpp:sid:0";
     public static final String IDLE = "urn:xmpp:idle:1";
     public static final String DATA = "jabber:x:data";
@@ -42,14 +45,20 @@ public final class Namespace {
     public static final String SASL_2 = "urn:xmpp:sasl:2";
     public static final String CHANNEL_BINDING = "urn:xmpp:sasl-cb:0";
     public static final String FAST = "urn:xmpp:fast:0";
+    public static final String TIME = "urn:xmpp:time";
     public static final String TLS = "urn:ietf:params:xml:ns:xmpp-tls";
-    public static final String PUBSUB = "http://jabber.org/protocol/pubsub";
-    public static final String PUBSUB_EVENT = PUBSUB + "#event";
     public static final String MUC = "http://jabber.org/protocol/muc";
-    public static final String PUBSUB_PUBLISH_OPTIONS = PUBSUB + "#publish-options";
-    public static final String PUBSUB_CONFIG_NODE_MAX = PUBSUB + "#config-node-max";
-    public static final String PUBSUB_ERROR = PUBSUB + "#errors";
-    public static final String PUBSUB_OWNER = PUBSUB + "#owner";
+    public static final String MUC_ADMIN = MUC + "#admin";
+    public static final String MUC_OWNER = MUC + "#owner";
+    public static final String MUC_USER = MUC + "#user";
+    public static final String MUC_ROOM_INFO = MUC + "#roominfo";
+    public static final String PUB_SUB = "http://jabber.org/protocol/pubsub";
+    public static final String PUB_SUB_EVENT = PUB_SUB + "#event";
+    public static final String PUB_SUB_PUBLISH_OPTIONS = PUB_SUB + "#publish-options";
+    public static final String PUB_SUB_CONFIG_NODE_MAX = PUB_SUB + "#config-node-max";
+    public static final String PUB_SUB_ERROR = PUB_SUB + "#errors";
+    public static final String PUB_SUB_OWNER = PUB_SUB + "#owner";
+    public static final String PUB_SUB_PERSISTENT_ITEMS = PUB_SUB + "#persistent-items";
     public static final String NICK = "http://jabber.org/protocol/nick";
     public static final String FLEXIBLE_OFFLINE_MESSAGE_RETRIEVAL =
             "http://jabber.org/protocol/offline";
@@ -92,10 +101,9 @@ public final class Namespace {
     public static final String PING = "urn:xmpp:ping";
     public static final String PUSH = "urn:xmpp:push:0";
     public static final String COMMANDS = "http://jabber.org/protocol/commands";
-    public static final String MUC_USER = "http://jabber.org/protocol/muc#user";
     public static final String BOOKMARKS2 = "urn:xmpp:bookmarks:1";
     public static final String BOOKMARKS2_COMPAT = BOOKMARKS2 + "#compat";
-    public static final String INVITE = "urn:xmpp:invite";
+    public static final String PRE_AUTHENTICATED_IN_BAND_REGISTRATION = "urn:xmpp:ibr-token:0";
     public static final String PARS = "urn:xmpp:pars:0";
     public static final String EASY_ONBOARDING_INVITE = "urn:xmpp:invite#invite";
     public static final String OMEMO_DTLS_SRTP_VERIFICATION =
@@ -105,11 +113,14 @@ public final class Namespace {
     public static final String UNIFIED_PUSH = "http://gultsch.de/xmpp/drafts/unified-push";
     public static final String REPORTING = "urn:xmpp:reporting:1";
     public static final String REPORTING_REASON_SPAM = "urn:xmpp:reporting:spam";
+    public static final String RETRACTION = "urn:xmpp:message-retract:1";
     public static final String SDP_OFFER_ANSWER = "urn:ietf:rfc:3264";
+    public static final String SESSION = "urn:ietf:params:xml:ns:xmpp-session";
     public static final String HASHES = "urn:xmpp:hashes:2";
+    public static final String MEDIA_ELEMENT = "urn:xmpp:media-element";
     public static final String MDS_DISPLAYED = "urn:xmpp:mds:displayed:0";
     public static final String MDS_SERVER_ASSIST = "urn:xmpp:mds:server-assist:0";
-
+    public static final String MODERATION = "urn:xmpp:message-moderate:1";
     public static final String ENTITY_CAPABILITIES = "http://jabber.org/protocol/caps";
     public static final String ENTITY_CAPABILITIES_2 = "urn:xmpp:caps";
     public static final String PRIVATE_XML_STORAGE = "jabber:iq:private";

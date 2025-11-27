@@ -16,6 +16,11 @@ public class VCardUpdate extends Extension {
 
     public String getHash() {
         final var photo = getPhoto();
-        return photo == null ? null : photo.getContent();
+        final var hash = photo == null ? null : photo.getContent();
+        return isValidSHA1(hash) ? hash : null;
+    }
+
+    public static boolean isValidSHA1(final String s) {
+        return s != null && s.matches("[a-fA-F0-9]{40}");
     }
 }

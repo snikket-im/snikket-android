@@ -6,6 +6,7 @@ import com.google.common.base.CharMatcher;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import de.gultsch.common.MiniUri;
 import eu.siacs.conversations.xmpp.Jid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -58,7 +59,7 @@ public class XmppUri {
         final ImmutableMap.Builder<String, String> builder = new ImmutableMap.Builder<>();
         final String[] pairs =
                 query == null ? new String[0] : query.split(String.valueOf(separator));
-        for (String pair : pairs) {
+        for (final var pair : pairs) {
             final String[] parts = pair.split("=", 2);
             if (parts.length == 0) {
                 continue;
@@ -66,19 +67,13 @@ public class XmppUri {
             final String key = parts[0].toLowerCase(Locale.US);
             final String value;
             if (parts.length == 2) {
-                String decoded;
-                try {
-                    decoded = URLDecoder.decode(parts[1], "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    decoded = "";
-                }
-                value = decoded;
+                value = MiniUri.urlDecodeOrEmpty(parts[1]);
             } else {
                 value = "";
             }
             builder.put(key, value);
         }
-        return builder.build();
+        return builder.buildKeepingLast();
     }
 
     private static List<Fingerprint> parseFingerprints(Map<String, String> parameters) {

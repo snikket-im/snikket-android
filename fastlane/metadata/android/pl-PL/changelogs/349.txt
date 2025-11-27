@@ -1,0 +1,4 @@
+* Wprowadzenie ustawienia eksperckiego do przeprowadzania odkrywania kanałów na lokalnym serwerze zamiast search.jabber.network
+* Włączenie znaczników dostarczenia domyślnie i usunięcie ustawienia
+* Włączenie „Przycisk wysyłki pokazuje status” domyślnie i usunięcie ustawienia
+* Przeniesienie ustawień kopii zapasowych i usługi na pierwszym planie na główny ekran

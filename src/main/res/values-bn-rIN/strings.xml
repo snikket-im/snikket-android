@@ -8,7 +8,6 @@
     <string name="channel_details">চ্যনেলের বিশদ বিবরণ</string>
     <string name="action_add_account">একটা অ্যকাউন্ট তৈরী করা যাক</string>
     <string name="action_edit_contact">নামটা বদল করা যাক</string>
-    <string name="action_add_phone_book">অ্যড্রেসবুকে সংরক্ষণ করা যাক</string>
     <string name="action_delete_contact">তালিকা থেকে মুছে ফেলা যাক</string>
     <string name="action_block_contact">এই ব্যক্তিকে ব্লক্ করা যাক</string>
     <string name="action_unblock_contact">ব্লকটা সরিয়ে ফেলা যাক</string>

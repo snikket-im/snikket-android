@@ -31,43 +31,42 @@ package eu.siacs.conversations.entities;
 
 import eu.siacs.conversations.xmpp.Jid;
 
-
 public class StubConversation implements Conversational {
 
-	private final Account account;
-	private final String uuid;
-	private final Jid jid;
-	private final int mode;
+    private final Account account;
+    private final String uuid;
+    private final Jid jid;
+    private final int mode;
 
-	public StubConversation(Account account, String uuid, Jid jid, int mode) {
-		this.account = account;
-		this.uuid = uuid;
-		this.jid = jid;
-		this.mode = mode;
-	}
+    public StubConversation(Account account, String uuid, Jid jid, int mode) {
+        this.account = account;
+        this.uuid = uuid;
+        this.jid = jid;
+        this.mode = mode;
+    }
 
-	@Override
-	public Account getAccount() {
-		return account;
-	}
+    @Override
+    public Account getAccount() {
+        return account;
+    }
 
-	@Override
-	public Contact getContact() {
-		return account.getRoster().getContact(jid);
-	}
+    @Override
+    public Contact getContact() {
+        return account.getRoster().getContact(jid);
+    }
 
-	@Override
-	public Jid getJid() {
-		return jid;
-	}
+    @Override
+    public Jid getAddress() {
+        return jid;
+    }
 
-	@Override
-	public int getMode() {
-		return mode;
-	}
+    @Override
+    public int getMode() {
+        return mode;
+    }
 
-	@Override
-	public String getUuid() {
-		return uuid;
-	}
+    @Override
+    public String getUuid() {
+        return uuid;
+    }
 }

@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import androidx.databinding.DataBindingUtil;
 import com.google.common.base.Stopwatch;
-import com.google.common.collect.ImmutableSet;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityRecordingBinding;
@@ -26,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -116,26 +114,6 @@ public class RecordingActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    private static final Set<String> AAC_SENSITIVE_DEVICES =
-            new ImmutableSet.Builder<String>()
-                    .add("FP4") // Fairphone 4
-                    // https://codeberg.org/monocles/monocles_chat/issues/133
-                    .add("ONEPLUS A6000") // OnePlus 6
-                    // https://github.com/iNPUTmice/Conversations/issues/4329
-                    .add("ONEPLUS A6003") // OnePlus 6
-                    // https://github.com/iNPUTmice/Conversations/issues/4329
-                    .add("ONEPLUS A6010") // OnePlus 6T
-                    // https://codeberg.org/monocles/monocles_chat/issues/133
-                    .add("ONEPLUS A6013") // OnePlus 6T
-                    // https://codeberg.org/monocles/monocles_chat/issues/133
-                    .add("Pixel 4a") // Pixel 4a
-                    // https://github.com/iNPUTmice/Conversations/issues/4223
-                    .add("WP12 Pro") // Oukitel WP 12 Pro
-                    // https://github.com/iNPUTmice/Conversations/issues/4223
-                    .add("Volla Phone X") // Volla Phone X
-                    // https://github.com/iNPUTmice/Conversations/issues/4223
-                    .build();
-
     private boolean startRecording() {
         mRecorder = new MediaRecorder();
         stopwatch = Stopwatch.createUnstarted();
@@ -157,18 +135,11 @@ public class RecordingActivity extends BaseActivity implements View.OnClickListe
         } else {
             outputFormat = MediaRecorder.OutputFormat.MPEG_4;
             mRecorder.setOutputFormat(outputFormat);
-            if (AAC_SENSITIVE_DEVICES.contains(Build.MODEL)
-                    && Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU) {
-                // Changing these three settings for AAC sensitive devices for Android<=13 might
-                // lead to sporadically truncated (cut-off) voice messages.
-                mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
-                mRecorder.setAudioSamplingRate(24_000);
-                mRecorder.setAudioEncodingBitRate(28_000);
-            } else {
-                mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-                mRecorder.setAudioSamplingRate(44_100);
-                mRecorder.setAudioEncodingBitRate(64_000);
-            }
+            // Changing these three settings for AAC sensitive devices for Android<=13 might
+            // lead to sporadically truncated (cut-off) voice messages.
+            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
+            mRecorder.setAudioSamplingRate(24_000);
+            mRecorder.setAudioEncodingBitRate(28_000);
         }
         setupOutputFile(outputFormat);
         mRecorder.setOutputFile(mOutputFile.getAbsolutePath());

@@ -6,7 +6,6 @@
     <string name="action_muc_details">جزئیات چت گروهی</string>
     <string name="action_add_account">اضافه کردن حساب کاربری</string>
     <string name="action_edit_contact">تغییر نام</string>
-    <string name="action_add_phone_book">اضافه کردن به لیست ادرس ها</string>
     <string name="action_delete_contact">حذف از لیست نام ها</string>
     <string name="action_block_contact">بلاک مخاطب</string>
     <string name="action_unblock_contact">غیر بلاک کردن مخاطب</string>
@@ -118,10 +117,6 @@
     <string name="server_info_show_more">مشخصات سرور</string>
     <string name="server_info_available">در دسترس</string>
     <string name="server_info_unavailable">خارج از دسترس</string>
-    <string name="last_seen_now">آخرین بار همین الان</string>
-    <string name="last_seen_mins">آخرین بار %d دقیقه پیش</string>
-    <string name="last_seen_hours">آخرین بار %d ساعت پیش</string>
-    <string name="last_seen_days">آخرین بار %d روز پیش</string>
     <string name="other_devices">دستگاه‌های دیگر</string>
     <string name="fetching_keys">در حال دریافت کلیدها…</string>
     <string name="decrypt">رمزگشایی</string>
@@ -405,7 +400,6 @@
     <string name="grant_admin_privileges">اعطای اجازه‌های مدیریت</string>
     <string name="vector_graphic">تصویر برداری</string>
     <string name="microphone_unavailable">میکروفون شما دردسترس نیست</string>
-    <string name="last_seen_day">آخرین یک روز پیش</string>
     <string name="error_saving_avatar">ذخیرهٔ تصویر نمایه ممکن نبود</string>
     <string name="server_does_not_support_easy_onboarding_invites">با این سرور نمی‌توان دعوت‌نامه ساخت</string>
     <string name="error_no_keys_to_trust_server_error">هیچ کلید قابل استفاده‌ای برای این مخاطب وجود ندارد.
@@ -465,7 +459,6 @@
     <string name="no_application_found_to_open_file">برنامه‌ای برای گشودن پرونده وجود ندارد</string>
     <string name="preemptively_grant">درخواست عضویت را خودبه‌خود بپذیر</string>
     <string name="pref_remove_trusted_certificates_summary">گواهینامه‌های امنیتی تأییدشده را حذف کن</string>
-    <string name="last_seen_hour">آخرین بار یک ساعت پیش</string>
     <string name="confirm">تأیید</string>
     <string name="encrypted_with_openpgp">رمزشده با OpenPGP</string>
     <string name="audio_call">تماس صوتی</string>
@@ -565,7 +558,6 @@
     <string name="search_all_conversations">همهٔ گفتگوها</string>
     <string name="disable_notifications">قطع اعلان‌ها</string>
     <string name="return_to_ongoing_call">بازگشت به تماس جاری</string>
-    <string name="last_seen_min">آخرین بار یک دقیقه پیش</string>
     <string name="could_not_change_affiliation">تغییر نسبت %s ممکن نبود</string>
     <string name="toast_no_trusted_certs">هیچ گواهینامهٔ امنیتی‌ای مستقیماً تأیید نشده</string>
     <string name="rtp_state_content_add_video">تبدیل به تماس ویدیویی؟</string>

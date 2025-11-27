@@ -2,11 +2,11 @@
 <resources>
     <string name="pref_notification_grace_period_summary">Czas, przez który Quicksy jest cicho po zobaczeniu aktywności na innym urządzeniu</string>
     <string name="pref_never_send_crash_summary">Wysyłając ślady stosu pomagasz w ciągłym rozwoju Quicksy</string>
-    <string name="pref_broadcast_last_activity_summary">Powiadom kontakty o tym że używasz Quicksy</string>
+    <string name="pref_broadcast_last_activity_summary">Powiadom kontakty o tym że używasz Quicksy</string>
     <string name="huawei_protected_apps_summary">Aby otrzymywać powiadomienia nawet kiedy ekran jest wyłączony musisz dodać Quicksy do listy chronionych aplikacji.</string>
     <string name="set_profile_picture">Obrazek profilowy Quicksy</string>
     <string name="not_available_in_your_country">Quicksy nie jest dostępne w Twoim kraju.</string>
     <string name="unable_to_verify_server_identity">Nie udało się sprawdzić tożsamości serwera.</string>
     <string name="unknown_security_error">Nieznany błąd bezpieczeństwa.</string>
-    <string name="timeout_while_connecting_to_server">Błąd czasu oczekiwania na połączenie z serwerem.</string>
+    <string name="timeout_while_connecting_to_server">Błąd czasu oczekiwania na połączenie z serwerem.</string>
 </resources>

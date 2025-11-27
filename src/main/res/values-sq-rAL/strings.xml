@@ -7,7 +7,6 @@
     <string name="channel_details">Hollësi kanali</string>
     <string name="action_add_account">Shtoni llogari</string>
     <string name="action_edit_contact">Përpunoni emër</string>
-    <string name="action_add_phone_book">Shtoje te libër adresash</string>
     <string name="action_block_contact">Bllokojeni kontaktin</string>
     <string name="action_unblock_contact">Zhbllokoje kontaktin</string>
     <string name="action_block_domain">Blloko përkatësin</string>
@@ -153,13 +152,6 @@
     <string name="server_info_pep">XEP-0163: PEP (Avatarë / OMEMO)</string>
     <string name="server_info_http_upload">XEP-0363: Ngarkim Kartelash HTTP</string>
     <string name="server_info_unavailable">jo i passhëm</string>
-    <string name="last_seen_now">parë së fundi mu tani</string>
-    <string name="last_seen_min">parë së fundi një minutë më parë</string>
-    <string name="last_seen_mins">parë së fundi %d minuta më parë</string>
-    <string name="last_seen_hour">parë së fundi një orë më parë</string>
-    <string name="last_seen_hours">parë së fundi %d orë më parë</string>
-    <string name="last_seen_day">parë së fundi një ditë më parë</string>
-    <string name="last_seen_days">parë së fundi %d ditë më parë</string>
     <string name="openpgp_messages_found">U gjetën mesazhe të rinj të fshehtëzuar me OpenPGP</string>
     <string name="openpgp_key_id">ID Kyçi OpenPGP</string>
     <string name="omemo_fingerprint">Shenja gishtash OMEMO</string>
@@ -1106,8 +1098,6 @@
     <string name="more_reactions">Më tepër reagime</string>
     <string name="could_not_modify_call">S’u ndryshua dot thirrja</string>
     <string name="clients_may_not_support_av">Klienti XMPP i kontaktit tuaj mund të mos mbulojë thirrje me audio/video.</string>
-    <string name="pref_show_avatars">Shfaq avatarë</string>
-    <string name="pref_show_avatars_summary">Shfaq avatarë për mesazhet tuaj të rinj dhe fjalosjet 1:1, përtej fjalosjeve grupi.</string>
     <string name="pref_chat_bubbles">Flluska fjalosjesh</string>
     <string name="pref_chat_bubbles_summary">Ngjyrë sfondi, Madhësi shkronjash, avatarë</string>
     <string name="pref_title_bubbles">Flluska Fjalosjesh</string>
@@ -1136,4 +1126,7 @@
     <string name="sos_scheduled_return">Shërbimi është vënë në plan të rikthehet në funksionim më %s</string>
     <string name="account_status_service_outage_known">Shërbim Jashtë Funksionimi (Problem i Ditur)</string>
     <string name="account_status_service_outage_scheduled">Kohë Mosfunksionimi e Planifikuar</string>
+    <string name="save_to_contact">Ruaje te Kontaktet</string>
+    <string name="show_in_contacts">Shfaqe te Kontakte</string>
+    <string name="no_contacts_permission">%1$s ka nevojë për hyrje te kontaktet tuaja</string>
 </resources>

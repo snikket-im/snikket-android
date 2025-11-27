@@ -2,11 +2,10 @@ package eu.siacs.conversations.parser;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.xmpp.model.stanza.Stanza;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,14 +14,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public abstract class AbstractParser {
+public abstract class AbstractParser extends XmppConnection.Delegate {
 
     protected final XmppConnectionService mXmppConnectionService;
-    protected final Account account;
 
-    protected AbstractParser(final XmppConnectionService service, final Account account) {
+    protected AbstractParser(final XmppConnectionService service, final XmppConnection connection) {
+        super(service.getApplicationContext(), connection);
         this.mXmppConnectionService = service;
-        this.account = account;
     }
 
     public static Long parseTimestamp(Element element, Long d) {
@@ -123,42 +121,6 @@ public abstract class AbstractParser {
     protected void updateLastseen(final Account account, final Jid from) {
         final Contact contact = account.getRoster().getContact(from);
         contact.setLastResource(from.isBareJid() ? "" : from.getResource());
-    }
-
-    protected static String avatarData(Element items) {
-        Element item = items.findChild("item");
-        if (item == null) {
-            return null;
-        }
-        return item.findChildContent("data", "urn:xmpp:avatar:data");
-    }
-
-    public static MucOptions.User parseItem(Conversation conference, Element item) {
-        return parseItem(conference, item, null);
-    }
-
-    public static MucOptions.User parseItem(
-            final Conversation conference, Element item, Jid fullJid) {
-        final String local = conference.getJid().getLocal();
-        final String domain = conference.getJid().getDomain().toString();
-        String affiliation = item.getAttribute("affiliation");
-        String role = item.getAttribute("role");
-        String nick = item.getAttribute("nick");
-        if (nick != null && fullJid == null) {
-            try {
-                fullJid = Jid.of(local, domain, nick);
-            } catch (IllegalArgumentException e) {
-                fullJid = null;
-            }
-        }
-        final Jid realJid = item.getAttributeAsJid("jid");
-        MucOptions.User user = new MucOptions.User(conference.getMucOptions(), fullJid);
-        if (Jid.Invalid.isValid(realJid)) {
-            user.setRealJid(realJid);
-        }
-        user.setAffiliation(affiliation);
-        user.setRole(role);
-        return user;
     }
 
     public static String extractErrorMessage(final Element packet) {

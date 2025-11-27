@@ -1,0 +1,2 @@
+* Naprawienie problemu z brakiem kompresji wideo
+* Naprawienie rzadkiej awarii podczas otwierania powiadomienia

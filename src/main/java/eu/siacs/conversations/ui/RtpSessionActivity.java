@@ -296,7 +296,7 @@ public class RtpSessionActivity extends XmppActivity
         final Contact contact = getWith();
         final Conversation conversation =
                 xmppConnectionService.findOrCreateConversation(
-                        contact.getAccount(), contact.getJid(), false, true);
+                        contact.getAccount(), contact.getAddress(), false, true);
         switchToConversation(conversation);
     }
 
@@ -629,7 +629,7 @@ public class RtpSessionActivity extends XmppActivity
         binding.with.setText(contact.getDisplayName());
         if (Arrays.asList(RtpEndUserState.INCOMING_CALL, RtpEndUserState.ACCEPTING_CALL)
                 .contains(state)) {
-            binding.withJid.setText(contact.getJid().asBareJid().toString());
+            binding.withJid.setText(contact.getAddress().asBareJid().toString());
             binding.withJid.setVisibility(View.VISIBLE);
         } else {
             binding.withJid.setVisibility(View.GONE);
@@ -1002,7 +1002,7 @@ public class RtpSessionActivity extends XmppActivity
         if (state == RtpEndUserState.CONNECTIVITY_ERROR
                 && getResources().getBoolean(R.bool.is_portrait_mode)) {
             binding.supportWarning.setVisibility(
-                    RtpCapability.check(contact) == RtpCapability.Capability.NONE
+                    RtpCapability.checkWithFallback(contact) == RtpCapability.Capability.NONE
                             ? View.VISIBLE
                             : View.GONE);
         } else {

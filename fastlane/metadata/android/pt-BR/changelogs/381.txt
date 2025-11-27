@@ -1,0 +1,2 @@
+* Feedback audível (discando, chamada iniciada, chamada encerrada) para chamadas de voz.
+* Correção de problema com a tentativa de reintentar chamadas de vídeo falhadas

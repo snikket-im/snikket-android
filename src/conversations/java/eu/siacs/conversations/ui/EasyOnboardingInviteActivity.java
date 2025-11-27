@@ -12,9 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import com.google.android.material.color.MaterialColors;
-import com.google.common.base.Strings;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityEasyInviteBinding;
@@ -22,9 +24,10 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.utils.EasyOnboardingInvite;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.manager.EasyOnboardingManager;
+import java.util.concurrent.TimeoutException;
 
-public class EasyOnboardingInviteActivity extends XmppActivity
-        implements EasyOnboardingInvite.OnInviteRequested {
+public class EasyOnboardingInviteActivity extends XmppActivity {
 
     private ActivityEasyInviteBinding binding;
 
@@ -155,30 +158,49 @@ public class EasyOnboardingInviteActivity extends XmppActivity
             return;
         }
         final Account account = xmppConnectionService.findAccountByJid(jid);
-        xmppConnectionService.requestEasyOnboardingInvite(account, this);
+        final var future =
+                account.getXmppConnection().getManager(EasyOnboardingManager.class).get();
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(EasyOnboardingInvite invite) {
+                        EasyOnboardingInviteActivity.this.easyOnboardingInvite = invite;
+                        Log.d(Config.LOGTAG, "invite requested");
+                        refreshUi();
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.d(Config.LOGTAG, "could not get invite", t);
+                        if (t instanceof UnsupportedOperationException) {
+                            Toast.makeText(
+                                            getApplicationContext(),
+                                            R.string
+                                                    .server_does_not_support_easy_onboarding_invites,
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        } else if (t instanceof TimeoutException) {
+                            Toast.makeText(
+                                            getApplicationContext(),
+                                            R.string.remote_server_timeout,
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        } else {
+                            Toast.makeText(
+                                            getApplicationContext(),
+                                            R.string.unable_to_parse_invite,
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+                },
+                ContextCompat.getMainExecutor(this));
     }
 
     public static void launch(final Account account, final Activity context) {
         final Intent intent = new Intent(context, EasyOnboardingInviteActivity.class);
         intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
         context.startActivity(intent);
-    }
-
-    @Override
-    public void inviteRequested(EasyOnboardingInvite invite) {
-        this.easyOnboardingInvite = invite;
-        Log.d(Config.LOGTAG, "invite requested");
-        refreshUi();
-    }
-
-    @Override
-    public void inviteRequestFailed(final String message) {
-        runOnUiThread(
-                () -> {
-                    if (!Strings.isNullOrEmpty(message)) {
-                        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-                    }
-                    finish();
-                });
     }
 }

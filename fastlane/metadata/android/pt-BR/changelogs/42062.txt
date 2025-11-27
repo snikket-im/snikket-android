@@ -1,0 +1,1 @@
+* Desabilitar a abertura de arquivos de backup (.ceb) pelo gerenciador de arquivos

@@ -8,7 +8,6 @@
     <string name="channel_details">頻道詳細資料</string>
     <string name="action_add_account">新增帳戶</string>
     <string name="action_edit_contact">編輯名稱</string>
-    <string name="action_add_phone_book">新增至通訊錄</string>
     <string name="action_delete_contact">從名冊中刪除</string>
     <string name="action_block_contact">封鎖聯絡人</string>
     <string name="action_unblock_contact">解除封鎖聯絡人</string>
@@ -184,13 +183,6 @@
     <string name="server_info_available">有效</string>
     <string name="server_info_unavailable">無效</string>
     <string name="missing_public_keys">缺少公開金鑰通知</string>
-    <string name="last_seen_now">剛剛查看過</string>
-    <string name="last_seen_min">1 分鐘前查看過</string>
-    <string name="last_seen_mins">%d 分鐘前查看過</string>
-    <string name="last_seen_hour">1 小時前查看過</string>
-    <string name="last_seen_hours">%d 小時前查看過</string>
-    <string name="last_seen_day">1 天前查看過</string>
-    <string name="last_seen_days">%d 天前查看過</string>
     <string name="install_openkeychain">訊息已加密，請安裝 OpenKeychain 以解密此訊息。</string>
     <string name="openpgp_messages_found">發現新的 OpenPGP 加密訊息</string>
     <string name="openpgp_key_id">OpenPGP 金鑰 ID</string>
@@ -1002,7 +994,7 @@
     <string name="account_state_logged_out">已登出</string>
     <string name="unverified_devices">您正在使用未驗證的設備。請掃描您其他設備上的 QR 碼進行驗證，以防止主動中間人攻擊。</string>
     <string name="audiobook">有聲書</string>
-    <string name="restore_warning_continued">請勿嘗試還原非您自己建立的備份！</string>
+    <string name="restore_warning_continued">僅還原由您親自建立的備份。</string>
     <string name="report_spam">報告垃圾訊息</string>
     <string name="pref_send_crash_reports">發送崩潰報告</string>
     <string name="corresponding_chats_closed">相應的會話已存檔。</string>
@@ -1115,6 +1107,4 @@
     <string name="pref_chat_bubbles">聊天氣泡</string>
     <string name="pref_chat_bubbles_summary">背景顏色、字體大小、大頭貼</string>
     <string name="pref_title_bubbles">聊天氣泡</string>
-    <string name="pref_show_avatars">顯示大頭貼</string>
-    <string name="pref_show_avatars_summary">除了群聊之外，還可以顯示您的訊息和 1 對 1 聊天的大頭貼。</string>
 </resources>

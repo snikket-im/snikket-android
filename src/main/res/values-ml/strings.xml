@@ -121,13 +121,6 @@
     <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_available">ലഭ്യമാണ്</string>
     <string name="server_info_unavailable">ലഭ്യമല്ല</string>
-    <string name="last_seen_now">അവസാനം കണ്ടത് ഇപ്പോൾ</string>
-    <string name="last_seen_min">അവസാനം കണ്ടത് ഒരു മിനിറ്റ് മുമ്പ്</string>
-    <string name="last_seen_mins">അവസാനം കണ്ടത് %d മിനിറ്റ് മുമ്പ്</string>
-    <string name="last_seen_hour">അവസാനം കണ്ടത് ഒരു മണിക്കൂർ മുമ്പ്</string>
-    <string name="last_seen_hours">അവസാനം കണ്ടത് %d മണിക്കൂർ മുമ്പ്</string>
-    <string name="last_seen_day">അവസാനം കണ്ടത് ഒരു ദിവസം മുമ്പ്</string>
-    <string name="last_seen_days">അവസാനം കണ്ടത് %d ദിവസം മുമ്പ്</string>
     <string name="omemo_fingerprint">OMEMO വിരലടയാളം</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO വിരലടയാളം</string>
     <string name="other_devices">മറ്റ് ഉപകരണങ്ങൾ</string>

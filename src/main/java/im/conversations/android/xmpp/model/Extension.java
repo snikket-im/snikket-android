@@ -59,6 +59,16 @@ public class Extension extends Element {
         return child;
     }
 
+    public <T extends Extension> T setExtension(T child) {
+        final var iterator = this.children.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getClass().isInstance(child)) {
+                iterator.remove();
+            }
+        }
+        return this.addExtension(child);
+    }
+
     public void addExtensions(final Collection<? extends Extension> extensions) {
         for (final Extension extension : extensions) {
             addExtension(extension);

@@ -74,16 +74,20 @@ public class MiniUri {
             }
             final String key = parts[0].toLowerCase(Locale.US);
             if (parts.length == 2) {
-                try {
-                    builder.put(key, URLDecoder.decode(parts[1], "UTF-8"));
-                } catch (final UnsupportedEncodingException e) {
-                    builder.put(key, EMPTY_STRING);
-                }
+                builder.put(key, urlDecodeOrEmpty(parts[1]));
             } else {
                 builder.put(key, EMPTY_STRING);
             }
         }
         return builder.build().asMap();
+    }
+
+    public static String urlDecodeOrEmpty(final String input) {
+        try {
+            return URLDecoder.decode(input, "UTF-8");
+        } catch (final UnsupportedEncodingException | IllegalArgumentException e) {
+            return EMPTY_STRING;
+        }
     }
 
     @NonNull

@@ -1,0 +1,2 @@
+* Mostrar el número de participantes como subtítulo para los canales públicos
+* Solucionar problema al unirse a MUCs en servidores muy antiguos de Prosody

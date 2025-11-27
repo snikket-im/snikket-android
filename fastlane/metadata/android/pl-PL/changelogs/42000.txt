@@ -1,0 +1,4 @@
+* Możliwość wybrania dzwonka rozmowy przychodzącej
+* Naprawienie odkrywania identyfikatora klucza OpenPGP dla OpenKeychain 5.6+
+* Prawidłowa weryfikacja certyfikatów TLS z punycode
+* Poprawienie stabilności nawiązywania sesji RTP (podczas rozmów)

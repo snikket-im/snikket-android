@@ -1,0 +1,2 @@
+* Naprawienie awarii podczas renderowania niektórych cytatów
+* Naprawienie awarii na ekranie powitalnym

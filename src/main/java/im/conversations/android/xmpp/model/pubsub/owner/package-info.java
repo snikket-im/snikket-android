@@ -1,5 +1,5 @@
-@XmlPackage(namespace = Namespace.PUBSUB_OWNER)
+@XmlPackage(namespace = Namespace.PUB_SUB_OWNER)
 package im.conversations.android.xmpp.model.pubsub.owner;
 
-import im.conversations.android.annotation.XmlPackage;
 import eu.siacs.conversations.xml.Namespace;
+import im.conversations.android.annotation.XmlPackage;

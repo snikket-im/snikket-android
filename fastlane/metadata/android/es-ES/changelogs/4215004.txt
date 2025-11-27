@@ -1,0 +1,2 @@
+* Subir y mostrar imágenes de perfil (avatares) en alta resolución en servidores compatibles con esta característica
+* Admitir "XEP-0425: Retractación de Mensajes Moderados" en canales públicos

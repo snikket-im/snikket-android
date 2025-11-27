@@ -1,0 +1,2 @@
+* Obsługa statusu niedostępności usługi
+* Drobne poprawki bezpieczeństwa parsowania wielu elementów treści, identyfikatorów uczestników i stanz

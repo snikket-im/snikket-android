@@ -1,0 +1,2 @@
+* Show 'Last seen' prominently in chat title (when enabled)
+* Various bug fixes

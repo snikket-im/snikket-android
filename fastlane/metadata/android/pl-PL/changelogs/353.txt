@@ -1,0 +1,4 @@
+* Umożliwienie użytkownikom ustawiania własnych pseudonimów
+* Przywrócenie pobierania plików zaszyfrowanych OMEMO
+* Kanały mają „#” jako symbol w awatarze
+* Quicksy używa „zawsze” jako domyślne ustawienie szyfrowania OMEMO (ukrywa ikonę kłódki)

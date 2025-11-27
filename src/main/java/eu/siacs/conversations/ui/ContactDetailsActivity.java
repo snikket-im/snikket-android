@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
+import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -32,7 +33,13 @@ import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
@@ -44,7 +51,6 @@ import eu.siacs.conversations.databinding.ActivityContactDetailsBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
-import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.services.AbstractQuickConversationsService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
@@ -64,11 +70,13 @@ import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XEP0392Helper;
 import eu.siacs.conversations.utils.XmppUri;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
+import eu.siacs.conversations.xmpp.manager.RosterManager;
+import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -107,11 +115,10 @@ public class ContactDetailsActivity extends OmemoActivity
                         }
                     } else {
                         contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
-                        xmppConnectionService.sendPresencePacket(
-                                contact.getAccount(),
-                                xmppConnectionService
-                                        .getPresenceGenerator()
-                                        .stopPresenceUpdatesTo(contact));
+                        final var connection = contact.getAccount().getXmppConnection();
+                        connection
+                                .getManager(PresenceManager.class)
+                                .unsubscribed(contact.getAddress().asBareJid());
                     }
                 }
             };
@@ -120,18 +127,15 @@ public class ContactDetailsActivity extends OmemoActivity
 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    final var connection = contact.getAccount().getXmppConnection();
                     if (isChecked) {
-                        xmppConnectionService.sendPresencePacket(
-                                contact.getAccount(),
-                                xmppConnectionService
-                                        .getPresenceGenerator()
-                                        .requestPresenceUpdatesFrom(contact));
+                        connection
+                                .getManager(PresenceManager.class)
+                                .subscribe(contact.getAddress().asBareJid());
                     } else {
-                        xmppConnectionService.sendPresencePacket(
-                                contact.getAccount(),
-                                xmppConnectionService
-                                        .getPresenceGenerator()
-                                        .stopPresenceUpdatesFrom(contact));
+                        connection
+                                .getManager(PresenceManager.class)
+                                .unsubscribe(contact.getAddress().asBareJid());
                     }
                 }
             };
@@ -145,16 +149,14 @@ public class ContactDetailsActivity extends OmemoActivity
     private void checkContactPermissionAndShowAddDialog() {
         if (hasContactsPermission()) {
             showAddToPhoneBookDialog();
-        } else if (QuickConversationsService.isContactListIntegration(this)
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        } else if (QuickConversationsService.isContactListIntegration(this)) {
             requestPermissions(
                     new String[] {Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
         }
     }
 
     private boolean hasContactsPermission() {
-        if (QuickConversationsService.isContactListIntegration(this)
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (QuickConversationsService.isContactListIntegration(this)) {
             return checkSelfPermission(Manifest.permission.READ_CONTACTS)
                     == PackageManager.PERMISSION_GRANTED;
         } else {
@@ -163,7 +165,7 @@ public class ContactDetailsActivity extends OmemoActivity
     }
 
     private void showAddToPhoneBookDialog() {
-        final Jid jid = contact.getJid();
+        final Jid jid = contact.getAddress();
         final boolean quicksyContact =
                 AbstractQuickConversationsService.isQuicksy()
                         && Config.QUICKSY_DOMAIN.equals(jid.getDomain())
@@ -175,7 +177,7 @@ public class ContactDetailsActivity extends OmemoActivity
             value = jid.toString();
         }
         final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle(getString(R.string.action_add_phone_book));
+        builder.setTitle(getString(R.string.save_to_contact));
         builder.setMessage(getString(R.string.add_phone_book_text, value));
         builder.setNegativeButton(getString(R.string.cancel), null);
         builder.setPositiveButton(
@@ -233,9 +235,9 @@ public class ContactDetailsActivity extends OmemoActivity
     protected String getShareableUri(boolean http) {
         if (http) {
             return "https://conversations.im/i/"
-                    + XmppUri.lameUrlEncode(contact.getJid().asBareJid().toString());
+                    + XmppUri.lameUrlEncode(contact.getAddress().asBareJid().toString());
         } else {
-            return "xmpp:" + contact.getJid().asBareJid().toString();
+            return "xmpp:" + contact.getAddress().asBareJid().toString();
         }
     }
 
@@ -295,14 +297,35 @@ public class ContactDetailsActivity extends OmemoActivity
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         // TODO check for Camera / Scan permission
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults.length > 0)
+        if (grantResults.length == 0) {
+            return;
+        }
+        if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
-                    showAddToPhoneBookDialog();
-                    xmppConnectionService.loadPhoneContacts();
-                    xmppConnectionService.startContactObserver();
-                }
+                showAddToPhoneBookDialog();
+                xmppConnectionService.loadPhoneContacts();
+                xmppConnectionService.startContactObserver();
+            } else {
+                showRedirectToAppSettings();
             }
+        }
+    }
+
+    private void showRedirectToAppSettings() {
+        final var dialogBuilder = new MaterialAlertDialogBuilder(this);
+        dialogBuilder.setTitle(R.string.save_to_contact);
+        dialogBuilder.setMessage(
+                getString(R.string.no_contacts_permission, getString(R.string.app_name)));
+        dialogBuilder.setPositiveButton(
+                R.string.continue_btn,
+                (d, w) -> {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                });
+        dialogBuilder.setNegativeButton(R.string.cancel, null);
+        dialogBuilder.create().show();
     }
 
     @Override
@@ -328,7 +351,7 @@ public class ContactDetailsActivity extends OmemoActivity
                                 JidDialog.style(
                                         this,
                                         R.string.remove_contact_text,
-                                        contact.getJid().toString()))
+                                        contact.getAddress().toString()))
                         .setPositiveButton(getString(R.string.delete), removeFromRoster)
                         .create()
                         .show();
@@ -341,8 +364,10 @@ public class ContactDetailsActivity extends OmemoActivity
                             R.string.contact_name,
                             value -> {
                                 contact.setServerName(value);
-                                ContactDetailsActivity.this.xmppConnectionService
-                                        .pushContactToServer(contact);
+                                final var connection = contact.getAccount().getXmppConnection();
+                                connection
+                                        .getManager(RosterManager.class)
+                                        .addRosterItem(contact, null);
                                 populateView();
                                 return null;
                             },
@@ -424,11 +449,15 @@ public class ContactDetailsActivity extends OmemoActivity
             binding.detailsSendPresence.setOnCheckedChangeListener(null);
             binding.detailsReceivePresence.setOnCheckedChangeListener(null);
 
-            List<String> statusMessages = contact.getPresences().getStatusMessages();
-            if (statusMessages.size() == 0) {
+            Collection<String> statusMessages =
+                    ImmutableSet.copyOf(
+                            Collections2.filter(
+                                    Lists.transform(contact.getPresences(), Presence::getStatus),
+                                    s -> !Strings.isNullOrEmpty(s)));
+            if (statusMessages.isEmpty()) {
                 binding.statusMessage.setVisibility(View.GONE);
             } else if (statusMessages.size() == 1) {
-                final String message = statusMessages.get(0);
+                final String message = Iterables.getOnlyElement(statusMessages);
                 binding.statusMessage.setVisibility(View.VISIBLE);
                 final Spannable span = new SpannableString(message);
                 if (Emoticons.isOnlyEmoji(message)) {
@@ -440,16 +469,7 @@ public class ContactDetailsActivity extends OmemoActivity
                 }
                 binding.statusMessage.setText(span);
             } else {
-                StringBuilder builder = new StringBuilder();
-                binding.statusMessage.setVisibility(View.VISIBLE);
-                int s = statusMessages.size();
-                for (int i = 0; i < s; ++i) {
-                    builder.append(statusMessages.get(i));
-                    if (i < s - 1) {
-                        builder.append("\n");
-                    }
-                }
-                binding.statusMessage.setText(builder);
+                binding.statusMessage.setText(Joiner.on('\n').join(statusMessages));
             }
 
             if (contact.getOption(Contact.Options.FROM)) {
@@ -488,29 +508,30 @@ public class ContactDetailsActivity extends OmemoActivity
         }
 
         if (contact.isBlocked() && !this.showDynamicTags) {
-            binding.detailsLastseen.setVisibility(View.VISIBLE);
-            binding.detailsLastseen.setText(R.string.contact_blocked);
+            binding.detailsLastSeen.setVisibility(View.VISIBLE);
+            binding.detailsLastSeen.setText(R.string.contact_blocked);
         } else {
-            if (showLastSeen
-                    && contact.getLastseen() > 0
-                    && contact.getPresences().allOrNonSupport(Namespace.IDLE)) {
-                binding.detailsLastseen.setVisibility(View.VISIBLE);
-                binding.detailsLastseen.setText(
-                        UIHelper.lastseen(
-                                getApplicationContext(),
-                                contact.isActive(),
-                                contact.getLastseen()));
-            } else {
-                binding.detailsLastseen.setVisibility(View.GONE);
-            }
+            binding.detailsLastSeen.setVisibility(View.GONE);
         }
 
-        binding.detailsContactjid.setText(IrregularUnicodeDetector.style(this, contact.getJid()));
+        binding.detailsContactXmppAddress.setText(
+                IrregularUnicodeDetector.style(this, contact.getAddress()));
         final String account = contact.getAccount().getJid().asBareJid().toString();
+        binding.detailsAccount.setOnClickListener(this::onDetailsAccountClicked);
         binding.detailsAccount.setText(getString(R.string.using_account, account));
-        AvatarWorkerTask.loadAvatar(
-                contact, binding.detailsContactBadge, R.dimen.avatar_on_details_screen_size);
-        binding.detailsContactBadge.setOnClickListener(this::onBadgeClick);
+        AvatarWorkerTask.loadAvatar(contact, binding.detailsAvatar, R.dimen.publish_avatar_size);
+        binding.detailsAvatar.setOnClickListener(this::onAvatarClicked);
+        if (QuickConversationsService.isContactListIntegration(this)) {
+            if (contact.getSystemAccount() == null) {
+                binding.addAddressBook.setText(R.string.save_to_contact);
+            } else {
+                binding.addAddressBook.setText(R.string.show_in_contacts);
+            }
+            binding.addAddressBook.setVisibility(View.VISIBLE);
+            binding.addAddressBook.setOnClickListener(this::onAddToAddressBookClick);
+        } else {
+            binding.addAddressBook.setVisibility(View.GONE);
+        }
 
         binding.detailsContactKeys.removeAllViews();
         boolean hasKeys = false;
@@ -590,9 +611,9 @@ public class ContactDetailsActivity extends OmemoActivity
         }
         binding.keysWrapper.setVisibility(hasKeys ? View.VISIBLE : View.GONE);
 
-        final List<ListItem.Tag> tagList = contact.getTags(this);
+        final var tagList = contact.getTags();
         final boolean hasMetaTags =
-                contact.isBlocked() || contact.getShownStatus() != Presence.Status.OFFLINE;
+                contact.isBlocked() || contact.getShownStatus() != Presence.Availability.OFFLINE;
         if ((tagList.isEmpty() && !hasMetaTags) || !this.showDynamicTags) {
             binding.tags.setVisibility(View.GONE);
         } else {
@@ -628,8 +649,8 @@ public class ContactDetailsActivity extends OmemoActivity
                 viewIdBuilder.add(id);
                 binding.tags.addView(tv);
             } else {
-                final Presence.Status status = contact.getShownStatus();
-                if (status != Presence.Status.OFFLINE) {
+                final Presence.Availability status = contact.getShownStatus();
+                if (status != Presence.Availability.OFFLINE) {
                     final TextView tv =
                             (TextView) inflater.inflate(R.layout.item_tag, binding.tags, false);
                     UIHelper.setStatus(tv, status);
@@ -643,7 +664,30 @@ public class ContactDetailsActivity extends OmemoActivity
         }
     }
 
-    private void onBadgeClick(final View view) {
+    private void onDetailsAccountClicked(final View view) {
+        final var contact = this.contact;
+        if (contact == null) {
+            return;
+        }
+        switchToAccount(contact.getAccount());
+    }
+
+    private void onAvatarClicked(final View view) {
+        final var contact = this.contact;
+        if (contact == null) {
+            return;
+        }
+        final var avatar = contact.getAvatar();
+        if (avatar == null) {
+            return;
+        }
+        final var intent = new Intent(this, ViewProfilePictureActivity.class);
+        intent.setData(Uri.fromParts("avatar", avatar, null));
+        intent.putExtra(ViewProfilePictureActivity.EXTRA_DISPLAY_NAME, contact.getDisplayName());
+        startActivity(intent);
+    }
+
+    private void onAddToAddressBookClick(final View view) {
         if (QuickConversationsService.isContactListIntegration(this)) {
             final Uri systemAccount = contact.getSystemAccount();
             if (systemAccount == null) {
@@ -685,7 +729,7 @@ public class ContactDetailsActivity extends OmemoActivity
             if (Compatibility.hasStoragePermission(this)) {
                 final int limit = GridManager.getCurrentColumnCount(this.binding.media);
                 xmppConnectionService.getAttachments(
-                        account, contact.getJid().asBareJid(), limit, this);
+                        account, contact.getAddress().asBareJid(), limit, this);
                 this.binding.showMedia.setOnClickListener(
                         (v) -> MediaBrowserActivity.launch(this, contact));
             }
@@ -701,7 +745,7 @@ public class ContactDetailsActivity extends OmemoActivity
     @Override
     protected void processFingerprintVerification(XmppUri uri) {
         if (contact != null
-                && contact.getJid().asBareJid().equals(uri.getJid())
+                && contact.getAddress().asBareJid().equals(uri.getJid())
                 && uri.hasFingerprints()) {
             if (xmppConnectionService.verifyFingerprints(contact, uri.getFingerprints())) {
                 Toast.makeText(this, R.string.verified_fingerprints, Toast.LENGTH_SHORT).show();

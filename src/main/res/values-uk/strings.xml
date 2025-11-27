@@ -8,7 +8,6 @@
     <string name="channel_details">Деталі каналу</string>
     <string name="action_add_account">Додати обліковий запис</string>
     <string name="action_edit_contact">Редагувати ім\'я</string>
-    <string name="action_add_phone_book">Додати до контактів</string>
     <string name="action_delete_contact">Вилучити зі списку контактів</string>
     <string name="action_block_contact">Заблокувати контакт</string>
     <string name="action_unblock_contact">Розблокувати контакт</string>
@@ -84,7 +83,7 @@
     <string name="send_message">Надіслати повідомлення</string>
     <string name="send_message_to_x">Повідомлення %s</string>
     <string name="send_omemo_x509_message">Повідомлення, зашифроване v\\OMEMO</string>
-    <string name="your_nick_has_been_changed">Використовується нове прізвисько</string>
+    <string name="your_nick_has_been_changed">Ваше прізвисько змінено</string>
     <string name="send_unencrypted">Надіслати без шифрування</string>
     <string name="decryption_failed">Не вдалося розшифрувати. Можливо, у Вас відсутній потрібний приватний ключ.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -193,13 +192,6 @@
     <string name="server_info_available">так</string>
     <string name="server_info_unavailable">ні</string>
     <string name="missing_public_keys">Бракує інформації про публічний ключ</string>
-    <string name="last_seen_now">зараз у мережі</string>
-    <string name="last_seen_min">у мережі 1 хвилину тому</string>
-    <string name="last_seen_mins">у мережі %d хвилин тому</string>
-    <string name="last_seen_hour">у мережі 1 годину тому</string>
-    <string name="last_seen_hours">у мережі %d годин тому</string>
-    <string name="last_seen_day">у мережі 1 день тому</string>
-    <string name="last_seen_days">у мережі %d днів тому</string>
     <string name="install_openkeychain">Повідомлення зашифровано. Щоб його розшифрувати, будь ласка, встановіть OpenKeychain.</string>
     <string name="openpgp_messages_found">Знайдено нові повідомлення, зашифровані OpenPGP</string>
     <string name="openpgp_key_id">Ідентифікатор ключа OpenPGP</string>
@@ -543,8 +535,8 @@
     <string name="gp_short">Короткий</string>
     <string name="gp_medium">Середній</string>
     <string name="gp_long">Довгий</string>
-    <string name="pref_broadcast_last_activity">Остання активність</string>
-    <string name="pref_broadcast_last_activity_summary">Дозволити контактам бачити, коли Ви востаннє користувалися додатком</string>
+    <string name="pref_broadcast_last_activity">Показувати останню активність</string>
+    <string name="pref_broadcast_last_activity_summary">Дозволити контактам бачити час Вашої останньої активності в додатку</string>
     <string name="pref_privacy">Приватність</string>
     <string name="pref_theme_options">Тема</string>
     <string name="pref_theme_options_summary">Виберіть колір теми</string>
@@ -558,7 +550,7 @@
     <string name="type_tablet">Планшет</string>
     <string name="type_web">Браузер</string>
     <string name="type_console">Консоль</string>
-    <string name="payment_required">Вимагається оплата</string>
+    <string name="payment_required">Необхідна оплата</string>
     <string name="missing_internet_permission">Надати дозвіл на доступ до Інтернету</string>
     <string name="me">Я</string>
     <string name="contact_asks_for_presence_subscription">Контакт просить надавати інформацію про присутність</string>
@@ -1143,11 +1135,9 @@
     <string name="add_reaction_title">Додати реакцію</string>
     <string name="could_not_modify_call">Не вдалося змінити виклик</string>
     <string name="clients_may_not_support_av">Можливо, клієнт XMPP Вашого контакту не підтримує аудіо- та відеовиклики.</string>
-    <string name="pref_show_avatars">Показувати аватари</string>
     <string name="pref_chat_bubbles">Бульбашки повідомлень</string>
     <string name="pref_chat_bubbles_summary">Колір фону, розмір шрифту, аватари</string>
     <string name="pref_title_bubbles">Вигляд повідомлень</string>
-    <string name="pref_show_avatars_summary">Крім групових чатів, показувати аватари також у Ваших повідомленнях і приватних чатах.</string>
     <string name="pref_call_integration">Інтеграція викликів</string>
     <string name="pref_call_integration_summary">Виклики з цього застосунку взаємодіють зі звичайними телефонними дзвінками — наприклад, завершення одного дзвінка, коли починається інший.</string>
     <string name="pref_align_start">Вирівнювання повідомлень ліворуч</string>
@@ -1158,7 +1148,7 @@
     <string name="delete_avatar_message">Бажаєте видалити свій аватар? Деякі клієнти можуть продовжувати відображати копію Вашого аватара з кешу.</string>
     <string name="account_status_connection_timeout">Час очікування з\'єднання вичерпано</string>
     <string name="retry_with_p2p">Повторити спробу з P2P</string>
-    <string name="account_status_channel_binding">Прив\'язка каналу недоступна</string>
+    <string name="account_status_channel_binding">Немає прив\'язки каналу</string>
     <string name="word_document">документ Word</string>
     <string name="restore_omemo_key">Відновити ключі OMEMO</string>
     <string name="non_quicksy_backup">Quicksy може відновлювати резервні копії лише для облікових записів quicksy.im</string>
@@ -1174,4 +1164,26 @@
     <string name="account_status_service_outage_scheduled">Запланований простій</string>
     <string name="account_status_service_outage_known">Сервіс не працює (відома проблема)</string>
     <string name="sos_scheduled_return">Відновлення роботи заплановано на %s</string>
+    <string name="no_contacts_permission">%1$s потребує доступу до Ваших контактів</string>
+    <string name="save_to_contact">Зберегти до контактів</string>
+    <string name="show_in_contacts">Показати в контактах</string>
+    <string name="pref_account_avatar">Облікові записи</string>
+    <string name="pref_category_avatars">Аватари</string>
+    <string name="pref_show_11_chats">Приватні чати</string>
+    <string name="pref_show_11_sender_chats_summary">Показувати аватари в отриманих повідомленнях у приватних чатах. (Аватари в групових чатах відображатимуться завжди)</string>
+    <string name="pref_account_avatar_summary">Показувати аватари облікових записів у вихідних повідомленнях для зручності керування ними.</string>
+    <string name="pref_show_11_chats_summary">Показувати аватари у приватних чатах. (Аватари в групових чатах відображатимуться завжди)</string>
+    <string name="do_not_show_this_warning_again">Більше не показувати це попередження.</string>
+    <string name="could_not_moderate_message">Не вдалося модерувати повідомлення</string>
+    <string name="moderate_delete_dot_dot_dot">Видалити як модератор…</string>
+    <string name="delete_message">Видалити повідомлення</string>
+    <string name="moderation_explained">Повідомлення буде видалено для Вас і всіх учасників цього публічного каналу.</string>
+    <string name="moderate_delete">Видалити як модератор</string>
+    <string name="last_seen">остання активність %s</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d учасник</item>
+        <item quantity="few">%1$d учасники</item>
+        <item quantity="many">%1$d учасників</item>
+        <item quantity="other">%1$d учасників</item>
+    </plurals>
 </resources>

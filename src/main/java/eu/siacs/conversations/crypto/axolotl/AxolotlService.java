@@ -8,6 +8,7 @@ import android.util.Log;
 import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -35,6 +36,7 @@ import eu.siacs.conversations.xmpp.jingle.RtpContentMap;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.OmemoVerifiedIceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
+import eu.siacs.conversations.xmpp.manager.PepManager;
 import eu.siacs.conversations.xmpp.pep.PublishOptions;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import java.security.PrivateKey;
@@ -129,7 +131,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     public void onAdvancedStreamFeaturesAvailable(Account account) {
         if (Config.supportOmemo()
                 && account.getXmppConnection() != null
-                && account.getXmppConnection().getFeatures().pep()) {
+                && account.getXmppConnection().getManager(PepManager.class).isAvailable()) {
             publishBundlesIfNeeded(true, false);
         } else {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": skipping OMEMO initialization");
@@ -167,7 +169,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
     public void preVerifyFingerprint(Contact contact, String fingerprint) {
         axolotlStore.preVerifyFingerprint(
-                contact.getAccount(), contact.getJid().asBareJid().toString(), fingerprint);
+                contact.getAccount(), contact.getAddress().asBareJid().toString(), fingerprint);
     }
 
     public void preVerifyFingerprint(Account account, String fingerprint) {
@@ -198,7 +200,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         return axolotlStore.getContactKeysWithTrust(jid.asBareJid().toString(), status);
     }
 
-    public Set<IdentityKey> getKeysWithTrust(FingerprintStatus status, List<Jid> jids) {
+    public Set<IdentityKey> getKeysWithTrust(
+            final FingerprintStatus status, final Collection<Jid> jids) {
         Set<IdentityKey> keys = new HashSet<>();
         for (Jid jid : jids) {
             keys.addAll(axolotlStore.getContactKeysWithTrust(jid.toString(), status));
@@ -214,7 +217,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         return axolotlStore.getContactNumTrustedKeys(jid.asBareJid().toString());
     }
 
-    public boolean anyTargetHasNoTrustedKeys(List<Jid> jids) {
+    public boolean anyTargetHasNoTrustedKeys(final Collection<Jid> jids) {
         for (Jid jid : jids) {
             if (axolotlStore.getContactNumTrustedKeys(jid.asBareJid().toString()) == 0) {
                 return true;
@@ -236,7 +239,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     }
 
     public Collection<XmppAxolotlSession> findSessionsForContact(Contact contact) {
-        SignalProtocolAddress contactAddress = getAddressForJid(contact.getJid());
+        SignalProtocolAddress contactAddress = getAddressForJid(contact.getAddress());
         ArrayList<XmppAxolotlSession> s =
                 new ArrayList<>(this.sessions.getAll(contactAddress.getName()).values());
         Collections.sort(s);
@@ -951,7 +954,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                                     Config.LOGTAG,
                                     getLogprefix(account)
                                             + "Error received while publishing bundle: "
-                                            + response.toString());
+                                            + response);
                         }
                         pepBroken = true;
                     }
@@ -966,15 +969,12 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                 ownDeviceIds == null ? Collections.emptySet() : ownDeviceIds);
     }
 
-    public List<Jid> getCryptoTargets(Conversation conversation) {
-        final List<Jid> jids;
+    public ImmutableSet<Jid> getCryptoTargets(final Conversation conversation) {
         if (conversation.getMode() == Conversation.MODE_SINGLE) {
-            jids = new ArrayList<>();
-            jids.add(conversation.getJid().asBareJid());
+            return ImmutableSet.of(conversation.getAddress().asBareJid());
         } else {
-            jids = conversation.getMucOptions().getMembers(false);
+            return conversation.getMucOptions().getMembers();
         }
-        return jids;
     }
 
     public FingerprintStatus getFingerprintTrust(String fingerprint) {
@@ -1196,7 +1196,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         }
     }
 
-    private void fetchDeviceIds(List<Jid> jids, final OnMultipleDeviceIdFetched callback) {
+    private void fetchDeviceIds(Collection<Jid> jids, final OnMultipleDeviceIdFetched callback) {
         final ArrayList<Jid> unfinishedJids = new ArrayList<>(jids);
         synchronized (unfinishedJids) {
             for (Jid jid : unfinishedJids) {
@@ -1416,7 +1416,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                                     Config.LOGTAG,
                                     AxolotlService.getLogprefix(account)
                                             + "Already have session for "
-                                            + address.toString()
+                                            + address
                                             + ", adding to cache...");
                             XmppAxolotlSession session =
                                     new XmppAxolotlSession(
@@ -1462,7 +1462,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                             Config.LOGTAG,
                             AxolotlService.getLogprefix(account)
                                     + "Already have session for "
-                                    + address.toString()
+                                    + address
                                     + ", adding to cache...");
                     XmppAxolotlSession session =
                             new XmppAxolotlSession(account, axolotlStore, address, identityKey);
@@ -1493,24 +1493,19 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     }
 
     public boolean createSessionsIfNeeded(final Conversation conversation) {
-        final List<Jid> jidsWithEmptyDeviceList = getCryptoTargets(conversation);
-        for (Iterator<Jid> iterator = jidsWithEmptyDeviceList.iterator(); iterator.hasNext(); ) {
-            final Jid jid = iterator.next();
-            if (!hasEmptyDeviceList(jid)) {
-                iterator.remove();
-            }
-        }
+        final var targets = getCryptoTargets(conversation);
+        final var jidsWithEmptyDeviceList = Collections2.filter(targets, this::hasEmptyDeviceList);
         Log.d(
                 Config.LOGTAG,
                 account.getJid().asBareJid()
                         + ": createSessionsIfNeeded() - jids with empty device list: "
                         + jidsWithEmptyDeviceList);
-        if (jidsWithEmptyDeviceList.size() > 0) {
+        if (jidsWithEmptyDeviceList.isEmpty()) {
+            return createSessionsIfNeededActual(conversation);
+        } else {
             fetchDeviceIds(
                     jidsWithEmptyDeviceList, () -> createSessionsIfNeededActual(conversation));
             return true;
-        } else {
-            return createSessionsIfNeededActual(conversation);
         }
     }
 
@@ -1538,7 +1533,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                         Config.LOGTAG,
                         AxolotlService.getLogprefix(account)
                                 + "Already fetching bundle for "
-                                + address.toString());
+                                + address);
             }
         }
 
@@ -1562,7 +1557,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         return verified;
     }
 
-    public boolean hasPendingKeyFetches(List<Jid> jids) {
+    public boolean hasPendingKeyFetches(final Collection<Jid> jids) {
         SignalProtocolAddress ownAddress =
                 new SignalProtocolAddress(account.getJid().asBareJid().toString(), 0);
         if (fetchStatusMap.getAll(ownAddress.getName()).containsValue(FetchStatus.PENDING)) {

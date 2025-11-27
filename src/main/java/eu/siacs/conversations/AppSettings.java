@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
 import androidx.annotation.BoolRes;
+import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 import com.google.common.base.Joiner;
@@ -14,6 +15,7 @@ import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.Compatibility;
 import java.security.SecureRandom;
+import java.util.Optional;
 
 public class AppSettings {
 
@@ -25,13 +27,14 @@ public class AppSettings {
     public static final String BLIND_TRUST_BEFORE_VERIFICATION = "btbv";
     public static final String AUTOMATIC_MESSAGE_DELETION = "automatic_message_deletion";
     public static final String BROADCAST_LAST_ACTIVITY = "last_activity";
+    public static final String SEND_CHAT_STATES = "chat_states";
     public static final String THEME = "theme";
     public static final String DYNAMIC_COLORS = "dynamic_colors";
     public static final String SHOW_DYNAMIC_TAGS = "show_dynamic_tags";
     public static final String OMEMO = "omemo";
     public static final String ALLOW_SCREENSHOTS = "allow_screenshots";
     public static final String RINGTONE = "call_ringtone";
-    public static final String BTBV = "btbv";
+    public static final String DISPLAY_ENTER_KEY = "display_enter_key";
 
     public static final String CONFIRM_MESSAGES = "confirm_messages";
     public static final String ALLOW_MESSAGE_CORRECTION = "allow_message_correction";
@@ -48,12 +51,15 @@ public class AppSettings {
     public static final String SEND_CRASH_REPORTS = "send_crash_reports";
     public static final String COLORFUL_CHAT_BUBBLES = "use_green_background";
     public static final String LARGE_FONT = "large_font";
-    public static final String SHOW_AVATARS = "show_avatars";
+    public static final String SHOW_AVATARS_11 = "show_avatars";
+    public static final String SHOW_AVATARS_ACCOUNTS = "show_avatars_accounts";
     public static final String CALL_INTEGRATION = "call_integration";
     public static final String ALIGN_START = "align_start";
     public static final String BACKUP_LOCATION = "backup_location";
+    public static final String AUTO_ACCEPT_FILE_SIZE = "auto_accept_file_size";
 
     private static final String ACCEPT_INVITES_FROM_STRANGERS = "accept_invites_from_strangers";
+    private static final String NOTIFICATIONS_FROM_STRANGERS = "notifications_from_strangers";
     private static final String INSTALLATION_ID = "im.conversations.android.install_id";
 
     private static final String EXTERNAL_STORAGE_AUTHORITY =
@@ -99,7 +105,7 @@ public class AppSettings {
     }
 
     public boolean isBTBVEnabled() {
-        return getBooleanPreference(BTBV, R.bool.btbv);
+        return getBooleanPreference(BLIND_TRUST_BEFORE_VERIFICATION, R.bool.btbv);
     }
 
     public boolean isTrustSystemCAStore() {
@@ -118,8 +124,12 @@ public class AppSettings {
         return getBooleanPreference(LARGE_FONT, R.bool.large_font);
     }
 
-    public boolean isShowAvatars() {
-        return getBooleanPreference(SHOW_AVATARS, R.bool.show_avatars);
+    public boolean isShowAvatars11() {
+        return getBooleanPreference(SHOW_AVATARS_11, R.bool.show_avatars);
+    }
+
+    public boolean isShowAvatarsAccounts() {
+        return getBooleanPreference(SHOW_AVATARS_ACCOUNTS, R.bool.show_avatars_accounts);
     }
 
     public boolean isCallIntegration() {
@@ -130,9 +140,47 @@ public class AppSettings {
         return getBooleanPreference(ALIGN_START, R.bool.align_start);
     }
 
+    public boolean isConfirmMessages() {
+        return getBooleanPreference(CONFIRM_MESSAGES, R.bool.confirm_messages);
+    }
+
+    public boolean isAllowMessageCorrection() {
+        return getBooleanPreference(ALLOW_MESSAGE_CORRECTION, R.bool.allow_message_correction);
+    }
+
+    public boolean isBroadcastLastActivity() {
+        return getBooleanPreference(BROADCAST_LAST_ACTIVITY, R.bool.last_activity);
+    }
+
+    public boolean isUserManagedAvailability() {
+        return getBooleanPreference(MANUALLY_CHANGE_PRESENCE, R.bool.manually_change_presence);
+    }
+
+    public boolean isAutomaticAvailability() {
+        return !isUserManagedAvailability();
+    }
+
+    public boolean isDndOnSilentMode() {
+        return getBooleanPreference(AppSettings.DND_ON_SILENT_MODE, R.bool.dnd_on_silent_mode);
+    }
+
+    public boolean isTreatVibrateAsSilent() {
+        return getBooleanPreference(
+                AppSettings.TREAT_VIBRATE_AS_SILENT, R.bool.treat_vibrate_as_silent);
+    }
+
+    public boolean isAwayWhenScreenLocked() {
+        return getBooleanPreference(
+                AppSettings.AWAY_WHEN_SCREEN_IS_OFF, R.bool.away_when_screen_off);
+    }
+
     public boolean isUseTor() {
         return QuickConversationsService.isConversations()
                 && getBooleanPreference(USE_TOR, R.bool.use_tor);
+    }
+
+    public boolean isSendChatStates() {
+        return getBooleanPreference(SEND_CHAT_STATES, R.bool.chat_states);
     }
 
     public boolean isExtendedConnectionOptions() {
@@ -146,15 +194,31 @@ public class AppSettings {
                 ACCEPT_INVITES_FROM_STRANGERS, R.bool.accept_invites_from_strangers);
     }
 
+    public boolean isNotificationsFromStrangers() {
+        return getBooleanPreference(
+                NOTIFICATIONS_FROM_STRANGERS, R.bool.notifications_from_strangers);
+    }
+
     public boolean isKeepForegroundService() {
         return Compatibility.twentySix()
                 || getBooleanPreference(KEEP_FOREGROUND_SERVICE, R.bool.enable_foreground_service);
     }
 
-    private boolean getBooleanPreference(@NonNull final String name, @BoolRes int res) {
+    private boolean getBooleanPreference(@NonNull final String name, @BoolRes final int res) {
         final SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(name, context.getResources().getBoolean(res));
+    }
+
+    private long getLongPreference(final String name, @IntegerRes final int res) {
+        final long defaultValue = context.getResources().getInteger(res);
+        final SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context);
+        try {
+            return Long.parseLong(sharedPreferences.getString(name, String.valueOf(defaultValue)));
+        } catch (final NumberFormatException e) {
+            return defaultValue;
+        }
     }
 
     public String getOmemo() {
@@ -212,6 +276,10 @@ public class AppSettings {
         return getBooleanPreference(SEND_CRASH_REPORTS, R.bool.send_crash_reports);
     }
 
+    public boolean isDisplayEnterKey() {
+        return getBooleanPreference(DISPLAY_ENTER_KEY, R.bool.display_enter_key);
+    }
+
     public void setSendCrashReports(boolean value) {
         final SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context);
@@ -232,6 +300,12 @@ public class AppSettings {
         final var installationId = secureRandom.nextLong();
         sharedPreferences.edit().putLong(INSTALLATION_ID, installationId).apply();
         return installationId;
+    }
+
+    public Optional<Long> getAutoAcceptFileSize() {
+        final long autoAcceptFileSize =
+                getLongPreference(AUTO_ACCEPT_FILE_SIZE, R.integer.auto_accept_filesize);
+        return autoAcceptFileSize <= 0 ? Optional.empty() : Optional.of(autoAcceptFileSize);
     }
 
     public synchronized void resetInstallationId() {

@@ -17,7 +17,14 @@ public final class Activities {
 
     public static void setStatusAndNavigationBarColors(
             final Activity activity, final View view, final boolean raisedStatusBar) {
-        final var isLightMode = isLightMode(activity);
+        setStatusAndNavigationBarColors(activity, view, isLightMode(activity), raisedStatusBar);
+    }
+
+    public static void setStatusAndNavigationBarColors(
+            final Activity activity,
+            final View view,
+            final boolean isLightMode,
+            final boolean raisedStatusBar) {
         final var window = activity.getWindow();
         final var flags = view.getSystemUiVisibility();
         // an elevation of 4 matches the MaterialToolbar elevation

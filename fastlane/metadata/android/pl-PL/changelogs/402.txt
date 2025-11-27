@@ -1,0 +1,3 @@
+* Oferowanie generowanie prostych zaproszeń na obsługiwanych serwerach
+* Pokazywanie GIF‑ów wysyłanych z Movima
+* Przechowywanie awatarów w pamięci podręcznej

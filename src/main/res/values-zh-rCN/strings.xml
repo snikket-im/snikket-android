@@ -8,7 +8,6 @@
     <string name="channel_details">频道详情</string>
     <string name="action_add_account">添加账号</string>
     <string name="action_edit_contact">编辑名称</string>
-    <string name="action_add_phone_book">添加到通讯录</string>
     <string name="action_delete_contact">删除联系人</string>
     <string name="action_block_contact">屏蔽联系人</string>
     <string name="action_unblock_contact">取消屏蔽联系人</string>
@@ -89,7 +88,7 @@
     <string name="send_message">发送消息</string>
     <string name="send_message_to_x">发送消息至 %s</string>
     <string name="send_omemo_x509_message">发送 v\\OMEMO 加密消息</string>
-    <string name="your_nick_has_been_changed">正在使用新昵称</string>
+    <string name="your_nick_has_been_changed">您的昵称已更改</string>
     <string name="send_unencrypted">发送未加密</string>
     <string name="decryption_failed">解密失败。也许您没有合适的私钥。</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -121,7 +120,7 @@
     <string name="pref_notification_sound_summary">新消息的通知提示音</string>
     <string name="pref_call_ringtone_summary">来电铃声</string>
     <string name="pref_notification_grace_period">静默期</string>
-    <string name="pref_notification_grace_period_summary">在其他设备上检测到活动之后，通知在此期间静音。</string>
+    <string name="pref_notification_grace_period_summary">当检测到您在其他设备活动时，通知被静音的时长。</string>
     <string name="pref_advanced_options">高级</string>
     <string name="pref_never_send_crash_summary">通过发送崩溃报告，您可以帮助此应用的进一步开发</string>
     <string name="pref_confirm_messages">确认消息</string>
@@ -205,13 +204,6 @@
     <string name="server_info_available">有效</string>
     <string name="server_info_unavailable">无效</string>
     <string name="missing_public_keys">缺少公钥公布</string>
-    <string name="last_seen_now">最后上线于刚刚</string>
-    <string name="last_seen_min">最后上线于 1 分钟前</string>
-    <string name="last_seen_mins">最后上线于 %d 分钟前</string>
-    <string name="last_seen_hour">最后上线于 1 小时前</string>
-    <string name="last_seen_hours">最后上线于 %d 小时前</string>
-    <string name="last_seen_day">最后上线于 1 天前</string>
-    <string name="last_seen_days">最后上线于 %d 天前</string>
     <string name="install_openkeychain">加密消息。请安装 OpenKeychain 解密。</string>
     <string name="openpgp_messages_found">发现新的 OpenPGP 加密消息</string>
     <string name="openpgp_key_id">OpenPGP 密钥 ID</string>
@@ -307,7 +299,7 @@
     <string name="conference_kicked">您已被踢出此群聊</string>
     <string name="conference_shutdown">此群聊已关闭</string>
     <string name="conference_unknown_error">您已不在此群聊</string>
-    <string name="conference_technical_problems">由于技术原因，您离开了此群聊</string>
+    <string name="conference_technical_problems">由于技术原因，您已离开此群聊</string>
     <string name="using_account">使用账号 %s</string>
     <string name="hosted_on">托管在 %s</string>
     <string name="checking_x">正在 HTTP 主机上检查 %s</string>
@@ -333,10 +325,10 @@
     <string name="pref_keep_foreground_service">前台服务</string>
     <string name="pref_keep_foreground_service_summary">防止操作系统中断连接</string>
     <string name="pref_create_backup">创建备份</string>
-    <string name="pref_create_backup_summary">备份将存储在 %s</string>
+    <string name="pref_create_backup_summary">备份将存储至 %s</string>
     <string name="notification_create_backup_title">正在创建备份文件</string>
     <string name="notification_backup_created_title">备份已创建</string>
-    <string name="notification_backup_created_subtitle">此备份文件已存储在 %s</string>
+    <string name="notification_backup_created_subtitle">备份文件已存储在 %s</string>
     <string name="restoring_backup">正在恢复备份</string>
     <string name="notification_restored_backup_title">备份已恢复</string>
     <string name="notification_restored_backup_subtitle">请勿忘记启用账号。</string>
@@ -417,7 +409,7 @@
     <string name="pref_enter_is_send">Enter 键发送</string>
     <string name="pref_enter_is_send_summary">使用 Enter 键发送消息。即使禁用此选项，始终可以使用 Ctrl+Enter 发送消息。</string>
     <string name="pref_display_enter_key">显示 Enter 键</string>
-    <string name="pref_display_enter_key_summary">将表情符号键替换为 Enter 键</string>
+    <string name="pref_display_enter_key_summary">将表情符号键更改为 Enter 键</string>
     <string name="audio">音频</string>
     <string name="video">视频</string>
     <string name="image">图片</string>
@@ -452,14 +444,14 @@
     <plurals name="toast_delete_certificates">
         <item quantity="other">%d 个证书已删除</item>
     </plurals>
-    <string name="pref_quick_action_summary">以快捷操作替代“发送”按钮</string>
+    <string name="pref_quick_action_summary">将“发送”按钮替换为快捷操作</string>
     <string name="pref_quick_action">快捷操作</string>
     <string name="none">无</string>
     <string name="recently_used">最近用过</string>
     <string name="choose_quick_action">选择快捷操作</string>
     <string name="search_contacts">搜索联系人</string>
     <string name="send_private_message">发送私信</string>
-    <string name="user_has_left_conference">%1$s 离开了群聊</string>
+    <string name="user_has_left_conference">%1$s 已离开群聊</string>
     <string name="username">用户名</string>
     <string name="username_hint">用户名</string>
     <string name="invalid_username">此用户名无效</string>
@@ -490,7 +482,7 @@
     <string name="unable_to_fetch_mam_prefs">无法获取归档首选项</string>
     <string name="captcha_required">需要验证码</string>
     <string name="captcha_hint">请按上图输入文本</string>
-    <string name="certificate_chain_is_not_trusted">未受信任的证书链</string>
+    <string name="certificate_chain_is_not_trusted">不受信任的证书链</string>
     <string name="jid_does_not_match_certificate">XMPP 地址与证书不匹配</string>
     <string name="action_renew_certificate">续订证书</string>
     <string name="error_fetching_omemo_key">获取 OMEMO 密钥时出错！</string>
@@ -553,7 +545,7 @@
     <string name="presence_away">离开</string>
     <string name="presence_xa">没空</string>
     <string name="presence_dnd">忙碌</string>
-    <string name="secure_password_generated">已生成安全密码</string>
+    <string name="secure_password_generated">安全密码已生成</string>
     <string name="device_does_not_support_battery_op">您的设备不支持选择退出电池优化</string>
     <string name="registration_please_wait">注册失败：请稍后重试</string>
     <string name="registration_password_too_weak">注册失败：密码太弱</string>
@@ -564,8 +556,8 @@
     <string name="gp_short">短</string>
     <string name="gp_medium">中</string>
     <string name="gp_long">长</string>
-    <string name="pref_broadcast_last_activity">最后上线</string>
-    <string name="pref_broadcast_last_activity_summary">让您的联系人知道您最后一次使用此应用的时间</string>
+    <string name="pref_broadcast_last_activity">显示最后上线</string>
+    <string name="pref_broadcast_last_activity_summary">允许您的联系人查看您最后一次在应用中的活动时间</string>
     <string name="pref_privacy">隐私</string>
     <string name="pref_theme_options">主题</string>
     <string name="pref_theme_options_summary">选择调色板</string>
@@ -602,16 +594,16 @@
     <string name="this_device_has_been_verified">此设备已通过验证</string>
     <string name="copy_fingerprint">复制指纹</string>
     <string name="all_omemo_keys_have_been_verified">您已验证您拥有的所有 OMEMO 密钥</string>
-    <string name="verified_fingerprints">已验证指纹</string>
+    <string name="verified_fingerprints">已通过验证的指纹</string>
     <string name="use_camera_icon_to_scan_barcode">使用相机扫描对方二维码</string>
-    <string name="please_wait_for_keys_to_be_fetched">正在获取密钥，请稍候</string>
+    <string name="please_wait_for_keys_to_be_fetched">请稍候，正在获取密钥</string>
     <string name="share_as_barcode">以二维码形式分享</string>
     <string name="share_as_uri">以 XMPP URI 形式分享</string>
     <string name="share_as_http">以 HTTP 链接形式分享</string>
     <string name="pref_blind_trust_before_verification">验证前盲目信任</string>
     <string name="pref_blind_trust_before_verification_summary">自动信任未经验证的联系人的新设备，但已验证的联系人的新设备需手动确认。</string>
     <string name="blindly_trusted_omemo_keys">盲目信任的 OMEMO 密钥，意味着存在密钥冒用或第三方窃听的风险。</string>
-    <string name="not_trusted">未受信任</string>
+    <string name="not_trusted">不受信任</string>
     <string name="invalid_barcode">二维码无效</string>
     <string name="pref_clean_cache_summary">清理缓存文件夹（由相机使用）</string>
     <string name="pref_clean_cache">清理缓存</string>
@@ -625,7 +617,7 @@
     <string name="show_inactive_devices">显示非活动设备</string>
     <string name="hide_inactive_devices">隐藏非活动设备</string>
     <string name="distrust_omemo_key">不信任设备</string>
-    <string name="distrust_omemo_key_text">是否确定要移除此设备的验证？\n此设备及其消息将标记为“未受信任”。</string>
+    <string name="distrust_omemo_key_text">是否确定要移除此设备的验证状态‌？\n此设备及其消息将被标记为“不受信任”。</string>
     <plurals name="seconds">
         <item quantity="other">%d 秒</item>
     </plurals>
@@ -651,7 +643,7 @@
     <string name="transcoding_video">正在压缩视频</string>
     <string name="contact_blocked_past_tense">联系人已屏蔽。</string>
     <string name="pref_notifications_from_strangers">陌生人的通知</string>
-    <string name="pref_notifications_from_strangers_summary">收到陌生人的消息和来电时通知。</string>
+    <string name="pref_notifications_from_strangers_summary">收到陌生人的消息和来电时发出通知。</string>
     <string name="received_message_from_stranger">收到了陌生人的消息</string>
     <string name="block_stranger">屏蔽陌生人</string>
     <string name="block_entire_domain">屏蔽整个域名</string>
@@ -676,7 +668,7 @@
     <string name="message">消息</string>
     <string name="private_messages_are_disabled">已禁用私信</string>
     <string name="mtm_accept_cert">接受未知证书？</string>
-    <string name="mtm_trust_anchor">此服务器证书不是由已知的证书颁发机构签发的。</string>
+    <string name="mtm_trust_anchor">服务器证书并非由已知的证书颁发机构签发。</string>
     <string name="mtm_accept_servername">接受不匹配的服务器名称？</string>
     <string name="mtm_hostname_mismatch">服务器无法以“%s”进行身份验证。证书仅对此有效：</string>
     <string name="mtm_connect_anyway">是否仍要连接？</string>
@@ -702,7 +694,7 @@
     <string name="create_shortcut">创建快捷方式</string>
     <string name="default_on">默认启用</string>
     <string name="default_off">默认禁用</string>
-    <string name="not_encrypted_for_this_device">未对此设备加密消息。</string>
+    <string name="not_encrypted_for_this_device">消息未针对此设备进行加密。</string>
     <string name="omemo_decryption_failed">无法解密 OMEMO 消息。</string>
     <string name="undo">撤销</string>
     <string name="location_disabled">已禁用位置分享</string>
@@ -1034,7 +1026,7 @@
     <string name="pref_title_trust_system_ca_store">证书授权服务</string>
     <string name="pref_title_trust_system_ca_store_summary">信任系统的 CA 证书</string>
     <string name="detect_mim">需要通道绑定</string>
-    <string name="detect_mim_summary">通道绑定可以检测某些中间人攻击</string>
+    <string name="detect_mim_summary">通道绑定可以检测部分中间人攻击</string>
     <string name="pref_category_server_connection">服务器连接</string>
     <string name="pref_summary_appearance">主题、配色、截屏、输入</string>
     <string name="pref_category_sending">发送</string>
@@ -1090,22 +1082,20 @@
     <string name="add_reaction_title">添加回应</string>
     <string name="could_not_modify_call">无法修改通话</string>
     <string name="clients_may_not_support_av">对方的 XMPP 客户端可能不支持音频/视频通话。</string>
-    <string name="pref_show_avatars">显示头像</string>
     <string name="pref_chat_bubbles_summary">背景颜色、字体大小、头像</string>
     <string name="pref_chat_bubbles">消息气泡</string>
     <string name="pref_title_bubbles">消息气泡</string>
-    <string name="pref_show_avatars_summary">在群聊和一对一聊天中，在消息旁显示头像。</string>
     <string name="pref_call_integration">通话集成</string>
     <string name="custom_notifications">自定义通知</string>
     <string name="custom_notifications_enable">是否为此对话启用自定义通知（重要程度、声音、振动）设置？</string>
-    <string name="pref_call_integration_summary">此应用的通话与常规通话交互，例如另一个通话开始时结束一个通话。</string>
+    <string name="pref_call_integration_summary">此应用的通话会与常规通话交互，例如新通话开始时自动结束当前通话。</string>
     <string name="pref_align_start_summary">在左侧显示所有消息，包括发送的消息，以实现统一的聊天布局。</string>
     <string name="pref_align_start">左对齐消息</string>
     <string name="delete_avatar_message">是否删除头像？部分客户端可能会继续显示已缓存的头像副本。</string>
     <string name="show_to_contacts_only">仅对联系人显示</string>
     <string name="account_status_connection_timeout">连接超时</string>
     <string name="retry_with_p2p">使用 P2P 重试</string>
-    <string name="account_status_channel_binding">不支持通道绑定</string>
+    <string name="account_status_channel_binding">无通道绑定</string>
     <string name="word_document">Word 文档</string>
     <string name="restore_omemo_key">恢复 OMEMO 密钥</string>
     <string name="non_quicksy_backup">Quicksy 只能恢复 quicksy.im 账号的备份</string>
@@ -1121,4 +1111,23 @@
     <string name="account_status_service_outage_scheduled">计划停机时间</string>
     <string name="account_status_service_outage_known">服务中断（已知问题）</string>
     <string name="sos_scheduled_return">‌服务预计将于 %s 恢复</string>
+    <string name="save_to_contact">保存到联系人</string>
+    <string name="show_in_contacts">在联系人中显示</string>
+    <string name="no_contacts_permission">%1$s 需要访问您的联系人</string>
+    <string name="pref_account_avatar">账号</string>
+    <string name="pref_category_avatars">头像</string>
+    <string name="pref_account_avatar_summary">在发送的消息旁显示账号头像，以便于识别和管理。</string>
+    <string name="pref_show_11_chats">一对一聊天</string>
+    <string name="pref_show_11_chats_summary">在一对一聊天中显示头像。（群聊中始终显示头像。）</string>
+    <string name="pref_show_11_sender_chats_summary">在一对一聊天中收到的消息旁显示头像。（群聊中始终显示头像。）</string>
+    <string name="moderation_explained">此消息将对您及本公开频道的所有参与者删除。</string>
+    <string name="do_not_show_this_warning_again">不再显示此警告。</string>
+    <string name="moderate_delete_dot_dot_dot">以主持人身份删除…</string>
+    <string name="moderate_delete">以主持人身份删除</string>
+    <string name="could_not_moderate_message">无法审核撤回消息</string>
+    <string name="delete_message">删除消息</string>
+    <string name="last_seen">最后上线：%s</string>
+    <plurals name="x_participants">
+        <item quantity="other">%1$d 位参与者</item>
+    </plurals>
 </resources>

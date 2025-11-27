@@ -47,6 +47,9 @@
     <dimen name="bubble_avatar_size">48dp</dimen>
     <dimen name="bubble_avatar_distance">6dp</dimen>
 
+    <!-- will get overwritten with 'true' on screens larger than w384dp -->
+    <bool name="last_seen_full_text">false</bool>
+
     <dimen name="dialpad_text_size">30sp</dimen>
     <dimen name="smaller_text_size">12sp</dimen>
     <dimen name="medium_margin">8dp</dimen>

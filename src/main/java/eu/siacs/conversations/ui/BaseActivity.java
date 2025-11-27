@@ -1,10 +1,8 @@
 package eu.siacs.conversations.ui;
 
 import android.util.Log;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-
 import eu.siacs.conversations.Conversations;
 import eu.siacs.conversations.ui.util.SettingsUtils;
 
@@ -23,7 +21,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         SettingsUtils.applyScreenshotSetting(this);
     }

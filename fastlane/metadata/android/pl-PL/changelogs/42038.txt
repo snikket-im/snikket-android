@@ -1,0 +1,2 @@
+* Mniejsze poprawki błędów
+* Przywrócenie możliwości dzwonienia przez JMP i inne usługi (wersja dla Google Play)

@@ -30,11 +30,8 @@
 package eu.siacs.conversations.utils;
 
 import android.util.LruCache;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.collect.ImmutableSet;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -58,6 +55,8 @@ public class Emoticons {
     private static final UnicodeRange REGIONAL_INDICATORS = new UnicodeRange(0x1F1E6, 0x1F1FF);
     private static final UnicodeRange GEOMETRIC_SHAPES = new UnicodeRange(0x25A0, 0x25FF);
     private static final UnicodeRange LATIN_SUPPLEMENT = new UnicodeRange(0x80, 0xFF);
+    private static final UnicodeBlocks ARROWS =
+            new UnicodeBlocks(new UnicodeRange(0x2194, 0x2199), new UnicodeList(0x21A9, 0x21AA));
     private static final UnicodeRange MISC_TECHNICAL = new UnicodeRange(0x2300, 0x23FF);
     private static final UnicodeRange TAGS = new UnicodeRange(0xE0020, 0xE007F);
     private static final UnicodeList CYK_SYMBOLS_AND_PUNCTUATION = new UnicodeList(0x3030, 0x303D);
@@ -84,6 +83,7 @@ public class Emoticons {
                     DINGBATS,
                     ENCLOSED_ALPHANUMERIC_SUPPLEMENT,
                     ENCLOSED_IDEOGRAPHIC_SUPPLEMENT,
+                    ARROWS,
                     MISC_TECHNICAL);
 
     private static final int MAX_EMOJIS = 42;

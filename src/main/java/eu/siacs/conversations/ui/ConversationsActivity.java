@@ -77,6 +77,7 @@ import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ToolbarUtils;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.SignupUtils;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
@@ -143,6 +144,7 @@ public class ConversationsActivity extends XmppActivity
     @Override
     protected void refreshUiReal() {
         invalidateOptionsMenu();
+        invalidateActionBarTitle();
         for (@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
             refreshFragment(id);
         }
@@ -658,10 +660,7 @@ public class ConversationsActivity extends XmppActivity
         if (mainFragment instanceof ConversationFragment conversationFragment) {
             final Conversation conversation = conversationFragment.getConversation();
             if (conversation != null) {
-                actionBar.setTitle(conversation.getName());
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                ToolbarUtils.setActionBarOnClickListener(
-                        binding.toolbar, (v) -> openConversationDetails(conversation));
+                setTitleAndSubtitle(actionBar, conversation, true);
                 return;
             }
         }
@@ -670,15 +669,43 @@ public class ConversationsActivity extends XmppActivity
         if (secondaryFragment instanceof ConversationFragment conversationFragment) {
             final Conversation conversation = conversationFragment.getConversation();
             if (conversation != null) {
-                actionBar.setTitle(conversation.getName());
+                setTitleAndSubtitle(actionBar, conversation, false);
             } else {
                 actionBar.setTitle(R.string.app_name);
             }
         } else {
             actionBar.setTitle(R.string.app_name);
+            actionBar.setSubtitle(null);
         }
         actionBar.setDisplayHomeAsUpEnabled(false);
         ToolbarUtils.resetActionBarOnClickListeners(binding.toolbar);
+    }
+
+    private void setTitleAndSubtitle(
+            final ActionBar actionBar, final Conversation conversation, final boolean clickable) {
+        actionBar.setTitle(conversation.getName());
+        if (conversation.getMode() == Conversational.MODE_SINGLE && this.mShowLastUserInteraction) {
+            final var contact = conversation.getContact();
+            actionBar.setSubtitle(
+                    UIHelper.lastUserInteraction(this, contact.getLastUserInteraction()));
+        } else if (conversation.getMode() == Conversation.MODE_MULTI) {
+            final var mucOptions = conversation.getMucOptions();
+            final var userCount = mucOptions.getUserCount();
+            if (mucOptions.isPrivateAndNonAnonymous() || userCount < 1) {
+                actionBar.setSubtitle(null);
+            } else {
+                actionBar.setSubtitle(
+                        getResources()
+                                .getQuantityString(R.plurals.x_participants, userCount, userCount));
+            }
+        } else {
+            actionBar.setSubtitle(null);
+        }
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (clickable) {
+            ToolbarUtils.setActionBarOnClickListener(
+                    binding.toolbar, (v) -> openConversationDetails(conversation));
+        }
     }
 
     private void openConversationDetails(final Conversation conversation) {

@@ -145,6 +145,11 @@ public final class MimeUtils {
         add("application/vnd.sun.xml.writer.global", "sxg");
         add("application/vnd.sun.xml.writer.template", "stw");
         add("application/vnd.visio", "vsd");
+        // https://www.iana.org/assignments/media-types/application/vnd.tcpdump.pcap
+        add("application/vnd.tcpdump.pcap", "pcap");
+        add("application/vnd.tcpdump.pcap", "cap");
+        add("application/vnd.tcpdump.pcap", "dmp");
+        add("application/x-pcapng", "pcapng");
         add("application/x-7z-compressed", "7z");
         add("application/x-abiword", "abw");
         add("application/x-apple-diskimage", "dmg");
@@ -425,8 +430,7 @@ public final class MimeUtils {
     }
 
     // mime types that are more reliant by path
-    private static final Collection<String> PATH_PRECEDENCE_MIME_TYPE =
-            Arrays.asList("audio/x-m4b");
+    private static final Collection<String> PATH_PRECEDENCE_MIME_TYPE = List.of("audio/x-m4b");
 
     private static void add(String mimeType, String extension) {
         // If we have an existing x -> y mapping, we do not want to
@@ -568,7 +572,8 @@ public final class MimeUtils {
 
     public static String guessMimeTypeFromUri(final Context context, final Uri uri) {
         final String mimeTypeContentResolver = guessFromContentResolver(context, uri);
-        final String mimeTypeFromQueryParameter = uri.getQueryParameter("mimeType");
+        final String mimeTypeFromQueryParameter =
+                uri.isHierarchical() ? uri.getQueryParameter("mimeType") : null;
         final String name = "content".equals(uri.getScheme()) ? getDisplayName(context, uri) : null;
         final String mimeTypeFromName = Strings.isNullOrEmpty(name) ? null : guessFromPath(name);
         final String path = uri.getPath();

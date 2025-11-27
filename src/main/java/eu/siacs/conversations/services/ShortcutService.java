@@ -27,6 +27,7 @@ import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
 import eu.siacs.conversations.xmpp.Jid;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ShortcutService {
 
@@ -67,10 +68,17 @@ public class ShortcutService {
                 ImmutableMap.copyOf(
                         Maps.uniqueIndex(xmppConnectionService.getAccounts(), Account::getUuid));
         final var contactBuilder = new ImmutableMap.Builder<FrequentContact, Contact>();
+        final var count = new AtomicInteger();
         for (final var frequentContact : frequentContacts) {
             final Account account = accounts.get(frequentContact.account);
-            if (account != null) {
-                final var contact = account.getRoster().getContact(frequentContact.contact);
+            if (account == null) {
+                continue;
+            }
+            final var contact = account.getRoster().getContact(frequentContact.contact);
+            if (contact.isSelf()) {
+                continue;
+            }
+            if (count.getAndIncrement() < 4) {
                 contactBuilder.put(frequentContact, contact);
             }
         }
@@ -109,8 +117,8 @@ public class ShortcutService {
                         .setIntent(getShortcutIntent(contact))
                         .setIsConversation();
         builder.setIcon(
-                IconCompat.createWithBitmap(
-                        xmppConnectionService.getAvatarService().getRoundedShortcut(contact)));
+                IconCompat.createWithAdaptiveBitmap(
+                        xmppConnectionService.getAvatarService().getAdaptive(contact)));
         if (conversation != null) {
             setConversation(builder, conversation);
         }
@@ -124,8 +132,8 @@ public class ShortcutService {
                         .setIntent(getShortcutIntent(mucOptions))
                         .setIsConversation();
         builder.setIcon(
-                IconCompat.createWithBitmap(
-                        xmppConnectionService.getAvatarService().getRoundedShortcut(mucOptions)));
+                IconCompat.createWithAdaptiveBitmap(
+                        xmppConnectionService.getAvatarService().getAdaptive(mucOptions)));
         setConversation(builder, mucOptions.getConversation().getUuid());
         return builder.build();
     }
@@ -165,12 +173,12 @@ public class ShortcutService {
         return Joiner.on(ID_SEPARATOR)
                 .join(
                         contact.getAccount().getJid().asBareJid().toString(),
-                        contact.getJid().asBareJid().toString());
+                        contact.getAddress().asBareJid().toString());
     }
 
     private static String getShortcutId(final MucOptions mucOptions) {
         final Account account = mucOptions.getAccount();
-        final Jid jid = mucOptions.getConversation().getJid();
+        final Jid jid = mucOptions.getConversation().getAddress();
         return Joiner.on(ID_SEPARATOR)
                 .join(account.getJid().asBareJid().toString(), jid.asBareJid().toString());
     }
@@ -182,12 +190,13 @@ public class ShortcutService {
                 Uri.parse(
                         String.format(
                                 "xmpp:%s?join",
-                                mucOptions.getConversation().getJid().asBareJid().toString())));
+                                mucOptions.getConversation().getAddress().asBareJid().toString())));
     }
 
     private Intent getShortcutIntent(final Contact contact) {
         return getShortcutIntent(
-                contact.getAccount(), Uri.parse("xmpp:" + contact.getJid().asBareJid().toString()));
+                contact.getAccount(),
+                Uri.parse("xmpp:" + contact.getAddress().asBareJid().toString()));
     }
 
     private Intent getShortcutIntent(final Account account, final Uri uri) {

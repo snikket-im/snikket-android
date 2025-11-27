@@ -1,0 +1,2 @@
+* Show number of participants in subtitle for public channels
+* Fix joining MUCs on very old Prosody servers

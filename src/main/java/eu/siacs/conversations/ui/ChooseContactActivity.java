@@ -62,14 +62,14 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity
         final Intent intent = new Intent(activity, ChooseContactActivity.class);
         List<String> contacts = new ArrayList<>();
         if (conversation.getMode() == Conversation.MODE_MULTI) {
-            for (MucOptions.User user : conversation.getMucOptions().getUsers(false)) {
+            for (MucOptions.User user : conversation.getMucOptions().getOnlineUsers()) {
                 Jid jid = user.getRealJid();
                 if (jid != null) {
                     contacts.add(jid.asBareJid().toString());
                 }
             }
         } else {
-            contacts.add(conversation.getJid().asBareJid().toString());
+            contacts.add(conversation.getAddress().asBareJid().toString());
         }
         intent.putExtra(EXTRA_FILTERED_CONTACTS, contacts.toArray(new String[0]));
         intent.putExtra(EXTRA_CONVERSATION, conversation.getUuid());
@@ -208,9 +208,9 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity
         getListItemAdapter().notifyDataSetChanged();
         Contact item = (Contact) getListItems().get(position);
         if (checked) {
-            selected.add(item.getJid().toString());
+            selected.add(item.getAddress().toString());
         } else {
-            selected.remove(item.getJid().toString());
+            selected.remove(item.getAddress().toString());
         }
     }
 
@@ -282,8 +282,8 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity
             if (account.isEnabled()) {
                 for (final Contact contact : account.getRoster().getContacts()) {
                     if (contact.showInContactList()
-                            && !filterContacts.contains(contact.getJid().asBareJid().toString())
-                            && contact.match(this, needle)) {
+                            && !filterContacts.contains(contact.getAddress().asBareJid().toString())
+                            && contact.match(needle)) {
                         getListItems().add(contact);
                     }
                 }
@@ -413,7 +413,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity
     private void onListItemClicked(ListItem item) {
         final Intent request = getIntent();
         final Intent data = new Intent();
-        data.putExtra("contact", item.getJid().toString());
+        data.putExtra("contact", item.getAddress().toString());
         String account = request.getStringExtra(EXTRA_ACCOUNT);
         if (account == null && item instanceof Contact) {
             account = ((Contact) item).getAccount().getJid().asBareJid().toString();

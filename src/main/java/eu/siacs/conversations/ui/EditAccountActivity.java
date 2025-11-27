@@ -34,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Lifecycle;
 import com.google.android.material.color.MaterialColors;
@@ -41,6 +42,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.MoreExecutors;
 import de.gultsch.common.Linkify;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
@@ -51,9 +55,9 @@ import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.databinding.ActivityEditAccountBinding;
 import eu.siacs.conversations.databinding.DialogPresenceBinding;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.services.BarcodeProvider;
+import eu.siacs.conversations.services.PushManagementService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
@@ -72,14 +76,20 @@ import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
-import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
-import eu.siacs.conversations.xmpp.forms.Data;
-import eu.siacs.conversations.xmpp.pep.Avatar;
+import eu.siacs.conversations.xmpp.manager.CarbonsManager;
+import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
+import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
+import eu.siacs.conversations.xmpp.manager.PepManager;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
+import eu.siacs.conversations.xmpp.manager.RegistrationManager;
+import im.conversations.android.xmpp.model.data.Data;
+import im.conversations.android.xmpp.model.mam.Preferences;
+import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -93,8 +103,7 @@ public class EditAccountActivity extends OmemoActivity
                 OnKeyStatusUpdated,
                 OnCaptchaRequested,
                 KeyChainAliasCallback,
-                XmppConnectionService.OnShowErrorToast,
-                XmppConnectionService.OnMamPreferencesFetched {
+                XmppConnectionService.OnShowErrorToast {
 
     public static final String EXTRA_OPENED_FROM_NOTIFICATION = "opened_from_notification";
     public static final String EXTRA_FORCE_REGISTER = "force_register";
@@ -115,22 +124,19 @@ public class EditAccountActivity extends OmemoActivity
                 deleteAccountAndReturnIfNecessary();
                 finish();
             };
-    private final UiCallback<Avatar> mAvatarFetchCallback =
-            new UiCallback<Avatar>() {
 
+    private final FutureCallback<Void> mAvatarFetchCallback =
+            new FutureCallback<>() {
                 @Override
-                public void userInputRequired(final PendingIntent pi, final Avatar avatar) {
-                    finishInitialSetup(avatar);
+                public void onSuccess(Void result) {
+                    Log.d(Config.LOGTAG, "found pre-existing avatar");
+                    finishInitialSetup(true);
                 }
 
                 @Override
-                public void success(final Avatar avatar) {
-                    finishInitialSetup(avatar);
-                }
-
-                @Override
-                public void error(final int errorCode, final Avatar avatar) {
-                    finishInitialSetup(avatar);
+                public void onFailure(@NonNull Throwable t) {
+                    Log.d(Config.LOGTAG, "failed to fetch avatar", t);
+                    finishInitialSetup(false);
                 }
             };
     private final OnClickListener mAvatarClickListener =
@@ -411,7 +417,7 @@ public class EditAccountActivity extends OmemoActivity
             };
 
     private static void setAvailabilityRadioButton(
-            Presence.Status status, DialogPresenceBinding binding) {
+            Presence.Availability status, DialogPresenceBinding binding) {
         if (status == null) {
             binding.online.setChecked(true);
             return;
@@ -431,15 +437,15 @@ public class EditAccountActivity extends OmemoActivity
         }
     }
 
-    private static Presence.Status getAvailabilityRadioButton(DialogPresenceBinding binding) {
+    private static Presence.Availability getAvailabilityRadioButton(DialogPresenceBinding binding) {
         if (binding.dnd.isChecked()) {
-            return Presence.Status.DND;
+            return Presence.Availability.DND;
         } else if (binding.xa.isChecked()) {
-            return Presence.Status.XA;
+            return Presence.Availability.XA;
         } else if (binding.away.isChecked()) {
-            return Presence.Status.AWAY;
+            return Presence.Availability.AWAY;
         } else {
-            return Presence.Status.ONLINE;
+            return Presence.Availability.ONLINE;
         }
     }
 
@@ -453,7 +459,8 @@ public class EditAccountActivity extends OmemoActivity
         } else if (mInitMode && mAccount != null && mAccount.getStatus() == Account.State.ONLINE) {
             if (!mFetchingAvatar) {
                 mFetchingAvatar = true;
-                xmppConnectionService.checkForAvatar(mAccount, mAvatarFetchCallback);
+                final var future = xmppConnectionService.checkForAvatar(mAccount);
+                Futures.addCallback(future, mAvatarFetchCallback, MoreExecutors.directExecutor());
             }
         }
         if (mAccount != null) {
@@ -520,7 +527,7 @@ public class EditAccountActivity extends OmemoActivity
         refreshUi();
     }
 
-    protected void finishInitialSetup(final Avatar avatar) {
+    protected void finishInitialSetup(final boolean avatar) {
         runOnUiThread(
                 () -> {
                     SoftKeyboardUtils.hideSoftKeyboard(EditAccountActivity.this);
@@ -529,7 +536,7 @@ public class EditAccountActivity extends OmemoActivity
                     final boolean wasFirstAccount =
                             xmppConnectionService != null
                                     && xmppConnectionService.getAccounts().size() == 1;
-                    if (avatar != null || (connection != null && !connection.getFeatures().pep())) {
+                    if (avatar || !connection.getManager(PepManager.class).isAvailable()) {
                         intent =
                                 new Intent(
                                         getApplicationContext(), StartConversationActivity.class);
@@ -787,11 +794,14 @@ public class EditAccountActivity extends OmemoActivity
                 showBlocklist.setVisible(false);
             }
 
-            if (!mAccount.getXmppConnection().getFeatures().register()) {
-                changePassword.setVisible(false);
-                deleteAccount.setVisible(false);
-            }
-            mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
+            final var registration =
+                    mAccount.getXmppConnection().getManager(RegistrationManager.class).hasFeature();
+            changePassword.setVisible(registration);
+            deleteAccount.setVisible(registration);
+            mamPrefs.setVisible(
+                    mAccount.getXmppConnection()
+                            .getManager(MessageArchiveManager.class)
+                            .hasFeature());
             changePresence.setVisible(!mInitMode);
         } else {
             showBlocklist.setVisible(false);
@@ -1226,7 +1236,8 @@ public class EditAccountActivity extends OmemoActivity
             this.binding.accountRegisterNew.setVisibility(View.GONE);
         }
         if (this.mAccount.isOnlineAndConnected() && !this.mFetchingAvatar) {
-            final Features features = this.mAccount.getXmppConnection().getFeatures();
+            final var connection = this.mAccount.getXmppConnection();
+            final Features features = connection.getFeatures();
             this.binding.stats.setVisibility(View.VISIBLE);
             boolean showBatteryWarning = isOptimizingBattery();
             boolean showDataSaverWarning = isAffectedByDataSaver();
@@ -1239,12 +1250,12 @@ public class EditAccountActivity extends OmemoActivity
             } else {
                 this.binding.serverInfoRosterVersion.setText(R.string.server_info_unavailable);
             }
-            if (features.carbons()) {
+            if (connection.getManager(CarbonsManager.class).isEnabled()) {
                 this.binding.serverInfoCarbons.setText(R.string.server_info_available);
             } else {
                 this.binding.serverInfoCarbons.setText(R.string.server_info_unavailable);
             }
-            if (features.mam()) {
+            if (connection.getManager(MessageArchiveManager.class).hasFeature()) {
                 this.binding.serverInfoMam.setText(R.string.server_info_available);
             } else {
                 this.binding.serverInfoMam.setText(R.string.server_info_unavailable);
@@ -1280,7 +1291,7 @@ public class EditAccountActivity extends OmemoActivity
                 this.binding.serverInfoSasl2.setText(R.string.server_info_unavailable);
             }
             this.binding.loginMechanism.setText(Strings.nullToEmpty(features.loginMechanism()));
-            if (features.pep()) {
+            if (connection.getManager(PepManager.class).isAvailable()) {
                 AxolotlService axolotlService = this.mAccount.getAxolotlService();
                 if (axolotlService != null && axolotlService.isPepBroken()) {
                     this.binding.serverInfoPep.setText(R.string.server_info_broken);
@@ -1292,28 +1303,32 @@ public class EditAccountActivity extends OmemoActivity
             } else {
                 this.binding.serverInfoPep.setText(R.string.server_info_unavailable);
             }
-            if (features.httpUpload(0)) {
-                final long maxFileSize = features.getMaxHttpUploadSize();
-                if (maxFileSize > 0) {
+            final var httpUploadManager = connection.getManager(HttpUploadManager.class);
+            final var uploadService = httpUploadManager.getService();
+            if (uploadService != null) {
+                final Long maxFileSize = uploadService.getMaxFileSize();
+                if (maxFileSize == null) {
+                    this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
+                } else {
                     this.binding.serverInfoHttpUpload.setText(
                             UIHelper.filesizeToString(maxFileSize));
-                } else {
-                    this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
                 }
             } else {
                 this.binding.serverInfoHttpUpload.setText(R.string.server_info_unavailable);
             }
 
-            this.binding.pushRow.setVisibility(
-                    xmppConnectionService.getPushManagementService().isStub()
-                            ? View.GONE
-                            : View.VISIBLE);
-
-            if (xmppConnectionService.getPushManagementService().available(mAccount)) {
-                this.binding.serverInfoPush.setText(R.string.server_info_available);
+            if (PushManagementService.isStub()) {
+                this.binding.pushRow.setVisibility(View.GONE);
             } else {
-                this.binding.serverInfoPush.setText(R.string.server_info_unavailable);
+                final var pushManagementService = new PushManagementService(this);
+                if (pushManagementService.available(mAccount)) {
+                    this.binding.serverInfoPush.setText(R.string.server_info_available);
+                } else {
+                    this.binding.serverInfoPush.setText(R.string.server_info_unavailable);
+                }
+                this.binding.pushRow.setVisibility(View.VISIBLE);
             }
+
             final long pgpKeyId = this.mAccount.getPgpId();
             if (pgpKeyId != 0 && Config.supportOpenPgp()) {
                 OnClickListener openPgp = view -> launchOpenKeyChain(pgpKeyId);
@@ -1512,7 +1527,7 @@ public class EditAccountActivity extends OmemoActivity
                     mAccount.setPgpSignId(0);
                     mAccount.unsetPgpSignature();
                     xmppConnectionService.databaseBackend.updateAccount(mAccount);
-                    xmppConnectionService.sendPresence(mAccount);
+                    mAccount.getXmppConnection().getManager(PresenceManager.class).available();
                     refreshUiReal();
                 });
         builder.create().show();
@@ -1587,11 +1602,70 @@ public class EditAccountActivity extends OmemoActivity
     }
 
     private void editMamPrefs() {
+        final var account = this.mAccount;
+        if (account == null) {
+            return;
+        }
         this.mFetchingMamPrefsToast =
                 Toast.makeText(this, R.string.fetching_mam_prefs, Toast.LENGTH_LONG);
         this.mFetchingMamPrefsToast.show();
-        xmppConnectionService.fetchMamPreferences(mAccount, this);
+        final var future =
+                account.getXmppConnection()
+                        .getManager(MessageArchiveManager.class)
+                        .getArchivingPreference();
+        Futures.addCallback(
+                future, fetchArchivingPreferencesCallback, ContextCompat.getMainExecutor(this));
     }
+
+    private final FutureCallback<Preferences.Default> fetchArchivingPreferencesCallback =
+            new FutureCallback<>() {
+                @Override
+                public void onSuccess(final Preferences.Default current) {
+                    if (mFetchingMamPrefsToast != null) {
+                        mFetchingMamPrefsToast.cancel();
+                    }
+                    final MaterialAlertDialogBuilder builder =
+                            new MaterialAlertDialogBuilder(EditAccountActivity.this);
+                    builder.setTitle(R.string.server_side_mam_prefs);
+                    final List<Preferences.Default> defaults =
+                            Arrays.asList(
+                                    Preferences.Default.NEVER,
+                                    Preferences.Default.ROSTER,
+                                    Preferences.Default.ALWAYS);
+                    final AtomicInteger choice =
+                            new AtomicInteger(Math.max(0, defaults.indexOf(current)));
+                    builder.setSingleChoiceItems(
+                            R.array.mam_prefs, choice.get(), (dialog, which) -> choice.set(which));
+                    builder.setNegativeButton(R.string.cancel, null);
+                    builder.setPositiveButton(
+                            R.string.ok,
+                            (dialog, which) -> {
+                                final var account = mAccount;
+                                if (account == null) {
+                                    return;
+                                }
+                                account.getXmppConnection()
+                                        .getManager(MessageArchiveManager.class)
+                                        .setArchivingPreference(defaults.get(choice.get()));
+                            });
+                    if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                        builder.create().show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Throwable t) {
+                    Log.d(Config.LOGTAG, "error fetching mam preferences", t);
+                    if (mFetchingMamPrefsToast != null) {
+                        mFetchingMamPrefsToast.cancel();
+                    }
+                    Toast.makeText(
+                                    EditAccountActivity.this,
+                                    R.string.unable_to_fetch_mam_prefs,
+                                    Toast.LENGTH_LONG)
+                            .show();
+                }
+            };
 
     @Override
     public void onKeyStatusUpdated(AxolotlService.FetchStatus report) {
@@ -1599,8 +1673,7 @@ public class EditAccountActivity extends OmemoActivity
     }
 
     @Override
-    public void onCaptchaRequested(
-            final Account account, final String id, final Data data, final Bitmap captcha) {
+    public void onCaptchaRequested(final Account account, final Data data, final Bitmap captcha) {
         runOnUiThread(
                 () -> {
                     if (mCaptchaDialog != null && mCaptchaDialog.isShowing()) {
@@ -1622,34 +1695,15 @@ public class EditAccountActivity extends OmemoActivity
 
                     builder.setPositiveButton(
                             getString(R.string.ok),
-                            (dialog, which) -> {
-                                String rc = input.getText().toString();
-                                data.put("username", account.getUsername());
-                                data.put("password", account.getPassword());
-                                data.put("ocr", rc);
-                                data.submit();
-
-                                if (xmppConnectionServiceBound) {
-                                    xmppConnectionService.sendCreateAccountWithCaptchaPacket(
-                                            account, id, data);
-                                }
-                            });
+                            (dialog, which) ->
+                                    account.getXmppConnection()
+                                            .register(data, input.getText().toString()));
                     builder.setNegativeButton(
                             getString(R.string.cancel),
-                            (dialog, which) -> {
-                                if (xmppConnectionService != null) {
-                                    xmppConnectionService.sendCreateAccountWithCaptchaPacket(
-                                            account, null, null);
-                                }
-                            });
+                            (dialog, which) -> account.getXmppConnection().cancelRegistration());
 
                     builder.setOnCancelListener(
-                            dialog -> {
-                                if (xmppConnectionService != null) {
-                                    xmppConnectionService.sendCreateAccountWithCaptchaPacket(
-                                            account, null, null);
-                                }
-                            });
+                            dialog -> account.getXmppConnection().cancelRegistration());
                     mCaptchaDialog = builder.create();
                     mCaptchaDialog.show();
                     input.requestFocus();
@@ -1659,50 +1713,6 @@ public class EditAccountActivity extends OmemoActivity
     public void onShowErrorToast(final int resId) {
         runOnUiThread(
                 () -> Toast.makeText(EditAccountActivity.this, resId, Toast.LENGTH_SHORT).show());
-    }
-
-    @Override
-    public void onPreferencesFetched(final Element prefs) {
-        runOnUiThread(
-                () -> {
-                    if (mFetchingMamPrefsToast != null) {
-                        mFetchingMamPrefsToast.cancel();
-                    }
-                    final MaterialAlertDialogBuilder builder =
-                            new MaterialAlertDialogBuilder(EditAccountActivity.this);
-                    builder.setTitle(R.string.server_side_mam_prefs);
-                    String defaultAttr = prefs.getAttribute("default");
-                    final List<String> defaults = Arrays.asList("never", "roster", "always");
-                    final AtomicInteger choice =
-                            new AtomicInteger(Math.max(0, defaults.indexOf(defaultAttr)));
-                    builder.setSingleChoiceItems(
-                            R.array.mam_prefs, choice.get(), (dialog, which) -> choice.set(which));
-                    builder.setNegativeButton(R.string.cancel, null);
-                    builder.setPositiveButton(
-                            R.string.ok,
-                            (dialog, which) -> {
-                                prefs.setAttribute("default", defaults.get(choice.get()));
-                                xmppConnectionService.pushMamPreferences(mAccount, prefs);
-                            });
-                    if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-                        builder.create().show();
-                    }
-                });
-    }
-
-    @Override
-    public void onPreferencesFetchFailed() {
-        runOnUiThread(
-                () -> {
-                    if (mFetchingMamPrefsToast != null) {
-                        mFetchingMamPrefsToast.cancel();
-                    }
-                    Toast.makeText(
-                                    EditAccountActivity.this,
-                                    R.string.unable_to_fetch_mam_prefs,
-                                    Toast.LENGTH_LONG)
-                            .show();
-                });
     }
 
     @Override

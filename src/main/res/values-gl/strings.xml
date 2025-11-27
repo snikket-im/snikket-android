@@ -8,7 +8,6 @@
     <string name="channel_details">Detalles da canle</string>
     <string name="action_add_account">Engadir conta</string>
     <string name="action_edit_contact">Editar contacto</string>
-    <string name="action_add_phone_book">Engadir a libreta de enderezos</string>
     <string name="action_delete_contact">Eliminar contacto da lista</string>
     <string name="action_block_contact">Bloquear contacto</string>
     <string name="action_unblock_contact">Desbloquear contacto</string>
@@ -88,7 +87,7 @@
     <string name="send_message">Enviar mensaxe</string>
     <string name="send_message_to_x">Enviar mensaxe a 1%s</string>
     <string name="send_omemo_x509_message">Enviar mensaxe cifrada v\\OMEMO</string>
-    <string name="your_nick_has_been_changed">Novo alcume en uso</string>
+    <string name="your_nick_has_been_changed">Cambiouse o teu alcume</string>
     <string name="send_unencrypted">Enviar texto sen cifrar</string>
     <string name="decryption_failed">Fallou o desencriptado. Quizais non teñas a chave privada apropiada.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -199,13 +198,6 @@
     <string name="server_info_available">Dispoñible</string>
     <string name="server_info_unavailable">Fallo</string>
     <string name="missing_public_keys">Anuncios de chave pública non notificados</string>
-    <string name="last_seen_now">acaba de estar dispoñible</string>
-    <string name="last_seen_min">visto hai un minuto</string>
-    <string name="last_seen_mins">visto hai 1%d minutos</string>
-    <string name="last_seen_hour">visto hai unha hora</string>
-    <string name="last_seen_hours">visto hai 1%d horas</string>
-    <string name="last_seen_day">visto hai un día</string>
-    <string name="last_seen_days">última conexión hai 1%d días</string>
     <string name="install_openkeychain">Mensaxe cifrada. Instala OpenKeychain para descifrala.</string>
     <string name="openpgp_messages_found">Atoparonse novas mensaxes cifradas cn OpenPGP</string>
     <string name="openpgp_key_id">ID da chave OpenPGP</string>
@@ -557,7 +549,7 @@
     <string name="gp_short">Breve</string>
     <string name="gp_medium">Medio</string>
     <string name="gp_long">Longo</string>
-    <string name="pref_broadcast_last_activity">Último uso</string>
+    <string name="pref_broadcast_last_activity">Mostrar último uso</string>
     <string name="pref_broadcast_last_activity_summary">Permitirlle aos teus contactos ver a última vez que usaches a app</string>
     <string name="pref_privacy">Privacidade</string>
     <string name="pref_theme_options">Decorado</string>
@@ -1095,10 +1087,8 @@
     <string name="add_reaction_title">Engadir reacción</string>
     <string name="could_not_modify_call">Non se puido modificar a chamada</string>
     <string name="clients_may_not_support_av">O cliente do teu contacto XMPP pode que non sexa compatible con chamadas de audio/video.</string>
-    <string name="pref_show_avatars">Mostrar avatares</string>
     <string name="pref_chat_bubbles">Burbullas da conversa</string>
     <string name="pref_title_bubbles">Burbullas na conversa</string>
-    <string name="pref_show_avatars_summary">Mostrar avatares para as túas mensaxes en conversas 1:1, ademáis de nas parolas en grupo.</string>
     <string name="pref_chat_bubbles_summary">Cor de fondo, Tamaño da letra, Avatares</string>
     <string name="pref_call_integration">Integración das chamadas</string>
     <string name="pref_call_integration_summary">As chamadas desde esta app interactúan coas chamadas de teléfono normais, por exemplo finalizando unha chamada cando outra comeza.</string>
@@ -1110,7 +1100,7 @@
     <string name="show_to_contacts_only">Mostrar só aos contactos</string>
     <string name="account_status_connection_timeout">Caducidade da conexión</string>
     <string name="retry_with_p2p">Reintentar con P2P</string>
-    <string name="account_status_channel_binding">Non está dispoñible a vinculación de canles</string>
+    <string name="account_status_channel_binding">Sen vinculación de canles</string>
     <string name="word_document">Documento de Word</string>
     <string name="restore_omemo_key">Restaurar claves OMEMO</string>
     <string name="non_quicksy_backup">Quicksy só pode restaurar copias de apoio de contas quicksy.im</string>
@@ -1126,4 +1116,24 @@
     <string name="account_status_service_outage_scheduled">Desconexión programada</string>
     <string name="sos_scheduled_return">Está previsto reactivar o servizo ás %s</string>
     <string name="account_status_service_outage_known">Sen servizo (incidencia coñecida)</string>
+    <string name="no_contacts_permission">%1$s precisa acceso aos teus contactos</string>
+    <string name="save_to_contact">Gardar nos contactos</string>
+    <string name="show_in_contacts">Mostrar nos contactos</string>
+    <string name="pref_account_avatar">Contas</string>
+    <string name="pref_category_avatars">Avatares</string>
+    <string name="pref_show_11_chats">Conversas 1:1</string>
+    <string name="pref_show_11_chats_summary">Mostrar avatares nas conversas 1:1. (Os avatares móstranse sempre nas conversas en grupo.)</string>
+    <string name="pref_account_avatar_summary">Mostrar avatares das contas para as mensaxes enviadas para unha xestión e identificación doadas.</string>
+    <string name="pref_show_11_sender_chats_summary">Mostrar avatares nas mensaxes recibidas para conversas 1:1. (Os avatares sempre se mostran nas conversas en grupo.)</string>
+    <string name="moderate_delete_dot_dot_dot">Eliminar como moderadora…</string>
+    <string name="moderate_delete">Eliminar como moderadora</string>
+    <string name="could_not_moderate_message">Non se puido moderar a mensaxe</string>
+    <string name="do_not_show_this_warning_again">Non volver a mostrar esta mensaxe.</string>
+    <string name="delete_message">Eliminar mensaxe</string>
+    <string name="moderation_explained">Vaise eliminar esta mensaxe para ti e todas as persoas participantes nesta canle pública.</string>
+    <string name="last_seen">último uso %s</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d Participante</item>
+        <item quantity="other">%1$d Participantes</item>
+    </plurals>
 </resources>

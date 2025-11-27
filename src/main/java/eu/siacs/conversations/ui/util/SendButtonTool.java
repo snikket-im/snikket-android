@@ -31,22 +31,18 @@ package eu.siacs.conversations.ui.util;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.view.View;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
-
 import com.google.android.material.color.MaterialColors;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
-import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.ui.Activities;
 import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.utils.UIHelper;
+import im.conversations.android.xmpp.model.stanza.Presence;
 
 public class SendButtonTool {
 
@@ -110,28 +106,37 @@ public class SendButtonTool {
         };
     }
 
-    public @ColorInt static int getSendButtonColor(final View view, final Presence.Status status) {
+    public @ColorInt static int getSendButtonColor(
+            final View view, final Presence.Availability status) {
         final boolean nightMode = Activities.isNightMode(view.getContext());
         return switch (status) {
-            case OFFLINE -> MaterialColors.getColor(
-                    view, com.google.android.material.R.attr.colorOnSurface);
-            case ONLINE, CHAT -> MaterialColors.harmonizeWithPrimary(
-                    view.getContext(),
-                    ContextCompat.getColor(
-                            view.getContext(), nightMode ? R.color.green_300 : R.color.green_800));
-            case AWAY -> MaterialColors.harmonizeWithPrimary(
-                    view.getContext(),
-                    ContextCompat.getColor(
-                            view.getContext(), nightMode ? R.color.amber_300 : R.color.amber_800));
-            case XA -> MaterialColors.harmonizeWithPrimary(
-                    view.getContext(),
-                    ContextCompat.getColor(
+            case OFFLINE ->
+                    MaterialColors.getColor(
+                            view, com.google.android.material.R.attr.colorOnSurface);
+            case ONLINE, CHAT ->
+                    MaterialColors.harmonizeWithPrimary(
                             view.getContext(),
-                            nightMode ? R.color.orange_300 : R.color.orange_800));
-            case DND -> MaterialColors.harmonizeWithPrimary(
-                    view.getContext(),
-                    ContextCompat.getColor(
-                            view.getContext(), nightMode ? R.color.red_300 : R.color.red_800));
+                            ContextCompat.getColor(
+                                    view.getContext(),
+                                    nightMode ? R.color.green_300 : R.color.green_800));
+            case AWAY ->
+                    MaterialColors.harmonizeWithPrimary(
+                            view.getContext(),
+                            ContextCompat.getColor(
+                                    view.getContext(),
+                                    nightMode ? R.color.amber_300 : R.color.amber_800));
+            case XA ->
+                    MaterialColors.harmonizeWithPrimary(
+                            view.getContext(),
+                            ContextCompat.getColor(
+                                    view.getContext(),
+                                    nightMode ? R.color.orange_300 : R.color.orange_800));
+            case DND ->
+                    MaterialColors.harmonizeWithPrimary(
+                            view.getContext(),
+                            ContextCompat.getColor(
+                                    view.getContext(),
+                                    nightMode ? R.color.red_300 : R.color.red_800));
         };
     }
 }

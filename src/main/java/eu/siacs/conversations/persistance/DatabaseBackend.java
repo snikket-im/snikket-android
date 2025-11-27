@@ -11,6 +11,8 @@ import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
@@ -20,8 +22,6 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.PresenceTemplate;
-import eu.siacs.conversations.entities.Roster;
-import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.ShortcutService;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -31,6 +31,10 @@ import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
+import im.conversations.android.xml.XmlElementReader;
+import im.conversations.android.xmpp.EntityCapabilities;
+import im.conversations.android.xmpp.EntityCapabilities2;
+import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +50,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.jxmpp.jid.parts.Localpart;
 import org.jxmpp.stringprep.XmppStringprepException;
@@ -61,11 +64,11 @@ import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "history";
-    private static final int DATABASE_VERSION = 53;
+    private static final int DATABASE_VERSION = 54;
 
     private static boolean requiresMessageIndexRebuild = false;
     private static DatabaseBackend instance = null;
-    private static final String CREATE_CONTATCS_STATEMENT =
+    private static final String CREATE_CONTACTS_STATEMENT =
             "create table "
                     + Contact.TABLENAME
                     + "("
@@ -106,22 +109,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                     + Contact.ACCOUNT
                     + ", "
                     + Contact.JID
-                    + ") ON CONFLICT REPLACE);";
-
-    private static final String CREATE_DISCOVERY_RESULTS_STATEMENT =
-            "create table "
-                    + ServiceDiscoveryResult.TABLENAME
-                    + "("
-                    + ServiceDiscoveryResult.HASH
-                    + " TEXT, "
-                    + ServiceDiscoveryResult.VER
-                    + " TEXT, "
-                    + ServiceDiscoveryResult.RESULT
-                    + " TEXT, "
-                    + "UNIQUE("
-                    + ServiceDiscoveryResult.HASH
-                    + ", "
-                    + ServiceDiscoveryResult.VER
                     + ") ON CONFLICT REPLACE);";
 
     private static final String CREATE_PRESENCE_TEMPLATES_STATEMENT =
@@ -252,6 +239,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                     + ") ON CONFLICT IGNORE"
                     + ");";
 
+    private static final String CREATE_CAPS_CACHE_TABLE =
+            "CREATE TABLE caps_cache (caps TEXT, caps2 TEXT, disco_info TEXT, UNIQUE (caps), UNIQUE"
+                    + " (caps2));";
+    private static final String CREATE_CAPS_CACHE_INDEX_CAPS =
+            "CREATE INDEX idx_caps ON caps_cache(caps);";
+    private static final String CREATE_CAPS_CACHE_INDEX_CAPS2 =
+            "CREATE INDEX idx_caps2 ON caps_cache(caps2);";
+
     private static final String RESOLVER_RESULTS_TABLENAME = "resolver_results";
 
     private static final String CREATE_RESOLVER_RESULTS_TABLE =
@@ -346,7 +341,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         final SQLiteDatabase db = getWritableDatabase();
         final Stopwatch stopwatch = Stopwatch.createStarted();
         db.execSQL(COPY_PREEXISTING_ENTRIES);
-        Log.d(Config.LOGTAG, "rebuilt message index in " + stopwatch.stop().toString());
+        Log.d(Config.LOGTAG, "rebuilt message index in " + stopwatch.stop());
     }
 
     public static synchronized DatabaseBackend getInstance(Context context) {
@@ -495,8 +490,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         db.execSQL(CREATE_MESSAGE_DELETED_INDEX);
         db.execSQL(CREATE_MESSAGE_RELATIVE_FILE_PATH_INDEX);
         db.execSQL(CREATE_MESSAGE_TYPE_INDEX);
-        db.execSQL(CREATE_CONTATCS_STATEMENT);
-        db.execSQL(CREATE_DISCOVERY_RESULTS_STATEMENT);
+        db.execSQL(CREATE_CONTACTS_STATEMENT);
         db.execSQL(CREATE_SESSIONS_STATEMENT);
         db.execSQL(CREATE_PREKEYS_STATEMENT);
         db.execSQL(CREATE_SIGNED_PREKEYS_STATEMENT);
@@ -507,6 +501,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         db.execSQL(CREATE_MESSAGE_INSERT_TRIGGER);
         db.execSQL(CREATE_MESSAGE_UPDATE_TRIGGER);
         db.execSQL(CREATE_MESSAGE_DELETE_TRIGGER);
+        db.execSQL(CREATE_CAPS_CACHE_TABLE);
+        db.execSQL(CREATE_CAPS_CACHE_INDEX_CAPS);
+        db.execSQL(CREATE_CAPS_CACHE_INDEX_CAPS2);
     }
 
     @Override
@@ -527,7 +524,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         }
         if (oldVersion < 5 && newVersion >= 5) {
             db.execSQL("DROP TABLE " + Contact.TABLENAME);
-            db.execSQL(CREATE_CONTATCS_STATEMENT);
+            db.execSQL(CREATE_CONTACTS_STATEMENT);
             db.execSQL("UPDATE " + Account.TABLENAME + " SET " + Account.ROSTERVERSION + " = NULL");
         }
         if (oldVersion < 6 && newVersion >= 6) {
@@ -727,10 +724,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                             + SQLiteAxolotlStore.CERTIFICATE);
         }
 
-        if (oldVersion < 23 && newVersion >= 23) {
-            db.execSQL(CREATE_DISCOVERY_RESULTS_STATEMENT);
-        }
-
         if (oldVersion < 24 && newVersion >= 24) {
             db.execSQL(
                     "ALTER TABLE " + Message.TABLENAME + " ADD COLUMN " + Message.EDITED + " TEXT");
@@ -743,10 +736,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
         if (oldVersion < 26 && newVersion >= 26) {
             db.execSQL(CREATE_PRESENCE_TEMPLATES_STATEMENT);
-        }
-
-        if (oldVersion < 27 && newVersion >= 27) {
-            db.execSQL("DELETE FROM " + ServiceDiscoveryResult.TABLENAME);
         }
 
         if (oldVersion < 28 && newVersion >= 28) {
@@ -1086,6 +1075,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 }
             }
         }
+        if (oldVersion < 54 && newVersion >= 54) {
+            db.execSQL("DROP TABLE discovery_results");
+            db.execSQL(CREATE_CAPS_CACHE_TABLE);
+            db.execSQL(CREATE_CAPS_CACHE_INDEX_CAPS);
+            db.execSQL(CREATE_CAPS_CACHE_INDEX_CAPS2);
+        }
     }
 
     private void canonicalizeJids(SQLiteDatabase db) {
@@ -1224,40 +1219,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         db.insert(Account.TABLENAME, null, account.getContentValues());
     }
 
-    public void insertDiscoveryResult(ServiceDiscoveryResult result) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(ServiceDiscoveryResult.TABLENAME, null, result.getContentValues());
-    }
-
-    public ServiceDiscoveryResult findDiscoveryResult(final String hash, final String ver) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String[] selectionArgs = {hash, ver};
-        Cursor cursor =
-                db.query(
-                        ServiceDiscoveryResult.TABLENAME,
-                        null,
-                        ServiceDiscoveryResult.HASH + "=? AND " + ServiceDiscoveryResult.VER + "=?",
-                        selectionArgs,
-                        null,
-                        null,
-                        null);
-        if (cursor.getCount() == 0) {
-            cursor.close();
-            return null;
-        }
-        cursor.moveToFirst();
-
-        ServiceDiscoveryResult result = null;
-        try {
-            result = new ServiceDiscoveryResult(cursor);
-        } catch (JSONException e) {
-            /* result is still null */
-        }
-
-        cursor.close();
-        return result;
-    }
-
     public void saveResolverResult(String domain, Resolver.Result result) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = result.toContentValues();
@@ -1345,7 +1306,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                         selectionArgs);
         while (cursor.moveToNext()) {
             final Conversation conversation = Conversation.fromCursor(cursor);
-            if (conversation.getJid() instanceof Jid.Invalid) {
+            if (conversation.getAddress() instanceof Jid.Invalid) {
                 continue;
             }
             list.add(conversation);
@@ -1561,7 +1522,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                         + " is not null and conversationUuid=(select uuid from conversations where"
                         + " accountUuid=? and (contactJid=? or contactJid like ?)) order by"
                         + " timeSent desc";
-        final String[] args = {account, jid.toString(), jid.toString() + "/%"};
+        final String[] args = {account, jid.toString(), jid + "/%"};
         Cursor cursor = db.rawQuery(SQL + (limit > 0 ? " limit " + limit : ""), args);
         List<FilePath> filesPaths = new ArrayList<>();
         while (cursor.moveToNext()) {
@@ -1612,6 +1573,59 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return message;
     }
 
+    public void insertCapsCache(
+            EntityCapabilities.EntityCapsHash caps,
+            EntityCapabilities2.EntityCaps2Hash caps2,
+            InfoQuery infoQuery) {
+        final var contentValues = new ContentValues();
+        contentValues.put("caps", caps.encoded());
+        contentValues.put("caps2", caps2.encoded());
+        contentValues.put("disco_info", infoQuery.toString());
+        getWritableDatabase()
+                .insertWithOnConflict(
+                        "caps_cache", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    public InfoQuery getInfoQuery(final EntityCapabilities.Hash hash) {
+        final String selection;
+        final String[] args;
+        if (hash instanceof EntityCapabilities.EntityCapsHash) {
+            selection = "caps=?";
+            args = new String[] {hash.encoded()};
+        } else if (hash instanceof EntityCapabilities2.EntityCaps2Hash) {
+            selection = "caps2=?";
+            args = new String[] {hash.encoded()};
+        } else {
+            return null;
+        }
+        try (final Cursor cursor =
+                getReadableDatabase()
+                        .query(
+                                "caps_cache",
+                                new String[] {"disco_info"},
+                                selection,
+                                args,
+                                null,
+                                null,
+                                null)) {
+            if (cursor.moveToFirst()) {
+                final var cached = cursor.getString(0);
+                try {
+                    final var element = XmlElementReader.read(cached);
+                    if (element instanceof InfoQuery infoQuery) {
+                        return infoQuery;
+                    }
+                } catch (final IOException e) {
+                    Log.e(Config.LOGTAG, "could not restore info query from cache", e);
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
     public static class FilePath {
         public final UUID uuid;
         public final String path;
@@ -1654,7 +1668,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             }
             cursor.moveToFirst();
             final Conversation conversation = Conversation.fromCursor(cursor);
-            if (conversation.getJid() instanceof Jid.Invalid) {
+            if (conversation.getAddress() instanceof Jid.Invalid) {
                 return null;
             }
             return conversation;
@@ -1687,7 +1701,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             }
             cursor.moveToFirst();
             final Conversation conversation = Conversation.fromCursor(cursor);
-            if (conversation.getJid() instanceof Jid.Invalid) {
+            if (conversation.getAddress() instanceof Jid.Invalid) {
                 return null;
             }
             conversation.setAccount(account);
@@ -1794,36 +1808,49 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return rows == 1;
     }
 
-    public void readRoster(Roster roster) {
+    public boolean deleteMessage(String uuid) {
+        final var db = this.getWritableDatabase();
+        final String[] args = {uuid};
+        final int rows = db.delete(Message.TABLENAME, Account.UUID + "=?", args);
+        return rows == 1;
+    }
+
+    public Map<Jid, Contact> readRoster(final Account account) {
+        final var builder = new ImmutableMap.Builder<Jid, Contact>();
         final SQLiteDatabase db = this.getReadableDatabase();
-        final String[] args = {roster.getAccount().getUuid()};
+        final String[] args = {account.getUuid()};
         try (final Cursor cursor =
                 db.query(Contact.TABLENAME, null, Contact.ACCOUNT + "=?", args, null, null, null)) {
             while (cursor.moveToNext()) {
-                roster.initContact(Contact.fromCursor(cursor));
+                final var contact = Contact.fromCursor(cursor);
+                if (contact != null) {
+                    contact.setAccount(account);
+                    builder.put(contact.getAddress(), contact);
+                }
             }
         }
+        return builder.buildKeepingLast();
     }
 
-    public void writeRoster(final Roster roster) {
-        long start = SystemClock.elapsedRealtime();
-        final Account account = roster.getAccount();
+    public void writeRoster(
+            final Account account, final String version, final List<Contact> contacts) {
+        final long start = SystemClock.elapsedRealtime();
         final SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
-        for (Contact contact : roster.getContacts()) {
+        for (final Contact contact : contacts) {
             if (contact.getOption(Contact.Options.IN_ROSTER)
                     || contact.hasAvatarOrPresenceName()
                     || contact.getOption(Contact.Options.SYNCED_VIA_OTHER)) {
                 db.insert(Contact.TABLENAME, null, contact.getContentValues());
             } else {
                 String where = Contact.ACCOUNT + "=? AND " + Contact.JID + "=?";
-                String[] whereArgs = {account.getUuid(), contact.getJid().toString()};
+                String[] whereArgs = {account.getUuid(), contact.getAddress().toString()};
                 db.delete(Contact.TABLENAME, where, whereArgs);
             }
         }
         db.setTransactionSuccessful();
         db.endTransaction();
-        account.setRosterVersion(roster.getVersion());
+        account.setRosterVersion(version);
         updateAccount(account);
         long duration = SystemClock.elapsedRealtime() - start;
         Log.d(
@@ -1844,7 +1871,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 "deleted "
                         + num
                         + " messages for "
-                        + conversation.getJid().asBareJid()
+                        + conversation.getAddress().asBareJid()
                         + " in "
                         + (SystemClock.elapsedRealtime() - start)
                         + "ms");
@@ -2624,25 +2651,25 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                         + " on conversations.uuid=messages.conversationUuid where"
                         + " messages.status!=0 and carbon==0  and conversations.mode=0 and"
                         + " messages.timeSent>=? group by conversations.uuid order by count(body)"
-                        + " desc limit 4;";
-        String[] whereArgs =
+                        + " desc limit 6;";
+
+        // ^ we only want 4 but we are removing self contacts in a later step
+
+        final String[] whereArgs =
                 new String[] {
                     String.valueOf(System.currentTimeMillis() - (Config.MILLISECONDS_IN_DAY * days))
                 };
-        Cursor cursor = db.rawQuery(SQL, whereArgs);
-        ArrayList<ShortcutService.FrequentContact> contacts = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            try {
-                contacts.add(
+        final var builder = new ImmutableList.Builder<ShortcutService.FrequentContact>();
+        try (final var cursor = db.rawQuery(SQL, whereArgs)) {
+
+            while (cursor.moveToNext()) {
+                builder.add(
                         new ShortcutService.FrequentContact(
                                 cursor.getString(0),
                                 cursor.getString(1),
                                 Jid.of(cursor.getString(2))));
-            } catch (final Exception e) {
-                Log.e(Config.LOGTAG, "could not create frequent contact", e);
             }
         }
-        cursor.close();
-        return contacts;
+        return builder.build();
     }
 }

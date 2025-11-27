@@ -8,7 +8,6 @@
     <string name="channel_details">Сведения о канале</string>
     <string name="action_add_account">Добавить аккаунт</string>
     <string name="action_edit_contact">Изменить контакт</string>
-    <string name="action_add_phone_book">Добавить в адресную книгу</string>
     <string name="action_delete_contact">Удалить из списка</string>
     <string name="action_block_contact">Заблокировать контакт</string>
     <string name="action_unblock_contact">Разблокировать контакт</string>
@@ -88,11 +87,11 @@
 \n 
 \n<b>Предупреждение:</b> данная операция не удалит копии файла, хранящиеся на других устройствах или серверах. </string>
     <string name="choose_presence">Выберите устройство</string>
-    <string name="send_unencrypted_message">Отправить сообщение без шифрования</string>
+    <string name="send_unencrypted_message">Отправить незашифрованное сообщение</string>
     <string name="send_message">Сообщение</string>
     <string name="send_message_to_x">Сообщение для %s</string>
     <string name="send_omemo_x509_message">Зашифрованное v\\OMEMO сообщение</string>
-    <string name="your_nick_has_been_changed">Используется новое имя</string>
+    <string name="your_nick_has_been_changed">Ваше имя изменено</string>
     <string name="send_unencrypted">Отправить в незашифрованном виде</string>
     <string name="decryption_failed">Расшифровка невозможна. Вероятно, у вас нет надлежащего ключа.</string>
     <string name="openkeychain_required">Установите OpenKeychain</string>
@@ -184,7 +183,7 @@
 \nВаши собеседники не смогут больше отправлять вам зашифрованные OpenPGP сообщения.</string>
     <string name="openpgp_has_been_published">Публичный ключ OpenPGP опубликован.</string>
     <string name="mgmt_account_enable">Включить аккаунт</string>
-    <string name="mgmt_account_delete_confirm_text">Удалить свой аккаунт? Удаление аккаунта также сотрёт все беседы.</string>
+    <string name="mgmt_account_delete_confirm_text">Удалить свой аккаунт? Удаление аккаунта также сотрёт всю историю бесед.</string>
     <string name="attach_record_voice">Записать голос</string>
     <string name="account_settings_jabber_id">XMPP-адрес</string>
     <string name="block_jabber_id">Заблокировать XMPP-адрес</string>
@@ -207,13 +206,6 @@
     <string name="server_info_available">доступно</string>
     <string name="server_info_unavailable">недоступно</string>
     <string name="missing_public_keys">Отсутствие анонсирования публичных ключей</string>
-    <string name="last_seen_now">Присутствие: только что</string>
-    <string name="last_seen_min">Присутствие: минуту назад</string>
-    <string name="last_seen_mins">Присутствие: %d мин. назад</string>
-    <string name="last_seen_hour">Присутствие: час назад</string>
-    <string name="last_seen_hours">Присутствие: %d час. назад</string>
-    <string name="last_seen_day">Присутствие: день назад</string>
-    <string name="last_seen_days">Присутствие: %d дн. назад</string>
     <string name="install_openkeychain">Зашифрованное сообщение. Установите OpenKeychain для расшифровки.</string>
     <string name="openpgp_messages_found">Найдены новые зашифрованные OpenPGP сообщения</string>
     <string name="openpgp_key_id">ID ключа OpenPGP</string>
@@ -356,7 +348,7 @@
     <string name="no_application_found_to_open_link">Не найдено приложения, способного открыть эту ссылку</string>
     <string name="no_application_found_to_view_contact">Не найдено приложения для просмотра контакта</string>
     <string name="pref_show_dynamic_tags">Динамические теги</string>
-    <string name="pref_show_dynamic_tags_summary">Отображать теги только для чтения под контактами</string>
+    <string name="pref_show_dynamic_tags_summary">Показывать теги только для чтения под контактами</string>
     <string name="enable_notifications">Включить уведомления</string>
     <string name="no_conference_server_found">Сервер конференции не найден</string>
     <string name="conference_creation_failed">Невозможно создать конференцию</string>
@@ -574,8 +566,8 @@
     <string name="gp_short">Короткий</string>
     <string name="gp_medium">Средний</string>
     <string name="gp_long">Длинный</string>
-    <string name="pref_broadcast_last_activity">Последняя активность</string>
-    <string name="pref_broadcast_last_activity_summary">Позволяет вашим контактам видеть, когда вы в последний раз использовали приложение</string>
+    <string name="pref_broadcast_last_activity">Показывать активность</string>
+    <string name="pref_broadcast_last_activity_summary">Позволяет вашим контактам видеть, когда вы в последний раз были активны в приложении</string>
     <string name="pref_privacy">Приватность</string>
     <string name="pref_theme_options">Тема</string>
     <string name="pref_theme_options_summary">Выбрать цветовую палитру</string>
@@ -1011,7 +1003,7 @@
     <string name="could_not_delete_account_from_server">Невозможно удалить аккаунт на сервере</string>
     <string name="delete_from_server">Удалить аккаунт на сервере</string>
     <string name="pref_autojoin">Синхронизировать закладки</string>
-    <string name="pref_autojoin_summary">Устанавливать флаг \"автоприсоединение\" при входе и выходе из MUC, и реагировать на изменения от других клиентов</string>
+    <string name="pref_autojoin_summary">Устанавливать флаг \"автоприсоединение\" при входе и выходе из группового чата, и реагировать на изменения от других клиентов</string>
     <string name="search_group_chats">Поиск конференций</string>
     <string name="download_failed_invalid_file">Загрузка не выполнена: файл испорчен</string>
     <string name="rtp_state_content_add_video">Перейти на видеовызов\?</string>
@@ -1086,7 +1078,7 @@
     <string name="appearance">Внешний вид</string>
     <string name="pref_title_interface">Интерфейс</string>
     <string name="pref_light_dark_mode">Светлая/тёмная тема</string>
-    <string name="pref_allow_screenshots_summary">Отображать содержимое экрана приложения в переключателе и разрешить делать снимки экрана</string>
+    <string name="pref_allow_screenshots_summary">Показывать содержимое экрана приложения в переключателе и разрешить делать снимки экрана</string>
     <string name="pref_category_e2ee">Сквозное шифрование</string>
     <string name="pref_title_trust_system_ca_store">Удостоверяющие центры</string>
     <string name="pref_category_operating_system">Операционная система</string>
@@ -1143,21 +1135,19 @@
     <string name="could_not_modify_call">Невозможно изменить звонок</string>
     <string name="clients_may_not_support_av">XMPP-клиент вашего контакта может не поддерживать аудио- и видеозвонки.</string>
     <string name="pref_chat_bubbles_summary">Цвет фона, размер текста, аватары</string>
-    <string name="pref_show_avatars">Показывать аватары</string>
     <string name="pref_title_bubbles">Сообщения в пузырях</string>
     <string name="pref_chat_bubbles">Пузыри сообщений</string>
-    <string name="pref_show_avatars_summary">Показывать аватары в своих сообщениях и приватных беседах в дополнение к конференциям</string>
     <string name="pref_call_integration">Интеграция звонков</string>
     <string name="pref_align_start">Выравнивать сообщения слева</string>
     <string name="pref_align_start_summary">Показывать все сообщения, включая отправленные, выровненными по левому краю для единообразия вида беседы</string>
     <string name="custom_notifications">Настраиваемые уведомления</string>
     <string name="pref_call_integration_summary">Звонки из этого приложения взаимодействуют с обычными телефонными звонками, например, завершение одного звонка при начале другого</string>
     <string name="custom_notifications_enable">Использовать индивидуальные настройки уведомлений (важность, звук, вибрация) для этой беседы?</string>
-    <string name="delete_avatar_message">Хотите удалить свой аватар? Некоторые клиенты могут продолжать отображать кэшированную копию вашего аватара.</string>
+    <string name="delete_avatar_message">Хотите удалить свой аватар? Некоторые клиенты могут продолжать показывать кэшированную копию вашего аватара.</string>
     <string name="show_to_contacts_only">Показывать только контактам</string>
     <string name="account_status_connection_timeout">Истекло время ожидания подключения</string>
     <string name="retry_with_p2p">Повторить через P2P</string>
-    <string name="account_status_channel_binding">Привязка канала недоступна</string>
+    <string name="account_status_channel_binding">Нет привязки канала</string>
     <string name="word_document">Документ Word</string>
     <string name="restore_omemo_key">Восстановить ключи OMEMO</string>
     <string name="non_quicksy_backup">Quicksy может восстанавливать резервные копии только для аккаунтов quicksy.im</string>
@@ -1173,4 +1163,26 @@
     <string name="account_status_service_outage_known">Сервис не работает (известная проблема)</string>
     <string name="account_status_service_outage_scheduled">Запланированный простой</string>
     <string name="sos_scheduled_return">Сервис должен заработать %s</string>
+    <string name="no_contacts_permission">%1$s требуется доступ к вашим контактам</string>
+    <string name="save_to_contact">Сохранить в контакты</string>
+    <string name="show_in_contacts">Показать в контактах</string>
+    <string name="pref_account_avatar">Аккаунты</string>
+    <string name="pref_account_avatar_summary">Показывать аватары аккаунтов в исходящих сообщениях для упрощения идентификации и управления</string>
+    <string name="pref_category_avatars">Аватары</string>
+    <string name="pref_show_11_chats">Беседы 1:1</string>
+    <string name="pref_show_11_chats_summary">Показывать аватары в беседах 1:1 (в конференциях аватары отображаются всегда)</string>
+    <string name="pref_show_11_sender_chats_summary">Показывать аватары у входящих сообщений в беседах 1:1 (в конференциях аватары отображаются всегда)</string>
+    <string name="moderate_delete_dot_dot_dot">Удалить как модератор…</string>
+    <string name="moderate_delete">Удалить как модератор</string>
+    <string name="delete_message">Удалить сообщение</string>
+    <string name="moderation_explained">Сообщение будет удалено для вас и всех остальных участников этого публичного канала.</string>
+    <string name="do_not_show_this_warning_again">Больше не предупреждать.</string>
+    <string name="could_not_moderate_message">Не удалось отмодерировать сообщение</string>
+    <string name="last_seen">Активность %s</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d участник</item>
+        <item quantity="few">%1$d участника</item>
+        <item quantity="many">%1$d участников</item>
+        <item quantity="other">%1$d участников</item>
+    </plurals>
 </resources>

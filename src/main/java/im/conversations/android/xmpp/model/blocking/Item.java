@@ -14,4 +14,8 @@ public class Item extends Extension {
     public Jid getJid() {
         return getAttributeAsJid("jid");
     }
+
+    public void setJid(final Jid address) {
+        this.setAttribute("jid", address);
+    }
 }

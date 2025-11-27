@@ -1,0 +1,3 @@
+* Naprawienie przesyłania plików przez Jingle IBB
+* Naprawienie zapełniania bazy danych przy wielokrotnych korektach
+* Przełączenie na Last Message Correction v1.1

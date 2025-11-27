@@ -3,8 +3,6 @@ package eu.siacs.conversations.xmpp;
 import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.SystemClock;
 import android.security.KeyChain;
@@ -18,14 +16,25 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.base.Throwables;
+import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.SettableFuture;
 import de.gultsch.common.Patterns;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.android.Device;
+import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.sasl.ChannelBinding;
@@ -36,21 +45,17 @@ import eu.siacs.conversations.crypto.sasl.SaslMechanism;
 import eu.siacs.conversations.crypto.sasl.ScramMechanism;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.entities.ServiceDiscoveryResult;
-import eu.siacs.conversations.generator.IqGenerator;
-import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.parser.MessageParser;
 import eu.siacs.conversations.parser.PresenceParser;
+import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MemorizingTrustManager;
-import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SSLSockets;
 import eu.siacs.conversations.utils.SocksSocketFactory;
@@ -62,11 +67,21 @@ import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.TagWriter;
 import eu.siacs.conversations.xml.XmlReader;
 import eu.siacs.conversations.xmpp.bind.Bind2;
-import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
+import eu.siacs.conversations.xmpp.manager.AbstractManager;
+import eu.siacs.conversations.xmpp.manager.BlockingManager;
+import eu.siacs.conversations.xmpp.manager.CarbonsManager;
+import eu.siacs.conversations.xmpp.manager.DiscoManager;
+import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
+import eu.siacs.conversations.xmpp.manager.PingManager;
+import eu.siacs.conversations.xmpp.manager.RegistrationManager;
+import im.conversations.android.xmpp.Entity;
+import im.conversations.android.xmpp.IqErrorException;
 import im.conversations.android.xmpp.model.AuthenticationFailure;
 import im.conversations.android.xmpp.model.AuthenticationRequest;
 import im.conversations.android.xmpp.model.AuthenticationStreamFeature;
+import im.conversations.android.xmpp.model.Extension;
 import im.conversations.android.xmpp.model.StreamElement;
 import im.conversations.android.xmpp.model.bind2.Bind;
 import im.conversations.android.xmpp.model.bind2.Bound;
@@ -86,6 +101,7 @@ import im.conversations.android.xmpp.model.sasl.Success;
 import im.conversations.android.xmpp.model.sasl2.Authenticate;
 import im.conversations.android.xmpp.model.sasl2.Authentication;
 import im.conversations.android.xmpp.model.sasl2.UserAgent;
+import im.conversations.android.xmpp.model.session.Session;
 import im.conversations.android.xmpp.model.sm.Ack;
 import im.conversations.android.xmpp.model.sm.Enable;
 import im.conversations.android.xmpp.model.sm.Enabled;
@@ -100,10 +116,10 @@ import im.conversations.android.xmpp.model.stanza.Stanza;
 import im.conversations.android.xmpp.model.streams.StreamError;
 import im.conversations.android.xmpp.model.tls.Proceed;
 import im.conversations.android.xmpp.model.tls.StartTls;
+import im.conversations.android.xmpp.processor.AccountStateProcessor;
 import im.conversations.android.xmpp.processor.BindProcessor;
-import java.io.ByteArrayInputStream;
+import im.conversations.android.xmpp.processor.MessageAcknowledgedProcessor;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ConnectException;
 import java.net.IDN;
 import java.net.InetAddress;
@@ -116,20 +132,21 @@ import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import javax.net.ssl.KeyManager;
@@ -144,10 +161,11 @@ import org.xmlpull.v1.XmlPullParserException;
 
 public class XmppConnection implements Runnable {
 
+    public static final Executor RECONNNECTION_EXECUTOR =
+            MoreExecutors.newSequentialExecutor(Executors.newCachedThreadPool());
+
     protected final Account account;
     private final Features features = new Features(this);
-    private final HashMap<Jid, ServiceDiscoveryResult> disco = new HashMap<>();
-    private final HashMap<String, Jid> commands = new HashMap<>();
     private final SparseArray<Stanza> mStanzaQueue = new SparseArray<>();
     private final Hashtable<String, Pair<Iq, Consumer<Iq>>> packetCallbacks = new Hashtable<>();
     private final Set<OnAdvancedStreamFeaturesLoaded> advancedStreamFeaturesLoadedListeners =
@@ -173,8 +191,6 @@ public class XmppConnection implements Runnable {
     private long lastConnectionStarted = 0;
     private long lastSessionStarted = 0;
     private long lastDiscoStarted = 0;
-    private boolean isMamPreferenceAlways = false;
-    private final AtomicInteger mPendingServiceDiscoveries = new AtomicInteger(0);
     private final AtomicBoolean mWaitForDisco = new AtomicBoolean(true);
     private final AtomicBoolean mWaitingForSmCatchup = new AtomicBoolean(false);
     private final AtomicInteger mSmCatchupMessageCounter = new AtomicInteger(0);
@@ -185,9 +201,11 @@ public class XmppConnection implements Runnable {
     private final Consumer<Presence> presenceListener;
     private final Consumer<Iq> unregisteredIqListener;
     private final Consumer<im.conversations.android.xmpp.model.stanza.Message> messageListener;
-    private OnStatusChanged statusListener = null;
-    private final Runnable bindListener;
-    private OnMessageAcknowledged acknowledgedListener = null;
+    private final Consumer<Account.State> accountStateProcessor;
+    private final BiFunction<Jid, String, Boolean> messageAcknowledgedProcessor;
+    private AxolotlService axolotlService;
+    private final PgpDecryptionService pgpDecryptionService;
+    private final Runnable bindProcessor;
     private final PendingItem<String> pendingResumeId = new PendingItem<>();
     private LoginInfo loginInfo;
     private HashedToken.Mechanism hashTokenRequest;
@@ -197,15 +215,24 @@ public class XmppConnection implements Runnable {
     private Resolver.Result seeOtherHostResolverResult;
     private volatile Thread mThread;
     private CountDownLatch mStreamCountDownLatch;
+    private final ClassToInstanceMap<AbstractManager> managers;
 
     public XmppConnection(final Account account, final XmppConnectionService service) {
         this.account = account;
         this.mXmppConnectionService = service;
         this.appSettings = mXmppConnectionService.getAppSettings();
-        this.presenceListener = new PresenceParser(service, account);
-        this.unregisteredIqListener = new IqParser(service, account);
-        this.messageListener = new MessageParser(service, account);
-        this.bindListener = new BindProcessor(service, account);
+        this.presenceListener = new PresenceParser(service, this);
+        // TODO rename this to Iq request handler (it handles only IQ get and set; throw assert
+        // error in handler just to be safe)
+        // TODO requires roster and blocking not to be handled by this
+        this.unregisteredIqListener = new IqParser(service, this);
+        this.messageListener = new MessageParser(service, this);
+        this.bindProcessor = new BindProcessor(service, this);
+        this.accountStateProcessor = new AccountStateProcessor(service, this);
+        this.messageAcknowledgedProcessor = new MessageAcknowledgedProcessor(service, this);
+        this.managers = Managers.get(service, this);
+        this.setAxolotlService(new AxolotlService(account, service));
+        this.pgpDecryptionService = new PgpDecryptionService(service);
     }
 
     private static void fixResource(final Context context, final Account account) {
@@ -229,9 +256,13 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private void changeStatus(final Account.State nextStatus) {
+    private void changeState(final Account.State nextStatus) {
+        this.changeState(nextStatus, true);
+    }
+
+    private void changeState(final Account.State nextStatus, final boolean skipOnInterrupt) {
         synchronized (this) {
-            if (Thread.currentThread().isInterrupted()) {
+            if (skipOnInterrupt && Thread.currentThread().isInterrupted()) {
                 Log.d(
                         Config.LOGTAG,
                         account.getJid().asBareJid()
@@ -256,15 +287,15 @@ public class XmppConnection implements Runnable {
                 return;
             }
         }
-        if (statusListener != null) {
-            statusListener.onStatusChanged(account);
-        }
+        this.accountStateProcessor.accept(nextStatus);
     }
 
-    public Jid getJidForCommand(final String node) {
-        synchronized (this.commands) {
-            return this.commands.get(node);
-        }
+    private void changeStateTerminal(final Account.State state) {
+        // interrupt needs to be called before status change; otherwise we interrupt the newly
+        // created thread
+        this.interrupt();
+        this.forceCloseSocket();
+        this.changeState(state, false);
     }
 
     public void prepareNewConnection() {
@@ -272,7 +303,7 @@ public class XmppConnection implements Runnable {
         this.lastPingSent = SystemClock.elapsedRealtime();
         this.lastDiscoStarted = Long.MAX_VALUE;
         this.mWaitingForSmCatchup.set(false);
-        this.changeStatus(Account.State.CONNECTING);
+        this.changeState(Account.State.CONNECTING);
     }
 
     public boolean isWaitingForSmCatchup() {
@@ -302,7 +333,7 @@ public class XmppConnection implements Runnable {
         try {
             Socket localSocket;
             shouldAuthenticate = !account.isOptionSet(Account.OPTION_REGISTER);
-            this.changeStatus(Account.State.CONNECTING);
+            this.changeState(Account.State.CONNECTING);
             final boolean useTorSetting = appSettings.isUseTor();
             final boolean extended = appSettings.isExtendedConnectionOptions();
             final boolean useTor = useTorSetting || account.isOnion();
@@ -504,27 +535,27 @@ public class XmppConnection implements Runnable {
             }
             processStream();
         } catch (final SecurityException e) {
-            this.changeStatus(Account.State.MISSING_INTERNET_PERMISSION);
+            this.changeState(Account.State.MISSING_INTERNET_PERMISSION);
         } catch (final StateChangingException e) {
-            this.changeStatus(e.state);
+            this.changeState(e.state);
         } catch (final UnknownHostException
                 | ConnectException
                 | SocksSocketFactory.HostNotFoundException e) {
-            this.changeStatus(Account.State.SERVER_NOT_FOUND);
+            this.changeState(Account.State.SERVER_NOT_FOUND);
         } catch (final SocksSocketFactory.SocksProxyNotFoundException e) {
-            this.changeStatus(Account.State.TOR_NOT_AVAILABLE);
+            this.changeState(Account.State.TOR_NOT_AVAILABLE);
         } catch (final IOException | XmlPullParserException e) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": " + e.getMessage());
-            this.changeStatus(Account.State.OFFLINE);
+            this.changeState(Account.State.OFFLINE);
             this.attempt = Math.max(0, this.attempt - 1);
         } finally {
-            if (!Thread.currentThread().isInterrupted()) {
-                forceCloseSocket();
-            } else {
+            if (Thread.currentThread().isInterrupted()) {
                 Log.d(
                         Config.LOGTAG,
                         account.getJid().asBareJid()
                                 + ": not force closing socket because thread was interrupted");
+            } else {
+                forceCloseSocket();
             }
         }
     }
@@ -878,7 +909,6 @@ public class XmppConnection implements Runnable {
                             Config.LOGTAG,
                             account.getJid().asBareJid()
                                     + ": successfully enabled carbons (via Bind 2.0)");
-                    features.carbonsEnabled = true;
                 } else if (currentLoginInfo.inlineBindFeatures != null
                         && currentLoginInfo.inlineBindFeatures.contains(Namespace.CARBONS)) {
                     negotiatedCarbons = true;
@@ -886,7 +916,6 @@ public class XmppConnection implements Runnable {
                             Config.LOGTAG,
                             account.getJid().asBareJid()
                                     + ": successfully enabled carbons (via Bind 2.0/implicit)");
-                    features.carbonsEnabled = true;
                 } else {
                     negotiatedCarbons = false;
                 }
@@ -1162,7 +1191,7 @@ public class XmppConnection implements Runnable {
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid() + ": awaiting disco results after resume");
-            changeStatus(Account.State.CONNECTING);
+            changeState(Account.State.CONNECTING);
         } else {
             changeStatusToOnline();
         }
@@ -1172,7 +1201,7 @@ public class XmppConnection implements Runnable {
         Log.d(
                 Config.LOGTAG,
                 account.getJid().asBareJid() + ": online with resource " + account.getResource());
-        changeStatus(Account.State.ONLINE);
+        changeState(Account.State.ONLINE);
     }
 
     private void processFailed(final Failed failed, final boolean sendBindRequest) {
@@ -1225,12 +1254,11 @@ public class XmppConnection implements Runnable {
                 }
                 final Stanza stanza = mStanzaQueue.valueAt(i);
                 if (stanza instanceof im.conversations.android.xmpp.model.stanza.Message packet
-                        && acknowledgedListener != null) {
+                        && messageAcknowledgedProcessor != null) {
                     final String id = packet.getId();
                     final Jid to = packet.getTo();
                     if (id != null && to != null) {
-                        acknowledgedMessages |=
-                                acknowledgedListener.onMessageAcknowledged(account, to, id);
+                        acknowledgedMessages |= messageAcknowledgedProcessor.apply(to, id);
                     }
                 }
                 mStanzaQueue.removeAt(i);
@@ -1513,12 +1541,12 @@ public class XmppConnection implements Runnable {
             mXmppConnectionService.databaseBackend.updateAccount(account);
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
-        if (streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
-                && account.isOptionSet(Account.OPTION_REGISTER)) {
-            register();
-        } else if (!streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
-                && account.isOptionSet(Account.OPTION_REGISTER)) {
-            throw new StateChangingException(Account.State.REGISTRATION_NOT_SUPPORTED);
+        if (account.isOptionSet(Account.OPTION_REGISTER)) {
+            if (this.streamFeatures.register()) {
+                this.register();
+            } else {
+                throw new StateChangingException(Account.State.REGISTRATION_NOT_SUPPORTED);
+            }
         } else if (streamFeatures.hasStreamFeature(Authentication.class)
                 && shouldAuthenticate
                 && this.loginInfo == null) {
@@ -1564,10 +1592,17 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate() throws IOException {
+        final var streamFeatures = this.streamFeatures;
         final boolean isSecure = isSecure();
-        if (isSecure && this.streamFeatures.hasStreamFeature(Authentication.class)) {
+        if (streamFeatures == null) {
+            Log.d(
+                    Config.LOGTAG,
+                    "could not pick alternate authentication mechanism. server never sent"
+                            + " features");
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        } else if (isSecure && streamFeatures.hasStreamFeature(Authentication.class)) {
             authenticate(SaslMechanism.Version.SASL_2);
-        } else if (isSecure && this.streamFeatures.hasStreamFeature(Mechanisms.class)) {
+        } else if (isSecure && streamFeatures.hasStreamFeature(Mechanisms.class)) {
             authenticate(SaslMechanism.Version.SASL);
         } else {
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
@@ -1777,7 +1812,7 @@ public class XmppConnection implements Runnable {
                                         account, appSettings.getInstallationId())));
         userAgent.setSoftware(
                 String.format("%s %s", BuildConfig.APP_NAME, BuildConfig.VERSION_NAME));
-        if (!PhoneHelper.isEmulator()) {
+        if (new Device(mXmppConnectionService).isPhysicalDevice()) {
             userAgent.setDevice(String.format("%s %s", Build.MANUFACTURER, Build.MODEL));
         }
         // do not include bind if 'inlineStreamManagement' is missing and we have a streamId
@@ -1821,167 +1856,96 @@ public class XmppConnection implements Runnable {
     }
 
     private void register() {
-        final String preAuth = account.getKey(Account.KEY_PRE_AUTH_REGISTRATION_TOKEN);
-        if (preAuth != null && features.invite()) {
-            final Iq preAuthRequest = new Iq(Iq.Type.SET);
-            preAuthRequest.addChild("preauth", Namespace.PARS).setAttribute("token", preAuth);
-            sendUnmodifiedIqPacket(
-                    preAuthRequest,
-                    (response) -> {
-                        if (response.getType() == Iq.Type.RESULT) {
-                            sendRegistryRequest();
+        final String preAuthToken =
+                Strings.emptyToNull(account.getKey(Account.KEY_PRE_AUTH_REGISTRATION_TOKEN));
+        final ListenableFuture<RegistrationManager.Registration> registrationFuture;
+        if (preAuthToken != null && streamFeatures.preAuthenticatedInBandRegistration()) {
+            registrationFuture =
+                    getManager(RegistrationManager.class).getRegistration(preAuthToken);
+        } else {
+            registrationFuture = getManager(RegistrationManager.class).getRegistration();
+        }
+        // TODO should we store this future and cancel it during disconnect or something
+        Futures.addCallback(
+                registrationFuture,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(final RegistrationManager.Registration registration) {
+                        if (registration instanceof RegistrationManager.SimpleRegistration) {
+                            final var future = getManager(RegistrationManager.class).register();
+                            awaitRegistrationResponse(future);
+                        } else if (registration
+                                instanceof RegistrationManager.ExtendedRegistration er) {
+                            mXmppConnectionService.displayCaptchaRequest(
+                                    account, er.getData(), er.getCaptcha());
+                        } else if (registration
+                                instanceof
+                                RegistrationManager.RedirectRegistration redirectRegistration) {
+                            XmppConnection.this.redirectionUrl = redirectRegistration.getURL();
+                            changeStateTerminal(Account.State.REGISTRATION_WEB);
                         } else {
-                            final String error = response.getErrorCondition();
                             Log.d(
                                     Config.LOGTAG,
-                                    account.getJid().asBareJid()
-                                            + ": failed to pre auth. "
-                                            + error);
-                            throw new StateChangingError(Account.State.REGISTRATION_INVALID_TOKEN);
+                                    "got registration: " + registration.getClass().getName());
+                            changeStateTerminal(Account.State.REGISTRATION_NOT_SUPPORTED);
                         }
-                    },
-                    true);
-        } else {
-            sendRegistryRequest();
-        }
-    }
+                    }
 
-    private void sendRegistryRequest() {
-        final Iq register = new Iq(Iq.Type.GET);
-        register.query(Namespace.REGISTER);
-        register.setTo(account.getDomain());
-        sendUnmodifiedIqPacket(
-                register,
-                (packet) -> {
-                    if (packet.getType() == Iq.Type.TIMEOUT) {
-                        return;
-                    }
-                    if (packet.getType() == Iq.Type.ERROR) {
-                        throw new StateChangingError(Account.State.REGISTRATION_FAILED);
-                    }
-                    final Element query = packet.query(Namespace.REGISTER);
-                    if (query.hasChild("username") && (query.hasChild("password"))) {
-                        final Iq register1 = new Iq(Iq.Type.SET);
-                        final Element username =
-                                new Element("username").setContent(account.getUsername());
-                        final Element password =
-                                new Element("password").setContent(account.getPassword());
-                        register1.query(Namespace.REGISTER).addChild(username);
-                        register1.query().addChild(password);
-                        register1.setFrom(account.getJid().asBareJid());
-                        sendUnmodifiedIqPacket(register1, this::processRegistrationResponse, true);
-                    } else if (query.hasChild("x", Namespace.DATA)) {
-                        final Data data = Data.parse(query.findChild("x", Namespace.DATA));
-                        final Element blob = query.findChild("data", "urn:xmpp:bob");
-                        final String id = packet.getId();
-                        InputStream is;
-                        if (blob != null) {
-                            try {
-                                final String base64Blob = blob.getContent();
-                                final byte[] strBlob = Base64.decode(base64Blob, Base64.DEFAULT);
-                                is = new ByteArrayInputStream(strBlob);
-                            } catch (Exception e) {
-                                is = null;
-                            }
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        if (t instanceof TimeoutException) {
+                            return;
+                        }
+                        if (t instanceof RegistrationManager.InvalidTokenException) {
+                            changeStateTerminal(Account.State.REGISTRATION_INVALID_TOKEN);
                         } else {
-                            final boolean useTor = this.appSettings.isUseTor() || account.isOnion();
-                            try {
-                                final String url = data.getValue("url");
-                                final String fallbackUrl = data.getValue("captcha-fallback-url");
-                                if (url != null) {
-                                    is = HttpConnectionManager.open(url, useTor);
-                                } else if (fallbackUrl != null) {
-                                    is = HttpConnectionManager.open(fallbackUrl, useTor);
-                                } else {
-                                    is = null;
-                                }
-                            } catch (final IOException e) {
-                                Log.d(
-                                        Config.LOGTAG,
-                                        account.getJid().asBareJid() + ": unable to fetch captcha",
-                                        e);
-                                is = null;
-                            }
+                            changeStateTerminal(Account.State.REGISTRATION_FAILED);
                         }
-
-                        if (is != null) {
-                            Bitmap captcha = BitmapFactory.decodeStream(is);
-                            try {
-                                if (mXmppConnectionService.displayCaptchaRequest(
-                                        account, id, data, captcha)) {
-                                    return;
-                                }
-                            } catch (Exception e) {
-                                throw new StateChangingError(Account.State.REGISTRATION_FAILED);
-                            }
-                        }
-                        throw new StateChangingError(Account.State.REGISTRATION_FAILED);
-                    } else if (query.hasChild("instructions")
-                            || query.hasChild("x", Namespace.OOB)) {
-                        final String instructions = query.findChildContent("instructions");
-                        final Element oob = query.findChild("x", Namespace.OOB);
-                        final String url = oob == null ? null : oob.findChildContent("url");
-                        if (url != null) {
-                            setAccountCreationFailed(url);
-                        } else if (instructions != null) {
-                            final Matcher matcher = Patterns.URI_HTTP.matcher(instructions);
-                            if (matcher.find()) {
-                                setAccountCreationFailed(
-                                        instructions.substring(matcher.start(), matcher.end()));
-                            }
-                        }
-                        throw new StateChangingError(Account.State.REGISTRATION_FAILED);
                     }
                 },
-                true);
+                MoreExecutors.directExecutor());
     }
 
-    public void sendCreateAccountWithCaptchaPacket(final String id, final Data data) {
-        final Iq request = IqGenerator.generateCreateAccountWithCaptcha(account, id, data);
-        this.sendUnmodifiedIqPacket(request, this::processRegistrationResponse, true);
+    public void register(
+            final im.conversations.android.xmpp.model.data.Data data, final String ocr) {
+        final var future = getManager(RegistrationManager.class).register(data, ocr);
+        awaitRegistrationResponse(future);
     }
 
-    private void processRegistrationResponse(final Iq response) {
-        if (response.getType() == Iq.Type.RESULT) {
-            account.setOption(Account.OPTION_REGISTER, false);
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid()
-                            + ": successfully registered new account on server");
-            throw new StateChangingError(Account.State.REGISTRATION_SUCCESSFUL);
-        } else {
-            final Account.State state = getRegistrationFailedState(response);
-            throw new StateChangingError(state);
-        }
+    private void awaitRegistrationResponse(final ListenableFuture<Void> registration) {
+        Futures.addCallback(
+                registration,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        account.setOption(Account.OPTION_REGISTER, false);
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid()
+                                        + ": successfully registered new account on server");
+                        changeStateTerminal(Account.State.REGISTRATION_SUCCESSFUL);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        if (t instanceof TimeoutException) {
+                            return;
+                        }
+                        if (t
+                                instanceof
+                                RegistrationManager.RegistrationFailedException exception) {
+                            changeStateTerminal(exception.asAccountState());
+                        } else {
+                            changeStateTerminal(Account.State.REGISTRATION_FAILED);
+                        }
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
-    @NonNull
-    private static Account.State getRegistrationFailedState(final Iq response) {
-        final List<String> PASSWORD_TOO_WEAK_MESSAGES =
-                Arrays.asList("The password is too weak", "Please use a longer password.");
-        final var error = response.getError();
-        final var condition = error == null ? null : error.getCondition();
-        final Account.State state;
-        if (condition instanceof Condition.Conflict) {
-            state = Account.State.REGISTRATION_CONFLICT;
-        } else if (condition instanceof Condition.ResourceConstraint) {
-            state = Account.State.REGISTRATION_PLEASE_WAIT;
-        } else if (condition instanceof Condition.NotAcceptable
-                && PASSWORD_TOO_WEAK_MESSAGES.contains(error.getTextAsString())) {
-            state = Account.State.REGISTRATION_PASSWORD_TOO_WEAK;
-        } else {
-            state = Account.State.REGISTRATION_FAILED;
-        }
-        return state;
-    }
-
-    private void setAccountCreationFailed(final String url) {
-        final HttpUrl httpUrl = url == null ? null : HttpUrl.parse(url);
-        if (httpUrl != null && httpUrl.isHttps()) {
-            this.redirectionUrl = httpUrl;
-            throw new StateChangingError(Account.State.REGISTRATION_WEB);
-        }
-        throw new StateChangingError(Account.State.REGISTRATION_FAILED);
+    public void cancelRegistration() {
+        RECONNNECTION_EXECUTOR.execute(
+                () -> this.changeStateTerminal(Account.State.REGISTRATION_FAILED));
     }
 
     public HttpUrl getRedirectionUrl() {
@@ -1997,12 +1961,7 @@ public class XmppConnection implements Runnable {
             this.mStanzaQueue.clear();
         }
         this.redirectionUrl = null;
-        synchronized (this.disco) {
-            disco.clear();
-        }
-        synchronized (this.commands) {
-            this.commands.clear();
-        }
+        getManager(DiscoManager.class).clear();
         this.loginInfo = null;
     }
 
@@ -2048,8 +2007,7 @@ public class XmppConnection implements Runnable {
                                             + ": jid changed during bind. updating database");
                             mXmppConnectionService.databaseBackend.updateAccount(account);
                         }
-                        if (streamFeatures.hasChild("session")
-                                && !streamFeatures.findChild("session").hasChild("optional")) {
+                        if (streamFeatures.session()) {
                             sendStartSession();
                         } else {
                             final boolean waitForDisco = enableStreamManagement();
@@ -2129,7 +2087,7 @@ public class XmppConnection implements Runnable {
                 Config.LOGTAG,
                 account.getJid().asBareJid() + ": sending legacy session to outdated server");
         final Iq startSession = new Iq(Iq.Type.SET);
-        startSession.addChild("session", "urn:ietf:params:xml:ns:xmpp-session");
+        startSession.addExtension(new Session());
         this.sendUnmodifiedIqPacket(
                 startSession,
                 (packet) -> {
@@ -2160,43 +2118,100 @@ public class XmppConnection implements Runnable {
 
     private void sendPostBindInitialization(
             final boolean waitForDisco, final boolean carbonsEnabled) {
-        features.carbonsEnabled = carbonsEnabled;
-        features.blockListRequested = false;
-        synchronized (this.disco) {
-            this.disco.clear();
-        }
+        getManager(CarbonsManager.class).setEnabledOnBind(carbonsEnabled);
+        getManager(DiscoManager.class).clear();
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": starting service discovery");
-        mPendingServiceDiscoveries.set(0);
         mWaitForDisco.set(waitForDisco);
         this.lastDiscoStarted = SystemClock.elapsedRealtime();
         mXmppConnectionService.scheduleWakeUpCall(
                 Config.CONNECT_DISCO_TIMEOUT * 1000L, account.getUuid().hashCode());
-        final Element caps = streamFeatures.findChild("c");
-        final String hash = caps == null ? null : caps.getAttribute("hash");
-        final String ver = caps == null ? null : caps.getAttribute("ver");
-        ServiceDiscoveryResult discoveryResult = null;
-        if (hash != null && ver != null) {
-            discoveryResult =
-                    mXmppConnectionService.getCachedServiceDiscoveryResult(new Pair<>(hash, ver));
-        }
-        final boolean requestDiscoItemsFirst =
-                !account.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY);
-        if (requestDiscoItemsFirst) {
-            sendServiceDiscoveryItems(account.getDomain());
-        }
-        if (discoveryResult == null) {
-            sendServiceDiscoveryInfo(account.getDomain());
-        } else {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server caps came from cache");
-            disco.put(account.getDomain(), discoveryResult);
-        }
+
+        final var nodeHash = streamFeatures.getCapabilities();
+        final var serverInfoFuture =
+                getManager(DiscoManager.class)
+                        .infoOrCache(Entity.discoItem(account.getDomain()), nodeHash);
+
         final var features = getFeatures();
         if (!features.bind2()) {
-            discoverMamPreferences();
+            getManager(MessageArchiveManager.class).fetchArchivingPreferences();
         }
-        sendServiceDiscoveryInfo(account.getJid().asBareJid());
-        if (!requestDiscoItemsFirst) {
-            sendServiceDiscoveryItems(account.getDomain());
+
+        final var accountInfoFuture =
+                getManager(DiscoManager.class)
+                        .info(Entity.discoItem(account.getJid().asBareJid()), null);
+
+        final var itemsFuture =
+                getManager(DiscoManager.class).itemsWithInfo(Entity.discoItem(account.getDomain()));
+
+        final var catchingServerFuture =
+                Futures.catching(
+                        serverInfoFuture,
+                        DiscoManager.CapsHashMismatchException.class,
+                        input -> {
+                            Log.d(
+                                    Config.LOGTAG,
+                                    account.getJid().asBareJid() + ": error in server caps",
+                                    input);
+                            return null;
+                        },
+                        MoreExecutors.directExecutor());
+
+        Futures.addCallback(
+                Futures.allAsList(accountInfoFuture, catchingServerFuture),
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(List<Object> result) {
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid() + ": advanced stream future done");
+                        enableAdvancedStreamFeatures();
+                    }
+
+                    @Override
+                    public void onFailure(@Nullable Throwable throwable) {
+                        Log.d(
+                                Config.LOGTAG,
+                                "could not fetch disco for advanced stream features",
+                                throwable);
+                    }
+                },
+                MoreExecutors.directExecutor());
+
+        if (mWaitForDisco.get()) {
+            final ListenableFuture<Void> discoComplete =
+                    Futures.whenAllComplete(serverInfoFuture, accountInfoFuture, itemsFuture)
+                            .call(() -> null, MoreExecutors.directExecutor());
+            Futures.addCallback(
+                    discoComplete,
+                    new FutureCallback<>() {
+                        @Override
+                        public void onSuccess(Void result) {
+                            if (timeout(serverInfoFuture, accountInfoFuture, itemsFuture)) {
+                                Log.d(
+                                        Config.LOGTAG,
+                                        account.getJid().asBareJid()
+                                                + ": reached timeout while waiting for disco");
+                                return;
+                            }
+                            if (mWaitForDisco.compareAndSet(true, false)) {
+                                finalizeBindOrError();
+                            } else {
+                                Log.d(
+                                        Config.LOGTAG,
+                                        account.getJid().asBareJid()
+                                                + ": disco complete but bind was already"
+                                                + " finalized");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Throwable t) {
+                            Log.d(Config.LOGTAG, "error in disco: ", t);
+                        }
+                    },
+                    MoreExecutors.directExecutor());
+        } else {
+            finalizeBind();
         }
 
         if (!mWaitForDisco.get()) {
@@ -2205,201 +2220,56 @@ public class XmppConnection implements Runnable {
         this.lastSessionStarted = SystemClock.elapsedRealtime();
     }
 
-    private void sendServiceDiscoveryInfo(final Jid jid) {
-        mPendingServiceDiscoveries.incrementAndGet();
-        final Iq iq = new Iq(Iq.Type.GET);
-        iq.setTo(jid);
-        iq.query("http://jabber.org/protocol/disco#info");
-        this.sendIqPacket(
-                iq,
-                (packet) -> {
-                    if (packet.getType() == Iq.Type.RESULT) {
-                        boolean advancedStreamFeaturesLoaded;
-                        synchronized (XmppConnection.this.disco) {
-                            ServiceDiscoveryResult result = new ServiceDiscoveryResult(packet);
-                            if (jid.equals(account.getDomain())) {
-                                mXmppConnectionService.databaseBackend.insertDiscoveryResult(
-                                        result);
-                            }
-                            disco.put(jid, result);
-                            advancedStreamFeaturesLoaded =
-                                    disco.containsKey(account.getDomain())
-                                            && disco.containsKey(account.getJid().asBareJid());
-                        }
-                        if (advancedStreamFeaturesLoaded
-                                && (jid.equals(account.getDomain())
-                                        || jid.equals(account.getJid().asBareJid()))) {
-                            enableAdvancedStreamFeatures();
-                        }
-                    } else if (packet.getType() == Iq.Type.ERROR) {
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid()
-                                        + ": could not query disco info for "
-                                        + jid.toString());
-                        final boolean serverOrAccount =
-                                jid.equals(account.getDomain())
-                                        || jid.equals(account.getJid().asBareJid());
-                        final boolean advancedStreamFeaturesLoaded;
-                        if (serverOrAccount) {
-                            synchronized (XmppConnection.this.disco) {
-                                disco.put(jid, ServiceDiscoveryResult.empty());
-                                advancedStreamFeaturesLoaded =
-                                        disco.containsKey(account.getDomain())
-                                                && disco.containsKey(account.getJid().asBareJid());
-                            }
-                        } else {
-                            advancedStreamFeaturesLoaded = false;
-                        }
-                        if (advancedStreamFeaturesLoaded) {
-                            enableAdvancedStreamFeatures();
-                        }
+    private boolean timeout(final ListenableFuture<?>... futures) {
+        for (final ListenableFuture<?> future : futures) {
+            if (future.isDone()) {
+                try {
+                    future.get();
+                } catch (final Exception e) {
+                    if (Throwables.getRootCause(e) instanceof TimeoutException) {
+                        return true;
                     }
-                    if (packet.getType() != Iq.Type.TIMEOUT) {
-                        if (mPendingServiceDiscoveries.decrementAndGet() == 0
-                                && mWaitForDisco.compareAndSet(true, false)) {
-                            finalizeBind();
-                        }
-                    }
-                });
+                }
+            }
+        }
+        return false;
     }
 
-    private void discoverMamPreferences() {
-        final Iq request = new Iq(Iq.Type.GET);
-        request.addChild("prefs", MessageArchiveService.Version.MAM_2.namespace);
-        sendIqPacket(
-                request,
-                (response) -> {
-                    if (response.getType() == Iq.Type.RESULT) {
-                        Element prefs =
-                                response.findChild(
-                                        "prefs", MessageArchiveService.Version.MAM_2.namespace);
-                        isMamPreferenceAlways =
-                                "always"
-                                        .equals(
-                                                prefs == null
-                                                        ? null
-                                                        : prefs.getAttribute("default"));
-                    }
-                });
-    }
-
-    private void discoverCommands() {
-        final Iq request = new Iq(Iq.Type.GET);
-        request.setTo(account.getDomain());
-        request.addChild("query", Namespace.DISCO_ITEMS).setAttribute("node", Namespace.COMMANDS);
-        sendIqPacket(
-                request,
-                (response) -> {
-                    if (response.getType() == Iq.Type.RESULT) {
-                        final Element query = response.findChild("query", Namespace.DISCO_ITEMS);
-                        if (query == null) {
-                            return;
-                        }
-                        final HashMap<String, Jid> commands = new HashMap<>();
-                        for (final Element child : query.getChildren()) {
-                            if ("item".equals(child.getName())) {
-                                final String node = child.getAttribute("node");
-                                final Jid jid = child.getAttributeAsJid("jid");
-                                if (node != null && jid != null) {
-                                    commands.put(node, jid);
-                                }
-                            }
-                        }
-                        synchronized (this.commands) {
-                            this.commands.clear();
-                            this.commands.putAll(commands);
-                        }
-                    }
-                });
-    }
-
-    public boolean isMamPreferenceAlways() {
-        return isMamPreferenceAlways;
+    private void finalizeBindOrError() {
+        try {
+            finalizeBind();
+        } catch (final Exception e) {
+            throw new Error(e);
+        }
     }
 
     private void finalizeBind() {
         this.offlineMessagesRetrieved = false;
-        this.bindListener.run();
+        this.bindProcessor.run();
         this.changeStatusToOnline();
     }
 
     private void enableAdvancedStreamFeatures() {
-        if (getFeatures().blocking() && !features.blockListRequested) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": Requesting block list");
-            this.sendIqPacket(getIqGenerator().generateGetBlockList(), unregisteredIqListener);
+        final var blockingManager = getManager(BlockingManager.class);
+        if (blockingManager.hasFeature()) {
+            blockingManager.request();
         }
         for (final OnAdvancedStreamFeaturesLoaded listener :
                 advancedStreamFeaturesLoadedListeners) {
             listener.onAdvancedStreamFeaturesAvailable(account);
         }
-        if (getFeatures().carbons() && !features.carbonsEnabled) {
-            sendEnableCarbons();
+        final var carbonsManager = getManager(CarbonsManager.class);
+        if (carbonsManager.hasFeature() && !carbonsManager.isEnabled()) {
+            carbonsManager.enable();
         }
-        if (getFeatures().commands()) {
-            discoverCommands();
+        final var discoManager = getManager(DiscoManager.class);
+        if (discoManager.hasServerCommands()) {
+            discoManager.fetchServerCommands();
         }
-    }
 
-    private void sendServiceDiscoveryItems(final Jid server) {
-        mPendingServiceDiscoveries.incrementAndGet();
-        final Iq iq = new Iq(Iq.Type.GET);
-        iq.setTo(server.getDomain());
-        iq.query("http://jabber.org/protocol/disco#items");
-        this.sendIqPacket(
-                iq,
-                (packet) -> {
-                    if (packet.getType() == Iq.Type.RESULT) {
-                        final HashSet<Jid> items = new HashSet<>();
-                        final List<Element> elements = packet.query().getChildren();
-                        for (final Element element : elements) {
-                            if (element.getName().equals("item")) {
-                                final Jid jid =
-                                        Jid.Invalid.getNullForInvalid(
-                                                element.getAttributeAsJid("jid"));
-                                if (jid != null && !jid.equals(account.getDomain())) {
-                                    items.add(jid);
-                                }
-                            }
-                        }
-                        for (Jid jid : items) {
-                            sendServiceDiscoveryInfo(jid);
-                        }
-                    } else {
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid()
-                                        + ": could not query disco items of "
-                                        + server);
-                    }
-                    if (packet.getType() != Iq.Type.TIMEOUT) {
-                        if (mPendingServiceDiscoveries.decrementAndGet() == 0
-                                && mWaitForDisco.compareAndSet(true, false)) {
-                            finalizeBind();
-                        }
-                    }
-                });
-    }
-
-    private void sendEnableCarbons() {
-        final Iq iq = new Iq(Iq.Type.SET);
-        iq.addChild("enable", Namespace.CARBONS);
-        this.sendIqPacket(
-                iq,
-                (packet) -> {
-                    if (packet.getType() == Iq.Type.RESULT) {
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid() + ": successfully enabled carbons");
-                        features.carbonsEnabled = true;
-                    } else {
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid()
-                                        + ": could not enable carbons "
-                                        + packet);
-                    }
-                });
+        // TODO check if MamManager has feature and
+        final var messageArchiveManager = getManager(MessageArchiveManager.class);
+        messageArchiveManager.catchup(account);
     }
 
     private void processStreamError(final StreamError streamError) throws IOException {
@@ -2533,6 +2403,30 @@ public class XmppConnection implements Runnable {
         return String.format("%s.%s", BuildConfig.APP_NAME, CryptoHelper.random(3));
     }
 
+    public void sendRequestStanza() {
+        this.sendPacket(new Request());
+    }
+
+    public ListenableFuture<Iq> sendIqPacket(final Iq request) {
+        return sendIqPacket(request, false);
+    }
+
+    public ListenableFuture<Iq> sendIqPacket(final Iq request, final boolean allowUnbound) {
+        final SettableFuture<Iq> settable = SettableFuture.create();
+        this.sendUnmodifiedIqPacket(
+                request,
+                response -> {
+                    final var type = response.getType();
+                    switch (type) {
+                        case RESULT -> settable.set(response);
+                        case TIMEOUT -> settable.setException(new TimeoutException());
+                        default -> settable.setException(new IqErrorException(response));
+                    }
+                },
+                allowUnbound);
+        return settable;
+    }
+
     public String sendIqPacket(final Iq packet, final Consumer<Iq> callback) {
         packet.setFrom(account.getJid());
         return this.sendUnmodifiedIqPacket(packet, callback, false);
@@ -2551,6 +2445,36 @@ public class XmppConnection implements Runnable {
         }
         this.sendPacket(packet, force);
         return packet.getId();
+    }
+
+    public void sendResultFor(final Iq request, final Extension... extensions) {
+        final var from = request.getFrom();
+        final var id = request.getId();
+        final var response = new Iq(Iq.Type.RESULT);
+        response.setTo(from);
+        response.setId(id);
+        for (final Extension extension : extensions) {
+            response.addExtension(extension);
+        }
+        this.sendPacket(response);
+    }
+
+    public void sendErrorFor(
+            final Iq request,
+            final im.conversations.android.xmpp.model.error.Error.Type type,
+            final Condition condition,
+            final im.conversations.android.xmpp.model.error.Error.Extension... extensions) {
+        final var from = request.getFrom();
+        final var id = request.getId();
+        final var response = new Iq(Iq.Type.ERROR);
+        response.setTo(from);
+        response.setId(id);
+        final var error =
+                response.addExtension(new im.conversations.android.xmpp.model.error.Error());
+        error.setType(type);
+        error.setCondition(condition);
+        error.addExtensions(extensions);
+        this.sendPacket(response);
     }
 
     public void sendMessagePacket(final im.conversations.android.xmpp.model.stanza.Message packet) {
@@ -2572,6 +2496,7 @@ public class XmppConnection implements Runnable {
             return;
         }
         synchronized (this.mStanzaQueue) {
+            // TODO should we fail IQs for unbound streams?
             if (force || isBound) {
                 tagWriter.writeStanzaAsync(packet);
             } else {
@@ -2617,25 +2542,12 @@ public class XmppConnection implements Runnable {
     }
 
     public void sendPing() {
-        if (!r()) {
-            final Iq iq = new Iq(Iq.Type.GET);
-            iq.setFrom(account.getJid());
-            iq.addChild("ping", Namespace.PING);
-            this.sendIqPacket(iq, null);
-        }
+        this.getManager(PingManager.class).ping();
         this.lastPingSent = SystemClock.elapsedRealtime();
     }
 
     public void setOnJinglePacketReceivedListener(final OnJinglePacketReceived listener) {
         this.jingleListener = listener;
-    }
-
-    public void setOnStatusChangedListener(final OnStatusChanged listener) {
-        this.statusListener = listener;
-    }
-
-    public void setOnMessageAcknowledgeListener(final OnMessageAcknowledged listener) {
-        this.acknowledgedListener = listener;
     }
 
     public void addOnAdvancedStreamFeaturesAvailableListener(
@@ -2708,59 +2620,14 @@ public class XmppConnection implements Runnable {
         this.boundStreamFeatures = null;
     }
 
-    private List<Entry<Jid, ServiceDiscoveryResult>> findDiscoItemsByFeature(final String feature) {
-        synchronized (this.disco) {
-            final List<Entry<Jid, ServiceDiscoveryResult>> items = new ArrayList<>();
-            for (final Entry<Jid, ServiceDiscoveryResult> cursor : this.disco.entrySet()) {
-                if (cursor.getValue().getFeatures().contains(feature)) {
-                    items.add(cursor);
-                }
-            }
-            return items;
-        }
+    public <M extends AbstractManager> M getManager(final Class<M> clazz) {
+        return this.managers.getInstance(clazz);
     }
 
-    public Jid findDiscoItemByFeature(final String feature) {
-        final var items = findDiscoItemsByFeature(feature);
-        if (items.isEmpty()) {
-            return null;
-        }
-        return Iterables.getFirst(items, null).getKey();
-    }
-
-    public boolean r() {
-        if (getFeatures().sm()) {
-            this.tagWriter.writeStanzaAsync(new Request());
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public List<String> getMucServersWithholdAccount() {
-        final List<String> servers = getMucServers();
-        servers.remove(account.getDomain().toString());
-        return servers;
-    }
-
-    public List<String> getMucServers() {
-        List<String> servers = new ArrayList<>();
-        synchronized (this.disco) {
-            for (final Entry<Jid, ServiceDiscoveryResult> cursor : disco.entrySet()) {
-                final ServiceDiscoveryResult value = cursor.getValue();
-                if (value.getFeatures().contains("http://jabber.org/protocol/muc")
-                        && value.hasIdentity("conference", "text")
-                        && !value.getFeatures().contains("jabber:iq:gateway")
-                        && !value.hasIdentity("conference", "irc")) {
-                    servers.add(cursor.getKey().toString());
-                }
-            }
-        }
-        return servers;
-    }
-
-    public String getMucServer() {
-        return Iterables.getFirst(getMucServers(), null);
+    public Set<Jid> getMucServersWithholdAccount() {
+        final var services = getManager(MultiUserChatManager.class).getServices();
+        return ImmutableSet.copyOf(
+                Collections2.filter(services, s -> !s.equals(account.getDomain())));
     }
 
     public int getTimeToNextAttempt(final boolean aggressive) {
@@ -2824,23 +2691,18 @@ public class XmppConnection implements Runnable {
         this.mInteractive = interactive;
     }
 
-    private IqGenerator getIqGenerator() {
-        return mXmppConnectionService.getIqGenerator();
-    }
-
     public void trackOfflineMessageRetrieval(boolean trackOfflineMessageRetrieval) {
         if (trackOfflineMessageRetrieval) {
-            final Iq iqPing = new Iq(Iq.Type.GET);
-            iqPing.addChild("ping", Namespace.PING);
-            this.sendIqPacket(
-                    iqPing,
-                    (response) -> {
-                        Log.d(
-                                Config.LOGTAG,
-                                account.getJid().asBareJid()
-                                        + ": got ping response after sending initial presence");
-                        XmppConnection.this.offlineMessagesRetrieved = true;
-                    });
+            getManager(PingManager.class)
+                    .ping(
+                            () -> {
+                                Log.d(
+                                        Config.LOGTAG,
+                                        account.getJid().asBareJid()
+                                                + ": got ping response after sending initial"
+                                                + " presence");
+                                this.offlineMessagesRetrieved = true;
+                            });
         } else {
             this.offlineMessagesRetrieved = true;
         }
@@ -2850,21 +2712,10 @@ public class XmppConnection implements Runnable {
         return this.offlineMessagesRetrieved;
     }
 
-    public void fetchRoster() {
-        final Iq iqPacket = new Iq(Iq.Type.GET);
-        final var version = account.getRosterVersion();
-        if (Strings.isNullOrEmpty(account.getRosterVersion())) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": fetching roster");
-        } else {
-            Log.d(
-                    Config.LOGTAG,
-                    account.getJid().asBareJid() + ": fetching roster version " + version);
-        }
-        iqPacket.query(Namespace.ROSTER).setAttribute("ver", version);
-        sendIqPacket(iqPacket, unregisteredIqListener);
-    }
-
     public void triggerConnectionTimeout() {
+
+        // TODO not triggering timeout while waiting for captcha input
+
         final var duration = getConnectionDuration();
         Log.d(
                 Config.LOGTAG,
@@ -2873,11 +2724,52 @@ public class XmppConnection implements Runnable {
         // last connection time gets reset so time to next attempt is calculated correctly
         this.lastConnectionStarted = SystemClock.elapsedRealtime();
 
-        // interrupt needs to be called before status change; otherwise we interrupt the newly
-        // created thread
-        this.interrupt();
-        this.forceCloseSocket();
-        this.changeStatus(Account.State.CONNECTION_TIMEOUT);
+        this.changeStateTerminal(Account.State.CONNECTION_TIMEOUT);
+    }
+
+    public Account getAccount() {
+        return this.account;
+    }
+
+    public Features getStreamFeatures() {
+        return this.features;
+    }
+
+    public boolean fromServer(final Stanza stanza) {
+        final var account = getAccount().getJid();
+        final Jid from = stanza.getFrom();
+        return from == null
+                || from.equals(account.getDomain())
+                || from.equals(account.asBareJid())
+                || from.equals(account);
+    }
+
+    public boolean fromAccount(final Stanza stanza) {
+        final var account = getAccount().getJid();
+        final Jid from = stanza.getFrom();
+        return from == null || from.asBareJid().equals(account.asBareJid());
+    }
+
+    public AxolotlService getAxolotlService() {
+        return this.axolotlService;
+    }
+
+    public PgpDecryptionService getPgpDecryptionService() {
+        return this.pgpDecryptionService;
+    }
+
+    public void setAxolotlService(AxolotlService axolotlService) {
+        final var current = this.axolotlService;
+        if (current != null) {
+            this.advancedStreamFeaturesLoadedListeners.remove(current);
+        }
+        this.axolotlService = axolotlService;
+        this.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
+    }
+
+    public void setStatusAndTriggerProcessor(final Account.State state) {
+        this.account.setStatus(state);
+        this.accountStateProcessor.accept(state);
     }
 
     private class MyKeyManager implements X509KeyManager {
@@ -3003,62 +2895,50 @@ public class XmppConnection implements Runnable {
         }
     }
 
+    public abstract static class Delegate {
+
+        protected final Context context;
+        protected final XmppConnection connection;
+
+        protected Delegate(final Context context, final XmppConnection connection) {
+            this.context = context;
+            this.connection = connection;
+        }
+
+        protected Account getAccount() {
+            return connection.account;
+        }
+
+        protected DatabaseBackend getDatabase() {
+            return DatabaseBackend.getInstance(context);
+        }
+
+        protected <T extends AbstractManager> T getManager(final Class<T> type) {
+            return connection.getManager(type);
+        }
+    }
+
     public class Features {
-        XmppConnection connection;
-        private boolean carbonsEnabled = false;
+        private final XmppConnection connection;
+
+        // TODO move these three into their respective managers or into XmppConnection
         private boolean encryptionEnabled = false;
-        private boolean blockListRequested = false;
 
         public Features(final XmppConnection connection) {
             this.connection = connection;
         }
 
         private boolean hasDiscoFeature(final Jid server, final String feature) {
-            synchronized (XmppConnection.this.disco) {
-                final ServiceDiscoveryResult sdr = connection.disco.get(server);
-                return sdr != null && sdr.getFeatures().contains(feature);
-            }
-        }
-
-        public boolean carbons() {
-            return hasDiscoFeature(account.getDomain(), Namespace.CARBONS);
-        }
-
-        public boolean commands() {
-            return hasDiscoFeature(account.getDomain(), Namespace.COMMANDS);
-        }
-
-        public boolean easyOnboardingInvites() {
-            synchronized (commands) {
-                return commands.containsKey(Namespace.EASY_ONBOARDING_INVITE);
-            }
-        }
-
-        public boolean bookmarksConversion() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.BOOKMARKS_CONVERSION)
-                    && pepPublishOptions();
+            final var infoQuery = getManager(DiscoManager.class).get(server);
+            return infoQuery != null && infoQuery.getFeatureStrings().contains(feature);
         }
 
         public boolean blocking() {
-            return hasDiscoFeature(account.getDomain(), Namespace.BLOCKING);
+            return connection.getManager(BlockingManager.class).hasFeature();
         }
 
         public boolean spamReporting() {
             return hasDiscoFeature(account.getDomain(), Namespace.REPORTING);
-        }
-
-        public boolean flexibleOfflineMessageRetrieval() {
-            return hasDiscoFeature(
-                    account.getDomain(), Namespace.FLEXIBLE_OFFLINE_MESSAGE_RETRIEVAL);
-        }
-
-        public boolean register() {
-            return hasDiscoFeature(account.getDomain(), Namespace.REGISTER);
-        }
-
-        public boolean invite() {
-            return connection.streamFeatures != null
-                    && connection.streamFeatures.hasChild("register", Namespace.INVITE);
         }
 
         public boolean sm() {
@@ -3070,22 +2950,6 @@ public class XmppConnection implements Runnable {
         public boolean csi() {
             return connection.streamFeatures != null
                     && connection.streamFeatures.clientStateIndication();
-        }
-
-        public boolean pep() {
-            synchronized (XmppConnection.this.disco) {
-                ServiceDiscoveryResult info = disco.get(account.getJid().asBareJid());
-                return info != null && info.hasIdentity("pubsub", "pep");
-            }
-        }
-
-        public boolean pepPersistent() {
-            synchronized (XmppConnection.this.disco) {
-                ServiceDiscoveryResult info = disco.get(account.getJid().asBareJid());
-                return info != null
-                        && info.getFeatures()
-                                .contains("http://jabber.org/protocol/pubsub#persistent-items");
-            }
         }
 
         public boolean bind2() {
@@ -3104,11 +2968,11 @@ public class XmppConnection implements Runnable {
         }
 
         public boolean pepPublishOptions() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUBSUB_PUBLISH_OPTIONS);
+            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUB_SUB_PUBLISH_OPTIONS);
         }
 
         public boolean pepConfigNodeMax() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUBSUB_CONFIG_NODE_MAX);
+            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUB_SUB_CONFIG_NODE_MAX);
         }
 
         public boolean pepOmemoWhitelisted() {
@@ -3116,35 +2980,17 @@ public class XmppConnection implements Runnable {
                     account.getJid().asBareJid(), AxolotlService.PEP_OMEMO_WHITELISTED);
         }
 
-        public boolean mam() {
-            return MessageArchiveService.Version.has(getAccountFeatures());
-        }
-
-        public List<String> getAccountFeatures() {
-            ServiceDiscoveryResult result = connection.disco.get(account.getJid().asBareJid());
-            return result == null ? Collections.emptyList() : result.getFeatures();
-        }
-
-        public boolean push() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUSH)
-                    || hasDiscoFeature(account.getDomain(), Namespace.PUSH);
-        }
-
         public boolean rosterVersioning() {
             return connection.streamFeatures != null && connection.streamFeatures.hasChild("ver");
         }
 
-        public void setBlockListRequested(boolean value) {
-            this.blockListRequested = value;
-        }
-
         public HttpUrl getServiceOutageStatus() {
-            final var disco = connection.disco.get(account.getDomain());
+            final var disco = getManager(DiscoManager.class).get(account.getDomain());
             if (disco == null) {
                 return null;
             }
             final var address =
-                    disco.getExtendedDiscoInformation(
+                    disco.getServiceDiscoveryExtension(
                             Namespace.SERVICE_OUTAGE_STATUS, "external-status-addresses");
             if (Strings.isNullOrEmpty(address)) {
                 return null;
@@ -3152,76 +2998,8 @@ public class XmppConnection implements Runnable {
             return HttpUrl.parse(address);
         }
 
-        public boolean httpUpload(long filesize) {
-            if (Config.DISABLE_HTTP_UPLOAD) {
-                return false;
-            } else {
-                for (String namespace :
-                        new String[] {Namespace.HTTP_UPLOAD, Namespace.HTTP_UPLOAD_LEGACY}) {
-                    List<Entry<Jid, ServiceDiscoveryResult>> items =
-                            findDiscoItemsByFeature(namespace);
-                    if (!items.isEmpty()) {
-                        try {
-                            long maxsize =
-                                    Long.parseLong(
-                                            items.get(0)
-                                                    .getValue()
-                                                    .getExtendedDiscoInformation(
-                                                            namespace, "max-file-size"));
-                            if (filesize <= maxsize) {
-                                return true;
-                            } else {
-                                Log.d(
-                                        Config.LOGTAG,
-                                        account.getJid().asBareJid()
-                                                + ": http upload is not available for files with"
-                                                + " size "
-                                                + filesize
-                                                + " (max is "
-                                                + maxsize
-                                                + ")");
-                                return false;
-                            }
-                        } catch (Exception e) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            }
-        }
-
-        public boolean useLegacyHttpUpload() {
-            return findDiscoItemByFeature(Namespace.HTTP_UPLOAD) == null
-                    && findDiscoItemByFeature(Namespace.HTTP_UPLOAD_LEGACY) != null;
-        }
-
-        public long getMaxHttpUploadSize() {
-            for (String namespace :
-                    new String[] {Namespace.HTTP_UPLOAD, Namespace.HTTP_UPLOAD_LEGACY}) {
-                List<Entry<Jid, ServiceDiscoveryResult>> items = findDiscoItemsByFeature(namespace);
-                if (!items.isEmpty()) {
-                    try {
-                        return Long.parseLong(
-                                items.get(0)
-                                        .getValue()
-                                        .getExtendedDiscoInformation(namespace, "max-file-size"));
-                    } catch (Exception e) {
-                        // ignored
-                    }
-                }
-            }
-            return -1;
-        }
-
         public boolean stanzaIds() {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.STANZA_IDS);
-        }
-
-        public boolean bookmarks2() {
-            return pepPublishOptions()
-                    && pepConfigNodeMax()
-                    && hasDiscoFeature(account.getJid().asBareJid(), Namespace.BOOKMARKS2_COMPAT);
         }
 
         public boolean externalServiceDiscovery() {

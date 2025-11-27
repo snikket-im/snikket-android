@@ -44,12 +44,14 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
 import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.android.Device;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -390,22 +392,18 @@ public class NotificationService {
     }
 
     private boolean notifyMessage(final Message message) {
+        final var appSettings = new AppSettings(mXmppConnectionService.getApplicationContext());
         final Conversation conversation = (Conversation) message.getConversation();
         return message.getStatus() == Message.STATUS_RECEIVED
                 && !conversation.isMuted()
                 && (conversation.alwaysNotify() || wasHighlightedOrPrivate(message))
-                && (!conversation.isWithStranger() || notificationsFromStrangers())
+                && (!conversation.isWithStranger() || appSettings.isNotificationsFromStrangers())
                 && message.getType() != Message.TYPE_RTP_SESSION;
     }
 
     private boolean notifyMissedCall(final Message message) {
         return message.getType() == Message.TYPE_RTP_SESSION
                 && message.getStatus() == Message.STATUS_RECEIVED;
-    }
-
-    public boolean notificationsFromStrangers() {
-        return mXmppConnectionService.getBooleanPreference(
-                "notifications_from_strangers", R.bool.notifications_from_strangers);
     }
 
     public void pushFromBacklog(final Message message) {
@@ -513,9 +511,8 @@ public class NotificationService {
 
     public void pushFailedDelivery(final Message message) {
         final Conversation conversation = (Conversation) message.getConversation();
-        final boolean isScreenLocked = !mXmppConnectionService.isScreenLocked();
         if (this.mIsInForeground
-                && isScreenLocked
+                && !new Device(mXmppConnectionService).isScreenLocked()
                 && this.mOpenConversation == message.getConversation()) {
             Log.d(
                     Config.LOGTAG,
@@ -755,7 +752,7 @@ public class NotificationService {
                             + ": suppressing notification because turned off");
             return;
         }
-        final boolean isScreenLocked = mXmppConnectionService.isScreenLocked();
+        final boolean isScreenLocked = new Device(mXmppConnectionService).isScreenLocked();
         if (this.mIsInForeground
                 && !isScreenLocked
                 && this.mOpenConversation == message.getConversation()) {
@@ -797,6 +794,19 @@ public class NotificationService {
     public void clear(final Conversation conversation) {
         clearMessages(conversation);
         clearMissedCalls(conversation);
+    }
+
+    public void clear(final Message message) {
+        synchronized (this.notifications) {
+            final var conversation = message.getConversation().getUuid();
+            final var list = this.notifications.get(conversation);
+            if (list != null && list.remove(message)) {
+                if (list.isEmpty()) {
+                    this.notifications.remove(conversation);
+                }
+                updateNotification(false);
+            }
+        }
     }
 
     public void clearMessages() {
@@ -1358,14 +1368,18 @@ public class NotificationService {
         final ShortcutInfoCompat info;
         if (conversation.getMode() == Conversation.MODE_SINGLE) {
             final Contact contact = conversation.getContact();
-            final Uri systemAccount = contact.getSystemAccount();
-            if (systemAccount != null) {
-                notificationBuilder.addPerson(systemAccount.toString());
+            if (contact.isSelf()) {
+                info = null;
+            } else {
+                final Uri systemAccount = contact.getSystemAccount();
+                if (systemAccount != null) {
+                    notificationBuilder.addPerson(systemAccount.toString());
+                }
+                info =
+                        mXmppConnectionService
+                                .getShortcutService()
+                                .getShortcutInfo(contact, conversation.getUuid());
             }
-            info =
-                    mXmppConnectionService
-                            .getShortcutService()
-                            .getShortcutInfo(contact, conversation.getUuid());
         } else {
             info =
                     mXmppConnectionService
@@ -1376,7 +1390,7 @@ public class NotificationService {
         notificationBuilder.setSmallIcon(R.drawable.ic_app_icon_notification);
         notificationBuilder.setDeleteIntent(createDeleteIntent(conversation));
         notificationBuilder.setContentIntent(createContentIntent(conversation));
-        if (channel.equals(MESSAGES_NOTIFICATION_CHANNEL)) {
+        if (channel.equals(MESSAGES_NOTIFICATION_CHANNEL) && info != null) {
             // when do not want 'customized' notifications for silent notifications in their
             // respective channels
             notificationBuilder.setShortcutInfo(info);
@@ -1489,7 +1503,7 @@ public class NotificationService {
                     messagingStyle.addMessage(imageMessage);
                 } else {
                     messagingStyle.addMessage(
-                            UIHelper.getMessagePreview(mXmppConnectionService, message).first,
+                            UIHelper.getMessagePreview(mXmppConnectionService, message, '\n').first,
                             message.getTimeSent(),
                             sender);
                 }
@@ -1502,7 +1516,7 @@ public class NotificationService {
                         new NotificationCompat.BigTextStyle().bigText(getMergedBodies(messages)));
                 final CharSequence preview =
                         UIHelper.getMessagePreview(
-                                        mXmppConnectionService, messages.get(messages.size() - 1))
+                                        mXmppConnectionService, Iterables.getLast(messages))
                                 .first;
                 builder.setContentText(preview);
                 builder.setTicker(preview);
@@ -1569,14 +1583,13 @@ public class NotificationService {
     }
 
     private CharSequence getMergedBodies(final ArrayList<Message> messages) {
-        final StringBuilder text = new StringBuilder();
-        for (Message message : messages) {
-            if (text.length() != 0) {
-                text.append("\n");
-            }
-            text.append(UIHelper.getMessagePreview(mXmppConnectionService, message).first);
-        }
-        return text.toString();
+        return Joiner.on('\n')
+                .join(
+                        Collections2.transform(
+                                messages,
+                                m ->
+                                        UIHelper.getMessagePreview(mXmppConnectionService, m, '\n')
+                                                .first));
     }
 
     private PendingIntent createShowLocationIntent(final Message message) {
@@ -1866,7 +1879,7 @@ public class NotificationService {
         }
     }
 
-    void updateErrorNotification() {
+    public void updateErrorNotification() {
         if (Config.SUPPRESS_ERROR_NOTIFICATION) {
             cancel(ERROR_NOTIFICATION_ID);
             return;

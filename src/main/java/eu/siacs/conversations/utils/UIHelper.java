@@ -12,27 +12,34 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.color.MaterialColors;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
-import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.worker.ExportBackupWorker;
 import eu.siacs.conversations.xmpp.Jid;
+import im.conversations.android.xmpp.model.idle.LastUserInteraction;
+import im.conversations.android.xmpp.model.stanza.Presence;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import org.jspecify.annotations.Nullable;
 
 public class UIHelper {
 
@@ -73,7 +80,8 @@ public class UIHelper {
         return readableTimeDifference(context, time, true);
     }
 
-    private static String readableTimeDifference(Context context, long time, boolean fullDate) {
+    private static String readableTimeDifference(
+            final Context context, final long time, final boolean fullDate) {
         if (time == 0) {
             return context.getString(R.string.just_now);
         }
@@ -127,40 +135,51 @@ public class UIHelper {
                 && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
     }
 
-    public static String lastseen(Context context, boolean active, long time) {
-        long difference = (System.currentTimeMillis() - time) / 1000;
-        if (active) {
-            return context.getString(R.string.online_right_now);
-        } else if (difference < 60) {
-            return context.getString(R.string.last_seen_now);
-        } else if (difference < 60 * 2) {
-            return context.getString(R.string.last_seen_min);
-        } else if (difference < 60 * 60) {
-            return context.getString(R.string.last_seen_mins, Math.round(difference / 60.0));
-        } else if (difference < 60 * 60 * 2) {
-            return context.getString(R.string.last_seen_hour);
-        } else if (difference < 60 * 60 * 24) {
-            return context.getString(
-                    R.string.last_seen_hours, Math.round(difference / (60.0 * 60.0)));
-        } else if (difference < 60 * 60 * 48) {
-            return context.getString(R.string.last_seen_day);
+    public static String lastUserInteraction(
+            final Context context, final LastUserInteraction interaction) {
+        if (interaction instanceof LastUserInteraction.Online) {
+            return context.getString(R.string.presence_online);
+        } else if (interaction instanceof LastUserInteraction.None) {
+            return null; // just hide the subtitle
+        } else if (interaction instanceof LastUserInteraction.Idle idle) {
+            if (context.getResources().getBoolean(R.bool.last_seen_full_text)) {
+                return context.getString(
+                        R.string.last_seen,
+                        UIHelper.readableTimeDifferenceFull(
+                                context, idle.getSince().toEpochMilli()));
+            } else {
+                return UIHelper.readableTimeDifference(context, idle.getSince().toEpochMilli());
+            }
         } else {
-            return context.getString(
-                    R.string.last_seen_days, Math.round(difference / (60.0 * 60.0 * 24.0)));
+            return null;
         }
     }
 
+    @ColorInt
     public static int getColorForName(final String name) {
         return XEP0392Helper.rgbFromNick(name);
     }
 
     public static Pair<CharSequence, Boolean> getMessagePreview(
             final Context context, final Message message) {
-        return getMessagePreview(context, message, 0);
+        return getMessagePreview(context, message, null, ' ');
     }
 
     public static Pair<CharSequence, Boolean> getMessagePreview(
-            final Context context, final Message message, @ColorInt int textColor) {
+            final Context context, final Message message, final char separator) {
+        return getMessagePreview(context, message, null, separator);
+    }
+
+    public static Pair<CharSequence, Boolean> getMessagePreview(
+            final Context context, final Message message, final @ColorInt int textColor) {
+        return getMessagePreview(context, message, textColor, null);
+    }
+
+    private static Pair<CharSequence, Boolean> getMessagePreview(
+            final Context context,
+            final Message message,
+            final @Nullable @ColorInt Integer textColor,
+            @Nullable final Character separator) {
         final Transferable d = message.getTransferable();
         if (d != null) {
             switch (d.getStatus()) {
@@ -247,38 +266,63 @@ public class UIHelper {
                                 getFileDescriptionString(context, message)),
                         true);
             } else {
-                SpannableStringBuilder styledBody = new SpannableStringBuilder(body);
-                if (textColor != 0) {
-                    StylingHelper.format(styledBody, 0, styledBody.length() - 1, textColor);
+                if (textColor != null) {
+                    return new Pair<>(getStyledBodyOneLine(body, textColor), false);
+                } else if (separator != null) {
+                    return new Pair<>(getBodyOmitQuotesAndBlocks(body, separator), false);
+                } else {
+                    throw new AssertionError("specify either separator or textColor");
                 }
-                SpannableStringBuilder builder = new SpannableStringBuilder();
-                for (CharSequence l : CharSequenceUtils.split(styledBody, '\n')) {
-                    if (l.length() > 0) {
-                        if (l.toString().equals("```")) {
-                            continue;
-                        }
-                        char first = l.charAt(0);
-                        if ((!QuoteHelper.isPositionQuoteStart(l, 0))) {
-                            CharSequence line = CharSequenceUtils.trim(l);
-                            if (line.length() == 0) {
-                                continue;
-                            }
-                            char last = line.charAt(line.length() - 1);
-                            if (builder.length() != 0) {
-                                builder.append(' ');
-                            }
-                            builder.append(line);
-                            if (!PUNCTIONATION.contains(last)) {
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (builder.length() == 0) {
-                    builder.append(body.trim());
-                }
-                return new Pair<>(builder, false);
             }
+        }
+    }
+
+    private static CharSequence getBodyOmitQuotesAndBlocks(
+            final String body, final char separator) {
+        final var parts = Splitter.on('\n').trimResults().omitEmptyStrings().splitToList(body);
+        final var filtered =
+                Collections2.filter(
+                        parts,
+                        line ->
+                                !QuoteHelper.isPositionQuoteCharacter(line, 0)
+                                        && !line.equals("```"));
+        if (filtered.isEmpty()) {
+            return body;
+        }
+        return Joiner.on(separator).join(filtered);
+    }
+
+    private static CharSequence getStyledBodyOneLine(final String body, final int textColor) {
+        final var styledBody = new SpannableStringBuilder(body);
+        StylingHelper.format(styledBody, 0, styledBody.length() - 1, textColor);
+        final var builder = new SpannableStringBuilder();
+        for (final var l : CharSequenceUtils.split(styledBody, '\n')) {
+            if (l.length() == 0) {
+                continue;
+            }
+            if (l.toString().equals("```")) {
+                continue;
+            }
+            if (QuoteHelper.isPositionQuoteCharacter(l, 0)) {
+                continue;
+            }
+            final var trimmed = CharSequenceUtils.trim(l);
+            if (trimmed.length() == 0) {
+                continue;
+            }
+            char last = trimmed.charAt(trimmed.length() - 1);
+            if (builder.length() != 0) {
+                builder.append(' ');
+            }
+            builder.append(trimmed);
+            if (!PUNCTIONATION.contains(last)) {
+                break;
+            }
+        }
+        if (builder.length() == 0) {
+            return body.trim();
+        } else {
+            return builder;
         }
     }
 
@@ -369,40 +413,25 @@ public class UIHelper {
         return false;
     }
 
-    public static String getDisplayName(MucOptions.User user) {
-        Contact contact = user.getContact();
-        if (contact != null) {
-            return contact.getDisplayName();
-        } else {
-            final String name = user.getName();
-            if (name != null) {
-                return name;
-            }
-            final Jid realJid = user.getRealJid();
-            if (realJid != null) {
-                return JidHelper.localPartOrFallback(realJid);
-            }
-            return null;
-        }
+    public static String concatNames(final Collection<MucOptions.User> users) {
+        return concatNames(users, users.size() >= 3);
     }
 
-    public static String concatNames(List<MucOptions.User> users) {
-        return concatNames(users, users.size());
+    public static String concatNames(
+            final Collection<MucOptions.User> users, final boolean shortNames) {
+
+        return Joiner.on(", ")
+                .join(
+                        Collections2.transform(
+                                users,
+                                u -> {
+                                    final var name = u.getDisplayName();
+                                    return shortNames ? name.split("\\s+")[0] : name;
+                                }));
     }
 
-    public static String concatNames(List<MucOptions.User> users, int max) {
-        StringBuilder builder = new StringBuilder();
-        final boolean shortNames = users.size() >= 3;
-        for (int i = 0; i < Math.min(users.size(), max); ++i) {
-            if (builder.length() != 0) {
-                builder.append(", ");
-            }
-            final String name = UIHelper.getDisplayName(users.get(i));
-            if (name != null) {
-                builder.append(shortNames ? name.split("\\s+")[0] : name);
-            }
-        }
-        return builder.toString();
+    public static String concatNames(final Collection<MucOptions.User> users, final int max) {
+        return concatNames(ImmutableList.copyOf(Iterables.limit(users, max)));
     }
 
     public static String getFileDescriptionString(final Context context, final Message message) {
@@ -450,26 +479,28 @@ public class UIHelper {
     public static String getMessageDisplayName(final Message message) {
         final Conversational conversation = message.getConversation();
         if (message.getStatus() == Message.STATUS_RECEIVED) {
-            final Contact contact = message.getContact();
             if (conversation.getMode() == Conversation.MODE_MULTI) {
-                if (contact != null) {
-                    return contact.getDisplayName();
+                if (conversation instanceof Conversation c) {
+                    return c.getMucOptions().getUserOrStub(message).getDisplayName();
                 } else {
-                    return getDisplayedMucCounterpart(message.getCounterpart());
+                    final var counterpart = message.getCounterpart();
+                    return counterpart.isBareJid()
+                            ? counterpart.toString()
+                            : counterpart.getResource();
                 }
             } else {
-                return contact != null ? contact.getDisplayName() : "";
+                return conversation.getContact().getDisplayName();
             }
         } else {
-            if (conversation instanceof Conversation
+            if (conversation instanceof Conversation c
                     && conversation.getMode() == Conversation.MODE_MULTI) {
-                return ((Conversation) conversation).getMucOptions().getSelf().getName();
+                return c.getMucOptions().getSelf().getDisplayName();
             } else {
                 final Account account = conversation.getAccount();
                 final Jid jid = account.getJid();
                 final String displayName = account.getDisplayName();
                 if (Strings.isNullOrEmpty(displayName)) {
-                    return jid.getLocal() != null ? jid.getLocal() : jid.getDomain().toString();
+                    return jid.isDomainJid() ? jid.getDomain().toString() : jid.getLocal();
                 } else {
                     return displayName;
                 }
@@ -498,16 +529,6 @@ public class UIHelper {
         };
     }
 
-    public static String getDisplayedMucCounterpart(final Jid counterpart) {
-        if (counterpart == null) {
-            return "";
-        } else if (!counterpart.isBareJid()) {
-            return counterpart.getResource().trim();
-        } else {
-            return counterpart.toString().trim();
-        }
-    }
-
     public static boolean receivedLocationQuestion(final Message message) {
         if (message == null
                 || message.getStatus() != Message.STATUS_RECEIVED
@@ -523,7 +544,7 @@ public class UIHelper {
         return LOCATION_QUESTIONS.contains(body);
     }
 
-    public static void setStatus(final TextView textView, Presence.Status status) {
+    public static void setStatus(final TextView textView, Presence.Availability status) {
         final @StringRes int text;
         final @ColorRes int color =
                 switch (status) {

@@ -10,7 +10,6 @@
     <string name="channel_details">Channel details</string>
     <string name="action_add_account">Add account</string>
     <string name="action_edit_contact">Edit name</string>
-    <string name="action_add_phone_book">Add to address book</string>
     <string name="action_delete_contact">Delete from roster</string>
     <string name="action_block_contact">Block contact</string>
     <string name="action_unblock_contact">Unblock contact</string>
@@ -95,7 +94,7 @@
     <string name="send_message_to_x">Send message to %s</string>
     <string name="send_encrypted_message">Send encrypted message</string>
     <string name="send_omemo_x509_message">Send v\\OMEMO encrypted message</string>
-    <string name="your_nick_has_been_changed">New nickname in use</string>
+    <string name="your_nick_has_been_changed">Your nickname has been changed</string>
     <string name="send_unencrypted">Send clear text</string>
     <string name="decryption_failed">Decryption failed. Maybe you don’t have the proper private key.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -172,7 +171,7 @@
     <string name="account_status_incompatible_client">Incompatible client</string>
     <string name="account_status_stream_error">Stream error</string>
     <string name="account_status_stream_opening_error">Stream opening error</string>
-    <string name="account_status_channel_binding">Channel binding unavailable</string>
+    <string name="account_status_channel_binding">No channel binding</string>
     <string name="encryption_choice_unencrypted">Clear text</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
@@ -210,13 +209,6 @@
     <string name="server_info_available">available</string>
     <string name="server_info_unavailable">unavailable</string>
     <string name="missing_public_keys">Missing public key announcements</string>
-    <string name="last_seen_now">last seen just now</string>
-    <string name="last_seen_min">last seen one minute ago</string>
-    <string name="last_seen_mins">last seen %d minutes ago</string>
-    <string name="last_seen_hour">last seen one hour ago</string>
-    <string name="last_seen_hours">last seen %d hours ago</string>
-    <string name="last_seen_day">last seen one day ago</string>
-    <string name="last_seen_days">last seen %d days ago</string>
     <string name="install_openkeychain">Encrypted message. Please install OpenKeychain to decrypt it.</string>
     <string name="openpgp_messages_found">New OpenPGP encrypted messages found</string>
     <string name="openpgp_key_id">OpenPGP Key ID</string>
@@ -522,6 +514,7 @@
     <string name="shared_text_with_x">Text shared with %s</string>
     <string name="no_storage_permission">Grant %1$s access to external storage</string>
     <string name="no_camera_permission">Grant %1$s access to the camera</string>
+    <string name="no_contacts_permission">%1$s needs access to your contacts</string>
     <string name="quicksy_wants_your_consent">Quicksy asks for your consent to use your data</string>
     <string name="sync_with_contacts">Contact list integration</string>
     <string name="sync_with_contacts_long">%1$s processes your contact list locally, on your device, to show you the names and profile pictures for matching contacts on XMPP.\n\nNo contact list data ever leaves your device!</string>
@@ -577,8 +570,8 @@
     <string name="gp_short">Short</string>
     <string name="gp_medium">Medium</string>
     <string name="gp_long">Long</string>
-    <string name="pref_broadcast_last_activity">Last seen</string>
-    <string name="pref_broadcast_last_activity_summary">Let your contacts see when you last used the app</string>
+    <string name="pref_broadcast_last_activity">Show last seen</string>
+    <string name="pref_broadcast_last_activity_summary">Let your contacts see the time you were last active in the app</string>
     <string name="pref_privacy">Privacy</string>
     <string name="pref_theme_options">Theme</string>
     <string name="pref_theme_options_summary">Select the color palette</string>
@@ -997,6 +990,10 @@
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>
     </plurals>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d Participant</item>
+        <item quantity="other">%1$d Participants</item>
+    </plurals>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="one">A message could not be delivered</item>
         <item quantity="other">Some messages could not be delivered</item>
@@ -1103,8 +1100,6 @@
     <string name="more_reactions">More reactions</string>
     <string name="could_not_modify_call">Could not modify call</string>
     <string name="clients_may_not_support_av">Your contact’s XMPP client might not support audio/video calls.</string>
-    <string name="pref_show_avatars">Show avatars</string>
-    <string name="pref_show_avatars_summary">Display avatars for your messages and in 1:1 chats, in addition to group chats.</string>
     <string name="pref_chat_bubbles">Chat bubbles</string>
     <string name="pref_chat_bubbles_summary">Background color, Font size, Avatars</string>
     <string name="pref_title_bubbles">Chat Bubbles</string>
@@ -1120,4 +1115,19 @@
     <string name="account_status_service_outage_scheduled">Planned Downtime</string>
     <string name="account_status_service_outage_known">Service Down (Known Issue)</string>
     <string name="sos_scheduled_return">The service is scheduled to return at %s</string>
+    <string name="save_to_contact">Save to Contacts</string>
+    <string name="show_in_contacts">Show in Contacts</string>
+    <string name="pref_account_avatar">Accounts</string>
+    <string name="pref_account_avatar_summary">Display account avatars on outgoing messages for easy identification and management.</string>
+    <string name="pref_category_avatars">Avatars</string>
+    <string name="pref_show_11_chats">1:1 chats</string>
+    <string name="pref_show_11_chats_summary">Display avatars in 1:1 chats. (Avatars in group chats will always been shown.)</string>
+    <string name="pref_show_11_sender_chats_summary">Display avatars in 1:1 chats on received messages. (Avatars in group chats will always been shown.)</string>
+    <string name="moderate_delete_dot_dot_dot">Delete as moderator…</string>
+    <string name="moderate_delete">Delete as moderator</string>
+    <string name="could_not_moderate_message">Could not moderate message</string>
+    <string name="delete_message">Delete message</string>
+    <string name="moderation_explained">This message will be deleted for you and every participant of this public channel.</string>
+    <string name="do_not_show_this_warning_again">Don’t show this warning again.</string>
+    <string name="last_seen">last seen %s</string>
 </resources>

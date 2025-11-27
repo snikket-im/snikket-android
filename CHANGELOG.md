@@ -1,5 +1,20 @@
 # Changelog
 
+### Version 2.19.2
+
+* Show number of participants in subtitle for public channels
+* Fix joining MUCs on very old Prosody servers
+
+### Version 2.19.1
+
+* Show 'Last seen' prominently in chat title (when enabled)
+* Various bug fixes
+
+### Version 2.19.0
+
+* Upload and show high resolution avatars (profile pictures) on servers that have support for them
+* Support 'XEP-0425: Moderated Message Retraction' in public channels
+
 ### Version 2.18.2
 
 * Support 'Service Outage Status'

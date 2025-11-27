@@ -8,7 +8,6 @@
     <string name="channel_details">Детаљи канала</string>
     <string name="action_add_account">Додај налог</string>
     <string name="action_edit_contact">Измени</string>
-    <string name="action_add_phone_book">Додај у именик</string>
     <string name="action_delete_contact">Обриши са списка контаката</string>
     <string name="action_block_contact">Блокирај контакт</string>
     <string name="action_unblock_contact">Одблокирај контакт</string>
@@ -91,7 +90,7 @@
     <string name="send_message">Пошаљи поруку</string>
     <string name="send_message_to_x">Пошаљи поруку ка %s</string>
     <string name="send_omemo_x509_message">Пошаљи v\\ОМЕМО шифровану поруку</string>
-    <string name="your_nick_has_been_changed">Нови надимак је у употреби</string>
+    <string name="your_nick_has_been_changed">Твој надимак је измењен</string>
     <string name="send_unencrypted">Пошаљи нешифровано</string>
     <string name="decryption_failed">Дешифровање није успело. Можда немаш одговарајући приватни кључ.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -202,13 +201,6 @@
     <string name="server_info_available">доступан</string>
     <string name="server_info_unavailable">недоступан</string>
     <string name="missing_public_keys">Недостају објаве јавног кључа</string>
-    <string name="last_seen_now">виђен/а мало пре</string>
-    <string name="last_seen_min">виђен/а пре минут</string>
-    <string name="last_seen_mins">виђен/а пре %d минута</string>
-    <string name="last_seen_hour">виђен/а пре сат времена</string>
-    <string name="last_seen_hours">виђен/а пре %d сати</string>
-    <string name="last_seen_day">виђен/а јуче</string>
-    <string name="last_seen_days">виђен/а пре %d дана</string>
     <string name="install_openkeychain">Шифрована порука. Инсталирај OpenKeychain да је дешифрујеш.</string>
     <string name="openpgp_messages_found">Пронађене су нове OpenPGP шифроване поруке</string>
     <string name="openpgp_key_id">ID OpenPGP кључа</string>
@@ -551,8 +543,8 @@
     <string name="gp_short">Кратак</string>
     <string name="gp_medium">Средњи</string>
     <string name="gp_long">Дуг</string>
-    <string name="pref_broadcast_last_activity">Последњи пут виђен/а</string>
-    <string name="pref_broadcast_last_activity_summary">Дозволи својим контактима да виде када си последњи пут користио/ла апликацију</string>
+    <string name="pref_broadcast_last_activity">Приказуј \"последњи пут виђен/а\"</string>
+    <string name="pref_broadcast_last_activity_summary">Дозволи својим контактима да виде када си последњи пут био/ла активан/на у апликацији</string>
     <string name="pref_privacy">Приватност</string>
     <string name="pref_theme_options">Тема</string>
     <string name="pref_theme_options_summary">Изабери палету боја</string>
@@ -903,7 +895,7 @@
     <string name="title_undo_swipe_out_chat">Преписка је архивирана</string>
     <string name="pref_large_font">Велика слова</string>
     <plurals name="view_users">
-        <item quantity="one">Погледај %1$dог учесника</item>
+        <item quantity="one">Погледај %1$d учесника</item>
         <item quantity="few">Погледај %1$d учесника</item>
         <item quantity="other">Погледај %1$d учесника</item>
     </plurals>
@@ -1129,8 +1121,6 @@
     <string name="more_reactions">Још реакција</string>
     <string name="could_not_modify_call">Није могуће изменити позив</string>
     <string name="clients_may_not_support_av">XMPP клијент вашег контакта можда не подржава аудио/видео позиве.</string>
-    <string name="pref_show_avatars">Прикажи аватаре</string>
-    <string name="pref_show_avatars_summary">Приказуј аватаре за поруке и у препискама 1-на-1, као и у групним препискама.</string>
     <string name="pref_chat_bubbles">Балончићи у препискама</string>
     <string name="pref_chat_bubbles_summary">Боја позадине, Величина слова, Аватари</string>
     <string name="pref_title_bubbles">Балончићи у препискама</string>
@@ -1144,7 +1134,7 @@
     <string name="show_to_contacts_only">Приказуј само контактима</string>
     <string name="account_status_connection_timeout">Истекла веза</string>
     <string name="retry_with_p2p">Покушај поново са P2P</string>
-    <string name="account_status_channel_binding">Везивање канала недоступно</string>
+    <string name="account_status_channel_binding">Нема везивања канала</string>
     <string name="word_document">Word документ</string>
     <string name="non_quicksy_backup">Quicksy може да врати резервне копије само за quicksy.im налоге</string>
     <string name="pref_backup_location">Локација резервних копија</string>
@@ -1157,4 +1147,28 @@
     <string name="copy_telephone_number">Копирај број телефона</string>
     <string name="copied_phone_number">Копиран број телефона у клипборд</string>
     <string name="copy_URI">Копирај URI</string>
+    <string name="account_status_service_outage_scheduled">Планирана недоступност</string>
+    <string name="account_status_service_outage_known">Сервис недоступан (познат проблем)</string>
+    <string name="sos_scheduled_return">Опоравак сервиса предвиђен за %s</string>
+    <string name="save_to_contact">Сачувај у контакте</string>
+    <string name="no_contacts_permission">%1$s тражи приступ твојим контактима</string>
+    <string name="show_in_contacts">Прикажи у контактима</string>
+    <string name="pref_account_avatar">Налози</string>
+    <string name="pref_account_avatar_summary">Приказуј аватаре налога на одлазним порукама ради лакшег распознавања и управљања.</string>
+    <string name="pref_category_avatars">Аватари</string>
+    <string name="pref_show_11_chats">Један-на-један преписка</string>
+    <string name="pref_show_11_chats_summary">Приказуј аватаре у један-на-један препискама. (Аватари у групним препискама ће увек бити приказани.)</string>
+    <string name="pref_show_11_sender_chats_summary">Приказуј аватаре у један-на-један препискама на примљеним порукама. (Аватари у групним препискама ће увек бити приказани.)</string>
+    <string name="moderate_delete">Обриши као модератор</string>
+    <string name="delete_message">Обриши поруку</string>
+    <string name="do_not_show_this_warning_again">Не приказуј више ово упозорење.</string>
+    <string name="moderate_delete_dot_dot_dot">Обриши као модератор…</string>
+    <string name="could_not_moderate_message">Није могуће уредити поруку</string>
+    <string name="moderation_explained">Ова порука ће бити обрисана за тебе и сваког учесника овог јавног канала.</string>
+    <string name="last_seen">последње виђен/а %s</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d учесник</item>
+        <item quantity="few">%1$d учесника</item>
+        <item quantity="other">%1$d учесника</item>
+    </plurals>
 </resources>

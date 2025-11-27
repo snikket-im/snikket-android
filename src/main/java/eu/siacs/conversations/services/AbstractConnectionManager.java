@@ -4,19 +4,15 @@ import static eu.siacs.conversations.entities.Transferable.VALID_CRYPTO_EXTENSIO
 
 import android.os.PowerManager;
 import android.os.SystemClock;
-import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.utils.Compatibility;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.concurrent.atomic.AtomicLong;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -25,7 +21,6 @@ import okio.Okio;
 import okio.Source;
 import org.bouncycastle.crypto.engines.AESEngine;
 import org.bouncycastle.crypto.io.CipherInputStream;
-import org.bouncycastle.crypto.io.CipherOutputStream;
 import org.bouncycastle.crypto.modes.AEADBlockCipher;
 import org.bouncycastle.crypto.modes.GCMBlockCipher;
 import org.bouncycastle.crypto.params.AEADParameters;
@@ -71,7 +66,7 @@ public class AbstractConnectionManager {
             }
 
             @Override
-            public void writeTo(final BufferedSink sink) throws IOException {
+            public void writeTo(@NonNull final BufferedSink sink) throws IOException {
                 long transmitted = 0;
                 try (final Source source = Okio.source(upgrade(file, new FileInputStream(file)))) {
                     long read;
@@ -87,29 +82,6 @@ public class AbstractConnectionManager {
 
     public interface ProgressListener {
         void onProgress(long progress);
-    }
-
-    public static OutputStream createOutputStream(
-            DownloadableFile file, boolean append, boolean decrypt) {
-        FileOutputStream os;
-        try {
-            os = new FileOutputStream(file, append);
-            if (file.getKey() == null || !decrypt) {
-                return os;
-            }
-        } catch (FileNotFoundException e) {
-            Log.d(Config.LOGTAG, "unable to create output stream", e);
-            return null;
-        }
-        try {
-            AEADBlockCipher cipher = new GCMBlockCipher(new AESEngine());
-            cipher.init(
-                    false, new AEADParameters(new KeyParameter(file.getKey()), 128, file.getIv()));
-            return new CipherOutputStream(os, cipher);
-        } catch (Exception e) {
-            Log.d(Config.LOGTAG, "unable to create cipher output stream", e);
-            return null;
-        }
     }
 
     public XmppConnectionService getXmppConnectionService() {

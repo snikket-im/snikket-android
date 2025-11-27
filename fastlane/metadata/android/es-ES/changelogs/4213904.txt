@@ -1,0 +1,2 @@
+* Posibilidad de elegir ubicación de copia de respaldo
+* Más URIs (tel:, mailto:) cliqueables

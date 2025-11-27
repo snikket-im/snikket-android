@@ -29,8 +29,9 @@ import eu.siacs.conversations.receiver.UnifiedPushDistributor;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.manager.PresenceManager;
 import im.conversations.android.xmpp.model.stanza.Iq;
-import im.conversations.android.xmpp.model.stanza.Presence;
+import im.conversations.android.xmpp.model.up.Push;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
@@ -53,7 +54,7 @@ public class UnifiedPushBroker {
 
     public UnifiedPushBroker(final XmppConnectionService xmppConnectionService) {
         this.service = xmppConnectionService;
-        SCHEDULER.scheduleAtFixedRate(
+        SCHEDULER.scheduleWithFixedDelay(
                 this::renewUnifiedPushEndpoints,
                 RENEWAL_INTERVAL,
                 RENEWAL_INTERVAL,
@@ -68,7 +69,10 @@ public class UnifiedPushBroker {
             if (transportAccount != null && transportAccount.getUuid().equals(account.getUuid())) {
                 final UnifiedPushDatabase database = UnifiedPushDatabase.getInstance(service);
                 if (database.hasEndpoints(transport)) {
-                    sendDirectedPresence(transportAccount, transport.transport);
+                    transportAccount
+                            .getXmppConnection()
+                            .getManager(PresenceManager.class)
+                            .available(transport.transport);
                 }
                 Log.d(
                         Config.LOGTAG,
@@ -76,12 +80,6 @@ public class UnifiedPushBroker {
                 renewUnifiedEndpoint(transportOptional.get(), null);
             }
         }
-    }
-
-    private void sendDirectedPresence(final Account account, Jid to) {
-        final var presence = new Presence();
-        presence.setTo(to);
-        service.sendPresencePacket(account, presence);
     }
 
     public void renewUnifiedPushEndpoints() {
@@ -181,6 +179,7 @@ public class UnifiedPushBroker {
                 Log.w(Config.LOGTAG, "endpoint was null in up registration");
                 return;
             }
+            // TODO replace with Instant.parse (in model)
             final long expiration;
             try {
                 expiration = AbstractParser.getTimestamp(registered.getAttribute("expiration"));
@@ -320,8 +319,7 @@ public class UnifiedPushBroker {
         service.sendBroadcast(intent);
     }
 
-    public boolean processPushMessage(
-            final Account account, final Jid transport, final Element push) {
+    public boolean processPushMessage(final Account account, final Jid transport, final Push push) {
         final String instance = push.getAttribute("instance");
         final String application = push.getAttribute("application");
         if (Strings.isNullOrEmpty(instance) || Strings.isNullOrEmpty(application)) {

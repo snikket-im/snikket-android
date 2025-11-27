@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">설정</string>
-    <string name="action_accounts">계정 </string>
+    <string name="action_accounts">계정 관리</string>
     <string name="action_contact_details">연락처 정보</string>
     <string name="action_add_account">계정 추가 </string>
     <string name="action_edit_contact">이름 편집 </string>
-    <string name="action_add_phone_book">주소록에 추가</string>
     <string name="action_delete_contact">명단에서 삭제 </string>
     <string name="action_block_contact">연락처 </string>
     <string name="action_unblock_contact">연락처 차단 해제 </string>
@@ -134,10 +133,6 @@
     <string name="server_info_available">가능 </string>
     <string name="server_info_unavailable">불가 </string>
     <string name="missing_public_keys">공개 키 선언 누락 </string>
-    <string name="last_seen_now">방금 전까지 접속했었음 </string>
-    <string name="last_seen_mins">%d 분 전까지 접속했었음  </string>
-    <string name="last_seen_hours">%d 시간 전까지 접속했었음 </string>
-    <string name="last_seen_days">%d 일 전까지 접속했었음  </string>
     <string name="openpgp_key_id">OpenPGP 키ID</string>
     <string name="omemo_fingerprint">OMEMO 핑거프린트</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO 핑거프린트</string>
@@ -387,4 +382,8 @@
     <string name="message_copied_to_clipboard">메세지가 클립보드에 복사되었습니다 </string>
     <string name="title_activity_show_location">위치 표시 </string>
     <string name="rtp_state_declined_or_busy">바쁨</string>
+    <string name="action_account">계정 관리</string>
+    <string name="action_archive_chat">채팅 기록</string>
+    <string name="action_muc_details">그룹 채팅 정보</string>
+    <string name="channel_details">채널 정보</string>
 </resources>

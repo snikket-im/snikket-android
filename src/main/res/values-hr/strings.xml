@@ -8,7 +8,6 @@
     <string name="channel_details">Detalji kanala</string>
     <string name="action_add_account">Dodaj račun</string>
     <string name="action_edit_contact">Uredi ime</string>
-    <string name="action_add_phone_book">Dodaj u adresar</string>
     <string name="action_delete_contact">Izbriši s popisa</string>
     <string name="action_block_contact">Blokiraj kontakt</string>
     <string name="action_unblock_contact">Odblokiraj kontakt</string>

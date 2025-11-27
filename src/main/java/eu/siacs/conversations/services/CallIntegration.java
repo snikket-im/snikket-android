@@ -540,10 +540,7 @@ public class CallIntegration extends Connection {
             return false;
         }
         // SailfishOS's AppSupport do not support Call Integration
-        if (Build.MODEL.endsWith("(AppSupport)")) {
-            return false;
-        }
-        return true;
+        return !Build.MODEL.endsWith("(AppSupport)");
     }
 
     public static boolean notSelfManaged(final Context context) {

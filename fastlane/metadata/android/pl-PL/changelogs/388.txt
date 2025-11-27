@@ -1,0 +1,3 @@
+* Ograniczenie przesłuchu podczas rozmów na niektórych urządzeniach
+* Naprawienie logowania gdy hasła zawierają znaki specjalne
+* Odtwarzanie tonów dzwonienia i zajętości na głośniku podczas rozmów wideo

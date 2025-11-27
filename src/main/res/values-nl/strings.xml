@@ -8,7 +8,6 @@
     <string name="channel_details">Kanaalinformatie</string>
     <string name="action_add_account">Account toevoegen</string>
     <string name="action_edit_contact">Naam veranderen</string>
-    <string name="action_add_phone_book">Toevoegen aan adresboek</string>
     <string name="action_delete_contact">Verwijderen uit lijst</string>
     <string name="action_block_contact">Contact blokkeren</string>
     <string name="action_unblock_contact">Contact deblokkeren</string>
@@ -182,13 +181,6 @@
     <string name="server_info_available">beschikbaar</string>
     <string name="server_info_unavailable">niet beschikbaar</string>
     <string name="missing_public_keys">Ontbrekende publieke sleutel-aankondigingen</string>
-    <string name="last_seen_now">zojuist voor het laatst gezien</string>
-    <string name="last_seen_min">een minuut geleden voor het laatst gezien</string>
-    <string name="last_seen_mins">%d minuten geleden voor het laatst gezien</string>
-    <string name="last_seen_hour">een uur geleden voor het laatst gezien</string>
-    <string name="last_seen_hours">%d uur geleden voor het laatst gezien</string>
-    <string name="last_seen_day">een dag geleden voor het laatst gezien</string>
-    <string name="last_seen_days">%d dagen geleden voor het laatst gezien</string>
     <string name="openpgp_messages_found">Nieuw OpenPGP-versleuteld bericht gevonden</string>
     <string name="openpgp_key_id">OpenPGP-sleutel-ID</string>
     <string name="omemo_fingerprint">OMEMO-vingerafdruk</string>
@@ -1114,8 +1106,6 @@
     <string name="pref_chat_bubbles">Chat-bubbels</string>
     <string name="pref_chat_bubbles_summary">Achtergrondkleur, Lettergrootte, Avatars</string>
     <string name="pref_title_bubbles">Chat-bubbels</string>
-    <string name="pref_show_avatars_summary">Avatars weergeven in jouw berichten en in 1:1-chats, naast groepschats.</string>
-    <string name="pref_show_avatars">Avatars weergeven</string>
     <string name="pref_call_integration">Integratie van gesprekken</string>
     <string name="pref_align_start">Links uitgelijnde berichten</string>
     <string name="pref_align_start_summary">Toon alle berichten, inclusief verzonden berichten, aan de linkerkant voor een uniforme chatlay-out.</string>

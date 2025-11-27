@@ -8,7 +8,6 @@
     <string name="channel_details">Dettagli canale</string>
     <string name="action_add_account">Aggiungi profilo</string>
     <string name="action_edit_contact">Modifica il nome</string>
-    <string name="action_add_phone_book">Aggiungi alla rubrica</string>
     <string name="action_delete_contact">Cancella dalla lista</string>
     <string name="action_block_contact">Blocca contatto</string>
     <string name="action_unblock_contact">Sblocca contatto</string>
@@ -89,7 +88,7 @@
     <string name="send_message">Invia messaggio</string>
     <string name="send_message_to_x">Invia messaggio a %s</string>
     <string name="send_omemo_x509_message">Invia messaggio cifrato v\\OMEMO</string>
-    <string name="your_nick_has_been_changed">Nuovo nome utente in uso</string>
+    <string name="your_nick_has_been_changed">Il tuo nickname è stato cambiato</string>
     <string name="send_unencrypted">Invia in chiaro</string>
     <string name="decryption_failed">Decifrazione fallita. Forse non disponi della chiave privata corretta.</string>
     <string name="openkeychain_required">OpenKeychain</string>
@@ -152,7 +151,7 @@
     <string name="account_status_offline">Offline</string>
     <string name="account_status_unauthorized">Non autorizzato</string>
     <string name="account_status_not_found">Server non trovato</string>
-    <string name="account_status_no_internet">Connettività assente</string>
+    <string name="account_status_no_internet">Connessione assente</string>
     <string name="account_status_regis_fail">Registrazione fallita</string>
     <string name="account_status_regis_conflict">Nome utente già in uso</string>
     <string name="account_status_regis_success">Registrazione completata</string>
@@ -200,13 +199,6 @@
     <string name="server_info_available">disponibile</string>
     <string name="server_info_unavailable">non disponibile</string>
     <string name="missing_public_keys">Annuncio chiave pubblica non effettuato</string>
-    <string name="last_seen_now">visto adesso</string>
-    <string name="last_seen_min">visto un minuto fa</string>
-    <string name="last_seen_mins">visto %d minuti fa</string>
-    <string name="last_seen_hour">visto un\'ora fa</string>
-    <string name="last_seen_hours">visto %d ore fa</string>
-    <string name="last_seen_day">visto un giorno fa</string>
-    <string name="last_seen_days">visto %d giorni fa</string>
     <string name="install_openkeychain">Messaggio cifrato. Installa OpenKeychain per decifrarlo.</string>
     <string name="openpgp_messages_found">Nuovi messaggi cifrati con OpenPGP trovati</string>
     <string name="openpgp_key_id">ID chiave OpenPGP</string>
@@ -560,8 +552,8 @@
     <string name="gp_short">Breve</string>
     <string name="gp_medium">Medio</string>
     <string name="gp_long">Lungo</string>
-    <string name="pref_broadcast_last_activity">Ultimo accesso</string>
-    <string name="pref_broadcast_last_activity_summary">Fai sapere ai tuoi contatti quando hai usato l\'app l\'ultima volta</string>
+    <string name="pref_broadcast_last_activity">Mostra ultimo accesso</string>
+    <string name="pref_broadcast_last_activity_summary">Fai sapere ai tuoi contatti quando hai avuto l\'ultima attività nell\'app</string>
     <string name="pref_privacy">Privacy</string>
     <string name="pref_theme_options">Tema</string>
     <string name="pref_theme_options_summary">Seleziona il colore</string>
@@ -749,7 +741,7 @@
     <string name="foreground_service_channel_name">Servizio in primo piano</string>
     <string name="foreground_service_channel_description">Questa categoria di notifiche è usata per mostrare una notifica permanente per indicare che %1$s è in esecuzione.</string>
     <string name="notification_group_status_information">Informazioni di stato</string>
-    <string name="error_channel_name">Problemi di connettività</string>
+    <string name="error_channel_name">Problemi di connessione</string>
     <string name="error_channel_description">Questa categoria di notifiche è usata per mostrare un notifica in caso si verifichi un problema nella connessione ad un profilo.</string>
     <string name="notification_group_messages">Messaggi</string>
     <string name="notification_group_calls">Chiamate</string>
@@ -1115,8 +1107,6 @@
     <string name="pref_call_integration">Integrazione di chiamate</string>
     <string name="pref_call_integration_summary">Le chiamate da questa app interagiscono con le normali chiamate telefoniche, come terminare una chiamata quando un\'altra inizia.</string>
     <string name="pref_align_start">Messaggi allineati a sinistra</string>
-    <string name="pref_show_avatars">Mostra gli avatar</string>
-    <string name="pref_show_avatars_summary">Mostra gli avatar per i tuoi messaggi e nelle chat 1:1, in aggiunta alle chat di gruppo.</string>
     <string name="custom_notifications_enable">Attivare le impostazioni di notifica personalizzate (importanza, suono, vibrazione) per questa conversazione?</string>
     <string name="pref_align_start_summary">Mostra tutti i messaggi, inclusi quelli inviati, sul lato sinistro per una disposizione uniforme della chat.</string>
     <string name="custom_notifications">Notifiche personalizzate</string>
@@ -1124,7 +1114,7 @@
     <string name="pref_chat_bubbles">Messaggi di chat</string>
     <string name="pref_chat_bubbles_summary">Colore di sfondo, dimensione caratteri, avatar</string>
     <string name="pref_title_bubbles">Messaggi di chat</string>
-    <string name="account_status_channel_binding">Associazione dei canali non disponibile</string>
+    <string name="account_status_channel_binding">Nessuna associazione dei canali</string>
     <string name="word_document">Documento Word</string>
     <string name="restore_omemo_key">Ripristina chiavi OMEMO</string>
     <string name="non_quicksy_backup">Quicksy può ripristinare backup solo per profili quicksy.im</string>
@@ -1137,4 +1127,23 @@
     <string name="copy_telephone_number">Copia numero di telefono</string>
     <string name="copy_URI">Copia URI</string>
     <string name="uri_copied_to_clipboard">URI copiato negli appunti</string>
+    <string name="account_status_service_outage_scheduled">Manutenzione programmata</string>
+    <string name="account_status_service_outage_known">Servizio in manutenzione (problema noto)</string>
+    <string name="sos_scheduled_return">Il servizio è programmato per tornare il %s</string>
+    <string name="no_contacts_permission">%1$s richiede l\'accesso ai tuoi contatti</string>
+    <string name="save_to_contact">Salva nei contatti</string>
+    <string name="show_in_contacts">Mostra nei contatti</string>
+    <string name="pref_account_avatar">Profili</string>
+    <string name="pref_account_avatar_summary">Mostra gli avatar dei profili nei messaggi in uscita per una facile identificazione e gestione.</string>
+    <string name="pref_category_avatars">Avatar</string>
+    <string name="pref_show_11_chats">Chat 1:1</string>
+    <string name="pref_show_11_chats_summary">Mostra gli avatar nelle chat 1:1. (Gli avatar nelle chat di gruppo verranno sempre mostrati.)</string>
+    <string name="pref_show_11_sender_chats_summary">Mostra gli avatar nelle chat 1:1 per i messaggi ricevuti. (Gli avatar nelle chat di gruppo verranno sempre mostrati.)</string>
+    <string name="moderate_delete">Elimina come moderatore</string>
+    <string name="could_not_moderate_message">Non è stato possibile moderare il messaggio</string>
+    <string name="delete_message">Elimina messaggio</string>
+    <string name="do_not_show_this_warning_again">Non mostrare più questo avviso.</string>
+    <string name="moderate_delete_dot_dot_dot">Elimina come moderatore…</string>
+    <string name="moderation_explained">Questo messaggio verrà eliminato per te e per tutti i partecipanti di questo canale pubblico.</string>
+    <string name="last_seen">ultimo accesso %s</string>
 </resources>

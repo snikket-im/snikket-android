@@ -8,7 +8,6 @@
     <string name="channel_details">Csatorna részletei</string>
     <string name="action_add_account">Fiók hozzáadása</string>
     <string name="action_edit_contact">Név szerkesztése</string>
-    <string name="action_add_phone_book">Hozzáadás a címjegyzékhez</string>
     <string name="action_delete_contact">Törlés a névsorból</string>
     <string name="action_block_contact">Partner tiltása</string>
     <string name="action_unblock_contact">Partner tiltásának feloldása</string>
@@ -196,13 +195,6 @@
     <string name="server_info_available">elérhető</string>
     <string name="server_info_unavailable">nem érhető el</string>
     <string name="missing_public_keys">Hiányzó nyilvános kulcs bejelentései</string>
-    <string name="last_seen_now">éppen most volt aktív</string>
-    <string name="last_seen_min">egy perce volt aktív</string>
-    <string name="last_seen_mins">%d perce volt aktív</string>
-    <string name="last_seen_hour">egy órája volt aktív</string>
-    <string name="last_seen_hours">%d órája volt aktív</string>
-    <string name="last_seen_day">egy napja volt aktív</string>
-    <string name="last_seen_days">%d napja volt aktív</string>
     <string name="install_openkeychain">Titkosított üzenet. Telepítse az OpenKeychain alkalmazást a visszafejtéshez.</string>
     <string name="openpgp_messages_found">Új OpenPGP titkosítású üzenetek találhatók</string>
     <string name="openpgp_key_id">OpenPGP kulcsazonosító</string>
@@ -1092,9 +1084,9 @@
     <string name="blindly_trusted_omemo_keys">Vakon bizalomba fogadott OMEMO kulcsok. Ez azt a veszélyt is magába foglalja, hogy lehet valaki más kulcsa vagy hamisított a kulcs.</string>
     <string name="could_not_add_reaction">Nem sikerült reakciót hozzáadni</string>
     <string name="delete_avatar_message">Szeretné törölni az avatárját? Egyes alkalmazások továbbra is megjeleníthetik az avatárjának gyorsítótárazott másolatát.</string>
-    <string name="pref_show_avatars">Avatárok mutatása</string>
-    <string name="pref_show_avatars_summary">A csoportos csevegések mellett az üzenetekben és az 1:1-es csevegésekben is megjelennek az avatárok.</string>
     <string name="pref_chat_bubbles">Csevegőbuborékok</string>
     <string name="pref_chat_bubbles_summary">Háttérszín, betűméret, avatárok</string>
     <string name="pref_title_bubbles">Csevegőbuborékok</string>
+    <string name="account_status_channel_binding">Nincs channel binding</string>
+    <string name="account_status_connection_timeout">Kapcsolati időkorlát</string>
 </resources>

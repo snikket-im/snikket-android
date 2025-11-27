@@ -1,0 +1,1 @@
+* Adicionar a capacidade de exibir as bolhas de mensagem alinhadas à esquerda

@@ -1,0 +1,2 @@
+* Podgląd PDF na Androidzie 5+
+* Używanie wektorów inicjujących OMEMO o rozmiarze 12 bajtów

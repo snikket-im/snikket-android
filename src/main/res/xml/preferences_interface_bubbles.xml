@@ -7,20 +7,31 @@
         android:summary="@string/pref_use_colorful_bubbles_summary"
         android:title="@string/pref_use_colorful_bubbles" />
     <SwitchPreferenceCompat
-        android:icon="@drawable/ic_format_align_left_24dp"
-        android:key="align_start"
-        android:summary="@string/pref_align_start_summary"
-        android:title="@string/pref_align_start" />
-    <SwitchPreferenceCompat
-        android:defaultValue="@bool/show_avatars"
-        android:icon="@drawable/ic_account_circle_24dp"
-        android:key="show_avatars"
-        android:summary="@string/pref_show_avatars_summary"
-        android:title="@string/pref_show_avatars" />
-    <SwitchPreferenceCompat
         android:defaultValue="@bool/large_font"
         android:icon="@drawable/ic_format_size_24dp"
         android:key="large_font"
         android:summary="@string/pref_large_font_summary"
         android:title="@string/pref_large_font" />
+    <SwitchPreferenceCompat
+        android:defaultValue="@bool/align_start"
+        android:disableDependentsState="true"
+        android:icon="@drawable/ic_format_align_left_24dp"
+        android:key="align_start"
+        android:summary="@string/pref_align_start_summary"
+        android:title="@string/pref_align_start" />
+    <PreferenceCategory android:title="@string/pref_category_avatars">
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/show_avatars"
+            android:icon="@drawable/ic_face_right_24dp"
+            android:key="show_avatars"
+            android:summary="@string/pref_show_11_chats_summary"
+            android:title="@string/pref_show_11_chats" />
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/show_avatars_accounts"
+            android:key="show_avatars_accounts"
+            android:dependency="align_start"
+            android:icon="@drawable/ic_face_left_24dp"
+            android:summary="@string/pref_account_avatar_summary"
+            android:title="@string/pref_account_avatar" />
+    </PreferenceCategory>
 </PreferenceScreen>

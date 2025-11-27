@@ -1,11 +1,15 @@
 package im.conversations.android.xmpp.model.data;
 
+import android.util.Log;
+import com.google.common.base.CaseFormat;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
+import eu.siacs.conversations.Config;
 import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
 import java.util.Collection;
 import java.util.Map;
+import org.jspecify.annotations.Nullable;
 
 @XmlElement(name = "x")
 public class Data extends Extension {
@@ -29,6 +33,15 @@ public class Data extends Extension {
                 this.getExtensions(Field.class), f -> !FORM_TYPE.equals(f.getFieldName()));
     }
 
+    public Field getFieldByName(final String name) {
+        return Iterables.find(getFields(), f -> name.equals(f.getFieldName()), null);
+    }
+
+    public String getValue(final String name) {
+        final var field = getFieldByName(name);
+        return field == null ? null : field.getValue();
+    }
+
     private void addField(final String name, final Object value) {
         addField(name, value, null);
     }
@@ -42,11 +55,14 @@ public class Data extends Extension {
         if (type != null) {
             field.setType(type);
         }
-        if (value instanceof Collection) {
-            for (final Object subValue : (Collection<?>) value) {
-                if (subValue instanceof String) {
+        if (value instanceof Collection<?> collection) {
+            Log.d(Config.LOGTAG, "submitting collection: " + collection);
+            for (final Object subValue : collection) {
+                if (subValue == null) {
+                    Log.d(Config.LOGTAG, "null value in the values for " + name);
+                } else if (subValue instanceof String s) {
                     final var valueExtension = field.addExtension(new Value());
-                    valueExtension.setContent((String) subValue);
+                    valueExtension.setContent(s);
                 } else {
                     throw new IllegalArgumentException(
                             String.format(
@@ -56,12 +72,15 @@ public class Data extends Extension {
             }
         } else {
             final var valueExtension = field.addExtension(new Value());
-            if (value instanceof String) {
-                valueExtension.setContent((String) value);
-            } else if (value instanceof Integer) {
-                valueExtension.setContent(String.valueOf(value));
-            } else if (value instanceof Boolean) {
-                valueExtension.setContent(Boolean.TRUE.equals(value) ? "1" : "0");
+            if (value instanceof String s) {
+                valueExtension.setContent(s);
+            } else if (value instanceof Enum<?> e) {
+                valueExtension.setContent(
+                        CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, e.toString()));
+            } else if (value instanceof Integer i) {
+                valueExtension.setContent(String.valueOf(i));
+            } else if (value instanceof Boolean b) {
+                valueExtension.setContent(Boolean.TRUE.equals(b) ? "1" : "0");
             } else {
                 throw new IllegalArgumentException(
                         String.format(
@@ -75,10 +94,12 @@ public class Data extends Extension {
         this.addField(FORM_TYPE, formType, FIELD_TYPE_HIDDEN);
     }
 
-    public static Data of(final String formType, final Map<String, Object> values) {
+    public static Data of(final Map<String, Object> values, @Nullable final String formType) {
         final var data = new Data();
         data.setType(FORM_TYPE_SUBMIT);
-        data.setFormType(formType);
+        if (formType != null) {
+            data.setFormType(formType);
+        }
         for (final Map.Entry<String, Object> entry : values.entrySet()) {
             data.addField(entry.getKey(), entry.getValue());
         }
@@ -95,10 +116,13 @@ public class Data extends Extension {
         for (final Field existingField : this.getFields()) {
             final var fieldName = existingField.getFieldName();
             final Object submittedValue = values.get(fieldName);
+            if (fieldName == null && Field.Type.FIXED.equals(existingField.getType())) {
+                continue;
+            }
             if (submittedValue != null) {
                 submit.addField(fieldName, submittedValue);
             } else {
-                submit.addField(fieldName, existingField.getValues());
+                submit.addExtension(existingField);
             }
         }
         return submit;

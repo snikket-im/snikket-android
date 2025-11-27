@@ -8,7 +8,6 @@
     <string name="channel_details">Informacyje kanału</string>
     <string name="action_add_account">Przidej kōnto</string>
     <string name="action_edit_contact">Edytuj miano</string>
-    <string name="action_add_phone_book">Przidej do kōntaktōw</string>
     <string name="action_delete_contact">Skasuj z rostera</string>
     <string name="action_block_contact">Zablokuj kōntakt</string>
     <string name="action_unblock_contact">Ôdblokuj kōntakt</string>
@@ -206,13 +205,6 @@
     <string name="server_info_available">dostympny</string>
     <string name="server_info_unavailable">niydostympny</string>
     <string name="missing_public_keys">Brak informacyje ô kluczu publicznym</string>
-    <string name="last_seen_now">prawie widziany</string>
-    <string name="last_seen_min">widziany przed minutōm</string>
-    <string name="last_seen_mins">widziany prze %d minutami</string>
-    <string name="last_seen_hour">widziany przed godzinōm</string>
-    <string name="last_seen_hours">widziany przed %d godzinami</string>
-    <string name="last_seen_day">widziany wczorej</string>
-    <string name="last_seen_days">widziany przed %d dniami</string>
     <string name="install_openkeychain">Wiadōmość zaszyfrowano. Zainstaluj OpenKeychain, coby ôdszyfrować.</string>
     <string name="openpgp_messages_found">Znojdziōne nowe wiadōmości zaszyfrowane we OpenPGP</string>
     <string name="openpgp_key_id">ID klucza OpenPGP</string>

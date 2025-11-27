@@ -60,6 +60,8 @@
         android:name="android.hardware.microphone"
         android:required="false" />
 
+    <uses-sdk tools:overrideLibrary="androidx.heifwriter" />
+
     <queries>
         <package android:name="org.sufficientlysecure.keychain" />
         <package android:name="org.torproject.android" />
@@ -363,6 +365,8 @@
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.ViewProfilePictureActivity"
+            android:theme="@style/Theme.Conversations3.Dark"/>
         <activity
             android:name=".ui.MucUsersActivity"
             android:label="@string/group_chat_members" />

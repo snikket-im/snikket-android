@@ -54,6 +54,7 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity
     protected void filterContacts(final String needle) {
         getListItems().clear();
         if (account != null) {
+            // TODO create getBlocklistAsListItems
             for (final Jid jid : account.getBlocklist()) {
                 ListItem item;
                 if (jid.isFullJid()) {
@@ -61,7 +62,7 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity
                 } else {
                     item = account.getRoster().getContact(jid);
                 }
-                if (item.match(this, needle)) {
+                if (item.match(needle)) {
                     getListItems().add(item);
                 }
             }

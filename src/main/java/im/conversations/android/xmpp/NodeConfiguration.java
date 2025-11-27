@@ -10,7 +10,7 @@ import java.util.Set;
 public class NodeConfiguration implements Map<String, Object> {
 
     private static final String PERSIST_ITEMS = "pubsub#persist_items";
-    private static final String ACCESS_MODEL = "pubsub#access_model";
+    public static final String ACCESS_MODEL = "pubsub#access_model";
     private static final String SEND_LAST_PUBLISHED_ITEM = "pubsub#send_last_published_item";
     private static final String MAX_ITEMS = "pubsub#max_items";
     private static final String NOTIFY_DELETE = "pubsub#notify_delete";
@@ -20,19 +20,25 @@ public class NodeConfiguration implements Map<String, Object> {
             new NodeConfiguration(
                     new ImmutableMap.Builder<String, Object>()
                             .put(PERSIST_ITEMS, Boolean.TRUE)
-                            .put(ACCESS_MODEL, "open")
+                            .put(ACCESS_MODEL, AccessModel.OPEN)
                             .build());
     public static final NodeConfiguration PRESENCE =
             new NodeConfiguration(
                     new ImmutableMap.Builder<String, Object>()
                             .put(PERSIST_ITEMS, Boolean.TRUE)
-                            .put(ACCESS_MODEL, "presence")
+                            .put(ACCESS_MODEL, AccessModel.PRESENCE)
+                            .build());
+    public static final NodeConfiguration WHITELIST =
+            new NodeConfiguration(
+                    new ImmutableMap.Builder<String, Object>()
+                            .put(PERSIST_ITEMS, Boolean.TRUE)
+                            .put(ACCESS_MODEL, AccessModel.WHITELIST)
                             .build());
     public static final NodeConfiguration WHITELIST_MAX_ITEMS =
             new NodeConfiguration(
                     new ImmutableMap.Builder<String, Object>()
                             .put(PERSIST_ITEMS, Boolean.TRUE)
-                            .put(ACCESS_MODEL, "whitelist")
+                            .put(ACCESS_MODEL, AccessModel.WHITELIST)
                             .put(SEND_LAST_PUBLISHED_ITEM, "never")
                             .put(MAX_ITEMS, "max")
                             .put(NOTIFY_DELETE, Boolean.TRUE)
@@ -108,5 +114,11 @@ public class NodeConfiguration implements Map<String, Object> {
     @Override
     public Set<Entry<String, Object>> entrySet() {
         return this.delegate.entrySet();
+    }
+
+    public enum AccessModel {
+        OPEN,
+        WHITELIST,
+        PRESENCE
     }
 }

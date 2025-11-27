@@ -9,4 +9,8 @@ public class VCard extends Extension {
     public VCard() {
         super(VCard.class);
     }
+
+    public Photo getPhoto() {
+        return this.getExtension(Photo.class);
+    }
 }

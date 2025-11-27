@@ -35,11 +35,11 @@ import java.util.List;
 
 public class ImStyleParser {
 
-    private final static List<Character> KEYWORDS = Arrays.asList('*', '_', '~', '`');
-    private final static List<Character> NO_SUB_PARSING_KEYWORDS = Arrays.asList('`');
-    private final static List<Character> BLOCK_KEYWORDS = Arrays.asList('`');
-    private final static boolean ALLOW_EMPTY = false;
-    private final static boolean PARSE_HIGHER_ORDER_END = true;
+    private static final List<Character> KEYWORDS = Arrays.asList('*', '_', '~', '`');
+    private static final List<Character> NO_SUB_PARSING_KEYWORDS = List.of('`');
+    private static final List<Character> BLOCK_KEYWORDS = List.of('`');
+    private static final boolean ALLOW_EMPTY = false;
+    private static final boolean PARSE_HIGHER_ORDER_END = true;
 
     public static List<Style> parse(CharSequence text) {
         return parse(text, 0, text.length() - 1);
@@ -49,7 +49,9 @@ public class ImStyleParser {
         List<Style> styles = new ArrayList<>();
         for (int i = start; i <= end; ++i) {
             char c = text.charAt(i);
-            if (KEYWORDS.contains(c) && precededByWhiteSpace(text, i, start) && !followedByWhitespace(text, i, end)) {
+            if (KEYWORDS.contains(c)
+                    && precededByWhiteSpace(text, i, start)
+                    && !followedByWhitespace(text, i, end)) {
                 if (BLOCK_KEYWORDS.contains(c) && isCharRepeatedTwoTimes(text, c, i + 1, end)) {
                     int to = seekEndBlock(text, c, i + 3, end);
                     if (to != -1 && (to != i + 5 || ALLOW_EMPTY)) {
@@ -91,7 +93,8 @@ public class ImStyleParser {
                 if (!PARSE_HIGHER_ORDER_END || followedByWhitespace(text, i, end)) {
                     return i;
                 } else {
-                    int higherOrder = seekHigherOrderEndWithoutNewBeginning(text, needle, i + 1, end);
+                    int higherOrder =
+                            seekHigherOrderEndWithoutNewBeginning(text, needle, i + 1, end);
                     if (higherOrder != -1) {
                         return higherOrder;
                     }
@@ -104,12 +107,17 @@ public class ImStyleParser {
         return -1;
     }
 
-    private static int seekHigherOrderEndWithoutNewBeginning(CharSequence text, char needle, int start, int end) {
+    private static int seekHigherOrderEndWithoutNewBeginning(
+            CharSequence text, char needle, int start, int end) {
         for (int i = start; i <= end; ++i) {
             char c = text.charAt(i);
-            if (c == needle && precededByWhiteSpace(text, i, start) && !followedByWhitespace(text, i, end)) {
+            if (c == needle
+                    && precededByWhiteSpace(text, i, start)
+                    && !followedByWhitespace(text, i, end)) {
                 return -1; // new beginning
-            } else if (c == needle && !Character.isWhitespace(text.charAt(i - 1)) && followedByWhitespace(text, i, end)) {
+            } else if (c == needle
+                    && !Character.isWhitespace(text.charAt(i - 1))
+                    && followedByWhitespace(text, i, end)) {
                 return i;
             } else if (c == '\n') {
                 return -1;

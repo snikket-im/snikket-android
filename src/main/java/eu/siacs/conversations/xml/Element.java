@@ -1,6 +1,7 @@
 package eu.siacs.conversations.xml;
 
 import androidx.annotation.NonNull;
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
@@ -8,6 +9,8 @@ import com.google.common.primitives.Longs;
 import eu.siacs.conversations.utils.XmlHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.xmpp.model.stanza.Message;
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -90,11 +93,6 @@ public class Element {
         return null;
     }
 
-    public String findChildContent(String name, String xmlns) {
-        Element element = findChild(name, xmlns);
-        return element == null ? null : element.getContent();
-    }
-
     public boolean hasChild(final String name) {
         return findChild(name) != null;
     }
@@ -119,6 +117,16 @@ public class Element {
     public Element setAttribute(String name, String value) {
         if (name != null && value != null) {
             this.attributes.put(name, value);
+        }
+        return this;
+    }
+
+    public Element setAttribute(final String name, final Enum<?> e) {
+        if (e == null) {
+            this.attributes.remove(name);
+        } else {
+            this.attributes.put(
+                    name, CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, e.toString()));
         }
         return this;
     }
@@ -223,5 +231,17 @@ public class Element {
 
     public String getNamespace() {
         return getAttribute("xmlns");
+    }
+
+    protected Instant getAttributeAsInstant(final String name) {
+        final var value = getAttribute(name);
+        if (Strings.isNullOrEmpty(value)) {
+            return null;
+        }
+        try {
+            return Instant.parse(value);
+        } catch (final DateTimeParseException e) {
+            return null;
+        }
     }
 }

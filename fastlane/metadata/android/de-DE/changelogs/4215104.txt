@@ -1,0 +1,2 @@
+* „Zuletzt genutzt“ im Chattitel gut sichtbar anzeigen (wenn aktiviert)
+* Verschiedene Fehlerbehebungen

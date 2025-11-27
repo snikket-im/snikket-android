@@ -33,16 +33,16 @@ import eu.siacs.conversations.xmpp.Jid;
 
 public interface Conversational {
 
-	int MODE_MULTI = 1;
-	int MODE_SINGLE = 0;
+    int MODE_MULTI = 1;
+    int MODE_SINGLE = 0;
 
-	Account getAccount();
+    Account getAccount();
 
-	Contact getContact();
+    Contact getContact();
 
-	Jid getJid();
+    Jid getAddress();
 
-	int getMode();
+    int getMode();
 
-	String getUuid();
+    String getUuid();
 }

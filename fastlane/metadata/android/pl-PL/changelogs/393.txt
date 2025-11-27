@@ -1,0 +1,3 @@
+* Pokazywanie przycisku pomocy gdy rozmowa audio/wideo się nie powiedzie
+* Naprawienie paru irytujących awarii
+* Naprawienie połączeń Jingle (przesyłanie plików i rozmowy) z surowymi JID

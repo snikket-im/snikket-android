@@ -82,11 +82,9 @@ public final class Config {
     public static final int CONNECT_DISCO_TIMEOUT = 20;
     public static final int MINI_GRACE_PERIOD = 750;
 
-    // media file formats. Homogenous Android or Conversations only deployments can switch to opus
-    // and webp
-    public static final int AVATAR_SIZE = 192;
-    public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
-    public static final int AVATAR_CHAR_LIMIT = 9400;
+    public static final int AVATAR_THUMBNAIL_SIZE = 192;
+    public static final int AVATAR_THUMBNAIL_CHAR_LIMIT = 9400;
+    public static final int AVATAR_FULL_SIZE = 1280;
 
     public static final int IMAGE_SIZE = 1920;
     public static final Bitmap.CompressFormat IMAGE_FORMAT = Bitmap.CompressFormat.JPEG;
@@ -121,7 +119,9 @@ public final class Config {
     public static final boolean USE_DIRECT_JINGLE_CANDIDATES = true;
     public static final boolean USE_JINGLE_MESSAGE_INIT = true;
 
-    public static final boolean DISABLE_HTTP_UPLOAD = false;
+    public static final boolean ENABLE_CAPS_CACHE = true;
+
+    public static final boolean ENABLE_HTTP_UPLOAD = true;
     public static final boolean EXTENDED_SM_LOGGING = false; // log stanza counts
     public static final boolean BACKGROUND_STANZA_LOGGING =
             false; // log all stanzas that were received while the app is in background
@@ -136,6 +136,7 @@ public final class Config {
             false; // require a/v calls to be verified with OMEMO
     public static final boolean JINGLE_MESSAGE_INIT_STRICT_OFFLINE_CHECK = false;
     public static final boolean JINGLE_MESSAGE_INIT_STRICT_DEVICE_TIMEOUT = false;
+    // TODO extend this to 12s
     public static final long DEVICE_DISCOVERY_TIMEOUT = 6000; // in milliseconds
 
     public static final boolean ONLY_INTERNAL_STORAGE =

@@ -10,4 +10,9 @@ public class Nick extends Extension {
     public Nick() {
         super(Nick.class);
     }
+
+    public Nick(final String nick) {
+        this();
+        this.setContent(nick);
+    }
 }

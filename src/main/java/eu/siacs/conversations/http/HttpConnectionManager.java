@@ -114,11 +114,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
                     return;
                 }
             }
-            HttpUploadConnection connection =
-                    new HttpUploadConnection(
-                            message,
-                            Method.determine(message.getConversation().getAccount()),
-                            this);
+            HttpUploadConnection connection = new HttpUploadConnection(message, this);
             connection.init(delay);
             this.uploadConnections.add(connection);
         }
@@ -140,7 +136,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         return buildHttpClient(url, account, 30, interactive);
     }
 
-    OkHttpClient buildHttpClient(
+    public OkHttpClient buildHttpClient(
             final HttpUrl url, final Account account, int readTimeout, boolean interactive) {
         final String slotHostname = url.host();
         final boolean onionSlot = slotHostname.endsWith(".onion");

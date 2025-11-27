@@ -6,7 +6,6 @@ import android.os.SystemClock;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
@@ -20,25 +19,23 @@ import eu.siacs.conversations.crypto.sasl.HashedTokenSha512;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
 import eu.siacs.conversations.http.ServiceOutageStatus;
 import eu.siacs.conversations.services.AvatarService;
-import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import eu.siacs.conversations.xmpp.manager.BlockingManager;
+import eu.siacs.conversations.xmpp.manager.HttpUploadManager;
+import eu.siacs.conversations.xmpp.manager.RosterManager;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Account extends AbstractEntity implements AvatarService.Avatarable {
+public class Account extends AbstractEntity implements AvatarService.Avatar {
 
     public static final String TABLENAME = "accounts";
 
@@ -76,14 +73,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private static final String KEY_PINNED_MECHANISM = "pinned_mechanism";
     public static final String KEY_SOS_URL = "sos_url";
     public static final String KEY_PRE_AUTH_REGISTRATION_TOKEN = "pre_auth_registration";
-
     protected final JSONObject keys;
-    private final Roster roster = new Roster(this);
-    private final Collection<Jid> blocklist = new CopyOnWriteArraySet<>();
-    public final Set<Conversation> pendingConferenceJoins = new HashSet<>();
-    public final Set<Conversation> pendingConferenceLeaves = new HashSet<>();
-    public final Set<Conversation> inProgressConferenceJoins = new HashSet<>();
-    public final Set<Conversation> inProgressConferencePings = new HashSet<>();
     protected Jid jid;
     protected String password;
     protected int options = 0;
@@ -96,12 +86,9 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     protected boolean online = false;
     private String rosterVersion;
     private String displayName = null;
-    private AxolotlService axolotlService = null;
-    private PgpDecryptionService pgpDecryptionService = null;
     private XmppConnection xmppConnection = null;
     private long mEndGracePeriod = 0L;
-    private final Map<Jid, Bookmark> bookmarks = new HashMap<>();
-    private Presence.Status presenceStatus;
+    private im.conversations.android.xmpp.model.stanza.Presence.Availability presenceStatus;
     private String presenceStatusMessage;
     private String pinnedMechanism;
     private String pinnedChannelBinding;
@@ -121,7 +108,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                 null,
                 null,
                 Resolver.XMPP_PORT_STARTTLS,
-                Presence.Status.ONLINE,
+                im.conversations.android.xmpp.model.stanza.Presence.Availability.ONLINE,
                 null,
                 null,
                 null,
@@ -140,7 +127,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
             String displayName,
             String hostname,
             int port,
-            final Presence.Status status,
+            final im.conversations.android.xmpp.model.stanza.Presence.Availability status,
             String statusMessage,
             final String pinnedMechanism,
             final String pinnedChannelBinding,
@@ -203,7 +190,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                 cursor.getString(cursor.getColumnIndexOrThrow(DISPLAY_NAME)),
                 cursor.getString(cursor.getColumnIndexOrThrow(HOSTNAME)),
                 cursor.getInt(cursor.getColumnIndexOrThrow(PORT)),
-                Presence.Status.fromShowString(
+                im.conversations.android.xmpp.model.stanza.Presence.Availability.valueOfShown(
                         cursor.getString(cursor.getColumnIndexOrThrow(STATUS))),
                 cursor.getString(cursor.getColumnIndexOrThrow(STATUS_MESSAGE)),
                 cursor.getString(cursor.getColumnIndexOrThrow(PINNED_MECHANISM)),
@@ -212,12 +199,14 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                 cursor.getString(cursor.getColumnIndexOrThrow(FAST_TOKEN)));
     }
 
-    public boolean httpUploadAvailable(long size) {
-        return xmppConnection != null && xmppConnection.getFeatures().httpUpload(size);
+    // TODO remove this method and call HttpUploadManager directly i
+    public boolean httpUploadAvailable(final long fileSize) {
+        return xmppConnection.getManager(HttpUploadManager.class).isAvailableForSize(fileSize);
     }
 
     public boolean httpUploadAvailable() {
-        return isOptionSet(OPTION_HTTP_UPLOAD_AVAILABLE) || httpUploadAvailable(0);
+        return isOptionSet(OPTION_HTTP_UPLOAD_AVAILABLE)
+                || xmppConnection.getManager(HttpUploadManager.class).isAvailableForSize(0);
     }
 
     public String getDisplayName() {
@@ -233,11 +222,11 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean hasPendingPgpIntent(Conversation conversation) {
-        return pgpDecryptionService != null && pgpDecryptionService.hasPendingIntent(conversation);
+        return getPgpDecryptionService().hasPendingIntent(conversation);
     }
 
     public boolean isPgpDecryptionServiceConnected() {
-        return pgpDecryptionService != null && pgpDecryptionService.isConnected();
+        return getPgpDecryptionService().isConnected();
     }
 
     public boolean setShowErrorNotification(boolean newValue) {
@@ -285,11 +274,12 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         final Jid prev = this.jid != null ? this.jid.asBareJid() : null;
         final boolean changed = prev == null || (next != null && !prev.equals(next.asBareJid()));
         if (changed) {
-            final AxolotlService oldAxolotlService = this.axolotlService;
+            final AxolotlService oldAxolotlService = xmppConnection.getAxolotlService();
+            // TODO check that changing JID and recreating the AxolotlService still works
             if (oldAxolotlService != null) {
                 oldAxolotlService.destroy();
                 this.jid = next;
-                this.axolotlService = oldAxolotlService.makeNew();
+                xmppConnection.setAxolotlService(oldAxolotlService.makeNew());
             }
         }
         this.jid = next;
@@ -451,11 +441,12 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                 && getXmppConnection().getAttempt() >= 3;
     }
 
-    public Presence.Status getPresenceStatus() {
+    public im.conversations.android.xmpp.model.stanza.Presence.Availability getPresenceStatus() {
         return this.presenceStatus;
     }
 
-    public void setPresenceStatus(Presence.Status status) {
+    public void setPresenceStatus(
+            im.conversations.android.xmpp.model.stanza.Presence.Availability status) {
         this.presenceStatus = status;
     }
 
@@ -544,35 +535,19 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public AxolotlService getAxolotlService() {
-        return axolotlService;
-    }
-
-    public void initAccountServices(final XmppConnectionService context) {
-        this.axolotlService = new AxolotlService(this, context);
-        this.pgpDecryptionService = new PgpDecryptionService(context);
-        if (xmppConnection != null) {
-            xmppConnection.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
-        }
+        return this.xmppConnection.getAxolotlService();
     }
 
     public PgpDecryptionService getPgpDecryptionService() {
-        return this.pgpDecryptionService;
+        return this.xmppConnection.getPgpDecryptionService();
     }
 
     public XmppConnection getXmppConnection() {
         return this.xmppConnection;
     }
 
-    public void setXmppConnection(final XmppConnection connection) {
-        this.xmppConnection = connection;
-    }
-
     public String getRosterVersion() {
-        if (this.rosterVersion == null) {
-            return "";
-        } else {
-            return this.rosterVersion;
-        }
+        return Strings.emptyToNull(this.rosterVersion);
     }
 
     public void setRosterVersion(final String version) {
@@ -584,9 +559,13 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public int activeDevicesWithRtpCapability() {
+        final var connection = getXmppConnection();
+        if (connection == null) {
+            return 0;
+        }
         int i = 0;
-        for (Presence presence : getSelfContact().getPresences().getPresences()) {
-            if (RtpCapability.check(presence) != RtpCapability.Capability.NONE) {
+        for (final var optionalInfoQuery : getSelfContact().getCapabilities()) {
+            if (RtpCapability.check(optionalInfoQuery.orNull()) != RtpCapability.Capability.NONE) {
                 i++;
             }
         }
@@ -637,50 +616,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public Roster getRoster() {
-        return this.roster;
-    }
-
-    public Collection<Bookmark> getBookmarks() {
-        synchronized (this.bookmarks) {
-            return ImmutableList.copyOf(this.bookmarks.values());
-        }
-    }
-
-    public void setBookmarks(final Map<Jid, Bookmark> bookmarks) {
-        synchronized (this.bookmarks) {
-            this.bookmarks.clear();
-            this.bookmarks.putAll(bookmarks);
-        }
-    }
-
-    public void putBookmark(final Bookmark bookmark) {
-        synchronized (this.bookmarks) {
-            this.bookmarks.put(bookmark.getJid(), bookmark);
-        }
-    }
-
-    public void removeBookmark(Bookmark bookmark) {
-        synchronized (this.bookmarks) {
-            this.bookmarks.remove(bookmark.getJid());
-        }
-    }
-
-    public void removeBookmark(Jid jid) {
-        synchronized (this.bookmarks) {
-            this.bookmarks.remove(jid);
-        }
-    }
-
-    public Set<Jid> getBookmarkedJids() {
-        synchronized (this.bookmarks) {
-            return new HashSet<>(this.bookmarks.keySet());
-        }
-    }
-
-    public Bookmark getBookmark(final Jid jid) {
-        synchronized (this.bookmarks) {
-            return this.bookmarks.get(jid.asBareJid());
-        }
+        return xmppConnection.getManager(RosterManager.class);
     }
 
     public boolean setAvatar(final String filename) {
@@ -734,9 +670,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     private List<XmppUri.Fingerprint> getFingerprints() {
         ArrayList<XmppUri.Fingerprint> fingerprints = new ArrayList<>();
-        if (axolotlService == null) {
-            return fingerprints;
-        }
+        final var axolotlService = getAxolotlService();
         fingerprints.add(
                 new XmppUri.Fingerprint(
                         XmppUri.FingerprintType.OMEMO,
@@ -755,21 +689,24 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean isBlocked(final ListItem contact) {
-        final Jid jid = contact.getJid();
+        final Jid jid = contact.getAddress();
+        final var blocklist = getBlocklist();
         return jid != null
                 && (blocklist.contains(jid.asBareJid()) || blocklist.contains(jid.getDomain()));
     }
 
     public boolean isBlocked(final Jid jid) {
+        final var blocklist = getBlocklist();
         return jid != null && blocklist.contains(jid.asBareJid());
     }
 
-    public Collection<Jid> getBlocklist() {
-        return this.blocklist;
-    }
-
-    public void clearBlocklist() {
-        getBlocklist().clear();
+    // TODO get rid of this method in favor of calling manager directly
+    public Set<Jid> getBlocklist() {
+        final var connection = this.xmppConnection;
+        if (connection == null) {
+            return Collections.emptySet();
+        }
+        return connection.getManager(BlockingManager.class).getBlocklist();
     }
 
     public boolean isOnlineAndConnected() {
@@ -779,11 +716,6 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     @Override
     public int getAvatarBackgroundColor() {
         return UIHelper.getColorForName(jid.asBareJid().toString());
-    }
-
-    @Override
-    public String getAvatarName() {
-        throw new IllegalStateException("This method should not be called");
     }
 
     public void setServiceOutageStatus(final ServiceOutageStatus sos) {
@@ -802,6 +734,10 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
             return sos.isNow();
         }
         return false;
+    }
+
+    public void setXmppConnection(final XmppConnection connection) {
+        this.xmppConnection = connection;
     }
 
     public enum State {
