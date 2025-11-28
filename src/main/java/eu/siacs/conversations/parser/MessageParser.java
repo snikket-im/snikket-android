@@ -670,8 +670,7 @@ public class MessageParser extends AbstractParser
                             }
                             getManager(ChatStateManager.class).process(packet);
                             mXmppConnectionService.updateMessage(replacedMessage, uuid);
-                            if (mXmppConnectionService.confirmMessages()
-                                    && replacedMessage.getStatus() == Message.STATUS_RECEIVED
+                            if (replacedMessage.getStatus() == Message.STATUS_RECEIVED
                                     && (replacedMessage.trusted()
                                             || replacedMessage
                                                     .isPrivateMessage()) // TODO do we really want
@@ -791,8 +790,7 @@ public class MessageParser extends AbstractParser
                 getManager(ChatStateManager.class).process(packet);
             }
 
-            if (mXmppConnectionService.confirmMessages()
-                    && message.getStatus() == Message.STATUS_RECEIVED
+            if (message.getStatus() == Message.STATUS_RECEIVED
                     && (message.trusted() || message.isPrivateMessage())
                     && remoteMsgId != null
                     && !selfAddressed

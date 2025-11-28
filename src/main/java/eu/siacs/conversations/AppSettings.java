@@ -43,7 +43,7 @@ public class AppSettings {
     public static final String RINGTONE = "call_ringtone";
     public static final String DISPLAY_ENTER_KEY = "display_enter_key";
 
-    public static final String CONFIRM_MESSAGES = "confirm_messages";
+    public static final String READ_RECEIPTS = "confirm_messages";
     public static final String ALLOW_MESSAGE_CORRECTION = "allow_message_correction";
 
     public static final String TRUST_SYSTEM_CA_STORE = "trust_system_ca_store";
@@ -163,8 +163,8 @@ public class AppSettings {
         return getBooleanPreference(ALIGN_START, R.bool.align_start);
     }
 
-    public boolean isConfirmMessages() {
-        return getBooleanPreference(CONFIRM_MESSAGES, R.bool.confirm_messages);
+    public boolean isReadReceipts() {
+        return getBooleanPreference(READ_RECEIPTS, R.bool.confirm_messages);
     }
 
     public boolean isAllowMessageCorrection() {

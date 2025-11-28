@@ -49,7 +49,7 @@ public class DisplayedManager extends AbstractManager {
                         && conversation.isPrivateAndNonAnonymous();
 
         final boolean sendDisplayedMarker =
-                appSettings.isConfirmMessages()
+                appSettings.isReadReceipts()
                         && (last.trusted() || isPrivateAndNonAnonymousMuc)
                         && ((last.getConversation().getMode() == Conversation.MODE_SINGLE
                                         && last.getRemoteMsgId() != null)

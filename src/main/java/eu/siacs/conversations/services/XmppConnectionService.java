@@ -3414,10 +3414,6 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public boolean confirmMessages() {
-        return appSettings.isConfirmMessages();
-    }
-
     public boolean allowMessageCorrection() {
         return appSettings.isAllowMessageCorrection();
     }

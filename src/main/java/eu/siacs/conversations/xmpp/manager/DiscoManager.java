@@ -333,7 +333,7 @@ public class DiscoManager extends AbstractManager {
         if (Config.MESSAGE_DISPLAYED_SYNCHRONIZATION) {
             features.add(notify(Namespace.MDS_DISPLAYED));
         }
-        if (appSettings.isConfirmMessages()) {
+        if (appSettings.isReadReceipts()) {
             features.addAll(MESSAGE_CONFIRMATION_FEATURES);
         }
         if (appSettings.isAllowMessageCorrection()) {
