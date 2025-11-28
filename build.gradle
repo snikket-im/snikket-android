@@ -6,8 +6,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.12.3'
-        classpath 'com.diffplug.spotless:spotless-plugin-gradle:8.0.0'
+        classpath 'com.android.tools.build:gradle:8.13.1'
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:8.1.0'
     }
 }
 
@@ -44,8 +44,8 @@ spotless {
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 
-    annotationProcessor 'org.immutables:value:2.11.6'
-    implementation 'org.immutables:value-annotations:2.11.6'
+    annotationProcessor 'org.immutables:value:2.11.7'
+    implementation 'org.immutables:value-annotations:2.11.7'
     annotationProcessor project(':libs:annotation-processor')
     implementation project(':libs:annotation')
     implementation 'androidx.appcompat:appcompat:1.7.1'
@@ -65,18 +65,18 @@ dependencies {
     implementation 'com.github.open-keychain.open-keychain:openpgp-api:v5.7.1'
     implementation 'com.google.android.material:material:1.13.0'
     implementation 'com.google.guava:guava:33.5.0-android'
-    implementation 'com.google.zxing:core:3.5.3'
+    implementation 'com.google.zxing:core:3.5.4'
     implementation 'com.leinardi.android:speed-dial:3.3.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
-    implementation 'com.squareup.okhttp3:okhttp:5.3.0'
+    implementation 'com.squareup.okhttp3:okhttp:5.3.2'
     implementation 'com.squareup.retrofit2:converter-gson:3.0.0'
     implementation 'com.squareup.retrofit2:retrofit:3.0.0'
-    implementation 'com.vanniktech:android-image-cropper:4.6.0'
+    implementation 'com.vanniktech:android-image-cropper:4.7.0'
     implementation 'im.conversations.webrtc:webrtc-android:129.0.0'
     implementation 'io.deepmedia.community:transcoder-android:0.11.2'
     implementation 'me.drakeet.support:toastcompat:1.1.0'
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
-    implementation 'org.bouncycastle:bcmail-jdk18on:1.82'
+    implementation 'org.bouncycastle:bcmail-jdk18on:1.83'
     implementation 'org.conscrypt:conscrypt-android:2.5.3'
     implementation 'org.hsluv:hsluv:1.0'
     implementation 'org.jxmpp:jxmpp-jid:1.1.0'

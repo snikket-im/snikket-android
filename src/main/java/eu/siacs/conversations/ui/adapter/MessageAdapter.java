@@ -362,10 +362,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.downloadButton().setVisibility(View.GONE);
         viewHolder.audioPlayer().setVisibility(View.GONE);
         viewHolder.image().setVisibility(View.GONE);
-        viewHolder.messageBody().setTypeface(null, Typeface.ITALIC);
         viewHolder.messageBody().setVisibility(View.VISIBLE);
         viewHolder.messageBody().setText(text);
         setTextSize(viewHolder.messageBody(), this.bubbleDesign.largeFont);
+        viewHolder.messageBody().setTypeface(null, Typeface.ITALIC);
         viewHolder
                 .messageBody()
                 .setTextColor(bubbleToOnSurfaceVariant(viewHolder.messageBody(), bubbleColor));
@@ -478,7 +478,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.downloadButton().setVisibility(View.GONE);
         viewHolder.image().setVisibility(View.GONE);
         viewHolder.audioPlayer().setVisibility(View.GONE);
-        viewHolder.messageBody().setTypeface(null, Typeface.NORMAL);
         viewHolder.messageBody().setVisibility(View.VISIBLE);
         setTextColor(viewHolder.messageBody(), bubbleColor);
         setTextSize(viewHolder.messageBody(), this.bubbleDesign.largeFont);

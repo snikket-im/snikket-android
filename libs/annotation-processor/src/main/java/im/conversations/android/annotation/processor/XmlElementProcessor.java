@@ -2,7 +2,6 @@ package im.conversations.android.annotation.processor;
 
 import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableMap;
@@ -14,7 +13,6 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.Nonnull;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -28,9 +26,10 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.JavaFileObject;
+import org.jspecify.annotations.NonNull;
 
 @AutoService(Processor.class)
-@SupportedSourceVersion(SourceVersion.RELEASE_17)
+@SupportedSourceVersion(SourceVersion.RELEASE_21)
 @SupportedAnnotationTypes("im.conversations.android.annotation.XmlElement")
 public class XmlElementProcessor extends AbstractProcessor {
 
@@ -160,30 +159,10 @@ public class XmlElementProcessor extends AbstractProcessor {
         return false;
     }
 
-    public static class Id implements Comparable<Id> {
-        public final String name;
-        public final String namespace;
-
-        public Id(String name, String namespace) {
-            this.name = name;
-            this.namespace = namespace;
-        }
+    public record Id(String name, String namespace) implements Comparable<Id> {
 
         @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Id id = (Id) o;
-            return Objects.equal(name, id.name) && Objects.equal(namespace, id.namespace);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(name, namespace);
-        }
-
-        @Override
-        public int compareTo(@Nonnull Id id) {
+        public int compareTo(@NonNull Id id) {
             return ComparisonChain.start()
                     .compare(namespace, id.namespace)
                     .compare(name, id.name)
