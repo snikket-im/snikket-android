@@ -543,7 +543,7 @@
     <string name="gp_short">Krátký</string>
     <string name="gp_medium">Střední</string>
     <string name="gp_long">Dlouhý</string>
-    <string name="pref_broadcast_last_activity">Zobrazit naposledy spatřen</string>
+    <string name="pref_broadcast_last_activity">Zobrazit naposledy viděn</string>
     <string name="pref_broadcast_last_activity_summary">Umožnit kontaktům vidět, kdy jste byli v aplikaci naposledy aktivní</string>
     <string name="pref_privacy">Soukromí</string>
     <string name="pref_theme_options">Vzhled</string>
@@ -1020,7 +1020,7 @@
     <string name="pref_title_trust_system_ca_store">Certifikační autority</string>
     <string name="detect_mim">Požadovat channel binding</string>
     <string name="pref_title_trust_system_ca_store_summary">Důvěřovat systémovým CA certifikátům</string>
-    <string name="pref_privacy_summary">Oznámení o psaní, naposledy spatřen, dostupnost</string>
+    <string name="pref_privacy_summary">Oznámení o psaní, naposledy viděn, dostupnost</string>
     <string name="privacy_policy">Zásady ochrany osobních údajů</string>
     <string name="contact_list_integration_not_available">Propojení se seznamem kontaktů není k dispozici</string>
     <string name="quicksy_wants_your_consent">Quicksy žádá o souhlas s použitím Vašich dat</string>
@@ -1148,7 +1148,7 @@
         <item quantity="few">%1$d účastníci</item>
         <item quantity="other">%1$d účastníků</item>
     </plurals>
-    <string name="last_seen">Naposledy spatřen %s</string>
+    <string name="last_seen">Naposledy %s</string>
     <string name="uri">URI</string>
     <string name="copy_URI">Kopírovat URI</string>
     <string name="copy_geo_uri">Kopírovat polohu</string>

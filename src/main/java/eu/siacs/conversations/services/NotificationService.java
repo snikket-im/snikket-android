@@ -69,6 +69,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
+import eu.siacs.conversations.xmpp.manager.ActivityManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -766,10 +767,26 @@ public class NotificationService {
             pushToStack(message);
             final Conversational conversation = message.getConversation();
             final Account account = conversation.getAccount();
-            final boolean doNotify =
-                    (!(this.mIsInForeground && this.mOpenConversation == null) || isScreenLocked)
-                            && !account.inGracePeriod()
-                            && !this.inMiniGracePeriod(account);
+            final var chatOverviewInForeground =
+                    (this.mIsInForeground && this.mOpenConversation == null) && !isScreenLocked;
+            final boolean doNotify;
+            if (chatOverviewInForeground) {
+                doNotify = false;
+                Log.d(
+                        Config.LOGTAG,
+                        "silencing notification because chat overview is in foreground");
+            } else if (account.getXmppConnection()
+                    .getManager(ActivityManager.class)
+                    .isInGracePeriod()) {
+                doNotify = false;
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": silencing notification because activity on other client (grace"
+                                + " period)");
+            } else {
+                doNotify = true;
+            }
             updateNotification(doNotify, Collections.singletonList(conversation.getUuid()));
         }
     }
@@ -1799,14 +1816,6 @@ public class NotificationService {
 
     private void markLastNotification() {
         this.mLastNotification = SystemClock.elapsedRealtime();
-    }
-
-    private boolean inMiniGracePeriod(final Account account) {
-        final int miniGrace =
-                account.getStatus() == Account.State.ONLINE
-                        ? Config.MINI_GRACE_PERIOD
-                        : Config.MINI_GRACE_PERIOD * 2;
-        return SystemClock.elapsedRealtime() < (this.mLastNotification + miniGrace);
     }
 
     Notification createForegroundNotification() {

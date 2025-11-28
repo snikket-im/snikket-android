@@ -32,12 +32,17 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
-import eu.siacs.conversations.xmpp.jingle.stanzas.Propose;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 import eu.siacs.conversations.xmpp.jingle.transports.InbandBytestreamsTransport;
 import eu.siacs.conversations.xmpp.jingle.transports.Transport;
 import im.conversations.android.xmpp.model.jingle.Jingle;
+import im.conversations.android.xmpp.model.jmi.Accept;
+import im.conversations.android.xmpp.model.jmi.JingleMessage;
+import im.conversations.android.xmpp.model.jmi.Proceed;
+import im.conversations.android.xmpp.model.jmi.Propose;
+import im.conversations.android.xmpp.model.jmi.Reject;
+import im.conversations.android.xmpp.model.jmi.Ringing;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import java.lang.ref.WeakReference;
 import java.security.SecureRandom;
@@ -284,17 +289,16 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             final Account account,
             final Jid to,
             final Jid from,
-            final Element message,
-            String remoteMsgId,
-            String serverMsgId,
+            final JingleMessage message,
+            final String remoteMsgId,
+            final String serverMsgId,
             long timestamp) {
-        Preconditions.checkArgument(Namespace.JINGLE_MESSAGE.equals(message.getNamespace()));
-        final String sessionId = message.getAttribute("id");
+        final var sessionId = message.getSessionId();
         if (sessionId == null) {
             return;
         }
-        if ("accept".equals(message.getName())) {
-            for (AbstractJingleConnection connection : connections.values()) {
+        if (message instanceof Accept) {
+            for (final var connection : connections.values()) {
                 if (connection instanceof JingleRtpConnection rtpConnection) {
                     final AbstractJingleConnection.Id id = connection.getId();
                     if (id.account == account && id.sessionId.equals(sessionId)) {
@@ -320,9 +324,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
         final AbstractJingleConnection existingJingleConnection = connections.get(id);
         if (existingJingleConnection != null) {
-            if (existingJingleConnection instanceof JingleRtpConnection) {
-                ((JingleRtpConnection) existingJingleConnection)
-                        .deliveryMessage(from, message, serverMsgId, timestamp);
+            if (existingJingleConnection instanceof JingleRtpConnection jingleRtpConnection) {
+                jingleRtpConnection.deliveryMessage(from, message, serverMsgId, timestamp);
             } else {
                 Log.d(
                         Config.LOGTAG,
@@ -335,7 +338,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
 
         if (fromSelf) {
-            if ("proceed".equals(message.getName())) {
+            if (message instanceof Proceed) {
                 final Conversation c =
                         mXmppConnectionService.findOrCreateConversation(
                                 account, id.with, false, false);
@@ -364,8 +367,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             return;
         }
 
-        if ("propose".equals(message.getName())) {
-            final Propose propose = Propose.upgrade(message);
+        if (message instanceof Propose propose) {
             final List<GenericDescription> descriptions = propose.getDescriptions();
             final Collection<RtpDescription> rtpDescriptions =
                     Collections2.transform(
@@ -472,7 +474,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                                 + descriptions.size()
                                 + " total descriptions");
             }
-        } else if (addressedDirectly && "proceed".equals(message.getName())) {
+        } else if (addressedDirectly && message instanceof Proceed) {
             synchronized (rtpSessionProposals) {
                 final RtpSessionProposal proposal =
                         getRtpSessionProposal(account, from.asBareJid(), sessionId);
@@ -510,7 +512,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     mXmppConnectionService.sendMessagePacket(account, errorMessage);
                 }
             }
-        } else if (addressedDirectly && "reject".equals(message.getName())) {
+        } else if (addressedDirectly && message instanceof Reject) {
             final RtpSessionProposal proposal =
                     getRtpSessionProposal(account, from.asBareJid(), sessionId);
             synchronized (rtpSessionProposals) {
@@ -534,7 +536,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                                     + " to deliver reject");
                 }
             }
-        } else if (addressedDirectly && "ringing".equals(message.getName())) {
+        } else if (addressedDirectly && message instanceof Ringing) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + from + " started ringing");
             updateProposedSessionDiscovered(
                     account, from, sessionId, DeviceDiscoveryState.DISCOVERED);

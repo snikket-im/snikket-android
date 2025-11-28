@@ -5,7 +5,6 @@ import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.generator.AbstractGenerator;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import im.conversations.android.xmpp.model.error.Condition;
-import im.conversations.android.xmpp.model.error.Error;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.time.Time;
 import java.util.Locale;
@@ -20,7 +19,7 @@ public class EntityTimeManager extends AbstractManager {
     public void request(final Iq request) {
         final var appSettings = new AppSettings(this.context);
         if (appSettings.isUseTor() || getAccount().isOnion()) {
-            this.connection.sendErrorFor(request, Error.Type.AUTH, new Condition.Forbidden());
+            this.connection.sendErrorFor(request, new Condition.Forbidden());
             return;
         }
         final var time = new Time();

@@ -314,7 +314,7 @@
     <string name="notification_backup_created_subtitle">Резервну копію збережено до %s</string>
     <string name="restoring_backup">Відновлення з резервної копії</string>
     <string name="notification_restored_backup_title">Відновлено з резервної копії</string>
-    <string name="notification_restored_backup_subtitle">Не забудьте увімкнути обліковий запис.</string>
+    <string name="notification_restored_backup_subtitle">Не забудьте ввімкнути обліковий запис.</string>
     <string name="choose_file">Файл</string>
     <string name="receiving_x_file">Отримання %1$s (%2$d%% завершено)</string>
     <string name="download_x_file">Завантажити %s</string>
@@ -559,7 +559,7 @@
     <string name="remote_server_not_found">Віддалений сервер не знайдено</string>
     <string name="remote_server_timeout">Затримка відповіді сервера</string>
     <string name="unable_to_update_account">Не вдалося оновити обліковий запис</string>
-    <string name="report_jid_as_spammer">Надіслати скаргу про те, що контакт із цим ID розсилає спам.</string>
+    <string name="report_jid_as_spammer">Надіслати скаргу про спам від цієї адреси XMPP.</string>
     <string name="pref_delete_omemo_identities">Вилучити ідентифікаційні дані OMEMO</string>
     <string name="pref_delete_omemo_identities_summary">Створити наново Ваші ключі OMEMO. Всі Ваші контакти будуть змушені підтвердити Вас знову. Використовуйте це, лише якщо немає іншого вибору.</string>
     <string name="delete_selected_keys">Вилучити вибрані ключі</string>
@@ -783,7 +783,7 @@
     <string name="temporarily_unavailable">Тимчасово недоступний. Будь ласка, спробуйте знову пізніше.</string>
     <string name="no_network_connection">Відсутнє з\'єднання з мережею.</string>
     <string name="try_again_in_x">Будь ласка, спробуйте ще раз через %s</string>
-    <string name="rate_limited">Ви обмежені за рейтингом</string>
+    <string name="rate_limited">У вас обмеження частоти звернень</string>
     <string name="too_many_attempts">Забагато спроб</string>
     <string name="the_app_is_out_of_date">Ви користуєтеся застарілою версією застосунку.</string>
     <string name="update">Оновити</string>
@@ -804,12 +804,12 @@
     <string name="choose_account">Виберіть обліковий запис</string>
     <string name="restore_backup">Відновити з резервної копії</string>
     <string name="restore">Відновити</string>
-    <string name="enter_password_to_restore">Введіть пароль до облікового запису %s, щоб відновити з резервної копії.</string>
+    <string name="enter_password_to_restore">Уведіть пароль до облікового запису %s, щоб відновити з резервної копії.</string>
     <string name="restore_warning">Не відновлюйте ключі OMEMO з метою клонування застосунку (запускати одночасно ще один примірник). Відновлення ключів OMEMO призначене виключно для перенесення даних або на випадок втрати оригінального пристрою.</string>
     <string name="unable_to_restore_backup">Неможливо відновити з резервної копії.</string>
     <string name="unable_to_decrypt_backup">Не вдалося розшифрувати резервну копію. Чи правильний пароль?</string>
     <string name="backup_channel_name">Створити або відновити резервну копію</string>
-    <string name="enter_jabber_id">Введіть адресу XMPP</string>
+    <string name="enter_jabber_id">Уведіть адресу XMPP</string>
     <string name="create_group_chat">Створити групу</string>
     <string name="join_public_channel">Приєднатися до публічного каналу</string>
     <string name="create_private_group_chat">Створити приватну групу</string>
@@ -818,7 +818,7 @@
     <string name="xmpp_address">Адреса XMPP</string>
     <string name="please_enter_name">Будь ласка, дайте назву цьому каналу</string>
     <string name="please_enter_xmpp_address">Будь ласка, надайте адресу XMPP</string>
-    <string name="this_is_an_xmpp_address">Це адреса XMPP. Будь ласка, додайте назву.</string>
+    <string name="this_is_an_xmpp_address">Це адреса XMPP. Будь ласка, надайте назву.</string>
     <string name="creating_channel">Створення публічного каналу…</string>
     <string name="channel_already_exists">Цей канал уже існує</string>
     <string name="joined_an_existing_channel">Ви приєдналися до наявного каналу</string>
@@ -946,7 +946,7 @@
     <string name="outgoing_call_timestamp">Вихідний виклик · %s</string>
     <string name="openkeychain_required_long"><![CDATA[%1$s використовує <b>OpenKeychain</b> для шифрування/дешифрування повідомлень і керування публічними ключами.<br><br>OpenKeychain поширюється на умовах ліцензії GPLv3+ і доступний для завантаження на F-Droid та Google Play.<br><br><small>(Після встановлення необхідно перезапустити %1$s.)</small>]]></string>
     <string name="more_options">Додатково</string>
-    <string name="unable_to_enable_video">Не вдалося увімкнути відео.</string>
+    <string name="unable_to_enable_video">Не вдалося ввімкнути відео.</string>
     <string name="no_active_accounts_support_this">Жоден з активних облікових записів не підтримує цієї функції</string>
     <string name="delete_from_server">Вилучити обліковий запис із сервера</string>
     <plurals name="some_messages_could_not_be_delivered">
@@ -1079,7 +1079,7 @@
     <string name="pref_title_trust_system_ca_store">Центри сертифікації</string>
     <string name="pref_category_operating_system">Операційна система</string>
     <string name="pref_connection_summary">Ім\'я вузла і порт, Tor</string>
-    <string name="pref_connection_summary_w_cd">Ім\'я вузла і порт, Tor, пошук каналів</string>
+    <string name="pref_connection_summary_w_cd">Ім\'я вузла і порт, Tor, P2P, пошук каналів</string>
     <string name="pref_keyboard_options">Клавіатура</string>
     <string name="pref_category_interaction">Взаємодія</string>
     <string name="pref_category_on_this_device">На пристрої</string>
@@ -1194,4 +1194,10 @@
     <string name="server_info_moderated_message_retraction">XEP-0425: Видалення повідомлень модератором</string>
     <string name="account_status_tls_error_protocol">Слабкий захист транспортів (немає TLS 1.3)</string>
     <string name="account_status_tls_error_untrusted">Недовірений сертифікат</string>
+    <string name="this_reaction_isnt_allowed">Ви не можете використовувати цю реакцію.</string>
+    <string name="number_reactions_are_restricted">Досягнуто обмеження кількості реакцій.</string>
+    <string name="enable_account_to_delete">Цей обліковий запис вимкнено. Ввімкніть його, щоб видалити з сервера.</string>
+    <string name="peer_to_peer">Однорангові з’єднання (P2P)</string>
+    <string name="pref_use_relays_summary">Перенаправляти всі P2P-з’єднання (дзвінки та передачу файлів) через свій сервер, щоб уникнути розкриття своєї IP-адреси.</string>
+    <string name="pref_use_relays">Використовувати ретранслятори</string>
 </resources>

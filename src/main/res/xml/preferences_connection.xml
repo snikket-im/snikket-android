@@ -16,6 +16,17 @@
             android:title="@string/pref_use_tor" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/peer_to_peer">
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/use_relays"
+            android:icon="@drawable/ic_location_disabled_24dp"
+            android:key="use_relays"
+            android:summary="@string/pref_use_relays_summary"
+            android:title="@string/pref_use_relays" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory
         android:key="groups_and_conferences"
         android:title="@string/group_chats_and_channels">

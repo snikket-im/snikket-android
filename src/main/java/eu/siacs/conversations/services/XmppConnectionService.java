@@ -114,16 +114,17 @@ import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
+import eu.siacs.conversations.xmpp.manager.ActivityManager;
 import eu.siacs.conversations.xmpp.manager.AvatarManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
+import eu.siacs.conversations.xmpp.manager.ChatStateManager;
 import eu.siacs.conversations.xmpp.manager.DisplayedManager;
 import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
@@ -1111,7 +1112,7 @@ public class XmppConnectionService extends Service {
         Log.d(Config.LOGTAG, "restoring accounts...");
         this.accounts = databaseBackend.getAccounts();
         for (final var account : this.accounts) {
-            account.setXmppConnection(createConnection(account));
+            account.setXmppConnection(new XmppConnection(account, this));
         }
         final boolean hasEnabledAccounts = hasEnabledAccounts();
         toggleSetProfilePictureActivity(hasEnabledAccounts);
@@ -1508,19 +1509,6 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public XmppConnection createConnection(final Account account) {
-        final XmppConnection connection = new XmppConnection(account, this);
-        connection.setOnJinglePacketReceivedListener((mJingleConnectionManager::deliverPacket));
-        return connection;
-    }
-
-    public void sendChatState(final Conversation conversation) {
-        if (appSettings.isSendChatStates()) {
-            final var packet = mMessageGenerator.generateChatState(conversation);
-            sendMessagePacket(conversation.getAccount(), packet);
-        }
-    }
-
     private void sendFileMessage(
             final Message message, final boolean delay, final boolean forceP2P) {
         final var account = message.getConversation().getAccount();
@@ -1561,7 +1549,7 @@ public class XmppConnectionService extends Service {
             mNotificationService.updateErrorNotification();
         }
         final Conversation conversation = (Conversation) message.getConversation();
-        account.deactivateGracePeriod();
+        account.getXmppConnection().getManager(ActivityManager.class).reset();
 
         if (QuickConversationsService.isQuicksy()
                 && conversation.getMode() == Conversation.MODE_SINGLE) {
@@ -1719,9 +1707,12 @@ public class XmppConnectionService extends Service {
             if (delay) {
                 mMessageGenerator.addDelay(packet, message.getTimeSent());
             }
-            if (conversation.setOutgoingChatState(Config.DEFAULT_CHAT_STATE)) {
+            final var chatStateManager =
+                    account.getXmppConnection().getManager(ChatStateManager.class);
+            if (chatStateManager.setOutgoingChatState(conversation, Config.DEFAULT_CHAT_STATE)) {
                 if (this.appSettings.isSendChatStates()) {
-                    packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));
+                    packet.addExtension(
+                            chatStateManager.getOutgoingChatStateExtension(conversation));
                 }
             }
             sendMessagePacket(account, packet);
@@ -2302,7 +2293,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void createAccount(final Account account) {
-        account.setXmppConnection(createConnection(account));
+        account.setXmppConnection(new XmppConnection(account, this));
         databaseBackend.createAccount(account);
         if (CallIntegration.hasSystemFeature(this)) {
             CallIntegrationConnectionService.togglePhoneAccountAsync(this, account);
@@ -2756,19 +2747,14 @@ public class XmppConnectionService extends Service {
     private void switchToForeground() {
         toggleSoftDisabled(false);
         final boolean broadcastLastActivity = appSettings.isBroadcastLastActivity();
-        for (Conversation conversation : getConversations()) {
-            if (conversation.getMode() == Conversation.MODE_MULTI) {
-                conversation.getMucOptions().resetChatState();
-            } else {
-                conversation.setIncomingChatState(Config.DEFAULT_CHAT_STATE);
-            }
-        }
         for (final var account : getAccounts()) {
+            final XmppConnection connection = account.getXmppConnection();
+            connection.getManager(MultiUserChatManager.class).resetChatStates();
+            connection.getManager(ChatStateManager.class).resetChatStates();
             if (account.getStatus() != Account.State.ONLINE) {
                 continue;
             }
-            account.deactivateGracePeriod();
-            final XmppConnection connection = account.getXmppConnection();
+            connection.getManager(ActivityManager.class).reset();
             if (connection.getFeatures().csi()) {
                 connection.sendActive();
             }
@@ -3428,10 +3414,6 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public boolean confirmMessages() {
-        return appSettings.isConfirmMessages();
-    }
-
     public boolean allowMessageCorrection() {
         return appSettings.isAllowMessageCorrection();
     }
@@ -3788,8 +3770,8 @@ public class XmppConnectionService extends Service {
     }
 
     private void deactivateGracePeriod() {
-        for (Account account : getAccounts()) {
-            account.deactivateGracePeriod();
+        for (final var account : getAccounts()) {
+            account.getXmppConnection().getManager(ActivityManager.class).reset();
         }
     }
 

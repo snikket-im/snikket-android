@@ -1,0 +1,4 @@
+* låt användarna ställa in deras egna smeknamn
+* återuppta hämtning av OMEMO-krypterade filer
+* Kanaler använder nu'#' som symbol i avataren
+* Quicksy använder nu '#' som symbol i avataren

@@ -2,12 +2,9 @@ package eu.siacs.conversations.ui;
 
 import android.os.Bundle;
 import android.widget.Toast;
-
 import androidx.databinding.DataBindingUtil;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityAddReactionBinding;
 
@@ -45,17 +42,12 @@ public class AddReactionActivity extends XmppActivity {
         }
         final var aggregated = m.getAggregatedReactions();
         if (aggregated.ourReactions.contains(emoji)) {
-            if (!xmppConnectionService.sendReactions(m, aggregated.ourReactions)) {
-                Toast.makeText(this, R.string.could_not_add_reaction, Toast.LENGTH_LONG).show();
-                return;
-            }
+            this.sendReactions(m, aggregated.ourReactions);
         } else {
             final ImmutableSet.Builder<String> reactionBuilder = new ImmutableSet.Builder<>();
             reactionBuilder.addAll(aggregated.ourReactions);
             reactionBuilder.add(emoji);
-            if (!xmppConnectionService.sendReactions(m, reactionBuilder.build())) {
-                Toast.makeText(this, R.string.could_not_add_reaction, Toast.LENGTH_LONG).show();
-            }
+            this.sendReactions(m, reactionBuilder.build());
         }
         finish();
     }

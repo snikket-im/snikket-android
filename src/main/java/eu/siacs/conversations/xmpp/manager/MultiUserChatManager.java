@@ -58,6 +58,7 @@ import im.conversations.android.xmpp.model.pgp.Signed;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Message;
 import im.conversations.android.xmpp.model.stanza.Presence;
+import im.conversations.android.xmpp.model.stanza.Stanza;
 import im.conversations.android.xmpp.model.vcard.update.VCardUpdate;
 import java.util.Arrays;
 import java.util.Collection;
@@ -749,6 +750,7 @@ public class MultiUserChatManager extends AbstractManager {
             final Conversation conversation,
             final InfoQuery rawinfoQuery,
             final MucConfigSummary previousMucConfig) {
+        Log.d(Config.LOGTAG, "disco info form: " + rawinfoQuery);
         final var infoQuery = clean(rawinfoQuery);
         final var caps = EntityCapabilities.hash(infoQuery);
         final var caps2 = EntityCapabilities2.hash(infoQuery);
@@ -801,6 +803,9 @@ public class MultiUserChatManager extends AbstractManager {
             }
         }
         this.service.updateConversationUi();
+
+        Log.d(Config.LOGTAG, "emoji restrictions: " + mucOptions.getReactionsRestrictions());
+
         return null;
     }
 
@@ -1238,6 +1243,12 @@ public class MultiUserChatManager extends AbstractManager {
         this.connection.sendMessagePacket(message);
     }
 
+    public boolean isMuc(final Stanza stanza) {
+        final var isTypeGroupChat =
+                stanza instanceof Message m && m.getType() == Message.Type.GROUPCHAT;
+        return isTypeGroupChat || isMuc(stanza.getFrom());
+    }
+
     public boolean isMuc(final Jid address) {
         final var state = address == null ? null : getState(address.asBareJid());
         return state != null && state.getConversation().getMode() == Conversational.MODE_MULTI;
@@ -1374,6 +1385,14 @@ public class MultiUserChatManager extends AbstractManager {
         }
 
         return builder.buildOrThrow();
+    }
+
+    public void resetChatStates() {
+        synchronized (this.states) {
+            for (var state : this.states.values()) {
+                state.resetChatState();
+            }
+        }
     }
 
     private static final class MucConfigSummary {

@@ -4,11 +4,14 @@ import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.manager.AbstractManager;
+import eu.siacs.conversations.xmpp.manager.ActivityManager;
 import eu.siacs.conversations.xmpp.manager.AvatarManager;
 import eu.siacs.conversations.xmpp.manager.AxolotlManager;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
 import eu.siacs.conversations.xmpp.manager.CarbonsManager;
+import eu.siacs.conversations.xmpp.manager.ChatStateManager;
+import eu.siacs.conversations.xmpp.manager.DeliveryReceiptManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.manager.DisplayedManager;
 import eu.siacs.conversations.xmpp.manager.EasyOnboardingManager;
@@ -44,11 +47,14 @@ public class Managers {
     public static ClassToInstanceMap<AbstractManager> get(
             final XmppConnectionService context, final XmppConnection connection) {
         return new ImmutableClassToInstanceMap.Builder<AbstractManager>()
+                .put(ActivityManager.class, new ActivityManager(context, connection))
                 .put(AvatarManager.class, new AvatarManager(context, connection))
                 .put(AxolotlManager.class, new AxolotlManager(context, connection))
                 .put(BlockingManager.class, new BlockingManager(context, connection))
                 .put(BookmarkManager.class, new BookmarkManager(context, connection))
                 .put(CarbonsManager.class, new CarbonsManager(context, connection))
+                .put(ChatStateManager.class, new ChatStateManager(context, connection))
+                .put(DeliveryReceiptManager.class, new DeliveryReceiptManager(context, connection))
                 .put(DiscoManager.class, new DiscoManager(context, connection))
                 .put(DisplayedManager.class, new DisplayedManager(context, connection))
                 .put(EasyOnboardingManager.class, new EasyOnboardingManager(context, connection))

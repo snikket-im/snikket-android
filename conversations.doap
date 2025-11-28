@@ -17,8 +17,8 @@
     <download-page rdf:resource="https://play.google.com/store/apps/details?id=eu.siacs.conversations"/>
     <bug-database rdf:resource="https://codeberg.org/iNPUTmice/Conversations/issues"/>
     <!-- See https://github.com/ewilderj/doap/issues/53 -->
-    <developer-forum rdf:resource="xmpp:conversations@siacs.conference.eu?join"/>
-    <support-forum rdf:resource="xmpp:conversations@siacs.conference.eu?join"/>
+    <developer-forum rdf:resource="xmpp:conversations@conference.siacs.eu?join"/>
+    <support-forum rdf:resource="xmpp:conversations@conference.siacs.eu?join"/>
 
     <license rdf:resource="https://codeberg.org/iNPUTmice/Conversations/src/branch/master/LICENSE"/>
 
@@ -118,6 +118,13 @@
             <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0085.html"/>
             <xmpp:status>complete</xmpp:status>
             <xmpp:version>2.1</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0086.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>1.0</xmpp:version>
         </xmpp:SupportedXep>
     </implements>
     <implements>

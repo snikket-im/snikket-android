@@ -27,6 +27,7 @@ import com.google.common.io.CountingInputStream;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.Conversations;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.SQLiteAxolotlStore;
 import eu.siacs.conversations.entities.Account;
@@ -226,6 +227,7 @@ public class ImportBackupWorker extends Worker {
         final int count = countCursor.getInt(0);
         Log.d(Config.LOGTAG, String.format("restored %d messages in %s", count, stopwatch.stop()));
         countCursor.close();
+        Conversations.getInstance(getApplicationContext()).resetAccounts();
         stopBackgroundService();
         notifySuccess();
         return Result.success();

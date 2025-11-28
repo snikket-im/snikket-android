@@ -1,0 +1,2 @@
+* Täpsem veateade, kui server ei toeta TLS 1.3 protokolli
+* Parandasime nutiseadme pööraamiset johtunud vead

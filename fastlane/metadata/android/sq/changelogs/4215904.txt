@@ -1,0 +1,2 @@
+* Përmirësim mesazhi gabimi për shërbyes që nuk mbulojnë TLS 1.3
+* Ndreqje problemesh me rrotullim pajisjeje

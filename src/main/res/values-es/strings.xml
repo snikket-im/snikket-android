@@ -1010,7 +1010,7 @@
     <string name="pref_category_application">Solicitud</string>
     <string name="pref_category_interaction">Interacción</string>
     <string name="pref_connection_summary">Nombre del host y puerto, Tor</string>
-    <string name="pref_connection_summary_w_cd">Nombre del host y puerto, Tor, descubrimiento de canales</string>
+    <string name="pref_connection_summary_w_cd">Nombre de host y puerto, Tor, P2P, Descarte de canales</string>
     <string name="pref_summary_security">Cifrado E2E, confianza ciega antes de la verificación, detección de MITM</string>
     <string name="pref_up_long_summary">Al actuar como un Distribuidor de UnifiedPush la conexión XMPP persistente, fiable y de bajo consumo de batería se utilizará para despertar a otras aplicaciones compatibles con UnifiedPush como Tusky, Ltt.rs, FluffyChat y más.</string>
     <string name="send_encrypted_message">Enviar mensaje cifrado</string>
@@ -1138,4 +1138,10 @@
     <string name="empty_conversations_list_hint">Una vez que inicies un chat, lo verás listado aquí</string>
     <string name="server_info_occupant_id">XEP-0421: Identificadores de ocupantes</string>
     <string name="server_info_moderated_message_retraction">XEP-0425: Retractación de Mensajes Moderados</string>
+    <string name="number_reactions_are_restricted">Límite de reacciones alcanzado.</string>
+    <string name="this_reaction_isnt_allowed">Reacción no permitida.</string>
+    <string name="enable_account_to_delete">Esta cuenta está desactivada. Actívala para eliminarla del servidor.</string>
+    <string name="peer_to_peer">P2P</string>
+    <string name="pref_use_relays">Utilizar siempre relés</string>
+    <string name="pref_use_relays_summary">Retransmite todas las conexiones P2P (llamadas y transferencias de archivos) a través de tu servidor para evitar revelar tu dirección IP.</string>
 </resources>

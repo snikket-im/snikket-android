@@ -6,8 +6,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.12.2'
-        classpath 'com.diffplug.spotless:spotless-plugin-gradle:7.2.1'
+        classpath 'com.android.tools.build:gradle:8.12.3'
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:8.0.0'
     }
 }
 
@@ -44,31 +44,31 @@ spotless {
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 
-    annotationProcessor 'org.immutables:value:2.11.3'
-    implementation 'org.immutables:value-annotations:2.11.3'
+    annotationProcessor 'org.immutables:value:2.11.6'
+    implementation 'org.immutables:value-annotations:2.11.6'
     annotationProcessor project(':libs:annotation-processor')
     implementation project(':libs:annotation')
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.concurrent:concurrent-futures:1.3.0'
     implementation 'androidx.documentfile:documentfile:1.1.0'
-    implementation 'androidx.emoji2:emoji2:1.5.0'
-    freeImplementation 'androidx.emoji2:emoji2-bundled:1.5.0'
-    implementation 'androidx.emoji2:emoji2-emojipicker:1.5.0'
+    implementation 'androidx.emoji2:emoji2:1.6.0'
+    freeImplementation 'androidx.emoji2:emoji2-bundled:1.6.0'
+    implementation 'androidx.emoji2:emoji2-emojipicker:1.6.0'
     implementation 'androidx.exifinterface:exifinterface:1.4.1'
-    implementation 'androidx.heifwriter:heifwriter:1.1.0-rc01'
+    implementation 'androidx.heifwriter:heifwriter:1.1.0'
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'androidx.sharetarget:sharetarget:1.2.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.viewpager:viewpager:1.1.0'
-    implementation 'androidx.work:work-runtime:2.10.3'
+    implementation 'androidx.work:work-runtime:2.11.0'
     implementation 'com.github.open-keychain.open-keychain:openpgp-api:v5.7.1'
     implementation 'com.google.android.material:material:1.13.0'
-    implementation 'com.google.guava:guava:33.4.8-android'
+    implementation 'com.google.guava:guava:33.5.0-android'
     implementation 'com.google.zxing:core:3.5.3'
     implementation 'com.leinardi.android:speed-dial:3.3.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
-    implementation 'com.squareup.okhttp3:okhttp:5.1.0'
+    implementation 'com.squareup.okhttp3:okhttp:5.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:3.0.0'
     implementation 'com.squareup.retrofit2:retrofit:3.0.0'
     implementation 'com.vanniktech:android-image-cropper:4.6.0'
@@ -76,7 +76,7 @@ dependencies {
     implementation 'io.deepmedia.community:transcoder-android:0.11.2'
     implementation 'me.drakeet.support:toastcompat:1.1.0'
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
-    implementation 'org.bouncycastle:bcmail-jdk18on:1.81'
+    implementation 'org.bouncycastle:bcmail-jdk18on:1.82'
     implementation 'org.conscrypt:conscrypt-android:2.5.3'
     implementation 'org.hsluv:hsluv:1.0'
     implementation 'org.jxmpp:jxmpp-jid:1.1.0'
@@ -86,14 +86,14 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.20'
     implementation 'org.whispersystems:signal-protocol-java:2.6.2'
     conversationsPlaystoreImplementation 'com.android.installreferrer:installreferrer:2.2'
-    playstoreImplementation('com.google.firebase:firebase-messaging:25.0.0') {
+    playstoreImplementation('com.google.firebase:firebase-messaging:25.0.1') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
 
     }
-    quicksyImplementation 'io.michaelrocks:libphonenumber-android:9.0.12'
-    quicksyPlaystoreImplementation 'com.google.android.gms:play-services-auth-api-phone:18.2.0'
+    quicksyImplementation 'io.michaelrocks:libphonenumber-android:9.0.17'
+    quicksyPlaystoreImplementation 'com.google.android.gms:play-services-auth-api-phone:18.3.0'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.robolectric:robolectric:4.16'
@@ -143,8 +143,8 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     flavorDimensions += "mode"

@@ -17,6 +17,8 @@ import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.xmpp.Jid;
 import java.security.SecureRandom;
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -26,6 +28,7 @@ public class AppSettings {
     public static final String KEEP_FOREGROUND_SERVICE = "enable_foreground_service";
     public static final String AWAY_WHEN_SCREEN_IS_OFF = "away_when_screen_off";
     public static final String TREAT_VIBRATE_AS_SILENT = "treat_vibrate_as_silent";
+    public static final String GRACE_PERIOD_LENGTH = "grace_period_length";
     public static final String DND_ON_SILENT_MODE = "dnd_on_silent_mode";
     public static final String MANUALLY_CHANGE_PRESENCE = "manually_change_presence";
     public static final String BLIND_TRUST_BEFORE_VERIFICATION = "btbv";
@@ -40,7 +43,7 @@ public class AppSettings {
     public static final String RINGTONE = "call_ringtone";
     public static final String DISPLAY_ENTER_KEY = "display_enter_key";
 
-    public static final String CONFIRM_MESSAGES = "confirm_messages";
+    public static final String READ_RECEIPTS = "confirm_messages";
     public static final String ALLOW_MESSAGE_CORRECTION = "allow_message_correction";
 
     public static final String TRUST_SYSTEM_CA_STORE = "trust_system_ca_store";
@@ -52,6 +55,7 @@ public class AppSettings {
     public static final String NOTIFICATION_LED = "led";
     public static final String SHOW_CONNECTION_OPTIONS = "show_connection_options";
     public static final String USE_TOR = "use_tor";
+    public static final String USE_RELAYS = "use_relays";
     public static final String CHANNEL_DISCOVERY_METHOD = "channel_discovery_method";
     public static final String SEND_CRASH_REPORTS = "send_crash_reports";
     public static final String COLORFUL_CHAT_BUBBLES = "use_green_background";
@@ -62,6 +66,7 @@ public class AppSettings {
     public static final String ALIGN_START = "align_start";
     public static final String BACKUP_LOCATION = "backup_location";
     public static final String AUTO_ACCEPT_FILE_SIZE = "auto_accept_file_size";
+    public static final String VIDEO_COMPRESSION = "video_compression";
 
     private static final String ACCEPT_INVITES_FROM_STRANGERS = "accept_invites_from_strangers";
     private static final String NOTIFICATIONS_FROM_STRANGERS = "notifications_from_strangers";
@@ -158,8 +163,8 @@ public class AppSettings {
         return getBooleanPreference(ALIGN_START, R.bool.align_start);
     }
 
-    public boolean isConfirmMessages() {
-        return getBooleanPreference(CONFIRM_MESSAGES, R.bool.confirm_messages);
+    public boolean isReadReceipts() {
+        return getBooleanPreference(READ_RECEIPTS, R.bool.confirm_messages);
     }
 
     public boolean isAllowMessageCorrection() {
@@ -195,6 +200,10 @@ public class AppSettings {
     public boolean isUseTor() {
         return QuickConversationsService.isConversations()
                 && getBooleanPreference(USE_TOR, R.bool.use_tor);
+    }
+
+    public boolean isUseRelays() {
+        return getBooleanPreference(USE_RELAYS, R.bool.use_relays);
     }
 
     public boolean isSendChatStates() {
@@ -237,6 +246,11 @@ public class AppSettings {
         } catch (final NumberFormatException e) {
             return defaultValue;
         }
+    }
+
+    public Duration getGracePeriodLength() {
+        final var length = getLongPreference(GRACE_PERIOD_LENGTH, R.integer.grace_period);
+        return Duration.ofSeconds(Math.max(length, 0));
     }
 
     public String getOmemo() {
@@ -328,6 +342,16 @@ public class AppSettings {
         final long autoAcceptFileSize =
                 getLongPreference(AUTO_ACCEPT_FILE_SIZE, R.integer.auto_accept_filesize);
         return autoAcceptFileSize <= 0 ? Optional.empty() : Optional.of(autoAcceptFileSize);
+    }
+
+    public String getVideoCompression() {
+        final var sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(
+                VIDEO_COMPRESSION, context.getResources().getString(R.string.video_compression));
+    }
+
+    public boolean isCompressVideo() {
+        return Arrays.asList("720", "360").contains(getVideoCompression());
     }
 
     public synchronized void resetInstallationId() {

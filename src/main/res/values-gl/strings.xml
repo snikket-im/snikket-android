@@ -1029,7 +1029,7 @@
     <string name="pref_title_trust_system_ca_store">Autoridades de certificación</string>
     <string name="pref_category_operating_system">Sistema operativo</string>
     <string name="pref_connection_summary">Servidor e Porto, Tor</string>
-    <string name="pref_connection_summary_w_cd">Servidor e Porto, Tor, Descubrimento de Canles</string>
+    <string name="pref_connection_summary_w_cd">Servidor e Porto, Tor, P2P, Descubrimento de Canles</string>
     <string name="pref_keyboard_options">Teclado</string>
     <string name="pref_category_application">Aplicación</string>
     <string name="pref_category_engagement_notifications">Notificacións de uso</string>
@@ -1144,4 +1144,10 @@
     <string name="server_info_occupant_id">XEP-0421: Identificadores de participantes</string>
     <string name="account_status_tls_error_protocol">Seguridade en tránsito feble (sen TLS 1.3)</string>
     <string name="account_status_tls_error_untrusted">Certificado sen verificar</string>
+    <string name="number_reactions_are_restricted">Acadouse o límite de reaccións.</string>
+    <string name="this_reaction_isnt_allowed">Esta reacción non está permitida.</string>
+    <string name="enable_account_to_delete">Esta conta está desactivada. Actívaa para borrala do servidor.</string>
+    <string name="peer_to_peer">entre-pares</string>
+    <string name="pref_use_relays">Usar sempre relés</string>
+    <string name="pref_use_relays_summary">Pasar todas as conexións P2P (chamadas e transferencia de ficheiros) polo teu servidor para evitar revelar o teu enderezo IP.</string>
 </resources>

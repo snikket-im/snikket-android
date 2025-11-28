@@ -1,18 +1,13 @@
 package de.gultsch.minidns;
 
 import android.util.Log;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
-
-
 import eu.siacs.conversations.Config;
-
-import org.conscrypt.OkHostnameVerifier;
-import org.minidns.dnsmessage.DnsMessage;
-
+import eu.siacs.conversations.persistance.FileBackend;
 import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -24,17 +19,14 @@ import java.net.SocketAddress;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import org.conscrypt.OkHostnameVerifier;
+import org.minidns.dnsmessage.DnsMessage;
 
 final class DNSSocket implements Closeable {
 
@@ -73,18 +65,21 @@ final class DNSSocket implements Closeable {
             evictInFlightQueries(new EOFException());
         } catch (final IOException e) {
             evictInFlightQueries(e);
+        } finally {
+            FileBackend.close(this.dataOutputStream);
+            FileBackend.close(this.dataInputStream);
+            FileBackend.close(socket);
+            evictInFlightQueries(new IllegalStateException("Removed dangling queries"));
+            Log.d(Config.LOGTAG, "shut down connection to " + socket.getInetAddress());
         }
     }
 
     private void evictInFlightQueries(final Exception e) {
         synchronized (inFlightQueries) {
-            final Iterator<Map.Entry<Integer, SettableFuture<DnsMessage>>> iterator =
-                    inFlightQueries.entrySet().iterator();
-            while (iterator.hasNext()) {
-                final Map.Entry<Integer, SettableFuture<DnsMessage>> entry = iterator.next();
-                entry.getValue().setException(e);
-                iterator.remove();
+            for (var future : this.inFlightQueries.values()) {
+                future.setException(e);
             }
+            this.inFlightQueries.clear();
         }
     }
 
@@ -130,7 +125,8 @@ final class DNSSocket implements Closeable {
             sslSocket.startHandshake();
             final SSLSession session = sslSocket.getSession();
             final Certificate[] peerCertificates = session.getPeerCertificates();
-            if (peerCertificates.length == 0 || !(peerCertificates[0] instanceof X509Certificate certificate)) {
+            if (peerCertificates.length == 0
+                    || !(peerCertificates[0] instanceof X509Certificate certificate)) {
                 throw new IOException("Peer did not provide X509 certificates");
             }
             if (!OkHostnameVerifier.strictInstance().verify(dnsServer.hostname, certificate)) {
@@ -140,35 +136,25 @@ final class DNSSocket implements Closeable {
         return DNSSocket.of(sslSocket);
     }
 
-    public DnsMessage query(final DnsMessage query) throws IOException, InterruptedException {
+    public ListenableFuture<DnsMessage> queryAsync(final DnsMessage query) {
         try {
-            return queryAsync(query).get(QUERY_TIMEOUT, TimeUnit.MILLISECONDS);
-        } catch (final ExecutionException e) {
-            final Throwable cause = e.getCause();
-            if (cause instanceof IOException) {
-                throw (IOException) cause;
-            } else {
-                throw new IOException(e);
+            this.semaphore.acquire();
+        } catch (InterruptedException e) {
+            return Futures.immediateFailedFuture(e);
+        }
+        try {
+            final SettableFuture<DnsMessage> responseFuture = SettableFuture.create();
+            synchronized (this.inFlightQueries) {
+                this.inFlightQueries.put(query.id, responseFuture);
             }
-        } catch (final TimeoutException e) {
-            throw new IOException(e);
-        }
-    }
-
-    public ListenableFuture<DnsMessage> queryAsync(final DnsMessage query)
-            throws InterruptedException, IOException {
-        final SettableFuture<DnsMessage> responseFuture = SettableFuture.create();
-        synchronized (this.inFlightQueries) {
-            this.inFlightQueries.put(query.id, responseFuture);
-        }
-        this.semaphore.acquire();
-        try {
             query.writeTo(this.dataOutputStream);
             this.dataOutputStream.flush();
+            return responseFuture;
+        } catch (final IOException e) {
+            return Futures.immediateFailedFuture(e);
         } finally {
             this.semaphore.release();
         }
-        return responseFuture;
     }
 
     private DnsMessage readDNSMessage() throws IOException {

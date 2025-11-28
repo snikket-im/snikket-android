@@ -18,6 +18,7 @@ public final class Namespace {
     public static final String CAPTCHA = "urn:xmpp:captcha";
     public static final String DELIVERY_RECEIPTS = "urn:xmpp:receipts";
     public static final String REACTIONS = "urn:xmpp:reactions:0";
+    public static final String REACTIONS_RESTRICTIONS = REACTIONS + ":restrictions";
     public static final String VCARD_TEMP = "vcard-temp";
     public static final String VCARD_TEMP_UPDATE = "vcard-temp:x:update";
     public static final String DIRECT_MUC_INVITATIONS = "jabber:x:conference";

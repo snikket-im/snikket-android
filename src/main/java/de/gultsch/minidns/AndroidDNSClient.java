@@ -8,18 +8,26 @@ import android.os.Build;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.collection.LruCache;
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.Config;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import org.minidns.AbstractDnsClient;
 import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.dnsmessage.Question;
 import org.minidns.dnsqueryresult.DnsQueryResult;
 import org.minidns.dnsqueryresult.StandardDnsQueryResult;
 import org.minidns.record.Data;
@@ -29,6 +37,9 @@ public class AndroidDNSClient extends AbstractDnsClient {
 
     private static final long DNS_MAX_TTL = 86_400L;
 
+    private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE =
+            Executors.newSingleThreadScheduledExecutor();
+
     private static final LruCache<QuestionServerTuple, DnsMessage> QUERY_CACHE =
             new LruCache<>(1024);
     private final Context context;
@@ -37,7 +48,6 @@ public class AndroidDNSClient extends AbstractDnsClient {
 
     public AndroidDNSClient(final Context context) {
         super();
-        this.setDataSource(networkDataSource);
         this.context = context;
     }
 
@@ -68,30 +78,91 @@ public class AndroidDNSClient extends AbstractDnsClient {
 
     @Override
     protected DnsQueryResult query(final DnsMessage.Builder queryBuilder) throws IOException {
+        throw new IOException("Not implemented");
+    }
+
+    public ListenableFuture<DnsQueryResult> queryAsFuture(final Question q) {
+        final DnsMessage.Builder query = buildMessage(q);
+        return queryAsFuture(query);
+    }
+
+    protected ListenableFuture<DnsQueryResult> queryAsFuture(
+            final DnsMessage.Builder queryBuilder) {
+        final var dnsServers = getDNSServers();
         final DnsMessage question = newQuestion(queryBuilder).build();
-        for (final DNSServer dnsServer : getDNSServers()) {
-            final QuestionServerTuple cacheKey = new QuestionServerTuple(dnsServer, question);
-            final DnsMessage cachedResponse = queryCache(cacheKey);
-            if (cachedResponse != null) {
-                return new CachedDnsQueryResult(question, cachedResponse);
-            }
-            final DnsQueryResult result = this.networkDataSource.query(question, dnsServer);
-            final var response = result.response;
-            if (response == null) {
-                continue;
-            }
-            switch (response.responseCode) {
-                case NO_ERROR:
-                case NX_DOMAIN:
-                    break;
-                default:
-                    continue;
-            }
-            cacheQuery(cacheKey, response);
-            return new StandardDnsQueryResult(
-                    dnsServer.inetAddress, dnsServer.port, result.queryMethod, question, response);
+        final var rawFuture = queryAsFuture(question, new LinkedList<>(dnsServers));
+        // allow for enough time to hit 2 servers over UDP and TCP one after another
+        return Futures.withTimeout(
+                rawFuture,
+                Math.round(DNSSocket.QUERY_TIMEOUT * 4.2f),
+                TimeUnit.MILLISECONDS,
+                SCHEDULED_EXECUTOR_SERVICE);
+    }
+
+    protected ListenableFuture<DnsQueryResult> queryAsFuture(
+            final DnsMessage question, final Queue<DNSServer> dnsServers) {
+        if (dnsServers.isEmpty()) {
+            return Futures.immediateFailedFuture(
+                    new IllegalStateException("Tried all DNS servers"));
         }
-        return null;
+        final var dnsServer = dnsServers.poll();
+        if (dnsServer == null) {
+            return Futures.immediateFailedFuture(new IllegalStateException("DNS Server was null"));
+        }
+        final QuestionServerTuple cacheKey = new QuestionServerTuple(dnsServer, question);
+        final DnsMessage cachedResponse = queryCache(cacheKey);
+        if (cachedResponse != null) {
+            return Futures.immediateFuture(new CachedDnsQueryResult(question, cachedResponse));
+        }
+        final var future = this.networkDataSource.query(question, dnsServer);
+        final var transformedFuture =
+                Futures.transform(
+                        future,
+                        result -> {
+                            if (result == null || result.response == null) {
+                                throw new IllegalStateException("Result or response was null");
+                            }
+                            final var response = result.response;
+                            if (response.responseCode == DnsMessage.RESPONSE_CODE.NO_ERROR
+                                    || response.responseCode
+                                            == DnsMessage.RESPONSE_CODE.NX_DOMAIN) {
+                                return new StandardDnsQueryResult(
+                                        dnsServer.inetAddress,
+                                        dnsServer.port,
+                                        result.queryMethod,
+                                        question,
+                                        response);
+                            }
+                            throw new IllegalStateException("Received error response code");
+                        },
+                        MoreExecutors.directExecutor());
+
+        final var caughtFuture =
+                Futures.catchingAsync(
+                        transformedFuture,
+                        Throwable.class,
+                        t -> {
+                            if (dnsServers.isEmpty()) {
+                                return Futures.immediateFailedFuture(t);
+                            }
+                            return queryAsFuture(question, dnsServers);
+                        },
+                        MoreExecutors.directExecutor());
+
+        return Futures.transform(
+                caughtFuture,
+                qr -> {
+                    cacheQuery(cacheKey, qr.response);
+                    return qr;
+                },
+                MoreExecutors.directExecutor());
+    }
+
+    final DnsMessage.Builder buildMessage(final Question question) {
+        final DnsMessage.Builder message = DnsMessage.builder();
+        message.setQuestion(question);
+        message.setId(random.nextInt());
+        return newQuestion(message);
     }
 
     public boolean isAskForDnssec() {
@@ -201,27 +272,10 @@ public class AndroidDNSClient extends AbstractDnsClient {
         return expiresAt(dnsMessage) - System.currentTimeMillis();
     }
 
-    private static class QuestionServerTuple {
-        private final DNSServer dnsServer;
-        private final DnsMessage question;
-
+    private record QuestionServerTuple(DNSServer dnsServer, DnsMessage question) {
         private QuestionServerTuple(final DNSServer dnsServer, final DnsMessage question) {
             this.dnsServer = dnsServer;
             this.question = question.asNormalizedVersion();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            QuestionServerTuple that = (QuestionServerTuple) o;
-            return Objects.equal(dnsServer, that.dnsServer)
-                    && Objects.equal(question, that.question);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(dnsServer, question);
         }
     }
 

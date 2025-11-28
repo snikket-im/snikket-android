@@ -13,6 +13,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -212,10 +213,12 @@ public class WebRTCDataChannelTransport implements Transport {
         this.peerConnectionFactory = PeerConnectionFactory.builder().createPeerConnectionFactory();
         this.xmppConnection = xmppConnection;
         this.account = account;
+        final var appSettings = new AppSettings(context);
         this.peerConnectionFuture =
                 Futures.transform(
                         getIceServers(),
-                        iceServers -> createPeerConnection(iceServers, true),
+                        iceServers ->
+                                createPeerConnection(iceServers, true, appSettings.isUseRelays()),
                         MoreExecutors.directExecutor());
         if (initiator) {
             this.localDescriptionFuture = setLocalDescription();
@@ -237,8 +240,11 @@ public class WebRTCDataChannelTransport implements Transport {
     }
 
     private PeerConnection createPeerConnection(
-            final Collection<PeerConnection.IceServer> iceServers, final boolean trickle) {
-        final PeerConnection.RTCConfiguration rtcConfig = buildConfiguration(iceServers, trickle);
+            final Collection<PeerConnection.IceServer> iceServers,
+            final boolean trickle,
+            final boolean useRelays) {
+        final PeerConnection.RTCConfiguration rtcConfig =
+                buildConfiguration(iceServers, trickle, useRelays);
         final PeerConnection peerConnection =
                 requirePeerConnectionFactory()
                         .createPeerConnection(rtcConfig, peerConnectionObserver);

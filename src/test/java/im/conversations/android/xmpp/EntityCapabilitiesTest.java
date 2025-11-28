@@ -32,7 +32,8 @@ public class EntityCapabilitiesTest {
                     <feature var='http://jabber.org/protocol/disco#items'/>
                     <feature var='http://jabber.org/protocol/disco#info'/>
                     <feature var='http://jabber.org/protocol/muc'/>
-                  </query>""";
+                  </query>\
+                """;
         final Element element = XmlElementReader.read(xml);
         assertThat(element, instanceOf(InfoQuery.class));
         final InfoQuery info = (InfoQuery) element;
@@ -73,7 +74,8 @@ public class EntityCapabilitiesTest {
                         <value>0.11</value>
                       </field>
                     </x>
-                  </query>""";
+                  </query>\
+                """;
         final Element element = XmlElementReader.read(xml.getBytes(StandardCharsets.UTF_8));
         assertThat(element, instanceOf(InfoQuery.class));
         final InfoQuery info = (InfoQuery) element;
@@ -98,7 +100,8 @@ public class EntityCapabilitiesTest {
                         <value>Something</value>
                       </field>
                     </x>
-                  </query>""";
+                  </query>\
+                """;
         final Element element = XmlElementReader.read(xml.getBytes(StandardCharsets.UTF_8));
         assertThat(element, instanceOf(InfoQuery.class));
         final InfoQuery info = (InfoQuery) element;
@@ -117,7 +120,8 @@ public class EntityCapabilitiesTest {
                         <value>b</value>
                       </field>
                     </x>
-                  </query>""";
+                  </query>\
+                """;
         final Element element = XmlElementReader.read(xml.getBytes(StandardCharsets.UTF_8));
         assertThat(element, instanceOf(InfoQuery.class));
         final InfoQuery info = (InfoQuery) element;
@@ -131,7 +135,7 @@ public class EntityCapabilitiesTest {
     @Test
     public void entityCapsOpenFireTestServer() throws IOException {
         final String xml =
-                """
+"""
 <iq type="result" id="779-6" to="jane@example.org" xmlns="jabber:client">
   <query xmlns="http://jabber.org/protocol/disco#info">
     <identity category="server" name="Openfire Server" type="im"/>
@@ -249,7 +253,8 @@ public class EntityCapabilitiesTest {
                   <feature var="urn:xmpp:receipts"/>
                   <feature var="jabber:iq:roster"/>
                   <feature var="jabber:iq:last"/>
-                </query>""";
+                </query>\
+                """;
         final Element element = XmlElementReader.read(xml.getBytes(StandardCharsets.UTF_8));
         assertThat(element, instanceOf(InfoQuery.class));
         final InfoQuery info = (InfoQuery) element;
@@ -323,7 +328,8 @@ public class EntityCapabilitiesTest {
                       <value>XP</value>
                     </field>
                   </x>
-                </query>""";
+                </query>\
+                """;
         final Element element = XmlElementReader.read(xml.getBytes(StandardCharsets.UTF_8));
         assertThat(element, instanceOf(InfoQuery.class));
         final InfoQuery info = (InfoQuery) element;

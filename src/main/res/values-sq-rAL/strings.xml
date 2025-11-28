@@ -71,7 +71,7 @@
     <string name="send_message">Dërgoni mesazh</string>
     <string name="send_message_to_x">Dërgoje mesazhin për %s</string>
     <string name="send_omemo_x509_message">Dërgoni një mesazh të fshehtëzuar me v\\OMEMO</string>
-    <string name="your_nick_has_been_changed">Nofkë e re në përdorim</string>
+    <string name="your_nick_has_been_changed">Nofka juaj është ndryshuar</string>
     <string name="send_unencrypted">Dërgo tekst të lexueshëm</string>
     <string name="install">Instaloje</string>
     <string name="openkeychain_not_installed">Ju lutemi, instaloni OpenKeychain</string>
@@ -424,7 +424,7 @@
     <string name="gp_short">E shkurtër</string>
     <string name="gp_medium">Mesatare</string>
     <string name="gp_long">E gjatë</string>
-    <string name="pref_broadcast_last_activity">Parë së fundi</string>
+    <string name="pref_broadcast_last_activity">Shfaq të parin së fundi</string>
     <string name="pref_privacy">Privatësi</string>
     <string name="pref_theme_options">Temë</string>
     <string name="pref_theme_options_summary">Përzgjidhni paletën e ngjyrave</string>
@@ -903,7 +903,7 @@
     <string name="battery_optimizations_enabled_explained">Pajisja juaj përdor optimizime shumë të thella baterie për %1$s, çka mund të shpjerë në vonesa njoftimesh, ose madje edhe humbje mesazhesh.
 \nRekomandohet të çaktivizohen ato.</string>
     <string name="device_does_not_support_battery_op">Pajisja juaj nuk mbulon zgjedhjen e lënies jashtë nga optimizim baterie</string>
-    <string name="pref_broadcast_last_activity_summary">Lërini kontaktet tuaj të shohin se kur e përdorët aplikacionin herën e fundit</string>
+    <string name="pref_broadcast_last_activity_summary">Lërini kontaktet tuaj të shohin kohën kur qetë aktiv së fundi në aplikacion</string>
     <string name="pref_delete_omemo_identities_summary">Riprodhoni kyçet tuaj OMEMO. Krejt kontakteve tuaj do t’ju duhet t’ju verifikojnë sërish. Këtë përdoreni si zgjidhjen e fundit.</string>
     <string name="error_publish_avatar_offline">Që të bëni publik avatarin tuaj, duhet të jeni i lidhur.</string>
     <string name="data_saver_enabled">Kursyesi i të dhënave u aktivizua</string>
@@ -1054,7 +1054,7 @@
     <string name="pref_category_operating_system">Sistem Operativ</string>
     <string name="pref_privacy_summary">Njoftime shtypjeje, Parë Së Fundi, I lirë/I zënë</string>
     <string name="pref_connection_summary">Strehëemër &amp; Portë, Tor</string>
-    <string name="pref_connection_summary_w_cd">Strehëemër &amp; Portë, Tor, Pikazje Kanalesh</string>
+    <string name="pref_connection_summary_w_cd">Strehëemër &amp; Portë, Tor, P2P, Pikasje Kanalesh</string>
     <string name="pref_keyboard_options">Tastierë</string>
     <string name="pref_category_engagement_notifications">Njoftime angazhimi</string>
     <string name="pref_category_application">Aplikacion</string>
@@ -1129,4 +1129,31 @@
     <string name="save_to_contact">Ruaje te Kontaktet</string>
     <string name="show_in_contacts">Shfaqe te Kontakte</string>
     <string name="no_contacts_permission">%1$s ka nevojë për hyrje te kontaktet tuaja</string>
+    <string name="account_status_tls_error_protocol">Siguri e dobët transporti (S’ka TLS 1.3)</string>
+    <string name="account_status_tls_error_untrusted">Dëshmi jo e besueshme</string>
+    <string name="server_info_moderated_message_retraction">XEP-0425: Tërheqje e Moderuar Mesazhesh</string>
+    <string name="download_failed_could_not_establish_tls">S’u vendos dot lidhje TLS</string>
+    <plurals name="x_participants">
+        <item quantity="one">%1$d Pjesëmarrës</item>
+        <item quantity="other">%1$d Pjesëmarrës</item>
+    </plurals>
+    <string name="pref_account_avatar">Llogari</string>
+    <string name="pref_account_avatar_summary">Shfaq avatarë llogarish te mesazhe që dërgohen, për identifikim dhe administrim të kollajtë.</string>
+    <string name="pref_category_avatars">Avatarë</string>
+    <string name="pref_show_11_chats">Fjalosje 1:1</string>
+    <string name="pref_show_11_chats_summary">Shfaqi avatarët në fjalosje 1:1. (Avatarët në fjalosje grupesh do të shfaqen përherë.)</string>
+    <string name="pref_show_11_sender_chats_summary">Shfaqi avatarët në fjalosje 1:1 te mesazhe të marrë. (Avatarët në fjalosje grupesh do të shfaqen përherë.)</string>
+    <string name="moderate_delete_dot_dot_dot">Fshijeni si moderator…</string>
+    <string name="moderate_delete">Fshijeni si moderator</string>
+    <string name="could_not_moderate_message">S’u moderua dot mesazhi</string>
+    <string name="delete_message">Fshije mesazhin</string>
+    <string name="moderation_explained">Ky mesazh do të fshihet për ju dhe këdo pjesëmarrës të këtij kanali publik.</string>
+    <string name="do_not_show_this_warning_again">Mos e shfaq më këtë sinjalizim.</string>
+    <string name="last_seen">parë së fundi më %s</string>
+    <string name="strong_transport_security">Sigurie e fuqishme transporti</string>
+    <string name="require_tls_v1_3">Kërko Doemos Protokoll “Transport Layer Security” (TLS) Version 1.3 për krejt lidhjet</string>
+    <string name="empty_conversations_list_hint">Pasi filloni një bisedë të re, do ta shihni të shfaqet këtu</string>
+    <string name="number_reactions_are_restricted">U mbërrit në kufij reagimesh.</string>
+    <string name="this_reaction_isnt_allowed">Ky reagim s’lejohet.</string>
+    <string name="enable_account_to_delete">Kjo llogari është çaktivizuar. Që ta fshihni nga shërbyesi, aktivizojeni.</string>
 </resources>

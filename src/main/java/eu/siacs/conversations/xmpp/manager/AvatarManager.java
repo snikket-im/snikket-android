@@ -432,6 +432,19 @@ public class AvatarManager extends AbstractManager {
         }
     }
 
+    private static Info pick(final Collection<Info> infos) {
+        final var supported =
+                Collections2.filter(
+                        infos,
+                        i ->
+                                Objects.nonNull(i.getId())
+                                        && i.getBytes() > 0
+                                        && i.getHeight() > 0
+                                        && i.getWidth() > 0
+                                        && SUPPORTED_CONTENT_TYPES.contains(i.getType()));
+        return Iterables.getFirst(AVATAR_ORDERING.sortedCopy(supported), null);
+    }
+
     public void handleDelete(final Jid from) {
         Preconditions.checkArgument(
                 from.isBareJid(), "node deletion can only be triggered from bare JIDs");
@@ -724,13 +737,30 @@ public class AvatarManager extends AbstractManager {
         final var future =
                 getManager(PepManager.class)
                         .publish(avatarData, mainAvatarInfo.getId(), configuration);
-        return Futures.transformAsync(
-                future,
+        final var metadataFuture =
+                Futures.transformAsync(
+                        future,
+                        v -> {
+                            final var id = mainAvatarInfo.getId();
+                            final var metadata = new Metadata();
+                            metadata.addExtensions(avatars);
+                            return getManager(PepManager.class)
+                                    .publish(metadata, id, configuration);
+                        },
+                        MoreExecutors.directExecutor());
+        return Futures.transform(
+                metadataFuture,
                 v -> {
-                    final var id = mainAvatarInfo.getId();
-                    final var metadata = new Metadata();
-                    metadata.addExtensions(avatars);
-                    return getManager(PepManager.class).publish(metadata, id, configuration);
+                    final var pick = pick(avatars);
+                    if (pick == null) {
+                        return null;
+                    }
+                    final var cache = FileBackend.getAvatarFile(context, pick.getId());
+                    if (cache.exists()) {
+                        Log.d(Config.LOGTAG, "set local avatar to " + pick.getId());
+                        setAvatarInfo(getAccount().getJid().asBareJid(), pick);
+                    }
+                    return null;
                 },
                 MoreExecutors.directExecutor());
     }

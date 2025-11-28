@@ -14,6 +14,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.manager.BlockingManager;
 import eu.siacs.conversations.xmpp.manager.DiscoManager;
 import eu.siacs.conversations.xmpp.manager.EntityTimeManager;
+import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
 import eu.siacs.conversations.xmpp.manager.PingManager;
 import eu.siacs.conversations.xmpp.manager.RosterManager;
 import eu.siacs.conversations.xmpp.manager.UnifiedPushManager;
@@ -21,8 +22,8 @@ import im.conversations.android.xmpp.model.blocking.Block;
 import im.conversations.android.xmpp.model.blocking.Unblock;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import im.conversations.android.xmpp.model.error.Condition;
-import im.conversations.android.xmpp.model.error.Error;
 import im.conversations.android.xmpp.model.ibb.InBandByteStream;
+import im.conversations.android.xmpp.model.jingle.Jingle;
 import im.conversations.android.xmpp.model.ping.Ping;
 import im.conversations.android.xmpp.model.roster.Query;
 import im.conversations.android.xmpp.model.stanza.Iq;
@@ -319,36 +320,49 @@ public class IqParser extends AbstractParser implements Consumer<Iq> {
     }
 
     private void acceptPush(final Iq packet) {
-        if (packet.hasExtension(Query.class)) {
+        // there is rarely a good reason to respond to IQs from MUCs
+        if (getManager(MultiUserChatManager.class).isMuc(packet)) {
+            this.connection.sendErrorFor(packet, new Condition.ServiceUnavailable());
+            return;
+        }
+        final var jingleConnectionManager =
+                this.mXmppConnectionService.getJingleConnectionManager();
+        if (packet.hasExtension(Jingle.class)) {
+            jingleConnectionManager.deliverPacket(getAccount(), packet);
+        } else if (packet.hasExtension(Query.class)) {
             this.getManager(RosterManager.class).push(packet);
         } else if (packet.hasExtension(Block.class)) {
             this.getManager(BlockingManager.class).pushBlock(packet);
         } else if (packet.hasExtension(Unblock.class)) {
             this.getManager(BlockingManager.class).pushUnblock(packet);
         } else if (packet.hasExtension(InBandByteStream.class)) {
-            mXmppConnectionService
-                    .getJingleConnectionManager()
-                    .deliverIbbPacket(getAccount(), packet);
+            jingleConnectionManager.deliverIbbPacket(getAccount(), packet);
         } else if (packet.hasExtension(Push.class)) {
             this.getManager(UnifiedPushManager.class).push(packet);
         } else {
-            this.connection.sendErrorFor(
-                    packet, Error.Type.CANCEL, new Condition.FeatureNotImplemented());
+            this.connection.sendErrorFor(packet, new Condition.FeatureNotImplemented());
         }
     }
 
     private void acceptRequest(final Iq packet) {
-        if (packet.hasExtension(InfoQuery.class)) {
+        // responding to pings in MUCs is fine. this does not reveal more info than responding with
+        // service unavailable
+        if (packet.hasExtension(Ping.class)) {
+            this.getManager(PingManager.class).pong(packet);
+            return;
+        }
+
+        // there is rarely a good reason to respond to IQs from MUCs
+        if (getManager(MultiUserChatManager.class).isMuc(packet)) {
+            this.connection.sendErrorFor(packet, new Condition.ServiceUnavailable());
+        } else if (packet.hasExtension(InfoQuery.class)) {
             this.getManager(DiscoManager.class).handleInfoQuery(packet);
         } else if (packet.hasExtension(Version.class)) {
             this.getManager(DiscoManager.class).handleVersionRequest(packet);
         } else if (packet.hasExtension(Time.class)) {
             this.getManager(EntityTimeManager.class).request(packet);
-        } else if (packet.hasExtension(Ping.class)) {
-            this.getManager(PingManager.class).pong(packet);
         } else {
-            this.connection.sendErrorFor(
-                    packet, Error.Type.CANCEL, new Condition.FeatureNotImplemented());
+            this.connection.sendErrorFor(packet, new Condition.FeatureNotImplemented());
         }
     }
 }

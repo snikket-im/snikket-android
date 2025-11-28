@@ -20,7 +20,6 @@ import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.manager.BookmarkManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
@@ -78,8 +77,6 @@ public class Conversation extends AbstractEntity
     private final JSONObject attributes;
     private Jid nextCounterpart;
     private boolean messagesLeftOnServer = true;
-    private ChatState mOutgoingChatState = Config.DEFAULT_CHAT_STATE;
-    private ChatState mIncomingChatState = Config.DEFAULT_CHAT_STATE;
     private String mFirstMamReference = null;
     private String displayState = null;
 
@@ -349,33 +346,6 @@ public class Conversation extends AbstractEntity
         synchronized (this.messages) {
             this.messages.clear();
         }
-    }
-
-    public boolean setIncomingChatState(ChatState state) {
-        if (this.mIncomingChatState == state) {
-            return false;
-        }
-        this.mIncomingChatState = state;
-        return true;
-    }
-
-    public ChatState getIncomingChatState() {
-        return this.mIncomingChatState;
-    }
-
-    public boolean setOutgoingChatState(ChatState state) {
-        if (mode == MODE_SINGLE && !getContact().isSelf()
-                || (isPrivateAndNonAnonymous() && getNextCounterpart() == null)) {
-            if (this.mOutgoingChatState != state) {
-                this.mOutgoingChatState = state;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public ChatState getOutgoingChatState() {
-        return this.mOutgoingChatState;
     }
 
     public void trim() {

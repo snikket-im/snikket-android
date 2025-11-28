@@ -12,13 +12,10 @@ package de.gultsch.minidns;
 
 import java.util.Collections;
 import java.util.Set;
-
-import org.minidns.MiniDnsException;
-import org.minidns.MiniDnsException.NullResultException;
 import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.dnsmessage.DnsMessage.RESPONSE_CODE;
 import org.minidns.dnsmessage.Question;
 import org.minidns.dnsqueryresult.DnsQueryResult;
-import org.minidns.dnsmessage.DnsMessage.RESPONSE_CODE;
 import org.minidns.dnssec.DnssecResultNotAuthenticException;
 import org.minidns.dnssec.DnssecUnverifiedReason;
 import org.minidns.record.Data;
@@ -33,11 +30,10 @@ public class ResolverResult<D extends Data> {
     protected final DnsMessage answer;
     protected final DnsQueryResult result;
 
-    public ResolverResult(Question question, DnsQueryResult result, Set<DnssecUnverifiedReason> unverifiedReasons) throws NullResultException {
-        // TODO: Is this null check still needed?
-        if (result == null) {
-            throw new MiniDnsException.NullResultException(question.asMessageBuilder().build());
-        }
+    public ResolverResult(
+            final Question question,
+            final DnsQueryResult result,
+            final Set<DnssecUnverifiedReason> unverifiedReasons) {
 
         this.result = result;
 
@@ -99,7 +95,8 @@ public class ResolverResult<D extends Data> {
     }
 
     public void throwIfErrorResponse() throws ResolutionUnsuccessfulException {
-        ResolutionUnsuccessfulException resolutionUnsuccessfulException = getResolutionUnsuccessfulException();
+        ResolutionUnsuccessfulException resolutionUnsuccessfulException =
+                getResolutionUnsuccessfulException();
         if (resolutionUnsuccessfulException != null) throw resolutionUnsuccessfulException;
     }
 
@@ -109,7 +106,8 @@ public class ResolverResult<D extends Data> {
         if (wasSuccessful()) return null;
 
         if (resolutionUnsuccessfulException == null) {
-            resolutionUnsuccessfulException = new ResolutionUnsuccessfulException(question, responseCode);
+            resolutionUnsuccessfulException =
+                    new ResolutionUnsuccessfulException(question, responseCode);
         }
 
         return resolutionUnsuccessfulException;
@@ -118,20 +116,20 @@ public class ResolverResult<D extends Data> {
     private DnssecResultNotAuthenticException dnssecResultNotAuthenticException;
 
     public DnssecResultNotAuthenticException getDnssecResultNotAuthenticException() {
-        if (!wasSuccessful())
-            return null;
-        if (isAuthenticData)
-            return null;
+        if (!wasSuccessful()) return null;
+        if (isAuthenticData) return null;
 
         if (dnssecResultNotAuthenticException == null) {
-            dnssecResultNotAuthenticException = DnssecResultNotAuthenticException.from(getUnverifiedReasons());
+            dnssecResultNotAuthenticException =
+                    DnssecResultNotAuthenticException.from(getUnverifiedReasons());
         }
 
         return dnssecResultNotAuthenticException;
     }
 
     /**
-     * Get the raw answer DNS message we received. <b>This is likely not what you want</b>, try {@link #getAnswers()} instead.
+     * Get the raw answer DNS message we received. <b>This is likely not what you want</b>, try
+     * {@link #getAnswers()} instead.
      *
      * @return the raw answer DNS Message.
      * @see #getAnswers()
@@ -148,9 +146,14 @@ public class ResolverResult<D extends Data> {
     public final String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(getClass().getName()).append('\n')
-               .append("Question: ").append(question).append('\n')
-               .append("Response Code: ").append(responseCode).append('\n');
+        sb.append(getClass().getName())
+                .append('\n')
+                .append("Question: ")
+                .append(question)
+                .append('\n')
+                .append("Response Code: ")
+                .append(responseCode)
+                .append('\n');
 
         if (responseCode == RESPONSE_CODE.NO_ERROR) {
             if (isAuthenticData) {
@@ -170,9 +173,11 @@ public class ResolverResult<D extends Data> {
     }
 
     protected void throwIseIfErrorResponse() {
-        ResolutionUnsuccessfulException resolutionUnsuccessfulException = getResolutionUnsuccessfulException();
+        ResolutionUnsuccessfulException resolutionUnsuccessfulException =
+                getResolutionUnsuccessfulException();
         if (resolutionUnsuccessfulException != null)
-            throw new IllegalStateException("Can not perform operation because the DNS resolution was unsuccessful",
+            throw new IllegalStateException(
+                    "Can not perform operation because the DNS resolution was unsuccessful",
                     resolutionUnsuccessfulException);
     }
 }

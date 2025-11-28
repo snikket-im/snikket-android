@@ -22,6 +22,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
+import eu.siacs.conversations.AppSettings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -40,12 +41,16 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
-import eu.siacs.conversations.xmpp.jingle.stanzas.Proceed;
-import eu.siacs.conversations.xmpp.jingle.stanzas.Propose;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 import eu.siacs.conversations.xmpp.manager.ExternalServiceDiscoveryManager;
 import im.conversations.android.xmpp.model.jingle.Jingle;
+import im.conversations.android.xmpp.model.jmi.Accept;
+import im.conversations.android.xmpp.model.jmi.JingleMessage;
+import im.conversations.android.xmpp.model.jmi.Proceed;
+import im.conversations.android.xmpp.model.jmi.Propose;
+import im.conversations.android.xmpp.model.jmi.Reject;
+import im.conversations.android.xmpp.model.jmi.Retract;
 import im.conversations.android.xmpp.model.stanza.Iq;
 import org.webrtc.DtmfSender;
 import java.util.Arrays;
@@ -1494,7 +1499,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     synchronized void deliveryMessage(
             final Jid from,
-            final Element message,
+            final JingleMessage message,
             final String serverMessageId,
             final long timestamp) {
         Log.d(
@@ -1502,14 +1507,15 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 id.account.getJid().asBareJid()
                         + ": delivered message to JingleRtpConnection "
                         + message);
-        switch (message.getName()) {
-            case "propose" ->
-                    receivePropose(from, Propose.upgrade(message), serverMessageId, timestamp);
-            case "proceed" ->
-                    receiveProceed(from, Proceed.upgrade(message), serverMessageId, timestamp);
-            case "retract" -> receiveRetract(from, serverMessageId, timestamp);
-            case "reject" -> receiveReject(from, serverMessageId, timestamp);
-            case "accept" -> receiveAccept(from, serverMessageId, timestamp);
+        switch (message) {
+            case Propose p -> receivePropose(from, p, serverMessageId, timestamp);
+            case Proceed p -> receiveProceed(from, p, serverMessageId, timestamp);
+            case Retract ignored -> receiveRetract(from, serverMessageId, timestamp);
+            case Reject ignored -> receiveReject(from, serverMessageId, timestamp);
+            case Accept ignored -> receiveAccept(from, serverMessageId, timestamp);
+            default -> {
+                Log.d(Config.LOGTAG, "received unhandled JMI: " + message);
+            }
         }
     }
 
@@ -1633,7 +1639,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void receivePropose(
-            final Jid from, final Propose propose, final String serverMsgId, final long timestamp) {
+            final Jid from,
+            final im.conversations.android.xmpp.model.jmi.Propose propose,
+            final String serverMsgId,
+            final long timestamp) {
         final boolean originatedFromMyself =
                 from.asBareJid().equals(id.account.getJid().asBareJid());
         if (originatedFromMyself) {
@@ -2140,8 +2149,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
             case RETRACTED, RETRACTED_RACED, TERMINATED_CANCEL_OR_TIMEOUT ->
                     this.callIntegration.retracted();
             case TERMINATED_CONNECTIVITY_ERROR,
-                            TERMINATED_APPLICATION_FAILURE,
-                            TERMINATED_SECURITY_ERROR ->
+                    TERMINATED_APPLICATION_FAILURE,
+                    TERMINATED_SECURITY_ERROR ->
                     this.callIntegration.error();
             default ->
                     throw new IllegalStateException(String.format("%s is not handled", this.state));
@@ -2336,7 +2345,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
             throws WebRTCWrapper.InitializationException {
         this.jingleConnectionManager.ensureConnectionIsRegistered(this);
         this.webRTCWrapper.setup(this.xmppConnectionService);
-        this.webRTCWrapper.initializePeerConnection(media, iceServers, trickle);
+        final var appSettings = new AppSettings(xmppConnectionService.getApplicationContext());
+        this.webRTCWrapper.initializePeerConnection(
+                media, iceServers, trickle, appSettings.isUseRelays());
         // this.webRTCWrapper.setMicrophoneEnabledOrThrow(callIntegration.isMicrophoneEnabled());
         this.webRTCWrapper.setMicrophoneEnabledOrThrow(true);
     }

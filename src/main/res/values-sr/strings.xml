@@ -389,7 +389,7 @@
     <string name="channel_options">Подешавања јавног канала</string>
     <string name="members_only">Приватно, само чланови</string>
     <string name="non_anonymous">Учини XMPP адресе видљиве свима</string>
-    <string name="moderated">Учини канал модерисаним</string>
+    <string name="moderated">Учини канал уређеним</string>
     <string name="you_are_not_participating">Не учествујеш</string>
     <string name="modified_conference_options">Опције групне преписке измењене!</string>
     <string name="could_not_modify_conference_options">Није могуће изменити опције групне преписке</string>
@@ -1097,7 +1097,7 @@
     <string name="pref_up_long_summary">Када ради као UnifiedPush дистрибутер, трајна, поуздана и економична XMPP веза ће бити употребљена да “пробуди” другу UnifiedPush-компатибилну апликацију, попут Tusky, Ltt.rs, FluffyChat и других.</string>
     <string name="pref_privacy_summary">Индикатори куцања, Последњи пут виђен/а, Присутност</string>
     <string name="pref_connection_summary">Назив сервера и порт, Тор</string>
-    <string name="pref_connection_summary_w_cd">Назив сервера и порт, Тор, Проналажење канала</string>
+    <string name="pref_connection_summary_w_cd">Назив сервера и порт, Тор, P2P, Проналажење канала</string>
     <string name="pref_category_engagement_notifications">Обавештења о учествовању</string>
     <string name="pref_category_application">Апликација</string>
     <string name="pref_large_font_summary">Повећај величину слова у порукама</string>
@@ -1179,4 +1179,10 @@
     <string name="server_info_occupant_id">XEP-0421: Occupant identifiers</string>
     <string name="account_status_tls_error_protocol">Слаба безбедност транспорта (није TLS 1.3)</string>
     <string name="account_status_tls_error_untrusted">Неодобрен сертификат</string>
+    <string name="number_reactions_are_restricted">Достигнут лимит броја реакција.</string>
+    <string name="this_reaction_isnt_allowed">Ова реакција није дозвољена.</string>
+    <string name="enable_account_to_delete">Овај налог је искључен. Укључи га да га обришеш са сервера.</string>
+    <string name="peer_to_peer">P2P</string>
+    <string name="pref_use_relays">Увек користи релеј</string>
+    <string name="pref_use_relays_summary">Усмери све P2P везе (позиве и слање фајлова) кроз твој сервер како би избегао откривање своје IP адресе.</string>
 </resources>

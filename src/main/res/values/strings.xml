@@ -126,8 +126,8 @@
     <string name="pref_advanced_options">Advanced</string>
     <string name="pref_send_crash_reports">Send crash reports</string>
     <string name="pref_never_send_crash_summary">By sending in stack traces you are helping the development</string>
-    <string name="pref_confirm_messages">Confirm Messages</string>
-    <string name="pref_confirm_messages_summary">Let your contacts know when you have received and read their messages</string>
+    <string name="pref_confirm_messages">Read receipts</string>
+    <string name="pref_confirm_messages_summary">When enabled, your contacts will see when you’ve read their messages.</string>
     <string name="pref_prevent_screenshots">Prevent Screenshots</string>
     <string name="pref_prevent_screenshots_summary">Hide app contents in the app switcher and block screenshots</string>
     <string name="pref_ui_options">UI</string>
@@ -920,6 +920,7 @@
     <string name="backup">Backup</string>
     <string name="category_about">About</string>
     <string name="please_enable_an_account">Please enable an account</string>
+    <string name="enable_account_to_delete">This account is disabled. Enable it to delete it from the server.</string>
     <string name="make_call">Make call</string>
     <string name="rtp_state_incoming_call">Incoming call</string>
     <string name="rtp_state_incoming_video_call">Incoming video call</string>
@@ -1066,7 +1067,7 @@
     <string name="pref_category_operating_system">Operating System</string>
     <string name="pref_privacy_summary">Typing notifications, Last Seen, Availability</string>
     <string name="pref_connection_summary">Hostname &amp; Port, Tor</string>
-    <string name="pref_connection_summary_w_cd">Hostname &amp; Port, Tor, Channel Discovery</string>
+    <string name="pref_connection_summary_w_cd">Hostname &amp; Port, Tor, P2P, Channel Discovery</string>
     <string name="pref_keyboard_options">Keyboard</string>
     <string name="pref_category_engagement_notifications">Engagement notifications</string>
     <string name="pref_category_application">Application</string>
@@ -1138,4 +1139,9 @@
     <string name="strong_transport_security">Strong transport security</string>
     <string name="require_tls_v1_3">Require Transport Layer Security (TLS) Protocol Version 1.3 for all connections</string>
     <string name="empty_conversations_list_hint">Once you start a new conversation, you’ll see it listed here</string>
+    <string name="number_reactions_are_restricted">Reaction limit reached.</string>
+    <string name="this_reaction_isnt_allowed">This reaction isn’t allowed.</string>
+    <string name="peer_to_peer">Peer-to-peer</string>
+    <string name="pref_use_relays">Always use relays</string>
+    <string name="pref_use_relays_summary">Relay all P2P connections (calls and file transfers) through your server to avoid revealing your IP address.</string>
 </resources>

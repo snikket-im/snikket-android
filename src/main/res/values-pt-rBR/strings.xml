@@ -30,7 +30,7 @@
         <item quantity="other">%d conversas não lidas</item>
     </plurals>
     <string name="sending">enviando…</string>
-    <string name="message_decrypting">Descriptografando a mensagem. Por favor, aguarde…</string>
+    <string name="message_decrypting">Descriptografando a mensagem. Aguarde…</string>
     <string name="pgp_message">Mensagem criptografada via OpenPGP</string>
     <string name="nick_in_use">Este apelido já está em uso</string>
     <string name="invalid_muc_nick">Apelido inválido</string>
@@ -75,7 +75,7 @@
     <string name="send_failed">entrega falhou</string>
     <string name="preparing_image">Preparando-se para enviar a imagem</string>
     <string name="preparing_images">Preparando-se para enviar as imagens</string>
-    <string name="sharing_files_please_wait">Compartilhando arquivos. Por favor, aguarde…</string>
+    <string name="sharing_files_please_wait">Compartilhando arquivos. Aguarde…</string>
     <string name="action_clear_history">Limpar histórico</string>
     <string name="clear_conversation_history">Limpar histórico da conversa</string>
     <string name="clear_histor_msg">Deseja apagar todas as mensagens desta conversa?\n\n<b>Atenção:</b> Isto não afetará mensagens armazenadas em outros dispositivos ou servidores.</string>
@@ -93,13 +93,13 @@
     <string name="openkeychain_required_long"><![CDATA[O %1$s utiliza o <b>OpenKeychain</b> para criptografar e descriptografar as mensagens e gerenciar suas chaves públicas. <br><br> Ele está licenciado sob a GPLv3+ e está disponível no F-Droid e no Google Play.<br><br><small>(Por favor reinicie o %1$s em seguida).</small>]]></string>
     <string name="restart">Reiniciar</string>
     <string name="install">Instalar</string>
-    <string name="openkeychain_not_installed">Por favor, instale o OpenKeychain</string>
+    <string name="openkeychain_not_installed">Instale o OpenKeychain</string>
     <string name="offering">oferecendo…</string>
     <string name="waiting">aguardando…</string>
     <string name="no_pgp_key">Nenhuma chave OpenPGP encontrada</string>
-    <string name="contact_has_no_pgp_key">Não foi possível criptografar suas mensagens porque o seu contato não está anunciando a chave pública dele.\n\n<small>Por favor, peça ao seu contato que configure o OpenPGP.</small></string>
+    <string name="contact_has_no_pgp_key">Não foi possível criptografar suas mensagens porque o seu contato não está anunciando a chave pública dele.\n\n<small>Peça ao seu contato que configure o OpenPGP.</small></string>
     <string name="no_pgp_keys">Nenhuma chave OpenPGP encontrada</string>
-    <string name="contacts_have_no_pgp_keys">Não foi possível criptografar sua mensagem porque os seus contatos não estão anunciando as chaves públicas deles.\n\n<small>Por favor, peça aos seus contatos que configuram o OpenPGP.</small></string>
+    <string name="contacts_have_no_pgp_keys">Não foi possível criptografar sua mensagem porque os seus contatos não estão anunciando as chaves públicas deles.\n\n<small>Peça aos seus contatos que configurem o OpenPGP.</small></string>
     <string name="pref_general">Geral</string>
     <string name="pref_accept_files">Aceitar arquivos</string>
     <string name="pref_accept_files_summary">Automaticamente aceitar arquivos menor que…</string>
@@ -142,9 +142,9 @@
     <string name="error_security_exception">O app que você usou para compartilhar esse arquivo não forneceu permissões suficientes.</string>
     <string name="account_status_unknown">Desconhecido</string>
     <string name="account_status_disabled">Desativada temporariamente</string>
-    <string name="account_status_online">Na linha</string>
+    <string name="account_status_online">Conectada</string>
     <string name="account_status_connecting">Conectando\u2026</string>
-    <string name="account_status_offline">Fora da linha</string>
+    <string name="account_status_offline">Não conectada</string>
     <string name="account_status_unauthorized">Não autorizado</string>
     <string name="account_status_not_found">Servidor não encontrado</string>
     <string name="account_status_no_internet">Sem conectividade</string>
@@ -180,7 +180,7 @@
     <string name="password">Senha</string>
     <string name="invalid_jid">Este não é um endereço XMPP válido</string>
     <string name="error_out_of_memory">Memória insuficiente. A imagem é muito grande</string>
-    <string name="add_phone_book_text">Deseja adicionar %s ao seu livro de endereços?</string>
+    <string name="add_phone_book_text">Deseja adicionar %s à sua lista de contatos?</string>
     <string name="server_info_show_more">Informações do servidor</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Cópia de mensagens</string>
@@ -257,7 +257,7 @@
     <string name="enable">Ativar</string>
     <string name="conference_requires_password">Grupo requer senha</string>
     <string name="enter_password">Digite a senha</string>
-    <string name="request_presence_updates">Por favor, primeiro solicite atualizações de presença do seu contato.\n\n<small>Isso determinará qual app de conversa o seu contato está usando</small>.</string>
+    <string name="request_presence_updates">Primeiro solicite atualizações de presença do seu contato.\n\n<small>Isso determinará qual app de conversa o seu contato está usando</small>.</string>
     <string name="request_now">Solicitar agora</string>
     <string name="ignore">Ignorar</string>
     <string name="without_mutual_presence_updates"><b>Atenção:</b> Enviar isso sem atualizações mútuas de presença pode provocar problemas inesperados.\n\n<small>Verifique nos detalhes do contato suas inscrições de presença.</small></string>
@@ -265,7 +265,7 @@
     <string name="pref_allow_message_correction">Correção de mensagem</string>
     <string name="pref_allow_message_correction_summary">Deixe que seus contatos editem suas mensagens após enviá-las</string>
     <string name="pref_expert_options">Configurações para especialistas</string>
-    <string name="pref_expert_options_summary">Por favor, tenha cuidado com essas</string>
+    <string name="pref_expert_options_summary">Tenha cuidado com essas</string>
     <string name="title_activity_about_x">Sobre o %s</string>
     <string name="title_pref_quiet_hours">Horário de sossego</string>
     <string name="title_pref_quiet_hours_start_time">Horário de início</string>
@@ -357,7 +357,7 @@
     <string name="disable_all_accounts">Desativar todas as contas</string>
     <string name="perform_action_with">Realizar a ação com</string>
     <string name="no_affiliation">Sem afiliação</string>
-    <string name="no_role">Fora da linha</string>
+    <string name="no_role">Off-line</string>
     <string name="outcast">Excluído</string>
     <string name="member">Membro</string>
     <string name="advanced_mode">Modo avançado</string>
@@ -404,7 +404,7 @@
     <string name="avatar_has_been_published">O avatar foi publicado!</string>
     <string name="sending_x_file">Enviando %s</string>
     <string name="offering_x_file">Oferecendo %s</string>
-    <string name="hide_offline">Ocultar pessoas fora da linha</string>
+    <string name="hide_offline">Ocultar pessoas off-line</string>
     <string name="contact_is_typing">%s está digitando…</string>
     <string name="contact_has_stopped_typing">%s parou de digitar</string>
     <string name="contacts_are_typing">%s estão digitando…</string>
@@ -463,7 +463,7 @@
     <string name="unable_to_parse_certificate">Não foi possível interpretar o certificado</string>
     <string name="mam_prefs">Preferências de arquivamento</string>
     <string name="server_side_mam_prefs">Preferências de arquivamento no servidor</string>
-    <string name="fetching_mam_prefs">Buscando as preferências de arquivamento. Por favor, aguarde…</string>
+    <string name="fetching_mam_prefs">Buscando as preferências de arquivamento. Aguarde…</string>
     <string name="unable_to_fetch_mam_prefs">Não foi possível buscar as preferências de arquivamento</string>
     <string name="captcha_required">CAPTCHA obrigatório</string>
     <string name="captcha_hint">Digite o texto da imagem acima</string>
@@ -528,7 +528,7 @@
     <string name="pref_manually_change_presence_summary">Configure sua disponibilidade ao editar a sua mensagem de estado.</string>
     <string name="status_message">Mensagem de estado</string>
     <string name="presence_chat">Livre para conversar</string>
-    <string name="presence_online">Na linha</string>
+    <string name="presence_online">On-line</string>
     <string name="presence_away">Afastado</string>
     <string name="presence_xa">Não disponível</string>
     <string name="presence_dnd">Ocupado</string>
@@ -583,7 +583,7 @@
     <string name="all_omemo_keys_have_been_verified">Você verificou todas as chaves OMEMO em sua posse</string>
     <string name="verified_fingerprints">Impressões digitais verificadas</string>
     <string name="use_camera_icon_to_scan_barcode">Use a câmera para capturar o código de barras de um contato</string>
-    <string name="please_wait_for_keys_to_be_fetched">Por favor, aguarde o descarregamento das chaves</string>
+    <string name="please_wait_for_keys_to_be_fetched">Aguarde o descarregamento das chaves</string>
     <string name="share_as_barcode">Compartilhar como código de barras</string>
     <string name="share_as_uri">Compartilhar como URI XMPP</string>
     <string name="share_as_http">Compartilhar como link HTTP</string>
@@ -646,7 +646,7 @@
     <string name="received_message_from_stranger">Foi recebida uma mensagem de um desconhecido</string>
     <string name="block_stranger">Bloquear desconhecido</string>
     <string name="block_entire_domain">Bloquear domínio inteiro</string>
-    <string name="online_right_now">na linha agora</string>
+    <string name="online_right_now">on-line agora</string>
     <string name="retry_decryption">Tentar descriptografar novamente</string>
     <string name="session_failure">Falha na sessão</string>
     <string name="sasl_downgrade">O mecanismo SASL foi desatualizado</string>
@@ -706,7 +706,7 @@
     <string name="title_activity_show_location">Mostrar localização</string>
     <string name="share">Compartilhar</string>
     <string name="unable_to_start_recording">Não foi possível iniciar a gravação</string>
-    <string name="please_wait">Por favor, aguarde…</string>
+    <string name="please_wait">Aguarde…</string>
     <string name="no_microphone_permission">Conceda acesso ao microfone para o %1$s</string>
     <string name="search_messages">Pesquisar mensagens</string>
     <string name="gif">GIF</string>
@@ -764,18 +764,18 @@
     <string name="enter_country_code_and_phone_number">O Quicksy enviará uma mensagem SMS (taxas podem ser cobradas pela operadora) para verificar seu número de telefone. Digite o código do seu país e o número de telefone:</string>
     <string name="we_will_be_verifying"><![CDATA[Nós verificaremos o número de telefone<br/><br/><b>%s</b><br/><br/>Podemos prosseguir ou deseja editar o número?]]></string>
     <string name="not_a_valid_phone_number">%s não é um número de telefone válido.</string>
-    <string name="please_enter_your_phone_number">Por favor, digite o seu número de telefone.</string>
+    <string name="please_enter_your_phone_number">Digite o seu número de telefone.</string>
     <string name="search_countries">Pesquisar países</string>
     <string name="verify_x">Verificar %s</string>
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Nós enviamos um SMS para <b>%s</b>.]]></string>
     <string name="we_have_sent_you_another_sms">Nós enviamos outro SMS com um código de 6 dígitos.</string>
-    <string name="please_enter_pin_below">Por favor, digite o PIN de 6 dígitos abaixo.</string>
+    <string name="please_enter_pin_below">Digite o PIN de 6 dígitos abaixo.</string>
     <string name="resend_sms">Reenviar o SMS</string>
     <string name="resend_sms_in">Reenviar o SMS (%s)</string>
-    <string name="wait_x">Por favor, espere (%s)</string>
+    <string name="wait_x">Aguarde (%s)</string>
     <string name="back">Voltar</string>
     <string name="possible_pin">A área de transferência foi automaticamente lida para um possível PIN.</string>
-    <string name="please_enter_pin">Por favor, digite o seu PIN de 6 dígitos.</string>
+    <string name="please_enter_pin">Digite o seu PIN de 6 dígitos.</string>
     <string name="abort_registration_procedure">Tem certeza de que deseja cancelar o cadastro?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
@@ -792,13 +792,13 @@
     <string name="invalid_user_input">Entrada inválida do usuário</string>
     <string name="temporarily_unavailable">Temporariamente indisponível. Tente novamente mais terde.</string>
     <string name="no_network_connection">Sem conexão com a rede.</string>
-    <string name="try_again_in_x">Por favor, tente novamente em %s</string>
+    <string name="try_again_in_x">Tente novamente em %s</string>
     <string name="rate_limited">Você está limitado pelo número de tentativas</string>
     <string name="too_many_attempts">Muitas tentativas</string>
     <string name="the_app_is_out_of_date">Você está usando uma versão desatualizada deste app.</string>
     <string name="update">Atualizar</string>
     <string name="logged_in_with_another_device">Este número de telefone está conectado em outro dispositivo.</string>
-    <string name="enter_your_name_instructions">Por favor, digite o seu nome para que as pessoas que não tenham você em seus livros de endereço saibam quem você é.</string>
+    <string name="enter_your_name_instructions">Digite o seu nome para que as pessoas que não tenham você em suas listas de contatos saibam quem você é.</string>
     <string name="your_name">Seu nome</string>
     <string name="enter_your_name">Digite o seu nome</string>
     <string name="no_name_set_instructions">Use o botão de edição para definir o seu nome.</string>
@@ -826,9 +826,9 @@
     <string name="create_public_channel">Criar um canal público</string>
     <string name="create_dialog_channel_name">Nome do canal</string>
     <string name="xmpp_address">Endereço XMPP</string>
-    <string name="please_enter_name">Por favor, forneça um nome para o canal</string>
-    <string name="please_enter_xmpp_address">Por favor, forneça um endereço XMPP</string>
-    <string name="this_is_an_xmpp_address">Esse é um endereço XMPP. Por favor, forneça um nome.</string>
+    <string name="please_enter_name">Foneça um nome para o canal</string>
+    <string name="please_enter_xmpp_address">Forneça um endereço XMPP</string>
+    <string name="this_is_an_xmpp_address">Esse é um endereço XMPP. Forneça um nome.</string>
     <string name="creating_channel">Criando o canal público…</string>
     <string name="channel_already_exists">Este canal já existe</string>
     <string name="joined_an_existing_channel">Você entrou em um canal existente</string>
@@ -863,7 +863,7 @@
     <string name="open_backup">Abrir backup</string>
     <string name="not_a_backup_file">O arquivo que você selecionou não é um backup do Snikket</string>
     <string name="account_already_setup">Esta conta já foi configurada</string>
-    <string name="please_enter_password">Por favor, digite a senha para esta conta</string>
+    <string name="please_enter_password">Digite a senha para esta conta</string>
     <string name="unable_to_perform_this_action">Não foi possível executar esta ação</string>
     <string name="open_join_dialog">Entrar no canal público…</string>
     <string name="sharing_application_not_grant_permission">O aplicativo de compartilhamento não permitiu o acesso a esse arquivo.</string>
@@ -874,7 +874,7 @@
     <string name="pref_channel_discovery">Método de descoberta de canais</string>
     <string name="backup">Backup</string>
     <string name="category_about">Sobre</string>
-    <string name="please_enable_an_account">Por favor, ative uma conta</string>
+    <string name="please_enable_an_account">Ative uma conta</string>
     <string name="make_call">Fazer chamada</string>
     <string name="rtp_state_incoming_call">Recebendo chamada</string>
     <string name="rtp_state_incoming_video_call">Recebendo chamada de vídeo</string>
@@ -916,7 +916,7 @@
         <item quantity="other">%d chamadas perdidas</item>
     </plurals>
     <plurals name="n_missed_calls_from_m_contacts">
-        <item quantity="one">%1$d chamadas perdidas de %2$d contato</item>
+        <item quantity="one">%1$d chamada perdida de %2$d contato</item>
         <item quantity="many">%1$d de chamadas perdidas de %2$d contatos</item>
         <item quantity="other">%1$d chamadas perdidas de %2$d contatos</item>
     </plurals>
@@ -1081,7 +1081,7 @@
     <string name="detect_mim_summary">A vinculação de canal pode detectar alguns ataques de máquina-no-meio</string>
     <string name="pref_privacy_summary">Indicadores de digitação, visto por último, disponibilidade</string>
     <string name="pref_connection_summary">Nome do servidor e porta, Tor</string>
-    <string name="pref_connection_summary_w_cd">Nome do servidor e porta, Tor, descoberta de canais</string>
+    <string name="pref_connection_summary_w_cd">Nome do servidor e porta, Tor, conexões diretas, descoberta de canais</string>
     <string name="pref_keyboard_options">Teclado</string>
     <string name="pref_category_engagement_notifications">Notificações de engajamento</string>
     <string name="pref_category_application">Aplicativo</string>
@@ -1149,4 +1149,10 @@
     <string name="download_failed_could_not_establish_tls">Não foi possível estabelecer uma conexão TLS</string>
     <string name="account_status_tls_error_protocol">Segurança de transporte fraca (sem TLS 1.3)</string>
     <string name="account_status_tls_error_untrusted">Certificado não confiado</string>
+    <string name="number_reactions_are_restricted">Limite de reações atingido.</string>
+    <string name="this_reaction_isnt_allowed">Esta reação não é permitida.</string>
+    <string name="enable_account_to_delete">Esta conta está desativada. Ative-a para apagá-la do servidor.</string>
+    <string name="peer_to_peer">Conexão direta</string>
+    <string name="pref_use_relays">Sempre usar relês</string>
+    <string name="pref_use_relays_summary">Passar todas as conexões \"diretas\" (chamadas e transferências de arquivo) pelo seu servidor para evitar revelar seu endereço de IP.</string>
 </resources>

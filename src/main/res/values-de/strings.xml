@@ -1046,7 +1046,7 @@
     <string name="pref_category_server_connection">Serververbindung</string>
     <string name="pref_privacy_summary">Tipp-Benachrichtigung, Zuletzt genutzt, Status</string>
     <string name="pref_connection_summary">Hostname &amp; Port, Tor</string>
-    <string name="pref_connection_summary_w_cd">Hostname &amp; Port, Tor, Channelsuche</string>
+    <string name="pref_connection_summary_w_cd">Hostname &amp; Port, Tor, P2P, Channelsuche</string>
     <string name="pref_category_application">Anwendung</string>
     <string name="pref_category_interaction">Interaktion</string>
     <string name="pref_up_long_summary">Beim Einsatz als UnifiedPush-Verteiler wird die dauerhafte, zuverlässige und akkuschonende XMPP-Verbindung genutzt, um andere UnifiedPush-kompatible Apps wie Tusky, Ltt.rs, FluffyChat und andere aufzuwecken.</string>
@@ -1144,4 +1144,10 @@
     <string name="empty_conversations_list_hint">Sobald du eine neue Unterhaltung startest, wird sie hier angezeigt</string>
     <string name="account_status_tls_error_protocol">Schwache Transportsicherheit (kein TLS 1.3)</string>
     <string name="account_status_tls_error_untrusted">Nicht vertrauenswürdiges Zertifikat</string>
+    <string name="this_reaction_isnt_allowed">Diese Reaktion ist nicht erlaubt.</string>
+    <string name="number_reactions_are_restricted">Reaktionslimit erreicht.</string>
+    <string name="enable_account_to_delete">Dieses Konto ist deaktiviert. Aktiviere es, um es vom Server zu löschen.</string>
+    <string name="peer_to_peer">Peer-to-Peer</string>
+    <string name="pref_use_relays_summary">Alle P2P-Verbindungen (Anrufe und Dateiübertragungen) über deinen Server weiterleiten, um zu vermeiden, dass deine IP-Adresse preisgegeben wird.</string>
+    <string name="pref_use_relays">Immer Relays verwenden</string>
 </resources>

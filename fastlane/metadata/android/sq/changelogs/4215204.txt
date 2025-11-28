@@ -1,0 +1,2 @@
+* Për kanale publikë shfaq te nëntitull numër pjesëmarrësish
+* Ndreqje ardhjeje MUC-sh në shërbyes Prosody shumë të vjetër

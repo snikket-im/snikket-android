@@ -1102,7 +1102,7 @@
     <string name="pref_category_operating_system">Sistema Operativo</string>
     <string name="pref_privacy_summary">Notificações de escrita, Última vez visto, Disponibilidade</string>
     <string name="pref_connection_summary">Nome do Host &amp; Porta, Tor</string>
-    <string name="pref_connection_summary_w_cd">Nome do Host &amp; Porta, Tor, Descoberta de Canais</string>
+    <string name="pref_connection_summary_w_cd">Nome do Host &amp; Porta, Tor, P2P, Descoberta de Canais</string>
     <string name="pref_category_engagement_notifications">Notificações de participação</string>
     <string name="pref_category_on_this_device">No dispositivo</string>
     <string name="pref_large_font">Fonte grande</string>
@@ -1149,4 +1149,10 @@
     <string name="require_tls_v1_3">Usar obrigatoriamente Transport Layer Security (TLS) Protocol Version 1.3 para todas as conexões</string>
     <string name="account_status_tls_error_protocol">Segurança de dados fraca (Sem TLS 1.3)</string>
     <string name="account_status_tls_error_untrusted">Certificado não confiado</string>
+    <string name="enable_account_to_delete">Esta conta está desativada. Ative-a para a apagar do servidor.</string>
+    <string name="number_reactions_are_restricted">Limite de reações alcançado.</string>
+    <string name="this_reaction_isnt_allowed">Reação não permitida.</string>
+    <string name="peer_to_peer">P2P</string>
+    <string name="pref_use_relays">Usar sempre ‘relay’s</string>
+    <string name="pref_use_relays_summary">Passa todas as conexões P2P (chamadas e transferência de ficheiros) pelo seu servidor para evitar revelar o seu endereço de IP.</string>
 </resources>

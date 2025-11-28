@@ -3,7 +3,8 @@ package eu.siacs.conversations;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xmpp.chatstate.ChatState;
+import im.conversations.android.xmpp.model.state.Active;
+import im.conversations.android.xmpp.model.state.ChatStateNotification;
 import java.util.Locale;
 
 public final class Config {
@@ -80,7 +81,6 @@ public final class Config {
     public static final int CONNECT_TIMEOUT = 90;
     public static final int POST_CONNECTIVITY_CHANGE_PING_INTERVAL = 30;
     public static final int CONNECT_DISCO_TIMEOUT = 20;
-    public static final int MINI_GRACE_PERIOD = 750;
 
     public static final int AVATAR_THUMBNAIL_SIZE = 192;
     public static final int AVATAR_THUMBNAIL_CHAR_LIMIT = 9400;
@@ -149,7 +149,7 @@ public final class Config {
     public static final long MAM_MAX_CATCHUP = MILLISECONDS_IN_DAY * 5;
     public static final int MAM_MAX_MESSAGES = 750;
 
-    public static final ChatState DEFAULT_CHAT_STATE = ChatState.ACTIVE;
+    public static final Class<? extends ChatStateNotification> DEFAULT_CHAT_STATE = Active.class;
     public static final int TYPING_TIMEOUT = 8;
 
     public static final int EXPIRY_INTERVAL = 30 * 60 * 1000; // 30 minutes

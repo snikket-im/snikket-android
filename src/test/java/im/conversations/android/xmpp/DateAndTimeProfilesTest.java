@@ -22,7 +22,7 @@ public class DateAndTimeProfilesTest {
     @Test
     public void delayExample() throws IOException {
         final var xml =
-                """
+"""
  <delay xmlns='urn:xmpp:delay'
      from='juliet@capulet.com/balcony'
      stamp='2002-09-10T23:41:07Z'/>
@@ -36,7 +36,7 @@ public class DateAndTimeProfilesTest {
     @Test
     public void delayExamplePlusSomeMilliseconds() throws IOException {
         final var xml =
-                """
+"""
  <delay xmlns='urn:xmpp:delay'
      from='juliet@capulet.com/balcony'
      stamp='2002-09-10T23:41:07.123Z'/>
@@ -50,7 +50,7 @@ public class DateAndTimeProfilesTest {
     @Test
     public void firstStepsOneTheMoon() throws IOException {
         final var xml =
-                """
+"""
  <delay xmlns='urn:xmpp:delay'
      from='juliet@capulet.com/balcony'
      stamp='1969-07-21T02:56:15Z'/>
@@ -64,7 +64,7 @@ public class DateAndTimeProfilesTest {
     @Test
     public void firstStepsOneTheMoonHustonTime() throws IOException {
         final var xml =
-                """
+"""
  <delay xmlns='urn:xmpp:delay'
      from='juliet@capulet.com/balcony'
      stamp='1969-07-20T21:56:15-05:00'/>

@@ -1,0 +1,2 @@
+* Ngarko dhe shfaq avatarë (foto profili) me cilësi të lartë, në shërbye që e mbulojnë këtë
+* Mbulim për 'XEP-0425: Moderated Message Retraction' në kanale publikë

@@ -1,0 +1,3 @@
+* fixar för överföring av IBB-filer för Jingle
+* fixar för upprepade korrigeringar som fyller upp databasen
+* bytte till Last Message Correction v1.1

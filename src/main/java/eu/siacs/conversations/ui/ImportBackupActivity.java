@@ -177,6 +177,9 @@ public class ImportBackupActivity extends ActionBarActivity
         } catch (final PackageManager.NameNotFoundException e) {
             return Collections.emptySet();
         }
+        if (permissions == null) {
+            return Collections.emptySet();
+        }
         return ImmutableSet.copyOf(permissions);
     }
 
@@ -379,7 +382,7 @@ public class ImportBackupActivity extends ActionBarActivity
     }
 
     private void onBackupRestored() {
-        final Intent intent = new Intent(this, ConversationActivity.class);
+        final var intent = new Intent(this, ConversationActivity.class);
         intent.addFlags(
                 Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_NEW_TASK

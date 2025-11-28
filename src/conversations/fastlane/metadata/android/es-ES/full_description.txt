@@ -1,39 +1,28 @@
-Fácil de usar, confiable y amigable con la batería. Con soporte integrado para imágenes, chats grupales y cifrado de extremo a extremo.
+Cliente Jabber/XMPP libre y de código abierto para Android. Fácil de usar, confiable y amigable con la batería. Con soporte integrado para imágenes, chats grupales y compartición de ubicación. Cifrado de extremo a extremo por defecto. Se conecta con todos los servidores modernos Jabber, XMPP y Snikket.
 
-Principios de diseño:
+<b>Características</b>
+• Cifrado de extremo a extremo con OMEMO u OpenPGP
+• Envío y recepción de imágenes y otros tipos de archivos
+• Llamadas de audio y video cifradas (DTLS-SRTP)
+• Detección avanzada de ataque de intermediario mediante enlace al canal (se requiere habilitarlo)
+• Compartición de tu ubicación
+• Envío de mensajes de voz
+• Reacciones con emojis
+• Indicación de cuándo tus contactos han leído tus mensajes
+• Interfaz intuitiva que sigue las pautas de diseño de Android (Material Design 3 con colores dinámicos)
+• Imágenes de perfil (avatares) de alta resolución para tus contactos
+• Sincronización con clientes de escritorio (Gajim y Dino)
+• Grupos de chat privados y canales públicos (compatibilidad con marcadores)
+• Moderación de mensajes para administradores de canales públicos
+• Integración con la agenda de contactos
+• Múltiples cuentas (bandeja de entrada unificada)
+• Envío de notificaciones push a otras aplicaciones compatibles como Tusky, Ltt.rs, DAVx⁵ y Fennec mediante UnifiedPush
+• Muy bajo impacto en la duración de la batería
 
-* Ser tan bello y fácil de usar como sea posible, sin sacrificar la seguridad o la privacidad.
-* Confiar en protocolos existentes y bien establecidos.
-* No requerir una cuenta de Google ni Google Cloud Messaging (GCM).
-* Requerir la menor cantidad de permisos posible.
+<i><b>Nota:</b></i> Algunas de estas características requieren compatibilidad de parte del servidor. Ve a detalles de la cuenta y toca "Información de servidor" desde el menú para ver si tu servidor tiene todas las extensiones necesarias.
 
-Características:
-
-* Cifrado de extremo a extremo con <a href="http://conversations.im/omemo/">OMEMO</a> u <a href="http://openpgp.org/about/">OpenPGP</a>.
-* Envío y recepción de imágenes.
-* Llamadas de audio y video cifradas (DTLS-SRTP).
-* Interfaz intuitiva que sigue las pautas de diseño de Android.
-* Imágenes / Avatares para tus contactos.
-* Sincronización con el cliente de escritorio.
-* Conferencias (con soporte para marcadores).
-* Integración con la agenda de contactos.
-* Múltiples cuentas / bandeja de entrada unificada.
-* Muy bajo impacto en la duración de la batería.
-
-Conversations facilita mucho la creación de una cuenta en el servidor gratuito conversations.im. Sin embargo, Conversations también funcionará con cualquier otro servidor XMPP. Muchos servidores XMPP son gestionados por voluntarios y son gratuitos.
-
-Características de XMPP:
-
-Conversations funciona con todos los servidores XMPP disponibles. Sin embargo, XMPP es un protocolo extensible. Estas extensiones también están estandarizadas en lo que se conoce como XEP. Conversations admite algunas de éstas para mejorar la experiencia general del usuario. Existe la posibilidad de que tu servidor XMPP actual no admita estas extensiones. Por lo tanto, para aprovechar al máximo Conversations, deberías considerar cambiar a un servidor XMPP que sí lo haga o, aún mejor, configurar tu propio servidor XMPP para ti y tus amigos.
-
-Estas XEP son, hasta ahora:
-
-XEP-0065: SOCKS5 Bytestreams (o mod_proxy65). Se utilizará para transferir archivos si ambas partes están detrás de un firewall o NAT.
-XEP-0163: Protocolo de Eventos Personales para avatares.
-XEP-0191: El comando de bloqueo te permite poner en la lista negra a spammers o bloquear contactos sin eliminarlos de tu lista de contactos.
-XEP-0198: La gestión de flujos permite que XMPP sobreviva a pequeñas interrupciones de red y cambios en la conexión TCP subyacente.
-XEP-0280: Message Carbons que sincroniza automáticamente los mensajes que envías a tu cliente de escritorio, lo que te permite cambiar sin problemas entre tu cliente móvil y el de escritorio dentro de una conversación.
-XEP-0237: Versionado de Roster, principalmente para ahorrar ancho de banda en conexiones móviles deficientes.
-XEP-0313: Gestión del Archivo de Mensajes que sincroniza el historial de mensajes con el servidor. Pone al día los mensajes que se enviaron mientras Conversations estaba fuera de línea.
-XEP-0352: Indicación de Estado del Cliente que informa al servidor si Conversations está en segundo plano o no. Permite al servidor ahorrar ancho de banda al retener paquetes no importantes.
-XEP-0363: Carga de Archivos HTTP que permite compartir archivos en conferencias y con contactos fuera de línea. Requiere un componente adicional en tu servidor.
+<b>Principios de diseño</b>
+• Ser tan bello y fácil de usar como sea posible, sin sacrificar la seguridad o la privacidad
+• Confiar en protocolos existentes y bien establecidos
+• No requerir una cuenta de Google, en especial Firebase Cloud Messaging (FCM)
+• Requerir la menor cantidad de permisos posible
