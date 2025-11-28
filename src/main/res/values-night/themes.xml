@@ -2,9 +2,7 @@
 
     <style name="Theme.Conversations3" parent="Theme.Conversations3.Dark"/>
 
-    <style name="Theme.Snikket" parent="Theme.Conversations3">
-    </style>
-
+    <style name="Theme.Snikket" parent="Theme.Snikket.Dark" />
 
     <style name="Theme.Conversations3.SplashScreen" parent="@style/Theme.Conversations3">
         <item name="android:windowBackground">@drawable/background_splash_screen</item>

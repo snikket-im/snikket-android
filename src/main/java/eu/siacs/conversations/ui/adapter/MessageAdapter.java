@@ -843,7 +843,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final BubbleColor bubbleColor;
         if (received) {
             if (isInValidSession) {
-                bubbleColor = BubbleColor.SURFACE;
+                bubbleColor = BubbleColor.SURFACE_HIGH;
             } else {
                 bubbleColor = BubbleColor.WARNING;
             }
@@ -1443,10 +1443,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private static void setTextSize(final TextView textView, final boolean largeFont) {
         if (largeFont) {
             textView.setTextAppearance(
-                    com.google.android.material.R.style.TextAppearance_Material3_BodyLarge);
+                    R.style.TextAppearance_Snikket_MessageContentLarge);
         } else {
             textView.setTextAppearance(
-                    com.google.android.material.R.style.TextAppearance_Material3_BodyMedium);
+                    R.style.TextAppearance_Snikket_MessageContentNormal);
         }
     }
 

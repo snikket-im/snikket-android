@@ -4,4 +4,7 @@
         <attr name="backgroundColor" format="reference|color" />
         <attr name="textColor" format="reference|color" />
     </declare-styleable>
+
+    <attr name="textAppearanceMessageContentNormal" format="reference"/>
+    <attr name="textAppearanceMessageContentLarge" format="reference"/>
 </resources>
