@@ -427,11 +427,11 @@ public class MessageArchiveManager extends AbstractManager {
                         + ": found "
                         + query.pendingReceiptRequests.size()
                         + " pending receipt requests");
+        final var deliveryReceiptManager = getManager(DeliveryReceiptManager.class);
         final var iterator = query.pendingReceiptRequests.iterator();
         while (iterator.hasNext()) {
-            ReceiptRequest rr = iterator.next();
-            connection.sendMessagePacket(
-                    mXmppConnectionService.getMessageGenerator().received(rr.getJid(), rr.getId()));
+            final var rr = iterator.next();
+            deliveryReceiptManager.received(rr.getJid(), rr.getId());
             iterator.remove();
         }
     }

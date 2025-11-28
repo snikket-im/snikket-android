@@ -18,7 +18,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Reaction;
 import eu.siacs.conversations.entities.ReadByMarker;
-import eu.siacs.conversations.entities.ReceiptRequest;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -32,6 +31,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.manager.ActivityManager;
 import eu.siacs.conversations.xmpp.manager.ChatStateManager;
+import eu.siacs.conversations.xmpp.manager.DeliveryReceiptManager;
 import eu.siacs.conversations.xmpp.manager.MessageArchiveManager;
 import eu.siacs.conversations.xmpp.manager.ModerationManager;
 import eu.siacs.conversations.xmpp.manager.MultiUserChatManager;
@@ -57,7 +57,6 @@ import im.conversations.android.xmpp.model.occupant.OccupantId;
 import im.conversations.android.xmpp.model.oob.OutOfBandData;
 import im.conversations.android.xmpp.model.pubsub.event.Event;
 import im.conversations.android.xmpp.model.reactions.Reactions;
-import im.conversations.android.xmpp.model.receipts.Request;
 import im.conversations.android.xmpp.model.retraction.Retract;
 import im.conversations.android.xmpp.model.unique.StanzaId;
 import java.util.UUID;
@@ -379,7 +378,7 @@ public class MessageParser extends AbstractParser
             Log.e(
                     Config.LOGTAG,
                     account.getJid().asBareJid()
-                            + ": received groupchat ("
+                            + ": received group chat ("
                             + from
                             + ") message on regular MAM request. skipping");
             return;
@@ -681,7 +680,8 @@ public class MessageParser extends AbstractParser
                                     && remoteMsgId != null
                                     && !selfAddressed
                                     && !isTypeGroupChat) {
-                                processMessageReceipts(account, packet, remoteMsgId, query);
+                                getManager(DeliveryReceiptManager.class)
+                                        .processRequest(packet, query);
                             }
                             if (replacedMessage.getEncryption() == Message.ENCRYPTION_PGP) {
                                 conversation
@@ -797,7 +797,7 @@ public class MessageParser extends AbstractParser
                     && remoteMsgId != null
                     && !selfAddressed
                     && !isTypeGroupChat) {
-                processMessageReceipts(account, packet, remoteMsgId, query);
+                getManager(DeliveryReceiptManager.class).processRequest(packet, query);
             }
 
             mXmppConnectionService.databaseBackend.createMessage(message);
@@ -894,12 +894,11 @@ public class MessageParser extends AbstractParser
                         status);
             }
 
-            final var received =
-                    packet.getExtension(
-                            im.conversations.android.xmpp.model.receipts.Received.class);
-            if (received != null) {
-                processReceived(received, packet, query, from);
+            if (packet.hasExtension(im.conversations.android.xmpp.model.receipts.Received.class)) {
+                getManager(DeliveryReceiptManager.class).processReceived(packet, query);
             }
+
+            // TODO move to DisplayedManager
             final var displayed = packet.getExtension(Displayed.class);
             if (displayed != null) {
                 processDisplayed(
@@ -985,7 +984,7 @@ public class MessageParser extends AbstractParser
             final boolean sendReceipts =
                     contact.showInContactList() || Config.JINGLE_MESSAGE_INIT_STRICT_OFFLINE_CHECK;
             if (remoteMsgId != null && !contact.isSelf() && sendReceipts) {
-                processMessageReceipts(getAccount(), packet, remoteMsgId, null);
+                getManager(DeliveryReceiptManager.class).processRequest(packet, null);
             }
         } else if ((query != null && query.isCatchup()) || !offlineMessagesRetrieved) {
             if (jingleMessage instanceof Propose propose) {
@@ -1067,35 +1066,6 @@ public class MessageParser extends AbstractParser
                     query.incrementActualMessageCount();
                     mXmppConnectionService.databaseBackend.createMessage(message);
                 }
-            }
-        }
-    }
-
-    private void processReceived(
-            final im.conversations.android.xmpp.model.receipts.Received received,
-            final im.conversations.android.xmpp.model.stanza.Message packet,
-            final MessageArchiveManager.Query query,
-            final Jid from) {
-        final var account = this.getAccount();
-        final var id = received.getId();
-        if (packet.fromAccount(account)) {
-            if (query != null && id != null && packet.getTo() != null) {
-                query.removePendingReceiptRequest(new ReceiptRequest(packet.getTo(), id));
-            }
-        } else if (id != null) {
-            if (id.startsWith(JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX)) {
-                final String sessionId =
-                        id.substring(JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX.length());
-                mXmppConnectionService
-                        .getJingleConnectionManager()
-                        .updateProposedSessionDiscovered(
-                                account,
-                                from,
-                                sessionId,
-                                JingleConnectionManager.DeviceDiscoveryState.DISCOVERED);
-            } else {
-                mXmppConnectionService.markMessage(
-                        account, from.asBareJid(), id, Message.STATUS_SEND_RECEIVED);
             }
         }
     }
@@ -1337,27 +1307,6 @@ public class MessageParser extends AbstractParser
                         account.getJid().asBareJid()
                                 + ": received dismissing display marker that did not match our last"
                                 + " id in that conversation");
-            }
-        }
-    }
-
-    private void processMessageReceipts(
-            final Account account,
-            final im.conversations.android.xmpp.model.stanza.Message packet,
-            final String remoteMsgId,
-            final MessageArchiveManager.Query query) {
-        final var request = packet.hasExtension(Request.class);
-        if (query == null) {
-            if (request) {
-                final var receipt =
-                        mXmppConnectionService
-                                .getMessageGenerator()
-                                .received(packet.getFrom(), remoteMsgId, packet.getType());
-                mXmppConnectionService.sendMessagePacket(account, receipt);
-            }
-        } else if (query.isCatchup()) {
-            if (request) {
-                query.addPendingReceiptRequest(new ReceiptRequest(packet.getFrom(), remoteMsgId));
             }
         }
     }

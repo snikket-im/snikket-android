@@ -24,7 +24,6 @@ import im.conversations.android.xmpp.model.jmi.Retract;
 import im.conversations.android.xmpp.model.markers.Markable;
 import im.conversations.android.xmpp.model.reactions.Reaction;
 import im.conversations.android.xmpp.model.reactions.Reactions;
-import im.conversations.android.xmpp.model.receipts.Received;
 import im.conversations.android.xmpp.model.receipts.Request;
 import im.conversations.android.xmpp.model.unique.OriginId;
 import java.text.SimpleDateFormat;
@@ -173,23 +172,6 @@ public class MessageGenerator extends AbstractGenerator {
         }
         packet.addExtension(new Store());
         return packet;
-    }
-
-    public im.conversations.android.xmpp.model.stanza.Message received(
-            final Jid to,
-            final String id,
-            final im.conversations.android.xmpp.model.stanza.Message.Type type) {
-        final var receivedPacket = new im.conversations.android.xmpp.model.stanza.Message();
-        receivedPacket.setType(type);
-        receivedPacket.setTo(to);
-        receivedPacket.addExtension(new Received(id));
-        receivedPacket.addExtension(new Store());
-        return receivedPacket;
-    }
-
-    public im.conversations.android.xmpp.model.stanza.Message received(
-            final Jid to, final String id) {
-        return received(to, id, im.conversations.android.xmpp.model.stanza.Message.Type.NORMAL);
     }
 
     public im.conversations.android.xmpp.model.stanza.Message sessionFinish(
