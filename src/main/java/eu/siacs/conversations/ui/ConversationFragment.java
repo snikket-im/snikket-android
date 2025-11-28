@@ -2403,14 +2403,18 @@ public class ConversationFragment extends XmppFragment
     private void correctMessage(final Message message) {
         this.conversation.setCorrectingMessage(message);
         final Editable editable = binding.textinput.getText();
-        this.conversation.setDraftMessage(editable.toString());
+        this.conversation.setDraftMessage(CharSequenceUtils.nullToEmpty(editable));
         this.binding.textinput.setText("");
         this.binding.textinput.append(message.getBody());
+        updateChatMsgHint();
     }
 
-    private void highlightInConference(String nick) {
-        final Editable editable = this.binding.textinput.getText();
-        String oldString = editable.toString().trim();
+    private void highlightInConference(final String nick) {
+        final var editable = this.binding.textinput.getText();
+        if (editable == null) {
+            return;
+        }
+        final var oldString = CharSequenceUtils.nullToEmpty(editable).trim();
         final int pos = this.binding.textinput.getSelectionStart();
         if (oldString.isEmpty() || pos == 0) {
             editable.insert(0, nick + ": ");

@@ -280,7 +280,7 @@
     <string name="ignore">Ignore</string>
     <string name="without_mutual_presence_updates"><b>Warning:</b> Sending this without mutual presence updates could cause unexpected problems.\n\n<small>Go to “Contact details” to verify your presence subscriptions.</small></string>
     <string name="pref_security_settings">Security</string>
-    <string name="pref_allow_message_correction">Message correction</string>
+    <string name="pref_allow_message_correction">Message edits</string>
     <string name="pref_allow_message_correction_summary">Allow your contacts to retroactively edit their messages</string>
     <string name="pref_expert_options">Expert settings</string>
     <string name="pref_expert_options_summary">Please be careful with these</string>
@@ -538,8 +538,8 @@
     <string name="selection_too_large">The selected area is too large</string>
     <string name="no_accounts">(No activated accounts)</string>
     <string name="this_field_is_required">This field is required</string>
-    <string name="correct_message">Correct message</string>
-    <string name="send_corrected_message">Send corrected message</string>
+    <string name="correct_message">Edit</string>
+    <string name="send_corrected_message">Send edited message</string>
     <string name="no_keys_just_confirm">You have already trusted this persons fingerprint. By selecting “Done” you are just confirming that %s is part of this group chat.</string>
     <string name="this_account_is_disabled">You have disabled this account</string>
     <string name="this_account_is_logged_out">You have logged out of this account</string>
@@ -977,7 +977,7 @@
     <string name="add_to_favorites">Pin to top</string>
     <string name="remove_from_favorites">Unpin from top</string>
     <string name="gpx_track">GPX track</string>
-    <string name="could_not_correct_message">Could not correct message</string>
+    <string name="could_not_correct_message">Could not edit message</string>
     <string name="search_all_conversations">All chats</string>
     <string name="search_this_conversation">This chat</string>
     <string name="your_avatar">Your avatar</string>
