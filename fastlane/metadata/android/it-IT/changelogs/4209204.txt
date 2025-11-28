@@ -1,2 +1,2 @@
-* Accesso più facile alla 'Informativa sulla privacy' nella versione Play Store (Quicksy e Conversations)
-* Rimossa l'integrazione alla rubrica nella versione Play Store di Conversations
+*Fornisce un accesso più facile alla 'Privacy Policy' sulla versione del Play Store (Quicksy e Conversations)
+*Rimuove l'integrazione alla rubrica sulla versione del Play Store di Conversations
