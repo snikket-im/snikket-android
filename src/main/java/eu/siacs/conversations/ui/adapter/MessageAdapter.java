@@ -364,6 +364,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.messageBody().setTypeface(null, Typeface.ITALIC);
         viewHolder.messageBody().setVisibility(View.VISIBLE);
         viewHolder.messageBody().setText(text);
+        setTextSize(viewHolder.messageBody(), this.bubbleDesign.largeFont);
         viewHolder
                 .messageBody()
                 .setTextColor(bubbleToOnSurfaceVariant(viewHolder.messageBody(), bubbleColor));
