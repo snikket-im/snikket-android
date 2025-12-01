@@ -435,7 +435,12 @@ public class MessageParser extends AbstractParser
             }
         }
 
-        if ((body != null
+        final Reactions reactions = packet.getExtension(Reactions.class);
+        if (reactions != null) {
+            final var user = getManager(MultiUserChatManager.class).getMucUser(packet, query);
+            processReactions(
+                    reactions, conversation, isTypeGroupChat, counterpart, user, packet);
+        } else if ((body != null
                         || pgpEncrypted != null
                         || (axolotlEncrypted != null && axolotlEncrypted.hasChild("payload"))
                         || oobUrl != null)
@@ -908,12 +913,6 @@ public class MessageParser extends AbstractParser
                         isTypeGroupChat,
                         conversation,
                         from);
-            }
-            final Reactions reactions = packet.getExtension(Reactions.class);
-            if (reactions != null) {
-                final var user = getManager(MultiUserChatManager.class).getMucUser(packet, query);
-                processReactions(
-                        reactions, conversation, isTypeGroupChat, counterpart, user, packet);
             }
 
             if (original.hasExtension(Retract.class)
