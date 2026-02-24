@@ -413,8 +413,7 @@ public class Conversation extends AbstractEntity
                     continue;
                 }
                 if (mcp.equals(counterpart)
-                        && ((message.getStatus() == Message.STATUS_RECEIVED) == received)
-                        && (carbon == message.isCarbon() || received)) {
+                        && ((message.getStatus() == Message.STATUS_RECEIVED) == received)) {
                     if (id.equals(message.getRemoteMsgId())
                             && !message.isFileOrImage()
                             && !message.treatAsDownloadable()) {
