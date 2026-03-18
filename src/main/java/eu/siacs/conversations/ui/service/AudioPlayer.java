@@ -43,8 +43,10 @@ public class AudioPlayer
 
     private static final int REFRESH_INTERVAL = 250;
     private static final Object LOCK = new Object();
+    private static final float[] SPEED_STEPS = {1.0f, 1.25f, 1.5f, 2.0f};
     private static MediaPlayer player = null;
     private static Message currentlyPlayingMessage = null;
+    private static int currentSpeedIndex = 0;
     private static PowerManager.WakeLock wakeLock;
     private final MessageAdapter messageAdapter;
     private final WeakReferenceSet<RelativeLayout> audioPlayerLayouts = new WeakReferenceSet<>();
@@ -118,6 +120,8 @@ public class AudioPlayer
         viewHolder.progress.setThumbTintList(color);
         viewHolder.progress.setProgressTintList(color);
         viewHolder.playPause.setOnClickListener(this);
+        viewHolder.playbackSpeed.setOnClickListener(this);
+        updateSpeedButton(viewHolder);
         final Context context = viewHolder.playPause.getContext();
         if (message == currentlyPlayingMessage) {
             if (AudioPlayer.player != null && AudioPlayer.player.isPlaying()) {
@@ -145,6 +149,10 @@ public class AudioPlayer
         if (v.getId() == R.id.play_pause) {
             synchronized (LOCK) {
                 startStop((MaterialButton) v);
+            }
+        } else if (v.getId() == R.id.playback_speed) {
+            synchronized (LOCK) {
+                cycleSpeed();
             }
         }
     }
@@ -411,6 +419,7 @@ public class AudioPlayer
                                 currentlyPlayingMessage,
                                 streamType == AudioManager.STREAM_VOICE_CALL,
                                 progress);
+                        applySpeed();
                     }
                 } catch (Exception e) {
                     Log.w(Config.LOGTAG, e);
@@ -439,6 +448,37 @@ public class AudioPlayer
         messageAdapter.setVolumeControl(AudioManager.STREAM_MUSIC);
     }
 
+    private void cycleSpeed() {
+        currentSpeedIndex = (currentSpeedIndex + 1) % SPEED_STEPS.length;
+        applySpeed();
+        for (WeakReference<RelativeLayout> audioPlayer : audioPlayerLayouts) {
+            final RelativeLayout layout = audioPlayer.get();
+            if (layout != null) {
+                updateSpeedButton(ViewHolder.get(layout));
+            }
+        }
+    }
+
+    private void applySpeed() {
+        if (player != null && player.isPlaying()) {
+            player.setPlaybackParams(
+                    player.getPlaybackParams()
+                            .setSpeed(SPEED_STEPS[currentSpeedIndex])
+                            .setPitch(1.0f));
+        }
+    }
+
+    private void updateSpeedButton(final ViewHolder viewHolder) {
+        if (viewHolder.playbackSpeed == null) {
+            return;
+        }
+        final Context context = viewHolder.playbackSpeed.getContext();
+        final int[] labelRes = {
+            R.string.speed_1x, R.string.speed_1_25x, R.string.speed_1_5x, R.string.speed_2x
+        };
+        viewHolder.playbackSpeed.setText(context.getString(labelRes[currentSpeedIndex]));
+    }
+
     private ViewHolder getCurrentViewHolder() {
         for (WeakReference<RelativeLayout> audioPlayer : audioPlayerLayouts) {
             final Message message = (Message) audioPlayer.get().getTag();
@@ -453,6 +493,7 @@ public class AudioPlayer
         private TextView runtime;
         private SeekBar progress;
         private MaterialButton playPause;
+        private MaterialButton playbackSpeed;
         private MessageAdapter.BubbleColor bubbleColor = MessageAdapter.BubbleColor.SURFACE;
 
         public static ViewHolder get(final RelativeLayout audioPlayer) {
@@ -465,6 +506,7 @@ public class AudioPlayer
             viewHolder.runtime = audioPlayer.findViewById(R.id.runtime);
             viewHolder.progress = audioPlayer.findViewById(R.id.progress);
             viewHolder.playPause = audioPlayer.findViewById(R.id.play_pause);
+            viewHolder.playbackSpeed = audioPlayer.findViewById(R.id.playback_speed);
             audioPlayer.setTag(R.id.TAG_AUDIO_PLAYER_VIEW_HOLDER, viewHolder);
             return viewHolder;
         }
