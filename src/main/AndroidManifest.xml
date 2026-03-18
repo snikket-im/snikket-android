@@ -381,6 +381,9 @@
             android:name=".ui.ViewProfilePictureActivity"
             android:theme="@style/Theme.Conversations3.Dark" />
         <activity
+            android:name=".ui.MediaViewerActivity"
+            android:theme="@style/Theme.Conversations3.Dark" />
+        <activity
             android:name=".ui.MucUsersActivity"
             android:label="@string/group_chat_members" />
         <activity

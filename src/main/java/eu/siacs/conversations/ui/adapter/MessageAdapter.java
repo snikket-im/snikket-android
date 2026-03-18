@@ -69,6 +69,7 @@ import eu.siacs.conversations.ui.Activities;
 import eu.siacs.conversations.ui.BindingAdapters;
 import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.ConversationsActivity;
+import eu.siacs.conversations.ui.MediaViewerActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.service.AudioPlayer;
 import eu.siacs.conversations.ui.text.DividerSpan;
@@ -688,7 +689,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 new LinearLayout.LayoutParams(scaledW, scaledH);
         viewHolder.image().setLayoutParams(layoutParams);
         activity.loadBitmap(message, viewHolder.image());
-        viewHolder.image().setOnClickListener(v -> openDownloadable(message));
+        viewHolder.image().setOnClickListener(v -> openMediaViewer(message));
     }
 
     private void toggleWhisperInfo(
@@ -1350,6 +1351,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final DownloadableFile file =
                 activity.xmppConnectionService.getFileBackend().getFile(message);
         ViewUtil.view(activity, file);
+    }
+
+    private void openMediaViewer(final Message message) {
+        final Intent intent = new Intent(activity, MediaViewerActivity.class);
+        intent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, message.getConversationUuid());
+        intent.putExtra(MediaViewerActivity.EXTRA_MESSAGE_UUID, message.getUuid());
+        activity.startActivity(intent);
     }
 
     private void showLocation(Message message) {
