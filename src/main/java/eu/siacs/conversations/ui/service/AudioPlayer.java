@@ -48,6 +48,7 @@ public class AudioPlayer
     private static PowerManager.WakeLock wakeLock;
     private final MessageAdapter messageAdapter;
     private final WeakReferenceSet<RelativeLayout> audioPlayerLayouts = new WeakReferenceSet<>();
+    private final WeakReferenceSet<RelativeLayout> allAudioPlayerLayouts = new WeakReferenceSet<>();
     private final SensorManager sensorManager;
     private final Sensor proximitySensor;
     private final PendingItem<WeakReference<MaterialButton>> pendingOnClickView =
@@ -100,6 +101,7 @@ public class AudioPlayer
     public void init(RelativeLayout audioPlayer, Message message) {
         synchronized (AudioPlayer.LOCK) {
             audioPlayer.setTag(message);
+            this.allAudioPlayerLayouts.addWeakReferenceTo(audioPlayer);
             if (init(ViewHolder.get(audioPlayer), message)) {
                 this.audioPlayerLayouts.addWeakReferenceTo(audioPlayer);
                 executor.execute(() -> this.stopRefresher(true));
@@ -286,6 +288,7 @@ public class AudioPlayer
     public void onCompletion(android.media.MediaPlayer mediaPlayer) {
         synchronized (AudioPlayer.LOCK) {
             this.stopRefresher(false);
+            final Message justFinished = AudioPlayer.currentlyPlayingMessage;
             if (AudioPlayer.player == mediaPlayer) {
                 AudioPlayer.currentlyPlayingMessage = null;
                 AudioPlayer.player = null;
@@ -295,6 +298,69 @@ public class AudioPlayer
             releaseProximityWakeLock();
             resetPlayerUi();
             sensorManager.unregisterListener(this);
+            handler.post(() -> {
+                synchronized (LOCK) {
+                    playNext(justFinished);
+                }
+            });
+        }
+    }
+
+    private static boolean isAudioMessage(final Message message) {
+        if (!message.isFileOrImage()) {
+            return false;
+        }
+        if (message.getEncryption() == Message.ENCRYPTION_PGP
+                || message.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
+            return false;
+        }
+        final Message.FileParams p = message.getFileParams();
+        return p != null && p.runtime > 0 && p.width == 0 && p.height == 0;
+    }
+
+    private void playNext(final Message finished) {
+        if (finished == null) {
+            return;
+        }
+        final int count = messageAdapter.getCount();
+        int startPos = -1;
+        for (int i = 0; i < count; i++) {
+            if (messageAdapter.getItem(i) == finished) {
+                startPos = i;
+                break;
+            }
+        }
+        if (startPos < 0) {
+            return;
+        }
+        for (int i = startPos + 1; i < count; i++) {
+            final Message next = messageAdapter.getItem(i);
+            if (next == null || !isAudioMessage(next)) {
+                continue;
+            }
+            for (WeakReference<RelativeLayout> ref : allAudioPlayerLayouts) {
+                final RelativeLayout layout = ref.get();
+                if (layout != null && layout.getTag() == next) {
+                    audioPlayerLayouts.clear();
+                    audioPlayerLayouts.addWeakReferenceTo(layout);
+                    final ViewHolder vh = ViewHolder.get(layout);
+                    if (play(vh, next, false)) {
+                        init(vh, next);
+                        stopRefresher(true);
+                    }
+                    return;
+                }
+            }
+            // View not yet visible — scroll to it and retry after layout
+            messageAdapter.smoothScrollToPosition(i);
+            handler.postDelayed(
+                    () -> {
+                        synchronized (LOCK) {
+                            playNext(finished);
+                        }
+                    },
+                    250);
+            return;
         }
     }
 

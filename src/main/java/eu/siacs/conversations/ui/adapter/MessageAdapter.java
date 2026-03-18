@@ -114,6 +114,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
     private BubbleDesign bubbleDesign = new BubbleDesign(false, false, false, true, true);
     private final boolean mForceNames;
+    private android.widget.ListView listView;
 
     public MessageAdapter(
             final XmppActivity activity, final List<Message> messages, final boolean forceNames) {
@@ -1321,6 +1322,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     public FileBackend getFileBackend() {
         return activity.xmppConnectionService.getFileBackend();
+    }
+
+    public void setListView(final android.widget.ListView listView) {
+        this.listView = listView;
+    }
+
+    public void smoothScrollToPosition(final int position) {
+        if (listView != null) {
+            listView.smoothScrollToPosition(position);
+        }
     }
 
     public void stopAudioPlayer() {
