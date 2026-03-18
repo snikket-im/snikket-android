@@ -1266,6 +1266,7 @@ public class ConversationFragment extends XmppFragment
         messageListAdapter.setOnContactPictureClicked(this);
         messageListAdapter.setOnContactPictureLongClicked(this);
         binding.messagesView.setAdapter(messageListAdapter);
+        messageListAdapter.setListView(binding.messagesView);
 
         registerForContextMenu(binding.messagesView);
 
