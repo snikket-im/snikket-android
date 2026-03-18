@@ -991,6 +991,11 @@
     <string name="record_voice_mail">Record voice mail</string>
     <string name="play_audio">Play audio</string>
     <string name="pause_audio">Pause audio</string>
+    <string name="speed_1x">1×</string>
+    <string name="speed_1_25x">1.25×</string>
+    <string name="speed_1_5x">1.5×</string>
+    <string name="speed_2x">2×</string>
+    <string name="playback_speed">Playback speed</string>
     <string name="add_contact_or_create_or_join_group_chat">Add contact, create or join group chat, or discover channels</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>

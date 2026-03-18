@@ -63,12 +63,25 @@
                 app:icon="@drawable/ic_play_arrow_24dp"
                 app:iconSize="26dp" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/playback_speed"
+                style="?attr/materialIconButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/playback_speed"
+                android:text="@string/speed_1x"
+                android:textSize="12sp"
+                app:iconSize="0dp" />
+
             <TextView
                 android:id="@+id/runtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="16dp"
+                android:layout_toStartOf="@+id/playback_speed"
+                android:layout_alignTop="@+id/playback_speed"
+                android:layout_marginEnd="4dp"
                 android:layout_marginBottom="16dp"
                 android:textAppearance="?textAppearanceBodySmall" />
 
@@ -79,6 +92,7 @@
                 android:layout_below="@+id/runtime"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/play_pause"
+                android:layout_toStartOf="@+id/playback_speed"
                 android:progress="100" />
         </RelativeLayout>
 
