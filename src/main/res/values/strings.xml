@@ -6,6 +6,9 @@
     <string name="action_account">Manage account</string>
     <string name="action_archive_chat">Archive chat</string>
     <string name="select_chats">Select chats</string>
+    <string name="select_all">Select all</string>
+    <string name="search_mode_messages">Messages</string>
+    <string name="search_mode_chats">Chats</string>
     <string name="archive_selected">Archive</string>
     <string name="archive_chats">Archive chats</string>
     <plurals name="x_chats">

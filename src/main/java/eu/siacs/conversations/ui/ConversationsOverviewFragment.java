@@ -401,6 +401,9 @@ public class ConversationsOverviewFragment extends XmppFragment {
                     if (item.getItemId() == R.id.action_archive_selected) {
                         confirmAndArchiveSelected();
                         return true;
+                    } else if (item.getItemId() == R.id.action_select_all) {
+                        selectAllConversations();
+                        return true;
                     }
                     return false;
                 }
@@ -460,6 +463,21 @@ public class ConversationsOverviewFragment extends XmppFragment {
         } else {
             updateSelectionTitle();
         }
+    }
+
+    private void selectAllConversations() {
+        if (selectionActionMode == null) {
+            return;
+        }
+        selectedConversationUuids.clear();
+        for (final Conversation conversation : conversations) {
+            if (conversation != null) {
+                selectedConversationUuids.add(conversation.getUuid());
+            }
+        }
+        conversationsAdapter.setSelection(selectedConversationUuids);
+        conversationsAdapter.notifyDataSetChanged();
+        updateSelectionTitle();
     }
 
     private void updateSelectionTitle() {

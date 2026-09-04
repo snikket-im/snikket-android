@@ -6,4 +6,8 @@
         android:icon="@drawable/ic_archive_24dp"
         android:title="@string/archive_selected"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_select_all"
+        android:title="@string/select_all"
+        app:showAsAction="never" />
 </menu>
