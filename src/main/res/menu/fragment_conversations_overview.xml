@@ -36,6 +36,11 @@
         android:visible="@bool/show_individual_search_options"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_select_chats"
+        android:orderInCategory="11"
+        android:title="@string/select_chats"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_easy_invite"
         android:orderInCategory="89"
         android:title="@string/invite_to_app" />

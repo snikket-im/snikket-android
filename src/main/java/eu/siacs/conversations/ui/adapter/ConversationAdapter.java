@@ -27,7 +27,11 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.manager.JingleManager;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ConversationAdapter
         extends RecyclerView.Adapter<ConversationAdapter.ConversationViewHolder> {
@@ -35,6 +39,8 @@ public class ConversationAdapter
     private final XmppActivity activity;
     private final List<Conversation> conversations;
     private OnConversationClickListener listener;
+    private OnConversationLongClickListener longClickListener;
+    private final Set<String> selectedUuids = new HashSet<>();
 
     public ConversationAdapter(XmppActivity activity, List<Conversation> conversations) {
         this.activity = activity;
@@ -75,6 +81,12 @@ public class ConversationAdapter
                     MaterialColors.getColor(
                             viewHolder.binding.frame,
                             com.google.android.material.R.attr.colorSurface));
+        }
+        if (selectedUuids.contains(conversation.getUuid())) {
+            viewHolder.binding.frame.setBackgroundColor(
+                    MaterialColors.getColor(
+                            viewHolder.binding.frame,
+                            com.google.android.material.R.attr.colorSecondaryContainer));
         }
 
         final Message message = conversation.getLatestMessage();
@@ -251,6 +263,14 @@ public class ConversationAdapter
                 viewHolder.binding.conversationImage,
                 R.dimen.avatar_on_conversation_overview);
         viewHolder.itemView.setOnClickListener(v -> listener.onConversationClick(v, conversation));
+        viewHolder.itemView.setOnLongClickListener(
+                v -> {
+                    if (longClickListener != null) {
+                        longClickListener.onConversationLongClick(v, conversation);
+                        return true;
+                    }
+                    return false;
+                });
     }
 
     @Override
@@ -260,6 +280,44 @@ public class ConversationAdapter
 
     public void setConversationClickListener(OnConversationClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setConversationLongClickListener(OnConversationLongClickListener listener) {
+        this.longClickListener = listener;
+    }
+
+    public boolean isSelected(final Conversation conversation) {
+        return conversation != null && selectedUuids.contains(conversation.getUuid());
+    }
+
+    public void setSelected(final Conversation conversation, final boolean selected) {
+        if (conversation == null) {
+            return;
+        }
+        if (selected) {
+            selectedUuids.add(conversation.getUuid());
+        } else {
+            selectedUuids.remove(conversation.getUuid());
+        }
+    }
+
+    public void setSelection(final Collection<String> uuids) {
+        selectedUuids.clear();
+        if (uuids != null) {
+            selectedUuids.addAll(uuids);
+        }
+    }
+
+    public Set<String> getSelectedUuids() {
+        return Collections.unmodifiableSet(new HashSet<>(selectedUuids));
+    }
+
+    public int getSelectionCount() {
+        return selectedUuids.size();
+    }
+
+    public void clearSelection() {
+        selectedUuids.clear();
     }
 
     public void insert(Conversation c, int position) {
@@ -274,6 +332,10 @@ public class ConversationAdapter
 
     public interface OnConversationClickListener {
         void onConversationClick(View view, Conversation conversation);
+    }
+
+    public interface OnConversationLongClickListener {
+        void onConversationLongClick(View view, Conversation conversation);
     }
 
     public static class ConversationViewHolder extends RecyclerView.ViewHolder {

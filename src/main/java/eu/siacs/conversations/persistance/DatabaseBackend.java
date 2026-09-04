@@ -1829,8 +1829,27 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     public boolean deleteMessage(String uuid) {
         final var db = this.getWritableDatabase();
         final String[] args = {uuid};
-        final int rows = db.delete(Message.TABLENAME, Account.UUID + "=?", args);
+        final int rows = db.delete(Message.TABLENAME, Message.UUID + "=?", args);
         return rows == 1;
+    }
+
+    public int deleteMessages(final Collection<String> uuids) {
+        if (uuids == null || uuids.isEmpty()) {
+            return 0;
+        }
+        final var db = this.getWritableDatabase();
+        db.beginTransaction();
+        int deleted = 0;
+        try {
+            for (final String uuid : uuids) {
+                final String[] args = {uuid};
+                deleted += db.delete(Message.TABLENAME, Message.UUID + "=?", args);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        return deleted;
     }
 
     public Map<Jid, Contact> readRoster(final Account account) {

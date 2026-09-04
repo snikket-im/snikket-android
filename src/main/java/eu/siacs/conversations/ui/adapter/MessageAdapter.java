@@ -93,8 +93,11 @@ import im.conversations.android.xmpp.model.reactions.Restrictions;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -114,6 +117,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
     private BubbleDesign bubbleDesign = new BubbleDesign(false, false, false, true, true);
     private final boolean mForceNames;
+    private final Set<String> selectedUuids = new HashSet<>();
 
     public MessageAdapter(
             final XmppActivity activity, final List<Message> messages, final boolean forceNames) {
@@ -157,6 +161,50 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     public void setOnContactPictureLongClicked(OnContactPictureLongClicked listener) {
         this.mOnContactPictureLongClickedListener = listener;
+    }
+
+    public static boolean isSelectable(final Message message) {
+        if (message == null) {
+            return false;
+        }
+        final int type = message.getType();
+        return type != Message.TYPE_STATUS && type != Message.TYPE_RTP_SESSION;
+    }
+
+    public boolean isSelected(final Message message) {
+        return message != null && selectedUuids.contains(message.getUuid());
+    }
+
+    public void setSelected(final Message message, final boolean selected) {
+        if (message == null || !isSelectable(message)) {
+            return;
+        }
+        if (selected) {
+            selectedUuids.add(message.getUuid());
+        } else {
+            selectedUuids.remove(message.getUuid());
+        }
+    }
+
+    public void setSelection(final Collection<String> uuids) {
+        selectedUuids.clear();
+        if (uuids != null) {
+            selectedUuids.addAll(uuids);
+        }
+    }
+
+    public Set<String> getSelectedUuids() {
+        return Collections.unmodifiableSet(new HashSet<>(selectedUuids));
+    }
+
+    public int getSelectionCount() {
+        return selectedUuids.size();
+    }
+
+    public void clearSelection() {
+        if (!selectedUuids.isEmpty()) {
+            selectedUuids.clear();
+        }
     }
 
     @Override
@@ -809,27 +857,35 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final int type = getItemViewType(message, bubbleDesign.alignStart);
         final MessageItemViewHolder viewHolder = getViewHolder(view, parent, type);
 
+        final View result;
         if (type == DATE_SEPARATOR
                 && viewHolder instanceof DateSeperatorMessageItemViewHolder messageItemViewHolder) {
-            return render(message, messageItemViewHolder);
-        }
-
-        if (type == RTP_SESSION
+            result = render(message, messageItemViewHolder);
+        } else if (type == RTP_SESSION
                 && viewHolder instanceof RtpSessionMessageItemViewHolder messageItemViewHolder) {
-            return render(message, messageItemViewHolder);
-        }
-
-        if (type == STATUS
+            result = render(message, messageItemViewHolder);
+        } else if (type == STATUS
                 && viewHolder instanceof StatusMessageItemViewHolder messageItemViewHolder) {
-            return render(message, messageItemViewHolder);
-        }
-
-        if ((type == END || type == START)
+            result = render(message, messageItemViewHolder);
+        } else if ((type == END || type == START)
                 && viewHolder instanceof BubbleMessageItemViewHolder messageItemViewHolder) {
-            return render(position, message, messageItemViewHolder);
+            result = render(position, message, messageItemViewHolder);
+        } else {
+            throw new AssertionError();
         }
+        applySelectionHighlight(result, message);
+        return result;
+    }
 
-        throw new AssertionError();
+    private void applySelectionHighlight(final View view, final Message message) {
+        if (isSelected(message)) {
+            view.setBackgroundColor(
+                    MaterialColors.getColor(
+                            view,
+                            com.google.android.material.R.attr.colorSecondaryContainer));
+        } else {
+            view.setBackgroundColor(Color.TRANSPARENT);
+        }
     }
 
     private View render(

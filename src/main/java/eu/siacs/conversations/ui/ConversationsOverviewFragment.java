@@ -36,6 +36,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -74,7 +75,9 @@ import eu.siacs.conversations.ui.util.ScrollState;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.xmpp.manager.EasyOnboardingManager;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ConversationsOverviewFragment extends XmppFragment {
@@ -88,6 +91,8 @@ public class ConversationsOverviewFragment extends XmppFragment {
     private FragmentConversationsOverviewBinding binding;
     private ConversationAdapter conversationsAdapter;
     private final PendingActionHelper pendingActionHelper = new PendingActionHelper();
+    private ActionMode selectionActionMode;
+    private final Set<String> selectedConversationUuids = new HashSet<>();
 
     private final ItemTouchHelper.SimpleCallback callback =
             new ItemTouchHelper.SimpleCallback(0, LEFT | RIGHT) {
@@ -142,6 +147,11 @@ public class ConversationsOverviewFragment extends XmppFragment {
                 @Override
                 public void onSwiped(
                         final RecyclerView.ViewHolder viewHolder, final int direction) {
+                    if (selectionActionMode != null) {
+                        // Swipe is disabled while multi-selecting; restore the swiped row
+                        conversationsAdapter.notifyDataSetChanged();
+                        return;
+                    }
                     int position = viewHolder.getLayoutPosition();
                     final Conversation conversation;
                     try {
@@ -175,6 +185,9 @@ public class ConversationsOverviewFragment extends XmppFragment {
                     final var id = menuItem.getItemId();
                     if (id == R.id.action_search) {
                         startActivity(new Intent(getActivity(), SearchActivity.class));
+                        return true;
+                    } else if (id == R.id.action_select_chats) {
+                        startConversationSelection();
                         return true;
                     } else if (id == R.id.action_easy_invite) {
                         selectAccountToStartEasyInvite();
@@ -302,6 +315,11 @@ public class ConversationsOverviewFragment extends XmppFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (selectionActionMode != null) {
+            selectionActionMode.finish();
+            selectionActionMode = null;
+        }
+        selectedConversationUuids.clear();
         this.binding = null;
         this.conversationsAdapter = null;
         this.touchHelper = null;
@@ -310,6 +328,11 @@ public class ConversationsOverviewFragment extends XmppFragment {
     @Override
     public void onPause() {
         pendingActionHelper.execute();
+        if (selectionActionMode != null) {
+            selectionActionMode.finish();
+            selectionActionMode = null;
+        }
+        selectedConversationUuids.clear();
         super.onPause();
     }
 
@@ -328,6 +351,10 @@ public class ConversationsOverviewFragment extends XmppFragment {
                 new ConversationAdapter(requireXmppActivity(), this.conversations);
         this.conversationsAdapter.setConversationClickListener(
                 (view, conversation) -> {
+                    if (selectionActionMode != null) {
+                        toggleConversationSelection(conversation);
+                        return;
+                    }
                     if (getActivity() instanceof OnConversationSelected callback) {
                         callback.onConversationSelected(conversation);
                     } else {
@@ -336,6 +363,8 @@ public class ConversationsOverviewFragment extends XmppFragment {
                                 "Activity does not implement OnConversationSelected");
                     }
                 });
+        this.conversationsAdapter.setConversationLongClickListener(
+                (view, conversation) -> startConversationSelection(conversation));
         this.binding.list.setAdapter(this.conversationsAdapter);
         this.binding.list.setLayoutManager(
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -347,6 +376,190 @@ public class ConversationsOverviewFragment extends XmppFragment {
 
     @Override
     public void onBackendConnected() {
+        refresh();
+    }
+
+    private final ActionMode.Callback selectionCallback =
+            new ActionMode.Callback() {
+                @Override
+                public boolean onCreateActionMode(final ActionMode mode, final Menu menu) {
+                    final MenuInflater inflater = mode.getMenuInflater();
+                    inflater.inflate(R.menu.menu_conversation_selection, menu);
+                    if (touchHelper != null && binding != null) {
+                        touchHelper.attachToRecyclerView(null);
+                    }
+                    return true;
+                }
+
+                @Override
+                public boolean onPrepareActionMode(final ActionMode mode, final Menu menu) {
+                    return false;
+                }
+
+                @Override
+                public boolean onActionItemClicked(final ActionMode mode, final MenuItem item) {
+                    if (item.getItemId() == R.id.action_archive_selected) {
+                        confirmAndArchiveSelected();
+                        return true;
+                    } else if (item.getItemId() == R.id.action_select_all) {
+                        selectAllConversations();
+                        return true;
+                    }
+                    return false;
+                }
+
+                @Override
+                public void onDestroyActionMode(final ActionMode mode) {
+                    clearConversationSelection();
+                    if (touchHelper != null && binding != null) {
+                        touchHelper.attachToRecyclerView(binding.list);
+                    }
+                }
+            };
+
+    private void startConversationSelection(final Conversation conversation) {
+        if (conversation == null || selectionActionMode != null) {
+            return;
+        }
+        selectedConversationUuids.clear();
+        selectedConversationUuids.add(conversation.getUuid());
+        conversationsAdapter.setSelection(selectedConversationUuids);
+        conversationsAdapter.notifyDataSetChanged();
+        selectionActionMode = requireActivity().startActionMode(selectionCallback);
+        updateSelectionTitle();
+    }
+
+    /**
+     * Tap-only entry point (toolbar overflow). Starts selection mode without requiring a
+     * long-press, which is finicky with a mouse in the emulator. Pre-selects the most recent
+     * conversation so the user gets immediate visual feedback, then tap toggles.
+     */
+    private void startConversationSelection() {
+        if (selectionActionMode != null || conversations.isEmpty()) {
+            return;
+        }
+        selectedConversationUuids.clear();
+        selectedConversationUuids.add(conversations.get(0).getUuid());
+        conversationsAdapter.setSelection(selectedConversationUuids);
+        conversationsAdapter.notifyDataSetChanged();
+        selectionActionMode = requireActivity().startActionMode(selectionCallback);
+        updateSelectionTitle();
+    }
+
+    private void toggleConversationSelection(final Conversation conversation) {
+        if (conversation == null) {
+            return;
+        }
+        final String uuid = conversation.getUuid();
+        if (selectedConversationUuids.contains(uuid)) {
+            selectedConversationUuids.remove(uuid);
+        } else {
+            selectedConversationUuids.add(uuid);
+        }
+        conversationsAdapter.setSelection(selectedConversationUuids);
+        conversationsAdapter.notifyDataSetChanged();
+        if (selectedConversationUuids.isEmpty()) {
+            finishConversationSelection();
+        } else {
+            updateSelectionTitle();
+        }
+    }
+
+    private void selectAllConversations() {
+        if (selectionActionMode == null) {
+            return;
+        }
+        selectedConversationUuids.clear();
+        for (final Conversation conversation : conversations) {
+            if (conversation != null) {
+                selectedConversationUuids.add(conversation.getUuid());
+            }
+        }
+        conversationsAdapter.setSelection(selectedConversationUuids);
+        conversationsAdapter.notifyDataSetChanged();
+        updateSelectionTitle();
+    }
+
+    private void updateSelectionTitle() {
+        if (selectionActionMode != null) {
+            final int count = selectedConversationUuids.size();
+            if (count == 0) {
+                selectionActionMode.setTitle(R.string.select_chats);
+            } else {
+                selectionActionMode.setTitle(
+                        getResources().getQuantityString(R.plurals.x_chats, count, count));
+            }
+        }
+    }
+
+    private void finishConversationSelection() {
+        if (selectionActionMode != null) {
+            selectionActionMode.finish();
+        } else {
+            clearConversationSelection();
+        }
+    }
+
+    private void clearConversationSelection() {
+        selectedConversationUuids.clear();
+        if (conversationsAdapter != null) {
+            conversationsAdapter.clearSelection();
+            try {
+                conversationsAdapter.notifyDataSetChanged();
+            } catch (final Exception e) {
+                Log.d(Config.LOGTAG, "could not clear conversation selection", e);
+            }
+        }
+        selectionActionMode = null;
+    }
+
+    private void confirmAndArchiveSelected() {
+        if (selectedConversationUuids.isEmpty()
+                || requireXmppActivity().xmppConnectionService == null) {
+            return;
+        }
+        final int count = selectedConversationUuids.size();
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
+        builder.setTitle(R.string.archive_chats);
+        builder.setMessage(
+                getResources()
+                        .getQuantityString(
+                                R.plurals.archive_chats_dialog_msg, count, count));
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(
+                R.string.confirm, (dialog, which) -> archiveSelectedConversations());
+        builder.create().show();
+    }
+
+    private void archiveSelectedConversations() {
+        if (selectedConversationUuids.isEmpty()) {
+            return;
+        }
+        final var service = requireXmppActivity().xmppConnectionService;
+        if (service == null) {
+            return;
+        }
+        final List<Conversation> toArchive = new ArrayList<>();
+        for (final Conversation conversation : conversations) {
+            if (conversation != null && selectedConversationUuids.contains(conversation.getUuid())) {
+                toArchive.add(conversation);
+            }
+        }
+        final Conversation openConversation = ConversationFragment.getConversation(getActivity());
+        final boolean openArchived =
+                openConversation != null
+                        && selectedConversationUuids.contains(openConversation.getUuid());
+        if (selectionActionMode != null) {
+            selectionActionMode.finish();
+        } else {
+            clearConversationSelection();
+        }
+        for (final Conversation conversation : toArchive) {
+            service.archiveConversation(conversation);
+        }
+        if (openArchived && getActivity() instanceof OnConversationArchived callback) {
+            callback.onConversationArchived(openConversation);
+        }
         refresh();
     }
 

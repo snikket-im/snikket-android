@@ -37,16 +37,22 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Strings;
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivitySearchBinding;
 import eu.siacs.conversations.entities.Contact;
@@ -54,6 +60,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.MessageSearchTask;
+import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
 import eu.siacs.conversations.ui.util.ChangeWatcher;
@@ -65,7 +72,10 @@ import eu.siacs.conversations.utils.FtsUtils;
 import eu.siacs.conversations.utils.MessageUtils;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 public class SearchActivity extends XmppActivity
         implements TextWatcher, OnSearchResultsAvailable, MessageAdapter.OnContactPictureClicked {
@@ -76,6 +86,17 @@ public class SearchActivity extends XmppActivity
     private ActivitySearchBinding binding;
     private MessageAdapter messageListAdapter;
     private final List<Message> messages = new ArrayList<>();
+    private ConversationAdapter chatAdapter;
+    private final List<Conversation> chatResults = new ArrayList<>();
+    private ActionMode chatSelectionActionMode;
+    private final Set<String> selectedChatUuids = new HashSet<>();
+
+    private enum SearchMode {
+        MESSAGES,
+        CHATS
+    }
+
+    private SearchMode searchMode = SearchMode.MESSAGES;
     private WeakReference<Message> selectedMessageReference = new WeakReference<>(null);
     private String uuid;
     private final ChangeWatcher<List<String>> currentSearch = new ChangeWatcher<>();
@@ -102,6 +123,35 @@ public class SearchActivity extends XmppActivity
         this.messageListAdapter.setOnContactPictureClicked(this);
         this.binding.searchResults.setAdapter(messageListAdapter);
         registerForContextMenu(this.binding.searchResults);
+        this.chatAdapter = new ConversationAdapter(this, this.chatResults);
+        this.chatAdapter.setConversationClickListener(
+                (view, conversation) -> {
+                    if (chatSelectionActionMode != null) {
+                        toggleChatSelection(conversation);
+                    } else {
+                        switchToConversation(conversation);
+                    }
+                });
+        this.chatAdapter.setConversationLongClickListener(
+                (view, conversation) -> startChatSelection(conversation));
+        this.binding.searchConversations.setAdapter(chatAdapter);
+        this.binding.searchConversations.setLayoutManager(new LinearLayoutManager(this));
+        if (uuid == null) {
+            this.binding.searchModeToggle.addOnButtonCheckedListener(
+                    (group, checkedId, isChecked) -> {
+                        if (!isChecked) {
+                            return;
+                        }
+                        if (checkedId == R.id.search_mode_chats) {
+                            showChatsMode();
+                        } else if (checkedId == R.id.search_mode_messages) {
+                            showMessagesMode();
+                        }
+                    });
+            this.binding.searchModeToggle.check(R.id.search_mode_messages);
+        } else {
+            this.binding.searchModeToggle.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -250,6 +300,11 @@ public class SearchActivity extends XmppActivity
             this.messages.clear();
             messageListAdapter.setHighlightedTerm(null);
             messageListAdapter.notifyDataSetChanged();
+            this.chatResults.clear();
+            if (chatAdapter != null) {
+                chatAdapter.notifyDataSetChanged();
+            }
+            finishChatSelection();
             changeBackground(false, false);
         } else {
             xmppConnectionService.search(term, uuid, this);
@@ -267,7 +322,230 @@ public class SearchActivity extends XmppActivity
                     messageListAdapter.notifyDataSetChanged();
                     changeBackground(true, !messages.isEmpty());
                     ListViewUtils.scrollToBottom(this.binding.searchResults);
+                    updateChatResults(messages);
                 });
+    }
+
+    private void updateChatResults(final List<Message> messages) {
+        this.chatResults.clear();
+        final var seen = new LinkedHashMap<String, Conversation>();
+        for (final Message message : messages) {
+            if (message == null) {
+                continue;
+            }
+            final Conversational conversational = message.getConversation();
+            if (conversational == null) {
+                continue;
+            }
+            final String conversationUuid = conversational.getUuid();
+            if (conversationUuid == null || seen.containsKey(conversationUuid)) {
+                continue;
+            }
+            final Conversation conversation;
+            if (conversational instanceof Conversation c) {
+                conversation = c;
+            } else if (xmppConnectionService != null) {
+                // Memory-only lookup: archived chats resolve to stubs here and are
+                // deliberately hidden from Chats mode instead of being restored.
+                conversation = xmppConnectionService.findConversationByUuid(conversationUuid);
+                if (conversation == null) {
+                    continue;
+                }
+            } else {
+                continue;
+            }
+            seen.put(conversationUuid, conversation);
+        }
+        this.chatResults.addAll(seen.values());
+        // Drop selections whose conversations are no longer listed
+        selectedChatUuids.retainAll(seen.keySet());
+        if (chatAdapter != null) {
+            chatAdapter.setSelection(selectedChatUuids);
+            chatAdapter.notifyDataSetChanged();
+        }
+        if (selectedChatUuids.isEmpty()) {
+            finishChatSelection();
+        } else {
+            updateChatSelectionTitle();
+        }
+    }
+
+    private void showChatsMode() {
+        searchMode = SearchMode.CHATS;
+        binding.searchResults.setVisibility(View.GONE);
+        binding.searchConversations.setVisibility(View.VISIBLE);
+    }
+
+    private void showMessagesMode() {
+        searchMode = SearchMode.MESSAGES;
+        binding.searchConversations.setVisibility(View.GONE);
+        binding.searchResults.setVisibility(View.VISIBLE);
+        finishChatSelection();
+    }
+
+    private final ActionMode.Callback chatSelectionCallback =
+            new ActionMode.Callback() {
+                @Override
+                public boolean onCreateActionMode(final ActionMode mode, final Menu menu) {
+                    final MenuInflater inflater = mode.getMenuInflater();
+                    inflater.inflate(R.menu.menu_conversation_selection, menu);
+                    return true;
+                }
+
+                @Override
+                public boolean onPrepareActionMode(final ActionMode mode, final Menu menu) {
+                    return false;
+                }
+
+                @Override
+                public boolean onActionItemClicked(final ActionMode mode, final MenuItem item) {
+                    if (item.getItemId() == R.id.action_archive_selected) {
+                        confirmAndArchiveSelectedChats();
+                        return true;
+                    } else if (item.getItemId() == R.id.action_select_all) {
+                        selectAllChats();
+                        return true;
+                    }
+                    return false;
+                }
+
+                @Override
+                public void onDestroyActionMode(final ActionMode mode) {
+                    clearChatSelection();
+                }
+            };
+
+    private void startChatSelection(final Conversation conversation) {
+        if (conversation == null || chatSelectionActionMode != null) {
+            return;
+        }
+        selectedChatUuids.clear();
+        selectedChatUuids.add(conversation.getUuid());
+        chatAdapter.setSelection(selectedChatUuids);
+        chatAdapter.notifyDataSetChanged();
+        chatSelectionActionMode = startActionMode(chatSelectionCallback);
+        updateChatSelectionTitle();
+    }
+
+    private void toggleChatSelection(final Conversation conversation) {
+        if (conversation == null) {
+            return;
+        }
+        final String uuid = conversation.getUuid();
+        if (selectedChatUuids.contains(uuid)) {
+            selectedChatUuids.remove(uuid);
+        } else {
+            selectedChatUuids.add(uuid);
+        }
+        chatAdapter.setSelection(selectedChatUuids);
+        chatAdapter.notifyDataSetChanged();
+        if (selectedChatUuids.isEmpty()) {
+            finishChatSelection();
+        } else {
+            updateChatSelectionTitle();
+        }
+    }
+
+    private void selectAllChats() {
+        if (chatSelectionActionMode == null) {
+            return;
+        }
+        selectedChatUuids.clear();
+        for (final Conversation conversation : chatResults) {
+            if (conversation != null) {
+                selectedChatUuids.add(conversation.getUuid());
+            }
+        }
+        chatAdapter.setSelection(selectedChatUuids);
+        chatAdapter.notifyDataSetChanged();
+        updateChatSelectionTitle();
+    }
+
+    private void updateChatSelectionTitle() {
+        if (chatSelectionActionMode != null) {
+            final int count = selectedChatUuids.size();
+            if (count == 0) {
+                chatSelectionActionMode.setTitle(R.string.select_chats);
+            } else {
+                chatSelectionActionMode.setTitle(
+                        getResources().getQuantityString(R.plurals.x_chats, count, count));
+            }
+        }
+    }
+
+    private void finishChatSelection() {
+        if (chatSelectionActionMode != null) {
+            chatSelectionActionMode.finish();
+        } else {
+            clearChatSelection();
+        }
+    }
+
+    private void clearChatSelection() {
+        selectedChatUuids.clear();
+        if (chatAdapter != null) {
+            chatAdapter.clearSelection();
+            try {
+                chatAdapter.notifyDataSetChanged();
+            } catch (final Exception e) {
+                Log.d(Config.LOGTAG, "could not clear search chat selection", e);
+            }
+        }
+        chatSelectionActionMode = null;
+    }
+
+    private void confirmAndArchiveSelectedChats() {
+        if (selectedChatUuids.isEmpty() || xmppConnectionService == null) {
+            return;
+        }
+        final int count = selectedChatUuids.size();
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.archive_chats);
+        builder.setMessage(
+                getResources()
+                        .getQuantityString(
+                                R.plurals.archive_chats_dialog_msg, count, count));
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(
+                R.string.confirm, (dialog, which) -> archiveSelectedChats());
+        builder.create().show();
+    }
+
+    private void archiveSelectedChats() {
+        if (selectedChatUuids.isEmpty() || xmppConnectionService == null) {
+            return;
+        }
+        final List<Conversation> toArchive = new ArrayList<>();
+        for (final Conversation conversation : chatResults) {
+            if (conversation != null && selectedChatUuids.contains(conversation.getUuid())) {
+                toArchive.add(conversation);
+            }
+        }
+        if (chatSelectionActionMode != null) {
+            chatSelectionActionMode.finish();
+        } else {
+            clearChatSelection();
+        }
+        for (final Conversation conversation : toArchive) {
+            xmppConnectionService.archiveConversation(conversation);
+        }
+        // Re-run the current query so archived chats drop out of Chats mode
+        final List<String> term = currentSearch.get();
+        if (term != null && !term.isEmpty()) {
+            xmppConnectionService.search(term, uuid, this);
+        } else {
+            refreshUi();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (chatSelectionActionMode != null) {
+            chatSelectionActionMode.finish();
+            chatSelectionActionMode = null;
+        }
+        selectedChatUuids.clear();
+        super.onDestroy();
     }
 
     @Override
