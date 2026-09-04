@@ -3808,6 +3808,59 @@ public class XmppConnectionService extends Service {
         mDatabaseWriterExecutor.execute(runnable);
     }
 
+    /**
+     * Deletes the given messages locally. This only removes them from this device; it does not
+     * retract them for other participants and - due to missing protocol support in XMPP - it does
+     * not sync the deletion to the user's other devices.
+     */
+    public void deleteMessages(
+            final Conversation conversation, final Collection<Message> messages) {
+        if (conversation == null || messages == null || messages.isEmpty()) {
+            return;
+        }
+        final List<String> uuids = new ArrayList<>(messages.size());
+        for (final Message message : messages) {
+            if (message == null) {
+                continue;
+            }
+            uuids.add(message.getUuid());
+            conversation.remove(message);
+            try {
+                if (message.getTransferable() != null) {
+                    message.getTransferable().cancel();
+                }
+            } catch (final Exception e) {
+                Log.d(Config.LOGTAG, "could not cancel transfer for deleted message", e);
+            }
+            try {
+                if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+                    conversation.getAccount().getPgpDecryptionService().discard(message);
+                }
+            } catch (final Exception e) {
+                Log.d(Config.LOGTAG, "could not discard pgp message", e);
+            }
+            try {
+                getNotificationService().clear(message);
+            } catch (final Exception e) {
+                Log.d(Config.LOGTAG, "could not clear notification for deleted message", e);
+            }
+            evictPreview(message.getUuid());
+            if (message.isFileOrImage()) {
+                try {
+                    getFileBackend().deleteFile(message);
+                } catch (final Exception e) {
+                    Log.d(Config.LOGTAG, "could not delete file for deleted message", e);
+                }
+            }
+        }
+        if (uuids.isEmpty()) {
+            return;
+        }
+        mDatabaseWriterExecutor.execute(() -> databaseBackend.deleteMessages(uuids));
+        updateConversation(conversation);
+        updateConversationUi();
+    }
+
     public boolean sendBlockRequest(
             final Blockable blockable, final boolean reportSpam, final String serverMsgId) {
         final var account = blockable.getAccount();

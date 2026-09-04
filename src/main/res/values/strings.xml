@@ -1133,6 +1133,10 @@
     <string name="moderate_delete">Delete as moderator</string>
     <string name="could_not_moderate_message">Could not moderate message</string>
     <string name="delete_message">Delete message</string>
+    <string name="select_messages">Select messages</string>
+    <string name="delete_selected">Delete selected</string>
+    <string name="delete_messages">Delete messages</string>
+    <string name="delete_messages_dialog_msg">Do you want to delete %1$d messages from this device?\n\n<b>Warning:</b> This will not delete copies of these messages that are stored on other devices or servers, and can not be synced to your other devices.</string>
     <string name="moderation_explained">This message will be deleted for you and every participant of this public channel.</string>
     <string name="do_not_show_this_warning_again">Don’t show this warning again.</string>
     <string name="last_seen">last seen %s</string>

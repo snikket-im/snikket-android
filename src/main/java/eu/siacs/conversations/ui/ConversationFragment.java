@@ -31,6 +31,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -409,6 +410,8 @@ public class ConversationFragment extends XmppFragment
                 return true;
             };
     private Message selectedMessage;
+    private ActionMode messageSelectionActionMode;
+    private final Set<String> selectedMessageUuids = new HashSet<>();
     private final OnClickListener mEnableAccountListener =
             new OnClickListener() {
                 @Override
@@ -653,6 +656,9 @@ public class ConversationFragment extends XmppFragment
                             break;
                         case R.id.action_search:
                             startSearch();
+                            break;
+                        case R.id.action_select_messages:
+                            startMessageSelection();
                             break;
                         case R.id.action_archive:
                             requireXmppActivity()
@@ -1266,6 +1272,12 @@ public class ConversationFragment extends XmppFragment
         messageListAdapter.setOnContactPictureClicked(this);
         messageListAdapter.setOnContactPictureLongClicked(this);
         binding.messagesView.setAdapter(messageListAdapter);
+        binding.messagesView.setOnItemClickListener(
+                (parent, view, position, id) -> {
+                    if (messageSelectionActionMode != null) {
+                        toggleMessageSelection(position);
+                    }
+                });
 
         registerForContextMenu(binding.messagesView);
 
@@ -1279,8 +1291,188 @@ public class ConversationFragment extends XmppFragment
     public void onDestroyView() {
         super.onDestroyView();
         Log.d(Config.LOGTAG, "ConversationFragment.onDestroyView()");
+        if (messageSelectionActionMode != null) {
+            messageSelectionActionMode.finish();
+            messageSelectionActionMode = null;
+        }
+        selectedMessageUuids.clear();
+        if (messageListAdapter != null) {
+            messageListAdapter.clearSelection();
+        }
         messageListAdapter.setOnContactPictureClicked(null);
         messageListAdapter.setOnContactPictureLongClicked(null);
+    }
+
+    private final ActionMode.Callback messageSelectionCallback =
+            new ActionMode.Callback() {
+                @Override
+                public boolean onCreateActionMode(final ActionMode mode, final Menu menu) {
+                    final MenuInflater inflater = mode.getMenuInflater();
+                    inflater.inflate(R.menu.menu_message_selection, menu);
+                    return true;
+                }
+
+                @Override
+                public boolean onPrepareActionMode(final ActionMode mode, final Menu menu) {
+                    return false;
+                }
+
+                @Override
+                public boolean onActionItemClicked(final ActionMode mode, final MenuItem item) {
+                    if (item.getItemId() == R.id.action_delete_selected) {
+                        confirmAndDeleteSelectedMessages();
+                        return true;
+                    }
+                    return false;
+                }
+
+                @Override
+                public void onDestroyActionMode(final ActionMode mode) {
+                    clearMessageSelection();
+                }
+            };
+
+    private void startMessageSelection(final Message message) {
+        if (message == null || !MessageAdapter.isSelectable(message)) {
+            return;
+        }
+        selectedMessageUuids.clear();
+        selectedMessageUuids.add(message.getUuid());
+        messageListAdapter.setSelection(selectedMessageUuids);
+        messageListAdapter.notifyDataSetChanged();
+        if (messageSelectionActionMode == null) {
+            messageSelectionActionMode =
+                    requireActivity().startActionMode(messageSelectionCallback);
+        }
+        updateMessageSelectionTitle();
+    }
+
+    /**
+     * Tap-only entry point (toolbar overflow). Starts selection mode without requiring a
+     * long-press, which is finicky with a mouse in the emulator. Pre-selects the latest
+     * selectable message so the user gets immediate visual feedback, then tap toggles.
+     */
+    private void startMessageSelection() {
+        if (messageSelectionActionMode != null || conversation == null) {
+            return;
+        }
+        selectedMessageUuids.clear();
+        synchronized (this.messageList) {
+            for (int i = this.messageList.size() - 1; i >= 0; --i) {
+                final Message message = this.messageList.get(i);
+                if (MessageAdapter.isSelectable(message)) {
+                    selectedMessageUuids.add(message.getUuid());
+                    break;
+                }
+            }
+        }
+        messageListAdapter.setSelection(selectedMessageUuids);
+        messageListAdapter.notifyDataSetChanged();
+        messageSelectionActionMode =
+                requireActivity().startActionMode(messageSelectionCallback);
+        updateMessageSelectionTitle();
+    }
+
+    private void toggleMessageSelection(final int position) {
+        final Message message;
+        synchronized (this.messageList) {
+            if (position < 0 || position >= this.messageList.size()) {
+                return;
+            }
+            message = this.messageList.get(position);
+        }
+        toggleMessageSelection(message);
+    }
+
+    private void toggleMessageSelection(final Message message) {
+        if (message == null || !MessageAdapter.isSelectable(message)) {
+            return;
+        }
+        final String uuid = message.getUuid();
+        if (selectedMessageUuids.contains(uuid)) {
+            selectedMessageUuids.remove(uuid);
+        } else {
+            selectedMessageUuids.add(uuid);
+        }
+        messageListAdapter.setSelection(selectedMessageUuids);
+        messageListAdapter.notifyDataSetChanged();
+        if (selectedMessageUuids.isEmpty()) {
+            finishMessageSelection();
+        } else {
+            updateMessageSelectionTitle();
+        }
+    }
+
+    private void updateMessageSelectionTitle() {
+        if (messageSelectionActionMode != null) {
+            final int count = selectedMessageUuids.size();
+            if (count == 0) {
+                messageSelectionActionMode.setTitle(R.string.select_messages);
+            } else {
+                messageSelectionActionMode.setTitle(
+                        getResources().getQuantityString(R.plurals.x_messages, count, count));
+            }
+        }
+    }
+
+    private void finishMessageSelection() {
+        if (messageSelectionActionMode != null) {
+            messageSelectionActionMode.finish();
+        } else {
+            clearMessageSelection();
+        }
+    }
+
+    private void clearMessageSelection() {
+        selectedMessageUuids.clear();
+        if (messageListAdapter != null) {
+            messageListAdapter.clearSelection();
+            try {
+                messageListAdapter.notifyDataSetChanged();
+            } catch (final Exception e) {
+                Log.d(Config.LOGTAG, "could not clear message selection", e);
+            }
+        }
+        messageSelectionActionMode = null;
+    }
+
+    private void confirmAndDeleteSelectedMessages() {
+        if (conversation == null || selectedMessageUuids.isEmpty()) {
+            return;
+        }
+        final int count = selectedMessageUuids.size();
+        final MaterialAlertDialogBuilder builder =
+                new MaterialAlertDialogBuilder(requireActivity());
+        builder.setTitle(R.string.delete_messages);
+        builder.setMessage(getString(R.string.delete_messages_dialog_msg, count));
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(
+                R.string.confirm, (dialog, which) -> deleteSelectedMessages());
+        builder.create().show();
+    }
+
+    private void deleteSelectedMessages() {
+        if (conversation == null || selectedMessageUuids.isEmpty()) {
+            return;
+        }
+        final List<Message> toDelete = new ArrayList<>();
+        synchronized (this.messageList) {
+            for (final Message message : this.messageList) {
+                if (message != null && selectedMessageUuids.contains(message.getUuid())) {
+                    toDelete.add(message);
+                }
+            }
+        }
+        if (messageSelectionActionMode != null) {
+            messageSelectionActionMode.finish();
+        } else {
+            clearMessageSelection();
+        }
+        if (!toDelete.isEmpty()) {
+            requireXmppActivity().xmppConnectionService.deleteMessages(conversation, toDelete);
+            requireConversationsActivity().onConversationsListItemUpdated();
+            refresh();
+        }
     }
 
     private void quoteText(String text) {
@@ -1303,11 +1495,21 @@ public class ConversationFragment extends XmppFragment
 
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        // This should cancel any remaining click events that would otherwise trigger links
-        v.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
         synchronized (this.messageList) {
-            super.onCreateContextMenu(menu, v, menuInfo);
             AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
+            if (acmi.position < 0 || acmi.position >= this.messageList.size()) {
+                return;
+            }
+            // When in multi-select mode long-press toggles selection instead of showing menu.
+            // This avoids needing a separate OnItemLongClickListener (which can interfere
+            // with the framework context-menu path on some devices/emulators).
+            if (messageSelectionActionMode != null) {
+                toggleMessageSelection(acmi.position);
+                return;
+            }
+            // This should cancel any remaining click events that would otherwise trigger links
+            v.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
+            super.onCreateContextMenu(menu, v, menuInfo);
             this.selectedMessage = this.messageList.get(acmi.position);
             populateContextMenu(menu);
         }
@@ -1319,20 +1521,24 @@ public class ConversationFragment extends XmppFragment
 
     private void populateContextMenu(final ContextMenu menu) {
         final Message m = this.selectedMessage;
+        if (!MessageAdapter.isSelectable(m)) {
+            return;
+        }
+        requireActivity().getMenuInflater().inflate(R.menu.message_context, menu);
+        menu.setHeaderTitle(R.string.message_options);
+        menu.findItem(R.id.select_messages).setVisible(true);
         final Transferable t = m.getTransferable();
-        if (m.getType() != Message.TYPE_STATUS && m.getType() != Message.TYPE_RTP_SESSION) {
+        if (m.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE
+                || m.getEncryption() == Message.ENCRYPTION_AXOLOTL_FAILED) {
+            return;
+        }
 
-            if (m.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE
-                    || m.getEncryption() == Message.ENCRYPTION_AXOLOTL_FAILED) {
-                return;
-            }
-
-            if (m.getStatus() == Message.STATUS_RECEIVED
-                    && t != null
-                    && (t.getStatus() == Transferable.STATUS_CANCELLED
-                            || t.getStatus() == Transferable.STATUS_FAILED)) {
-                return;
-            }
+        if (m.getStatus() == Message.STATUS_RECEIVED
+                && t != null
+                && (t.getStatus() == Transferable.STATUS_CANCELLED
+                        || t.getStatus() == Transferable.STATUS_FAILED)) {
+            return;
+        }
 
             final boolean deleted = m.isDeleted();
             final boolean encrypted =
@@ -1342,8 +1548,6 @@ public class ConversationFragment extends XmppFragment
                     m.getStatus() == Message.STATUS_RECEIVED
                             && (t instanceof JingleFileTransferConnection
                                     || t instanceof HttpDownloadConnection);
-            requireActivity().getMenuInflater().inflate(R.menu.message_context, menu);
-            menu.setHeaderTitle(R.string.message_options);
             final MenuItem addReaction = menu.findItem(R.id.action_add_reaction);
             final MenuItem reportAndBlock = menu.findItem(R.id.action_report_and_block);
             final MenuItem openWith = menu.findItem(R.id.open_with);
@@ -1515,7 +1719,6 @@ public class ConversationFragment extends XmppFragment
                     || (mime != null && mime.startsWith("audio/"))) {
                 openWith.setVisible(true);
             }
-        }
     }
 
     @Override
@@ -1567,6 +1770,10 @@ public class ConversationFragment extends XmppFragment
             }
             case R.id.delete_file -> {
                 deleteFile(selectedMessage);
+                yield true;
+            }
+            case R.id.select_messages -> {
+                startMessageSelection(selectedMessage);
                 yield true;
             }
             case R.id.moderation -> {
@@ -2522,6 +2729,14 @@ public class ConversationFragment extends XmppFragment
     @Override
     public void onStop() {
         super.onStop();
+        if (messageSelectionActionMode != null) {
+            messageSelectionActionMode.finish();
+            messageSelectionActionMode = null;
+        }
+        selectedMessageUuids.clear();
+        if (messageListAdapter != null) {
+            messageListAdapter.clearSelection();
+        }
         final Activity activity = getActivity();
         messageListAdapter.unregisterListenerInAudioPlayer();
         if (activity == null || !activity.isChangingConfigurations()) {
@@ -2564,6 +2779,14 @@ public class ConversationFragment extends XmppFragment
         final boolean changedConversation = this.conversation != conversation;
         if (changedConversation) {
             this.saveMessageDraftStopAudioPlayer();
+            if (messageSelectionActionMode != null) {
+                messageSelectionActionMode.finish();
+                messageSelectionActionMode = null;
+            }
+            selectedMessageUuids.clear();
+            if (messageListAdapter != null) {
+                messageListAdapter.clearSelection();
+            }
         }
         this.clearPending();
         if (this.reInit(conversation, extras != null)) {
