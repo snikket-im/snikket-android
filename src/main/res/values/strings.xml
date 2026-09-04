@@ -5,6 +5,17 @@
     <string name="action_accounts">Manage accounts</string>
     <string name="action_account">Manage account</string>
     <string name="action_archive_chat">Archive chat</string>
+    <string name="select_chats">Select chats</string>
+    <string name="archive_selected">Archive</string>
+    <string name="archive_chats">Archive chats</string>
+    <plurals name="x_chats">
+        <item quantity="one">%d chat</item>
+        <item quantity="other">%d chats</item>
+    </plurals>
+    <plurals name="archive_chats_dialog_msg">
+        <item quantity="one">Do you want to archive %1$d chat?\n\nIt will be removed from the chat list but its history will be kept.</item>
+        <item quantity="other">Do you want to archive %1$d chats?\n\nThey will be removed from the chat list but their history will be kept.</item>
+    </plurals>
     <string name="action_contact_details">Contact details</string>
     <string name="action_muc_details">Group chat details</string>
     <string name="channel_details">Channel details</string>
