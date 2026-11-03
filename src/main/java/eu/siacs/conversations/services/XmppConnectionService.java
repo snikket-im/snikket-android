@@ -191,6 +191,8 @@ public class XmppConnectionService extends Service {
     public static final String ACTION_FCM_MESSAGE_RECEIVED = "fcm_message_received";
     public static final String ACTION_DISMISS_CALL = "dismiss_call";
     public static final String ACTION_END_CALL = "end_call";
+    public static final String ACTION_INCOMING_CALL_NOTIFICATION_DISMISSED =
+            "incoming_call_notification_dismissed";
     public static final String ACTION_PROVISION_ACCOUNT = "provision_account";
     public static final String ACTION_CALL_INTEGRATION_SERVICE_STARTED =
             "call_integration_service_started";
@@ -549,6 +551,9 @@ public class XmppConnectionService extends Service {
                                     : intent.getStringExtra(RtpSessionActivity.EXTRA_SESSION_ID);
                     endRtpSession(sessionId);
                 }
+                break;
+            case ACTION_INCOMING_CALL_NOTIFICATION_DISMISSED:
+                mNotificationService.onIncomingCallNotificationDismissed();
                 break;
             case ACTION_PROVISION_ACCOUNT:
                 {

@@ -22,6 +22,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.SpannableString;
@@ -82,6 +84,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -93,6 +96,12 @@ public class NotificationService {
     private static final int LED_COLOR = 0xffffff00;
 
     private static final long[] CALL_PATTERN = {0, 500, 300, 600, 3000};
+
+    private static final AudioAttributes INCOMING_CALL_AUDIO_ATTRIBUTES =
+            new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                    .build();
 
     private static final String MESSAGES_GROUP = "eu.siacs.conversations.messages";
     private static final String MISSED_CALLS_GROUP = "eu.siacs.conversations.missed_calls";
@@ -114,6 +123,7 @@ public class NotificationService {
     private Conversation mOpenConversation;
     private boolean mIsInForeground;
     private long mLastNotification;
+    private final AtomicBoolean ringingVibration = new AtomicBoolean(false);
 
     private static final String INCOMING_CALLS_NOTIFICATION_CHANNEL = "incoming_calls_channel";
     private static final String INCOMING_CALLS_NOTIFICATION_CHANNEL_PREFIX =
@@ -376,12 +386,7 @@ public class NotificationService {
                         id,
                         context.getString(R.string.incoming_calls_channel_name),
                         NotificationManager.IMPORTANCE_HIGH);
-        incomingCallsChannel.setSound(
-                ringtoneUri,
-                new AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .build());
+        incomingCallsChannel.setSound(ringtoneUri, INCOMING_CALL_AUDIO_ATTRIBUTES);
         incomingCallsChannel.setShowBadge(false);
         incomingCallsChannel.setLightColor(LED_COLOR);
         incomingCallsChannel.enableLights(true);
@@ -561,7 +566,105 @@ public class NotificationService {
 
     public synchronized void startRinging(
             final AbstractJingleConnection.Id id, final Set<Media> media) {
+        // started first so that a repeating vibration of the notification itself replaces ours
+        try {
+            startRingingVibration();
+        } catch (final RuntimeException e) {
+            Log.w(Config.LOGTAG, "could not start vibrating for incoming call", e);
+        }
         showIncomingCallNotification(id, media, false);
+    }
+
+    // The incoming call notification is insistent and should keep vibrating until it is answered.
+    // However, some devices vibrate only once. Of two repeating vibrations Android keeps the newer
+    // one and it ignores one-time vibrations during a repeating one. So where the notification
+    // keeps vibrating it takes over (and still stops when the notification shade is opened) while
+    // elsewhere our vibration keeps going.
+    private void startRingingVibration() {
+        if (!isRingingVibrationAllowed()) {
+            return;
+        }
+        final var vibrator = mXmppConnectionService.getSystemService(Vibrator.class);
+        if (vibrator == null || !vibrator.hasVibrator()) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(
+                    VibrationEffect.createWaveform(CALL_PATTERN, 0),
+                    INCOMING_CALL_AUDIO_ATTRIBUTES);
+        } else {
+            vibrator.vibrate(CALL_PATTERN, 0, INCOMING_CALL_AUDIO_ATTRIBUTES);
+        }
+        this.ringingVibration.set(true);
+    }
+
+    private boolean isRingingVibrationAllowed() {
+        final var notificationManager =
+                mXmppConnectionService.getSystemService(NotificationManager.class);
+        final boolean channelVibrates;
+        final int channelImportance;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final var channel = getCurrentIncomingCallChannel(mXmppConnectionService);
+            channelVibrates = !channel.isPresent() || channel.get().shouldVibrate();
+            channelImportance =
+                    channel.isPresent()
+                            ? channel.get().getImportance()
+                            : NotificationManager.IMPORTANCE_HIGH;
+        } else {
+            channelVibrates = true;
+            channelImportance = NotificationManager.IMPORTANCE_HIGH;
+        }
+        final var audioManager = mXmppConnectionService.getSystemService(AudioManager.class);
+        return isRingingVibrationAllowed(
+                notificationManager.areNotificationsEnabled(),
+                notificationManager.getCurrentInterruptionFilter(),
+                channelVibrates,
+                channelImportance,
+                audioManager == null ? AudioManager.MODE_NORMAL : audioManager.getMode());
+    }
+
+    // Android only vibrates for the notification when the notification is allowed to alert.
+    // Ringer mode is respected by Android itself because of the ringtone usage.
+    static boolean isRingingVibrationAllowed(
+            final boolean notificationsEnabled,
+            final int interruptionFilter,
+            final boolean channelVibrates,
+            final int channelImportance,
+            final int audioMode) {
+        if (!notificationsEnabled) {
+            return false;
+        }
+        // do not disturb might intercept the call and we can not tell whether it does
+        if (interruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL) {
+            return false;
+        }
+        if (!channelVibrates || channelImportance < NotificationManager.IMPORTANCE_DEFAULT) {
+            return false;
+        }
+        return audioMode != AudioManager.MODE_IN_CALL
+                && audioMode != AudioManager.MODE_IN_COMMUNICATION;
+    }
+
+    private void stopRingingVibration() {
+        if (this.ringingVibration.compareAndSet(true, false)) {
+            final var vibrator = mXmppConnectionService.getSystemService(Vibrator.class);
+            if (vibrator != null) {
+                vibrator.cancel();
+            }
+        }
+    }
+
+    public void onIncomingCallNotificationDismissed() {
+        Log.d(Config.LOGTAG, "incoming call notification has been dismissed");
+        stopRingingVibration();
+    }
+
+    private boolean isIncomingCallNotificationShowing() {
+        final var notificationManager =
+                mXmppConnectionService.getSystemService(NotificationManager.class);
+        return Iterables.any(
+                Arrays.asList(notificationManager.getActiveNotifications()),
+                n -> n.getId() == INCOMING_CALL_NOTIFICATION_ID);
     }
 
     private void showIncomingCallNotification(
@@ -626,6 +729,12 @@ public class NotificationService {
         builder.setFullScreenIntent(pendingIntent, true);
         builder.setContentIntent(pendingIntent); // old androids need this?
         builder.setOngoing(true);
+        // since Android 14 users can swipe away ongoing notifications
+        builder.setDeleteIntent(
+                createCallAction(
+                        id.sessionId,
+                        XmppConnectionService.ACTION_INCOMING_CALL_NOTIFICATION_DISMISSED,
+                        105));
         builder.addAction(
                 new NotificationCompat.Action.Builder(
                                 R.drawable.ic_call_end_24dp,
@@ -644,11 +753,7 @@ public class NotificationService {
                         .build());
         modifyIncomingCall(builder);
         final Notification notification = builder.build();
-        notification.audioAttributes =
-                new AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
-                        .build();
+        notification.audioAttributes = INCOMING_CALL_AUDIO_ATTRIBUTES;
         notification.flags = notification.flags | Notification.FLAG_INSISTENT;
         notify(INCOMING_CALL_NOTIFICATION_ID, notification);
     }
@@ -712,6 +817,7 @@ public class NotificationService {
     }
 
     public void cancelIncomingCallNotification() {
+        stopRingingVibration();
         cancel(INCOMING_CALL_NOTIFICATION_ID);
     }
 
@@ -720,12 +826,9 @@ public class NotificationService {
         if (jingleRtpConnection == null) {
             return false;
         }
-        final var notificationManager =
-                mXmppConnectionService.getSystemService(NotificationManager.class);
-        if (Iterables.any(
-                Arrays.asList(notificationManager.getActiveNotifications()),
-                n -> n.getId() == INCOMING_CALL_NOTIFICATION_ID)) {
+        if (isIncomingCallNotificationShowing()) {
             Log.d(Config.LOGTAG, "stopping sound and vibration for incoming call notification");
+            stopRingingVibration();
             showIncomingCallNotification(
                     jingleRtpConnection.getId(), jingleRtpConnection.getMedia(), true);
             return true;

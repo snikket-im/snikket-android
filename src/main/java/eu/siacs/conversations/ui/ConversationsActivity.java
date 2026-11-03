@@ -33,6 +33,7 @@ import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -77,6 +78,7 @@ import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ToolbarUtils;
 import eu.siacs.conversations.utils.ExceptionHelper;
+import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
@@ -124,6 +126,7 @@ public class ConversationsActivity extends XmppActivity
     private final PendingItem<ActivityResult> postponedActivityResult = new PendingItem<>();
     private ActivityConversationsBinding binding;
     private boolean mActivityPaused = true;
+    private AlertDialog fullScreenIntentDialog = null;
 
     private static boolean isViewOrShareIntent(Intent i) {
         Log.d(Config.LOGTAG, "action: " + (i == null ? null : i.getAction()));
@@ -191,7 +194,10 @@ public class ConversationsActivity extends XmppActivity
             if (openBatteryOptimizationDialogIfNeeded()) {
                 return;
             }
-            requestNotificationPermissionIfNeeded();
+            if (requestNotificationPermissionIfNeeded()) {
+                return;
+            }
+            openFullScreenIntentDialogIfNeeded();
         }
     }
 
@@ -240,14 +246,60 @@ public class ConversationsActivity extends XmppActivity
         return false;
     }
 
-    private void requestNotificationPermissionIfNeeded() {
+    private boolean requestNotificationPermissionIfNeeded() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                         != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(
                     new String[] {Manifest.permission.POST_NOTIFICATIONS},
                     REQUEST_POST_NOTIFICATION);
+            return true;
         }
+        return false;
+    }
+
+    private String getFullScreenIntentPreferenceKey() {
+        final String device = PhoneHelper.getAndroidId(this);
+        return "show_full_screen_intent" + (device == null ? "" : device);
+    }
+
+    // without this permission Android 14+ shows incoming calls as regular notifications that
+    // neither turn on the screen nor bring up the call screen on the lock screen
+    private boolean openFullScreenIntentDialogIfNeeded() {
+        if (this.fullScreenIntentDialog != null && this.fullScreenIntentDialog.isShowing()) {
+            return true;
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+                || !getPreferences().getBoolean(getFullScreenIntentPreferenceKey(), true)
+                || getSystemService(NotificationManager.class).canUseFullScreenIntent()) {
+            return false;
+        }
+        final Intent intent = new Intent(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT);
+        intent.setData(Uri.parse("package:" + getPackageName()));
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.pref_fullscreen_notification);
+        builder.setMessage(R.string.pref_fullscreen_notification_summary);
+        builder.setPositiveButton(
+                R.string.next,
+                (dialog, which) -> {
+                    try {
+                        startActivity(intent);
+                    } catch (final ActivityNotFoundException e) {
+                        Toast.makeText(this, R.string.unsupported_operation, Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+        builder.setOnDismissListener(
+                dialog ->
+                        getPreferences()
+                                .edit()
+                                .putBoolean(getFullScreenIntentPreferenceKey(), false)
+                                .apply());
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        this.fullScreenIntentDialog = dialog;
+        return true;
     }
 
     private void notifyFragmentOfBackendConnected(@IdRes int id) {
@@ -291,6 +343,9 @@ public class ConversationsActivity extends XmppActivity
                     case REQUEST_PLAY_PAUSE:
                         ConversationFragment.startStopPending(this);
                         break;
+                    case REQUEST_POST_NOTIFICATION:
+                        openFullScreenIntentDialogIfNeeded();
+                        break;
                 }
             }
         }
@@ -315,7 +370,9 @@ public class ConversationsActivity extends XmppActivity
         }
         if (activityResult.requestCode == REQUEST_BATTERY_OP) {
             // the result code is always 0 even when battery permission were granted
-            requestNotificationPermissionIfNeeded();
+            if (!requestNotificationPermissionIfNeeded()) {
+                openFullScreenIntentDialogIfNeeded();
+            }
             XmppConnectionService.toggleForegroundService(xmppConnectionService);
         }
     }
