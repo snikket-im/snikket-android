@@ -1115,6 +1115,7 @@
     <string name="call_is_using_speaker">Звонок через динамик.</string>
     <string name="call_is_using_bluetooth">Звонок через Bluetooth.</string>
     <string name="flip_camera">Сменить камеру</string>
+    <string name="swap_videos">Поменять видео местами</string>
     <string name="video_is_enabled_tap_to_disable">Видео активно. Нажмите для выключения.</string>
     <string name="pref_create_backup_one_off_summary">Создать разовую резервную копию</string>
     <string name="your_avatar_tap_to_select_new_avatar">Ваш аватар. Нажмите, чтобы выбрать новый аватар в галерее.</string>

@@ -152,6 +152,10 @@ public class RtpSessionActivity extends XmppActivity
             };
     private boolean buttonsHiddenAfterTimeout = false;
     private final Runnable mVisibilityToggleExecutor = this::updateButtonInVideoCallVisibility;
+    // tapping the small preview shows the own camera in the large view (and the other way round).
+    // the request is tied to the session so that it doesn't carry over to the next call
+    private String videoFeedsSwapRequestedSessionId = null;
+    private boolean videoFeedsSwapped = false;
 
     public static Set<Media> actionToMedia(final String action) {
         if (ACTION_MAKE_VIDEO_CALL.equals(action)) {
@@ -178,6 +182,18 @@ public class RtpSessionActivity extends XmppActivity
         }
     }
 
+    private static void removeSink(
+            final VideoTrack videoTrack, final SurfaceViewRenderer surfaceViewRenderer) {
+        try {
+            videoTrack.removeSink(surfaceViewRenderer);
+        } catch (final IllegalStateException e) {
+            Log.e(
+                    Config.LOGTAG,
+                    "possible race condition on trying to remove video sink. ignoring",
+                    e);
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -189,7 +205,7 @@ public class RtpSessionActivity extends XmppActivity
                                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_rtp_session);
         this.binding.remoteVideo.setOnClickListener(this::onVideoScreenClick);
-        this.binding.localVideo.setOnClickListener(this::onVideoScreenClick);
+        this.binding.localVideo.setOnClickListener(this::onLocalVideoClick);
         setSupportActionBar(binding.toolbar);
         Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
 
@@ -212,6 +228,8 @@ public class RtpSessionActivity extends XmppActivity
         if (savedInstanceState != null) {
             int dialpad_visibility = savedInstanceState.getInt("dialpad_visibility");
             findViewById(R.id.dialpad).setVisibility(dialpad_visibility);
+            this.videoFeedsSwapRequestedSessionId =
+                    savedInstanceState.getString("video_feeds_swapped_session_id");
         }
     }
 
@@ -224,6 +242,43 @@ public class RtpSessionActivity extends XmppActivity
 
     private void onVideoScreenClick(final View view) {
         resetVisibilityExecutorShowButtons();
+    }
+
+    private void onLocalVideoClick(final View view) {
+        final JingleRtpConnection connection =
+                this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
+        final RtpEndUserState state = connection == null ? null : connection.getEndUserState();
+        if (canSwapVideoFeeds(state, getLocalVideoTrack(), getRemoteVideoTrack())) {
+            this.videoFeedsSwapRequestedSessionId =
+                    this.videoFeedsSwapped ? null : connection.getId().sessionId;
+            updateVideoViews(state);
+        }
+        onVideoScreenClick(view);
+    }
+
+    private boolean isVideoFeedsSwapRequested() {
+        final JingleRtpConnection connection =
+                this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
+        return connection != null
+                && connection.getId().sessionId.equals(this.videoFeedsSwapRequestedSessionId);
+    }
+
+    private boolean canSwapVideoFeeds(
+            final RtpEndUserState state,
+            final Optional<VideoTrack> localVideoTrack,
+            final Optional<VideoTrack> remoteVideoTrack) {
+        return state == RtpEndUserState.CONNECTED
+                && localVideoTrack.isPresent()
+                && remoteVideoTrack.isPresent()
+                && !isPictureInPicture();
+    }
+
+    private SurfaceViewRenderer getLocalVideoRenderer() {
+        return this.videoFeedsSwapped ? binding.remoteVideo : binding.localVideo;
+    }
+
+    private eu.siacs.conversations.ui.widget.SurfaceViewRenderer getRemoteVideoRenderer() {
+        return this.videoFeedsSwapped ? binding.localVideo : binding.remoteVideo;
     }
 
     @Override
@@ -694,13 +749,16 @@ public class RtpSessionActivity extends XmppActivity
     }
 
     private void releaseVideoTracks(final JingleRtpConnection jingleRtpConnection) {
+        // either track might be rendered by either view depending on whether feeds are swapped
         final Optional<VideoTrack> remoteVideo = jingleRtpConnection.getRemoteVideoTrack();
         if (remoteVideo.isPresent()) {
             remoteVideo.get().removeSink(binding.remoteVideo);
+            remoteVideo.get().removeSink(binding.localVideo);
         }
         final Optional<VideoTrack> localVideo = jingleRtpConnection.getLocalVideoTrack();
         if (localVideo.isPresent()) {
             localVideo.get().removeSink(binding.localVideo);
+            localVideo.get().removeSink(binding.remoteVideo);
         }
     }
 
@@ -751,7 +809,8 @@ public class RtpSessionActivity extends XmppActivity
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startPictureInPicture() {
         try {
-            final Rational rational = this.binding.remoteVideo.getAspectRatio();
+            // picture in picture always shows the remote video
+            final Rational rational = getRemoteVideoRenderer().getAspectRatio();
             final Rational clippedRational = Rationals.clip(rational);
             Log.d(
                     Config.LOGTAG,
@@ -1226,7 +1285,7 @@ public class RtpSessionActivity extends XmppActivity
                 new FutureCallback<>() {
                     @Override
                     public void onSuccess(@Nullable Boolean isFrontCamera) {
-                        binding.localVideo.setMirror(Boolean.TRUE.equals(isFrontCamera));
+                        getLocalVideoRenderer().setMirror(Boolean.TRUE.equals(isFrontCamera));
                     }
 
                     @Override
@@ -1345,6 +1404,7 @@ public class RtpSessionActivity extends XmppActivity
 
     private void updateVideoViews(final RtpEndUserState state) {
         if (END_CARD.contains(state) || state == RtpEndUserState.ENDING_CALL) {
+            this.videoFeedsSwapped = false;
             binding.localVideo.setVisibility(View.GONE);
             binding.localVideo.release();
             binding.remoteVideoWrapper.setVisibility(View.GONE);
@@ -1382,19 +1442,27 @@ public class RtpSessionActivity extends XmppActivity
             return;
         }
         final Optional<VideoTrack> localVideoTrack = getLocalVideoTrack();
+        final Optional<VideoTrack> remoteVideoTrack = getRemoteVideoTrack();
+        final boolean canSwap = canSwapVideoFeeds(state, localVideoTrack, remoteVideoTrack);
+        final boolean swapped = canSwap && isVideoFeedsSwapRequested();
+        if (swapped != this.videoFeedsSwapped) {
+            // do not keep showing the last frame of the other feed until a new frame arrives
+            binding.localVideo.clearImage();
+            binding.remoteVideo.clearImage();
+            this.videoFeedsSwapped = swapped;
+        }
+        binding.localVideo.setContentDescription(canSwap ? getString(R.string.swap_videos) : null);
+        final SurfaceViewRenderer localVideoRenderer = getLocalVideoRenderer();
+        final SurfaceViewRenderer remoteVideoRenderer = getRemoteVideoRenderer();
         if (localVideoTrack.isPresent() && !isPictureInPicture()) {
             ensureSurfaceViewRendererIsSetup(binding.localVideo);
             // paint local view over remote view
             binding.localVideo.setZOrderMediaOverlay(true);
-            binding.localVideo.setMirror(requireRtpConnection().isFrontCamera());
-            addSink(localVideoTrack.get(), binding.localVideo);
         } else {
             binding.localVideo.setVisibility(View.GONE);
         }
-        final Optional<VideoTrack> remoteVideoTrack = getRemoteVideoTrack();
         if (remoteVideoTrack.isPresent()) {
             ensureSurfaceViewRendererIsSetup(binding.remoteVideo);
-            addSink(remoteVideoTrack.get(), binding.remoteVideo);
             binding.remoteVideo.setScalingType(
                     RendererCommon.ScalingType.SCALE_ASPECT_FILL,
                     RendererCommon.ScalingType.SCALE_ASPECT_FIT);
@@ -1416,6 +1484,18 @@ public class RtpSessionActivity extends XmppActivity
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             binding.remoteVideoWrapper.setVisibility(View.GONE);
             binding.pipLocalMicOffIndicator.setVisibility(View.GONE);
+        }
+        if (localVideoTrack.isPresent()) {
+            removeSink(localVideoTrack.get(), remoteVideoRenderer);
+            if (!isPictureInPicture()) {
+                localVideoRenderer.setMirror(requireRtpConnection().isFrontCamera());
+                addSink(localVideoTrack.get(), localVideoRenderer);
+            }
+        }
+        if (remoteVideoTrack.isPresent()) {
+            removeSink(remoteVideoTrack.get(), localVideoRenderer);
+            remoteVideoRenderer.setMirror(false);
+            addSink(remoteVideoTrack.get(), remoteVideoRenderer);
         }
     }
 
@@ -1653,6 +1733,7 @@ public class RtpSessionActivity extends XmppActivity
         super.onSaveInstanceState(outState);
         int visibility = findViewById(R.id.dialpad).getVisibility();
         outState.putInt("dialpad_visibility", visibility);
+        outState.putString("video_feeds_swapped_session_id", this.videoFeedsSwapRequestedSessionId);
     }
 
     private void updateRtpSessionProposalState(
