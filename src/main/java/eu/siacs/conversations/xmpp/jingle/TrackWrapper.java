@@ -47,7 +47,13 @@ class TrackWrapper<T extends MediaStreamTrack> {
             Log.w(Config.LOGTAG, "unable to detect transceiver for " + id);
             return Optional.of(trackWrapper.track);
         }
-        final RtpTransceiver.RtpTransceiverDirection direction = transceiver.getDirection();
+        final RtpTransceiver.RtpTransceiverDirection direction;
+        try {
+            direction = transceiver.getDirection();
+        } catch (final IllegalStateException e) {
+            Log.w(Config.LOGTAG, "transceiver has been disposed concurrently", e);
+            return Optional.of(trackWrapper.track);
+        }
         if (direction == RtpTransceiver.RtpTransceiverDirection.SEND_ONLY
                 || direction == RtpTransceiver.RtpTransceiverDirection.SEND_RECV) {
             return Optional.of(trackWrapper.track);
@@ -66,10 +72,16 @@ class TrackWrapper<T extends MediaStreamTrack> {
         } catch (final IllegalStateException e) {
             return null;
         }
-        for (final RtpTransceiver transceiver : peerConnection.getTransceivers()) {
-            if (transceiver.getSender().id().equals(rtpSenderId)) {
-                return transceiver;
+        // getTransceivers() disposes the transceivers it returned before. A concurrent call from
+        // another thread can therefore dispose the transceivers we are looking at
+        try {
+            for (final RtpTransceiver transceiver : peerConnection.getTransceivers()) {
+                if (transceiver.getSender().id().equals(rtpSenderId)) {
+                    return transceiver;
+                }
             }
+        } catch (final IllegalStateException e) {
+            Log.w(Config.LOGTAG, "unable to look up transceiver", e);
         }
         return null;
     }

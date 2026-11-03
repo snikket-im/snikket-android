@@ -674,6 +674,25 @@ public class RtpSessionActivity extends XmppActivity
     public void onResume() {
         super.onResume();
         resetVisibilityExecutorShowButtons();
+        restartVideoCaptureIfInterrupted();
+    }
+
+    @Override
+    public void onWindowFocusChanged(final boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            // in split screen the other app might have been using the camera
+            restartVideoCaptureIfInterrupted();
+        }
+    }
+
+    // the camera might have been taken away from us while the call screen was not visible
+    private void restartVideoCaptureIfInterrupted() {
+        final JingleRtpConnection connection =
+                this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
+        if (connection != null) {
+            connection.restartVideoCaptureIfInterrupted();
+        }
     }
 
     @Override
@@ -846,6 +865,7 @@ public class RtpSessionActivity extends XmppActivity
         }
         setWidth(currentState);
         updateVideoViews(currentState);
+        restartVideoCaptureIfInterrupted();
         updateStateDisplay(currentState, media, contentAddition);
         updateVerifiedShield(verified && STATES_SHOWING_SWITCH_TO_CHAT.contains(currentState));
         updateButtonConfiguration(currentState, media, contentAddition);

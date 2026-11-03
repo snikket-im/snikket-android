@@ -125,7 +125,7 @@ public abstract class AbstractJingleConnection {
     protected final Id id;
     private final Jid initiator;
 
-    protected State state = State.NULL;
+    protected volatile State state = State.NULL;
 
     AbstractJingleConnection(
             final XmppConnectionService service, final Id id, final Jid initiator) {

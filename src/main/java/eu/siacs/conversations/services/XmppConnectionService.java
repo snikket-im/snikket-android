@@ -43,6 +43,7 @@ import android.util.Pair;
 import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
 import com.google.common.base.Objects;
@@ -203,6 +204,9 @@ public class XmppConnectionService extends Service {
     private static final String SETTING_LAST_ACTIVITY_TS = "last_activity_timestamp";
 
     public final CountDownLatch restoredFromDatabaseLatch = new CountDownLatch(1);
+    static final int FOREGROUND_SERVICE_TYPE_MICROPHONE_AND_CAMERA =
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
+                    | ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA;
     private static final Executor FILE_OBSERVER_EXECUTOR = Executors.newSingleThreadExecutor();
     public static final Executor FILE_ATTACHMENT_EXECUTOR = Executors.newSingleThreadExecutor();
 
@@ -1322,8 +1326,11 @@ public class XmppConnectionService extends Service {
     }
 
     public void setOngoingCall(
-            AbstractJingleConnection.Id id, Set<Media> media, final boolean reconnecting) {
-        ongoingCall.set(new OngoingCall(id, media, reconnecting));
+            AbstractJingleConnection.Id id,
+            Set<Media> media,
+            final boolean videoEnabled,
+            final boolean reconnecting) {
+        ongoingCall.set(new OngoingCall(id, media, videoEnabled, reconnecting));
         toggleForegroundService(false);
     }
 
@@ -1346,15 +1353,15 @@ public class XmppConnectionService extends Service {
             if (ongoing != null) {
                 notification = this.mNotificationService.getOngoingCallNotification(ongoing);
                 id = NotificationService.ONGOING_CALL_NOTIFICATION_ID;
-                startForegroundOrCatch(id, notification, true);
+                startForegroundOrCatch(id, notification, true, ongoing.usesCamera());
             } else if (ongoingVideoTranscoding) {
                 notification = this.mNotificationService.getIndeterminateVideoTranscoding();
                 id = NotificationService.ONGOING_VIDEO_TRANSCODING_NOTIFICATION_ID;
-                startForegroundOrCatch(id, notification, false);
+                startForegroundOrCatch(id, notification, false, false);
             } else {
                 notification = this.mNotificationService.createForegroundNotification();
                 id = NotificationService.FOREGROUND_NOTIFICATION_ID;
-                startForegroundOrCatch(id, notification, false);
+                startForegroundOrCatch(id, notification, false, false);
             }
             mNotificationService.notify(id, notification);
             status = true;
@@ -1379,35 +1386,82 @@ public class XmppConnectionService extends Service {
     }
 
     private void startForegroundOrCatch(
-            final int id, final Notification notification, final boolean requireMicrophone) {
+            final int id,
+            final Notification notification,
+            final boolean requireMicrophone,
+            final boolean requireCamera) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                final int foregroundServiceType;
-                if (requireMicrophone
-                        && ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-                                == PackageManager.PERMISSION_GRANTED) {
-                    foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE;
-                    Log.d(Config.LOGTAG, "defaulting to microphone foreground service type");
-                } else if (getSystemService(PowerManager.class)
-                        .isIgnoringBatteryOptimizations(getPackageName())) {
-                    foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED;
-                } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE;
-                } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA;
-                } else {
-                    foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE;
-                    Log.w(Config.LOGTAG, "falling back to special use foreground service type");
+                final int foregroundServiceType =
+                        chooseForegroundServiceType(
+                                requireMicrophone,
+                                requireCamera,
+                                ContextCompat.checkSelfPermission(
+                                                this, Manifest.permission.RECORD_AUDIO)
+                                        == PackageManager.PERMISSION_GRANTED,
+                                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                                        == PackageManager.PERMISSION_GRANTED,
+                                getSystemService(PowerManager.class)
+                                        .isIgnoringBatteryOptimizations(getPackageName()));
+                Log.d(Config.LOGTAG, "using foreground service type " + foregroundServiceType);
+                try {
+                    startForeground(id, notification, foregroundServiceType);
+                } catch (final SecurityException e) {
+                    if (foregroundServiceType != FOREGROUND_SERVICE_TYPE_MICROPHONE_AND_CAMERA) {
+                        throw e;
+                    }
+                    Log.w(
+                            Config.LOGTAG,
+                            "could not start foreground service with camera type: "
+                                    + e.getMessage());
+                    final var withoutCamera =
+                            getForegroundServiceTypeWithoutCamera(getForegroundServiceType());
+                    if (withoutCamera.isPresent()) {
+                        startForeground(id, notification, withoutCamera.get());
+                    }
                 }
-                startForeground(id, notification, foregroundServiceType);
             } else {
                 startForeground(id, notification);
             }
         } catch (final IllegalStateException | SecurityException e) {
             Log.e(Config.LOGTAG, "Could not start foreground service", e);
         }
+    }
+
+    // without the camera type Android revokes camera access during video calls as soon as the call
+    // screen is in the background (for example after leaving the app without picture in picture)
+    @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+    static int chooseForegroundServiceType(
+            final boolean requireMicrophone,
+            final boolean requireCamera,
+            final boolean hasMicrophonePermission,
+            final boolean hasCameraPermission,
+            final boolean ignoringBatteryOptimizations) {
+        if (requireMicrophone && hasMicrophonePermission) {
+            if (requireCamera && hasCameraPermission) {
+                return FOREGROUND_SERVICE_TYPE_MICROPHONE_AND_CAMERA;
+            }
+            return ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE;
+        } else if (ignoringBatteryOptimizations) {
+            return ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED;
+        } else if (hasMicrophonePermission) {
+            return ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE;
+        } else if (hasCameraPermission) {
+            return ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA;
+        } else {
+            return ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE;
+        }
+    }
+
+    // Android might refuse the camera type, for example when the app is in the background. Absent
+    // means the running foreground service should be kept as it is.
+    static Optional<Integer> getForegroundServiceTypeWithoutCamera(
+            final int currentForegroundServiceType) {
+        if ((currentForegroundServiceType & ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA) != 0) {
+            // do not narrow down a running foreground service that already has camera access
+            return Optional.absent();
+        }
+        return Optional.of(ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE);
     }
 
     public boolean foregroundNotificationNeedsUpdatingWhenErrorStateChanges() {
@@ -4059,13 +4113,22 @@ public class XmppConnectionService extends Service {
     public static class OngoingCall {
         public final AbstractJingleConnection.Id id;
         public final Set<Media> media;
+        public final boolean videoEnabled;
         public final boolean reconnecting;
 
         public OngoingCall(
-                AbstractJingleConnection.Id id, Set<Media> media, final boolean reconnecting) {
+                AbstractJingleConnection.Id id,
+                Set<Media> media,
+                final boolean videoEnabled,
+                final boolean reconnecting) {
             this.id = id;
             this.media = media;
+            this.videoEnabled = videoEnabled;
             this.reconnecting = reconnecting;
+        }
+
+        public boolean usesCamera() {
+            return videoEnabled && media.contains(Media.VIDEO);
         }
 
         @Override
@@ -4074,13 +4137,14 @@ public class XmppConnectionService extends Service {
             if (o == null || getClass() != o.getClass()) return false;
             OngoingCall that = (OngoingCall) o;
             return reconnecting == that.reconnecting
+                    && videoEnabled == that.videoEnabled
                     && Objects.equal(id, that.id)
                     && Objects.equal(media, that.media);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hashCode(id, media, reconnecting);
+            return Objects.hashCode(id, media, videoEnabled, reconnecting);
         }
     }
 

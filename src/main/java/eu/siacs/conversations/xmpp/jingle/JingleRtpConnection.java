@@ -2682,6 +2682,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
         this.callIntegration.setAudioDeviceWhenAvailable(
                 CallIntegration.initialAudioDevice(activeContents.getMedia()));
         updateEndUserState();
+        // the foreground service type depends on whether the call has video
+        updateOngoingCallNotification();
     }
 
     private SessionDescription setLocalSessionDescription()
@@ -2733,6 +2735,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     public void setVideoEnabled(final boolean enabled) {
         webRTCWrapper.setVideoEnabled(enabled);
+        // the foreground service only keeps access to the camera while video is enabled
+        updateOngoingCallNotification();
     }
 
     public boolean isCameraSwitchable() {
@@ -2745,6 +2749,13 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     public ListenableFuture<Boolean> switchCamera() {
         return webRTCWrapper.switchCamera();
+    }
+
+    public void restartVideoCaptureIfInterrupted() {
+        // with video disabled there is no need to bring the camera back (and its indicator on)
+        if (webRTCWrapper.isVideoEnabledByUser()) {
+            webRTCWrapper.restartVideoCaptureIfInterrupted();
+        }
     }
 
     @Override
@@ -2845,7 +2856,13 @@ public class JingleRtpConnection extends AbstractJingleConnection
             } else {
                 reconnecting = false;
             }
-            xmppConnectionService.setOngoingCall(id, getMedia(), reconnecting);
+            // this runs on various threads; so tracks must not be looked up via the peer connection
+            xmppConnectionService.setOngoingCall(
+                    id, getMedia(), webRTCWrapper.isVideoEnabledByUser(), reconnecting);
+            // not every caller holds the lock; the call might have ended in the meantime
+            if (isTerminated()) {
+                xmppConnectionService.removeOngoingCall();
+            }
         } else {
             xmppConnectionService.removeOngoingCall();
         }

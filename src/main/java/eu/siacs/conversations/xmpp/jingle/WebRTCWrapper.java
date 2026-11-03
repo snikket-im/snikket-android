@@ -241,6 +241,7 @@ public class WebRTCWrapper {
     private Context context = null;
     private EglBase eglBase = null;
     private VideoSourceWrapper videoSourceWrapper;
+    private volatile boolean videoEnabledByUser = true;
 
     WebRTCWrapper(final EventCallback eventCallback) {
         this.eventCallback = eventCallback;
@@ -543,6 +544,13 @@ public class WebRTCWrapper {
         return videoSourceWrapper.switchCamera();
     }
 
+    void restartVideoCaptureIfInterrupted() {
+        final VideoSourceWrapper videoSourceWrapper = this.videoSourceWrapper;
+        if (videoSourceWrapper != null) {
+            videoSourceWrapper.restartCaptureIfInterrupted();
+        }
+    }
+
     boolean isMicrophoneEnabled() {
         final Optional<AudioTrack> audioTrack =
                 TrackWrapper.get(peerConnection, this.localAudioTrack);
@@ -593,7 +601,12 @@ public class WebRTCWrapper {
         final Optional<VideoTrack> videoTrack =
                 TrackWrapper.get(peerConnection, this.localVideoTrack);
         if (videoTrack.isPresent()) {
-            return videoTrack.get().enabled();
+            try {
+                return videoTrack.get().enabled();
+            } catch (final IllegalStateException e) {
+                // the call might have been ended on another thread
+                return false;
+            }
         }
         return false;
     }
@@ -603,9 +616,20 @@ public class WebRTCWrapper {
                 TrackWrapper.get(peerConnection, this.localVideoTrack);
         if (videoTrack.isPresent()) {
             videoTrack.get().setEnabled(enabled);
+            this.videoEnabledByUser = enabled;
+            if (enabled) {
+                restartVideoCaptureIfInterrupted();
+            }
             return;
         }
         throw new IllegalStateException("Local video track does not exist");
+    }
+
+    // Unlike isVideoEnabled() this does not look up the track through the peer connection and is
+    // safe to call from any thread. PeerConnection.getTransceivers() disposes the transceivers it
+    // returned before and must not be called from multiple threads at the same time.
+    boolean isVideoEnabledByUser() {
+        return this.videoEnabledByUser;
     }
 
     synchronized ListenableFuture<SessionDescription> setLocalDescription(
